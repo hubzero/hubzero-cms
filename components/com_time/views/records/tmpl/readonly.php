@@ -109,7 +109,7 @@ $juser = JFactory::getUser();
 
 					<div class="grouping date-group">
 						<label for="date"><?php echo JText::_('COM_TIME_RECORDS_DATE'); ?>:</label>
-						<?php echo ($this->row->date != '0000-00-00 00:00:00') ? JHTML::_('date', $this->row->date, 'm/d/y') : ''; ?>
+						<?php echo ($this->row->date != '0000-00-00 00:00:00') ? JHTML::_('date', $this->row->date, 'm/d/y', null) : ''; ?>
 					</div>
 				</div>
 

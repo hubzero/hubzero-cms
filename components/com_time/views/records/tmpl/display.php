@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
+
 $this->css()
      ->css('records')
      ->js('records');
@@ -83,20 +85,15 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 				<div id="add-filters">
 					<p>Filter results:
 						<select name="q[column]" id="filter-column">
-							<option value="user_id">User</option>
-							<option value="task_id">Task</option>
+							<?php foreach ($this->cols as $c) : ?>
+								<option value="<?php echo $c['raw']; ?>"><?php echo $c['human']; ?></option>
+							<?php endforeach; ?>
 						</select>
-						<select name="q[operator]" id="filter-operator">
-							<option value="e">equals (&#61;)</option>
-							<option value="de">doesn't equal (&#8800;)</option>
-							<option value="gt">is greater than (&#62;)</option>
-							<option value="lt">is less than (&#60;)</option>
-							<option value="gte">is greater than or equal to (&#62;&#61;)</option>
-							<option value="lte">is less than or equal to (&#60;&#61;)</option>
-						</select>
+						<?php echo $this->operators; ?>
 						<select name="q[value]" id="filter-value">
 						</select>
 						<input id="filter-submit" class="btn btn-success" type="submit" value="<?php echo JText::_('+ Add filter'); ?>" />
+						<input type="hidden" value="time_records" id="filter-table" />
 					</p>
 				</div><!-- / .filters -->
 			</form>
@@ -164,20 +161,10 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 				<tbody>
 					<?php if (count($this->records) > 0) {
 						foreach ($this->records as $record) {
-							// Cut the description off if it's too long
-							if (strlen($record->description) > 25)
-							{
-								$record->description = trim(substr($record->description,0,25))."...";
-							}
-							// Highlight search words if set
-							if (!empty($this->filters['search']))
-							{
-								foreach ($this->filters['search'] as $arg)
-								{
-									$record->description = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $record->description);
-									$record->pname       = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $record->pname);
-								}
-							}
+							// Cut the description off if it's too long and highlight search terms
+							$originalDescription = $record->description;
+							$record->description = \Hubzero\Utility\String::truncate($record->description, 25);
+							$record = TimeFilters::highlight($record, $this->filters);
 							?>
 						<tr>
 							<td>
@@ -187,9 +174,9 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 							</td>
 							<td><?php echo $record->uname; ?></td>
 							<td class="col-time"><?php echo $record->time; ?></td>
-							<td><?php echo JHTML::_('date', $record->date, 'm/d/y'); ?></td>
+							<td><?php echo JHTML::_('date', $record->date, 'm/d/y', null); ?></td>
 							<td><?php echo $record->pname; ?></td>
-							<td class="last"><?php echo $record->description; ?></td>
+							<td class="last" title="<?php echo $originalDescription; ?>"><?php echo $record->description; ?></td>
 						</tr>
 						<?php } // close foreach
 					} else { // else count > 0 ?>

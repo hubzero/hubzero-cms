@@ -62,6 +62,10 @@ class TimeControllerRecords extends TimeControllerBase
 		$juser = JFactory::getUser();
 		$this->view->subordinates = TimeHTML::getSubordinates($juser->get('id'));
 
+		// Get the column list and operators
+		$this->view->cols      = TimeFilters::getColumnNames('time_records', array("id", "description"));
+		$this->view->operators = TimeFilters::buildSelectOperators();
+
 		// Set a few things for the vew
 		$this->_buildPathway();
 		$this->view->title = $this->_buildTitle();

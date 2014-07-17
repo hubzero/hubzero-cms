@@ -161,6 +161,13 @@ class TimeFilters
 	 */
 	public static function highlight($obj, $filters=array())
 	{
+		$is_array = true;
+		if (!is_array($obj))
+		{
+			$is_array = false;
+			$obj = array($obj);
+		}
+
 		// Highlight search words if set
 		if (!empty($filters['search']) && is_array($obj))
 		{
@@ -168,9 +175,21 @@ class TimeFilters
 			{
 				foreach ($filters['search'] as $arg)
 				{
-					$o->name = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $o->name);
+					if (isset($o->name))
+					{
+						$o->name = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $o->name);
+					}
+					if (isset($o->description))
+					{
+						$o->description = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $o->description);
+					}
 				}
 			}
+		}
+
+		if (!$is_array)
+		{
+			$obj = $obj[0];
 		}
 
 		return $obj;
@@ -358,7 +377,7 @@ class TimeFilters
 			$x['display'] = $value;
 
 			// Now override at will...
-			if ($column == 'assignee' || $column == 'liaison')
+			if ($column == 'assignee' || $column == 'liaison' || $column == 'user_id')
 			{
 				$x['value'] = $value;
 				$x['display'] = JFactory::getUser($value)->get('name');
@@ -374,6 +393,13 @@ class TimeFilters
 				$hub->load($value);
 				$x['value'] = $value;
 				$x['display'] = $hub->name;
+			}
+			elseif ($column == 'task_id')
+			{
+				$task = new TimeTasks($db);
+				$task->load($value);
+				$x['value'] = $value;
+				$x['display'] = $task->name;
 			}
 			elseif ($column == 'active')
 			{

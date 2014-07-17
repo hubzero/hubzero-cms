@@ -28,9 +28,9 @@ HUB.Plugins.TimeRecords = {
 		var $ = this.jQuery;
 
 		// Initialize variables
-		var hub        = $("#hub_id");
-		var col_filter = $("#filter-column");
-		var filter_sub = $("#filter-submit");
+		var hub      = $("#hub_id");
+		var column   = $('#filter-column');
+		var operator = $('#filter-operator');
 
 		// Show add filters box
 		$('#add-filters').css('display', 'block');
@@ -67,78 +67,67 @@ HUB.Plugins.TimeRecords = {
 			});
 		});
 
-		// Add change event to the column filters select box ('view' view)
-		col_filter.change(function(event){
-			// Update the filter values when column is changed
+		if ($('#filter-table').length) {
 			HUB.Plugins.TimeRecords.col_change();
-		});
 
-		// Update the filter values on initial page load too
-		HUB.Plugins.TimeRecords.col_change();
-
+			// Capture change events on the column field
+			column.on('change', HUB.Plugins.TimeRecords.col_change);
+			operator.on('change', HUB.Plugins.TimeRecords.operator_change);
+		}
 	}, // end initialize
 
 	col_change: function() {
-		var $ = this.jQuery;
+		var $ = HUB.Plugins.TimeRecords.jQuery;
 
-		var col_val = $('#filter-column').val();
+		// Initialize variables
+		var table    = $('#filter-table');
+		var column   = $('#filter-column');
+		var value    = $('#filter-value');
+		var operator = $('#filter-operator');
 
-		if(col_val == 'user_id') {
-			HUB.Plugins.TimeRecords.get_users();
-		}
-		else if(col_val == 'task_id') {
-			HUB.Plugins.TimeRecords.get_tasks();
+		if(operator.val() != "like") {
+			if(column.val().search("date") < 0) {
+				// Create a ajax call to get relevent value options
+				$.ajax({
+					url: "/api/time/getValues",
+					data: "table="+table.val()+"&column="+column.val(),
+					dataType: "json",
+					cache: false,
+					success: function(json){
+						// If success, update the list of values based on the chosen column
+						var options = '';
+						if(json.values.length > 0) {
+							for (var i = 0; i < json.values.length; i++) {
+								options += '<option value="' + json.values[i].value + '">' + json.values[i].display + '</option>';
+							}
+						} else {
+							options = '<option value="">No values are available</option>';
+						}
+						value.replaceWith("<select name=\"q[value]\" id=\"filter-value\"></select>");
+						$('#filter-value').html(options);
+					}
+				});
+			} else {
+				value.replaceWith("<input name=\"q[value]\" id=\"filter-value\" class=\"hadDatepicker\" type=text />");
+				$('.hadDatepicker').datepicker({ dateFormat: 'yy-mm-dd' });
+			}
 		}
 	}, // end col_change
 
-	get_users: function() {
-		var $     = this.jQuery;
-		var value = $('#filter-value');
+	operator_change: function() {
+		var $ = HUB.Plugins.TimeRecords.jQuery;
 
-		// Create a ajax call to get the users
-		$.ajax({
-			url: "/api/time/indexTimeUsers",
-			dataType: "json",
-			cache: false,
-			success: function(json){
-				// If success, update the list of users
-				var options = '';
-				if(json.users.length > 0) {
-					for (var i = 0; i < json.users.length; i++) {
-						options += '<option value="' + json.users[i].id + '">' + json.users[i].name + '</option>';
-					}
-				} else {
-					options = '<option value="">No users are available</option>';
-				}
-				value.html(options);
-			}
-		});
-	}, // end get_users
+		// Initialize variables
+		var operator = $('#filter-operator');
+		var value    = $('#filter-value');
 
-	get_tasks: function() {
-		var $     = this.jQuery;
-		var value = $('#filter-value');
-
-		// Create a ajax call to get the tasks
-		$.ajax({
-			url: "/api/time/indexTasks",
-			dataType: "json",
-			data: "pactive=1",
-			cache: false,
-			success: function(json){
-				// If success, update the list of tasks based on the chosen hub
-				var options = '';
-				if(json.tasks.length > 0) {
-					for (var i = 0; i < json.tasks.length; i++) {
-						options += '<option value="' + json.tasks[i].id + '">' + json.tasks[i].name + '</option>';
-					}
-				} else {
-					options = '<option value="">No tasks are available</option>';
-				}
-				value.html(options);
-			}
-		});
-	} // end get_tasks
+		if (operator.val() == "like") {
+			value.replaceWith("<input name=\"q[value]\" id=\"filter-value\" type=text />");
+		} else {
+			value.replaceWith("<select name=\"q[value]\" id=\"filter-value\"></select>");
+			HUB.Plugins.TimeRecords.col_change();
+		}
+	} // end operator_change
 };
 
 jQuery(document).ready(function($){

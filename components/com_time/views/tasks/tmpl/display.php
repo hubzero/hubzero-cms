@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
+
 $this->css()
      ->css('tasks')
      ->js('tasks');
@@ -95,33 +97,30 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 					</p>
 				</div><!-- / .filters -->
 			</form>
-			<?php
-				if (!empty($this->filters['q']) || (is_array($this->filters['search']) && !empty($this->filters['search'][0])))
-				{
-					echo '<div id="applied-filters">';
-					echo '<p>Applied filters:</p>';
-					echo '<ul class="filters-list">';
-					if (!empty($this->filters['q']))
-					{
-						foreach ($this->filters['q'] as $q)
-						{
-							echo '<li><a href="' .
-								JRoute::_($base . '&q[column]=' . $q['column'] .
-									'&q[operator]=' . $q['operator'] . '&q[value]=' . $q['value'] . '&q[delete]') .
-								'" class="filters-x">x</a><i>' . $q['human_column'] . ' ' . $q['human_operator'] . '</i>: ' .
-								$q['human_value'] . '</li>';
-						}
-					}
-					if (is_array($this->filters['search']) && !empty($this->filters['search'][0]))
-					{
-						echo '<li><a href="' .
-							JRoute::_($base . '&search=') .
-							'" class="filters-x">x</a><i>Search</i>: ' . implode(" ", $this->filters['search']) . '</li>';
-					}
-					echo '</ul>';
-					echo '</div>';
-				}
-			?>
+			<?php if (!empty($this->filters['q']) || (is_array($this->filters['search']) && !empty($this->filters['search'][0]))) : ?>
+				<div id="applied-filters">
+					<p>Applied filters:</p>
+					<ul class="filters-list">
+						<?php if (!empty($this->filters['q'])) : ?>
+							<?php foreach ($this->filters['q'] as $q) : ?>
+								<li>
+									<a href="<?php echo JRoute::_($base . '&q[column]=' . $q['column'] .
+										'&q[operator]=' . $q['operator'] . '&q[value]=' . $q['value'] . '&q[delete]'); ?>"
+										class="filters-x">x
+									</a>
+									<i><?php echo $q['human_column'] . ' ' . $q['human_operator']; ?></i>: <?php echo $q['human_value']; ?>
+								</li>
+							<?php endforeach; ?>
+						<?php endif; ?>
+						<?php if (is_array($this->filters['search']) && !empty($this->filters['search'][0])) : ?>
+							<li>
+								<a href="<?php echo JRoute::_($base . '&search='); ?>" class="filters-x">x</a>
+								<i>Search</i>: <?php echo implode(" ", $this->filters['search']); ?>
+							</li>
+						<?php endif; ?>
+					</ul>
+				</div>
+			<?php endif; ?>
 			<table class="entries">
 				<caption><?php echo JText::_('COM_TIME_TASKS_CAPTION'); ?></caption>
 				<thead>
@@ -186,8 +185,8 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 							<td style="text-align:center;"><?php echo $task->priority; ?></td>
 							<td><?php echo $task->aname; ?></td>
 							<td><?php echo $task->lname; ?></td>
-							<td><?php echo ($task->start_date != '0000-00-00') ? JHTML::_('date', $task->start_date, 'm/d/y') : ''; ?></td>
-							<td><?php echo ($task->end_date != '0000-00-00') ? JHTML::_('date', $task->end_date, 'm/d/y') : ''; ?></td>
+							<td><?php echo ($task->start_date != '0000-00-00') ? JHTML::_('date', $task->start_date, 'm/d/y', null) : ''; ?></td>
+							<td><?php echo ($task->end_date != '0000-00-00') ? JHTML::_('date', $task->end_date, 'm/d/y', null) : ''; ?></td>
 						</tr>
 						<?php endforeach; ?>
 					<?php else : ?>

@@ -91,7 +91,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 					<div class="grouping anniversary-grouping">
 						<label for="anniversary_date"><?php echo JText::_('COM_TIME_HUBS_ANNIVERSARY_DATE'); ?>:</label>
-						<?php echo ($this->row->anniversary_date != '0000-00-00') ? JHTML::_('date', $this->row->anniversary_date, 'm/d/y') : ''; ?>
+						<?php echo ($this->row->anniversary_date != '0000-00-00') ? JHTML::_('date', $this->row->anniversary_date, 'm/d/y', null) : ''; ?>
 					</div>
 
 					<div class="grouping support-grouping">
