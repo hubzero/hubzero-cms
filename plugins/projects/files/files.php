@@ -3496,7 +3496,7 @@ class plgProjectsFiles extends JPlugin
 		// Incoming
 		$render 	= JRequest::getVar('render', 'download');
 		$items 		= $this->_sortIncoming();
-		$file 	 	= urldecode(JRequest::getVar('file', ''));
+		$file 	 	= trim(urldecode(JRequest::getVar('file', '')), DS);
 		$multifile	= 0;
 		$deleteTemp = 0;
 		$remote 	= NULL;
