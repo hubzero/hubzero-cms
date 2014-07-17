@@ -342,48 +342,28 @@ class ForumModel extends ForumModelAbstract
 
 			if (!$juser->get('guest'))
 			{
-				if (version_compare(JVERSION, '1.6', 'ge'))
+				$asset  = 'com_forum';
+				if ($assetId)
 				{
-					$asset  = 'com_forum';
-					if ($assetId)
-					{
-						$asset .= ($assetType != 'component') ? '.' . $assetType : '';
-						$asset .= ($assetId) ? '.' . $assetId : '';
-					}
-
-					$at = '';
-					if ($assetType != 'component')
-					{
-						$at .= '.' . $assetType;
-					}
-
-					// Admin
-					$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
-					$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
-					// Permissions
-					$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
-					$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
-					$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
-					$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
-					$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
+					$asset .= ($assetType != 'component') ? '.' . $assetType : '';
+					$asset .= ($assetId) ? '.' . $assetId : '';
 				}
-				else
+
+				$at = '';
+				if ($assetType != 'component')
 				{
-					if ($assetType == 'post' || $assetType == 'thread')
-					{
-						$this->config()->set('access-create-' . $assetType, true);
-						$this->config()->set('access-edit-' . $assetType, true);
-						$this->config()->set('access-delete-' . $assetType, true);
-					}
-					if ($juser->authorize($this->_option, 'manage'))
-					{
-						$this->config()->set('access-manage-' . $assetType, true);
-						$this->config()->set('access-admin-' . $assetType, true);
-						$this->config()->set('access-create-' . $assetType, true);
-						$this->config()->set('access-delete-' . $assetType, true);
-						$this->config()->set('access-edit-' . $assetType, true);
-					}
+					$at .= '.' . $assetType;
 				}
+
+				// Admin
+				$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
+				$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
+				// Permissions
+				$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
+				$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
+				$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
+				$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
+				$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
 			}
 
 			$this->config()->set('access-check-done', true);
