@@ -39,135 +39,137 @@ $this->css()
 </header>
 
 <section class="main section">
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post" class="section-inner">
+	<div class="section-inner">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
+	<?php } ?>
 		<div class="subject">
-			<?php if ($this->getError()) { ?>
-				<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
-			<?php } ?>
-			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
-				<fieldset class="entry-search">
-					<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
-					<input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
-					<input type="hidden" name="order" value="recent" />
-					<input type="hidden" name="task" value="category" />
-					<input type="hidden" name="section" value="all" />
-					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				</fieldset>
-			</div><!-- / .container -->
-
-			<div class="container">
-				<div class="container-block">
-					<h3><?php echo JText::_('COM_KB_ARTICLES'); ?></h3>
-					<div class="grid">
-						<div class="col span-half">
-							<h4>
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
-									<?php echo JText::_('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
-								</a>
-							</h4>
-						<?php
-						$popular = $this->archive->articles('popular', array('limit' => 5));
-						if ($popular->total() > 0) { ?>
-							<ul class="articles">
-							<?php foreach ($popular as $row) { ?>
-								<li>
-									<a href="<?php echo $row->link(); ?>" title="<?php echo JText::_('COM_KB_READ_ARTICLE'); ?>">
-										<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+			<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
+				<div class="container data-entry">
+					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
+					<fieldset class="entry-search">
+						<legend><?php echo JText::_('COM_KB_SEARCH_LEGEND'); ?></legend>
+						<label for="entry-search-field"><?php echo JText::_('COM_KB_SEARCH_LABEL'); ?></label>
+						<input type="text" name="search" id="entry-search-field" value="" placeholder="<?php echo JText::_('COM_KB_SEARCH_PLACEHOLDER'); ?>" />
+						<input type="hidden" name="order" value="recent" />
+						<input type="hidden" name="task" value="category" />
+						<input type="hidden" name="section" value="all" />
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+					</fieldset>
+				</div><!-- / .container -->
+	
+				<div class="container">
+					<div class="container-block">
+						<h3>Articles</h3>
+						<div class="grid">
+							<div class="col span-half">
+								<h4>
+									<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
+										<?php echo JText::_('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
 									</a>
-								</li>
-							<?php } ?>
-							</ul>
-						<?php } else { ?>
-							<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
-						<?php } ?>
-						</div><!-- / .col span-half -->
-						<div class="col span-half omega">
-							<h4>
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
-									<?php echo JText::_('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
-								</a>
-							</h4>
-						<?php
-						$recent = $this->archive->articles('recent', array('limit' => 5));
-						if ($recent->total() > 0) { ?>
-							<ul class="articles">
-							<?php foreach ($recent as $row) { ?>
-								<li>
-									<a href="<?php echo $row->link(); ?>" title="<?php echo JText::_('COM_KB_READ_ARTICLE'); ?>">
-										<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-									</a>
-								</li>
-							<?php } ?>
-							</ul>
-						<?php } else { ?>
-							<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
-						<?php } ?>
-						</div><!-- / .col span-half -->
-					</div><!-- / .grid -->
-
-					<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
-					<div class="grid">
-					<?php
-						$i = 0;
-
-						$filters = array();
-						$filters['limit']    = JRequest::getInt('limit', 3);
-						$filters['start']    = JRequest::getInt('limitstart', 0);
-						$filters['order']    = JRequest::getWord('order', 'recent');
-						$filters['category'] = 0;
-						$filters['state']    = 1;
-						$filters['access']   = 0;
-
-						foreach ($this->archive->categories('list', array('sort' => 'title', 'sort_Dir' => 'ASC')) as $row)
-						{
-							$i++;
-
-							switch ($i)
-							{
-								case 1: $cls = ''; break;
-								case 2: $cls = ' omega'; break;
-							}
-
-							$filters['section'] = $row->get('id');
-
-							$articles = $row->articles('list', $filters);
-							?>
-						<div class="col span-half<?php echo $cls; ?>">
-							<h4>
-								<a href="<?php echo JRoute::_($row->link()); ?>">
-									<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span>(<?php echo $row->get('articles', 0); ?>)</span> <span class="more">&raquo;</span>
-								</a>
-							</h4>
-						<?php if ($articles->total() > 0) { ?>
-							<ul class="articles">
-							<?php foreach ($articles as $article) { ?>
-								<li>
-									<a href="<?php echo $article->link(); ?>">
-										<?php echo $this->escape(stripslashes($article->get('title'))); ?>
-									</a>
-								</li>
-							<?php } ?>
-							</ul>
-						<?php } else { ?>
-							<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
-						<?php } ?>
-						</div><!-- / .col span-half <?php echo $cls; ?> -->
-						<?php //echo ($i >= 2) ? '<div class="clearfix"></div>' : ''; ?>
+								</h4>
 							<?php
-							if ($i >= 2)
+							$popular = $this->archive->articles('popular', array('limit' => 5));
+							if ($popular->total() > 0) { ?>
+								<ul class="articles">
+								<?php foreach ($popular as $row) { ?>
+									<li>
+										<a href="<?php echo $row->link(); ?>" title="<?php echo JText::_('COM_KB_READ_ARTICLE'); ?>">
+											<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+										</a>
+									</li>
+								<?php } ?>
+								</ul>
+							<?php } else { ?>
+								<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
+							<?php } ?>
+							</div><!-- / .col span-half -->
+							<div class="col span-half omega">
+								<h4>
+									<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
+										<?php echo JText::_('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
+									</a>
+								</h4>
+							<?php
+							$recent = $this->archive->articles('recent', array('limit' => 5));
+							if ($recent->total() > 0) { ?>
+								<ul class="articles">
+								<?php foreach ($recent as $row) { ?>
+									<li>
+										<a href="<?php echo $row->link(); ?>" title="<?php echo JText::_('COM_KB_READ_ARTICLE'); ?>">
+											<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+										</a>
+									</li>
+								<?php } ?>
+								</ul>
+							<?php } else { ?>
+								<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
+							<?php } ?>
+							</div><!-- / .col span-half -->
+						</div><!-- / .grid -->
+	
+						<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
+						<div class="grid">
+						<?php
+							$i = 0;
+	
+							$filters = array();
+							$filters['limit']    = JRequest::getInt('limit', 3);
+							$filters['start']    = JRequest::getInt('limitstart', 0);
+							$filters['order']    = JRequest::getWord('order', 'recent');
+							$filters['category'] = 0;
+							$filters['state']    = 1;
+							$filters['access']   = 0;
+	
+							foreach ($this->archive->categories('list', array('sort' => 'title', 'sort_Dir' => 'ASC')) as $row)
 							{
-								$i = 0;
+								$i++;
+	
+								switch ($i)
+								{
+									case 1: $cls = ''; break;
+									case 2: $cls = ' omega'; break;
+								}
+	
+								$filters['section'] = $row->get('id');
+	
+								$articles = $row->articles('list', $filters);
+								?>
+							<div class="col span-half<?php echo $cls; ?>">
+								<h4>
+									<a href="<?php echo JRoute::_($row->link()); ?>">
+										<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span>(<?php echo $row->get('articles', 0); ?>)</span> <span class="more">&raquo;</span>
+									</a>
+								</h4>
+							<?php if ($articles->total() > 0) { ?>
+								<ul class="articles">
+								<?php foreach ($articles as $article) { ?>
+									<li>
+										<a href="<?php echo $article->link(); ?>">
+											<?php echo $this->escape(stripslashes($article->get('title'))); ?>
+										</a>
+									</li>
+								<?php } ?>
+								</ul>
+							<?php } else { ?>
+								<p><?php echo JText::_('COM_KB_NO_ARTICLES'); ?></p>
+							<?php } ?>
+							</div><!-- / .col span-half <?php echo $cls; ?> -->
+							<?php //echo ($i >= 2) ? '<div class="clearfix"></div>' : ''; ?>
+								<?php
+								if ($i >= 2)
+								{
+									$i = 0;
+								}
 							}
-						}
-					?>
-					</div><!-- / .grid -->
-				</div><!-- / .container-block -->
-			</div><!-- / .container -->
+						?>
+						</div><!-- / .grid -->
+					</div><!-- / .container-block -->
+				</div><!-- / .container -->
+			</form>
 		</div><!-- / .subject -->
-
+	
 		<aside class="aside">
 		<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
 			<div class="container">
@@ -194,5 +196,5 @@ $this->css()
 			</div><!-- / .container -->
 		<?php } ?>
 		</aside><!-- / .aside -->
-	</form>
-</section><!-- / .main section -->
+	</div><!-- / .section-inner -->
+</div><!-- / .main section -->

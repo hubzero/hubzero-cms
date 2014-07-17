@@ -56,81 +56,83 @@ if (!$this->filters['filterby'] == 'none')
 </header>
 
 <section id="introduction" class="section">
-	<div class="grid">
-		<div class="col span-third">
-			<div class="container">
-				<h3>Discover</h3>
-				<p>The Best Answers chosen by the Community.</p>
+	<div class="section-inner">
+		<div class="grid">
+			<div class="col span-third">
+				<div class="container">
+					<h3>Discover</h3>
+					<p>The Best Answers chosen by the Community.</p>
+				</div>
+			</div>
+			<div class="col span-third">
+				<div class="container">
+					<h3>Ask</h3>
+					<p>What would you like to know?</p>
+				</div>
+			</div>
+			<div class="col span-third omega">
+				<div class="container">
+					<h3>Answer</h3>
+					<p>Share your knowledge, Help others and be an Expert.</p>
+				</div>
 			</div>
 		</div>
-		<div class="col span-third">
-			<div class="container">
-				<h3>Ask</h3>
-				<p>What would you like to know?</p>
-			</div>
-		</div>
-		<div class="col span-third omega">
-			<div class="container">
-				<h3>Answer</h3>
-				<p>Share your knowledge, Help others and be an Expert.</p>
-			</div>
-		</div>
-	</div>
+	</div><!-- / .section-inner -->
 </section>
 
 <section class="main section">
 	<div class="section-inner">
 		<div class="subject">
 			<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option); ?>">
-
+	
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_ANSWERS_SEARCH'); ?>" />
 					<fieldset class="entry-search">
 						<input type="text" name="q" value="<?php echo $this->escape($this->filters['q']); ?>" placeholder="<?php echo JText::_('COM_ANSWERS_SEARCH_PLACEHOLDER'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-
+	
 						<input type="hidden" name="area" value="<?php echo $this->escape($this->filters['area']); ?>" />
-
+	
 						<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 						<input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); ?>" />
 						<input type="hidden" name="task" value="<?php echo $this->escape($this->task); ?>" />
 					</fieldset>
 				</div><!-- / .container -->
-
-				<?php if (!$juser->get('guest')) { ?>
-					<ul class="entries-menu user-options">
-						<li>
-							<a<?php echo ($this->filters['area'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby'])); ?>">
-								<?php echo JText::_('COM_ANSWERS_FILTER_EVERYTHING'); ?>
-							</a>
-						</li>
-						<li>
-							<a<?php echo ($this->filters['area'] == 'mine') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area=mine&filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby'])); ?>">
-								<?php echo JText::_('COM_ANSWERS_QUESTIONS_I_ASKED'); ?>
-							</a>
-						</li>
-						<li>
-							<a<?php echo ($this->filters['area'] == 'assigned') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area=assigned&filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby'])); ?>">
-								<?php echo JText::_('COM_ANSWERS_QUESTIONS_RELATED_TO_CONTRIBUTIONS'); ?>
-							</a>
-						</li>
-						<li>
-							<a<?php echo ($this->filters['area'] == 'interest') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area=interest&filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby'])); ?>">
-								<?php echo JText::_('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS'); ?>
-							</a>
-						</li>
-					</ul>
-				<?php } ?>
-
+	
+			<?php if (!$juser->get('guest')) { ?>
+				<ul class="entries-menu user-options">
+					<li>
+						<a<?php echo ($this->filters['area'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby'])); ?>">
+							<?php echo JText::_('COM_ANSWERS_FILTER_EVERYTHING'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['area'] == 'mine') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area=mine&filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby'])); ?>">
+							<?php echo JText::_('COM_ANSWERS_QUESTIONS_I_ASKED'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['area'] == 'assigned') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area=assigned&filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby'])); ?>">
+							<?php echo JText::_('COM_ANSWERS_QUESTIONS_RELATED_TO_CONTRIBUTIONS'); ?>
+						</a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['area'] == 'interest') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area=interest&filterby='.urlencode($this->filters['filterby']).'&sortby='.urlencode($this->filters['sortby'])); ?>">
+							<?php echo JText::_('COM_ANSWERS_QUESTIONS_TAGGED_WITH_MY_INTERESTS'); ?>
+						</a>
+					</li>
+				</ul>
+			<?php } ?>
+	
 				<div class="container">
 					<ul class="entries-menu order-options">
-						<?php if ($this->banking) { ?>
-							<li>
-								<a<?php echo ($this->filters['sortby'] == 'rewards') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area='.urlencode($this->filters['area']).'&filterby='.urlencode($this->filters['filterby']).'&sortby=rewards'); ?>" title="<?php echo JText::_('COM_ANSWERS_SORT_REWARDS_TITLE'); ?>">
-									<?php echo JText::_('COM_ANSWERS_SORT_REWARDS'); ?>
-								</a>
-							</li>
-						<?php } ?>
+					<?php if ($this->banking) { ?>
+						<li>
+							<a<?php echo ($this->filters['sortby'] == 'rewards') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area='.urlencode($this->filters['area']).'&filterby='.urlencode($this->filters['filterby']).'&sortby=rewards'); ?>" title="<?php echo JText::_('COM_ANSWERS_SORT_REWARDS_TITLE'); ?>">
+								<?php echo JText::_('COM_ANSWERS_SORT_REWARDS'); ?>
+							</a>
+						</li>
+					<?php } ?>
 						<li>
 							<a<?php echo ($this->filters['sortby'] == 'votes') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area='.urlencode($this->filters['area']).'&filterby='.urlencode($this->filters['filterby']).'&sortby=votes'); ?>" title="<?php echo JText::_('COM_ANSWERS_SORT_POPULAR_TITLE'); ?>">
 								<?php echo JText::_('COM_ANSWERS_SORT_POPULAR'); ?>
@@ -142,7 +144,7 @@ if (!$this->filters['filterby'] == 'none')
 							</a>
 						</li>
 					</ul>
-
+	
 					<ul class="entries-menu filter-options">
 						<li>
 							<a<?php echo ($this->filters['filterby'] == 'all' || $this->filters['filterby'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area='.urlencode($this->filters['area']).'&filterby=all&sortby='.urlencode($this->filters['sortby'])); ?>" title="<?php echo JText::_('COM_ANSWERS_FILTER_ALL_TITLE'); ?>">
@@ -160,13 +162,13 @@ if (!$this->filters['filterby'] == 'none')
 							</a>
 						</li>
 					</ul>
-
+	
 					<table class="questions entries" summary="<?php echo JText::_('COM_ANSWERS_RESULTS_SUMMARY'); ?>">
 						<caption>
 							<?php
 								$s = ($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
 								$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
-
+	
 								if ($this->filters['q'] != '') {
 									echo JText::sprintf('COM_ANSWERS_SEARCH_FOR', $this->escape($this->filters['q']), JText::_('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby'])));
 								} else {
@@ -176,37 +178,37 @@ if (!$this->filters['filterby'] == 'none')
 							<span>(<?php echo JText::sprintf('COM_ANSWERS_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
 						</caption>
 						<tbody>
-					<?php
-					if (count($this->results) > 0) {
-						foreach ($this->results as $row)
-						{
-							$row->reports = (isset($row->reports)) ? $row->reports : 0;
-							$row->points = $row->points ? $row->points : 0;
-
-							// author name
-							$name = JText::_('COM_ANSWERS_ANONYMOUS');
-							if (!$row->anonymous) {
-								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->userid).'">'.$this->escape(stripslashes($row->name)).'</a>';
-							}
-
-							$cls  = ($row->state == 1) ? 'answered' : '';
-							$cls  = ($row->reports) ? 'flagged' : $cls;
-							$cls .= ($row->created_by == $juser->get('username')) ? ' mine' : '';
-						?>
+	<?php
+		if (count($this->results) > 0) {
+			foreach ($this->results as $row)
+			{
+				$row->reports = (isset($row->reports)) ? $row->reports : 0;
+				$row->points = $row->points ? $row->points : 0;
+	
+				// author name
+				$name = JText::_('COM_ANSWERS_ANONYMOUS');
+				if (!$row->anonymous) {
+					$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->userid).'">'.$this->escape(stripslashes($row->name)).'</a>';
+				}
+	
+				$cls  = ($row->state == 1) ? 'answered' : '';
+				$cls  = ($row->reports) ? 'flagged' : $cls;
+				$cls .= ($row->created_by == $juser->get('username')) ? ' mine' : '';
+	?>
 							<tr<?php echo ($cls) ? ' class="'.$cls.'"' : ''; ?>>
 								<th>
 									<span class="entry-id"><?php echo $row->id; ?></span>
 								</th>
 								<td>
-									<?php if (!$row->reports) { ?>
-										<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id='.$row->id); ?>">
-											<?php echo $this->escape(stripslashes($row->subject)); ?>
-										</a><br />
-									<?php } else { ?>
-										<span class="entry-title">
-											<?php echo JText::_('COM_ANSWERS_QUESTION_UNDER_REVIEW'); ?>
-										</span><br />
-									<?php } ?>
+								<?php if (!$row->reports) { ?>
+									<a class="entry-title" href="<?php echo JRoute::_('index.php?option=com_answers&task=question&id='.$row->id); ?>">
+										<?php echo $this->escape(stripslashes($row->subject)); ?>
+									</a><br />
+								<?php } else { ?>
+									<span class="entry-title">
+										<?php echo JText::_('COM_ANSWERS_QUESTION_UNDER_REVIEW'); ?>
+									</span><br />
+								<?php } ?>
 									<span class="entry-details">
 										<?php echo JText::sprintf('COM_ANSWERS_ASKED_BY', $name); ?>
 										<span class="entry-date-at"><?php echo JText::_('COM_ANSWERS_DATETIME_AT'); ?></span>
@@ -227,14 +229,14 @@ if (!$this->filters['filterby'] == 'none')
 								</td>
 							<?php if ($this->banking) { ?>
 								<td class="reward">
-									<?php if (isset($row->reward) && $row->reward == 1 && $this->banking && $row->points) { ?>
-										<span class="entry-reward">
-											<?php echo $row->points; ?>
-											<a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->points); ?>">
-												<?php echo JText::_('COM_ANSWERS_POINTS'); ?>
-											</a>
-										</span>
-									<?php } ?>
+								<?php if (isset($row->reward) && $row->reward == 1 && $this->banking && $row->points) { ?>
+									<span class="entry-reward">
+										<?php echo $row->points; ?>
+										<a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->points); ?>">
+											<?php echo JText::_('COM_ANSWERS_POINTS'); ?>
+										</a>
+									</span>
+								<?php } ?>
 								</td>
 							<?php } ?>
 								<td class="voting">
@@ -251,23 +253,23 @@ if (!$this->filters['filterby'] == 'none')
 									</span>
 								</td>
 							</tr>
-						<?php
-							} // end foreach
-						?>
-					<?php } else { ?>
+	<?php
+		} // end foreach
+	?>
+	<?php } else { ?>
 							<tr class="noresults">
 								<td>
 									<?php echo JText::_('COM_ANSWERS_NO_RESULTS'); ?>
 								</td>
 							</tr>
-					<?php } // end if (count($this->results) > 0) { ?>
+	<?php } // end if (count($this->results) > 0) { ?>
 						</tbody>
 					</table>
 					<?php
 					$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 					$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);
-
+	
 					echo $this->pageNav->getListFooter();
 					?>
 					<div class="clearfix"></div>
@@ -281,14 +283,14 @@ if (!$this->filters['filterby'] == 'none')
 					<?php echo JText::_('COM_ANSWERS_CANT_FIND_ANSWER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_kb'); ?>"><?php echo JText::_('COM_ANSWERS_KNOWLEDGE_BASE'); ?></a> <?php echo JText::_('COM_ANSWERS_OR_BY').' '.JText::_('COM_ANSWERS_SEARCH').'? '.JText::_('COM_ANSWERS_ASK_YOUR_FELLOW').' '.$jconfig->getValue('config.sitename').' '.JText::_('COM_ANSWERS_MEMBERS'); ?>!
 				</p>
 			</div><!-- / .container -->
-			<?php if ($this->banking) { ?>
-				<div class="container">
-					<h3><?php echo JText::_('COM_ANSWERS_EARN_POINTS'); ?></h3>
-					<p class="starter">
-						<?php echo JText::_('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a>.
-					</p>
-				</div><!-- / .container -->
-			<?php } ?>
+	<?php if ($this->banking) { ?>
+			<div class="container">
+				<h3><?php echo JText::_('COM_ANSWERS_EARN_POINTS'); ?></h3>
+				<p class="starter">
+					<?php echo JText::_('COM_ANSWERS_START_EARNING_POINTS'); ?> <a href="<?php echo $this->infolink; ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a>.
+				</p>
+			</div><!-- / .container -->
+	<?php } ?>
 		</aside><!-- / .aside -->
-	</div>
+	</div><!-- / .section-inner -->
 </section><!-- / .main section -->

@@ -62,19 +62,19 @@ $this->css()
 						<?php echo $tags; ?>
 					</div><!-- / .entry-tags -->
 				<?php } ?>
-
+	
 					<p class="entry-voting voting">
 						<?php
 							$this->view('_vote')
-							     ->set('option', $this->option)
-							     ->set('item', $this->article)
-							     ->set('type', 'entry')
-							     ->set('vote', $this->vote)
-							     ->set('id', 0) //$this->article->get('id');
-							     ->display();
+								 ->set('option', $this->option)
+								 ->set('item', $this->article)
+								 ->set('type', 'entry')
+								 ->set('vote', $this->vote)
+								 ->set('id', 0) //$this->article->get('id');
+								 ->display();
 						?>
 					</p>
-
+	
 					<p class="entry-details">
 						<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?>
 						<span class="entry-date-at"><?php echo JText::_('COM_KB_DATETIME_AT'); ?></span>
@@ -82,7 +82,7 @@ $this->css()
 						<span class="entry-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span>
 						<span class="entry-date"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('date'); ?></time></span>
 					</p>
-
+	
 					<div class="clearfix"></div>
 				</div><!-- / .container-block -->
 			</article><!-- / .container -->
@@ -118,133 +118,139 @@ $this->css()
 				</ul>
 			</div><!-- / .container -->
 		</aside><!-- / .aside -->
-	</div>
+	</div><!-- / .section-inner -->
 </section><!-- / .main section -->
 
 <?php if ($this->article->param('allow_comments')) { ?>
-	<section class="below section" id="comments">
-		<div class="section-inner">
-			<div class="subject">
-				<h3 class="comments-title">
-					<?php echo JText::_('COM_KB_COMMENTS_ON_ENTRY'); ?>
-					<?php if ($this->article->param('feeds_enabled') && $this->article->comments('count') > 0) { ?>
-						<a class="icon-feed feed btn" href="<?php echo $this->article->link('feed'); ?>" title="<?php echo JText::_('COM_KB_COMMENT_FEED'); ?>">
-							<?php echo JText::_('COM_KB_FEED'); ?>
-						</a>
-					<?php } ?>
-				</h3>
-
-				<?php
-				if ($this->article->comments('count') > 0)
-				{
-					$this->view('_list')
-					     ->set('parent', 0)
-					     ->set('cls', 'odd')
-					     ->set('depth', 0)
-					     ->set('option', $this->option)
-					     ->set('article', $this->article)
-					     ->set('comments', $this->article->comments('list'))
-					     ->set('base', $this->article->link())
-					     ->display();
-				}
-				else
-				{
-				?>
-				<p class="no-comments">
-					<?php echo JText::_('COM_KB_NO_COMMENTS'); ?>
-				</p>
+<section class="below section" id="comments">
+	<div class="section-inner">
+		<div class="subject">
+			<h3 class="comments-title">
+				<?php echo JText::_('COM_KB_COMMENTS_ON_ENTRY'); ?>
+				<?php if ($this->article->param('feeds_enabled') && $this->article->comments('count') > 0) { ?>
+					<a class="icon-feed feed btn" href="<?php echo $this->article->link('feed'); ?>" title="<?php echo JText::_('COM_KB_COMMENT_FEED'); ?>">
+						<?php echo JText::_('COM_KB_FEED'); ?>
+					</a>
 				<?php } ?>
-
-				<h3 class="post-comment-title">
-					<?php echo JText::_('COM_KB_POST_COMMENT'); ?>
-				</h3>
-				<form method="post" action="<?php echo JRoute::_($this->article->link()); ?>" id="commentform">
-					<p class="comment-member-photo">
-						<span class="comment-anchor"></span>
-						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, (!$this->juser->get('guest') ? 0 : 1)); ?>" alt="" />
-					</p>
-					<fieldset>
-					<?php
-					if (!$this->juser->get('guest'))
+			</h3>
+	
+			<?php
+			if ($this->article->comments('count') > 0)
+			{
+				$this->view('_list')
+					 ->set('parent', 0)
+					 ->set('cls', 'odd')
+					 ->set('depth', 0)
+					 ->set('option', $this->option)
+					 ->set('article', $this->article)
+					 ->set('comments', $this->article->comments('list'))
+					 ->set('base', $this->article->link())
+					 ->display();
+			}
+			else
+			{
+			?>
+			<p class="no-comments">
+				<?php echo JText::_('COM_KB_NO_COMMENTS'); ?>
+			</p>
+			<?php } ?>
+	
+			<h3 class="post-comment-title">
+				<?php echo JText::_('COM_KB_POST_COMMENT'); ?>
+			</h3>
+			<form method="post" action="<?php echo JRoute::_($this->article->link()); ?>" id="commentform">
+				<p class="comment-member-photo">
+					<span class="comment-anchor"></span>
+					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, (!$this->juser->get('guest') ? 0 : 1)); ?>" alt="" />
+				</p>
+				<fieldset>
+				<?php
+				if (!$this->juser->get('guest'))
+				{
+					if ($this->replyto->get('id'))
 					{
-						if ($this->replyto->get('id'))
+						$name = JText::_('COM_KB_ANONYMOUS');
+						$xuser = \Hubzero\User\Profile::getInstance($this->replyto->get('created_by'));
+						if (!$this->replyto->get('anonymous'))
 						{
-							$name = JText::_('COM_KB_ANONYMOUS');
-							$xuser = \Hubzero\User\Profile::getInstance($this->replyto->get('created_by'));
-							if (!$this->replyto->get('anonymous'))
+							if (is_object($xuser) && $xuser->get('name'))
 							{
-								if (is_object($xuser) && $xuser->get('name'))
-								{
-									$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->get('created_by')).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
-								}
+								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->get('created_by')).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
 							}
-						?>
-						<blockquote cite="c<?php echo $this->replyto->id ?>">
-							<p>
-								<strong><?php echo $name; ?></strong>
-								<span class="comment-date-at"><?php echo JText::_('COM_KB_AT'); ?></span>
-								<span class="time"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('time')); ?></time></span>
-								<span class="comment-date-on"><?php echo JText::_('COM_KB_ON'); ?></span>
-								<span class="date"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('date')); ?></time></span>
-							</p>
-							<p>
-								<?php echo \Hubzero\Utility\String::truncate(stripslashes($this->replyto->content('raw')), 300); ?>
-							</p>
-						</blockquote>
-						<?php
 						}
+					?>
+					<blockquote cite="c<?php echo $this->replyto->id ?>">
+						<p>
+							<strong><?php echo $name; ?></strong>
+							<span class="comment-date-at"><?php echo JText::_('COM_KB_AT'); ?></span>
+							<span class="time"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('time')); ?></time></span>
+							<span class="comment-date-on"><?php echo JText::_('COM_KB_ON'); ?></span>
+							<span class="date"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('date')); ?></time></span>
+						</p>
+						<p>
+							<?php echo \Hubzero\Utility\String::truncate(stripslashes($this->replyto->content('raw')), 300); ?>
+						</p>
+					</blockquote>
+					<?php
+					}
+				}
+				?>
+	
+				<?php if ($this->article->commentsOpen()) { ?>
+					<label for="commentcontent">
+						<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
+					<?php
+					if (!$this->juser->get('guest')) {
+						echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal'));
+					} else {
+						$rtrn = JRoute::_($this->article->link() . '#post-comment', false, true);
+						?>
+						<p class="warning">
+							<?php echo JText::sprintf('COM_KB_MUST_LOG_IN', JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
+						</p>
+						<?php
 					}
 					?>
-
-					<?php if ($this->article->commentsOpen()) { ?>
-						<?php if (!$this->juser->get('guest')) { ?>
-							<label for="commentcontent">
-								<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
-								<?php echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal')); ?>
-							</label>
-						<?php } else { ?>
-							<p class="warning">
-								<?php echo JText::sprintf('COM_KB_MUST_LOG_IN', JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->article->link() . '#post-comment', false, true)), false)); ?>
-							</p>
-						<?php } ?>
-
-						<?php if (!$this->juser->get('guest')) { ?>
-						<label id="comment-anonymous-label" for="comment-anonymous">
-							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-							<?php echo JText::_('COM_KB_FIELD_ANONYMOUS'); ?>
-						</label>
-
-						<p class="submit">
-							<input type="submit" name="submit" value="<?php echo JText::_('COM_KB_SUBMIT'); ?>" />
-						</p>
-						<?php } ?>
-					<?php } else { ?>
-						<p class="warning">
-							<?php echo JText::_('COM_KB_COMMENTS_CLOSED'); ?>
-						</p>
+					</label>
+	
+					<?php if (!$this->juser->get('guest')) { ?>
+					<label id="comment-anonymous-label" for="comment-anonymous">
+						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+						<?php echo JText::_('COM_KB_FIELD_ANONYMOUS'); ?>
+					</label>
+	
+					<p class="submit">
+						<input type="submit" name="submit" value="<?php echo JText::_('COM_KB_SUBMIT'); ?>" />
+					</p>
 					<?php } ?>
-						<input type="hidden" name="comment[id]" value="0" />
-						<input type="hidden" name="comment[entry_id]" value="<?php echo $this->escape($this->article->get('id')); ?>" />
-						<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->replyto->get('id')); ?>" />
-						<input type="hidden" name="comment[created]" value="" />
-						<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape($this->juser->get('id')); ?>" />
-						<input type="hidden" name="comment[state]" value="1" />
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="task" value="savecomment" />
+				<?php } else { ?>
+					<p class="warning">
+						<?php echo JText::_('COM_KB_COMMENTS_CLOSED'); ?>
+					</p>
+				<?php } ?>
+					<input type="hidden" name="comment[id]" value="0" />
+					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->escape($this->article->get('id')); ?>" />
+					<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->replyto->get('id')); ?>" />
+					<input type="hidden" name="comment[created]" value="" />
+					<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape($this->juser->get('id')); ?>" />
+					<input type="hidden" name="comment[state]" value="1" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="task" value="savecomment" />
+	
+					<?php echo JHTML::_('form.token'); ?>
+	
+					<div class="sidenote">
+						<p>
+							<strong><?php echo JText::_('COM_KB_COMMENT_KEEP_RELEVANT'); ?></strong>
+						</p>
+					</div>
+				</fieldset>
+			</form>
+		</div><!-- / .subject -->
+		<aside class="aside">
+	
+		</aside>
+	</div><!-- / .section-inner -->
+</section><!-- / .below -->
 
-						<?php echo JHTML::_('form.token'); ?>
-
-						<div class="sidenote">
-							<p>
-								<strong><?php echo JText::_('COM_KB_COMMENT_KEEP_RELEVANT'); ?></strong>
-							</p>
-						</div>
-					</fieldset>
-				</form>
-			</div><!-- / .subject -->
-			<aside class="aside">
-
-			</aside>
-		</div>
-	</section><!-- / .below -->
-<?php } ?>
+<?php } // if ($this->config->get('allow_comments')) ?>
