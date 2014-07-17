@@ -312,28 +312,12 @@ class BlogModel extends \Hubzero\Base\Object
 			}
 			else
 			{
-				// Check if they're a site admin
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					if ($juser->authorize('com_blog', 'manage'))
-					{
-						$this->params->set('access-admin-entry', true);
-						$this->params->set('access-manage-entry', true);
-						$this->params->set('access-delete-entry', true);
-						$this->params->set('access-edit-entry', true);
-						$this->params->set('access-edit-state-entry', true);
-						$this->params->set('access-edit-own-entry', true);
-					}
-				}
-				else
-				{
-					$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
-					$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
-					$this->params->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
-				}
+				$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
+				$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->params->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->params->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->params->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->params->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
 
 				$this->params->set('access-check-done', true);
 			}
