@@ -46,7 +46,7 @@ class TagsModelObject extends \Hubzero\Base\Model
 	protected $_tbl_name = 'TagsTableObject';
 
 	/**
-	 * JUser
+	 * \Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
@@ -128,19 +128,26 @@ class TagsModelObject extends \Hubzero\Base\Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire object
 	 *
+	 * @param      string $property Property to retrieve
+	 * @param      mixed  $default  Default value if property not set
 	 * @return     mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
-			$this->_creator = JUser::getInstance($this->get('taggerid'));
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('taggerid'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
-		if ($property && $this->_creator instanceof JUser)
+		if ($property)
 		{
-			return $this->_creator->get($property);
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}

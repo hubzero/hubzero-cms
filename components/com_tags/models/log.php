@@ -46,14 +46,14 @@ class TagsModelLog extends \Hubzero\Base\Model
 	protected $_tbl_name = 'TagsTableLog';
 
 	/**
-	 * JUser
+	 * \Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
 	protected $_creator = NULL;
 
 	/**
-	 * JUser
+	 * \Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
@@ -129,43 +129,28 @@ class TagsModelLog extends \Hubzero\Base\Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire object
 	 *
+	 * @param      string $property Property to retrieve
+	 * @param      mixed  $default  Default value if property not set
 	 * @return     mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
-		if (!isset($this->_creator) || !is_object($this->_creator))
+		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
-			$this->_creator = JUser::getInstance($this->get('user_id'));
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('user_id'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
-		if ($property && $this->_creator instanceof JUser)
+		if ($property)
 		{
-			return $this->_creator->get($property);
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
-	}
-
-	/**
-	 * Get the creator of this entry
-	 *
-	 * Accepts an optional property name. If provided
-	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
-	 *
-	 * @return     mixed
-	 */
-	public function actor($property=null)
-	{
-		if (!isset($this->_actor) || !is_object($this->_actor))
-		{
-			$this->_actor = JUser::getInstance($this->get('actorid'));
-		}
-		if ($property && $this->_actor instanceof JUser)
-		{
-			return $this->_actor->get($property);
-		}
-		return $this->_actor;
 	}
 
 	/**
@@ -190,5 +175,34 @@ class TagsModelLog extends \Hubzero\Base\Model
 				return $this->get('timestamp');
 			break;
 		}
+	}
+
+	/**
+	 * Get the actor of this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire object
+	 *
+	 * @param      string $property Property to retrieve
+	 * @param      mixed  $default  Default value if property not set
+	 * @return     mixed
+	 */
+	public function actor($property=null, $default=null)
+	{
+		if (!($this->_actor instanceof \Hubzero\User\Profile))
+		{
+			$this->_actor = \Hubzero\User\Profile::getInstance($this->get('actorid'));
+			if (!$this->_actor)
+			{
+				$this->_actor = new \Hubzero\User\Profile();
+			}
+		}
+		if ($property)
+		{
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_actor->get($property, $default);
+		}
+		return $this->_actor;
 	}
 }
