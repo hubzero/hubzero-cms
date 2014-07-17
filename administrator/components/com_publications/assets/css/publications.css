@@ -501,7 +501,7 @@
 	}
 	.col h5 {
 		border-bottom: 1px dotted #000;
-		margin: 0.5em 1.5em 1.5em 1.5em;
+		margin: 0.5em 1.5em 1.5em 0;
 	}
 	.tweakblock {
 		border-top: 1px dotted black;

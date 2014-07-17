@@ -51,14 +51,13 @@ $selected 	= NULL;
 if ($block == 'license')
 {
 	$objL 			= new PublicationLicense( $this->database);
-	$selections 	= $objL->getBlockLicenses( $manifest );
+	$selected 		= $objL->getPubLicense( $this->publication->version_id );
+	$selections 	= $objL->getBlockLicenses( $manifest, $selected );
 
 	if (!$selections)
 	{
 		$selections = $objL->getDefaultLicense();
 	}
-
-	$selected 		= $objL->getPubLicense( $this->publication->version_id );
 }
 
 ?>

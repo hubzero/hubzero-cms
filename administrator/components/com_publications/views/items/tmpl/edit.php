@@ -94,6 +94,9 @@ $panels = array(
 	'submitter'		=> $this->typeParams->get('show_submitter', 0)
 );
 
+JPluginHelper::importPlugin('hubzero');
+$dispatcher = JDispatcher::getInstance();
+
 ?>
 
 <script type="text/javascript">
@@ -209,7 +212,26 @@ function popratings()
 		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_TAGS'); ?></span></legend>
 		<fieldset>
 		<div class="input-wrap">
-			<input type="text" name="tags" id="tags" value="<?php echo $this->lists['tags']; ?>" size="80" />
+			<?php
+			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')) );
+			if (count($tf) > 0) {
+				echo $tf[0];
+			} else { ?>
+				<input type="text" name="tags" id="actags" value="" />
+			<?php } ?>
+		</div>
+		</fieldset>
+	</fieldset>
+	<fieldset class="adminform">
+		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_LICENSE'); ?></span></legend>
+		<fieldset>
+		<div class="input-wrap">
+			<label for="license_type"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE_TYPE'); ?>:</label>
+			<?php echo $this->lists['licenses']; ?>
+		</div>
+		<div class="input-wrap">
+			<label for="license_text"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
+			<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo $this->row->license_text; ?></textarea>
 		</div>
 		</fieldset>
 	</fieldset>
@@ -312,7 +334,8 @@ function popratings()
 	</div>
 		<div class="input-wrap">
 			<label for="publish_up"><?php echo JText::_('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
-			<?php $up = JHTML::_('date', $this->row->published_up, 'Y-m-d H:i:s'); ?>
+			<?php $up = $this->row->published_up != '0000-00-00 00:00:00'
+						? JHTML::_('date', $this->row->published_up, 'Y-m-d H:i:s') : NULL; ?>
 			<?php echo JHTML::_('calendar', $up, 'published_up', 'published_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
 		</div>
 		<div class="input-wrap">
@@ -321,7 +344,8 @@ function popratings()
 				$down = 'Never';
 				if (strtolower($this->row->published_down) != 'never')
 				{
-					$down = JHTML::_('date', $this->row->published_down, 'Y-m-d H:i:s');
+					$down = $this->row->published_down != '0000-00-00 00:00:00'
+						? JHTML::_('date', $this->row->published_down, 'Y-m-d H:i:s') : NULL;
 				}
 			?>
 			<?php echo JHTML::_('calendar', $down, 'published_down', 'published_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
@@ -417,10 +441,11 @@ function popratings()
 <?php echo JHtml::_('sliders.end'); ?>
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?></span></legend>
-		<label></label>
-		<div class="input-wrap">
-			<?php echo $this->lists['content']; ?>
-		</div>
+		<fieldset>
+			<div class="input-wrap">
+				<?php echo $this->lists['content']; ?>
+			</div>
+		</fieldset>
 	</fieldset>
 	</div>
 	<div class="clr"></div>

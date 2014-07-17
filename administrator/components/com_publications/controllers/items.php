@@ -209,6 +209,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		// Load publication project
+		$this->view->pub->_project = new Project($this->database);
+		$this->view->pub->_project->load($this->view->pub->project_id);
+
 		// Load version
 		$vid = $this->view->pub->version_id;
 		$this->view->row->load($vid);
@@ -327,8 +331,16 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->view->lists['authors'] = PublicationsAdminHtml::selectAuthorsNoEdit($this->view->pub->_authors, $this->_option);
 
 		// Get tags on this item
-		$tagsHelper = new PublicationTags( $this->database);
+		$tagsHelper = new PublicationTags( $this->database );
 		$this->view->lists['tags'] = $tagsHelper->get_tag_string($id, 0, 0, NULL, 0, 1);
+		
+		// Get selected license
+		$objL = new PublicationLicense( $this->database );
+		$this->view->license = $objL->getPubLicense( $this->view->pub->version_id );
+		$this->view->lists['licenses'] = PublicationsAdminHtml::selectLicense(
+			$objL->getLicenses(),
+			$this->view->license
+		);
 
 		// Set any errors
 		if ($this->getError())
@@ -376,6 +388,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 		else
 		{
+			// Load publication project
+			$this->view->pub->_project = new Project($this->database);
+			$this->view->pub->_project->load($this->view->pub->project_id);
+
 			// Get master type info
 			$mt = new PublicationMasterType( $this->database );
 			$this->view->pub->_type = $mt->getType($this->view->pub->base);
@@ -471,6 +487,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		}
 		else
 		{
+			// Load publication project
+			$pub->_project = new Project($this->database);
+			$pub->_project->load($pub->project_id);
+
 			// Get master type info
 			$mt = new PublicationMasterType( $this->database );
 			$pub->_type = $mt->getType($pub->base);
@@ -851,6 +871,21 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$row->metadata 		= $metadata ? $metadata : $row->metadata;
 		$row->published_up 	= $published_up ? $published_up : $row->published_up;
 		$row->release_notes	= $release_notes;
+		$row->license_type	= JRequest::getInt( 'license_type', 0, 'post' );
+		$row->license_text	= trim(JRequest::getVar( 'license_text', '', 'post' ));
+		$row->license_type	= JRequest::getInt( 'license_type', 0, 'post' );
+		
+		// publish up
+		$published_up 		= trim(JRequest::getVar( 'published_up', '', 'post' ));
+		$published_down 	= trim(JRequest::getVar( 'published_down', '', 'post' ));
+
+		$row->published_up  = $published_up
+							? JFactory::getDate($published_up, JFactory::getConfig()->get('offset'))->toSql()
+							: '0000-00-00 00:00:00';
+		$row->published_down= $published_down && trim($published_down) != 'Never'
+							? JFactory::getDate($published_down, JFactory::getConfig()->get('offset'))->toSql()
+							: '0000-00-00 00:00:00';
+		$row->doi		    = trim(JRequest::getVar( 'doi', '', 'post' ));
 
 		// Determine action (if status is flipped)
 		$state = JRequest::getInt( 'state', 0 );
@@ -890,16 +925,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			))
 			{
 				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
-			}
-		}
-
-		// Save parameters
-		$params = JRequest::getVar('params', '', 'post');
-		if (is_array($params))
-		{
-			foreach ($params as $k => $v)
-			{
-				$row->saveParam($row->id, $k, $v);
 			}
 		}
 
@@ -1146,6 +1171,16 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					$url,  $row->getError(), 'error'
 				);
 				return;
+			}
+		}
+
+		// Save parameters
+		$params = JRequest::getVar('params', '', 'post');
+		if (is_array($params))
+		{
+			foreach ($params as $k => $v)
+			{
+				$row->saveParam($row->id, $k, $v);
 			}
 		}
 

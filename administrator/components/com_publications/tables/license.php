@@ -281,11 +281,10 @@ class PublicationLicense extends JTable
 	 */
 	public function getLicenses ( $filters = array() )
 	{
-		$apps_only = isset($filters['apps_only']) ? $filters['apps_only'] : '';
 		$sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'ordering';
 
 		$query = "SELECT * FROM $this->_tbl ";
-		$query.= $apps_only ? " WHERE active=1 " : " WHERE (apps_only=".$apps_only." OR main=1) AND active=1";
+		$query.= " WHERE active=1 ";
 		$query.= " ORDER BY ".$sortby;
 
 		$this->_db->setQuery( $query );
@@ -298,7 +297,7 @@ class PublicationLicense extends JTable
 	 * @param      array   $filters Filters to build query from
 	 * @return     object
 	 */
-	public function getBlockLicenses ( $manifest = NULL )
+	public function getBlockLicenses ( $manifest = NULL, $selected = NULL )
 	{
 		if (!$manifest)
 		{
@@ -308,7 +307,11 @@ class PublicationLicense extends JTable
 		$include = isset($manifest->params->include) ? $manifest->params->include : array();
 		$exclude = isset($manifest->params->exclude) ? $manifest->params->exclude : array();
 
-		$apps_only = isset($filters['apps_only']) ? $filters['apps_only'] : '';
+		if ($selected)
+		{
+			$include[] = $selected->id;
+		}
+
 		$sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'ordering';
 
 		$query = "SELECT * FROM $this->_tbl WHERE active=1 ";

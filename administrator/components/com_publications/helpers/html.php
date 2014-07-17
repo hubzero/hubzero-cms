@@ -228,6 +228,30 @@ class PublicationsAdminHtml
 		$html .= '</select>'."\n";
 		return $html;
 	}
+	
+	/**
+	 * License selection
+	 *
+	 * @param      array $licenses Parameter description (if any) ...
+	 * @param      unknown $value Parameter description (if any) ...
+	 * @return     string Return description (if any) ...
+	 */
+	public static function selectLicense($licenses, $selected)
+	{
+		$value = $selected ? $selected->id : 1;
+		$html  = '<select name="license_type" id="license_type">'."\n";
+		foreach ($licenses as $license)
+		{
+			$html .= "\t".'<option value="' . $license->id . '"';
+			if ($value == $license->id)
+			{
+				$html .= ' selected="selected"';
+			}
+			$html .= '>' . trim($license->name) . '</option>'."\n";
+		}
+		$html .= '</select>'."\n";
+		return $html;
+	}
 
 	/**
 	 * Short description for 'selectGroup'
