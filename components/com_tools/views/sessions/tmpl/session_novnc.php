@@ -188,20 +188,7 @@ else
 				return;
 			}
 			UI.requestResize(w, h); //Invoke resize on the server
-
-			// Update containers dimensions just to be sure
-			appcontent = $('#app-content');
-
-			if (appcontent.width() != w || appcontent.height() != h) {
-				appcontent
-					.width(w)
-					.height(h);
-				$('#noVNC_container')
-					.width(w)
-					.height(h);
-
-				$('#app-size').html(w.toString() + ' x ' + h.toString());
-			}
+			UI.resizeContainers(w, h); // Update container elements' dimensions
 		}
 
 		function getScrollBarDimensions() {
@@ -236,6 +223,6 @@ else
 		}
 
 		//Final attachment for onload
-		window.onload = UI.load;
+		//window.onload = UI.load;
 	</script>
 <?php } ?>
