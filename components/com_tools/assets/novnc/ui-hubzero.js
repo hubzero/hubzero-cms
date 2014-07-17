@@ -15,7 +15,7 @@ window.onscriptsload = function () {
 	UI.load();
 };
 window.onload = function () {
-	UI.keyboardinputReset();
+	//UI.keyboardinputReset();
 };
 
 var INCLUDE_URI = "/components/com_tools/assets/novnc/";
@@ -63,28 +63,13 @@ var UI = {
 				alert('Connection failed: bad password');
 			},
 			'onFBResize': function() {
-				// Update containers dimensions just to be sure
-				var app = $D('noVNC_canvas'),
-					appcontent = $D('app-content');
-
-				var w = app.width,
-					h = app.height;
-
-				if (appcontent.style.width.replace('px', '') != w.toString()
-				 || appcontent.style.height.replace('px', '') != h.toString()) {
-					appcontent.style.width  = w + 'px';
-					appcontent.style.height = h + 'px';
-					$D('noVNC_container').style.width  = w + 'px';
-					$D('noVNC_container').style.height = h + 'px';
-
-
-					if ($D('app-size')) {
-console.log($D('app-size'));
-						$D('app-size').innerHTML = w.toString() + ' x ' + h.toString();
-					}
-
-					console.log(w.toString() + ' ' + h.toString());
-				}
+				// Update containers dimensions
+				// Need a slight delay here to give the canvas time to have its dimensions
+				// updated before attempting to grab those dimensions
+				var resizeContainersTimeout = setTimeout(function(){
+					console.log('RESIZED');
+					UI.resizeContainers(0, 0);
+				}, 500);
 			}
 		});
 
@@ -134,6 +119,31 @@ console.log($D('app-size'));
 		UI.rfb.connect(host, port, password, connectPath);
 	},
 
+	resizeContainers: function(w, h) {
+		var container = $D('noVNC_container'),
+			wrapper   = $D('app-content');
+
+		if (!w || !h) {
+			var canvas = $D('noVNC_canvas');
+			w = canvas.width;
+			h = canvas.height;
+		}
+
+		if (container.style.width.replace('px', '') != w.toString()
+		 || container.style.height.replace('px', '') != h.toString()) {
+			// Set the continer's dimensions
+			container.style.width  = w + 'px';
+			container.style.height = h + 'px';
+			// Set the wrap's dimensions
+			wrapper.style.width  = w + 'px';
+			wrapper.style.height = h + 'px';
+			// If the resize button exists...
+			if ($D('app-size')) {
+				$D('app-size').innerHTML = w.toString() + ' x ' + h.toString();
+			}
+		}
+	},
+
 	// Show the clipboard panel
 	toggleClipboardPanel: function() {
 		//Toggle Clipboard Panel
@@ -170,12 +180,6 @@ console.log($D('app-size'));
 				button.style.display = "";
 			} else {
 				button.style.display = "none";
-				/*
-				button.style.backgroundColor = "black";
-				button.style.color = "lightgray";
-				button.style.backgroundColor = "";
-				button.style.color = "";
-				*/
 			}
 		}
 	},
