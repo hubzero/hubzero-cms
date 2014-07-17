@@ -75,7 +75,7 @@ class modEventsCalendar extends \Hubzero\Module\Module
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'date.php');
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
+			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
 		} else {
 			$this->setError(JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED'));
 			return;
