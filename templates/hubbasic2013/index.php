@@ -38,9 +38,9 @@ JHTML::_('behavior.modal');
 
 //do we want to include jQuery
 $this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/template.js');
 
 $browser = new \Hubzero\Browser\Detector();
-$p = strtolower(str_replace(' ', '', $browser->platform()));
 $b = $browser->name();
 $v = $browser->major();
 
@@ -51,8 +51,9 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $p . ' ' . $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
+		<meta name="viewport" content="width=device-width">
 		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> Doesn't validate... -->
 
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
@@ -90,56 +91,70 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							<span><?php echo $config->getValue('config.sitename'); ?></span>
 						</a>
 					</h1>
+					
+					<div id="mobile-nav" class="show-m">
+						<ul>
+							<!--li><a id="mobile-menu"><span><?php echo JText::_('TPL_BASELAYER_MENU'); ?></span></a></li-->
+							<li><a id="mobile-menu" href="#"><p id="nav-icon"><span></span></p><em>Menu</em></a></li>
+						</ul>
+						
+					</div>
 
-					<div id="account" role="navigation">
-					<?php if (!$juser->get('guest')) {
-							$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
-					?>
-						<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
-							<li>
-								<div id="account-info">
-									<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" width="30" height="30" />
-									<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
-										<?php echo stripslashes($juser->get('name')); ?> 
-										<span class="account-email"><?php echo $juser->get('email'); ?></span>
-									</a>
-								</div>
-								<ul>
-									<li id="account-dashboard">
-										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_DASHBOARD'); ?></span></a>
-									</li>
-									<li id="account-profile">
-										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_PROFILE'); ?></span></a>
-									</li>
-									<li id="account-messages">
-										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_MESSAGES'); ?></span></a>
-									</li>
-									<li id="account-logout">
-										<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_LOGOUT'); ?></span></a>
+					<nav id="main-navigation" role="main">
+						<div class="wrapper cf">
+					
+							<div id="account" role="navigation" class="cf">
+							<?php if (!$juser->get('guest')) {
+									$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+							?>
+								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
+									<li>
+										<div id="account-info">
+											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" width="30" height="30" />
+											<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
+												<?php echo stripslashes($juser->get('name')); ?> 
+												<span class="account-email"><?php echo $juser->get('email'); ?></span>
+											</a>
+										</div>
+										<ul>
+											<li id="account-dashboard">
+												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_DASHBOARD'); ?></span></a>
+											</li>
+											<li id="account-profile">
+												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_PROFILE'); ?></span></a>
+											</li>
+											<li id="account-messages">
+												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_MESSAGES'); ?></span></a>
+											</li>
+											<li id="account-logout">
+												<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('TPL_HUBBASIC_LOGOUT'); ?></span></a>
+											</li>
+										</ul>
 									</li>
 								</ul>
-							</li>
-						</ul>
-					<?php } else { ?>
-						<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
-							<li id="account-login">
-								<a href="<?php echo JRoute::_( 'index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
-							</li>
-							<?php
-							$usersConfig =  JComponentHelper::getParams('com_users');
-							if ($usersConfig->get('allowUserRegistration') != '0') : ?>
-								<li id="account-register">
-									<a href="<?php echo JRoute::_('index.php?option=com_members&controller=register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
-								</li>
-							<?php endif; ?>
-						</ul>
-						<?php /* <jdoc:include type="modules" name="account" /> */ ?>
-					<?php } ?>
-					</div><!-- / #account -->
-
-					<div id="nav" role="menu">
-						<jdoc:include type="modules" name="user3" />
-					</div><!-- / #nav -->
+							<?php } else { ?>
+								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
+									<li id="account-login">
+										<?php $login_route = (version_compare(JVERSION, '2.5', 'ge')) ? 'index.php?option=com_users&view=login' : 'index.php?option=com_user&view=login'; ?>
+										<a href="<?php echo JRoute::_($login_route); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
+									</li>
+									<?php
+									$usersConfig =  JComponentHelper::getParams('com_users');
+									if ($usersConfig->get('allowUserRegistration') != '0') : ?>
+										<li id="account-register">
+											<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>"><?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?></a>
+										</li>
+									<?php endif; ?>
+								</ul>
+								<?php /* <jdoc:include type="modules" name="account" /> */ ?>
+							<?php } ?>
+							</div><!-- / #account -->
+		
+							<div id="nav" role="menu">
+								<jdoc:include type="modules" name="user3" />
+							</div><!-- / #nav -->
+						</div> <!-- / .wrapper -->
+					</nav><!-- / #main-navigation -->
 				</div><!-- / .inner -->
 			</header><!-- / #masthead -->
 
