@@ -180,7 +180,7 @@ class modToolList extends \Hubzero\Module\Module
 					$launchOnIpad = $params->get('launch_ipad', 0);
 
 					//if we are on the ipad and we want to launch nanohub app
-					if($isiPad && $launchOnIpad)
+					if ($isiPad && $launchOnIpad)
 					{
 						$url = 'nanohub://tools/invoke/' . $tool->toolname . '/' . $tool->revision;
 					}

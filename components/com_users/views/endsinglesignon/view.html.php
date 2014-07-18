@@ -61,5 +61,7 @@ class UsersViewEndsinglesignon extends JViewLegacy
 		parent::display($tpl);
 	}
 
-	function attach() {}
+	function attach()
+	{
+	}
 }

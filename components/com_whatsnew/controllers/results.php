@@ -316,7 +316,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 					// NOTE: this will override any category sent in the querystring
 					$area = $c;
 					// Strip it off the search string
-    		    	$searchstring = preg_replace($regexp, '', $searchstring);
+					$searchstring = preg_replace($regexp, '', $searchstring);
 					break;
 				}
 				// Does the category contain sub-categories?

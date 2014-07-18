@@ -62,7 +62,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$this->cn = JRequest::getVar('cn', '');
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}

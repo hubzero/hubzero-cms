@@ -434,7 +434,7 @@ class ToolStats extends ResourcesUsage
 				}
 				else
 				{
-			    	$this->avg_exec = $this->avg_cpu;
+					$this->avg_exec = $this->avg_cpu;
 				}
 				# $this->avg_exec = $this->avg_wall;
 

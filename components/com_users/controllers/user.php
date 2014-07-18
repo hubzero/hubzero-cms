@@ -118,7 +118,7 @@ class UsersControllerUser extends UsersController
 			$app->setUserState('users.login.form.data', array());
 
 			// If no_html is set, return json response
-			if(JRequest::getInt('no_html', 0))
+			if (JRequest::getInt('no_html', 0))
 			{
 				echo json_encode( array("success" => true, "redirect" => JRoute::_($app->getUserState('users.login.form.return'), false)) );
 				exit;
@@ -142,7 +142,7 @@ class UsersControllerUser extends UsersController
 			}
 
 			// If no_html is set, return json response
-			if(JRequest::getInt('no_html', 0))
+			if (JRequest::getInt('no_html', 0))
 			{
 				echo json_encode( array("error" => $result->getMessage(), "freturn" => JRoute::_($return, false)) );
 				exit;
@@ -386,7 +386,7 @@ class UsersControllerUser extends UsersController
 		$app  = JFactory::getApplication();
 
 		// First, they should already be logged in, so check for that
-		if($user->get('guest'))
+		if ($user->get('guest'))
 		{
 			JError::raiseError( 403, JText::_( 'You must be logged in to perform this function' ));
 			return;
@@ -426,5 +426,7 @@ class UsersControllerUser extends UsersController
 			'Your account has been successfully linked!');
 	}
 
-	public function attach(){}
+	public function attach()
+	{
+	}
 }

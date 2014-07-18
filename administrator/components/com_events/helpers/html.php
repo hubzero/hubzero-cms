@@ -183,10 +183,10 @@ class EventsHtml
 		{
 			$name_of_day = '&nbsp;'.$day_name[$a];
 			$daynamelist[] = JHTML::_('select.option', $a, $name_of_day, 'value', 'text');
-        }
+		}
 		$tosend = EventsHtml::buildRadioOption( $daynamelist, $tag_name, $args, 'value', 'text', $reccurday );
 		echo $tosend;
-    }
+	}
 
 	/**
 	 * Short description for 'buildWeekDaysCheck'

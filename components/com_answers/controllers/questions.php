@@ -1450,7 +1450,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		$questions = $database->loadAssocList();
 
 		//add each question to the feed
-		foreach($questions as $question)
+		foreach ($questions as $question)
 		{
 			//get the authors name
 			$a = JFactory::getUser($question['created_by']);

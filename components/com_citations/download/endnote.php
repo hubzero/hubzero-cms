@@ -90,7 +90,7 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 		$types = $ct->getType();
 
 		$type = '';
-		foreach($types as $t)
+		foreach ($types as $t)
 		{
 			if ($t['id'] == $row->type)
 			{
@@ -264,21 +264,21 @@ class CitationsDownloadEndnote extends CitationsDownloadAbstract
 
 		$citation_endnote_tags = array();
 		$citation_badges_key = "";
-		foreach($custom_tags  as $ct)
+		foreach ($custom_tags  as $ct)
 		{
 			$citation_endnote_tags[] = explode("-", trim($ct));
 		}
 
-		foreach($citation_endnote_tags as $cet)
+		foreach ($citation_endnote_tags as $cet)
 		{
-			if($cet[0] == 'badges')
+			if ($cet[0] == 'badges')
 			{
 				$citation_badges_key = $cet[1];
 			}
 		}
 
 		//if we found a key to export badges then add to export
-		if($row->badges && !in_array('badges', $exclude) && $citation_badges_key != '')
+		if ($row->badges && !in_array('badges', $exclude) && $citation_badges_key != '')
 		{
 			$doc .= $citation_badges_key . " " . $row->badges;
 		}

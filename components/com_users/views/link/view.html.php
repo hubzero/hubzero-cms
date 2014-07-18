@@ -119,5 +119,7 @@ class UsersViewLink extends JViewLegacy
 		parent::display($tpl);
 	}
 
-	function attach() {}
+	function attach()
+	{
+	}
 }

@@ -672,7 +672,7 @@ class ResourcesHtml
 
 						$sess = $resource->tool ? $resource->tool : $resource->alias . '_r' . $resource->revision;
 						$v = (!isset($resource->revision) or $resource->revision=='dev') ? 'test' : $resource->revision;
-						if($isiPad && $launchOnIpad)
+						if ($isiPad && $launchOnIpad)
 						{
 							$lurl = 'nanohub://tools/invoke/' . $resource->alias . '/' . $v;
 						}
@@ -683,8 +683,9 @@ class ResourcesHtml
 
 					}
 					elseif (!isset($resource->revision) or $resource->revision=='dev')
-					{ // serve dev version
-						if($isiPad && $launchOnIpad)
+					{
+						// serve dev version
+						if ($isiPad && $launchOnIpad)
 						{
 							$lurl = 'nanohub://tools/invoke/' . $resource->alias . '/dev';
 						}
@@ -696,7 +697,7 @@ class ResourcesHtml
 				}
 				else
 				{
-					if($isiPad && $launchOnIpad)
+					if ($isiPad && $launchOnIpad)
 					{
 						$lurl = 'nanohub://tools/invoke/' . $resource->alias;
 					}

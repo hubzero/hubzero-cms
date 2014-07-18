@@ -132,7 +132,7 @@ class plgSearchEvents extends SearchPlugin
 	 * @param      object $res Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
- 	public static function onBeforeSearchRenderEvents($res)
+	public static function onBeforeSearchRenderEvents($res)
 	{
 		$date = $res->get('date');
 		return

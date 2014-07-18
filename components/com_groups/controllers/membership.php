@@ -71,7 +71,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$this->_buildPathway();
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -129,7 +129,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -186,7 +186,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$la = array($logins);
 		}
 
-		foreach($la as $l)
+		foreach ($la as $l)
 		{
 			// Trim up content
 			$l = trim($l);
@@ -436,7 +436,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		if ($this->juser->get('guest'))
 		{
 			$link = null;
-			if($token)
+			if ($token)
 			{
 				$link = JRoute::_('index.php?option=com_groups&cn='.$this->cn.'&task=accept&token='.$token);
 			}
@@ -446,7 +446,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -616,7 +616,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -720,7 +720,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -837,7 +837,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}

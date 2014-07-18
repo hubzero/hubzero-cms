@@ -85,10 +85,10 @@ class UsersViewLogin extends JViewLegacy
 				$query  = $query['query'];
 				$query  = explode('&', $query);
 				$auth   = '';
-				foreach($query as $q)
+				foreach ($query as $q)
 				{
 					$n = explode('=', $q);
-					if($n[0] == 'authenticator')
+					if ($n[0] == 'authenticator')
 					{
 						$auth = $n[1];
 					}
@@ -222,5 +222,7 @@ class UsersViewLogin extends JViewLegacy
 		}
 	}
 
-	function attach() {}
+	function attach()
+	{
+	}
 }

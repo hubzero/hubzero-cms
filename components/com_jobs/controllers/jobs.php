@@ -2086,7 +2086,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 
 			if (!$result)
 			{
-            	JError::raiseError(404, JText::_('COM_JOBS_ERROR_ARCHIVE_FAILED'));
+				JError::raiseError(404, JText::_('COM_JOBS_ERROR_ARCHIVE_FAILED'));
 			}
 			else
 			{
