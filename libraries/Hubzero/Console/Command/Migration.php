@@ -111,7 +111,7 @@ class Migration implements CommandInterface
 			}
 		}
 
-		// migrating a super group
+		// Migrating a super group
 		$alternativeDatabase = null;
 		if ($this->arguments->getOpt('group'))
 		{
@@ -119,15 +119,14 @@ class Migration implements CommandInterface
 			$group = \Hubzero\User\Group::getInstance($cname);
 			if ($group && $group->isSuperGroup())
 			{
-				//get group config
+				// Get group config
 				$groupsConfig = \JComponentHelper::getParams('com_groups');
 
-				// path to group folder
+				// Path to group folder
 				$directory  = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 				$directory .= DS . $group->get('gidNumber');
 
-				// get group database
-				//\JRequest::setVar('cn', $group->get('cn'));
+				// Get group database
 				$alternativeDatabase = \Hubzero\User\Group\Helper::getDBO(array(), $group->get('cn'));
 			}
 			else

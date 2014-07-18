@@ -571,7 +571,7 @@ class Migration
 		$exclude   = array(".", "..");
 		$directory = $this->docroot . DS . 'migrations' . DS . 'hooks';
 
-		// make sure we have a hooks directroy
+		// Make sure we have a hooks directroy
 		if (!is_dir($directory))
 		{
 			return;
