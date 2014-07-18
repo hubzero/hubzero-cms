@@ -73,13 +73,7 @@ class CronModelJob extends \Hubzero\Base\Model
 	{
 		parent::__construct($oid);
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		$this->set('params', new $paramsClass($this->get('params')));
+		$this->set('params', new JRegistry($this->get('params')));
 
 		jimport('joomla.error.profiler');
 		$this->_profiler = new JProfiler('cron_job_' . $this->get('id'));
@@ -113,20 +107,26 @@ class CronModelJob extends \Hubzero\Base\Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire object
 	 *
-	 * @param     string $property Value to get from user object
-	 * @return    mixed
+	 * @param      string $property Property to retrieve
+	 * @param      mixed  $default  Default value if property not set
+	 * @return     mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
-		if (!isset($this->_creator) || !($this->_creator instanceof JUser))
+		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
-			$this->_creator = JUser::getInstance($this->get('created_by'));
+			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
-			return $this->_creator->get((string) $property);
+			$property = ($property == 'id' ? 'uidNumber' : $property);
+			return $this->_creator->get((string) $property, $default);
 		}
 		return $this->_creator;
 	}
@@ -162,7 +162,7 @@ class CronModelJob extends \Hubzero\Base\Model
 	 */
 	public function expression()
 	{
-		if (!isset($this->_expression) || !is_a($this->_expression, 'CronExpression'))
+		if (!($this->_expression instanceof Cron\CronExpression))
 		{
 			$this->_expression = Cron\CronExpression::factory($this->get('recurrence'));
 		}
