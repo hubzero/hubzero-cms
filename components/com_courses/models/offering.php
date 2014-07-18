@@ -1355,13 +1355,6 @@ class CoursesModelOffering extends CoursesModelAbstract
 		//returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
 		$course_plugins = $this->get('plugins');
 
-		/*$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		$course_plugins = new $paramsClass($this->get('plugins'));*/
-
 		if ($course_plugins)
 		{
 			$course_plugins = explode(',', $course_plugins);

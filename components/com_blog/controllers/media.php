@@ -319,29 +319,21 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Short description for '_getUploadPath'
+	 * Build an upload path
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $scope Parameter description (if any) ...
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param      string  $scope
+	 * @param      integer $id
+	 * @return     string
 	 */
 	protected function _getUploadPath($scope, $id)
 	{
-		$paramClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramClass = 'JRegistry';
-		}
-
 		$path = JPATH_ROOT;
 		switch ($scope)
 		{
 			case 'member':
 				jimport('joomla.plugin.plugin');
 				$plugin = JPluginHelper::getPlugin('members', 'blog');
-				$params = new $paramClass($plugin->params);
+				$params = new JRegistry($plugin->params);
 				$p = $params->get('uploadpath');
 				$p = str_replace('{{uid}}', \Hubzero\Utility\String::pad($id), $p);
 			break;
@@ -349,7 +341,7 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 			case 'group':
 				jimport('joomla.plugin.plugin');
 				$plugin = JPluginHelper::getPlugin('groups', 'blog');
-				$params = new $paramClass($plugin->params);
+				$params = new JRegistry($plugin->params);
 				$p = $params->get('uploadpath');
 				$p = str_replace('{{gid}}', $id, $p);
 			break;

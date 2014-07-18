@@ -1680,12 +1680,6 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Start outputing results if any found
 		if (count($rows) > 0)
 		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-
 			foreach ($rows as $row)
 			{
 				// Prepare the title
@@ -1775,10 +1769,10 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				}
 
 				// Get attributes
-				//$attribs = new $paramsClass($row->attribs);
+				//$attribs = new JRegistry($row->attribs);
 				if ($children)
 				{
-					$attribs = new $paramsClass($children[0]->attribs);
+					$attribs = new JRegistry($children[0]->attribs);
 				}
 
 				foreach ($podcasts as $podcast)

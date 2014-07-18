@@ -782,12 +782,6 @@ class ResourcesHtml
 			break;
 
 			default:
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
 				$firstChild->title = str_replace('"', '&quot;', $firstChild->title);
 				$firstChild->title = str_replace('&amp;', '&', $firstChild->title);
 				$firstChild->title = str_replace('&', '&amp;', $firstChild->title);
@@ -800,12 +794,12 @@ class ResourcesHtml
 				//$lt = new ResourcesType($database);
 				//$lt->load($firstChild->logicaltype);
 				$lt = ResourcesType::getRecordInstance($firstChild->logicaltype);
-				$ltparams = new $paramsClass($lt->params);
+				$ltparams = new JRegistry($lt->params);
 
 				//$rt = new ResourcesType($database);
 				//$rt->load($firstChild->type);
 				$rt = ResourcesType::getRecordInstance($firstChild->type);
-				$tparams = new $paramsClass($rt->params);
+				$tparams = new JRegistry($rt->params);
 
 				if ($firstChild->logicaltype)
 				{
@@ -898,7 +892,7 @@ class ResourcesHtml
 				}
 				else
 				{
-					$childParams = new $paramsClass($firstChild->params);
+					$childParams = new JRegistry($firstChild->params);
 					$linkAction = intval($childParams->get('link_action', $linkAction));
 
 					$url = self::processPath($option, $firstChild, $resource->id, $linkAction);
@@ -927,7 +921,7 @@ class ResourcesHtml
 						break;
 					}
 
-					$attribs = new $paramsClass($firstChild->attribs);
+					$attribs = new JRegistry($firstChild->attribs);
 					$width  = intval($attribs->get('width', 640));
 					$height = intval($attribs->get('height', 360));
 					if ($width > 0 && $height > 0)

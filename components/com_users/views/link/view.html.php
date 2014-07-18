@@ -44,7 +44,7 @@ class UsersViewLink extends JViewLegacy
 		$document = JFactory::getDocument();
 
 		// If this is an auth_link account update, carry on, otherwise raise an error
-		if(!is_object($user)
+		if (!is_object($user)
 				|| !array_key_exists('auth_link_id', $user)
 				|| !is_numeric($user->get('username'))
 				|| !$user->get('username') < 0)
@@ -67,13 +67,8 @@ class UsersViewLink extends JViewLegacy
 		$plugins = JPluginHelper::getPlugin('authentication');
 
 		// Get the display name for the current plugin being used
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
 		$plugin       = JPluginHelper::getPlugin('authentication', $hzad->authenticator);
-		$pparams      = new $paramsClass($plugin->params);
+		$pparams      = new JRegistry($plugin->params);
 		$display_name = $pparams->get('display_name', ucfirst($plugin->name));
 
 		// Look for conflicts - first check in the hub accounts
@@ -83,9 +78,9 @@ class UsersViewLink extends JViewLegacy
 		$link_conflicts = \Hubzero\Auth\Link::find_by_email($hzal->email, array($hzad->id));
 
 		$conflict = array();
-		if($profile_conflicts)
+		if ($profile_conflicts)
 		{
-			foreach($profile_conflicts as $p)
+			foreach ($profile_conflicts as $p)
 			{
 				$user_id    = JUserHelper::getUserId($p);
 				$juser      = JFactory::getUser($user_id);
@@ -94,9 +89,9 @@ class UsersViewLink extends JViewLegacy
 				$conflict[] = array("auth_domain_name" => $dname, "name" => $juser->name, "email" => $juser->email);
 			}
 		}
-		if($link_conflicts)
+		if ($link_conflicts)
 		{
-			foreach($link_conflicts as $l)
+			foreach ($link_conflicts as $l)
 			{
 				$juser      = JFactory::getUser($l['user_id']);
 				$conflict[] = array("auth_domain_name" => $l['auth_domain_name'], "name" => $juser->name, "email" => $l['email']);

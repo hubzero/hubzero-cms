@@ -561,23 +561,13 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Check if they're a site admin (from Joomla)
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+		// Admin
+		$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
+		$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
 
-			if ($this->config->get('access-admin-' . $assetType))
-			{
-				return 'admin';
-			}
-		}
-		else
+		if ($this->config->get('access-admin-' . $assetType))
 		{
-			if ($this->juser->authorize($this->_option, 'manage'))
-			{
-				return 'admin';
-			}
+			return 'admin';
 		}
 
 		return false;
@@ -638,15 +628,9 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 				}
 			}*/
 
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-
 			//get the params from the members blog plugin
 			$blog_config = JPluginHelper::getPlugin('members', 'blog');
-			$blog_params = new $paramsClass($blog_config->params);
+			$blog_params = new JRegistry($blog_config->params);
 
 			//build the base path to file based of upload path param
 			$base_path = str_replace('{{uid}}', \Hubzero\User\Profile\Helper::niceidformat($member->get('uidNumber')), $blog_params->get('uploadpath'));

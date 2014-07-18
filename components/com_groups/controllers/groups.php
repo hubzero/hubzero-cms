@@ -1111,15 +1111,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
 		}
 
-		//determine params class based on joomla version
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// Get the group params
-		$gparams = new $paramsClass($this->view->group->get('params'));
+		$gparams = new JRegistry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)

@@ -76,7 +76,7 @@ class UsersViewLogin extends JViewLegacy
 		// HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
 		// Parse the return to retrive the authenticator, and remove it from the list below
 		$auth = '';
-		if($return = JRequest::getVar('return', null))
+		if ($return = JRequest::getVar('return', null))
 		{
 			$decoded_return = base64_decode($return);
 			$query  = parse_url($decoded_return);
@@ -109,36 +109,24 @@ class UsersViewLogin extends JViewLegacy
 		$plugins        = JPluginHelper::getPlugin('authentication');
 		$authenticators = array();
 
-		foreach($plugins as $p)
+		foreach ($plugins as $p)
 		{
-			if($p->name != 'hubzero' && $p->name != $auth)
+			if ($p->name != 'hubzero' && $p->name != $auth)
 			{
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				$pparams = new $paramsClass($p->params);
+				$pparams = new JRegistry($p->params);
 				$display = $pparams->get('display_name', ucfirst($p->name));
 				$authenticators[] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 			else if ($p->name == 'hubzero')
 			{
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				$pparams = new $paramsClass($p->params);
+				$pparams = new JRegistry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);
 			}
 		}
 
 		// Override $multiAuth if authenticator is set to hubzero
-		if(JRequest::getWord('authenticator') == 'hubzero')
+		if (JRequest::getWord('authenticator') == 'hubzero')
 		{
 			$multiAuth = false;
 		}

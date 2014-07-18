@@ -45,13 +45,14 @@ class FileAssetHandler extends AssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'Post notes or slides (i.e. a downloadable file)',
-			'responds_to'    => array(
-				'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'png', 'ppt',
-				'pptx', 'pps', 'ppsx', 'doc', 'docx', 'xls', 'xlsx',
-				'zip', 'tgz', 'tar', 'mp3', 'm', 'cpp', 'c', 'wm2d',
-				'slx'),
-		);
+		'action_message' => 'Post notes or slides (i.e. a downloadable file)',
+		'responds_to'    => array(
+			'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'png', 'ppt',
+			'pptx', 'pps', 'ppsx', 'doc', 'docx', 'xls', 'xlsx',
+			'zip', 'tgz', 'tar', 'mp3', 'm', 'cpp', 'c', 'wm2d',
+			'slx'
+		),
+	);
 
 	/**
 	 * Create method for this handler
@@ -90,11 +91,7 @@ class FileAssetHandler extends AssetHandler
 
 		// Max upload size
 		$sizeLimit = (int) $config->get('upload_maxsize');
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$sizeLimit = $sizeLimit * 1024 * 1024;
-		}
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		// Check to make sure we have a file and its not too big
 		if ($size == 0)

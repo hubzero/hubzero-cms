@@ -213,12 +213,7 @@ class WikiHelperParser extends JObservable
 		$plugin = JPluginHelper::getPlugin('wiki', $this->_name);
 		if (is_string($plugin->params))
 		{
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-			$plugin->params = new $paramsClass($plugin->params);
+			$plugin->params = new JRegistry($plugin->params);
 		}
 		$plugin->params->loadArray($config);
 

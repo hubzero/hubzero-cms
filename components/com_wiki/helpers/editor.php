@@ -297,15 +297,9 @@ class WikiHelperEditor extends JObservable
 		// Require plugin file
 		require_once $path;
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// Get the plugin
 		$plugin = JPluginHelper::getPlugin('wiki', $this->_name);
-		$params = new $paramsClass($plugin->params);
+		$params = new JRegistry($plugin->params);
 		$params->loadArray($config);
 		$plugin->params = $params;
 

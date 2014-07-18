@@ -495,7 +495,6 @@ class GroupsHelperView
 		return $stylesheets;
 	}
 
-
 	/**
 	 * Check User Authorization
 	 *
@@ -507,19 +506,9 @@ class GroupsHelperView
 		$juser = JFactory::getUser();
 
 		//check to see if they are a site admin
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if (!$checkOnlyMembership && $juser->authorise('core.admin', 'com_groups'))
 		{
-			if (!$checkOnlyMembership && $juser->authorise('core.admin', 'com_groups'))
-			{
-				return 'admin';
-			}
-		}
-		else
-		{
-			if (!$checkOnlyMembership && $juser->get('usertype') == 'Super Administrator')
-			{
-				return 'admin';
-			}
+			return 'admin';
 		}
 
 		//check to see if they are a group manager

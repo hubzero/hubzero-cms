@@ -69,14 +69,8 @@ class CitationsDownloadBibtex extends CitationsDownloadAbstract
 		}
 		$exclude = array_values(array_filter(array_map('trim', explode("\n", $exclude))));
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		//get fields to not include for specific citation
-		$cparams = new $paramsClass($row->params);
+		$cparams = new JRegistry($row->params);
 		$citation_exclude = $cparams->get('exclude', '');
 		if (strpos($citation_exclude, ',') !== false)
 		{

@@ -73,16 +73,10 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		$this->resource = new ResourcesResource($this->_db);
 		$this->resource->load($oid);
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		$this->params = JComponentHelper::getParams('com_resources');
-		$this->params->merge(new $paramsClass($this->resource->params));
+		$this->params->merge(new JRegistry($this->resource->params));
 
-		$this->attribs = new $paramsClass($this->resource->attribs);
+		$this->attribs = new JRegistry($this->resource->attribs);
 
 		if ($this->isTool())
 		{
@@ -358,39 +352,19 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 		else
 		{
 			// Check if they're a site admin (from Joomla)
-			if (version_compare(JVERSION, '1.6', 'lt'))
+			$this->params->set('access-admin-resource', $juser->authorise('core.admin', null));
+			$this->params->set('access-manage-resource', $juser->authorise('core.manage', null));
+			if ($this->params->get('access-admin-resource')
+			 || $this->params->get('access-manage-resource'))
 			{
-				if ($juser->authorize('com_resources', 'manage'))
-				{
-					$this->params->set('access-view-resource', true);
-					$this->params->set('access-view-all-resource', true);
+				$this->params->set('access-view-resource', true);
+				$this->params->set('access-view-all-resource', true);
 
-					$this->params->set('access-admin-resource', true);
-					$this->params->set('access-manage-resource', true);
-
-					$this->params->set('access-create-resource', true);
-					$this->params->set('access-delete-resource', true);
-					$this->params->set('access-edit-resource', true);
-					$this->params->set('access-edit-state-resource', true);
-					$this->params->set('access-edit-own-resource', true);
-				}
-			}
-			else
-			{
-				$this->params->set('access-admin-resource', $juser->authorise('core.admin', null));
-				$this->params->set('access-manage-resource', $juser->authorise('core.manage', null));
-				if ($this->params->get('access-admin-resource')
-				 || $this->params->get('access-manage-resource'))
-				{
-					$this->params->set('access-view-resource', true);
-					$this->params->set('access-view-all-resource', true);
-
-					$this->params->set('access-create-resource', true);
-					$this->params->set('access-delete-resource', true);
-					$this->params->set('access-edit-resource', true);
-					$this->params->set('access-edit-state-resource', true);
-					$this->params->set('access-edit-own-resource', true);
-				}
+				$this->params->set('access-create-resource', true);
+				$this->params->set('access-delete-resource', true);
+				$this->params->set('access-edit-resource', true);
+				$this->params->set('access-edit-state-resource', true);
+				$this->params->set('access-edit-own-resource', true);
 			}
 		}
 

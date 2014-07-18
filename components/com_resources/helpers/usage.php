@@ -100,13 +100,6 @@ class ResourcesUsage
 	var $dateFormat = NULL;
 
 	/**
-	 * Time zone flag
-	 *
-	 * @var string
-	 */
-	var $tz = NULL;
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object  &$db      JDatabase
@@ -126,13 +119,7 @@ class ResourcesUsage
 		$this->cites    = $cites;
 		$this->lastcite = $lastcite;
 
-		$this->dateFormat = '%d %b %Y';
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->dateFormat = JText::_('DATE_FORMAT_HZ1');
-			$this->tz = true;
-		}
+		$this->dateFormat = JText::_('DATE_FORMAT_HZ1');
 	}
 
 	/**
@@ -202,7 +189,7 @@ class ResourcesUsage
 		$html .= '   <td colspan="2">Google/IEEE';
 		if ($this->lastcite)
 		{
-			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat, $this->tz);
+			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat);
 		}
 		$html .= '</td>' . "\n";
 		$html .= '  </tr>' . "\n";
@@ -385,7 +372,7 @@ class ToolStats extends ResourcesUsage
 			$html .= '   <td colspan="2">' . $caption;
 			if ($this->datetime)
 			{
-				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat, $this->tz);
+				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat);
 			}
 			$html .= '</td>' . "\n";
 			$html .= '  </tr>' . "\n";
@@ -539,7 +526,7 @@ class AndmoreStats extends ResourcesUsage
 			$html .= '   <td colspan="2">' . $caption;
 			if ($this->datetime)
 			{
-				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat, $this->tz);
+				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat);
 			}
 			$html .= '</td>' . "\n";
 			$html .= '  </tr>' . "\n";

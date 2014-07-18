@@ -61,12 +61,8 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 			$menu = new stdClass;
 			$menu->params = '';
 		}
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		$menu->param = new $paramsClass($menu->params);
+
+		$menu->param = new JRegistry($menu->params);
 
 		// Incoming
 		$this->view->period = JRequest::getVar('period', $menu->param->get('period', 'month'));

@@ -1065,13 +1065,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Get the tool's name
 		//$tv->loadFromInstance($row->appname);
 		$app->title = stripslashes($tv->title);
-
-		$paramClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramClass = 'JRegistry';
-		}
-		$app->params = new $paramClass($tv->params);
+		$app->params = new JRegistry($tv->params);
 
 		// Ensure we found an active session
 		if (!$row->sesstoken)

@@ -31,17 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$yearFormat = '%Y';
-$monthFormat = '%m';
-$tz = 0;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$yearFormat = 'Y';
-	$monthFormat = 'm';
-	$tz = null;
-}
-
 ?>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
@@ -73,6 +62,6 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 
 		<p class="submit">
 			<input type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>" />
-			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, $yearFormat, $tz).'/'.JHTML::_('date',$this->entry->publish_up, $monthFormat, $tz).'/'.$this->entry->alias); ?>">Cancel</a>
+			<a href="<?php echo JRoute::_('index.php?option='.$this->option.'&gid='.$this->group->cn.'&active=blog&scope='.JHTML::_('date',$this->entry->publish_up, 'Y').'/'.JHTML::_('date',$this->entry->publish_up, 'm').'/'.$this->entry->alias); ?>">Cancel</a>
 		</p>
 	</form>

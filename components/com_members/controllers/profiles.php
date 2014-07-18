@@ -575,18 +575,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		// Merge profile params (take precendence) with the site config
 		//  ** What is this for?
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		$rparams = new $paramsClass($profile->get('params'));
+		$rparams = new JRegistry($profile->get('params'));
 		$params = $this->config;
 		$params->merge($rparams);
 
 		// Set the page title
 		$document = JFactory::getDocument();
-	    $document->setTitle($this->view->title . ': ' . stripslashes($profile->get('name')));
+		$document->setTitle($this->view->title . ': ' . stripslashes($profile->get('name')));
 
 		// Set the pathway
 		$pathway->addItem(
@@ -1830,23 +1825,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Check if they're a site admin (from Joomla)
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			// Admin
-			$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $assetId));
-			$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $assetId));
+		// Admin
+		$this->config->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $assetId));
+		$this->config->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $assetId));
 
-			if ($this->config->get('access-admin-' . $assetType))
-			{
-				return 'admin';
-			}
-		}
-		else
+		if ($this->config->get('access-admin-' . $assetType))
 		{
-			if ($this->juser->authorize($this->_option, 'manage'))
-			{
-				return 'admin';
-			}
+			return 'admin';
 		}
 
 		// Check if they're the member

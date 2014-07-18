@@ -217,11 +217,6 @@ $juser = JFactory::getUser();
 			</thead>
 			<tbody>
 			<?php
-				$this->model->paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$this->model->paramsClass = 'JRegistry';
-				}
 				$html = '';
 				foreach ($schildren as $child)
 				{
@@ -229,7 +224,7 @@ $juser = JFactory::getUser();
 					$this->helper = new ResourcesHelper($child->id, $this->database);
 					$this->helper->getChildren();
 
-					$child_params = new $this->model->paramsClass($child->params);
+					$child_params = new JRegistry($child->params);
 					$link_action = $child_params->get( 'link_action', '' );
 
 					$child->title = $this->escape($child->title);

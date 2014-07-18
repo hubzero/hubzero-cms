@@ -1843,21 +1843,11 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		if (!$this->juser->get('guest'))
 		{
 			// Check if they're a site admin (from Joomla)
-			if (version_compare(JVERSION, '1.6', 'lt'))
+			$this->config->set('access-admin-component', $this->juser->authorise('core.admin', null));
+			$this->config->set('access-manage-component', $this->juser->authorise('core.manage', null));
+			if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
 			{
-				if ($this->juser->authorize($this->_option, 'manage'))
-				{
-					$admin = 1;
-				}
-			}
-			else
-			{
-				$this->config->set('access-admin-component', $this->juser->authorise('core.admin', null));
-				$this->config->set('access-manage-component', $this->juser->authorise('core.manage', null));
-				if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
-				{
-					$admin = 1;
-				}
+				$admin = 1;
 			}
 
 			// check if they belong to a dedicated admin group

@@ -91,15 +91,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->_errorHandler( 403, JText::_('COM_GROUPS_ERROR_NOT_AUTH') );
 		}
 
-		//determine params class based on joomla version
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// Get group params
-		$gparams = new $paramsClass($this->view->group->get('params'));
+		$gparams = new JRegistry($this->view->group->get('params'));
 		if ($gparams->get('membership_control', 1) == 0)
 		{
 			$this->setNotification('Group membership is not managed in the group interface.', 'error');
@@ -474,15 +467,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			return;
 		}
 
-		//determine params class based on joomla version
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// Get the group params
-		$gparams = new $paramsClass($this->view->group->get('params'));
+		$gparams = new JRegistry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -644,15 +630,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 		}
 
-		//determine params class based on joomla version
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// Get the group params
-		$gparams = new $paramsClass($this->view->group->get('params'));
+		$gparams = new JRegistry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -755,15 +734,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 		}
 
-		//determine params class based on joomla version
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// Get the group params
-		$gparams = new $paramsClass($this->view->group->get('params'));
+		$gparams = new JRegistry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
@@ -879,15 +851,8 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_NOT_FOUND') );
 		}
 
-		//determine params class based on joomla version
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		// Get the group params
-		$gparams = new $paramsClass($this->view->group->get('params'));
+		$gparams = new JRegistry($this->view->group->get('params'));
 
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)

@@ -349,15 +349,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 		if (($params = JRequest::getVar('params', false, 'post')) || !$id)
 		{
-			$paramsClass = 'JParameter';
-			$mthd        = 'bind';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-				$mthd        = 'loadArray';
-			}
-
-			$p = new $paramsClass('');
+			$p = new JRegistry('');
 
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
@@ -373,7 +365,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			{
 				foreach ($plugins as $plugin)
 				{
-					$default = new $paramsClass($plugin->params);
+					$default = new JRegistry($plugin->params);
 					foreach ($default->toArray() as $k => $v)
 					{
 						if (substr($k, 0, strlen('default_')) == 'default_')
@@ -386,7 +378,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 
 			if ($params)
 			{
-				$p->$mthd($params);
+				$p->loadArray($params);
 			}
 
 			$assetGroup->set('params', $p->toString());

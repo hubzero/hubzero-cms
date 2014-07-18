@@ -45,9 +45,9 @@ class WikiAssetHandler extends ContentAssetHandler
 	 * @var array
 	 **/
 	protected static $info = array(
-			'action_message' => 'A textual wiki page',
-			'responds_to'    => array('wiki')
-		);
+		'action_message' => 'A textual wiki page',
+		'responds_to'    => array('wiki')
+	);
 
 	/**
 	 * Create method for this handler
@@ -93,11 +93,7 @@ class WikiAssetHandler extends ContentAssetHandler
 
 			// Max upload size
 			$sizeLimit = $config->get('upload_maxsize');
-
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$sizeLimit = $sizeLimit * 1024 * 1024;
-			}
+			$sizeLimit = $sizeLimit * 1024 * 1024;
 
 			// Get courses config
 			$cconfig = JComponentHelper::getParams('com_courses');

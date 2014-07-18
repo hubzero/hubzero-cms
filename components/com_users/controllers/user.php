@@ -203,7 +203,7 @@ class UsersControllerUser extends UsersController
 		if (!($error instanceof Exception)) {
 			// If the authenticator is empty, but they have an active third party session,
 			// redirect to a page indicating this and offering complete signout
-			if(isset($juser->auth_link_id) && $juser->auth_link_id && empty($authenticator))
+			if (isset($juser->auth_link_id) && $juser->auth_link_id && empty($authenticator))
 			{
 				$auth_domain_name = '';
 				$auth_domain      = \Hubzero\Auth\Link::find_by_id($juser->auth_link_id);
@@ -216,17 +216,12 @@ class UsersControllerUser extends UsersController
 
 				// Redirect to user third party signout view
 				// Only do this for PUCAS for the time being (it's the one that doesn't lose session info after hub logout)
-				if($auth_domain_name == 'pucas')
+				if ($auth_domain_name == 'pucas')
 				{
 					// Get plugin params
 					$plugin      = JPluginHelper::getPlugin('authentication', $auth_domain_name);
-					$paramsClass = 'JParameter';
-					if (version_compare(JVERSION, '1.6', 'ge'))
-					{
-						$paramsClass = 'JRegistry';
-					}
 
-					$pparams = new $paramsClass($plugin->params);
+					$pparams = new JRegistry($plugin->params);
 					$auto_logoff = $pparams->get('auto_logoff', false);
 
 					if ($auto_logoff)

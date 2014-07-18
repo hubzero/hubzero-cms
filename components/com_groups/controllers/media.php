@@ -419,12 +419,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$mediaConfig       = JComponentHelper::getParams('com_media');
 		$allowedExtensions = array_values(array_filter(explode(',', $mediaConfig->get('upload_extensions'))));
 		$sizeLimit         = $mediaConfig->get('upload_maxsize');
-
-		// joomla v1.6 and above store in mb
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$sizeLimit = $sizeLimit * 1024 * 1024;
-		}
+		$sizeLimit         = $sizeLimit * 1024 * 1024;
 
 		// if super group allow archives
 		if ($this->group->get('type') == 3)
@@ -564,11 +559,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 
 		//max upload size
 		$sizeLimit = $config->get('upload_maxsize');
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$sizeLimit = $sizeLimit * 1024 * 1024;
-		}
+		$sizeLimit = $sizeLimit * 1024 * 1024;
 
 		//get the file
 		if (isset($_GET['qqfile']))

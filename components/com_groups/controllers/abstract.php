@@ -81,7 +81,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	 * @param 		string  $customReturn 	Do we want to redirect someplace specific after login
 	 * @return 		void
 	 */
-	public function loginTask( $message = '', $customReturn = null )
+	public function loginTask($message = '', $customReturn = null)
 	{
 		//general return
 		$return = JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task);
@@ -92,15 +92,9 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 			$return = $customReturn;
 		}
 
-		$component = 'com_user';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$component = 'com_users';
-		}
-
 		//redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option='. $component.'&view=login&return=' . base64_encode($return) ),
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return)),
 			$message,
 			'warning'
 		);
@@ -114,7 +108,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	 * @param		array $pages	Array of group pages, if any
 	 * @return 		void
 	 */
-	public function _buildPathway( $pages = array() )
+	public function _buildPathway($pages = array())
 	{
 		$pathway = JFactory::getApplication()->getPathway();
 
@@ -131,7 +125,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		if ($this->cn)
 		{
 			//load group
-			$group = \Hubzero\User\Group::getInstance( $this->cn );
+			$group = \Hubzero\User\Group::getInstance($this->cn);
 			if ($group)
 			{
 				$pathway->addItem(
@@ -213,7 +207,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	 * @param		array $pages	Array of group pages, if any
 	 * @return 		void
 	 */
-	public function _buildTitle( $pages = array() )
+	public function _buildTitle($pages = array())
 	{
 		$this->_title = JText::_(strtoupper($this->_option));
 
@@ -224,7 +218,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 
 		if ($this->cn)
 		{
-			$group = \Hubzero\User\Group::getInstance( $this->cn );
+			$group = \Hubzero\User\Group::getInstance($this->cn);
 			if (is_object($group))
 			{
 				$this->_title = JText::_('COM_GROUPS_GROUP') . ': ' . stripslashes($group->get('description'));
@@ -264,19 +258,19 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	 * @param 		string $errorMessage	Error message
 	 * @return 		void
 	 */
-	public function _errorHandler( $errorCode, $errorMessage )
+	public function _errorHandler($errorCode, $errorMessage)
 	{
 		$no_html = JRequest::getInt('no_html', 0);
 
 		if ($no_html)
 		{
-			$error = array('error' => array( 'code' => $errorCode, 'message' => $errorMessage ));
-			echo json_encode( $error );
+			$error = array('error' => array('code' => $errorCode, 'message' => $errorMessage));
+			echo json_encode($error);
 			exit();
 		}
 		else
 		{
-			JError::raiseError( $errorCode, $errorMessage );
+			JError::raiseError($errorCode, $errorMessage);
 			return;
 		}
 	}
@@ -291,13 +285,13 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	protected function _authorize($checkOnlyMembership = true)
 	{
 		//load the group
-		$group = \Hubzero\User\Group::getInstance( $this->cn );
+		$group = \Hubzero\User\Group::getInstance($this->cn);
 		if (!is_object($group))
 		{
 			return false;
 		}
 
-		return GroupsHelperView::authorize( $group, $checkOnlyMembership );
+		return GroupsHelperView::authorize($group, $checkOnlyMembership);
 	}
 
 	/**
@@ -306,10 +300,10 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	 * @param     $task    Task to be performed
 	 * @return    boolean
 	 */
-	public function _authorizedForTask( $task )
+	public function _authorizedForTask($task)
 	{
 		//load the group
-		$group = \Hubzero\User\Group::getInstance( $this->cn );
+		$group = \Hubzero\User\Group::getInstance($this->cn);
 		if (!is_object($group))
 		{
 			return false;
