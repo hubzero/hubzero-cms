@@ -86,7 +86,7 @@ if ($assets->total() > 0)
 			{
 				?>
 				<a rel="post<?php echo $this->row->get('id'); ?>" href="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>" class="img-link">
-					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" class="img" />
+					<img src="<?php echo JRoute::_($href . $this->row->get('id') . '&task=download&file=' . ltrim($asset->get('filename'), DS)); ?>" alt="<?php echo ($asset->get('description')) ? $this->escape(stripslashes($asset->get('description'))) : ''; ?>" width="50" height="50" class="img" />
 				</a>
 				<?php
 			}
