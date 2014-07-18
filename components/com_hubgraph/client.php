@@ -59,7 +59,8 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 		}
 	}
 
-	private function validate() {
+	private function validate()
+	{
 		foreach (self::$defaultSettings as $k=>$v)
 		{
 			if (!array_key_exists($k, $this->settings))
