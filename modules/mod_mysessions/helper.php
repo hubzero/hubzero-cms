@@ -108,19 +108,7 @@ class modMySessions extends \Hubzero\Module\Module
 		$this->toolsConfig = JComponentHelper::getParams('com_tools');
 
 		//set ACL for com_tools
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$jacl = JFactory::getACL();
-			$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
-			$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
-			$jacl->addACL('com_tools', 'manage', 'users', 'manager');
-
-			$authorized = $this->juser->authorize('com_tools', 'manage');
-		}
-		else
-		{
-			$authorized = JFactory::getUser()->authorise('core.manage', 'com_tools');
-		}
+		$authorized = JFactory::getUser()->authorise('core.manage', 'com_tools');
 
 		// Ensure we have a connection to the middleware
 		$this->error = false;

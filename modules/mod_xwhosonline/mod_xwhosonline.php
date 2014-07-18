@@ -34,14 +34,5 @@ defined('_JEXEC') or die('Restricted access');
 // Include the logic only once
 require_once(dirname(__FILE__) . DS . 'helper.php');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	// Editor usertype check
-	$jacl = JFactory::getACL();
-	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'super administrator');
-	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'administrator');
-	$jacl->addACL('mod_xwhosonline', 'manage', 'users', 'manager');
-}
-
 $modxwhosonline = new modXWhosonline($params, $module);
 $modxwhosonline->display();

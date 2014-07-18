@@ -260,14 +260,6 @@ class modToolList extends \Hubzero\Module\Module
 
 		$params = $this->params;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$jacl = JFactory::getACL();
-			$jacl->addACL('com_tools', 'manage', 'users', 'super administrator');
-			$jacl->addACL('com_tools', 'manage', 'users', 'administrator');
-			$jacl->addACL('com_tools', 'manage', 'users', 'manager');
-		}
-
 		$juser = JFactory::getUser();
 
 		$mconfig = JComponentHelper::getParams('com_tools');

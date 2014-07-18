@@ -56,37 +56,16 @@ class modSlidingPanes extends \Hubzero\Module\Module
 
 		$nullDate = $db->getNullDate();
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			// query to determine article count
-			$query = 'SELECT a.*,' .
-				' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(":", a.id, a.alias) ELSE a.id END as slug,'.
-				' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(":", cc.id, cc.alias) ELSE cc.id END as catslug'.
-				' FROM #__content AS a' .
-				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
-				' INNER JOIN #__sections AS s ON s.id = a.sectionid' .
-				' WHERE a.state = 1 ' .
-				//($noauth ? ' AND a.access <= ' .(int) $aid. ' AND cc.access <= ' .(int) $aid. ' AND s.access <= ' .(int) $aid : '').
-				' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
-				' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
-				' AND cc.id = '. (int) $catid .
-				' AND cc.section = s.id' .
-				' AND cc.published = 1' .
-				' AND s.published = 1' .
-				' ORDER BY ' . $orderby . ' ' . $limitby;
-		}
-		else
-		{
-			// query to determine article count
-			$query = 'SELECT a.* FROM #__content AS a' .
-				' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
-				' WHERE a.state = 1 ' .
-				' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
-				' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
-				' AND cc.id = ' . (int) $catid .
-				' AND cc.published = 1' .
-				' ORDER BY ' . $orderby . ' ' . $limitby;
-		}
+		// query to determine article count
+		$query = 'SELECT a.* FROM #__content AS a' .
+			' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
+			' WHERE a.state = 1 ' .
+			' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
+			' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
+			' AND cc.id = ' . (int) $catid .
+			' AND cc.published = 1' .
+			' ORDER BY ' . $orderby . ' ' . $limitby;
+
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}
