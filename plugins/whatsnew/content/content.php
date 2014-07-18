@@ -110,52 +110,48 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 			{
 				foreach ($rows as $key => $row)
 				{
-					if (version_compare(JVERSION, '1.6', 'lt'))
+					/*$database->setQuery("SELECT alias, parent FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id=" . $database->quote($row->id) . "' AND published=1 LIMIT 1");
+					$menuitem = $database->loadRow();
+					if ($menuitem[1])
 					{
-						$database->setQuery("SELECT alias, parent FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id=" . $database->quote($row->id) . "' AND published=1 LIMIT 1");
-						$menuitem = $database->loadRow();
-						if ($menuitem[1])
+						$p = $this->_recursiveMenuLookup($menuitem[1]);
+						$path = implode(DS, $p);
+						if ($menuitem[0])
 						{
-							$p = $this->_recursiveMenuLookup($menuitem[1]);
-							$path = implode(DS, $p);
-							if ($menuitem[0])
-							{
-								$path .= DS . $menuitem[0];
-							}
-							else if ($row->alias)
-							{
-								$path .= DS . $row->alias;
-							}
+							$path .= DS . $menuitem[0];
 						}
-						else if ($menuitem[0])
+						else if ($row->alias)
 						{
-							$path = DS . $menuitem[0];
+							$path .= DS . $row->alias;
 						}
-						else
-						{
-							$path = '';
-							if ($row->fsection)
-							{
-								$path .= DS . $row->fsection;
-							}
-							if ($row->category && $row->category != $row->fsection)
-							{
-								$path .= DS . $row->category;
-							}
-							if ($row->alias)
-							{
-								$path .= DS . $row->alias;
-							}
-							if (!$path)
-							{
-								$path = '/content/article/' . $row->id;
-							}
-						}
+					}
+					else if ($menuitem[0])
+					{
+						$path = DS . $menuitem[0];
 					}
 					else
 					{
-						$path = JRoute::_($row->href);
-					}
+						$path = '';
+						if ($row->fsection)
+						{
+							$path .= DS . $row->fsection;
+						}
+						if ($row->category && $row->category != $row->fsection)
+						{
+							$path .= DS . $row->category;
+						}
+						if ($row->alias)
+						{
+							$path .= DS . $row->alias;
+						}
+						if (!$path)
+						{
+							$path = '/content/article/' . $row->id;
+						}
+					}*/
+
+					$path = JRoute::_($row->href);
+
 					$rows[$key]->text = strip_tags($row->text);
 					$rows[$key]->href = $path;
 				}

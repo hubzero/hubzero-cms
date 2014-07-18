@@ -55,7 +55,7 @@ $url = JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&act
 	</p>
 <?php } else { ?>
 	<?php if ($this->juser->get('guest')) { ?>
-		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_WISHLIST_MUST_LOGIN', JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $url, false)); ?></p>
+		<p class="warning"><?php echo JText::sprintf('PLG_GROUPS_WISHLIST_MUST_LOGIN', JRoute::_('index.php?option=com_users&view=login&return=' . $url, false)); ?></p>
 	<?php } else { ?>
 		<p class="warning"><?php echo JText::_('PLG_GROUPS_WISHLIST_MUST_BE_MEMBER'); ?></p>
 	<?php } ?>

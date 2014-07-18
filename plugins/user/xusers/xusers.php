@@ -48,6 +48,7 @@ class plgUserXusers extends JPlugin
 	public function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
+
 		$this->database = JFactory::getDBO();
 	}
 
@@ -68,33 +69,39 @@ class plgUserXusers extends JPlugin
 	{
 		jimport('joomla.user.helper');
 
-		$juser =  JFactory::getUser();   // get user from session (might be tmp_user, can't fetch from db)
+		$juser =  JFactory::getUser(); // get user from session (might be tmp_user, can't fetch from db)
 
-		if ($juser->get('guest') == '1') { // joomla user plugin hasn't run or something went very badly
+		if ($juser->get('guest') == '1')
+		{
+			// joomla user plugin hasn't run or something went very badly
 
 			$plugins = JPluginHelper::getPlugin('user');
 			$xuser_order = false;
 			$joomla_order = false;
 			$i = 0;
 
-			foreach ($plugins as $plugin) {
-
-				if ($plugin->name == 'xusers') {
+			foreach ($plugins as $plugin)
+			{
+				if ($plugin->name == 'xusers')
+				{
 					$xuser_order = $i;
 				}
 
-				if ($plugin->name == 'joomla') {
+				if ($plugin->name == 'joomla')
+				{
 					$joomla_order = $i;
 				}
 
 				$i++;
 			}
 
-			if ($joomla_order === false) {
+			if ($joomla_order === false)
+			{
 				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_JOOMLA_USER_PLUGIN_MISCONFIGURED'));
 			}
 
-			if ($xuser_order <= $joomla_order) {
+			if ($xuser_order <= $joomla_order)
+			{
 				return JError::raiseError('SOME_ERROR_CODE', JText::_('E_HUBZERO_USER_PLUGIN_MISCONFIGURED'));
 			}
 
@@ -171,22 +178,25 @@ class plgUserXusers extends JPlugin
 
 		$username = $juser->get('username');
 
-		if (isset($user['auth_link']) && is_object($user['auth_link'])) {
+		if (isset($user['auth_link']) && is_object($user['auth_link']))
+		{
 			$hzal = $user['auth_link'];
 		}
-		else {
+		else
+		{
 			$hzal = null;
 		}
 
-		if ($juser->get('tmp_user')) {
-
+		if ($juser->get('tmp_user'))
+		{
 			$email = $juser->get('email');
 
-			if ($username[0] == '-') {
-
+			if ($username[0] == '-')
+			{
 				$username = trim($username,'-');
 
-				if ($hzal) {
+				if ($hzal)
+				{
 					$juser->set('username','guest;' . $username);
 					$juser->set('email', $hzal->email);
 				}
@@ -194,18 +204,20 @@ class plgUserXusers extends JPlugin
 		}
 		else {
 
-			if ($username[0] == '-') {
-
+			if ($username[0] == '-')
+			{
 				$username = trim($username, '-');
 
-				if ($hzal) {
+				if ($hzal)
+				{
 					$hzal->user_id = $juser->get('id');
 					$hzal->update();
 				}
 			}
 		}
 
-		if ($hzal) {
+		if ($hzal)
+		{
 			$juser->set('auth_link_id',$hzal->id);
 			$session->set('linkaccount', true);
 		}
@@ -233,70 +245,61 @@ class plgUserXusers extends JPlugin
 	{
 		$xprofile = \Hubzero\User\Profile::getInstance($user['id']);
 
-		if (!is_object($xprofile)) {
-
+		if (!is_object($xprofile))
+		{
 			$params = JComponentHelper::getParams('com_members');
 
 			$hubHomeDir = rtrim($params->get('homedir'),'/');
 
-			if (empty($hubHomeDir)) {
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					// @FIXME: this is legacy joomla, should be replaced with correct solution
-					JLoader::register('JTableComponent', JPATH_LIBRARIES.DS.'joomla'.DS.'database'.DS.'table'.DS.'component.php');
-				}
-
+			if (empty($hubHomeDir))
+			{
 				// try to deduce a viable home directory based on sitename or live_site
 				$jconfig = JFactory::getConfig();
 				$sitename = strtolower($jconfig->getValue('config.sitename'));
 				$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
 				$sitename = trim($sitename,'/ ');
 				$sitename_e = explode('.', $sitename, 2);
-				if (isset($sitename_e[1])) {
+				if (isset($sitename_e[1]))
+				{
 					$sitename = $sitename_e[0];
 				}
-				if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename)) {
+				if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
+				{
 					$sitename = '';
 				}
-				if (empty($sitename)) {
+				if (empty($sitename))
+				{
 					$sitename = strtolower(JURI::base());
 					$sitename = preg_replace('/^http[s]{0,1}:\/\//','',$sitename,1);
 					$sitename = trim($sitename,'/ ');
 					$sitename_e = explode('.', $sitename, 2);
-					if (isset($sitename_e[1])) {
+					if (isset($sitename_e[1]))
+					{
 						$sitename = $sitename_e[0];
 					}
-					if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename)) {
+					if (!preg_match("/^[a-zA-Z]+[\-_0-9a-zA-Z\.]+$/i", $sitename))
+					{
 						$sitename = '';
 					}
 				}
 
 				$hubHomeDir = DS . 'home';
 
-				if (!empty($sitename)) {
+				if (!empty($sitename))
+				{
 					$hubHomeDir .= DS . $sitename;
 				}
 
-				if (!empty($hubHomeDir)) {
+				if (!empty($hubHomeDir))
+				{
 					$db = JFactory::getDBO();
-					if (version_compare(JVERSION, '1.6', 'lt'))
-					{
-						$component = new JTableComponent($db);
-						$component->loadByOption('com_members');
-						$params->set('homedir',$hubHomeDir);
-						$component->params = $params->toString();
-						$component->store();
-					}
-					else
-					{
 
-						$component = new JTableExtension($this->database);
-						$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));
-						$params = new JRegistry($component->params);
-						$params->set('homedir',$hubHomeDir);
-						$component->params = $params->__toString();
-						$component->store();
-					}
+					$component = new JTableExtension($this->database);
+					$component->load($component->find(array('element' => 'com_members', 'type' => 'component')));
+					$params = new JRegistry($component->params);
+					$params->set('homedir',$hubHomeDir);
+					$component->params = $params->__toString();
+					$component->store();
 				}
 			}
 
@@ -317,7 +320,8 @@ class plgUserXusers extends JPlugin
 			$xprofile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
 			$xprofile->set('public', $params->get('privacy', 0));
 
-			if (isset($_SERVER['REMOTE_HOST'])) {
+			if (isset($_SERVER['REMOTE_HOST']))
+			{
 				$xprofile->set('regHost', $_SERVER['REMOTE_HOST']);
 			}
 
@@ -325,32 +329,38 @@ class plgUserXusers extends JPlugin
 
 			$result = $xprofile->create();
 
-			if (!$result) {
+			if (!$result)
+			{
 				return JError::raiseError('500', 'xHUB Internal Error: Unable to create \Hubzero\User\Profile record');
 			}
 		}
-		else {
+		else
+		{
 			$update = false;
 
 			$params = JComponentHelper::getParams('com_members');
 
-			if ($xprofile->get('username') != $user['username']) {
+			if ($xprofile->get('username') != $user['username'])
+			{
 				$xprofile->set('username', $user['username']);
 				$update = true;
 			}
 
-			if ($xprofile->get('name') != $user['name']) {
+			if ($xprofile->get('name') != $user['name'])
+			{
 				$xprofile->set('name', $user['name']);
 				$update = true;
 			}
 
-			if ($xprofile->get('email') != $user['email']) {
+			if ($xprofile->get('email') != $user['email'])
+			{
 				$xprofile->set('email', $user['email']);
 				$xprofile->set('emailConfirmed', 0);
 				$update = true;
 			}
 
-			if ($xprofile->get('emailConfirmed') == '')	{
+			if ($xprofile->get('emailConfirmed') == '')
+			{
 				$xprofile->set('emailConfirmed', '3');
 				$update = true;
 			}
@@ -433,7 +443,8 @@ class plgUserXusers extends JPlugin
 		// remove user from groups
 		\Hubzero\User\Helper::removeUserFromGroups($user['id']);
 
-		if (is_object($xprofile)) {
+		if (is_object($xprofile))
+		{
 			$xprofile->delete();
 		}
 
@@ -475,12 +486,12 @@ class plgUserXusers extends JPlugin
 		// If this is a temporary user created during the auth_link process (ex: username is a negative number)
 		// and they're logging out (i.e. they didn't finish the process to create a full account),
 		// then delete the temp account
-		if(is_numeric($user['username']) && $user['username'] < 0)
+		if (is_numeric($user['username']) && $user['username'] < 0)
 		{
-			$juser =  JFactory::getUser($user['id']);
+			$juser = JFactory::getUser($user['id']);
 
 			// Further check to make sure this was an abandoned auth_link account
-			if(substr($juser->email, -8) == '@invalid')
+			if (substr($juser->email, -8) == '@invalid')
 			{
 				// Delete the user
 				$juser->delete();
