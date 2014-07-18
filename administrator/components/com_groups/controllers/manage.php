@@ -348,12 +348,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		}
 
 		// group params
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		$gparams = new $paramsClass($group->get('params'));
+		$gparams = new JRegistry($group->get('params'));
 
 		// set membership control param
 		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;

@@ -31,50 +31,29 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.file');
-
 $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 
 // Load CSS
-//$doc->addStyleSheet('templates/system/css/system.css');
-$doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
-$doc->addStyleSheet('templates/'.$this->template.'/css/common/icons.css');
-$doc->addStyleSheet('templates/'.$this->template.'/css/cpanel.css');
-if ($this->params->get('theme') && $this->params->get('theme') != 'gray') {
+$doc->addStyleSheet('templates/' . $this->template . '/css/template.css');
+$doc->addStyleSheet('templates/' . $this->template . '/css/common/icons.css');
+$doc->addStyleSheet('templates/' . $this->template . '/css/cpanel.css');
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
+{
 	$doc->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
-if ($this->direction == 'rtl') {
-	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+if ($this->direction == 'rtl')
+{
+	$doc->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
 }
 
 $doc->addScript('templates/' . $this->template . '/js/index.js');
-/*
-$doc->addScriptDeclaration('
-	var sTimeout = ((' . $app->getCfg('lifetime') . '-1)*60*1000);
-	function sessionWarning() {
-		var val = confirm("Your session is about to timeout! Press \'OK\' to prevent this.");
-		if (val) {
-			if (MooTools.version == "1.12" || MooTools.version == "1.11") {
-				var myAjax = new Ajax("index.php", {method: "get"}).request();
-			} else {
-				var myAjax = new Request({method: "get", url: "index.php"}).send();
-			}
-		}
-	}
-	window.addEvent("domready", function () {
-		sessionWarning.periodical(sTimeout);
-	});
-');
-*/
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
-
-$juser = JFactory::getUser();
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
@@ -102,31 +81,35 @@ $juser = JFactory::getUser();
 			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
 
 			<ul class="user-options">
-					<?php
-						//Display an harcoded logout
-						$task = JRequest::getCmd('task');
-						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu')) {
-							$logoutLink = '';
-						} else {
-							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&'. JUtility::getToken() .'=1');
-						}
-						$hideLinks	= JRequest::getBool('hidemainmenu');
-						$output = array();
-						// Print the Preview link to Main site.
-						//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
-						//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
-						// Print the logout link.
-						$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="'.$logoutLink.'">').JText::_('Log out').($hideLinks ? '</span></li>' : '</a></li>');
-						// Reverse rendering order for rtl display.
-						if ($this->direction == "rtl") :
-							$output = array_reverse($output);
-						endif;
-						// Output the items.
-						foreach ($output as $item) :
-						echo $item;
-						endforeach;
-					?>
-  			</ul>
+				<?php
+					//Display an harcoded logout
+					$task = JRequest::getCmd('task');
+					if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu'))
+					{
+						$logoutLink = '';
+					}
+					else
+					{
+						$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
+					}
+					$hideLinks= JRequest::getBool('hidemainmenu');
+					$output = array();
+					// Print the Preview link to Main site.
+					//$juser = JFactory::getUser();
+					//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
+					//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
+					// Print the logout link.
+					$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="' . $logoutLink . '">') . JText::_('TPL_HUBBASICADMIN_LOGOUT') . ($hideLinks ? '</span></li>' : '</a></li>');
+					// Reverse rendering order for rtl display.
+					if ($this->direction == "rtl") :
+						$output = array_reverse($output);
+					endif;
+					// Output the items.
+					foreach ($output as $item) :
+					echo $item;
+					endforeach;
+				?>
+			</ul>
 
 			<div class="clr"></div>
 		</header><!-- / header -->
@@ -178,10 +161,10 @@ $juser = JFactory::getUser();
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">
-					<a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a> &copy; <?php echo date("Y"); ?>. All Rights Reserved.
+					<?php echo JText::sprintf('TPL_HUBBASICADMIN_COPYRIGHT', '<a href="' . JURI::root() . '">'. $app->getCfg('sitename') . '</a>', date("Y")); ?>
 				</p>
 				<p class="promotion">
-					Powered by <a rel="external" href="http://hubzero.org">HUBzero&reg; CMS</a>, version <?php echo \Hubzero\Version\Version::VERSION; ?>
+					<?php echo JText::sprintf('TPL_HUBBASICADMIN_POWERED_BY', \Hubzero\Version\Version::VERSION); ?>
 				</p>
 			</section><!-- / .basement -->
 		</footer><!-- / #footer -->

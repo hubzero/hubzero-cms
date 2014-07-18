@@ -155,7 +155,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-	<?php /*<?php if ($canDo->get('core.admin')): ?>
+	<?php /*
 			<div class="col width-100 fltlft">
 				<fieldset class="panelform">
 					<legend><span><?php echo JText::_('COM_WISHLIST_FIELDSET_RULES'); ?></span></legend>
@@ -164,7 +164,7 @@ function submitbutton(pressbutton)
 				</fieldset>
 			</div>
 			<div class="clr"></div>
-		<?php endif; ?>*/ ?>
+	*/ ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

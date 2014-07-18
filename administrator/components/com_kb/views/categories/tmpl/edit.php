@@ -130,7 +130,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-	<?php /*if (version_compare(JVERSION, '1.6', 'ge')) { ?>
+	<?php /*
 		<?php if ($canDo->get('core.admin')): ?>
 			<div class="col width-100 fltlft">
 				<fieldset class="panelform">
@@ -140,7 +140,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="clr"></div>
 		<?php endif; ?>
-	<?php }*/ ?>
+	*/ ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

@@ -146,9 +146,6 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		//empty citation object
 		$this->view->row = new CitationsCitation($this->database);
 
-		//params class object
-		$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
-
 		//if we have an id load that citation data
 		if (isset($id) && $id != '' && $id != 0)
 		{
@@ -169,7 +166,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			$this->view->badges = CitationFormat::citationBadges($this->view->row, JFactory::getDBO(), false);
 
 			//parse citation params
-			$this->view->params = new $paramsClass($this->view->row->params);
+			$this->view->params = new JRegistry($this->view->row->params);
 		}
 		else
 		{
@@ -187,7 +184,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			$this->view->badges = array();
 
 			//empty params object
-			$this->view->params = new $paramsClass('');
+			$this->view->params = new JRegistry('');
 		}
 
 		//are we padding back the citation data
@@ -280,15 +277,8 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		//params class object
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
 		//set params
-		$cparams = new $paramsClass($this->_getParams($row->id));
+		$cparams = new JRegistry($this->_getParams($row->id));
 		$cparams->set('exclude', $exclude);
 		$cparams->set('rollover', $rollover);
 		$row->params = $cparams->toString();

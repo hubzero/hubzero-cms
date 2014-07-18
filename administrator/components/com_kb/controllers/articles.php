@@ -197,11 +197,10 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		// Get the sections
 		$this->view->sections   = $c->categories('list', array('section' => 0, 'empty' => 1));
 
-		/*if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$m = new KbModelAdminArticle();
-			$this->view->form = $m->getForm();
-		}*/
+		/*
+		$m = new KbModelAdminArticle();
+		$this->view->form = $m->getForm();
+		*/
 
 		// Set any errors
 		if ($this->getError())

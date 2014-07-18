@@ -37,21 +37,13 @@ $doc = JFactory::getDocument();
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
-
-$juser = JFactory::getUser();
-
-$jv = 'j15';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$jv = 'j25';
-}
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $jv . ' ' . $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="j25 <?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<link href="templates/<?php echo $this->template; ?>/css/template.css" rel="stylesheet" type="text/css" />
 		<link href="templates/<?php echo $this->template; ?>/css/common/icons.css" rel="stylesheet" type="text/css" />
@@ -81,17 +73,21 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 					<?php
 						//Display an harcoded logout
 						$task = JRequest::getCmd('task');
-						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu')) {
+						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu'))
+						{
 							$logoutLink = '';
-						} else {
-							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&'. JUtility::getToken() .'=1');
+						}
+						else
+						{
+							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&' . JUtility::getToken() . '=1');
 						}
 						$output = array();
 						// Print the Preview link to Main site.
+						//$juser = JFactory::getUser();
 						//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
 						//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
 						// Print the logout link.
-						$output[] = '<a class="logout" href="'.$logoutLink.'">'.JText::_('Log out').'</a>';
+						$output[] = '<a class="logout" href="' . $logoutLink . '">' . JText::_('TPL_HUBBASICADMIN_LOGOUT') . '</a>';
 						// Reverse rendering order for rtl display.
 						if ($this->direction == "rtl") :
 							$output = array_reverse($output);
@@ -148,10 +144,10 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 		<footer id="footer">
 			<section class="basement">
 				<p class="copyright">
-					<?php echo $app->getCfg('sitename'); ?></a> &copy; <?php echo date("Y"); ?>. All Rights Reserved.
+					<?php echo JText::sprintf('TPL_HUBBASICADMIN_COPYRIGHT', '<a href="' . JURI::root() . '">'. $app->getCfg('sitename') . '</a>', date("Y")); ?>
 				</p>
 				<p class="promotion">
-					<a rel="external" href="http://hubzero.org">Powered by <a href="http://hubzero.org">HUBzero&reg; CMS</a>.</a>
+					<?php echo JText::sprintf('TPL_HUBBASICADMIN_POWERED_BY', \Hubzero\Version\Version::VERSION); ?>
 				</p>
 			</section><!-- / .basement -->
 		</footer><!-- / #footer -->

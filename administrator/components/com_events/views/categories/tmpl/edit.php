@@ -54,48 +54,36 @@ function submitbutton(pressbutton, section)
 	}
 
 	if (document.adminForm.name.value == ''){
-		alert("Category must have a name");
+		alert("<?php echo JText::_('Category must have a name'); ?>");
 	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_EVENTS_DETAILS'); ?></span></legend>
 
-			<?php if (version_compare(JVERSION, '1.6', 'ge')) { ?>
-			<input type="hidden" name="access" value="<?php echo $this->row->access; ?>" />
-			<?php } ?>
-
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
-						<td><input type="text" name="category[title]" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" size="50" maxlength="50" /></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('COM_EVENTS_CATEGORY_ALIAS'); ?>:</td>
-						<td><input type="text" name="category[alias]" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" maxlength="255" /></td>
-					</tr>
-					<tr>
-						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_ORDERING'); ?>:</td>
-						<td><?php echo $this->orderlist; ?></td>
-					</tr>
-				<?php if (version_compare(JVERSION, '1.6', 'lt')) { ?>
-					<tr>
-						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ACCESSLEVEL'); ?>:</td>
-						<td><?php echo $this->glist; ?></td>
-					</tr>
-				<?php } ?>
-					<tr>
-						<td class="key" style="vertical-align: top;"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</td>
-						<td><?php echo $editor->display('category[description]', stripslashes($this->row->description), '100%', 'auto', '45', '10', false); ?></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-title"><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_TITLE'); ?>:</td>
+				<input type="text" name="category[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" maxlength="50" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-alias"><?php echo JText::_('COM_EVENTS_CATEGORY_ALIAS'); ?>:</label>
+				<input type="text" name="category[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" maxlength="255" />
+			</div>
+			<div class="input-wrap">
+				<label><?php echo JText::_('COM_EVENTS_CAL_LANG_CATEGORY_ORDERING'); ?>:</td>
+				<?php echo $this->orderlist; ?>
+			</div>
+			<div class="input-wrap">
+				<label for="field-description"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:</label>
+				<?php echo JFactory::getEditor()->display('category[description]', $this->escape($this->row->description), '', '', 50, 15, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
@@ -104,9 +92,11 @@ function submitbutton(pressbutton, section)
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
+
 	<input type="hidden" name="category[extension]" value="com_events" />
 	<input type="hidden" name="category[id]" value="<?php echo $this->row->id; ?>" />
-	<input type="hidden" name="task" value="save" />
+	<input type="hidden" name="category[access]" value="<?php echo $this->row->access; ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

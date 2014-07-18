@@ -31,34 +31,26 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.filesystem.file');
-
 $doc = JFactory::getDocument();
 
-$doc->addStyleSheet('templates/'.$this->template.'/css/component.css');
-if ($this->params->get('theme') && $this->params->get('theme') != 'gray') {
+$doc->addStyleSheet('templates/' . $this->template . '/css/component.css');
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
+{
 	$doc->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
-if ($this->direction == 'rtl') {
-	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+if ($this->direction == 'rtl')
+{
+	$doc->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
 }
 
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	//$doc->addScript('/media/system/js/mootools-core-uncompressed.js');
-	//$doc->addScript('/media/system/js/core-uncompressed.js');
-	//$doc->addScript('/media/system/js/mootools-more-uncompressed.js');
-	JHTML::_('behavior.framework');
-	$doc->addScript('templates/' . $this->template . '/js/component.js');
-}
+JHTML::_('behavior.framework');
+$doc->addScript('templates/' . $this->template . '/js/component.js');
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
-
-$juser = JFactory::getUser();
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->

@@ -282,11 +282,8 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 		}
 		asort($this->view->sections);
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$m = new ForumModelAdminCategory();
-			$this->view->form = $m->getForm();
-		}
+		$m = new ForumModelAdminCategory();
+		$this->view->form = $m->getForm();
 
 		// Set any errors
 		if ($this->getError())

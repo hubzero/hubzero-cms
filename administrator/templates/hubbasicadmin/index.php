@@ -28,64 +28,36 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-
 // No direct access.
 defined('_JEXEC') or die;
-
-jimport('joomla.filesystem.file');
 
 $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 
 // Load CSS
-$doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
-$doc->addStyleSheet('templates/'.$this->template.'/css/common/icons.css');
-if ($this->params->get('theme') && $this->params->get('theme') != 'gray') {
+$doc->addStyleSheet('templates/' . $this->template . '/css/template.css');
+$doc->addStyleSheet('templates/' . $this->template . '/css/common/icons.css');
+if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
+{
 	$doc->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
-if ($this->direction == 'rtl') {
-	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+if ($this->direction == 'rtl')
+{
+	$doc->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
 }
-
-/*
-$doc->addScriptDeclaration('
-	var sTimeout = ((' . $app->getCfg('lifetime') . '-1)*60*1000);
-	function sessionWarning() {
-		var val = confirm("Your session is about to timeout! Press \'OK\' to prevent this.");
-		if (val) {
-			if (MooTools.version == "1.12" || MooTools.version == "1.11") {
-				var myAjax = new Ajax("index.php", {method: "get"}).request();
-			} else {
-				var myAjax = new Request({method: "get", url: "index.php"}).send();
-			}
-		}
-	}
-	window.addEvent("domready", function () {
-		sessionWarning.periodical(sTimeout);
-	});
-');
-*/
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
 $v = $browser->major();
-
-$juser = JFactory::getUser();
-
-$jv = 'j15';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$jv = 'j25';
-}
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $jv . ' ' . $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="j25 <?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
 		<jdoc:include type="head" />
 <?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
@@ -101,37 +73,41 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 	</head>
-	<body id="minwidth-body"<?php if (version_compare(JVERSION, '1.6', 'lt')) { echo ' class="j15"'; } ?>>
+	<body id="minwidth-body">
 		<jdoc:include type="modules" name="notices" />
 		<header id="header" role="banner">
 			<h1><a href="<?php echo JURI::root(); ?>"><?php echo $app->getCfg('sitename'); ?></a></h1>
 
 			<ul class="user-options">
-					<?php
-						//Display an harcoded logout
-						$task = JRequest::getCmd('task');
-						if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu')) {
-							$logoutLink = '';
-						} else {
-							$logoutLink = JRoute::_('index.php?option=com_login&task=logout&'. JUtility::getToken() .'=1');
-						}
-						$hideLinks	= JRequest::getBool('hidemainmenu');
-						$output = array();
-						// Print the Preview link to Main site.
-						//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
-						//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
-						// Print the logout link.
-						$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="'.$logoutLink.'">').JText::_('TPL_HUBBASICADMIN_LOGOUT').($hideLinks ? '</span></li>' : '</a></li>');
-						// Reverse rendering order for rtl display.
-						if ($this->direction == "rtl") :
-							$output = array_reverse($output);
-						endif;
-						// Output the items.
-						foreach ($output as $item) :
-						echo $item;
-						endforeach;
-					?>
-  			</ul>
+				<?php
+					//Display an harcoded logout
+					$task = JRequest::getCmd('task');
+					if ($task == 'edit' || $task == 'editA' || JRequest::getInt('hidemainmenu'))
+					{
+						$logoutLink = '';
+					}
+					else
+					{
+						$logoutLink = JRoute::_('index.php?option=com_login&task=logout&'. JUtility::getToken() .'=1');
+					}
+					$hideLinks= JRequest::getBool('hidemainmenu');
+					$output = array();
+					// Print the Preview link to Main site.
+					//$juser = JFactory::getUser();
+					//$output[] = '<span class="viewsite"><a href="'.JURI::root().'" rel="external">'.JText::_('JGLOBAL_VIEW_SITE').'</a></span>';
+					//$output[] = '<span>' . $juser->get('name') .' (' . $juser->get('username') . ')</span>';
+					// Print the logout link.
+					$output[] = ($hideLinks ? '<li class="disabled"><span class="logout">' : '<li><a class="logout" href="' . $logoutLink . '">') . JText::_('TPL_HUBBASICADMIN_LOGOUT') . ($hideLinks ? '</span></li>' : '</a></li>');
+					// Reverse rendering order for rtl display.
+					if ($this->direction == "rtl") :
+						$output = array_reverse($output);
+					endif;
+					// Output the items.
+					foreach ($output as $item) :
+					echo $item;
+					endforeach;
+				?>
+			</ul>
 
 			<div class="clr"></div>
 		</header><!-- / header -->

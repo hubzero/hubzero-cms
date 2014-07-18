@@ -145,11 +145,10 @@ class WishlistControllerLists extends \Hubzero\Component\AdminController
 			$this->view->row->load($id);
 		}
 
-		/*if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$m = new WishlistModelList();
-			$this->view->form = $m->getForm();
-		}*/
+		/*
+		$m = new WishlistModelList();
+		$this->view->form = $m->getForm();
+		*/
 
 		// Set any errors
 		if ($this->getError())

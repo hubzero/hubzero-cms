@@ -45,16 +45,10 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$config = new JParameter($this->config->toString());
-			$config->loadSetupFile(JPATH_COMPONENT . DS . 'config.xml');
-			$this->config = $config;
-		}
-		else
-		{
-			$this->config->loadSetupFile(JPATH_COMPONENT . DS . 'config.xml');
-		}
+		$config = new JParameter($this->config->toString());
+		$config->loadSetupFile(JPATH_COMPONENT . DS . 'config.xml');
+		$this->config = $config;
+
 		$this->view->params = $this->config->renderToArray();
 
 		// Set any errors

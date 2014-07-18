@@ -60,7 +60,7 @@ JSubMenuHelper::addEntry(
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_EVENTS_CATEGORIES'),
-	'index.php?option=com_events&controller=categories',
+	'index.php?option=com_categories&extension=com_events',
 	$controllerName == 'categories'
 );
 JSubMenuHelper::addEntry(

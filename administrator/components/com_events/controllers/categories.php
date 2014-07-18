@@ -75,7 +75,7 @@ class EventsControllerCategories extends \Hubzero\Component\AdminController
 		{
 			$table = 'content';
 
-			$this->database->setQuery("SELECT name FROM #__sections WHERE id='" . $this->view->section . "'");
+			$this->database->setQuery("SELECT name FROM `#__sections` WHERE id='" . $this->view->section . "'");
 			$this->view->section_name = $this->database->loadResult();
 			if ($this->database->getErrorNum())
 			{
@@ -88,7 +88,7 @@ class EventsControllerCategories extends \Hubzero\Component\AdminController
 		{
 			$table = substr($this->view->section, 4);
 
-			$this->database->setQuery("SELECT name FROM #__extensions WHERE type='component' AND element='" . $this->view->section . "'");
+			$this->database->setQuery("SELECT name FROM `#__extensions` WHERE type='component' AND element='" . $this->view->section . "'");
 			$this->view->section_name = $this->database->loadResult();
 			if ($this->database->getErrorNum())
 			{
@@ -102,14 +102,7 @@ class EventsControllerCategories extends \Hubzero\Component\AdminController
 		}
 
 		// Get the total number of records
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->database->setQuery("SELECT count(*) FROM #__categories WHERE section='" . $this->view->section . "'");
-		}
-		else
-		{
-			$this->database->setQuery("SELECT count(*) FROM #__categories WHERE extension='" . $this->view->section . "'");
-		}
+		$this->database->setQuery("SELECT count(*) FROM `#__categories` WHERE extension='" . $this->view->section . "'");
 		$this->view->total = $this->database->loadResult();
 		if ($this->database->getErrorNum())
 		{
@@ -118,37 +111,18 @@ class EventsControllerCategories extends \Hubzero\Component\AdminController
 		}
 
 		// dmcd may 22/04  added #__events_categories table to fetch category color property
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$this->database->setQuery("SELECT  c.*, g.name AS groupname, u.name AS editor, cc.color AS color, "
-				. "COUNT(DISTINCT s2.checked_out) AS checked_out, COUNT(DISTINCT s1.id) AS num"
-				. "\nFROM #__categories AS c"
-				. "\nLEFT JOIN #__users AS u ON u.id = c.checked_out"
-				. "\nLEFT JOIN #__groups AS g ON g.id = c.access"
-				. "\nLEFT JOIN #__$table AS s1 ON s1.catid = c.id"
-				. "\nLEFT JOIN #__$table AS s2 ON s2.catid = c.id AND s2.checked_out > 0"
-				. "\nLEFT JOIN #__${table}_categories AS cc ON cc.id = c.id"
-				. "\nWHERE section='" . $this->view->section . "'"
-				. "\nGROUP BY c.id"
-				. "\nORDER BY c.ordering, c.name"
-				. "\nLIMIT $limitstart,$limit"
-			);
-		}
-		else
-		{
-			$this->database->setQuery("SELECT  c.*, c.alias AS name, 'Public' AS groupname, u.name AS editor, cc.color AS color, "
-				. "COUNT(DISTINCT s2.checked_out) AS checked_out, COUNT(DISTINCT s1.id) AS num"
-				. "\nFROM #__categories AS c"
-				. "\nLEFT JOIN #__users AS u ON u.id = c.checked_out"
-				. "\nLEFT JOIN #__$table AS s1 ON s1.catid = c.id"
-				. "\nLEFT JOIN #__$table AS s2 ON s2.catid = c.id AND s2.checked_out > 0"
-				. "\nLEFT JOIN #__${table}_categories AS cc ON cc.id = c.id"
-				. "\nWHERE extension='" . $this->view->section . "'"
-				. "\nGROUP BY c.id"
-				. "\nORDER BY c.title"
-				. "\nLIMIT $limitstart,$limit"
-			);
-		}
+		$this->database->setQuery("SELECT  c.*, c.alias AS name, 'Public' AS groupname, u.name AS editor, cc.color AS color, "
+			. "COUNT(DISTINCT s2.checked_out) AS checked_out, COUNT(DISTINCT s1.id) AS num"
+			. "\nFROM #__categories AS c"
+			. "\nLEFT JOIN #__users AS u ON u.id = c.checked_out"
+			. "\nLEFT JOIN #__$table AS s1 ON s1.catid = c.id"
+			. "\nLEFT JOIN #__$table AS s2 ON s2.catid = c.id AND s2.checked_out > 0"
+			. "\nLEFT JOIN #__${table}_categories AS cc ON cc.id = c.id"
+			. "\nWHERE extension='" . $this->view->section . "'"
+			. "\nGROUP BY c.id"
+			. "\nORDER BY c.title"
+			. "\nLIMIT $limitstart,$limit"
+		);
 
 		// Execute query
 		$this->view->rows = $this->database->loadObjectList();
@@ -286,15 +260,6 @@ class EventsControllerCategories extends \Hubzero\Component\AdminController
 			false,
 			false
 		);
-
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			// Get list of groups
-			$this->database->setQuery("SELECT id AS value, name AS text FROM #__groups ORDER BY id");
-			$this->view->groups = $this->database->loadObjectList();
-
-			$this->view->glist = JHTML::_('select.genericlist', $this->view->groups, 'access', 'class="inputbox" size="1"','value', 'text', intval($this->view->row->access), false, false);
-		}
 
 		// Set any errors
 		if ($this->getError())

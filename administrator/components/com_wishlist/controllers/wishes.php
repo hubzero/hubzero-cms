@@ -188,11 +188,10 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 			$this->view->wishlist = $this->view->row->wishlist;
 		}
 
-		/*if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$m = new WishlistModelWish();
-			$this->view->form = $m->getForm();
-		}*/
+		/*
+		$m = new WishlistModelWish();
+		$this->view->form = $m->getForm();
+		*/
 
 		$obj = new Wishlist($this->database);
 		$filters = array();

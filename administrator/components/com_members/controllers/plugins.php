@@ -135,27 +135,16 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 				$where[] = 'p.published = 0';
 			}
 		}
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$where[] = 'p.type = ' . $this->database->Quote('plugin');
-		}
+		$where[] = 'p.type = ' . $this->database->Quote('plugin');
 
 		$where   = (count($where) ? ' WHERE ' . implode(' AND ', $where) : '');
 		$orderby = ' ORDER BY ' . $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'] . ', p.ordering ASC';
 
 		// get the total number of records
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = 'SELECT COUNT(*)'
-				. ' FROM #__plugins AS p'
-				. $where;
-		}
-		else
-		{
-			$query = 'SELECT COUNT(*)'
-				. ' FROM #__extensions AS p'
-				. $where;
-		}
+		$query = 'SELECT COUNT(*)'
+			. ' FROM #__extensions AS p'
+			. $where;
+
 		$this->database->setQuery($query);
 		$this->view->total = $this->database->loadResult();
 
@@ -166,26 +155,14 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			$this->view->filters['limit']
 		);
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = 'SELECT p.*, u.name AS editor, g.name AS groupname'
-				. ' FROM #__plugins AS p'
-				. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
-				. ' LEFT JOIN #__groups AS g ON g.id = p.access'
-				. $where
-				. ' GROUP BY p.id'
-				. $orderby;
-		}
-		else
-		{
-			$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
-				. ' FROM #__extensions AS p'
-				. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
-				. ' LEFT JOIN #__viewlevels AS g ON g.id = p.access'
-				. $where
-				. ' GROUP BY p.extension_id'
-				. $orderby;
-		}
+		$query = 'SELECT p.extension_id AS id, p.enabled As published, p.*, u.name AS editor, g.title AS groupname'
+			. ' FROM #__extensions AS p'
+			. ' LEFT JOIN #__users AS u ON u.id = p.checked_out'
+			. ' LEFT JOIN #__viewlevels AS g ON g.id = p.access'
+			. $where
+			. ' GROUP BY p.extension_id'
+			. $orderby;
+
 		$this->database->setQuery($query, $this->view->pagination->limitstart, $this->view->pagination->limit);
 		$this->view->rows = $this->database->loadObjectList();
 		if ($this->database->getErrorNum())
@@ -349,18 +326,9 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query = 'UPDATE #__plugins SET published = '.(int) $state
-				. ' WHERE id IN (' . implode(',', $id) . ')'
-				. ' AND (checked_out = 0 OR (checked_out = '.(int) $this->juser->get('id').'))';
-		}
-		else
-		{
-			$query = "UPDATE #__extensions SET enabled = ".(int) $state
-				. " WHERE extension_id IN (" . implode(',', $id) . ")"
-				. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
-		}
+		$query = "UPDATE #__extensions SET enabled = ".(int) $state
+			. " WHERE extension_id IN (" . implode(',', $id) . ")"
+			. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
 
 		$this->database->setQuery($query);
 		if (!$this->database->query())
@@ -375,14 +343,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 
 		if (count($id) == 1)
 		{
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-				$row = JTable::getInstance('plugin');
-			}
-			else
-			{
-				$row = JTable::getInstance('extension');
-			}
+			$row = JTable::getInstance('extension');
 			$row->checkin($id[0]);
 		}
 
@@ -439,16 +400,9 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 			$where = "client_id = 0";
 		}
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$row = JTable::getInstance('plugin');
-		}
-		else
-		{
-			$row = JTable::getInstance('extension');
-		}
+		$row = JTable::getInstance('extension');
 		$row->load($uid);
-		$row->move($inc, 'folder='.$this->database->Quote($row->folder).' AND ordering > -10000 AND ordering < 10000 AND ('.$where.')');
+		$row->move($inc, 'folder=' . $this->database->Quote($row->folder) . ' AND ordering > -10000 AND ordering < 10000 AND (' . $where . ')');
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
@@ -501,14 +455,7 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		JArrayHelper::toInteger($cid, array(0));
 
 		// Load the object
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$row = JTable::getInstance('plugin');
-		}
-		else
-		{
-			$row = JTable::getInstance('extension');
-		}
+		$row = JTable::getInstance('extension');
 		$row->load($cid[0]);
 
 		// Set the access
@@ -559,14 +506,8 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		$order = JRequest::getVar('order', array(0), 'post', 'array');
 		JArrayHelper::toInteger($order, array(0));
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$row = JTable::getInstance('plugin');
-		}
-		else
-		{
-			$row = JTable::getInstance('extension');
-		}
+		$row = JTable::getInstance('extension');
+
 		$conditions = array();
 
 		// update ordering values

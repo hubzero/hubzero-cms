@@ -168,11 +168,10 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		// Get the sections
 		$this->view->sections = $archive->categories('list', array('parent' => 0, 'empty' => 1));
 
-		/*if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$m = new KbModelAdminCategory();
-			$this->view->form = $m->getForm();
-		}*/
+		/*
+		$m = new KbModelAdminCategory();
+		$this->view->form = $m->getForm();
+		*/
 
 		// Set any errors
 		if ($this->getError())

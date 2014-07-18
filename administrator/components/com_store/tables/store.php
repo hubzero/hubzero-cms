@@ -41,84 +41,84 @@ class Store extends  JTable
 	 *
 	 * @var integer
 	 */
-	var $id         	= NULL;
+	var $id = NULL;
 
 	/**
 	 * varchar(127)
 	 *
 	 * @var string
 	 */
-	var $title    		= NULL;
+	var $title = NULL;
 
 	/**
 	 * int(11)
 	 *
 	 * @var integer
 	 */
-	var $price    		= NULL;
+	var $price = NULL;
 
 	/**
 	 * text
 	 *
 	 * @var string
 	 */
-	var $description    = NULL;
+	var $description = NULL;
 
 	/**
 	 * int(1)
 	 *
 	 * @var integer
 	 */
-	var $available    	= NULL;
+	var $available = NULL;
 
 	/**
 	 * tinyint(1)
 	 *
 	 * @var integer
 	 */
-	var $published   	= NULL;
+	var $published = NULL;
 
 	/**
 	 * tinyint(1)
 	 *
 	 * @var integer
 	 */
-	var $featured   	= NULL;
+	var $featured = NULL;
 
 	/**
 	 * int(11)
 	 *
 	 * @var integer
 	 */
-	var $special   		= NULL;
+	var $special = NULL;
 
 	/**
 	 * varchar(127)
 	 *
 	 * @var string
 	 */
-	var $category   	= NULL;
+	var $category = NULL;
 
 	/**
 	 * int(11)
 	 *
 	 * @var integer
 	 */
-	var $type   		= NULL;
+	var $type = NULL;
 
 	/**
 	 * datetime(0000-00-00 00:00:00)
 	 *
 	 * @var string
 	 */
-	var $created  		= NULL;
+	var $created = NULL;
 
 	/**
 	 * text
 	 *
 	 * @var string
 	 */
-	var $params 		= NULL;
+	var $params = NULL;
 
 	/**
 	 * Constructor
@@ -135,7 +135,7 @@ class Store extends  JTable
 	 * Get a record
 	 *
 	 * @param      integer $id
-	 * @return     mixed Return description (if any) ...
+	 * @return     object
 	 */
 	public function getInfo($id)
 	{
@@ -144,7 +144,7 @@ class Store extends  JTable
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE id=" . $id;
+		$query = "SELECT * FROM $this->_tbl WHERE id=" . $this->_db->quote($id);
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
@@ -154,8 +154,8 @@ class Store extends  JTable
 	 *
 	 * @param      string $rtrn    Return data (record count or array or records)
 	 * @param      array  $filters Filters to build query from
-	 * @param      object $config  JParameter
-	 * @return     array Return description (if any) ...
+	 * @param      object $config  JRegistry
+	 * @return     mixed
 	 */
 	public function getItems($rtrn='count', $filters, $config)
 	{
@@ -220,12 +220,6 @@ class Store extends  JTable
 			$result = $this->_db->loadObjectList();
 			if ($result)
 			{
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
 				for ($i=0; $i < count($result); $i++)
 				{
 					$row = &$result[$i];
@@ -234,7 +228,7 @@ class Store extends  JTable
 					$row->root = JPATH_ROOT;
 
 					// Get parameters
-					$params = new $paramsClass($row->params);
+					$params = new JRegistry($row->params);
 					$row->size  = $params->get('size', '');
 					$row->color = $params->get('color', '');
 				}
