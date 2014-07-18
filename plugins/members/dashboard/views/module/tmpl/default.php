@@ -127,7 +127,7 @@ else
 			{
 				if (strstr($strSrc, $this->module->module))
 				{
-					$html .= '<script type="'.$strType.'" src="'.$strSrc.'"></script>';
+					$html .= '<script src="'.$strSrc.'"></script>';
 				}
 			}
 		}
