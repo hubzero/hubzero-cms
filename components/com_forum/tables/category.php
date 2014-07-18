@@ -404,14 +404,7 @@ class ForumTableCategory extends JTable
 		{
 			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.scope_id";
 		}
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
-		}
-		else
-		{
-			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
-		}
+		$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 
 		$where = array();
 		if (isset($filters['state']) && (int) $filters['state'] >= 0)
@@ -511,14 +504,7 @@ class ForumTableCategory extends JTable
 			$query .= ", (SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.parent=0 AND r.state=1 $flt) AS threads,
 						(SELECT COUNT(*) FROM #__forum_posts AS r WHERE r.category_id=c.id AND r.state=1 $flt) AS posts";
 		}
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= ", a.name AS access_level";
-		}
-		else
-		{
-			$query .= ", a.title AS access_level";
-		}
+		$query .= ", a.title AS access_level";
 		$query .= " " . $this->_buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort'])

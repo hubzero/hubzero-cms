@@ -156,7 +156,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 	public function loginTask($message = '')
 	{
 		$rtrn = base64_encode(JRoute::_($this->course->offering()->link() . '&task=' . $this->_task, false, true));
-		$link = str_replace('&amp;', '&', JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . $rtrn));
+		$link = str_replace('&amp;', '&', JRoute::_('index.php?option=com_users&view=login&return=' . $rtrn));
 		$this->setRedirect(
 			$link,
 			JText::_($message),

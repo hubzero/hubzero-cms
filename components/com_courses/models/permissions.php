@@ -384,61 +384,10 @@ class CoursesModelPermissions extends JObject
 	{
 		$juser = JFactory::getUser();
 
-		// Check if user is an admin, and set flag appropriately
-		// Do this here (even though we also do it in courses.php), because not all calls (ex: api) go through courses.php
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$jacl = JFactory::getACL();
-			$jacl->addACL('com_courses', 'manage', 'users', 'super administrator');
-			$jacl->addACL('com_courses', 'manage', 'users', 'administrator');
-			$jacl->addACL('com_courses', 'manage', 'users', 'manager');
-		}
-
-		// If they're not logged in
-		/*if (!$juser->get('guest'))
-		{*/
-			// List of actions
-			$actions = array(
-				'admin', 'manage', 'create', 'delete', 'edit', 'edit-state', 'edit-own', 'view'
-			);
-
-			// Check if they're a site admin
-			/*if (version_compare(JVERSION, '1.6', 'lt')) // Joomla 1.5.x
-			{
-				// If they're a site admin
-				if ($juser->authorize('com_courses', 'manage'))
-				{
-					// Authorize for each action and actionable item
-					foreach ($actions as $action)
-					{
-						$this->config()->set('access-' . $action . '-course', true);
-						$this->config()->set('access-' . $action . '-offering', true);
-						$this->config()->set('access-' . $action . '-section', true);
-					}
-					$this->config()->set('access-checked-course', true);
-					$this->config()->set('access-checked-offering', true);
-					$this->config()->set('access-checked-section', true);
-				}
-			}
-			else // Joomla 1.6+
-			{
-				// If they're a site admin
-				if ($juser->authorise('core.manage', 'com_courses.component'))
-				{
-					// Authorize for each action and actionable item
-					foreach ($actions as $action)
-					{
-						$this->config()->set('access-' . $action . '-course', true);
-						$this->config()->set('access-' . $action . '-offering', true);
-						$this->config()->set('access-' . $action . '-section', true);
-						//$this->config()->set('access-' . $action . '-student', true);
-					}
-					$this->config()->set('access-checked-course', true);
-					$this->config()->set('access-checked-offering', true);
-					$this->config()->set('access-checked-section', true);
-				}
-			}
-		}*/
+		// List of actions
+		$actions = array(
+			'admin', 'manage', 'create', 'delete', 'edit', 'edit-state', 'edit-own', 'view'
+		);
 
 		// Are they an admin?
 		if ($this->config()->get('access-admin-course')

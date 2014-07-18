@@ -36,19 +36,13 @@ $juser = JFactory::getUser();
 $database = JFactory::getDBO();
 $html = '';
 
-$paramsClass = 'JRegistry';
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$paramsClass = 'JParameter';
-}
-
 // Get parameters
-$rparams = new $paramsClass($this->resource->params);
+$rparams = new JParameter($this->resource->params);
 $params = $this->config;
 $params->merge($rparams);
 
 // Get attributes
-$attribs = new $paramsClass($this->resource->attribs);
+$attribs = new JParameter($this->resource->attribs);
 
 // Get the resource's children
 $helper = new ResourcesHelper($this->resource->id, $database);

@@ -342,14 +342,7 @@ class ForumTableSection extends JTable
 		{
 			$query .= " LEFT JOIN #__xgroups AS g ON g.gidNumber=c.scope_id";
 		}
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= " LEFT JOIN #__groups AS a ON c.access=a.id";
-		}
-		else
-		{
-			$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
-		}
+		$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 
 		$where = array();
 
@@ -419,14 +412,7 @@ class ForumTableSection extends JTable
 		{
 			$query .= ", g.cn AS group_alias";
 		}
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= ", a.name AS access_level";
-		}
-		else
-		{
-			$query .= ", a.title AS access_level";
-		}
+		$query .= ", a.title AS access_level";
 		$query .= " " . $this->buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort'])

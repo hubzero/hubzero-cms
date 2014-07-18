@@ -65,15 +65,8 @@ $usertype = JText::_('Unknown');
 $submitter = JUser::getInstance($this->ticket->login);
 if ($submitter && is_object($submitter))
 {
-	if (version_compare(JVERSION, '1.6', 'lt'))
-	{
-		$usertype = $submitter->get('usertype');
-	}
-	else
-	{
-		jimport( 'joomla.user.helper' );
-		$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
-	}
+	jimport( 'joomla.user.helper' );
+	$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
 }
 
 $comment = $this->ticket->report;

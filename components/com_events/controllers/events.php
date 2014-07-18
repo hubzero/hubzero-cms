@@ -2163,19 +2163,9 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		}
 
 		// Check if they're a site admin from Joomla
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if ($this->juser->authorise('core.admin', $this->_option . '.component'))
 		{
-			if ($this->juser->authorise('core.admin', $this->_option . '.component'))
-			{
-				return true;
-			}
-		}
-		else
-		{
-			if ($this->juser->authorize($this->_option, 'manage'))
-			{
-				return true;
-			}
+			return true;
 		}
 
 		// Check against events configuration
