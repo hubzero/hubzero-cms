@@ -151,13 +151,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'members');
 			\Hubzero\Document\Assets::addPluginScript('groups', 'members');
 
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-
-			$gparams = new $paramsClass($group->get('params'));
+			$gparams = new JRegistry($group->get('params'));
 			$this->membership_control = $gparams->get('membership_control', 1);
 
 			$oparams = JComponentHelper::getParams($this->_option);

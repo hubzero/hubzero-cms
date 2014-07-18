@@ -149,12 +149,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		$params = new $paramsClass($model->get('params'));
+		$params = new JRegistry($model->get('params'));
 
 		if ($params->get('store_product', 0))
 		{
@@ -244,12 +239,7 @@ class plgCoursesStore extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		$params = new $paramsClass($model->get('params'));
+		$params = new JRegistry($model->get('params'));
 
 		if ($product = $params->get('store_product_id', 0))
 		{

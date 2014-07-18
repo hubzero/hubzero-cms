@@ -31,24 +31,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$juri =& JURI::getInstance();
-$jconfig =& JFactory::getConfig();
+$juri = JURI::getInstance();
+$jconfig = JFactory::getConfig();
 $ih = new MembersImgHandler();
 
-$dateFormat = '%b %d, %Y';
-$tz = null;
+$dateFormat = 'M d, Y';
 
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'M d, Y';
-	$tz = false;
-}
 $baseManage = 'publications/submit';
 $baseView = 'publications';
 
 $base = trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 
-$mconfig =& JComponentHelper::getParams( 'com_members' );
+$mconfig = JComponentHelper::getParams( 'com_members' );
 $pPath   = trim($mconfig->get('webpath'), DS);
 $profileThumb = NULL;
 

@@ -297,13 +297,8 @@ class plgWhatsnewResources extends \Hubzero\Plugin\Plugin
 
 		// Get the component params and merge with resource params
 		$config = JComponentHelper::getParams('com_resources');
-		$paramClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramClass = 'JRegistry';
-		}
 
-		$rparams = new $paramClass($row->params);
+		$rparams = new JRegistry($row->params);
 		//$params = $config;
 		//$params->merge($rparams);
 

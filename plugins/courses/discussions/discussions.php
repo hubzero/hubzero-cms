@@ -336,12 +336,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->offering = $offering;
 		$this->database = JFactory::getDBO();
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-		$this->params->merge(new $paramsClass($offering->section()->get('params')));
+		$this->params->merge(new JRegistry($offering->section()->get('params')));
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
 		if ($return == 'html')
@@ -521,13 +516,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			return '';
 		}
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
-
-		$this->params->merge(new $paramsClass($course->offering()->section()->get('params')));
+		$this->params->merge(new JRegistry($course->offering()->section()->get('params')));
 
 		$this->_active = 'outline';
 
@@ -1909,7 +1898,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$return = JRoute::_($this->base . '&unit=manage');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -2358,7 +2347,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 				$return = JRoute::_($this->offering->link() . '&active=' . $this->_name . '&unit=' . $section . '&b=' . $category . '&c=' . $id . '/edit');
 			}
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
@@ -2457,7 +2446,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . base64_encode(JRoute::_($this->base, false, true)))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->base, false, true)))
 			);
 			return;
 		}
@@ -2790,7 +2779,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$return = JRoute::_($this->offering->link() . '&active=' . $this->_name . '&unit=download&b=' . $thread . '&file=' . $file); // . '&unit=' . $category . '&b=' . $thread . '&c=' . $post . '&file=' . $file);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_user' . (version_compare(JVERSION, '1.6', 'lt') ? '' : 's') . '&view=login&return=' . base64_encode($return))
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}

@@ -57,14 +57,6 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 
 	if ($plugins = $dispatcher->trigger('onAssetgroupEdit'))
 	{
-		$pth = false;
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$pth = true;
-			//$paramsClass = 'JRegistry';
-		}
-
 		$data = $ag->get('params');
 
 		foreach ($plugins as $plugin)
@@ -72,9 +64,9 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 			$p = JPluginHelper::getPlugin('courses', $plugin['name']);
 			$default = new JRegistry($p->params);
 
-			$param = new $paramsClass(
+			$param = new JParameter(
 				(is_object($data) ? $data->toString() : $data),
-				JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . ($pth ? DS . $plugin['name'] : '') . '.xml'
+				JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . $plugin['name'] . DS . $plugin['name'] . '.xml'
 			);
 			foreach ($default->toArray() as $k => $v)
 			{

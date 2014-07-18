@@ -43,12 +43,7 @@ else
 
 if ($offering->exists())
 {
-	$paramsClass = 'JParameter';
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$paramsClass = 'JRegistry';
-	}
-	$params = new $paramsClass($offering->get('params'));
+	$params = new JRegistry($offering->get('params'));
 
 	$product = null;
 

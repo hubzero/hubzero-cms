@@ -158,15 +158,9 @@ class plgCronMembers extends JPlugin
 			$RE = new ReviewsEconomy($this->database);
 			$reviews = $RE->getReviews();
 
-			$paramsClass = 'JParameter';
-			if (version_compare(JVERSION, '1.6', 'ge'))
-			{
-				$paramsClass = 'JRegistry';
-			}
-
 			// do we have ratings on reviews enabled?
 			$param = JPluginHelper::getPlugin('resources', 'reviews');
-			$plparam = new $paramsClass($param->params);
+			$plparam = new JRegistry($param->params);
 			$voting = $plparam->get('voting');
 
 			$accumulated = 0;

@@ -146,51 +146,29 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 			// Set comments to viewable
 			$this->params->set('access-view-' . $assetType, true);
 
-			// Joomla 1.6+
-			if (version_compare(JVERSION, '1.6', 'ge'))
+			$asset  = $this->option;
+			if ($assetId)
 			{
-				$asset  = $this->option;
-				if ($assetId)
-				{
-					$asset .= ($assetType != 'comment') ? '.' . $assetType : '';
-					$asset .= ($assetId) ? '.' . $assetId : '';
-				}
-
-				$yearFormat  = "Y";
-				$monthFormat = "m";
-				$dayFormat   = "d";
-
-				// Are they an admin?
-				$this->params->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
-				$this->params->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
-				if ($this->params->get('access-admin-' . $assetType)
-				 || $this->params->get('access-manage-' . $assetType))
-				{
-					$this->params->set('access-create-' . $assetType, true);
-					$this->params->set('access-delete-' . $assetType, true);
-					$this->params->set('access-edit-' . $assetType, true);
-					return;
-				}
+				$asset .= ($assetType != 'comment') ? '.' . $assetType : '';
+				$asset .= ($assetId) ? '.' . $assetId : '';
 			}
-			else
+
+			$yearFormat  = "Y";
+			$monthFormat = "m";
+			$dayFormat   = "d";
+
+			// Are they an admin?
+			$this->params->set('access-admin-' . $assetType, $this->juser->authorise('core.admin', $asset));
+			$this->params->set('access-manage-' . $assetType, $this->juser->authorise('core.manage', $asset));
+			if ($this->params->get('access-admin-' . $assetType)
+			 || $this->params->get('access-manage-' . $assetType))
 			{
-				// Joomla 1.5
-
-				$yearFormat  = "%Y";
-				$monthFormat = "%m";
-				$dayFormat   = "%d";
-
-				// Are they an admin?
-				if ($this->juser->authorize($this->option, 'manage'))
-				{
-					$this->params->set('access-manage-' . $assetType, true);
-					$this->params->set('access-admin-' . $assetType, true);
-					$this->params->set('access-create-' . $assetType, true);
-					$this->params->set('access-delete-' . $assetType, true);
-					$this->params->set('access-edit-' . $assetType, true);
-					return;
-				}
+				$this->params->set('access-create-' . $assetType, true);
+				$this->params->set('access-delete-' . $assetType, true);
+				$this->params->set('access-edit-' . $assetType, true);
+				return;
 			}
+
 			if (isset($this->obj->publish_up) && $this->obj->publish_up)
 			{
 				$d = $this->obj->publish_up;

@@ -609,8 +609,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//stringify params
 		if (isset($event['params']) && count($event['params']) > 0)
 		{
-			$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
-			$params = new $paramsClass('');
+			$params = new JRegistry('');
 			$params->loadArray( $event['params'] );
 			$event['params'] = $params->toString();
 		}
@@ -1061,8 +1060,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$view->race       = (isset($this->race)) ? $this->race : null;
 
 		//add params to view
-		$paramsClass = (version_compare(JVERSION, '1.6', 'ge')) ? 'JRegistry' : 'JParameter';
-		$view->params = new $paramsClass( $view->event->get('params') );
+		$view->params = new JRegistry( $view->event->get('params') );
 
 		if (!$this->juser->get('guest'))
 		{
