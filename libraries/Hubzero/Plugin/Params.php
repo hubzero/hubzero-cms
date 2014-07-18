@@ -179,14 +179,7 @@ class Params extends \JTable
 		$this->_db->setQuery("SELECT params FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid) . " AND folder=" . $this->_db->Quote($folder) . " AND element=" . $this->_db->Quote($element) . " LIMIT 1");
 		$result = $this->_db->loadResult();
 
-		$paramsClass = '\\JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = '\\JRegistry';
-		}
-
-		$params = new $paramsClass($result);
-		return $params;
+		return new \JRegistry($result);
 	}
 
 	/**
@@ -211,15 +204,9 @@ class Params extends \JTable
 			return null;
 		}
 
-		$paramsClass = '\\JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = '\\JRegistry';
-		}
-
 		$plugin = \JPluginHelper::getPlugin($folder, $element);
-		$params = new $paramsClass($plugin->params);
-		return $params;
+
+		return new \JRegistry($plugin->params);
 	}
 
 	/**

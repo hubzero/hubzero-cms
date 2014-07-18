@@ -45,14 +45,11 @@ class Helper
 	{
 		jimport('joomla.application.module.helper');
 
-		//$result = '';
-
 		$words = explode(' ', $condition);
 		for ($i = 0; $i < count($words); $i+=2)
 		{
 			// odd parts (modules)
 			$name = strtolower($words[$i]);
-			//$words[$i] = ((isset($this->_buffer['modules'][$name])) && ($this->_buffer['modules'][$name] === false)) ? 0 : count(\JModuleHelper::getModules($name));
 			$words[$i] = count(\JModuleHelper::getModules($name));
 		}
 
@@ -98,9 +95,8 @@ class Helper
 	{
 		$module = \JModuleHelper::getModule($name);
 		$params = array('style' => $style);
-		$contents = \JModuleHelper::renderModule($module, $params);
 
-		return $contents;
+		return \JModuleHelper::renderModule($module, $params);
 	}
 
 	/**
@@ -141,21 +137,11 @@ class Helper
 		$db = \JFactory::getDBO();
 
 		//select module params based on name passed in
-		$sql = "SELECT params FROM `#__modules` WHERE id='" . $id . "' AND published=1";
-		$db->setQuery($sql);
+		$db->setQuery("SELECT params FROM `#__modules` WHERE id='" . intval($id) . "' AND published=1");
 		$params = $db->loadResult();
 
-		$paramsClass = '\\JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = '\\JRegistry';
-		}
-
-		//parse params
-		$mparams = new $paramsClass($params);
-
 		//return params
-		return $mparams;
+		return new \JRegistry($params);
 	}
 }
 

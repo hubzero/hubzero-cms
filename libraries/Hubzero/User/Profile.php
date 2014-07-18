@@ -483,23 +483,16 @@ class Profile extends Object
 
 		$this->clear();
 
-		$paramsClass = '\\JParameter';
+		$this->_params = new \JRegistry($result['params']);
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = '\\JRegistry';
-		}
-
-		$this->_params = new $paramsClass($result['params']);
-
-		foreach ($result as $property=>$value)
+		foreach ($result as $property => $value)
 		{
 			$this->set($property, $value);
 		}
 
 		$classvars = get_class_vars(__CLASS__);
 
-		foreach ($classvars as $property=>$value)
+		foreach ($classvars as $property => $value)
 		{
 			if ('_auxv_' == substr($property, 0, 6) || '_auxs_' == substr($property, 0, 6))
 			{
@@ -525,7 +518,7 @@ class Profile extends Object
 
 		$db =  \JFactory::getDBO();
 
-		$query = "SELECT * FROM #__author WHERE id=" . $db->Quote($authorid);
+		$query = "SELECT * FROM `#__author` WHERE id=" . $db->Quote($authorid);
 
 		$db->setQuery($query);
 

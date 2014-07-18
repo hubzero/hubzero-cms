@@ -594,20 +594,9 @@ class SiteController extends Object implements ControllerInterface
 			return false;
 		}
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		if ($this->juser->authorise('core.admin', $this->_option))
 		{
-			if ($this->juser->authorise('core.admin', $this->_option))
-			{
-				return true;
-			}
-		}
-		else
-		{
-			// Check if they're a site admin (from Joomla)
-			if ($this->juser->authorize($this->_option, 'manage'))
-			{
-				return true;
-			}
+			return true;
 		}
 
 		return false;
