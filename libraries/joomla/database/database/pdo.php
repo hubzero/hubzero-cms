@@ -31,14 +31,14 @@ class JDatabasePDO extends JDatabase
 	 *
 	 * @var string
 	 */
-	var $name			= 'pdo';
+	var $name = 'pdo';
 
 	/**
 	 *  The null/zero date string
 	 *
 	 * @var string
 	 */
-	var $_nullDate		= '0000-00-00 00:00:00';
+	var $_nullDate = '0000-00-00 00:00:00';
 
 	/**
 	* Database object constructor
@@ -168,14 +168,7 @@ class JDatabasePDO extends JDatabase
 
 	public function escape($text, $extra = false)
 	{
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$result = $this->_resource->quote($text);
-		}
-		else
-		{
-			$result = $this->connection->quote($text);
-		}
+		$result = $this->connection->quote($text);
 
 		if ($extra)
 		{
@@ -231,7 +224,8 @@ class JDatabasePDO extends JDatabase
 	 * @access	public
 	 * @return mixed A database resource if successful, FALSE if not.
 	 */
-	public function execute() {
+	public function execute()
+	{
 		if (!is_object($this->connection))
 		{
 			// Legacy error handling switch based on the JError::$legacy switch.
