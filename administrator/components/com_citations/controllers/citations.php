@@ -318,7 +318,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			$assoc = new CitationsAssociation($this->database);
 
 			//check to see if we should delete
-			if(isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
+			if (isset($a['id']) && $a['tbl'] == '' && $a['oid'] == '')
 			{
 				// Delete the row
 				if (!$assoc->delete($a['id']))
@@ -327,7 +327,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 					return;
 				}
 			}
-			else if($a['tbl'] != '' || $a['oid'] != '')
+			else if ($a['tbl'] != '' || $a['oid'] != '')
 			{
 				$a['cid'] = $row->id;
 

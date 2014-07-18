@@ -40,7 +40,7 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 
 		<p>
 			<label for="title">Title:</label>
-			<input type="text" name="title" value="<?= $ag->get('title') ?>" placeholder="Asset Group Title" />
+			<input type="text" name="title" value="<?php echo $ag->get('title') ?>" placeholder="Asset Group Title" />
 		</p>
 		<p>
 			<label for="state">Published:</label>
@@ -90,9 +90,9 @@ $ag = new CoursesModelAssetgroup($this->scope_id);
 	}
 ?>
 
-		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
-		<input type="hidden" name="id" value="<?= $ag->get('id') ?>" />
+		<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+		<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
+		<input type="hidden" name="id" value="<?php echo $ag->get('id') ?>" />
 
 		<input type="submit" value="Submit" class="submit" />
 		<input type="button" value="Cancel" class="cancel" />
