@@ -275,16 +275,8 @@ class modSpotlight extends \Hubzero\Module\Module
 	 */
 	private function _composeEntry($row, $tbl, $txtLength=100, $getid=0)
 	{
-		$yearFormat = '%Y';
-		$monthFormat = '%m';
-		$tz = 0;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$yearFormat = 'Y';
-			$monthFormat = 'm';
-			$tz = null;
-		}
+		$yearFormat = 'Y';
+		$monthFormat = 'm';
 
 		$out = '';
 
@@ -328,8 +320,8 @@ class modSpotlight extends \Hubzero\Module\Module
 				}
 				else
 				{
-					$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, $yearFormat, $tz) . '/'.JHTML::_('date',$row->publish_up, $monthFormat, $tz) . '/' . $row->alias) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
-					$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, $yearFormat, $tz) . '/'.JHTML::_('date',$row->publish_up, $monthFormat, $tz) . '/' . $row->alias) . '">' . $row->title.'</a></span> ';
+					$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, $yearFormat) . '/'.JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+					$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, $yearFormat) . '/'.JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '">' . $row->title.'</a></span> ';
 					$out .=  ' by <a href="'. JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $profile->get('name') . '</a> - '.JText::_('in Blogs')."\n";
 					$out .= '<div class="clear"></div>'."\n";
 				}

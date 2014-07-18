@@ -13,13 +13,13 @@ class modLoginHelper
 {
 	static function getReturnURL($params, $type)
 	{
-		$app	= JFactory::getApplication();
+		$app    = JFactory::getApplication();
 		$router = $app->getRouter();
 		$url = null;
 		if ($itemid =  $params->get($type))
 		{
-			$db		= JFactory::getDbo();
-			$query	= $db->getQuery(true);
+			$db = JFactory::getDbo();
+			$query = $db->getQuery(true);
 
 			$query->select($db->quoteName('link'));
 			$query->from($db->quoteName('#__menu'));
@@ -103,24 +103,24 @@ class modLoginHelper
 		\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
 		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
 
-		$type 	 = self::getType();
+		$type    = self::getType();
 		$return	 = JRequest::getVar('return', null);
 		$freturn = base64_encode($_SERVER['REQUEST_URI']);
 
 		// If we have a return set with an authenticator in it, we're linking an existing account
 		// Parse the return to retrive the authenticator, and remove it from the list below
 		$auth = '';
-		if($areturn = JRequest::getVar('return', null))
+		if ($areturn = JRequest::getVar('return', null))
 		{
 			$areturn = base64_decode($areturn);
 			$query   = parse_url($areturn);
 			$query   = $query['query'];
 			$query   = explode('&', $query);
 			$auth    = '';
-			foreach($query as $q)
+			foreach ($query as $q)
 			{
 				$n = explode('=', $q);
-				if($n[0] == 'authenticator')
+				if ($n[0] == 'authenticator')
 				{
 					$auth = $n[1];
 				}
@@ -133,30 +133,18 @@ class modLoginHelper
 		$plugins        = JPluginHelper::getPlugin('authentication');
 		$authenticators = array();
 
-		foreach($plugins as $p)
+		foreach ($plugins as $p)
 		{
-			if($p->name != 'hubzero' && $p->name != $auth)
+			if ($p->name != 'hubzero' && $p->name != $auth)
 			{
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				$pparams = new $paramsClass($p->params);
+				$pparams = new JRegistry($p->params);
 				$display = $pparams->get('display_name', ucfirst($p->name));
 				$authenticators[] = array('name' => $p->name, 'display' => $display);
 				$multiAuth = true;
 			}
 			else if ($p->name == 'hubzero')
 			{
-				$paramsClass = 'JParameter';
-				if (version_compare(JVERSION, '1.6', 'ge'))
-				{
-					$paramsClass = 'JRegistry';
-				}
-
-				$pparams = new $paramsClass($p->params);
+				$pparams = new JRegistry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);
 			}
 		}
