@@ -9,7 +9,8 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.application.component.helper');
 		
 		//include tool utils
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
+		include_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
+		include_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php';
 		
 		switch($this->segments[0]) 
 		{
