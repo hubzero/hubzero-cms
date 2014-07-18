@@ -38,7 +38,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class ContributionSorter
 {
-
 	/**
 	 * Short description for 'sort'
 	 *
@@ -195,22 +194,10 @@ class plgSearchMembers extends SearchPlugin
 			return false;
 		}
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$when = "c.alias THEN
-				concat(
-					CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
-				)";
-		}
-		else
-		{
-			$when = "s.name OR ca.name OR c.alias THEN
-				concat(
-					CASE WHEN s.name THEN concat('/', s.name) ELSE '' END,
-					CASE WHEN ca.name AND ca.name != s.name THEN concat('/', ca.name) ELSE '' END,
-					CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
-				)";
-		}
+		$when = "c.alias THEN
+			concat(
+				CASE WHEN c.alias THEN concat('/', c.alias) ELSE '' END
+			)";
 
 		$resp = array();
 		foreach ($assoc as $row)
@@ -241,14 +228,8 @@ class plgSearchMembers extends SearchPlugin
 						WHEN aa.subtable = 'resources' THEN
 							rt.type
 						ELSE";
-			if (version_compare(JVERSION, '1.6', 'lt'))
-			{
-						$query .= " s.name";
-			}
-			else
-			{
-						$query .= " s.alias";
-			}
+			$query .= " s.alias";
+
 			$query .= " END AS section,
 					CASE
 						WHEN aa.subtable = 'resources' THEN
@@ -263,24 +244,14 @@ class plgSearchMembers extends SearchPlugin
 						ON ra.child_id = r.id
 					LEFT JOIN #__resource_types rt
 						ON rt.id = r.type";
-				if (version_compare(JVERSION, '1.6', 'lt'))
-				{
-					$query .= " LEFT JOIN #__content c
-						ON aa.subtable = 'content' AND c.id = aa.subid AND c.state = 1
-					LEFT JOIN #__sections s
-						ON s.id = c.sectionid
-					LEFT JOIN #__categories ca
-						ON ca.id = c.catid";
-				}
-				else
-				{
-					$query .= " LEFT JOIN #__content c
+
+			$query .= " LEFT JOIN #__content c
 						ON aa.subtable = 'content' AND c.id = aa.subid AND c.state = 1
 					LEFT JOIN #__categories s
 						ON s.id = c.sectionid
 					LEFT JOIN #__categories ca
 						ON ca.id = c.catid";
-				}
+
 			$query .= " WHERE aa.authorid = " . $row->get('id');
 			$work = new SearchResultSQL($query);
 			$work_assoc = $work->to_associative();

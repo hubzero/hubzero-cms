@@ -38,7 +38,6 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 class ResourceChildSorter
 {
-
 	/**
 	 * Description for 'order'
 	 *
@@ -94,7 +93,6 @@ class ResourceChildSorter
  */
 class plgSearchResources extends SearchPlugin
 {
-
 	/**
 	 * Short description for 'onYSearch'
 	 *
@@ -110,46 +108,19 @@ class plgSearchResources extends SearchPlugin
 		$dbg = isset($_GET['dbg']);
 
 		$database = JFactory::getDBO();
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		$user = JFactory::getUser();
+
+		$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
+		$viewlevels = implode(',', $user->getAuthorisedViewLevels());
+
+		if ($groups)
 		{
-			$user = JFactory::getUser();
-
-			$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
-			$viewlevels = implode(',', $user->getAuthorisedViewLevels());
-
-			if ($groups)
-			{
-				$group_list = '(\'' . join('\', \'', $groups) . '\')';
-				$access = '(access IN (' . $viewlevels . ') OR ((access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
-			}
-			else
-			{
-				$access = '(access IN (' . $viewlevels . '))';
-			}
+			$group_list = '(\'' . join('\', \'', $groups) . '\')';
+			$access = '(access IN (' . $viewlevels . ') OR ((access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
 		}
 		else
 		{
-			if ($authz->is_guest())
-			{
-				$access = 'access = 0';
-			}
-			else if ($authz->is_super_admin())
-			{
-				$access = '1';
-			}
-			else
-			{
-				$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
-				if ($groups)
-				{
-					$group_list = '(\'' . join('\', \'', $groups) . '\')';
-					$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN ' . $group_list . '))';
-				}
-				else
-				{
-					$access = '(access = 0 OR access = 1)';
-				}
-			}
+			$access = '(access IN (' . $viewlevels . '))';
 		}
 
 		$term_parser = $request->get_terms();
@@ -209,16 +180,16 @@ class plgSearchResources extends SearchPlugin
 				$weight AS weight,
 				r.publish_up AS date,
 				rt.type AS section,
-				(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM #__author_assoc anames LEFT JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
+				(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM `#__author_assoc` anames LEFT JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
 				AS contributors,
-				(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM #__author_assoc anames WHERE subtable = 'resources' AND subid = r.id)
+				(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM `#__author_assoc` anames WHERE subtable = 'resources' AND subid = r.id)
 				AS contributor_ids,
 				(select group_concat(concat(parent_id, '|', ordering))
-					from #__resource_assoc ra2
-					left join #__resources re3 on re3.id = ra2.parent_id and re3.standalone
+					from `#__resource_assoc` ra2
+					left join `#__resources` re3 on re3.id = ra2.parent_id and re3.standalone
 					where ra2.child_id = r.id) AS parents
-			FROM #__resources r
-			LEFT JOIN #__resource_types rt
+			FROM `#__resources` r
+			LEFT JOIN `#__resource_types` rt
 				ON rt.id = r.type
 			WHERE
 				r.published = 1 AND r.standalone AND $access AND (r.publish_up AND UTC_TIMESTAMP() > r.publish_up) AND (NOT r.publish_down OR UTC_TIMESTAMP() < r.publish_down)
@@ -258,16 +229,16 @@ class plgSearchResources extends SearchPlugin
 						r.publish_up AS date,
 						0.5 as weight,
 						rt.type AS section,
-						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM #__author_assoc anames LEFT JOIN #__xprofiles u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
+						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM `#__author_assoc anames` LEFT JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
 							AS contributors,
-						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM #__author_assoc anames WHERE subtable = 'resources' AND subid = r.id)
+						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM `#__author_assoc` anames WHERE subtable = 'resources' AND subid = r.id)
 							AS contributor_ids,
 						(select group_concat(concat(parent_id, '|', ordering))
-							from #__resource_assoc ra2
-							left join #__resources re3 on re3.id = ra2.parent_id and re3.standalone
+							from `#__resource_assoc` ra2
+							left join `#__resources` re3 on re3.id = ra2.parent_id and re3.standalone
 							where ra2.child_id = r.id) AS parents
-					FROM #__resources r
-					LEFT JOIN #__resource_types rt
+					FROM `#__resources` r
+					LEFT JOIN `#__resource_types` rt
 					ON rt.id = r.type
 					WHERE
 						r.published = 1 AND r.standalone AND $access AND (r.publish_up AND NOW() > r.publish_up) AND (NOT r.publish_down OR NOW() < r.publish_down)
@@ -275,16 +246,16 @@ class plgSearchResources extends SearchPlugin
 				);
 				foreach ($sql->to_associative() as $row)
 				{
-						if ($tag_map[$row->get('id')] > 1)
-						{
-							$row->adjust_weight($tag_map[$row->get('id')]/8, 'tag bonus for non-matching but tagged resources');
-						}
-						$id_assoc[$row->get('id')] = $row;
+					if ($tag_map[$row->get('id')] > 1)
+					{
+						$row->adjust_weight($tag_map[$row->get('id')]/8, 'tag bonus for non-matching but tagged resources');
+					}
+					$id_assoc[$row->get('id')] = $row;
 				}
 			}
 		}
 
-/*
+		/*
 		// Nest child resources
 		$section = $request->get_terms()->get_section();
 		foreach ($id_assoc as $id=>$row)
@@ -302,7 +273,7 @@ class plgSearchResources extends SearchPlugin
 					}
 				}
 		}
-*/
+		*/
 		$sorter = new ResourceChildSorter($placed);
 		$rows = array();
 		foreach ($id_assoc as $id=>$row)

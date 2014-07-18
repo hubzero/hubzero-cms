@@ -69,21 +69,8 @@ class plgSearchKB extends SearchPlugin
 		}
 
 		$user = JFactory::getUser();
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$addtl_where[] = '(f.access IN (0,' . implode(',', $user->getAuthorisedViewLevels()) . '))';
-		}
-		else
-		{
-			if ($user->guest)
-			{
-				$addtl_where[] = '(f.access = 0)';
-			}
-			elseif ($user->usertype != 'Super Administrator')
-			{
-				$addtl_where[] = '(f.access = 0 OR f.access = 1)';
-			}
-		}
+
+		$addtl_where[] = '(f.access IN (0,' . implode(',', $user->getAuthorisedViewLevels()) . '))';
 
 		$results->add(new SearchResultSQL(
 			"SELECT
@@ -97,10 +84,10 @@ class plgSearchKB extends SearchPlugin
 					WHEN c.alias IS NULL THEN s.alias
 					ELSE concat(s.alias, ', ', c.alias)
 				END AS section
-			FROM #__faq f
-			LEFT JOIN #__faq_categories s
+			FROM `#__faq` f
+			LEFT JOIN `#__faq_categories` s
 				ON s.id = f.section
-			LEFT JOIN #__faq_categories c
+			LEFT JOIN `#__faq_categories` c
 				ON c.id = f.category
 			WHERE
 				f.state = 1 AND s.state = 1 AND

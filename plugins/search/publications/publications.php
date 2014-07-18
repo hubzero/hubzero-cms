@@ -101,49 +101,20 @@ class plgSearchPublications extends SearchPlugin
 
 		$database = JFactory::getDBO();
 
-		// Joomla 1.6+
-		if (version_compare(JVERSION, '1.6', 'ge'))
+		$user = JFactory::getUser();
+
+		$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
+		$viewlevels = implode(',', $user->getAuthorisedViewLevels());
+
+		/*if ($groups)
 		{
-			$user = JFactory::getUser();
-
-			$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
-			$viewlevels = implode(',', $user->getAuthorisedViewLevels());
-
-			/*if ($groups)
-			{
-				$group_list = '(\'' . join('\', \'', $groups) . '\')';
-				$access = '(p.access IN (' . $viewlevels . ') OR ((v.access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
-			}
-			else
-			{*/
-				$access = '(p.access IN (0, ' . $viewlevels . '))';
-			//}
+			$group_list = '(\'' . join('\', \'', $groups) . '\')';
+			$access = '(p.access IN (' . $viewlevels . ') OR ((v.access = 4 OR access = 5) AND r.group_owner IN ' . $group_list . '))';
 		}
 		else
-		// Joomla 1.5
-		{
-			if ($authz->is_guest())
-			{
-				$access = 'p.access = 0';
-			}
-			else if ($authz->is_super_admin())
-			{
-				$access = '1';
-			}
-			else
-			{
-				/*$groups = array_map(array($database, 'getEscaped'), $authz->get_group_names());
-				if ($groups)
-				{
-					$group_list = '(\'' . join('\', \'', $groups) . '\')';
-					$access = '(access = 0 OR access = 1 OR ((access = 3 OR access = 4) AND r.group_owner IN ' . $group_list . '))';
-				}
-				else
-				{*/
-					$access = '(p.access = 0 OR p.access = 1)';
-				//}
-			}
-		}
+		{*/
+			$access = '(p.access IN (0, ' . $viewlevels . '))';
+		//}
 
 		$term_parser = $request->get_terms();
 		$terms = $request->get_term_ar();

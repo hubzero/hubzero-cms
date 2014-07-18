@@ -65,21 +65,7 @@ class plgSearchEvents extends SearchPlugin
 		// @date   4/20/2014
 		//
 		// $user = JFactory::getUser();
-		// if (version_compare(JVERSION, '1.6', 'ge'))
-		// {
-		// 	$addtl_where[] = '(e.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
-		// }
-		// else
-		// {
-		// 	if ($user->guest)
-		// 	{
-		// 		$addtl_where[] = '(e.access = 0)';
-		// 	}
-		// 	elseif ($user->usertype != 'Super Administrator')
-		// 	{
-		// 		$addtl_where[] = '(e.access = 0 OR e.access = 1)';
-		// 	}
-		// }
+		// $addtl_where[] = '(e.access IN (' . implode(',', $user->getAuthorisedViewLevels()) . '))';
 
 		$rows = new SearchResultSQL(
 			"SELECT
@@ -91,7 +77,7 @@ class plgSearchEvents extends SearchPlugin
 				$weight AS weight,
 				publish_up AS date,
 				'Events' AS section
-			FROM #__events e
+			FROM `#__events` e
 			WHERE
 				state = 1 AND
 				approved AND $weight > 0".

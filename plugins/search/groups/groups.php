@@ -49,13 +49,11 @@ class plgSearchGroups extends SearchPlugin
 		$weight = 'match(g.cn, g.description, g.public_desc) AGAINST (\'' . join(' ', $terms['stemmed']) . '\')';
 
 		$from = '';
-		if (version_compare(JVERSION, '1.6', 'ge'))
+
+		$juser = JFactory::getUser();
+		if (!$juser->authorise('core.view', 'com_groups'))
 		{
-			$juser = JFactory::getUser();
-			if (!$juser->authorise('core.view', 'com_groups'))
-			{
-				$from = " JOIN #__xgroups_members AS m ON m.gidNumber=g.gidNumber AND m.uidNumber=" . $juser->get('id');
-			}
+			$from = " JOIN `#__xgroups_members` AS m ON m.gidNumber=g.gidNumber AND m.uidNumber=" . $juser->get('id');
 		}
 
 		$addtl_where = array();
@@ -76,7 +74,7 @@ class plgSearchGroups extends SearchPlugin
 				$weight AS weight,
 				NULL AS date,
 				'Groups' AS section
-			FROM #__xgroups g $from
+			FROM `#__xgroups` g $from
 			WHERE
 				(g.type = 1 OR g.type = 3) AND g.discoverability = 0 AND $weight > 0" .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .

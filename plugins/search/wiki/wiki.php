@@ -61,40 +61,18 @@ class plgSearchWiki extends SearchPlugin
 			$addtl_where[] = "(wp.title NOT LIKE '%$forb%' AND wv.pagetext NOT LIKE '%$forb%')";
 		}
 
-		# TODO
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$user = JFactory::getUser();
-			$viewlevels	= implode(',', $user->getAuthorisedViewLevels());
+		$user = JFactory::getUser();
+		$viewlevels	= implode(',', $user->getAuthorisedViewLevels());
 
-			if (($gids = $authz->get_group_ids()))
-			{
-				$authorization = '(wp.access IN (0,' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
-			}
-			else
-			{
-				$authorization = '(wp.access IN (0,' . $viewlevels . '))';
-			}
+		if (($gids = $authz->get_group_ids()))
+		{
+			$authorization = '(wp.access IN (0,' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
 		}
 		else
 		{
-			if ($authz->is_guest())
-			{
-				$authorization = 'wp.access = 0';
-			}
-			elseif ($authz->is_super_admin())
-			{
-				$authorization = '1';
-			}
-			elseif (($gids = $authz->get_group_ids()))
-			{
-				$authorization = '(wp.access = 0 OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
-			}
-			else
-			{
-				$authorization = 'wp.access = 0';
-			}
+			$authorization = '(wp.access IN (0,' . $viewlevels . '))';
 		}
+
 		// fml
 		$groupAuth = array();
 		if ($authz->is_super_admin()) {
@@ -121,15 +99,15 @@ class plgSearchWiki extends SearchPlugin
 				$weight AS weight,
 				wv.created AS date,
 				'Wiki' AS section
-			FROM #__wiki_version wv
-			INNER JOIN #__wiki_page wp
+			FROM `#__wiki_version` wv
+			INNER JOIN `#__wiki_page` wp
 				ON wp.id = wv.pageid
-			LEFT JOIN #__xgroups xg ON xg.cn = wp.group_cn
+			LEFT JOIN `#__xgroups` xg ON xg.cn = wp.group_cn
 			WHERE
 				$authorization AND
 				$weight > 0 AND
 				wp.state < 2 AND
-				wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version wv2 WHERE wv2.pageid = wv.pageid) " .
+				wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_version` wv2 WHERE wv2.pageid = wv.pageid) " .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
 				" AND (xg.gidNumber IS NULL OR (".implode(' OR ', $groupAuth)."))
 			 ORDER BY $weight DESC"
