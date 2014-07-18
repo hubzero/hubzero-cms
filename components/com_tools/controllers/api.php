@@ -9,9 +9,10 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.application.component.helper');
 
 		//include tool utils
-		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php' );
+		include_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php';
+		include_once JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php';
 
-		switch($this->segments[0])
+		switch ($this->segments[0])
 		{
 			case 'index':		$this->index();				break;
 			case 'info':		$this->info();				break;
@@ -101,7 +102,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//create list of tools
 		$t = array();
-		foreach($tools as $k => $tool)
+		foreach ($tools as $k => $tool)
 		{
 			if (isset($t[$tool->alias]))
 			{
@@ -146,7 +147,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$format 	= JRequest::getVar('format', 'json');
 
 		//we need a tool to continue
-		if($tool == '')
+		if ($tool == '')
 		{
 			$this->errorMessage(400, 'Tool Alias Required.');
 			return;
@@ -167,7 +168,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$tool_info = $database->loadObject();
 
 		//veryify we have result
-		if($tool_info == null)
+		if ($tool_info == null)
 		{
 			$this->errorMessage(404, 'No Tool Found Matching the Alias: "' . $tool . '"');
 			return;
@@ -202,7 +203,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//add full path to screenshot
 		$s = array();
-		foreach($shots as $shot)
+		foreach ($shots as $shot)
 		{
 			$s[] = $path . DS . $shot->filename;
 		}
@@ -273,17 +274,17 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$format 	= JRequest::getVar('format', 'json');
 
 		$image_type = IMAGETYPE_PNG;
-		if($type == 'jpeg' || $type == 'jpg')
+		if ($type == 'jpeg' || $type == 'jpg')
 		{
 			$image_type = IMAGETYPE_JPEG;
 		}
-		else if($type == 'gif')
+		else if ($type == 'gif')
 		{
 			$image_type = IMAGETYPE_GIF;
 		}
 
 		//check to make sure we have a valid sessionid
-		if($sessionid == '' || !is_numeric($sessionid))
+		if ($sessionid == '' || !is_numeric($sessionid))
 		{
 			$this->errorMessage(401, 'No session ID Specified.');
 			return;
@@ -295,10 +296,10 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//check to make sure we have a sessions dir
 		$home_directory = DS .'webdav' . DS . 'home' . DS . strtolower($sess->username) . DS . 'data' . DS . 'sessions';
-		if(!is_dir($home_directory))
+		if (!is_dir($home_directory))
 		{
 			clearstatcache();
-			if(!is_dir($home_directory))
+			if (!is_dir($home_directory))
 			{
 				$this->errorMessage(500, 'Unable to find users sessions directory. - ' . $home_directory);
 				return;
@@ -308,7 +309,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		//check to make sure we have an active session with the ID supplied
 		$home_directory .= DS . $sessionid . '{,L,D}';
 		$directories = glob($home_directory, GLOB_BRACE);
-		if(empty($directories))
+		if (empty($directories))
 		{
 			$this->errorMessage(404, "No Session directory with the ID: " . $sessionid);
 			return;
@@ -321,9 +322,9 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		// check to make sure we have a screenshot
 		$screenshot = $home_directory . DS . 'screenshot.png';
 
-		if(!file_exists($screenshot))
+		if (!file_exists($screenshot))
 		{
-			if($notFound)
+			if ($notFound)
 			{
 				$screenshot = JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'assets' . DS . 'img' . DS . 'screenshot-notfound.png';
 			}
@@ -436,7 +437,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$toolAccess = ToolsHelperUtils::getToolAccess( $app->name, $result->get('username') );
 
 		//do we have access
-		if($toolAccess->valid != 1)
+		if ($toolAccess->valid != 1)
 		{
 			$this->errorMessage(400, $toolAccess->error->message);
 			return;
@@ -456,7 +457,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$remain = $result->get('jobsAllowed') - $jobs;
 
 		//can we open another session
-		if($remain <= 0)
+		if ($remain <= 0)
 		{
 			$this->errorMessage(401, 'You are using all (' . $jobs . ') your available job slots.');
 			return;
@@ -476,7 +477,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$status = ToolsHelperUtils::middleware("start user=" . $result->get('username') . " ip=" . $app->ip . " app=" . $app->name . " version=" . $app->version, $output);
 
 		//make sure we got a valid session back from the middleware
-		if(!isset($output->session))
+		if (!isset($output->session))
 		{
 			$this->errorMessage(500, 'There was a issue while trying to start the tool session. Please try again later.');
 			return;
@@ -515,7 +516,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$output->readonly = 0;
 
 		//return result
-		if( $status )
+		if ( $status )
 		{
 			$this->setMessageType( $format );
 			$this->setMessage( $output );
@@ -552,7 +553,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$ip			= $_SERVER["REMOTE_ADDR"];
 
 		//make sure we have the session
-		if(!$sessionid)
+		if (!$sessionid)
 		{
 			$this->errorMessage(400, 'Session ID Needed');
 			return;
@@ -622,7 +623,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$output->readonly = ($row->readonly == 'Yes') ? 1 : 0;
 
 		//return result
-		if($status)
+		if ($status)
 		{
 			$this->setMessageType( $format );
 			$this->setMessage( $output );
@@ -655,7 +656,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$format 	= JRequest::getVar('format', 'json');
 
 		//make sure we have the session
-		if(!$sessionid)
+		if (!$sessionid)
 		{
 			$this->errorMessage(400, 'Missing session ID.');
 			return;
@@ -666,7 +667,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$ms->load($sessionid, $result->get("username"));
 
 		//check to make sure session exists and it belongs to the user
-		if(!$ms->username || $ms->username != $result->get("username"))
+		if (!$ms->username || $ms->username != $result->get("username"))
 		{
 			$this->errorMessage(400, 'Session Doesn\'t Exist or Does Not Belong to User');
 			return;
@@ -689,7 +690,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$dispatcher->trigger('onAfterSessionStop', array($ms->appname));
 
 		// was the session stopped successfully
-		if($status == 1)
+		if ($status == 1)
 		{
 			$object = new stdClass();
 			$object->session = array("session" => $sessionid, "status" => "stopped", "stopped" => JFactory::getDate()->toSql());
@@ -724,7 +725,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$format 	= JRequest::getVar('format', 'json');
 
 		//check to make sure we have session id
-		if(!$sessionid)
+		if (!$sessionid)
 		{
 			$this->errorMessage(400, 'Missing session ID.');
 			return;
@@ -735,7 +736,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$mv->deleteViewperm( $sessionid, $result->get("username") );
 
 		//make sure we didnt have error disconnecting
-		if(!$mv->getError())
+		if (!$mv->getError())
 		{
 			$object = new stdClass();
 			$object->session = array("session" => $sessionid, "status" => "disconnected", "disconnected" => JFactory::getDate()->toSql());
@@ -796,7 +797,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
-		if($result === false)	return $this->not_found();
+		if ($result === false)	return $this->not_found();
 
 		//get request vars
 		$degree = JRequest::getVar('degree', '');
@@ -807,7 +808,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$storage_host = $tool_params->get('storagehost', '');
 
 		//check to make sure we have a storage host
-		if($storage_host == '')
+		if ($storage_host == '')
 		{
 			$this->errorMessage(500, 'Unable to find storage host.');
 			return;
@@ -823,7 +824,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		);
 
 		//check to make sure we have a degree
-		if($degree == '' || !in_array($degree, array_keys($accepted_degrees)))
+		if ($degree == '' || !in_array($degree, array_keys($accepted_degrees)))
 		{
 			$this->errorMessage(401, 'No purge level supplied.');
 			return;
@@ -851,7 +852,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 		$purge_info = array_map("trim", $purge_info);
 
 		//check to make sure the purge was successful
-		if(in_array('Success.', $purge_info))
+		if (in_array('Success.', $purge_info))
 		{
 			//return result
 			$object = new stdClass();
