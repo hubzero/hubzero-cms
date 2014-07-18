@@ -51,37 +51,22 @@ class GroupsHelper
 	public static function getActions($assetType='component', $assetId = 0)
 	{
 		$assetName = 'com_groups';
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user = JFactory::getUser();
+		$result = new JObject;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		$assetName .= '.' . $assetType;
+		if ($assetId)
 		{
-			$actions = array(
-				'admin', 'manage', 'create', 'edit', 'edit.state', 'delete'
-			);
-
-			foreach ($actions as $action)
-			{
-				$result->set('core.' . $action, $user->authorize($assetName, 'manage'));
-			}
-			$result->set('core.admin', $user->authorize($assetName, 'admin'));
+			$assetName .= '.' . (int) $assetId;
 		}
-		else
+
+		$actions = array(
+			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
+		);
+
+		foreach ($actions as $action)
 		{
-			$assetName .= '.' . $assetType;
-			if ($assetId)
-			{
-				$assetName .= '.' . (int) $assetId;
-			}
-
-			$actions = array(
-				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
-			);
-
-			foreach ($actions as $action)
-			{
-				$result->set($action, $user->authorise($action, $assetName));
-			}
+			$result->set($action, $user->authorise($action, $assetName));
 		}
 
 		return $result;

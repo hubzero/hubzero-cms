@@ -249,14 +249,7 @@ class KbTableCategory extends JTable
 	private function _buildQuery($filters=array())
 	{
 		$query = "FROM $this->_tbl AS a";
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$query .= " LEFT JOIN #__groups AS g ON g.`id` = a.`access`";
-		}
-		else
-		{
-			$query .= " LEFT JOIN #__viewlevels AS g ON g.`id` = (a.`access` + 1)";
-		}
+		$query .= " LEFT JOIN #__viewlevels AS g ON g.`id` = (a.`access` + 1)";
 
 		$where = array();
 
@@ -348,26 +341,17 @@ class KbTableCategory extends JTable
 			$access .= " AND fa.`access`=" . $this->_db->Quote($filters['access']);
 		}
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if (isset($filters['section']) && $filters['section'] > 0)
 		{
-			$query  = "SELECT a.*, g.`name` AS groupname,
-					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles,
-					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
+			$query  = "SELECT a.*, g.`title` AS groupname,
+				(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id $access) AS articles,
+				(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
 		}
 		else
 		{
-			if (isset($filters['section']) && $filters['section'] > 0)
-			{
-				$query  = "SELECT a.*, g.`title` AS groupname,
-					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id $access) AS articles,
-					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
-			}
-			else
-			{
-				$query  = "SELECT a.*, g.`title` AS groupname,
-					(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles,
-					(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
-			}
+			$query  = "SELECT a.*, g.`title` AS groupname,
+				(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles,
+				(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
 		}
 
 		$query .= $this->_buildQuery($filters);

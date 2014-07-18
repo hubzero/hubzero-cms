@@ -51,40 +51,26 @@ class CoursesHelper
 	public static function getActions($assetType=NULL, $assetId = 0)
 	{
 		$assetName = 'com_courses';
-		$user	= JFactory::getUser();
-		$result	= new JObject;
+		$user = JFactory::getUser();
+		$result = new JObject;
 
-		if (version_compare(JVERSION, '1.6', 'lt'))
+		if ($assetType)
 		{
-			$actions = array(
-				'admin', 'manage', 'create', 'edit', 'edit.state', 'delete'
-			);
-
-			foreach ($actions as $action)
-			{
-				$result->set('core.' . $action, $user->authorize($assetName, 'manage'));
-			}
+			$assetName .= '.' . $assetType;
 		}
-		else
+
+		if ($assetId)
 		{
-			if ($assetType)
-			{
-				$assetName .= '.' . $assetType;
-			}
+			$assetName .= '.' . (int) $assetId;
+		}
 
-			if ($assetId)
-			{
-				$assetName .= '.' . (int) $assetId;
-			}
+		$actions = array(
+			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
+		);
 
-			$actions = array(
-				'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
-			);
-
-			foreach ($actions as $action)
-			{
-				$result->set($action, $user->authorise($action, $assetName));
-			}
+		foreach ($actions as $action)
+		{
+			$result->set($action, $user->authorise($action, $assetName));
 		}
 
 		return $result;

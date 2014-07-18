@@ -1003,11 +1003,7 @@ class ResourcesResource extends JTable
 	{
 		$gname = 'g.title';
 		$gtbl = '#__viewlevels AS g ON g.id = (r.access + 1)';
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$gname = 'g.name';
-			$gtbl = '#__groups AS g ON g.id = r.access';
-		}
+
 		$sql = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, CASE WHEN r.modified != '0000-00-00 00:00:00' THEN r.modified ELSE r.created END AS modified, r.access,
 				r.published, r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.params, u.name AS editor,
 				$gname AS groupname, t.type AS typetitle,
@@ -1102,11 +1098,6 @@ class ResourcesResource extends JTable
 	{
 		$gname = 'g.title';
 		$gtbl = '#__viewlevels AS g ON g.id = (r.access + 1)';
-		if (version_compare(JVERSION, '1.6', 'lt'))
-		{
-			$gname = 'g.name';
-			$gtbl = '#__groups AS g ON g.id = r.access';
-		}
 
 		if (isset($filters['parent_id']) && $filters['parent_id'] > 0)
 		{

@@ -116,7 +116,7 @@ JHTML::_('behavior.tooltip');
 				<td>
 				<?php if ($i > 0 || ($i+$this->pageNav->limitstart > 0)) { ?>
 					<a href="#reorder" class="order up jgrid" onclick="return listItemTask('cb<?php echo $i;?>','orderup')" title="Move Up">
-						<span class="state uparrow"><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/uparrow.png" alt="Move up" /><?php } else { ?><span><?php echo JText::_('COM_EVENTS_MOVE_UP'); ?></span><?php } ?></span>
+						<span class="state uparrow"><span><?php echo JText::_('COM_EVENTS_MOVE_UP'); ?></span></span>
 					</a>
 				<?php } else { ?>
 					&nbsp;
@@ -125,7 +125,7 @@ JHTML::_('behavior.tooltip');
 				<td>
 				<?php if ($i < $n-1 || $i+$this->pageNav->limitstart < $this->pageNav->total-1) { ?>
 					<a href="#reorder" class="order down jgrid" onclick="return listItemTask('cb<?php echo $i;?>','orderdown')" title="Move Down">
-						<span class="state downarrow"><?php if (version_compare(JVERSION, '1.6', 'lt')) { ?><img src="images/downarrow.png" alt="Move down" /><?php } else { ?><span><?php echo JText::_('COM_EVENTS_MOVE_DOWN'); ?></span><?php } ?></span>
+						<span class="state downarrow"><span><?php echo JText::_('COM_EVENTS_MOVE_DOWN'); ?></span></span>
 					</a>
 				<?php } else { ?>
 					&nbsp;
