@@ -139,7 +139,7 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 		$this->type = new ResourcesType($this->_db);
 		$this->type->bind($this->types($this->resource->type));
-		$this->type->params = new $paramsClass($this->type->params);
+		$this->type->params = new JRegistry($this->type->params);
 	}
 
 	/**

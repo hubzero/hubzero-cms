@@ -35,9 +35,6 @@ $this->css()
      ->css('providers.css', 'com_users')
      ->js()
      ->js('jquery.hoverIntent', 'system');
-
-$paramsClass = 'JRegistry';
-$com_user    = 'com_users';
 ?>
 
 <h3 class="section-header"><?php echo JText::_('PLG_MEMBERS_ACCOUNT'); ?></h3>
@@ -63,7 +60,7 @@ $com_user    = 'com_users';
 				{
 					// Get the display name for the current plugin being used
 					$plugin       = JPluginHelper::getPlugin('authentication', $hzala['auth_domain_name']);
-					$pparams      = new $paramsClass($plugin->params);
+					$pparams      = new JRegistry($plugin->params);
 					$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
 					?>
 					<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
@@ -90,10 +87,10 @@ $com_user    = 'com_users';
 				{
 					// Get the display name for the current plugin being used
 					$plugin       = JPluginHelper::getPlugin('authentication', $domain->name);
-					$pparams      = new $paramsClass($plugin->params);
+					$pparams      = new JRegistry($plugin->params);
 					$display_name = $pparams->get('display_name', ucfirst($domain->name));
 					?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $com_user . '&view=login&authenticator=' . $domain->name); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $domain->name); ?>">
 						<div class="account inactive <?php echo $domain->name; ?>">
 							<div class="account-info">
 								<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
