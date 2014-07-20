@@ -2,59 +2,30 @@
 defined('_JEXEC') or die('Restricted access');
 $i = 1;
 
-$dateFormat = '%d %b %Y';
-$tz = 0;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M Y';
-	$tz = false;
-}
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
-
-	<div class="status-msg">
-	<?php 
-		// Display error or success message
-		if ($this->getError()) { 
-			echo ('<p class="witherror">' . $this->getError().'</p>');
-		}
-	?>
-	</div>
 </header><!-- / #content-header -->
-
-<section id="introduction" class="section">
-	<div id="introbody">
-	<?php if ($this->contributable) { ?>
-		<div class="grid">
-			<div class="col span4">
-	<?php } ?>
-				<h3><?php echo JText::_('COM_PUBLICATIONS_BROWSE_PUBLICATIONS'); ?></h3>
-				<ul class="extracontent">
-				<?php foreach ($this->categories as $cat) { 
-					if ($cat->itemCount <= 0) { continue; }
-					if ($i > 3) { break; } ?>
-					<li class="<?php echo $cat->alias; ?>"><a href="<?php echo JRoute::_('index.php?option=com_publications'. a . 'category=' . $cat->url_alias); ?>"><?php echo JText::_('COM_PUBLICATIONS_BROWSE') . ' ' . $cat->name; ?> &raquo;</a></li>
-				<?php $i++; } ?>
-					<li class="browseall"><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=browse'); ?>"><?php echo JText::_('COM_PUBLICATIONS_BROWSE_ALL'); ?> &raquo;</a></li>
-				</ul>
-
-	<?php if ($this->contributable) { ?>
-			</div>
-			<div class="col span8 omega">
-				<h3><?php echo JText::_('COM_PUBLICATIONS_WHO_CAN_SUBMIT'); ?></h3>
-				<p><?php echo JText::_('COM_PUBLICATIONS_WHO_CAN_SUBMIT_ANYONE'); ?></p>
-				<p><a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'task=submit'); ?>"><?php echo JText::_('COM_PUBLICATIONS_START_PUBLISHING'); ?> &raquo;</a></p>
-			</div>
-		</div>
-	<?php } ?>
-	</div>
-</section><!-- / #introduction.section -->
-
-<section class="section">
+<div id="content-header-extra">
+    <ul id="useroptions">
+    	<li><a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_PUBLICATIONS_BROWSE') . ' ' . JText::_('COM_PUBLICATIONS_PUBLICATIONS'); ?></a></li>
+	</ul>
+</div><!-- / #content-header-extra -->
+<div class="clear"></div>
+<?php if ($this->getError()) { ?>
+<div class="status-msg">
+<?php
+	// Display error or success message
+	if ($this->getError()) {
+		echo ('<p class="witherror">' . $this->getError().'</p>');
+	}
+ ?>
+</div>
+<?php } ?>
+<div class="clear block">&nbsp;</div>
+<section class="section intropage">
 	<div class="grid">
-		<div class="col span6">
+		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6';  ?>">
 			<h3><?php echo JText::_('Recent Publications'); ?></h3>
 			<?php if($this->results && count($this->results) > 0) { ?>
 				<ul class="mypubs">
@@ -63,7 +34,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						$pa = new PublicationAuthor( $this->database );
 						$authors = $pa->getAuthors($row->version_id); 
 						$info = array();
-						$info[] =  JHTML::_('date', $row->published_up, $dateFormat, $tz);	
+						$info[] =  JHTML::_('date', $row->published_up, 'd M Y');	
 						$info[] = $row->cat_name;	
 						$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
 						
@@ -82,8 +53,8 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>'); 
 			} ?>
 		</div>
-		<div class="col span6 omega">
-			<h3><?php echo JText::_('Popular Publications'); ?></h3>
+		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6';  ?>">
+			<h3><?php echo JText::_('COM_PUBLICATIONS_PUPULAR'); ?></h3>
 			<?php if ($this->best && count($this->best) > 0) { ?>
 				<ul class="mypubs">
 					<?php foreach($this->best as $row) {
@@ -91,7 +62,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 						$pa = new PublicationAuthor( $this->database );
 						$authors = $pa->getAuthors($row->version_id); 
 						$info = array();
-						$info[] =  JHTML::_('date', $row->published_up, $dateFormat, $tz);	
+						$info[] =  JHTML::_('date', $row->published_up, 'd M Y');	
 						$info[] = $row->cat_name;	
 						$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
 						
@@ -110,5 +81,12 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>'); 
 			} ?>
 		</div>
+		<?php if ($this->contributable) { ?>
+		<div class="col span4 omega">
+			<h3><?php echo JText::_('COM_PUBLICATIONS_WHO_CAN_SUBMIT'); ?></h3>
+			<p><?php echo JText::_('COM_PUBLICATIONS_WHO_CAN_SUBMIT_ANYONE'); ?></p>
+			<p><a href="<?php echo JRoute::_('index.php?option=com_publications&task=submit'); ?>" class="btn"><?php echo JText::_('COM_PUBLICATIONS_START_PUBLISHING'); ?> &raquo;</a></p>
+		</div>
+		<?php } ?>
 	</div>
 </section><!-- / .section -->

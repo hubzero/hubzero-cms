@@ -333,7 +333,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		$this->view->filters 		   = array();
 		$this->view->filters['sortby'] = 'date_published';
-		$this->view->filters['limit']  = 10;
+		$this->view->filters['limit']  = $this->config->get('listlimit', 10);
 		$this->view->filters['start']  = JRequest::getInt( 'limitstart', 0 );
 
 		// Instantiate a publication object

@@ -1547,8 +1547,7 @@
 		line-height: 1.2em;
 	}
 	.launcher-inside-wrap .pubinfo {
-		margin: -1em 0 0 0;
-		padding: 0.5em;
+		margin: 0 0 0 0;
 	}
 	.grad-purple .launcher-inside-wrap .ataglance {
 		color: #52346f;
@@ -1746,4 +1745,8 @@
 	ul.element-list li {
 		padding: 0.3em 0;
 		border-bottom: 1px dotted #CCC;
+	}
+/* New */
+	.com_publications .grid {
+		border: none !important;
 	}
