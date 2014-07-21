@@ -8,7 +8,7 @@ class PHPUnitTestHelper
 	/**
 	 * Standard setup process for tests running in 'site'
 	 */
-	function siteSetup()
+	public static function siteSetup()
 	{
 		// Trick joomla into thinking client is 'site'
 		$app = JFactory::getApplication('site');
@@ -19,7 +19,7 @@ class PHPUnitTestHelper
 	/**
 	 * Standard setup process for tests running using selenium
 	 */
-	function seleniumSetup()
+	public function seleniumSetup()
 	{
 		$this->setHost(SELENIUM_HOST);
 		$this->setBrowser(SELENIUM_BROWSER);
@@ -30,7 +30,7 @@ class PHPUnitTestHelper
 	/**
 	 * Get testing DBO
 	 */
-	function getDBO()
+	public static function getDBO()
 	{
 		// Define database connection parameters for test db
 		$options = array(
@@ -48,11 +48,11 @@ class PHPUnitTestHelper
 		$environment = $config->getValue('config.application_env');
 
 		// If that didn't work, and we're not on a production machine, get the default db
-		if(get_class($db) != 'JDatabaseMySQL' && $environment != 'production')
+		if (get_class($db) != 'JDatabaseMySQL' && $environment != 'production')
 		{
 			$db = JFactory::getDBO();
 		}
-		elseif(get_class($db) != 'JDatabaseMySQL' && $environment == 'production')
+		elseif (get_class($db) != 'JDatabaseMySQL' && $environment == 'production')
 		{
 			die('You must setup a test database to run unit tests on a production system');
 		}
