@@ -115,6 +115,18 @@ class Arguments
 	}
 
 	/**
+	 * Setter for additional options for a given command
+	 *
+	 * @param  (string) $key
+	 * @param  (mixed)  $value
+	 * @return void
+	 **/
+	public function setOpt($key, $value)
+	{
+		$this->opts[$key] = $value;
+	}
+
+	/**
 	 * Parse the raw arguments into command, task, and additional options
 	 *
 	 * @return void
