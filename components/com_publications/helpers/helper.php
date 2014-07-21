@@ -358,7 +358,7 @@ class PublicationHelper extends JObject
 					$k = $i;
 					$i++;
 				}
-				else if(trim($contributor->organization) != '')
+				else if (trim($contributor->organization) != '')
 				{
 					$k = array_search(trim($contributor->organization), $orgs) + 1;
 				}

@@ -94,12 +94,12 @@ foreach ($this->related as $line)
 ?>
 		<tr>
 			<td>
-<?php  if($line->section == 'Topic') { ?>
+<?php if ($line->section == 'Topic') { ?>
 		<a href="<?php echo $sef; ?>"><?php echo stripslashes($line->title); ?></a>
 <?php }
 
 else { ?>
-	<?php if($line->section == 'Series') { echo JText::_('PLG_PUBLICATION_RELATED_PART_OF'); } ?>
+	<?php if ($line->section == 'Series') { echo JText::_('PLG_PUBLICATION_RELATED_PART_OF'); } ?>
 				<a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo stripslashes($line->title); ?></a>
 				<div style="display:none;" id="rsrce<?php echo $line->id; ?>">
 					<h4><?php echo stripslashes($line->title); ?></h4>
