@@ -73,28 +73,32 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		$view->hubsList   = $hubTbl->getRecords();
 		$view->hubs       = array();
 		$records          = $recordTbl->getRecords(
-			array('q' => array(
-				array(
-					'column' => 'date',
-					'o'      => '>=',
-					'value'  => $view->start
-				),
-				array(
-					'column' => 'date',
-					'o'      => '<=',
-					'value'  => $view->end
-				),
-				array(
-					'column' => 'h.id',
-					'o'      => '=',
-					'value'  => (isset($view->hub_id) && $view->hub_id > 0) ? $view->hub_id : null
-				),
-				array(
-					'column' => 'p.id',
-					'o'      => '=',
-					'value'  => (isset($view->task_id) && $view->task_id > 0) ? $view->task_id : null
-				),
-			))
+			array(
+				'orderby'  => 'h.name',
+				'orderdir' => 'ASC',
+				'q'        => array(
+					array(
+						'column' => 'date',
+						'o'      => '>=',
+						'value'  => $view->start
+					),
+					array(
+						'column' => 'date',
+						'o'      => '<=',
+						'value'  => $view->end
+					),
+					array(
+						'column' => 'h.id',
+						'o'      => '=',
+						'value'  => (isset($view->hub_id) && $view->hub_id > 0) ? $view->hub_id : null
+					),
+					array(
+						'column' => 'p.id',
+						'o'      => '=',
+						'value'  => (isset($view->task_id) && $view->task_id > 0) ? $view->task_id : null
+					),
+				)
+			)
 		);
 
 		foreach ($records as $record)
