@@ -1,0 +1,88 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/time/summary/summary.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.plg_time_summary {
+	display: table;
+}
+.plg_time_summary .filters {
+	width: 20%;
+	border-right: 1px solid #CCCCCC;
+	background: #F9F9F9;
+	padding: 15px;
+	height: 525px;
+	display: table-cell;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.plg_time_summary .charts {
+	display: table-cell;
+	padding: 15px;
+}
+.plg_time_summary .report-hub,
+.plg_time_summary .report-task,
+.plg_time_summary .report-record {
+	overflow: hidden;
+}
+.plg_time_summary .report-hub-name,
+.plg_time_summary .report-hub-hours {
+	font-size: 16px;
+}
+.plg_time_summary .report-record {
+	font-style: italic;
+	font-size: 11px;
+}
+.plg_time_summary .report-filler {
+	border-bottom: 1px dotted #CCCCCC;
+	color: transparent;
+}
+.plg_time_summary .report-hub-name,
+.plg_time_summary .report-task-name,
+.plg_time_summary .report-record-name {
+	position: relative;
+	float: left;
+}
+.plg_time_summary .report-task-name,
+.plg_time_summary .report-task .report-filler  {
+	margin-left: 20px;
+}
+.plg_time_summary .report-record-name,
+.plg_time_summary .report-record .report-filler {
+	margin-left: 40px;
+}
+.plg_time_summary .report-hub-hours,
+.plg_time_summary .report-task-hours,
+.plg_time_summary .report-record-hours {
+	float: right;
+}
+.plg_time_summary .respondable {
+	display: none;
+}
+.plg_time_summary .clickable:hover {
+	background: #F9F9F9;
+	cursor: pointer;
+}
+.plg_time_summary .report-hub-name:before,
+.plg_time_summary .report-task-name:before,
+.plg_time_summary .report-record-name:before {
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+	content: "";
+	font-family: 'Fontcons';
+}
+.plg_time_summary .report-hub-name:before {
+	content: "\f001";
+}
+.plg_time_summary .report-task-name:before {
+	content: "\f07c";
+}
+.plg_time_summary .report-record-name:before {
+	content: "\2714";
+}
+.plg_time_summary .no-data {
+	margin: 20px;
+}
