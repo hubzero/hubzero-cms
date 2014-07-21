@@ -196,9 +196,9 @@ Class TimeRecords extends JTable
 	 * @param  $filters of rows to return (filters: pid, startdate, enddate, id_range, orderby, orderdir, start, limit, user, task, query)
 	 * @return object list of collections
 	 */
-	public function getRecords($filters)
+	public function getRecords($filters=array())
 	{
-		$query  = "SELECT r.*, u.name as uname, u.id as uid, p.id as pid, p.name as pname";
+		$query  = "SELECT r.*, u.name as uname, u.id as uid, p.id as pid, p.name as pname, h.id as hid, h.name as hname";
 		$query .= $this->buildquery();
 
 		// This is used when creating set for a given task and id range
@@ -276,7 +276,10 @@ Class TimeRecords extends JTable
 			$query .= " ORDER BY r.id DESC";
 		}
 		// Set limit and start for pagination
-		$query .= " LIMIT ".intval($filters['start']).",".intval($filters['limit']);
+		if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] > 0)
+		{
+			$query .= " LIMIT ".intval($filters['start']).",".intval($filters['limit']);
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -324,20 +327,53 @@ Class TimeRecords extends JTable
 	/**
 	 * Get summary hours for overview column chart
 	 *
-	 * @param  $limit of rows to return
+	 * @param  $filters
 	 * @return object list of 'task=>hours'
 	 */
-	public function getSummaryHours($limit, $uid='')
+	public function getSummaryHours($filters=array())
 	{
 		$query  = "SELECT p.name AS pname, sum(time) as hours";
 		$query .= $this->buildquery();
-		if (!empty($uid))
+		$where  = array();
+		if (isset($filters['uid']) && !empty($filters['uid']))
 		{
-			$query .= " WHERE u.id = " . $this->_db->Quote($uid);
+			$where[] = "u.id = " . $this->_db->Quote($filters['uid']);
 		}
+		if (isset($filters['hub_id']) && !empty($filters['hub_id']))
+		{
+			$where[] = "h.id = " . $this->_db->Quote($filters['hub_id']);
+		}
+		if (isset($filters['task_id']) && !empty($filters['task_id']))
+		{
+			$where[] = "p.id = " . $this->_db->Quote($filters['task_id']);
+		}
+		if (isset($filters['start_date']) && !empty($filters['start_date']))
+		{
+			$where[] = "r.date >= " . $this->_db->Quote($filters['start_date']);
+		}
+		if (isset($filters['end_date']) && !empty($filters['end_date']))
+		{
+			$where[] = "r.date <= " . $this->_db->Quote($filters['end_date']);
+		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(' AND ', $where);
+		}
+
 		$query .= " GROUP BY task_id";
-		$query .= " ORDER BY hours DESC";
-		$query .= " LIMIT " . $limit;
+		if (isset($filters['orderby']) && isset($filters['orderdir']))
+		{
+			$query .= " ORDER BY {$filters['orderby']} {$filters['orderdir']}";
+		}
+		else
+		{
+			$query .= " ORDER BY hours DESC";
+		}
+		if (isset($filters['limit']) && $filters['limit'] > 0)
+		{
+			$query .= " LIMIT " . (int)$filters['limit'];
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -346,20 +382,30 @@ Class TimeRecords extends JTable
 	/**
 	 * Get summary hours by hub for overview pie chart
 	 *
-	 * @param  $limit of rows to return
+	 * @param  $filters
 	 * @return object list of 'task=>hours'
 	 */
-	public function getSummaryHoursByHub($limit, $hub=0)
+	public function getSummaryHoursByHub($filters=array())
 	{
 		$query  = "SELECT h.name AS hname, sum(time) as hours";
 		$query .= $this->buildquery();
-		if (!empty($hub))
+		if (isset($filters['hub']) && !empty($filters['hub']))
 		{
-			$query .= " WHERE h.id = " . $this->_db->Quote($hub);
+			$query .= " WHERE h.id = " . $this->_db->Quote($filters['hub']);
 		}
 		$query .= " GROUP BY hname";
-		$query .= " ORDER BY hours DESC";
-		$query .= " LIMIT ".$limit;
+		if (isset($filters['orderby']) && isset($filters['orderdir']))
+		{
+			$query .= " ORDER BY {$filters['orderby']} {$filters['orderdir']}";
+		}
+		else
+		{
+			$query .= " ORDER BY hours DESC";
+		}
+		if (isset($filters['limit']) && $filters['limit'] > 0)
+		{
+			$query .= " LIMIT " . (int)$filters['limit'];
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

@@ -183,6 +183,10 @@ class TimeFilters
 					{
 						$o->description = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $o->description);
 					}
+					if (isset($o->pname))
+					{
+						$o->pname = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $o->pname);
+					}
 				}
 			}
 		}

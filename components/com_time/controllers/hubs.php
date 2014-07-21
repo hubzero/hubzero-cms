@@ -204,7 +204,7 @@ class TimeControllerHubs extends TimeControllerBase
 
 		// Get the summary hours for the hub
 		$records                = new TimeRecords($this->database);
-		$hours                  = $records->getSummaryHoursByHub(1, $this->view->row->id);
+		$hours                  = $records->getSummaryHoursByHub(array('hub'=>$this->view->row->id, 'limit'=>1));
 		$this->view->totalHours = ($hours) ? $hours[0]->hours : 0;
 
 		$obj = new TimeModelHub($this->view->row);

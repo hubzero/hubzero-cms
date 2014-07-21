@@ -174,7 +174,7 @@ Class TimeHubs extends JTable
 	 * @param  $filters (examples: active, orderby, orderdir, start, limit)
 	 * @return object list of hubs
 	 */
-	public function getRecords($filters)
+	public function getRecords($filters=array())
 	{
 		$query  = "SELECT h.*";
 		$query .= $this->buildquery($filters);
@@ -199,7 +199,10 @@ Class TimeHubs extends JTable
 		{
 			$query .= " ORDER BY name ASC";
 		}
-		$query .= " LIMIT ".intval($filters['start']).",".intval($filters['limit']);
+		if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] > 0)
+		{
+			$query .= " LIMIT ".intval($filters['start']).",".intval($filters['limit']);
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

@@ -208,7 +208,7 @@ Class TimeTasks extends JTable
 	 * @param  $filters start and limit
 	 * @return object list of collections
 	 */
-	public function getTasks($filters)
+	public function getTasks($filters=array())
 	{
 		$query  = "SELECT p.*, h.name as hname, ua.name as aname, ul.name as lname";
 		$query .= $this->buildquery();
@@ -255,7 +255,10 @@ Class TimeTasks extends JTable
 		{
 			$query .= " ORDER BY p.name ASC";
 		}
-		$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		if (isset($filters['start']) && isset($filters['limit']) && $filters['limit'] > 0)
+		{
+			$query .= " LIMIT ".intval($filters['start']).",".intval($filters['limit']);
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

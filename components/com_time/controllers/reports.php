@@ -46,6 +46,29 @@ class TimeControllerReports extends TimeControllerBase
 		$this->_buildPathway();
 		$this->view->title = $this->_buildTitle();
 
+		\JPluginHelper::importPlugin('time');
+		$this->view->reports = JPluginHelper::getPlugin('time');
+
+		if ($this->view->report_type = JRequest::getCmd('report_type', false))
+		{
+			$className = 'plgTime' . ucfirst($this->view->report_type);
+
+			if (class_exists($className))
+			{
+				if (($method = JRequest::getCmd('method', false)) && in_array($method, $className::$accepts))
+				{
+					if (method_exists($className, $method))
+					{
+						$this->view->content = $className::$method();
+					}
+				}
+				elseif (method_exists($className, 'render'))
+				{
+					$this->view->content = $className::render();
+				}
+			}
+		}
+
 		// Set a few things for the vew
 		if ($this->getError())
 		{

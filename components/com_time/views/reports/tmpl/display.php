@@ -34,6 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->css('reports')
      ->js('reports');
+
+$base    = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
+$options = array();
 ?>
 
 <header id="content-header">
@@ -43,8 +46,30 @@ $this->css()
 <div class="com_time_container">
 	<?php $this->view('menu', 'shared')->display(); ?>
 	<section class="com_time_content com_time_reports">
-		<div class="no_reports">
-			<?php echo JText::_('COM_TIME_REPORTS_NO_REPORT_TYPES'); ?>
-		</div>
+		<?php if (count($this->reports) > 0) : ?>
+			<div class="report-select-type">
+				<form action="<?php echo JRoute::_($base); ?>">
+					<label for="report-type"><?php echo JText::_('COM_TIME_REPORTS_SELECT_REPORT_TYPE'); ?>: </label>
+					<?php foreach ($this->reports as $report) : ?>
+						<?php $options[] = JHTML::_('select.option', $report->name, ucwords($report->name), 'value', 'text'); ?>
+					<?php endforeach; ?>
+					<?php echo JHTML::_('select.genericlist', $options, 'report_type', null); ?>
+					<button class="btn btn-success"><?php echo JText::_('COM_TIME_REPORTS_BEGIN'); ?></button>
+				</form>
+			</div>
+			<div class="report-content">
+				<?php if (isset($this->content)) : ?>
+					<?php echo (isset($this->content)) ? $this->content : ''; ?>
+				<?php else : ?>
+					<div class="make-selection">
+						<?php echo JText::_('COM_TIME_REPORTS_PLEASE_SELECT_REPORT_TYPE'); ?>
+					</div>
+				<?php endif; ?>
+			</div>
+		<?php else : ?>
+			<div class="no_reports">
+				<?php echo JText::_('COM_TIME_REPORTS_NO_REPORT_TYPES'); ?>
+			</div>
+		<?php endif; ?>
 	</section>
 </div>

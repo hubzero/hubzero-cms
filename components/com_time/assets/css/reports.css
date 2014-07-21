@@ -5,7 +5,8 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-.com_time_reports .no_reports {
+.com_time_reports .no_reports,
+.com_time_reports .make-selection {
 	display: block;
 	width: 600px;
 	height: 100px;
@@ -18,7 +19,8 @@
 	position: relative;
 	color: #999999;
 }
-.com_time_reports .no_reports:before {
+.com_time_reports .no_reports:before,
+.com_time_reports .make-selection:before {
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -27,4 +29,20 @@
 	text-align: center;
 	content: "\2757";
 	font-family: 'Fontcons';
+}
+.com_time_reports .make-selection:before {
+	content: "\25f7";
+}
+.com_time_reports .report-select-type {
+	border-top: 1px solid #CCCCCC;
+	border-bottom: 1px solid #CCCCCC;
+	padding: 15px;
+	background-color: #F9F9F9;
+}
+.com_time_reports .report-select-type select {
+	display: inline-block;
+	width: auto;
+}
+.com_time_reports .report-select-type label {
+	display: inline-block;
 }

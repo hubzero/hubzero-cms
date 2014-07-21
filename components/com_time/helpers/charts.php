@@ -52,7 +52,7 @@ class ChartsHtml
 		$records = new TimeRecords($db);
 		$limit   = 5;
 		$total   = $records->getCount();
-		$rows    = $records->getSummaryHours($limit);
+		$rows    = $records->getSummaryHours(array('limit'=>$limit));
 		$count   = 0;
 
 		// Go through the rows and build the data for the chart
@@ -127,7 +127,7 @@ class ChartsHtml
 		$records = new TimeRecords($db);
 		$limit   = 10;
 		$total   = $records->getCount();
-		$rows    = $records->getSummaryHoursByHub($limit);
+		$rows    = $records->getSummaryHoursByHub(array('limit'=>$limit));
 		$count   = 0;
 
 		// Go through the rows and build the data for the chart
@@ -184,7 +184,7 @@ class ChartsHtml
 		$records = new TimeRecords($db);
 		$limit   = 10;
 		$total   = $records->getCount();
-		$rows    = $records->getSummaryHours($limit, $uid);
+		$rows    = $records->getSummaryHours(array('limit'=>$limit, 'uid'=>$uid));
 		$count   = 0;
 
 		$user =  JFactory::getUser($uid);
