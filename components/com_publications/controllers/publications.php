@@ -1909,11 +1909,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// First attachment (former 'first child')
 		$this->firstattach  = $this->attachments ? $this->attachments[0] : NULL;
 
-		$paramsClass = 'JParameter';
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$paramsClass = 'JRegistry';
-		}
+		$paramsClass = 'JRegistry';
 
 		// Get the height and width
 		$attribs = new $paramsClass($this->firstattach->attribs);
@@ -2061,16 +2057,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	 */
 	public function citationTask()
 	{
-		$monthFormat = "%b";
-		$yearFormat = "%Y";
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$yearFormat = "Y";
-			$monthFormat = "M";
-			$tz = false;
-		}
+		$yearFormat = "Y";
+		$monthFormat = "M";
+		$tz = false;
 
 		// Incoming
 		$id = JRequest::getInt( 'id', 0 );

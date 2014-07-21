@@ -41,28 +41,28 @@ class PublicationHelper extends JObject
 	 *
 	 * @var object
 	 */
-	var $_db      		= NULL;
+	var $_db = NULL;
 
 	/**
 	 * Publication ID
 	 *
 	 * @var integer
 	 */
-	var $_pub_id   		= NULL;
+	var $_pub_id = NULL;
 
 	/**
 	 * Publication version ID
 	 *
 	 * @var integer
 	 */
-	var $_version_id   	= NULL;
+	var $_version_id = NULL;
 
 	/**
 	 * Data
 	 *
 	 * @var array
 	 */
-	var $_data   		= array();
+	var $_data = array();
 
 	/**
 	 * Constructor
@@ -74,13 +74,13 @@ class PublicationHelper extends JObject
 	 */
 	public function __construct( &$db, $versionid = 0, $pubid = 0 )
 	{
-		$this->_db 					= $db;
-		$this->_version_id 			= $versionid;
-		$this->_pub_id 				= $pubid;
+		$this->_db         = $db;
+		$this->_version_id = $versionid;
+		$this->_pub_id     = $pubid;
 
-		$this->contributors 		= null;
-		$this->primary_content	 	= null;
-		$this->supporting_content 	= null;
+		$this->contributors = null;
+		$this->primary_content = null;
+		$this->supporting_content = null;
 	}
 
 	/**
@@ -133,11 +133,11 @@ class PublicationHelper extends JObject
 
 		$base = DS . trim($base, DS);
 
-		$pub_dir 		=  \Hubzero\Utility\String::pad( $pid );
-		$version_dir 	=  \Hubzero\Utility\String::pad( $vid );
-		$path 			= $base . DS . $pub_dir . DS . $version_dir;
-		$path 			= $filedir ? $path . DS . $filedir : $path;
-		$path 			= $root ? JPATH_ROOT . $path : $path;
+		$pub_dir     =  \Hubzero\Utility\String::pad( $pid );
+		$version_dir =  \Hubzero\Utility\String::pad( $vid );
+		$path        = $base . DS . $pub_dir . DS . $version_dir;
+		$path        = $filedir ? $path . DS . $filedir : $path;
+		$path        = $root ? JPATH_ROOT . $path : $path;
 
 		return $path;
 	}
@@ -736,18 +736,11 @@ class PublicationHelper extends JObject
 	 */
 	public static function getPubStateProperty($row, $get = 'class', $version = 1)
 	{
-		$dateFormat = '%b %d, %Y';
-		$tz = null;
+		$dateFormat = 'M d, Y';
 
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'M d, Y';
-			$tz = false;
-		}
-
-		$status 	= '';
-		$date 		= '';
-		$class 		= '';
+		$status = '';
+		$date   = '';
+		$class  = '';
 
 		$now = JFactory::getDate()->toSql();
 
@@ -765,7 +758,7 @@ class PublicationHelper extends JObject
 				$status.= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_PUBLISHED');
 				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
-					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
+					.' ' . JHTML::_('date', $row->published_up, $dateFormat);
 				break;
 
 			case 3:
@@ -773,21 +766,21 @@ class PublicationHelper extends JObject
 				$class = 'draft';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_DRAFT');
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_STARTED'))
-					.' ' . JHTML::_('date', $row->created, $dateFormat, $tz);
+					.' ' . JHTML::_('date', $row->created, $dateFormat);
 				break;
 
 			case 4:
 				$class   = 'ready';
 				$status .= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_READY');
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
-					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
+					.' ' . JHTML::_('date', $row->published_up, $dateFormat);
 				break;
 
 			case 5:
 				$class  = 'pending';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_PENDING');
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'))
-					.' ' . JHTML::_('date', $row->submitted, $dateFormat, $tz);
+					.' ' . JHTML::_('date', $row->submitted, $dateFormat);
 				break;
 
 			case 6:
@@ -795,14 +788,14 @@ class PublicationHelper extends JObject
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_DARKARCHIVE');
 				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
-					.' ' . JHTML::_('date', $row->published_up, $dateFormat, $tz);
+					.' ' . JHTML::_('date', $row->published_up, $dateFormat);
 				break;
 
 			case 7:
 				$class  = 'wip';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_WIP');
 				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'))
-					.' ' . JHTML::_('date', $row->submitted, $dateFormat, $tz);
+					.' ' . JHTML::_('date', $row->submitted, $dateFormat);
 				break;
 		}
 
@@ -846,7 +839,7 @@ class PublicationHelper extends JObject
 		elseif ($pubtitle)
 		{
 			$normalized = strtolower($typetitle);
-			$cls= preg_replace("/[^a-zA-Z0-9]/", "", $normalized);
+			$cls = preg_replace("/[^a-zA-Z0-9]/", "", $normalized);
 
 			if (substr($normalized, -3) == 'ies')
 			{

@@ -36,13 +36,7 @@ JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
-$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
-
-$params = new $paramsClass($this->row->params);
+$params = new JRegistry($this->row->params);
 
 // Get curator group cn
 $curatorGroup = '';

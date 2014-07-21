@@ -915,16 +915,10 @@ class PublicationsHtml
 	 * @param      object $lastPubRelease
 	 * @return     string HTML
 	 */
-	public static function showVersionInfo ( $publication, $version, $option, $config, $lastPubRelease )
+	public static function showVersionInfo( $publication, $version, $option, $config, $lastPubRelease )
 	{
-		$dateFormat = '%b %d, %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'M d, Y';
-			$tz = false;
-		}
+		$dateFormat = 'M d, Y';
+		$tz = false;
 
 		$text = '';
 		if ($version == 'dev')
@@ -1037,14 +1031,8 @@ class PublicationsHtml
 	 */
 	public static function showAccessMessage( $publication, $option, $authorized, $restricted, $editlink = '' )
 	{
-		$dateFormat = '%b %d, %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'm d, Y';
-			$tz = false;
-		}
+		$dateFormat = 'm d, Y';
+		$tz = false;
 
 		$msg = '';
 		$project = '';
@@ -1417,14 +1405,7 @@ class PublicationsHtml
 	 */
 	public static function writeResults( &$database, &$lines, $filters = array(), $show_date = 3 )
 	{
-		$dateFormat = '%b %d, %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'M d, Y';
-			$tz = false;
-		}
+		$dateFormat = 'M d, Y';
 
 		$juser = JFactory::getUser();
 
@@ -1441,8 +1422,10 @@ class PublicationsHtml
 			$objO  = new ProjectOwner( $database );
 
 			// Determine if they have access to edit
-			if (!$juser->get('guest')) {
-				if ($line->created_by == $juser->get('id') || $objO->isOwner($juser->get('id'), $line->project_id)) {
+			if (!$juser->get('guest'))
+			{
+				if ($line->created_by == $juser->get('id') || $objO->isOwner($juser->get('id'), $line->project_id))
+				{
 					$show_edit = 2;
 				}
 			}
@@ -1470,9 +1453,9 @@ class PublicationsHtml
 			switch ($show_date)
 			{
 				case 0: $view->thedate = ''; break;
-				case 1: $view->thedate = JHTML::_('date', $line->created, $dateFormat, $tz);    	break;
-				case 2: $view->thedate = JHTML::_('date', $line->modified, $dateFormat, $tz);   	break;
-				case 3: $view->thedate = JHTML::_('date', $line->published_up, $dateFormat, $tz); break;
+				case 1: $view->thedate = JHTML::_('date', $line->created, $dateFormat);      break;
+				case 2: $view->thedate = JHTML::_('date', $line->modified, $dateFormat);     break;
+				case 3: $view->thedate = JHTML::_('date', $line->published_up, $dateFormat); break;
 			}
 
 			$html .= $view->loadTemplate();

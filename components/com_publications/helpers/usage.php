@@ -100,13 +100,6 @@ class PublicationUsage
 	var $dateFormat = NULL;
 
 	/**
-	 * Time zone flag
-	 *
-	 * @var string
-	 */
-	var $tz = NULL;
-
-	/**
 	 * Constructor
 	 *
 	 * @param      object  &$db      JDatabase
@@ -126,13 +119,7 @@ class PublicationUsage
 		$this->cites    = $cites;
 		$this->lastcite = $lastcite;
 
-		$this->dateFormat = '%d %b %Y';
-		$this->tz = 0;
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$this->dateFormat = 'd M Y';
-			$this->tz = null;
-		}
+		$this->dateFormat = 'd M Y';
 	}
 
 	/**
@@ -203,7 +190,7 @@ class PublicationUsage
 		$html .= '   <td colspan="2">Google/IEEE';
 		if ($this->lastcite)
 		{
-			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat, $this->tz);
+			$html .= ': updated '.JHTML::_('date', $this->lastcite, $this->dateFormat);
 		}
 		$html .= '</td>' . "\n";
 		$html .= '  </tr>' . "\n";
@@ -362,14 +349,14 @@ class AndmoreStats extends PublicationUsage
 		$html = '';
 		if ($this->users != 'unavailable' && $this->avg_view != 'unavailable')
 		{
-			$html .= '<table class="usagestats" summary="' . JText::_('Statistics for this publication') . '">' . "\n";
+			$html .= '<table class="usagestats">' . "\n";
 			$html .= ' <caption>'.JText::_('Usage Stats') . '</caption>' . "\n";
 			$html .= ' <tfoot>' . "\n";
 			$html .= '  <tr>' . "\n";
 			$html .= '   <td colspan="2">' . $caption;
 			if ($this->datetime)
 			{
-				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat, $this->tz);
+				$html .= ': ' . JText::_('updated') . ' ' . JHTML::_('date', $this->datetime, $this->dateFormat);
 			}
 			$html .= '</td>' . "\n";
 			$html .= '  </tr>' . "\n";

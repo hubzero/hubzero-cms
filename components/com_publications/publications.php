@@ -29,50 +29,34 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-else
-{
-	$option = JRequest::getCmd('option','');
-}
+$option = JRequest::getCmd('option', 'com_publications');
 
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'publication.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'version.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'access.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.level.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'license.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'master.type.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'screenshot.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
-require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'publication.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'version.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'access.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.level.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'audience.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'author.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'license.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'master.type.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'screenshot.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'attachment.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'review.php');
 
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
+include_once(JPATH_COMPONENT . DS . 'models' . DS . 'publication.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'types.php');
 
-require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'usage.php' );
-require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php' );
-require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );
-require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php' );
-require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'resourceMapGenerator.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'usage.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'resourceMapGenerator.php');
 
-require_once( JPATH_COMPONENT . DS . 'models' . DS . 'types.php' );
-
-require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-	. DS . 'com_projects' . DS . 'tables' . DS . 'project.php' );
-require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-	. DS . 'com_projects' . DS . 'tables'. DS . 'project.owner.php' );
-
-jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables'. DS . 'project.owner.php');
 
 $controllerName = JRequest::getCmd('controller', 'publications');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

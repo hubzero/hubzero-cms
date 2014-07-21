@@ -34,13 +34,7 @@ JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ' ' . JText::_(
 JToolBarHelper::save('saveadvanced');
 JToolBarHelper::cancel();
 
-$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
-
-$params = new $paramsClass($this->row->params);
+$params = new JRegistry($this->row->params);
 $manifest  = $this->curation->_manifest;
 $curParams = $manifest->params;
 $blocks	   = $manifest->blocks;

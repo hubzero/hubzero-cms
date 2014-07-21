@@ -27,17 +27,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Add stylesheet
 $document = JFactory::getDocument();
-$document->addStyleSheet('plugins' . DS . 'publications' . DS
-	. 'related' . DS . 'assets' . DS . 'css' . DS . 'related.css');
+$document->addStyleSheet('plugins' . DS . 'publications' . DS . 'related' . DS . 'assets' . DS . 'css' . DS . 'related.css');
 
-$dateFormat = '%d %b, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M, Y';
-	$tz = false;
-}
+$dateFormat = 'd M, Y';
 
 $juser = JFactory::getUser();
 $database = JFactory::getDBO();
@@ -55,7 +47,7 @@ $authorlist = '';
 <?php
 foreach ($this->related as $line)
 {
-	if($line->section == 'Topic') {
+	if ($line->section == 'Topic') {
 		if ($line->group != '' && $line->scope != '') {
 			$sef = JRoute::_('index.php?option=com_groups&scope='.$line->scope.'&pagename='.$line->alias);
 		} else {
@@ -126,7 +118,7 @@ else { ?>
 <?php } ?>
 								<tr>
 									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_DATE'); ?></th>
-									<td><?php echo JHTML::_('date',$line->published_up, $dateFormat, $tz); ?></td>
+									<td><?php echo JHTML::_('date',$line->published_up, $dateFormat); ?></td>
 								</tr>
 								<tr>
 									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_AVG_RATING'); ?></th>

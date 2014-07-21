@@ -47,13 +47,7 @@ if (JPluginHelper::isEnabled('projects', $this->row->alias))
 	$active  = JText::_('COM_PUBLICATIONS_MTYPE_ON');
 }
 
-$paramsClass = 'JParameter';
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$paramsClass = 'JRegistry';
-}
-
-$params = new $paramsClass($this->row->params);
+$params = new JRegistry($this->row->params);
 
 // Available panels and default config
 $panels = array(
