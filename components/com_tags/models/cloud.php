@@ -78,7 +78,13 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	 *
 	 * @var array
 	 */
-	protected $_cache = array();
+	protected $_cache = array(
+		'tags.one'    => null,
+		'tags.count'  => null,
+		'tags.list'   => null,
+		'tags.string' => null,
+		'tags.cloud'  => null
+	);
 
 	/**
 	 * Constructor
@@ -86,16 +92,16 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
-	public function __construct($scope_id=0)
+	public function __construct($scope_id=0, $scope='')
 	{
 		$this->_db = JFactory::getDBO();
 
 		$this->_tbl = new TagsTableTag($this->_db);
 
-		/*if ($scope)
+		if ($scope)
 		{
 			$this->_scope    = $scope;
-		}*/
+		}
 		if ($scope_id)
 		{
 			$this->_scope_id = $scope_id;
@@ -111,7 +117,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	 * @param      integer $scope_id
 	 * @return     object TagsModelCloud
 	 */
-	static function &getInstance($scope_id=0, $scope='site')
+	static function &getInstance($scope_id=0, $scope='')
 	{
 		static $instances;
 
@@ -120,11 +126,11 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			$instances = array();
 		}
 
-		$key = $scope . '_' . $scope_id;
+		$key = (string) $scope . '_' . (int) $scope_id;
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new TagsModelCloud($scope_id);
+			$instances[$key] = new TagsModelCloud($scope_id, $scope);
 		}
 
 		return $instances[$key];
@@ -198,33 +204,40 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	 */
 	public function tag($id=null)
 	{
-		if (!isset($this->_cache['tag'])
+		if (!$this->_cache['tags.one']
 		 || (
 				$id !== null
-			 && (int) $this->_cache['tag']->get('id') != $id
-			 && (string) $this->_cache['tag']->get('tag') != $this->_tbl->normalize($id)
+			 && (int) $this->_cache['tags.one']->get('id') != $id
+			 && (string) $this->_cache['tags.one']->get('tag') != $this->_tbl->normalize($id)
 			)
 		 )
 		{
-			$this->_cache['tag'] = null;
-			if (isset($this->_cache['tags']) && $this->_cache['tags'] instanceof \Hubzero\Base\ItemList)
+			// Unset current tag
+			$this->_cache['tags.one'] = null;
+
+			// Is the tags list available?
+			// If so, this may save us a trip to the database
+			if ($this->_cache['tags.list'] instanceof \Hubzero\Base\ItemList)
 			{
-				foreach ($this->_cache['tags'] as $key => $tag)
+				// Loop through each tag looking one that matches
+				foreach ($this->_cache['tags.list'] as $key => $tag)
 				{
 					if ((int) $tag->get('id') == $id || (string) $tag->get('tag') == $this->_tbl->normalize($id))
 					{
-						$this->_cache['tag'] = $tag;
+						$this->_cache['tags.one'] = $tag;
 						break;
 					}
 				}
 			}
 
-			if (!$this->_cache['tag'])
+			// No tag found?
+			if (!$this->_cache['tags.one'])
 			{
-				$this->_cache['tag'] = TagsModelTag::getInstance($id);
+				$this->_cache['tags.one'] = TagsModelTag::getInstance($id);
 			}
 		}
-		return $this->_cache['tag'];
+
+		return $this->_cache['tags.one'];
 	}
 
 	/**
@@ -249,11 +262,11 @@ class TagsModelCloud extends \Hubzero\Base\Object
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_cache['tags_count']) || $clear)
+				if (!isset($this->_cache['tags.count']) || $clear)
 				{
-					$this->_cache['tags_count'] = (int) $this->_tbl->getCount($filters);
+					$this->_cache['tags.count'] = (int) $this->_tbl->getCount($filters);
 				}
-				return $this->_cache['tags_count'];
+				return $this->_cache['tags.count'];
 			break;
 
 			case 'top':
@@ -262,7 +275,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['tags']) || !($this->_cache['tags'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['tags.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $this->_tbl->getRecords($filters))
 					{
@@ -275,9 +288,9 @@ class TagsModelCloud extends \Hubzero\Base\Object
 					{
 						$results = array();
 					}
-					$this->_cache['tags'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['tags.list'] = new \Hubzero\Base\ItemList($results);
 				}
-				return $this->_cache['tags'];
+				return $this->_cache['tags.list'];
 			break;
 		}
 	}
@@ -451,16 +464,16 @@ class TagsModelCloud extends \Hubzero\Base\Object
 		switch (strtolower($rtrn))
 		{
 			case 'string':
-				if (!isset($this->_cache['tags_string']) || $clear)
+				if (!isset($this->_cache['tags.string']) || $clear)
 				{
 					$tags = array();
 					foreach ($this->tags('list', $filters, $clear) as $tag)
 					{
 						$tags[] = $tag->get('raw_tag');
 					}
-					$this->_cache['tags_string'] = implode(', ', $tags);
+					$this->_cache['tags.string'] = implode(', ', $tags);
 				}
-				return $this->_cache['tags_string'];
+				return $this->_cache['tags.string'];
 			break;
 
 			case 'array':
@@ -470,7 +483,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			case 'cloud':
 			case 'html':
 			default:
-				if (!isset($this->_cache['tags_cloud']) || $clear)
+				if (!isset($this->_cache['tags.cloud']) || $clear)
 				{
 					$view = new \Hubzero\Component\View(array(
 						'base_path' => JPATH_ROOT . '/components/com_tags',
@@ -480,9 +493,9 @@ class TagsModelCloud extends \Hubzero\Base\Object
 					$view->set('config', $this->_config)
 					     ->set('tags', $this->tags('list', $filters, $clear));
 
-					$this->_cache['tags_cloud'] = $view->loadTemplate();
+					$this->_cache['tags.cloud'] = $view->loadTemplate();
 				}
-				return $this->_cache['tags_cloud'];
+				return $this->_cache['tags.cloud'];
 			break;
 		}
 	}
