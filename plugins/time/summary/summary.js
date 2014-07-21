@@ -67,7 +67,7 @@ jQuery(document).ready(function( $ ) {
 					},
 					xaxis: {
 						show: true,
-						tickSize: Math.round(max / 10),
+						tickSize: (max > 15) ? Math.round(max / 15) : max,
 						tickFormatter: function formatter(val, axis) {
 							if (val === 0) {
 								return val + ' hours(s)';
