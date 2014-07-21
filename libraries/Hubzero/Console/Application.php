@@ -124,4 +124,36 @@ class Application
 
 		$this->output->render();
 	}
+
+	/**
+	 * Method to start the console application over again
+	 *
+	 * @return void
+	 **/
+	public static function reboot($class, $task, Arguments $arguments, Output $output)
+	{
+		// Namespace class
+		$class = __NAMESPACE__ . '\\Command\\' . ucfirst($class);
+
+		// Say no to infinite nesting!
+		$backtrace = debug_backtrace();
+		$previous  = $backtrace[1];
+		$prevClass = $previous['class'];
+		$prevTask  = $previous['function'];
+
+		if ($prevClass == $class && $prevTask == $task)
+		{
+			$output->error('You\'ve attempted to enter an infinite loop. We\'ve stopped you. You\'re welcome.');
+		}
+
+		// If task is help, set the output to our output class with extra methods for rendering help doc
+		if ($task == 'help')
+		{
+			$output = $output->getHelpOutput();
+		}
+
+		$command = new $class($output, $arguments);
+
+		$command->{$task}();
+	}
 }
