@@ -257,7 +257,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			if ($matches[0])
 			{
 				$this->attr['style']['width'] = $val;
-				//$this->attr['width'] = $val;
+				$this->attr['width'] = intval($val);
 				return;
 			}
 		}
@@ -368,7 +368,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 			if ($matches[0])
 			{
 				$this->attr['style']['width'] = $key;
-				//$this->attr['width'] = $key;
+				$this->attr['width'] = intval($key);
 				return;
 			}
 		}

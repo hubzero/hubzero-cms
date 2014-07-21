@@ -970,5 +970,115 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			JRoute::_($this->page->link())
 		);
 	}
+
+	/**
+	 * Output the contents of a wiki page as a PDF
+	 *
+	 * Based on work submitted by Steven Maus <steveng4235@gmail.com> (2014)
+	 *
+	 * @return     void
+	 */
+	public function pdfTask()
+	{
+		// Does a page exist for the given pagename?
+		if (!$this->page->exists() || $this->page->isDeleted())
+		{
+			// No! Ask if they want to create a new page
+			$this->view->setLayout('doesnotexist');
+			if ($this->_group)
+			{
+				$this->page->set('group_cn', $this->_group);
+				$this->page->set('scope', $this->_group . '/wiki');
+			}
+
+			if ($this->getError())
+			{
+				foreach ($this->getErrors() as $error)
+				{
+					$this->view->setError($error);
+				}
+			}
+			$this->view->display();
+			return;
+		}
+
+		// Retrieve a specific version if given
+		$this->view->revision = $this->page->revision(JRequest::getInt('version', 0));
+		if (!$this->view->revision->exists())
+		{
+			$this->view->setLayout('nosuchrevision');
+
+			if ($this->getError())
+			{
+				foreach ($this->getErrors() as $error)
+				{
+					$this->view->setError($error);
+				}
+			}
+			$this->view->display();
+			return;
+		}
+
+		JRequest::setVar('format', 'pdf');
+
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+		// set header and footer fonts
+		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+		// set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetHeaderMargin(10);
+		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+		// set auto page breaks
+		$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+		// set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// Set font
+		$pdf->SetFont('dejavusans', '', 11, '', true);
+
+		//$current = $page->getCurrentRevision();
+		//$pageTitle = $page->getTitle();
+		//$pageAuthor = $page->authors();
+		$pdf->setAuthor  = $this->page->creator('name');
+		$pdf->setCreator = JFactory::getConfig()->get('sitename');
+
+		$pdf->setDocModificationTimeStamp($this->page->modified());
+		$pdf->setHeaderData(NULL, 0, strtoupper($this->page->get('itle')), NULL, array(84, 94, 124), array(146, 152, 169));
+		$pdf->setFooterData(array(255, 255, 255), array(255, 255, 255));
+
+		$pdf->AddPage();
+
+		// Set the view page content to current revision html
+		$this->view->page = $this->page;
+
+		// Load the wiki parser
+		$wikiconfig = array(
+			'option'   => $this->_option,
+			'scope'    => $this->page->get('scope'),
+			'pagename' => $this->page->get('pagename'),
+			'pageid'   => $this->page->get('id'),
+			'filepath' => '',
+			'domain'   => $this->page->get('group_cn')
+		);
+
+		$p = WikiHelperParser::getInstance();
+
+		// Parse the text
+		$this->view->revision->set('pagehtml', $p->parse($this->view->revision->get('pagetext'), $wikiconfig, true, true));
+
+		$pdf->writeHTML($this->view->loadTemplate(), true, false, true, false, '');
+
+		header("Content-type: application/octet-stream");
+
+		// Close and output PDF document
+		// Force the download of the PDF
+		$pdf->Output($this->page->get('pagename') . '.pdf', 'D');
+		exit();
+	}
 }
 

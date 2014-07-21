@@ -69,6 +69,7 @@ class WikiModelAdapterProjects extends WikiModelAdapterAbstract
 				return $this->_base . '?' . (string) $this->_build($segments);
 			break;
 
+			case 'pdf':
 			case 'new':
 			case 'rename':
 			case 'edit':
