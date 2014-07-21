@@ -82,7 +82,7 @@ class Component extends Scaffolding
 		}
 
 		// Make sure component doesn't already exist
-		if (is_dir(JPATH_ROOT . DS . 'components' . DS . 'com_' . $name))
+		if (is_dir($install_dir . DS . 'com_' . $name))
 		{
 			$this->output->error("Error: the component name provided ({$name}) seems to already exists.");
 		}
