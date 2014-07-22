@@ -307,6 +307,12 @@ class JAuthentication extends JObject
 				continue;
 			}
 
+			// If backend login, make sure plugin is enabled for backend
+			if ($options['action'] == 'core.login.admin' && !$plugin->params->get('admin_login', false))
+			{
+				continue;
+			}
+
 			// Try to authenticate
 			$plugin->onUserAuthenticate($credentials, $options, $response);
 
