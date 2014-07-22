@@ -337,7 +337,7 @@ class BlogTableEntry extends JTable
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$filters['search'] = strtolower(stripslashes($filters['search']));
-			$query .= " AND (LOWER(m.title) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR LOWER(m.content) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
+			$query .= " AND (LOWER(m.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . " OR LOWER(m.content) LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . ")";
 		}
 		if (isset($filters['order']) && $filters['order'] != '')
 		{
@@ -481,8 +481,8 @@ class BlogTableEntry extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$filters['search'] = $this->_db->getEscaped(strtolower(stripslashes($filters['search'])));
-			$query .= " AND (LOWER(m.title) LIKE '%" . $filters['search'] . "%' OR LOWER(m.content) LIKE '%" . $filters['search'] . "%')";
+			$filters['search'] = $this->_db->quote('%' . strtolower(stripslashes($filters['search'])) . '%');
+			$query .= " AND (LOWER(m.title) LIKE " . $filters['search'] . " OR LOWER(m.content) LIKE " . $filters['search'] . ")";
 		}
 		if (isset($filters['order']) && $filters['order'] != '')
 		{
