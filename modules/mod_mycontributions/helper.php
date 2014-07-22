@@ -180,7 +180,7 @@ class modMyContributions extends \Hubzero\Module\Module
 
 						if ($listid)
 						{
-							$controller = new WishlistController();
+							$controller = new WishlistControllerWishlist();
 							$filters = $controller->getFilters(1);
 							$wishes = $objWish->get_wishes($listid, $filters, 1, $juser);
 							$unranked = 0;
