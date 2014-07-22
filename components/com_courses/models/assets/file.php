@@ -50,9 +50,8 @@ class FileAssetHandler extends AssetHandler
 			'txt', 'pdf', 'jpg', 'jpeg', 'gif', 'png', 'ppt',
 			'pptx', 'pps', 'ppsx', 'doc', 'docx', 'xls', 'xlsx',
 			'zip', 'tgz', 'tar', 'mp3', 'm', 'cpp', 'c', 'wm2d',
-			'slx'
-		),
-	);
+			'slx', 'srt'),
+		);
 
 	/**
 	 * Create method for this handler
