@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $option = 'com_support';
 
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!JFactory::getUser()->authorise('core.manage', $option)) 
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
@@ -86,11 +86,6 @@ JSubMenuHelper::addEntry(
 	JText::_('COM_SUPPORT_ABUSE_REPORTS'),
 	'index.php?option=com_support&controller=abusereports',
 	$controllerName == 'abusereports'
-);
-JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_TAG_GROUPS'),
-	'index.php?option=com_support&controller=taggroups',
-	$controllerName == 'taggroups'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_SUPPORT_STATS'),
