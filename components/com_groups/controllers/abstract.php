@@ -84,7 +84,18 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 	public function loginTask($message = '', $customReturn = null)
 	{
 		//general return
-		$return = JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->cn . '&task=' . $this->_task);
+		$return = 'index.php?option=' . $this->_option . '&cn=' . $this->cn;
+
+		// append controller
+		if (isset($this->_controller) && $this->_controller != 'groups')
+		{
+			$return .= '&controller=' . $this->_controller;
+		}
+		//append task
+		if (isset($this->_task))
+		{
+			$return .= '&task=' . $this->_task;
+		}
 
 		//do we have a custom return
 		if ($customReturn)
@@ -94,7 +105,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 
 		//redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return)),
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($return))),
 			$message,
 			'warning'
 		);
