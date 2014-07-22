@@ -114,7 +114,7 @@ class Group implements CommandInterface
 
 		$this->arguments->setOpt(3, 'component');
 		$this->arguments->setOpt('install-dir', $directory);
-		Application::reboot('scaffolding', 'create', $this->arguments, $this->output);
+		Application::call('scaffolding', 'create', $this->arguments, $this->output);
 	}
 
 	/**

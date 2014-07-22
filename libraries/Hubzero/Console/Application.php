@@ -126,11 +126,11 @@ class Application
 	}
 
 	/**
-	 * Method to start the console application over again
+	 * Method to call another console command
 	 *
 	 * @return void
 	 **/
-	public static function reboot($class, $task, Arguments $arguments, Output $output)
+	public static function call($class, $task, Arguments $arguments, Output $output)
 	{
 		// Namespace class
 		$class = __NAMESPACE__ . '\\Command\\' . ucfirst($class);
