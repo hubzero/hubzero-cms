@@ -421,7 +421,7 @@ class TagsTableTag extends JTable
 			$query .= " LEFT JOIN #__tags_substitute AS sb ON sb.tag_id=t.id";
 			// Used to also query using unfiltered search text agains the rawtag and the tag.
 			// Figured this was safer
-			$where[] = "(LOWER(t.`raw_tag`) LIKE '" . $this->_db->getEscaped($filters['search']) . "%' OR LOWER(sb.`raw_tag`) LIKE '" . $this->_db->getEscaped($filters['search']) . "%')";
+			$where[] = "(LOWER(t.`raw_tag`) LIKE " . $this->_db->quote($filters['search'] . '%') . " OR LOWER(sb.`raw_tag`) LIKE " . $this->_db->quote($filters['search'] . '%') . ")";
 		}
 		if (isset($filters['by']))
 		{
