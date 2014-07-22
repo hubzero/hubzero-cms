@@ -39,11 +39,11 @@ $this->css()
 </header>
 
 <section class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
-<?php } ?>
-	<div class="subject">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>" method="post" class="section-inner">
+		<div class="subject">
+			<?php if ($this->getError()) { ?>
+				<p class="error"><?php echo implode("\n", $this->getErrors()); ?></p>
+			<?php } ?>
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
 				<fieldset class="entry-search">
@@ -60,7 +60,7 @@ $this->css()
 
 			<div class="container">
 				<div class="container-block">
-					<h3>Articles</h3>
+					<h3><?php echo JText::_('COM_KB_ARTICLES'); ?></h3>
 					<div class="grid">
 						<div class="col span-half">
 							<h4>
@@ -166,33 +166,33 @@ $this->css()
 					</div><!-- / .grid -->
 				</div><!-- / .container-block -->
 			</div><!-- / .container -->
-		</form>
-	</div><!-- / .subject -->
+		</div><!-- / .subject -->
 
-	<aside class="aside">
-	<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_KB_COMMUNITY'); ?></h3>
-			<p>
-				<?php echo JText::_('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo JText::sprintf('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . JRoute::_('index.php?option=com_answers') . '">' . JText::_('COM_ANSWERS') . '</a>'); ?>
-			</p>
-		</div><!-- / .container -->
-	<?php } ?>
-	<?php if (JComponentHelper::isEnabled('com_wishlist')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_KB_FEATURE_REQUEST'); ?></h3>
-			<p>
-				<?php echo JText::_('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('COM_KB_FEATURE_TELL_US'); ?></a>
-			</p>
-		</div><!-- / .container -->
-	<?php } ?>
-	<?php if (JComponentHelper::isEnabled('com_support')) { ?>
-		<div class="container">
-			<h3><?php echo JText::_('COM_KB_TROUBLE_REPORT'); ?></h3>
-			<p>
-				<?php echo JText::_('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_KB_TROUBLE_TELL_US'); ?></a>
-			</p>
-		</div><!-- / .container -->
-	<?php } ?>
-	</aside><!-- / .aside -->
+		<aside class="aside">
+		<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
+			<div class="container">
+				<h3><?php echo JText::_('COM_KB_COMMUNITY'); ?></h3>
+				<p>
+					<?php echo JText::_('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo JText::sprintf('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . JRoute::_('index.php?option=com_answers') . '">' . JText::_('COM_ANSWERS') . '</a>'); ?>
+				</p>
+			</div><!-- / .container -->
+		<?php } ?>
+		<?php if (JComponentHelper::isEnabled('com_wishlist')) { ?>
+			<div class="container">
+				<h3><?php echo JText::_('COM_KB_FEATURE_REQUEST'); ?></h3>
+				<p>
+					<?php echo JText::_('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo JRoute::_('index.php?option=com_wishlist'); ?>"><?php echo JText::_('COM_KB_FEATURE_TELL_US'); ?></a>
+				</p>
+			</div><!-- / .container -->
+		<?php } ?>
+		<?php if (JComponentHelper::isEnabled('com_support')) { ?>
+			<div class="container">
+				<h3><?php echo JText::_('COM_KB_TROUBLE_REPORT'); ?></h3>
+				<p>
+					<?php echo JText::_('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo JText::_('COM_KB_TROUBLE_TELL_US'); ?></a>
+				</p>
+			</div><!-- / .container -->
+		<?php } ?>
+		</aside><!-- / .aside -->
+	</form>
 </div><!-- / .main section -->

@@ -45,11 +45,11 @@ $this->css()
 </header>
 
 <section class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	<div class="subject">
-		<form action="<?php echo JRoute::_($this->category->link()); ?>" method="post">
+	<form action="<?php echo JRoute::_($this->category->link()); ?>" method="post" class="section-inner">
+		<div class="subject">
+			<?php if ($this->getError()) { ?>
+				<p class="error"><?php echo $this->getError(); ?></p>
+			<?php } ?>
 
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
@@ -138,36 +138,36 @@ $this->css()
 				?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
-		</form>
-	</div><!-- / .subject -->
-	<aside class="aside">
-		<div class="container">
-			<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
-			<ul class="categories">
-				<li>
-					<a<?php if ($this->catid <= 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
-						<?php echo JText::_('COM_KB_ALL_ARTICLES'); ?>
-					</a>
-				</li>
-			<?php foreach ($this->categories as $row) { ?>
-				<li>
-					<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($row->link()); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
-					</a>
-				<?php if ($row->children('count') > 0 && $this->catid == $row->get('id')) { ?>
-					<ul class="categories">
-					<?php foreach ($row->children() as $cat) { ?>
+		</div><!-- / .subject -->
+		<aside class="aside">
+			<div class="container">
+				<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
+				<ul class="categories">
+					<li>
+						<a<?php if ($this->catid <= 0) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&section=all'); ?>">
+							<?php echo JText::_('COM_KB_ALL_ARTICLES'); ?>
+						</a>
+					</li>
+					<?php foreach ($this->categories as $row) { ?>
 						<li>
-							<a <?php if ($this->catid  == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($cat->link()); ?>">
-								<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
+							<a <?php if ($this->catid == $row->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
 							</a>
+							<?php if ($row->children('count') > 0 && $this->catid == $row->get('id')) { ?>
+								<ul class="categories">
+								<?php foreach ($row->children() as $cat) { ?>
+									<li>
+										<a <?php if ($this->catid  == $cat->get('id')) { echo 'class="active" '; } ?> href="<?php echo JRoute::_($cat->link()); ?>">
+											<?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
+										</a>
+									</li>
+								<?php } ?>
+								</ul>
+							<?php } ?>
 						</li>
 					<?php } ?>
-					</ul>
-				<?php } ?>
-				</li>
-			<?php } ?>
-			</ul>
-		</div><!-- / .container -->
-	</aside><!-- / .aside -->
+				</ul>
+			</div><!-- / .container -->
+		</aside><!-- / .aside -->
+	</form>
 </section><!-- / .main section -->
