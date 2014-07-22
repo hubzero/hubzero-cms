@@ -131,9 +131,22 @@ if (!isset($presentation->subtitles))
 	$presentation->subtitles = array();
 }
 
+// make sure source is full path to assets folder
+$subFiles = array();
+foreach ($presentation->subtitles as $k => $subtitle)
+{
+	if (!strpos($subtitle->source, DS))
+	{
+		$subtitle->source = $content_folder . DS . $subtitle->source;
+	}
+
+	$subFiles[] = $subtitle->source;
+}
+
 //get all local subtitles
 $localSubtitles = JFolder::files(JPATH_ROOT . DS . $content_folder, '.srt|.SRT');
 
+// add local subtitles too
 foreach ($localSubtitles as $k => $subtitle)
 {
 	$info     = pathinfo($subtitle);
@@ -141,11 +154,18 @@ foreach ($localSubtitles as $k => $subtitle)
 	$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
 	$source   = $content_folder . DS . $subtitle;
 	
-	//add each subtitle
-	$presentation->subtitles[$k]->type     = 'SRT';
-	$presentation->subtitles[$k]->name     = ucfirst($name);
-	$presentation->subtitles[$k]->source   = $source;
-	$presentation->subtitles[$k]->autoplay = $autoplay;
+	// add each subtitle
+	$subtitle                  = new stdClass;
+	$subtitle->type            = 'SRT';
+	$subtitle->name            = ucfirst($name);
+	$subtitle->source          = $source;
+	$subtitle->autoplay        = $autoplay;
+
+	// make sure we dont already have this file.
+	if (!in_array($subtitle->source, $subFiles))
+	{
+		$presentation->subtitles[] = $subtitle;
+	}
 }
 
 //reset keys

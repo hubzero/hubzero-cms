@@ -1406,15 +1406,15 @@ HUB.Presenter = {
 	syncSubtitles: function( sub_titles )
 	{
 		current = HUB.Presenter.getCurrent();
-		
-		//get the subs for the track we have selected
-		for(i in sub_titles) {
+
+		// get the subs for the track we have selected
+		for (i = 0; i < sub_titles.length; i++) { 
 			if(sub_titles[i].lang.toLowerCase() == track) {
 				var subs = sub_titles[i].subs;
 			}
 		}
 		
-		//clear the subtitle tracks between 
+		// clear the subtitle tracks between 
 		jQ("#video-subtitles div").hide().html("");
 		
 		for(i in subs) {
