@@ -16,7 +16,7 @@ defined('JPATH_PLATFORM') or die;
  * @subpackage  Database
  * @since       11.1
  */
-class JDatabaseQueryMySQL extends PDOJDatabaseQuery
+class JDatabaseQueryPDOMySQL extends JDatabaseQuery
 {
 	/**
 	 * Concatenates an array of column names or values.

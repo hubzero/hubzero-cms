@@ -94,7 +94,7 @@ class JDatabasePDO extends JDatabase
 		}
 
 		// Attempt to connect to the server.
-		if (!($this->connection = new PDO("mysql:host=${host}", $user, $password))) 
+		if (!($this->connection = new PDO("mysql:host=${options['host']}", $options['user'], $options['password']))) 
 		{
 
 			// Legacy error handling switch based on the JError::$legacy switch.
@@ -153,12 +153,29 @@ class JDatabasePDO extends JDatabase
 	{
 		$result = $this->connection->quote($text);
 
+		$result = substr($result,1,-1);
+
 		if ($extra)
 		{
 			$result = addcslashes($result, '%_');
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Method to quote and optionally escape a string to database requirements for insertion into the database.
+	 *
+	 * @param   string   $text    The string to quote.
+	 * @param   boolean  $escape  True (default) to escape the string, false to leave it unchanged.
+	 *
+	 * @return  string  The quoted input string.
+	 *
+	 * @since   11.1
+	 */
+	public function quote($text, $escape = true)
+	{
+		return $this->connection->quote($text);
 	}
 
 	/**
@@ -720,7 +737,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	protected function fetchArray($cursor = null)
 	{
-		return $cursor->fetchAll(PDO_FETCH_NUM);
+		return $cursor->fetch(PDO::FETCH_NUM);
 	}
 
 	/**
@@ -734,7 +751,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	protected function fetchAssoc($cursor = null)
 	{
-		return $cursor->fetchAll(PDO_FETCH_ASSOC);
+		return $cursor->fetch(PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -749,7 +766,7 @@ class JDatabasePDO extends JDatabase
 	 */
 	protected function fetchObject($cursor = null, $class = 'stdClass')
 	{
-		return $cursor->fetchAll(PDO_FETCH_OBJ);
+		return $cursor->fetch(PDO::FETCH_OBJ);
 	}
 
 	/**
