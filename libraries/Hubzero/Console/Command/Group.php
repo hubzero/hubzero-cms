@@ -73,8 +73,35 @@ class Group implements CommandInterface
 		$this->output    = $output;
 		$this->arguments = $arguments;
 
-		$cname = $this->arguments->getOpt('group');
-		$group = \Hubzero\User\Group::getInstance($cname);
+		// do we have a group arg?
+		if ($cname = $this->arguments->getOpt('group'))
+		{
+			$group = \Hubzero\User\Group::getInstance($cname);
+		}
+		else
+		{
+			// get the current directory
+			$currentDirectory = getcwd();
+
+			// remove web root
+			$currentDirectory = str_replace(JPATH_ROOT, '', $currentDirectory);
+
+			// Get group upload directory
+			$groupsConfig     = \JComponentHelper::getParams('com_groups');
+			$groupsDirectory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
+
+			// are we within the groups upload path
+			if (strpos($currentDirectory, $groupsDirectory))
+			{
+				$gid = str_replace($groupsDirectory, '', $currentDirectory);
+				$gid = trim($gid, DS);
+
+				// get group instance
+				$group = \Hubzero\User\Group::getInstance($gid);
+			}
+		}
+
+		// make sure we have a group & its super!
 		if ($group && $group->isSuperGroup())
 		{
 			$this->group = $group;
@@ -112,9 +139,22 @@ class Group implements CommandInterface
 		$directory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 		$directory .= DS . $this->group->get('gidNumber') . DS . 'components';
 
+		// set our needed args
 		$this->arguments->setOpt(3, 'component');
 		$this->arguments->setOpt('install-dir', $directory);
 		Application::call('scaffolding', 'create', $this->arguments, $this->output);
+	}
+
+	/**
+	 * Run super groups migration
+	 * 
+	 * @return [type] [description]
+	 */
+	public function migrate()
+	{
+		// set our group arg & call migration
+		$this->arguments->setOpt('group', $this->group->get('cn'));
+		Application::call('migration', 'run', $this->arguments, $this->output);
 	}
 
 	/**
