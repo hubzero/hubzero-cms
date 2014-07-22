@@ -73,10 +73,24 @@ class Repository implements CommandInterface
 		$this->output    = $output;
 		$this->arguments = $arguments;
 
-		// Try to figure out the mechanism
-		if (is_dir(JPATH_ROOT . DS . '.git'))
+		// Overriding default document root?
+		$directory = JPATH_ROOT;
+		if ($this->arguments->getOpt('r'))
 		{
-			$this->mechanism = new Git(JPATH_ROOT);
+			if (is_dir($this->arguments->getOpt('r')) && is_readable($this->arguments->getOpt('r')))
+			{
+				$directory = rtrim($this->arguments->getOpt('r'), DS);
+			}
+			else
+			{
+				$this->output->error('Error: Provided directory is not valid');
+			}
+		}
+
+		// Try to figure out the mechanism
+		if (is_dir($directory . DS . '.git'))
+		{
+			$this->mechanism = new Git($directory);
 		}
 		else
 		{

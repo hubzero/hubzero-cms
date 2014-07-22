@@ -158,6 +158,29 @@ class Group implements CommandInterface
 	}
 
 	/**
+	 * Update super group code
+	 * 
+	 * @return [type] [description]
+	 */
+	public function update()
+	{
+		// Get group config
+		$groupsConfig = \JComponentHelper::getParams('com_groups');
+
+		// Path to group folder
+		$directory  = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
+		$directory .= DS . $this->group->get('gidNumber');
+
+		// get task, defaults to update
+		$task = ($this->arguments->getOpt(3)) ? $this->arguments->getOpt(3) : 'update';
+
+		// set our group directory & force mode & call migration
+		$this->arguments->setOpt('r', $directory);
+		$this->arguments->setOpt('f', 1);
+		Application::call('repository', $task, $this->arguments, $this->output);
+	}
+
+	/**
 	 * Output help documentation
 	 *
 	 * @return void
