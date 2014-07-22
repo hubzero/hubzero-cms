@@ -1183,7 +1183,7 @@ class Group extends Object
 				$where_clause = "WHERE";
 			}
 
-			$where_clause .= " (LOWER(description) LIKE '%" . $db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(cn) LIKE '%" . $db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where_clause .= " (LOWER(description) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(cn) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		if (isset($filters['index']) && $filters['index'] != '')
@@ -1197,7 +1197,7 @@ class Group extends Object
 				$where_clause = "WHERE";
 			}
 
-			$where_clause .= " (LOWER(description) LIKE '" . $db->getEscaped(strtolower($filters['index'])) . "%') ";
+			$where_clause .= " (LOWER(description) LIKE " . $db->quote(strtolower($filters['index']) . '%') . ") ";
 		}
 
 		if (isset($filters['authorized']) && $filters['authorized'] === 'admin')

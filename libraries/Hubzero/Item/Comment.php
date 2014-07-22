@@ -655,7 +655,7 @@ class Comment extends \JTable
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "LOWER(c.content) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+			$where[] = "LOWER(c.content) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 		}
 
 		if (count($where) > 0)
@@ -760,7 +760,7 @@ class Comment extends \JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "LOWER(r.`content`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+			$where[] = "LOWER(r.`content`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 		}
 
 		if (count($where) > 0)
