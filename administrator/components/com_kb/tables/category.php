@@ -267,7 +267,7 @@ class KbTableCategory extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(a.`title` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR a.`description` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
+			$where[] = "(a.`title` LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . " OR a.`description` LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . ")";
 		}
 		if (isset($filters['empty']) && !$filters['empty'])
 		{

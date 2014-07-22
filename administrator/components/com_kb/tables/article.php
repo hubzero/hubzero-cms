@@ -369,7 +369,7 @@ class KbTableArticle extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(a.`title` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR a.`fulltxt` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
+			$where[] = "(a.`title` LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . " OR a.`fulltxt` LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . ")";
 		}
 
 		if (count($where) > 0)
