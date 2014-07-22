@@ -30,42 +30,14 @@
 
 namespace Hubzero\Console\Command;
 
-use Hubzero\Console\Output;
-use Hubzero\Console\Arguments;
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
  * Database class
  **/
-class Database implements CommandInterface
+class Database extends Base implements CommandInterface
 {
-	/**
-	 * Output object, implements the Output interface
-	 *
-	 * @var object
-	 **/
-	private $output;
-
-	/**
-	 * Arguments object, implements the Argument interface
-	 *
-	 * @var object
-	 **/
-	private $arguments;
-
-	/**
-	 * Constructor - sets output mechanism and arguments for use by command
-	 *
-	 * @return void
-	 **/
-	public function __construct(Output $output, Arguments $arguments)
-	{
-		$this->output    = $output;
-		$this->arguments = $arguments;
-	}
-
 	/**
 	 * Default (required) command - just executes run
 	 *
@@ -98,17 +70,28 @@ class Database implements CommandInterface
 
 		if (!$this->arguments->getOpt('all-tables'))
 		{
+			$this->output->addLine('Dumping database with all prefixed tables included');
 			foreach ($tables as $table)
 			{
 				if (strpos($table, $prefix) !== 0 && !in_array(str_replace('#__', $prefix, $table), $includes))
 				{
 					$excludes[] = $config->db . '.' . $table;
 				}
+				elseif (in_array(str_replace('#__', $prefix, $table), $includes))
+				{
+					$this->output->addLine('Also including `' . $table . '`');
+				}
 			}
 
 			// Build exclude list string
 			$exclude = '--ignore-table=' . implode(' --ignore-table=', $excludes);
 		}
+		else
+		{
+			$this->output->addLine('Dumping database with all tables included');
+		}
+
+		// Add save location option
 
 		$home     = getenv('HOME');
 		$hostname = gethostname();
@@ -118,6 +101,9 @@ class Database implements CommandInterface
 		$cmd = "mysqldump -u {$config->user} -p'{$config->password}' {$config->db} --routines {$exclude} > {$filename}";
 
 		exec($cmd);
+
+		// Print out location of file
+		$this->output->addLine('File saved to: ' . $filename, 'success');
 	}
 
 	/**
@@ -146,15 +132,28 @@ class Database implements CommandInterface
 		$params['com_usage']              = \JComponentHelper::getParams('com_usage');
 		$params['plg_projects_databases'] = \JPluginHelper::getPlugin('projects', 'databases')->params;
 
+		$db     = \JFactory::getDbo();
+		$tables = $db->getTableList();
+
+		// See if we should drop all tables first
+		if ($this->arguments->getOpt('drop-all-tables'))
+		{
+			$this->output->addLine('Dropping all tables...');
+			foreach ($tables as $table)
+			{
+				$db->dropTable($table);
+			}
+		}
+
 		// Craft the command to be executed
 		$infile = escapeshellarg($infile);
 		$config = new \JConfig();
 		$cmd    = "mysql -u {$config->user} -p'{$config->password}' -D {$config->db} < {$infile}";
 
+		$this->output->addLine('Loading data from ' . $infile . '...');
+
 		// Now push the big red button
 		exec($cmd);
-
-		$db = \JFactory::getDbo();
 
 		// Now load some things back up
 		foreach ($params as $k => $v)
@@ -172,6 +171,8 @@ class Database implements CommandInterface
 				$table->store();
 			}
 		}
+
+		$this->output->addLine('Load complete!', 'success');
 	}
 
 	/**
@@ -199,6 +200,13 @@ class Database implements CommandInterface
 				these tables. Use with caution when planning to evenutally load this
 				data into another host (ex: dev) as it rarely makes sense to reload
 				tool sessions into another environment.'
+			)
+			->addArgument(
+				'--drop-all-tables: Drop all tables',
+				'When loading in a database dump, this option will drop all tables
+				prior to loading in the given dump. This is often helpful when the
+				applied dump is divergent in schema from the current database being
+				overwritten.'
 			);
 	}
 }
