@@ -47,6 +47,14 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">Yes</option>
 				</field>
 				<field name="debug_location" type="text" size="50" default="/var/log/apache2/php/phpCAS.log" label="Debug location" description="Location where debugging log will be sent (only applicable when site debug is enabled)." />
+				<field name="site_login"  type="radio" label="Site login" default="1" description="Enable this plugin for frontend authentication">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="admin_login"  type="radio" label="Admin login" default="0" description="Enable this plugin for backend authentication">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

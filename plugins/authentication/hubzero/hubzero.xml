@@ -44,6 +44,14 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">Unckecked</option>
 					<option value="1">Checked</option>
 				</field>
+				<field name="site_login"  type="radio" label="Site login" default="1" description="Enable this plugin for frontend authentication">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="admin_login"  type="radio" label="Admin login" default="1" description="Enable this plugin for backend authentication">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

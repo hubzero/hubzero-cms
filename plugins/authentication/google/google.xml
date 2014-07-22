@@ -45,6 +45,14 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="app_id"       type="text" size="20" label="App ID"          description="Your Hub's Google App ID" />
 				<field name="app_secret"   type="text" size="32" label="Consumer Secret" description="Consumer Secret provided when your hub is registered on Google" />
 				<field name="display_name" type="text" size="32" label="Display name"    description="Text to display on the site when referencing this plugin" default="Google" />
+				<field name="site_login"  type="radio" label="Site login" default="1" description="Enable this plugin for frontend authentication">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="admin_login"  type="radio" label="Admin login" default="0" description="Enable this plugin for backend authentication">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
