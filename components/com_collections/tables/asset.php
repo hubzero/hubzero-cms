@@ -303,8 +303,8 @@ class CollectionsTableAsset extends JTable
 		}*/
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(a.filename) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-					OR LOWER(a.description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(a.filename) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(a.description) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 		if (isset($filters['created_by']))
 		{
