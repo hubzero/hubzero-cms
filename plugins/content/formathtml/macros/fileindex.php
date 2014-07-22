@@ -65,7 +65,7 @@ class FileIndex extends Macro
 		{
 			$et = strip_tags($et);
 			// Get pages with a prefix
-			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE '" . $this->_db->getEscaped(strtolower($et)) . "%' AND pageid=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
+			$sql  = "SELECT * FROM `#__wiki_attachments` WHERE LOWER(filename) LIKE " . $this->_db->quote(strtolower($et) . '%') . " AND pageid=" . $this->_db->quote($this->pageid) . " ORDER BY created ASC";
 		}
 		else
 		{

@@ -246,7 +246,7 @@ class CoursesTableMemberNote extends JTable
 			}
 			else
 			{
-				$where[] = "(LOWER(a.content) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+				$where[] = "(LOWER(a.content) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 			}
 		}
 
