@@ -382,7 +382,7 @@ class EventsRespondent extends JTable
 				case 'search':
 					if (!empty($val))
 					{
-						$this->filters[] = 'concat(first_name, \' \', last_name) LIKE \'%' . $this->_db->getEscaped($val) . '%\'';
+						$this->filters[] = "concat(first_name, ' ', last_name) LIKE " . $this->_db->quote($val . '%');
 						$this->searchTerms = htmlentities($val);
 					}
 				break;

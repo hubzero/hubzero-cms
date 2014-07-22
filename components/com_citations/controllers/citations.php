@@ -137,7 +137,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		//search/filtering params
 		$this->view->filters['id']				= JRequest::getInt('id', 0);
 		$this->view->filters['tag']             = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
-		$this->view->filters['search']          = $this->database->getEscaped(JRequest::getVar('search', ''));
+		$this->view->filters['search']          = JRequest::getVar('search', '');
 		$this->view->filters['type']            = JRequest::getVar('type', '');
 		$this->view->filters['author']          = JRequest::getVar('author', '');
 		$this->view->filters['publishedin']     = JRequest::getVar('publishedin', '');

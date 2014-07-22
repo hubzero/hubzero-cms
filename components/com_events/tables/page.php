@@ -292,7 +292,7 @@ class EventsPage extends JTable
 			{
 				$query .= " WHERE ";
 			}
-			$query .= "LOWER(t.title) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
+			$query .= "LOWER(t.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 		}
 		if (isset($filters['limit']) && $filters['limit'] != 0)
 		{

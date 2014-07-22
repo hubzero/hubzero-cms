@@ -67,7 +67,7 @@ $query = "SELECT COUNT(*)
 		FROM #__wiki_attachments AS wa
 		INNER JOIN #__wiki_page AS wp
 			ON wp.id=wa.pageid
-		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' $where";
+		WHERE wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " $where";
 
 $database->setQuery($query);
 $total = $database->loadResult();
@@ -76,7 +76,7 @@ $query = "SELECT wa.*, wp.scope, wp.pagename
 		FROM #__wiki_attachments AS wa
 		INNER JOIN #__wiki_page AS wp
 			ON wp.id=wa.pageid
-		WHERE wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%'
+		WHERE wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . "
 			$where
 		ORDER BY $sort $dir";
 if ($limit && $limit != 'all')

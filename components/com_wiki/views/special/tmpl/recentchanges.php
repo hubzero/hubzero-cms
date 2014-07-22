@@ -56,7 +56,7 @@ $query = "SELECT COUNT(*)
 			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
 				AND wp.access != 2";
 
@@ -68,7 +68,7 @@ $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.acc
 			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
 				AND wp.access != 2
 			ORDER BY created DESC";

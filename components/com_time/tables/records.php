@@ -165,8 +165,8 @@ Class TimeRecords extends JTable
 				foreach ($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= "(LOWER(r.description) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
-					$query .= " OR LOWER(p.name) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%')";
+					$query .= "(LOWER(r.description) LIKE " . $this->_db->quote('%' . strtolower($arg) . '%');
+					$query .= " OR LOWER(p.name) LIKE " . $this->_db->quote('%' . strtolower($arg) . '%') . ")";
 
 					$first = false;
 				}
@@ -241,8 +241,8 @@ Class TimeRecords extends JTable
 				foreach ($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= "(LOWER(r.description) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
-					$query .= " OR LOWER(p.name) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%')";
+					$query .= "(LOWER(r.description) LIKE " . $this->_db->quote('%' . strtolower($arg) . '%');
+					$query .= " OR LOWER(p.name) LIKE " . $this->_db->quote('%' . strtolower($arg) . '%') . ")";
 
 					$first = false;
 				}

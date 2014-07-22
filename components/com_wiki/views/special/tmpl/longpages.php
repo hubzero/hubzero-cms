@@ -50,7 +50,7 @@ $query = "SELECT COUNT(*)
 			INNER JOIN #__wiki_page AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
 				AND wp.access != 2
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
@@ -63,7 +63,7 @@ $query = "SELECT wv.pageid, wp.title, wv.length, wp.pagename, wp.scope, wp.group
 			INNER JOIN #__wiki_page AS wp
 				ON wp.id = wv.pageid
 			WHERE wv.approved = 1
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
+				" . ($this->page->get('scope') ? "AND wp.scope LIKE " . $database->quote($this->page->get('scope') . '%') . " " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
 				AND wp.state < 2
 				AND wp.access != 2
 				AND wv.id = (SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)

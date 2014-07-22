@@ -89,7 +89,7 @@ if ($label == "none") {
 				<input class="entry-search-submit" type="submit" value="Search" />
 				<fieldset class="entry-search">
 					<legend><?php echo JText::_('COM_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo stripslashes($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 				</fieldset>
 			</div><!-- /.container .data-entry -->
 			<div class="container">

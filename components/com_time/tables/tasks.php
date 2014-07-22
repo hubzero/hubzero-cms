@@ -178,7 +178,7 @@ Class TimeTasks extends JTable
 				foreach ($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= "LOWER(p.name) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
+					$query .= "LOWER(p.name) LIKE " . $this->_db->quote('%' . strtolower($arg) . '%');
 
 					$first = false;
 				}
@@ -223,7 +223,7 @@ Class TimeTasks extends JTable
 				foreach ($filters['search'] as $arg)
 				{
 					$query .= ($first) ? " WHERE " : " AND ";
-					$query .= "LOWER(p.name) LIKE '%" . $this->_db->getEscaped(strtolower($arg)) . "%'";
+					$query .= "LOWER(p.name) LIKE " . $this->_db->quote('%' . strtolower($arg) . '%');
 
 					$first = false;
 				}

@@ -273,7 +273,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$this->_title = JText::_(strtoupper($this->_option)) . ': ';
 		if ($this->view->filters['type'] != '')
 		{
-			$t->load($this->database->getEscaped($this->view->filters['type']));
+			$t->load($t->normalize($this->view->filters['type']));
 			$this->_title .= $t->type;
 			$this->_task_title = $t->type;
 		}

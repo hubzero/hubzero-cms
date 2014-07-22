@@ -158,19 +158,19 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		switch (count($searchPieces))
 		{
 			case 3:
-				$searchWhere  = "(LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%'";
-				$searchWhere .= " OR LOWER(xp.name) LIKE '" . $this->database->getEscaped($searchPieces[0]) . "%'";
-				$searchWhere .= " OR LOWER(xp.name) LIKE '%" . $this->database->getEscaped($searchPieces[1]) . "%'";
-				$searchWhere .= " OR LOWER(xp.name) LIKE '%" . $this->database->getEscaped($searchPieces[2]) . "')";
+				$searchWhere  = "(LOWER(xp.name) LIKE " . $this->database->quote('%' . $filters['search'] . '%');
+				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote($searchPieces[0] . '%');
+				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote('%' . $searchPieces[1] . '%');
+				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote('%' . $searchPieces[2]) . ")";
 				break;
 			case 2:
-				$searchWhere  = "(LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%'";
-				$searchWhere .= " OR LOWER(xp.name) LIKE '" . $this->database->getEscaped($searchPieces[0]) . "%'";
-				$searchWhere .= " OR LOWER(xp.name) LIKE '%" . $this->database->getEscaped($searchPieces[1]) . "')";
+				$searchWhere  = "(LOWER(xp.name) LIKE " . $this->database->quote('%' . $filters['search'] . '%');
+				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote($searchPieces[0] . '%');
+				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote('%' . $searchPieces[1]) . ")";
 				break;
 			case 1:
 			default:
-				$searchWhere  = "(LOWER(xp.name) LIKE '%" . $this->database->getEscaped($filters['search']) . "%')";
+				$searchWhere  = "(LOWER(xp.name) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . ")";
 		}
 
 		// Fetch results

@@ -585,7 +585,7 @@ class TagsTableTag extends JTable
 		{
 			$query .= " admin=0 AND";
 		}
-		$query .= " (LOWER(t.raw_tag) LIKE '" . $this->_db->getEscaped($filters['search']) . "%' OR LOWER(s.raw_tag) LIKE '" . $this->_db->getEscaped($filters['search']) . "%')
+		$query .= " (LOWER(t.raw_tag) LIKE " . $this->_db->quote($filters['search'] . '%') . " OR LOWER(s.raw_tag) LIKE " . $this->_db->quote($filters['search'] . '%') . ")
 					ORDER BY t.raw_tag ASC";
 
 		$this->_db->setQuery($query);
