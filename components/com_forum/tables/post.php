@@ -466,8 +466,8 @@ class ForumTablePost extends JTable
 			//}
 			if (isset($filters['search']) && $filters['search'] != '')
 			{
-				$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+				$where[] = "(LOWER(c.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(c.comment) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 			}
 			if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 			{
@@ -635,8 +635,8 @@ class ForumTablePost extends JTable
 		//}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-					OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(c.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(c.comment) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 		//if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 		//{
@@ -788,8 +788,8 @@ class ForumTablePost extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-					OR LOWER(c.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(c.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(c.comment) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 		if (isset($filters['parent']) && (int) $filters['parent'] >= 0)
 		{
