@@ -780,11 +780,11 @@ class WikiTablePage extends JTable
 		$where = array();
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(LOWER(t.pagename) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(t.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(t.pagename) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(t.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 		if (isset($filters['namespace']) && $filters['namespace'])
 		{
-			$where[] = "LOWER(t.pagename) LIKE '" . $this->_db->getEscaped(strtolower($filters['namespace'])) . "%'";
+			$where[] = "LOWER(t.pagename) LIKE " . $this->_db->quote(strtolower($filters['namespace']) . '%');
 		}
 		if (isset($filters['scope']))
 		{
@@ -1003,11 +1003,11 @@ class WikiTablePage extends JTable
 					{
 						foreach ($ugs as $ug)
 						{
-							$groups[] = $this->_db->getEscaped($ug->cn);
+							$groups[] = $this->_db->quote($ug->cn);
 						}
 					}
 
-					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN ('" . implode("','", $groups) . "') OR w.created_by=" . $this->_db->Quote($juser->get('id')) . ")))";
+					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN (" . implode(",", $groups) . ") OR w.created_by=" . $this->_db->Quote($juser->get('id')) . ")))";
 				}
 			}
 			else

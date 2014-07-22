@@ -305,7 +305,7 @@ class WikiTableRevision extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "LOWER(r.pagehtml) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+			$where[] = "LOWER(r.pagehtml) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 		}
 		if (isset($filters['approved']) && $filters['approved'])
 		{
