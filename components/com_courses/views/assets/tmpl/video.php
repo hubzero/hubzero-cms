@@ -144,7 +144,7 @@ if ($type == 'hubpresenter')
 	$presentation = $presentation->presentation;
 
 	// get subs from json file
-	$subs = ($presentation->subtitles) ? $presentation->subtitles : array();
+	$subs = (isset($presentation->subtitles)) ? $presentation->subtitles : array();
 
 	// make sure source is full path to assets folder
 	$subFiles = array();
