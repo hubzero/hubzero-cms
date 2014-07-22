@@ -143,7 +143,7 @@ class Help implements CommandInterface
 	private function getCommands()
 	{
 		// Get files from command directory to use in list
-		$files    = array_diff(scandir(__DIR__), array('..', '.', 'CommandInterface.php'));
+		$files    = array_diff(scandir(__DIR__), array('..', '.', 'CommandInterface.php', 'Base.php'));
 		$commands = array();
 
 		foreach ($files as $file)
