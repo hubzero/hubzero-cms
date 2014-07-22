@@ -191,10 +191,10 @@ class AnswersTableQuestion extends JTable
 			$words   = explode(' ', $filters['q']);
 			foreach ($words as $word)
 			{
-				$word = $this->_db->getEscaped(strtolower($word));
-				$query .= "AND ((LOWER(C.subject) LIKE '%$word%')
-					OR (LOWER(C.question) LIKE '%$word%')
-					OR (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.question_id=C.id AND (LOWER(a.answer) LIKE '%$word%')) > 0)";
+				$word = $this->_db->quote('%' . strtolower($word) . '%');
+				$query .= "AND ((LOWER(C.subject) LIKE $word)
+					OR (LOWER(C.question) LIKE $word)
+					OR (SELECT COUNT(*) FROM #__answers_responses AS a WHERE a.state!=2 AND a.question_id=C.id AND (LOWER(a.answer) LIKE $word)) > 0)";
 			}
 		}
 		if (isset($filters['mine']) && $filters['mine'] != 0)
@@ -306,7 +306,7 @@ class AnswersTableQuestion extends JTable
 		//$query.= "\n FROM $this->_tbl AS a, `#__answers_tags` AS t, `#__tags` AS tg";
 		$query .= " FROM $this->_tbl AS a, #__tags_object AS RTA ";
 		$query .= " INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
-		$query .= " WHERE RTA.objectid=a.id AND RTA.tbl='answers' AND (TA.tag='" . $this->_db->getEscaped(strtolower($tag)) . "' OR TA.raw_tag='" . $this->_db->getEscaped($tag) . "')";
+		$query .= " WHERE RTA.objectid=a.id AND RTA.tbl='answers' AND (TA.tag=" . $this->_db->quote(strtolower($tag)) . " OR TA.raw_tag=" . $this->_db->quote($tag) . ")";
 
 		$query .= " ORDER BY a.created DESC";
 		$query .= ($limit) ? " LIMIT " . $limit : "";
