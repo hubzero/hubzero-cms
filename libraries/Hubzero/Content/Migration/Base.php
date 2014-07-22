@@ -441,6 +441,82 @@ class Base
 	}
 
 	/**
+	 * Save plugin params
+	 *
+	 * @param $folder  - (string) plugin folder
+	 * @param $element - (string) plugin element
+	 * @param $params  - (array)  plugin params (if already known)
+	 * @return void
+	 **/
+	public function savePluginParams($folder, $element, $params)
+	{
+		if ($this->baseDb->tableExists('#__plugins'))
+		{
+			$folder  = strtolower($folder);
+			$element = strtolower($element);
+			$name    = ucfirst($folder) . ' - ' . ucfirst($element);
+
+			// First, make sure we have a plugin entry existing
+			$query = "SELECT `id` FROM `#__plugins` WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
+			$this->baseDb->setQuery($query);
+			if (!$id = $this->baseDb->loadResult())
+			{
+				$this->addPluginEntry($folder, $element, 1, $params);
+				return;
+			}
+
+			// Build params string
+			if (is_array($params))
+			{
+				$p = '';
+				foreach ($params as $k => $v)
+				{
+					$p .= "{$k}={$v}\n";
+				}
+
+				$params = $p;
+			}
+			else
+			{
+				return false;
+			}
+
+			$query = "UPDATE `#__plugins` SET `params` = " . $this->baseDb->quote($params) . " WHERE `id` = " . $this->baseDb->quote($id);
+			$this->baseDb->setQuery($query);
+			$this->baseDb->query();
+		}
+		else
+		{
+			$folder  = strtolower($folder);
+			$element = strtolower($element);
+			$name    = 'plg_' . $folder . '_' . $element;
+
+			// First, make sure it isn't already there
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
+			$this->baseDb->setQuery($query);
+			if (!$id = $this->baseDb->loadResult())
+			{
+				$this->addPluginEntry($folder, $element, 1, $params);
+				return;
+			}
+
+			// Build params JSON
+			if (is_array($params))
+			{
+				$params = json_encode($params);
+			}
+			else
+			{
+				return false;
+			}
+
+			$query = "UPDATE `#__extensions` SET `params` = " . $this->baseDb->quote($params) . " WHERE `extension_id` = " . $this->baseDb->quote($id);
+			$this->baseDb->setQuery($query);
+			$this->baseDb->query();
+		}
+	}
+
+	/**
 	 * Add, as needed, the module entry to the appropriate table, depending on the Joomla version
 	 *
 	 * @param $element - (string) plugin element
