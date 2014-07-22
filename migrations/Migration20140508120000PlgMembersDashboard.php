@@ -78,7 +78,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 
 
 		// move over exxisting preferences
-		$this->db->setQuery("SELECT * FROM `#__myhub`");
+		$this->db->setQuery("SELECT * FROM `#__myhub` GROUP BY uid");
 		$preferences = $this->db->loadObjectList();
 
 		$newpreferences = array();

@@ -89,7 +89,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 								$b->object_id   = $resource->id;
 								$b->title       = $resource->title;
 								$b->description = $resource->introtext;
-								$b->url         = JRoute::_('index.php?option=com_resources&id=' . $resource->id);
+								$b->url         = 'index.php?option=com_resources&id=' . $resource->id;
 								if (!$b->check())
 								{
 									continue;
