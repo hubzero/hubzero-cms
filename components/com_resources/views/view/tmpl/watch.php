@@ -68,30 +68,37 @@ $rt = new ResourcesType( $this->database );
 $rt->load($parent->type);
 
 //if we have a series get children
-if($rt->type == "Series" || $rt->type == "Courses") {
+if ($rt->type == "Series" || $rt->type == "Courses")
+{
 	$rh->getChildren( $parent->id, 0, 'yes' );
 	$children = $rh->children;
 
 	//remove any children without a HUBpresenter
-	foreach($children as $k => $c) {
+	foreach ($children as $k => $c)
+	{
 		$rh = new ResourcesHelper( $c->id, $this->database );
 		$rh->getChildren();
 		$sub_child = $rh->children;
 		$hasHUBpresenter = false;
 
-		foreach($sub_child as $sc) {
+		foreach ($sub_child as $sc)
+		{
 			$rt = new ResourcesType( $this->database );
 			$rt->load($sc->type);
-			if(strtolower($rt->type) == "hubpresenter") {
+			if (strtolower($rt->type) == "hubpresenter")
+			{
 				$hasHUBpresenter = true;
 			}
 		}
 
-		if(!$hasHUBpresenter) {
+		if (!$hasHUBpresenter)
+		{
 			unset($children[$k]);
 		}
 	}
-} else {
+}
+else
+{
 	$children = NULL;
 }
 
@@ -100,7 +107,7 @@ $sql = "SELECT authorid, role, name FROM #__author_assoc "
 	 . "WHERE subtable='resources' "
 	 . "AND subid=" . $parent->id . " "
 	 . "ORDER BY ordering";
-	
+
 $this->database->setQuery( $sql );
 $lectureAuthors = $this->database->loadObjectList();
 
@@ -135,21 +142,41 @@ if (!isset($presentation->subtitles))
 	$presentation->subtitles = array();
 }
 
+// make sure source is full path to assets folder
+$subFiles = array();
+foreach ($presentation->subtitles as $k => $subtitle)
+{
+	if (!strpos($subtitle->source, DS))
+	{
+		$subtitle->source = $content_folder . DS . $subtitle->source;
+	}
+
+	$subFiles[] = $subtitle->source;
+}
+
 //get all local subtitles
 $localSubtitles = JFolder::files(JPATH_ROOT . DS . $content_folder, '.srt|.SRT');
 
+// add local subtitles too
 foreach ($localSubtitles as $k => $subtitle)
 {
 	$info     = pathinfo($subtitle);
 	$name     = str_replace('-auto','', $info['filename']);
 	$autoplay = (strstr($info['filename'],'-auto')) ? 1 : 0;
 	$source   = $content_folder . DS . $subtitle;
-	
-	//add each subtitle
-	$presentation->subtitles[$k]->type     = 'SRT';
-	$presentation->subtitles[$k]->name     = ucfirst($name);
-	$presentation->subtitles[$k]->source   = $source;
-	$presentation->subtitles[$k]->autoplay = $autoplay;
+
+	// add each subtitle
+	$subtitle                  = new stdClass;
+	$subtitle->type            = 'SRT';
+	$subtitle->name            = ucfirst($name);
+	$subtitle->source          = $source;
+	$subtitle->autoplay        = $autoplay;
+
+	// make sure we dont already have this file.
+	if (!in_array($subtitle->source, $subFiles))
+	{
+		$presentation->subtitles[] = $subtitle;
+	}
 }
 
 //reset keys
@@ -157,18 +184,18 @@ $presentation->subtitles = array_values($presentation->subtitles);
 ?>
 
 <div id="presenter-nav-bar">
-	<a href="<?php echo JRoute::_('index.php?option=com_resources&id=' . $rr->id); ?>" id="powered" title="Powered by <?php echo JFactory::getConfig()->get('sitename'); ?>">
+	<a href="/resources/<?php echo $rr->id; ?>" id="powered" title="Powered by <?php echo JFactory::getConfig()->get('sitename'); ?>">
 		<span>powered by</span> <?php echo JFactory::getConfig()->get('sitename'); ?>
 	</a>
 	
-	<?php if($children) : ?>
+	<?php if ($children) : ?>
 		<form name="presentation-picker" id="presentation-picker" method="post">
 			<label for="presentations">Select a different presentation: 
 				<select name="presentation" id="presentation">
 					<optgroup label="<?php echo $parent->title; ?>">
-						<?php foreach($children as $c) : ?>
-							<?php if(JFactory::getDate() > $c->publish_up || $user->get("usertype") == 'Administrator' || $user->get("usertype") == 'Super Administrator') : ?>
-								<option <?php if($c->title == $rr->title) { echo "selected"; } ?> value="<?php echo $c->id; ?>"><?php echo $c->title; ?></option>
+						<?php foreach ($children as $c) : ?>
+							<?php if (JFactory::getDate() > $c->publish_up || $user->get("usertype") == 'Administrator' || $user->get("usertype") == 'Super Administrator') : ?>
+								<option <?php if ($c->title == $rr->title) { echo "selected"; } ?> value="<?php echo $c->id; ?>"><?php echo $c->title; ?></option>
 							<?php endif; ?>
 						<?php endforeach; ?>
 					</optgroup>
@@ -198,7 +225,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 <div id="presenter-container" class="<?php echo $presenationFormat; ?>">
 	<div id="presenter-header">
 		<div id="title"><?php echo $rr->title; ?></div>
-		<div id="author"><?php if($a) { echo "by: " . implode(", ", $a); } ?></div>
+		<div id="author"><?php if ($a) { echo "by: " . implode(", ", $a); } ?></div>
 		<!--<div id="slide_title"></div>-->
 	</div><!-- /#header -->
 	
@@ -207,13 +234,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
 			<div id="slides">
 				<ul class="no-js">
 					<?php $counter = 0; ?>
-					<?php foreach($presentation->slides as $slide) : ?>
+					<?php foreach ($presentation->slides as $slide) : ?>
 						<li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
-							<?php if($slide->type == 'Image') : ?>
+							<?php if ($slide->type == 'Image') : ?>
 								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 							<?php else : ?>
 								<video class="slidevideo">  
-									<?php foreach($slide->media as $source): ?>
+									<?php foreach ($slide->media as $source): ?>
 										<source src="<?php echo $content_folder.DS.$source->source; ?>" /> 
 									<?php endforeach; ?>
 									<a href="<?php echo $content_folder.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a> 
@@ -246,11 +273,11 @@ $presentation->subtitles = array_values($presentation->subtitles);
 		<?php $cls = (isset($presentation->videoPosition) && $presentation->videoPosition == "left" && strtolower($presentation->type) == 'video') ? "move-left": ""; ?>
 		<div id="presenter-right">
 			<div id="media" class="<?php echo $cls; ?>">
-				<?php if(strtolower($presentation->type) == 'video') : ?>
+				<?php if (strtolower($presentation->type) == 'video') : ?>
 					<video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">
-						<?php foreach($presentation->media as $media): ?>
+						<?php foreach ($presentation->media as $media): ?>
 						   	<?php
-								switch( $media->type )
+								switch ($media->type)
 								{
 									case 'ogg':
 									case 'ogv':     $type = "video/ogg;";    break;
@@ -259,16 +286,16 @@ $presentation->subtitles = array_values($presentation->subtitles);
 									case 'm4v':
 									default:        $type = "video/mp4;";    break;
 								}
-								
+
 								//get the source
 								$source = $media->source;
-								
+
 								//is this the mp4 (need for flash)
 								if (in_array($media->type, array('mp4','m4v')))
 								{
 									$mp4 = $media->source;
 								}
-								
+
 								//if were playing local files
 								if (substr($media->source, 0, 4) != 'http')
 								{
@@ -285,13 +312,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
 						<a href="<?php echo $mp4; ?>" 
 							id="flowplayer" 
 							data-mediaid="<?php echo $rr->id; ?>"></a>
-						<?php if(count($presentation->subtitles) > 0) : ?>
-							<?php foreach($presentation->subtitles as $subtitle) : ?>
+						<?php if (count($presentation->subtitles) > 0) : ?>
+							<?php foreach ($presentation->subtitles as $subtitle) : ?>
 								<?php
 									//get file modified time
 									$source = $subtitle->source;
 									$auto   = $subtitle->autoplay;
-									
+
 									//if were playing local files
 									if (substr($subtitle->source, 0, 4) != 'http')
 									{
@@ -312,9 +339,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
 					</video>
 				<?php else : ?>
 					<audio id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">
-						<?php foreach($presentation->media as $source): ?>
+						<?php foreach ($presentation->media as $source): ?>
 							<?php
-								switch( $source->type )
+								switch ($source->type)
 								{
 									case 'mp3':		$type = 'audio/mp3';	break;
 									case 'ogv':
@@ -323,10 +350,10 @@ $presentation->subtitles = array_values($presentation->subtitles);
 							?>
 							<source src="<?php echo $content_folder.DS.$source->source; ?>" type="<?php echo $type; ?>" />
 						<?php endforeach; ?>
-						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if($presentation->duration) { echo $presentation->duration; } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
+						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
 					</audio>
 					
-					<?php if($presentation->placeholder) : ?>
+					<?php if ($presentation->placeholder) : ?>
 						<img src="<?php echo $content_folder.DS.$presentation->placeholder; ?>" title="" id="placeholder" />
 					<?php endif; ?>
 				<?php endif; ?>
@@ -334,13 +361,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
 			<div id="list">
 				<ul id="list_items">
 					<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
-					<?php foreach($presentation->slides as $slide) : ?>
-						<?php if((int)$slide->slide != $last_slide_id) : ?>
+					<?php foreach ($presentation->slides as $slide) : ?>
+						<?php if ((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">
 								<?php
 									//use thumb if possible
 									$thumb = $content_folder.DS.$slide->media;
-									if($slide->thumb && file_exists(JPATH_ROOT . $content_folder.DS.$slide->thumb))
+									if ($slide->thumb && file_exists(JPATH_ROOT . $content_folder.DS.$slide->thumb))
 									{
 										$thumb = $content_folder.DS.$slide->thumb;
 									}
@@ -354,7 +381,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 										echo ($num) . ". ";
 										echo substr($slide->title, 0, $max);
 
-										if(strlen($slide->title) > $max)
+										if (strlen($slide->title) > $max)
 											echo $elipsis;
 									?>
 								</span>
