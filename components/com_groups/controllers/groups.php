@@ -497,6 +497,31 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$phpPageContent = ob_get_contents();
 		ob_end_clean();
 
+		//create new group document helper
+		$groupDocument = new GroupsHelperDocument();
+
+		// set group doc needed props
+		// parse and render content
+		$groupDocument->set('group', $group)
+			          ->set('page', null)
+			          ->set('document', $phpPageContent)
+			          ->parse()
+			          ->render();
+
+		// get doc content
+		$phpPageContent = $groupDocument->output();
+
+		// run as closure to ensure no $this scope
+		$eval = function() use ($phpPageContent)
+		{
+			ob_start();
+			unset($this);
+			eval("?> $phpPageContent <?php ");
+			$document = ob_get_clean();
+			return $document;
+		};
+		$phpPageContent = $eval();
+
 		// create view object
 		$view = new \Hubzero\Component\View(array(
 			'name'   => 'pages',
