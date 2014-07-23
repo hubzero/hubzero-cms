@@ -137,10 +137,13 @@ class Group implements CommandInterface
 
 		// Path to group folder
 		$directory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
-		$directory .= DS . $this->group->get('gidNumber') . DS . 'components';
+		$directory .= DS . $this->group->get('gidNumber');
+
+		// determine what we want to create
+		$createWhat = ($this->arguments->getOpt(3)) ? $this->arguments->getOpt(3) : 'component';
 
 		// set our needed args
-		$this->arguments->setOpt(3, 'component');
+		$this->arguments->setOpt(3, $createWhat);
 		$this->arguments->setOpt('install-dir', $directory);
 		Application::call('scaffolding', 'create', $this->arguments, $this->output);
 	}
