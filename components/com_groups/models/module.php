@@ -283,8 +283,22 @@ class GroupsModelModule extends \Hubzero\Base\Model
 				$content = $this->get('content_parsed', null);
 				if ($content == null)
 				{
+					// get group
+					$group = \Hubzero\User\Group::getInstance(JRequest::getVar('cn', JRequest::getVar('gid', '')));
+
+					// get base path 
+					$basePath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+
 					// build config
-					$config = array();
+					$config = array(
+						'option'         => JRequest::getCmd('option', 'com_groups'),
+						'scope'          => '',
+						'pagename'       => $group->get('cn'),
+						'pageid'         => 0,
+						'filepath'       => $basePath . DS . $group->get('gidNumber') . DS . 'uploads',
+						'domain'         => $group->get('cn'),
+						'alt_macro_path' => JPATH_ROOT . $basePath . DS . $group->get('gidNumber') . DS . 'macros'
+					);
 
 					$content = stripslashes($this->get('content'));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
