@@ -118,7 +118,7 @@ class MwHosttype extends JTable
 		}
 		else
 		{
-			if($this->$k)
+			if ($this->$k)
 			{
 				$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
 			}
@@ -127,7 +127,7 @@ class MwHosttype extends JTable
 				$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 			}
 		}
-		if(!$ret)
+		if (!$ret)
 		{
 			$this->setError(get_class($this).'::store failed - '.$this->_db->getErrorMsg());
 			return false;

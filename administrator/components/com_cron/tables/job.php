@@ -205,7 +205,7 @@ class CronTableJob extends JTable
 			return false;
 		}
 
- 		$bits = @explode(' ', $this->recurrence);
+		$bits = @explode(' ', $this->recurrence);
 		if (count($bits) != 5)
 		{
 			$this->setError(JText::_('Cron string is invalid. Too many or too little sections.'));

@@ -700,7 +700,7 @@ class ResourcesStatsClusters extends JTable
 	 *
 	 * @var unknown
 	 */
- 	var $resid   		= NULL;
+	var $resid   		= NULL;
 
 	/**
 	 * varchar(255)
