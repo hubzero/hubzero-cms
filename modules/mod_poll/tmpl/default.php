@@ -9,7 +9,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			<li class="<?php echo $this->escape($tabclass_arr[$tabcnt]); ?><?php echo $this->params->get('moduleclass_sfx'); ?>">
 				<input type="radio" name="voteid" id="voteid<?php echo $options[$i]->id;?>" value="<?php echo $this->escape($options[$i]->id);?>" />
 				<label for="voteid<?php echo $options[$i]->id; ?>" class="<?php echo $this->escape($tabclass_arr[$tabcnt]); ?><?php echo $this->params->get('moduleclass_sfx'); ?>">
-					<?php echo $this->escape(stripslashes($options[$i]->text)); ?>
+					<?php echo $this->escape(str_replace('&#039;', "'", $options[$i]->text)); ?>
 				</label>
 			</li>
 			<?php
