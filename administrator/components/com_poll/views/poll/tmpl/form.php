@@ -119,7 +119,7 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 				</label>
 			</td>
 			<td>
-				<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->options[$i]->text; ?>" size="60" />
+				<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape(str_replace('&#039;', "'", $this->options[$i]->text)); ?>" size="60" />
 			</td>
 		</tr>
 		<?php } for (; $i < 12; $i++) { ?>
