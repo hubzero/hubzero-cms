@@ -50,8 +50,8 @@ var JFormValidator = function() {
 		);
 
 		// Attach to forms with class 'form-validate'
-		var forms = $$('form.form-validate');
-		forms.each(function(form){ this.attachToForm(form); }, this);
+		var forms = $('form.form-validate');
+		forms.each(function(i, form){ this.attachToForm(form); }, this);
 	};
 
 	this.setHandler = function(name, fn, en)
