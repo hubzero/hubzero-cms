@@ -85,7 +85,7 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 		<?php for ($i=0, $n=count( $this->options ); $i < $n; $i++ ) { ?>
 			<div class="input-wrap">
 				<label for="polloption<?php echo $this->options[$i]->id; ?>"><?php echo JText::_( 'COM_POLL_FIELD_OPTION' ); ?> <?php echo ($i+1); ?></label><br />
-				<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape($this->options[$i]->text); ?>" />
+				<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape(str_replace('&#039;', "'", $this->options[$i]->text)); ?>" />
 			</div>
 			<?php } for (; $i < 12; $i++) { ?>
 			<div class="input-wrap">
