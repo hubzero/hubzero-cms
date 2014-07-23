@@ -113,8 +113,10 @@ function submitbutton(pressbutton)
 	if (form.title.value == ''){
 		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else if (form.type.value == "-1"){
-		alert('You must select a Section.');
+		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TYPE'); ?>');
 	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
