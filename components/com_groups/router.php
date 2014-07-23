@@ -149,6 +149,7 @@ function GroupsParseRoute($segments)
 	}
 	else
 	{
+		$vars['controller'] = 'groups';
 		$vars['task'] = 'view';
 		$vars['cn'] = $segments[0];
 	}
@@ -178,6 +179,7 @@ function GroupsParseRoute($segments)
 				break;
 			default:
 				$vars['active'] = $segments[1];
+				handleGroupComponents($vars);
 		}
 	}
 
@@ -267,3 +269,49 @@ function GroupsParseRoute($segments)
 	return $vars;
 }
 
+
+/**
+ * Special function that takes all extra query params and prefixes them
+ *
+ * This is needeed when users use controller & task query string params which
+ * conflict with the groups component controller & task query string params. Prefixing 
+ * them and setting the original key to what the GroupsParseRoute method generates. Then
+ * the supergroup system plugin rewrites them back after we made it through to the group component.
+ * 
+ * @param  [type] $vars [description]
+ * @return [type]       [description]
+ */
+function handleGroupComponents($vars)
+{
+	// make sure we have an active vars
+	if (isset($vars['active']))
+	{
+		// load our group
+		$group = \Hubzero\User\Group::getInstance($vars['cn']);
+		if (!$group || !$group->isSuperGroup())
+		{
+			return;
+		}
+
+		// build upload path
+		$groupsConfig = JComponentHelper::getParams('com_groups');
+		$uploadPath = trim($groupsConfig->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+
+		// build path to component
+		$componentPath = JPATH_ROOT . DS . $uploadPath . DS . 'components' . DS . 'com_' . $vars['active'];
+
+		// make sure its a component
+		if (!is_dir($componentPath))
+		{
+			return;
+		}
+
+		// rewrite all query string params to have "g_" prefix
+		foreach (JRequest::get() as $k => $v)
+		{
+			$old = (isset($vars[$k])) ? $vars[$k] : null;
+			JRequest::setVar('sg_' . $k, $v);
+			JRequest::setVar($k, $old);
+		}
+	}
+}

@@ -114,6 +114,15 @@ class plgSystemSupergroup extends JPlugin
 					}
 				}
 			}
+
+			// remove "sg_" prefix for super group query params
+			foreach (JRequest::get() as $k => $v)
+			{
+				if (strpos($k, 'sg_') !== false)
+				{
+					JRequest::setVar(str_replace('sg_', '', $k), $v);
+				}
+			}
 		}
 	}
 
