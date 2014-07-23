@@ -460,7 +460,11 @@ class CitationFormat
 		$coins_data = str_replace($chars, $replace, implode('&', $coins_data));
 		
 		$cite = preg_replace('/, :/', ':', $cite);
-		
+
+		// highlight citation data
+		// do before appendnind coins as we dont want that data accidentily highlighted (causes style issues)
+		$cite = ($highlight) ? \Hubzero\Utility\String::highlight($cite, $highlight) : $cite;
+
 		//if we want coins add them
 		if ($include_coins || $coins_only) 
 		{
@@ -474,7 +478,7 @@ class CitationFormat
 		}
 		
 		//output the citation
-		return ($highlight) ? \Hubzero\Utility\String::highlight($cite, $highlight) : $cite;
+		return $cite;
 	}
 
 	/**
