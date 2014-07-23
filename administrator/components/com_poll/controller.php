@@ -41,35 +41,32 @@ class PollController extends JController
 
 	public function display($cachable = false, $urlparams = false)
 	{
-		switch($this->getTask())
+		switch ($this->getTask())
 		{
-			case 'add'     :
-			{
+			case 'add':
 				JRequest::setVar( 'hidemainmenu', 1 );
 				JRequest::setVar( 'layout', 'form'  );
 				JRequest::setVar( 'view', 'poll'  );
 				JRequest::setVar( 'edit', false  );
-			} break;
-			case 'edit'    :
-			{
+			break;
+			case 'edit':
 				JRequest::setVar( 'hidemainmenu', 1 );
 				JRequest::setVar( 'layout', 'form'  );
 				JRequest::setVar( 'view', 'poll'  );
 				JRequest::setVar( 'edit', true  );
-			} break;
-
-			case 'preview' :
-			{
+			break;
+			case 'preview':
 				JRequest::setVar( 'tmpl', 'component' );
 				JRequest::setVar( 'view', 'poll'  );
-			} break;
+			break;
 		}
 
 		//Set the default view, just in case
 		$view = JRequest::getCmd('view');
-		if(empty($view)) {
+		if (empty($view))
+		{
 			JRequest::setVar('view', 'polls');
-		};
+		}
 
 		parent::display();
 	}
@@ -105,7 +102,7 @@ class PollController extends JController
 
 		foreach ($options as $i=>$text)
 		{
-			$text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+			//$text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 			if ($isNew)
 			{
 				$obj = new stdClass();
@@ -127,13 +124,13 @@ class PollController extends JController
 			case 'apply':
 				$msg = JText::_( 'Changes to Poll saved' );
 				$link = 'index.php?option=com_poll&view=poll&task=edit&cid[]='. $row->id .'';
-				break;
+			break;
 
 			case 'save':
 			default:
 				$msg = JText::_( 'Poll saved' );
 				$link = 'index.php?option=com_poll';
-				break;
+			break;
 		}
 
 		$this->setRedirect($link, $msg);
@@ -193,10 +190,9 @@ class PollController extends JController
 		$cids = implode( ',', $cid );
 
 		$query = 'UPDATE #__polls'
-		. ' SET published = ' . (int) $publish
-		. ' WHERE id IN ( '. $cids .' )'
-		. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )'
-		;
+			. ' SET published = ' . (int) $publish
+			. ' WHERE id IN ( '. $cids .' )'
+			. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )';
 		$db->setQuery( $query );
 		if (!$db->query())
 		{
@@ -241,10 +237,9 @@ class PollController extends JController
 		$cids = implode( ',', $cid );
 
 		$query = 'UPDATE #__polls'
-		. ' SET open = ' . (int) $publish
-		. ' WHERE id IN ( '. $cids .' )'
-		. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )'
-		;
+			. ' SET open = ' . (int) $publish
+			. ' WHERE id IN ( '. $cids .' )'
+			. ' AND ( checked_out = 0 OR ( checked_out = '.(int) $user->get('id').' ) )';
 		$db->setQuery( $query );
 		if (!$db->query())
 		{
