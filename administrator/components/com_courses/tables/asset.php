@@ -250,8 +250,8 @@ class CoursesTableAsset extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(LOWER(ca.url) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-					OR LOWER(ca.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(ca.url) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(ca.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		if (count($where) > 0)

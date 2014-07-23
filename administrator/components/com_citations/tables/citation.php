@@ -591,13 +591,13 @@ class CitationsCitation extends JTable
 		//author filter
 		if (isset($filter['author']) && $filter['author'] != '')
 		{
-			$query .= " AND r.author LIKE '%" . $this->_db->getEscaped($filter['author']) . "%'";
+			$query .= " AND r.author LIKE " . $this->_db->quote('%' . $filter['author'] . '%');
 		}
 
 		//published in filter
 		if (isset($filter['publishedin']) && $filter['publishedin'] != '')
 		{
-			$query .= " AND (r.booktitle LIKE '%" . $this->_db->getEscaped($filter['publishedin']) . "%' OR r.journal LIKE '%" . $this->_db->getEscaped($filter['publishedin']) . "%')";
+			$query .= " AND (r.booktitle LIKE " . $this->_db->quote('%' . $filter['publishedin'] . '%') . " OR r.journal LIKE " . $this->_db->quote('%' . $filter['publishedin'] . '%') . ")";
 		}
 
 		//year filter

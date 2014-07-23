@@ -420,7 +420,7 @@ class ResourcesContributor extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$w[] = "m.name LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
+			$w[] = "m.name LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 		}
 
 		$sql .= (count($w) > 0) ? "WHERE " : "";

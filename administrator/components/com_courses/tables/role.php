@@ -179,7 +179,7 @@ class CoursesTableRole extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "LOWER(r.`title`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['title'])) . "%'";
+			$where[] = "LOWER(r.`title`) LIKE " . $this->_db->quote('%' . strtolower($filters['title']) . '%');
 		}
 
 		if (count($where) > 0)

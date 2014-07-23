@@ -405,7 +405,7 @@ class CoursesTableMember extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$q  = "(LOWER(u.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(u.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+			$q  = "(LOWER(u.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(u.username) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
 			{
 				$q .= " OR u.id=" . $this->_db->quote($filters['search']);

@@ -223,7 +223,7 @@ Class CoursesTablePage extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "LOWER(r.`title`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['title'])) . "%'";
+			$where[] = "LOWER(r.`title`) LIKE " . $this->_db->quote('%' . strtolower($filters['title']) . '%');
 		}
 		if (isset($filters['active']))
 		{
@@ -234,7 +234,7 @@ Class CoursesTablePage extends JTable
 			}
 			else
 			{
-				$where[] = "r.`active`=" . $this->_db->getEscaped(intval($filters['active']));
+				$where[] = "r.`active`=" . $this->_db->quote(intval($filters['active']));
 			}
 		}
 

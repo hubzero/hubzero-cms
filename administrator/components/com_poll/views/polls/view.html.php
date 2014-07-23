@@ -60,7 +60,7 @@ class PollViewPolls extends JView
 		}
 		if ($search)
 		{
-			$where[] = 'LOWER(m.title) LIKE '.$db->Quote( '%'.$db->getEscaped( $search, true ).'%', false );
+			$where[] = 'LOWER(m.title) LIKE '.$db->Quote('%'. $search . '%');
 		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );

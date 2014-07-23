@@ -404,9 +404,9 @@ class Job extends JTable
 					for ($i=0, $n=count($s); $i < $n; $i++)
 					{
 						$sql .= "\n , (SELECT count(*) FROM $this->_tbl AS o WHERE o.id=j.id ";
-						$sql .= "AND  LOWER(o.title) LIKE '%" . $this->_db->getEscaped($s[$i]) . "%') AS keyword$i ";
+						$sql .= "AND  LOWER(o.title) LIKE " . $this->_db->quote('%' . $s[$i] . '%') . ") AS keyword$i ";
 						$sql .= "\n , (SELECT count(*) FROM $this->_tbl AS o WHERE o.id=j.id ";
-						$sql .= "AND  LOWER(o.description) LIKE '%" . $this->_db->getEscaped($s[$i]) . "%') AS bodykeyword$i ";
+						$sql .= "AND  LOWER(o.description) LIKE " . $this->_db->quote('%' . $s[$i] . '%') . ") AS bodykeyword$i ";
 						$kw .= '+ keyword' . $i . ' * 2 ';
 						$kw .= '+ bodykeyword' . $i;
 					}

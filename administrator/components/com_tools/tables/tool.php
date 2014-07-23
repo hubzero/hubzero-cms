@@ -192,11 +192,11 @@ class Tool extends JTable
 			$search = $filters['search'];
 			if (intval($search))
 			{
-				$filter .= " AND f.id='%" . $this->_db->getEscaped($search) . "%' ";
+				$filter .= " AND f.id=" . $this->_db->quote('%' . $search . '%') . " ";
 			}
 			else
 			{
-				$filter .= " AND LOWER(f.toolname) LIKE '%" . $this->_db->getEscaped($search) . "%' ";
+				$filter .= " AND LOWER(f.toolname) LIKE " . $this->_db->quote('%' . $search . '%') . " ";
 			}
 		}
 		if (!$admin)

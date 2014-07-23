@@ -346,7 +346,7 @@ class MembersProfile extends JTable
 		$sqlsearch = "";
 		if (isset($filters['index']) && $filters['index'] != '')
 		{
-			$sqlsearch = " ((LEFT(m.surname, 1) = '" . $this->_db->getEscaped($filters['index']) . "') OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = '" . $this->_db->getEscaped($filters['index']) . "%')) ";
+			$sqlsearch = " ((LEFT(m.surname, 1) = " . $this->_db->quote($filters['index']) . ") OR (LEFT(SUBSTRING_INDEX(m.name, ' ', -1), 1) = " . $this->_db->quote($filters['index'] . '%') . ")) ";
 		}
 
 		if (isset($filters['contributions']))
@@ -385,7 +385,7 @@ class MembersProfile extends JTable
 					$sqlsearch .= " (";
 					foreach ($words as $word)
 					{
-						$sqlsearch .= " (LOWER(m.givenName) LIKE '%" . $this->_db->getEscaped($word) . "%') OR";
+						$sqlsearch .= " (LOWER(m.givenName) LIKE " . $this->_db->quote('%' . $word . '%') . ") OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
@@ -395,7 +395,7 @@ class MembersProfile extends JTable
 					$sqlsearch .= " (";
 					foreach ($words as $word)
 					{
-						$sqlsearch .= " (LOWER(m.surname) LIKE '%" . $this->_db->getEscaped($word) . "%') OR";
+						$sqlsearch .= " (LOWER(m.surname) LIKE " . $this->_db->quote('%' . $word . '%') . ") OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
@@ -406,7 +406,7 @@ class MembersProfile extends JTable
 					$sqlsearch .= " (";
 					foreach ($words as $word)
 					{
-						$sqlsearch .= " MATCH (m.name) AGAINST ('" . $this->_db->getEscaped($word) . "' IN BOOLEAN MODE) OR"; //" (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
+						$sqlsearch .= " MATCH (m.name) AGAINST (" . $this->_db->quote($word) . " IN BOOLEAN MODE) OR"; //" (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
@@ -600,12 +600,12 @@ class MembersProfile extends JTable
 			{
 				$word = strtolower($word);
 
-				$search[] = "(m.uidNumber='" . $this->_db->getEscaped($word) . "')";
-				$search[] = "(LOWER(m.email) LIKE '%" . $this->_db->getEscaped($word) . "%')";
-				$search[] = "(LOWER(m.username) LIKE '%" . $this->_db->getEscaped($word) . "%')";
-				$search[] = "(LOWER(m.givenName) LIKE '%" . $this->_db->getEscaped($word) . "%')";
-				$search[] = "(LOWER(m.surname) LIKE '%" . $this->_db->getEscaped($word) . "%')";
-				$search[] = "(MATCH (m.name) AGAINST ('" . $this->_db->getEscaped($word) . "' IN BOOLEAN MODE))";
+				$search[] = "(m.uidNumber=" . $this->_db->quote($word) . ")";
+				$search[] = "(LOWER(m.email) LIKE " . $this->_db->quote('%' . $word . '%') . ")";
+				$search[] = "(LOWER(m.username) LIKE " . $this->_db->quote('%' . $word . '%') . ")";
+				$search[] = "(LOWER(m.givenName) LIKE " . $this->_db->quote('%' . $word . '%') . ")";
+				$search[] = "(LOWER(m.surname) LIKE " . $this->_db->quote('%' . $word . '%') . ")";
+				$search[] = "(MATCH (m.name) AGAINST (" . $this->_db->quote($word) . " IN BOOLEAN MODE))";
 			}
 
 			$where[] = "(" . implode(" OR ", $search) . ")";

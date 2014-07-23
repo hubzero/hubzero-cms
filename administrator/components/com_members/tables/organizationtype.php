@@ -180,7 +180,7 @@ class MembersTableOrganizationType extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(`title` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%' OR `type` LIKE '%" . $this->_db->getEscaped($filters['search']) . "%')";
+			$where[] = "(`title` LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . " OR `type` LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . ")";
 		}
 
 		if (count($where))

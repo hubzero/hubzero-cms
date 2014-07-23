@@ -160,7 +160,7 @@ class ResourcesStats extends JTable
 
 		$sql = "SELECT *
 				FROM $this->_tbl
-				WHERE datetime='" . $this->_db->getEscaped($dthis) . "-01 00:00:00' AND period=" . $this->_db->Quote($period) . " AND resid=" . $this->_db->Quote($resid);
+				WHERE datetime=" . $this->_db->quote($dthis . "-01 00:00:00") . " AND period=" . $this->_db->Quote($period) . " AND resid=" . $this->_db->Quote($resid);
 
 		$this->_db->setQuery($sql);
 
@@ -347,7 +347,7 @@ class ResourcesStatsTools extends JTable
 
 		$sql = "SELECT id, users, sessions, simulations, jobs, avg_wall, tot_wall, avg_cpu, tot_cpu, avg_view, tot_view, avg_wait, tot_wait, avg_cpus, tot_cpus, period, LEFT(datetime,7) as datetime
 				FROM $this->_tbl
-				WHERE datetime='" . $this->_db->getEscaped($dthis) . "-00 00:00:00' AND period=" . $this->_db->Quote($period) . " AND resid=" . $this->_db->Quote($resid);
+				WHERE datetime=" . $this->_db->quote($dthis . "-00 00:00:00") . " AND period=" . $this->_db->Quote($period) . " AND resid=" . $this->_db->Quote($resid);
 
 		$this->_db->setQuery($sql);
 
@@ -648,7 +648,7 @@ class ResourcesStatsToolsUsers extends JTable
 	{
 		$sql = "SELECT u.name, s.user, u.email, u.organization, s.jobs, s.sessions, s.simulations, s.tot_wall, s.tot_cpu, s.tot_view
 				FROM $this->_tbl AS s, user AS u
-				WHERE u.user = s.user AND s.datetime='" . $this->_db->getEscaped($dthis) . "-00' AND s.period=" . $this->_db->Quote($period) . " AND s.resid=" . $this->_db->Quote($resid) . "
+				WHERE u.user = s.user AND s.datetime=" . $this->_db->quote($dthis . "-00") . " AND s.period=" . $this->_db->Quote($period) . " AND s.resid=" . $this->_db->Quote($resid) . "
 				ORDER BY s.jobs DESC limit 25";
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();

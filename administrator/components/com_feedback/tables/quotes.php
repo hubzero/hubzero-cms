@@ -179,7 +179,7 @@ class FeedbackQuotes extends JTable
 
 			foreach ($words as $word)
 			{
-				$sqlsearch[] = "(LOWER(fullname) LIKE '%" . $this->_db->getEscaped(strtolower($word)) . "%')";
+				$sqlsearch[] = "(LOWER(fullname) LIKE " . $this->_db->quote('%' . strtolower($word) . '%') . ")";
 			}
 
 			$where[] = "(" . implode(" OR ", $sqlsearch) . ")";

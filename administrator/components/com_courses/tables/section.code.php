@@ -195,7 +195,7 @@ class CoursesTableSectionCode extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.code) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(c.code) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		if (count($where) > 0)

@@ -326,7 +326,7 @@ class SupportTicket extends JTable
 		}
 		if (isset($filters['severity']) && $filters['severity'] != '')
 		{
-			$filter .= " AND severity='".$this->_db->getEscaped($filters['severity'])."'";
+			$filter .= " AND severity=" . $this->_db->quote($filters['severity']);
 		}
 		if ($admin)
 		{
@@ -345,7 +345,7 @@ class SupportTicket extends JTable
 		}
 		if (isset($filters['category']) && $filters['category'] != '')
 		{
-			$filter .= " AND category='" . $this->_db->getEscaped($filters['category']) . "'";
+			$filter .= " AND category=" . $this->_db->quote($filters['category']);
 		}
 		if (isset($filters['owner']) && $filters['owner'] != '')
 		{
@@ -379,7 +379,7 @@ class SupportTicket extends JTable
 			{
 				$filter .= " AND ";
 			}
-			$filter .= "login='" . $this->_db->getEscaped($filters['reportedby']) . "'";
+			$filter .= "login=" . $this->_db->quote($filters['reportedby']);
 			if (isset($filters['owner']) && $filters['owner'] != '')
 			{
 				$filter .= ")";
@@ -411,7 +411,7 @@ class SupportTicket extends JTable
 
 		if (isset($filters['group']) && $filters['group'] != '')
 		{
-			$filter .= " AND `group`='" . $this->_db->getEscaped($filters['group']) . "'";
+			$filter .= " AND `group`=" . $this->_db->quote($filters['group']);
 		}
 		if ($admin == false && (!isset($filters['owner']) || $filters['owner'] != '') && (!isset($filters['reportedby']) || $filters['reportedby'] != ''))
 		{
@@ -423,11 +423,11 @@ class SupportTicket extends JTable
 				$g = array();
 				foreach ($xgroups as $xgroup)
 				{
-					$g[] = $this->_db->getEscaped($xgroup->cn);
+					$g[] = $this->_db->quote($xgroup->cn);
 				}
-				$groups = implode("','", $g);
+				$groups = implode(",", $g);
 			}
-			$filter .= ($groups) ? " OR `group` IN ('$groups'))" : ")";
+			$filter .= ($groups) ? " OR `group` IN ($groups))" : ")";
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -442,11 +442,11 @@ class SupportTicket extends JTable
 			if (isset($filters['search']) && $filters['search'] != '')
 			{
 				$from .= "WHERE ";
-				$from .= "(LOWER(f.summary) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.report) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(u.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.login) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+				$from .= "(LOWER(f.summary) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.report) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(u.username) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.login) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 
 				if (is_numeric($filters['search']))
 				{
@@ -465,7 +465,7 @@ class SupportTicket extends JTable
 				{
 					$from .= " AND ";
 				}
-				$from .= "st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='" . $this->_db->getEscaped($filters['tag']) . "'";
+				$from .= "st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag=" . $this->_db->quote($filters['tag']);
 			}
 			$from .= ") UNION (
 				SELECT g.id, g.summary, g.report, g.category, g.status, g.severity, g.resolved, g.owner, g.created, g.closed, g.login, g.name, g.email, g.type, g.section, g.group, ug.name AS owner_name, ug.id AS owner_id
@@ -473,7 +473,7 @@ class SupportTicket extends JTable
 				WHERE w.ticket=g.id";
 			if (isset($filters['search']) && $filters['search'] != '')
 			{
-				$from .= " AND LOWER(w.comment) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+				$from .= " AND LOWER(w.comment) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			}
 			$from .= ")) AS h";
 		}
@@ -487,7 +487,7 @@ class SupportTicket extends JTable
 			}
 			if (isset($filters['tag']) && $filters['tag'] != '')
 			{
-				$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='" . $this->_db->getEscaped($filters['tag']) . "'";
+				$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag=" . $this->_db->quote($filters['tag']);
 			}
 		}
 
@@ -534,10 +534,10 @@ class SupportTicket extends JTable
 		{
 			$sql .= " AND ";
 			$sql .= "(
-						LOWER(f.report) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(u.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.login) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+						LOWER(f.report) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(u.username) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.login) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR id=" . $filters['search'];
@@ -593,9 +593,9 @@ class SupportTicket extends JTable
 		{
 			$sql .= " AND ";
 			$sql .= "(
-						LOWER(f.report) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(f.login) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+						LOWER(f.report) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(f.login) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR id=" . $filters['search'];
@@ -638,12 +638,12 @@ class SupportTicket extends JTable
 
 		if (isset($filters['group']) && $filters['group'] != '')
 		{
-			$filter .= " AND `group`='" . $this->_db->getEscaped($filters['group']) . "'";
+			$filter .= " AND `group`=" . $this->_db->quote($filters['group']);
 		}
 
 		if (isset($filters['tag']) && $filters['tag'] != '')
 		{
-			$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag='" . $this->_db->getEscaped($filters['tag']) . "'";
+			$filter .= " AND st.objectid=f.id AND st.tbl='support' AND st.tagid=t.id AND t.tag=" . $this->_db->quote($filters['tag']);
 		}
 
 		return $filter;
@@ -752,9 +752,9 @@ class SupportTicket extends JTable
 		}
 		else
 		{
-			$sql .= " AND `group`='$group'";
+			$sql .= " AND `group`=" . $this->_db->quote($group);
 		}
-		$sql .= " AND created BETWEEN '" . $this->_db->getEscaped($year) . "-" . $this->_db->getEscaped($month) . "-" . $this->_db->getEscaped($day) . " 00:00:00' AND '" . $this->_db->getEscaped($endyear) . "-" . $this->_db->getEscaped($month) . "-" . $this->_db->getEscaped($day) . " 00:00:00'";
+		$sql .= " AND created BETWEEN " . $this->_db->quote($year . "-" . $month . "-" . $day . " 00:00:00") . " AND " . $this->_db->quote($endyear . "-" . $month . "-" . $day . " 00:00:00");
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
@@ -782,7 +782,7 @@ class SupportTicket extends JTable
 				AND f.type='$type'
 				AND f.open=0
 				AND k.ticket=f.id
-				AND k.created BETWEEN '" . $this->_db->getEscaped($year) . "-" . $this->_db->getEscaped($month) . "-" . $this->_db->getEscaped($day) . " 00:00:00' AND '" . $this->_db->getEscaped($endyear) . "-" . $this->_db->getEscaped($month) . "-" . $this->_db->getEscaped($day) . " 00:00:00'";
+				AND k.created BETWEEN " . $this->_db->quote($year . "-" . $month . "-" . $day . " 00:00:00") . " AND " . $this->_db->quote($endyear . "-" . $month . "-" . $day . " 00:00:00");
 		if (!$group)
 		{
 			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
@@ -868,8 +868,8 @@ class SupportTicket extends JTable
 				AND f.type=" . $this->_db->Quote($type) . "
 				AND f.open=0
 				AND k.ticket=f.id
-				AND k.created>='" . $this->_db->getEscaped($year) . "-" . $this->_db->getEscaped($month) . "-01 00:00:00'
-				AND k.created<'" . $this->_db->getEscaped($nextyear) . "-" . $this->_db->getEscaped($nextmonth) . "-01 00:00:00'";
+				AND k.created>=" . $this->_db->quote($year . "-" . $month . "-01 00:00:00") . "
+				AND k.created<" . $this->_db->quote($nextyear . "-" . $nextmonth . "-01 00:00:00");
 		if (!$group)
 		{
 			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";
@@ -907,8 +907,8 @@ class SupportTicket extends JTable
 				FROM $this->_tbl
 				WHERE report!=''
 				AND type=" . $this->_db->Quote($type) . "
-				AND created>='" . $this->_db->getEscaped($year) . "-" . $this->_db->getEscaped($month) . "-01 00:00:00'
-				AND created<'" . $this->_db->getEscaped($nextyear) . "-" . $this->_db->getEscaped($nextmonth) . "-01 00:00:00'";
+				AND created>=" . $this->_db->quote($year . "-" . $month . "-01 00:00:00") . "
+				AND created<" . $this->_db->quote($nextyear . "-" . $nextmonth . "-01 00:00:00");
 		if (!$group)
 		{
 			//$sql .= " AND (`group`='' OR `group` IS NULL)";
@@ -940,7 +940,7 @@ class SupportTicket extends JTable
 				AND f.type=" . $this->_db->Quote($type) . "
 				AND f.open=0
 				AND k.ticket=f.id
-				AND f.created>='" . $this->_db->getEscaped($year) . "-01-01 00:00:00'";
+				AND f.created>=" . $this->_db->quote($year . "-01-01 00:00:00");
 		if (!$group)
 		{
 			//$sql .= " AND (f.`group`='' OR f.`group` IS NULL)";

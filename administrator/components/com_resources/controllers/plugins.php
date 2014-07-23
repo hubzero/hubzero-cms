@@ -122,7 +122,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		if ($this->view->filters['search'])
 		{
-			$where[] = 'LOWER(p.name) LIKE ' . $this->database->Quote('%' . $this->database->getEscaped($this->view->filters['search'], true) . '%', false);
+			$where[] = 'LOWER(p.name) LIKE ' . $this->database->Quote('%' . $this->view->filters['search'] . '%');
 		}
 		if ($this->view->filters['state'])
 		{

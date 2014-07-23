@@ -202,7 +202,7 @@ class MwZones extends JTable
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.`zone`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%' OR LOWER(c.`master`) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(c.`zone`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(c.`master`) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		$query = "FROM $this->_tbl AS c";

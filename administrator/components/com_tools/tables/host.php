@@ -232,7 +232,7 @@ class MwHost extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(c.hostname) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(c.hostname) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		$query = "FROM $this->_tbl AS c";

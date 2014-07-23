@@ -502,7 +502,7 @@ class Wishlist extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$w[] = "m.title LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
+			$w[] = "m.title LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 		}
 
 		$sql .= (count($w) > 0) ? "WHERE " : "";

@@ -827,14 +827,14 @@ class ToolVersion extends  JTable
 	 */
 	public function validToolReg(&$tool, &$err, $id, $config, $checker=0, $result=1)
 	{
-	    $xlog = JFactory::getLogger();
+		$xlog = JFactory::getLogger();
 
 		$tgObj = new ToolGroup($this->_db);
 
 		//  check if toolname exists in tool table
 		$query  = "SELECT t.id ";
 		$query .= "FROM #__tool as t ";
-		$query .= "WHERE t.toolname LIKE '" . $this->_db->getEscaped($tool['toolname']) . "' ";
+		$query .= "WHERE t.toolname LIKE " . $this->_db->quote($tool['toolname']) . " ";
 		if ($id)
 		{
 			$query .= "AND t.id!=" . $this->_db->Quote($id) . " ";

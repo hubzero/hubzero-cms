@@ -251,7 +251,7 @@ class JobSeeker extends JTable
 				for ($i=0, $n=count($s); $i < $n; $i++)
 				{
 					$query .= "\n , (SELECT count(*) FROM #__jobs_seekers AS s WHERE s.uid=r.uid ";
-					$query .= "AND  LOWER(s.tagline) LIKE '%" . $this->_db->getEscaped($s[$i]) . "%') AS keyword$i ";
+					$query .= "AND  LOWER(s.tagline) LIKE " . $this->_db->quote('%' . $s[$i] . '%') . ") AS keyword$i ";
 					$kw .= $i == ($n-1) ? 'keyword' . $i . ' + 2' : 'keyword' . $i . ' + ';
 				}
 

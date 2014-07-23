@@ -216,9 +216,9 @@ class GroupsGroup extends JTable
 			}
 			else
 			{
-				$where[] = "(LOWER(v.name) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(v.username) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-						OR LOWER(v.email) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+				$where[] = "(LOWER(v.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(v.username) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(v.email) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 			}
 		}
 

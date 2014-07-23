@@ -294,7 +294,7 @@ class ResourcesResource extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT r.id FROM $this->_tbl AS r LEFT JOIN #__resource_assoc AS a ON a.child_id=r.id WHERE (r.`path`=" . $this->_db->Quote($oid) . " OR r.`path` LIKE '%/" . $this->_db->getEscaped($oid) . "') AND r.`standalone`=0 AND a.parent_id=" . $this->_db->Quote($parent_id));
+		$this->_db->setQuery("SELECT r.id FROM $this->_tbl AS r LEFT JOIN #__resource_assoc AS a ON a.child_id=r.id WHERE (r.`path`=" . $this->_db->Quote($oid) . " OR r.`path` LIKE " . $this->_db->quote('%/' . $oid) . ") AND r.`standalone`=0 AND a.parent_id=" . $this->_db->Quote($parent_id));
 		if ($result = $this->_db->loadResult())
 		{
 			return true;
@@ -537,7 +537,7 @@ class ResourcesResource extends JTable
 				$query .= "(C.access=0 OR C.access=1 OR C.access=3 OR (C.access=4 AND (C.group_owner IN ('" . $groups . "') ";
 				foreach ($usersgroups as $group)
 				{
-					$query .= " OR C.group_access LIKE '%;" . $this->_db->getEscaped($group) . ";%'";
+					$query .= " OR C.group_access LIKE " . $this->_db->quote('%;' . $group . ';%');
 				}
 				$query .= "))) ";
 			}
@@ -786,7 +786,7 @@ class ResourcesResource extends JTable
 		}
 
 		if (isset($filters['tag'])) {
-			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag='" . $this->_db->getEscaped($filters['tag']) . "' OR tg.alias='" . $this->_db->getEscaped($filters['tag']) . "') ";
+			$query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag=" . $this->_db->quote($filters['tag']) . " OR tg.alias=" . $this->_db->quote($filters['tag']) . ") ";
 		}
 		if (isset($filters['tags']))
 		{
@@ -800,7 +800,7 @@ class ResourcesResource extends JTable
 
 		if (isset($filters['group']) && $filters['group'] != '')
 		{
-			$query .= "AND (r.group_owner='" . $this->_db->getEscaped($filters['group']) . "' OR r.group_access LIKE '%;" . $this->_db->getEscaped($filters['group']) . ";%') ";
+			$query .= "AND (r.group_owner=" . $this->_db->quote($filters['group']) . " OR r.group_access LIKE " . $this->_db->quote('%;' . $filters['group'] . ';%') . ") ";
 			if (!$filters['authorized'])
 			{
 				switch ($filters['access'])
@@ -980,10 +980,10 @@ class ResourcesResource extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$sql .= " AND (LOWER(r.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'";
+			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
 			{
-				$sql .= " OR r.id=" . $this->_db->getEscaped(strtolower($filters['search']));
+				$sql .= " OR r.id=" . $this->_db->quote(strtolower($filters['search']));
 			}
 			$sql .= ")";
 		}
@@ -1023,7 +1023,7 @@ class ResourcesResource extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$sql .= " AND (LOWER(r.title) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
+			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR r.id=" . $this->_db->Quote($filters['search']);
@@ -1075,7 +1075,7 @@ class ResourcesResource extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$sql .= " AND (LOWER(r.title) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
+			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR r.id=" . $this->_db->Quote($filters['search']);
@@ -1132,7 +1132,7 @@ class ResourcesResource extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$sql .= " AND (LOWER(r.title) LIKE '%" . $this->_db->getEscaped($filters['search']) . "%'";
+			$sql .= " AND (LOWER(r.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%');
 			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR r.id=" . $this->_db->Quote($filters['search']);

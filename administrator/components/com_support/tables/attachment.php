@@ -384,8 +384,8 @@ class SupportAttachment extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$where[] = "(LOWER(filename) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-					OR LOWER(description) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(filename) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(description) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		if (count($where) > 0)

@@ -237,8 +237,8 @@ class CoursesTableUnit extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			$where[] = "(LOWER(cu.alias) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%'
-					OR LOWER(cu.title) LIKE '%" . $this->_db->getEscaped(strtolower($filters['search'])) . "%')";
+			$where[] = "(LOWER(cu.alias) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(cu.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		if (count($where) > 0)
