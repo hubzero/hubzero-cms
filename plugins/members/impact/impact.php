@@ -161,11 +161,6 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		// Start url
-		$route = $this->_project->provisioned
-					? 'index.php?option=com_publications&task=submit'
-					: 'index.php?option=com_projects&alias=' . $this->_project->alias . '&active=publications';
-
 		// Get pub stats for each publication
 		$pubLog = new PublicationLog($this->_database);
 		$view->pubstats = $pubLog->getAuthorStats($uid, 0, false);
@@ -181,7 +176,6 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		$view->database  = $this->_database;
 		$view->uid       = $uid;
 		$view->pubconfig = JComponentHelper::getParams('com_publications');
-		$view->title     = $this->_area['title'];
 		$view->helper    = new PublicationHelper($this->_database);
 
 		if ($this->getError())

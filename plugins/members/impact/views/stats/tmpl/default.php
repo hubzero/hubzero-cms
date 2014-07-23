@@ -143,7 +143,7 @@ tooltip: true,
 
 								function showTooltip(x,y,contents, append)
 								{
-								      $('<div>' +  contents + append + '</div>').css( {
+								      $('<div>' + contents + append +'\ </div>').css({
 								            position: 'absolute',
 								            display: 'none',
 								            top: y,
@@ -169,18 +169,18 @@ tooltip: true,
 										{
 											if (points[k].data[m][0] != null && points[k].data[m][1] != null)
 											{
-										  		if (k == 0)
+												if (k == 0)
 												{
-											  		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+													showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 														graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10,
-														points[k].data[m][1], append)
-										  		}
+														points[k].data[m][1], append);
+													}
 												else
 												{
 											 		showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
 														graphy + points[k].yaxis.p2c(points[k].data[m][1]) - 45,
-														points[k].data[m][1], append)
-										  		}
+														points[k].data[m][1], append);
+													}
 
 											}
 										}
