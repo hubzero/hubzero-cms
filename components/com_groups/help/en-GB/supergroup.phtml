@@ -31,8 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-
 <h1>Super Groups</h1>
+
+<h4>Table of Contents</h4>
+<ul>
+	<li><a href="#templating-system">Templating System</a></li>
+	<li><a href="#page-templates">Page Templates</a></li>
+	<li><a href="#macros">Custom Macros</a></li>
+	<li><a href="#php-pages">PHP Pages</a></li>
+	<li><a href="#databases">Databases</a></li>
+	<li><a href="#components">Components</a></li>
+</ul>
+
+<h6>Whats a Super Group</h6>
 <p>Super groups are advanced HUB groups, who have their own webspace within the HUB to showcase their group.</p>
 
 <h6>Advanced Features for Group Pages</h6>
@@ -40,10 +51,10 @@ defined('_JEXEC') or die('Restricted access');
 
 <hr />
 
-<h3>Templating System</h3>
+<h3 id="templating-system">Templating System</h3>
 <p>A new templating system has been added to help Super groups create a better web presence. When a super group is created, a default template is created and placed in the groups filespace.</p>
 
-<p class="info">The only file needed for a super group template to work is /site/groups/{groupid}/template/index.php</p>
+<p class="info">The only file needed for a super group template to work is /site/groups/{group_id}/template/index.php</p>
 
 <h6>File Directory Structure</h6>
 <p>Below shows the desired file directory structure for super groups. Following this pattern will allow HUB owners and developers to add new developments and find bugs easier.</p>
@@ -91,7 +102,7 @@ echo htmlentities('<group:include type="googleanalytics" account="{account}" />'
 
 <hr />
 
-<h3>Page Templates</h3>
+<h3 id="page-templates">Page Templates</h3>
 <p>You'll probably want most of your group pages to look about the same. Sometimes, though, you may need a specific page, or a group of pages, to display or behave differently. This is easily accomplished with page templates.</p>
 
 
@@ -104,7 +115,7 @@ echo htmlentities('<group:include type="googleanalytics" account="{account}" />'
 
 <p>For example: Your About Us page has an alias of 'about-us' and an ID of 6. If template has a file named page-about-us.php or page-6.php, then it will automatically find and use that file to render the About Us page.</p>
 
-<p class="info">To be used, specialized page templates must be in your groups template directory: /site/groups/{groupid}/template/</p>
+<p class="info">To be used, specialized page templates must be in your groups template directory: /site/groups/{group_id}/template/</p>
 
 <hr />
 
@@ -119,8 +130,9 @@ Template Name: My Custom Page
 */');
 ?>
 </pre>
+<p class="info">To be used, custom page templates must be in your groups template directory: /site/groups/{group_id}/template/</p>
 
-<p class="info">To be used, custom page templates must be in your groups template directory: /site/groups/{groupid}/template/</p>
+<hr />
 
 <h6>Selecting a Custom Template</h6>
 <p>Once you upload the file to your template's folder, the template name, "My Custom Page", will list in the edit page screen's Template dropdown.</p>
@@ -145,14 +157,129 @@ Template Name: My Custom Page
 	<li>page.php — Else the HUB looks for and, if found, uses the default page template.</li>
 	<li>index.php — Else the HUB uses a the template's index file.</li>
 </ol>
-	
+
 <hr />
 
-<h3>Databases</h3>
+<h6>Group Includes</h6>
+<p>The following group include tags can be used within a group page.</p>
+<pre><?php
+echo htmlentities('<group:include type="modules" position="{position}" />') . "\n";
+echo htmlentities('<group:include type="module" title="{title}" />') . "\n";
+?></pre>
+
+<hr />
+
+<h3 id="macros">Custom Macros</h3>
+<p>Super groups have the ability to create their own custom macros or override any existing macro "[[MacroName(args)]]".</p>
+<h6>Custom Macro Class Structure</h6>
+
+
+<pre><?php echo htmlentities('<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2014 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+namespace Plugins\Content\Formathtml\Macros;
+
+use Plugins\Content\Formathtml\Macro;
+
+/**
+ * Wiki macro class for displaying hello world
+ */
+class {{macro_name}} extends Macro
+{
+	/**
+	 * Returns description of macro, use, and accepted arguments
+	 * 
+	 * @return     array
+	 */
+	public function description()
+	{
+		$txt = array();
+		$txt[\'html\'] = \'<p>Put macro description here...</p>\';
+		return $txt[\'html\'];
+	}
+
+	/**
+	 * Generate macro output
+	 * 
+	 * @return     string
+	 */
+	public function render()
+	{
+		return \'Return any html content you want this macro to render\';
+	}
+}'); ?>
+</pre>
+
+<hr />
+
+<h6>Overriding Macros</h6>
+<p>To override a macro, copy the original macro located in /{web_root}/plugins/content/formathtml/macros/ into your groups macro folder /site/groups/{group_id}/macros/. You can no modify the render functionality, add or remove params, etc.</p>
+<p class="warning">Note: The Macos class name must remain the same and the class must implement a render() method. You are free to add or chanage other methods.</p>
+<p class="warning">Note: If the original macro file is located within a subfolder, you must recreate that folder structure in the groups macros folder for the override to work.</p>
+
+<hr />
+
+<h3 id="php-pages">PHP Pages</h3>
+<p>Super groups have the ability to include PHP code in any group page or module through the page and module managers. If you are finding this is hard to manage or the approval process is taking too long. Users with SSH access and PHP knowledge can add any number of PHP pages to their super group.</p>
+
+<h6>PHP Pages Directory</h6>
+<pre>/site/groups/{group_id}/pages/</pre>
+
+<hr />
+
+<h6>Super groups can also create a hiearchy folders within the pages directory</h6>
+<pre>
+1. /site/groups/{group_id}/pages/features.php -> /groups/{group_cn}/features
+
+2. /site/groups/{group_id}/pages/features/one.php -> /groups/{group_cn}/features/one
+
+3. /site/groups/{group_id}/pages/features/two.php -> /groups/{group_cn}/features/two
+</pre>
+
+<hr />
+
+<h6>Group Includes</h6>
+<p>The following group include tags can be used within a PHP page.</p>
+<pre><?php
+echo htmlentities('<group:include type="modules" position="{position}" />') . "\n";
+echo htmlentities('<group:include type="module" title="{title}" />') . "\n";
+?></pre>
+
+<hr />
+
+<h3 id="databases">Databases</h3>
 <p>Each super group comes with its own database. This database can be used to store data for that group. The credentials for accessing that database can be found in the super groups database config file.</p>
 
 <h6>Database Config Path</h6>
-<pre>/site/groups/{groupid}/config/db.php</pre>
+<pre>/site/groups/{group_id}/config/db.php</pre>
+
+<hr />
 
 <h6>Database Config Contents</h6>
 <pre>
@@ -167,6 +294,8 @@ return array(
 );"); ?>
 </pre>
 
+<hr />
+
 <h6>Using the Database</h6>
 <p>You can use the database anywhere you want in your template, a PHP page, a group component, etc. Anywhere you can run PHP code basically.</p>
 <p>Getting a reference to the group database object is very easy:</p>
@@ -176,41 +305,24 @@ return array(
 
 <hr />
 
-<h3>PHP Pages</h3>
-<p>Super groups have the ability to include PHP code in any group page or module through the page and module managers. If you are finding this is hard to manage or the approval process is taking too long. Users with SSH access and PHP knowledge can add any number of PHP pages to their super group.</p>
+<h3 id="components">Components</h3>
+<p>Super groups now have the ability to have their own components. They are setup the <u>exact</u> same as a regular component except for their file location. For more information regarding developing components see: <a target="_blank" href="https://hubzero.org/documentation/1.2.2/webdevs">https://hubzero.org/documentation/1.2.2/webdevs</a></p>
 
-<p>Super groups can also create a hiearchy folders within the pages directory</p>
-
-<h6>PHP Pages Directory</h6>
-<pre>/site/groups/{groupid}/pages/</pre>
-
-<h6>Examples</h6>
-<pre>
-1. /site/groups/{groupid}/pages/features.php -> /groups/{groupcn}/features
-
-2. /site/groups/{groupid}/pages/features/one.php -> /groups/{groupcn}/features/one
-
-3. /site/groups/{groupid}/pages/features/two.php -> /groups/{groupcn}/features/two
-</pre>
+<h6>Component Directory</h6>
+<pre>/site/groups/{group_id}/components/com_{component}/</pre>
 
 <hr />
 
-<h3>Components</h3>
-<p>Super groups now have the ability to have their own components. They are setup the <u>exact</u> same as a regular component except for their file location.</p>
-<p>For more information regarding developing components see: <a target="_blank" href="https://hubzero.org/documentation/1.2.2/webdevs">https://hubzero.org/documentation/1.2.2/webdevs</a></p>
-
-<h6>Component Directory</h6>
-<pre>/site/groups/{groupid}/components/com_{component}/</pre>
-
 <h6>Component Language File Directory</h6>
-<pre>/site/groups/{groupid}/language/en-GB/en-GB.com_{component}.ini</pre>
+<pre>/site/groups/{group_id}/language/en-GB/en-GB.com_{component}.ini</pre>
+
+<hr />
 
 <h6>Component Paths</h6>
 <p>As a helper for super group component developers the path to the component directory is defined in a constant.</p>
 <pre>JPATH_GROUPCOMPONENT</pre>
-
 <p>So as an example, if your creating the component "com_drwho", the JPATH_GROUPCOMPONENT constant equals:</p>
-<pre>/{web_root}/site/groups/{groupid}/components/com_drwho/</pre>
+<pre>/{web_root}/site/groups/{group_id}/components/com_drwho/</pre>
 
 <p class="warning">Note: You should be able to move the component to the main components folder and and have it work without any changes.</p>
 
