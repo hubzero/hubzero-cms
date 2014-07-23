@@ -307,7 +307,7 @@ class CitationsCitation extends JTable
 	 *
 	 * @var unknown
 	 */
-    var	$res_edu 			= NULL;  // @var int(3)
+	var	$res_edu 			= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'exp_list_exp_data'
@@ -321,14 +321,14 @@ class CitationsCitation extends JTable
 	 *
 	 * @var unknown
 	 */
- 	var $exp_data       	= NULL;  // @var int(3)
+	var $exp_data       	= NULL;  // @var int(3)
 
 	/**
 	 * Description for 'notes'
 	 *
 	 * @var unknown
 	 */
- 	var $notes          	= NULL;  // @var text
+	var $notes          	= NULL;  // @var text
 
 	/**
 	 * Description for 'published'
@@ -836,7 +836,7 @@ class CitationsCitation extends JTable
 			}
 		}
 
-		if(isset($filter['id']) && $filter['id'] > 0)
+		if (isset($filter['id']) && $filter['id'] > 0)
 		{
 			$query .= " AND r.id=" . $filter['id'];
 		}
