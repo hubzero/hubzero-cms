@@ -77,13 +77,23 @@ class Migration extends Scaffolding
 				break;
 		}
 
+		// determine our base path
+		$base = JPATH_ROOT;
+		if ($this->arguments->getOpt('install-dir') && strlen(($this->arguments->getOpt('install-dir'))) > 0)
+		{
+			$base = JPATH_ROOT . DS . trim($this->arguments->getOpt('install-dir'), DS);
+		}
+
+		// install directory is migrations folder within base
+		$install_dir = $base . DS . 'migrations';
+
 		// Extension
 		$extension = null;
 		if ($this->arguments->getOpt('e') || $this->arguments->getOpt('extension'))
 		{
 			$extension = ($this->arguments->getOpt('e')) ? $this->arguments->getOpt('e') : $this->arguments->getOpt('extension');
 
-			if ($extension != 'core' && !$this->isValidExtension($extension))
+			if ($extension != 'core' && !$this->isValidExtension($extension, $base))
 			{
 				$this->output->error("Error: the extension provided ({$extension}) does not appear to be valid.");
 			}
@@ -121,7 +131,7 @@ class Migration extends Scaffolding
 
 		// Craft file/classname
 		$classname   = 'Migration' . \JFactory::getDate()->format("YmdHis") . $ext;
-		$destination = JPATH_ROOT . DS . 'migrations' . DS . $classname . '.php';
+		$destination = $install_dir . DS . $classname . '.php';
 
 		$this->addTemplateFile("{$this->getType()}.tmpl", $destination)
 			 ->addReplacement('class_name', $classname)
@@ -136,7 +146,7 @@ class Migration extends Scaffolding
 	 *
 	 * @return bool - whether or not extension is valid
 	 **/
-	private function isValidExtension($extension)
+	private function isValidExtension($extension, $base)
 	{
 		$ext = explode("_", $extension);
 		$dir = '';
@@ -144,15 +154,15 @@ class Migration extends Scaffolding
 		switch ($ext[0])
 		{
 			case 'com':
-				$dir = JPATH_ROOT . DS . 'components' . DS . $extension;
-				$alt = JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $extension;
+				$dir = $base . DS . 'components' . DS . $extension;
+				$alt = $base . DS . 'administrator' . DS . 'components' . DS . $extension;
 			break;
 			case 'mod':
-				$dir = JPATH_ROOT . DS . 'modules' . DS . $extension;
-				$alt = JPATH_ROOT . DS . 'administrator' . DS . 'modules' . DS . $extension;
+				$dir = $base . DS . 'modules' . DS . $extension;
+				$alt = $base . DS . 'administrator' . DS . 'modules' . DS . $extension;
 			break;
 			case 'plg':
-				$dir = JPATH_ROOT . DS . 'plugins' . DS . $ext[1] . DS . $ext[2];
+				$dir = $base . DS . 'plugins' . DS . $ext[1] . DS . $ext[2];
 				$alt = 'invalidfilepath';
 			break;
 		}
