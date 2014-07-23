@@ -557,7 +557,7 @@ class CitationsCitation extends JTable
 		//search term match
 		if (isset($filter['search']) && $filter['search'] != '')
 		{
-			$query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "') > 0)";
+			$query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "' IN BOOLEAN MODE) > 0)";
 
 			//if ($admin = true)
 			//{
@@ -850,7 +850,7 @@ class CitationsCitation extends JTable
 		//if we had a search term lets order by search match
 		if (isset($filter['search']) && $filter['search'] != '')
 		{
-			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "') DESC";
+			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "' IN BOOLEAN MODE) DESC";
 		}
 
 		//sort filter
