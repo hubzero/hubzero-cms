@@ -114,6 +114,8 @@ function submitbutton(pressbutton)
 	} else if (form.type.value == "-1"){
 		alert('You must select a Section.');
 	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
