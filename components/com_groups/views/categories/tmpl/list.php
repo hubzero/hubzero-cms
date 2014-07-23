@@ -45,7 +45,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<li>
 				<div class="item-container">
 					<div class="item-title">
-						<?php echo $category->get('title'); ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=edit&categoryid='.$category->get('id')); ?>">
+							<?php echo $category->get('title'); ?>
+						</a>
 					</div>
 					
 					<div class="item-sub">
