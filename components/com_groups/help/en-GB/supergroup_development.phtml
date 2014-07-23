@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 <h1>Super Group Development</h1>
 <p>In efforts to make super group development easier, we are utilizing a code management tool called <a href="https://www.gitlab.com/" target="_blank">Gitlab</a>. Similar to Github in functionality and looks, it provides an easy way for the developers to write &amp; push code and give the HUBzero team the security we needed to allow third party developers to commit code to production machines.</p>
 
-<?php if (JFactory::getUser()->get('usertype') == 'Super Administrators') : ?>
+<?php if (JFactory::getUser()->get('usertype') == 'Super Administrator') : ?>
 	<h2>HUB Setup</h2>
 	<p>Each HUB can choose to integrate with Gitlab or not. If your HUB chooses to integrate then there are few steps to get setup and running.</p>
 	<ol>
@@ -81,7 +81,9 @@ defined('_JEXEC') or die('Restricted access');
 
 <h2>Frequent Updates</h2>
 <p>Managing the super groups by Gitlab (outside of the main CMS), allows for more regular updates.
-<p>At any point after the hub is configured to work with Gitlab, any hub admin who has access to the groups adminstrator panel can update the the super groups code. Since each super group pulls from the main repo that is write protected running the "Pull Code" command wont do anything unless "merge requests" were approved and merged in since the last time code was pulled.
+<p>At any point after the hub is configured to work with Gitlab, any hub admin who has access to the groups adminstrator panel can update the the super groups code. Since each super group pulls from the main repo that is write protected running the "Pull Code" command wont do anything unless "merge requests" were approved and merged in since the last time code was pulled.</p>
+
+<p>Along with pulling in any new code that had been merged, any migrations that had not been run previously will also be run.</p>
 
 <hr />
 
