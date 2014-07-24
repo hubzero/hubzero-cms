@@ -46,7 +46,7 @@ a:focus {
 	position: absolute;
 	top: 0;
 	left: 0;
-	width: 150px;
+	width: 250px;
 	height: 30px;
 	padding: 5px 10px;
 	color: #fff;
@@ -1038,6 +1038,7 @@ a.ui-slider-handle {
 	left:300px;
 	width:600px;
 	font-size:14px;
+	line-height: 18px;
 	}
 #hubpresenter-error ol {
 	position:absolute;

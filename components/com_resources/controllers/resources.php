@@ -720,6 +720,18 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$path = $path ? $path : ResourcesHtml::build_path($activechild->created, $activechild->id, '');
 		$path = $base . $path;
 
+		// we must have a folder
+		if (!JFolder::exists(JPATH_ROOT . DS . $path))
+		{
+			$this->setError(JText::_('Folder containing assets does nto exist.'));
+
+			$return = array();
+			$return['errors'] = $this->getErrors();
+			$return['content_folder'] = $path;
+			$return['manifest'] = null;
+			return $return;
+		}
+
 		//check to make sure we have a presentation document defining cuepoints, slides, and media
 		//$manifest_path_json = JPATH_ROOT . $path . DS . 'presentation.json';
 		$manifests = JFolder::files( JPATH_ROOT . DS . $path, '.json' );
@@ -876,7 +888,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			//if we have no errors
 			if (count($errors) > 0)
 			{
-				echo HUBpresenterHelper::errorMessage($errors);
+				// Instantiate a new view
+				$this->view = new \Hubzero\Component\View(array(
+					'name'   => 'view',
+					'layout' => 'watch_error'
+				));
+				$this->view->errors = $errors;
+				$this->view->display();
 				return;
 			}
 			else
