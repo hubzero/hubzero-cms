@@ -153,7 +153,6 @@ if (!$no_html && $tmpl != 'component') :
 										$menu_item .= '<a class="outline" href="' . $link . '" data-icon="&#x' . $cat['icon'] . '" data-title="' . JText::_('Outline') . '">' . JText::_('Outline') . '</a>';
 									}
 									$menu_item .= '</li>';
-									$menu_item .= '</li>';
 								}
 								else
 								{
