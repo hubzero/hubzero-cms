@@ -291,7 +291,7 @@ class CoursesTableAnnouncement extends JTable
 
 		$query .= " ORDER BY a.sticky DESC, a.created DESC";
 
-		if (isset($filters['limit']))
+		if (isset($filters['limit']) && $filters['limit'] > 0)
 		{
 			if (!isset($filters['start']))
 			{
