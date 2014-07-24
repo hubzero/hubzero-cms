@@ -353,6 +353,34 @@ class TagsTableTag extends JTable
 	 */
 	public function buildQuery($filters)
 	{
+		if (isset($filters['sort']) && $filters['sort'] == 'taggedon')
+		{
+			$query = "SELECT tj.tagid FROM `#__tags_object` AS tj 
+					INNER JOIN $this->_tbl As t ON t.id=tj.tagid
+					WHERE t.admin=0 GROUP BY tj.tagid ORDER BY tj.taggedon DESC";
+
+			if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+			{
+				if (!isset($filters['start']))
+				{
+					$filters['start'] = 0;
+				}
+				$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			}
+			$this->_db->setQuery($query);
+			$data = $this->_db->loadResultArray();
+
+			$query  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon, 
+						(SELECT COUNT(*) FROM `#__tags_object` AS tt WHERE tt.tagid=t.id) AS total, 
+						(SELECT COUNT(*) FROM `#__tags_substitute` AS s WHERE s.tag_id=t.id) AS substitutes 
+					FROM $this->_tbl AS t 
+					INNER JOIN `#__tags_object` AS tj ON t.id=tj.tagid 
+					WHERE t.id=tj.tagid AND t.id IN (" . implode(',', $data) . ")
+					ORDER BY tj.taggedon DESC";
+
+			return $query;
+		}
+
 		if (isset($filters['count']) && $filters['count']) 
 		{
 			$query = "SELECT count(DISTINCT t.id)";
@@ -368,7 +396,7 @@ class TagsTableTag extends JTable
 		$query .= " FROM $this->_tbl AS t";
 		if (isset($filters['by']) && $filters['by'] == 'user') 
 		{
-			$query .= " JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%'";
+			$query .= " JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid "; //AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%'";
 		}
 		else if (isset($filters['scope']) || isset($filters['scope_id'])) 
 		{
@@ -623,7 +651,7 @@ class TagsTableTag extends JTable
 
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.taggedon, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM $this->_tbl AS t  ";
-		$sql .= "JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%' ";
+		$sql .= "JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid "; //AND t.raw_tag NOT LIKE 'tool:%' AND t.raw_tag NOT LIKE 'resource:%' ";
 		if ($exclude_private) 
 		{
 			$sql.= "LEFT JOIN #__resources AS R ON R.id=tj.objectid AND tj.tbl='resources' ";
