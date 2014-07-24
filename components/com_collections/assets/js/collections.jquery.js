@@ -113,8 +113,10 @@ jQuery(document).ready(function(jq){
 					current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
 				},
 				beforeShow: function() {
-					scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
-					eval(scrp);
+					if (scrp && scrp.length) {
+						scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
+						eval(scrp);
+					}
 				},
 				afterShow: function() {
 					var el = this.element;
