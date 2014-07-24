@@ -658,7 +658,7 @@
 	}
 	#app-share table thead th {
 		font-size: 115%;
-		background: #f8f8f8 url("/components/com_members/assets/img/light-stripes.png");
+		background: #f8f8f8 url("/components/com_tools/assets/img/light-stripes.png");
 		border: 2px solid #e9e9e9;
 		border-bottom: 1px solid #e9e9e9;
 		margin-right: -2px; /* Fix 2px issue */
