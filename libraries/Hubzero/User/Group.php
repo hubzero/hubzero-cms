@@ -1525,9 +1525,10 @@ class Group extends Object
 	/**
 	 * Return a groups logo
 	 *
-	 * @return BOOL
+	 * @param   string $what What data to return?
+	 * @return  mixed
 	 */
-	public function getLogo()
+	public function getLogo($what='')
 	{
 		// get user
 		$juser = \JFactory::getUser();
@@ -1550,6 +1551,17 @@ class Group extends Object
 		 && !in_array($juser->get('id'), $members_and_invitees))
 		{
 			$src = $default_logo;
+		}
+
+		$what = strtolower($what);
+		if ($what == 'size')
+		{
+			return getimagesize(JPATH_ROOT . $src);
+		}
+
+		if ($what == 'path')
+		{
+			return $src;
 		}
 
 		return \JURI::base(true) . $src;
