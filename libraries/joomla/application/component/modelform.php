@@ -55,6 +55,13 @@ abstract class JModelForm extends JModel
 				return false;
 			}
 
+			// Make sure a table has a checked_out field
+			$fields = $table->getFields();
+			if (!isset($fields['checked_out']))
+			{
+				return true;
+			}
+
 			// Check if this is the user having previously checked out the row.
 			if ($table->checked_out > 0 && $table->checked_out != $user->get('id') && !$user->authorise('core.admin', 'com_checkin'))
 			{
@@ -95,6 +102,13 @@ abstract class JModelForm extends JModel
 			{
 				$this->setError($table->getError());
 				return false;
+			}
+
+			// Make sure a table has a checked_out field
+			$fields = $table->getFields();
+			if (!isset($fields['checked_out']))
+			{
+				return true;
 			}
 
 			// Check if this is the user having previously checked out the row.
