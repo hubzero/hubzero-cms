@@ -126,6 +126,9 @@ $this->css('course.css')
 				<div class="course-group">
 					<?php
 					$group = \Hubzero\User\Group::getInstance($this->course->get('group_id'));
+
+					list($width, $height) = $group->getLogo('size');
+					$atts = ($width > $height ? 'height="50"' : 'width="50"');
 					?>
 					<p class="course-group-descripion">
 						<?php echo JText::_('Brought to you by:'); ?>
@@ -137,7 +140,7 @@ $this->css('course.css')
 					</h3>
 					<p class="course-group-img">
 						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
-							<img src="<?php echo $group->getLogo(); ?>" width="50" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?> group image" />
+							<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?> group image" />
 						</a>
 					</p>
 				</div>
