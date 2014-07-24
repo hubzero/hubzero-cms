@@ -19,15 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Delete Blog Entry Layout">
+	<layout title="Delete a Post">
 		<message>
-			<![CDATA[STANDARD DELETE BLOG ENTRY LAYOUT DESC]]>
+			<![CDATA[Delete a Post]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Delete Blog Entry Layout</name>
-		<description>STANDARD DELETE BLOG ENTRY LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
+	<fields name="params">
+		<fieldset name="basic">
+			<field name="post" type="text" label="Post ID" description="Enter the ID for the a specific post to display" />
+		</fieldset>
+	</fields>
 </metadata>
