@@ -259,111 +259,118 @@ HUB.Plugins.CoursesForum = {
 						data: $(this).serializeArray(),
 						files: $(":file", this),
 						iframe: true,
-						processData: false
-					}).complete(function(response) {
-						var data = jQuery.parseJSON(response.responseText);
-						if (data) {
-							if (_DEBUG) {
-								window.console && console.log(data);
+						processData: false,
+						dataType: 'json',
+						success: function(response, status) {
+							if (typeof response === "string" ) {
+								//data = jQuery.parseJSON(response.responseText);
+								var data = jQuery.parseJSON(response);
+							} else {
+								var data = response;
 							}
-							// Deactivate previous items
-							$('#' + feed.data('active')).removeClass('active');
-							feed.data('active', '');
+							if (data) {
+								if (_DEBUG) {
+									window.console && console.log(data);
+								}
+								// Deactivate previous items
+								$('#' + feed.data('active')).removeClass('active');
+								feed.data('active', '');
 
-							// Deactivate the add comment button
-							abtn.removeClass('active');
+								// Deactivate the add comment button
+								abtn.removeClass('active');
 
-							// Hide the "add comment" form and reset the fields
-							cfrm.hide();
-							cfrm.find('#field_comment').val('');
-							cfrm.find('input[type=file]').val('');
+								// Hide the "add comment" form and reset the fields
+								cfrm.hide();
+								cfrm.find('#field_comment').val('');
+								cfrm.find('input[type=file]').val('');
 
-							// Set some data so we know when/where to start pulling new results from
-							feed.data('thread_last_change', data.thread.lastchange);
-							feed.data('thread', data.thread.lastid);
-							if (_DEBUG) {
-								window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
-							}
+								// Set some data so we know when/where to start pulling new results from
+								feed.data('thread_last_change', data.thread.lastchange);
+								feed.data('thread', data.thread.lastid);
+								if (_DEBUG) {
+									window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+								}
 
-							header.text(data.thread.total + ' comments');
+								header.text(data.thread.total + ' comments');
 
-							// Update discussions list
-							//feed.html(data.threads.html);
-							if (data.threads.posts.length > 0) {
-								$('#threads_lastchange').val(data.threads.lastchange);
+								// Update discussions list
+								//feed.html(data.threads.html);
+								if (data.threads.posts.length > 0) {
+									$('#threads_lastchange').val(data.threads.lastchange);
 
-								for (var i = 0; i< data.threads.posts.length; i++) 
-								{
-									var item = data.threads.posts[i];
+									for (var i = 0; i< data.threads.posts.length; i++) 
+									{
+										var item = data.threads.posts[i];
 
-									if ($('#thread' + item.id).length) {
-										// Comment already exists!
-										continue;
-									}
-
-									var list = $('#category' + item.category_id);
-									if (!list.length) {
-										list = $('#categorynew');
-									}
-									if (!list.length) {
-										continue;
-									}
-
-									if (list.find('li.comments-none').length) {
-										list.empty();
-									}
-									list.prepend($(item.html).hide().fadeIn());
-
-									if (list.attr('id') == 'categorynew') {
-										var count = $('#newcomments span.count');
-									} else {
-										var count = $('#ct' + item.category_id + ' span.count');
-									}
-									if (count.length > 0) {
-										count.text(parseInt(count.text()) + 1);
-									}
-
-									var category = count.closest('div.category');
-									if (category.length > 0) {
-										var ccount = category.find('span.category-discussions');
-										if (ccount.length > 0) {
-											ccount.text(parseInt(ccount.text()) + 1);
+										if ($('#thread' + item.id).length) {
+											// Comment already exists!
+											continue;
 										}
-									}
 
-									if (item.mine) {
-										var mine = $('#categorymine');
-										if (mine.find('li.comments-none').length) {
-											mine.empty();
+										var list = $('#category' + item.category_id);
+										if (!list.length) {
+											list = $('#categorynew');
 										}
-										mine.prepend($(item.html).hide().fadeIn());
+										if (!list.length) {
+											continue;
+										}
 
-										var ccount = $('#ctmine').find('span.category-discussions');
-										if (ccount.length > 0) {
-											ccount.text(parseInt(ccount.text()) + 1);
+										if (list.find('li.comments-none').length) {
+											list.empty();
+										}
+										list.prepend($(item.html).hide().fadeIn());
+
+										if (list.attr('id') == 'categorynew') {
+											var count = $('#newcomments span.count');
+										} else {
+											var count = $('#ct' + item.category_id + ' span.count');
+										}
+										if (count.length > 0) {
+											count.text(parseInt(count.text()) + 1);
+										}
+
+										var category = count.closest('div.category');
+										if (category.length > 0) {
+											var ccount = category.find('span.category-discussions');
+											if (ccount.length > 0) {
+												ccount.text(parseInt(ccount.text()) + 1);
+											}
+										}
+
+										if (item.mine) {
+											var mine = $('#categorymine');
+											if (mine.find('li.comments-none').length) {
+												mine.empty();
+											}
+											mine.prepend($(item.html).hide().fadeIn());
+
+											var ccount = $('#ctmine').find('span.category-discussions');
+											if (ccount.length > 0) {
+												ccount.text(parseInt(ccount.text()) + 1);
+											}
 										}
 									}
 								}
+
+								// Append thread data and fade it in
+								//thread.html(data.thread.html).hide().fadeIn();
+								// hide thread
+								thread.hide();
+
+								// set the inner html (not jQuery way)
+								thread.get(0).innerHTML = data.thread.html;
+
+								// find all scripts in this html and eval them
+								thread.find('script').each(function(){
+									eval($(this).html());
+								});
+
+								// fade in
+								thread.fadeIn();
+
+								// Apply plugins to loaded content
+								jQuery(document).trigger('ajaxLoad');
 							}
-
-							// Append thread data and fade it in
-							//thread.html(data.thread.html).hide().fadeIn();
-							// hide thread
-							thread.hide();
-
-							// set the inner html (not jQuery way)
-							thread.get(0).innerHTML = data.thread.html;
-
-							// find all scripts in this html and eval them
-							thread.find('script').each(function(){
-								eval($(this).html());
-							});
-
-							// fade in
-							thread.fadeIn();
-
-							// Apply plugins to loaded content
-							jQuery(document).trigger('ajaxLoad');
 						}
 					});
 
@@ -532,44 +539,51 @@ HUB.Plugins.CoursesForum = {
 							data: $(this).serializeArray(),
 							files: $(":file", this),
 							iframe: true,
-							processData: false
-						}).complete(function(response) {
-							if (frm.hasClass('comment-edit')) {
-								var thrd = frm.attr('data-thread'),
-									srch = container.find('input.search').val();
+							processData: false,
+							dataType: 'json',
+							success: function(response, status) {
+								if (frm.hasClass('comment-edit')) {
+									var thrd = frm.attr('data-thread'),
+										srch = container.find('input.search').val();
 
-								$.getJSON(cfrm.attr('action').nohtml() + '&action=thread&thread=' + thrd + (srch ? '&search=' + srch : ''), {}, function(data){
-									// Set some data so we know when/where to start pulling new results from
-									if (_DEBUG) {
-										console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
-									}
-									// Append data and fade it in
-									//thread.html(data.thread.html).hide().fadeIn();
-									thread.hide();
-									thread.get(0).innerHTML = data.thread.html;
-									thread.find('script').each(function(){
-										eval($(this).html());
+									$.getJSON(cfrm.attr('action').nohtml() + '&action=thread&thread=' + thrd + (srch ? '&search=' + srch : ''), {}, function(data){
+										// Set some data so we know when/where to start pulling new results from
+										if (_DEBUG) {
+											console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+										}
+										// Append data and fade it in
+										//thread.html(data.thread.html).hide().fadeIn();
+										thread.hide();
+										thread.get(0).innerHTML = data.thread.html;
+										thread.find('script').each(function(){
+											eval($(this).html());
+										});
+										thread.fadeIn();
+
+										// Apply plugins to loaded content
+										//jQuery(document).trigger('ajaxLoad');
 									});
-									thread.fadeIn();
-
-									// Apply plugins to loaded content
-									jQuery(document).trigger('ajaxLoad');
-								});
-							} else {
-								data = jQuery.parseJSON(response.responseText);
-
-								if (data) {
-									if (_DEBUG) {
-										window.console && console.log(data);
-									}
-									feed.data('thread_last_change', data.thread.lastchange);
-									feed.data('thread', data.thread.lastid);
-									if (_DEBUG) {
-										window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+								} else {
+									if (typeof response === "string" ) {
+										//data = jQuery.parseJSON(response.responseText);
+										var data = jQuery.parseJSON(response);
+									} else {
+										var data = response;
 									}
 
-									if (data.thread.posts) {
-										plgn.updateComments(data.thread.posts, 'append');
+									if (data) {
+										if (_DEBUG) {
+											window.console && console.log(data);
+										}
+										feed.data('thread_last_change', data.thread.lastchange);
+										feed.data('thread', data.thread.lastid);
+										if (_DEBUG) {
+											window.console && console.log('thread_last_change: ' + feed.data('thread_last_change') + ', thread: ' + feed.data('thread'));
+										}
+
+										if (data.thread.posts) {
+											plgn.updateComments(data.thread.posts, 'append');
+										}
 									}
 								}
 							}
