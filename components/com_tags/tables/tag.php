@@ -398,7 +398,7 @@ class TagsTableTag extends JTable
 					INNER JOIN $this->_tbl As t ON t.id=tj.tagid
 					WHERE t.admin=0 GROUP BY tj.tagid ORDER BY tj.taggedon DESC";
 
-			if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all') 
+			if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 			{
 				if (!isset($filters['start']))
 				{
