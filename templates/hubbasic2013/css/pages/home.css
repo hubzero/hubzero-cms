@@ -86,6 +86,8 @@
 	}
 	#welcome:hover:after {
 		color: #fff;
+		-webkit-backface-visibility: hidden;
+		        backface-visibility: hidden;
 		-webkit-animation: whitePulse 2s infinite;
 		   -moz-animation: whitePulse 2s infinite;
 		     -o-animation: whitePulse 2s infinite;
