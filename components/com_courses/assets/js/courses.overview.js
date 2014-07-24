@@ -91,7 +91,7 @@ jQuery(document).ready(function(jq) {
 
 						$.post($(this).attr('action').nohtml(), $(this).serialize(), function(data) {
 							fbox.html(data);
-							HUB.Plugins.Autocomplete.initialize();
+							//HUB.Plugins.Autocomplete.initialize();
 
 							$('#notifier').text('Changes saved').hide().fadeIn().delay(1000).fadeOut();
 						});
