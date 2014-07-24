@@ -61,6 +61,8 @@ class Plugin extends \JPlugin
 	{
 		parent::__construct($subject, $config);
 
+		$this->option = (isset($config['type']) ? 'com_' . $config['type'] : 'com_' . $this->_type);
+
 		// Load the language files if needed.
 		if ($this->_autoloadLanguage)
 		{
@@ -119,7 +121,7 @@ class Plugin extends \JPlugin
 				'message' => $message,
 				'type'    => strtolower($type),
 				'option'  => $this->option,
-				'plugin'  => $this->plugin
+				'plugin'  => $this->_name
 			);
 		}
 
