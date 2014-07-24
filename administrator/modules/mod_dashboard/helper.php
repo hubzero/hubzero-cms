@@ -114,7 +114,7 @@ class Helper extends Module
 				$this->mainlist = $obj->createlist('general', 1);
 			}
 			$filters = array('filterby'=>'pending', 'sortby'=>'date');
-			$wishes = $objWish->get_wishes($mainlist, $filters, 1, $juser);
+			$wishes = $objWish->get_wishes($this->mainlist, $filters, 1, $juser);
 
 			$this->wishes = count($wishes);
 		}
