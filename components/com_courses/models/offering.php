@@ -337,7 +337,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 	 * @param      mixed $idx Index value
 	 * @return     array
 	 */
-	public function sections($filters=array())
+	public function sections($filters=array(), $clear=false)
 	{
 		if (!isset($filters['offering_id']))
 		{
@@ -355,7 +355,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			return $tbl->count($filters);
 		}
 
-		if (!($this->_sections instanceof CoursesModelIterator))
+		if (!($this->_sections instanceof CoursesModelIterator) || $clear)
 		{
 			$tbl = new CoursesTableSection($this->_db);
 
@@ -1136,12 +1136,40 @@ class CoursesModelOffering extends CoursesModelAbstract
 	}
 
 	/**
-	 * Short title for 'update'
-	 * Long title (if any) ...
+	 * Create a section linked to this offering
 	 *
-	 * @param unknown $course_id Parameter title (if any) ...
-	 * @param array $data Parameter title (if any) ...
-	 * @return boolean Return title (if any) ...
+	 * @param   boolean $validate Validate data?
+	 * @return  boolean True on success, False on error
+	 */
+	public function makeSection($alias='__default', $is_default=1)
+	{
+		$section = new CoursesModelSection();
+		$section->set('offering_id', $this->get('id'));
+		$section->set('alias', $alias);
+		$section->set('title', JText::_('Default'));
+		$section->set('state', 1);
+		$section->set('is_default', $is_default);
+		$section->set('enrollment', $this->config('default_enrollment', 0));
+		$section->set('start_date', $this->get('start_date'));
+		$section->set('end_date', $this->get('end_date'));
+		$section->set('publish_up', $this->get('publish_up'));
+		$section->set('publish_down', $this->get('publish_down'));
+		if (!$section->store())
+		{
+			$this->setError($section->getError());
+			return false;
+		}
+
+		$this->_sections = null;
+
+		return true;
+	}
+
+	/**
+	 * Store changes to the database
+	 *
+	 * @param   boolean $validate Validate data?
+	 * @return  boolean True on success, False on error
 	 */
 	public function store($validate=true)
 	{
@@ -1173,20 +1201,8 @@ class CoursesModelOffering extends CoursesModelAbstract
 		// An offering MUST have at least one __default section
 		if ($validate && $this->sections()->total() <= 0)
 		{
-			$section = new CoursesModelSection('__default', $this->get('id'));
-			$section->set('offering_id', $this->get('id'));
-			$section->set('alias', '__default');
-			$section->set('title', JText::_('Default'));
-			$section->set('state', 1);
-			$section->set('is_default', 1);
-			$section->set('enrollment', $this->config('default_enrollment', 0));
-			$section->set('start_date', $this->get('start_date'));
-			$section->set('end_date', $this->get('end_date'));
-			$section->set('publish_up', $this->get('publish_up'));
-			$section->set('publish_down', $this->get('publish_down'));
-			if (!$section->store())
+			if (!$this->makeSection('__default', 1))
 			{
-				$this->setError($section->getError());
 				return false;
 			}
 		}

@@ -342,6 +342,10 @@ $this->css('course.css')
 					if (!$dflt->exists())
 					{
 						// No default? Get the first in the list
+						if (!$offering->sections()->total())
+						{
+							$offering->makeSection();
+						}
 						$dflt = $offering->sections()->fetch('first');
 					}
 					$offering->section($dflt->get('alias'));
