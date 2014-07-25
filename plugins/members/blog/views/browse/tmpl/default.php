@@ -55,7 +55,7 @@ $this->css()
 </ul>
 <?php endif; ?>
 
-<form method="get" action="<?php JRoute::_($base); ?>">
+<form method="get" action="<?php echo JRoute::_($base); ?>">
 	<section class="section">
 		<div class="subject">
 		<?php if ($this->getError()) : ?>

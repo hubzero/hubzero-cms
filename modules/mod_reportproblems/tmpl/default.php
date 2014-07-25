@@ -61,7 +61,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</h2>
 			<form method="post" action="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=save'); ?>" id="troublereport" enctype="multipart/form-data">
 				<fieldset class="reporter">
-					<label for="trLogin">
+					<label<?php if ($this->guestOrTmpAccount) { echo ' for="trLogin"'; } ?>>
 						<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_LOGIN'); ?>: <span class="optional"><?php echo JText::_('MOD_REPORTPROBLEMS_OPTIONAL'); ?></span>
 						<?php if (!$this->guestOrTmpAccount) { ?>
 							<input type="hidden" name="reporter[login]" id="trLogin" value="<?php echo $this->escape($this->juser->get('username')); ?>" /><br /><span class="info-block"><?php echo $this->escape($this->juser->get('username')); ?></span>
@@ -70,7 +70,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<?php } ?>
 					</label>
 
-					<label for="trName">
+					<label<?php if ($this->guestOrTmpAccount) { echo ' for="trName"'; } ?>>
 						<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_NAME'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
 						<?php if (!$this->guestOrTmpAccount) { ?>
 							<input type="hidden" name="reporter[name]" id="trName" value="<?php echo $this->escape($this->juser->get('name')); ?>" /><br /><span class="info-block"><?php echo $this->escape($this->juser->get('name')); ?></span>
@@ -79,7 +79,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<?php } ?>
 					</label>
 
-					<label for="trEmail">
+					<label<?php if ($this->guestOrTmpAccount) { echo ' for="trEmail"'; } ?>>
 						<?php echo JText::_('MOD_REPORTPROBLEMS_LABEL_EMAIL'); ?>: <span class="required"><?php echo JText::_('MOD_REPORTPROBLEMS_REQUIRED'); ?></span>
 						<?php if (!$this->guestOrTmpAccount) { ?>
 							<input type="hidden" name="reporter[email]" id="trEmail" value="<?php echo $this->escape($this->juser->get('email')); ?>" /><br /><span class="info-block"><?php echo $this->escape($this->juser->get('email')); ?></span>

@@ -97,7 +97,7 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 		}
 
 		// Build the input tag
-		$html  = '<input type="text" name="' . $name . '" rel="' . $opt . ',' . $type . ',' . $wsel . '"';
+		$html  = '<input type="text" name="' . $name . '" data-options="' . $opt . ',' . $type . ',' . $wsel . '"';
 		$html .= ($id)    ? ' id="' . $id . '"'             : '';
 		$html .= ($class) ? ' class="' . trim($class) . '"' : '';
 		$html .= ($size)  ? ' size="' . $size . '"'         : '';

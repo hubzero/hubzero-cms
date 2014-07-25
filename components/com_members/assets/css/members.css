@@ -278,7 +278,8 @@
 	#page_menu li .alrt:hover span {
 		left: -9px;
 	}
-	#page_menu li .alrt span h5 {
+	#page_menu li .alrt span strong {
+		display: block;
 		background: #ec1b1c;
 		background-image: -webkit-linear-gradient(top, #ec1b1c, #bc2525);
 		background-image: -moz-linear-gradient(top, #ec1b1c, #bc2525);

@@ -969,7 +969,7 @@ HUB.Plugins.Autocomplete = {
 				return;
 			}
 
-			var params = $(input).attr('rel').split(',');
+			var params = $(input).attr('data-options').split(',');
 			if (params) {
 				option = params[0];
 				type = params[1];

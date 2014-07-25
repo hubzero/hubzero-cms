@@ -67,7 +67,7 @@ $this->css();
 	<?php } ?>
 
 	<div class="container" id="courses-container">
-		<form method="get" action="<?php JRoute::_($base); ?>">
+		<form method="get" action="<?php echo JRoute::_($base); ?>">
 
 			<ul class="entries-menu order-options">
 				<li>

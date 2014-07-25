@@ -34,12 +34,16 @@
 	.entries small.entry-id-before, 
 	.entries .entry-id:before {
 		content: "\f09c";
+		font-size: 2em;
+		font-weight: normal;
 	}
 	.member_courses .section {
 		padding: 10px;
 	}
-	.member_courses .entries tbody th {
-		width: 1.5em;
+	.com_members .member_courses .entries tbody th,
+	.member_courses .entries .entry-id {
+		width: 2em;
+		height: 2em;
 	}
 	.user-options + .container {
 		margin-top: 0;

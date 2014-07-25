@@ -195,7 +195,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		{
 			$title = count($unreadMessages) . ' unread message(s).';
 			$link = JRoute::_('index.php?option=com_members&id='.$member->get("uidNumber").'&active=messages');
-			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><h5>Messages Alert</h5>{$title}</span></a>";
+			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><strong>Messages Alert</strong>{$title}</span></a>";
 		}
 
 		// Return data
