@@ -589,7 +589,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		//get members name and id
 		$mbrs = JRequest::getVar('to', array());
-		foreach($mbrs as $mbr)
+		foreach ($mbrs as $mbr)
 		{
 			$mem = JUser::getInstance($mbr);
 			$tos[] = $mem->get('name') . ' (' . $mem->get('id') . ')';
@@ -1076,7 +1076,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			{
 				preg_match("/\((\d+)\)/", $mbr, $matches);
 				$email_users[] = $matches[1];
- 			}
+			}
 		}
 
 		// Incoming message and subject
