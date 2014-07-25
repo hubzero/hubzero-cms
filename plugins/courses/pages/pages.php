@@ -137,6 +137,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			{
 				$action = 'add';
 			}
+			if ($active == 'download')
+			{
+				$action = 'download';
+			}
 			if ($act = strtolower(JRequest::getWord('action', '')))
 			{
 				$action = $act;
@@ -875,25 +879,43 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		}
 
 		// Add JPATH_ROOT
-		$filename = $this->_path($page) . DS . ltrim($filename, DS);
+		$filepath = $this->_path($page) . DS . ltrim($filename, DS);
 
 		// Ensure the file exist
-		if (!file_exists($filename))
+		$found = true;
+		if (!file_exists($filepath))
 		{
-			JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filename);
-			return;
+			if (!$page)
+			{
+				JRequest::setVar('section_id', $this->view->offering->section()->get('id'));
+				$filepath = $this->_path($page) . DS . ltrim($filename, DS);
+				if (!file_exists($filepath))
+				{
+					$found = false;
+				}
+			}
+			else
+			{
+				$found = false;
+			}
+
+			if (!$found)
+			{
+				JError::raiseError(404, JText::_('COM_COURSES_FILE_NOT_FOUND') . '[j]' . $filepath);
+				return;
+			}
 		}
 
 		// Initiate a new content server and serve up the file
 		$xserver = new \Hubzero\Content\Server();
-		$xserver->filename($filename);
+		$xserver->filename($filepath);
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR') . '[x]' . $filename);
+			JError::raiseError(404, JText::_('COM_COURSES_SERVER_ERROR') . '[x]' . $filepath);
 		}
 		else
 		{

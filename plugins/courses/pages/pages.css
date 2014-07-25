@@ -117,6 +117,10 @@
 	.course_pages .pages-content {
 		position: relative;
 	}
+	.course_pages .file-path {
+		font-size: 0.85em;
+		color: #aaa;
+	}
 
 	.course_pages .manager-options {
 		list-style: none;
@@ -293,11 +297,16 @@
 		color: #bbb;
 		text-align: center;
 	}
+	#file-uploader-list table,
 	#file-uploader-list tr td {
+		border: none;
+	}
+	#file-uploader-list tr.start td {
+		border: none;
 		border-top: 1px solid #f0f0f0;
 		padding: 0.5em;
 	}
-	#file-uploader-list tr:first-child td {
+	#file-uploader-list tr.start:first-child td {
 		border-top: none;
 	}
 	#file-uploader-list .delete {

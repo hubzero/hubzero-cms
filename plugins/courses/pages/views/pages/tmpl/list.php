@@ -87,11 +87,14 @@ if (!$no_html) { ?>
 				{
 					jimport('joomla.filesystem.file');
 
+					$page = JRequest::getVar('page', '');
+
 					foreach ($this->docs as $path => $name)
 					{
 						$ext = JFile::getExt($name);
+						$type = (in_array($ext, array('jpg', 'jpe', 'jpeg', 'gif', 'png')) ? 'Image' : 'File');
 				?>
-					<tr>
+					<tr class="row-group start">
 						<td width="100%">
 							<span><?php echo $this->escape(stripslashes($name)); ?></span>
 						</td>
@@ -99,6 +102,11 @@ if (!$no_html) { ?>
 							<a class="delete" href="<?php echo JRoute::_($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section); ?>" <?php if (!$no_html) { ?>target="filer" onclick="return deleteFile('<?php echo $this->escape($name); ?>');"<?php } ?> title="<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>">
 								<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>
 							</a>
+						</td>
+					</tr>
+					<tr class="row-group end">
+						<td colspan="2">
+							<span class="file-path"><?php echo JRoute::_($base . '&unit=download&b=' . $type . ':' . $this->escape(stripslashes($name))); ?></span>
 						</td>
 					</tr>
 				<?php
