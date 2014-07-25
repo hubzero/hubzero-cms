@@ -562,6 +562,11 @@
 		padding: 1em 0 1em 0;
 		margin: 0;
 	}
+	@-moz-document url-prefix() {
+		#trail span.pathway {
+			padding: 1em 0 0.85em 0;
+		}
+	}
 	#trail a {
 		color: #ccc;
 		border: none;
