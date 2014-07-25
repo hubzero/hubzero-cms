@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        components/com_feedback/assets/js/feedback.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -10,22 +10,23 @@ if (!jq) {
 }
 
 jQuery(document).ready(function(jq){
-	var $ = jq;
+	var $ = jq,
+		fls = $("#field-files");
 
-	if ($("#imgInp").length) {
+	if (fls.length) {
 		function readURL(input) {
 			var files = Array.prototype.slice.call($(input)[0].files);
 
 			files.forEach(function(file) {
 				var reader = new FileReader();
 				reader.onload = function (e) {
-					$('#uploadImages').append('<img src="' + e.target.result + '" width="100" height="100" alt="test">');
+					$('#uploadImages').append('<img src="' + e.target.result + '" width="100" height="100" alt="">');
 				}
 				reader.readAsDataURL(file); 
 			});
 		}
 
-		$("#imgInp").change(function(e){
+		fls.on('change', function(e){
 			$('#uploadImages').html("");
 			readURL(this);
 		});

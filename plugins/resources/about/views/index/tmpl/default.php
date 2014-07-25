@@ -221,7 +221,7 @@ $maintext = $this->model->description('parsed');
 		<?php if ($this->model->contributors('submitter')) { ?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_SUBMITTER'); ?></h4>
 			<div class="resource-content">
-				<span id="submitterlist">
+				<div id="submitterlist">
 					<?php
 					$view = new \Hubzero\Component\View(array(
 						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_resources',
@@ -234,7 +234,7 @@ $maintext = $this->model->description('parsed');
 					$view->showorgs     = 1;
 					$view->display();
 					?>
-				</span>
+				</div>
 			</div>
 		<?php } ?>
 

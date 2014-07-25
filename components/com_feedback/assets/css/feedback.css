@@ -97,6 +97,7 @@
 	}
 
 	#uploadImages {
+		display: block;
 		margin: 25.6px;
 	}
 	#uploadImages img {

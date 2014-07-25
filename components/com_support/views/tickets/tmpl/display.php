@@ -88,7 +88,7 @@ $this->css()
 									<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 								</a>
 							<?php if ($this->acl->check('read', 'tickets')) { ?>
-								<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+								<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 									<?php echo JText::_('JACTION_EDIT'); ?>
 								</a>
 							<?php } ?>
@@ -129,7 +129,7 @@ $this->css()
 								<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 							</a>
 						<?php if ($this->acl->check('read', 'tickets')) { ?>
-							<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+							<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 								<?php echo JText::_('JACTION_EDIT'); ?>
 							</a>
 						<?php } ?>
@@ -154,7 +154,7 @@ $this->css()
 								<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
 									<?php echo JText::_('JACTION_DELETE'); ?>
 								</a>
-								<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+								<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
 									<?php echo JText::_('JACTION_EDIT'); ?>
 								</a>
 							</li>
@@ -166,7 +166,7 @@ $this->css()
 					<?php } ?>
 				</ul>
 				<p>
-					<a class="modal icon-add add btn" id="new-query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=add'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+					<a class="modal icon-add add btn" id="new-query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=add'); ?>">
 						<?php echo JText::_('COM_SUPPORT_ADD_QUERY'); ?>
 					</a>
 					<noscript>

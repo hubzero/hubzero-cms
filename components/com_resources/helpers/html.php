@@ -167,6 +167,9 @@ class ResourcesHtml
 						$width      = $childAttribs->get('width', 640);
 						$height     = $childAttribs->get('height', 360);
 
+						$url = str_replace( '&amp;', '&', $url);
+						$url = str_replace( '&', '&amp;', $url);
+
 						if ($linkAction == 1)
 						{
 							$supli[] = ' <li><a class="'.$class.'" rel="external" href="'.$url.'" title="'.$child->title.'"' . $extra . '>'.$item.'</a></li>'."\n";
@@ -358,7 +361,7 @@ class ResourcesHtml
 				}
 				$html .= "\t\t" . '<li id="sm-' . $i . '"';
 				$html .= (strtolower($name) == $active) ? ' class="active"' : '';
-				$html .= '><a class="tab" rel="' . $name . '" href="' . $url . '"><span>' . $cat[$name] . '</span></a></li>' . "\n";
+				$html .= '><a class="tab" data-rel="' . $name . '" href="' . $url . '"><span>' . $cat[$name] . '</span></a></li>' . "\n";
 				$i++;
 			}
 		}

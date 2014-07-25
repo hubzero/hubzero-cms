@@ -98,6 +98,8 @@
 		line-height: 1em;
 		color: #999;
 		position: relative;
+
+		display: none;
 	}
 	.aside ul.sharelinks {
 		padding: 0 0 1em 0; 

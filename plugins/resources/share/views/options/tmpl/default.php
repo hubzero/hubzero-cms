@@ -136,6 +136,7 @@ if (($i+2) > $limit) {
 $popup .= '</ul>';
 
 $metadata .= '<dl class="shareinfo">'."\n";
+$metadata .= "\t".'<dt>' . JText::_('PLG_RESOURCES_SHARE') . '</dt>'."\n";
 $metadata .= "\t".'<dd>'."\n";
 $metadata .= "\t\t".'<p>'."\n";
 $metadata .= "\t\t\t".JText::_('PLG_RESOURCES_SHARE_RESOURCE')."\n";

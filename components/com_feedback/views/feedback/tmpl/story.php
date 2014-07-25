@@ -40,13 +40,11 @@ $jconfig = JFactory::getConfig();
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-					<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
+			</a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
@@ -59,6 +57,8 @@ $jconfig = JFactory::getConfig();
 			<p><?php echo JText::_('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
 		</div>
 		<fieldset>
+			<legend><?php echo JText::_('COM_FEEDBACK_STORY_YOUR_STORY'); ?></legend>
+
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="sendstory" />
@@ -66,44 +66,42 @@ $jconfig = JFactory::getConfig();
 			<input type="hidden" name="fields[userid]" value="<?php echo $this->row->userid; ?>" id="userid" />
 			<input type="hidden" name="fields[useremail]" value="<?php echo $this->row->useremail; ?>" id="useremail" />
 
-			<legend><?php echo JText::_('COM_FEEDBACK_STORY_YOUR_STORY'); ?></legend>
-
 			<!-- <input type="hidden" name="fields[picture]" id="picture" value="" />
 			<div class="field-wrap">
 				<iframe width="100%" height="130" scrolling="no" name="filer" frameborder="0" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->user->get('uidNumber'); ?>"></iframe>
 			</div> -->
 
-			<label for="fullname">
+			<label for="field-fullname">
 				<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
-				<input type="text" name="fields[fullname]" id="fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" id="fullname" />
+				<input type="text" name="fields[fullname]" id="field-fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" />
 			</label>
 
-			<label for="org">
+			<label for="field-org">
 				<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?>
-				<input type="text" name="fields[org]" id="org" value="<?php echo $this->escape($this->row->org); ?>" size="30" id="org" />
+				<input type="text" name="fields[org]" id="field-org" value="<?php echo $this->escape($this->row->org); ?>" size="30" />
 			</label>
 
 			<label for="field-files">
 				<?php echo JText::_('COM_FEEDBACK_PICTURES'); ?>
-				<input id="imgInp" type="file" name="files[]" id="field-files" multiple="multiple" />
-				<div id="uploadImages"></div>
+				<input type="file" name="files[]" id="field-files" multiple="multiple" />
+				<span id="uploadImages"></span>
 			</label>
 
-			<label<?php echo ($this->getError() && $this->row->quote == '') ? ' class="fieldWithErrors"' : ''; ?> for="quote">
+			<label<?php echo ($this->getError() && $this->row->quote == '') ? ' class="fieldWithErrors"' : ''; ?> for="field-quote">
 				<?php echo JText::_('COM_FEEDBACK_STORY_DESCRIPTION'); ?>
-				<textarea name="fields[quote]" id="quote" rows="40" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>
+				<textarea name="fields[quote]" id="field-quote" rows="40" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>
 			</label>
-		<?php if ($this->getError() && $this->row->quote == '') { ?>
-			<p class="error"><?php echo JText::_('COM_FEEDBACK_STORY_MISSING_DESCRIPTION'); ?></p>
-		<?php } ?>
+			<?php if ($this->getError() && $this->row->quote == '') { ?>
+				<p class="error"><?php echo JText::_('COM_FEEDBACK_STORY_MISSING_DESCRIPTION'); ?></p>
+			<?php } ?>
 
-			<label for="publish_ok">
-				<input type="checkbox" name="fields[publish_ok]" id="publish_ok" value="1" class="option"<?php if ($this->row->publish_ok) { echo ' checked="checked"'; } ?> />
+			<label for="field-publish_ok">
+				<input type="checkbox" name="fields[publish_ok]" id="field-publish_ok" value="1" class="option"<?php if ($this->row->publish_ok) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_QUOTE', $jconfig->getValue('config.sitename'), $jconfig->getValue('config.sitename')); ?>
 			</label>
 
-			<label for="contact_ok">
-				<input type="checkbox" name="fields[contact_ok]" id="contact_ok" value="1" class="option"<?php if ($this->row->contact_ok) { echo ' checked="checked"'; } ?> />
+			<label for="field-contact_ok">
+				<input type="checkbox" name="fields[contact_ok]" id="field-contact_ok" value="1" class="option"<?php if ($this->row->contact_ok) { echo ' checked="checked"'; } ?> />
 				<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', $jconfig->getValue('config.sitename')); ?>
 			</label>
 		</fieldset><div class="clear"></div>
