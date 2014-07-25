@@ -197,21 +197,16 @@ $this->css()
 					?>
 
 					<?php if ($this->article->commentsOpen()) { ?>
-						<label for="commentcontent">
-							<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
-						<?php
-						if (!$this->juser->get('guest')) {
-							echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal'));
-						} else {
-							$rtrn = JRoute::_($this->article->link() . '#post-comment', false, true);
-							?>
+						<?php if (!$this->juser->get('guest')) { ?>
+							<label for="commentcontent">
+								<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
+								<?php echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal')); ?>
+							</label>
+						<?php } else { ?>
 							<p class="warning">
-								<?php echo JText::sprintf('COM_KB_MUST_LOG_IN', JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
+								<?php echo JText::sprintf('COM_KB_MUST_LOG_IN', JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->article->link() . '#post-comment', false, true)), false)); ?>
 							</p>
-							<?php
-						}
-						?>
-						</label>
+						<?php } ?>
 
 						<?php if (!$this->juser->get('guest')) { ?>
 						<label id="comment-anonymous-label" for="comment-anonymous">

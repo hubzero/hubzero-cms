@@ -195,4 +195,4 @@ $this->css()
 		<?php } ?>
 		</aside><!-- / .aside -->
 	</form>
-</div><!-- / .main section -->
+</section><!-- / .main section -->

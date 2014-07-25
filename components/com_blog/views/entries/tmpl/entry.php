@@ -154,13 +154,13 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 									<?php echo $this->escape(stripslashes($this->row->creator('name'))); ?>
 								</a>
 							</h4>
-							<p class="entry-author-bio">
+							<div class="entry-author-bio">
 							<?php if ($this->row->creator('bio')) { ?>
 								<?php echo $this->row->creator()->getBio('parsed', 300); ?>
 							<?php } else { ?>
 								<em><?php echo JText::_('COM_BLOG_AUTHOR_NO_BIO'); ?></em>
 							<?php } ?>
-							</p>
+							</div>
 							<div class="clearfix"></div>
 						</div><!-- / .entry-author-content -->
 					</div><!-- / .entry-author -->

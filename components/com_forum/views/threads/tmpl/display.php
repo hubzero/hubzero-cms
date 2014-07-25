@@ -65,34 +65,36 @@ $this->thread->set('category', $this->category->get('alias'));
 			<h3 class="thread-title<?php echo ($this->thread->get('closed')) ? ' closed' : ''; ?>">
 				<?php echo $this->escape(stripslashes($this->thread->get('title'))); ?>
 			</h3>
+
+			<?php
+			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0)
+			{
+				$this->view('_list')
+				     ->set('option', $this->option)
+				     ->set('controller', $this->controller)
+				     ->set('comments', $this->thread->posts($this->config->get('threading', 'list')))
+				     ->set('thread', $this->thread)
+				     ->set('parent', 0)
+				     ->set('config', $this->config)
+				     ->set('depth', 0)
+				     ->set('cls', 'odd')
+				     ->set('filters', $this->filters)
+				     ->set('category', $this->category)
+				     ->display();
+			}
+			else
+			{
+				?>
+				<ol class="comments">
+					<li>
+						<p><?php echo JText::_('COM_FORUM_NO_REPLIES_FOUND'); ?></p>
+					</li>
+				</ol>
+				<?php
+			}
+			?>
 			<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
 				<?php
-				if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0)
-				{
-					$this->view('_list')
-					     ->set('option', $this->option)
-					     ->set('controller', $this->controller)
-					     ->set('comments', $this->thread->posts($this->config->get('threading', 'list')))
-					     ->set('thread', $this->thread)
-					     ->set('parent', 0)
-					     ->set('config', $this->config)
-					     ->set('depth', 0)
-					     ->set('cls', 'odd')
-					     ->set('filters', $this->filters)
-					     ->set('category', $this->category)
-					     ->display();
-				}
-				else
-				{
-					?>
-					<ol class="comments">
-						<li>
-							<p><?php echo JText::_('COM_FORUM_NO_REPLIES_FOUND'); ?></p>
-						</li>
-					</ol>
-					<?php
-				}
-
 				jimport('joomla.html.pagination');
 				$pageNav = new JPagination(
 					$this->thread->posts('count', $this->filters),
