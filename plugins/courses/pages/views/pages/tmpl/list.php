@@ -35,7 +35,7 @@ $no_html = JRequest::getVar('no_html', 0);
 
 $section = JRequest::getInt('section_id', 0);
 
-$base = $this->offering->alias() . '&active=pages';
+$base = $this->offering->link() . '&active=pages';
 
 if (!$no_html) { ?>
 <script type="text/javascript">
