@@ -100,9 +100,12 @@ class plgSupportAnswers extends JPlugin
 			{
 				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->text, $matches))
 				{
-					$rows[$key]->text = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text);
+					$rows[$key]->text = strip_tags(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->text));
 				}
-
+				if (preg_match('/^<!-- \{FORMAT:(.*)\} -->/i', $row->subject, $matches))
+				{
+					$rows[$key]->subject = strip_tags(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $row->subject));
+				}
 				switch ($category)
 				{
 					case 'answer':
