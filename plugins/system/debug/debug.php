@@ -176,7 +176,7 @@ class plgSystemDebug extends JPlugin
 			}
 			if (\JError::getErrors())
 			{
-				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-errors\');"><span class="text">' . JText::_('PLG_DEBUG_ERRORS') . '</span></a>';
+				$html .= '<a href="javascript:" class="debug-tab" onclick="Debugger.toggleContainer(this, \'debug-errors\');"><span class="text">' . JText::_('PLG_DEBUG_ERRORS') . '</span><span class="badge">' . count(\JError::getErrors()) . '</span></a>';
 			}
 
 			$dumper = \Hubzero\Utility\Debug::getInstance();
@@ -716,13 +716,13 @@ class plgSystemDebug extends JPlugin
 	 */
 	protected function displayErrors()
 	{
-		$html  = '<div class="debug-container" id="debug-errors">';
+		//$html  = '<div class="debug-container" id="debug-errors">';
 
-		$html .= '<ol>';
+		$html  = '<ol>';
 
 		while ($error = \JError::getError(true))
 		{
-			$col = (E_WARNING == $error->get('level')) ? 'error' : 'warning';
+			$col = (E_WARNING == $error->get('level')) ? 'dbg-error' : 'dbg-warning';
 
 			$html .= '<li>';
 			$html .= '<strong class="' . $col . '">' . $error->getMessage() . '</strong><br />';
@@ -740,7 +740,7 @@ class plgSystemDebug extends JPlugin
 
 		$html .= '</ol>';
 
-		$html .= '</div>';
+		//$html .= '</div>';
 
 		return $html;
 	}
