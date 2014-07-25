@@ -362,7 +362,7 @@ class CoursesTableMember extends JTable
 		}
 		if (isset($filters['offering_id']))
 		{
-			if (is_array($filters['offering_id']))
+			if (is_array($filters['offering_id']) && count($filters['offering_id']) > 0)
 			{
 				$filters['offering_id'] = array_map('intval', $filters['offering_id']);
 				$where[] = "m.`offering_id` IN (" . implode(",", $filters['offering_id']) . ")";
@@ -374,7 +374,7 @@ class CoursesTableMember extends JTable
 		}
 		if (isset($filters['section_id']))
 		{
-			if (is_array($filters['section_id']))
+			if (is_array($filters['section_id']) && count($filters['section_id']) > 0)
 			{
 				$filters['section_id'] = array_map('intval', $filters['section_id']);
 				$where[] = "m.`section_id` IN (" . implode(",", $filters['section_id']) . ")";

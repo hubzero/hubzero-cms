@@ -107,19 +107,24 @@ $k = 0;
 foreach ($this->rows as $row)
 {
 	$units    = $row->units(array('count' => true));
+	$students = 0;
 
 	$s = $row->sections();
-	$sids = array();
-	foreach ($s as $section)
+	if ($s->total() >  0)
 	{
-		$sids[] = $section->get('id');
+		$sids = array();
+		foreach ($s as $section)
+		{
+			$sids[] = $section->get('id');
+		}
+
+		$students = $row->members(array(
+						'count' => true,
+						'student' => 1,
+						'section_id' => $sids
+					));
 	}
 
-	$students = $row->members(array(
-					'count' => true,
-					'student' => 1,
-					'section_id' => $sids
-				));
 	$pages    = $row->pages(array('count' => true, 'active' => array(0, 1)));
 	$sections = $row->sections(array('count' => true));
 ?>
