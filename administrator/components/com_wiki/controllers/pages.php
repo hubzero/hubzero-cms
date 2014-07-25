@@ -95,6 +95,11 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 			'search', 
 			''
 		));
+		$this->view->filters['namespace'] = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.namespace',
+			'namespace',
+			''
+		));
 		$this->view->filters['group'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.group', 
 			'group', 

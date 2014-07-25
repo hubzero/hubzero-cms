@@ -90,8 +90,8 @@ function submitbutton(pressbutton)
 			<label for="filter_namespace"><?php echo JText::_('Namespace'); ?>:</label>
 			<select name="namespace" id="filter_namespace" onchange="document.adminForm.submit( );">
 				<option value="">- Select namespace -</option>
-				<option value="Help">Help</option>
-				<option value="Template">Template</option>
+				<option value="Help"<?php if (strtolower($this->filters['namespace']) == 'help') { echo ' selected="selected"'; } ?>>Help</option>
+				<option value="Template"<?php if (strtolower($this->filters['namespace']) == 'template') { echo ' selected="selected"'; } ?>>Template</option>
 			</select>
 		</div>
 	</fieldset>
