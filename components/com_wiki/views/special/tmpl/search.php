@@ -37,26 +37,13 @@ $pathway->addItem(
 	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
-
-/*
-$sort = strtolower(JRequest::getVar('sort', 'created'));
-if (!in_array($sort, array('created', 'title', 'summary', 'created_by')))
-{
-	$sort = 'created';
-}
-$dir = strtoupper(JRequest::getVar('dir', 'DESC'));
-if (!in_array($dir, array('ASC', 'DESC')))
-{
-	$dir = 'DESC';
-}*/
+$jconfig  = JFactory::getConfig();
+$juser    = JFactory::getUser();
+$database = JFactory::getDBO();
 
 $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
 $term  = JRequest::getVar('q', '');
-
-$database = JFactory::getDBO();
 
 $weight = '(match(wp.title) against (' . $database->Quote($term) . ') + match(wv.pagetext) against (' . $database->Quote($term) . '))';
 
@@ -74,7 +61,6 @@ $query = "SELECT COUNT(*)
 $database->setQuery($query);
 $total = $database->loadResult();
 
-//(SELECT MIN(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
 $query = "SELECT wv.pageid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created AS modified, wv.summary
 			FROM `#__wiki_version` AS wv
 			INNER JOIN `#__wiki_page` AS wp
@@ -92,15 +78,6 @@ if ($limit && $limit != 'all')
 
 $database->setQuery($query);
 $rows = $database->loadObjectList();
-
-jimport('joomla.html.pagination');
-$pageNav = new JPagination(
-	$total,
-	$start,
-	$limit
-);
-
-//$altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:Search'); ?>" method="post">
 	<div class="container data-entry">
@@ -132,12 +109,12 @@ $pageNav = new JPagination(
 				</tr>
 			</thead>
 			<tbody>
-<?php
-if ($rows)
-{
-	foreach ($rows as $row)
-	{
-?>
+			<?php
+			if ($rows)
+			{
+				foreach ($rows as $row)
+				{
+			?>
 				<tr>
 					<td>
 						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $row->scope . '&pagename=' . $row->pagename); ?>">
@@ -151,28 +128,34 @@ if ($rows)
 						<time datetime="<?php echo $row->modified; ?>"><?php echo $row->modified; ?></time>
 					</td>
 				</tr>
-<?php
-	}
-}
-else
-{
-?>
+			<?php
+				}
+			}
+			else
+			{
+			?>
 				<tr>
-					<td colspan="4">
+					<td colspan="3">
 						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-<?php
-}
-?>
+			<?php
+			}
+			?>
 			</tbody>
 		</table>
-<?php
-$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
-$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
+		<?php
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination(
+			$total,
+			$start,
+			$limit
+		);
+		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
+		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 
-echo $pageNav->getListFooter();
-?>
+		echo $pageNav->getListFooter();
+		?>
 		<div class="clear"></div>
 	</div>
 </form>

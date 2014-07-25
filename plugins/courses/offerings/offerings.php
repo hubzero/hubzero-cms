@@ -106,7 +106,7 @@ class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
 	{
 		// The output array we're returning
 		$arr = array(
-			'name'     => 'offerings',
+			'name'     => $this->_name,
 			'html'     => '',
 			'metadata' => ''
 		);
@@ -126,7 +126,7 @@ class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
 
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'  => 'courses',
+				'folder'  => $this->_type,
 				'element' => $this->_name,
 				'name'    => 'overview'
 			)

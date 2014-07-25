@@ -61,12 +61,12 @@ defined('_JEXEC') or die('Restricted access');
 
 				if (($access == 'registered' && $this->juser->get('guest')) || ($access == 'members' && !in_array($this->juser->get("id"), $this->group->get('members'))))
 				{
-					$item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']}\" class=\"overview\">Overview</span>";
+					$item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" class=\"overview\">Overview</span>";
 				}
 				else
 				{
 					$item  = "<li class=\"{$liClass} group-overview-tab\">";
-					$item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']}\" title=\"{$this->group->get('description')}'s Overview Page\" href=\"{$link}\">Overview</a>";
+					$item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" title=\"{$this->group->get('description')}'s Overview Page\" href=\"{$link}\">Overview</a>";
 				}
 
 				$item .= "<ul class=\"\">";
@@ -114,13 +114,13 @@ defined('_JEXEC') or die('Restricted access');
 				elseif ($access == 'members' && !in_array($this->juser->get("id"), $this->group->get('members')))
 				{
 					$item  = "<li class=\"protected members-only group-{$class}-tab\" title=\"This page is restricted to group members only!\">";
-					$item .= "<span data-icon=\"&#x{$section['icon']}\" class=\"{$class}\">{$title}</span>";
+					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"{$class}\">{$title}</span>";
 					$item .= "</li>";
 				}
 				elseif ($access == 'registered' && $this->juser->get('guest'))
 				{
 					$item  = "<li class=\"protected registered-only group-{$class}-tab\" title=\"This page is restricted to registered hub users only!\">";
-					$item .= "<span data-icon=\"&#x{$section['icon']}\" class=\"{$class}\">{$title}</span>";
+					$item .= "<span data-icon=\"&#x{$section['icon']};\" class=\"{$class}\">{$title}</span>";
 					$item .= "</li>";
 				}
 				else
@@ -135,7 +135,7 @@ defined('_JEXEC') or die('Restricted access');
 
 					//create menu item
 					$item  = "<li class=\"{$liClass} group-{$class}-tab {$cls}\">";
-					$item .= "<a class=\"{$class}\"  data-icon=\"&#x{$section['icon']}\" title=\"{$this->group->get('description')}'s {$title} Page\" href=\"{$link}\">{$title}</a>";
+					$item .= "<a class=\"{$class}\"  data-icon=\"&#x{$section['icon']};\" title=\"{$this->group->get('description')}'s {$title} Page\" href=\"{$link}\">{$title}</a>";
 					$item .= "<span class=\"meta\">";
 					if ($meta_count)
 					{

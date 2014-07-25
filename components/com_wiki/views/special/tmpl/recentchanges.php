@@ -80,13 +80,6 @@ if ($limit && $limit != 'all')
 $database->setQuery($query);
 $rows = $database->loadObjectList();
 
-jimport('joomla.html.pagination');
-$pageNav = new JPagination(
-	$total,
-	$start,
-	$limit
-);
-
 $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
@@ -115,18 +108,18 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 				</tr>
 			</thead>
 			<tbody>
-<?php
-if ($rows)
-{
-	foreach ($rows as $row)
-	{
-		$name = JText::_('(unknown)');
-		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
-		if (is_object($xprofile))
-		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($xprofile->get('name'))) . '</a>';
-		}
-?>
+			<?php
+			if ($rows)
+			{
+				foreach ($rows as $row)
+				{
+					$name = JText::_('(unknown)');
+					$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
+					if (is_object($xprofile))
+					{
+						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($xprofile->get('name'))) . '</a>';
+					}
+			?>
 				<tr>
 					<td>
 						(
@@ -153,23 +146,29 @@ if ($rows)
 						<span><?php echo $this->escape(stripslashes($row->summary)); ?></span>
 					</td>
 				</tr>
-<?php
-	}
-}
-else
-{
-?>
+			<?php
+				}
+			}
+			else
+			{
+			?>
 				<tr>
-					<td colspan="4">
+					<td colspan="5">
 						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-<?php
-}
-?>
+			<?php
+			}
+			?>
 			</tbody>
 		</table>
 		<?php
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination(
+			$total,
+			$start,
+			$limit
+		);
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 

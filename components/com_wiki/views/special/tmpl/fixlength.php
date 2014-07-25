@@ -37,16 +37,13 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
-
+$jconfig  = JFactory::getConfig();
+$juser    = JFactory::getUser();
 $database = JFactory::getDBO();
 
 $query = "SELECT wv.id, wv.pageid, wv.pagetext FROM `#__wiki_version` AS wv WHERE wv.length = '0'";
-
 $database->setQuery($query);
 $rows = $database->loadObjectList();
-
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
@@ -68,18 +65,18 @@ $rows = $database->loadObjectList();
 				</tr>
 			</thead>
 			<tbody>
-<?php
-if ($rows)
-{
-	foreach ($rows as $row)
-	{
-		$lngth = strlen($row->pagetext);
-		$database->setQuery("UPDATE `#__wiki_version` SET `length` = " . $database->quote($lngth) . " WHERE `id`=" . $database->quote($row->id));
-		if (!$database->query())
-		{
-			$this->setError($database->getErrorMsg());
-		}
-?>
+			<?php
+			if ($rows)
+			{
+				foreach ($rows as $row)
+				{
+					$lngth = strlen($row->pagetext);
+					$database->setQuery("UPDATE `#__wiki_version` SET `length` = " . $database->quote($lngth) . " WHERE `id`=" . $database->quote($row->id));
+					if (!$database->query())
+					{
+						$this->setError($database->getErrorMsg());
+					}
+			?>
 				<tr>
 					<td>
 						<?php echo $row->id; ?>
@@ -91,20 +88,20 @@ if ($rows)
 						<?php echo JText::sprintf('COM_WIKI_HISTORY_BYTES', $lngth); ?>
 					</td>
 				</tr>
-<?php
-	}
-}
-else
-{
-?>
+			<?php
+				}
+			}
+			else
+			{
+			?>
 				<tr>
-					<td colspan="4">
+					<td colspan="3">
 						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-<?php
-}
-?>
+			<?php
+			}
+			?>
 			</tbody>
 		</table>
 

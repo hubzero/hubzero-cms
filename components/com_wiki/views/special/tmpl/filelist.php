@@ -37,8 +37,9 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
+$jconfig  = JFactory::getConfig();
+$juser    = JFactory::getUser();
+$database = JFactory::getDBO();
 
 $sort = strtolower(JRequest::getVar('sort', 'created'));
 if (!in_array($sort, array('created', 'filename', 'description', 'created_by')))
@@ -53,8 +54,6 @@ if (!in_array($dir, array('ASC', 'DESC')))
 
 $limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 $start = JRequest::getInt('limitstart', 0);
-
-$database = JFactory::getDBO();
 
 $where = " AND (wp.group_cn='' OR wp.group_cn IS NULL) ";
 if ($this->sub)
@@ -86,13 +85,6 @@ if ($limit && $limit != 'all')
 
 $database->setQuery($query);
 $rows = $database->loadObjectList();
-
-jimport('joomla.html.pagination');
-$pageNav = new JPagination(
-	$total,
-	$start,
-	$limit
-);
 
 $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 ?>
@@ -133,26 +125,26 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 				</tr>
 			</thead>
 			<tbody>
-<?php
-if ($rows)
-{
-	jimport('joomla.filesystem.file');
+			<?php
+			if ($rows)
+			{
+				jimport('joomla.filesystem.file');
 
-	foreach ($rows as $row)
-	{
-		$fsize = JText::_('(unknown)');
-		if (is_file(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename))
-		{
-			$fsize = \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename));
-		}
+				foreach ($rows as $row)
+				{
+					$fsize = JText::_('(unknown)');
+					if (is_file(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename))
+					{
+						$fsize = \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename));
+					}
 
-		$name = JText::_('COM_WIKI_UNKNOWN');
-		$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
-		if (is_object($xprofile))
-		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($xprofile->get('name'))) . '</a>';
-		}
-?>
+					$name = JText::_('COM_WIKI_UNKNOWN');
+					$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
+					if (is_object($xprofile))
+					{
+						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($xprofile->get('name'))) . '</a>';
+					}
+			?>
 				<tr>
 					<td>
 						<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
@@ -183,23 +175,29 @@ if ($rows)
 						<span><?php echo $this->escape(stripslashes($row->description)); ?></span>
 					</td>
 				</tr>
-<?php
-	}
-}
-else
-{
-?>
+			<?php
+				}
+			}
+			else
+			{
+			?>
 				<tr>
-					<td colspan="5">
+					<td colspan="6">
 						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-<?php
-}
-?>
+			<?php
+			}
+			?>
 			</tbody>
 		</table>
 		<?php
+		jimport('joomla.html.pagination');
+		$pageNav = new JPagination(
+			$total,
+			$start,
+			$limit
+		);
 		$pageNav->setAdditionalUrlParam('scope', $this->page->get('scope'));
 		$pageNav->setAdditionalUrlParam('pagename', $this->page->get('pagename'));
 		$pageNav->setAdditionalUrlParam('sort', $sort);

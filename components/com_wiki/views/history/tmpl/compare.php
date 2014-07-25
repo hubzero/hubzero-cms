@@ -72,21 +72,23 @@ $drauthor = $this->dr->creator('name') ? $this->dr->creator('name') : JText::_('
 ?>
 
 <section class="main section">
-	<div class="grid">
-		<div class="col span-half">
-			<dl class="diff-versions">
-				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->or->get('version'); ?><dt>
-				<dd><?php echo JText::sprintf('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->or->get('created') . '">' . $this->or->get('created') . '</time>', $this->escape($orauthor)); ?><dd>
+	<div class="section-inner">
+		<div class="grid">
+			<div class="col span-half">
+				<dl class="diff-versions">
+					<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->or->get('version'); ?><dt>
+					<dd><?php echo JText::sprintf('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->or->get('created') . '">' . $this->or->get('created') . '</time>', $this->escape($orauthor)); ?><dd>
 
-				<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->dr->get('version'); ?><dt>
-				<dd><?php echo JText::sprintf('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->dr->get('created') . '">' . $this->dr->get('created') . '</time>', $this->escape($drauthor)); ?><dd>
-			</dl>
-		</div><!-- / .aside -->
-		<div class="col span-half omega">
-			<p class="diff-deletedline"><?php echo JText::_('COM_WIKI_HISTORY_DELETIONS'); ?></p>
-			<p class="diff-addedline"><?php echo JText::_('COM_WIKI_HISTORY_ADDITIONS'); ?></p>
-		</div><!-- / .subject -->
-	</div><!-- / .section -->
+					<dt><?php echo JText::_('COM_WIKI_VERSION') . ' ' . $this->dr->get('version'); ?><dt>
+					<dd><?php echo JText::sprintf('COM_WIKI_HISTORY_CREATED_BY', '<time datetime="' . $this->dr->get('created') . '">' . $this->dr->get('created') . '</time>', $this->escape($drauthor)); ?><dd>
+				</dl>
+			</div><!-- / .aside -->
+			<div class="col span-half omega">
+				<p class="diff-deletedline"><?php echo JText::_('COM_WIKI_HISTORY_DELETIONS'); ?></p>
+				<p class="diff-addedline"><?php echo JText::_('COM_WIKI_HISTORY_ADDITIONS'); ?></p>
+			</div><!-- / .subject -->
+		</div><!-- / .section -->
 
-	<?php echo $this->content; ?>
+		<?php echo $this->content; ?>
+	</div>
 </section><!-- / .main section -->

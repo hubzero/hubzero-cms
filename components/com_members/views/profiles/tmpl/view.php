@@ -135,7 +135,7 @@ if (!$no_html)
 						}
 					?>
 					<li class="<?php echo $cls; ?>">
-						<a class="<?php echo $key; ?>" data-icon="<?php echo '&#x' . $c['icon']; ?>" title="<?php echo $prefix . ' ' . $name; ?>" href="<?php echo $url; ?>">
+						<a class="<?php echo $key; ?>" data-icon="<?php echo '&#x' . $c['icon']; ?>;" title="<?php echo $prefix . ' ' . $name; ?>" href="<?php echo $url; ?>">
 							<?php echo $name; ?>
 						</a>
 						<span class="meta">

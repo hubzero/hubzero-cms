@@ -320,7 +320,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		</div>
 	<?php } ?>
 		<fieldset>
-			<legend><?php echo JText::_('Metadata'); ?></legend>
+			<legend><?php echo JText::_('COM_WIKI_FIELDSET_METADATA'); ?></legend>
 			<label>
 				<?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:
 				<?php

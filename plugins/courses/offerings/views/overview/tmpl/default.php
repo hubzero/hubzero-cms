@@ -102,7 +102,7 @@ $this->css();
 					<?php if ($offering->isAvailable()) { ?>
 					<span class="accepting enrollment">
 						<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_ACCEPTING'); ?>
-					</a>
+					</span>
 					<?php } else { ?>
 					<span class="closed enrollment">
 						<?php echo JText::_('PLG_COURSES_OFFERINGS_STATUS_CLOSED'); ?>

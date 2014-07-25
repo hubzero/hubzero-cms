@@ -83,80 +83,82 @@ if (!$this->sub)
 <?php } ?>
 
 <section class="main section">
-	<div class="subject">
-		<?php if ($this->sub) { ?>
-			<p class="comment-add-btn">
-				<a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
-			</p>
-		<?php } ?>
-		<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
+	<div class="section-inner">
+		<div class="subject">
+			<?php if ($this->sub) { ?>
+				<p class="comment-add-btn">
+					<a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
+				</p>
+			<?php } ?>
+			<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
 
-		<?php
-		$filters = array('version' => '');
-		if ($this->v)
-		{
-			$filters['version'] = 'AND version=' . $this->v;
-		}
-
-		if ($this->page->comments('list', $filters)->total())
-		{
-			$this->view('_list', 'comments')
-			     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
-			     ->set('parent', 0)
-			     ->set('page', $this->page)
-			     ->set('option', $this->option)
-			     ->set('comments', $this->page->comments())
-			     ->set('config', $this->config)
-			     ->set('depth', 0)
-			     ->set('version', $this->v)
-			     ->set('cls', 'odd')
-			     ->display();
-		}
-		else
-		{
+			<?php
+			$filters = array('version' => '');
 			if ($this->v)
 			{
-				echo '<p>' . JText::_('COM_WIKI_NO_COMMENTS_FOR_VERSION') . '</p>';
+				$filters['version'] = 'AND version=' . $this->v;
+			}
+
+			if ($this->page->comments('list', $filters)->total())
+			{
+				$this->view('_list', 'comments')
+				     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
+				     ->set('parent', 0)
+				     ->set('page', $this->page)
+				     ->set('option', $this->option)
+				     ->set('comments', $this->page->comments())
+				     ->set('config', $this->config)
+				     ->set('depth', 0)
+				     ->set('version', $this->v)
+				     ->set('cls', 'odd')
+				     ->display();
 			}
 			else
 			{
-				echo '<p>' . JText::_('COM_WIKI_NO_COMMENTS') . '</p>';
+				if ($this->v)
+				{
+					echo '<p>' . JText::_('COM_WIKI_NO_COMMENTS_FOR_VERSION') . '</p>';
+				}
+				else
+				{
+					echo '<p>' . JText::_('COM_WIKI_NO_COMMENTS') . '</p>';
+				}
 			}
-		}
-		?>
-	</div><!-- / .subject -->
-	<aside class="aside">
-		<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="get">
-			<fieldset class="controls">
-				<label for="filter-version">
-					<?php echo JText::_('COM_WIKI_COMMENT_REVISION'); ?>:
-					<select name="version" id="filter-version">
-						<option value=""><?php echo JText::_('COM_WIKI_ALL'); ?></option>
-						<?php
-						foreach ($this->page->revisions('list') as $ver)
-						{
-						?>
-						<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>><?php echo JText::sprintf('COM_WIKI_VERSION_NUM', $ver->get('version')); ?></option>
-						<?php
-						}
-						?>
-					</select>
-				</label>
-				<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" /></p>
-			<?php if ($this->sub) { ?>
-				<input type="hidden" name="action" value="comments" />
-				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
-			<?php } else { ?>
-				<input type="hidden" name="task" value="comments" />
-			<?php } ?>
-			</fieldset>
-		</form>
-	</aside><!-- / .aside -->
+			?>
+		</div><!-- / .subject -->
+		<aside class="aside">
+			<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="get">
+				<fieldset class="controls">
+					<label for="filter-version">
+						<?php echo JText::_('COM_WIKI_COMMENT_REVISION'); ?>:
+						<select name="version" id="filter-version">
+							<option value=""><?php echo JText::_('COM_WIKI_ALL'); ?></option>
+							<?php
+							foreach ($this->page->revisions('list') as $ver)
+							{
+							?>
+							<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>><?php echo JText::sprintf('COM_WIKI_VERSION_NUM', $ver->get('version')); ?></option>
+							<?php
+							}
+							?>
+						</select>
+					</label>
+					<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" /></p>
+				<?php if ($this->sub) { ?>
+					<input type="hidden" name="action" value="comments" />
+					<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
+				<?php } else { ?>
+					<input type="hidden" name="task" value="comments" />
+				<?php } ?>
+				</fieldset>
+			</form>
+		</aside><!-- / .aside -->
+	</div>
 </section><!-- / .main section -->
 
 <?php if (isset($this->mycomment) && is_a($this->mycomment, 'WikiModelComment')) { ?>
-<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="post" id="commentform">
-	<section class="below section">
+<section class="below section">
+	<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="post" id="commentform" class="section-inner">
 		<div class="subject">
 			<h3 id="commentform-title">
 				<?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?>
@@ -226,7 +228,7 @@ if (!$this->sub)
 		</div><!-- / .subject -->
 		<aside class="aside">
 			<table class="wiki-reference">
-				<caption>Wiki Syntax Reference</caption>
+				<caption><?php echo JText::_('COM_WIKI_SYNTAX_REFERENCE'); ?></caption>
 				<tbody>
 					<tr>
 						<td>'''bold'''</td>
@@ -259,6 +261,6 @@ if (!$this->sub)
 				</tbody>
 			</table>
 		</aside><!-- / .aside -->
-	</section><!-- / .below section -->
-</form>
+	</form>
+</section><!-- / .below section -->
 <?php } ?>

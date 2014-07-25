@@ -37,9 +37,8 @@ $pathway->addItem(
 	$this->page->link()
 );
 
-$jconfig = JFactory::getConfig();
-$juser = JFactory::getUser();
-
+$jconfig  = JFactory::getConfig();
+$juser    = JFactory::getUser();
 $database = JFactory::getDBO();
 
 if (JRequest::getInt('force_fix', 0))
@@ -51,18 +50,15 @@ if (JRequest::getInt('force_fix', 0))
 }
 
 $query = "SELECT wv.pageid, wv.id AS versionid, wp.title, wp.pagename, wp.scope, wp.group_cn, wp.version_id, wv.version, wv.created_by, wv.created
-			FROM #__wiki_version AS wv
-			INNER JOIN #__wiki_page AS wp
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
 				ON wp.id = wv.pageid
 			WHERE wp.version_id = '0'
-				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
+				AND wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_version` AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY created DESC";
-
-//$query = "SELECT wv.id, wv.pageid, wv.pagetext FROM #__wiki_page AS wv WHERE wv.length = '0'";
 
 $database->setQuery($query);
 $rows = $database->loadObjectList();
-
 ?>
 <form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
 	<p>
@@ -87,17 +83,17 @@ $rows = $database->loadObjectList();
 				</tr>
 			</thead>
 			<tbody>
-<?php
-if ($rows)
-{
-	foreach ($rows as $row)
-	{
-		$database->setQuery("UPDATE `#__wiki_page` SET `version_id` = " . $database->quote($row->versionid) . ", `modified`=" . $database->quote($row->created) . " WHERE `id`=" . $database->quote($row->pageid));
-		if (!$database->query())
-		{
-			$this->setError($database->getErrorMsg());
-		}
-?>
+			<?php
+			if ($rows)
+			{
+				foreach ($rows as $row)
+				{
+					$database->setQuery("UPDATE `#__wiki_page` SET `version_id` = " . $database->quote($row->versionid) . ", `modified`=" . $database->quote($row->created) . " WHERE `id`=" . $database->quote($row->pageid));
+					if (!$database->query())
+					{
+						$this->setError($database->getErrorMsg());
+					}
+			?>
 				<tr>
 					<td>
 						<?php echo $row->versionid; ?>
@@ -114,23 +110,21 @@ if ($rows)
 						</a>
 					</td>
 				</tr>
-<?php
-	}
-}
-else
-{
-?>
+			<?php
+				}
+			}
+			else
+			{
+			?>
 				<tr>
 					<td colspan="4">
 						<?php echo JText::_('COM_WIKI_NONE'); ?>
 					</td>
 				</tr>
-<?php
-}
-?>
+			<?php
+			}
+			?>
 			</tbody>
 		</table>
-
-		<div class="clearfix"></div>
 	</div>
 </form>

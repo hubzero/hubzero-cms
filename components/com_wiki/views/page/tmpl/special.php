@@ -63,7 +63,7 @@ $juser = JFactory::getUser();
 ?>
 
 	<section class="main section">
-		<article class="wikipage">
+		<article>
 		<?php
 			$this->view(strtolower($this->layout), 'special')
 			     ->setBasePath($this->base_path)
