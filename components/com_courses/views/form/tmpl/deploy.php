@@ -51,8 +51,8 @@ $this->css('form.css')
 				<input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
 			<?php endif; ?>
 			<div class="navbar">
-				<div><a href="/courses/form" id="cancel">Cancel</a></div>
-				<button id="submit" type="submit">Create deployment</button>
+				<div><a href="<?php echo JURI::base(true); ?>/courses/form" id="cancel"><?php echo JText::_('COM_COURSES_CANCEL'); ?></a></div>
+				<button id="submit" type="submit"><?php echo JText::_('COM_COURSES_CREATE_DEPLOYMENT'); ?></button>
 			</div>
 		</fieldset>
 	</form>

@@ -48,15 +48,20 @@ $this->css('form.css')
 		</ul>
 	<?php endif; ?>
 
-	<form action="" method="post" enctype="multipart/form-data">
+	<form action="index.php" method="post" enctype="multipart/form-data">
 		<input type="file" name="pdf" accept="application/pdf" required autofocus />
 		<input type="hidden" name="task" value="upload" />
-		<button type="submit">Upload</button>
+		<button type="submit"><?php echo JText::_('COM_COURSES_UPLOAD'); ?></button>
 	</form>
-	<h2>Select a previous PDF</h2>
+
+	<h2><?php echo JText::_('COM_COURSES_SELECT_PREVIOUS_PDF'); ?></h2>
 	<table class="tablesorter">
 		<thead>
-			<tr><th>Title</th><th>Created</th><th>Updated</th></tr>
+			<tr>
+				<th><?php echo JText::_('COM_COURSES_HEADER_TITLE'); ?></th>
+				<th><?php echo JText::_('COM_COURSES_HEADER_CREATED'); ?></th>
+				<th><?php echo JText::_('COM_COURSES_HEADER_UPDATED'); ?></th>
+			</tr>
 		</thead>
 		<tbody>
 		<?php foreach (PdfForm::getActiveList() as $form): ?>
@@ -66,18 +71,23 @@ $this->css('form.css')
 					<form action="<?php echo JRoute::_('index.php?option=com_courses&controller=form'); ?>" method="get">
 						<input type="hidden" name="task" value="deploy" />
 						<input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
-						<button type="submit">Deploy</button>
+						<button type="submit"><?php echo JText::_('COM_COURSES_DEPLOY'); ?></button>
 					</form>
 					<form action="<?php echo JRoute::_('index.php?option=com_courses&controller=form'); ?>" method="get">
 						<input type="hidden" name="task" value="layout" />
 						<input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
-						<button type="submit">Edit</button>
+						<button type="submit"><?php echo JText::_('COM_COURSES_EDIT'); ?></button>
 					</form>
 					<br />
 					<?php if (($deps = PdfFormDeployment::forForm($form['id']))): ?>
 					<table class="tablesorter nested">
 						<thead>
-							<tr><th>Deployment</th><th>User</th><th>Start date</th><th>End date</th></tr>
+							<tr>
+								<th><?php echo JText::_('COM_COURSES_HEADER_DEPLOYMENT'); ?></th>
+								<th><?php echo JText::_('COM_COURSES_HEADER_USER'); ?></th>
+								<th><?php echo JText::_('COM_COURSES_HEADER_START_DATE'); ?></th>
+								<th><?php echo JText::_('COM_COURSES_HEADER_END_DATE'); ?></th>
+							</tr>
 						</thead>
 						<tbody>
 						<?php foreach ($deps as $dep): ?>
@@ -101,7 +111,8 @@ $this->css('form.css')
 					<?php endif; ?>
 				</td>
 				<td><?php echo date('Y-m-d H:i', strtotime($form['created'])) ?></td>
-				<td><?php echo date('Y-m-d H:i', strtotime($form['updated'])) ?></td></tr>
+				<td><?php echo date('Y-m-d H:i', strtotime($form['updated'])) ?></td>
+			</tr>
 		<?php endforeach; ?>
 		</tbody>
 	</table>

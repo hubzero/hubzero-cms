@@ -35,67 +35,67 @@ $offerings = $this->course->offerings();
 ?>
 <?php if ($this->getError()) { ?>
 	<dl id="system-message">
-		<dt><?php echo JText::_('Error'); ?></dt>
+		<dt><?php echo JText::_('COM_COURSES_ERROR'); ?></dt>
 		<dd class="error"><?php echo implode('<br />', $this->getErrors()); ?></dd>
 	</dl>
 <?php } ?>
 <div id="course-managers">
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" class="course-managers-form" id="hubForm">
 		<fieldset>
-				<div class="grid">
-					<div class="col span7">
-						<label for="field-usernames">
-							<?php echo JText::_('Enter comma-separated usernames or IDs'); ?>
-							<?php
-							JPluginHelper::importPlugin('hubzero');
-							$dispatcher = JDispatcher::getInstance();
+			<div class="grid">
+				<div class="col span7">
+					<label for="field-usernames">
+						<?php echo JText::_('COM_COURSES_ADD_MANAGER_LABEL'); ?>
+						<?php
+						JPluginHelper::importPlugin('hubzero');
+						$dispatcher = JDispatcher::getInstance();
 
-							$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'usernames', 'field-usernames', '', '')));
+						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'usernames', 'field-usernames', '', '')));
 						if (count($mc) > 0) {
 							echo $mc[0];
 						} else { ?>
 							<input type="text" name="usernames" id="field-usernames" value="" />
 						<?php } ?>
-						</label>
-					</div>
-					<div class="col span4">
-						<label for="field-role">
-							<?php echo JText::_('Select role'); ?>
-							<select name="role" id="field-role">
-							<?php foreach ($roles as $role) { ?>
+					</label>
+				</div>
+				<div class="col span4">
+					<label for="field-role">
+						<?php echo JText::_('Select role'); ?>
+						<select name="role" id="field-role">
+						<?php foreach ($roles as $role) { ?>
+							<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
+						<?php } ?>
+						<?php
+						foreach ($offerings as $offering)
+						{
+							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+							if (!$oroles || !count($oroles))
+							{
+								continue;
+							}
+						?>
+							<optgroup label="<?php echo JText::_('COM_COURSES_OFFERING') . ': ' . $this->escape($offering->get('title')); ?>">
+							<?php foreach ($oroles as $role) { ?>
 								<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
 							<?php } ?>
-							<?php
-							foreach ($offerings as $offering)
-							{
-								$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
-								if (!$oroles || !count($oroles))
-								{
-									continue;
-								}
-							?>
-								<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
-								<?php foreach ($oroles as $role) { ?>
-									<option value="<?php echo $role->id; ?>"><?php echo $this->escape(stripslashes($role->title)); ?></option>
-								<?php } ?>
-								</optgroup>
-							<?php } ?>
-							</select>
-						</label>
-					</div>
-					<div class="col span1 omega">
-						<p class="submit">
-							<input type="submit" value="<?php echo JText::_('Add'); ?>" />
-						</p>
-					</div>
+							</optgroup>
+						<?php } ?>
+						</select>
+					</label>
 				</div>
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
-						<input type="hidden" name="tmpl" value="component" />
-						<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
-						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
-						<input type="hidden" name="task" value="add" />
-			</fieldset>
+				<div class="col span1 omega">
+					<p class="submit">
+						<input type="submit" value="<?php echo JText::_('COM_COURSES_ADD'); ?>" />
+					</p>
+				</div>
+			</div>
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
+			<input type="hidden" name="tmpl" value="component" />
+			<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
+			<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
+			<input type="hidden" name="task" value="add" />
+		</fieldset>
 
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
@@ -111,7 +111,7 @@ $offerings = $this->course->offerings();
 						<input type="hidden" name="id" value="<?php echo $this->course->get('id'); ?>" />
 						<input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
 						<input type="hidden" name="task" id="task" value="remove" />
-						<input type="submit" name="action" value="<?php echo JText::_('Remove'); ?>" />
+						<input type="submit" name="action" value="<?php echo JText::_('COM_COURSES_REMOVE'); ?>" />
 					</th>
 					<th colspan="2">
 						<span id="notifier"></span>
@@ -139,34 +139,32 @@ $offerings = $this->course->offerings();
 						<input type="hidden" name="entries[<?php echo $i; ?>][section_id]" value="<?php echo $manager->get('section_id', 0); ?>" />
 						<input type="hidden" name="entries[<?php echo $i; ?>][user_id]" value="<?php echo $u->get('id'); ?>" />
 						<input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $u->get('id'); ?>" />
-
-						<!-- <input type="checkbox" name="users[]" value="<?php echo $u->get('id'); ?>" /> -->
 					</td>
 					<td class="paramlist_key">
 						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $u->get('id')); ?>">
-							<?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : JText::_('unknown'); ?>
+							<?php echo $u->get('name') ? $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')' : JText::_('COM_COURSES_UNKNOWN'); ?>
 						</a>
 					</td>
 					<td>
 						<select name="entries[<?php echo $i; ?>][role_id]">
-						<?php foreach ($roles as $role) { ?>
-							<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
-						<?php } ?>
-						<?php
-						foreach ($offerings as $offering)
-						{
-							$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
-							if (!$oroles || !count($oroles))
-							{
-								continue;
-							}
-						?>
-							<optgroup label="<?php echo JText::_('Offering:') . ' ' . $this->escape($offering->get('title')); ?>">
-							<?php foreach ($oroles as $role) { ?>
+							<?php foreach ($roles as $role) { ?>
 								<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
 							<?php } ?>
-							</optgroup>
-						<?php } ?>
+							<?php
+							foreach ($offerings as $offering)
+							{
+								$oroles = $offering->roles(array('offering_id' => $offering->get('id')));
+								if (!$oroles || !count($oroles))
+								{
+									continue;
+								}
+								?>
+								<optgroup label="<?php echo JText::_('COM_COURSES_OFFERING') . ': ' . $this->escape($offering->get('title')); ?>">
+								<?php foreach ($oroles as $role) { ?>
+									<option value="<?php echo $role->id; ?>"<?php if ($manager->get('role_id') == $role->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+								<?php } ?>
+								</optgroup>
+							<?php } ?>
 						</select>
 					</td>
 				</tr>

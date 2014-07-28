@@ -45,9 +45,9 @@ if ($this->course->access('edit', 'course') && $field == 'description')
 		</label>
 
 		<p class="submit">
-			<input type="submit" class="btn btn-success" value="<?php echo JText::_('Save'); ?>" />
+			<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_COURSES_SAVE'); ?>" />
 			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias')); ?>">
-				<?php echo JText::_('Cancel'); ?>
+				<?php echo JText::_('COM_COURSES_CANCEL'); ?>
 			</a>
 		</p>
 
@@ -70,16 +70,16 @@ else
 		?>
 		<div class="manager-options">
 			<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&task=edit&field=description'); ?>">
-				<?php echo JText::_('Edit'); ?>
+				<?php echo JText::_('COM_COURSES_EDIT'); ?>
 			</a>
-			<span><strong>Long description</strong></span>
+			<span><strong><?php echo JText::_('COM_COURSES_LONG_DESCRIPTION'); ?></strong></span>
 		</div>
 		<?php
 	}
 
 	if (!$this->course->get('description'))
 	{
-		echo '<p><em>' . JText::_('No overview has been provided for this course yet.') . '</em></p>';
+		echo '<p><em>' . JText::_('COM_COURSES_LONG_DESCRIPTION_NONE') . '</em></p>';
 	}
 	else
 	{

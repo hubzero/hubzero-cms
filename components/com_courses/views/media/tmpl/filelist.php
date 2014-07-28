@@ -81,7 +81,7 @@ $course = CoursesModelCourse::getInstance($this->listdir);
 	<div id="file_list">
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="filelist">
 <?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
-			<p><?php echo JText::_('NO_FILES_FOUND'); ?></p>
+			<p><?php echo JText::_('COM_COURSES_NO_FILES_FOUND'); ?></p>
 <?php } else { ?>
 			<table>
 				<tbody>
@@ -92,7 +92,8 @@ for ($i=0; $i<count($folders); $i++)
 	$folder_name = key($folders);
 
 	$num_files = 0;
-	if (is_dir(JPATH_ROOT.DS.$folders[$folder_name])) {
+	if (is_dir(JPATH_ROOT.DS.$folders[$folder_name]))
+	{
 		$d = @dir(JPATH_ROOT.DS.$folders[$folder_name]);
 
 		while (false !== ($entry = $d->read()))
@@ -104,16 +105,21 @@ for ($i=0; $i<count($folders); $i++)
 		$d->close();
 	}
 
-	if ($this->listdir == '/') {
+	if ($this->listdir == '/')
+	{
 		$this->listdir = '';
 	}
 ?>
 					<tr>
-						<td><img src="<?php echo $this->config->get('iconpath'); ?>/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" /></td>
-						<td width="100%"><?php echo $folder_name; ?></td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('DELETE'); ?>">
-								<?php echo JText::_('DELETE'); ?>
+							<img src="<?php echo $this->config->get('iconpath'); ?>/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" />
+						</td>
+						<td width="100%">
+							<?php echo $folder_name; ?>
+						</td>
+						<td>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+								<?php echo JText::_('JACTION_DELETE'); ?>
 							</a>
 						</td>
 					</tr>
@@ -126,25 +132,32 @@ for ($i=0; $i<count($docs); $i++)
 	$doc_name = key($docs);
 	$iconfile = $this->config->get('iconpath').DS.substr($doc_name,-3).'.png';
 
-	if (file_exists(JPATH_ROOT.$iconfile))	{
+	if (file_exists(JPATH_ROOT.$iconfile))
+	{
 		$icon = $iconfile;
-	} else {
+	}
+	else
+	{
 		$icon = $this->config->get('iconpath').DS.'unknown.png';
 	}
 ?>
 					<tr>
-						<td><img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" /></td>
-						<td width="100%"><?php echo $docs[$doc_name]; ?></td>
+						<td>
+							<img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" />
+						</td>
+						<td width="100%">
+							<?php echo $docs[$doc_name]; ?>
+						</td>
 						<td>
 							<?php if (is_object($course)) : ?>
 								<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="Show File Path">
-									<img src="/components/com_courses/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" />
+									<img src="<?php echo JURI::base(true); ?>/components/com_courses/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" />
 								</a>
 							<?php endif; ?>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>">
-								<?php echo JText::_('DELETE'); ?>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $docs[$doc_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $docs[$doc_name]; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+								<?php echo JText::_('JACTION_DELETE'); ?>
 							</a>
 						</td>
 					</tr>
@@ -156,15 +169,22 @@ for ($i=0; $i<count($images); $i++)
 {
 	$image_name = key($images);
 	$iconfile = $this->config->get('iconpath').DS.substr($image_name,-3).'.png';
-	if (file_exists(JPATH_ROOT.$iconfile))	{
+	if (file_exists(JPATH_ROOT.$iconfile))
+	{
 		$icon = $iconfile;
-	} else {
+	}
+	else
+	{
 		$icon = $this->config->get('iconpath').DS.'unknown.png';
 	}
 ?>
 					<tr>
-						<td><img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" /></td>
-						<td width="100%"><?php echo $images[$image_name]; ?></td>
+						<td>
+							<img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" />
+						</td>
+						<td width="100%">
+							<?php echo $images[$image_name]; ?>
+						</td>
 						<td>
 							<?php if (is_object($course)) : ?>
 								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="Show File Path">
@@ -173,8 +193,8 @@ for ($i=0; $i<count($images); $i++)
 							<?php endif; ?>
 						</td>
 						<td>
-							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('DELETE'); ?>">
-								<?php echo JText::_('DELETE'); ?>
+							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefile&amp;file=<?php echo $images[$image_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFile('<?php echo $images[$image_name]; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+								<?php echo JText::_('JACTION_DELETE'); ?>
 							</a>
 						</td>
 					</tr>

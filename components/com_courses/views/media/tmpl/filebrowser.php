@@ -49,12 +49,12 @@ $base = rtrim(JURI::base(true), '/');
 				<div id="ajax-uploader" data-action="<?php echo $base; ?>/index.php?option=com_courses&amp;task=ajaxupload&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1">
 					<noscript>
 						<p><input type="file" name="upload" id="upload" /></p>
-						<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
+						<p><input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" /></p>
 					</noscript>
 				</div>
 			<?php else : ?>
 				<p><input type="file" name="upload" id="upload" /></p>
-				<p><input type="submit" value="<?php echo JText::_('UPLOAD'); ?>" /></p>
+				<p><input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" /></p>
 			<?php endif; ?>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

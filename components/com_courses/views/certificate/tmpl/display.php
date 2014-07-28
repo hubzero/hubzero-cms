@@ -31,9 +31,11 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <header id="content-header">
-	<h2><?php echo JText::_('Course Completion Certificate'); ?></h2>
+	<h2><?php echo JText::_('COM_COURSES_COMPLETION_CERTIFICATE'); ?></h2>
 </header>
 
 <section class="main section">
-	<p class="warning"><?php echo JText::_('No certificate available.'); ?></p>
+	<div class="section-inner">
+		<p class="warning"><?php echo JText::_('COM_COURSES_COMPLETION_CERTIFICATE_NONE'); ?></p>
+	</div>
 </section>

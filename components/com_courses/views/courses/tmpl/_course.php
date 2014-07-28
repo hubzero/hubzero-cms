@@ -44,18 +44,18 @@ switch ($this->count)
 			<div class="course-details">
 				<div class="course-identity">
 					<?php if ($logo = $this->course->logo()) { ?>
-						<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+						<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
 					<?php } else { ?>
 						<span></span>
 					<?php } ?>
 
 					<?php if ($this->course->get('rating', 0) > 4) { ?>
 					<div>
-						<strong>Top rated course!</strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
+						<strong><?php echo JText::_('COM_COURSES_TOP_RATED_COURSE'); ?></strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
 					</div>
 					<?php } else if ($this->course->get('popularity', 0) > 7) { ?>
 					<div>
-						<strong>Most popular course!</strong> <span class="popularity">&#xf091;</span>
+						<strong><?php echo JText::_('COM_COURSES_POPULAR_COURSE'); ?></strong> <span class="popularity">&#xf091;</span>
 					</div>
 					<?php } ?>
 				</div>

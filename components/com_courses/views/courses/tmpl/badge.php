@@ -79,8 +79,8 @@ switch ($this->action)
 	break;
 
 	case 'criteria':
-		$title = "Badge Criteria";
-		$body = "<div class=\"criteria-text\">\n";
+		$title = JText::_('COM_COURSES_BADGE_CRITERIA');
+		$body  = "<div class=\"criteria-text\">\n";
 		$body .= $this->badge->get('criteria_text') . "\n";
 		$body .= "</div>\n";
 	break;
@@ -88,7 +88,7 @@ switch ($this->action)
 	case 'validation':
 		if (!$this->token)
 		{
-			JError::raiseError(421, 'Invalid request');
+			JError::raiseError(421, JText::_('COM_COURSES_INVALID_REQUEST'));
 		}
 
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php';
@@ -98,11 +98,11 @@ switch ($this->action)
 		$db = JFactory::getDBO();
 
 		$memberBadge = new CoursesTableMemberBadge($db);
-		$memberBadge->load(array('validation_token'=>$this->token));
+		$memberBadge->load(array('validation_token' => $this->token));
 
 		if (!$memberBadge->get('id'))
 		{
-			JError::raiseError(421, 'Invalid request');
+			JError::raiseError(421, JText::_('COM_COURSES_INVALID_REQUEST'));
 		}
 
 		$memberTbl = new CoursesTableMember($db);
@@ -112,12 +112,10 @@ switch ($this->action)
 		$criteria = new CoursesTableSectionBadgeCriteria($db);
 		$criteria->load($memberBadge->get('criteria_id'));
 
-		$title = "Badge Validation";
+		$title = JText::_('COM_COURSES_BADGE_VALIDATION');
 		$body  = "<img class=\"badge-img\" src=\"".$this->badge->get('img_url')."\" width=\"125\" />\n";
 		$body .= "<div class=\"badge-validation\">\n";
-		$body .= "This serves to verify that " . JFactory::getUser($user_id)->get('name') . " \n";
-		$body .= "has completed the requirements of this badge on " . JFactory::getDate($memberBadge->get('earned_on'))->format('M d, Y') . ", \n";
-		$body .= "meeting the requirements of the badge at that time.  The requirements at the time of completion were:\n";
+		$body .= JText::sprintf('COM_COURSES_BADGE_VALIDATION_TEXT', JFactory::getUser($user_id)->get('name'), JFactory::getDate($memberBadge->get('earned_on'))->format('M d, Y'));
 		$body .= "</div>\n";
 		$body .= "<div class=\"badge-criteria\">\n";
 		$body .= $criteria->get('text');
@@ -125,7 +123,7 @@ switch ($this->action)
 	break;
 
 	default:
-		JError::raiseError(421, 'Invalid request');
+		JError::raiseError(421, JText::_('COM_COURSES_INVALID_REQUEST'));
 	break;
 }
 ?>
@@ -135,5 +133,7 @@ switch ($this->action)
 </header>
 
 <section class="main section">
-	<?php echo $body; ?>
+	<div class="section-inner">
+		<?php echo $body; ?>
+	</div>
 </section>

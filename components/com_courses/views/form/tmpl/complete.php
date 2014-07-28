@@ -26,10 +26,10 @@ $incomplete = $this->incomplete;
 		endif;
 		$layout = $pdf->getPageLayout();
 		if ($incomplete):
-			echo '<p class="error incomplete">Please ensure you have selected an answer for each question.</p>';
+			echo '<p class="error incomplete">' . JText::_('COM_COURSES_SELECT_ANSWER_FOR_EACH_QUESTION') . '</p>';
 		endif;
 	?>
-	<form action="" method="post">
+	<form action="index.php" method="post">
 		<ol id="pages" class="complete">
 		<?php $pdf->eachPage(function($url, $idx) use ($layout, $progress, $incomplete) { ?>
 			<li>
@@ -57,7 +57,7 @@ $incomplete = $this->incomplete;
 				<input type="hidden" name="task" value="submit" />
 				<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
 				<input type="hidden" name="attempt" value="<?php echo $this->resp->getAttemptNumber() ?>" />
-				<button class="btn btn-primary" type="submit">Submit</button>
+				<button class="btn btn-primary" type="submit"><?php echo JText::_('COM_COURSES_SUBMIT'); ?></button>
 			</p>
 		</fieldset>
 	</form>
