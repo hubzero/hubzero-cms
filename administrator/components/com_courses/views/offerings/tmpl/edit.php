@@ -194,7 +194,7 @@ function submitbutton(pressbutton)
 							<tr>
 								<th><?php echo JText::_('COM_COURSES_FILE'); ?>:</th>
 								<td>
-									<span id="img-name"><?php echo $this->row->params('logo', 'COM_COURSES_NONE'); ?></span>
+									<span id="img-name"><?php echo $this->row->params('logo', JText::_('COM_COURSES_NONE')); ?></span>
 								</td>
 								<td>
 									<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;task=remove&amp;currentfile=<?php echo $logo; ?>&amp;type=offering&amp;id=<?php echo $this->row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('COM_COURSES_DELETE'); ?>">[ x ]</a>
