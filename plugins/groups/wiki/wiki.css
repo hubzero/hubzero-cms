@@ -267,6 +267,7 @@
 	.sub-menu li.page-delete {
 		float: right;
 	}
+	.sub-menu li.page-pdf a,
 	.sub-menu li.page-delete a {
 		background: transparent;
 		border-radius: 0;
@@ -280,6 +281,7 @@
 		margin-left: 30px;
 		display: inline;
 	}
+	.sub-menu li.page-pdf a:hover,
 	.sub-menu li.page-delete a:hover {
 		background: transparent;
 		color: #222;
@@ -310,6 +312,12 @@
 	}
 	.sub-menu li.page-search a span:before {
 		content: "\f002";
+	}
+	.sub-menu li.page-pdf {
+		background: transparent;
+	}
+	.sub-menu li.page-pdf a span:before {
+		content: "\f019";
 	}
 	.icon-index:before,
 	.sub-menu li.page-index a span:before {
