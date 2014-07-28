@@ -156,7 +156,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$dispatcher = JDispatcher::getInstance();
 
 		// Serve requested item
-	 	$content = $dispatcher->trigger( 'serve', array($objSt->projectid, $objSt->reference));
+		$content = $dispatcher->trigger('serve', array($objSt->projectid, $objSt->reference));
 
 		// Return content
 		if ($content[0])
@@ -201,7 +201,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Return first message of type
 		if ($messages && count($messages) > 0)
 		{
-			foreach($messages as $message)
+			foreach ($messages as $message)
 			{
 				if ($message['type'] == $type)
 				{
@@ -700,7 +700,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$stage = $requested_step != 6
 				 && $obj->setup_stage >= $requested_step
 				 && $obj->setup_stage != $setup_complete
-			   	 ? $requested_step : $obj->setup_stage;
+				 ? $requested_step : $obj->setup_stage;
 
 		// Get temp id for saving image before saving project
 		if ($stage < 1)
@@ -795,7 +795,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			}
 		}
 
-	 	// Send to requested page
+		// Send to requested page
 		$layouts = array('describe', 'team', 'finalize');
 		if ($stage <= ($setup_complete - 1))
 		{
@@ -1115,7 +1115,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		if (!$this->juser->get('guest') && $authorized != 1)
 		{
 			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if($ugs && count($ugs) > 0)
+			if ($ugs && count($ugs) > 0)
 			{
 				$sdata_group 	= $this->config->get('sdata_group', '');
 				$ginfo_group 	= $this->config->get('ginfo_group', '');
@@ -1769,7 +1769,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			if ($updated)
 			{
 				$objAA->recordActivity( $pid, $this->juser->get('id'),
-				 	JText::_('COM_PROJECTS_EDITED')
+					JText::_('COM_PROJECTS_EDITED')
 					. ' ' . JText::_('COM_PROJECTS_PROJECT_INFORMATION'), $pid,
 					JText::_('COM_PROJECTS_PROJECT_INFORMATION'),
 					JRoute::_('index.php?option='
@@ -1915,7 +1915,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					$obj->saveParam(
 						$obj->id,
 						'restricted_data',
-					 	htmlentities($restricted)
+						htmlentities($restricted)
 					);
 				}
 
@@ -1993,7 +1993,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				if (!empty($incoming))
 				{
 					$old_params = $obj->params;
-					foreach($incoming as $key => $value)
+					foreach ($incoming as $key => $value)
 					{
 						$obj->saveParam($pid, $key, htmlentities($value));
 
@@ -3576,7 +3576,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$view->suggestions 	= $suggestions;
 			$view->project 		= $project;
 			$modules 		   .= $view->loadTemplate();
-	 	}
+		}
 
 		// Get todo's
 		$objTD = new ProjectTodo( $this->database );
