@@ -144,7 +144,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 		// Set the page's <title> tag
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
+		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();

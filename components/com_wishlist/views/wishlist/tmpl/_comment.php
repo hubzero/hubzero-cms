@@ -121,7 +121,7 @@ defined('_JEXEC') or die('Restricted access');
 							?>
 						</label>
 
-						<label id="comment-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+						<label class="comment-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
 							<input class="option" type="checkbox" name="anonymous" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
 							<?php echo JText::_('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>

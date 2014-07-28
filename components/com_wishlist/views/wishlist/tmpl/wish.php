@@ -692,7 +692,7 @@ $this->css()
 
 						<?php echo JHTML::_('form.token'); ?>
 
-						<label for="comment<?php echo $this->wish->id; ?>">
+						<label for="comment<?php echo $this->wish->get('id'); ?>">
 							<?php echo JText::_('COM_WISHLIST_ENTER_COMMENTS'); ?>
 							<?php
 							echo JFactory::getEditor()->display('content', '', '', '', 35, 4, false, 'comment' . $this->wish->get('id'), null, null, array('class' => 'minimal no-footer'));
@@ -701,18 +701,18 @@ $this->css()
 
 						<fieldset>
 							<div class="grouping">
-								<label>
-									 <?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
-									<input type="file" name="upload" />
+								<label for="comment-upload">
+									<?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE'); ?>
+									<input type="file" name="upload" id="comment-upload" />
 								</label>
-								<label>
-									 <?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
-									<input type="text" name="description" value="" />
+								<label for="comment-description">
+									<?php echo JText::_('COM_WISHLIST_ACTION_ATTACH_FILE_DESC'); ?>
+									<input type="text" name="description" id="comment-description" value="" />
 								</label>
 							</div>
 						</fieldset>
 
-						<label id="comment-anonymous-label">
+						<label id="comment-anonymous-label" for="comment-anonymous">
 							<input class="option" type="checkbox" name="anonymous" value="1" id="comment-anonymous" />
 							<?php echo JText::_('COM_WISHLIST_POST_COMMENT_ANONYMOUSLY'); ?>
 						</label>

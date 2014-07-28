@@ -116,6 +116,15 @@ class WishlistModelAdapterUser extends WishlistModelAdapterAbstract
 	{
 		$segments = $this->_segments;
 
+		if ($this->get('category'))
+		{
+			$segments['category'] = $this->get('category');
+		}
+		if ($this->get('referenceid'))
+		{
+			$segments['rid'] = $this->get('referenceid');
+		}
+
 		$anchor = '';
 
 		// If it doesn't exist or isn't published
@@ -126,32 +135,43 @@ class WishlistModelAdapterUser extends WishlistModelAdapterAbstract
 			break;
 
 			case 'edit':
-				$segments['task']  = 'edit';
-				$segments['entry'] = $this->get('id');
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'edit';
+					$segments['wishid'] = $this->get('wishid');
+				}
 			break;
 
 			case 'delete':
 				$segments['task']  = 'delete';
-				$segments['entry'] = $this->get('id');
+				if ($this->get('wishid'))
+				{
+					$segments['wishid'] = $this->get('wishid');
+				}
 			break;
 
+			case 'add':
+			case 'addwish':
 			case 'new':
-				$segments['task'] = 'new';
+				$segments['task'] = 'add';
 			break;
 
-			case 'comments':
-				$segments['task']  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['task'] .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
-				$segments['task'] .= $this->get('alias');
+			case 'settings':
+				unset($segments['category']);
+				unset($segments['rid']);
 
-				$anchor = '#comments';
+				$segments['task'] = 'settings';
+				$segments['id'] = $this->get('wishlist');
 			break;
 
 			case 'permalink':
 			default:
-				$segments['task']  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$segments['task'] .= JHTML::_('date', $this->get('publish_up'), 'm') . '/';
-				$segments['task'] .= $this->get('alias');
+				$segments['task'] = 'wishlist';
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+				}
 			break;
 		}
 

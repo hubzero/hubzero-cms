@@ -129,14 +129,14 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 		// Set the page's <title> tag
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
+		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -145,7 +145,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 			$this->page->link()
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_task)),
+			JText::_(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link() . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
@@ -214,14 +214,14 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 
 		// Set the page's <title> tag
 		$document = JFactory::getDocument();
-		$document->setTitle(JText::_(strtoupper($this->_name)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_task)));
+		$document->setTitle(JText::_(strtoupper($this->_option)) . ': ' . $this->view->title . ': ' . JText::_(strtoupper($this->_option . '_' . $this->_task)));
 
 		// Set the pathway
 		$pathway = JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -230,13 +230,13 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 			$this->page->link()
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_task)),
+			JText::_(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link() . '&' . ($this->_sub ? 'action' : 'task') . '=' . $this->_task
 		);
 
 		$this->view->sub     = $this->_sub;
 		$this->view->message = $this->_message;
-		$this->view->name    = JText::_(strtoupper($this->_name));
+		$this->view->name    = JText::_(strtoupper($this->_option));
 
 		if ($this->getError())
 		{
@@ -290,10 +290,9 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Delete it
+		// Mark as deleted
 		$revision->set('approved', 2);
 
-		//if (!$revision->delete($id))
 		if (!$revision->store())
 		{
 			$this->setRedirect(

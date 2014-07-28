@@ -38,7 +38,9 @@ if (!$this->sub)
 $this->js()
      ->js('jquery.fileuploader.js', 'system');
 
-JPluginHelper::importPlugin( 'hubzero' );
+$juser = JFactory::getUser();
+
+JPluginHelper::importPlugin('hubzero');
 $dispatcher = JDispatcher::getInstance();
 
 $tags = $this->page->tags('string');
@@ -117,7 +119,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#file')); ?></p>
 
 		<div id="file-uploader">
-			<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+			<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 		</div>
 		<div id="file-uploader-list"></div>
 	</div>
@@ -188,8 +190,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 							}
 						?>
 					</select>
-					<?php echo implode("\n", $hi); ?>
 				</label>
+				<?php echo implode("\n", $hi); ?>
 			</div>
 		</div>
 
@@ -219,7 +221,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<div class="grid">
 				<div class="col span-half" id="file-manager" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
 					<div id="file-uploader">
-						<iframe width="100%" height="370" name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+						<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
 					</div>
 					<div id="file-uploader-list"></div>
 				</div>
@@ -232,86 +234,95 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<?php } ?>
 	</fieldset><div class="clear"></div>
 
+<?php if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) {?>
 	<fieldset>
 		<legend><?php echo JText::_('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
 
-	<?php if ($this->page->access('edit')) {
-		$mode = $this->page->param('mode', 'wiki');
-		$cls = '';
-		if ($mode && $mode != 'knol')
-		{
-			$cls = ' class="hide"';
-		}
+		<?php if ($this->page->access('edit')) {
+			$mode = $this->page->param('mode', 'wiki');
+			$cls = '';
+			if ($mode && $mode != 'knol')
+			{
+				$cls = ' class="hide"';
+			}
 
-		$juser = JFactory::getUser();
-		if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) { ?>
-			<label for="params_mode">
-				<?php echo JText::_('COM_WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
-				<select name="params[mode]" id="params_mode">
-					<option value="knol"<?php if ($mode == 'knol') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_KNOL'); ?></option>
-					<option value="wiki"<?php if ($mode == 'wiki') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_WIKI'); ?></option>
-				<?php if ($this->page->access('admin')) { ?>
-					<option value="static"<?php if ($mode == 'static') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_STATIC'); ?></option>
-				<?php } ?>
-				</select>
-			</label>
+			if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) { ?>
+				<label for="params_mode">
+					<?php echo JText::_('COM_WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
+					<select name="params[mode]" id="params_mode">
+						<option value="knol"<?php if ($mode == 'knol') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_KNOL'); ?></option>
+						<option value="wiki"<?php if ($mode == 'wiki') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_WIKI'); ?></option>
+					<?php if ($this->page->access('admin')) { ?>
+						<option value="static"<?php if ($mode == 'static') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_WIKI_FIELD_MODE_STATIC'); ?></option>
+					<?php } ?>
+					</select>
+				</label>
+			<?php } else { ?>
+				<input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
+			<?php } ?>
+
+				<label<?php echo $cls; ?> for="params_authors">
+					<?php echo JText::_('COM_WIKI_FIELD_AUTHORS'); ?>:
+					<?php
+					$mc = $dispatcher->trigger(
+						'onGetMultiEntry',
+						array(array(
+							'members',
+							'authors',
+							'params_authors',
+							'',
+							$this->page->authors('string')
+						))
+					);
+					if (count($mc) > 0) {
+						echo $mc[0];
+					} else { ?>
+					<input type="text" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
+					<?php } ?>
+				</label>
+
+				<label<?php echo $cls; ?>>
+					<input class="option" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) { echo ' checked="checked"'; } ?> value="1" />
+					<?php echo JText::_('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
+				</label>
+				&nbsp;
+
+				<label<?php echo $cls; ?> for="params_allow_changes">
+					<input class="option" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($this->page->param('allow_changes') == 1) { echo ' checked="checked"'; } ?> value="1" />
+					<?php echo JText::_('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
+				</label>
+
+				<label<?php echo $cls; ?> for="params_allow_comments">
+					<input class="option" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php if ($this->page->param('allow_comments') == 1) { echo ' checked="checked"'; } ?> value="1" />
+					<?php echo JText::_('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
+				</label>
 		<?php } else { ?>
-			<input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
+				<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
+				<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
+				<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
+				<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
+				<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
 		<?php } ?>
-
-			<label<?php echo $cls; ?> for="params_authors">
-				<?php echo JText::_('COM_WIKI_FIELD_AUTHORS'); ?>:
-				<?php
-				$mc = $dispatcher->trigger(
-					'onGetMultiEntry',
-					array(array(
-						'members',
-						'authors',
-						'params_authors',
-						'',
-						$this->page->authors('string')
-					))
-				);
-				if (count($mc) > 0) {
-					echo $mc[0];
-				} else { ?>
-				<input type="text" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
-				<?php } ?>
-			</label>
-
-			<label<?php echo $cls; ?>>
-				<input class="option" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
-			</label>
-			&nbsp;
-
-			<label<?php echo $cls; ?> for="params_allow_changes">
-				<input class="option" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($this->page->param('allow_changes') == 1) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
-			</label>
-
-			<label<?php echo $cls; ?> for="params_allow_comments">
-				<input class="option" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php if ($this->page->param('allow_comments') == 1) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
-			</label>
-	<?php } else { ?>
-			<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
-			<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
-			<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
-			<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
-			<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
-	<?php } ?>
 
 			<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
 
-		<?php if ($this->page->access('manage')) { ?>
-			<label for="state">
-				<input class="option" type="checkbox" name="page[state]" id="state"<?php if ($this->page->isLocked()) { echo ' checked="checked"'; } ?> value="1" />
-				<?php echo JText::_('COM_WIKI_FIELD_STATE'); ?>
-			</label>
-		<?php } ?>
+			<?php if ($this->page->access('manage')) { ?>
+				<label for="state">
+					<input class="option" type="checkbox" name="page[state]" id="state"<?php if ($this->page->isLocked()) { echo ' checked="checked"'; } ?> value="1" />
+					<?php echo JText::_('COM_WIKI_FIELD_STATE'); ?>
+				</label>
+			<?php } ?>
 		</fieldset>
 		<div class="clear"></div>
+<?php } else { ?>
+		<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
+		<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
+		<input type="hidden" name="page[state]" value="<?php echo $this->escape($this->page->get('state'), 0); ?>" />
+		<input type="hidden" name="authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
+		<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
+		<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
+		<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
+<?php } ?>
 
 <?php if ($this->page->access('edit')) { ?>
 	<?php if (!$this->sub) { ?>
@@ -359,13 +370,13 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 
-<?php if ($this->sub) { ?>
-		<input type="hidden" name="cn" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
-		<input type="hidden" name="active" value="<?php echo $this->escape($this->sub); ?>" />
-		<input type="hidden" name="action" value="save" />
-<?php } else { ?>
-		<input type="hidden" name="task" value="save" />
-<?php } ?>
+		<?php if ($this->sub) { ?>
+			<input type="hidden" name="cn" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
+			<input type="hidden" name="active" value="<?php echo $this->escape($this->sub); ?>" />
+			<input type="hidden" name="action" value="save" />
+		<?php } else { ?>
+			<input type="hidden" name="task" value="save" />
+		<?php } ?>
 
 		<?php echo JHTML::_('form.token'); ?>
 

@@ -1,11 +1,17 @@
 /**
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
+ * @package     hubzero-cms
+ * @file        components/com_wishlist/assets/css/wishlist.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_wishlist CSS
+	-- -- -- -- -- -- --
+
+*/
 
 	.aside .container .tags li {
 		background: transparent;
@@ -457,7 +463,11 @@
 	.warning .say_no {
 		margin-right: 1em;
 	}
-	
+
+	#hubForm .submit a {
+		margin-left: 2em;
+	}
+
 	#planform {
 		margin: 0;
 		padding: 0;
@@ -485,8 +495,8 @@
 		border-width: 15px 0 0 15px;
 		border-style: solid;
 		border-color: #fff transparent; 
-	    display: block; 
-	    width: 0;
+		display: block; 
+		width: 0;
 	}
 	#planform fieldset:before {
 		top: 10px; 
@@ -609,13 +619,15 @@
 	#publish_up-label input {
 		display: block;
 	}
-	.due, .overdue {
+	.due,
+	.overdue {
 		float: right;
 		background: #fefae2;
 		border: 2px solid #e6d6c0;
 		padding: 0 0.5em;
 	}
-	.due a, .overdue a {
+	.due a,
+	.overdue a {
 		color: orange;
 		border: none;
 	}

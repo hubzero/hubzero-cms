@@ -57,7 +57,7 @@ if ($this->wishlist->exists())
 			<div id="content-header-extra">
 				<ul id="useroptions">
 					<li class="last">
-						<a class="icon-add add btn" href="<?php echo JRoute::_($this->wishlist->link()); ?>">
+						<a class="icon-add add btn" href="<?php echo JRoute::_($this->wishlist->link('new')); ?>">
 							<?php echo JText::_('COM_WISHLIST_TASK_ADD'); ?>
 						</a>
 					</li>

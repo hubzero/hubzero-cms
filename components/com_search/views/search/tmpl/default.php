@@ -47,7 +47,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
 			<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_SEARCH_SEARCH'); ?>" />
 			<fieldset class="entry-search">
 				<legend><?php echo JText::_('COM_SEARCH_SITE'); ?></legend>
-				<label for="entry-search-field"><?php echo JText::_('COM_SEARCH_TERMS'); ?></label>
+				<label for="terms"><?php echo JText::_('COM_SEARCH_TERMS'); ?></label>
 				<input type="text" name="terms" id="terms" value="<?php echo $this->escape($this->terms); ?>" placeholder="<?php echo JText::_('COM_SEARCH_TERMS_PLACEHOLDER'); ?>" />
 			</fieldset>
 		</form>

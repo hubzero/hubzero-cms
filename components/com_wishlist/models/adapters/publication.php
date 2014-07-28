@@ -124,8 +124,10 @@ class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 				}
 			break;
 
+			case 'add':
+			case 'addwish':
 			case 'new':
-				$segments['task'] = 'new';
+				$segments['task'] = 'addwish';
 			break;
 
 			case 'settings':

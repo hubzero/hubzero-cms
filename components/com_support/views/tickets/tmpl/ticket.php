@@ -154,7 +154,7 @@ $cc = array();
 						<span class="date"><time datetime="<?php echo $this->row->created(); ?>"><?php echo $this->row->created('date'); ?></time></span>
 					</a>
 				</p><!-- / .entry-title -->
-				<div class="entry-body" cite="<?php echo $this->escape($this->row->get('login', $this->row->get('name'))); ?>">
+				<div class="entry-body">
 					<p><?php echo $this->row->content('parsed'); ?></p>
 					<?php if ($this->row->attachments()->total()) { ?>
 						<div class="comment-attachments">
@@ -314,7 +314,7 @@ $cc = array();
 						</a>
 					</p><!-- / .comment-head -->
 				<?php if ($content = $comment->content('parsed')) { ?>
-					<div class="comment-body" cite="<?php echo $cite; ?>">
+					<div class="comment-body">
 						<p><?php echo $content; ?></p>
 					</div><!-- / .comment-body -->
 				<?php } ?>
@@ -537,7 +537,7 @@ $cc = array();
 					<div class="top grouping">
 				<?php } ?>
 					<?php if ($this->row->access('create', 'comments') > 0) { ?>
-						<label>
+						<label for="messages">
 							<?php
 							$hi = array();
 							$o  = '<select name="messages" id="messages">' . "\n";
@@ -557,10 +557,10 @@ $cc = array();
 								$hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape(stripslashes($message->message)) . '" />' . "\n";
 							}
 							$o .= '</select>' . "\n";
-							$hi = implode("\n", $hi);
-							echo $o . $hi;
+							echo $o;
 							?>
 						</label>
+						<?php echo implode("\n", $hi); ?>
 					<?php } // ACL can create comment (admin) ?>
 					<?php if ($this->row->access('create', 'private_comments')) { ?>
 						<label>
