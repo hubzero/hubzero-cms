@@ -443,7 +443,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			if (!JFolder::create($uploadPath))
 			{
 				JFactory::getApplication()
-					->enqueueMessage('Unable to create group folder. Please try again later.', 'error');
+					->enqueueMessage(JText::_('COM_GROUPS_SUPER_UNABLE_TO_CREATE'), 'error');
 			}
 		}
 
@@ -451,7 +451,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (!is_writable($uploadPath))
 		{
 			JFactory::getApplication()
-					->enqueueMessage('Group folder ('.$uploadPath.') is not writable. Plase modify the folder permissions and try again later.', 'error');
+					->enqueueMessage(JText::sprintf('COM_GROUPS_SUPER_FOLDER_NOT_WRITABLE', $uploadpath), 'error');
 			return;
 		}
 
@@ -470,7 +470,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (!$this->database->query())
 		{
 			JFactory::getApplication()
-				->enqueueMessage('Unable to create super group database. Please try again later.', 'error');
+				->enqueueMessage(JText::_('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'), 'error');
 		}
 
 		// check to see if we have a super group db config
@@ -478,7 +478,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (!file_exists($supergroupDbConfigFile))
 		{
 			JFactory::getApplication()
-				->enqueueMessage('Unable to load super group config. Please try again later.', 'error');
+				->enqueueMessage(JText::_('COM_GROUPS_SUPER_UNABLE_TO_LOAD_CONFIG'), 'error');
 		}
 
 		// get hub super group database config file
@@ -499,7 +499,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			if (!file_put_contents($dbConfigFile, $dbConfigContents))
 			{
 				JFactory::getApplication()
-					->enqueueMessage('Unable to write super group database config file. Please try again later.', 'error');
+					->enqueueMessage(JText::_('COM_GROUPS_SUPER_UNABLE_TO_WRITE_CONFIG'), 'error');
 			}
 		}
 
@@ -528,7 +528,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (!$gitlabManagement || $gitlabUrl == '' || $gitlabKey == '')
 		{
 			JFactory::getApplication()
-					->enqueueMessage('Gitlab is not setup properly for managing super group repositories. Please complete setup in the Groups params and save the super group again.', 'warning');
+					->enqueueMessage(JText::_('COM_GROUPS_GITLAB_NOT_SETUP'), 'warning');
 			return;
 		}
 
@@ -622,7 +622,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (preg_match("/Host key verification failed/uis", $output))
 		{
 			JFactory::getApplication()
-					->enqueueMessage('Gitlab is not setup properly for managing super group repositories. Please make sure the hub has a valid SSH key and has been added to Gitlab to allow the HUB to make commits.', 'warning');
+					->enqueueMessage(JText::_('COM_GROUPS_GITLAB_NOT_SETUP_SSH'), 'warning');
 			return;
 		}
 
@@ -669,7 +669,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// make sure its a super group
 			if (!$group->isSuperGroup())
 			{
-				$failed[] = array('group' => $group->get('cn'), 'message' => 'Not a super group.');
+				$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_NOT_SUPER_GROUP'));
 				continue;
 			}
 
@@ -679,14 +679,14 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// make sure we have an upload path
 			if (!is_dir($uploadPath))
 			{
-				$failed[] = array('group' => $group->get('cn'), 'message' => 'Group upload path does not exist.');
+				$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'));
 				continue;
 			}
 
 			// make sure we have a git repo
 			if (!is_dir($uploadPath . DS . '.git'))
 			{
-				$failed[] = array('group' => $group->get('cn'), 'message' => 'Group assets are not versioned by git.');
+				$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));
 				continue;
 			}
 
@@ -883,7 +883,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 				// Output messsage and redirect
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-					JText::_('Group has been published.')
+					JText::_('COM_GROUPS_PUBLISHED')
 				);
 			}
 		}
@@ -991,7 +991,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// Output messsage and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Group has been Approved.')
+				JText::_('COM_GROUPS_APPROVED')
 			);
 		}
 	}
@@ -1054,7 +1054,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// No access - redirect to main listing
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('Not Authorized'),
+				JText::_('COM_GROUPS_NOT_AUTH'),
 				'error'
 			);
 			return false;

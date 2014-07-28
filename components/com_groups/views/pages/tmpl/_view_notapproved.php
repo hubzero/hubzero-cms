@@ -33,6 +33,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 
 <div class="group-page group-page-notice notice-warning">
-	<h4>Page Is Pending Approval From Site Administrator</h4>
-	<p>The page does not have an approved version to display. Approvals are made during normal business hours Monday - Friday 8am to 5pm <abbr title="Eastern Standard Time">EST</abbr>.</p>
+	<h4><?php echo JText::_('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL'); ?></h4>
+	<p><?php echo JText::_('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL_DESC_NO_OTHER_VERSION'); ?></p>
 </div>

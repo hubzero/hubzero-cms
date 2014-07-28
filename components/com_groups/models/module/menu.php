@@ -57,22 +57,27 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 		{
 			$this->_tbl->load($oid);
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
 			$this->bind( $oid );
 		}
 	}
 
+	/**
+	 * Get Pages Module appear on
+	 * 
+	 * @return [type] [description]
+	 */
 	public function getPageTitle()
 	{
 		if ($this->get('pageid') == 0)
 		{
-			return  JText::_('All Pages');
+			return  JText::_('COM_GROUPS_PAGES_MODULE_INCLUDED_ON_ALL_PAGES');
 		}
 
 		if ($this->get('pageid') == -1)
 		{
-			return  JText::_('No Pages');
+			return  JText::_('COM_GROUPS_PAGES_MODULE_INCLUDED_ON_NO_PAGES');
 		}
 
 		// new group page

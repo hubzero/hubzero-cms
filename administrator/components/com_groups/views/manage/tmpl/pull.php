@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css();
 
 JToolBarHelper::title(JText::_('COM_GROUPS'), 'groups.png');
-JToolBarHelper::custom('display','back','back','Back', false);
+JToolBarHelper::custom('display','back','back','COM_GROUPS_BACK', false);
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 		<table class="adminlist success">
 			<thead>
 			 	<tr>
-					<th scope="col"><?php echo JText::_('The following groups successfully pulled in new code'); ?></th>
+					<th scope="col"><?php echo JText::_('COM_GROUPS_PULL_SUCCESS'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -82,7 +82,7 @@ function submitbutton(pressbutton)
 		<table class="adminlist failed">
 			<thead>
 			 	<tr>
-					<th scope="col"><?php echo JText::_('The following groups successfully failed to pull new code'); ?></th>
+					<th scope="col"><?php echo JText::_('COM_GROUPS_PULL_FAIL'); ?></th>
 				</tr>
 			</thead>
 			<tbody>

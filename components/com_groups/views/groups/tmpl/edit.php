@@ -50,11 +50,10 @@ $default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'group_
 
 //access levels
 $levels = array(
-	//'anyone' => 'Enabled/On',
-	'anyone' => 'Any HUB Visitor',
-	'registered' => 'Only Registered User of the HUB',
-	'members' => 'Only Group Members',
-	'nobody' => 'Disabled/Off'
+	'anyone'     => JText::_('COM_GROUPS_PLUGIN_ANYONE'),
+	'registered' => JText::_('COM_GROUPS_PLUGIN_REGISTERED'),
+	'members'    => JText::_('COM_GROUPS_PLUGIN_MEMBERS'),
+	'nobody'     => JText::_('COM_GROUPS_PLUGIN_DISABLED')
 );
 
 //build back link
@@ -76,11 +75,11 @@ else
 if ($this->task == "edit")
 {
 	$link = JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn'));
-	$title = "Back to Group";
+	$title = JText::_('COM_GROUPS_ACTION_BACK_TO_GROUP');
 }
 else
 {
-	$title = "Back";
+	$title = JText::_('COM_GROUPS_ACTION_BACK');
 }
 ?>
 <header id="content-header">
@@ -156,14 +155,14 @@ else
 				
 				<?php if ($this->task != 'new') : ?>
 					<fieldset>
-						<legend>Logo</legend>
-						<p>Upload your logo using the file upload browser to the right then select it in the drop down below.</p>
+						<legend><?php echo JText::_('COM_GROUPS_LOGO_FIELD_TITLE'); ?></legend>
+						<p><?php echo JText::_('COM_GROUPS_LOGO_FIELD_DESC'); ?></p>
 						<?php if ($this->group->isSuperGroup()) : ?>
-							<p class="info">Setting a group logo for a super group will not update the logo in the template (seen when viewing the group). This logo is used primarily for branding purposes in resources, courses, &amp; other areas on the hub.</p>
+							<p class="info"><?php echo JText::_('COM_GROUPS_LOGO_FIELD_DESC_SUPER_GROUP'); ?></p>
 						<?php endif; ?>
 						<label id="group-logo-label">
 							<select name="group[logo]" id="group_logo" rel="<?php echo $this->group->get('gidNumber'); ?>">
-								<option value="">Select a group logo...</option>
+								<option value=""><?php echo JText::_('COM_GROUPS_LOGO_FIELD_OPTION_NULL'); ?></option>
 								<?php foreach ($this->logos as $logo) { ?>
 									<?php
 										$remove = JPATH_SITE . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
@@ -242,7 +241,7 @@ else
 						<p><?php echo JText::_('COM_GROUPS_ACCESS_SETTINGS_DESC'); ?></p>
 
 						<fieldset class="preview">
-							<legend>Set Permissions for each Tab</legend>
+							<legend><?php echo JText::_('COM_GROUPS_ACCESS_SETTINGS_DESC_DESC'); ?></legend>
 							<ul id="access">
 								<img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
 								<?php for ($i=0; $i<count($this->hub_group_plugins); $i++) { ?>
@@ -292,7 +291,7 @@ else
 						<iframe class="floating-iframe" src="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('gidNumber').'&controller=media&task=filebrowser&tmpl=component'); ?>"></iframe>
 					</div>
 				<?php else : ?>
-					<p><em>Images &amp; files can be uploaded here once the group has been created.</em></p>
+					<p><em><?php echo JText::_('COM_GROUPS_EDIT_MUST_SAVE_TO_UPLOAD_IMAGES'); ?></em></p>
 				<?php endif; ?>
 			</div>
 		</div>

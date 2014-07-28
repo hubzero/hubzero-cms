@@ -187,7 +187,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			'The page category was successfully saved.',
+			JText::_('COM_GROUPS_PAGES_CATEGORY_SAVED'),
 			'passed'
 		);
 	}
@@ -214,7 +214,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 			{
 				$this->setRedirect(
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-					JText::_('Unable to delete category.'),
+					JText::_('COM_GROUPS_PAGES_CATEGORY_DELETE_FAILED'),
 					'error'
 				);
 				return;
@@ -243,7 +243,7 @@ class GroupsControllerCategories extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The page categories were successfully deleted.'),
+			JText::_('COM_GROUPS_PAGES_CATEGORY_DELETE_SUCCESS'),
 			'passed'
 		);
 	}

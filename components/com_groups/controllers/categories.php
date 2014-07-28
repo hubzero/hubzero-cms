@@ -51,12 +51,12 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to customize a group.');
+			$this->loginTask(JText::_('COM_GROUPS_ERROR_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -169,7 +169,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		}
 
 		//inform user & redirect
-		$this->setNotification('The page category was successfully saved.', 'passed');
+		$this->setNotification(JText::_('COM_GROUPS_PAGES_CATEGORY_SAVED'), 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories') );
 	}
 
@@ -189,7 +189,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		// make sure this is our groups cat
 		if ($category->get('gidNumber') != $this->group->get('gidNumber'))
 		{
-			$this->setNotification( JText::_('Unable to delete category.'), 'error' );
+			$this->setNotification( JText::_('COM_GROUPS_PAGES_CATEGORY_DELETE_ERROR'), 'error' );
 			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories') );
 			return;
 		}
@@ -203,7 +203,7 @@ class GroupsControllerCategories extends GroupsControllerAbstract
 		}
 
 		//inform user & redirect
-		$this->setNotification('The page category was successfully deleted.', 'passed');
+		$this->setNotification(JText::_('COM_GROUPS_PAGES_CATEGORY_DELETED'), 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#categories') );
 	}
 }

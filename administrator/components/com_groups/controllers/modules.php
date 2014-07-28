@@ -75,7 +75,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			//inform user & redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=pages&gid=' . $this->gid,
-				JText::_('Modules are not allowed for this group'),
+				JText::_('COM_GROUPS_MODULES_NOT_ALLOWED'),
 				'warning'
 			);
 			return;
@@ -293,7 +293,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			'The page module was successfully saved.',
+			JText::_('COM_GROUPS_MODULES_SAVED'),
 			'passed'
 		);
 	}
@@ -339,7 +339,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The page modules were successfully deleted.'),
+			JText::_('COM_GROUPS_MODULES_DELETED'),
 			'passed'
 		);
 	}
@@ -357,7 +357,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Modules can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
 				'error'
 			);
 			return;
@@ -372,14 +372,13 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// make sure module belongs to this group
 		if (!$module->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to view this module.');
+			JError::raiseError(403, JText::_('COM_GROUPS_MODULES_NOT_AUTHORIZED'));
 		}
 
 		// output page version
 		if ($escape)
 		{
 			echo highlight_string($module->content('raw'), true);
-			//echo '<pre>' . $this->view->escape($module->get('content')) . '</pre>';
 		}
 		else
 		{
@@ -400,7 +399,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Modules can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
 				'error'
 			);
 			return;
@@ -415,7 +414,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// make sure page belongs to this group
 		if (!$module->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to view this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_MODULES_NOT_AUTHORIZED'));
 		}
 
 		// get first module menu's page id
@@ -523,7 +522,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Modules can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
 				'error'
 			);
 			return;
@@ -541,7 +540,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			//inform user & redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('The module is already approved'),
+				JText::_('COM_GROUPS_MODULES_ALREADY_APPROVED'),
 				'warning'
 			);
 			return;
@@ -563,7 +562,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->view->setLayout('errors');
 			$this->view->error = (isset($output[0])) ? $output[0] : '';
-			$this->view->error = str_replace($file, '"' . $module->get('title') . '"', $view->error);
+			$this->view->error = str_replace($file, '"' . $module->get('title') . '"', $this->view->error);
 			$this->view->module = $module;
 			$this->view->option = $this->_option;
 			$this->view->controller = $this->_controller;
@@ -584,7 +583,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// were all set
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The module content contained no PHP errors!'),
+			JText::_('COM_GROUPS_MODULES_NO_ERRORS'),
 			'passed'
 		);
 	}
@@ -601,7 +600,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Modules can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
 				'error'
 			);
 			return;
@@ -635,7 +634,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Modules can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
 				'error'
 			);
 			return;
@@ -653,7 +652,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			//inform user & redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('The module is already approved'),
+				JText::_('COM_GROUPS_MODULES_ALREADY_APPROVED'),
 				'warning'
 			);
 			return;
@@ -707,7 +706,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// were all set
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The module content contained no potential XSS issues!'),
+			JText::_('COM_GROUPS_MODULES_NO_XSS'),
 			'passed'
 		);
 	}
@@ -724,7 +723,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Modules can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
 				'error'
 			);
 			return;
@@ -746,7 +745,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// inform user and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The module was successfully scanned!'),
+			JText::_('COM_GROUPS_MODULES_SCANNED'),
 			'passed'
 		);
 	}
@@ -763,7 +762,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
 				'error'
 			);
 			return;
@@ -799,7 +798,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Modules can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
 				'error'
 			);
 			return;
@@ -817,7 +816,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 			//inform user & redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('The module is already approved'),
+				JText::_('COM_GROUPS_MODULES_ALREADY_APPROVED'),
 				'warning'
 			);
 			return;
@@ -844,7 +843,7 @@ class GroupsControllerModules extends \Hubzero\Component\AdminController
 		// inform user and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The module was successfully approved!'),
+			JText::_('COM_GROUPS_MODULES_APPROVED'),
 			'passed'
 		);
 	}

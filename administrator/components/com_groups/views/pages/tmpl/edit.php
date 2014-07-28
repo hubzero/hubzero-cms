@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn;
 
 // define title
-$text = ($this->task == 'edit' ? JText::_('Edit Page') : JText::_('New Page'));
+$text = ($this->task == 'edit' ? JText::_('COM_GROUPS_PAGES_EDIT_PAGE') : JText::_('COM_GROUPS_PAGES_NEW_PAGE'));
 
 // create toolbar
 $canDo = GroupsHelper::getActions('group');
@@ -54,27 +54,27 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 <form action="<?php echo $base; ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Page Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_GROUPS_PAGES_PAGE_DETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('Title'); ?>:</label><br />
+				<label for="field-title"><?php echo JText::_('COM_GROUPS_PAGES_TITLE'); ?>:</label><br />
 				<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-alias"><?php echo JText::_('Alias'); ?>:</label><br />
+				<label for="field-alias"><?php echo JText::_('COM_GROUPS_PAGES_ALIAS'); ?>:</label><br />
 				<input type="text" name="page[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
 			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Page Settings'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_GROUPS_PAGES_PAGE_SETTINGS'); ?></span></legend>
 
 			<?php if ($this->page->get('id')) : ?>
 				<div class="input-wrap">
-					<label for="field-order"><?php echo JText::_('Order'); ?>:</label><br />
+					<label for="field-order"><?php echo JText::_('COM_GROUPS_PAGES_ORDER'); ?>:</label><br />
 					<select name="page[ordering]" id="field-order">
-						<?php foreach($this->order as $k => $order) : ?>
+						<?php foreach ($this->order as $k => $order) : ?>
 							<?php $sel = ($order->get('title') == $this->page->get('title')) ? 'selected="selected"' : ''; ?>
 							<option <?php echo $sel ;?> value="<?php echo $order->get('ordering'); ?>"><?php echo ($order->get('ordering') + 0) . '. '; ?><?php echo $order->get('title'); ?></option>
 						<?php endforeach; ?>
@@ -82,9 +82,9 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 				</div>
 			<?php endif; ?>
 			<div class="input-wrap">
-				<label for="field-category"><?php echo JText::_('Category'); ?>:</label><br />
+				<label for="field-category"><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY'); ?>:</label><br />
 				<select name="page[category]" id="field-category">
-					<option value="">- Select Page Category &mdash;</option>
+					<option value=""><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_OPTION_NULL'); ?></option>
 					<?php foreach ($this->categories as $pageCategory) : ?>
 						<?php $sel = ($this->page->get('category') == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
 						<option <?php echo $sel; ?> value="<?php echo $pageCategory->get('id'); ?>"><?php echo $pageCategory->get('title'); ?></option>
@@ -93,9 +93,9 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 			</div>
 			<?php if ($this->group->isSuperGroup()) : ?>
 				<div class="input-wrap">
-					<label for="field-order"><?php echo JText::_('Template'); ?>:</label><br />
+					<label for="field-order"><?php echo JText::_('COM_GROUPS_PAGES_TEMPLATE'); ?>:</label><br />
 					<select name="page[template]" id="field-order">
-						<option value="">- Default</option>
+						<option value=""><?php echo JText::_('COM_GROUPS_PAGES_TEMPLATE_OPTION_NULL'); ?></option>
 						<?php foreach ($this->pageTemplates as $name => $file) : ?>
 							<?php
 								$tmpl = str_replace('.php', '', $file);
@@ -106,25 +106,25 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 				</div>
 			<?php endif; ?>
 			<div class="input-wrap">
-				<label for="field-home"><?php echo JText::_('Home'); ?>:</label><br />
+				<label for="field-home"><?php echo JText::_('COM_GROUPS_PAGES_HOME'); ?>:</label><br />
 				<select name="page[home]" id="field-home">
-					<option value="0" <?php if($this->page->get('home') == 0) { echo "selected"; } ?>>Use current home page</option>
-					<option value="1" <?php if($this->page->get('home') == 1) { echo "selected"; } ?>>Set as home page</option>
+					<option value="0" <?php if ($this->page->get('home') == 0) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_HOME_USE'); ?></option>
+					<option value="1" <?php if ($this->page->get('home') == 1) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_HOME_SET'); ?></option>
 				</select>
 			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Page Access'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_GROUPS_PAGES_PAGE_ACCESS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-state"><?php echo JText::_('Status'); ?>:</label><br />
+				<label for="field-state"><?php echo JText::_('COM_GROUPS_PAGES_STATE'); ?>:</label><br />
 				<select name="page[state]" id="field-state">
 					<?php
 					$states = array(
-						1 => JText::_('Published'),
-						0 => JText::_('Unpublished'),
-						2 => JText::_('Trashed')
+						1 => JText::_('COM_GROUPS_PAGES_STATE_PUBLISHED'),
+						0 => JText::_('COM_GROUPS_PAGES_STATE_UNPUBLISHED'),
+						2 => JText::_('COM_GROUPS_PAGES_STATE_DELETED')
 					);
 
 					foreach ($states as $k => $v)
@@ -136,10 +136,10 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 				</select>
 			</div>
 			<div class="input-wrap">
-				<label for="field-privacy"><?php echo JText::_('Privacy'); ?>:</label><br />
+				<label for="field-privacy"><?php echo JText::_('COM_GROUPS_PAGES_PRIVACY'); ?>:</label><br />
 				<?php
 					$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
-					switch($access)
+					switch ($access)
 					{
 						case 'anyone':		$name = "Any HUB Visitor";		break;
 						case 'registered':	$name = "Registered HUB Users";	break;
@@ -147,17 +147,21 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 					}
 				?>
 				<select name="page[privacy]" id="page[privacy]">
-					<option value="default" <?php if($this->page->get('privacy') == "default") { echo 'selected="selected"'; } ?>>Inherits overview tab's privacy setting (Currently set to: <?php echo $name; ?>)</option>
-					<option value="members" <?php if($this->page->get('privacy') == "members") { echo 'selected="selected"'; } ?>>Private Page (Accessible to members only)</option>
+					<option value="default" <?php if ($this->page->get('privacy') == "default") { echo 'selected="selected"'; } ?>>
+						<?php echo JText::sprintf('COM_GROUPS_PAGES_PRIVACY_OPTION_INHERIT', $name); ?>
+					</option>
+					<option value="members" <?php if ($this->page->get('privacy') == "members") { echo 'selected="selected"'; } ?>>
+						<?php echo JText::_('COM_GROUPS_PAGES_PRIVACY_OPTION_PRIVATE'); ?>
+					</option>
 				</select>
 			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Page Content'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_GROUPS_PAGES_PAGE_CONTENT'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-content"><?php echo JText::_('Content'); ?>:</label><br />
+				<label for="field-content"><?php echo JText::_('COM_GROUPS_PAGES_CONTENT'); ?>:</label><br />
 				<textarea name="pageversion[content]" id="field-content" rows="30"><?php echo $this->escape(stripslashes($this->version->get('content'))); ?></textarea>
 				<input type="hidden" name="pageversion[version]" value="<?php echo $this->version->get('version'); ?>" />
 			</div>
@@ -169,40 +173,40 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 			<table class="meta">
 				<tbody>
 					<tr>
-						<th><?php echo JText::_('Owner'); ?></th>
+						<th><?php echo JText::_('COM_GROUPS_PAGES_OWNER'); ?></th>
 						<td><?php echo $this->group->get('description'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('ID'); ?></th>
+						<th><?php echo JText::_('COM_GROUPS_PAGES_ID'); ?></th>
 						<td><?php echo $this->page->get('id'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Current Version'); ?></th>
+						<th><?php echo JText::_('COM_GROUPS_PAGES_CURRENT_VERSION'); ?></th>
 						<td><?php echo $this->version->get('version'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Created'); ?></th>
+						<th><?php echo JText::_('COM_GROUPS_PAGES_CREATED'); ?></th>
 						<td><?php echo JHTML::_('date', $this->firstversion->get('created'), 'F j, Y @ g:ia'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Created By'); ?></th>
+						<th><?php echo JText::_('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
 						<td>
 							<?php
 								$profile = \Hubzero\User\Profile::getInstance($this->firstversion->get('created_by'));
-								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('System');
+								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('COM_GROUPS_PAGES_SYSTEM');
 							?>
 						</td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Last Modified'); ?></th>
+						<th><?php echo JText::_('COM_GROUPS_PAGES_LAST_MODIFIED'); ?></th>
 						<td><?php echo JHTML::_('date', $this->version->get('created'), 'F j, Y @ g:ia'); ?></td>
 					</tr>
 					<tr>
-						<th><?php echo JText::_('Last Modified By'); ?></th>
+						<th><?php echo JText::_('COM_GROUPS_PAGES_LAST_MODIFIED_BY'); ?></th>
 						<td>
 							<?php
 								$profile = \Hubzero\User\Profile::getInstance($this->version->get('created_by'));
-								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('System');
+								echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('uidNumber') . ')' : JText::_('COM_GROUPS_PAGES_SYSTEM');
 							?>
 						</td>
 					</tr>
@@ -211,15 +215,15 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 			</table>
 
 			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('Page Versions'); ?></span></legend>
+				<legend><span><?php echo JText::_('COM_GROUPS_PAGES_PAGE_VERSIONS'); ?></span></legend>
 
 				<table class="admintable">
 					<thead>
 						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Created</th>
-							<th scope="col">Approved</th>
-							<th scope="col">View</th>
+							<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_VERSION_NUMBER'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_VERSION_CREATED'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_VERSION_APPROVED'); ?></th>
+							<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_VERSION_VIEW'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -229,8 +233,8 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 								<td>
 									<?php
 										$profile = \Hubzero\User\Profile::getInstance($version->get('created_by'));
-										echo 'by: ' . ((is_object($profile)) ? $profile->get('name') : JText::_('System'));
-										echo '<br /> on: ' . JHTML::_('date', $version->get('created'));
+										$name = ((is_object($profile)) ? $profile->get('name') : JText::_('COM_GROUPS_PAGES_SYSTEM'));
+										echo JText::sprintf('COM_GROUPS_PAGES_VERSION_CREATED_DETAILS', $name, JHTML::_('date', $version->get('created')));
 									?>
 								</td>
 								<td>
@@ -238,18 +242,18 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 										if ($version->get('approved'))
 										{
 											$profile = \Hubzero\User\Profile::getInstance($version->get('approved_by'));
-											echo 'by: ' . ((is_object($profile)) ? $profile->get('name') : JText::_('System'));
-											echo '<br /> on: ' . JHTML::_('date', $version->get('approved_on'));
+											$name = ((is_object($profile)) ? $profile->get('name') : JText::_('COM_GROUPS_PAGES_SYSTEM'));
+											echo JText::sprintf('COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS', $name, JHTML::_('date', $version->get('approved_on')));
 										}
 										else
 										{
-											echo 'Not approved';
+											echo JText::_('COM_GROUPS_PAGES_VERSION_NOT_APPROVED');
 										}
 									?>
 								</td>
 								<td>
 									<a class="version" href="<?php echo $base; ?>&amp;task=raw&amp;pageid=<?php echo $this->page->get('id'); ?>&amp;version=<?php echo $version->get('version'); ?>">
-										<?php echo JText::_('View Raw'); ?>
+										<?php echo JText::_('COM_GROUPS_PAGES_VERSION_VIEW_RAW'); ?>
 									</a>
 								</td>
 							</tr>

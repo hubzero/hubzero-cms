@@ -51,12 +51,12 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to customize a group.');
+			$this->loginTask(JText::_('COM_GROUPS_ERROR_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
 		//check to make sure we have  cname
-		if(!$this->cn)
+		if (!$this->cn)
 		{
 			$this->_errorHandler(400, JText::_('COM_GROUPS_ERROR_NO_ID'));
 		}
@@ -283,7 +283,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		}
 
 		// Push success message and redirect
-		$this->setNotification("You have successfully updated the module.", 'passed');
+		$this->setNotification(JText::_('COM_GROUPS_PAGES_MODULE_SAVED'), 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages#modules') );
 		if ($return = JRequest::getVar('return', '','post'))
 		{
@@ -340,7 +340,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		// make sure its out page
 		if (!$module->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to modify this module.');
+			JError::raiseError(403, JText::_('COM_GROUPS_ERROR_NOT_AUTH'));
 		}
 
 		// make sure state is a valid state
@@ -361,7 +361,7 @@ class GroupsControllerModules extends GroupsControllerAbstract
 		}
 
 		//inform user & redirect
-		$this->setNotification('The group module was successfully ' . $status . '.', 'passed');
+		$this->setNotification(JText::sprintf('COM_GROUPS_PAGES_MODULE_STATE_CHANGE', $status), 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=modules') );
 		if ($return = JRequest::getVar('return', '','get'))
 		{

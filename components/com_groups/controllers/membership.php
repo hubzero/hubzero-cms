@@ -63,7 +63,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged to send invites to group members.');
+			$this->loginTask(JText::_('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
@@ -95,7 +95,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$gparams = new JRegistry($this->view->group->get('params'));
 		if ($gparams->get('membership_control', 1) == 0)
 		{
-			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->setNotification(JText::_('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
 			return;
 		}
@@ -124,7 +124,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to send invites to group members.');
+			$this->loginTask(JText::_('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
@@ -155,7 +155,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		if (!$logins)
 		{
-			$this->setNotification('You must enter in names and/or email addresses to invite.', 'error');
+			$this->setNotification(JText::_('COM_GROUPS_INVITE_MUST_ENTER_DATA'), 'error');
 			$this->inviteTask();
 			return;
 		}
@@ -217,7 +217,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 					}
 					else
 					{
-						$badentries[] = array($uid, 'User is already a member or invited.');
+						$badentries[] = array($uid, JText::_('COM_GROUPS_INVITE_USER_IS_ALREADY_MEMBER'));
 					}
 				}
 			}
@@ -242,7 +242,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 						// Check if in current email invitee if not add a new email invite
 						if (in_array($uid, $members) || in_array($uid, $current_invitees))
 						{
-							$badentries[] = array($uid, 'User is already a member or invitee.');
+							$badentries[] = array($uid, JText::_('COM_GROUPS_INVITE_USER_IS_ALREADY_MEMBER'));
 						}
 						elseif (in_array($uid, $applicants))
 						{
@@ -262,13 +262,13 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 						}
 						else
 						{
-							$badentries[] = array($l, 'Email address has already been invited.');
+							$badentries[] = array($l, JText::_('COM_GROUPS_INVITE_EMAIL_ALREADY_INVITED'));
 						}
 					}
 				}
 				else
 				{
-					$badentries[] = array($l, 'Entry is not a valid email address or user.');
+					$badentries[] = array($l, JText::_('COM_GROUPS_INVITE_EMAIL_NOT_VALID'));
 				}
 			}
 		}
@@ -374,7 +374,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		if (count($all_invites) > 0)
 		{
-			$success_message = 'Group invites were successfully sent to the following users/email addresses: <br />';
+			$success_message = JText::_('COM_GROUPS_INVITE_SUCCESS_MESSAGE');
 			foreach ($all_invites as $invite)
 			{
 				if (is_numeric($invite))
@@ -391,7 +391,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 
 		if (count($badentries) > 0)
 		{
-			$error_message = 'We were unable to send invites to the following entries: <br />';
+			$error_message = JText::_('COM_GROUPS_INVITE_ERROR_MESSAGE');
 			foreach ($badentries as $entry)
 			{
 				if (is_numeric($entry[0]))
@@ -441,7 +441,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 				$link = JRoute::_('index.php?option=com_groups&cn='.$this->cn.'&task=accept&token='.$token);
 			}
 
-			$this->loginTask('You must be logged in to accept a group invite.', $link);
+			$this->loginTask(JText::_('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_ACCEPT'), $link);
 			return;
 		}
 
@@ -473,7 +473,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
-			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->setNotification(JText::_('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
 			return;
 		}
@@ -588,7 +588,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 				->send();
 
 		//set notification fro user
-		$this->setNotification('You have successfully accepted your group invite.', 'passed');
+		$this->setNotification(JText::_('COM_GROUPS_INVITE_ACCEPTED_SUCCESS'), 'passed');
 
 		// Action Complete. Redirect to appropriate page
 		if ($return == 'browse')
@@ -611,7 +611,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to cancel group memberships.');
+			$this->loginTask(JText::_('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_CANCEL'));
 			return;
 		}
 
@@ -636,7 +636,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
-			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->setNotification(JText::_('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
 			return;
 		}
@@ -699,7 +699,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Action Complete. Redirect to appropriate page
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_members&id=' . $this->juser->get('id') . '&active=groups'),
-			'You have successfully canceled your group membership.',
+			JText::_('COM_GROUPS_INVITE_CANCEL_SUCCESS'),
 			'passed'
 		);
 	}
@@ -715,7 +715,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to join a group.');
+			$this->loginTask(JText::_('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_JOIN'));
 			return;
 		}
 
@@ -740,7 +740,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
-			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->setNotification(JText::_('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
 			return;
 		}
@@ -757,10 +757,10 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			return;
 		}
 
-		//check if applicant
+		// check if applicant
 		if (in_array($this->juser->get('id'), $applicants))
 		{
-			$this->setNotification('You are already awaiting approval to join this group.', 'info');
+			$this->setNotification(JText::_('COM_GROUPS_INVITE_ALREADY_APPLIED'), 'info');
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn='.$this->view->group->get('cn')) );
 			return;
 		}
@@ -768,7 +768,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		//is the group closed or invite only
 		if ($this->view->group->get('join_policy') == 3 || $this->view->group->get('join_policy') == 2)
 		{
-			$this->setNotification('You are unable to join the group at this time due to the join policy set by the group managers.', 'warning');
+			$this->setNotification(JText::_('COM_GROUPS_INVITE_UNABLE_TO_JOIN'), 'warning');
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn='.$this->view->group->get('cn')) );
 			return;
 		}
@@ -815,7 +815,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
 		//set title
-		$this->view->title = "Request Group Membership: " . $this->view->group->get('description');
+		$this->view->title = JText::_('COM_GROUPS_INVITE_REQUEST') . ": " . $this->view->group->get('description');
 
 		//display
 		$this->view->display();
@@ -832,7 +832,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to request access a group.');
+			$this->loginTask(JText::_('COM_GROUPS_INVITE_MUST_BE_LOGGED_IN_TO_REQUEST'));
 			return;
 		}
 
@@ -857,7 +857,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
-			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->setNotification(JText::_('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
 			return;
 		}
@@ -948,7 +948,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 				->send();
 
 		//tell the user they just did good
-		$this->setNotification('Your membership request has been forwarded to the group managers for approval.', 'passed');
+		$this->setNotification(JText::_('COM_GROUPS_INVITE_REQUEST_FORWARDED'), 'passed');
 
 		// Push through to the groups listing
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->view->group->get('cn')) );

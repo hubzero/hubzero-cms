@@ -43,8 +43,8 @@ $dispatcher = JDispatcher::getInstance();
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li class="last">
-				<a class="group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
-					<?php echo JText::_('Back to Group'); ?>
+				<a class="icon-group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
+					<?php echo JText::_('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
 				</a>
 			</li>
 		</ul>
@@ -53,7 +53,7 @@ $dispatcher = JDispatcher::getInstance();
 
 <section class="main section">
 	<?php
-		foreach($this->notifications as $notification)
+		foreach ($this->notifications as $notification)
 		{
 			echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 		}

@@ -44,20 +44,20 @@ foreach ($this->modules as $module)
 <ul class="toolbar toolbar-modules">
 	<li class="new">
 		<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=add'); ?>">
-			<?php echo JText::_('New Module'); ?>
+			<?php echo JText::_('COM_GROUPS_PAGES_NEW_MODULE'); ?>
 		</a>
 	</li>
 	<li class="filter">
 		<select>
-			<option value="">- Filter By Position &mdash;</option>
+			<option value=""><?php echo JText::_('COM_GROUPS_PAGES_MODULE_FILTER'); ?></option>
 			<?php foreach ($positions as $position) : ?>
 				<option value="<?php echo $position; ?>"><?php echo $position; ?></option>
 			<?php endforeach; ?>
 		</select>
 	</li>
-	<li class="filter-search-divider">Or</li>
+	<li class="filter-search-divider"><?php echo JText::_('COM_GROUPS_PAGES_MODULE_OR'); ?></li>
 	<li class="search">
-		<input type="text" placeholder="Search Modules...." />
+		<input type="text" placeholder="<?php echo JText::_('COM_GROUPS_PAGES_MODULE_SEARCH'); ?>" />
 	</li>
 </ul>
 
@@ -89,43 +89,43 @@ foreach ($this->modules as $module)
 					</div>
 
 					<div class="item-sub">
-						Included on: <?php echo implode(', ', $pages); ?>
+						<?php echo JText::sprintf('COM_GROUPS_PAGES_MODULE_INCLUDED_ON', implode(', ', $pages)); ?>
 					</div>
 
 					<div class="item-position">
-						<span><?php echo JText::_('Position:'); ?></span>
+						<span><?php echo JText::_('COM_GROUPS_PAGES_MODULE_POSITION'); ?>:</span>
 						<?php echo $module->get('position'); ?>
 					</div>
 
 					<?php if ($module->get('approved') == 0) : ?>
 						<div class="item-approved">
-							<?php echo JText::_('Pending Approval'); ?>
+							<?php echo JText::_('COM_GROUPS_PAGES_MODULE_PENDING_APPROVAL'); ?>
 						</div>
 					<?php endif; ?>
 
 					<div class="item-state">
 						<?php if ($module->get('state') == 0) : ?>
-							<a class="unpublished tooltips" title="<?php echo JText::_('Publish Module'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Publish Module'); ?></a>
+							<a class="unpublished tooltips" title="<?php echo JText::_('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></a>
 						<?php else : ?>
-							<a class="published tooltips" title="<?php echo JText::_('Un-publish Module'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Un-publish Module'); ?></a>
+							<a class="published tooltips" title="<?php echo JText::_('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></a>
 						<?php endif; ?>
 					</div>
 
 					<div class="item-controls btn-group dropdown">
 						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=edit&moduleid='.$module->get('id')); ?>" class="btn">
-							<?php echo JText::_('Manage Module'); ?>
+							<?php echo JText::_('COM_GROUPS_PAGES_MANAGE_MODULE'); ?>
 						</a>
 						<span class="btn dropdown-toggle"></span>
 						<ul class="dropdown-menu">
-							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=edit&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Edit Module'); ?></a></li>
+							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=edit&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_EDIT_MODULE'); ?></a></li>
 							<li class="divider"></li>
 							<?php if ($module->get('state') == 0) : ?>
-								<li><a class="icon-ban-circle" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Publish Module'); ?></a></li>
+								<li><a class="icon-ban-circle" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=publish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></a></li>
 							<?php else : ?>
-								<li><a class="icon-success" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Un-publish Module'); ?></a></li>
+								<li><a class="icon-success" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=unpublish&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></a></li>
 							<?php endif; ?>
 							<li class="divider"></li>
-							<li><a class="icon-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=delete&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('Delete Module'); ?></a></li>
+							<li><a class="icon-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=modules&task=delete&moduleid='.$module->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_DELETE_MODULE'); ?></a></li>
 						</ul>
 					</div>
 				</div>
@@ -133,7 +133,7 @@ foreach ($this->modules as $module)
 		<?php endforeach; ?>
 	<?php else : ?>
 		<li class="no-results">
-			<p><?php echo JText::_('Currently this group does not have any modules.'); ?></p>
+			<p><?php echo JText::_('COM_GROUPS_PAGES_NO_MODULES'); ?></p>
 		</li>
 	<?php endif; ?>
 </ul>

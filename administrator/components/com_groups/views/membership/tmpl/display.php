@@ -36,7 +36,7 @@ JToolBarHelper::title(JText::_('COM_GROUPS'), 'groups.png');
 
 $bar =  JToolBar::getInstance('toolbar');
 // Add an upload button
-$bar->appendButton( 'Popup', 'new', JText::_('New'), 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170 );
+$bar->appendButton( 'Popup', 'new', 'COM_GROUPS_NEW', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid'], 570, 170 );
 
 JToolBarHelper::spacer();
 switch ($this->filters['status'])
@@ -48,28 +48,28 @@ switch ($this->filters['status'])
 		//}
 		if ($canDo->get('core.delete'))
 		{
-			JToolBarHelper::custom('uninvite', 'unpublish', JText::_('Uninvite'), JText::_('Uninvite'), false, false);
+			JToolBarHelper::custom('uninvite', 'unpublish','COM_GROUPS_MEMBER_UNINVITE', 'COM_GROUPS_MEMBER_UNINVITE', false, false);
 		}
 	break;
 	case 'applicant':
 		if ($canDo->get('core.edit'))
 		{
-			JToolBarHelper::custom('approve', 'publish', JText::_('Approve'), JText::_('Approve'), false, false);
+			JToolBarHelper::custom('approve', 'publish', 'COM_GROUPS_MEMBER_APPROVE', 'COM_GROUPS_MEMBER_APPROVE', false, false);
 		}
 		if ($canDo->get('core.delete'))
 		{
-			JToolBarHelper::custom('deny', 'unpublish', JText::_('Deny'), JText::_('Deny'), false, false);
+			JToolBarHelper::custom('deny', 'unpublish', 'COM_GROUPS_MEMBER_DENY', 'COM_GROUPS_MEMBER_DENY', false, false);
 		}
 	break;
 	default:
 		if ($canDo->get('core.edit'))
 		{
-			JToolBarHelper::custom('promote', 'promote', JText::_('Promote'), JText::_('Promote'), false, false);
-			JToolBarHelper::custom('demote', 'demote', JText::_('Demote'), JText::_('Demote'), false, false);
+			JToolBarHelper::custom('promote', 'promote', 'COM_GROUPS_MEMBER_PROMOTE', 'COM_GROUPS_MEMBER_PROMOTE', false, false);
+			JToolBarHelper::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE','COM_GROUPS_MEMBER_DEMOTE', false, false);
 		}
 		if ($canDo->get('core.delete'))
 		{
-			JToolBarHelper::deleteList('delete', 'delete');
+			JToolBarHelper::deleteList();
 		}
 	break;
 }
@@ -99,11 +99,11 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_GROUPS_SEARCH'); ?>" />
 
-		<label for="filter-status"><?php echo JText::_('Status'); ?>:</label>
+		<label for="filter-status"><?php echo JText::_('COM_GROUPS_MEMBER_STATUS'); ?>:</label>
 		<select name="status" id="filter-status">
-			<option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('User status...'); ?></option>
+			<option value=""<?php echo ($this->filters['status'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_MEMBER_STATUS'); ?></option>
 			<!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : ''; ?>>Member</option> -->
 			<option value="manager"<?php echo ($this->filters['status'] == 'manager') ? ' selected="selected"' : ''; ?>>Manager</option>
 			<option value="applicant"<?php echo ($this->filters['status'] == 'applicant') ? ' selected="selected"' : ''; ?>>Applicant</option>
@@ -121,12 +121,12 @@ function submitbutton(pressbutton)
 			</tr>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_USERNAME'), 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_EMAIL'), 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JText::_('Status'); ?></th>
-				<th scope="col" colspan="2"><?php echo JText::_('Action'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_MEMBER_STATUS'); ?></th>
+				<th scope="col" colspan="2"><?php echo JText::_('COM_GROUPS_MEMBER_ACTION'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -195,7 +195,7 @@ foreach ($this->rows as $row)
 		case 'inviteemail':
 	?>
 					<a class="state unpublish" onclick="javascript:if(confirm('Cancel invitation?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=uninvite&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo (isset($row->uidNumber)) ? $row->uidNumber : $row->email; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('uninvite'); ?></span>
+						<span><?php echo JText::_('COM_GROUPS_MEMBER_UNINVITE'); ?></span>
 					</a>
 				</td>
 				<td>
@@ -205,19 +205,19 @@ foreach ($this->rows as $row)
 		case 'applicant':
 	?>
 					<a class="state publish" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('approve'); ?></span>
+						<span><?php echo JText::_('COM_GROUPS_MEMBER_APPROVE'); ?></span>
 					</a>
 				</td>
 				<td>
 					<a class="state unpublish" onclick="javascript:if(confirm('Deny membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deny&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('deny'); ?></span>
+						<span><?php echo JText::_('COM_GROUPS_MEMBER_DENY'); ?></span>
 					</a>
 	<?php
 		break;
 		case 'manager':
 	?>
 					<a class="state demote" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=demote&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('demote'); ?></span>
+						<span><?php echo JText::_('COM_GROUPS_MEMBER_DEMOTE'); ?></span>
 					</a>
 				</td>
 				<td>
@@ -228,12 +228,12 @@ foreach ($this->rows as $row)
 		case 'member':
 	?>
 					<a class="state promote" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=promote&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('promote'); ?></span>
+						<span><?php echo JText::_('COM_GROUPS_MEMBER_PROMOTE'); ?></span>
 					</a>
 				</td>
 				<td>
 					<a class="state trash" onclick="javascript:if(confirm('Cancel membership?')){return true;}else{return false;}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;gid=<?php echo $this->filters['gid']; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<span><?php echo JText::_('remove'); ?></span>
+						<span><?php echo JText::_('COM_GROUPS_MEMBER_REMOVE'); ?></span>
 					</a>
 	<?php
 		break;

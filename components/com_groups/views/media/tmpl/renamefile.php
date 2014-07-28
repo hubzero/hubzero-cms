@@ -37,15 +37,15 @@ $fileInfo = pathinfo($this->file);
 
 <form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=dorenamefile&no_html=1'); ?>" method="post" class="hubForm">
 	<fieldset>
-		<legend><?php echo JTexT::_('Rename File'); ?></legend>
+		<legend><?php echo JTexT::_('COM_GROUPS_MEDIA_RENAME_FILE'); ?></legend>
 		<label>
-			<?php echo JText::_('Current Name: '); ?><br />
+			<?php echo JText::_('COM_GROUPS_MEDIA_RENAME_CURRENT_NAME'); ?>:<br />
 			<input type="hidden" name="file" value="<?php echo $this->file; ?>" />
 
 			<input type="text" name="name" value="<?php echo $fileInfo['basename']; ?>" />
 		</label>
 		<p class="controls">
-			<button type="submit" class="btn icon-edit"><?php echo JTexT::_('Rename'); ?></button>
+			<button type="submit" class="btn icon-edit"><?php echo JTexT::_('COM_GROUPS_MEDIA_RENAME'); ?></button>
 		</p>
 	</fieldset>
 </form>

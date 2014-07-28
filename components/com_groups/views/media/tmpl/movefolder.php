@@ -34,17 +34,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 <form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=domovefolder&no_html=1'); ?>" method="post" class="hubForm">
 	<fieldset>
-		<legend><?php echo JTexT::_('Move Folder'); ?></legend>
+		<legend><?php echo JTexT::_('COM_GROUPS_MEDIA_MOVE_FOLDER'); ?></legend>
 		<label>
-			<?php echo JText::_('Current Folder: '); ?>
+			<?php echo JText::_('COM_GROUPS_MEDIA_MOVE_CURRENT_FOLDER'); ?>:
 			<input type="text" name="current" value="<?php echo $this->folder; ?>" readonly="readonly" />
 		</label>
 		<label>
-			<?php echo JTexT::_('Move to: '); ?>
+			<?php echo JTexT::_('COM_GROUPS_MEDIA_MOVE_MOVE_TO'); ?>:
 			<?php echo $this->folderList; ?>
 		</label>
 		<p class="controls">
-			<button type="submit" class="btn icon-move"><?php echo JTexT::_('Move'); ?></button>
+			<button type="submit" class="btn icon-move"><?php echo JTexT::_('COM_GROUPS_MEDIA_MOVE'); ?></button>
 		</p>
 	</fieldset>
 </form>

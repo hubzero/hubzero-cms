@@ -41,7 +41,7 @@ if ($canDo->get('core.admin'))
 
 	if ($this->config->get('super_gitlab', 0))
 	{
-		JToolBarHelper::custom('pull', 'pull', '', 'Pull Code');
+		JToolBarHelper::custom('pull', 'pull', '', 'COM_GROUPS_PULL_CODE');
 		JToolBarHelper::spacer();
 	}
 
@@ -56,7 +56,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('delete', 'delete');
+	JToolBarHelper::deleteList();
 }
 JToolBarHelper::spacer();
 JToolBarHelper::help('groups');
@@ -79,11 +79,11 @@ function submitbutton(pressbutton)
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('COM_GROUPS_SEARCH'); ?>" />
 
 		<label for="filter-type"><?php echo JText::_('COM_GROUPS_TYPE'); ?>:</label>
 		<select name="type" id="filter-type">
-			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Type...'); ?></option>
+			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_TYPE'); ?></option>
 			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>Hub</option>
 			<option value="super"<?php echo ($this->filters['type'][0] == 'super') ? ' selected="selected"' : ''; ?>>Super</option>
 <?php if ($canDo->get('core.admin')) { ?>
@@ -93,25 +93,25 @@ function submitbutton(pressbutton)
 			<option value="course"<?php echo ($this->filters['type'][0] == 'course') ? ' selected="selected"' : ''; ?>>Course</option>
 		</select>
 
-		<label for="filter-discoverability"><?php echo JText::_('Discoverability'); ?>:</label>
+		<label for="filter-discoverability"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY'); ?>:</label>
 		<select name="discoverability" id="filter-discoverability">
-			<option value=""<?php echo ($this->filters['discoverability'] == null) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Discoverability...'); ?></option>
-			<option value="0"<?php echo ($this->filters['discoverability'] == 0 && $this->filters['discoverability'] != null) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Visible'); ?></option>
-			<option value="1"<?php echo ($this->filters['discoverability'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('Hidden'); ?></option>
+			<option value=""<?php echo ($this->filters['discoverability'] == null) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_DISCOVERABILITY'); ?></option>
+			<option value="0"<?php echo ($this->filters['discoverability'] == 0 && $this->filters['discoverability'] != null) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_VISIBLE'); ?></option>
+			<option value="1"<?php echo ($this->filters['discoverability'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_HIDDEN'); ?></option>
 		</select>
 
-		<label for="filter-policy"><?php echo JText::_('Policy'); ?>:</label>
+		<label for="filter-policy"><?php echo JText::_('COM_GROUPS_JOIN_POLICY'); ?>:</label>
 		<select name="policy" id="filter-policy">
-			<option value=""<?php echo ($this->filters['policy'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Policy type...'); ?></option>
-			<option value="open"<?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Open'); ?></option>
-			<option value="restricted"<?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Restricted'); ?></option>
-			<option value="invite"<?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Invite only'); ?></option>
-			<option value="closed"<?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo JText::_('Closed'); ?></option>
+			<option value=""<?php echo ($this->filters['policy'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_JOIN_POLICY'); ?></option>
+			<option value="open"<?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_JOIN_POLICY_PUBLIC'); ?></option>
+			<option value="restricted"<?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_JOIN_POLICY_RESTRICTED'); ?></option>
+			<option value="invite"<?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_JOIN_POLICY_INVITE'); ?></option>
+			<option value="closed"<?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_JOIN_POLICY_CLOSED'); ?></option>
 		</select>
 
 		<input type="submit" value="<?php echo JText::_('COM_GROUPS_GO'); ?>" />
 		|
-		<a class="button" href="/administrator/index.php?option=com_groups&amp;controller=manage&amp;type=hub&amp;discoverability=&amp;policy=&amp;approved=&amp;published=&amp;created=">Reset</a>
+		<a class="button" href="/administrator/index.php?option=com_groups&amp;controller=manage&amp;type=hub&amp;discoverability=&amp;policy=&amp;approved=&amp;published=&amp;created="><?php echo JText::_('COM_GROUPS_RESET'); ?></a>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -119,14 +119,14 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_ID'), 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_NAME'), 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_CN'), 'cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_TYPE'), 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_GROUPS_PUBLISHED'), 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Approved'), 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_ID', 'gidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_NAME', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_CN', 'cn', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_TYPE', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_PUBLISHED', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_GROUPS_APPROVED', 'approved', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_MEMBERS'); ?></th>
-				<th scope="col"><?php echo JText::_('Pages'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -149,11 +149,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	switch ($row->type)
 	{
-		case '0': $type = 'System';  break;
-		case '1': $type = 'Hub';     break;
-		case '2': $type = 'Project'; break;
-		case '3': $type = 'Super';   break;
-		case '4': $type = 'Course';  break;
+		case '0': $type = JText::_('COM_GROUPS_TYPE_SYSTEM');  break;
+		case '1': $type = JText::_('COM_GROUPS_TYPE_HUB');     break;
+		case '2': $type = JText::_('COM_GROUPS_TYPE_PROJECT'); break;
+		case '3': $type = JText::_('COM_GROUPS_TYPE_SUPER');   break;
+		case '4': $type = JText::_('COM_GROUPS_TYPE_COURSE');  break;
 	}
 
 	//get group invite emails
@@ -186,7 +186,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->cn; ?>">
 						<?php echo $this->escape(stripslashes($row->description)); ?>
 					</a>
 				<?php } else { ?>
@@ -197,7 +197,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->cn; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->cn; ?>">
 						<?php echo $this->escape($row->cn); ?>
 					</a>
 				<?php } else { ?>
@@ -210,15 +210,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($row->published) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Unpublish Group'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_UNPUBLISH'); ?>">
 						<span class="state publish">
-							<span class="text"><?php echo JText::_('Published'); ?></span>
+							<span class="text"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } else { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Publish Group'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_PUBLISH'); ?>">
 						<span class="state unpublish">
-							<span class="text"><?php echo JText::_('Unpublished'); ?></span>
+							<span class="text"><?php echo JText::_('COM_GROUPS_UNPUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } ?>
@@ -227,25 +227,25 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if (!$group->get('approved')) { ?>
-					<a class="jgrid state no" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('Approve Group'); ?>">
+					<a class="jgrid state no" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_APPROVE'); ?>">
 						<span class="not-approved">
-							<span class="text"><?php echo JText::_('Approve Group'); ?></span>
+							<span class="text"><?php echo JText::_('COM_GROUPS_APPROVE'); ?></span>
 						</span>
 					</a>
 					<?php } else { ?>
 						<span class="state yes approved">
-							<span class="text"><?php echo JText::_('Approved'); ?></span>
+							<span class="text"><?php echo JText::_('COM_GROUPS_APPROVED'); ?></span>
 						</span>
 					<?php } ?>
 				<?php } ?>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=membership&amp;gid=<?php echo $row->cn; ?>" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
+					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=membership&amp;gid=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_MANAGE_MEMBERSHIP') . '::' . $tip; ?>">
 						<?php echo count($members); ?>
 					</a>
 				<?php } else { ?>
-					<span class="glyph member" title="<?php echo JText::_('Manage membership') . '::' . $tip; ?>">
+					<span class="glyph member" title="<?php echo JText::_('COM_GROUPS_MANAGE_MEMBERSHIP') . '::' . $tip; ?>">
 						<?php echo count($members); ?>
 					</span>
 				<?php } ?>

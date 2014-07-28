@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $tmpl = JRequest::getVar('tmpl', '');
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('COM_GROUPS_EDIT') : JText::_('COM_GROUPS_NEW'));
 
 $canDo = GroupsHelper::getActions('group');
 
@@ -83,10 +83,10 @@ jQuery(document).ready(function($){
 	<fieldset>
 		<div class="configuration" >
 			<div class="fltrt configuration-options">
-				<button type="button" onclick="submitbutton('addusers');"><?php echo JText::_( 'Save' );?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_( 'Cancel' );?></button>
+				<button type="button" onclick="submitbutton('addusers');"><?php echo JText::_( 'COM_GROUPS_MEMBER_SAVE' );?></button>
+				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_( 'COM_GROUPS_MEMBER_CANCEL' );?></button>
 			</div>
-			<?php echo JText::_('Add users') ?>
+			<?php echo JText::_('COM_GROUPS_MEMBER_ADD') ?>
 		</div>
 	</fieldset>
 <?php } ?>

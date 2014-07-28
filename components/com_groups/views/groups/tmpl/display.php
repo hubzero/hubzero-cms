@@ -51,7 +51,7 @@ $this->css('introduction.css', 'system')
 </header>
 
 <?php
-	foreach($this->notifications as $notification)
+	foreach ($this->notifications as $notification)
 	{
 		echo "<p class=\"{$notification['type']}\">{$notification['message']}</p>";
 	}
@@ -76,7 +76,7 @@ $this->css('introduction.css', 'system')
 			<ul>
 				<li>
 					<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=index'); ?>">
-						<?php echo JText::_('Need Help?'); ?>
+						<?php echo JText::_('COM_GROUPS_INTRO_NEED_HELP'); ?>
 					</a>
 				</li>
 			</ul>
@@ -88,11 +88,11 @@ $this->css('introduction.css', 'system')
 	<?php if (isset($this->mygroups['invitees']) && count($this->mygroups['invitees']) > 0) : ?>
 		<div class="invites">
 			<div class="header">
-				<h2>Group Invites</h2>
-				<p>Below is a list of your current group invites.</p>
+				<h2><?php echo JText::_('COM_GROUPS_INTRO_GROUP_INVITES'); ?></h2>
+				<p><?php echo JText::_('COM_GROUPS_INTRO_GROUP_INVITES_DESC'); ?></p>
 			</div>
 			<ul>
-				<?php foreach($this->mygroups['invitees'] as $invite) : ?>
+				<?php foreach ($this->mygroups['invitees'] as $invite) : ?>
 					<li><?php echo $invite->description; ?><a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$invite->cn.'&task=accept'); ?>">Accept Invite</a></li>
 				<?php endforeach; ?>
 			</ul>
@@ -102,11 +102,11 @@ $this->css('introduction.css', 'system')
 	<?php if (isset($this->mygroups['applicants']) && count($this->mygroups['applicants']) > 0) : ?>
 		<div class="requests">
 			<div class="header">
-				<h2>Group Requests</h2>
-				<p>Below is a list of your pending group requests.</p>
+				<h2><?php echo JText::_('COM_GROUPS_INTRO_GROUP_REQUESTS'); ?></h2>
+				<p><?php echo JText::_('COM_GROUPS_INTRO_GROUP_REQUESTS_DESC'); ?></p>
 			</div>
 			<ul>
-				<?php foreach($this->mygroups['applicants'] as $applicant) : ?>
+				<?php foreach ($this->mygroups['applicants'] as $applicant) : ?>
 					<li><?php echo $applicant->description; ?><a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$applicant->cn.'&task=cancel'); ?>">Cancel Request</a></li>
 				<?php endforeach; ?>
 			</ul>

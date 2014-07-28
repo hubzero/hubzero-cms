@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+JHTML::_('behavior.modal');
+
 // push scripts and styles
 $this->css()
      ->css('media.css')
@@ -68,11 +70,11 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 		?>
 		<ul class="path">
 			<?php if ($this->group->get('type') == 3) : ?>
-				<li><a data-folder="/" href="javascript:(void);">/ (root)</a></li>
+				<li><a data-folder="/" href="javascript:(void);"><?php echo JText::_('COM_GROUPS_MEDIA_PATH_SLASH_ROOT'); ?></a></li>
 			<?php endif; ?>
 			<?php foreach ($segments as $segment) : ?>
 				<?php $folder .= DS . $segment; ?>
-				<li class="divider">/</li>
+				<li class="divider"><?php echo JText::_('COM_GROUPS_MEDIA_PATH_SLASH'); ?></li>
 				<li><a data-folder="<?php echo $folder; ?>" href="javascript:(void);"><?php echo $segment; ?></a></li>
 			<?php endforeach; ?>
 		</ul>
@@ -81,8 +83,8 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 	<div class="filelist-headers">
 		<ul>
 			<li>
-				<div class="name"><?php echo JText::_('Name'); ?></div>
-				<div class="modified"><?php echo JText::_('Modified'); ?></div>
+				<div class="name"><?php echo JText::_('COM_GROUPS_MEDIA_NAME'); ?></div>
+				<div class="modified"><?php echo JText::_('COM_GROUPS_MEDIA_MODIFIED'); ?></div>
 			</li>
 		</ul>
 	</div>
@@ -153,50 +155,51 @@ $ckeditorQuery = '&type='.$type.'&CKEditor=' . $ckeditor . '&CKEditorFuncNum=' .
 			</li>
 			<li class="file-details cf">
 				<div class="right">
-					<div class="title">File Preview</div>
+					<div class="title"><?php echo JText::_('COM_GROUPS_MEDIA_FILE_PREVIEW'); ?></div>
 					<div class="preview">
 						<?php if ($isImage) : ?>
 							<img src="/components/com_groups/assets/img/loading.gif" data-src="<?php echo $downloadPath; ?>" />
 						<?php else : ?>
-							<p><strong>Preview Not Available</strong></p>
+							<p><strong><?php echo JText::_('COM_GROUPS_MEDIA_FILE_PREVIEW_NOT_AVAILABLE'); ?></strong></p>
 						<?php endif; ?>
 					</div>
 				</div>
 				<div class="left">
-					<div class="title">File Details</div>
+					<div class="title"><?php echo JText::_('COM_GROUPS_MEDIA_FILE_DETAILS'); ?></div>
 					<ul>
 						<li>
-							<strong>Name: </strong> <?php echo $file; ?>
+							<strong><?php echo JText::_('COM_GROUPS_MEDIA_FILE_NAME'); ?>: </strong> <?php echo $file; ?>
 						</li>
 						<li>
-							<strong>Size: </strong> <?php echo $formattedFilesize; ?>
+							<strong><?php echo JText::_('COM_GROUPS_MEDIA_FILE_SIZE'); ?>: </strong> <?php echo $formattedFilesize; ?>
 						</li>
 						<?php if ($isImage) : ?>
 							<li>
-								<strong>Dimensions: </strong> <?php echo $formattedDimensions; ?>
+								<strong><?php echo JText::_('COM_GROUPS_MEDIA_FILE_DIMENSIONS'); ?>: </strong> <?php echo $formattedDimensions; ?>
 							</li>
 						<?php endif; ?>
 						<li class="path">
-							<strong>Path: </strong> <span><?php echo $downloadPath; ?></span>
+							<strong><?php echo JText::_('COM_GROUPS_MEDIA_FILE_PATH'); ?>: </strong> <span><?php echo $downloadPath; ?></span>
 						</li>
 						<li>
 							<?php if (isset($ckeditor) && $ckeditor != '') : ?>
-								<a href="javascript:void(0);" class="btn icon-add" onclick="return ckeditorInsertFile('<?php echo $downloadPath; ?>');">Insert File</a>
+								<a href="javascript:void(0);" class="btn icon-add" onclick="return ckeditorInsertFile('<?php echo $downloadPath; ?>');"><?php echo JText::_('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
 							<?php endif; ?>
-							<a href="<?php echo $downloadPath; ?>" class="btn icon-download action-download">Download</a>
-							<a href="<?php echo $renamePath; ?>" class="btn icon-edit action-rename">Rename</a>
-							<a href="<?php echo $movePath; ?>" class="btn icon-move action-move">Move</a>
+							<a href="<?php echo $downloadPath; ?>" class="btn icon-download action-download"><?php echo JText::_('COM_GROUPS_MEDIA_DOWNLOAD'); ?></a>
+							<a href="<?php echo $renamePath; ?>" class="btn icon-edit action-rename"><?php echo JText::_('COM_GROUPS_MEDIA_RENAME'); ?></a>
+							<a href="<?php echo $movePath; ?>" class="btn icon-move action-move"><?php echo JText::_('COM_GROUPS_MEDIA_MOVE'); ?></a>
 							<?php if ($isArchive) : ?>
-								<a href="<?php echo $extractPath; ?>" class="btn icon-extract action-extract">Extract</a>
+								<a href="<?php echo $extractPath; ?>" class="btn icon-extract action-extract"><?php echo JText::_('COM_GROUPS_MEDIA_EXTRACT'); ?></a>
 							<?php endif; ?>
-							<a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn icon-delete action-delete">Delete</a>
+							<a data-file="<?php echo $relFilePath; ?>" href="<?php echo $deletePath; ?>" class="btn icon-delete action-delete">
+								<?php echo JText::_('COM_GROUPS_MEDIA_DELETE'); ?></a>
 						</li>
 					</ul>
 				</div>
 			</li>
 		<?php endforeach; ?>
 		<?php if (count($this->folders) == 0 && count($this->files) == 0) : ?>
-			<li><em>No files or folders found.</em></li>
+			<li><em><?php echo JText::_('COM_GROUPS_MEDIA_NO_FILES'); ?></em></li>
 		<?php endif;?>
 	</ul>
 </div>

@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = GroupsHelper::getActions('group');
 
-JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('Group Page Categories'), 'groups.png');
+JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('COM_GROUPS_PAGES_CATEGORIES'), 'groups.png');
 
 if ($canDo->get('core.create'))
 {
@@ -44,10 +44,10 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('Delete page Categories?', 'delete');
+	JToolBarHelper::deleteList('COM_GROUPS_PAGES_CATEGORIES_CONFIRM_DELETE', 'delete');
 }
 JToolBarHelper::spacer();
-JToolBarHelper::custom('manage', 'config','config','Manage',false);
+JToolBarHelper::custom('manage', 'config','config','COM_GROUPS_MANAGE',false);
 ?>
 
 <script type="text/javascript">
@@ -64,8 +64,8 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->categories->count();?>);" /></th>
-				<th>Title</th>
-				<th>Color</th>
+				<th><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?></th>
+				<th><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 	<?php endforeach; ?>
 <?php else : ?>
 			<tr>
-				<td colspan="3"><?php echo JText::_('Currently there are no pages for this group.'); ?></td>
+				<td colspan="3"><?php echo JText::_('COM_GROUPS_PAGES_NO_CATEGORIES'); ?></td>
 			</tr>
 <?php endif; ?>
 		</tbody>

@@ -44,10 +44,10 @@ $this->css()
 		<ul id="useroptions">
 			<li class="last">
 				<a class="icon-group group btn popup 1200x600" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&path=/uploads'); ?>">
-					<?php echo JText::_('Upload Images/Files'); ?>
+					<?php echo JText::_('COM_GROUPS_ACTION_UPLOAD_MANAGER'); ?>
 				</a>
 				<a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
-					<?php echo JText::_('Back to Group'); ?>
+					<?php echo JText::_('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
 				</a>
 			</li>
 		</ul>
@@ -63,16 +63,15 @@ $this->css()
 
 	<div class="group-page-manager">
 		<ul class="tabs clearfix">
-			<li><a href="#pages"><?php echo JText::_('Manage Pages'); ?></a></li>
-			<li><a href="#categories"><?php echo JText::_('Manage Page Categories'); ?></a></li>
+			<li><a href="#pages"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGES'); ?></a></li>
+			<li><a href="#categories"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?></a></li>
 			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
-				<li><a href="#modules"><?php echo JText::_('Manage Modules'); ?></a></li>
+				<li><a href="#modules"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_MODULES'); ?></a></li>
 			<?php endif ;?>
 		</ul>
 
 		<form action="index.php" method="post" id="hubForm" class="full">
 			<fieldset>
-				<!-- <legend><?php echo JText::_('Manage Pages'); ?></legend> -->
 				<?php
 					$this->view('list')
 					     ->set('group', $this->group)
@@ -83,7 +82,6 @@ $this->css()
 			</fieldset>
 
 			<fieldset>
-				<!-- <legend><?php echo JText::_('Manage Page Categories'); ?></legend> -->
 				<?php
 					$this->view('list', 'categories')
 					     ->set('group', $this->group)
@@ -94,7 +92,6 @@ $this->css()
 
 			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
 				<fieldset>
-					<!-- <legend><?php echo JText::_('Manage Modules'); ?></legend> -->
 					<?php
 						$this->view('list', 'modules')
 						     ->set('group', $this->group)

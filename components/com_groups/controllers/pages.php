@@ -51,7 +51,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to customize a group.');
+			$this->loginTask(JText::_('COM_GROUPS_ERROR_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
@@ -125,7 +125,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$this->_buildTitle();
 
 		//set view vars
-		$this->view->title  = 'Manage Group Pages: ' . $this->group->get('description');
+		$this->view->title  = JText::_('COM_GROUPS_PAGES_MANAGE') . ': ' . $this->group->get('description');
 
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
@@ -171,13 +171,13 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// make sure page exists
 		if (!$this->view->page->exists() && !$new)
 		{
-			JError::raiseError(404, 'Page not found.');
+			JError::raiseError(404, JText::_('COM_GROUPS_PAGES_PAGE_NOT_FOUND'));
 		}
 
 		// make sure page belongs to group - if editing
 		if (!$this->view->page->belongsToGroup($this->group) && !$new)
 		{
-			JError::raiseError(403, 'You are not authorized to edit this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
 		}
 
 		// are we passing in a page from someplace else
@@ -280,7 +280,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// make sure page belongs to group
 		if ($task == 'update' && !$this->page->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to modify this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
 		}
 
 		// set page vars
@@ -374,20 +374,19 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			}
 		}
 
-
 		// check page back in
 		GroupsHelperPages::checkin($this->page->get('id'));
 
 		// redirect to return url
 		if ($return = JRequest::getVar('return', '','post'))
 		{
-			$this->setNotification("You have successfully {$task}d the page.", 'passed');
+			$this->setNotification(JText::sprintf('COM_GROUPS_PAGES_PAGE_SAVED', $task), 'passed');
 			$this->setRedirect(base64_decode($return));
 			return;
 		}
 
 		// Push success message and redirect
-		$this->setNotification("You have successfully {$task}d the page. You can view the page by <a rel=\"external\" href=\"{$this->page->url()}\">clicking here</a>.", 'passed');
+		$this->setNotification(JText::sprintf('COM_GROUPS_PAGES_PAGE_SAVED_AND_LINK', $task, $this->page->url()), 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')) );
 	}
 
@@ -410,13 +409,13 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// make sure page exists
 		if (!$this->view->page->exists())
 		{
-			JError::raiseError(404, 'Page not found.');
+			JError::raiseError(404, JText::_('COM_GROUPS_PAGES_PAGE_NOT_FOUND'));
 		}
 
 		// make sure page belongs to group - if editing
 		if (!$this->view->page->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to edit this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
 		}
 
 		// build the title
@@ -482,7 +481,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// make sure its out page
 		if (!$page->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to modify this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
 		}
 
 		// make sure state is a valid state
@@ -503,7 +502,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		}
 
 		//inform user & redirect
-		$this->setNotification('The group page was successfully ' . $status . '.', 'passed');
+		$this->setNotification(JText::sprintf('COM_GROUPS_PAGES_PAGE_STATUS_CHANGE', $status), 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages') );
 		if ($return = JRequest::getVar('return', '','get'))
 		{
@@ -552,14 +551,14 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// make sure its out page
 		if (!$page->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to modify this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
 		}
 
 		// make sure we have an approved version
 		$version = $page->approvedVersion();
 		if ($version === null)
 		{
-			$this->setNotification('Unable to set "' . $page->get('title') . '" as the home page. The page must have at least one approved version to set as home.', 'error');
+			$this->setNotification(JText::sprintf('COM_GROUPS_PAGES_PAGE_HOME_ERROR', $page->get('title')), 'error');
 			$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages') );
 			return;
 		}
@@ -586,7 +585,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		}
 
 		// inform user
-		$this->setNotification("The page " . $page->get('title') . " was successfully set as the home page.", 'passed');
+		$this->setNotification(JText::sprintf('COM_GROUPS_PAGES_PAGE_HOME_SET', $page->get('title')), 'passed');
 
 		// redirect
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages') );
@@ -634,7 +633,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// make sure page belongs to this group
 		if (!$page->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to view this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
 		}
 
 		// load page version
@@ -643,7 +642,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// do we have a page version
 		if ($pageVersion === null)
 		{
-			JError::raiseError(404, 'Page Version Not Found');
+			JError::raiseError(404, JText::_('COM_GROUPS_PAGES_PAGE_VERSION_NOT_FOUND'));
 		}
 
 		// output page version

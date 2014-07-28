@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('COM_GROUPS_EDIT') : JText::_('COM_GROUPS_NEW'));
 
 $canDo = GroupsHelper::getActions('group');
 
@@ -84,19 +84,19 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="task" value="save" />
 
 			<div class="input-wrap">
-				<label for="field-type"><?php echo JText::_('TYPE'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-type"><?php echo JText::_('COM_GROUPS_TYPE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<select name="group[type]" id="field-type">
-					<option value="1"<?php echo ($this->group->type == '1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('hub'); ?></option>
-					<option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>><?php echo JText::_('super'); ?></option>
+					<option value="1"<?php echo ($this->group->type == '1') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_TYPE_HUB'); ?></option>
+					<option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_TYPE_SUPER'); ?></option>
 				<?php if ($canDo->get('core.admin')) { ?>
-					<option value="0"<?php echo ($this->group->type == '0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('system'); ?></option>
+					<option value="0"<?php echo ($this->group->type == '0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_TYPE_SYSTEM'); ?></option>
 				<?php } ?>
-					<option value="2"<?php echo ($this->group->type == '2') ? ' selected="selected"' : ''; ?>><?php echo JText::_('project'); ?></option>
-					<option value="4"<?php echo ($this->group->type == '4') ? ' selected="selected"' : ''; ?>><?php echo JText::_('course'); ?></option>
+					<option value="2"<?php echo ($this->group->type == '2') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_TYPE_PROJECT'); ?></option>
+					<option value="4"<?php echo ($this->group->type == '4') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_TYPE_COURSE'); ?></option>
 				</select>
 			</div>
 			<div class="input-wrap">
-				<label for="field-cn"><?php echo JText::_('COM_GROUPS_CN'); ?>: <span class="required"><?php echo JText::_('required'); ?></span></label><br />
+				<label for="field-cn"><?php echo JText::_('COM_GROUPS_CN'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="group[cn]" id="field-cn" value="<?php echo $this->escape(stripslashes($this->group->cn)); ?>" />
 			</div>
 			<div class="input-wrap">
@@ -127,22 +127,22 @@ function submitbutton(pressbutton)
 					<td><?php echo $this->escape($this->group->gidNumber); ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Published'); ?></th>
+					<th><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></th>
 					<td><?php echo ($this->group->published) ? 'Yes' : 'No'; ?></td>
 				</tr>
 				<tr>
-					<th><?php echo JText::_('Approved'); ?></th>
+					<th><?php echo JText::_('COM_GROUPS_APPROVED'); ?></th>
 					<td><?php echo ($this->group->approved) ? 'Yes' : 'No'; ?></td>
 				</tr>
 			<?php if ($this->group->created) { ?>
 				<tr>
-					<th><?php echo JText::_('Created'); ?></th>
+					<th><?php echo JText::_('COM_GROUPS_CREATED'); ?></th>
 					<td><?php echo $this->escape(date("l F d, Y @ g:ia", strtotime($this->group->created))); ?></td>
 				</tr>
 			<?php } ?>
 			<?php if ($this->group->created_by) { ?>
 				<tr>
-					<th><?php echo JText::_('Creator'); ?></th>
+					<th><?php echo JText::_('COM_GROUPS_CREATED_BY'); ?></th>
 					<td><?php
 					$creator = JUser::getInstance($this->group->created_by);
 					echo $this->escape($creator->get('name')); ?></td>
@@ -152,11 +152,11 @@ function submitbutton(pressbutton)
 		</table>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Membership'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_GROUPS_MEMBERSHIP'); ?></span></legend>
 
 			<div class="input-wrap">
 				<input type="checkbox" name="group[params][membership_control]" id="field-membership_control" value="1" <?php if ($membership_control == 1) { ?>checked="checked"<?php } ?> />
-				<label for="field-membership_control">Control membership within the group?</label>
+				<label for="field-membership_control"><?php echo JText::_('COM_GROUPS_MEMBERSHIP_CONTROL'); ?></label>
 			</div>
 			<fieldset>
 				<legend><?php echo JText::_('COM_GROUPS_JOIN_POLICY'); ?>:</legend>
@@ -173,17 +173,17 @@ function submitbutton(pressbutton)
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Access'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_GROUPS_ACCESS'); ?></span></legend>
 
 			<fieldset>
-				<legend><?php echo JText::_('Discoverability'); ?>:</legend>
+				<legend><?php echo JText::_('COM_GROUPS_DISCOVERABILITY'); ?>:</legend>
 
 				<div class="input-wrap">
 					<input type="radio" name="group[discoverability]" id="field-discoverability0" value="0"<?php if ($this->group->discoverability == 0) { echo ' checked="checked"'; } ?> />
-					<label for="field-discoverability0"><?php echo JText::_('Visible'); ?></label>
+					<label for="field-discoverability0"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_VISIBLE'); ?></label>
 					<br />
 					<input type="radio" name="group[discoverability]" id="field-discoverability1" value="1"<?php if ($this->group->discoverability == 1) { echo ' checked="checked"'; } ?> />
-					<label for="field-discoverability1"><?php echo JText::_('Hidden'); ?></label>
+					<label for="field-discoverability1"><?php echo JText::_('COM_GROUPS_DISCOVERABILITY_HIDDEN'); ?></label>
 				</div>
 			</fieldset>
 
@@ -195,9 +195,9 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="display_system_users"><?php echo JText::_('COM_GROUPS_SHOW_SYSTEM_USERS'); ?>:</label><br />
 				<select name="group[params][display_system_users]" id="display_system_users">
-					<option <?php if ($display_system_users == 'global') { echo 'selected="selected"'; } ?> value="global">Global</option>
-					<option <?php if ($display_system_users == 'no') { echo 'selected="selected"'; } ?> value="no">No</option>
-					<option <?php if ($display_system_users == 'yes') { echo 'selected="selected"'; } ?> value="yes">Yes</option>
+					<option <?php if ($display_system_users == 'global') { echo 'selected="selected"'; } ?> value="global"><?php echo JText::_('COM_GROUPS_SHOW_SYSTEM_USERS_GLOBAL'); ?></option>
+					<option <?php if ($display_system_users == 'no') { echo 'selected="selected"'; } ?> value="no"><?php echo JText::_('COM_GROUPS_SHOW_SYSTEM_USERS_NO'); ?></option>
+					<option <?php if ($display_system_users == 'yes') { echo 'selected="selected"'; } ?> value="yes"><?php echo JText::_('COM_GROUPS_SHOW_SYSTEM_USERS_YES'); ?></option>
 				</select>
 			</div>
 		</fieldset>

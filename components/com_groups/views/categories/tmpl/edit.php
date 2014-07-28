@@ -37,10 +37,10 @@ $this->css()
      ->css('jquery.colpick.css', 'system')
      ->js('jquery.colpick', 'system');
 
-$title = 'Add Page Category';
+$title = JText::_('COM_GROUPS_PAGES_ADD_CATEGORY');
 if ($this->category->get('id'))
 {
-	$title = 'Edit Page Category';
+	$title = JText::_('COM_GROUPS_PAGES_EDIT_CATEGORY');
 }
 ?>
 <?php if (!JRequest::getInt('no_html', 0)) : ?>
@@ -49,7 +49,9 @@ if ($this->category->get('id'))
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#pagecategories'); ?>">Back to Manage Pages</a></li>
+			<li><a class="icon-prev prev btn" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#pagecategories'); ?>">
+				<?php echo JText::_('COM_GROUPS_ACTION_BACK_TO_MANAGE_PAGES'); ?>
+			</a></li>
 		</ul>
 	</div>
 </header>
@@ -62,21 +64,22 @@ if ($this->category->get('id'))
 
 	<form action="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=savecategory'); ?>" method="POST" id="hubForm" class="full editcategory">
 		<fieldset>
-			<legend><?php echo JText::_('Details')?></legend>
+			<legend><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_DETAILS'); ?></legend>
 
 			<label for="field-category-title">
-				<strong>Title:</strong> <span class="required">Required</span>
+				<strong><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_TITLE')?>:</strong> <span class="required"><?php echo JText::_('COM_GROUPS_FIELD_REQUIRED'); ?></span>
 				<input type="text" name="category[title]" id="field-category-title" value="<?php echo $this->escape($this->category->get('title')); ?>" />
 			</label>
 
 			<label for="field-category-color">
-				<strong>Color:</strong> <span class="optional">Optional</span>
+				<strong><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_COLOR')?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
 				<input type="text" maxlength="6" name="category[color]" id="field-category-color" value="<?php echo $this->escape($this->category->get('color')); ?>" />
 			</label>
 		</fieldset>
 
 		<p class="submit">
-			<button type="submit" class="btn btn-info save icon-save"><?php echo JText::_('Save Category'); ?></button>
+			<button type="submit" class="btn btn-info save icon-save"><?php echo JText::_('COM_GROUPS_PAGES_SAVE_CATEGORY'); ?></button>
+			<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#pagecategories'); ?>" class="btn"><?php echo JText::_('COM_GROUPS_PAGES_CANCEL'); ?></a>
 		</p>
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="categories" />

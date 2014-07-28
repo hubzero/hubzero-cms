@@ -28,145 +28,87 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="uploadpath" type="text" menu="hide" default="/site/groups" label="Upload path" description="File path for pictures" size="50" />
-		<param name="scan_uploads" type="list" default="1" label="Scan Uploads" description="Scan uploads with ClamAV for virus checking.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="iconpath" type="text" menu="hide" default="/components/com_groups/assest/img/icons" label="Icons" description="File path for icons" size="50" />
-
-		<param name="join_policy" type="list" default="0" label="Default Join Policy" description="The default default join policy for new groups.">
-			<option value="0">Public</option>
-			<option value="1">Restricted</option>
-			<option value="2">Invite Only</option>
-			<option value="3">Closed</option>
-		</param>
-		<param name="discoverability" type="list" default="0" label="Default Discoverability" description="The default discoverability setting for new groups.">
-			<option value="0">Visible</option>
-			<option value="1">Hidden</option>
-		</param>
-		<param type="spacer" />
-		<param name="auto_approve" type="list" default="1" label="Auto Approve Groups:?" description="Groups are auto approved at creation. Otherwise Hub administrator must manually approve group.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param type="spacer" />
-		<param name="display_system_users" type="list" default="no" label="Display System Users?" description="Display system users in group member lists?">
-			<option value="no">No</option>
-			<option value="yes">Yes</option>
-		</param>
-		<param name="email_comment_processing" type="list" default="0" label="Enable discussion comments via E-mail" description="Enable logic to send group discussion comments via email and process and add responses via email">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="email_member_groupsidcussionemail_autosignup" type="list" default="0" label="Enable groups to auto setup new members to receive discussion email by default" description="Automatically setup new group users to get email from the group discussions">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-
-		<param type="spacer" />
-		<param name="intro_mygroups" type="list" default="1" label="Show My Groups" description="Display list of my groups on group landing page?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="intro_interestinggroups" type="list" default="1" label="Show Interesting Groups" description="Display list of groups having matching tags as the user on the group landing page?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="intro_populargroups" type="list" default="1" label="Show Popular Groups" description="Display list of popular groups on group landing page?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="intro_featuredgroups" type="list" default="1" label="Show Featured Groups" description="Display list of featured groups on group landing page?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="intro_featuredgroups_list" type="text" default="" label="Featured Group List" description="List of Featured Groups to Display" size="50" />
-	</params>
-
-	<fieldset name="general" label="General">
-		<field name="auto_approve" type="list" default="1" label="Auto Approve Groups:?" description="Groups are auto approved at creation. Otherwise Hub administrator must manually approve group.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+	<fieldset name="general" label="COM_GROUPS_CONFIG_FIELDSET_GENERAL">
+		<field name="auto_approve" type="list" default="1" label="COM_GROUPS_CONFIG_AUTO_APPROVE" description="COM_GROUPS_CONFIG_AUTO_APPROVE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 	</fieldset>
 
-	<fieldset name="intro" label="Intro Page">
-		<field name="intro_mygroups" type="list" default="1" label="Show My Groups" description="Display list of my groups on group landing page?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+	<fieldset name="intro" label="COM_GROUPS_CONFIG_FIELDSET_INTRO">
+		<field name="intro_mygroups" type="list" default="1" label="COM_GROUPS_CONFIG_INTRO_MY_GROUPS" description="COM_GROUPS_CONFIG_INTRO_MY_GROUPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="intro_interestinggroups" type="list" default="1" label="Show Interesting Groups" description="Display list of groups having matching tags as the user on the group landing page?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="intro_interestinggroups" type="list" default="1" label="COM_GROUPS_CONFIG_INTRO_INTERESTING_GROUPS" description="COM_GROUPS_CONFIG_INTRO_INTERESTING_GROUPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="intro_populargroups" type="list" default="1" label="Show Popular Groups" description="Display list of popular groups on group landing page?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="intro_populargroups" type="list" default="1" label="COM_GROUPS_CONFIG_INTRO_POPULAR_GROUPS" description="COM_GROUPS_CONFIG_INTRO_POPULAR_GROUPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="intro_featuredgroups" type="list" default="1" label="Show Featured Groups" description="Display list of featured groups on group landing page?">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="intro_featuredgroups" type="list" default="1" label="COM_GROUPS_CONFIG_INTRO_FEATURED_GROUPS" description="COM_GROUPS_CONFIG_INTRO_FEATURED_GROUPS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="intro_featuredgroups_list" type="text" default="" label="Featured Group List" description="List of Featured Groups to Display" size="50" />
+		<field name="intro_featuredgroups_list" type="text" default="" label="COM_GROUPS_CONFIG_INTRO_FEATURED_GROUPS_LIST" description="COM_GROUPS_CONFIG_INTRO_FEATURED_GROUPS_LIST_DESC" size="50" />
 	</fieldset>
 
-	<fieldset name="membership" label="Membership &amp; Access">
-		<field name="join_policy" type="list" default="0" label="Default Join Policy" description="The default default join policy for new groups.">
-			<option value="0">Public</option>
-			<option value="1">Restricted</option>
-			<option value="2">Invite Only</option>
-			<option value="3">Closed</option>
+	<fieldset name="membership" label="COM_GROUPS_CONFIG_FIELDSET_MEMBERSHIP">
+		<field name="join_policy" type="list" default="0" label="COM_GROUPS_CONFIG_DEFAULT_JOIN_POLICY" description="COM_GROUPS_CONFIG_DEFAULT_JOIN_POLICY_DESC">
+			<option value="0">COM_GROUPS_CONFIG_DEFAULT_JOIN_POLICY_PUBLIC</option>
+			<option value="1">COM_GROUPS_CONFIG_DEFAULT_JOIN_POLICY_RESTRICTED</option>
+			<option value="2">COM_GROUPS_CONFIG_DEFAULT_JOIN_POLICY_INVITE</option>
+			<option value="3">COM_GROUPS_CONFIG_DEFAULT_JOIN_POLICY_CLOSED</option>
 		</field>
-		<field name="discoverability" type="list" default="0" label="Default Discoverability" description="The default discoverability setting for new groups.">
-			<option value="0">Visible</option>
-			<option value="1">Hidden</option>
+		<field name="discoverability" type="list" default="0" label="COM_GROUPS_CONFIG_DEFAULT_DISCOVERABILITY" description="COM_GROUPS_CONFIG_DEFAULT_DISCOVERABILITY_DESC">
+			<option value="0">COM_GROUPS_CONFIG_DEFAULT_DISCOVERABILITY_VISIBLE</option>
+			<option value="1">COM_GROUPS_CONFIG_DEFAULT_DISCOVERABILITY_HIDDEN</option>
 		</field>
-		<field name="display_system_users" type="list" default="no" label="Display System Users?" description="Display system users in group member lists?">
-			<option value="no">No</option>
-			<option value="yes">Yes</option>
-		</field>
-	</fieldset>
-
-	<fieldset name="email" label="Email">
-		<field name="email_comment_processing" type="list" default="0" label="Enable discussion comments via E-mail" description="Enable logic to send group discussion comments via email and process and add responses via email">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</field>
-		<field name="email_member_groupsidcussionemail_autosignup" type="list" default="0" label="Enable groups to auto setup new members to receive discussion email by default" description="Automatically setup new group users to get email from the group discussions">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="display_system_users" type="list" default="no" label="COM_GROUPS_CONFIG_DISPLAY_SYSTEM_USERS" description="COM_GROUPS_CONFIG_DISPLAY_SYSTEM_USERS_DESC">
+			<option value="no">JNO</option>
+			<option value="yes">JYES</option>
 		</field>
 	</fieldset>
 
-	<fieldset name="upload" label="Upload">
-		<field name="uploadpath" type="text" menu="hide" default="/site/groups" label="Upload path" description="File path for pictures" size="50" />
-		<field name="scan_uploads" type="list" default="1" label="Scan Uploads" description="Scan uploads with ClamAV for virus checking.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+	<fieldset name="email" label="COM_GROUPS_CONFIG_FIELDSET_EMAIL">
+		<field name="email_comment_processing" type="list" default="0" label="COM_GROUPS_CONFIG_EMAIL_PROCESSING" description="COM_GROUPS_CONFIG_EMAIL_PROCESSING_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="email_member_groupsidcussionemail_autosignup" type="list" default="0" label="COM_GROUPS_CONFIG_EMAIL_PROCESSING_AUTOSUBSCRIBE" description="COM_GROUPS_CONFIG_EMAIL_PROCESSING_AUTOSUBSCRIBE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 	</fieldset>
-	<fieldset name="pages" label="Pages">
-		<field name="approvers" type="textarea" default="" label="Page Approvers" description="Users allowed to approve group pages containing php and/or scripts. Comma seperated list of usernames." size="50" />
-		<field name="page_modules" type="list" default="0" label="Group Modules" description="Allow standard HUB groups to use page modules. Feature meant to be used with only super groups.">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+
+	<fieldset name="upload" label="COM_GROUPS_CONFIG_FIELDSET_UPLOAD">
+		<field name="uploadpath" type="text" menu="hide" default="/site/groups" label="COM_GROUPS_CONFIG_UPLOAD_PATH" description="COM_GROUPS_CONFIG_UPLOAD_PATH_DESC" size="50" />
+		<field name="scan_uploads" type="list" default="1" label="COM_GROUPS_CONFIG_UPLOAD_SCAN" description="COM_GROUPS_CONFIG_UPLOAD_SCAN_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 	</fieldset>
-	<fieldset name="super" label="Super">
-		<field name="super_components" type="list" default="0" label="Super Group Components" description="Allow Super Group Components">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+	<fieldset name="pages" label="COM_GROUPS_CONFIG_FIELDSET_PAGES">
+		<field name="approvers" type="textarea" default="" label="COM_GROUPS_CONFIG_PAGES_PAGE_APPROVERS" description="COM_GROUPS_CONFIG_PAGES_PAGE_APPROVERS_DESC" size="50" />
+		<field name="page_modules" type="list" default="0" label="COM_GROUPS_CONFIG_PAGES_MODULES" description="COM_GROUPS_CONFIG_PAGES_MODULES_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="super_group_file_owner" type="text" default="access-content" label="Super Group Group Owner" description="Filesystem owner of super group folder assets." size="50" />
+	</fieldset>
+	<fieldset name="super" label="COM_GROUPS_CONFIG_FIELDSET_SUPER">
+		<field name="super_components" type="list" default="0" label="COM_GROUPS_SUPER_GROUP_COMPONENTS" description="COM_GROUPS_SUPER_GROUP_COMPONENTS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="super_group_file_owner" type="text" default="access-content" label="COM_GROUPS_SUPER_GROUP_FILE_OWNER" description="COM_GROUPS_SUPER_GROUP_FILE_OWNER_DESC" size="50" />
 		<field type="spacer" />
-		<field name="super_gitlab" type="list" default="0" label="Repo Management" description="Use GitLab to manage super group repositories">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="super_gitlab" type="list" default="0" label="COM_GROUPS_SUPER_REPO_MANAGEMENT" description="COM_GROUPS_SUPER_REPO_MANAGEMENT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
-		<field name="super_gitlab_url" type="text" default="" label="GitLab URL" description="URL for Gitlabs API." />
-		<field name="super_gitlab_key" type="text" default="" label="GitLab Key" description="Key to use for authenticating API calls" />
+		<field name="super_gitlab_url" type="text" default="" label="COM_GROUPS_SUPER_REPO_URL" description="COM_GROUPS_SUPER_REPO_URL_DESC" />
+		<field name="super_gitlab_key" type="text" default="" label="COM_GROUPS_SUPER_REPO_KEY" description="COM_GROUPS_SUPER_REPO_KEY_DESC" />
 	</fieldset>
 </config>
-

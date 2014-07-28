@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn;
 
 // create toolbar title
-JToolBarHelper::title($this->group->get('description') . ': <small><small>[ ' . JText::_('Group Page Modules') . ' ]</small></small>', 'groups.png');
+JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('COM_GROUPS_PAGES_MODULES'), 'groups.png');
 
 //add buttons to toolbar
 $canDo = GroupsHelper::getActions('group');
@@ -48,10 +48,10 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList('Delete page Modules?', 'delete');
+	JToolBarHelper::deleteList('COM_GROUPS_MODULES_CONFIRM_DELETE', 'delete');
 }
 JToolBarHelper::spacer();
-JToolBarHelper::custom('manage', 'config','config','Manage',false);
+JToolBarHelper::custom('manage', 'config','config','COM_GROUPS_MANAGE', false);
 
 $this->css();
 
@@ -72,54 +72,53 @@ function submitbutton(pressbutton)
 	<table class="adminlist attention">
 		<thead>
 		 	<tr>
-				<th>(<?php echo $this->needsAttention->count(); ?>) Modules Needing Approval</th>
-				<th>View</th>
-				<th>Checks</th>
-				<th>Approve</th>
+				<th>(<?php echo $this->needsAttention->count(); ?>) <?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION'); ?></th>
+				<th><?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW'); ?></th>
+				<th><?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECKS'); ?></th>
+				<th><?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($this->needsAttention as $needsAttention) : ?>
 				<tr>
 					<td>
-						<?php echo $this->escape($needsAttention->get('title')); ?> <br />
-						<span class="hint" tabindex="-1"><?php //echo '/groups/' . $this->group->get('cn') . '/' . $this->escape($needsAttention->get('alias')); ?></span>
+						<?php echo $this->escape($needsAttention->get('title')); ?>
 					</td>
 					<td>
 						<ol class="attention-view">
 							<li class="raw">
 								<a class="version" href="<?php echo $base; ?>&amp;task=raw&amp;moduleid=<?php echo $needsAttention->get('id'); ?>" class="btn">
-									<?php echo JText::_('View Raw'); ?>
+									<?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW_RAW'); ?>
 								</a>
 							</li>
-							<?php if($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
+							<?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
 								<li class="preview">
 									<a class="preview" href="<?php echo $base; ?>&amp;task=preview&amp;moduleid=<?php echo $needsAttention->get('id'); ?>" class="btn">
-										<?php echo JText::_('Render Preview'); ?>
+										<?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_RENDER_PREVIEW'); ?>
 									</a>
 								</li>
 							<?php else : ?>
 								<li class="preview">
-									<?php echo JText::_('Render Preview (must run check first)'); ?>
+									<?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_RENDER_PREVIEW_HINT'); ?>
 								</li>
 							<?php endif; ?>
 							<li class="edit">
 								<a href="<?php echo $base; ?>&amp;task=edit&amp;id[]=<?php echo $needsAttention->get('id'); ?>" class="btn">
-									<?php echo JText::_('Edit'); ?>
+									<?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_EDIT'); ?>
 								</a>
 							</li>
 						</ol>
 					</td>
 					<td>
 						<ol class="attention-actions">
-							<li class="<?php if($needsAttention->get('checked_errors')) { echo 'completed'; } ?>">
+							<li class="<?php if ($needsAttention->get('checked_errors')) { echo 'completed'; } ?>">
 								<a href="<?php echo $base; ?>&amp;task=errors&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
-									<?php echo JText::_('Check for Errors'); ?>
+									<?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECK_FOR_ERRORS'); ?>
 								</a>
 							</li>
-							<li class="<?php if($needsAttention->get('scanned')) { echo 'completed'; } ?>">
+							<li class="<?php if ($needsAttention->get('scanned')) { echo 'completed'; } ?>">
 								<a href="<?php echo $base; ?>&amp;task=scan&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
-									<?php echo JText::_('Scan Content'); ?>
+									<?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_SCAN_CONTENT'); ?>
 								</a>
 							</li>
 
@@ -127,14 +126,14 @@ function submitbutton(pressbutton)
 					</td>
 					<td width="20%">
 						<ol class="attention-actions">
-							<?php if($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
+							<?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
 								<li class="approve">
 									<a href="<?php echo $base; ?>&amp;task=approve&amp;id=<?php echo $needsAttention->get('id'); ?>" class="btn">
-										<strong><?php echo JText::_('Approve'); ?></strong>
+										<strong><?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></strong>
 									</a>
 								</li>
 							<?php else: ?>
-								<span><em><?php echo JText::_('You must check for errors and scan before you can approve'); ?></em></span>
+								<span><em><?php echo JText::_('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE_HINT'); ?></em></span>
 							<?php endif; ?>
 						</ol>
 					</td>
@@ -150,9 +149,9 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th width="30px"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->modules->count();?>);" /></th>
-				<th>Title</th>
-				<th>Status</th>
-				<th>Position</th>
+				<th><?php echo JText::_('COM_GROUPS_MODULES_TITLE'); ?></th>
+				<th><?php echo JText::_('COM_GROUPS_MODULES_STATUS'); ?></th>
+				<th><?php echo JText::_('COM_GROUPS_MODULES_POSITION'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -170,22 +169,22 @@ function submitbutton(pressbutton)
 							{
 								$pages[] = $menu->getPageTitle();
 							}
-							echo "Included on: " . implode(', ', $pages);
+							echo JText::sprintf('COM_GROUPS_MODULES_INCLUDED_ON', implode(', ', $pages));
 						?>
 					</span>
 				</td>
 				<td>
 					<?php
-						switch($module->get('state'))
+						switch ($module->get('state'))
 						{
 							case 0:
-								echo  JText::_('Unpublished');
+								echo  JText::_('COM_GROUPS_MODULES_STATUS_UNPUBLISHED');
 							break;
 							case 1:
-								echo  JText::_('Published');
+								echo  JText::_('COM_GROUPS_MODULES_STATUS_PUBLISHED');
 							break;
 							case 2:
-								echo JText::_('Deleted');
+								echo JText::_('COM_GROUPS_MODULES_STATUS_DELETED');
 							break;
 						}
 					?>
@@ -195,7 +194,7 @@ function submitbutton(pressbutton)
 	<?php endforeach; ?>
 <?php else : ?>
 			<tr>
-				<td colspan="4"><?php echo JText::_('Currently there are no module for this group.'); ?></td>
+				<td colspan="4"><?php echo JText::_('COM_GROUPS_MODULES_NO_MODULES'); ?></td>
 			</tr>
 <?php endif; ?>
 		</tbody>

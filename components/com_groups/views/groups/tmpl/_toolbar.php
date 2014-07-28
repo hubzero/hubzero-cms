@@ -57,37 +57,37 @@ if ($this->group->isSuperGroup())
 <ul <?php echo $this->classOrId; ?>>
 	<?php if ($this->juser->get('guest') == 1) : ?>
 		<li>
-			<a class="login" href="<?php echo $loginLink; ?>">Login</a>
+			<a class="login" href="<?php echo $loginLink; ?>"><?php echo JText::_('COM_GROUPS_TOOLBAR_LOGIN'); ?></a>
 		</li>
 	<?php elseif (in_array($this->juser->get("id"), $this->group->get("invitees"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
 				<a class="invited" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>">
-					Accept Group Invitation
+					<?php echo JText::_('COM_GROUPS_TOOLBAR_ACCEPT'); ?>
 				</a>
 			</li>
 		<?php endif; ?>
 	<?php elseif ($this->group->get('join_policy') == 3 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
 		<li>
-			<span class="closed">Group Closed</span>
+			<span class="closed"><?php echo JText::_('COM_GROUPS_TOOLBAR_CLOSED'); ?></span>
 		</li>
 	<?php elseif ($this->group->get('join_policy') == 2 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
 		<li>
-			<span class="inviteonly">Group is Invite Only</span>
+			<span class="inviteonly"><?php echo JText::_('COM_GROUPS_TOOLBAR_INVITE_ONLY'); ?></span>
 		</li>
 	<?php elseif ($this->group->get('join_policy') == 0 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<li>
-				<a class="join" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>">Join Group</a>
+				<a class="join" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>"><?php echo JText::_('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
 			</li>
 		<?php endif; ?>
 	<?php elseif ($this->group->get('join_policy') == 1 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
 		<?php if ($membership_control == 1) : ?>
 			<?php if (in_array($this->juser->get("id"), $this->group->get("applicants"))) : ?>
-				<li><span class="pending">Request Pending Approval</span></li>
+				<li><span class="pending"><?php echo JText::_('COM_GROUPS_TOOLBAR_PENDING'); ?></span></li>
 			<?php else : ?>
 				<li>
-					<a class="request" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>">Request Group Membership</a>
+					<a class="request" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>"><?php echo JText::_('COM_GROUPS_TOOLBAR_REQUEST'); ?></a>
 				</li>
 			<?php endif; ?>
 		<?php endif; ?>
@@ -97,7 +97,7 @@ if ($this->group->isSuperGroup())
 		<li>
 			<div class="btn-group <?php echo ($isManager) ? "manager" : "member" ?>">
 				<a href="javascript:void(0);" class="btn">
-					Group <?php echo ($isManager) ? "Manager" : "Member" ?>
+					<?php echo JText::_('COM_GROUPS_GROUP'); ?> <?php echo ($isManager) ? JText::_('COM_GROUPS_TOOLBAR_MANAGER') : JText::_('COM_GROUPS_TOOLBAR_MEMBER') ?>
 				</a>
 				<span class="btn dropdown-toggle"></span>
 				<ul class="dropdown-menu">
@@ -105,18 +105,18 @@ if ($this->group->isSuperGroup())
 						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-invite" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
-									Invite Members
+									<?php echo JText::_('COM_GROUPS_TOOLBAR_INVITE'); ?>
 								</a>
 							</li>
 						<?php endif; ?>
 						<li>
 							<a class="group-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=edit'); ?>">
-								Edit Group Settings
+								<?php echo JText::_('COM_GROUPS_TOOLBAR_EDIT'); ?>
 							</a>
 						</li>
 						<li>
 							<a class="group-pages" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages'); ?>">
-								Manage Group Pages
+								<?php echo JText::_('COM_GROUPS_TOOLBAR_PAGES'); ?>
 							</a>
 						</li>
 						<?php if ($membership_control == 1) : ?>
@@ -128,7 +128,7 @@ if ($this->group->isSuperGroup())
 						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-invite" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
-									Invite Members
+									<?php echo JText::_('COM_GROUPS_TOOLBAR_INVITE'); ?>
 								</a>
 							</li>
 						<?php endif; ?>
@@ -137,7 +137,7 @@ if ($this->group->isSuperGroup())
 					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.edit')) : ?>
 						<li>
 							<a class="group-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=edit'); ?>">
-								Edit Group Settings
+								<?php echo JText::_('COM_GROUPS_TOOLBAR_EDIT'); ?>
 							</a>
 						</li>
 					<?php endif; ?>
@@ -145,7 +145,7 @@ if ($this->group->isSuperGroup())
 					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
 						<li>
 							<a class="group-pages" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=pages'); ?>">
-								Manage Group Pages
+								<?php echo JText::_('COM_GROUPS_TOOLBAR_PAGES'); ?>
 							</a>
 						</li>
 					<?php endif; ?>
@@ -154,7 +154,7 @@ if ($this->group->isSuperGroup())
 						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-cancel cancel_group_membership" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>">
-									Cancel Group Membership
+									<?php echo JText::_('COM_GROUPS_TOOLBAR_CANCEL'); ?>
 								</a>
 							</li>
 							<?php if ($isManager): ?>
@@ -166,7 +166,7 @@ if ($this->group->isSuperGroup())
 						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=delete'); ?>">
-									Delete Group
+									<?php echo JText::_('COM_GROUPS_TOOLBAR_DELETE'); ?>
 								</a>
 							</li>
 						<?php endif; ?>
@@ -175,7 +175,7 @@ if ($this->group->isSuperGroup())
 					<?php if ($this->logoutLink) : ?>
 						<li class="divider"></li>
 						<li>
-							<a class="logout" href="<?php echo $logoutLink; ?>">Logout</a>
+							<a class="logout" href="<?php echo $logoutLink; ?>"><?php echo JText::_('COM_GROUPS_TOOLBAR_LOGOUT'); ?></a>
 						</li>
 					<?php endif; ?>
 				</ul>

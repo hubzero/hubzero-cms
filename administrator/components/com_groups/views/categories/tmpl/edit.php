@@ -32,7 +32,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = GroupsHelper::getActions('group');
 
-JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('Group Page Categories'), 'groups.png');
+JToolBarHelper::title($this->group->get('description') . ': ' . JText::_('COM_GROUPS_PAGES_CATEGORIES'), 'groups.png');
 
 if ($canDo->get('core.edit'))
 {
@@ -52,15 +52,15 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;gid=<?php echo $this->group->cn; ?>" name="adminForm" id="item-form" method="post">
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('Page Category'); ?></span></legend>
+		<legend><span><?php echo JText::_('COM_GROUPS_PAGES_CATEGORIES_CATEGORY'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="field-type"><?php echo JText::_('Title'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+			<label for="field-type"><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 			<input type="text" name="category[title]" id="field-title" value="<?php echo $this->escape($this->category->get('title')); ?>" />
 		</div>
-		<div class="input-wrap" data-hint="<?php echo JText::_('Hexadecimal color code (e.g., #000000) or any other format allowed by CSS'); ?>">
-			<label for="field-color"><?php echo JText::_('Color'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
-			<input maxlength="6" type="text" name="category[color]" id="field-color" value="<?php echo $this->escape($this->category->get('color')); ?>" placeholder="#" />
+		<div class="input-wrap" data-hint="<?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_COLOR_HINT'); ?>">
+			<label for="field-color"><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?>:</label>
+			<input maxlength="6" type="text" name="category[color]" id="field-color" value="<?php echo $this->escape($this->category->get('color')); ?>" placeholder="<?php echo JText::_('COM_GROUPS_PAGES_CATEGORY_COLOR_PLACEHOLDER'); ?>" />
 		</div>
 	</fieldset>
 	<input type="hidden" name="category[id]" value="<?php echo $this->category->get('id'); ?>" />

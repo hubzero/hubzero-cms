@@ -1885,3 +1885,11 @@ fieldset.assignment label {
 .com_groups #content-header {
 	padding-right: 180px;
 }
+
+.com_groups #hubForm .grid {
+	margin: 0;
+}
+.com_groups #hubForm .grid label {
+	padding-left: 2em;
+	padding-right: 2em;
+}

@@ -34,20 +34,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 <ul class="toolbar toolbar-pages">
 	<li class="new">
 		<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=add'); ?>">
-			<?php echo JText::_('New Page'); ?>
+			<?php echo JText::_('COM_GROUPS_PAGES_NEW_PAGE'); ?>
 		</a>
 	</li>
 	<li class="filter">
 		<select>
-			<option value="">- Filter By Category &mdash;</option>
+			<option value=""><?php echo JText::_('COM_GROUPS_PAGES_PAGE_FILTER'); ?></option>
 			<?php foreach ($this->categories as $category) : ?>
 				<option data-color="#<?php echo $category->get('color'); ?>" value="<?php echo $category->get('id'); ?>"><?php echo $category->get('title'); ?></option>
 			<?php endforeach; ?>
 		</select>
 	</li>
-	<li class="filter-search-divider">Or</li>
+	<li class="filter-search-divider"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_OR'); ?></li>
 	<li class="search">
-		<input type="text" placeholder="Search Pages...." />
+		<input type="text" placeholder="<?php echo JText::_('COM_GROUPS_PAGES_PAGE_SEARCH'); ?>" />
 	</li>
 </ul>
 
@@ -79,7 +79,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<div class="item-container" <?php if ($category) : ?>style="border-color: #<?php echo $category->get('color'); ?>"<?php endif; ?>>
 					<div class="item-title">
 						<?php if ($page->get('privacy') == 'members') : ?>
-							<span class="icon-lock tooltips" title="Private to Group Members"></span>
+							<span class="icon-lock tooltips" title="<?php echo JText::_('COM_GROUPS_PAGES_PAGE_PRIVATE'); ?>"></span>
 						<?php endif; ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>">
 							<?php echo $page->get('title'); ?>
@@ -95,30 +95,30 @@ defined('_JEXEC') or die( 'Restricted access' );
 							<img width="15" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($checkout->userid); ?>" />
 							<?php
 								$user = \Hubzero\User\Profile::getInstance($checkout->userid);
-								echo JText::sprintf('<a href="/members/%s">%s</a> is currently editing', $user->get('uidNumber'), $user->get('name'));
+								echo JText::sprintf('COM_GROUPS_PAGES_PAGE_CHECKED_OUT', $user->get('uidNumber'), $user->get('name'));
 							?>
 						</div>
 					<?php endif; ?>
 
 					<?php if ($version->get('approved') == 0) : ?>
 						<div class="item-approved">
-							<?php echo JText::_('Pending Approval'); ?>
+							<?php echo JText::_('COM_GROUPS_PAGES_PAGE_PENDING_APPROVAL'); ?>
 						</div>
 					<?php endif; ?>
 
 					<div class="item-state">
 						<?php if ($page->get('state') == 0) : ?>
-							<a class="unpublished tooltips" title="<?php echo JText::_('Publish Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$page->get('id')); ?>"><?php echo JText::_('Publish Page'); ?></a>
+							<a class="unpublished tooltips" title="<?php echo JText::_('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$page->get('id')); ?>"><?php echo JText::_('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?></a>
 						<?php else : ?>
-							<a class="published tooltips" title="<?php echo JText::_('Unpublish Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$page->get('id')); ?>"><?php echo JText::_('Unpublish Page'); ?></a>
+							<a class="published tooltips" title="<?php echo JText::_('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$page->get('id')); ?>"><?php echo JText::_('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?></a>
 						<?php endif; ?>
 					</div>
 
 					<div class="item-home">
 						<?php if (!$page->get('home')) : ?>
-							<a class="tooltips" title="<?php echo JText::_('Make Home Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"><?php echo JText::_('Make Home Page'); ?></a>
+							<a class="tooltips" title="<?php echo JText::_('COM_GROUPS_PAGES_MAKE_HOME'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"><?php echo JText::_('COM_GROUPS_PAGES_MAKE_HOME'); ?></a>
 						<?php else : ?>
-							<a class="homepage tooltips" title="<?php echo JText::_('Remove as Home Page'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"><?php echo JText::_('Remove as Home Page'); ?></a>
+							<a class="homepage tooltips" title="<?php echo JText::_('COM_GROUPS_PAGES_REMOVE_AS_HOME'); ?>" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"><?php echo JText::_('COM_GROUPS_PAGES_REMOVE_AS_HOME'); ?></a>
 						<?php endif; ?>
 					</div>
 
@@ -130,26 +130,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 					</div>
 
 					<div class="item-controls btn-group dropdown">
-						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>" class="btn"><?php echo JText::_('Manage Page'); ?></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>" class="btn"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGE'); ?></a>
 						<span class="btn dropdown-toggle"></span>
 						<ul class="dropdown-menu">
-							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Edit Page'); ?></a></li>
-							<li><a class="icon-search page-preview" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=preview&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Preview Page'); ?></a></li>
+							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_EDIT_PAGE'); ?></a></li>
+							<li><a class="icon-search page-preview" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=preview&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_PREVIEW_PAGE'); ?></a></li>
 							<?php if (!$page->get('home')) : ?>
-								<li><a class="icon-home" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Make Home Page'); ?></a></li>
+								<li><a class="icon-home" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_MAKE_HOME'); ?></a></li>
 							<?php else : ?>
-								<li><a class="icon-home" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Remove as Home Page'); ?></a></li>
+								<li><a class="icon-home" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_REMOVE_AS_HOME'); ?></a></li>
 							<?php endif; ?>
 							<li class="divider"></li>
 							<?php if ($page->get('state') == 0) : ?>
-								<li><a class="icon-ban-circle" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Publish Page'); ?></a></li>
+								<li><a class="icon-ban-circle" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=publish&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_PUBLISH_PAGE'); ?></a></li>
 							<?php else : ?>
-								<li><a class="icon-success" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Un-publish Page'); ?></a></li>
+								<li><a class="icon-success" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=unpublish&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_UNPUBLISH_PAGE'); ?></a></li>
 							<?php endif; ?>
 							<li class="divider"></li>
-							<li><a class="icon-history page-history" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=versions&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Version History'); ?></a></li>
+							<li><a class="icon-history page-history" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=versions&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_VERSION_HISTORY_PAGE'); ?></a></li>
 							<li class="divider"></li>
-							<li><a class="icon-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=delete&pageid='.$page->get('id')); ?>"> <?php echo JText::_('Delete Page'); ?></a></li>
+							<li><a class="icon-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=delete&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_DELETE_PAGE'); ?></a></li>
 						</ul>
 					</div>
 				</div>
@@ -157,7 +157,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php endforeach; ?>
 	<?php else : ?>
 		<li class="no-results">
-			<p><?php echo JText::_('Currently this group does not have any content pages.'); ?></p>
+			<p><?php echo JText::_('COM_GROUPS_PAGES_NO_PAGES'); ?></p>
 		</li>
 	<?php endif; ?>
 

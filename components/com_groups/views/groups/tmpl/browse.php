@@ -139,9 +139,9 @@ $this->css();
 							echo 'Search for "'.$this->filters['search'].'" in ';
 						}
 						?>
-						<?php echo JText::_('Groups'); ?>
+						<?php echo JText::_('COM_GROUPS'); ?>
 						<?php if ($this->filters['index']) { ?>
-							<?php echo JText::_('starting with'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
+							<?php echo JText::_('COM_GROUPS_STARTING_WITH'); ?> "<?php echo strToUpper($this->filters['index']); ?>"
 						<?php } ?>
 						<?php if ($this->groups) { ?>
 							<span>(<?php echo $s . '-' . $e; ?> of <?php echo $this->total; ?>)</span>
@@ -174,25 +174,25 @@ $this->css();
 							$status = '';
 
 							//determine group status
-							if($g->get('published') && in_array($this->juser->get('id'), $managers))
+							if ($g->get('published') && in_array($this->juser->get('id'), $managers))
 							{
 								$status = 'manager';
 							}
-							elseif($g->get('published') && in_array($this->juser->get('id'), $members))
+							elseif ($g->get('published') && in_array($this->juser->get('id'), $members))
 							{
 								$status = 'member';
 							}
-							elseif($g->get('published') && in_array($this->juser->get('id'), $invitees))
+							elseif ($g->get('published') && in_array($this->juser->get('id'), $invitees))
 							{
 								$status = 'invitee';
 							}
-							elseif($g->get('published') && in_array($this->juser->get('id'), $applicants))
+							elseif ($g->get('published') && in_array($this->juser->get('id'), $applicants))
 							{
 								$status = 'pending';
 							}
 							else
 							{
-								if(!$g->get('published'))
+								if (!$g->get('published'))
 								{
 									$status = 'new';
 								}
@@ -212,11 +212,11 @@ $this->css();
 								<?php
 								switch ($group->join_policy)
 								{
-									case 3: echo '<span class="closed join-policy">'.JText::_('Closed').'</span>'."\n"; break;
-									case 2: echo '<span class="inviteonly join-policy">'.JText::_('Invite Only').'</span>'."\n"; break;
-									case 1: echo '<span class="restricted join-policy">'.JText::_('Restricted').'</span>'."\n";  break;
+									case 3: echo '<span class="closed join-policy">'.JText::_('COM_GROUPS_BROWSE_POLICY_CLOSED').'</span>'."\n"; break;
+									case 2: echo '<span class="inviteonly join-policy">'.JText::_('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY').'</span>'."\n"; break;
+									case 1: echo '<span class="restricted join-policy">'.JText::_('COM_GROUPS_BROWSE_POLICY_RESTRICTED').'</span>'."\n";  break;
 									case 0:
-									default: echo '<span class="open join-policy">'.JText::_('Open').'</span>'."\n"; break;
+									default: echo '<span class="open join-policy">'.JText::_('COM_GROUPS_BROWSE_POLICY_OPEN').'</span>'."\n"; break;
 								}
 								?>
 							</td>
@@ -224,11 +224,11 @@ $this->css();
 								<span class="<?php echo $status; ?> status"><?php
 									switch ($status)
 									{
-										case 'manager': echo JText::_('Manager'); break;
-										case 'new': echo JText::_('New'); break;
-										case 'member': echo JText::_('Member'); break;
-										case 'pending': echo JText::_('Pending Approval'); break;
-										case 'invitee': echo JText::_('Invited'); break;
+										case 'manager': echo JText::_('COM_GROUPS_BROWSE_STATUS_MANAGER'); break;
+										case 'new': echo JText::_('COM_GROUPS_BROWSE_STATUS_NEW'); break;
+										case 'member': echo JText::_('COM_GROUPS_BROWSE_STATUS_MEMBER'); break;
+										case 'pending': echo JText::_('COM_GROUPS_BROWSE_STATUS_PENDING'); break;
+										case 'invitee': echo JText::_('COM_GROUPS_BROWSE_STATUS_INVITED'); break;
 										default: break;
 									}
 								?></span>
@@ -240,7 +240,7 @@ $this->css();
 					?>
 						<tr>
 							<td colspan="<?php echo ($this->authorized) ? '4' : '3'; ?>">
-								<p class="warning"><?php echo JText::_('No results found'); ?></p>
+								<p class="warning"><?php echo JText::_('COM_GROUPS_BROWSE_NO_GROUPS'); ?></p>
 							</td>
 						</tr>
 					<?php } ?>

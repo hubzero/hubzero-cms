@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 <ul class="toolbar toolbar-categories">
 	<li class="new">
 		<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=add'); ?>">
-			<?php echo JText::_('New Page Category'); ?>
+			<?php echo JText::_('COM_GROUPS_PAGES_NEW_CATEGORY'); ?>
 		</a>
 	</li>
 </ul>
@@ -51,20 +51,20 @@ defined('_JEXEC') or die( 'Restricted access' );
 					</div>
 
 					<div class="item-sub">
-						<?php echo $category->getPages('count'); ?> Page(s)
+						<?php echo JText::sprintf('COM_GROUPS_PAGES_CATEGORY_X_PAGES', $category->getPages('count')); ?>
 					</div>
 
 					<div class="item-color" style="background-color: #<?php echo $category->get('color'); ?>"></div>
 
 					<div class="item-controls btn-group dropdown">
 						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=edit&categoryid='.$category->get('id')); ?>" class="btn">
-							<?php echo JText::_('Manage Page Category'); ?>
+							<?php echo JText::_('COM_GROUPS_PAGES_MANAGE_CATEGORY'); ?>
 						</a>
 						<span class="btn dropdown-toggle"></span>
 						<ul class="dropdown-menu">
-							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=edit&categoryid='.$category->get('id')); ?>"> <?php echo JText::_('Edit Page Category'); ?></a></li>
+							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=edit&categoryid='.$category->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_EDIT_CATEGORY'); ?></a></li>
 							<li class="divider"></li>
-							<li><a class="icon-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=delete&categoryid='.$category->get('id')); ?>"> <?php echo JText::_('Delete Page Category'); ?></a></li>
+							<li><a class="icon-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=categories&task=delete&categoryid='.$category->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_DELETE_CATEGORY'); ?></a></li>
 						</ul>
 					</div>
 				</div>
@@ -72,7 +72,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php endforeach; ?>
 	<?php else : ?>
 		<li class="no-results">
-			<p><?php echo JText::_('Currently this group does not have any page categories.'); ?></p>
+			<p><?php echo JText::_('COM_GROUPS_PAGES_NO_CATEGORIES'); ?></p>
 		</li>
 	<?php endif; ?>
 </ul>

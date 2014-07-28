@@ -54,7 +54,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to view or upload group files.');
+			$this->loginTask(JText::_('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
@@ -144,6 +144,12 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		$this->view->display();
 	}
 
+	/**
+	 * Create group folder id doesnt exist
+	 * 
+	 * @param  [type] $path [description]
+	 * @return [type]       [description]
+	 */
 	private function _createGroupFolder( $path )
 	{
 		// create base group folder
@@ -159,6 +165,13 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		}
 	}
 
+	/**
+	 * Build Folder tree based on path
+	 * 
+	 * @param  [type]  $folders   [description]
+	 * @param  integer $parent_id [description]
+	 * @return [type]             [description]
+	 */
 	private function _buildFolderTree( $folders, $parent_id = 0 )
 	{
 		$branch = array();
@@ -177,6 +190,12 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		return $branch;
 	}
 
+	/**
+	 * Build Folder tree in html ul list form
+	 * 
+	 * @param  [type] $tree [description]
+	 * @return [type]       [description]
+	 */
 	private function _buildFolderTreeHtml( $tree )
 	{
 		//load group object
@@ -204,6 +223,12 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		return $html;
 	}
 
+	/**
+	 * Build Folder tree in select list form
+	 * 
+	 * @param  [type] $tree [description]
+	 * @return [type]       [description]
+	 */
 	private function _buildFolderTreeSelect( $tree )
 	{
 		// load group object
@@ -219,6 +244,12 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		return $html;
 	}
 
+	/**
+	 * Recursive function to create options for select list
+	 * 
+	 * @param  [type] $tree [description]
+	 * @return [type]       [description]
+	 */
 	private function _buildFolderTreeSelectOptionList( $tree )
 	{
 		// load group object
@@ -327,13 +358,13 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// make sure user is not guest
 		if ($this->juser->get('guest'))
 		{
-			$message = JText::_('You must be logged in to upload files.');
+			$message = JText::_('COM_GROUPS_MEDIA_MUST_BE_LOGGED_IN');
 		}
 
 		// make sure we have a directory to upload to
 		if (!$listdir)
 		{
-			$message = JText::_('No Group ID');
+			$message = JText::_('COM_GROUPS_ERROR_NO_ID');
 		}
 
 		// if dont have a message we are good to go
@@ -436,7 +467,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		if (!$file['name'] || $file['size'] == 0)
 		{
 			$returnObj->error   = true;
-			$returnObj->message = JText::_('No File Uploaded');
+			$returnObj->message = JText::_('COM_GROUPS_MEDIA_NO_FILE');
 			return $returnObj;
 		}
 
@@ -446,7 +477,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		{
 			$these = implode(', ', $allowedExtensions);
 			$returnObj->error   = true;
-			$returnObj->message = 'File has an invalid extension, it should be one of ' . $these . '.';
+			$returnObj->message = JText::sprintf('COM_GROUPS_MEDIA_INVALID_FILE', $these);
 			return $returnObj;
 		}
 
@@ -455,7 +486,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
 			$returnObj->error   = true;
-			$returnObj->message = 'File is too large. Max file upload size is ' . $max;
+			$returnObj->message = JText::sprintf('COM_GROUPS_MEDIA_FILE_TOO_BIG', $max);
 			return $returnObj;
 		}
 
@@ -467,7 +498,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 			if (!JFolder::create($groupFolder))
 			{
 				$returnObj->error   = true;
-				$returnObj->message = JText::_('UNABLE_TO_CREATE_UPLOAD_PATH');
+				$returnObj->message = JText::_('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH');
 				return $returnObj;
 			}
 		}
@@ -476,7 +507,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 			if (!JFolder::create($groupUploadsFolder))
 			{
 				$returnObj->error   = true;
-				$returnObj->message = JText::_('UNABLE_TO_CREATE_UPLOAD_PATH');
+				$returnObj->message = JText::_('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH');
 				return $returnObj;
 			}
 		}
@@ -501,7 +532,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		if (!JFile::upload($file['tmp_name'], $finalFileName))
 		{
 			$returnObj->error   = true;
-			$returnObj->message = JText::_('ERROR_UPLOADING');
+			$returnObj->message = JText::_('COM_GROUPS_MEDIA_ERROR_UPLOADING');
 			return $returnObj;
 		}
 
@@ -523,14 +554,14 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 
 				//inform user
 				$returnObj->error   = true;
-				$returnObj->message = JText::_('File uploaded contained a virus or was encrypted and was deleted.');
+				$returnObj->message = JText::_('COM_GROUPS_MEDIA_FILE_CONTAINS_VIRUS');
 				return $returnObj;
 			}
 		}
 
 		// return our final upload status
 		$returnObj->file    = $finalFileName;
-		$returnObj->message = JText::_('Uploaded Successfully');
+		$returnObj->message = JText::_('COM_GROUPS_MEDIA_UPLOAD_SUCCESS');
 		return $returnObj;
 	}
 
@@ -606,26 +637,26 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		{
 			if (!JFolder::create($uploadDirectory))
 			{
-				echo json_encode(array('error' => "Server error. Unable to create upload directory."));
+				echo json_encode(array('error' => JText::_('COM_GROUPS_MEDIA_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
 			}
 		}
 		if (!is_writable($uploadDirectory))
 		{
-			echo json_encode(array('error' => "Server error. Upload directory isn't writable."));
+			echo json_encode(array('error' => JText::_('COM_GROUPS_MEDIA_PATH_NOT_WRITABLE')));
 			return;
 		}
 
 		//check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => 'File is empty'));
+			echo json_encode(array('error' => JText::_('COM_GROUPS_MEDIA_FILE_EMPTY')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
+			echo json_encode(array('error' => JText::sprintf('COM_GROUPS_MEDIA_FILE_TOO_BIG', $max)));
 			return;
 		}
 
@@ -636,7 +667,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
 		{
 			$these = implode(', ', $allowedExtensions);
-			echo json_encode(array('error' => 'File has an invalid extension, it should be one of ' . $these . '.'));
+			echo json_encode(array('error' => JText::sprintf('COM_GROUPS_MEDIA_INVALID_FILE', $these)));
 			return;
 		}
 
@@ -690,7 +721,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 				unlink($file);
 
 				//inform user
-				echo json_encode(array('error' => 'File uploaded contained a virus or was encrypted and was deleted.'));
+				echo json_encode(array('error' => JText::_('COM_GROUPS_MEDIA_FILE_CONTAINS_VIRUS')));
 				return;
 			}
 		}
@@ -753,14 +784,14 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// make sure we have a file
 		if (!file_exists($source))
 		{
-			JError::raiseError(500, 'Unable to locate source file');
+			JError::raiseError(500, JText::_('COM_GROUPS_MEDIA_UNABLE_TO_LOCATE_SOURCE'));
 			return;
 		}
 
 		// make sure we have a destination
 		if (!is_dir($destination) || !is_writable($destination))
 		{
-			JError::raiseError(500, 'Destination folder doesn\'t exist or isn\'t writable.');
+			JError::raiseError(500, JText::_('COM_GROUPS_MEDIA_DESTINATION_UNAVAILABLE'));
 			return;
 		}
 
@@ -828,7 +859,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// make sure file doesnt already exist
 		if (file_exists($destination))
 		{
-			header('HTTP/1.1 500 Another file with that name exists.');
+			header('HTTP/1.1 500 ' . JText::_('COM_GROUPS_MEDIA_NAME_CONFLICT'));
 			exit();
 		}
 
@@ -865,7 +896,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 
 		// delete garbage folders
 
-
+		//return folder
 		echo $folder;
 		exit();
 	}
@@ -968,7 +999,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// make sure new folder doesnt already exist
 		if (JFolder::exists($newFolder))
 		{
-			header('HTTP/1.1 500 Another folder with that name exists.');
+			header('HTTP/1.1 500 ' . JText::_('COM_GROUPS_MEDIA_FOLDER_NAME_CONFLICT'));
 			exit();
 		}
 
@@ -1045,7 +1076,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// make sure new folder doesnt already exist
 		if (JFolder::exists($newFolder))
 		{
-			header('HTTP/1.1 500 Another folder with that name exists.');
+			header('HTTP/1.1 500 ' . JText::_('COM_GROUPS_MEDIA_FOLDER_NAME_CONFLICT'));
 			exit();
 		}
 
@@ -1124,7 +1155,7 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		// make sure new folder doesnt already exist
 		if (JFolder::exists($newPath))
 		{
-			header('HTTP/1.1 500 A folder with that name exists in that location.');
+			header('HTTP/1.1 500 ' . JText::_('COM_GROUPS_MEDIA_FOLDER_NAME_CONFLICT'));
 			exit();
 		}
 

@@ -43,11 +43,13 @@ $this->css();
 	</span>
 	<span class="description"><?php echo JText::_('COM_GROUPS_PENDING_APPROVAL_WARNING'); ?></span>
 
-	<?php if(in_array($this->juser->get('id'), $this->group->get('invitees'))) : ?>
+	<?php if (in_array($this->juser->get('id'), $this->group->get('invitees'))) : ?>
 		<hr />
-		<a href="<?php echo JRoute::_('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">Accept Group Invite</a>
+		<a href="<?php echo JRoute::_('index.php?option=com_groups&controller=groups&cn='.$this->group->get('cn').'&task=accept'); ?>" class="group-invited">
+			<?php echo JText::_('COM_GROUPS_ACCEPT_INVITE'); ?>
+		</a>
 		<hr />
 	<?php endif; ?>
 
-	<a class="all-groups" href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">&lsaquo; Go Back to Groups</a> | <a class="my-groups" href="<?php echo JRout::_('index.php?option=com_members&task=myaccount&active=groups'); ?>">Go to My Groups &rsaquo;</a>
+	<a class="all-groups" href="<?php echo JRoute::_('index.php?option=com_groups'); ?>"><?php echo JText::_('COM_GROUPS_ALL_GROUPS'); ?></a> | <a class="my-groups" href="<?php echo JRout::_('index.php?option=com_members&task=myaccount&active=groups'); ?>"><?php echo JText::_('COM_GROUPS_MY_GROUPS'); ?></a>
 </div>

@@ -286,13 +286,13 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The group page was successfully saved.'),
+			JText::_('COM_GROUPS_PAGES_SAVED'),
 			'passed'
 		);
 	}
 
 	/**
-	 * Delete Page Module
+	 * Delete Page
 	 *
 	 * @return void
 	 */
@@ -332,7 +332,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		//inform user & redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The page modules were successfully deleted.'),
+			JText::_('COM_GROUPS_PAGES_DELETED'),
 			'passed'
 		);
 	}
@@ -349,7 +349,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -370,7 +370,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			//inform user & redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('The page is already approved'),
+				JText::_('COM_GROUPS_PAGES_ALREADY_APPROVED'),
 				'warning'
 			);
 			return;
@@ -427,7 +427,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// were all set
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The page content contained no potential XSS issues!'),
+			JText::_('COM_GROUPS_PAGES_NO_XSS'),
 			'passed'
 		);
 	}
@@ -444,7 +444,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -465,7 +465,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			//inform user & redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('The page is already approved'),
+				JText::_('COM_GROUPS_PAGES_ALREADY_APPROVED'),
 				'warning'
 			);
 			return;
@@ -487,7 +487,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->view->setLayout('errors');
 			$this->view->error = (isset($output[0])) ? $output[0] : '';
-			$this->view->error = str_replace($file, '"' . $page->get('title') . '"', $view->error);
+			$this->view->error = str_replace($file, '"' . $page->get('title') . '"', $this->view->error);
 			$this->view->page = $page;
 			$this->view->option = $this->_option;
 			$this->view->controller = $this->_controller;
@@ -510,7 +510,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// were all set
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The page content contained no PHP errors!'),
+			JText::_('COM_GROUPS_PAGES_NO_ERRORS'),
 			'passed'
 		);
 	}
@@ -527,7 +527,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -552,7 +552,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// inform user and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The page was successfully scanned!'),
+			JText::_('COM_GROUPS_PAGES_SCANNED'),
 			'passed'
 		);
 	}
@@ -569,7 +569,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -609,7 +609,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -648,7 +648,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -669,7 +669,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			//inform user & redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('The page is already approved'),
+				JText::_('COM_GROUPS_PAGES_ALREADY_APPROVED'),
 				'warning'
 			);
 			return;
@@ -704,7 +704,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// inform user and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-			JText::_('The page was successfully approved!'),
+			JText::_('COM_GROUPS_PAGES_APPROVED'),
 			'passed'
 		);
 	}
@@ -722,7 +722,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -738,7 +738,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure page belongs to this group
 		if (!$page->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to view this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_NOT_AUTH'));
 		}
 
 		// load page version
@@ -747,14 +747,13 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// do we have a page version
 		if ($pageVersion === null)
 		{
-			JError::raiseError(404, 'Page Version Not Found');
+			JError::raiseError(404, JText::_('COM_GROUPS_PAGES_VERSION_NOT_FOUND'));
 		}
 
 		// output page version
 		if ($escape)
 		{
 			echo highlight_string($pageVersion->content('raw'), true);
-			//echo '<pre>' . $this->view->escape($pageVersion->content('raw')) . '</pre>';
 		}
 		else
 		{
@@ -776,7 +775,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
-				JText::_('Pages can only be approved by authorized approvers.'),
+				JText::_('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
 				'error'
 			);
 			return;
@@ -792,7 +791,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		// make sure page belongs to this group
 		if (!$page->belongsToGroup($this->group))
 		{
-			JError::raiseError(403, 'You are not authorized to view this page.');
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_NOT_AUTH'));
 		}
 
 		// get preview

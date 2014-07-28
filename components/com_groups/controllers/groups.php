@@ -392,15 +392,17 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		{
 			$app->redirect(
 					JRoute::_('index.php?option=com_groups&cn='.$group->get('cn')),
-					JText::sprintf('You are already logged in as "%s" (%s).', $juser->get('name'), $juser->get('email')),
+					JText::sprintf('COM_GROUPS_VIEW_ALREADY_LOGGED_IN', $juser->get('name'), $juser->get('email')),
 					'warning'
 				);
 		}
 
-		// build html to return
-		$html  = '<h2>'.JText::_('Login').'</h2>';
-		$html .= \Hubzero\Module\Helper::renderModule('mod_login');
-		return $html;
+		// create view object
+		$view = new \Hubzero\Component\View(array(
+			'name'   => 'pages',
+			'layout' => '_view_login'
+		));
+		return $view->loadTemplate();
 	}
 
 	/**
@@ -687,7 +689,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to create a group.');
+			$this->loginTask(JText::_('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
@@ -811,7 +813,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to delete a group.');
+			$this->loginTask(JText::_('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
@@ -1048,11 +1050,12 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if (!$this->config->get('auto_approve', 1))
 		{
 			// create approval subject
-			$subject = $jconfig->getValue('config.sitename') . ' Group Waiting Approval';
+			$subject = JText::sprintf('COM_GROUPS_SAVE_WAITING_APPROVAL', $jconfig->getValue('config.sitename'));
 
 			// build approval message
-			$html  = 'Group "' . $group->get('description') . '" (' . 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'groups' . DS . $group->get('cn') . ') is waiting for approval by HUB administrator.';
-			$html .= "\n\n" . 'Please log into the administrator back-end of HUB to approve group: ' . "\n" . 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'administrator';
+			$link  = 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'groups' . DS . $group->get('cn');
+			$link2 = 'https://' . trim($_SERVER['HTTP_HOST'], DS) . DS . 'administrator';
+			$html  = JText::sprintf('COM_GROUPS_SAVE_WAITING_APPROVAL_DESC', $group->get('description'), $link, $link2);
 
 			// create new message
 			$message = new \Hubzero\Mail\Message();
@@ -1072,11 +1075,11 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Show success message to user
 		if ($this->_task == 'new')
 		{
-			$this->setNotification("You have successfully created the \"{$group->get('description')}\" group" , 'passed');
+			$this->setNotification(JText::sprintf('COM_GROUPS_CREATED_SUCCESS', $group->get('description')), 'passed');
 		}
 		else
 		{
-			$this->setNotification("You have successfully updated the \"{$group->get('description')}\" group" , 'passed');
+			$this->setNotification(JText::sprintf('COM_GROUPS_UPDATED_SUCCESS', $group->get('description')), 'passed');
 		}
 
 		// Redirect back to the group page
@@ -1110,7 +1113,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to delete a group.');
+			$this->loginTask(JText::_('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
@@ -1141,7 +1144,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// If membership is managed in seperate place disallow action
 		if ($gparams->get('membership_control', 1) == 0)
 		{
-			$this->setNotification('Group membership is not managed in the group interface.', 'error');
+			$this->setNotification(JText::_('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
 			$this->setRedirect( JRoute::_('index.php?option=com_groups&cn=' . $this->view->group->get('cn')) );
 			return;
 		}
@@ -1171,7 +1174,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 
 		//set some vars for view
-		$this->view->title = 'Delete Group: ' . $this->view->group->get('description');;
+		$this->view->title = JText::_('COM_GROUPS_DELETE_GROUP') . ': ' . $this->view->group->get('description');;
 		$this->view->juser = $this->juser;
 		$this->view->msg = JRequest::getVar('msg', '');
 
@@ -1190,7 +1193,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to delete a group.');
+			$this->loginTask(JText::_('COM_GROUPS_DELETE_MUST_BE_LOGGED_IN'));
 			return;
 		}
 
@@ -1348,7 +1351,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		));
 
 		// Redirect back to the groups page
-		$this->setNotification("You successfully deleted the \"{$deletedgroup->get('description')}\" group", 'passed');
+		$this->setNotification(JText::sprintf('COM_GROUPS_DELETE_SUCCESS', $deletedgroup->get('description')), 'passed');
 		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option) );
 		return;
 	}
@@ -1365,7 +1368,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 
 		//set notification
 		$this->setNotification(
-			JText::_('This group does not seem to exist. Would you like to <a href="' . JRoute::_('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn)) . '">create it</a>?'),
+			JText::sprintf('COM_GROUPS_CREATE_SUGGEST', JRoute::_('index.php?option=' . $this->_option . '&task=new' . (is_numeric($this->cn) ? '' : '&suggested_cn=' . $this->cn))),
 			'warning'
 		);
 
