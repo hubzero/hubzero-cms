@@ -102,7 +102,7 @@ if ($closed == 'closed' && $this->showClose == true)
 					<a class="icon-edit edit" href="<?php echo JRoute::_($this->announcement->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
 						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
 					</a>
-					<a class="icon-delete delete" href="<?php echo JRoute::_($this->announcement->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
+					<a class="icon-delete delete" href="<?php echo JRoute::_($this->announcement->link('delete')); ?>" data-confirm="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>" title="<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>">
 						<?php echo JText::_('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>
 					</a>
 				<?php endif; ?>

@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/announcements/announcements.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/groups/announcements/announcements.js
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -37,8 +37,7 @@ jQuery(document).ready(function(jq){
 			document.cookie = 'group_announcement_' + id + '=closed; expires=' + date.toGMTString() + ';';
 		})
 		.on('click', 'a.delete', function(event) {
-			if (confirm('Are you sure you wish to delete this item?'))
-			{
+			if (confirm($(this).attr('data-confirm'))) {
 				return true;
 			}
 			event.preventDefault();
