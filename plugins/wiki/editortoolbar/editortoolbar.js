@@ -1,19 +1,9 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/hubzero/wikieditortoolbar/wikieditortoolbar.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/wiki/editortoolbar/editortoolbar.js
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
-}
 
 (function(jQuery) {
 
@@ -21,11 +11,13 @@ if (!HUB.Plugins) {
 
 		return this.each(function() {
 
-			var toolbar = jQuery(this),
-				id = toolbar.attr('id').split('-').pop(),
-				textbox = jQuery('#'+id),
+			var toolbar = jQuery('<ul class="wiki-toolbar"></ul>'),
+				id = jQuery(this).attr('id'),
+				textbox = jQuery(this),
 				editButtons = new Array(),
 				helpButtons = new Array();
+
+			textbox.before(toolbar);
 
 			// Don't generate buttons for browsers which don't fully support it.
 			if (!(document.selection && document.selection.createRange)
@@ -156,7 +148,7 @@ if (!HUB.Plugins) {
 					if (window.getSelection) {
 						range = window.getSelection();
 					} else if (document.getSelection) {
-				        range = document.getSelection();
+						range = document.getSelection();
 					} else if (document.selection) {
 						range = document.selection.createRange();
 					}
@@ -228,9 +220,6 @@ if (!HUB.Plugins) {
 
 })(jQuery);
 
-//----------------------------------------------------------
-// Wiki toolbar
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
@@ -238,13 +227,14 @@ if (!jq) {
 var wyktoolbar = [];
 
 function initWikitoolbar() {
-	jQuery('.wiki-toolbar').each(function(i, toolbar) {
+	jQuery('.wiki-toolbar-content').each(function(i, toolbar) {
 		var tbar = jQuery(toolbar),
-			id = tbar.attr('id').split('-').pop();
+			id   = tbar.attr('id');
 
 		for (var i = 0; i < wyktoolbar.length; i++) 
 		{
-			if (wyktoolbar[i] == id && tbar.children().length) {
+			var bar = jQuery(tbar.parent()).find('ul.wiki-toolbar');
+			if (wyktoolbar[i] == id && jQuery(bar).children().length) {
 				return;
 			}
 		}
