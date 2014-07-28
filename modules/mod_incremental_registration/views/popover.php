@@ -487,7 +487,7 @@ $defaultCountries = array(
 				<?php if (isset($row['race'])): ?>
 					<?php $race = isset($_POST['race']) ? $_POST['race'] : array(); ?>
 					<li>
-							<label>If you are a U.S. Citizens or Permanent Residents (<a class="popup 675x678" href="/register/raceethnic">more information</a>), select your race(s) below</label>
+							<label>If you are a U.S. Citizens or Permanent Residents (<a class="popup 675x678" href="<?php echo JRoute::_('index.php?option=com_members&controller=register&task=raceethnic'); ?>">more information</a>), select your race(s) below</label>
 							<?php if (isset($errors['race'])): ?>
 								<p class="warning">Please select your race(s)</p>
 							<?php endif; ?>

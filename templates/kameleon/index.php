@@ -127,7 +127,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 										<a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('TPL_KAMELEON_LOGIN'); ?>"><?php echo JText::_('TPL_KAMELEON_LOGIN'); ?></a>
 									</li>
 									<li id="account-register">
-										<a href="<?php echo JRoute::_('index.php?option=com_register'); ?>" title="<?php echo JText::_('TPL_KAMELEON_SIGN_UP'); ?>"><?php echo JText::_('TPL_KAMELEON_REGISTER'); ?></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_members&controller=register'); ?>" title="<?php echo JText::_('TPL_KAMELEON_SIGN_UP'); ?>"><?php echo JText::_('TPL_KAMELEON_REGISTER'); ?></a>
 									</li>
 								</ul>
 								<?php /* <jdoc:include type="modules" name="account" /> */ ?>

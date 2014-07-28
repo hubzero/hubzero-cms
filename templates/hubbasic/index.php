@@ -81,13 +81,13 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<jdoc:include type="modules" name="notices" />
 		<div id="top">
 			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
-<?php if ($this->countModules('helppane')) : ?>
-			<p id="tab">
-				<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="Need help? Send a trouble report to our support team.">
-					<span>Need Help?</span>
-				</a>
-			</p>
-<?php endif; ?>
+			<?php if ($this->countModules('helppane')) : ?>
+				<p id="tab">
+					<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="Need help? Send a trouble report to our support team.">
+						<span>Need Help?</span>
+					</a>
+				</p>
+			<?php endif; ?>
 			<div class="clear"></div>
 		</div><!-- / #top -->
 
@@ -104,24 +104,24 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 				</h1>
 
 				<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
-<?php
-	if (!$juser->get('guest')) {
-		// Find the user's most recent support tickets
-		$database = JFactory::getDBO();
-		$recipient = new \Hubzero\Message\Recipient($database);
-		$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
-?>
-					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
-					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Dashboard'); ?></span></a></li>
-<?php if (is_numeric($juser->get('username')) && $juser->get('username') < 0) { ?>
-					<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?></a></li>
-<?php } else { ?>
-					<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
-<?php } ?>
-					<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
-<?php } else { ?>
-					<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a></li>
-<?php } ?>
+					<?php
+						if (!$juser->get('guest')) {
+							// Find the user's most recent support tickets
+							$database = JFactory::getDBO();
+							$recipient = new \Hubzero\Message\Recipient($database);
+							$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
+					?>
+							<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
+							<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Dashboard'); ?></span></a></li>
+							<?php if (is_numeric($juser->get('username')) && $juser->get('username') < 0) { ?>
+								<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?></a></li>
+							<?php } else { ?>
+								<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
+							<?php } ?>
+							<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
+					<?php } else { ?>
+						<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a></li>
+					<?php } ?>
 				</ul>
 
 				<jdoc:include type="modules" name="search" />

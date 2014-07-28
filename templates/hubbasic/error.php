@@ -82,7 +82,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 		<div id="top">
 			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
 			<p id="tab">
-				<a href="/support/" title="Need help? Send a trouble report to our support team.">
+				<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="Need help? Send a trouble report to our support team.">
 					<span>Need Help?</span>
 				</a>
 			</p>
@@ -101,20 +101,20 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 				</h1>
 
 				<ul id="toolbar" class="<?php if (!$juser->get('guest')) { echo 'loggedin'; } else { echo 'loggedout'; } ?>">
-<?php
-	if (!$juser->get('guest')) {
-		// Find the user's most recent support tickets
-		$database = JFactory::getDBO();
-		$recipient = new \Hubzero\Message\Recipient( $database );
-		$rows = $recipient->getUnreadMessages( $juser->get('id'), 0 );
-?>
-					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
+				<?php
+					if (!$juser->get('guest')) {
+						// Find the user's most recent support tickets
+						$database = JFactory::getDBO();
+						$recipient = new \Hubzero\Message\Recipient($database);
+						$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
+				?>
+					<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
 					<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Account'); ?></span></a></li>
 					<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
 					<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
-<?php } else { ?>
+				<?php } else { ?>
 					<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a></li>
-<?php } ?>
+				<?php } ?>
 				</ul>
 
 				<?php \Hubzero\Module\Helper::displayModules('search'); ?>
@@ -142,25 +142,25 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							<p><?php echo JText::_('You may not be able to visit this page because of:'); ?></p>
 
 							<ol>
-<?php if ($this->error->getCode() != 403) { ?>
-								<li><?php echo JText::_('An out-of-date bookmark/favourite.'); ?></li>
-								<li><?php echo JText::_('A search engine that has an out-of-date listing for this site.'); ?></li>
-								<li><?php echo JText::_('A mis-typed address.'); ?></li>
-								<li><?php echo JText::_('The requested resource was not found.'); ?></li>
-<?php } ?>
+								<?php if ($this->error->getCode() != 403) { ?>
+									<li><?php echo JText::_('An out-of-date bookmark/favourite.'); ?></li>
+									<li><?php echo JText::_('A search engine that has an out-of-date listing for this site.'); ?></li>
+									<li><?php echo JText::_('A mis-typed address.'); ?></li>
+									<li><?php echo JText::_('The requested resource was not found.'); ?></li>
+								<?php } ?>
 								<li><?php echo JText::_('This page may belong to a group with restricted access.  Only members of the group can view the contents.'); ?></li>
 								<li><?php echo JText::_('An error has occurred while processing your request.'); ?></li>
 							</ol>
-<?php if ($this->error->getCode() != 403) { ?>
-							<p><?php echo JText::_('If difficulties persist, please contact the system administrator of this site.'); ?></p>
-<?php } else { ?>
-							<p><?php echo JText::_('If difficulties persist and you feel that you should have access to the page, please file a trouble report by clicking on the Help! option on the menu above.'); ?></p>
-<?php } ?>
+							<?php if ($this->error->getCode() != 403) { ?>
+								<p><?php echo JText::_('If difficulties persist, please contact the system administrator of this site.'); ?></p>
+							<?php } else { ?>
+								<p><?php echo JText::_('If difficulties persist and you feel that you should have access to the page, please file a trouble report by clicking on the Help! option on the menu above.'); ?></p>
+							<?php } ?>
 						</div><!-- / #errorbox -->
 
 						<form method="get" action="/search">
 							<fieldset>
-								<?php echo JText::_('Please try the'); ?> <a href="/index.php" title="<?php echo JText::_('Go to the home page'); ?>"><?php echo JText::_('Home Page'); ?></a> <span><?php echo JText::_('or'); ?></span>
+								<?php echo JText::_('Please try the'); ?> <a href="<?php echo JURI::base(true); ?>" title="<?php echo JText::_('Go to the home page'); ?>"><?php echo JText::_('Home Page'); ?></a> <span><?php echo JText::_('or'); ?></span>
 								<label>
 									<?php echo JText::_('Search:'); ?>
 									<input type="text" name="searchword" value="" />
@@ -169,11 +169,11 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							</fieldset>
 						</form>
 					</div><!-- / #outline -->
-<?php if ($this->debug) { ?>
-					<div id="techinfo">
-						<?php echo $this->renderBacktrace(); ?>
-					</div>
-<?php } ?>
+					<?php if ($this->debug) { ?>
+						<div id="techinfo">
+							<?php echo $this->renderBacktrace(); ?>
+						</div>
+					<?php } ?>
 				</div><!-- / #content-wrap -->
 			</main><!-- / #content -->
 		</div><!-- / #wrap -->

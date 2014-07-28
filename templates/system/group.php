@@ -79,7 +79,7 @@ $return = DS . trim(str_replace(JURI::base(),'', JURI::current()), DS);
 							<ul class="menu loggedout">
 								<?php if (JComponentHelper::getParams('com_users')->get('allowUserRegistration') != '0') : ?>
 									<li id="account-register">
-										<a href="<?php echo JRoute::_('index.php?option=com_register&return=' . base64_encode($return)); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>">
+										<a href="<?php echo JRoute::_('index.php?option=com_members&controller=register&return=' . base64_encode($return)); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>">
 											<?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?>
 										</a>
 									</li>

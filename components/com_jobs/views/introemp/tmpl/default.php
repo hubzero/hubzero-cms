@@ -53,7 +53,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</div>
 
 			<?php echo \Hubzero\Module\Helper::renderModules('force_mod_mini'); ?>
-			<p><?php echo JText::_('COM_JOBS_LOGIN_NO_ACCOUNT').' <a href="/register">'.JText::_('COM_JOBS_LOGIN_REGISTER_NOW').'</a>. '.JText::_('COM_JOBS_LOGIN_IT_IS_FREE'); ?></p>
+			<p><?php echo JText::_('COM_JOBS_LOGIN_NO_ACCOUNT').' <a href="' . JRoute::_('index.php?option=com_members&controller=register') . '">'.JText::_('COM_JOBS_LOGIN_REGISTER_NOW').'</a>. '.JText::_('COM_JOBS_LOGIN_IT_IS_FREE'); ?></p>
 		</div>
 
 		<div class="col span-third">

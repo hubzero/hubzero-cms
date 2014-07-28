@@ -43,7 +43,7 @@ if (!empty($error_message))
 	<div class="error"></div>
 	<div class="grid">
 		<div id="inner" class="<?php echo ($multiAuth) ? 'multiAuth' : 'singleAuth'; ?>">
-			<?php if($multiAuth) { // only display if we have third part auth plugins enabled ?>
+			<?php if ($multiAuth) { // only display if we have third part auth plugins enabled ?>
 				<div id="providers" class="two columns first">
 					<h3>Sign in with your:</h2>
 					<?php foreach($authenticators as $a) : ?>
@@ -88,12 +88,12 @@ if (!empty($error_message))
 					</form>
 				</div>
 			</div>
-			<?php if(!$multiAuth) { ?>
-				<p class="callToAction">Don't have an account? <a href="/register?return=<?php echo $return; ?>">Create one.</a></p>
+			<?php if (!$multiAuth) { ?>
+				<p class="callToAction">Don't have an account? <a href="<?php echo JRoute::_('index.php?option=com_members&controller=register&return=' . $return); ?>">Create one.</a></p>
 			<?php } ?>
 		</div>
 	</div>
-	<?php if($multiAuth) { ?>
-		<p class="callToAction">Or, you can <a href="/register?return=<?php echo $return; ?>">create a local account.</a></p>
+	<?php if ($multiAuth) { ?>
+		<p class="callToAction">Or, you can <a href="<?php echo JRoute::_('index.php?option=com_members&controller=register&return=' . $return); ?>">create a local account.</a></p>
 	<?php } ?>
 </div>
