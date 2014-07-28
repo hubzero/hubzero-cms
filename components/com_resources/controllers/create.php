@@ -172,7 +172,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	{
 		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller), 'server');
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn))
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
 		);
 		return;
 	}

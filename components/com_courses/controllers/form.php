@@ -593,7 +593,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		{
 			$return = base64_encode(JRoute::_('index.php?option=' . $this->_option . '&controller=form'));
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . $return),
+				JRoute::_('index.php?option=com_users&view=login&return=' . $return),
 				$message,
 				'warning'
 			);

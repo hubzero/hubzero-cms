@@ -121,7 +121,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 		{
 			//build return url and redirect url
 			$return 	= JRoute::_('index.php?option=com_newsletter&task=subscribe');
-			$redirect	= JRoute::_('index.php?option=com_login&return=' . base64_encode($return) );
+			$redirect	= JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return) );
 
 			//redirect
 			$this->setRedirect( $redirect, JText::_('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
@@ -486,7 +486,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\SiteController
 				//inform user and redirect
 				$this->_messageType = 'warning';
 				$this->_message 	= JText::_('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_MUST_LOGIN');
-				$this->_redirect	= JRoute::_('index.php?option=com_login&return=' . base64_encode($return) );
+				$this->_redirect	= JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return) );
 				return;
 			}
 		}

@@ -47,7 +47,7 @@ $this->reviews = new \Hubzero\Base\ItemList($this->reviews);
 </h3>
 <p class="section-options">
 	<?php if ($juser->get('guest')) { ?>
-			<a href="<?php echo JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="icon-add add btn">
+			<a href="<?php echo JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews&action=addreview#reviewform'))); ?>" class="icon-add add btn">
 				<?php echo JText::_('PLG_PUBLICATION_REVIEWS_WRITE_A_REVIEW'); ?>
 			</a>
 	<?php } else { ?>

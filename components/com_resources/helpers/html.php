@@ -754,7 +754,7 @@ class ResourcesHtml
 					//if ($juser->get('guest')) {
 						// Not logged-in = show message
 						//$html .= self::primaryButton('launchtool disabled', $lurl, 'Launch Tool');
-						//$html .= self::warning('You must <a href="'.JRoute::_('index.php?option=com_login').'">log in</a> before you can run this tool.')."\n";
+						//$html .= self::warning('You must <a href="'.JRoute::_('index.php?option=com_users&view=login').'">log in</a> before you can run this tool.')."\n";
 					//} else {
 						$pop = ($juser->get('guest')) ? '<p class="warning">' . JText::_('You must login before you can run this tool.') . '</p>' : '';
 						$pop = ($resource->revision =='dev') ? '<p class="warning">' . JText::_('Warning: This tool version is under development and may not be run until it is installed.') . '</p>' : $pop;
@@ -892,7 +892,7 @@ class ResourcesHtml
 				{
 					// first child is for registered users only and the visitor is not logged in
 					$pop  = '<p class="warning">This resource requires you to log in before you can proceed with the download.</p>' . "\n";
-					$html .= self::primaryButton($class . ' disabled', JRoute::_('index.php?option=com_login'), $mesg, '', '', '', '', $pop);
+					$html .= self::primaryButton($class . ' disabled', JRoute::_('index.php?option=com_users&view=login'), $mesg, '', '', '', '', $pop);
 				}
 				else
 				{

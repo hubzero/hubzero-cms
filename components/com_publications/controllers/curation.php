@@ -881,7 +881,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$rtrn = JRequest::getVar('REQUEST_URI',
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task), 'server');
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
 		);

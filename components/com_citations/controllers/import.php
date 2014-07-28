@@ -49,7 +49,7 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=import', false, true))),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=import', false, true))),
 				JText::_('COM_CITATIONS_NOT_LOGGEDIN'),
 				'warning'
 			);

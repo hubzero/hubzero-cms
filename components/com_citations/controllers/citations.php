@@ -512,7 +512,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 	public function loginTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true))),
 			JText::_('COM_CITATIONS_NOT_LOGGEDIN'),
 			'warning'
 		);

@@ -171,7 +171,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 				$rtrn = JRequest::getVar('REQUEST_URI',
 					JRoute::_('index.php?option=' . $option . '&id='.$publication->id.'&active=reviews&v=' . $publication->version_number), 'server');
 				$this->redirect(
-					JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 					JText::_('PLG_PUBLICATION_REVIEWS_LOGIN_NOTICE'),
 					'warning'
 				);
@@ -524,7 +524,7 @@ class PlgPublicationsReviewsHelper extends JObject
 			$rtrn = JRequest::getVar('REQUEST_URI',
 				JRoute::_('index.php?option=' . $this->option . '&id='.$rid.'&active=reviews'), 'server');
 			$this->redirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode($rtrn)),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 				JText::_('PLG_PUBLICATION_REVIEWS_PLEASE_LOGIN_TO_VOTE'),
 				'warning'
 			);

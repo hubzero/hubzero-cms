@@ -301,7 +301,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_login').'?return=' . base64_encode($rtrn),
+			JRoute::_('index.php?option=com_users&view=login').'?return=' . base64_encode($rtrn),
 			$this->_msg,
 			'warning'
 		);

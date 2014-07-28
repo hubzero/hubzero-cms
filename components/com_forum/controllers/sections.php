@@ -162,7 +162,7 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option, false, true))),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_('index.php?option=' . $this->_option, false, true))),
 				JText::_('COM_FORUM_LOGIN_NOTICE'),
 				'warning'
 			);
