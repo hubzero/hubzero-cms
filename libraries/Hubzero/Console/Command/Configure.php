@@ -50,30 +50,18 @@ class Configure extends Base implements CommandInterface
 	 **/
 	public function execute()
 	{
-		if ($this->arguments->getOpt('name'))
-		{
-			$name = $this->arguments->getOpt('name');
-		}
+		$options = $this->arguments->getOpts();
 
-		if ($this->arguments->getOpt('email'))
-		{
-			$email = $this->arguments->getOpt('email');
-		}
-
-		if ($this->arguments->getOpt('color'))
-		{
-			$color = $this->arguments->getOpt('color');
-		}
-
-		if (!isset($name) && !isset($email) && !isset($color))
+		if (empty($options))
 		{
 			if ($this->output->isInteractive())
 			{
-				$option = $this->output->getResponse('What do you want to configure [name|email|color] ?');
+				$options = array();
+				$option  = $this->output->getResponse('What do you want to configure [name|email|etc...] ?');
 
-				if (in_array($option, array('email', 'name', 'color')))
+				if (is_string($option) && !empty($option))
 				{
-					$$option = $this->output->getResponse("What do you want your {$option} to be?");
+					$options[$option] = $this->output->getResponse("What do you want your {$option} to be?");
 				}
 				else if (empty($option))
 				{
@@ -93,21 +81,7 @@ class Configure extends Base implements CommandInterface
 			}
 		}
 
-		$config = array();
-		if (isset($name))
-		{
-			$config['user_name'] = $name;
-		}
-		if (isset($email))
-		{
-			$config['user_email'] = $email;
-		}
-		if (isset($color))
-		{
-			$config['color'] = $color;
-		}
-
-		if ($this->save($config))
+		if ($this->save($options))
 		{
 			$this->output->addLine('Saved new configuration!', 'success');
 		}

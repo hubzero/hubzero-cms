@@ -32,6 +32,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Console\Config;
 use Hubzero\Console\Command\Utilities\Git;
 
 // Check to ensure this file is included in Joomla!
@@ -429,6 +430,7 @@ class Repository extends Base implements CommandInterface
 			if ($proceed == 'y' || $proceed == 'yes')
 			{
 				$this->mechanism->purgeRollbackPoints();
+				$this->output->addLine('Purging rollback points.');
 				$performed++;
 			}
 
@@ -445,6 +447,117 @@ class Repository extends Base implements CommandInterface
 			{
 				$this->output->addLine('Please specify which cleanup operations to perform');
 			}
+		}
+	}
+
+	/**
+	 * Run syntax checker on changed files
+	 *
+	 * @return void
+	 **/
+	public function syntax()
+	{
+		// Make sure phpcs is installed
+		exec('which phpcs', $output);
+		if (!$output)
+		{
+			$this->output->error('PHP Code Sniffer does not appear to be installed');
+		}
+
+		// Get files
+		$status = $this->mechanism->status();
+		$files  = array_merge($status['added'], $status['modified']);
+
+		// Whether or not to scan untracked files
+		if (!$this->arguments->getOpt('exclude-untracked'))
+		{
+			$files = array_merge($files, $status['untracked']);
+		}
+
+		// Did we find any files?
+		if ($files && count($files) > 0)
+		{
+			// Base standards directory
+			if (!$standards = Config::get('repository_standards_dir'))
+			{
+				$this->output
+				     ->addSpacer()
+				     ->addLine('You must specify your standards directory first via:')
+				     ->addLine(
+						'muse configure --repository_standards_dir=/path/to/standards',
+						array(
+							'indentation' => '2',
+							'color'       => 'blue'
+						)
+					)
+					->addSpacer()
+					->error("Error: failed to retrieve standards directory.");
+			}
+			else
+			{
+				$standards = rtrim($standards, DS) . DS . 'HubzeroCS';
+			}
+
+			// See what branch we're on, and set standards directory accordingly
+			$branch = $this->mechanism->getMechanismVersionName();
+			$branch = str_replace('.', '', $branch);
+			if (!is_dir($standards . $branch))
+			{
+				$this->output->error('A standards directory for the current branch does not exist');
+			}
+
+			if ($this->arguments->getOpt('no-linting') && $this->arguments->getOpt('no-sniffing'))
+			{
+				$this->output->addLine('No sniffing or linting...that means we\'re not doing anything!', 'warning');
+			}
+
+			foreach ($files as $file)
+			{
+				$this->output->addString("Scanning {$file}...");
+				$passed = true;
+				$base   = $this->mechanism->getBasePath();
+				$base   = rtrim($base, DS) . DS;
+
+				// Lint files with php extension
+				if (!$this->arguments->getOpt('no-linting'))
+				{
+					if (substr($file, -4) == '.php')
+					{
+						$cmd = "php -l {$base}{$file}";
+						exec($cmd, $output, $code);
+						if ($code !== 0)
+						{
+							$passed = false;
+							$this->output->addLine("failed php linter", array('color'=>'red'));
+						}
+					}
+				}
+
+				// Now run them through PHP code sniffer
+				if (!$this->arguments->getOpt('no-sniffing'))
+				{
+					// Append specific standard (with branchname) to command
+					$cmd    = "phpcs --standard={$standards}{$branch}/ruleset.xml -n {$base}{$file}";
+					$cmd    = escapeshellcmd($cmd);
+					$result = shell_exec($cmd);
+
+					if (!empty($result))
+					{
+						$passed = false;
+						$this->output->addLine($result, array('color'=>'red'));
+					}
+				}
+
+				// Did it all pass?
+				if ($passed)
+				{
+					$this->output->addLine('clear');
+				}
+			}
+		}
+		else
+		{
+			$this->output->addLine('No files to scan');
 		}
 	}
 

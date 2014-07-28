@@ -115,6 +115,16 @@ class Arguments
 	}
 
 	/**
+	 * Get all opts
+	 *
+	 * @return (array) - options
+	 **/
+	public function getOpts()
+	{
+		return $this->opts;
+	}
+
+	/**
 	 * Setter for additional options for a given command
 	 *
 	 * @param  (string) $key

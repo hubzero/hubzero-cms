@@ -94,6 +94,29 @@ class Git
 	}
 
 	/**
+	 * Return the base path of the repository
+	 *
+	 * @return (string) - path
+	 **/
+	public function getBasePath()
+	{
+		return $this->workTree;
+	}
+
+	/**
+	 * Get the mechanisms version identifier
+	 *
+	 * @return (string) - version name
+	 **/
+	public function getMechanismVersionName()
+	{
+		$name = $this->call('rev-parse', array('--abbrev-ref', 'HEAD'));
+		$name = trim($name);
+
+		return $name;
+	}
+
+	/**
 	 * Get the status of the repository
 	 *
 	 * @return (string) $response
