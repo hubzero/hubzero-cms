@@ -40,22 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Scaffolding class for generating template extensions
  **/
-class Scaffolding implements CommandInterface
+class Scaffolding extends Base implements CommandInterface
 {
-	/**
-	 * Output object, implements the Output interface
-	 *
-	 * @var object
-	 **/
-	protected $output;
-
-	/**
-	 * Arguments object, implements the Argument interface
-	 *
-	 * @var object
-	 **/
-	protected $arguments;
-
 	/**
 	 * Array of vars to replace in template
 	 *
@@ -87,12 +73,14 @@ class Scaffolding implements CommandInterface
 	/**
 	 * Constructor - sets output mechanism and arguments for use by command
 	 *
+	 * @param  object - output renderer
+	 * @param  object - command arguments
 	 * @return void
 	 **/
 	public function __construct(Output $output, Arguments $arguments)
 	{
-		$this->output    = $output;
-		$this->arguments = $arguments;
+		parent::__construct($output, $arguments);
+
 		$this->type      = $this->arguments->getOpt(3);
 	}
 

@@ -39,33 +39,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * User class for general user functions
  **/
-class User implements CommandInterface
+class User extends Base implements CommandInterface
 {
-	/**
-	 * Output object, implements the Output interface
-	 *
-	 * @var object
-	 **/
-	protected $output;
-
-	/**
-	 * Arguments object, implements the Argument interface
-	 *
-	 * @var object
-	 **/
-	protected $arguments;
-
-	/**
-	 * Constructor - sets output mechanism and arguments for use by command
-	 *
-	 * @return void
-	 **/
-	public function __construct(Output $output, Arguments $arguments)
-	{
-		$this->output    = $output;
-		$this->arguments = $arguments;
-	}
-
 	/**
 	 * Default (required) command
 	 *
@@ -88,7 +63,7 @@ class User implements CommandInterface
 		$this->output
 		     ->getHelpOutput()
 		     ->addOverview('General user functions for manipulating hub users.')
-		     ->output->render();
+		     ->render();
 	}
 
 	/**

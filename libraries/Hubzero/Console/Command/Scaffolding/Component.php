@@ -70,7 +70,7 @@ class Component extends Scaffolding
 			}
 		}
 
-		// define our install directory or get it from args
+		// Define our install directory or get it from args
 		$install_dir = JPATH_ROOT . DS . 'components';
 		if ($this->arguments->getOpt('install-dir') && strlen(($this->arguments->getOpt('install-dir'))) > 0)
 		{

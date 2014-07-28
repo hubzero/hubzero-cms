@@ -39,38 +39,12 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Test class
  **/
-class Test implements CommandInterface
+class Test extends Base implements CommandInterface
 {
-	/**
-	 * Output object, implements the Output interface
-	 *
-	 * @var object
-	 **/
-	private $output;
-
-	/**
-	 * Arguments object, implements the Argument interface
-	 *
-	 * @var object
-	 **/
-	private $arguments;
-
-	/**
-	 * Constructor - sets output mechanism and arguments for use by command
-	 *
-	 * @return void
-	 **/
-	public function __construct(Output $output, Arguments $arguments)
-	{
-		$this->output    = $output;
-		$this->arguments = $arguments;
-	}
-
 	/**
 	 * Dump the database
 	 *
 	 * @return void
-	 * @author
 	 **/
 	public function execute()
 	{

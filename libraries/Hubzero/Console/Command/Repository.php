@@ -40,22 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Repository class
  **/
-class Repository implements CommandInterface
+class Repository extends Base implements CommandInterface
 {
-	/**
-	 * Output object, implements the Output interface
-	 *
-	 * @var object
-	 **/
-	private $output;
-
-	/**
-	 * Arguments object, implements the Argument interface
-	 *
-	 * @var object
-	 **/
-	private $arguments;
-
 	/**
 	 * Repository management mechanism (i.e. git, packages, etc...)
 	 *
@@ -66,12 +52,13 @@ class Repository implements CommandInterface
 	/**
 	 * Constructor - sets output and arguments for use by command
 	 *
+	 * @param  object - output renderer
+	 * @param  object - command arguments
 	 * @return void
 	 **/
 	public function __construct(Output $output, Arguments $arguments)
 	{
-		$this->output    = $output;
-		$this->arguments = $arguments;
+		parent::__construct($output, $arguments);
 
 		// Overriding default document root?
 		$directory = JPATH_ROOT;

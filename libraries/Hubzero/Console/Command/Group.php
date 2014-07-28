@@ -40,22 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Group command class
  **/
-class Group implements CommandInterface
+class Group extends Base implements CommandInterface
 {
-	/**
-	 * Output object, implements the Output interface
-	 *
-	 * @var object
-	 **/
-	private $output;
-
-	/**
-	 * Arguments object, implements the Argument interface
-	 *
-	 * @var object
-	 **/
-	private $arguments;
-
 	/**
 	 * Group object
 	 *
@@ -66,43 +52,44 @@ class Group implements CommandInterface
 	/**
 	 * Constructor - sets output mechanism and arguments for use by command
 	 *
+	 * @param  object - output renderer
+	 * @param  object - command arguments
 	 * @return void
 	 **/
 	public function __construct(Output $output, Arguments $arguments)
 	{
-		$this->output    = $output;
-		$this->arguments = $arguments;
+		parent::__construct($output, $arguments);
 
-		// do we have a group arg?
+		// Do we have a group arg?
 		if ($cname = $this->arguments->getOpt('group'))
 		{
 			$group = \Hubzero\User\Group::getInstance($cname);
 		}
 		else
 		{
-			// get the current directory
+			// Get the current directory
 			$currentDirectory = getcwd();
 
-			// remove web root
+			// Remove web root
 			$currentDirectory = str_replace(JPATH_ROOT, '', $currentDirectory);
 
 			// Get group upload directory
 			$groupsConfig     = \JComponentHelper::getParams('com_groups');
 			$groupsDirectory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 
-			// are we within the groups upload path
+			// Are we within the groups upload path
 			if (strpos($currentDirectory, $groupsDirectory))
 			{
 				$gid = str_replace($groupsDirectory, '', $currentDirectory);
 				$gid = trim($gid, DS);
 
-				// get group instance
+				// Get group instance
 				$group = \Hubzero\User\Group::getInstance($gid);
 			}
 		}
 
-		// make sure we have a group & its super!
-		if ($group && $group->isSuperGroup())
+		// Make sure we have a group & its super!
+		if (isset($group) && $group && $group->isSuperGroup())
 		{
 			$this->group = $group;
 		}
@@ -139,10 +126,10 @@ class Group implements CommandInterface
 		$directory  = trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 		$directory .= DS . $this->group->get('gidNumber');
 
-		// determine what we want to create
+		// Determine what we want to create
 		$createWhat = ($this->arguments->getOpt(3)) ? $this->arguments->getOpt(3) : 'component';
 
-		// set our needed args
+		// Set our needed args
 		$this->arguments->setOpt(3, $createWhat);
 		$this->arguments->setOpt('install-dir', $directory);
 		Application::call('scaffolding', 'create', $this->arguments, $this->output);
@@ -151,11 +138,11 @@ class Group implements CommandInterface
 	/**
 	 * Run super groups migration
 	 * 
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function migrate()
 	{
-		// set our group arg & call migration
+		// Set our group arg & call migration
 		$this->arguments->setOpt('group', $this->group->get('cn'));
 		Application::call('migration', 'run', $this->arguments, $this->output);
 	}
@@ -163,7 +150,7 @@ class Group implements CommandInterface
 	/**
 	 * Update super group code
 	 * 
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function update()
 	{
@@ -174,10 +161,10 @@ class Group implements CommandInterface
 		$directory  = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 		$directory .= DS . $this->group->get('gidNumber');
 
-		// get task, defaults to update
+		// Get task, defaults to update
 		$task = ($this->arguments->getOpt(3)) ? $this->arguments->getOpt(3) : 'update';
 
-		// set our group directory & force mode & call migration
+		// Set our group directory & force mode & call update
 		$this->arguments->setOpt('r', $directory);
 		$this->arguments->setOpt('f', 1);
 		Application::call('repository', $task, $this->arguments, $this->output);

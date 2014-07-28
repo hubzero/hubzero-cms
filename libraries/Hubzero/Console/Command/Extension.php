@@ -40,33 +40,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Extension class
  **/
-class Extension implements CommandInterface
+class Extension extends Base implements CommandInterface
 {
-	/**
-	 * Output object, implements the Output interface
-	 *
-	 * @var object
-	 **/
-	private $output;
-
-	/**
-	 * Arguments object, implements the Argument interface
-	 *
-	 * @var object
-	 **/
-	private $arguments;
-
-	/**
-	 * Constructor - sets output mechanism and arguments for use by command
-	 *
-	 * @return void
-	 **/
-	public function __construct(Output $output, Arguments $arguments)
-	{
-		$this->output    = $output;
-		$this->arguments = $arguments;
-	}
-
 	/**
 	 * Default (required) command - just executes run
 	 *
@@ -101,7 +76,6 @@ class Extension implements CommandInterface
 	 * Add an entry to the extension table
 	 *
 	 * @return void
-	 * @author
 	 **/
 	public function add()
 	{
@@ -112,7 +86,6 @@ class Extension implements CommandInterface
 	 * Delete an entry from the extension table
 	 *
 	 * @return void
-	 * @author
 	 **/
 	public function delete()
 	{
@@ -122,6 +95,7 @@ class Extension implements CommandInterface
 	/**
 	 * Alter extension
 	 *
+	 * @param  string - method name
 	 * @return void
 	 **/
 	private function alter($method)
@@ -191,7 +165,6 @@ class Extension implements CommandInterface
 	 * Enable an extension
 	 *
 	 * @return void
-	 * @author
 	 **/
 	public function enable()
 	{
@@ -202,7 +175,6 @@ class Extension implements CommandInterface
 	 * Disable an extension
 	 *
 	 * @return void
-	 * @author
 	 **/
 	public function disable()
 	{

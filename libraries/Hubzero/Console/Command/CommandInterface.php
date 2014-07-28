@@ -44,6 +44,8 @@ interface CommandInterface
 	/**
 	 * Constructor - sets output mechanism and arguments for use by command
 	 *
+	 * @param  object - output renderer
+	 * @param  object - command arguments
 	 * @return void
 	 **/
 	public function __construct(Output $output, Arguments $arguments);

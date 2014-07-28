@@ -77,14 +77,14 @@ class Migration extends Scaffolding
 				break;
 		}
 
-		// determine our base path
+		// Determine our base path
 		$base = JPATH_ROOT;
 		if ($this->arguments->getOpt('install-dir') && strlen(($this->arguments->getOpt('install-dir'))) > 0)
 		{
 			$base = JPATH_ROOT . DS . trim($this->arguments->getOpt('install-dir'), DS);
 		}
 
-		// install directory is migrations folder within base
+		// Install directory is migrations folder within base
 		$install_dir = $base . DS . 'migrations';
 
 		// Extension
@@ -144,7 +144,9 @@ class Migration extends Scaffolding
 	/**
 	 * Simple helper function to check validity of provided extension name
 	 *
-	 * @return bool - whether or not extension is valid
+	 * @param  string - extension name to evaluate
+	 * @param  string - base directory to examine
+	 * @return bool   - whether or not extension is valid
 	 **/
 	private function isValidExtension($extension, $base)
 	{
@@ -173,6 +175,7 @@ class Migration extends Scaffolding
 	/**
 	 * Get table creation string
 	 *
+	 * @param  (string) table name for which to retrieve create syntax
 	 * @return (string) table creation syntax
 	 **/
 	private function showCreateTable($tableName)
@@ -208,6 +211,13 @@ class Migration extends Scaffolding
 				should be given the extension "core"',
 				'Example: -e=com_courses, --extension=plg_members_dashboard',
 				true
+			)
+			->addArgument(
+				'--install-dir: installation directory',
+				'Installation/base directory within which the migration will be installed.
+				By default, this will be JPATH_ROOT. The command will then look for a 
+				directory named "migrations" within the provided installation directory.',
+				'Example: --install-dir=/www/myhub'
 			)
 			->addArgument(
 				'--editor: editor',
