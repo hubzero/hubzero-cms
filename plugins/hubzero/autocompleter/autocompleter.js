@@ -969,11 +969,13 @@ HUB.Plugins.Autocomplete = {
 				return;
 			}
 
-			var params = $(input).attr('data-options').split(',');
-			if (params) {
-				option = params[0];
-				type = params[1];
-				wsel = params[2];
+			if ($(input).attr('data-options')) {
+				var params = $(input).attr('data-options').split(',');
+				if (params) {
+					option = params[0];
+					type = params[1];
+					wsel = params[2];
+				}
 			}
 
 			// Set the CSS class for the type of autocompleter (affects colors)
