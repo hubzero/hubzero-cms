@@ -91,7 +91,7 @@ function HelpParseRoute($segments)
 		$vars['extension'] = $segments[1];
 		$vars['page']      = $segments[2];
 	}
-	else
+	elseif (isset($segments[1]))
 	{
 		$vars['page'] = $segments[1];
 	}
