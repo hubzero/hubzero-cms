@@ -96,6 +96,7 @@ smaller area with "overflow: scroll" enabled?
 			notice.remove();
 		});
 		if ($.growl.settings.displayTimeout > 0) {
+			$('a[rel="close"]', notice).hide();
 			setTimeout(function(){
 				jQuery.growl.settings.noticeRemove(notice, function(){
 					notice.remove();
@@ -119,7 +120,7 @@ smaller area with "overflow: scroll" enabled?
 			//' <p><img src="%image%" alt="" /></p>' +
 			//' <p class="icon">&#xf005;</p>' +
 			//' <h3 style="margin-top: 15px; color: #fff;">%title%</h3>' +
-			'  %message%' +
+			'  %message%' + '<a href="#" class="growl-close" rel="close" title="Close">Close</a>' +
 			'</div>',
 		noticeCss: {
 			opacity: 1, //.75,
@@ -190,6 +191,9 @@ jQuery(document).ready(function($){
 	// Display system messages in Growl-like way
 	var msg = $('#system-message-container');
 	if (msg.length && msg.html().replace(/\s+/, '') != '') {
+		if (msg.find('dd.error, dd.warning').length) {
+			$.growl.settings.displayTimeout = 0;
+		}
 		$.growl('', msg.html());
 	}
 });

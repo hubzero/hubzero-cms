@@ -141,21 +141,58 @@
 	position: fixed;
 	top: 30%;
 	right: 50%;
-	margin-right: -105px;
+	margin: 0 -105px 0 0;
 	width: 211px;
 	text-align: center;
+	.box-shadow(~"0 1px 4px rgba(0, 0, 0, 0.15)");
 
-	#system-message dd {
-		padding: 5em 0.61803399em 0.61803399em 0.61803399em;
-		font-weight: 500;
+	#system-message {
+		margin: 0;
+		padding: 0;
+
+		dd {
+			padding: 5em 0.61803399em 0.61803399em 0.61803399em;
+			font-weight: 500;
+			box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.1);
+
+			&:before {
+				font-size: 4em;
+				line-height: 1;
+				top: 0.2em;
+				left: 50%;
+				text-align: center;
+				margin-left: -0.5em;
+			}
+		}
+	}
+
+	.growl-close {
+		display: block;
+		position: absolute;
+		top: -1em;
+		right: -1em;
+		width: 1em;
+		height: 1em;
+		padding: 0.5em;
+		line-height: 1;
+		overflow: hidden;
+		text-align: center;
+		background: #222;
+		background: rgba(0, 0, 0, 0.8);
+		.border-radius(50%);
+		color: #fff;
+		border: 2px solid #fff;
 
 		&:before {
-			font-size: 4em;
-			line-height: 1;
-			top: 0;
-			left: 50%;
-			text-align: center;
-			margin-left: -0.5em;
+			content: "\2716";
+			font-family: "Fontcons";
+			display: block;
+			margin: 0 0 1em 0;
+		}
+		&:hover {
+			background: #c00;
+			border: 2px solid #fff;
+			text-decoration: none;
 		}
 	}
 }
