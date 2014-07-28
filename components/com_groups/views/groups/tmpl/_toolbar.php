@@ -44,8 +44,8 @@ $groupUrl   = 'index.php?option=com_groups&cn='.$this->group->get('cn');
 // build login and logout links
 $loginReturn  = base64_encode($currentUrl);
 $logoutReturn = base64_encode(JRoute::_($groupUrl));
-$loginLink    = JRoute::_('/login?return=' . $loginReturn);
-$logoutLink   = JRoute::_('/logout?return=' . $logoutReturn);
+$loginLink    = JRoute::_('index.php?option=com_users&view=login&return=' . $loginReturn);
+$logoutLink   = JRoute::_('index.php?option=com_users&view=logout&return=' . $logoutReturn);
 
 // super group login link
 if ($this->group->isSuperGroup())

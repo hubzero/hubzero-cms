@@ -236,7 +236,7 @@ $this->css()
 						} else {
 						?>
 						<p class="warning">
-							<?php echo JText::sprintf('PLG_MEMBERS_BLOG_MUST_LOG_IN', '<a href="/login?return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true)) . '">' . JText::_('PLG_MEMBERS_BLOG_LOG_IN') . '</a>'); ?>
+							<?php echo JText::sprintf('PLG_MEMBERS_BLOG_MUST_LOG_IN', '<a href="' . JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode(JRoute::_($this->row->link() . '#post-comment', false, true))) . '">' . JText::_('PLG_MEMBERS_BLOG_LOG_IN') . '</a>'); ?>
 						</p>
 						<?php } ?>
 					</label>

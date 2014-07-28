@@ -238,7 +238,7 @@ class plgPublicationsQuestions extends JPlugin
 		{
 			$app = JFactory::getApplication();
 			$app->redirect(
-				'/login?return=' . base64_encode($_SERVER['REQUEST_URI']),
+				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])),
 				JText::_('PLG_PUBLICATIONS_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
 				'warning'
 			);

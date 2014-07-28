@@ -111,9 +111,13 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 			if ($juser->get('guest')
 			 && ($group_plugin_acl == 'registered' || $group_plugin_acl == 'members'))
 			{
-				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active);
-				$message = JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active));
-				$this->redirect( "/login?return=".base64_encode($url), $message, 'warning' );
+				$url = JRoute::_('index.php?option=com_groups&cn='.$group->get('cn').'&active='.$active, false, true);
+
+				$this->redirect(
+					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+					JText::sprintf('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
+					'warning'
+				);
 				return;
 			}
 

@@ -72,9 +72,9 @@ $step = (int) JRequest::getInt('step', 1);
 			We can do that. Just login with that existing account now and we'll link them up!
 		</div>
 		<div class="responses">
-			<a href="<?php echo JRoute::_('/logout?return=' .
-				base64_encode(JRoute::_('/login?reset=1&return=' .
-					base64_encode(JRoute::_('/login?authenticator=' . $this->hzad->authenticator))))); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout&return=' .
+				base64_encode(JRoute::_('index.php?option=com_users&view=login&reset=1&return=' .
+					base64_encode(JRoute::_('index.php?option=com_users&view=login&authenticator=' . $this->hzad->authenticator))))); ?>">
 				<div data-step="3" class="button ok">OK</div>
 			</a>
 			<a href="<?php echo JRoute::_('index.php?option=com_users&view=link&step=2'); ?>">
