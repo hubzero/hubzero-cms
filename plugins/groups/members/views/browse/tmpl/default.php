@@ -152,7 +152,7 @@ $option = 'com_groups';
 					<caption>
 						<?php
 							if ($this->role_filter) {
- 								echo $role_name;
+								echo $role_name;
 							} elseif ($this->q) {
 								echo JText::_('PLG_GROUPS_MEMBERS_SEARCH') . ': ' . $this->escape($this->q);
 							} else {
@@ -169,7 +169,7 @@ $option = 'com_groups';
 										$append = '&users[]=role&role_id='.$role_id;
 										$title = JText::sprintf('PLG_GROUPS_MEMBERS_MESSAGE_ALL_ROLE', $role_name);
 									} else {
-										switch($this->filter)
+										switch ($this->filter)
 										{
 											case 'pending':
 												$append = '&users[]=applicants';
@@ -228,7 +228,7 @@ $option = 'com_groups';
 									$inviteemail = true;
 									$pic = rtrim(JURI::getInstance()->base(true), '/') . '/components/com_groups/assets/img/emailthumb.png';
 								}
-								else if(!is_object($u))
+								else if (!is_object($u))
 								{
 									continue;
 								}
