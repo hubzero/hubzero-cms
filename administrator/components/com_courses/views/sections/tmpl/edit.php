@@ -185,25 +185,25 @@ jQuery(document).ready(function($){
 
 					<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?>">
 						<label for="field-publish_up"><?php echo JText::_('COM_COURSES_FIELD_PUBLISH_UP'); ?>:</label><br />
-						<?php echo JHTML::_('calendar', $this->row->get('publish_up'), 'fields[publish_up]', 'field-publish_up'); ?>
+						<?php echo JHTML::_('calendar', ($this->row->get('publish_up') != '0000-00-00 00:00:00' ? $this->row->get('publish_up') : ''), 'fields[publish_up]', 'field-publish_up'); ?>
 						<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_PUBLISH_UP_HINT'); ?></span>
 					</div>
 
 					<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?>">
 						<label for="field-start_date"><?php echo JText::_('COM_COURSES_FIELD_SECTION_STARTS'); ?>:</label><br />
-						<?php echo JHTML::_('calendar', $this->row->get('start_date'), 'fields[start_date]', 'field-start_date'); ?>
+						<?php echo JHTML::_('calendar', ($this->row->get('start_date') != '0000-00-00 00:00:00' ? $this->row->get('start_date') : ''), 'fields[start_date]', 'field-start_date'); ?>
 						<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_SECTION_STARTS_HINT'); ?></span>
 					</div>
 
 					<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_FINISHES_HINT'); ?>">
 						<label for="field-end date"><?php echo JText::_('COM_COURSES_FIELD_FINISHES'); ?>:</label><br />
-						<?php echo JHTML::_('calendar', $this->row->get('end_date'), 'fields[end_date]', 'field-end_date'); ?>
+						<?php echo JHTML::_('calendar', ($this->row->get('end_date') != '0000-00-00 00:00:00' ? $this->row->get('end_date') : ''), 'fields[end_date]', 'field-end_date'); ?>
 						<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_FINISHES_HINT'); ?></span>
 					</div>
 
 					<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?>">
 						<label for="field-publish_down"><?php echo JText::_('COM_COURSES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
-						<?php echo JHTML::_('calendar', $this->row->get('publish_down'), 'fields[publish_down]', 'field-publish_down'); ?>
+						<?php echo JHTML::_('calendar', ($this->row->get('publish_down') != '0000-00-00 00:00:00' ? $this->row->get('publish_down') : ''), 'fields[publish_down]', 'field-publish_down'); ?>
 						<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_PUBLISH_DOWN_HINT'); ?></span>
 					</div>
 				</fieldset>
