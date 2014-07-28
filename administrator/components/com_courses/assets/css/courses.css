@@ -2,6 +2,9 @@
 		content: "\f08c";
 		font-family: "Fontcons";
 	}
+	.upload-path {
+		display: none;
+	}
 
 	#img-container {
 		padding: 1em;
@@ -44,6 +47,10 @@
 		border-radius: 3px;
 		font-size: 1.1em;
 		font-weight: bold;
+	}
+	#component-body .qq-upload-button,
+	#component-body .qq-upload-drop-area {
+		margin: 0 1em 1em 1em;
 	}
 
 	.asset-uploader .columns {

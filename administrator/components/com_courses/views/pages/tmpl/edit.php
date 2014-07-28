@@ -44,6 +44,8 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('page');
+
+JHTML::_('behavior.framework');
 ?>
 
 <?php foreach ($this->notifications as $notification) { ?>
