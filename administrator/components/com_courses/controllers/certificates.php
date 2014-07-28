@@ -81,6 +81,16 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	 *
 	 * @return void
 	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Saves changes
+	 *
+	 * @return void
+	 */
 	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
@@ -110,7 +120,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
+				'index.php?option=' . $this->_option, //'&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
 				JText::_('COM_COURSES_SETTINGS_SAVED')
 			);
 			return;

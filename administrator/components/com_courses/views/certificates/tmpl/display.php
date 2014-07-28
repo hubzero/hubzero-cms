@@ -37,6 +37,7 @@ JToolBarHelper::custom('preview', 'preview', '', 'COM_COURSES_PREVIEW', false);
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::spacer();
+	JToolBarHelper::apply();
 	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();
