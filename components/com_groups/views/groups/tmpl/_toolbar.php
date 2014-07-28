@@ -55,35 +55,35 @@ if ($this->group->isSuperGroup())
 ?>
 
 <ul <?php echo $this->classOrId; ?>>
-	<?php if($this->juser->get('guest') == 1) : ?>
+	<?php if ($this->juser->get('guest') == 1) : ?>
 		<li>
 			<a class="login" href="<?php echo $loginLink; ?>">Login</a>
 		</li>
-	<?php elseif(in_array($this->juser->get("id"), $this->group->get("invitees"))) : ?>
-		<?php if($membership_control == 1) : ?>
+	<?php elseif (in_array($this->juser->get("id"), $this->group->get("invitees"))) : ?>
+		<?php if ($membership_control == 1) : ?>
 			<li>
 				<a class="invited" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=accept'); ?>">
 					Accept Group Invitation
 				</a>
 			</li>
 		<?php endif; ?>
-	<?php elseif($this->group->get('join_policy') == 3 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
+	<?php elseif ($this->group->get('join_policy') == 3 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
 		<li>
 			<span class="closed">Group Closed</span>
 		</li>
-	<?php elseif($this->group->get('join_policy') == 2 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
+	<?php elseif ($this->group->get('join_policy') == 2 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
 		<li>
 			<span class="inviteonly">Group is Invite Only</span>
 		</li>
-	<?php elseif($this->group->get('join_policy') == 0 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
-		<?php if($membership_control == 1) : ?>
+	<?php elseif ($this->group->get('join_policy') == 0 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
+		<?php if ($membership_control == 1) : ?>
 			<li>
 				<a class="join" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=join'); ?>">Join Group</a>
 			</li>
 		<?php endif; ?>
-	<?php elseif($this->group->get('join_policy') == 1 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
-		<?php if($membership_control == 1) : ?>
-			<?php if(in_array($this->juser->get("id"), $this->group->get("applicants"))) : ?>
+	<?php elseif ($this->group->get('join_policy') == 1 && !in_array($this->juser->get("id"), $this->group->get("members"))) : ?>
+		<?php if ($membership_control == 1) : ?>
+			<?php if (in_array($this->juser->get("id"), $this->group->get("applicants"))) : ?>
 				<li><span class="pending">Request Pending Approval</span></li>
 			<?php else : ?>
 				<li>
@@ -101,8 +101,8 @@ if ($this->group->isSuperGroup())
 				</a>
 				<span class="btn dropdown-toggle"></span>
 				<ul class="dropdown-menu">
-					<?php if($isManager) : ?>
-						<?php if($membership_control == 1) : ?>
+					<?php if ($isManager) : ?>
+						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-invite" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
 									Invite Members
@@ -119,13 +119,13 @@ if ($this->group->isSuperGroup())
 								Manage Group Pages
 							</a>
 						</li>
-						<?php if($membership_control == 1) : ?>
+						<?php if ($membership_control == 1) : ?>
 							<li class="divider"></li>
 						<?php endif; ?>
 					<?php endif; ?>
 
 					<?php if (!$isManager && \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.invite')) : ?>
-						<?php if($membership_control == 1) : ?>
+						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-invite" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=invite'); ?>">
 									Invite Members
@@ -150,20 +150,20 @@ if ($this->group->isSuperGroup())
 						</li>
 					<?php endif; ?>
 
-					<?php if($canCancel) : ?>
-						<?php if($membership_control == 1) : ?>
+					<?php if ($canCancel) : ?>
+						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-cancel cancel_group_membership" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=cancel'); ?>">
 									Cancel Group Membership
 								</a>
 							</li>
-							<?php if($isManager): ?>
+							<?php if ($isManager): ?>
 								<li class="divider"></li>
 							<?php endif; ?>
 						<?php endif; ?>
 					<?php endif; ?>
-					<?php if($isManager) : ?>
-						<?php if($membership_control == 1) : ?>
+					<?php if ($isManager) : ?>
+						<?php if ($membership_control == 1) : ?>
 							<li>
 								<a class="group-delete" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&task=delete'); ?>">
 									Delete Group

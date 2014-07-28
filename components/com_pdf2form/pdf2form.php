@@ -276,7 +276,8 @@ class PdfFormRespondent
 {
 	private $id, $started, $finished;
 
-	public function __construct($depId) {
+	public function __construct($depId)
+	{
 		if (!($uid = JFactory::getUser()->id))
 		{
 			throw new NeedLoginError;
@@ -362,7 +363,8 @@ class PdfFormRespondent
 		return $this->finished;
 	}
 
-	public function markStart() {
+	public function markStart()
+	{
 		$this->started = date('Y-m-d H:i:s');
 		JFactory::getDBO()->execute('UPDATE #__pdf_form_respondents SET started = \''.$this->started.'\' WHERE started IS NULL AND id = '.(int)$this->id);
 		return $this;
@@ -567,7 +569,8 @@ class PdfFormDeployment
 		return $this->crumb;
 	}
 
-	public function getState() {
+	public function getState()
+	{
 		if ($this->endTime && strtotime($this->endTime) <= time())
 		{
 			return 'expired';
@@ -896,7 +899,8 @@ class PdfForm
 		return $this;
 	}
 
-	public function getPageLayout($version = NULL) {
+	public function getPageLayout($version = NULL)
+	{
 		$dbh = self::getDbh();
 		$fid = $this->getId();
 		if (!is_null($date))
