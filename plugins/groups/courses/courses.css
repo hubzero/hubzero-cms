@@ -1,14 +1,14 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/members/courses/courses.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/groups/courses/courses.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 /*
 
 	-- -- -- -- -- -- --
-	Members Courses plugin CSS
+	Groups Courses plugin CSS
 	-- -- -- -- -- -- --
 
 */
@@ -18,13 +18,21 @@
 		margin: 3em auto;
 		background-color: #fff;
 		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		-moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
-		-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		   -moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		    -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 	}
 	#courses-introduction .instructions {
 		padding: 1em 1.4em;
+		text-align: center;
+	}
+	#courses-introduction .instructions:before {
+		content: "\2298";
+		font-family: "Fontcons";
+		font-size: 8em;
+		line-height: 1.2em;
+		color: #eee;
 	}
 	#courses-introduction .questions {
 		padding: 1em 1.4em;
@@ -93,10 +101,10 @@
 		display: inline-block;
 		background-color: #6a0;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		margin: 0;
 		padding: 0em 0.4em;
 		color: #fff;

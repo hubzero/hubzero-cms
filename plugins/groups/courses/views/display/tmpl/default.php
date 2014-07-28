@@ -51,18 +51,17 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			//$qs .= ($this->filters['group']  ? '&group=' . $this->escape($this->filters['group'])   : '');
 			?>
 			<ul class="entries-menu order-options">
-				<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=title' . $qs); ?>" title="Sort by title">&darr; Title</a></li>
-				<li><a<?php echo ($this->filters['sortby'] == 'alias') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=alias' . $qs); ?>" title="Sort by alias">&darr; Alias</a></li>
-				<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=popularity' . $qs); ?>" title="Sort by popularity">&darr; Popularity</a></li>
+				<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=title' . $qs); ?>" title="<?php echo JText::_('PLG_GROUPS_COURSES_SORT_BY_TITLE'); ?>"><?php echo JText::_('PLG_GROUPS_COURSES_SORT_TITLE'); ?></a></li>
+				<li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($base . '&sortby=popularity' . $qs); ?>" title="<?php echo JText::_('PLG_GROUPS_COURSES_SORT_BY_ENROLLED'); ?>"><?php echo JText::_('PLG_GROUPS_COURSES_SORT_ENROLLED'); ?></a></li>
 			</ul>
 
-			<table class="courses entries" summary="<?php echo JText::_('PLG_GROUPS_COURSES_RESULTS_SUMMARY'); ?>">
+			<table class="courses entries">
 				<caption>
 					<?php
-					$s = ($this->total > 0) ? $this->filters['start']+1 : 0; //($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
+					$s = ($this->total > 0) ? $this->filters['start']+1 : 0;
 					$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 
-					echo $this->escape(JText::_('PLG_GROUPS_COURSES')); //JText::_('PLG_GROUPS_COURSES_' . strtoupper($this->filters['task']));
+					echo $this->escape(JText::_('PLG_GROUPS_COURSES'));
 					?>
 					<span>(<?php echo JText::sprintf('PLG_GROUPS_COURSES_RESULTS_TOTAL', $s, $e, $this->total); ?>)</span>
 				</caption>
@@ -152,6 +151,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 			<p><?php echo JText::_('PLG_GROUPS_COURSES_NONE'); ?></p>
 		</div><!-- / .instructions -->
 		<div class="questions">
+			<p><strong><?php echo JText::_('PLG_GROUPS_COURSES_WHAT_IS_THIS'); ?></strong></p>
+			<p><?php echo JText::_('PLG_GROUPS_COURSES_ABOUT_PLUGIN'); ?><p>
 			<p><strong><?php echo JText::_('PLG_GROUPS_COURSES_WHAT_ARE_COURSES'); ?></strong></p>
 			<p><?php echo JText::_('PLG_GROUPS_COURSES_EXPLANATION'); ?><p>
 		</div><!-- / .post-type -->

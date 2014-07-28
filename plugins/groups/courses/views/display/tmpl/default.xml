@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Favorites Layout">
+	<layout title="Group Courses Listing">
 		<message>
-			<![CDATA[STANDARD FAVORITES LAYOUT DESC]]>
+			<![CDATA[Group Courses Listing]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Favorites Layout</name>
-		<description>STANDARD FAVORITES LAYOUT DESC</description>
+		<name>Group Courses Listing</name>
+		<description>Group Courses Listing</description>
 		<params>
 		</params>
 	</state>
