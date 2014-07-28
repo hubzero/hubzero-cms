@@ -1007,7 +1007,14 @@ class WikiTablePage extends JTable
 						}
 					}
 
-					$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN (" . implode(",", $groups) . ") OR w.created_by=" . $this->_db->Quote($juser->get('id')) . ")))";
+					if (count($groups) > 0)
+					{
+						$where[] = "(w.access!=1 OR (w.access=1 AND (w.group_cn IN (" . implode(",", $groups) . ") OR w.created_by=" . $this->_db->Quote($juser->get('id')) . ")))";
+					}
+					else
+					{
+						$where[] = "(w.access!=1 OR (w.access=1 AND w.created_by=" . $this->_db->Quote($juser->get('id')) . "))";
+					}
 				}
 			}
 			else
