@@ -575,7 +575,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 							$this->setError($e->getMessage());
 						}
 
-						if ($provider_badge_id)
+						if (isset($provider_badge_id) && $provider_badge_id)
 						{
 							// We've successfully created a badge, so save that id to the database
 							$badgeObj->bind(array('provider_badge_id'=>$provider_badge_id));
