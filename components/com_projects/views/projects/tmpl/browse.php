@@ -191,8 +191,8 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$pagenavhtml = str_replace('projects/?','projects/browse/?',$pagenavhtml);
 		$html .= t.t.'<fieldset>'.n;
 		$html .= t.t.$pagenavhtml;
+		$html .= t.t.'</fieldset>'.n;
 	}
-	$html .= t.t.'</fieldset>'.n;
 	$html .= t.'</form>'.n;
 	echo $html;
 ?>

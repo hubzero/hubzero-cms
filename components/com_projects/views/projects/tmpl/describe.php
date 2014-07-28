@@ -132,7 +132,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	}
 	$html .= t.t.t.'</label>'.n;
 	$html .= t.t.t.'<label>'.JText::_('COM_PROJECTS_THUMBNAIL').':'.n;
-	$html .= t.t.t.'<iframe class="filer filerMini" frameBorder="0" src="' . JRoute::_('index.php?option='.$this->option. a . 'alias=' . $this->project->alias . a . 'task=img').'/?file='.stripslashes($this->project->picture).'&no_html=1&tempid='.$this->tempid .'"></iframe>'."\n";
+	$html .= t.t.t.'<iframe class="filer filerMini" src="' . JRoute::_('index.php?option='.$this->option. a . 'alias=' . $this->project->alias . a . 'task=img').'/?file='.stripslashes($this->project->picture).'&amp;no_html=1&amp;tempid='.$this->tempid .'"></iframe>'."\n";
 	$html .= t.t.t.'</label>'.n;
 	// Privacy
 	$html .= t.t.'<h2 class="setup-h">'.JText::_('COM_PROJECTS_SETTING_APPEAR_IN_SEARCH').'</h2>'.n;
