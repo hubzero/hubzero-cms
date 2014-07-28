@@ -143,11 +143,12 @@ class Output
 	 * including a new line at the end of the output
 	 *
 	 * @param  (string) $message - text of string
+	 * @param  (mixed)  $styles  - array of custom styles or string containing predefined term (see formatLine() for posibilities)
 	 * @return (object) $this    - for method chaining
 	 **/
-	public function addString($message)
+	public function addString($message, $styles=null)
 	{
-		$this->addLine($message, null, false);
+		$this->addLine($message, $styles, false);
 
 		return $this;
 	}
@@ -233,7 +234,7 @@ class Output
 	 **/
 	public function addSpacer()
 	{
-		$this->response[] = array('message' => '');
+		$this->addLine('');
 
 		return $this;
 	}

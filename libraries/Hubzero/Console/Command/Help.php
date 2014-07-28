@@ -60,7 +60,11 @@ class Help extends Base implements CommandInterface
 					'format' => 'underline'
 			))
 			->addSpacer()
-			->addLine('Usage: muse [command] [task] [options]')
+			->addString('Usage: muse ')
+			->addString('[command] ', array('color'=>'green'))
+			->addString('[task] ', array('color'=>'yellow'))
+			->addString('[options]')
+			->addSpacer()
 			->addSpacer()
 			->addLine('Commands');
 
