@@ -336,7 +336,7 @@ class UsersModelReset extends JModelForm
 
 		// Check for a user.
 		if (empty($userId)) {
-			$this->setError(JText::_('COM_USERS_INVALID_EMAIL'));
+			$this->setError(JText::_('COM_USERS_INVALID_USERNAME'));
 			return false;
 		}
 
