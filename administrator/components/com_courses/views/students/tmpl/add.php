@@ -95,9 +95,9 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[student]" value="1" />
 
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_USER_HINT'); ?>">
+			<div class="input-wrap">
 				<label for="acmembers"><?php echo JText::_('COM_COURSES_FIELD_USER'); ?></label><br />
-				<input type="text" name="fields[user_id]" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-source="<?php echo $base; ?>/administrator/index.php" />
+				<input type="text" name="fields[user_id]" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
 				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_USER_HINT'); ?></span>
 
 				<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
