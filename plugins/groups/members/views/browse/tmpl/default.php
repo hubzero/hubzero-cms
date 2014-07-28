@@ -278,7 +278,7 @@ $option = 'com_groups';
 								<?php } else { ?>
 									<span class="name">
 										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $u->get('uidNumber')); ?>">
-											<?php echo $this->escape(stripslashes($u->get('name'))); ?>
+											<?php echo $this->escape(stripslashes($u->get('surname')) . ', ' . stripslashes($u->get('givenName'))); ?>
 										</a>
 									</span> 
 									<span class="status"><?php echo $status; ?></span><br />

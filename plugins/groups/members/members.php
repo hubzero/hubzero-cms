@@ -267,6 +267,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$view->groupusers = array_values(array_filter($view->groupusers));
 				}
 
+				// sort users before display
+				$view->groupusers = $this->sortAlphabetically($view->groupusers);
+
 				$view->limit = JRequest::getInt('limit', $this->params->get('display_limit', 50));
 				$view->start = JRequest::getInt('limitstart', 0);
 				$view->start = ($view->limit == 0) ? 0 : $view->start;
@@ -301,7 +304,43 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		// Return the output
 		return $arr;
 	}
-	
+
+	/**
+	 * [sortAlphabetically description]
+	 * @param  [type] $userIds [description]
+	 * @return [type]          [description]
+	 */
+	private function sortAlphabetically($userIds)
+	{
+		// get each users name
+		$users = array();
+		$emails = array();
+		foreach ($userIds as $k => $userid)
+		{
+			$profile = Hubzero\User\Profile::getInstance($userid);
+			if ($profile)
+			{
+				$users[$profile->get('uidNumber')] = $profile->get('surname');
+			}
+			elseif (preg_match("/^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$/i", $userid))
+			{
+				$emails[] = $userid;
+			}
+		}
+
+		// sort by last name
+		asort($users);
+
+		// return sorted member ids
+		return array_merge(array_keys($users), $emails);
+	}
+
+	/**
+	 * Is user sustem user?
+	 * 
+	 * @param  [type]  $userid [description]
+	 * @return boolean         [description]
+	 */
 	private function isSystemUser( $userid )
 	{
 		return (is_numeric($userid) && $userid < 1000) ? null : $userid;
