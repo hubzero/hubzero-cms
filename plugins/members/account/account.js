@@ -136,13 +136,8 @@ HUB.Plugins.MembersAccount = {
 					error.removeClass('error').addClass('passed');
 					error.html('Password save successful!');
 					error.slideDown('fast');
-					error.delay(2000).slideUp('fast', function(){
-						$('#oldpass').val('');
-						$('#newpass1').val('');
-						$('#newpass2').val('');
-						error.removeClass('passed').addClass('error');
-						error.html('');
-						passrule.find('li').switchClass('error passed', 'empty', 200);
+					error.delay(2000).slideUp('fast', function() {
+						window.location.reload();
 					});
 				}
 				else
