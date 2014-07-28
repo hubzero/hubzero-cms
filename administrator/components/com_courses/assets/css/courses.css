@@ -1,11 +1,14 @@
-.assets:before {
-	content: "\f08c";
-	font-family: "Fontcons";
-}
+	.assets:before {
+		content: "\f08c";
+		font-family: "Fontcons";
+	}
 
 	#img-container {
 		padding: 1em;
 		text-align: center;
+	}
+	#img-delete {
+		white-space: nowrap;
 	}
 /* Drag and drop file upload */
 	.qq-uploading {
@@ -42,9 +45,7 @@
 		font-size: 1.1em;
 		font-weight: bold;
 	}
-	/*.asset-uploader:hover {
-		border: 3px solid #333;
-	}*/
+
 	.asset-uploader .columns {
 		margin-top: 0;
 		padding-top: 0;
@@ -66,7 +67,7 @@
 		top: 0em;
 		left: -0.2em;
 		font-family: "Fontcons";
-		content: "\f08c"; /*"\f046";*/
+		content: "\f08c";
 		font-size: 1.1em;
 		line-height: 1;
 		content: "\f016";
@@ -76,7 +77,6 @@
 	.qq-upload-button:hover,
 	.qq-upload-drop-area:hover,
 	.qq-upload-drop-area-active {
-		/*background: #fdfce4;*/
 		border: 3px solid #333;
 		color: #333;
 		cursor: pointer;
