@@ -749,6 +749,7 @@ jQuery(document).ready(function($){
 								<td>
 									<?php if ($this->badge->get('img_url')) : ?>
 										<?php echo $this->escape(stripslashes($this->badge->get('img_url'))); ?>
+										<input type="file" name="badge_image" id="badge-image" />
 									<?php else : ?>
 										<input type="file" name="badge_image" id="badge-image" />
 									<?php endif; ?>
