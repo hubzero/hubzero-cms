@@ -297,12 +297,14 @@ class CoursesModelFormReport extends \Hubzero\Base\Model
 				$query .= "`#__courses_form_respondents` AS cfr WHERE cm.id = cfr.member_id ";
 				$query .= "AND cfr.id = " . $db->quote($response->respondent_id);;
 				$db->setQuery($query);
-				$student = $db->loadObject();
+				if (!$student = $db->loadObject())
+				{
+					continue;
+				}
 				if (!$student->student)
 				{
 					continue;
 				}
-
 				if (isset($section_id) && $student->section_id != $section_id)
 				{
 					continue;
