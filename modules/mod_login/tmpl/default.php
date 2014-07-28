@@ -46,7 +46,7 @@ if (!empty($error_message))
 			<?php if ($multiAuth) { // only display if we have third part auth plugins enabled ?>
 				<div id="providers" class="two columns first">
 					<h3>Sign in with your:</h2>
-					<?php foreach($authenticators as $a) : ?>
+					<?php foreach ($authenticators as $a) : ?>
 						<div class="account-group-wrap">
 							<a class="account-group" id="<?php echo $a['name']; ?>" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $r); ?>">
 								<p><?php echo $a['display']; ?> account</p>
@@ -73,7 +73,7 @@ if (!empty($error_message))
 							<input tabindex="2" type="password" name="passwd" id="password" placeholder="password" />
 						</div>
 						<div class="submission">
-						<?php if(JPluginHelper::isEnabled('system', 'remember')) : ?>
+						<?php if (JPluginHelper::isEnabled('system', 'remember')) : ?>
 							<input type="checkbox" class="option" name="remember" id="remember" value="yes" alt="Remember Me" <?php echo ($remember_me_default) ? 'checked="checked"' : ''; ?> />
 							<label for="remember" id="remember-me-label"><?php echo JText::_('Keep me logged in?'); ?></label>
 						<?php endif; ?>

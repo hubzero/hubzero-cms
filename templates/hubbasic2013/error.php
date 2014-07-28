@@ -75,7 +75,7 @@ $v = $browser->major();
 					</h1>
 
 					<div id="account" role="navigation">
-					<?php if (!$juser->get('guest')) { 
+					<?php if (!$juser->get('guest')) {
 							$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 					?>
 						<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
@@ -187,7 +187,7 @@ $v = $browser->major();
 										<p class="signature">&mdash;Cpt. Showa, Security</p>
 										<?php 
 										break;
-										case 500: 
+										case 500:
 										default: ?>
 										<h3><?php echo JText::_('Will Hubzilla\'s reign of terror never cease?!'); ?></h3>
 										<blockquote>
