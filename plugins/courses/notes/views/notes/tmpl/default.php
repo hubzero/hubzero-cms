@@ -145,7 +145,7 @@ $base = $this->offering->link();
 		$this->view('_not_enrolled')
 		     ->set('course', $this->course)
 		     ->set('option', $this->option)
-		     ->set('message', 'You must be enrolled to utilize the notes feature.')
+		     ->set('message', JText::_('PLG_COURSES_NOTES_ENROLLMENT_REQUIRED'))
 		     ->display();
 	?>
 <?php endif; ?>

@@ -37,9 +37,9 @@ defined('_JEXEC') or die('Restricted access');
 		<p class="warning"><?php echo JText::_($this->message); ?></p>
 	</div>
 	<div class="questions">
-		<p><strong><?php echo JText::_('How can I enroll?'); ?></strong></p>
-		<p><?php echo JText::sprintf('To find out if enrollment is still open and how to enroll, visit the <a href="%s">course overview page</a>', JRoute::_($this->course->link())); ?></p>
-		<p><strong><?php echo JText::_('Where can I learn more bout this course?'); ?></strong></p>
-		<p><?php echo JText::sprintf('To learn more, either visit the <a href="%s">course overview page</a> or browse the <a href="%s">course listing</a>.', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+		<p><strong><?php echo JText::_('PLG_COURSES_NOTES_HOW_TO_ENROLL'); ?></strong></p>
+		<p><?php echo JText::sprintf('PLG_COURSES_NOTES_HOW_TO_ENROLL_EXPLANATION', JRoute::_($this->course->link())); ?></p>
+		<p><strong><?php echo JText::_('PLG_COURSES_NOTES_WHERE_TO_LEARN_MORE'); ?></strong></p>
+		<p><?php echo JText::sprintf('PLG_COURSES_NOTES_WHERE_TO_LEARN_MORE_EXPLANATION', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
 	</div>
 </div>
