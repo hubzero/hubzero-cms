@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="media">
-   <form action="index2.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+   <form action="index.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 	<table class="formed">
 	 <thead>
 	  <tr>
@@ -54,8 +54,9 @@ defined('_JEXEC') or die('Restricted access');
 	 </tbody>
 	</table>
 	<?php
-		if ($this->getError()) {
-			echo $this->getError();
+		if ($this->getError())
+		{
+			echo '<p class="error">' . $this->getError() . '</p>';
 		}
 	?>
 	<table class="formed">
@@ -74,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 		list($width, $height, $type, $attr) = getimagesize($this->path . DS . $this->file);
 ?>
 	  <tr>
-	   <td rowspan="6"><img src="<?php echo '../' . $this->config->get('webpath') . DS . $this->dir . DS . $this->file; ?>" alt="<?php echo JText::_('MEMBER_PICTURE'); ?>" id="conimage" /></td>
+	   <td rowspan="6"><img src="<?php echo '../' . $this->config->get('webpath') . DS . $this->dir . DS . $this->file . '?v=' . time(); ?>" alt="<?php echo JText::_('MEMBER_PICTURE'); ?>" id="conimage" /></td>
 	   <td><?php echo JText::_('FILE'); ?>:</td>
 	   <td><?php echo $this->file; ?></td>
 	  </tr>
@@ -92,7 +93,7 @@ defined('_JEXEC') or die('Restricted access');
 	  </tr>
 	  <tr>
 	   <td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-	   <td><a href="index3.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=remove&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+	   <td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=remove&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 	  </tr>
 <?php } else { ?>
 	  <tr>

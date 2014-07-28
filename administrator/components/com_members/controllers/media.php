@@ -47,117 +47,120 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
-		if (!$id) 
-		{
-			$this->setError(JText::_('MEMBERS_NO_ID'));
-			$this->displayTask('', $id);
-			return;
-		}
-
-		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
-		if (!$file['name']) 
-		{
-			$this->setError(JText::_('MEMBERS_NO_FILE'));
-			$this->displayTask('', $id);
-			return;
-		}
-		$curfile = JRequest::getVar('curfile', '');
+		$id      = JRequest::getInt('id', 0);
+		$curfile = JRequest::getVar('file', '');
+		$file    = JRequest::getVar('upload', '', 'files', 'array');
 
 		// Build upload path
 		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
+		//allowed extensions for uplaod
+		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif');
+
+		//max upload size
+		$sizeLimit = $this->config->get('maxAllowed', '40000000');
+
+		// make sure we have id
+		if (!$id) 
+		{
+			$this->setError(JText::_('MEMBERS_NO_ID'));
+			$this->displayTask($curfile, $id);
+			return;
+		}
+
+		// make sure we have a file
+		if (!$file['name']) 
+		{
+			$this->setError(JText::_('MEMBERS_NO_FILE'));
+			$this->displayTask($curfile, $id);
+			return;
+		}
+
+		// make sure we have an upload path
 		if (!is_dir($path)) 
 		{
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path)) 
 			{
 				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
-				$this->displayTask('', $id);
+				$this->displayTask($curfile, $id);
 				return;
 			}
 		}
 
-		// Make the filename safe
-		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
-		$file['name'] = str_replace(' ', '_', $file['name']);
-
-		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name'])) 
+		// make sure file is not empty
+		if ($file['size'] == 0)
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
-			$file = $curfile;
-		} 
-		else 
-		{
-			$ih = new MembersImgHandler();
-
-			// Do we have an old file we're replacing?
-			if (($curfile = JRequest::getVar('currentfile', ''))) 
-			{
-				// Remove old image
-				if (file_exists($path . DS . $curfile)) 
-				{
-					if (!JFile::delete($path . DS . $curfile)) 
-					{
-						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
-						$this->displayTask($file['name'], $id);
-						return;
-					}
-				}
-				
-				// Get the old thumbnail name
-				$curthumb = $ih->createThumbName($curfile);
-				
-				// Remove old thumbnail
-				if (file_exists($path . DS . $curthumb)) 
-				{
-					if (!JFile::delete($path . DS . $curthumb)) 
-					{
-						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
-						$this->displayTask($file['name'], $id);
-						return;
-					}
-				}
-			}
-
-			// Instantiate a profile, change some info and save
-			$profile = new \Hubzero\User\Profile();
-			$profile->load($id);
-			$profile->set('picture', $file['name']);
-			if (!$profile->update()) 
-			{
-				$this->setError($profile->getError());
-			}
-
-			// Resize the image if necessary
-			$ih->set('image', $file['name']);
-			$ih->set('path', $path . DS);
-			$ih->set('maxWidth', 186);
-			$ih->set('maxHeight', 186);
-			if (!$ih->process()) 
-			{
-				$this->setError($ih->getError());
-			}
-
-			// Create a thumbnail image
-			$ih->set('maxWidth', 50);
-			$ih->set('maxHeight', 50);
-			$ih->set('cropratio', '1:1');
-			$ih->set('outputName', $ih->createThumbName());
-			if (!$ih->process()) 
-			{
-				$this->setError($ih->getError());
-			}
-
-			$file = $file['name'];
+			$this->setError(JText::_('FILE_HAS_NO_SIZE'));
+			$this->displayTask($curfile, $id);
+			return;
 		}
 
+		// make sure file is not empty
+		if ($file['size'] > $sizeLimit)
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+			$this->setError(JText::sprintf('FILE_SIZE_TOO_BIG', $max));
+			$this->displayTask($curfile, $id);
+			return;
+		}
+
+		// must be in allowed extensions
+		$pathInfo = pathinfo($file['name']);
+		$ext = $pathInfo['extension'];
+		if (!in_array($ext, $allowedExtensions))
+		{
+			$these = implode(', ', $allowedExtensions);
+			$this->setError(JText::sprintf('FILE_TYPE_NOT_ALLOWED', $these));
+			$this->displayTask($curfile, $id);
+			return;
+		}
+
+		// build needed paths
+		$filePath    = $path . DS . $file['name'];
+		$profilePath = $path . DS . 'profile.png';
+		$thumbPath   = $path . DS . 'thumb.png';
+
+		// upload image
+		if (!JFile::upload($file['tmp_name'], $filePath))
+		{
+			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->displayTask($curfile, $id);
+			return;
+		}
+
+		// create profile pic
+		$imageProcessor = new \Hubzero\Image\Processor($filePath);
+		if (count($imageProcessor->getErrors()) == 0)
+		{
+			$imageProcessor->autoRotate();
+			$imageProcessor->resize(400);
+			$imageProcessor->setImageType(IMAGETYPE_PNG);
+			$imageProcessor->save($profilePath);
+		}
+
+		// create thumb
+		$imageProcessor = new \Hubzero\Image\Processor($filePath);
+		if (count($imageProcessor->getErrors()) == 0)
+		{
+			$imageProcessor->resize(50, false, true, true);
+			$imageProcessor->save($thumbPath);
+		}
+
+		// update profile
+		$profile = Hubzero\User\Profile::getInstance($id);
+		$profile->set('picture', 'profile.png');
+		if (!$profile->update()) 
+		{
+			$this->setError($profile->getError());
+		}
+
+		// remove orig file
+		unlink($filePath);
+
 		// Push through to the image view
-		$this->displayTask($file, $id);
+		$this->displayTask('profile.png', $id);
 	}
 
 	/**
@@ -192,6 +195,8 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		$dir  = \Hubzero\Utility\String::pad($id);
 		$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . $dir;
 
+
+		// if we have file
 		if (!file_exists($path . DS . $file) or !$file) 
 		{
 			$this->setError(JText::_('FILE_NOT_FOUND'));
@@ -210,7 +215,14 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 			}
 
 			// Get the file thumbnail name
-			$curthumb = $ih->createThumbName($file);
+			if ($file == 'profile.png')
+			{
+				$curthumb = 'thumb.png';
+			}
+			else
+			{
+				$curthumb = $ih->createThumbName($file);
+			}
 
 			// Remove the thumbnail
 			if (file_exists($path . DS . $curthumb)) 
@@ -222,10 +234,9 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 					return;
 				}
 			}
-
+			
 			// Instantiate a profile, change some info and save
-			$profile = new \Hubzero\User\Profile();
-			$profile->load($id);
+			$profile = Hubzero\User\Profile::getInstance($id);
 			$profile->set('picture', '');
 			if (!$profile->update()) 
 			{
