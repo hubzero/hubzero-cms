@@ -466,12 +466,12 @@ class Repository extends Base implements CommandInterface
 
 		// Get files
 		$status = $this->mechanism->status();
-		$files  = array_merge($status['added'], $status['modified']);
+		$files  = (isset($status['added']) || isset($status['modified'])) ? array_merge($status['added'], $status['modified']) : array();
 
 		// Whether or not to scan untracked files
 		if (!$this->arguments->getOpt('exclude-untracked'))
 		{
-			$files = array_merge($files, $status['untracked']);
+			$files = (isset($status['untracked'])) ? array_merge($files, $status['untracked']) : $files;
 		}
 
 		// Did we find any files?
