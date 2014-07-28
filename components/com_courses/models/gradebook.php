@@ -177,6 +177,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 
 		// Compute stats
+		$stats = array();
 		foreach ($grades as $asset_id => $grade)
 		{
 			$stats[$asset_id]['responses'] = count($grade);
