@@ -528,7 +528,6 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$eval = function() use ($phpPageContent)
 		{
 			ob_start();
-			unset($this);
 			eval("?> $phpPageContent <?php ");
 			$document = ob_get_clean();
 			return $document;
