@@ -93,6 +93,8 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			0,
 			'int'
 		);
+
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 		//$this->view->filters['role'] = 'student';
 
 		//$this->view->filters['count'] = true;

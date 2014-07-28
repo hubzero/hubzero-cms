@@ -125,7 +125,7 @@ function submitbutton(pressbutton)
 		<thead>
 		<?php if ($this->filters['offering']) { ?>
 			<tr>
-				<th colspan="<?php echo (!$this->filters['offering']) ? '7' : '6'; ?>">
+				<th colspan="<?php echo (!$this->filters['offering']) ? '8' : '7'; ?>">
 					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=courses">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>)
@@ -153,7 +153,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="<?php echo (!$this->filters['offering']) ? '7' : '6'; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="<?php echo (!$this->filters['offering']) ? '8' : '7'; ?>"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
