@@ -88,7 +88,7 @@ $version = $record['summary']['version'];
 				$qidx = 0;
 				foreach ($layout[$idx - 1] as $qid=>$group):
 					foreach ($group['answers'] as $aidx=>$ans):
-						if ($record['detail'][$qid]['answer_id'] == 0) :
+						if (!isset($record['detail'][$qid]) || $record['detail'][$qid]['answer_id'] == 0) :
 							echo '<div class="no-answer" style="top: '.($ans['top'] - 4).'px; left: '.$ans['left'].'px">No answer provided</div>';
 							continue 2;
 						elseif ($record['detail'][$qid]['correct_answer_id'] == $ans['id']):
