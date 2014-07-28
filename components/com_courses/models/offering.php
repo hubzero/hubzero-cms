@@ -197,19 +197,22 @@ class CoursesModelOffering extends CoursesModelAbstract
 
 		$this->_tbl = new CoursesTableOffering($this->_db);
 
-		if (is_numeric($oid) || is_string($oid))
+		if ($oid)
 		{
-			if (strstr($oid, ':'))
+			if (is_numeric($oid) || is_string($oid))
 			{
-				$dot = strpos($oid, ':');
-				$section = substr($oid, $dot + 1);
-				$oid = substr($oid, 0, $dot);
+				if (strstr($oid, ':'))
+				{
+					$dot = strpos($oid, ':');
+					$section = substr($oid, $dot + 1);
+					$oid = substr($oid, 0, $dot);
+				}
+				$this->_tbl->load($oid, $course_id);
 			}
-			$this->_tbl->load($oid, $course_id);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
+			else if (is_object($oid) || is_array($oid))
+			{
+				$this->bind($oid);
+			}
 		}
 
 		if ($this->exists()) // && $section)
