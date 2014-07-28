@@ -199,7 +199,7 @@ $option = 'com_groups';
 						<?php } ?>
 					</caption>
 					<tbody>
-<?php
+						<?php
 						if ($this->groupusers) {
 							//$emailthumb = '/components/com_groups/assets/img/emailthumb.png';
 
@@ -262,7 +262,7 @@ $option = 'com_groups';
 								if (is_object($u) && $juser->get('id') == $u->get('uidNumber')) {
 									$cls .= ' me';
 								}
-?>
+						?>
 						<tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
 							<td class="photo">
 								<img width="50" height="50" src="<?php echo $pic; ?>" alt="" />
@@ -403,18 +403,18 @@ $option = 'com_groups';
 									}
 								}
 								echo $html;
-?>
+							?>
 						</tr>
-<?php
+						<?php
 							}
 						} else {
-?>
+						?>
 						<tr>
 							<td><?php echo JText::_('PLG_GROUPS_MEMBERS_NO_RESULTS'); ?></td>
 						</tr>
-<?php
+						<?php
 						}
-?>
+						?>
 					</tbody>
 				</table>
 			<?php
@@ -427,13 +427,12 @@ $option = 'com_groups';
 			?>
 				<div class="clearfix"></div>
 			</div><!-- / .container -->
-		</div>
-		<div class="clear"></div>
+			<div class="clear"></div>
 
-
-		<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
-		<input type="hidden" name="active" value="members" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="filter" value="<?php echo $this->filter; ?>" />
-	</form>
+			<input type="hidden" name="cn" value="<?php echo $this->group->cn; ?>" />
+			<input type="hidden" name="active" value="members" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="filter" value="<?php echo $this->filter; ?>" />
+		</form>
+	</div><!-- / .subject -->
 </div><!--/ #group_members -->
