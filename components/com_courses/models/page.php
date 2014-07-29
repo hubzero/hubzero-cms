@@ -201,7 +201,7 @@ class CoursesModelPage extends CoursesModelAbstract
 				$dest .= DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : '');
 			}
 
-			if (!file_exists(JPATH_ROOT . $desc))
+			if (!file_exists(JPATH_ROOT . $dest))
 			{
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::copy($src, $dest))
