@@ -108,6 +108,7 @@ class UsersViewLogin extends JViewLegacy
 		$multiAuth      = false;
 		$plugins        = JPluginHelper::getPlugin('authentication');
 		$authenticators = array();
+		$remember_me_default = 0;
 
 		foreach ($plugins as $p)
 		{
