@@ -33,48 +33,48 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('offering');
 ?>
-	<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
-		<h2>
-			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-		</h2>
+<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
+	<h2>
+		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+	</h2>
 
-		<?php if ($logo = $this->course->logo()) { ?>
-		<p class="course-identity">
-			<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
-		</p>
-		<?php } ?>
+	<?php if ($logo = $this->course->logo()) { ?>
+	<p class="course-identity">
+		<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+	</p>
+	<?php } ?>
 
-		<p id="page_identity">
-			<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
-				<?php echo JText::_('Course overview'); ?>
-			</a>
-			<strong>
-				<?php echo JText::_('Offering:'); ?>
-			</strong>
-			<span>
-				<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
-			</span>
-			<strong>
-				<?php echo JText::_('Section:'); ?>
-			</strong>
-			<span>
-				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
-			</span>
-		</p>
-	</header><!-- #content-header -->
+	<p id="page_identity">
+		<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
+			<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
+		</a>
+		<strong>
+			<?php echo JText::_('COM_COURSES_OFFERING'); ?>:
+		</strong>
+		<span>
+			<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
+		</span>
+		<strong>
+			<?php echo JText::_('COM_COURSES_SECTION'); ?>:
+		</strong>
+		<span>
+			<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
+		</span>
+	</p>
+</header><!-- #content-header -->
 
-	<section class="main section enroll-closed">
-
+<section class="main section enroll-closed">
+	<div class="section-inner">
 		<div id="offering-introduction">
 			<div class="instructions">
-				<p class="warning"><?php echo JText::_('Course enrollment is <strong>closed</strong>.'); ?></p>
+				<p class="warning"><?php echo JText::_('COM_COURSES_ENROLLMENT_CLOSED'); ?></p>
 			</div><!-- / .instructions -->
 			<div class="questions">
-				<p><strong><?php echo JText::_('Help! I should be in this course!'); ?></strong></p>
-				<p><?php echo JText::sprintf('If you feel this is in error, please contact <a href="%s">support</a>', JRoute::_('index.php?option=com_support')); ?></p>
-				<p><strong><?php echo JText::_('Where can I find other courses?'); ?></strong></p>
-				<p><?php echo JText::sprintf('You can browse the <a href="%s">course listing</a> to find all the current offerings.', JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+				<p><strong><?php echo JText::_('COM_COURSES_I_SHOULD_HAVE_ACCESS'); ?></strong></p>
+				<p><?php echo JText::sprintf('COM_COURSES_I_SHOULD_HAVE_ACCESS_EXPLANATION', JRoute::_('index.php?option=com_support')); ?></p>
+				<p><strong><?php echo JText::_('COM_COURSES_WHERE_CAN_I_FIND_THER_COURSES'); ?></strong></p>
+				<p><?php echo JText::sprintf('COM_COURSES_WHERE_CAN_I_FIND_THER_COURSES_EXPLANATIONS', JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
 			</div><!-- / .questions -->
 		</div><!-- / #offering-introduction -->
-
-	</section><!-- /.main section -->
+	</div>
+</section><!-- /.main section -->

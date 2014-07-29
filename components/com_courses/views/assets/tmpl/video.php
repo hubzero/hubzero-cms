@@ -51,7 +51,7 @@ if (isset($manifest) && is_file($manifest))
 	if (is_null($manifest))
 	{
 		$type  = 'none';
-		$error = 'Video manifest does not contain valid JSON';
+		$error = JText::_('COM_COURSES_VIDEO_ERROR_INVALID_JSON');
 	}
 	else
 	{
@@ -67,15 +67,7 @@ else
 	$type = 'none';
 }
 
-// Add Jquery to the page if the system plugin isn't enabled
-if (!JPluginHelper::isEnabled('system', 'jquery'))
-{
-	// Create the document object
-	$doc = JFactory::getDocument();
-
-	$doc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
-	$doc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-}
+JHTML::_('behavior.framework', true);
 
 // If the video type is 'hubpresenter', perform next steps
 if ($type == 'hubpresenter')
@@ -95,7 +87,7 @@ if ($type == 'hubpresenter')
 		// If we dont have all the necessary media formats
 		if ((in_array('mp4', $ext) && count($ext) < 3) || (in_array('mp3', $ext) && count($ext) < 2))
 		{
-			$this->setError(JText::_('Missing necessary media formats for video or audio.'));
+			$this->setError(JText::_('COM_COURSES_VIDEO_ERROR_MISSING_FORMATS'));
 		}
 
 		// Make sure if any slides are video we have three formats of video and backup image for mobile
@@ -123,12 +115,12 @@ if ($type == 'hubpresenter')
 		{
 			if (count($v) < 3)
 			{
-				$this->setError(JText::_('Video Slides must be Uploaded in the Three Standard Formats. You currently only have ' . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ').'));
+				$this->setError(JText::sprintf('COM_COURSES_VIDEO_ERROR_MISSING_SLIDES_FORMAT', count($v), $k . implode(", {$k}.", array_keys($v))));
 			}
 
 			if (!file_exists($slide_path . DS . $k . '.png'))
 			{
-				$this->setError(JText::_('Slides containing video must have a still image of the slide for mobile suport. Please upload an image with the filename "' . $k . '.png".'));
+				$this->setError(JText::sprintf('COM_COURSES_VIDEO_ERROR_MISSING_STILL_IMAGE', $k));
 			}
 		}
 	}
@@ -231,13 +223,13 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
 		if (JRequest::getVar('tmpl', '') == 'component')
 		{
-			$redirect .= $delimeter . "tmpl=component";
+			$redirect .= $delimeter . 'tmpl=component';
 		}
 
 		$delimeter = (strpos($redirect, '?') === false) ? '?' : '&';
 
 		// Append current position to redirect
-		$redirect .= $delimeter . "time=" . gmdate("H:i:s", $tracking->current_position);
+		$redirect .= $delimeter . 'time=' . gmdate("H:i:s", $tracking->current_position);
 
 		// Redirect
 		JFactory::getApplication()->redirect(JRoute::_($redirect, false), '','',false);
@@ -245,21 +237,20 @@ if ($type == 'hubpresenter' || $type == 'html5')
 }
 
 ?>
-
 <?php if ($type == 'html5') : ?>
 	<div id="video-container">
 		<?php if (count($presentation->media) > 0) : ?>
 			<video controls="controls" id="video-player" data-mediaid="<?php echo $this->asset->id; ?>">
 				<?php foreach ($presentation->media as $video) : ?>
 					<?php
-						switch ( $video->type )
+						switch ($video->type)
 						{
 							case 'ogg':
-							case 'ogv':     $type = "video/ogg;";    break;
-							case 'webm':    $type = "video/webm;";   break;
+							case 'ogv':  $type = 'video/ogg;';  break;
+							case 'webm': $type = 'video/webm;'; break;
 							case 'mp4':
 							case 'm4v':
-							default:        $type = "video/mp4;";    break;
+							default:     $type = 'video/mp4;';  break;
 						}
 
 						//video source
@@ -320,7 +311,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	<div id="transcript-container">
 		<div id="transcript-toolbar">
 			<select id="transcript-selector"></select>
-			<input type="text" id="transcript-search" placeholder="Search Transcript..." />
+			<input type="text" id="transcript-search" placeholder="<?php echo JText::_('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT'); ?>" />
 			<a href="javascript:void(0);" id="font-bigger"></a>
 			<a href="javascript:void(0);" id="font-smaller"></a>
 		</div>
@@ -328,15 +319,15 @@ if ($type == 'hubpresenter' || $type == 'html5')
 	</div>
 <?php elseif($type == 'hubpresenter') : ?>
 	<div id="presenter-shortcuts-box">
-		<h2>Keyboard Shortcuts</h2>
-		<a href="#" id="shortcuts-close">Close</a>
+		<h2><?php echo JText::_('COM_COURSES_VIDEO_KEYBOARD_SHORTCUTS'); ?></h2>
+		<a href="#" id="shortcuts-close"><?php echo JText::_('COM_COURSES_VIDEO_CLOSE'); ?></a>
 		<ul id="shortcuts-content">
-			<li><kbd>Space</kbd> or <kbd>P</kbd><span>Pauses/Plays Presentation</li>
-			<li><kbd>&darr;</kbd> or <kbd>&rarr;</kbd><span>Next Slide</span></li>
-			<li><kbd>&uarr;</kbd> or <kbd>&larr;</kbd><span>Previous Slide</span></li>
-			<li><kbd>+</kbd><span>Increase Volume</span></li>
-			<li><kbd>-</kbd><span>Decrease Volume</span></li>
-			<li><kbd>M</kbd><span>Mute Presentation</span></li>
+			<li><?php echo JText::sprintf('COM_COURSES_VIDEO_OR', '<kbd>Space</kbd>', '<kbd>P</kbd>'); ?><span><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PAUSE_PLAY'); ?></li>
+			<li><?php echo JText::sprintf('COM_COURSES_VIDEO_OR', '<kbd>&darr;</kbd>', '<kbd>&rarr;</kbd>'); ?><span><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_NEXT_SLIDE'); ?></span></li>
+			<li><?php echo JText::sprintf('COM_COURSES_VIDEO_OR', '<kbd>&uarr;</kbd>', '<kbd>&larr;</kbd>'); ?><span><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PREV_SLIDE'); ?></span></li>
+			<li><kbd>+</kbd><span><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_VOLUME_INCREASE'); ?></span></li>
+			<li><kbd>-</kbd><span><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_VOLUME_DECREASE'); ?></span></li>
+			<li><kbd>M</kbd><span><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_VOLUME_MUTE'); ?></span></li>
 		</dl>
 	</div>
 
@@ -361,7 +352,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 										<?php endforeach; ?>
 										<a href="<?php echo $content_folder . DS . $slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 									</video>
-									<img src="<?php echo $content_folder . DS . $slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
+									<img src="<?php echo $content_folder . DS . $slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement" />
 								<?php endif; ?>
 							</li>
 							<?php $counter++; ?>
@@ -372,12 +363,12 @@ if ($type == 'hubpresenter' || $type == 'html5')
 					<div id="control-buttons">
 						<div id="volume-icon"></div>
 						<div id="volume-bar"></div>
-						<a id="previous" href="#" title="Previous Slide">Previous</a>
-						<a id="play-pause" href="#" title="Play Presentation">Pause</a>
-						<a id="next" href="#" title="Next Slide">Next</a>
-						<a id="shortcuts" href="#" title="Keyboard Shortcuts">Shortcuts</a>
-						<a id="link" href="#" title="Link to this Spot in Presentation">Link</a>
-						<a id="switch" href="#" title="Switch Placement of Video and Slides">Switch</a>
+						<a id="previous" href="#" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PREV_SLIDE'); ?>"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PREV'); ?></a>
+						<a id="play-pause" href="#" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PAUSE_PLAY'); ?>"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_PAUSE'); ?></a>
+						<a id="next" href="#" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_NEXT_SLIDE'); ?>"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_NEXT'); ?></a>
+						<a id="shortcuts" href="#" title="<?php echo JText::_('COM_COURSES_VIDEO_KEYBOARD_SHORTCUTS'); ?>"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SHORTCUTS'); ?></a>
+						<a id="link" href="#" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK_THIS_SPOT'); ?>"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_LINK'); ?></a>
+						<a id="switch" href="#" title="<?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SWITCH_VIDEO_SLIDES'); ?>"><?php echo JText::_('COM_COURSES_VIDEO_CONTROL_SWITCH'); ?></a>
 					</div>
 					<div id="control-progress">
 						<div id="progress-bar"></div>
@@ -398,9 +389,9 @@ if ($type == 'hubpresenter' || $type == 'html5')
 									switch (strtolower($source->type))
 									{
 										case 'm4v':
-										case 'mp4':  $type = "video/mp4;";  break;
-										case 'ogv':  $type = "video/ogg;";  break;
-										case 'webm': $type = "video/webm;"; break;
+										case 'mp4':  $type = 'video/mp4;';  break;
+										case 'ogv':  $type = 'video/ogg;';  break;
+										case 'webm': $type = 'video/webm;'; break;
 									}
 								?>
 								<source src="<?php echo $content_folder . DS . $source->source; ?>" type='<?php echo $type; ?>'>
@@ -450,8 +441,8 @@ if ($type == 'hubpresenter' || $type == 'html5')
 										<?php
 											$num++;
 											$max = 30;
-											$elipsis = "&hellip;";
-											echo ($num) . ". ";
+											$elipsis = '&hellip;';
+											echo ($num) . '. ';
 											echo substr($slide->title, 0, $max);
 
 											if (strlen($slide->title) > $max)
@@ -473,39 +464,39 @@ if ($type == 'hubpresenter' || $type == 'html5')
 			</div><!-- /#right -->
 		</div><!-- /#content -->
 	</div>
-	<div id="twofinger">Use two Fingers to Scroll</div>
+	<div id="twofinger"><?php echo JText::_('COM_COURSES_VIDEO_USE_FINGERS_TO_SCROLL'); ?></div>
 <?php elseif ($type == 'standalone') : ?>
-<?php
-	jimport('joomla.filesystem.file');
-	$path = $path . DS . $this->model->get('url');
-	$ext  = strtolower(JFile::getExt(JPATH_ROOT . $path));
-	$doc  = JFactory::getDocument();
-	$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
-	$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
-?>
+	<?php
+		jimport('joomla.filesystem.file');
+		$path = $path . DS . $this->model->get('url');
+		$ext  = strtolower(JFile::getExt(JPATH_ROOT . $path));
+		$doc  = JFactory::getDocument();
+		$doc->addStyleSheet('//releases.flowplayer.org/5.4.2/skin/minimalist.css');
+		$doc->addScript('//releases.flowplayer.org/5.4.2/flowplayer.min.js');
+	?>
 	<div class="flowplayer">
 		<video id="movie<?php echo rand(0, 1000); ?>" preload controls>
-<?php
-	switch ($ext)
-	{
-		case 'mov':
-		case 'mp4':
-		case 'm4v':
-			echo '<source src="' . $path . '" type="video/mp4" />';
-		break;
+			<?php
+				switch ($ext)
+				{
+					case 'mov':
+					case 'mp4':
+					case 'm4v':
+						echo '<source src="' . $path . '" type="video/mp4" />';
+					break;
 
-		case 'ogg':
-		case 'ogv':
-			echo '<source src="' . $path . '" type="video/ogg" />';
-		break;
+					case 'ogg':
+					case 'ogv':
+						echo '<source src="' . $path . '" type="video/ogg" />';
+					break;
 
-		case 'webm':
-			echo '<source src="' . $path . '" type="video/webm" />';
-		break;
-	}
-?>
+					case 'webm':
+						echo '<source src="' . $path . '" type="video/webm" />';
+					break;
+				}
+			?>
 		</video>
 	</div>
 <?php else : ?>
-	<p class="warning"><?php echo (isset($error)) ? $error : 'This lecture has no playable videos associated with it'; ?></p>
+	<p class="warning"><?php echo (isset($error)) ? $error : JText::_('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS'); ?></p>
 <?php endif; ?>

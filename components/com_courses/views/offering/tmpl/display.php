@@ -56,21 +56,21 @@ if (!$no_html && $tmpl != 'component') :
 		</h2>
 		<?php if ($src) { ?>
 		<p class="course-identity">
-			<img src="<?php echo $src; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
+			<img src="<?php echo $src; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
 		</p>
 		<?php } ?>
 		<p id="page_identity">
 			<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
-				<?php echo JText::_('Course overview'); ?>
+				<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
 			</a>
 			<strong>
-				<?php echo JText::_('Offering:'); ?>
+				<?php echo JText::_('COM_COURSES_OFFERING'); ?>:
 			</strong>
 			<span>
 				<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
 			</span>
 			<strong>
-				<?php echo JText::_('Section:'); ?>
+				<?php echo JText::_('COM_COURSES_SECTION'); ?>:
 			</strong>
 			<span>
 				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
@@ -85,13 +85,13 @@ if (!$no_html && $tmpl != 'component') :
 <?php if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) { ?>
 			<div id="offering-introduction">
 				<div class="instructions">
-					<p class="warning"><?php echo JText::_('You must be enrolled in this course to view the content.'); ?></p>
+					<p class="warning"><?php echo JText::_('COM_COURSES_ENROLLMENT_REQUIRED'); ?></p>
 				</div><!-- / .instructions -->
 				<div class="questions">
-					<p><strong><?php echo JText::_('How can I enroll?'); ?></strong></p>
-					<p><?php echo JText::sprintf('To find out if enrollment is still open and how to enroll, visit the <a href="%s">course overview page</a>', JRoute::_($this->course->link())); ?></p>
-					<p><strong><?php echo JText::_('Where can I learn more bout this course?'); ?></strong></p>
-					<p><?php echo JText::sprintf('To learn more, either visit the <a href="%s">course overview page</a> or browse the <a href="%s">course listing</a>.', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
+					<p><strong><?php echo JText::_('COM_COURSES_HOW_TO_ENROLL'); ?></strong></p>
+					<p><?php echo JText::sprintf('COM_COURSES_HOW_TO_ENROLL_EXPLANATION', JRoute::_($this->course->link())); ?></p>
+					<p><strong><?php echo JText::_('COM_COURSES_WHERE_TO_LEARN_MORE'); ?></strong></p>
+					<p><?php echo JText::sprintf('COM_COURSES_WHERE_TO_LEARN_MORE_EXPLANATION', JRoute::_($this->course->link()), JRoute::_('index.php?option=' . $this->option . '&controller=courses&task=browse')); ?></p>
 				</div><!-- / .post-type -->
 			</div><!-- / #collection-introduction -->
 <?php } else { ?>
@@ -145,12 +145,12 @@ if (!$no_html && $tmpl != 'component') :
 
 									if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0))
 									{
-										$menu_item  = '<li class="protected course-overview-tab"><span class="outline">' . JText::_('Outline') . '</span>';
+										$menu_item  = '<li class="protected course-overview-tab"><span class="outline">' . JText::_('COM_COURSES_OUTLINE') . '</span>';
 									}
 									else
 									{
 										$menu_item  = "<li class=\"{$li_cls} course-overview-tab\">";
-										$menu_item .= '<a class="outline" href="' . $link . '" data-icon="&#x' . $cat['icon'] . ';" data-title="' . JText::_('Outline') . '">' . JText::_('Outline') . '</a>';
+										$menu_item .= '<a class="outline" href="' . $link . '" data-icon="&#x' . $cat['icon'] . ';" data-title="' . JText::_('COM_COURSES_OUTLINE') . '">' . JText::_('COM_COURSES_OUTLINE') . '</a>';
 									}
 									$menu_item .= '</li>';
 								}
@@ -158,7 +158,7 @@ if (!$no_html && $tmpl != 'component') :
 								{
 									if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0))
 									{
-										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" data-title="' . JText::_('This page is restricted to course members only!') . '">';
+										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" data-title="' . JText::_('COM_COURSES_RESTRICTED_PAGE') . '">';
 										$menu_item .= '<span class="' . $cls . '" data-icon="&#x' . $cat['icon'] . '">' . $title . '</span>';
 										$menu_item .= '</li>';
 									}

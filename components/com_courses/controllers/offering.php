@@ -265,7 +265,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to enroll in a course.');
+			$this->loginTask(JText::_('COM_COURSES_ENROLLMENT_REQUIRES_LOGIN'));
 			return;
 		}
 
@@ -278,7 +278,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			// Redirect back to the course page
 			$this->setRedirect(
 				JRoute::_($offering->link()),
-				JText::_('You are already enrolled in this course')
+				JText::_('COM_COURSES_ALREADY_ENROLLED')
 			);
 			return;
 		}
@@ -315,19 +315,19 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 				// Is it a valid code?
 				if (!$coupon->exists())
 				{
-					$this->setError(JText::sprintf('"%s" is not a valid coupon code.', $code));
+					$this->setError(JText::sprintf('COM_COURSES_ERROR_CODE_INVALID', $code));
 				}
 				// Has it already been redeemed?
 				if ($coupon->isRedeemed())
 				{
-					$this->setError(JText::sprintf('The code "%s" has already been redeemed.', $code));
+					$this->setError(JText::sprintf('COM_COURSES_ERROR_CODE_ALREADY_REDEEMED', $code));
 				}
 				else
 				{
 					// Has it expired?
 					if ($coupon->isExpired())
 					{
-						$this->setError(JText::sprintf('The code "%s" has expired.', $code));
+						$this->setError(JText::sprintf('COM_COURSES_ERROR_CODE_EXPIRED', $code));
 					}
 				}
 				if (!$this->getError())
@@ -467,7 +467,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 				// Check if they're logged in
 				if ($this->juser->get('guest'))
 				{
-					$this->loginTask('You must be enrolled to utilize this asset.');
+					$this->loginTask(JText::_('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'));
 					return;
 				}
 				else
@@ -475,7 +475,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 					// Redirect back to the course outline
 					$this->setRedirect(
 						JRoute::_($this->course->offering()->link()),
-						'You must be enrolled to utilize this asset.',
+						JText::_('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
 						'warning'
 					);
 					return;
@@ -493,7 +493,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 							// Check if they're logged in
 							if ($this->juser->get('guest'))
 							{
-								$this->loginTask('You must be enrolled to utilize this asset.');
+								$this->loginTask(JText::_('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'));
 								return;
 							}
 							else
@@ -501,7 +501,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 								// Redirect back to the course outline
 								$this->setRedirect(
 									JRoute::_($this->course->offering()->link()),
-									'You must be enrolled to utilize this asset.',
+									JText::_('COM_COURSES_ENROLLMENT_REQUIRED_FOR_ASSET'),
 									'warning'
 								);
 								return;
@@ -520,7 +520,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 				// Redirect back to the course outline
 				$this->setRedirect(
 					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')),
-					'This asset is not currently available.',
+					JText::_('COM_COURSES_ERROR_ASSET_UNAVAILABLE'),
 					'warning'
 				);
 				return;
@@ -550,7 +550,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			// Redirect back to the course outline
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')),
-				'This asset has prerequisites that have not been met. Please complete '.$requirements.' before trying again.',
+				JText::sprintf('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
 				'warning'
 			);
 			return;
@@ -575,7 +575,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->loginTask('You must be logged in to save course settings.');
+			$this->loginTask(JText::_('COM_COURSES_NOT_LOGGEDIN'));
 			return;
 		}
 

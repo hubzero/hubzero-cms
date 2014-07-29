@@ -113,7 +113,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	public function _buildTitle($append='')
 	{
 		// Set the title used in the view
-		$this->_title = JText::_('Forms');
+		$this->_title = JText::_('COM_COURSES_FORMS');
 
 		if (!empty($append))
 		{
@@ -188,7 +188,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			{
 				$this->setRedirect(
 					JRoute::_('index.php?option=com_courses&controller=form&task=layout&formId=' . $pdf->getId(), false),
-					JText::_('PDF upload successfull'),
+					JText::_('COM_COURSES_PDF_UPLOAD_SUCCESSFUL'),
 					'passed'
 				);
 				return;
@@ -280,7 +280,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	{
 		if (!$deployment = JRequest::getVar('deployment'))
 		{
-			JError::raiseError(422, 'No deployment provided');
+			JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
 		}
 
 		$pdf = $this->assertExistentForm();
@@ -305,7 +305,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 				$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=component' : '';
 				$this->setRedirect(
 					JRoute::_($this->base . '&task=form.showDeployment&id='.$dep->save().'&formId='.$pdf->getId().$tmpl, false),
-					JText::_('Deployment successfully created'),
+					JText::_('COM_COURSES_DEPLOYMENT_CREATED'),
 					'passed'
 				);
 				return;
@@ -322,12 +322,12 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	{
 		if (!$deployment = JRequest::getVar('deployment'))
 		{
-			JError::raiseError(422, 'No deployment provided');
+			JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_DEPLOYMENT'));
 		}
 
 		if (!$deploymentId = JRequest::getInt('deploymentId'))
 		{
-			JError::raiseError(422, 'No deployment ID provided');
+			JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_DEPLOYMENT_ID'));
 		}
 
 		$pdf = $this->assertExistentForm();
@@ -345,7 +345,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			$tmpl = (JRequest::getWord('tmpl', false)) ? '&tmpl=component' : '';
 			$this->setRedirect(
 				JRoute::_($this->base . '&task=form.showDeployment&id='.$dep->save($deploymentId).'&formId='.$pdf->getId().$tmpl, false),
-				JText::_('Deployment successfully updated'),
+				JText::_('COM_COURSES_DEPLOYMENT_UPDATED'),
 				'passed'
 			);
 			return;
@@ -361,7 +361,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	{
 		if (!$id = JRequest::getInt('id', false))
 		{
-			JError::raiseError(422, 'No form identifier supplied');
+			JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
 		}
 
 		// Set the title and pathway
@@ -395,7 +395,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		switch ($dep->getState())
 		{
 			case 'pending':
-				JError::raiseError(422, 'This deployment is not yet available');
+				JError::raiseError(422, JText::_('COM_COURSES_DEPLOYMENT_UNAVAILABLE'));
 			break;
 
 			case 'expired':
@@ -404,7 +404,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 				// Make sure they're not trying to take the form too many times
 				if ($attempt > $dep->getAllowedAttempts())
 				{
-					JError::raiseError(403, "You're not allowed this many attempts!");
+					JError::raiseError(403, JText::_('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
 				}
 
 				$this->setView('results', $dep->getResultsClosed());
@@ -430,7 +430,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 				// Make sure they're not trying to take the form too many times
 				if ($attempt > $dep->getAllowedAttempts())
 				{
-					JError::raiseError(403, "You're not allowed this many attempts!");
+					JError::raiseError(403, JText::_('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
 				}
 
 				$resp = $dep->getRespondent($this->member, $attempt);
@@ -504,7 +504,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 	{
 		if (!isset($_POST['crumb']) || !isset($_POST['question']) || !isset($_POST['answer']))
 		{
-			echo "Crumb, question, or answer not provided.";
+			echo JText::_('COM_COURSES_ERROR_MISSING_CRUMB_QUESTION_OR_ANSWER');
 			exit();
 		}
 
@@ -541,7 +541,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 		// Make sure they're not trying to take the form too many times
 		if ($attempt > $dep->getAllowedAttempts())
 		{
-			JError::raiseError(403, "You're not allowed this many attempts!");
+			JError::raiseError(403, JText::_('COM_COURSES_WARNING_EXCEEDED_ATTEMPTS'));
 		}
 
 		// Check to see if the time limit has been reached
@@ -611,7 +611,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			if (!$this->authorizeCourse())
 			{
 				// Otherwise, a course id should be provided, and we need to make sure they are authorized
-				JError::raiseError(403, 'Not authorized');
+				JError::raiseError(403, JText::_('COM_COURSES_NOT_AUTH'));
 			}
 		}
 	}
@@ -632,7 +632,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 			return $_GET['formId'];
 		}
 
-		JError::raiseError(422, 'No form identifier supplied');
+		JError::raiseError(422, JText::_('COM_COURSES_ERROR_MISSING_IDENTIFIER'));
 	}
 
 	/**
@@ -646,7 +646,7 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 		if (!$pdf->isStored())
 		{
-			JError::raiseError(404, 'No form matches identifier');
+			JError::raiseError(404, JText::_('COM_COURSES_ERROR_UNKNOWN_IDENTIFIER'));
 		}
 
 		return $pdf;

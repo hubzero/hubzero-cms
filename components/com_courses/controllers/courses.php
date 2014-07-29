@@ -126,47 +126,11 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		// Push some needed scripts to the template
 		$model = CoursesModelCourses::getInstance();
 
-		//vars
-		$this->view->popularcourses     = array();
-		/*$this->view->mycourses          = array();
-		$this->view->interestingcourses = array();
-
-		if (!$this->juser->get('guest'))
-		{
-			//get users courses
-			if ($this->config->get('intro_mycourses', 1))
-			{
-				$this->view->mycourses = $model->userCourses($this->juser->get('id'), 'all');
-			}
-
-			if ($this->config->get('intro_interestingcourses', 1))
-			{
-				//get users tags
-				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
-				$mt = new MembersTags($this->database);
-
-				//get courses user may be interested in
-				if ($mytags = $mt->get_tag_string($this->juser->get('id')))
-				{
-					$this->view->interestingcourses = $model->courses(array(
-						'tag'   => $mytags,
-						'tag_any' => true,
-						'limit' => 10,
-						'state' => 1
-					), true);
-				}
-			}
-		}
-
-		//get the popular courses
-		if ($this->config->get('intro_popularcourses', 1))
-		{*/
-			$this->view->popularcourses = $model->courses(array(
-				'limit' => 12,
-				'sort'  => 'students',
-				'state' => 1
-			), true);
-		//}
+		$this->view->popularcourses = $model->courses(array(
+			'limit' => 12,
+			'sort'  => 'students',
+			'state' => 1
+		), true);
 
 		// Output HTML
 		$this->view->config   = $this->config;
@@ -186,11 +150,12 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 	public function browseTask()
 	{
 		// Filters
-		$this->view->filters = array();
-		$this->view->filters['state']  = 1;
-		$this->view->filters['search'] = JRequest::getVar('search', '');
-		$this->view->filters['sortby'] = strtolower(JRequest::getWord('sortby', 'title'));
-		$this->view->filters['group']  = JRequest::getVar('group', '');
+		$this->view->filters = array(
+			'state'  => 1,
+			'search' => JRequest::getVar('search', ''),
+			'sortby' => strtolower(JRequest::getWord('sortby', 'title')),
+			'group'  => JRequest::getVar('group', '')
+		);
 		if ($this->view->filters['group'])
 		{
 			$group = \Hubzero\User\Group::getInstance($this->view->filters['group']);
@@ -272,7 +237,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 
 			if (!$badge->get('id'))
 			{
-				JError::raiseError(500, JText::_('Badge not found'));
+				JError::raiseError(500, JText::_('COM_COURSES_BADGE_NOT_FOUND'));
 				return;
 			}
 			else
@@ -285,7 +250,7 @@ class CoursesControllerCourses extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			JError::raiseError(500, JText::_('Badge not found'));
+			JError::raiseError(500, JText::_('COM_COURSES_BADGE_NOT_FOUND'));
 			return;
 		}
 

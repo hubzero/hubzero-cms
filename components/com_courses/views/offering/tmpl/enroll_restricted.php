@@ -33,37 +33,38 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('offering');
 ?>
-	<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
-		<h2>
-			<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
-		</h2>
+<header id="content-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
+	<h2>
+		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+	</h2>
 
-		<?php if ($logo = $this->course->logo()) { ?>
-		<p class="course-identity">
-			<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('Course logo'); ?>" />
-		</p>
-		<?php } ?>
+	<?php if ($logo = $this->course->logo()) { ?>
+	<p class="course-identity">
+		<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+	</p>
+	<?php } ?>
 
-		<p id="page_identity">
-			<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
-				<?php echo JText::_('Course overview'); ?>
-			</a>
-			<strong>
-				<?php echo JText::_('Offering:'); ?>
-			</strong>
-			<span>
-				<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
-			</span>
-			<strong>
-				<?php echo JText::_('Section:'); ?>
-			</strong>
-			<span>
-				<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
-			</span>
-		</p>
-	</header><!-- #content-header -->
+	<p id="page_identity">
+		<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
+			<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
+		</a>
+		<strong>
+			<?php echo JText::_('COM_COURSES_OFFERING'); ?>:
+		</strong>
+		<span>
+			<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
+		</span>
+		<strong>
+			<?php echo JText::_('COM_COURSES_SECTION'); ?>:
+		</strong>
+		<span>
+			<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
+		</span>
+	</p>
+</header><!-- #content-header -->
 
-	<section class="main section enroll-restricted">
+<section class="main section enroll-restricted">
+	<div class="section-inner">
 		<?php
 			foreach ($this->notifications as $notification)
 			{
@@ -73,16 +74,16 @@ $this->css('offering');
 
 		<form action="<?php echo JRoute::_($this->course->offering()->link() . '&task=enroll'); ?>" method="post" id="hubForm">
 			<div class="explaination">
-				<h3><?php echo JText::_('Code not working?'); ?></h3>
-				<p><?php echo JText::_('It may be possible that the code has already been redeemed.'); ?></p>
+				<h3><?php echo JText::_('COM_COURSES_CODE_NOT_WORKING'); ?></h3>
+				<p><?php echo JText::_('COM_COURSES_CODE_NOT_WORKING_EXPLANATION'); ?></p>
 			</div>
 			<fieldset>
-				<legend><?php echo JText::_('Redeem Coupon Code'); ?></legend>
+				<legend><?php echo JText::_('COM_COURSES_REDEEM_COUPON_CODE'); ?></legend>
 
-				<p class="warning"><?php echo JText::_('This course has restricted enrollment and requires a coupon code.'); ?></p>
+				<p class="warning"><?php echo JText::_('COM_COURSES_ENROLLMENT_RESTRICTED'); ?></p>
 
 				<label for="field-code">
-					<?php echo JText::_('Coupon Code'); ?> <span class="required"><?php echo JText::_('COM_COURSES_REQUIRED'); ?></span>
+					<?php echo JText::_('COM_COURSES_FIELD_COUPON_CODE'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 					<input type="text" name="code" id="field-code" size="35" value="" />
 				</label>
 			</fieldset>
@@ -95,7 +96,8 @@ $this->css('offering');
 			<input type="hidden" name="task" value="enroll" />
 
 			<p class="submit">
-				<input class="btn btn-success" type="submit" value="<?php echo JText::_('Redeem'); ?>" />
+				<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_COURSES_REDEEM'); ?>" />
 			</p>
 		</form>
-	</section><!-- /.main section -->
+	</div>
+</section><!-- /.main section -->

@@ -37,85 +37,82 @@ $base = rtrim(JURI::base(true), '/');
 
 $course = CoursesModelCourse::getInstance($this->listdir);
 ?>
-	<script type="text/javascript">
-		function updateDir()
+<script type="text/javascript">
+	function updateDir()
+	{
+		var allPaths = window.top.document.forms[0].dirPath.options;
+		for (i=0; i<allPaths.length; i++)
 		{
-			var allPaths = window.top.document.forms[0].dirPath.options;
-			for (i=0; i<allPaths.length; i++)
-			{
-				allPaths.item(i).selected = false;
-				if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
-					allPaths.item(i).selected = true;
-				}
+			allPaths.item(i).selected = false;
+			if ((allPaths.item(i).value)== '<?php if (strlen($this->listdir)>0) { echo $this->listdir ;} else { echo '/';}  ?>') {
+				allPaths.item(i).selected = true;
 			}
 		}
-		function deleteFile(file)
-		{
-			if (confirm("Delete file \""+file+"\"?")) {
-				return true;
-			}
-
-			return false;
+	}
+	function deleteFile(file)
+	{
+		if (confirm("Delete file \""+file+"\"?")) {
+			return true;
 		}
-		function deleteFolder(folder, numFiles)
-		{
-			if (numFiles > 0) {
-				alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
-				return false;
-			}
 
-			if (confirm('Delete folder "'+folder+'"?')) {
-				return true;
-			}
-
+		return false;
+	}
+	function deleteFolder(folder, numFiles)
+	{
+		if (numFiles > 0) {
+			alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
 			return false;
 		}
 
-		function showFilePath(file) {
-			var path = prompt('The file path is:', file);
-			return false;
+		if (confirm('Delete folder "'+folder+'"?')) {
+			return true;
 		}
 
-	</script>
+		return false;
+	}
 
-	<div id="file_list">
-		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="filelist">
-<?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
+	function showFilePath(file) {
+		var path = prompt('The file path is:', file);
+		return false;
+	}
+
+</script>
+
+<div id="file_list">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="filelist">
+		<?php if (count($this->images) == 0 && count($this->folders) == 0 && count($this->docs) == 0) { ?>
 			<p><?php echo JText::_('COM_COURSES_NO_FILES_FOUND'); ?></p>
-<?php } else { ?>
+		<?php } else { ?>
 			<table>
 				<tbody>
-<?php
-$folders = $this->folders;
-for ($i=0; $i<count($folders); $i++)
-{
-	$folder_name = key($folders);
+				<?php
+				$folders = $this->folders;
+				for ($i=0; $i<count($folders); $i++)
+				{
+					$folder_name = key($folders);
 
-	$num_files = 0;
-	if (is_dir(JPATH_ROOT.DS.$folders[$folder_name]))
-	{
-		$d = @dir(JPATH_ROOT.DS.$folders[$folder_name]);
+					$num_files = 0;
+					if (is_dir(JPATH_ROOT.DS.$folders[$folder_name]))
+					{
+						$d = @dir(JPATH_ROOT.DS.$folders[$folder_name]);
 
-		while (false !== ($entry = $d->read()))
-		{
-			if (substr($entry,0,1) != '.') {
-				$num_files++;
-			}
-		}
-		$d->close();
-	}
+						while (false !== ($entry = $d->read()))
+						{
+							if (substr($entry,0,1) != '.') {
+								$num_files++;
+							}
+						}
+						$d->close();
+					}
 
-	if ($this->listdir == '/')
-	{
-		$this->listdir = '';
-	}
-?>
+					if ($this->listdir == '/')
+					{
+						$this->listdir = '';
+					}
+					?>
 					<tr>
-						<td>
-							<img src="<?php echo $this->config->get('iconpath'); ?>/folder.gif" alt="<?php echo $folder_name; ?>" width="16" height="16" />
-						</td>
-						<td width="100%">
-							<?php echo $folder_name; ?>
+						<td width="100%" colspan="2">
+							<span class="icon-folder"><?php echo $folder_name; ?></span>
 						</td>
 						<td>
 							<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;task=deletefolder&amp;folder=<?php echo DS.$folders[$folder_name]; ?>&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1" target="filer" onclick="return deleteFolder('<?php echo $folder_name; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('JACTION_DELETE'); ?>">
@@ -123,35 +120,33 @@ for ($i=0; $i<count($folders); $i++)
 							</a>
 						</td>
 					</tr>
-<?php
-	next($folders);
-}
-$docs = $this->docs;
-for ($i=0; $i<count($docs); $i++)
-{
-	$doc_name = key($docs);
-	$iconfile = $this->config->get('iconpath').DS.substr($doc_name,-3).'.png';
+					<?php
+					next($folders);
+				}
 
-	if (file_exists(JPATH_ROOT.$iconfile))
-	{
-		$icon = $iconfile;
-	}
-	else
-	{
-		$icon = $this->config->get('iconpath').DS.'unknown.png';
-	}
-?>
+				$docs = $this->docs;
+				for ($i=0; $i<count($docs); $i++)
+				{
+					$doc_name = key($docs);
+					$iconfile = $this->config->get('iconpath').DS.substr($doc_name,-3).'.png';
+
+					if (file_exists(JPATH_ROOT.$iconfile))
+					{
+						$icon = $iconfile;
+					}
+					else
+					{
+						$icon = $this->config->get('iconpath').DS.'unknown.png';
+					}
+					?>
 					<tr>
-						<td>
-							<img src="<?php echo $icon; ?>" alt="<?php echo $docs[$doc_name]; ?>" width="16" height="16" />
-						</td>
 						<td width="100%">
-							<?php echo $docs[$doc_name]; ?>
+							<span class="icon-file"><?php echo $docs[$doc_name]; ?></span>
 						</td>
 						<td>
 							<?php if (is_object($course)) : ?>
-								<a href="#" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="Show File Path">
-									<img src="<?php echo JURI::base(true); ?>/components/com_courses/assets/img/icons/file_path.png" alt="Show Image Path" width="15" height="15" />
+								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'File:'.$docs[$doc_name]; ?>')" title="<?php echo JText::_('COM_COURSES_SHOW_FILE_PATH'); ?>">
+									<?php echo JText::_('COM_COURSES_SHOW_FILE_PATH'); ?>
 								</a>
 							<?php endif; ?>
 						</td>
@@ -161,34 +156,23 @@ for ($i=0; $i<count($docs); $i++)
 							</a>
 						</td>
 					</tr>
-<?php
-	next($docs);
-}
-$images = $this->images;
-for ($i=0; $i<count($images); $i++)
-{
-	$image_name = key($images);
-	$iconfile = $this->config->get('iconpath').DS.substr($image_name,-3).'.png';
-	if (file_exists(JPATH_ROOT.$iconfile))
-	{
-		$icon = $iconfile;
-	}
-	else
-	{
-		$icon = $this->config->get('iconpath').DS.'unknown.png';
-	}
-?>
+					<?php
+					next($docs);
+				}
+
+				$images = $this->images;
+				for ($i=0; $i<count($images); $i++)
+				{
+					$image_name = key($images);
+					?>
 					<tr>
-						<td>
-							<img src="<?php echo $icon; ?>" alt="<?php echo $images[$image_name]; ?>" width="16" height="16" />
-						</td>
 						<td width="100%">
-							<?php echo $images[$image_name]; ?>
+							<span class="icon-image"><?php echo $images[$image_name]; ?></span>
 						</td>
 						<td>
 							<?php if (is_object($course)) : ?>
-								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="Show File Path">
-									<?php echo JText::_('Show Image Path'); ?>
+								<a href="#" class="icon-path filepath" onclick="return showFilePath('<?php echo 'https://'.$_SERVER['HTTP_HOST'].DS.'courses'.DS.$course->get('cn').DS.'Image:'.$images[$image_name]; ?>')" title="<?php echo JText::_('COM_COURSES_SHOW_FILE_PATH'); ?>">
+									<?php echo JText::_('COM_COURSES_SHOW_FILE_PATH'); ?>
 								</a>
 							<?php endif; ?>
 						</td>
@@ -198,12 +182,12 @@ for ($i=0; $i<count($images); $i++)
 							</a>
 						</td>
 					</tr>
-<?php
-	next($images);
-}
-?>
+					<?php
+					next($images);
+				}
+				?>
 				</tbody>
 			</table>
-<?php } ?>
-		</form>
-	</div>
+		<?php } ?>
+	</form>
+</div>

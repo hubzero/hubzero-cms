@@ -31,10 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//get objects
-$config 	= JFactory::getConfig();
-$database 	= JFactory::getDBO();
-
 $base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 ?>
 <header id="content-header">
@@ -42,16 +38,16 @@ $base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this-
 		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 	</h2>
 	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="browse btn" href="<?php echo JRoute::_($base); ?>">
-					<?php echo JText::_('Course Overview'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-browse btn" href="<?php echo JRoute::_($base); ?>">
+				<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
+			</a>
+		</p>
 	</div>
 </header>
 
 <section class="main section">
-	<p>Congrats!</p>
+	<div class="section-inner">
+		<p><?php echo JText::_('COM_COURSES_ENROLLMENT_ACHIEVED'); ?></p>
+	</div>
 </section>

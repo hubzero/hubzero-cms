@@ -51,7 +51,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
-				JText::_('Specified course and/or course offering not found.'),
+				JText::_('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -64,7 +64,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
-				JText::_('Student record not found'),
+				JText::_('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'),
 				'error'
 			);
 			return;
@@ -75,13 +75,11 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&controller=courses'),
-				JText::_('No certificate found for this course.'),
+				JText::_('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'),
 				'error'
 			);
 			return;
 		}
-
-		//$juser = JUser::getInstance(JRequest::getInt('u', 0));
 
 		// Path and file name
 		$dir = JPATH_ROOT . DS . 'site' . DS . 'courses' . DS . 'certificates';
@@ -107,7 +105,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 				jimport('joomla.filesystem.folder');
 				if (!JFolder::create($dir))
 				{
-					JError::raiseError(500, JText::_('Failed to create folder to store receipts'));
+					JError::raiseError(500, JText::_('COM_COURSES_ERROR_FAILED_TO_CREATE_DIRECTORY'));
 					return;
 				}
 			}
