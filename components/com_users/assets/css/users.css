@@ -5,7 +5,19 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-#hubForm .required {
-	text-transform: none;
+#hubForm label.required {
 	font-size: inherit;
+	color: inherit;
+	text-transform: inherit;
+}
+#hubForm span.required {
+	text-transform: uppercase;
+	font-size: xx-small;
+	margin-left: 5px;
+	position: relative;
+}
+#hubForm span.required.star:before {
+	font-family: "fontcons";
+	content: "\273D";
+	margin-right: 1px;
 }
