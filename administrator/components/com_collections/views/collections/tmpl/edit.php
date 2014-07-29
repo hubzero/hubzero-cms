@@ -73,7 +73,7 @@ function submitbutton(pressbutton)
 					<td class="key">
 						<label for="field-object_type"><?php echo JText::_('Owner type'); ?>:</label><br />
 						<select name="fields[object_type]" id="field-object_type">
-							<option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>>site</option>
+							<!-- <option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>>site</option> -->
 							<option value="member"<?php if ($this->row->get('object_type') == 'member') { echo ' selected="selected"'; } ?>>member</option>
 							<option value="group"<?php if ($this->row->get('object_type') == 'group') { echo ' selected="selected"'; } ?>>group</option>
 						</select>
