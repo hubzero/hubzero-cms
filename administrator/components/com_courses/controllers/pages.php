@@ -658,13 +658,14 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
+		$course_id = JRequest::getInt('course', 0);
 		$listdir = JRequest::getVar('listdir', 0);
-		if (!$listdir)
+		/*if (!$listdir)
 		{
 			$this->setError(JText::_('COM_COURSES_ERROR_NO_ID'));
 			$this->filesTask();
 			return;
-		}
+		}*/
 
 		// Incoming sub-directory
 		$subdir = JRequest::getVar('subdir', '');
