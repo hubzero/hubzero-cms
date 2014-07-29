@@ -66,11 +66,12 @@ function submitbutton(pressbutton)
 		<div class="col width-30 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 		</div>
 		<div class="col width-70 fltrt">
 			<label for="filter_offering"><?php echo JText::_('COM_COURSES_OFFERING'); ?>:</label>
-			<select name="offering" id="filter_offering">
-				<option value="0"><?php echo JText::_('COM_COURSES_NONE'); ?></option>
+			<select name="offering" id="filter_offering" onchange="document.adminForm.submit();">
+				<option value="0"><?php echo JText::_('COM_COURSES_OFFERING_SELECT'); ?></option>
 				<?php
 				$offerings = array();
 				require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'courses.php');
@@ -99,8 +100,8 @@ function submitbutton(pressbutton)
 
 		<?php if ($this->filters['offering']) { ?>
 			<label for="filter_section"><?php echo JText::_('COM_COURSES_SECTION'); ?>:</label>
-			<select name="section" id="filter_section">
-				<option value="0"><?php echo JText::_('COM_COURSES_NONE'); ?></option>
+			<select name="section" id="filter_section" onchange="document.adminForm.submit();">
+				<option value="0"><?php echo JText::_('COM_COURSES_SECTION_SELECT'); ?></option>
 				<?php
 				if ($this->offering->sections()->total() > 0)
 				{
@@ -116,7 +117,6 @@ function submitbutton(pressbutton)
 		<?php } else { ?>
 			<input type="hidden" name="section" id="filter_section" value="0" />
 		<?php } ?>
-			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
 		</div>
 	</fieldset>
 	<div class="clr"></div>
