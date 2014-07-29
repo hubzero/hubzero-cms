@@ -316,7 +316,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 		if (!$title)
 		{
 			$pathway->addItem(
-				JText::_('Wishlists'),
+				JText::_(strtoupper($this->get('option'))),
 				'index.php?option=' . $this->get('option')
 			);
 		}

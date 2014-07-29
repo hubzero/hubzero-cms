@@ -386,7 +386,7 @@ if ($this->wishlist->exists())
 								<div class="container">
 									<h3><?php echo JText::_('COM_WISHLIST_POPULAR_TAGS'); ?></h3>
 									<?php echo $tags; ?>
-									<p><?php echo JText::_('Click a tag to filter results.'); ?></p>
+									<p><?php echo JText::_('COM_WISHLIST_CLICK_TAG_TO_FILTER'); ?></p>
 								</div><!-- / .container -->
 								<?php
 							} // end if ($tags)

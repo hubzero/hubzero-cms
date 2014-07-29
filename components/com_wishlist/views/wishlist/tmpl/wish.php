@@ -41,7 +41,7 @@ $this->css()
 	// What name should we dispay for the submitter?
 	$user = $this->wish->proposer();
 
-	$name = JText::_('COM_WISHLIT_ANONYMOUS');
+	$name = JText::_('COM_WISHLIST_ANONYMOUS');
 	if ($this->wish->get('anonymous') != 1)
 	{
 		$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->wish->get('proposed_by')) . '">' . $this->wish->proposer('name') . '</a>';
@@ -96,13 +96,13 @@ $this->css()
 <?php if (!$this->getError()) { ?>
 	<?php if ($this->wish->get('saved')==3) { ?>
 		<p class="passed">
-			<?php echo JText::_('New wish successfully posted. Thank you!'); ?>
+			<?php echo JText::_('COM_WISHLIST_NOTICE_WISH_CREATED'); ?>
 		</p>
 	<?php } ?>
 
 	<?php if ($this->wish->get('saved')==2 && $this->wishlist->access('manage')) { ?>
 		<p class="passed">
-			<?php echo JText::_('Changes to the wish successfully saved.'); ?>
+			<?php echo JText::_('COM_WISHLIST_NOTICE_WISH_CHANGES_SAVED'); ?>
 		</p>
 	<?php } ?>
 <?php } ?>
@@ -116,7 +116,7 @@ $this->css()
 		</div>
 	</section><!-- / .main section -->
 		<?php } else if (!$this->wish->get('admin') && $this->wish->isWithdrawn()) { ?>
-			<p class="warning"><?php echo JText::_('This wish has been withdrawn.'); ?></p>
+			<p class="warning"><?php echo JText::_('COM_WISHLIST_NOTICE_WISH_WITHDRAWN'); ?></p>
 		</div><!-- / .subject -->
 		<div class="aside">
 		</div>
@@ -124,7 +124,7 @@ $this->css()
 		<?php } else { ?>
 			<div class="entry wish" id="w<?php echo $this->wish->get('id'); ?>">
 				<p class="entry-member-photo">
-					<img src="<?php echo $this->wish->proposer('picture'); ?>" alt="<?php echo JText::_('Member avatar'); ?>" />
+					<img src="<?php echo $this->wish->proposer('picture'); ?>" alt="<?php echo JText::_('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
 				</p><!-- / .wish-member-photo -->
 
 				<div class="entry-content">
@@ -271,7 +271,7 @@ $this->css()
 
 										<?php echo JHTML::_('form.token'); ?>
 
-										<input type="submit" value="<?php echo JText::_('Save'); ?>" />
+										<input type="submit" value="<?php echo JText::_('COM_WISHLIST_SAVE'); ?>" />
 									</td>
 									<td></td>
 									<td></td>
