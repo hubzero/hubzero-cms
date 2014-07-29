@@ -254,7 +254,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$g = JRequest::getVar('group', array(), 'post');
+		$g = JRequest::getVar('group', array(), 'post', 'none', 2);
 		$g = $this->_multiArrayMap('trim', $g);
 
 		// Instantiate an \Hubzero\User\Group object
@@ -1004,7 +1004,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	 * @return 		boolean		True if valid, false if not
 	 */
     private function _validCn( $cn, $allowDashes = false )
-	{
+    {
 		$regex = '/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i';
 		if ($allowDashes)
 		{
