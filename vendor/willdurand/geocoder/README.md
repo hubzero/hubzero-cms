@@ -144,12 +144,13 @@ A valid api key is required.
 ### GoogleMapsProvider ###
 
 The `GoogleMapsProvider` named `google_maps` is able to geocode and reverse geocode **street addresses**.
+A locale and a region can be set as well as an optional api key. This provider also supports SSL.
 
 
 ### GoogleMapsBusinessProvider ###
 
 The `GoogleMapsBusinessProvider` named `google_maps_business` is able to geocode and reverse geocode **street addresses**.
-A valid `Client ID` is required. The private key is optional.
+A valid `Client ID` is required. The private key is optional. This provider also supports SSL.
 
 
 ### BingMapsProvider ###
@@ -204,6 +205,7 @@ The `OIORestProvider` named `oio_rest` is able to geocode and reverse geocode **
 ### GeocoderCaProvider ###
 
 The `GeocoderCaProvider` named `geocoder_ca` is able to geocode and reverse geocode **street addresses**, exclusively in USA & Canada.
+An optional api key can be provided. This provider also supports SSL.
 
 
 ### GeocoderUsProvider ###
@@ -248,6 +250,16 @@ A valid api key is required.
 The `MaxMindProvider` named `maxmind` is able to geocode **IPv4 and IPv6 addresses** only.
 A valid `City/ISP/Org` or `Omni` service's api key is required.
 This provider provides two constants `CITY_EXTENDED_SERVICE` by default and `OMNI_SERVICE`.
+
+
+### MaxMindBinaryProvider ###
+
+The `MaxMindBinaryProvider` named `maxmind_binary` is able to geocode **IPv4 and IPv6 addresses**
+only. It requires a data file, and the [geoip/geoip](https://packagist.org/packages/geoip/geoip)
+package must be installed.
+
+It is worth mentioning that this provider has **serious performance issues**, and should **not**
+be used in production. For more information, please read [issue #301](https://github.com/geocoder-php/Geocoder/issues/301).
 
 
 ### GeonamesProvider ###

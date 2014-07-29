@@ -25,14 +25,7 @@ class When extends \DateTime
 
     public function __construct($time = "now", $timezone = NULL)
     {
-        if ($timezone != NULL)
-        {
-            $this->startDate = parent::__construct($time, $timezone);
-        }
-        else
-        {
-            $this->startDate = parent::__construct($time);
-        }
+        $this->startDate = parent::__construct($time, $timezone);
     }
 
     public function startDate($startDate)
@@ -558,12 +551,11 @@ class When extends \DateTime
                 if ($count === 0)
                 {
                     $startWeekDay = clone $this->startDate;
+                    $startWeekDay->modify("next " . $wkst);
+
+                    $daysLeft = $dateLooper->diff($startWeekDay)->format("%a") + 1;
+
                     $startWeekDay->modify("last " . $wkst);
-                    $startWeekDay->modify("+7 days");
-
-                    $daysLeft = intval($startWeekDay->format('j')) - intval($dateLooper->format("j"));
-
-                    $startWeekDay->modify("-7 days");
                 }
 
                 while ($daysLeft > 0)
@@ -572,6 +564,7 @@ class When extends \DateTime
                     {
                         $this->addOccurrence($this->generateTimeOccurrences($dateLooper));
                     }
+
                     $dateLooper->add(new \DateInterval('P1D'));
                     $daysLeft--;
                 }
@@ -752,16 +745,6 @@ class When extends \DateTime
                 $dayOfWeek = $this->startDate->format('l');
                 $dayOfWeekAbr = strtolower(substr($dayOfWeek, 0, 2));
                 $this->bydays = array("0" . $dayOfWeekAbr);
-            }
-        }
-
-        if ($this->freq === "yearly")
-        {
-            if (!isset($this->bymonthdays) && !isset($this->bydays) 
-                && !isset($this->bymonths) && !isset($this->byyeardays) && !isset($this->byweeknos))
-            {
-                $this->bymonths = array($this->startDate->format('n'));
-                $this->bymonthdays = array($this->startDate->format('j'));
             }
         }
     }

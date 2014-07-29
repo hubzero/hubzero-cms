@@ -57,13 +57,14 @@
     "require": {
         "ezyang/htmlpurifier": "4.5.0",
         "facebook/php-sdk": "3.2.2",
+        "facebook/php-sdk-v4": "4.0.9",
         "tecnick.com/tcpdf": "6.0.017",
         "leafo/lessphp": "0.3.9",
         "dannytrue/phantomjs": "dev-master",
         "swiftmailer/swiftmailer": "v5.0.2",
         "monolog/monolog": "1.2.*",
         "willdurand/geocoder": "@stable",
-		"guzzle/guzzle": "3.8.*@dev",
+        "guzzle/guzzle": "3.8.*@dev",
         "tplaner/when": "dev-develop",
         "m4tthumphrey/php-gitlab-api": "6.4.3"
     },

@@ -1,9 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "33328377c8908088cf4ea6ad5f0e4cdf",
+    "hash": "b72f71558a1fab3ab42667feca417ca8",
     "packages": [
         {
             "name": "dannytrue/phantomjs",
@@ -135,17 +136,66 @@
             "time": "2013-01-15 21:37:15"
         },
         {
+            "name": "facebook/php-sdk-v4",
+            "version": "4.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/facebook/facebook-php-sdk-v4.git",
+                "reference": "a20dc24e0536ba7332f79b74c5a4deb45fa998f8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/facebook/facebook-php-sdk-v4/zipball/a20dc24e0536ba7332f79b74c5a4deb45fa998f8",
+                "reference": "a20dc24e0536ba7332f79b74c5a4deb45fa998f8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "~4.0",
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "Allows for implementation of the Guzzle HTTP client"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Facebook\\": "src/Facebook/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Facebook Platform"
+            ],
+            "authors": [
+                {
+                    "name": "Facebook",
+                    "homepage": "https://github.com/facebook/facebook-php-sdk-v4/contributors"
+                }
+            ],
+            "description": "Facebook SDK for PHP",
+            "homepage": "https://github.com/facebook/facebook-php-sdk-v4",
+            "keywords": [
+                "facebook",
+                "sdk"
+            ],
+            "time": "2014-06-27 11:59:52"
+        },
+        {
             "name": "guzzle/guzzle",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle3.git",
-                "reference": "92d9934f2fca1da15178c91239576ae26e505e60"
+                "reference": "f7f3c2e66c9e60e6cc5b40298880588af52edf56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/92d9934f2fca1da15178c91239576ae26e505e60",
-                "reference": "92d9934f2fca1da15178c91239576ae26e505e60",
+                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/f7f3c2e66c9e60e6cc5b40298880588af52edf56",
+                "reference": "f7f3c2e66c9e60e6cc5b40298880588af52edf56",
                 "shasum": ""
             },
             "require": {
@@ -224,20 +274,20 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-05-07 17:04:22"
+            "time": "2014-07-08 18:26:17"
         },
         {
             "name": "kriswallsmith/buzz",
-            "version": "v0.10",
+            "version": "v0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/Buzz.git",
-                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17"
+                "reference": "a0f207ac4939978b604be9bec5d5b19baecd8165"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/759432d66387e3433d3b06cb6f773b97225b9b17",
-                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/a0f207ac4939978b604be9bec5d5b19baecd8165",
+                "reference": "a0f207ac4939978b604be9bec5d5b19baecd8165",
                 "shasum": ""
             },
             "require": {
@@ -272,7 +322,7 @@
                 "curl",
                 "http client"
             ],
-            "time": "2013-05-19 03:41:15"
+            "time": "2014-03-24 21:56:09"
         },
         {
             "name": "leafo/lessphp",
@@ -476,24 +526,27 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.4.4",
+            "version": "v2.5.2",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "e539602e5455aa086c0e81e604745af7789e4d8a"
+                "reference": "2215d2ef6fd7ab24d55576a3d924df575c741762"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/e539602e5455aa086c0e81e604745af7789e4d8a",
-                "reference": "e539602e5455aa086c0e81e604745af7789e4d8a",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/2215d2ef6fd7ab24d55576a3d924df575c741762",
+                "reference": "2215d2ef6fd7ab24d55576a3d924df575c741762",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "symfony/dependency-injection": "~2.0"
+                "psr/log": "~1.0",
+                "symfony/config": "~2.0",
+                "symfony/dependency-injection": "~2.0",
+                "symfony/stopwatch": "~2.2"
             },
             "suggest": {
                 "symfony/dependency-injection": "",
@@ -502,7 +555,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -528,7 +581,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-16 10:34:31"
+            "time": "2014-07-09 09:05:48"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -592,13 +645,13 @@
             "version": "dev-develop",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tplaner/when.git",
-                "reference": "266c22fd81f05074396214807e192d3bf600e802"
+                "url": "https://github.com/tplaner/When.git",
+                "reference": "2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tplaner/when/zipball/266c22fd81f05074396214807e192d3bf600e802",
-                "reference": "266c22fd81f05074396214807e192d3bf600e802",
+                "url": "https://api.github.com/repos/tplaner/When/zipball/2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a",
+                "reference": "2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a",
                 "shasum": ""
             },
             "require": {
@@ -628,23 +681,23 @@
                 "time"
             ],
             "support": {
-                "source": "https://github.com/tplaner/when/tree/develop",
-                "issues": "https://github.com/tplaner/when/issues"
+                "source": "https://github.com/tplaner/When/tree/develop",
+                "issues": "https://github.com/tplaner/When/issues"
             },
-            "time": "2013-12-13 21:55:19"
+            "time": "2014-06-16 22:55:57"
         },
         {
             "name": "willdurand/geocoder",
-            "version": "2.4.2",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geocoder-php/Geocoder.git",
-                "reference": "258e2f5c84a9cea03096f6f11ecdc0293fbc7b93"
+                "reference": "50e54f88b539de0ca3864e8e6a48412d1358d8b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/Geocoder/zipball/258e2f5c84a9cea03096f6f11ecdc0293fbc7b93",
-                "reference": "258e2f5c84a9cea03096f6f11ecdc0293fbc7b93",
+                "url": "https://api.github.com/repos/geocoder-php/Geocoder/zipball/50e54f88b539de0ca3864e8e6a48412d1358d8b7",
+                "reference": "50e54f88b539de0ca3864e8e6a48412d1358d8b7",
                 "shasum": ""
             },
             "require": {
@@ -667,7 +720,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -694,7 +747,7 @@
                 "geocoding",
                 "geoip"
             ],
-            "time": "2014-01-05 01:57:42"
+            "time": "2014-05-16 09:11:44"
         }
     ],
     "packages-dev": [
@@ -710,6 +763,7 @@
         "guzzle/guzzle": 20,
         "tplaner/when": 20
     },
+    "prefer-stable": false,
     "platform": [
 
     ],
