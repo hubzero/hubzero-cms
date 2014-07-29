@@ -1560,13 +1560,24 @@ class ResourcesHtml
 					{
 						$groups[] = $xgroup->cn;
 					}
-					if ($toolgroups) 
+					// Check if they're in the admin tool group
+					$admingroup = JComponentHelper::getParams('com_tools')->get('admingroup');
+					if ($admingroup && in_array($admingroup, $groups))
 					{
-						foreach ($toolgroups as $toolgroup)
+						$ingroup = true;
+					}
+					// Not in the admin group
+					// Check if they're in the tool's group
+					else
+					{
+						if ($toolgroups) 
 						{
-							if (in_array($toolgroup->cn, $groups)) 
+							foreach ($toolgroups as $toolgroup)
 							{
-								$ingroup = true;
+								if (in_array($toolgroup->cn, $groups)) 
+								{
+									$ingroup = true;
+								}
 							}
 						}
 					}
