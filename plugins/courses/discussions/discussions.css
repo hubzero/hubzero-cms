@@ -17,8 +17,16 @@
 		padding: 0;
 		margin: 0;
 	}
-	#page_content.course_discussions .main {
+	#page_content.course_discussions section.main {
+		max-width: 100%;
+		width: auto;
 		margin: 20px;
+	}
+	#page_content.course_discussions section.main>.subject {
+		width: 100%;
+	}
+	#page_content.course_discussions section.main>.aside {
+		min-width: 210px;
 	}
 
 	label .required {

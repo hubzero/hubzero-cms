@@ -186,7 +186,7 @@
 		opacity: 1;
 	}
 	#page_menu li.active {
-		background: url("/components/com_courses/assets/img/menu.png") repeat-x 0 0;
+		background: #fff;
 		color: #eee;
 		font-weight: 500;
 		margin-right: 0px;
