@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-object_type"><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 					<select name="fields[object_type]" id="field-object_type">
-						<option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_SITE'); ?></option>
+						<!-- <option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_SITE'); ?></option> -->
 						<option value="member"<?php if ($this->row->get('object_type') == 'member') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_MEMBER'); ?></option>
 						<option value="group"<?php if ($this->row->get('object_type') == 'group') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_GROUP'); ?></option>
 					</select>
