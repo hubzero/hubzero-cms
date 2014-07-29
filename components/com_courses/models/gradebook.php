@@ -854,9 +854,9 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 				// Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
 				if (
-					($exam_weight     == 0 || ($exam_weight     > 0 && $totals['exam']     == $counts[$m]['exam']))     &&
-					($quiz_weight     == 0 || ($quiz_weight     > 0 && $totals['quiz']     == $counts[$m]['quiz']))     &&
-					($homework_weight == 0 || ($homework_weight > 0 && $totals['homework'] == $counts[$m]['homework'])) &&
+					($exam_weight     == 0 || ($exam_weight     > 0 && isset($counts[$m]['exam'])     && $totals['exam']     == $counts[$m]['exam']))     &&
+					($quiz_weight     == 0 || ($quiz_weight     > 0 && isset($counts[$m]['quiz'])     && $totals['quiz']     == $counts[$m]['quiz']))     &&
+					($homework_weight == 0 || ($homework_weight > 0 && isset($counts[$m]['homework']) && $totals['homework'] == $counts[$m]['homework'])) &&
 					$passing[$m]
 					)
 				{
