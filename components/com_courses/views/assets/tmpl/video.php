@@ -317,7 +317,7 @@ if ($type == 'hubpresenter' || $type == 'html5')
 		</div>
 		<div id="transcripts"></div>
 	</div>
-<?php elseif($type == 'hubpresenter') : ?>
+<?php elseif ($type == 'hubpresenter') : ?>
 	<div id="presenter-shortcuts-box">
 		<h2><?php echo JText::_('COM_COURSES_VIDEO_KEYBOARD_SHORTCUTS'); ?></h2>
 		<a href="#" id="shortcuts-close"><?php echo JText::_('COM_COURSES_VIDEO_CLOSE'); ?></a>
