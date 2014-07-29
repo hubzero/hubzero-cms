@@ -617,9 +617,9 @@ class CoursesModelUnit extends CoursesModelAbstract
 			}
 
 			// Copy asset groups
-			foreach ($this->assetgroups(null, array('unit_id' => $u_id)) as $assetgroup)
+			foreach ($this->assetgroups(null, array('unit_id' => $u_id, 'parent' => 0)) as $assetgroup)
 			{
-				if (!$assetgroup->copy($this->get('id')))
+				if (!$assetgroup->copy($this->get('id'), $deep))
 				{
 					$this->setError($assetgroup->getError());
 				}

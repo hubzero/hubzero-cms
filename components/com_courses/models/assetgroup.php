@@ -482,7 +482,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
-		// Are we copying to a new offering?
+		// Are we copying to a new unit?
 		if ($unit_id)
 		{
 			$this->set('unit_id', $unit_id);
@@ -516,9 +516,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			}
 
 			// Copy asset groups
-			foreach ($this->children(null, array('unit_id' => $u_id)) as $assetgroup)
+			foreach ($this->children(null, array('parent' => $a_id)) as $assetgroup)
 			{
-				if (!$assetgroup->copy($this->get('id')))
+				if (!$assetgroup->copy($unit_id, $deep))
 				{
 					$this->setError($assetgroup->getError());
 				}
