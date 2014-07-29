@@ -292,9 +292,10 @@ class CoursesTableGradeBook extends JTable
 		$assets = $asset->find(
 			array(
 				'w' => array(
-					'course_id'  => $course->get('id'),
-					'section_id' => $course->offering()->section()->get('id'),
-					'asset_type' => 'form'
+					'course_id'   => $course->get('id'),
+					'section_id'  => $course->offering()->section()->get('id'),
+					'offering_id' => $course->offering()->get('id'),
+					'asset_type'  => 'form'
 				)
 			)
 		);
