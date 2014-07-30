@@ -642,17 +642,21 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		//get jquery plugin & parse params
 		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
 		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
+
+		// get document object
+		$document = JFactory::getDocument();
 		
 		//add jquery if we dont have the jquery plugin enabled or not active on admin
 		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
 		{
-			$document = JFactory::getDocument();
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
 			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.ui.js' );
 			$document->addStylesheet( DS . 'media' . DS . 'system' . DS . 'css' . DS . 'jquery.ui.css' );
-			$document->addScript( 'components/com_newsletter/assets/js/newsletter.jquery.js' );
 		}
+
+		// add newsletter js
+		$document->addScript( 'components/com_newsletter/assets/js/newsletter.jquery.js' );
 		
 		//check if we have any errors
 		if ($this->getError())
@@ -804,24 +808,24 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		
 		//set mail headers
 		//$mailHeaders  = "MIME-Version: 1.0" . "\r\n";
-		$mailHeaders .= "Content-type: text/html; charset=\"UTF-8\"" . "\r\n";
-		$mailHeaders .= "From: {$mailFrom}" . "\r\n";
+		//$mailHeaders .= "Content-type: text/html; charset=\"UTF-8\"" . "\r\n";
+		$mailHeaders  = "From: {$mailFrom}" . "\r\n";
 		$mailHeaders .= "Reply-To: {$mailReplyTo}" . "\r\n";
 		
 		//set mail priority
 		$mailHeaders .= "X-Priority: 3" . "\r\n";
-		$mailHeaders .= "X-MSMail-Priority: Normal" . "\r\n";
-		$mailHeaders .= "Importance: Normal\n";
+		//$mailHeaders .= "X-MSMail-Priority: Normal" . "\r\n";
+		//$mailHeaders .= "Importance: Normal\n";
 		
 		//set extra headers
 		$mailHeaders .= "X-Mailer: PHP/" . phpversion()  . "\r\n";
 		$mailHeaders .= "X-Component: " . $this->_option . "\r\n";
 		$mailHeaders .= "X-Component-Object: Campaign Mailing" . "\r\n";
 		$mailHeaders .= "X-Component-ObjectId: {{CAMPAIGN_MAILING_ID}}" . "\r\n";
-		$mailHeaders .= "List-Unsubscribe: <mailto:{{UNSUBSCRIBE_MAILTO_LINK}}>, <{{UNSUBSCRIBE_LINK}}>";
+		//$mailHeaders .= "List-Unsubscribe: <mailto:{{UNSUBSCRIBE_MAILTO_LINK}}>, <{{UNSUBSCRIBE_LINK}}>";
 		
 		//set mail args
-		$mailArgs = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
+		//$mailArgs = '-f hubmail-bounces@' . $_SERVER['HTTP_HOST'];
 		
 		//are we sending test mailing
 		if ($sendingTest)
@@ -834,7 +838,32 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 				foreach (explode("\r\n", $mailHeaders) as $header)
 				{
 					$parts = array_map("trim", explode(':', $header));
-					$message->addHeader($parts[0], $parts[1]);
+					switch ($parts[0])
+					{
+						case 'From':
+							if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches))
+							{
+								$message->setFrom(array($matches[2] => $matches[1]));
+							}
+							break;
+						case 'Reply-To':
+							if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches))
+							{
+								$message->setReplyTo(array($matches[2] => $matches[1]));
+							}
+							break;	
+						case 'Importance':
+						case 'X-Priority':
+						case 'X-MSMail-Priority':
+							$priority = (isset($parts[1]) && in_array($parts[1], array(1,2,3,4,5))) ? $parts[1] : 3;
+							$message->setPriority($priority);
+							break;
+						default:
+							if (isset($parts[1]))
+							{
+								$message->addHeader($parts[0], $parts[1]);
+							}
+					}
 				}
 		
 				// build message object and send

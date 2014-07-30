@@ -137,16 +137,41 @@ class plgCronNewsletter extends JPlugin
 			foreach (explode("\r\n", $queuedEmail->headers) as $header)
 			{
 				$parts = array_map("trim", explode(':', $header));
-				$message->addHeader($parts[0], $parts[1]);
+				switch ($parts[0])
+				{
+					case 'From':
+						if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches))
+						{
+							$message->setFrom(array($matches[2] => $matches[1]));
+						}
+						break;
+					case 'Reply-To':
+						if (preg_match("/\\\"([^\"]*)\\\"\\s<([^>]*)>/ux", $parts[1], $matches))
+						{
+							$message->setReplyTo(array($matches[2] => $matches[1]));
+						}
+						break;	
+					case 'Importance':
+					case 'X-Priority':
+					case 'X-MSMail-Priority':
+						$priority = (isset($parts[1]) && in_array($parts[1], array(1,2,3,4,5))) ? $parts[1] : 3;
+						$message->setPriority($priority);
+						break;
+					default:
+						if (isset($parts[1]))
+						{
+							$message->addHeader($parts[0], $parts[1]);
+						}
+				}
 			}
-	
+			
 			// build message object and send
 			$message->setSubject($queuedEmail->subject)
 					->setTo($queuedEmail->email)
 					->setBody($queuedEmail->plain_body, 'text/plain')
 					->addPart($queuedEmail->html_body, 'text/html');
 
-			//mail message
+			// mail message
 			if ($message->send())
 			{
 				//add to process email array
