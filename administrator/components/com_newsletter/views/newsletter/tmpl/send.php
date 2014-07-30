@@ -46,7 +46,6 @@ jQuery(document).ready(function($){
 	var $ = jq;
 
 	$('#mailinglist').on('change', function(event) {
-		console.log('chagne');
 		var value = $(this).val();
 		if (value != '' && value != 0)
 		{
