@@ -62,22 +62,22 @@ JHTML::_('behavior.framework');
 			<input type="hidden" name="course" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="offering" value="<?php echo $this->offering->get('id'); ?>" />
 			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
 			<input type="hidden" name="fields[course_id]" value="<?php echo $this->course->get('id'); ?>" />
 			<input type="hidden" name="fields[offering_id]" value="<?php echo $this->row->get('offering_id'); ?>" />
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
 				<label for="field-url"><?php echo JText::_('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->url)); ?>" />
+				<input type="text" name="fields[url]" id="field-url" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" />
 				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">
 				<label for="field-content"><?php echo JText::_('COM_COURSES_FIELD_CONTENT'); ?>:</label><br />
-				<textarea name="fields[content]" id="field-content" rows="35" columns="40"><?php echo $this->escape(stripslashes($this->row->content)); ?></textarea>
+				<textarea name="fields[content]" id="field-content" rows="35" columns="40"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
 			</div>
 		</fieldset>
 	</div>
@@ -121,8 +121,8 @@ JHTML::_('behavior.framework');
 			<div class="input-wrap">
 				<label for="field-active"><?php echo JText::_('COM_COURSES_FIELD_ACTIVE'); ?>:</label><br />
 				<select name="fields[active]" id="field-active">
-					<option value="1" <?php if ($this->row->active) { echo 'selected="selected"'; } ?>><?php echo JText::_('JYES'); ?></option>
-					<option value="0" <?php if (!$this->row->active) { echo 'selected="selected"'; } ?>><?php echo JText::_('JNO'); ?></option>
+					<option value="1" <?php if ($this->row->get('active')) { echo 'selected="selected"'; } ?>><?php echo JText::_('JYES'); ?></option>
+					<option value="0" <?php if (!$this->row->get('active')) { echo 'selected="selected"'; } ?>><?php echo JText::_('JNO'); ?></option>
 				</select>
 			</div>
 		</fieldset>

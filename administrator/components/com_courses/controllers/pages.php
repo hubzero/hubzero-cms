@@ -180,8 +180,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 				$id = 0;
 			}
 
-			$this->view->row = new CoursesTablePage($this->database);
-			$this->view->row->load($id);
+			$this->view->row = new CoursesModelPage($id);
 		}
 
 		if (!$this->view->row->get('course_id'))
@@ -192,9 +191,9 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		{
 			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
 		}
-		if (!$this->view->row->id)
+		if (!$this->view->row->exists())
 		{
-			$this->view->row->active = 1;
+			$this->view->row->set('active', 1);
 		}
 
 		$this->view->course   = CoursesModelCourse::getInstance($this->view->row->get('course_id'));
@@ -239,7 +238,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// instatiate course page object for saving
-		$row = new CoursesTablePage($this->database);
+		$row = new CoursesModelPage($fields['id']);
 
 		if (!$row->bind($fields))
 		{
@@ -248,14 +247,7 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if (!$row->check())
-		{
-			$this->addComponentMessage($row->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
-
-		if (!$row->store())
+		if (!$row->store(true))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
