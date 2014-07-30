@@ -1667,7 +1667,7 @@ class Group extends Object
 		if ($before != $content && $as == 'parsed')
 		{
 			$this->set($type . '_desc', trim($content));
-			$this->update();
+			//$this->update();
 		}
 
 		return $content;
