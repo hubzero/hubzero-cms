@@ -264,9 +264,8 @@ class plgAuthenticationFacebook extends JPlugin
 				case 2.0:
 					try
 					{
-						$user_profile = (new \Facebook\FacebookRequest(
-							$session, 'GET', '/me'
-						))->execute()->getGraphObject(\Facebook\GraphUser::className());
+						$request = new \Facebook\FacebookRequest($session, 'GET', '/me');
+						$user_profile = $request->execute()->getGraphObject(\Facebook\GraphUser::className());
 
 						$id       = $user_profile->getId();
 						$fullname = $user_profile->getName();
@@ -404,9 +403,8 @@ class plgAuthenticationFacebook extends JPlugin
 				case 2.0:
 					try
 					{
-						$user_profile = (new \Facebook\FacebookRequest(
-							$session, 'GET', '/me'
-						))->execute()->getGraphObject(\Facebook\GraphUser::className());
+						$request = new \Facebook\FacebookRequest($session, 'GET', '/me');
+						$user_profile = $request->execute()->getGraphObject(\Facebook\GraphUser::className());
 
 						$id    = $user_profile->getId();
 						$email = $user_profile->getProperty('email');
