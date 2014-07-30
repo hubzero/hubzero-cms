@@ -70,7 +70,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::setDebug($debug_location);
 		}
 
-		if(!phpCAS::isInitialized())
+		if (!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
@@ -117,7 +117,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::setDebug($debug_location);
 		}
 
-		if(!phpCAS::isInitialized())
+		if (!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
@@ -170,7 +170,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::setDebug($debug_location);
 		}
 
-		if(!phpCAS::isInitialized())
+		if (!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
@@ -241,7 +241,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::setDebug($debug_location);
 		}
 
-		if(!phpCAS::isInitialized())
+		if (!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}
@@ -317,9 +317,10 @@ class plgAuthenticationPUCAS extends JPlugin
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
 	 * @access	public
+	 * @param   array - $options
 	 * @return	void
 	 */
-	public function link()
+	public function link($options=array())
 	{
 		$app = JFactory::getApplication();
 
@@ -332,7 +333,7 @@ class plgAuthenticationPUCAS extends JPlugin
 			phpCAS::setDebug($debug_location);
 		}
 
-		if(!phpCAS::isInitialized())
+		if (!phpCAS::isInitialized())
 		{
 			phpCAS::client(CAS_VERSION_2_0, 'www.purdue.edu', 443, '/apps/account/cas', false);
 		}

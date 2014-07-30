@@ -103,7 +103,7 @@ class plgAuthenticationTwitter extends JPlugin
 		{
 			// User didn't authorize our app or clicked cancel
 			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
-				'To log in via Twitter, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
+				'To log in via Twitter, you must authorize the ' . $app->getCfg('sitename') . ' app.',
 				'error');
 			return;
 		}
@@ -208,7 +208,7 @@ class plgAuthenticationTwitter extends JPlugin
 		$twitter = new TwitterOAuth(
 			$this->params->get('app_id'),
 			$this->params->get('app_secret'),
-			$token_credentials['oauth_token'], 
+			$token_credentials['oauth_token'],
 			$token_credentials['oauth_token_secret']
 		);
 
@@ -275,9 +275,10 @@ class plgAuthenticationTwitter extends JPlugin
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
 	 * @access	public
+	 * @param   array - $options
 	 * @return	void
 	 */
-	public function link()
+	public function link($options=array())
 	{
 		$app = JFactory::getApplication();
 
@@ -298,7 +299,7 @@ class plgAuthenticationTwitter extends JPlugin
 		$twitter = new TwitterOAuth(
 			$this->params->get('app_id'),
 			$this->params->get('app_secret'),
-			$token_credentials['oauth_token'], 
+			$token_credentials['oauth_token'],
 			$token_credentials['oauth_token_secret']
 		);
 
@@ -317,8 +318,8 @@ class plgAuthenticationTwitter extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This twitter account is already linked to another hub account
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
-					'This Twitter account appears to already be linked to a hub account', 
+				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+					'This Twitter account appears to already be linked to a hub account',
 					'error');
 				return;
 			}
@@ -332,8 +333,8 @@ class plgAuthenticationTwitter extends JPlugin
 		else
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
-				'To link the current account with your Twitter account, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				'To link the current account with your Twitter account, you must authorize the ' . $app->getCfg('sitename') . ' app.',
 				'error');
 			return;
 		}

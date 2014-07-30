@@ -117,10 +117,10 @@ class plgAuthenticationGoogle extends JPlugin
 		$b64dreturn = '';
 
 		// Check the state for our return variable
-		if($return = JRequest::getVar('state', '', 'method', 'base64'))
+		if ($return = JRequest::getVar('state', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
-			if(!JURI::isInternal($b64dreturn))
+			if (!JURI::isInternal($b64dreturn))
 			{
 				$b64dreturn = '';
 			}
@@ -165,7 +165,7 @@ class plgAuthenticationGoogle extends JPlugin
 		{
 			// User didn't authorize our app or clicked cancel
 			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
-				'To log in via Google, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
+				'To log in via Google, you must authorize the ' . $app->getCfg('sitename') . ' app.',
 				'error');
 		}
 	}
@@ -332,9 +332,10 @@ class plgAuthenticationGoogle extends JPlugin
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
 	 * @access	public
+	 * @param   array - $options
 	 * @return	void
 	 */
-	public function link()
+	public function link($options=array())
 	{
 		$app = JFactory::getApplication();
 
@@ -390,8 +391,8 @@ class plgAuthenticationGoogle extends JPlugin
 			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
 			{
 				// This google account is already linked to another hub account
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
-					'This google account appears to already be linked to a hub account', 
+				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+					'This google account appears to already be linked to a hub account',
 					'error');
 			}
 			else
@@ -407,7 +408,7 @@ class plgAuthenticationGoogle extends JPlugin
 		{
 			// User didn't authorize our app, or, clicked cancel...
 			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
-				'To log in via Google, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
+				'To log in via Google, you must authorize the ' . $app->getCfg('sitename') . ' app.',
 				'error');
 		}
 	}

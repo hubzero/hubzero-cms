@@ -392,6 +392,22 @@ class UsersControllerUser extends UsersController
 			return;
 		}
 
+		// Do we have a return
+		$return  = '';
+		$options = array();
+		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
+		{
+			$return = base64_decode($return);
+			if (!JURI::isInternal($return))
+			{
+				$return = '';
+			}
+			else
+			{
+				$options['return'] = base64_encode($return);
+			}
+		}
+
 		$authenticator = JRequest::getVar('authenticator', '', 'method');
 
 		// If a specific authenticator is specified try to call the link method for that plugin
@@ -407,7 +423,7 @@ class UsersControllerUser extends UsersController
 
 					$myplugin = new $className($this,(array)$plugin);
 
-					$myplugin->link();
+					$myplugin->link($options);
 				} else {
 					// No Link method is availble
 					$app->redirect(JRoute::_('index.php?option=com_members&id=' . $user->get('id') . '&active=account'),
