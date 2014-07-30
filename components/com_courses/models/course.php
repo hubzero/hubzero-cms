@@ -962,7 +962,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 					$dest = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('id') . '/' . $file;
 
 					jimport('joomla.filesystem.file');
-					if (!JFile::copy($src, $dest))
+					if (!JFile::copy($src, $dest, JPATH_ROOT))
 					{
 						$this->setError(JText::_('Failed to copy course logo.'));
 					}
