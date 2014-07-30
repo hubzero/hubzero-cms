@@ -47,6 +47,27 @@ JToolBarHelper::help('page');
 
 JHTML::_('behavior.framework');
 ?>
+<script type="text/javascript">
+Joomla.submitbutton = function(pressbutton) {
+	var form = document.adminForm;
+
+	if (pressbutton == 'cancel') {
+		Joomla.submitform(pressbutton, document.getElementById('item-form'));
+		return;
+	}
+
+	// do field validation
+	if ($('#field-title').val() == ''){
+		alert("<?php echo JText::_('COM_COURSES_ERROR_MISSING_TITLE'); ?>");
+	} else if ($('#field-content').val() == ''){
+		alert("<?php echo JText::_('COM_COURSES_ERROR_MISSING_CONTENT'); ?>");
+	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
+		Joomla.submitform(pressbutton, document.getElementById('item-form'));
+	}
+}
+</script>
 
 <?php foreach ($this->notifications as $notification) { ?>
 <p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
@@ -77,7 +98,7 @@ JHTML::_('behavior.framework');
 			</div>
 			<div class="input-wrap">
 				<label for="field-content"><?php echo JText::_('COM_COURSES_FIELD_CONTENT'); ?>:</label><br />
-				<textarea name="fields[content]" id="field-content" rows="35" columns="40"><?php echo $this->escape($this->row->content('raw')); ?></textarea>
+				<?php echo JFactory::getEditor()->display('fields[content]', $this->escape($this->row->content('raw')), '', '', 50, 30, false, 'field-content'); ?>
 			</div>
 		</fieldset>
 	</div>
