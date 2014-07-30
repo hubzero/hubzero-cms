@@ -351,6 +351,7 @@ class PdfForm
 				$im->readImage($this->fname.'['.($this->pages).']');
 				$im->setImageFormat('png');
 				$im->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
+				$im->borderImage('white', 10, 10);
 				$im->trimImage(0);
 
 				// Get the image dimensions and x,y trim points
@@ -358,10 +359,10 @@ class PdfForm
 
 				// Reset page proportions to get new width and height
 				$im->setImagePage(0, 0, 0, 0);
-				$widths[]                     = $im->width;
-				$crop[$this->pages]['height'] = $im->height;
-				$crop[$this->pages]['x']      = $imagePage['x'];
-				$crop[$this->pages]['y']      = $imagePage['y'];
+				$widths[]                     = $im->width+20;
+				$crop[$this->pages]['height'] = $im->height+20;
+				$crop[$this->pages]['x']      = $imagePage['x']-10;
+				$crop[$this->pages]['y']      = $imagePage['y']-10;
 			}
 
 			// Now actually do the image creation and cropping based on min margin
@@ -373,8 +374,6 @@ class PdfForm
 				$im->setImageFormat('png');
 				$im->setImageUnits(imagick::RESOLUTION_PIXELSPERINCH);
 				$im->cropImage(max($widths), $crop[$this->pages]['height'], $crop[$this->pages]['x'], $crop[$this->pages]['y']);
-				$im->resizeImage(582,0, Imagick::FILTER_MITCHELL, 1);
-				$im->sharpenImage(5, 0.5);
 				$im->borderImage('white', 15, 15);
 				$im->paintTransparentImage($im->getImagePixelColor(0,0), 0.0, 0);
 				$im->writeImage($path . DS . ($this->pages + 1) . '.png');
