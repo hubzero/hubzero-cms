@@ -75,10 +75,9 @@ class plgContentFormathtml extends JPlugin
 			}
 		}
 
-		$content = \Hubzero\Utility\Sanitize::clean($content);
-
 		if ($this->params->get('sanitizeBefore', 1))
 		{
+			$content = \Hubzero\Utility\Sanitize::clean($content);
 			$content = \Hubzero\Utility\Sanitize::html($content);
 		}
 
