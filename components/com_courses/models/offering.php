@@ -1332,7 +1332,18 @@ class CoursesModelOffering extends CoursesModelAbstract
 				$src  = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $c_id . '/offerings/' . $o_id . '/' . $file;
 				if (file_exists(JPATH_ROOT . $src))
 				{
-					$dest = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/offerings/' . $this->get('id') . '/' . $file;
+					$dest = '/' . trim($this->config('uploadpath', '/site/courses'), '/') . '/' . $this->get('course_id') . '/offerings/' . $this->get('id');
+
+					if (!is_dir(JPATH_ROOT . $dest))
+					{
+						jimport('joomla.filesystem.folder');
+						if (!JFolder::create(JPATH_ROOT . $dest))
+						{
+							$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+						}
+					}
+
+					$dest .= '/' . $file;
 
 					jimport('joomla.filesystem.file');
 					if (!JFile::copy($src, $dest, JPATH_ROOT))
