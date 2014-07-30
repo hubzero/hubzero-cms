@@ -187,7 +187,7 @@
 		cursor: pointer;
 		font-size: 200%;
 		line-height: 1.2;
-		color: #ddd;
+		color: #b9b9b9;
 	}
 	.rating:not(:checked) > label:before {
 		font-family: "Fontcons";
