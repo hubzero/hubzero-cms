@@ -96,11 +96,16 @@ JSubMenuHelper::addEntry(
 	'index.php?option=' . $option . '&controller=roles',
 	$controllerName == 'roles'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_RESOURCES_PLUGINS'),
-	'index.php?option=' . $option . '&controller=plugins',
-	$controllerName == 'plugins'
-);
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
+$canDo = PluginsHelper::getActions();
+if ($canDo->get('core.manage'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('COM_RESOURCES_PLUGINS'),
+		'index.php?option=' . $option . '&controller=plugins',
+		$controllerName == 'plugins'
+	);
+}
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES_IMPORT'),
 	'index.php?option=' . $option . '&controller=import',

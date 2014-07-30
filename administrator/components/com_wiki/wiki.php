@@ -59,11 +59,15 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_wiki',
 	true
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_WIKI_PLUGINS'),
-	'index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki'
-);
-
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
+$canDo = PluginsHelper::getActions();
+if ($canDo->get('core.manage'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('COM_WIKI_PLUGINS'),
+		'index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki'
+	);
+}
 
 // Instantiate controller
 $controller = new $controllerName();

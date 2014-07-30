@@ -50,10 +50,16 @@ JSubMenuHelper::addEntry(
 	'index.php?option=' .  $option . '&controller=jobs',
 	($controllerName == 'jobs')
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_CRON_PLUGINS'),
-	'index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron'
-);
+
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
+$canDo = PluginsHelper::getActions();
+if ($canDo->get('core.manage'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('COM_CRON_PLUGINS'),
+		'index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron'
+	);
+}
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CronController' . ucfirst($controllerName);

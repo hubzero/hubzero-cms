@@ -63,10 +63,15 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_tags&controller=relationships&task=meta',
 	($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_TAGS_PLUGINS'),
-	'index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags'
-);
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
+$canDo = PluginsHelper::getActions();
+if ($canDo->get('core.manage'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('COM_TAGS_PLUGINS'),
+		'index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags'
+	);
+}
 
 // Include scripts
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');

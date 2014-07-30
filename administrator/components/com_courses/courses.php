@@ -68,10 +68,16 @@ JSubMenuHelper::addEntry(
 	'index.php?option=' .  $option . '&controller=roles',
 	$controllerName == 'roles'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_COURSES_PLUGINS'),
-	'index.php?option=com_plugins&view=plugins&filter_folder=courses&filter_type=courses'
-);
+
+require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
+$canDo = PluginsHelper::getActions();
+if ($canDo->get('core.manage'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('COM_COURSES_PLUGINS'),
+		'index.php?option=com_plugins&view=plugins&filter_folder=courses&filter_type=courses'
+	);
+}
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CoursesController' . ucfirst($controllerName);
