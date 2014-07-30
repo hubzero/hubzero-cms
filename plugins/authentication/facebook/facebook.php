@@ -125,24 +125,23 @@ class plgAuthenticationFacebook extends JPlugin
 
 		$return = '';
 		$b64dreturn = '';
-		if($return = JRequest::getVar('return', '', 'method', 'base64'))
+		if ($return = JRequest::getVar('return', '', 'method', 'base64'))
 		{
 			$b64dreturn = base64_decode($return);
-			if(!JURI::isInternal($b64dreturn))
+			if (!JURI::isInternal($b64dreturn))
 			{
 				$b64dreturn = '';
 			}
 		}
 
 		$options['return'] = $b64dreturn;
-		$com_user = (version_compare(JVERSION, '2.5', 'ge')) ? 'com_users' : 'com_user';
 
 		// Check to make sure they didn't deny our application permissions
-		if(JRequest::getVar('error', NULL))
+		if (JRequest::getVar('error', NULL))
 		{
 			// User didn't authorize our app or clicked cancel
-			$app->redirect(JRoute::_('index.php?option=' . $com_user . '&view=login&return=' . $return),
-				'To log in via Facebook, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=com_users&view=login&return=' . $return),
+				'To log in via Facebook, you must authorize the ' . $app->getCfg('sitename') . ' app.',
 				'error');
 		}
 	}
@@ -158,35 +157,7 @@ class plgAuthenticationFacebook extends JPlugin
 	public function display($view, $tpl)
 	{
 		$app = JFactory::getApplication();
-
-		// Get the hub url
-		$juri    = JURI::getInstance();
-		$service = trim($juri->base(), DS);
-
-		if (empty($service))
-		{
-			$service = $_SERVER['HTTP_HOST'];
-		}
-
-		// Check if a return is specified
-		$return = '';
-		if ($view->return)
-		{
-			$return = "&return=" . $view->return;
-		}
-
-		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
-		$juser = JFactory::getUser();
-		if (version_compare(JVERSION, '2.5', 'ge'))
-		{
-			$com_user = 'com_users';
-			$task     = ($juser->get('guest')) ? 'user.login' : 'user.link';
-		}
-		else
-		{
-			$com_user = 'com_user';
-			$task     = ($juser->get('guest')) ? 'login' : 'link';
-		}
+		$ver = $this->params->get('api_version', 1.0);
 
 		// Set up the config for the facebook sdk instance
 		$config               = array();
@@ -194,18 +165,30 @@ class plgAuthenticationFacebook extends JPlugin
 		$config['secret']     = $this->params->get('app_secret');
 		$config['fileUpload'] = false;
 
-		// Create facebook instance
-		$facebook = new Facebook($config);
-
 		// Set up params for the login call
 		$params = array(
-			'scope'        => 'email,user_birthday', // this is where you would specify more information from the facebook profile
+			'scope'        => 'public_profile,email,user_birthday',
 			'display'      => 'page',
-			'redirect_uri' => $service . '/index.php?option=' . $com_user . '&task=' . $task . '&authenticator=facebook' . $return
+			'redirect_uri' => self::getReturnUrl($view->return)
 		);
 
-		// Get the login URL
-		$loginUrl = $facebook->getLoginUrl($params);
+		switch ($ver)
+		{
+			case 2.0:
+				\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
+
+				$helper = new \Facebook\FacebookRedirectLoginHelper($params['redirect_uri']);
+				$loginUrl = $helper->getLoginUrl(explode(',', $params['scope']));
+				break;
+			case 1.0:
+			default:
+				// Create facebook instance
+				$facebook = new Facebook($config);
+
+				// Get the login URL
+				$loginUrl = $facebook->getLoginUrl($params);
+				break;
+		}
 
 		// Redirect to the login URL
 		$app->redirect($loginUrl);
@@ -220,7 +203,7 @@ class plgAuthenticationFacebook extends JPlugin
 	 * @param	object	$response	 Authentication response object
 	 * @return	boolean
 	 */
-	public function onAuthenticate( $credentials, $options, &$response )
+	public function onAuthenticate($credentials, $options, &$response)
 	{
 		return $this->onUserAuthenticate($credentials, $options, $response);
 	}
@@ -236,33 +219,91 @@ class plgAuthenticationFacebook extends JPlugin
 	 */
 	public function onUserAuthenticate($credentials, $options, &$response)
 	{
+		// Check which version of facebook api should be used
+		$ver = $this->params->get('api_version', 1.0);
+
 		// Set up the config for the sdk instance
 		$config           = array();
 		$config['appId']  = $this->params->get('app_id');
 		$config['secret'] = $this->params->get('app_secret');
 
-		// Create instance and get the facebook user_id
-		$facebook = new Facebook($config);
-		$user_id  = $facebook->getUser();
+		switch ($ver)
+		{
+			case 2.0:
+				// Set defaults
+				\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
+
+				$helper = new \Facebook\FacebookRedirectLoginHelper(self::getReturnUrl($options['return'], true));
+
+				try
+				{
+					$session = $helper->getSessionFromRedirect();
+				}
+				catch (\Facebook\FacebookRequestException $ex)
+				{
+					// When Facebook returns an error
+				}
+				catch (\Exception $ex)
+				{
+					// When validation fails or other local issues
+				}
+				break;
+			case 1.0:
+			default:
+				// Create instance and get the facebook user_id
+				$facebook = new Facebook($config);
+				$user_id  = $facebook->getUser();
+				break;
+		}
 
 		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
-		if($user_id > 0)
+		if ((isset($user_id) && $user_id > 0) || (isset($session) && $session))
 		{
-			// Get the facebook graph api profile for the user
-			$user_profile = $facebook->api('/me','GET');
+			switch ($ver)
+			{
+				case 2.0:
+					try
+					{
+						$user_profile = (new \Facebook\FacebookRequest(
+							$session, 'GET', '/me'
+						))->execute()->getGraphObject(\Facebook\GraphUser::className());
 
-			// Get unique username (we'll use facebook id - could also use facebook username, but not everyone has one defined)
-			$username = $user_profile['id'];
+						$id       = $user_profile->getId();
+						$fullname = $user_profile->getName();
+						$email    = $user_profile->getProperty('email');
+						$username = $user_profile->getProperty('username');
+					}
+					catch (\Facebook\FacebookRequestException $e)
+					{
+						// Error message?
+						$response->status = JAUTHENTICATE_STATUS_FAILURE;
+						$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
+						return;
+					}
+					break;
+				case 1.0:
+				default:
+					// Get the facebook graph api profile for the user
+					$user_profile = $facebook->api('/me','GET');
+
+					// Get unique username/id
+					// We'll use facebook id - could also use facebook username, but not everyone has one defined
+					$id       = $user_profile['id'];
+					$fullname = $user_profile['name'];
+					$email    = $user_profile['email'];
+					$username = $user_profile['username'];
+					break;
+			}
 
 			// Create the hubzero auth link
-			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $username);
-			$hzal->email = $user_profile['email'];
+			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $id);
+			$hzal->email = $email;
 
 			// Set response variables
 			$response->auth_link = $hzal;
 			$response->type      = 'facebook';
 			$response->status    = JAUTHENTICATE_STATUS_SUCCESS;
-			$response->fullname  = $user_profile['name'];
+			$response->fullname  = $fullname;
 
 			if (!empty($hzal->user_id))
 			{
@@ -278,8 +319,8 @@ class plgAuthenticationFacebook extends JPlugin
 				$response->email    = $response->username . '@invalid';
 
 				// Also set a suggested username for their hub account
-				$sub_email    = explode('@', $user_profile['email'], 2);
-				$tmp_username = (!empty($user_profile['username'])) ? $user_profile['username'] : $sub_email[0];
+				$sub_email    = explode('@', $email, 2);
+				$tmp_username = (!empty($username)) ? $username : $sub_email[0];
 				JFactory::getSession()->set('auth_link.tmp_username', $tmp_username);
 			}
 
@@ -291,7 +332,7 @@ class plgAuthenticationFacebook extends JPlugin
 				// Set cookie with login preference info
 				$prefs                  = array();
 				$prefs['user_id']       = $user->get('id');
-				$prefs['user_img']      = 'https://graph.facebook.com/'.$username.'/picture?type=normal';
+				$prefs['user_img']      = 'https://graph.facebook.com/v2.0/'.$id.'/picture?type=normal';
 				$prefs['authenticator'] = 'facebook';
 
 				$namespace = 'authenticator';
@@ -311,12 +352,14 @@ class plgAuthenticationFacebook extends JPlugin
 	 * Similar to onAuthenticate, except we already have a logged in user, we're just linking accounts
 	 *
 	 * @access	public
+	 * @param   array - $options
 	 * @return	void
 	 */
-	public function link()
+	public function link($options=array())
 	{
-		$app = JFactory::getApplication();
-
+		// Check which version of facebook api should be used
+		$ver   = $this->params->get('api_version', 1.0);
+		$app   = JFactory::getApplication();
 		$juser = JFactory::getUser();
 
 		// Set up the config for the sdk instance
@@ -324,42 +367,93 @@ class plgAuthenticationFacebook extends JPlugin
 		$config['appId']  = $this->params->get('app_id');
 		$config['secret'] = $this->params->get('app_secret');
 
-		// Create instance and get the facebook user_id
-		$facebook = new Facebook($config);
-		$user_id  = $facebook->getUser();
+		switch ($ver)
+		{
+			case 2.0:
+				// Set defaults
+				\Facebook\FacebookSession::setDefaultApplication($config['appId'], $config['secret']);
+
+				$helper = new \Facebook\FacebookRedirectLoginHelper(self::getReturnUrl($options['return']));
+
+				try
+				{
+					$session = $helper->getSessionFromRedirect();
+				}
+				catch (\Facebook\FacebookRequestException $ex)
+				{
+					// When Facebook returns an error
+				}
+				catch (\Exception $ex)
+				{
+					// When validation fails or other local issues
+				}
+				break;
+			case 1.0:
+			default:
+				// Create instance and get the facebook user_id
+				$facebook = new Facebook($config);
+				$user_id  = $facebook->getUser();
+				break;
+		}
 
 		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
-		if($user_id > 0)
+		if ((isset($user_id) && $user_id > 0) || (isset($session) && $session))
 		{
-			// Get the facebook graph api profile for the user
-			$user_profile = $facebook->api('/me','GET');
+			switch ($ver)
+			{
+				case 2.0:
+					try
+					{
+						$user_profile = (new \Facebook\FacebookRequest(
+							$session, 'GET', '/me'
+						))->execute()->getGraphObject(\Facebook\GraphUser::className());
 
-			// Get unique username
-			$username = $user_profile['id'];
+						$id    = $user_profile->getId();
+						$email = $user_profile->getProperty('email');
+					}
+					catch (\Facebook\FacebookRequestException $e)
+					{
+						// Error message?
+						$response->status = JAUTHENTICATE_STATUS_FAILURE;
+						$response->error_message = 'Failed to retrieve Facebook profile (' . $e->getMessage() . ').';
+						return;
+					}
+					break;
+				case 1.0:
+				default:
+					// Get the facebook graph api profile for the user
+					$user_profile = $facebook->api('/me','GET');
+
+					// Get unique username/id
+					// We'll use facebook id - could also use facebook username, but not everyone has one defined
+					$id    = $user_profile['id'];
+					$email = $user_profile['email'];
+					break;
+			}
 
 			$hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'facebook', '');
 
 			// Create the link
-			if (\Hubzero\Auth\Link::getInstance($hzad->id, $username))
+			if (\Hubzero\Auth\Link::getInstance($hzad->id, $id))
 			{
 				// This facebook account is already linked to another hub account
-				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
-					'This facebook account appears to already be linked to a hub account', 
+				$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+					'This facebook account appears to already be linked to a hub account',
 					'error');
 			}
 			else
 			{
-				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $username);
+				$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $id);
 				$hzal->user_id = $juser->get('id');
-				$hzal->email   = $user_profile['email'];
+				$hzal->email   = $email;
 				$hzal->update();
 			}
 		}
 		else
 		{
 			// User didn't authorize our app, or, clicked cancel
-			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'), 
-				'To link the current account with your Facebook account, you must authorize the ' . $app->getCfg('sitename') . ' app.', 
+			$app->redirect(JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=account'),
+				'To link the current account with your Facebook account, you must authorize the ' . $app->getCfg('sitename') . ' app.',
 				'error');
 		}
 	}
@@ -387,7 +481,7 @@ class plgAuthenticationFacebook extends JPlugin
 		$user_id  = $facebook->getUser();
 
 		// Make sure we have a user_id (facebook returns 0 for a non-logged in user)
-		if($user_id > 0)
+		if ($user_id > 0)
 		{
 			// Get the facebook graph api profile for the user
 			$user_profile = $facebook->api('/me','GET');
@@ -398,5 +492,43 @@ class plgAuthenticationFacebook extends JPlugin
 		{
 			// Not currently logged in
 		}
+	}
+
+	/**
+	 * Generate return url
+	 *
+	 * @param  (string) return url
+	 * @param  (bool)   whether or not to encode return before using
+	 * @return (string) url
+	 **/
+	private static function getReturnUrl($return=null, $encode=false)
+	{
+		// Get the hub url
+		$juri    = JURI::getInstance();
+		$service = trim($juri->base(), DS);
+
+		if (empty($service))
+		{
+			$service = $_SERVER['HTTP_HOST'];
+		}
+
+		// If someone is logged in already, then we're linking an account, otherwise, we're just loggin in fresh
+		$juser = JFactory::getUser();
+		$task  = ($juser->get('guest')) ? 'user.login' : 'user.link';
+
+		// Check if a return is specified
+		$rtrn = '';
+		if (isset($return) && !empty($return))
+		{
+			if ($encode)
+			{
+				$return = base64_encode($return);
+			}
+			$rtrn = "&return=" . $return;
+		}
+
+		$url = $service . '/index.php?option=com_users&task=' . $task . '&authenticator=facebook' . $rtrn;
+
+		return $url;
 	}
 }

@@ -53,6 +53,10 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
+				<field name="api_version"  type="list" label="API Version" default="1" description="Which version of the Facebook API you want to use">
+					<option value="1">1.0 (deprecation date: 4/30/2015)</option>
+					<option value="2">2.0 (PHP 5.4 only!)</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
