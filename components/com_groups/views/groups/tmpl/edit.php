@@ -139,13 +139,13 @@ else
 
 						<?php
 							$editor = \JFactory::getEditor();
-							echo $editor->display('public_desc', $this->escape($this->group->getDescription('raw', 0, 'public')), '', '', 35, 8, false, 'public_desc', null, null, array('class' => 'minimal no-footer macros'));
+							echo $editor->display('public_desc', $this->escape($this->group->getDescription('raw', 0, 'public')), '', '', 35, 8, false, 'public_desc', null, null, array('class' => 'minimal no-footer images macros'));
 						?>
 					</label>
 					<label for="private_desc">
 						<?php echo JText::_('COM_GROUPS_DETAILS_FIELD_PRIVATE'); ?> <span class="optional"><?php echo JText::_('COM_GROUPS_OPTIONAL'); ?></span>
 						<?php
-							echo $editor->display('private_desc', $this->escape($this->group->getDescription('raw', 0, 'private')), '', '', 35, 8, false, 'private_desc', null, null, array('class' => 'minimal no-footer macros'));
+							echo $editor->display('private_desc', $this->escape($this->group->getDescription('raw', 0, 'private')), '', '', 35, 8, false, 'private_desc', null, null, array('class' => 'minimal no-footer images macros'));
 						?>
 					</label>
 				</fieldset>

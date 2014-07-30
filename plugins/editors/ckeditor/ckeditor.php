@@ -357,6 +357,13 @@ class plgEditorCkeditor extends JPlugin
 			//$config->hubzeroAutogrow_autoStart = false;
 		}
 
+		// image plugin if in minimal mode
+		if (in_array('minimal', $this->params->get('class')) && in_array('images', $this->params->get('class')))
+		{
+			// push after links section
+			$config->toolbar = array_merge(array_splice($config->toolbar, 0, 1), array(array('Image')), $config->toolbar);
+		}
+
 		// macros popup
 		if (in_array('macros', $this->params->get('class')))
 		{
