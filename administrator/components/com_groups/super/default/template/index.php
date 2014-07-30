@@ -33,10 +33,11 @@ JFactory::getDocument()
 		
 		<div class="super-group-content-wrap">
 			<div class="super-group-content group_<?php echo $this->tab; ?>">
-				<?php 
-					$show = array('members', 'resources', 'wiki', 'forum', 'blog', 'calendar', 'usage', 'wishlist', 'announcements');
-					if (in_array($this->tab, $show)) : ?>
-					<h2><?php echo ($this->tab == 'forum') ? 'Discussions' : ucfirst($this->tab); ?></h2>
+				<?php
+					$title = (isset($this->page) && $this->page->get('title')) ? $this->page->get('title') : ucfirst($this->tab);
+					if ($title != '') :
+				?>
+					<h2><?php echo $title; ?></h2>
 				<?php endif; ?>
 <?php endif; ?>
 				<!-- ###  Start Content Include  ### -->
