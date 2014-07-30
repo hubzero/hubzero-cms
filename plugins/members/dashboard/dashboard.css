@@ -124,9 +124,12 @@
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-	border: 1px solid #CCC;
+    border: 1px solid #CCC;
+    border-top: none;
 	background: #FFF;
-    border-radius: 2px;
+    -wekit-box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    -moz-box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
     position: relative;
     width: 32%;
     margin: 0 2% 2% 0;
@@ -139,14 +142,16 @@
 .module-title {
 	background: #FFF;
     color: #555;
-    border-bottom: 1px solid #CCC;
+    border: 1px solid #555;
     position: relative;
 }
 .ready .customizable .module-title:hover {
 	cursor: move;
 }
 .module-title h3 {
-    padding: 10px;
+    background: #555;
+    color: #FFF;
+    padding: 5px 10px;
     font-size: 14px;
     margin: 0;
 }
@@ -159,7 +164,7 @@
     right: 0;
     bottom: 0;
     text-align: right;
-    background: #FFF;
+    background: #555;
     display: none;
 }
 .module-links li { 
@@ -171,12 +176,12 @@
 .module-links li a {
     display: block;
     position: relative;
-    padding: 10px 20px;
+    padding: 5px 20px;
     margin: 0;
     border: none;
-    border-left: 1px solid #E9E9E9;
+    border-left: 1px solid #777;
     text-decoration: none;
-    color: #555;
+    color: #FFF;
 }
 .module-links li a span {
     width: 0;
@@ -193,15 +198,17 @@
 }
 .module-links a:before {
     position: absolute;
-    top: 10px;
+    top: 5px;
     left: 15px;
     font-family: 'Fontcons';
 }
-.module-links .remove.confirm {
-    color: #8e0606;
+.module-links .remove.confirm,
+.module-links .remove.confirm:hover {
+    color: #FFF;
+    background: #8e0606;
 }
 .module-links .remove:hover {
-    background: #f2e1e1;
+    background: #777;
 }
 .module-links .remove.confirm span {
     width: 54px;
@@ -218,33 +225,33 @@
     content: '\2716';
 }
 .module-links .settings:hover {
-    background: #efefef;
+    background: #777;
 }
 .modifying-settings .settings,
 .modifying-settings .settings:hover {
-    background: #666;
+    background: #777;
 }
-.modifying-settings .settings:before {
-    color: #FFF;
-}
-
 
 
 /* Module Main */
 .module-main {
     position: absolute;
-    top: 41px;
+    top: 31px;
     bottom: 0;
     left: 0;
     right: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.linux .module-main {
+    bottom: 15px;
 }
 .module:after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    bottom: 1px;
+    left: 1px;
+    right: 1px;
     height: 20px;
     background-image: -webkit-gradient(linear, top left, top right, from(rgba(255,255,255,0)), to(rgba(255,255,255,1)));
     background-image: -webkit-linear-gradient(bottom, rgba(255,255,255,0), rgba(255,255,255,1));
