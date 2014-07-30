@@ -1,0 +1,47 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kameleon/css/themes/wine.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Wine Style Sheet 
+	a {
+		color: #895656;
+	}
+	a:hover {
+		color: #000;
+	}
+
+/* Light header */
+	#login-body #toolbar-box,
+	div.configuration,
+	h2.modal-title,
+	.light .main-navigation {
+		background: #80605f;
+	}
+	.light .main-navigation ul#menu ul {
+		background: #80605f;
+	}
+	.light .main-navigation ul#menu ul li {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+	/*.light .main-navigation ul#menu a {
+		color: #fff;
+	}*/
+
+/* Dark header */
+	.dark #toolbar-box {
+		background: #80605f;
+		border-color: #80605f;
+	}
+	.dark #toolbar-box .pagetitle h2 {
+		color: #fff;
+	}
+	.dark .toolbar-box li a span:after {
+		text-shadow:
+		     -1px -1px 0 #80605f,
+		      1px -1px 0 #80605f,
+		      -1px 1px 0 #80605f,
+		       1px 1px 0 #80605f;
+	}

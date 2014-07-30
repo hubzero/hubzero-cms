@@ -1,0 +1,47 @@
+/**
+ * @package     hubzero-cms
+ * @file        templates/kameleon/css/themes/grape.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Grape Style Sheet 
+	a {
+		color: #6c6081;
+	}
+	a:hover {
+		color: #000;
+	}
+
+/* Light header */
+	#login-body #toolbar-box,
+	div.configuration,
+	h2.modal-title,
+	.light .main-navigation {
+		background: #7b718c;
+	}
+	.light .main-navigation ul#menu ul {
+		background: #7b718c;
+	}
+	.light .main-navigation ul#menu ul li {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+	/*.light .main-navigation ul#menu a {
+		color: #fff;
+	}*/
+
+/* Dark header */
+	.dark #toolbar-box {
+		background: #7b718c; /* #6c6081*/
+		border-color: #7b718c;
+	}
+	.dark #toolbar-box .pagetitle h2 {
+		color: #fff;
+	}
+	.dark .toolbar-box li a span:after {
+		text-shadow:
+		     -1px -1px 0 #7b718c,
+		      1px -1px 0 #7b718c,
+		      -1px 1px 0 #7b718c,
+		       1px 1px 0 #7b718c;
+	}
