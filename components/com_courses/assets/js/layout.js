@@ -181,6 +181,17 @@ jQuery(function($) {
 	var uploadButton = $('#new-upload');
 	uploadButton.fileupload({
 		submit: function() {
+			if ($('#title').val().replace(/^\s+|\s+$/g, '') === '') {
+				$('#title-error').text('Please enter a title for this document first').show();
+				$('#title').addClass('fieldWithErrors').focus();
+				location.hash = '#title';
+
+				setTimeout(function() {
+					$('#title-error').fadeOut();
+				}, 5000);
+
+				return false;
+			}
 			$('.new-upload-button').find('span').html('uploading...');
 		},
 		done: function() {
