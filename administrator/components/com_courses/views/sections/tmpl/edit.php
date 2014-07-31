@@ -513,12 +513,12 @@ jQuery(document).ready(function($){
 											<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][scope]" value="asset_group" />
 											<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][scope_id]" value="<?php echo $agt->get('id'); ?>" />
 											<?php //echo JHTML::_('calendar', $unit->get('publish_up'), 'dates[' . $i . '][publish_up]', 'dates_' . $i . '_publish_up', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
-											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up" class="datetime-field" value="<?php echo ($agt->get('publish_up') == $unit->get('publish_up') || $agt->get('publish_up') == $nullDate ? '' : JHTML::_('date', $agt->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
+											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up" class="datetime-field" value="<?php echo (!$agt->get('publish_up') || $agt->get('publish_up') == $unit->get('publish_up') || $agt->get('publish_up') == $nullDate ? '' : JHTML::_('date', $agt->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
 										</td>
 										<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_up"><?php echo JText::_('COM_COURSES_TO'); ?></label></th>
 										<td>
 											<?php //echo JHTML::_('calendar', $unit->get('publish_down'), 'dates[' . $i . '][publish_down]', 'dates_' . $i . '_publish_down', "%Y-%m-%d", array('class' => 'calendar-field inputbox')); ?>
-											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_down" class="datetime-field" value="<?php echo ($agt->get('publish_down') == $unit->get('publish_down') || $agt->get('publish_down') == $nullDate ? '' : JHTML::_('date', $agt->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
+											<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_publish_down" class="datetime-field" value="<?php echo (!$agt->get('publish_down') || $agt->get('publish_down') == $unit->get('publish_down') || $agt->get('publish_down') == $nullDate ? '' : JHTML::_('date', $agt->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
 										</td>
 									</tr>
 
@@ -552,11 +552,11 @@ jQuery(document).ready(function($){
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][id]" value="<?php echo $this->row->date('asset_group', $ag->get('id'))->get('id'); ?>" />
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][scope]" value="asset_group" />
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][scope_id]" value="<?php echo $ag->get('id'); ?>" />
-													<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up" class="datetime-field" value="<?php echo ($ag->get('publish_up') == $agt->get('publish_up') || $ag->get('publish_up') == $nullDate ? '' : JHTML::_('date', $ag->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up" class="datetime-field" value="<?php echo (!$ag->get('publish_up') || $ag->get('publish_up') == $agt->get('publish_up') || $ag->get('publish_up') == $nullDate ? '' : JHTML::_('date', $ag->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
 												</td>
 												<td><label for="dates_<?php echo $i; ?>_<?php echo $j; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up"><?php echo JText::_('COM_COURSES_TO'); ?></label></th>
 												<td>
-													<input type="text" name="dates[<?php echo $i; ?>][<?php echo $z; ?>][<?php echo $j; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_down" class="datetime-field" value="<?php echo ($ag->get('publish_down') == $agt->get('publish_down') || $ag->get('publish_down') == $nullDate ? '' : JHTML::_('date', $ag->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][<?php echo $z; ?>][<?php echo $j; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_down" class="datetime-field" value="<?php echo (!$ag->get('publish_down') || $ag->get('publish_down') == $agt->get('publish_down') || $ag->get('publish_down') == $nullDate ? '' : JHTML::_('date', $ag->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
 												</td>
 											</tr>
 
@@ -589,11 +589,11 @@ jQuery(document).ready(function($){
 															<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
 															<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
 															<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-															<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo ($a->get('publish_up') == $ag->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : JHTML::_('date', $a->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
+															<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo (!$a->get('publish_up') || $a->get('publish_up') == $ag->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : JHTML::_('date', $a->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
 														</td>
 														<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('COM_COURSES_TO'); ?></label></th>
 														<td>
-															<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo ($a->get('publish_down') == $ag->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : JHTML::_('date', $a->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
+															<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo (!$a->get('publish_down') || $a->get('publish_down') == $ag->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : JHTML::_('date', $a->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
 														</td>
 													</tr>
 
@@ -630,11 +630,11 @@ jQuery(document).ready(function($){
 														<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
 														<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
 														<input type="hidden" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-														<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo ($a->get('publish_up') == $agt->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : JHTML::_('date', $a->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
+														<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo (!$a->get('publish_up') || $a->get('publish_up') == $agt->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : JHTML::_('date', $a->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
 													</td>
 													<td><label for="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('COM_COURSES_TO'); ?></label></th>
 													<td>
-														<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo ($a->get('publish_down') == $agt->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : JHTML::_('date', $a->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
+														<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo (!$a->get('publish_down') || $a->get('publish_down') == $agt->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : JHTML::_('date', $a->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
 													</td>
 												</tr>
 
@@ -671,11 +671,11 @@ jQuery(document).ready(function($){
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][id]" value="<?php echo $this->row->date('asset', $a->get('id'))->get('id'); ?>" />
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][scope]" value="asset" />
 													<input type="hidden" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][scope_id]" value="<?php echo $a->get('id'); ?>" />
-													<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo ($a->get('publish_up') == $unit->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : JHTML::_('date', $a->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_up]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up" class="datetime-field" value="<?php echo (!$a->get('publish_up') || $a->get('publish_up') == $unit->get('publish_up') || $a->get('publish_up') == $nullDate ? '' : JHTML::_('date', $a->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
 												</td>
 												<td><label for="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_up"><?php echo JText::_('COM_COURSES_TO'); ?></label></th>
 												<td>
-													<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo ($a->get('publish_down') == $unit->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : JHTML::_('date', $a->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][asset][<?php echo $k; ?>][publish_down]" id="dates_<?php echo $i; ?>_asset_<?php echo $k; ?>_publish_down" class="datetime-field" value="<?php echo (!$a->get('publish_down') || $a->get('publish_down') == $unit->get('publish_down') || $a->get('publish_down') == $nullDate ? '' : JHTML::_('date', $a->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
 												</td>
 											</tr>
 
