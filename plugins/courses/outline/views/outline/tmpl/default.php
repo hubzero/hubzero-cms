@@ -265,7 +265,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 											<div class="asset-group<?php echo $cls; ?>">
 												<ul class="asset-list">
 												<?php
-												
+												echo '<li>';
 												$ulopen = false;
 												$i = 1;
 												$title = '';
