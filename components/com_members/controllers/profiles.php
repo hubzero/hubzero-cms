@@ -1542,6 +1542,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 					return false;
 				}
 			}
+
+			// Update session if name is changing
+			if ($n && $juser->get('name') != JFactory::getSession()->get('user')->get('name'))
+			{
+				$user = JFactory::getSession()->get('user');
+				$user->set('name', $juser->get('name'));
+			}
 		}
 
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
