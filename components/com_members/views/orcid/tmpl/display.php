@@ -88,19 +88,24 @@ $this->css('orcid.css');
 
 			<p>Please fill in any of the following fields:</p>
 
-			<div class="grid">
-				<div class="col span6">
-					<label>
+			<div class="grid nobreak">
+				<div class="col span4">
+					<label for="first-name">
 						First name:
 						<input type="text" id="first-name" name="first-name" value="<?php echo $this->escape($fname); ?>" />
 					</label>
 				</div>
-				<div class="col span6 omega">
-					<label>
+				<div class="col span4">
+					<label for="last-name">
 						Last name:
 						<input type="text" id="last-name" name="last-name" value="<?php echo $this->escape($lname); ?>" />
 					</label>
-					<input type="hidden" id="email" name="email" value="<?php echo $this->escape($email); ?>" />
+				</div>
+				<div class="col span4 omega">
+					<label for="email">
+						Email:
+						<input type="text" id="email" name="email" value="<?php echo $this->escape($email); ?>" />
+					</label>
 				</div>
 			</div>
 		</fieldset>
@@ -123,5 +128,5 @@ $this->css('orcid.css');
 	<h4>Create a new ORCID</h4>
 	<p>If you can't find your ID or would like to create a new one, just click on the "Create new ORCID" button below to generate a new ORCID based on the info in your profile. You will then receive an email from ORCID to claim the generated ORCID.</p>
 
-	<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid('" . $fname . "', '" . $lname ."', '" . $email . "')"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
+	<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
 </section>

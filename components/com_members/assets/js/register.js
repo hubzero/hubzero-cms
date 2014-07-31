@@ -577,7 +577,7 @@ HUB.Register = {
 		var lastName = $('#last-name').val();
 		var email = $('#email').val();
 
-		if (!firstName && !lastName) {
+		if (!firstName && !lastName && !email) {
 			alert('Please fill at least one of the fields.');
 			return;
 		}
@@ -610,18 +610,28 @@ HUB.Register = {
 	},
 
 	createOrcid: function(fname, lname, email) {
+		var uri = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname + '&email=' + email;
+		console.log(uri);
 		$.ajax({
-			url: $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname + '&email=' + email,
+			url: uri,
 			type: 'GET',
 			success: function(data, status, jqXHR) {
-				var orcid =jQuery.parseJSON(data);
+				var response =jQuery.parseJSON(data);
 
-				if (orcid) {
-					alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
-					window.parent.document.getElementById('orcid').value = orcid;
-					parent.jQuery.fancybox.close();
+				if (response.success) {
+					if (response.orcid) {
+						alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
+						window.parent.document.getElementById('orcid').value = orcid;
+						parent.jQuery.fancybox.close();
+					} else {
+						alert('ORCID service reported a successful creation but we failed to retrieve an ORCID. Please contact support.');
+					}
 				} else {
-					alert('Failed to create a new ORCID. Possible existence of an ORCID with the same email.');
+					if (response.message) {
+						alert(response.message);
+					} else {
+						alert('Failed to create a new ORCID. Possible existence of an ORCID with the same email.');
+					}
 				}
 			}
 		});

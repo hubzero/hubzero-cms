@@ -95,27 +95,28 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 * @param   string $lname
 	 * @return  string
 	 */
-	private function _fetchXml($fname, $lname)
+	private function _fetchXml($fname, $lname, $email)
 	{
 		$url = 'http://' . $this->config->get('orcid_service', 'orcid.org') . '/search/orcid-bio?q=';
 
-		$is_fname = !empty($fname);
-		$is_lname = !empty($lname);
+		$bits = array();
 
-		if ($is_fname)
+		if ($fname)
 		{
-			$url .= 'given-names:' . $fname;
+			$bits[] = 'given-names:' . $fname;
 		}
 
-		if ($is_fname && $is_lname)
+		if ($lname)
 		{
-			$url .= '+AND+';
+			$bits[] = 'family-name:' . $lname;
 		}
 
-		if ($is_lname)
+		if ($email)
 		{
-			$url .= 'family-name:' . $lname;
+			$bits[] = 'email:' . $email;
 		}
+
+		$url .= implode('+AND+', $bits);
 
 		$initedCurl = curl_init();
 		curl_setopt($initedCurl, CURLOPT_URL, $url);
@@ -197,69 +198,6 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Call service to create an ORCID
-	 *
-	 * @param   string $first_name
-	 * @param   string $last_name
-	 * @param   string $email
-	 * @return  string
-	 */
-	private function _create($first_name, $last_name, $email)
-	{
-		$xml_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'.
-					'<orcid-message'.
-						' xmlns="http://www.orcid.org/ns/orcid"'.
-						' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'.
-						' xsi:schemaLocation="https://raw.github.com/ORCID/ORCID-Source/master/orcid-model/src/main/resources/orcid-message-1.1.xsd">'.
-						'<message-version>1.1</message-version>'.
-						'<orcid-profile>'.
-							'<orcid-bio>'.
-								'<personal-details>'.
-									'<given-names>' . $first_name . '</given-names>'.
-									'<family-name>' . $last_name . '</family-name>'.
-								'</personal-details>'.
-								'<contact-details>'.
-									'<email primary="true">' . $email . '</email>'.
-								'</contact-details>'.
-							'</orcid-bio>'.
-						'</orcid-profile>'.
-					'</orcid-message>';
-
-		$url = 'http://api.' . $this->config->get('orcid_service', 'orcid.org') . '/orcid-profile';
-
-		$initedCurl = curl_init($url);
-		curl_setopt($initedCurl, CURLOPT_POST, 1);
-		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/xml', 'Content-Type: application/vdn.orcid+xml', 'Authorization: Bearer 8b9f8396-0e9d-4b74-96b0-fbcfdc678716'));
-		curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "$xml_data");
-		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
-		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($initedCurl, CURLOPT_HEADER, 1);
-		$curl_response = curl_exec($initedCurl);
-		curl_close($initedCurl);
-
-		$parsed_response = $this->_http_parse_headers($curl_response);
-
-		$pathComponents = array();
-		if (isset($parsed_response['Location']))
-		{
-			$parsed_url = parse_url($parsed_response['Location']);
-			$pathComponents = explode('/', trim($parsed_url['path'], '/'));
-		}
-		$orcid = '';
-		if (count($pathComponents) > 0 && !empty($pathComponents[0]))
-		{
-			$orcid = $pathComponents[0];
-		}
-		else
-		{
-			$this->view->setError('Failed in creating account.');
-		}
-
-		return $orcid;
-	}
-
-	/**
 	 * Save an ORCID to a profile
 	 *
 	 * @param   string $orcid
@@ -291,6 +229,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	{
 		$first_name  = JRequest::getVar('fname', '');
 		$last_name   = JRequest::getVar('lname', '');
+		$email       = JRequest::getVar('email', '');
 		$returnOrcid = JRequest::getInt('return', 0);
 		$isRegister  = $returnOrcid == 1;
 
@@ -303,7 +242,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 			$callbackPrefix = "HUB.Members.Profile.";
 		}
 
-		$root = $this->_fetchXml($first_name, $last_name);
+		$root = $this->_fetchXml($first_name, $last_name, $email);
 
 		if (!empty($root))
 		{
@@ -373,15 +312,72 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		$email       = JRequest::getVar('email', '');
 		$returnOrcid = JRequest::getInt('return', 0);
 
-		$orcid = $this->_create($first_name, $last_name, $email);
+		$xml_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'.
+					'<orcid-message'.
+						' xmlns="http://www.orcid.org/ns/orcid"'.
+						' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'.
+						' xsi:schemaLocation="https://raw.github.com/ORCID/ORCID-Source/master/orcid-model/src/main/resources/orcid-message-1.1.xsd">'.
+						'<message-version>1.1</message-version>'.
+						'<orcid-profile>'.
+							'<orcid-bio>'.
+								'<personal-details>'.
+									'<given-names>' . $first_name . '</given-names>'.
+									'<family-name>' . $last_name . '</family-name>'.
+								'</personal-details>'.
+								'<contact-details>'.
+									'<email primary="true">' . $email . '</email>'.
+								'</contact-details>'.
+							'</orcid-bio>'.
+						'</orcid-profile>'.
+					'</orcid-message>';
+
+		$url = 'http://api.' . $this->config->get('orcid_service', 'orcid.org') . '/orcid-profile';
+
+		$initedCurl = curl_init($url);
+		curl_setopt($initedCurl, CURLOPT_POST, 1);
+		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/xml', 'Content-Type: application/vdn.orcid+xml', 'Authorization: Bearer 8b9f8396-0e9d-4b74-96b0-fbcfdc678716'));
+		curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "$xml_data");
+		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
+		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($initedCurl, CURLOPT_HEADER, 1);
+		$curl_response = curl_exec($initedCurl);
+		curl_close($initedCurl);
+		$parsed_response = $this->_http_parse_headers($curl_response);
+
+		$output = new stdClass();
+		$output->success = 1;
+		$output->orcid   = '';
+		$output->message = '';
+
+		$pathComponents = array();
+		if (isset($parsed_response['Location']))
+		{
+			$parsed_url = parse_url($parsed_response['Location']);
+			$pathComponents = explode('/', trim($parsed_url['path'], '/'));
+		}
+
+		if (count($pathComponents) > 0 && !empty($pathComponents[0]))
+		{
+			$output->orcid = $pathComponents[0];
+		}
+		else
+		{
+			$output->success = 0;
+			$output->message = JText::sprintf('Failed in creating account for %s %s (%s).', $first_name, $last_name, $email);
+			if (preg_match('/\<error\-desc\>(.*?)\<\/error\-desc\>/i', $curl_response, $matches))
+			{
+				$output->message .= ' ' . $matches[1];
+			}
+		}
 
 		// If returnOrcid == 1, return the ORCID without saving
 		if (!$returnOrcid)
 		{
-			$state = $this->_save($orcid);
+			$state = $this->_save($output->orcid);
 		}
 
-		echo json_encode($orcid);
+		echo json_encode($output);
 		exit();
 	}
 }
