@@ -34,13 +34,15 @@ $tmpl = JRequest::getVar('tmpl', '');
 
 if ($tmpl != 'component')
 {
-	JToolBarHelper::title(JText::_('COM_COURSES').': ' . JText::_('COM_COURSES_COUPON_CODE') . ': ' . JText::_('COM_COURSES_GENERATE'), 'course.png');
+	JToolBarHelper::title(JText::_('COM_COURSES') . ': ' . JText::_('COM_COURSES_COUPON_CODE') . ': ' . JText::_('COM_COURSES_GENERATE'), 'course.png');
 	if ($canDo->get('core.edit'))
 	{
 		JToolBarHelper::save();
 	}
 	JToolBarHelper::cancel();
 }
+
+JHTML::_('behavior.framework', true);
 
 $jconfig = JFactory::getConfig();
 $offset = $jconfig->getValue('config.offset');
