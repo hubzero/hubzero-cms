@@ -239,6 +239,9 @@
 	.offering-info .btn-group .btn {
 		width: 80%;
 		float: left;
+		/*white-space: normal;*/
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	.offering-info .btn-group .btn.dropdown-toggle {
 		width: 20%;
