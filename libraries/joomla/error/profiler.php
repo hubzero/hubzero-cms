@@ -222,10 +222,10 @@ class JProfiler extends JObject
 
 		$logger->useFiles($path . '/profile.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP");
 
-		$hubname = $_SERVER['SERVER_NAME'];
-		$uri = $_SERVER['REQUEST_URI'];
-		$ip = $_SERVER['REMOTE_ADDR'];
-		$query = $_SERVER['QUERY_STRING'];
+		$hubname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
+		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'unknown';
+		$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
+		$query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown'; 
 		$memory = memory_get_usage(true);
 		$db = \JFactory::getDBO();
 		$querycount = $db->getCount();
