@@ -200,4 +200,17 @@ class JProfiler extends JObject
 	{
 		return $this->_buffer;
 	}
+
+	/**
+	 * Get time mark
+	 *
+	 * Return time in seconds (float) since application began.
+	 *
+	 * @return  float  time since application began (seconds)
+	 *
+	 */
+	public function getTimeMark()
+	{
+		return microtime(true) - $this->_start;
+	}
 }

@@ -85,7 +85,7 @@ function apache_note()
 }
 
 //
-JDEBUG ? $_PROFILER->mark( 'afterLoad' ) : null;
+JPROFILE ? $_PROFILER->mark( 'afterLoad' ) : null;
 
 //CREATE THE APPLICATION
 $mainframe = JFactory::getApplication('site');
@@ -99,7 +99,7 @@ $mainframe->initialise();
 JPluginHelper::importPlugin('system');
 
 // trigger the onAfterInitialise events
-JDEBUG ? $_PROFILER->mark('afterInitialise') : null;
+JPROFILE ? $_PROFILER->mark('afterInitialise') : null;
 $mainframe->triggerEvent('onAfterInitialise');
 
 if (0) {
@@ -111,7 +111,7 @@ if (0) {
 	$mainframe->authorize($Itemid);
 
 	// trigger the onAfterRoute events
-	JDEBUG ? $_PROFILER->mark('afterRoute') : null;
+	JPROFILE ? $_PROFILER->mark('afterRoute') : null;
 	$mainframe->triggerEvent('onAfterRoute');
 
 	//DISPATCH THE APPLICATION
@@ -119,14 +119,14 @@ if (0) {
 	$mainframe->dispatch($option);
 
 	// trigger the onAfterDispatch events
-	JDEBUG ? $_PROFILER->mark('afterDispatch') : null;
+	JPROFILE ? $_PROFILER->mark('afterDispatch') : null;
 	$mainframe->triggerEvent('onAfterDispatch');
 
 	//RENDER  THE APPLICATION
 	$mainframe->render();
 
 	// trigger the onAfterRender events
-	JDEBUG ? $_PROFILER->mark('afterRender') : null;
+	JPROFILE ? $_PROFILER->mark('afterRender') : null;
 	$mainframe->triggerEvent('onAfterRender');
 } // ( 0 )
 

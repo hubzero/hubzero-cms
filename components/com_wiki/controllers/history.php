@@ -91,7 +91,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 				$this->setError($result);
 			}
 
-			JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JPROFILE ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();

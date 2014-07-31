@@ -93,7 +93,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 				$this->setError($result);
 			}
 
-			JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JPROFILE ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -305,7 +305,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			$this->view->revision->set('pagehtml', $p->parse($this->view->revision->get('pagetext'), $wikiconfig, true, true));
 		}
 
-		JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiParse') : null;
+		JPROFILE ? JProfiler::getInstance('Application')->mark('afterWikiParse') : null;
 
 		// Handle display events
 		JPluginHelper::importPlugin('wiki');
