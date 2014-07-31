@@ -133,7 +133,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>" class="btn"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGE'); ?></a>
 						<span class="btn dropdown-toggle"></span>
 						<ul class="dropdown-menu">
-							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_EDIT_PAGE'); ?></a></li>
+							<li><a class="icon-edit" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_EDIT_PAGE_BACK'); ?></a></li>
 							<li><a class="icon-search page-preview" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=preview&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_PREVIEW_PAGE'); ?></a></li>
 							<?php if (!$page->get('home')) : ?>
 								<li><a class="icon-home" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=sethome&pageid='.$page->get('id')); ?>"> <?php echo JText::_('COM_GROUPS_PAGES_MAKE_HOME'); ?></a></li>

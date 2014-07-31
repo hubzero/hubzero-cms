@@ -36,6 +36,13 @@ $this->css()
 	 ->js()
      ->css('jquery.fancyselect.css', 'system')
      ->js('jquery.fancyselect', 'system');
+
+// has home override
+$hasHomeOverride = false;
+if (file_exists(JPATH_ROOT . DS . $this->group->getBasePath() . DS . 'pages' . DS . 'overview.php'))
+{
+	$hasHomeOverride = true;
+}
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -60,6 +67,10 @@ $this->css()
 			<?php echo $notification['message']; ?>
 		</p>
 	<?php endforeach; ?>
+
+	<?php if ($this->group->isSuperGroup() && $hasHomeOverride) : ?>
+		<p class="info"><?php echo JText::_('COM_GROUPS_PAGES_SUPER_GROUP_HAS_HOME_OVERRIDE'); ?></p>
+	<?php endif; ?>
 
 	<div class="group-page-manager">
 		<ul class="tabs clearfix">
