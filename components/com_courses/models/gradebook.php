@@ -231,25 +231,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			// Support legacy label of 'forms', as well as new, more accurate label of 'graded'
 			case 'forms':
 			case 'graded':
-				// Get the graded assets (only need those attached to units for this calculation)
-				$asset  = new CoursesTableAsset(JFactory::getDBO());
-				$assets = $asset->find(
-					array(
-						'w' => array(
-							'course_id'   => $this->course->get('id'),
-							'section_id'  => $this->course->offering()->section()->get('id'),
-							'offering_id' => $this->course->offering()->get('id'),
-							'graded'      => true,
-							'state'       => 1,
-							'asset_scope' => 'asset_group'
-						),
-						'order_by'  => 'title',
-						'order_dir' => 'ASC'
-					)
-				);
-
 				// Get count of graded items taken
-				$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'asset_scope'=>'asset_group');
+				$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'asset_scope'=>'asset_group', 'graded'=>true);
 				$grades  = $this->_tbl->find($filters);
 
 				$views = array();
@@ -423,7 +406,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$gradePolicy = new CoursesModelGradePolicies($course->offering()->section()->get('grade_policy_id'), $course->offering()->section()->get('id'));
 
 		// Calculate course grades, start by getting all grades
-		$filters = array('scope'=>'asset', 'member_id'=>$member_id, 'course_id'=>$course_id);
+		$filters = array('scope'=>'asset', 'member_id'=>$member_id, 'course_id'=>$course_id, 'graded'=>true);
 		$results = $this->_tbl->find($filters);
 		$grades  = array();
 		$scores  = array();
@@ -805,7 +788,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		if (!isset($grades))
 		{
 			// Get count of graded items taken
-			$filters = array('member_id'=>$member_id, 'scope'=>'asset');
+			$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'graded'=>true);
 			$grades  = $this->_tbl->find($filters);
 		}
 

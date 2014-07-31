@@ -155,6 +155,10 @@ class CoursesTableGradeBook extends JTable
 		{
 			$where[] = "caa.scope = " . $this->_db->quote($filters['asset_scope']);
 		}
+		if (isset($filters['graded']) && $filters['graded'])
+		{
+			$where[] = "ca.graded = '1'";
+		}
 		if (isset($filters['scope_id']) && $filters['scope_id'])
 		{
 			if (!is_array($filters['scope_id']))
