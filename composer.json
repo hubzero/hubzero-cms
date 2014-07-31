@@ -64,7 +64,8 @@
         "monolog/monolog": "1.2.*",
         "willdurand/geocoder": "@stable",
         "guzzle/guzzle": "3.8.*@dev",
-        "tplaner/when": "dev-develop"
+        "tplaner/when": "dev-develop",
+        "predis/predis": "0.8.6"
     },
     "repositories": [
         {
