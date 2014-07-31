@@ -203,13 +203,18 @@
 .group_overview > h2 {
 	display: none;
 }
+/* Member Adjustments */
+.group_members .aside .roles li {
+	overflow: hidden;
+}
 /* Wiki Adjustments */
 .group_wiki > h2 {
 	display: none;
 }
 /* Collections Adjustments */
 .group_collections p.overview,
-.group_collections fieldset.filters {
+.group_collections fieldset.filters,
+.group_collections .sub-menu {
 	margin-top: 0 !important;
 }
 /* Login */
