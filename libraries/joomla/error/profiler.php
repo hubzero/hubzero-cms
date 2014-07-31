@@ -224,6 +224,7 @@ class JProfiler extends JObject
 
 		$hubname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
 		$uri = JURI::getInstance()->getPath();
+		$uri = strtr($uri, array(" "=>"%20"));
 		$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
 		$query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown'; 
 		$memory = memory_get_usage(true);
