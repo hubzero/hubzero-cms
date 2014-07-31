@@ -69,7 +69,7 @@ HUB.Plugins.GroupCalendar = {
 			header: {
 				left: 'title prev,next',
 				center: '',
-				right: 'month,agendaWeek,agendaDay today'
+				right: 'today'
 			},
 			weekMode: 'variable',
 			eventSources: [],
