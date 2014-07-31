@@ -702,7 +702,7 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 		$users_mem = array();
 		$users_man = array();
 
-		// Incoming array of users to demote
+		// Incoming array of users to remove
 		$mbrs = JRequest::getVar('users', array(0));
 
 		// Figure out how many managers are being deleted
@@ -739,6 +739,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 					$users_man[] = $uid;
 				}
 
+				require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'members' . DS . 'role.php';
+				GroupsMembersRole::deleteRolesForUserWithId($uid);
+
 				$this->notifyUser($targetuser);
 			}
 			else
@@ -770,6 +773,8 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'action'    => 'membership_removed',
 			'comments'  => $users_mem
 		));
+		$app = JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'));
 	}
 
 	/**

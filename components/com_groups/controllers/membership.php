@@ -654,6 +654,10 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$this->setNotification(JText::_('GROUPS_ERROR_CANCEL_MEMBERSHIP_FAILED'), 'error');
 		}
 
+		// delete member roles
+		require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'members' . DS . 'role.php';
+		GroupsMembersRole::deleteRolesForUserWithId($this->juser->get('id'));
+
 		// Log the membership cancellation
 		GroupsModelLog::log(array(
 			'gidNumber' => $this->view->group->get('gidNumber'),

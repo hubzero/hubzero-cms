@@ -99,11 +99,21 @@ class GroupsMembersRole extends JTable
 		return true;
 	}
 
+	/**
+	 * Get Role Permisisons
+	 * @return [type] [description]
+	 */
 	public function getPermissions()
 	{
 		return $this->permissions;
 	}
 
+	/**
+	 * Check to see if role has permission
+	 * 
+	 * @param  string  $permission [description]
+	 * @return boolean             [description]
+	 */
 	public function hasPermission($permission = '')
 	{
 		// get role permissions & json decode
@@ -114,5 +124,23 @@ class GroupsMembersRole extends JTable
 			return $permissions->$permission;
 		}
 		return null;
+	}
+
+	/**
+	 * Delete Roles for user
+	 * 
+	 * @param  [type] $userId [description]
+	 * @return [type]         [description]
+	 */
+	public static function deleteRolesForUserWithId($userId)
+	{
+		$database = JFactory::getDBO();
+		$sql = "DELETE FROM #__xgroups_member_roles WHERE uidNumber=" . $database->Quote($userId);
+		$database->setQuery($sql);
+		if (!$database->query())
+		{
+			return false;
+		}
+		return true;
 	}
 }
