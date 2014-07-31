@@ -235,6 +235,55 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Copy an entry and all associated data
+	 *
+	 * @return	void
+	 */
+	public function copyTask()
+	{
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (is_array($ids))
+		{
+			$id = (!empty($ids)) ? $ids[0] : 0;
+		}
+		else
+		{
+			$id = 0;
+		}
+
+		if (!$id)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_COURSES_ERROR_NO_ID'),
+				'error'
+			);
+			return;
+		}
+
+		$course = CoursesModelCourse::getInstance($id);
+		if (!$course->copy())
+		{
+			// Redirect back to the courses page
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $course->getError(),
+				'error'
+			);
+			return;
+		}
+
+		// Redirect back to the courses page
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('COM_COURSES_ITEM_COPIED')
+		);
+	}
+
+	/**
 	 * Removes a course and all associated information
 	 *
 	 * @return	void

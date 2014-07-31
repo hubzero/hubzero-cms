@@ -916,6 +916,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 		$this->set('id', 0);
 		// We want to distinguish this course from the one we copied from
 		$this->set('title', $this->get('title') . ' (copy)');
+		$this->set('alias', $this->get('alias') . '_copy');
 
 		if (!$this->store())
 		{
