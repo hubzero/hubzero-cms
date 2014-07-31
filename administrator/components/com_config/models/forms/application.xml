@@ -149,6 +149,19 @@
 		</field>
 
 		<field
+			name="profile"
+			type="radio"
+			default="0"
+			label="COM_CONFIG_FIELD_PROFILE_SYSTEM_LABEL"
+			description="COM_CONFIG_FIELD_PROFILE_SYSTEM_DESC"
+			filter="integer">
+			<option
+				value="1">JYES</option>
+			<option
+				value="0">JNO</option>
+		</field>
+
+		<field
 			name="debug_lang"
 			type="radio"
 			default="0"

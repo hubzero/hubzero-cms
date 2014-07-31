@@ -25,7 +25,7 @@ require_once JPATH_BASE.'/includes/toolbar.php';
 JLoader::import('Hubzero.Factory');
 
 // Mark afterLoad in the profiler.
-JDEBUG ? $_PROFILER->mark('afterLoad') : null;
+JPROFILE ? $_PROFILER->mark('afterLoad') : null;
 
 // Instantiate the application.
 $app = JFactory::getApplication('administrator');
@@ -36,25 +36,25 @@ $app->initialise(array(
 ));
 
 // Mark afterIntialise in the profiler.
-JDEBUG ? $_PROFILER->mark('afterInitialise') : null;
+JPROFILE ? $_PROFILER->mark('afterInitialise') : null;
 
 // Route the application.
 $app->route();
 
 // Mark afterRoute in the profiler.
-JDEBUG ? $_PROFILER->mark('afterRoute') : null;
+JPROFILE ? $_PROFILER->mark('afterRoute') : null;
 
 // Dispatch the application.
 $app->dispatch();
 
 // Mark afterDispatch in the profiler.
-JDEBUG ? $_PROFILER->mark('afterDispatch') : null;
+JPROFILE ? $_PROFILER->mark('afterDispatch') : null;
 
 // Render the application.
 $app->render();
 
 // Mark afterRender in the profiler.
-JDEBUG ? $_PROFILER->mark('afterRender') : null;
+JPROFILE ? $_PROFILER->mark('afterRender') : null;
 
 // Return the response.
 echo $app;

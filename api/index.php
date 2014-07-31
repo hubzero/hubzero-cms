@@ -46,6 +46,7 @@ ini_set('output_hander','');
 ini_set('implicit_flush','0');
 
 define('_JEXEC', 1);
+define('JPROFILE',1);
 define('JPATH_PLATFORM', 1);
 define('DS', DIRECTORY_SEPARATOR);
 define('JPATH_ROOT', dirname( dirname(__FILE__) ));
