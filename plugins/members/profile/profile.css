@@ -221,7 +221,7 @@
 	/* Private Section */
 	#profile li.section.private {
 		background:none;
-		background:#efefef url("/components/com_members/assets/img/light-stripes.png") repeat 0 0; 
+		background:#efefef url("/media/system/images/light-stripes.png") repeat 0 0; 
 	}
 	#profile li.section.private .key {
 	}
