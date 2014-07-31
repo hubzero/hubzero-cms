@@ -82,14 +82,14 @@ class Writer
 	 * @param  string  $format
 	 * @return void
 	 */
-	public function useFiles($path, $level = 'debug', $format='')
+	public function useFiles($path, $level = 'debug', $format='', $dateFormat = 'Y-m-d H:i:s')
 	{
 		$level = $this->parseLevel($level);
 
 		$handler = new StreamHandler($path, $level);
 		if ($format)
 		{
-			$handler->setFormatter(new LineFormatter($format, 'Y-m-d H:i:s'));
+			$handler->setFormatter(new LineFormatter($format, $dateFormat));
 		}
 
 		$this->monolog->pushHandler($handler);

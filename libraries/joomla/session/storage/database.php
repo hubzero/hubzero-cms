@@ -67,43 +67,49 @@ class JSessionStorageDatabase extends JSessionStorage
 	 */
 	public function write($id, $data)
 	{
+		global $_PROFILER;
+
 		if (JFactory::getApplication()->getClientId() == 4 || php_sapi_name() == 'cli')
 		{
+			JPROFILE ? $_PROFILER->log() : null;
 			return true; // skip session write on api and command line calls
 		}
 
 		// Get the database connection object and verify its connected.
 		$db = JFactory::getDbo();
-		if (!$db->connected())
-		{
-			return false;
-		}
 
-		try
+		if ($db->connected())
 		{
-			$query = $db->getQuery(true);
-			$query->update($db->quoteName('#__session'))
-			->set($db->quoteName('data') . ' = ' . $db->quote($data))
-			->set($db->quoteName('time') . ' = ' . $db->quote((int) time()))
-			->set($db->quoteName('ip') . ' = ' . $db->quote($_SERVER['REMOTE_ADDR']))
-			->where($db->quoteName('session_id') . ' = ' . $db->quote($id));
-
-			// Try to update the session data in the database table.
-			$db->setQuery($query);
-			if (!$db->execute())
+			try
 			{
-				return false;
+				$query = $db->getQuery(true);
+				$query->update($db->quoteName('#__session'))
+				->set($db->quoteName('data') . ' = ' . $db->quote($data))
+				->set($db->quoteName('time') . ' = ' . $db->quote((int) time()))
+				->set($db->quoteName('ip') . ' = ' . $db->quote($_SERVER['REMOTE_ADDR']))
+				->where($db->quoteName('session_id') . ' = ' . $db->quote($id));
+
+				// Try to update the session data in the database table.
+				$db->setQuery($query);
+
+				if ($db->execute())
+				{
+					JPROFILE ? $_PROFILER->log() : null;
+					return true;
+				}
+
+				/* Since $db->execute did not throw an exception, so the query was successful.
+				Either the data changed, or the data was identical.
+				In either case we are done.
+				*/
 			}
-			/* Since $db->execute did not throw an exception, so the query was successful.
-			Either the data changed, or the data was identical.
-			In either case we are done.
-			*/
-			return true;
+			catch (Exception $e)
+			{
+			}
 		}
-		catch (Exception $e)
-		{
-			return false;
-		}
+
+		JPROFILE ? $_PROFILER->log() : null;
+		return false;
 	}
 
 	/**
