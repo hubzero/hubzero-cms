@@ -622,4 +622,28 @@ class CoursesTableGradeBook extends JTable
 			$this->_db->query();
 		}
 	}
+
+	/**
+	 * Clear units if they once had a grade but should no longer
+	 *
+	 * @param      array $data - info to process
+	 * @return     void
+	 */
+	public function clearUnits($data)
+	{
+		if (is_array($data) && count($data) > 0)
+		{
+			foreach ($data as $unit_id => $members)
+			{
+				if (is_array($members) && count($members) > 0)
+				{
+					$query  = "UPDATE `#__courses_grade_book` SET score = NULL";
+					$query .= " WHERE scope = 'unit' AND scope_id = " . $this->_db->quote($unit_id);
+					$query .= " AND member_id IN (" . implode(',', $members) . ")";
+					$this->_db->setQuery($query);
+					$this->_db->query();
+				}
+			}
+		}
+	}
 }

@@ -402,6 +402,19 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			return false;
 		}
 
+		// Get our units and track which units have grades that might need to be cleared
+		$unit_ids = array();
+		$units    = $course->offering()->units();
+
+		if (!is_array($member_id))
+		{
+			$member_id = (array) $member_id;
+		}
+		foreach ($units as $unit)
+		{
+			$unit_ids[$unit->get('id')] = $member_id;
+		}
+
 		// Get a grade policy object
 		$gradePolicy = new CoursesModelGradePolicies($course->offering()->section()->get('grade_policy_id'), $course->offering()->section()->get('id'));
 
@@ -443,6 +456,12 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				// Loop through units and compute scores
 				foreach ($values as $unit_id=>$val)
 				{
+					// We're processing this unit/member, thus it doesn't need to be cleared - so remove it from the list of potentials
+					if (($key = array_search($member_id, $unit_ids[$unit_id])) !== false)
+					{
+						unset($unit_ids[$unit_id][$key]);
+					}
+
 					$scores[$member_id]['units'][$unit_id]['exam_count']     = 0;
 					$scores[$member_id]['units'][$unit_id]['quiz_count']     = 0;
 					$scores[$member_id]['units'][$unit_id]['homework_count'] = 0;
@@ -601,6 +620,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		}
 
 		$this->_tbl->saveGrades($scores, $course_id);
+		$this->_tbl->clearUnits($unit_ids);
 
 		// Success
 		return true;
