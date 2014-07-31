@@ -104,6 +104,17 @@ var typewatch = (function(){
 				self.renderNote(note);
 				self.notes.push(note);
 			});
+
+			jQuery(window).on('resize', function(e) {
+				var width = jQuery(window).width();
+				jQuery.each(self.options.notes, function(index, note){
+					var item = jQuery('#note-' + note.id);
+
+					if (parseInt(item.css('left').replace('px', '')) >= width) {
+						item.css('left', (width - item.width()) + 'px');
+					}
+				});
+			});
 		},
 
 		checkTimes: function() {
@@ -420,6 +431,10 @@ var typewatch = (function(){
 								.on('click', function(){
 									self.deleteNote(this);
 								});
+
+			if (parseInt(note.pos_x.replace('px', '')) >= jQuery(window).width()) {
+				note.pos_x = (jQuery(window).width() - note.width) + 'px';
+			}
 
 			var _div_wrap 	= jQuery(document.createElement('div'))
 								.css({'position':'absolute','top':note.pos_y,'left':note.pos_x, "width":note.width,"height":note.height}) //'float': 'left',
