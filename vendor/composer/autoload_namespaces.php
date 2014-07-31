@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'When' => array($vendorDir . '/tplaner/when/src'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
+    'Predis' => array($vendorDir . '/predis/predis/lib'),
     'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Hubzero' => array($baseDir . '/libraries'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
