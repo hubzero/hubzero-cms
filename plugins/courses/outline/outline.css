@@ -184,6 +184,7 @@
 		display: block;
 		border: none;
 		position: relative;
+		background: #fff;
 	}
 	#course-outline .asset-list .pending {
 		color: green;
@@ -233,12 +234,12 @@
 		position: absolute;
 	}
 	#course-outline .asset-list .pending:after {
-		content: "\f05d"; /*\f017";*/
+		content: "\f05d";
 		top: 22px;
 		left: -9px;
 	}
 	#course-outline .asset-list .ended:after {
-		content: "\2298"; /*\f017";*/
+		content: "\2298";
 		top: 22px;
 		left: -9px;
 	}
@@ -251,6 +252,66 @@
 	#course-outline .asset-list .asset-primary:hover:before {
 		border-color: #666;
 	}
+	#course-outline .asset-list li ul {
+		margin: 0;
+		padding: 0.4em 0 0.4em 30px;
+		border-top: 1px solid #e9e9e9;
+		position: relative;
+	}
+	#course-outline .asset-list li ul:after {
+		content: "";
+		width: 1px;
+		background: #dfdfdf;
+		position: absolute;
+		top: 0;
+		left: 30px;
+		bottom: 1.5em;
+	}
+	#course-outline .asset-list li li {
+		padding: 0 0 0 10px;
+		position: relative;
+	}
+	#course-outline .asset-list li li:after {
+		content: "";
+		width: 0.8em;
+		height: 1px;
+		background: #dfdfdf;
+		position: absolute;
+		top: 50%;
+		left: 0;
+	}
+	#course-outline .asset-list li li a {
+		margin: 0;
+		display: block;
+		border: none;
+		position: relative;
+		padding: 0.4em;
+	}
+	#course-outline .asset-list li li a.unavailable:before,
+	#course-outline .asset-list li li a.pending:before,
+	#course-outline .asset-list li li a.ended:before {
+		font-family: "Fontcons";
+		content: "";
+		color: #ccc;
+		margin-right: 0.4em;
+	}
+	#course-outline .asset-list li li a.unavailable:before {
+		content: "\f023";
+	}
+	#course-outline .asset-list li li a.pending:before {
+		content: "\f05d";
+	}
+	#course-outline .asset-list li li a.ended:before {
+		content: "\2298";
+	}
+
+	#course-outline .asset-list li li a.unavailable:after,
+	#course-outline .asset-list li li a.pending:after,
+	#course-outline .asset-list li li a.ended:after,
+	#course-outline .asset-list li li:before {
+		display: none;
+	}
+
 	#course-outline .grid .asset-group:last-child {
 		border-bottom: none;
 	}
@@ -258,7 +319,7 @@
 		margin: 20px;
 	}
 
-	#course-outline .unit-fill  {
+	#course-outline .unit-fill {
 		position: absolute;
 		top: 1.8em;
 		left: -10px;
@@ -285,7 +346,7 @@
 	#course-outline .advertise-enroll {
 		text-align: center;
 		padding: 15px;
-		background-color: rgba(255, 255, 0, .2);
+		background-color: rgba(255, 255, 0, 0.2);
 		overflow: hidden;
 	}
 	#course-outline .advertise-enroll div {

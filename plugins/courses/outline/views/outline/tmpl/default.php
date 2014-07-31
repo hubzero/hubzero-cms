@@ -265,6 +265,9 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 											<div class="asset-group<?php echo $cls; ?>">
 												<ul class="asset-list">
 												<?php
+												
+												$ulopen = false;
+												$i = 1;
 												$title = '';
 												if (trim($ag->get('title')) !== '--')
 												{
@@ -284,21 +287,22 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 
 															if (!$a->started())
 															{
-																$cls = ' pending';
+																$cls = 'pending';
 															}
 															if ($a->ended())
 															{
-																$cls = ' ended';
+																$cls = 'ended';
 															}
 															if ($a->isDraft())
 															{
-																$cls = ' draft';
+																$cls = 'draft';
 															}
 
 															if ($a->isUnpublished())
 															{
-																$cls = ' unpublished';
+																$cls = 'unpublished';
 															}
+															$cls .= ($i == 1) ? ' asset-primary' : '';
 
 															if ($a->isDeleted())
 															{
@@ -316,8 +320,12 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															{
 																$target = '';
 															}
+															if ($i > 1)
+															{
+																$title = '';
+															}
 															// ' . $a->get('subtype') . '
-															$link = '<a class="asset-primary' . $cls . '" href="' . $href . '"' . $target . '>' . ($title ? $title : $this->escape(stripslashes($a->get('title')))) . '</a>';
+															$link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . ($title ? $title : $this->escape(stripslashes($a->get('title')))) . '</a>';
 
 															// Finally, make sure prereqs have been met
 															if ($a->get('type') != 'video' && !$prerequisites->hasMet('asset', $a->get('id')) && !$isManager)
@@ -333,11 +341,36 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 																$link = '<span title="' . $info . '" class="asset-primary unavailable hasTip">' . ($title ? $title : $this->escape(stripslashes($a->get('title')))) . '</span>';
 															}
 
-															break;
+															//break;
+															if ($i > 1 && !$ulopen)
+															{
+																echo '<ul>';
+																$ulopen = true;
+															}
+
+															if ($i == 1)
+															{
+																echo $link;
+															}
+															else
+															{
+																echo '<li>' . $link . '</li>';
+															}
+
+															if ($a->get('type') == 'video')
+															{
+																break;
+															}
+															$i++;
 														}
 													}
 												}
-												echo '<li>' . $link . '</li>';
+												if ($ulopen)
+												{
+													echo '</ul>';
+													$ulopen = false;
+												}
+												echo '</li>';
 												?>
 											</ul>
 											</div><!-- / .asset-group -->
