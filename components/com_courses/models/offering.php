@@ -1300,6 +1300,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 			// Copying to the same course so we want to distinguish
 			// this offering from the one we copied from
 			$this->set('title', $this->get('title') . ' (copy)');
+			$this->set('alias', $this->get('alias') . '_copy');
 		}
 		if (!$this->store())
 		{

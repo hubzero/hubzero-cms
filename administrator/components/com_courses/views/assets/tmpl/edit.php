@@ -45,6 +45,8 @@ if (!$this->tmpl)
 	JToolBarHelper::cancel();
 }
 
+JHTML::_('behavior.framework', true);
+
 if ($this->row->get('id'))
 {
 	$id = $this->row->get('id');
@@ -87,14 +89,14 @@ function saveAndUpdate()
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="index.php" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
 <?php if ($this->tmpl == 'component') { ?>
 	<fieldset>
-		<div style="float: right">
-			<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('COM_COURSES_SAVE'); ?></button>
-			<button type="button" onclick="window.parent.document.assetform.close();"><?php echo JText::_('COM_COURSES_CANCEL'); ?></button>
-		</div>
 		<div class="configuration">
+			<div class="configuration-options">
+				<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('COM_COURSES_SAVE'); ?></button>
+				<button type="button" onclick="window.parent.document.assetform.close();"><?php echo JText::_('COM_COURSES_CANCEL'); ?></button>
+			</div>
 			<?php echo $text; ?>
 		</div>
 	</fieldset>

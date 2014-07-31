@@ -164,15 +164,22 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 *
 	 * @param	int	Article ID number
 	 */
-	public function children($idx=null, $populate=false)
+	public function children($idx=null, $populate=false, $filters=array())
 	{
 		if ($populate)
 		{
-			$filters = array(
-				'parent'     => $this->get('id'),
-				'unit_id'    => $this->get('unit_id'),
-				'section_id' => $this->get('section_id')
-			);
+			if (!isset($filters['parent']))
+			{
+				$filters['parent'] = $this->get('id');
+			}
+			if (!isset($filters['unit_id']))
+			{
+				$filters['unit_id'] = $this->get('unit_id');
+			}
+			if (!isset($filters['section_id']))
+			{
+				$filters['section_id'] = $this->get('section_id');
+			}
 
 			if (($results = $this->_tbl->find(array('w' => $filters))))
 			{
@@ -492,6 +499,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			// Copying to the same offering so we want to distinguish
 			// this unit from the one we copied from
 			$this->set('title', $this->get('title') . ' (copy)');
+			$this->set('alias', $this->get('alias') . '_copy');
 		}
 		if (!$this->store())
 		{
@@ -516,13 +524,26 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			}
 
 			// Copy asset groups
-			foreach ($this->children(null, array('parent' => $a_id)) as $assetgroup)
+			if ($children = $this->_tbl->find(array('w' => array('parent' => $a_id))))
+			{
+				foreach ($children as $c)
+				{
+					$assetgroup = new CoursesModelAssetgroup($c);
+					$assetgroup->set('parent', $this->get('id'));
+
+					if (!$assetgroup->copy($unit_id, $deep))
+					{
+						$this->setError($assetgroup->getError());
+					}
+				}
+			}
+			/*foreach ($this->children(null, true, array('parent' => $a_id)) as $assetgroup)
 			{
 				if (!$assetgroup->copy($unit_id, $deep))
 				{
 					$this->setError($assetgroup->getError());
 				}
-			}
+			}*/
 		}
 
 		return true;

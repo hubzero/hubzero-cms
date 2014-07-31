@@ -394,7 +394,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$assetgroup = CoursesModelAssetgroup::getInstance($id);
+		$assetgroup = new CoursesModelAssetgroup($id);
 		if (!$assetgroup->copy())
 		{
 			// Redirect back to the courses page

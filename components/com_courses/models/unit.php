@@ -593,6 +593,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 			// Copying to the same offering so we want to distinguish
 			// this unit from the one we copied from
 			$this->set('title', $this->get('title') . ' (copy)');
+			$this->set('alias', $this->get('alias') . '_copy');
 		}
 		if (!$this->store())
 		{
