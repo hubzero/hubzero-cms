@@ -97,7 +97,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	private function _fetchXml($fname, $lname, $email)
 	{
-		$url = 'http://' . $this->config->get('orcid_service', 'orcid.org') . '/search/orcid-bio?q=';
+		$url = 'http://api.' . $this->config->get('orcid_service', 'orcid.org') . '/search/orcid-bio?q=';
 
 		$bits = array();
 
@@ -120,11 +120,11 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 		$initedCurl = curl_init();
 		curl_setopt($initedCurl, CURLOPT_URL, $url);
-		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/orcid+xml'));
+		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/orcid+xml', 'Authorization: Bearer 8b9f8396-0e9d-4b74-96b0-fbcfdc678716'));
 		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
-		echo '<br />';
+
 		$curlData = curl_exec($initedCurl);
 
 		if (!curl_errno($initedCurl))
