@@ -338,6 +338,7 @@ class CoursesTableCourse extends JTable
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "(LOWER(c.title) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+					OR LOWER(c.blurb) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
 					OR LOWER(c.alias) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 

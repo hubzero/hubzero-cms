@@ -57,14 +57,13 @@ if (count($this->notifications) > 0)
 ?>
 
 <section id="introduction" class="section">
-	<div class="section-inner">
+	<form class="section-inner" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse'); ?>" method="get">
 		<div class="grid">
 			<div class="col span8">
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_COURSES_SEARCH'); ?>" />
 					<fieldset class="entry-search">
 						<input type="text" name="search" value="" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_INTRO_PLACEHOLDER'); ?>" />
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					</fieldset>
 				</div><!-- / .container -->
 				<p><?php echo JText::_('COM_COURSES_WATCH_LEARN_TEST_EARN'); ?></p>
@@ -78,7 +77,7 @@ if (count($this->notifications) > 0)
 				</div>
 			</div>
 		</div>
-	</div>
+	</form>
 </section><!-- / #introduction.section -->
 
 <section class="section">
