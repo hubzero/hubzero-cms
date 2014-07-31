@@ -693,14 +693,13 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// build command to run via shell
 			// this will run a "git pull --rebase origin master"
 			$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_pull_and_migrate.sh ';
-			$cmd .= $uploadPath . ' ' . JPATH_ROOT . ' ' . $group->get('cn') . ' 2>&1';
+			$cmd .= $uploadPath . ' ' . JPATH_ROOT . ' 2>&1';
 
 			// execute command
 			$output = shell_exec($cmd);
 
 			// did we succeed
-			if (preg_match("/First, Rewinding head to replay your work on top of it/uis", $output)
-				|| preg_match("/Current branch master is up to date./uis", $output))
+			if (preg_match("/Updating the repository...complete/uis", $output))
 			{
 				// add success message
 				$success[] = array('group' => $group->get('cn'), 'message' => $output);
