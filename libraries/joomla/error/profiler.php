@@ -215,15 +215,15 @@ class JProfiler extends JObject
 
 		$path = \JFactory::getConfig()->getValue('config.log_path');
 
-		if (is_dir('/var/log/hubzero'))
+		if (is_dir('/var/log/hubzero-cms'))
 		{
-			$path = '/var/log/hubzero';
+			$path = '/var/log/hubzero-cms';
 		}
 
 		$logger->useFiles($path . '/profile.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP");
 
 		$hubname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
-		$uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : 'unknown';
+		$uri = JURI::getInstance()->getPath();
 		$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
 		$query = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'unknown'; 
 		$memory = memory_get_usage(true);
