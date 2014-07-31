@@ -189,6 +189,14 @@ function submitbutton(pressbutton)
 	<script type="text/javascript">
 	var offeringsections = new Array;
 	<?php echo $js; ?>
+
+	jQuery(document).ready(function($){
+		if (jQuery.uniform) {
+			$('#offering_id').on('change', function(e){
+				$.uniform.update();
+			});
+		}
+	});
 	</script>
 
 	<?php echo JHTML::_('form.token'); ?>
