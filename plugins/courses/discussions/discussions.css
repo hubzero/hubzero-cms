@@ -29,6 +29,10 @@
 		min-width: 210px;
 	}
 
+	#page_content ol.comments .comment-body img {
+		height: auto;
+	}
+
 	label .required {
 		text-transform: uppercase;
 		font-size: xx-small;
