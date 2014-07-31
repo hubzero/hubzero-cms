@@ -118,21 +118,6 @@
 		margin: 0;
 		overflow: hidden;
 	}
-	#course-outline h3:hover {
-		cursor: pointer;
-	}
-	#course-outline h3:after {
-		display: block;
-		font-family: "Fontcons";
-		content: "\f0d9";
-		position: absolute;
-		top: 20px;
-		right: 20px;
-	}
-	#course-outline h3.unit-content-available:after {
-		content: "\f0d7";
-		clear: left;
-	}
 	#course-outline .unit-description {
 		margin: 0;
 		padding: 0 30px 20px 30px;
@@ -178,13 +163,47 @@
 		padding: 0;
 		list-style: none;
 	}
+
+	#course-outline .asset-play a {
+		position: absolute;
+		top: 0.9em;
+		right: 20px;
+		display: block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		border: 2px solid #bbb;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		-ms-border-radius: 50%;
+		-o-border-radius: 50%;
+		border-radius: 50%;
+		font-size: 1.2em;
+		padding: 0.5em;
+		white-space: nowrap;
+		line-height: 1;
+		color: #bbb;
+	}
+	#course-outline .asset-play a:before {
+		content: "\25B6";
+		font-family: "Fontcons";
+		margin-right: 1em;
+		margin-left: 0.2em;
+	}
+	#course-outline .asset-play a:hover {
+		color: #222;
+		border-color: #222;
+	}
+	#course-outline .asset-list li {
+		position: relative;
+	}
 	#course-outline .asset-list .asset-primary {
 		margin: 0;
 		padding: 20px 20px 20px 30px;
 		display: block;
 		border: none;
-		position: relative;
 		background: #fff;
+		cursor: pointer;
 	}
 	#course-outline .asset-list .pending {
 		color: green;
@@ -194,10 +213,7 @@
 		color: #bbb;
 		background-color: #f6f6f6;
 	}
-	#course-outline .asset-list .asset-primary:hover {
-		background-color: #fff;
-	}
-	#course-outline .asset-list .asset-primary:before {
+	#course-outline .asset-list .asset-primary:after {
 		content: "";
 		display: block;
 		width: 21px;
@@ -249,16 +265,16 @@
 	#course-outline .asset-list .ended:hover {
 		color: #222;
 	}
-	#course-outline .asset-list .asset-primary:hover:before {
-		border-color: #666;
+	#course-outline .asset-list>li:hover .asset-primary {
+		background: #ffe;
 	}
-	#course-outline .asset-list li ul {
+	#course-outline .asset-list ul {
 		margin: 0;
 		padding: 0.4em 0 0.4em 30px;
 		border-top: 1px solid #e9e9e9;
 		position: relative;
 	}
-	#course-outline .asset-list li ul:after {
+	#course-outline .asset-list ul:after {
 		content: "";
 		width: 1px;
 		background: #dfdfdf;
@@ -266,6 +282,9 @@
 		top: 0;
 		left: 30px;
 		bottom: 1.5em;
+	}
+	#course-outline .asset-list .collapsed ul {
+		display: none;
 	}
 	#course-outline .asset-list li li {
 		padding: 0 0 0 10px;

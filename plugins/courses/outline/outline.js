@@ -5,19 +5,6 @@
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
-//  Ensure we have our namespace
-//-----------------------------------------------------------
-if (!HUB) {
-	var HUB = {};
-}
-if (!HUB.Plugins) {
-	HUB.Plugins = {};
-}
-
-//----------------------------------------------------------
-//  Outline scripts
-//----------------------------------------------------------
 if (!jq) {
 	var jq = $;
 }
@@ -25,15 +12,11 @@ if (!jq) {
 jQuery(document).ready(function(jq) {
 	var $ = jq;
 
-	$('.unit-content').on('click', 'h3', function(){
-		if ($(this).hasClass('unit-content-available')) {
-			$(this).siblings('.unit-availability').find('.details').slideUp(500);
-			$(this).removeClass('unit-content-available');
+	$('ul.asset-list>li').on('click', function(){
+		if ($(this).hasClass('collapsed')) {
+			$(this).removeClass('collapsed');
 		} else {
-			$(this).siblings('.unit-availability').find('.details').slideDown(500);
-
-			// Toggle class for arrow (active gives down arrow indicating expanded list)
-			$(this).addClass('unit-content-available');
+			$(this).addClass('collapsed');
 		}
 	});
 
@@ -42,11 +25,4 @@ jQuery(document).ready(function(jq) {
 		height:($(window).height())*5/6,
 		autoSize: false
 	});
-
-	/*$('.notempty').masonry({
-		itemSelector: '.weeksection',
-		columnWidth: function(container) {
-			return container / 2;
-		}
-	});*/
 });

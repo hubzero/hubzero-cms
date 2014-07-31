@@ -238,51 +238,47 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 										<div class="col span8 omega">
 									<?php foreach ($agt->children() as $ag) { ?>
 										<?php if (($ag->isAvailable() && $ag->isPublished()) || $isManager) :
-											$cls = '';
-											if ($ag->isDraft())
-											{
-												$cls = ' draft';
-											}
-											if (!$ag->started())
-											{
-												$cls = ' pending';
-											}
-											if ($ag->ended())
-											{
-												$cls = ' unpublished';
-											}
-											if ($ag->isUnpublished())
-											{
-												$cls = ' unpublished';
-											}
-
 											if ($ag->isDeleted())
 											{
 												continue;
 											}
 
+											$acls = '';
+											if ($ag->isDraft())
+											{
+												$acls = ' draft';
+											}
+											if (!$ag->started())
+											{
+												$acls = ' pending';
+											}
+											if ($ag->ended())
+											{
+												$acls = ' ended';
+											}
+											if ($ag->isUnpublished())
+											{
+												$acls = ' unpublished';
+											}
 										?>
-											<div class="asset-group<?php echo $cls; ?>">
+											<div class="asset-group">
 												<ul class="asset-list">
 												<?php
-												echo '<li>';
-												$ulopen = false;
-												$i = 1;
-												$title = '';
-												if (trim($ag->get('title')) !== '--')
-												{
-													$title = $this->escape(stripslashes($ag->get('title')));
-												}
-
-												$link = '<span class="asset-primary unavailable">' . $title . '</span>';
+												$play = '';
+												$found = array();
 
 												if ($ag->assets()->total())
 												{
 													// Loop through the assets
-													foreach ($ag->assets() as $a)
+													foreach ($ag->assets() as $i => $a)
 													{
 														if ((($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished()) || $isManager)
 														{
+															if ($a->isDeleted())
+															{
+																continue;
+															}
+
 															$cls = '';
 
 															if (!$a->started())
@@ -297,16 +293,9 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															{
 																$cls = 'draft';
 															}
-
 															if ($a->isUnpublished())
 															{
 																$cls = 'unpublished';
-															}
-															$cls .= ($i == 1) ? ' asset-primary' : '';
-
-															if ($a->isDeleted())
-															{
-																continue;
 															}
 
 															$href = JRoute::_($base . '&asset=' . $a->get('id'));
@@ -320,12 +309,8 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															{
 																$target = '';
 															}
-															if ($i > 1)
-															{
-																$title = '';
-															}
-															// ' . $a->get('subtype') . '
-															$link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . ($title ? $title : $this->escape(stripslashes($a->get('title')))) . '</a>';
+
+															$link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a>';
 
 															// Finally, make sure prereqs have been met
 															if ($a->get('type') != 'video' && !$prerequisites->hasMet('asset', $a->get('id')) && !$isManager)
@@ -338,41 +323,39 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 																	$items[] = $reqAsset->get('title');
 																}
 																$info .= implode(", ", $items);
-																$link = '<span title="' . $info . '" class="asset-primary unavailable hasTip">' . ($title ? $title : $this->escape(stripslashes($a->get('title')))) . '</span>';
+																$link = '<span title="' . $info . '" class="asset-primary unavailable hasTip">' . $this->escape(stripslashes($a->get('title'))) . '</span>';
 															}
 
-															//break;
-															if ($i > 1 && !$ulopen)
-															{
-																echo '<ul>';
-																$ulopen = true;
-															}
-
-															if ($i == 1)
-															{
-																echo $link;
-															}
-															else
-															{
-																echo '<li>' . $link . '</li>';
-															}
+															$found[] = '<li>' . $link . '</li>';
 
 															if ($a->get('type') == 'video')
 															{
-																break;
+																$play = $link;
 															}
-															$i++;
 														}
 													}
 												}
-												if ($ulopen)
-												{
-													echo '</ul>';
-													$ulopen = false;
-												}
-												echo '</li>';
+												//<?php echo ($play ? ' class="collapsed"' : '');
 												?>
-											</ul>
+													<li class="collapsed">
+														<span class="asset-primary<?php echo $acls; ?>"><?php
+														//if (trim($ag->get('title')) !== '--')
+														//{
+															echo $this->escape(stripslashes($ag->get('title')));
+														//}
+														?></span>
+														<?php
+														if (count($found) > 0)
+														{
+															echo '<ul>' . implode("\n", $found) . '</ul>';
+														}
+														if ($play)
+														{
+															echo '<span class="asset-play">' . $play . '</span>';
+														}
+														?>
+													</li>
+												</ul>
 											</div><!-- / .asset-group -->
 										<?php endif; ?>
 									<?php } // foreach ($agt->children() as $ag) ?>
