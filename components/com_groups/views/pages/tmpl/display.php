@@ -63,15 +63,15 @@ $this->css()
 
 	<div class="group-page-manager">
 		<ul class="tabs clearfix">
-			<li><a href="#pages"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGES'); ?></a></li>
-			<li><a href="#categories"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?></a></li>
+			<li><a data-tab="pages" href="#pages"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGES'); ?></a></li>
+			<li><a data-tab="categories" href="#categories"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?></a></li>
 			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
-				<li><a href="#modules"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_MODULES'); ?></a></li>
+				<li><a data-tab="modules" href="#modules"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_MODULES'); ?></a></li>
 			<?php endif ;?>
 		</ul>
 
 		<form action="index.php" method="post" id="hubForm" class="full">
-			<fieldset>
+			<fieldset data-tab-content="pages">
 				<?php
 					$this->view('list')
 					     ->set('group', $this->group)
@@ -81,7 +81,7 @@ $this->css()
 				?>
 			</fieldset>
 
-			<fieldset>
+			<fieldset data-tab-content="categories">
 				<?php
 					$this->view('list', 'categories')
 					     ->set('group', $this->group)
@@ -91,7 +91,7 @@ $this->css()
 			</fieldset>
 
 			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
-				<fieldset>
+				<fieldset data-tab-content="modules">
 					<?php
 						$this->view('list', 'modules')
 						     ->set('group', $this->group)

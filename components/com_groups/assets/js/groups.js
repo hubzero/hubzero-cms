@@ -535,13 +535,32 @@ HUB.Groups = {
 	pagesTabs: function()
 	{
 		var $ = this.jQuery;
+
+		// show tabs & hide sections
+		$('.group-page-manager .tabs').show();
+		$('.group-page-manager form > fieldset').hide();
+
+		//get active tab
+		var activeTab = window.location.hash.replace('#', '');
 		
-		// create tabbed interface
-		$('.group-page-manager .tabs')
-			.show()
-			.tabs('.group-page-manager form > fieldset', {
-				//history: true
-			});
+		// make sure we have active tab and its valid
+		if (activeTab == '')
+		{
+			activeTab = 'pages';
+			window.location.hash = activeTab;
+		}
+
+		// listen for hash change event
+		$(window).on('hashchange', function() {
+			activeTab = window.location.hash.replace('#', '');
+			$('.group-page-manager .tabs a').removeClass('current');
+			$('.group-page-manager form > fieldset').hide();
+			$('.group-page-manager .tabs a[data-tab="' + activeTab + '"').addClass('current');
+			$('.group-page-manager form > fieldset[data-tab-content="' + activeTab + '"]').show();
+		});
+
+		// trigger hash change
+		$(window).trigger('hashchange');
 	},
 	
 	//-----
