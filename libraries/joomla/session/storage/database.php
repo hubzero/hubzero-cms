@@ -71,7 +71,11 @@ class JSessionStorageDatabase extends JSessionStorage
 
 		if (JFactory::getApplication()->getClientId() == 4 || php_sapi_name() == 'cli')
 		{
-			JPROFILE ? $_PROFILER->log() : null;
+			if (php_sapi_name() != 'cli')
+			{
+				JPROFILE ? $_PROFILER->log() : null;
+			}
+			
 			return true; // skip session write on api and command line calls
 		}
 		
