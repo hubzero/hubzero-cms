@@ -278,7 +278,7 @@ jQuery(function($) {
 					} else {
 						setTimeout(function() {
 							$('#saved-notification').slideUp('slow');
-							parent.$('body').trigger('savesuccessful');
+							parent.$('body').trigger('savesuccessful', [serialized.title]);
 							window.location.href = '/courses/form';
 						}, 2000);
 					}

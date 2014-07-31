@@ -171,18 +171,21 @@ class FormAssetHandler extends ContentAssetHandler
 						});
 
 						// Listen for savesuccessful call from iframe
-						$('body').on('savesuccessful', function() {
+						$('body').on('savesuccessful', function( e, title ) {
 							$.fancybox.close();
 
-							HUB.CoursesOutline.asset.insert(" .
+							var data = " .
 								json_encode(
 									array(
 										'assets'=>array(
 											$return['assets']
 										)
 									)
-								) .
-								", assetslist, {'progressBarId':progressBarId});
+								) . ";
+
+							data.assets[0].asset_title = title;
+
+							HUB.CoursesOutline.asset.insert(data, assetslist, {'progressBarId':progressBarId});
 						});
 					}
 				});";

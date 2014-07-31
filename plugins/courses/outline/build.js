@@ -491,7 +491,8 @@ HUB.CoursesOutline = {
 									});
 
 									// Listen for savesuccessful call from iframe
-									$('body').on('savesuccessful', function() {
+									$('body').on('savesuccessful', function ( e, title ) {
+										$('.outline-main').trigger('assetUpdate', [item, {asset_title:title}]);
 										$.fancybox.close();
 									});
 								}
