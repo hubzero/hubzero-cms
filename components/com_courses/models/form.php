@@ -337,7 +337,24 @@ class PdfForm
 			$version = $dbh->loadResult();
 
 			$path = $this->base . $fid . (($version) ? DS . ($version+1) : '');
-			mkdir($path);
+			if (!is_dir($path))
+			{
+				mkdir($path);
+			}
+			elseif (!$version)
+			{
+				$files = scandir($path);
+				if (is_array($files) && count($files) > 0)
+				{
+					foreach ($files as $file)
+					{
+						if ($file != '.' && $file != '..' && is_file($path . DS . $file))
+						{
+							unlink($path . DS . $file);
+						}
+					}
+				}
+			}
 
 			// Get the number of images for our for-loop
 			$im = new imagick($this->fname);
