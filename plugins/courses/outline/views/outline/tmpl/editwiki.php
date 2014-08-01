@@ -88,6 +88,7 @@ $assets = array();
 -->
 
 		<div class="wiki-files">
+			<p class="hint">Use the <code>Image</code> or <code>File</code> macro to include uploaded files. Example: <code>[[Image(mypicture.png)]]</code></p>
 			<div class="wiki-files-upload-wrapper">
 				<div class="wiki-files-upload">
 					<p>Click or drop file</p>

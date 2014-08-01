@@ -51,6 +51,16 @@
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
 }
+.wiki-files p.hint {
+	margin: 0 0 1em 0;
+	padding: 0;
+}
+.wiki-files p.hint code {
+	background: #fff;
+	color: #333;
+	display: inline-block;
+	padding: 0.1em 0.3em;
+}
 .fileupload {
 	opacity: 0;
 	position: absolute;
