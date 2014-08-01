@@ -1807,7 +1807,8 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	{
 		// hold missing
 		$this->view->missing = array();
-		$this->view->html    = '';
+		$this->view->warning = array();
+		$this->view->good    = array();
 
 		// get all resources
 		$db  = JFactory::getDBO();
@@ -1833,16 +1834,15 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 				// checks
 				if (is_dir($path))
 				{
-					$this->view->html .= '<span style="color: yellow;">#' . $result->id . ': ' . JText::_('COM_RESOURCES_PATH_IS_DIRECTORY') . ' ' . $path . '</span><br />';
+					$this->view->warning[] = '<span style="color: yellow;">#' . $result->id . ': ' . JText::_('COM_RESOURCES_PATH_IS_DIRECTORY') . ' ' . $path . '</span>';
 				}
 				elseif (JURI::isInternal($path) && !file_exists($base . $path))
 				{
-					$this->view->missing[] = $result;
-					$this->view->html .= '<span style="color: red">#' . $result->id . ': ' . JText::sprintf('COM_RESOURCES_MISSING_RESOURCE_AT', $base . $path) . '</span><br />';
+					$this->view->missing[] = '<span style="color: red">#' . $result->id . ': ' . JText::sprintf('COM_RESOURCES_MISSING_RESOURCE_AT', $base . $path) . '</span>';
 				}
 				else
 				{
-					$this->view->html .= '<span style="color: green">#' . $result->id . ': ' . JText::sprintf('COM_RESOURCES_NO_PROBLEMS_FOUND', $path) . '</span><br />';
+					$this->view->good[] = '<span style="color: green">#' . $result->id . ': ' . JText::sprintf('COM_RESOURCES_NO_PROBLEMS_FOUND', $path) . '</span>';
 				}
 			}
 		}
