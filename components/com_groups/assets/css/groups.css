@@ -1264,7 +1264,7 @@ body.group-page-preview {
 }
 .group-page-manager #hubForm {
 	/* border: 1px solid #666; */
-	z-index: 888;
+	z-index: 554;
 }
 .group-page-manager #hubForm ul {
 	margin: auto;
@@ -1288,7 +1288,7 @@ body.group-page-preview {
 	padding: 0;
 	list-style: none;
 	display: none;
-	z-index: 999;
+	z-index: 555;
 	position: relative;
 }
 .group-page-manager .tabs li {
