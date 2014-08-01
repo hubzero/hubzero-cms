@@ -209,7 +209,7 @@ class Geocode
 		} 
 		catch (\Exception $e) 
 		{
-			echo $e->getMessage();
+			throw new $e;
 		}
 	}
 
