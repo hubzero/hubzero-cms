@@ -415,11 +415,11 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$html .= '</p>' . "\n";
 		if ($row->itext)
 		{
-			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->itext)), 200) . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->itext)), 200) . '</p>' . "\n";
 		}
 		else if ($row->ftext)
 		{
-			$html .= "\t\t" . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)), 200) . "\n";
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags(stripslashes($row->ftext)), 200) . '</p>' . "\n";
 		}
 		$html .= "\t\t" . '<p class="href">' . $juri->base() . trim($row->href, '/') . '</p>' . "\n";
 		$html .= "\t" . '</li>'."\n";
