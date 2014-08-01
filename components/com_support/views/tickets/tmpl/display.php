@@ -88,8 +88,8 @@ $this->css()
 									<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 								</a>
 							<?php if ($this->acl->check('read', 'tickets')) { ?>
-								<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
-									<?php echo JText::_('JACTION_EDIT'); ?>
+								<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('COM_SUPPORT_COPY_QUERY'); ?>">
+									<?php echo JText::_('COM_SUPPORT_COPY_QUERY'); ?>
 								</a>
 							<?php } ?>
 							<?php if ($i == 0) { ?>
@@ -129,8 +129,8 @@ $this->css()
 								<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 							</a>
 						<?php if ($this->acl->check('read', 'tickets')) { ?>
-							<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
-								<?php echo JText::_('JACTION_EDIT'); ?>
+							<a class="modal copy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('COM_SUPPORT_COPY_QUERY'); ?>">
+								<?php echo JText::_('COM_SUPPORT_COPY_QUERY'); ?>
 							</a>
 						<?php } ?>
 						</li>
