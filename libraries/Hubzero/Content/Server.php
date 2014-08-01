@@ -265,7 +265,6 @@ class Server extends Object
 
 		$saveas    = addslashes($saveas);
 		$filesize  = filesize($filename);
-		$extension = $fileinfo['extension'];
 
 		// Get the file's mimetype
 		$mime = new Mimetypes();
