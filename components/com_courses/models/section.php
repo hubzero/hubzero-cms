@@ -249,6 +249,31 @@ class CoursesModelSection extends CoursesModelAbstract
 	}
 
 	/**
+	 * Has the section ended?
+	 *
+	 * @return     boolean
+	 */
+	public function expired()
+	{
+		// If it doesn't exist or isn't published
+		if (!$this->exists() || !$this->isPublished())
+		{
+			return true;
+		}
+
+		$now = JFactory::getDate()->toSql();
+
+		if ($this->get('publish_down')
+		 && $this->get('publish_down') != $this->_db->getNullDate()
+		 && $this->get('publish_down') <= $now)
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Has the offering ended?
 	 *
 	 * @return     boolean

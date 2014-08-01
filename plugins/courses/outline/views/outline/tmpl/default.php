@@ -123,6 +123,9 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 ?>
 
 <?php if ($this->course->offering()->units()->total() > 0) : ?>
+
+	<?php if ($this->course->offering()->section()->started() && !$this->course->offering()->section()->ended()) { ?>
+
 	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>
 		<?php if ((!$isManager && $unit->isPublished()) || $isManager) {
 				$cls = '';
@@ -474,6 +477,11 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 		</div><!-- / .unit -->
 		<?php } ?>
 	<?php } // close foreach ?>
+
+	<?php } else { ?>
+		<p class="warning">The access time for this section has expired and the content is no longer available.</p>
+	<?php } ?>
+
 <?php elseif ($this->course->offering()->access('manage')) : ?>
 		<p class="info">Your outline is currently empty. Go to the <a href="<?php echo JRoute::_($base . '&active=outline&action=build'); ?>">Outline Builder</a> to begin creating your course outline.</p>
 <?php else : ?>
