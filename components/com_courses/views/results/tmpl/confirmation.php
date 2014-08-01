@@ -38,13 +38,11 @@ $dep  = $this->dep;
 	<h2>Results: <?php echo $this->title ?></h2>
 
 	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="icon-back back btn" href="<?php echo JRoute::_($this->base); ?>">
-					<?php echo JText::_('Back to course'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-prev back btn" href="<?php echo JRoute::_($this->base); ?>">
+				<?php echo JText::_('Back to course'); ?>
+			</a>
+		</p>
 	</div>
 </header>
 
