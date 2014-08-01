@@ -208,6 +208,7 @@ if ($this->cats)
 						}
 
 						$num = ($total > 1) ? JText::sprintf('PLG_GROUPS_RESOURCES_RESULTS', $total) : JText::sprintf('PLG_GROUPS_RESOURCES_RESULT', $total);
+						$this->total = $total;
 
 						// Build the category HTML
 						$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">'.$name.' <span>('.$num.')</span></h4>'."\n";
