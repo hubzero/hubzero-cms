@@ -241,11 +241,14 @@ class Recipient extends \JTable
 			return false;
 		}
 
-		$query = "SELECT DISTINCT m.*, r.expires, r.actionid
+		$query = "SELECT " . ($limit ? "DISTINCT m.*, r.expires, r.actionid" : "DISTINCT m.id") . "
 				FROM #__xmessage AS m, $this->_tbl AS r
 				WHERE m.id = r.mid AND r.uid=" . $this->_db->Quote($uid) . " AND m.id NOT IN (SELECT s.mid FROM #__xmessage_seen AS s WHERE s.uid=" . $this->_db->Quote($uid) . ")";
-		$query .= " ORDER BY created DESC";
-		$query .= ($limit) ? " LIMIT $limit" : "";
+		if ($limit)
+		{
+			$query .= " ORDER BY r.created DESC";
+			$query .= " LIMIT $limit";
+		}
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
