@@ -295,7 +295,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															}
 															if ($a->isUnpublished())
 															{
-																$cls = 'unpublished';
+																$cls = 'unavailable';
 															}
 
 															$href = JRoute::_($base . '&asset=' . $a->get('id'));
@@ -323,7 +323,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 																	$items[] = $reqAsset->get('title');
 																}
 																$info .= implode(", ", $items);
-																$link = '<span title="' . $info . '" class="asset-primary unavailable hasTip">' . $this->escape(stripslashes($a->get('title'))) . '</span>';
+																$link = '<span title="' . $info . '" class="unavailable hasTip">' . $this->escape(stripslashes($a->get('title'))) . '</span>';
 															}
 
 															$found[] = '<li>' . $link . '</li>';
@@ -335,9 +335,8 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 														}
 													}
 												}
-												//<?php echo ($play ? ' class="collapsed"' : '');
 												?>
-													<li class="collapsed">
+													<li class="<?php echo 'collapsed'; //($play ? ' class="collapsed"' : ''); ?>">
 														<span class="asset-primary<?php echo $acls; ?>"><?php
 														//if (trim($ag->get('title')) !== '--')
 														//{

@@ -207,13 +207,11 @@
 	}
 	#course-outline .asset-list .pending {
 		color: green;
-		background-color: #f6f6f6;
 	}
 	#course-outline .asset-list .unavailable {
 		color: #bbb;
-		background-color: #f6f6f6;
 	}
-	#course-outline .asset-list .asset-primary:after {
+	#course-outline .asset-list .asset-primary:before {
 		content: "";
 		display: block;
 		width: 21px;
@@ -227,9 +225,7 @@
 		-moz-border-radius: 50%;
 		border-radius: 50%;
 	}
-	#course-outline .asset-list .unavailable:after,
-	#course-outline .asset-list .pending:after,
-	#course-outline .asset-list .ended:after {
+	#course-outline .asset-list .asset-primary:after {
 		font-family: "Fontcons";
 		content: "";
 		position: absolute;
@@ -244,17 +240,17 @@
 		line-height: 1;
 		color: #ccc;
 	}
-	#course-outline .asset-list .unavailable:after {
+	#course-outline .asset-list .asset-primary.unavailable:after {
 		content: "\f023";
-		font-family: "Fontcons";
-		position: absolute;
+		color: #bbb;
 	}
-	#course-outline .asset-list .pending:after {
-		content: "\f05d";
+	#course-outline .asset-list .asset-primary.pending:after {
+		content: "\f017";
 		top: 22px;
 		left: -9px;
+		color: green;
 	}
-	#course-outline .asset-list .ended:after {
+	#course-outline .asset-list .asset-primary.ended:after {
 		content: "\2298";
 		top: 22px;
 		left: -9px;
@@ -299,36 +295,37 @@
 		top: 50%;
 		left: 0;
 	}
+	#course-outline .asset-list li li span,
 	#course-outline .asset-list li li a {
 		margin: 0;
-		display: block;
+		display: inline-block;
 		border: none;
 		position: relative;
 		padding: 0.4em;
 	}
-	#course-outline .asset-list li li a.unavailable:before,
-	#course-outline .asset-list li li a.pending:before,
-	#course-outline .asset-list li li a.ended:before {
+	#course-outline .asset-list li li .unavailable:before,
+	#course-outline .asset-list li li .pending:before,
+	#course-outline .asset-list li li .ended:before,
+	#course-outline .asset-list li li .draft:before {
 		font-family: "Fontcons";
 		content: "";
 		color: #ccc;
 		margin-right: 0.4em;
 	}
-	#course-outline .asset-list li li a.unavailable:before {
+	#course-outline .asset-list li li .unavailable:before {
 		content: "\f023";
+		color: #bbb;
 	}
-	#course-outline .asset-list li li a.pending:before {
-		content: "\f05d";
+	#course-outline .asset-list li li .pending:before {
+		content: "\f017";
+		color: green;
 	}
-	#course-outline .asset-list li li a.ended:before {
+	#course-outline .asset-list li li .ended:before {
 		content: "\2298";
 	}
-
-	#course-outline .asset-list li li a.unavailable:after,
-	#course-outline .asset-list li li a.pending:after,
-	#course-outline .asset-list li li a.ended:after,
-	#course-outline .asset-list li li:before {
-		display: none;
+	#course-outline .asset-list li li .draft:before {
+		content: "\22EF";
+		color: #c09853;
 	}
 
 	#course-outline .grid .asset-group:last-child {
