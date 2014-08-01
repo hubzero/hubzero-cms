@@ -1280,7 +1280,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		}
 
 		// Make sure the resource is published and standalone
-		if (!$this->model->resource->standalone) // || !$this->model->published()) 
+		if (!$this->model->resource->standalone || !$this->model->published()) 
 		{
 			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
 			return;
