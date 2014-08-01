@@ -49,6 +49,13 @@ class PdfFormRespondent
 	private $depId;
 
 	/**
+	 * Member ID
+	 *
+	 * @var int
+	 **/
+	private $member_id;
+
+	/**
 	 * Bool indicating whether the form has been started
 	 *
 	 * @var date/time
@@ -88,6 +95,7 @@ class PdfFormRespondent
 
 		// Set deployment id
 		$this->depId = (int)$depId;
+		$this->member_id = (int)$member_id;
 
 		if (($res = $dbh->loadAssoc()))
 		{
@@ -135,7 +143,55 @@ class PdfFormRespondent
 			$dbh->query();
 		}
 
+		$this->saveToGradebook();
+
 		return $this;
+	}
+
+	/**
+	 * Save score to gradebook
+	 *
+	 * @return void
+	 **/
+	public function saveToGradebook()
+	{
+		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'grade.book.php';
+
+		$database  = JFactory::getDBO();
+
+		// Get the asset id
+		$query  = "SELECT `asset_id`";
+		$query .= " FROM `#__courses_form_respondents` cfr";
+		$query .= " JOIN `#__courses_form_deployments` cfd ON cfr.deployment_id = cfd.id";
+		$query .= " JOIN `#__courses_forms` cf ON cfd.form_id = cf.id";
+		$query .= " WHERE cfr.id = " . $database->quote($this->id);
+
+		$database->setQuery($query);
+		$asset_id = $database->loadResult();
+
+		// Get score
+		$results = $this->getAnswers();
+		$score   = $results['summary']['score'];
+
+		// Load gradebook entry
+		$gradebook = new CoursesTableGradeBook($database);
+		$gradebook->loadByUserAndAssetId($this->member_id, $asset_id);
+
+		if (!$gradebook->get('id'))
+		{
+			$grade = array(
+				'member_id' => $this->member_id,
+				'score'     => $score,
+				'scope'     => 'asset',
+				'scope_id'  => $asset_id
+			);
+
+			$gradebook->save($grade);
+		}
+		elseif ($score > $gradebook->get('score'))
+		{
+			$gradebook->save(array('score'=>$score));
+		}
 	}
 
 	/**
