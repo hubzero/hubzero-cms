@@ -340,6 +340,23 @@ $pid = JRequest::getInt( 'publication', 0 );
 			</div>
 		</fieldset><div class="clear"></div>
 
+		<fieldset>
+			<legend><?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT'); ?>:</legend>
+			<p class="warning"><?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_HINT'); ?></p>
+			<label for="format_type">
+				<?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_FORMAT'); ?>:
+				<select id="format_type" name="format">
+					<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_APA'); ?></option>
+					<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_IEEE'); ?></option>
+				</select>
+			</label>
+			<label for="formatted">
+				<?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_CITATION'); ?>:
+				<textarea name="formatted" id="formatted" rows="8" cols="10"><?php echo stripslashes($this->row->formatted); ?></textarea>
+			</label>
+		</fieldset><div class="clear"></div>
+
+
 		<?php if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
 			<div class="explaination">
 				<p></p>

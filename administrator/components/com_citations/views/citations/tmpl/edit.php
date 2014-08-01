@@ -293,6 +293,29 @@ function submitbutton(pressbutton)
 				<?php echo $editor->display('citation[research_notes]', stripslashes($this->row->research_notes), '', '', '50', '10'); ?>
 			</div>
 		</fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('MANUAL_FORMAT'); ?></span></legend>
+			<table class="adminform">
+				<tbody>
+					<tr>
+						<th class="key"><?php echo JText::_('MANUAL_FORMAT_FORMAT'); ?>:</th>
+						<td colspan="3">
+							<select id="format_type" name="citation[format]">
+								<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo JText::_('MANUAL_FORMAT_FORMAT_APA'); ?></option>
+								<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo JText::_('MANUAL_FORMAT_FORMAT_IEEE'); ?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('MANUAL_FORMAT_CITATION'); ?>:</th>
+						<td colspan="3">
+							<?php echo $editor->display('citation[formatted]', stripslashes($this->row->formatted), '500px', '100px', '50', '10'); ?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+
 	</div>
 	<div class="col width-40 fltrt">
 		<fieldset class="adminform">
