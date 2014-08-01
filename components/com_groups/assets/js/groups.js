@@ -536,6 +536,11 @@ HUB.Groups = {
 	{
 		var $ = this.jQuery;
 
+		if (!$('.group-page-manager').length)
+		{
+			return;
+		}
+		
 		// show tabs & hide sections
 		$('.group-page-manager .tabs').show();
 		$('.group-page-manager form > fieldset').hide();
