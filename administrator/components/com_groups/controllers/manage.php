@@ -463,41 +463,65 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		shell_exec("chmod -R 2770 $uploadPath");
 		shell_exec("chgrp -R " . $this->config->get('super_group_file_owner', 'access-content') . " " . $uploadPath);
 		
+		// get all current users granted permissionss
+		$this->database->setQuery("SHOW GRANTS FOR CURRENT_USER();");
+		$grants = $this->database->loadResultArray();
+
+		// look at all current users granted permissions
+		$canCreateSuperGroupDB = false;
+		foreach ($grants as $grant)
+		{
+			if (preg_match('/sg\\\\_%/', $grant))
+			{
+				$canCreateSuperGroupDB = true;
+			}
+		}
+
 		// create super group DB if doesnt already exist
-		$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
-		if (!$this->database->query())
+		if ($canCreateSuperGroupDB)
+		{
+			$this->database->setQuery("CREATE DATABASE IF NOT EXISTS `sg_{$group->get('cn')}`;");
+			if (!$this->database->query())
+			{
+				JFactory::getApplication()
+					->enqueueMessage(JText::_('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'), 'error');
+			}
+		}
+		else
 		{
 			JFactory::getApplication()
-				->enqueueMessage('Unable to create super group database. Please try again later.', 'error');
+					->enqueueMessage(JText::_('COM_GROUPS_SUPER_UNABLE_TO_CREATE_DB'), 'error');
 		}
-		
+
 		// check to see if we have a super group db config
 		$supergroupDbConfigFile = DS . 'etc' . DS . 'supergroup.conf';
 		if (!file_exists($supergroupDbConfigFile))
 		{
 			JFactory::getApplication()
-				->enqueueMessage('Unable to load super group config. Please try again later.', 'error');
+				->enqueueMessage(JText::_('COM_GROUPS_SUPER_UNABLE_TO_LOAD_CONFIG'), 'error');
 		}
-		
-		// get hub super group database config file
-		$supergroupDbConfig = include $supergroupDbConfigFile;
-		
-		// define username, password, and database to be written in config
-		$username = (isset($supergroupDbConfig['username'])) ? $supergroupDbConfig['username'] : '';
-		$password = (isset($supergroupDbConfig['password'])) ? $supergroupDbConfig['password'] : '';
-		$database = 'sg_' . $group->get('cn');
-				
-		//write db config in super group
-		$dbConfigFile     = $uploadPath . DS . 'config' . DS . 'db.php';
-		$dbConfigContents = "<?php\n\treturn array(\n\t\t'host'     => 'localhost',\n\t\t'port'     => '',\n\t\t'user' => '{$username}',\n\t\t'password' => '{$password}',\n\t\t'database' => '{$database}',\n\t\t'prefix'   => ''\n\t);";
-		
-		// write db config file
-		if (!file_exists($dbConfigFile))
+		else
 		{
-			if (!file_put_contents($dbConfigFile, $dbConfigContents))
+			// get hub super group database config file
+			$supergroupDbConfig = include $supergroupDbConfigFile;
+
+			// define username, password, and database to be written in config
+			$username = (isset($supergroupDbConfig['username'])) ? $supergroupDbConfig['username'] : '';
+			$password = (isset($supergroupDbConfig['password'])) ? $supergroupDbConfig['password'] : '';
+			$database = 'sg_' . $group->get('cn');
+
+			//write db config in super group
+			$dbConfigFile     = $uploadPath . DS . 'config' . DS . 'db.php';
+			$dbConfigContents = "<?php\n\treturn array(\n\t\t'host'     => 'localhost',\n\t\t'port'     => '',\n\t\t'user' => '{$username}',\n\t\t'password' => '{$password}',\n\t\t'database' => '{$database}',\n\t\t'prefix'   => ''\n\t);";
+
+			// write db config file
+			if (!file_exists($dbConfigFile))
 			{
-				JFactory::getApplication()
-					->enqueueMessage('Unable to write super group database config file. Please try again later.', 'error');
+				if (!file_put_contents($dbConfigFile, $dbConfigContents))
+				{
+					JFactory::getApplication()
+						->enqueueMessage(JText::_('COM_GROUPS_SUPER_UNABLE_TO_WRITE_CONFIG'), 'error');
+				}
 			}
 		}
 		
