@@ -783,6 +783,10 @@ class ResourcesResource extends JTable
 		{
 			$query .= "AND r.published!=4 ";
 		}
+		if (isset($filters['state']) && is_array($filters['state']))
+		{
+			$query .= "AND r.published IN(" . implode(',', $filters['state']) . ")";
+		}
 		if (isset($filters['author'])) 
 		{
 			$query .= "AND (aa.authorid=" . $this->_db->Quote(intval($filters['author'])) . ") "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in jos_author_assoc, making his profile page look wildly incorrect

@@ -428,7 +428,7 @@ class ResourcesContributor extends JTable
 
 		if (!isset($filters['sort']) || !$filters['sort']) 
 		{
-			$filters['sort'] = 'title';
+			$filters['sort'] = 'name';
 		}
 		if (!isset($filters['sort_Dir']) || !$filters['sort_Dir']) 
 		{
