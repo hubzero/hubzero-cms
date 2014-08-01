@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        plugins/courses/outline/outline.jquery.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        plugins/courses/outline/outline.js
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -12,11 +12,12 @@ if (!jq) {
 jQuery(document).ready(function(jq) {
 	var $ = jq;
 
-	$('ul.asset-list>li').on('click', function(){
-		if ($(this).hasClass('collapsed')) {
-			$(this).removeClass('collapsed');
+	$('.asset-primary').on('click', function(){
+		var el = $($(this).parent());
+		if (el.hasClass('collapsed')) {
+			el.removeClass('collapsed');
 		} else {
-			$(this).addClass('collapsed');
+			el.addClass('collapsed');
 		}
 	});
 
