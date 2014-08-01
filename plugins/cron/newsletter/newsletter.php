@@ -213,7 +213,14 @@ class plgCronNewsletter extends JPlugin
 		foreach ($unconvertedActions as $action)
 		{
 			// attempt to locate
-			$location = Hubzero\Geocode\Geocode::locate($action->ip);
+			try
+			{
+				$location = Hubzero\Geocode\Geocode::locate($action->ip);
+			}
+			catch(Exception $e)
+			{
+				continue;
+			}
 			
 			//if we got a valid result lets update our action with location info
 			if (is_object($location) && $location['latitude'] != '' && $location['longitude'] != '-')
