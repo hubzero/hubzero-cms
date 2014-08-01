@@ -43,8 +43,8 @@ $assets = array();
 	<h3>Create a wiki page</h3>
 
 	<form action="<?php echo JURI::base(true); ?>/api/courses/asset/new" method="POST" class="edit-form">
-
 		<div class="title-error error">Please provide a title first</div>
+
 		<p>
 			<label for="title">Title: </label><span class="required">*required</span>
 			<input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?php echo $asset->get('title') ?>" />
@@ -66,8 +66,8 @@ $assets = array();
 <?php
 					$assetgroups = array();
 					foreach ($this->course->offering()->units() as $unit) :
-						foreach($unit->assetgroups() as $agt) :
-							foreach($agt->children() as $ag) :
+						foreach ($unit->assetgroups() as $agt) :
+							foreach ($agt->children() as $ag) :
 								$assetgroups[] = array('id'=>$ag->get('id'), 'title'=>$ag->get('title'));
 								if ($ag->assets()->total()) :
 									foreach ($ag->assets() as $a) :
@@ -159,16 +159,14 @@ $assets = array();
 			</div>
 		<?php endif; ?>
 
-
-		<input type="hidden" name="original_scope_id" value="<?= $this->scope_id ?>" />
-		<input type="hidden" name="course_id" value="<?= $this->course->get('id') ?>" />
-		<input type="hidden" name="offering" value="<?= $this->course->offering()->alias(); ?>" />
-		<input type="hidden" name="section_id" value="<?= $this->course->offering()->section()->get('id'); ?>" />
-		<input type="hidden" name="id" id="asset_id" value="<?= $id ?>" />
+		<input type="hidden" name="original_scope_id" value="<?php echo $this->scope_id ?>" />
+		<input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+		<input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
+		<input type="hidden" name="section_id" value="<?php echo $this->course->offering()->section()->get('id'); ?>" />
+		<input type="hidden" name="id" id="asset_id" value="<?php echo $id ?>" />
 		<input type="hidden" name="type" value="wiki" />
 
 		<input type="submit" value="Submit" class="wiki-submit submit" />
 		<input type="button" value="Cancel" class="cancel" />
-
 	</form>
 </div>
