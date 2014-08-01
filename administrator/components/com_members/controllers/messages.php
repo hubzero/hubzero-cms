@@ -244,8 +244,8 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('ids', array());
-
+		$ids = JRequest::getVar('id', array());
+		
 		// Do we have any IDs?
 		if (!empty($ids)) 
 		{
@@ -258,10 +258,10 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 
 				$row = new \Hubzero\Message\Component($this->database);
 				$row->load($id);
-
+				
 				// Remove any associations
 				$notify->deleteType($row->action);
-
+				
 				// Remove the record
 				$row->delete($id);
 			}
