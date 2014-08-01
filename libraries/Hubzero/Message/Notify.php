@@ -153,5 +153,28 @@ class Notify extends \JTable
 		}
 		return true;
 	}
+
+	/**
+	 * Delete notifications for action
+	 * 
+	 * @param  [type] $type [description]
+	 * @return [type]       [description]
+	 */
+	public function deleteType($type)
+	{
+		if (!$type)
+		{
+			return false;
+		}
+
+		$query  = "DELETE FROM $this->_tbl WHERE `type`=" . $this->_db->Quote($type);
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			return false;
+		}
+		return true;
+	}
+
 }
 

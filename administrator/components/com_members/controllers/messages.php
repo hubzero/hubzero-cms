@@ -244,7 +244,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('ids', array());
+		$ids = JRequest::getVar('id', array());
 
 		// Do we have any IDs?
 		if (!empty($ids))
