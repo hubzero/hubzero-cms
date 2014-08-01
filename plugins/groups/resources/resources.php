@@ -515,6 +515,7 @@ class plgGroupsResources extends \Hubzero\Plugin\Plugin
 		$filters['group'] = $group->get('cn');
 		$filters['access'] = $access;
 		$filters['authorized'] = $authorized;
+		$filters['state'] = array(1);
 
 		// Get categories
 		$categories = $this->_cats;
