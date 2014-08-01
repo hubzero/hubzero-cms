@@ -200,6 +200,7 @@ foreach ($this->results as $category)
 		}
 
 		$num = ($total > 1) ? JText::sprintf('PLG_GROUPS_RESOURCES_RESULTS', $total) : JText::sprintf('PLG_GROUPS_RESOURCES_RESULT', $total);
+		$this->total = $total;
 
 		// A function for category specific items that may be needed
 		// Check if a function exist (using old style plugins)
