@@ -68,6 +68,7 @@ class WikiAssetHandler extends ContentAssetHandler
 		if (!JRequest::getInt('id', false))
 		{
 			// Create asset
+			$this->asset['course_id'] = JRequest::getInt('course_id');
 			$return = parent::create();
 		}
 		else
