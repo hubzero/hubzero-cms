@@ -330,7 +330,7 @@ if ($label == "none") {
 												: $formatter->formatCitation($cite, 
 													$this->filters['search'], $coins, $this->config);
 													
-											if ($cite->doi && $cite->url)
+											if ($cite->doi)
 											{
 												$formatted = str_replace('doi:' . $cite->doi, 
 													'<a href="' . $cite->url . '" rel="external">' 

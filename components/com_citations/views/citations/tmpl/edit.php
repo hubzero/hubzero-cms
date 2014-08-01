@@ -316,6 +316,22 @@ $pid = JRequest::getInt( 'publication', 0 );
 				</label>
 			</div>
 		</fieldset><div class="clear"></div>
+
+		<fieldset>
+			<legend><?php echo JText::_('Manually Format Citation'); ?>:</legend>
+			<p class="warning"><?php echo JText::_('Note: Override the citation output by entering the full citation below'); ?></p>
+			<label for="format_type">
+				<?php echo JText::_('Format Type'); ?>:
+				<select id="format_type" name="format">
+					<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo JText::_('APA'); ?></option>
+					<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo JText::_('IEEE'); ?></option>
+				</select>
+			</label>
+			<label for="formatted">
+				<?php echo JText::_('Citation'); ?>:
+				<textarea name="formatted" id="formatted" rows="8" cols="10"><?php echo stripslashes($this->row->formatted); ?></textarea>
+			</label>
+		</fieldset><div class="clear"></div>
 		
 		<?php if ($allow_tags == "yes" || $allow_badges == "yes") : ?>
 			<div class="explaination">

@@ -272,6 +272,30 @@ function submitbutton(pressbutton)
 				</tbody>
 			</table>
 		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('Manually Format Citation'); ?></span></legend>
+			<table class="adminform">
+				<tbody>
+					<tr>
+						<th class="key"><?php echo JText::_('Format Type'); ?>:</th>
+						<td colspan="3">
+							<select id="format_type" name="citation[format]">
+								<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo JText::_('APA'); ?></option>
+								<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo JText::_('IEEE'); ?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('Citation'); ?>:</th>
+						<td colspan="3">
+							<?php echo $editor->display('citation[formatted]', stripslashes($this->row->formatted), '500px', '100px', '50', '10'); ?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</fieldset>
+
 	</div>
 	<div class="col width-30 fltrt">
 		<fieldset class="adminform">
