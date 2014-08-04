@@ -132,7 +132,12 @@ $this->css('course.css')
 						list($width, $height) = $group->getLogo('size');
 						$atts = ($width > $height ? 'height="50"' : 'width="50"');
 						?>
-						<p class="course-group-descripion">
+						<p class="course-group-img">
+							<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+								<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
+							</a>
+						</p>
+						<p class="course-group-description">
 							<?php echo JText::_('COM_COURSES_BROUGHT_BY_GROUP'); ?>
 						</p>
 						<h3 class="course-group-title">
@@ -140,11 +145,6 @@ $this->css('course.css')
 								<?php echo $this->escape(stripslashes($group->get('description'))); ?>
 							</a>
 						</h3>
-						<p class="course-group-img">
-							<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
-								<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
-							</a>
-						</p>
 					</div>
 				<?php } ?>
 			<?php } ?>
