@@ -77,6 +77,9 @@ function submitbutton(pressbutton)
 }
 </script>
 
+<?php if ($this->getError()) { ?>
+	<p class="error"><?php echo implode('<br />', (array)$this->getError()); ?></p>
+<?php } ?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
 
 <div class="col width-60 fltlft">
@@ -354,6 +357,52 @@ function submitbutton(pressbutton)
 					<label for="newpass"><?php echo JText::_('NEW_PASSWORD'); ?>:</label>
 					<input type="password" name="newpass" id="newpass" value="" />
 					<p class="warning"><strong>NOTE:</strong> Entering anything above will reset the user's password.</p>
+					<?php if (count($this->password_rules) > 0) : ?>
+						<?php $this->css('password.css'); ?>
+						<script type="text/javascript">
+							/*jQuery(document).ready(function ( $ )
+							{
+								var password = $('#newpass'),
+								checkPass    = function() {
+									// Create an ajax call to check the potential password
+									$.ajax({
+										url: "/api/members/checkpass",
+										type: "POST",
+										data: "password1="+password.val(),
+										dataType: "html",
+										cache: false,
+										success: function ( html ) {
+											if(html.length > 0 && password.val() != '')
+											{
+												$('.passrules').html(html);
+											}
+											else
+											{
+												// Probably deleted password, so reset classes
+												$('.passrules').find('li').removeClass('error passed').addClass('empty');
+											}
+										}
+									});
+								};
+
+								password.on('keyup', checkPass);
+							});*/
+						</script>
+						<div><?php echo JText::_('PASSWORD_RULES'); ?>:</div>
+						<ul class="passrules">
+							<?php foreach ($this->password_rules as $rule) : ?>
+								<?php if (!empty($rule)) : ?>
+									<?php if ($this->validated && is_array($this->validated) && in_array($rule, $this->validated)) : ?>
+										<li class="pass-error"><?php echo $rule; ?></li>
+									<?php elseif ($this->validated) : ?>
+										<li class="pass-passed"><?php echo $rule; ?></li>
+									<?php else : ?>
+										<li class="pass-empty"><?php echo $rule; ?></li>
+									<?php endif; ?>
+								<?php endif; ?>
+							<?php endforeach ?>
+						</ul>
+					<?php endif; ?>
 				</div>
 				<div class="input-wrap">
 					<label title="shadowLastChange"><?php echo JText::_('SHADOW_LAST_CHANGE'); ?>:</label>

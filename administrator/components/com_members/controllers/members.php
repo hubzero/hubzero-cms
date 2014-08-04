@@ -287,6 +287,22 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		$this->view->password = \Hubzero\User\Password::getInstance($id);
 
+		// Get password rules
+		$password_rules = \Hubzero\Password\Rule::getRules();
+
+		// Get the password rule descriptions
+		$this->view->password_rules = array();
+		foreach ($password_rules as $rule)
+		{
+			if (!empty($rule['description']))
+			{
+				$this->view->password_rules[] = $rule['description'];
+			}
+		}
+
+		// Validate the password
+		$this->view->validated = (isset($this->validated)) ? $this->validated : false;
+
 		// Get the user's interests (tags)
 		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
 
@@ -479,7 +495,22 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$newpass = trim(JRequest::getVar('newpass', '', 'post'));
 		if ($newpass != '')
 		{
-			\Hubzero\User\Password::changePassword( $profile->get('username'), $newpass);
+			// Get password rules and validate
+			$password_rules = \Hubzero\Password\Rule::getRules();
+			$validated      = \Hubzero\Password\Rule::validate($newpass, $password_rules, $profile->get('uidNumber'));
+
+			if (!empty($validated))
+			{
+				// Set error
+				$this->setError(JText::_('MEMBERS_PASSWORD_DOES_NOT_MEET_REQUIREMENTS'));
+				$this->validated = $validated;
+				$redirect = false;
+			}
+			else
+			{
+				// Save password
+				\Hubzero\User\Password::changePassword($profile->get('username'), $newpass);
+			}
 		}
 
 		$passinfo = \Hubzero\User\Password::getInstance($id);
