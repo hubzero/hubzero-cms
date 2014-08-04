@@ -103,7 +103,7 @@ HUB.Jobs = {
 
 			if (tgmen.val() == '') {
 				tgmen
-					.val(default_tagline()
+					.val(default_tagline)
 					.css('color', '#999');
 			}
 

@@ -1135,14 +1135,14 @@
 	.editbt a {
 		background: url("/components/com_jobs/assets/img/page_white_edit.png") 0 0 no-repeat; 
 		padding-left: 16px;
-	}
-	.editbt a {
 		border: 0;
 	}
-	.questionmark  {
-		background: url("/components/com_jobs/assets/img/question.gif") 0 2px no-repeat; 
-		padding-left: 18px; 
-		margin-left: 0.1em;
+	.questionmark:before {
+		content: "\f059";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+		margin-left: 0.2em;
+		font-size: 1.2em;
 	}
 
 /* Resume Form */
@@ -1174,19 +1174,23 @@
 		width: 30%;
 	}
 
-/* Introductory screen 
-	#introduction {
-		background: #fbf8ea url("/components/com_jobs/assets/img/jobs-large.gif") 30px 25px no-repeat;
-	}*/
+/* Introductory screen */
 	#introduction:after {
 		content: "\f022";
 	}
 	.promo {
 		font-size: 85%;
 		color: #FF3300;
-		background: url("/components/com_jobs/assets/img/star.gif") left 2px no-repeat;
-		padding-left: 18px;
-		padding-right: 1em;
+		padding-left: 1.8em;
+		position: relative;
+	}
+	.promo:before {
+		content: "\2605";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0;
+		left: 0;
+		font-size: 1.2em;
 	}
 	.intronote {
 		width: 85%;
@@ -1207,7 +1211,8 @@
 		padding-right: 1em;
 		background: url("/components/com_jobs/assets/img/j_arrow_down.gif") right center no-repeat;
 	}
-	table.postings th, table.postings th a {
+	table.postings th,
+	table.postings th a {
 		color: #999;
 	}
 	table.postings th a {
@@ -1220,4 +1225,3 @@
 		color: #000;
 		border-bottom: 1px dotted #000;
 	}
-
