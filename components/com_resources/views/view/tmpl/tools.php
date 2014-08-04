@@ -159,7 +159,7 @@ if ($mode != 'preview')
 						if (isset($this->model->resource->curversion) && $this->model->resource->curversion) {
 							$msg .= ' <br />'.JText::_('COM_RESOURCES_LATEST_VERSION').': <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&rev='.$curtool->revision).'">'.$this->model->resource->curversion.'</a>.';
 						}
-						$msg .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=versions').'">'.JText::_('All versions').'</a>';
+						$msg .= ' <a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=versions').'">'.JText::_('COM_RESOURCES_TOOL_ALL_VERSIONS').'</a>';
 						$html .= '<p class="archive">' . $msg . '</p>' . "\n";
 					}
 
@@ -205,9 +205,9 @@ if ($mode != 'preview')
 						$url = $guide ? ResourcesHtml::processPath($this->option, $guide, $this->model->resource->id) : '';
 						$html .= "\t\t".'<p class="supdocs">'."\n";
 						if ($url) {
-							$html .= "\t\t\t".'<span><span class="guide"><a href="'.$url.'">'.JText::_('First-Time User Guide').'</a></span></span>'."\n";
+							$html .= "\t\t\t".'<span><span class="guide"><a href="'.$url.'">'.JText::_('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE').'</a></span></span>'."\n";
 						}
-						$html .= "\t\t\t".'<span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'">'.JText::_('View All Supporting Documents').'</a></span>'."\n";
+						$html .= "\t\t\t".'<span class="viewalldocs"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->model->resource->id.'&active=supportingdocs').'">'.JText::_('COM_RESOURCES_TOOL_VIEW_ALL_SUPPORTING_DOCS').'</a></span>'."\n";
 						$html .= "\t\t".'</p>'."\n";
 					}
 

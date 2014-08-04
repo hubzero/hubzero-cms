@@ -650,8 +650,8 @@ class ResourcesHtml
 				if (!$mconfig->get('mw_on')
 				 || ($mconfig->get('mw_on') > 1 && !$authorized))
 				{
-					$pop   = '<p class="warning">' . JText::_('Session invocation is currently disabled.') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
+					$pop   = '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_SESSION_INVOKE_DISABLED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 					return $html;
 				}
 
@@ -755,27 +755,25 @@ class ResourcesHtml
 
 				if (!$juser->get('guest') && !$ingroup && $toolgroups)
 				{ // see if tool is restricted to a group and if current user is in that group
-					$pop = '<p class="warning">' . JText::_('
-						WARNING: This tool is currently restricted to authorized members of the hub.
-						If you need access, please submit a ticket to that effect and include the reason for your request.') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
+					$pop = '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_IS_RESTRICTED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 				}
 				else if ((isset($resource->revision) && $resource->toolpublished) or !isset($resource->revision))
 				{ // dev or published tool
 					//if ($juser->get('guest')) {
 						// Not logged-in = show message
-						//$html .= self::primaryButton('launchtool disabled', $lurl, 'Launch Tool');
+						//$html .= self::primaryButton('launchtool disabled', $lurl, JText::_('COM_RESOURCES_LAUNCH_TOOL'));
 						//$html .= self::warning('You must <a href="'.JRoute::_('index.php?option=com_users&view=login').'">log in</a> before you can run this tool.')."\n";
 					//} else {
-						$pop = ($juser->get('guest')) ? '<p class="warning">' . JText::_('You must login before you can run this tool.') . '</p>' : '';
-						$pop = ($resource->revision =='dev') ? '<p class="warning">' . JText::_('Warning: This tool version is under development and may not be run until it is installed.') . '</p>' : $pop;
-						$html .= self::primaryButton('launchtool', $lurl, JText::_('Launch Tool'), '', '', '', 0, $pop);
+						$pop = ($juser->get('guest')) ? '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_LOGIN_REQUIRED_TO_RUN') . '</p>' : '';
+						$pop = ($resource->revision =='dev') ? '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_VERSION_UNDER_DEVELOPMENT') . '</p>' : $pop;
+						$html .= self::primaryButton('launchtool', $lurl, JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 0, $pop);
 					//}
 				}
 				else
 				{ // tool unpublished
-					$pop   = '<p class="warning">' . JText::_('This tool version is unpublished and cannot be run. If you would like to have this version staged, you can put a request through HUB Support.') . '</p>';
-					$html .= self::primaryButton('link_disabled', '', 'Launch Tool', '', '', '', 1, $pop);
+					$pop   = '<p class="warning">' . JText::_('COM_RESOURCES_TOOL_VERSION_UNPUBLISHED') . '</p>';
+					$html .= self::primaryButton('link_disabled', '', JText::_('COM_RESOURCES_LAUNCH_TOOL'), '', '', '', 1, $pop);
 				}
 			break;
 
@@ -789,7 +787,7 @@ class ResourcesHtml
 			case 31:
 			case 2:
 				// do nothing
-				$mesg  = JText::_('View').' ';
+				$mesg  = JText::_('COM_RESOURCES_VIEW') . ' ';
 				$mesg .= $resource->type == 6 ? 'Course Lectures' : '';
 				$mesg .= $resource->type == 2 ? 'Workshop ' : '';
 				$mesg .= $resource->type == 6 ? '' : 'Series';
@@ -828,21 +826,21 @@ class ResourcesHtml
 				switch ($rtLinkAction)
 				{
 					case 'download':
-						$mesg  = 'Download';
+						$mesg  = JText::_('COM_RESOURCES_DOWNLOAD');
 						$class = 'download';
 						//$action = 'rel="download"';
 						$linkAction = 3;
 					break;
 
 					case 'lightbox':
-						$mesg = 'View Resource';
+						$mesg = JText::_('COM_RESOURCES_VIEW_RESOURCE');
 						$class = 'play';
 						//$action = 'rel="internal"';
 						$linkAction = 2;
 					break;
 
 					case 'newwindow':
-						$mesg = 'View Resource';
+						$mesg = JText::_('COM_RESOURCES_VIEW_RESOURCE');
 						//$class = 'popup';
 						$action = 'rel="external"';
 						$linkAction = 1;
@@ -852,19 +850,17 @@ class ResourcesHtml
 					default:
 						$linkAction = 0;
 
-						//$mediatypes = array('11','20','34','19','37','32','15','40','41','15','76');
 						$mediatypes = array('elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter');
-						//$downtypes = array('60','59','57','55');
 						$downtypes = array('thesis','handout','manual','software_download');
 
 						if (in_array($lt->alias, $downtypes))
 						{
-							$mesg  = 'Download';
+							$mesg  = JText::_('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						}
 						elseif (in_array($rt->alias, $mediatypes))
 						{
-							$mesg  = 'View Presentation';
+							$mesg  = JText::_('COM_RESOURCES_VIEW_PRESENTATION');
 							$mediatypes = array('flash_paper','breeze','32','26');
 							if (in_array($firstChild->type, $mediatypes))
 							{
@@ -873,13 +869,13 @@ class ResourcesHtml
 						}
 						else
 						{
-							$mesg  = 'Download';
+							$mesg  = JText::_('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						}
 
 						if ($firstChild->standalone == 1)
 						{
-							$mesg  = 'View Resource';
+							$mesg  = JText::_('COM_RESOURCES_VIEW_RESOURCE');
 							$class = ''; //'play';
 						}
 
@@ -893,7 +889,7 @@ class ResourcesHtml
 						 || substr($firstChild->path, 0, 7) == 'feed://'
 						 || substr($firstChild->path, 0, 6) == 'mms://')
 						{
-							$mesg  = 'View Link';
+							$mesg  = JText::_('COM_RESOURCES_VIEW_LINK');
 						}
 					break;
 				}
@@ -902,7 +898,7 @@ class ResourcesHtml
 				if ($firstChild->access==1 && $juser->get('guest'))
 				{
 					// first child is for registered users only and the visitor is not logged in
-					$pop  = '<p class="warning">This resource requires you to log in before you can proceed with the download.</p>' . "\n";
+					$pop  = '<p class="warning">' . JText::_('COM_RESOURCES_LOGIN_REQUIRED_TO_DOWNLOAD') . '</p>' . "\n";
 					$html .= self::primaryButton($class . ' disabled', JRoute::_('index.php?option=com_users&view=login'), $mesg, '', '', '', '', $pop);
 				}
 				else
@@ -915,17 +911,17 @@ class ResourcesHtml
 					switch ($linkAction)
 					{
 						case 3:
-							$mesg  = 'Download';
+							$mesg  = JText::_('COM_RESOURCES_DOWNLOAD');
 							$class = 'download';
 						break;
 
 						case 2:
-							$mesg  = 'View Resource';
+							$mesg  = JText::_('COM_RESOURCES_VIEW_RESOURCE');
 							$class = 'play';
 						break;
 
 						case 1:
-							$mesg = 'View Resource';
+							$mesg = JText::_('COM_RESOURCES_VIEW_RESOURCE');
 							//$class = 'popup';
 							$action = 'rel="external"';
 						break;
