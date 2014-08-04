@@ -70,69 +70,63 @@ class CoursesModelPage extends CoursesModelAbstract
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($content = $this->get('content_parsed'))
+				$content = $this->get('content_parsed', null);
+				if ($content === null)
 				{
-					if ($shorten)
+					$config = array(
+						'option'   => JRequest::getCmd('option', 'com_courses'),
+						'scope'    => JRequest::getVar('gid', ''),
+						'pagename' => $this->get('url'),
+						'pageid'   => '',
+						'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : ''),
+						'domain'   => $this->get('course_id')
+					);
+					if ($this->get('offering_id'))
 					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
+						$config['scope'] = CoursesModelCourse::getInstance($this->get('course_id'))->get('alias') . DS . CoursesModelOffering::getInstance($this->get('offering_id'))->get('alias') . DS . 'pages';
 					}
-					return $content;
+					if ($this->get('section_id'))
+					{
+						$config['filepath'] = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'sections' . DS . $this->get('section_id') . DS . 'pagefiles';
+					}
+
+					$content = stripslashes($this->get('content'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('content_parsed', (string) $this->get('content'));
+					$this->set('content', $content);
+
+					return $this->content($as, $shorten);
 				}
-
-				$config = array(
-					'option'   => JRequest::getCmd('option', 'com_courses'),
-					'scope'    => JRequest::getVar('gid', ''),
-					'pagename' => $this->get('url'),
-					'pageid'   => '',
-					'filepath' => DS . ltrim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'pagefiles' . ($this->get('offering_id') ? DS . $this->get('offering_id') : ''),
-					'domain'   => $this->get('course_id')
-				);
-				if ($this->get('offering_id'))
-				{
-					$config['scope'] = CoursesModelCourse::getInstance($this->get('course_id'))->get('alias') . DS . CoursesModelOffering::getInstance($this->get('offering_id'))->get('alias') . DS . 'pages';
-				}
-				if ($this->get('section_id'))
-				{
-					$config['filepath'] = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'sections' . DS . $this->get('section_id') . DS . 'pagefiles';
-				}
-
-				$content = stripslashes($this->get('content'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('content_parsed', $this->get('content'));
-				$this->set('content', $content);
-
-				return $this->content($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('content'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
+				$content = html_entity_decode($content);
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 
 	/**

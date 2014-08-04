@@ -123,61 +123,55 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	public function content($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
+		$options = array();
 
 		switch ($as)
 		{
 			case 'parsed':
-				if ($content = $this->get('content_parsed'))
+				$content = $this->get('content_parsed', null);
+				if ($content === null)
 				{
-					if ($shorten)
-					{
-						$content = \Hubzero\Utility\String::truncate($content, $shorten, array('html' => true));
-					}
-					return $content;
+					$config = array(
+						'option'   => 'com_courses',
+						'scope'    => 'courses',
+						'pagename' => $this->get('id'),
+						'pageid'   => 0,
+						'filepath' => '',
+						'domain'   => ''
+					);
+
+					$content = stripslashes($this->get('content'));
+					$this->importPlugin('content')->trigger('onContentPrepare', array(
+						$this->_context,
+						&$this,
+						&$config
+					));
+
+					$this->set('content_parsed', $this->get('content')); //implode('', $content));
+					$this->set('content', $content);
+
+					return $this->content($as, $shorten);
 				}
-
-				$config = array(
-					'option'   => 'com_courses',
-					'scope'    => 'courses',
-					'pagename' => $this->get('id'),
-					'pageid'   => 0,
-					'filepath' => '',
-					'domain'   => ''
-				);
-
-				$content = stripslashes($this->get('content'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
-					&$config
-				));
-
-				$this->set('content_parsed', $this->get('content')); //implode('', $content));
-				$this->set('content', $content);
-
-				return $this->content($as, $shorten);
+				$options['html'] = true;
 			break;
 
 			case 'clean':
 				$content = strip_tags($this->content('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
 			break;
 
 			case 'raw':
 			default:
 				$content = stripslashes($this->get('content'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
+				$content = html_entity_decode($content);
 			break;
 		}
+
+		if ($shorten)
+		{
+			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+		}
+		return $content;
 	}
 }
 

@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" /></td>
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" />
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_BLURB_HINT'); ?>">
 				<label for="field-blurb"><?php echo JText::_('COM_COURSES_FIELD_BLURB'); ?>:</label><br />
