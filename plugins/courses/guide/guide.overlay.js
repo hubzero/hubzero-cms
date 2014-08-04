@@ -47,6 +47,7 @@ jQuery(document).ready(function(jq){
 			},
 			afterShow: function() {
 				$('#guide-content').css('position', 'absolute');
+				$('html').removeClass('fancybox-lock');
 			},
 			onUpdate: function() {
 				$('#guide-content').css('position', 'absolute');
@@ -85,6 +86,7 @@ jQuery(document).ready(function(jq){
 					},
 					afterShow: function() {
 						$('#guide-content').css('position', 'absolute');
+						$('html').removeClass('fancybox-lock');
 					},
 					beforeClose: function() {
 						$.get($('#guide-overlay').attr('data-action').nohtml(), {}, function(response){
