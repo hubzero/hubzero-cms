@@ -66,7 +66,7 @@ class plgCoursesRelated extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 
-		$query  = "SELECT c.*
+		$query  = "SELECT DISTINCT c.*
 					FROM `#__courses` AS c
 					JOIN `#__courses_members` AS m ON m.course_id=c.id AND m.student=0
 					LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
