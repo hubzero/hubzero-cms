@@ -1,0 +1,20 @@
+@import url("../../../../components/com_wishlist/assets/css/wishlist.css");
+
+.entry .entry-content {
+	background: #fff;
+}
+.wish-status,
+.entry {
+	margin-top: 30px;
+}
+.subject>ol.comments {
+	margin: 30px 0;
+}
+.below h3 {
+	font-size: 115%;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+	padding: 0 0 0.618em 0;
+}

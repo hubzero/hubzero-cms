@@ -79,9 +79,9 @@
 	#introduction .col p:last-child {
 		margin-bottom: 0;
 	}
-	#introduction .omega {
+	/*#introduction .omega {
 		text-align: right;
-	}
+	}*/
 
 	#introduction + .section {
 		padding: 0;

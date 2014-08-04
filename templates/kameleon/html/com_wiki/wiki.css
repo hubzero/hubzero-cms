@@ -14,6 +14,11 @@
 		padding: 30px 60px;
 		display: table-cell;
 	}
+	.wikipage h1,
+	.wikipage h2,
+	.wikipage h3 {
+		margin-left: 0;
+	}
 
 	ul.sub-menu {
 		padding-left: 60px;
