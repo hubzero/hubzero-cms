@@ -526,10 +526,18 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 			// Copy asset groups
 			if ($children = $this->_tbl->find(array('w' => array('parent' => $a_id))))
 			{
+				$found = array();
+
 				foreach ($children as $c)
 				{
+					if (in_array($c->id, $found))
+					{
+						continue;
+					}
 					$assetgroup = new CoursesModelAssetgroup($c);
 					$assetgroup->set('parent', $this->get('id'));
+
+					$found[] = $c->id;
 
 					if (!$assetgroup->copy($unit_id, $deep))
 					{
