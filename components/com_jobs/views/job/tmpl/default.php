@@ -177,7 +177,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		if ($owner)
 		{
 			// admin options
-			switch( $job->status )
+			switch ($job->status)
 			{
 				case 1:
 					$html .= '<p class="manageroptions"><span><a href="'.JRoute::_('index.php?option='.$this->option.'&task=unpublish&code='.$job->code).'">'.JText::_('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB').'</a> '.JText::_('COM_JOBS_NOTICE_ACCESS_PRESERVED').'</span> </p>';
