@@ -235,6 +235,7 @@ class CoursesTableCourse extends JTable
 			$this->setError(JText::_('Invalid alias.'));
 			return false;
 		}
+		$this->makeAliasUnique();
 
 		if (!$this->id)
 		{
@@ -243,6 +244,32 @@ class CoursesTableCourse extends JTable
 			$this->created_by = $juser->get('id');
 		}
 		return true;
+	}
+
+	/**
+	 * Return a unique alias based on given alias
+	 *
+	 * @return     integer
+	 */
+	private function makeAliasUnique()
+	{
+		$sql = "SELECT alias FROM $this->_tbl";
+		if ($this->id)
+		{
+			$sql .= " AND `id`!=" . $this->_db->Quote(intval($this->id));
+		}
+		$this->_db->setQuery($sql);
+		$result = $this->_db->loadResultArray();
+
+		$original_alias = $this->alias;
+
+		if ($result)
+		{
+			for ($i=1; in_array($this->alias, $result); $i++)
+			{
+				$this->alias = $original_alias . $i;
+			}
+		}
 	}
 
 	/**
