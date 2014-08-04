@@ -124,7 +124,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 
 <?php if ($this->course->offering()->units()->total() > 0) : ?>
 
-	<?php if ($this->course->offering()->section()->started() && !$this->course->offering()->section()->ended()) { ?>
+	<?php if (($this->course->offering()->section()->started() && !$this->course->offering()->section()->ended()) || $isManager) { ?>
 
 	<?php foreach ($this->course->offering()->units() as $i => $unit) { ?>
 		<?php if ((!$isManager && $unit->isPublished()) || $isManager) {
@@ -197,7 +197,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 								</p>
 							</div>
 				<?php } else { ?>
-						<?php $i = 0; ?>
+						<?php $k = 0; ?>
 
 						<?php foreach ($unit->assetgroups(null, $filters) as $agt) { ?>
 							<?php if ((($agt->isAvailable() && $agt->isPublished()) || $isManager) && count($agt->children()) > 0) { ?>
@@ -273,7 +273,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 												if ($ag->assets()->total())
 												{
 													// Loop through the assets
-													foreach ($ag->assets() as $i => $a)
+													foreach ($ag->assets() as $a)
 													{
 														if ((($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished()) || $isManager)
 														{
@@ -431,7 +431,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 										</div><!-- / .col -->
 									</div><!--  .grid -->
 
-								<?php $i++; ?>
+								<?php $k++; ?>
 							<?php } ?>
 						<?php } // foreach ($unit->assetgroups() as $agt) ?>
 
@@ -454,17 +454,17 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 											$target = '';
 										}
 										echo '<li><a class="asset ' . $a->get('subtype') . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a></li>';
-										$i++;
+										$k++;
 									}
 								}
 								?>
 							</ul>
 						<?php } ?>
 
-						<?php if (!$i) { ?>
+						<?php if (!$k) { ?>
 							<div class="grid">
 								<p class="info">
-									No content found for this unit.
+									No content found or existing content has expired and is no longer available for this unit.
 								</p>
 							</div>
 						<?php } ?>
