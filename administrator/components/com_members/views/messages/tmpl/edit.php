@@ -55,7 +55,10 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 </script>
-
+</script>
+<?php if ($this->getErrors()) { ?>
+	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+<?php } ?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">

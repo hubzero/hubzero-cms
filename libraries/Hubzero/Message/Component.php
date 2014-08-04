@@ -88,6 +88,14 @@ class Component extends \JTable
 			$this->setError(\JText::_('Please provide a component.'));
 			return false;
 		}
+		$this->_db->setQuery("SELECT element FROM jos_extensions AS e WHERE e.type = 'component' ORDER BY e.name ASC");
+		$extensions = $this->_db->loadResultArray();
+		if (!in_array($this->component, $extensions))
+		{
+			$this->setError(\JText::_('Component does not exist.'));
+			return false;
+		}
+
 		$this->action = trim($this->action);
 		if (!$this->action) 
 		{
@@ -120,7 +128,7 @@ class Component extends \JTable
 	public function getRecords($filters = array())
 	{
 		$query  = "SELECT x.*, c.name" . $this->_buildQuery($filters);
-
+		
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
