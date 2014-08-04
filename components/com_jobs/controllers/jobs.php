@@ -2292,7 +2292,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 	 */
 	public function getServiceParams(&$service)
 	{
-		$params = new JRegistr($service->params);
+		$params = new JRegistry($service->params);
 		$service->maxads = $params->get('maxads', '');
 		$service->maxads = intval(str_replace(' ', '', $service->maxads));
 	}

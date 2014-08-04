@@ -37,7 +37,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$jobsHtml = new JobsHtml();
 
 	$promoline = $this->config->get('promoline') ? $this->config->get('promoline') : '';
-	$infolink = $this->config->get('infolink') ? $this->config->get('infolink') : '';
+	$infolink = JRoute::_('index.php?option=com_help&component=jobs'); //$this->config->get('infolink') ? $this->config->get('infolink') : '';
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -47,12 +47,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php if ($this->guest) { ?>
 			<li><?php echo JText::_('COM_JOBS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option . '&task=view').'?action=login">'.JText::_('COM_JOBS_ACTION_LOGIN').'</a> '.JText::_('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
 		<?php } else if ($this->emp && $this->allowsubscriptions) {  ?>
-			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-			<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
+			<li><a class="icon-dashboard myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+			<li><a class="icon-list shortlist btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=resumes').'?filterby=shortlisted'; ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
 		<?php } else if ($this->admin) { ?>
 			<li>
 				<!-- <?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?> -->
-				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
+				<a class="icon-dashboard myjobs btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
 			</li>
 		<?php } else { ?>
 			<li><a class="myresume btn" href="<?php echo JRoute::_('index.php?option='.$this->option . '&task=addresume'); ?>"><?php echo JText::_('COM_JOBS_MY_RESUME'); ?></a></li>
@@ -98,7 +98,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</div>
 		<div class="col span3 omega">
 			<h3><?php echo JText::_('COM_JOBS_QUESTIONS_LINK'); ?></h3>
-			<p><?php echo '<a href="'.$infolink.'">'.JText::_('COM_JOBS_LEARN_MORE').'</a> '.JText::_('COM_JOBS_ABOUT_THE_PROCESS'); ?></p>
+			<p><?php echo '<a class="popup" href="'.$infolink.'">'.JText::_('COM_JOBS_LEARN_MORE').'</a> '.JText::_('COM_JOBS_ABOUT_THE_PROCESS'); ?></p>
 		</div>
 	</div><!-- / .grid -->
 	<?php } ?>

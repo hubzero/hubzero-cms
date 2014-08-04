@@ -58,12 +58,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div id="content-header-extra">
 		<ul id="useroptions">
 		<?php if ($this->emp) {  ?>
-			<li><a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-			<li><a class="shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes&filterby=shortlisted'); ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
+			<li><a class="icon-dashboard myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
+			<li><a class="icon-list shortlist btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=resumes&filterby=shortlisted'); ?>"><?php echo JText::_('COM_JOBS_SHORTLIST'); ?></a></li>
 		<?php } else { ?>
 			<li>
 				<!-- <?php echo JText::_('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?> -->
-				<a class="myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
+				<a class="icon-dashboard myjobs btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
 			</li>
 		<?php } ?>
 		</ul>
@@ -126,7 +126,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				</select>
 			</label>
 		<?php } else { ?>
-			<p class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_US_ONLY'); ?></p>
+			<p class="warning"><?php echo JText::_('COM_JOBS_EDITJOB_US_ONLY'); ?></p>
 			<input type="hidden" id="companyLocationCountry" name="companyLocationCountry" value="us" />
 		<?php } ?>
 			<label>
@@ -167,14 +167,22 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<?php echo JText::_('COM_JOBS_EDITJOB_TYPE'); ?>:
 				<?php echo $jobsHtml->formSelect('type', $this->types, $job->type, '', ''); ?>
 			</label>
-			<label for="startdate">
-				<?php echo JText::_('COM_JOBS_EDITJOB_START_DATE'); ?>:
-				<input type="text" class="option level" name="startdate" id="startdate" size="10" maxlength="10" value="<?php echo $startdate; ?>" /> <span class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
-			</label>
-			<label for="closedate">
-				<?php echo JText::_('COM_JOBS_EDITJOB_CLOSE_DATE'); ?>:
-				<input  type="text" class="option level" name="closedate" id="closedate" size="10" maxlength="10" value="<?php echo $closedate; ?>" /> <span class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
-			</label>
+			<div class="grid">
+				<div class="col span6">
+					<label for="startdate">
+						<?php echo JText::_('COM_JOBS_EDITJOB_START_DATE'); ?>:
+						<input type="text" name="startdate" id="startdate" size="10" maxlength="10" value="<?php echo $startdate; ?>" />
+						<span class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
+					</label>
+				</div>
+				<div class="col span6 omega">
+					<label for="closedate">
+						<?php echo JText::_('COM_JOBS_EDITJOB_CLOSE_DATE'); ?>:
+						<input  type="text" name="closedate" id="closedate" size="10" maxlength="10" value="<?php echo $closedate; ?>" />
+						<span class="hint"><?php echo JText::_('COM_JOBS_EDITJOB_HINT_DATE_FORMAT'); ?></span>
+					</label>
+				</div>
+			</div>
 			<label for="applyExternalUrl">
 				<?php echo JText::_('COM_JOBS_EDITJOB_EXTERNAL_URL'); ?>:
 				<input  type="text" name="applyExternalUrl" id="applyExternalUrl" size="100" maxlength="250" value="<?php echo $this->escape(stripslashes($job->applyExternalUrl)); ?>" />
@@ -206,9 +214,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</fieldset>
 		<p class="submit">
 			<input type="submit" class="btn btn-success" name="submit" value="<?php echo ($this->task=='addjob' or $job->status == 4) ? JText::_('COM_JOBS_ACTION_SAVE_PREVIEW') : JText::_('COM_JOBS_ACTION_SAVE'); ?>" />
-			<span class="cancelaction">
-				<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_CANCEL'); ?></a>
-			</span>
+
+			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo JText::_('COM_JOBS_CANCEL'); ?></a>
 		</p>
 	</form>
 </section>
