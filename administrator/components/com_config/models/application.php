@@ -253,7 +253,7 @@ class ConfigModelApplication extends JModelForm
 		$ftp = JClientHelper::getCredentials('ftp', true);
 
 		// Attempt to make the file writeable if using FTP.
-		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0644'))
+		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0640'))
 		{
 			JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTWRITABLE'));
 		}
@@ -267,7 +267,7 @@ class ConfigModelApplication extends JModelForm
 		}
 
 		// Attempt to make the file unwriteable if using FTP.
-		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0444'))
+		if (!$ftp['enabled'] && JPath::isOwner($file) && !JPath::setPermissions($file, '0440'))
 		{
 			JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_CONFIG_ERROR_CONFIGURATION_PHP_NOTUNWRITABLE'));
 		}
