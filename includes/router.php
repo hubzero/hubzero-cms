@@ -235,7 +235,7 @@ class JRouterSite extends JRouter
 			$expiredpassword = $session->get('expiredpassword',false);
 
 			if ($badpassword || $expiredpassword) {
-				if ($vars['option'] == 'com_members' && $vars['task'] == 'changepassword') {
+				if ($vars['option'] == 'com_members' && isset($vars['task']) && $vars['task'] == 'changepassword') {
 					return $vars;
 				}
 
