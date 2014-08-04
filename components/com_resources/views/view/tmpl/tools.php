@@ -165,7 +165,7 @@ if ($mode != 'preview')
 
 					// doi message
 					if ($revision != 'dev' && ($this->model->resource->doi || $this->model->resource->doi_label)) {
-						if($this->model->resource->doi && $tconfig->get('doi_shoulder'))
+						if ($this->model->resource->doi && $tconfig->get('doi_shoulder'))
 						{
 							$doi = 'doi:' . $tconfig->get('doi_shoulder') . DS . strtoupper($this->model->resource->doi);
 						}
