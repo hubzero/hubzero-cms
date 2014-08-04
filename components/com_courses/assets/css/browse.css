@@ -102,7 +102,7 @@
 	.course-group {
 		border: 1px solid #e9e9e9;
 		margin: 1em 0 2em 0;
-		padding: 2em 2em 2em 90px;
+		padding: 2em;
 		position: relative;
 		-webkit-border-radius: 0.25em;
 		-moz-border-radius: 0.25em;
@@ -123,8 +123,12 @@
 		border: none;
 		color: inherit;
 	}
-	.course-group img {
+	/*.course-group img {
 		position: absolute;
 		left: 2em;
 		top: 1.9em;
+	}*/
+	.course-group p.course-group-img {
+		float: left;
+		margin: 0 1.5em 0 0;
 	}

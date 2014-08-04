@@ -116,8 +116,16 @@ $juser = JFactory::getUser();
 				<div class="course-group">
 					<?php
 					$group = \Hubzero\User\Group::getInstance($this->filters['group']);
+
+					list($width, $height) = $group->getLogo('size');
+					$atts = ($width > $height ? 'height="50"' : 'width="50"');
 					?>
-					<p class="course-group-descripion">
+					<p class="course-group-img">
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
+							<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
+						</a>
+					</p>
+					<p class="course-group-description">
 						<?php echo JText::_('Brought to you by:'); ?>
 					</p>
 					<h3 class="course-group-title">
@@ -125,11 +133,6 @@ $juser = JFactory::getUser();
 							<?php echo $this->escape(stripslashes($group->get('description'))); ?>
 						</a>
 					</h3>
-					<p class="course-group-img">
-						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
-							<img src="<?php echo $group->getLogo(); ?>" width="50" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?> group image" />
-						</a>
-					</p>
 				</div>
 			<?php } ?>
 
