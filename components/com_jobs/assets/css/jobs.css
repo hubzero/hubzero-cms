@@ -434,7 +434,7 @@
 		margin-bottom: 0.5em;
 	}
 /* Shortlisting */
-	.favvit, 
+	.favvit,
 	a.favvit {
 		background: url("/components/com_jobs/assets/img/smiley-large.gif") 0 10px no-repeat; 
 		padding: 0.5em 0.5em 2em 1em; 
@@ -520,8 +520,7 @@
 		color: #ce9252;
 		border: none;
 	}
-	a.premium:before
-	{
+	a.premium:before {
 		content: "\f04e";
 		font-family: 'Fontcons';
 		margin-right: 0.2em;
@@ -548,18 +547,15 @@
 	.current  h3 {
 		color: #a35807;
 	}
-	.process_steps h3 span, 
+	.process_steps h3 span,
 	.countc {
 		background: #eef3fc;
 		border: 1px solid #cccccc;
-		-moz-border-radius-topright: 15px;
-		-moz-border-radius-bottomright: 15px;
-		-moz-border-radius-bottomleft: 15px;
-		-moz-border-radius-topleft: 15px;
-		-webkit-border-top-right-radius: 15px;
-		-webkit-border-bottom-right-radius: 15px;
-		-webkit-border-bottom-left-radius: 15px;
-		-webkit-border-top-left-radius: 15px;
+		-webkit-border-radius: 15px;
+		-moz-border-radius: 15px;
+		-ms-border-radius: 15px;
+		-o-border-radius: 15px;
+		border-radius: 15px;
 	}
 	.countc {
 		padding: 0.2em 0.5em 0.2em 0.5em;
@@ -807,14 +803,14 @@
 		font-weight: normal;
 		font-size: 80%;
 	}
-	#hubForm .explaination .joblist h3, 
+	#hubForm .explaination .joblist h3,
 	#hubForm .explaination h3 {
 		margin: 0;
-		padding: 0;		
+		padding: 0;
 		position: relative;
 		width: auto;
 	}
-	#hubForm .explaination h3  {
+	#hubForm .explaination h3 {
 		margin-top: 1em;
 		margin-bottom: 1em;
 		font-size: 130%;
@@ -823,10 +819,16 @@
 	#hubForm .explaination h4 {
 		padding: 0.5em 0 0.5em 1.5em;
 		color: #ce9252;
-		background: url("/components/com_jobs/assets/img/orangepointer.gif") 0 center no-repeat;
 		margin: 0;
 		position: relative;
 		width: auto;
+	}
+	#hubForm .explaination h4:before {
+		content: "\2192";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.5em;
+		left: 0;
 	}
 	.com_jobs #hubForm .explaination .exp_wrap {
 		padding-left: 2em;
@@ -1041,10 +1043,10 @@
 		font-weight: bold;
 		color: #333333;
 	}
-	.additem {
+	/*.additem {
 		padding-left: 20px;
 		background: url("/components/com_jobs/assets/img/additem.gif") 0 0 no-repeat;
-	}
+	}*/
 /*---------------------------------------------------------------*/
 	.edittitle {
 		padding-left: 20px;
