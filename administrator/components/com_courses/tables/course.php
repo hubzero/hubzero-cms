@@ -256,7 +256,7 @@ class CoursesTableCourse extends JTable
 		$sql = "SELECT alias FROM $this->_tbl";
 		if ($this->id)
 		{
-			$sql .= " AND `id`!=" . $this->_db->Quote(intval($this->id));
+			$sql .= " WHERE `id`!=" . $this->_db->Quote(intval($this->id));
 		}
 		$this->_db->setQuery($sql);
 		$result = $this->_db->loadResultArray();
