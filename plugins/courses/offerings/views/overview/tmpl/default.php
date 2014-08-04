@@ -33,6 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 ?>
+<?php if ($this->course->access('edit', 'course')) { ?>
+<div class="manager-options">
+	<a class="icon-add btn btn-secondary" id="add-offering" href="<?php echo JRoute::_($this->course->link() . '&task=newoffering'); ?>">
+		<?php echo JText::_('PLG_COURSES_OFFERINGS_NEW_OFFERING'); ?>
+	</a>
+	<span><strong><?php echo JText::_('PLG_COURSES_OFFERINGS_NEW_OFFERING_EXPLANATION'); ?></strong></span>
+</div>
+<?php } ?>
 <div class="container">
 	<table class="entries">
 		<thead>
