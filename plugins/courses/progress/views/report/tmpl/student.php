@@ -81,7 +81,7 @@ $auxiliary = $asset->findByScope(
 
 $assets = array_merge($assets, $auxiliary);
 
-foreach($assets as $asset)
+foreach ($assets as $asset)
 {
 	$increment_count_taken = false;
 	$crumb                 = false;
@@ -392,7 +392,7 @@ $progress_timeline .= '</div>';
 			<div class="current-score-inner">
 				<p class="grading-policy"><?php echo JText::_('grading policy') ?></p>
 				<p class="title"><?php echo JText::_('Your current score') ?></p>
-				<?
+				<?php
 					$cls = '';
 					if ($passing === 1)
 					{
@@ -404,8 +404,8 @@ $progress_timeline .= '</div>';
 					}
 				?>
 				<p class="score<?php echo $cls ?>">
-					<?=
-						(isset($grades[$this->member->get('id')]['course'][$this->course->get('id')]))
+					<?php
+						echo (isset($grades[$this->member->get('id')]['course'][$this->course->get('id')]))
 							? $grades[$this->member->get('id')]['course'][$this->course->get('id')] . '%'
 							: '--'
 					?>
@@ -445,14 +445,14 @@ $progress_timeline .= '</div>';
 	</p>
 
 	<div class="units">
-	<?php foreach($this->course->offering()->units() as $unit) : ?>
+	<?php foreach ($this->course->offering()->units() as $unit) : ?>
 
 		<div class="unit-entry">
 			<div class="unit-overview">
 				<div class="unit-title"><?php echo $unit->get('title') ?></div>
 				<div class="unit-score">
-					<?=
-						(isset($grades[$this->member->get('id')]['units'][$unit->get('id')]))
+					<?php
+						echo (isset($grades[$this->member->get('id')]['units'][$unit->get('id')]))
 							? $grades[$this->member->get('id')]['units'][$unit->get('id')] . '%'
 							: '--'
 					?>
@@ -474,7 +474,7 @@ $progress_timeline .= '</div>';
 								});
 						?>
 							<?php foreach ($details['forms'][$unit->get('id')] as $form) : ?>
-								<?
+								<?php
 									if (is_numeric($form['score']) && $form['score'] < 60)
 									{
 										$class = 'stop';
@@ -526,13 +526,13 @@ $progress_timeline .= '</div>';
 						</tr>
 					</thead>
 					<tbody>
-						<?
+						<?php
 							usort($details['aux'], function ($a, $b) {
 								return strcmp($a['title'], $b['title']);
 							});
 						?>
 						<?php foreach ($details['aux'] as $aux) : ?>
-							<?
+							<?php
 								if (is_numeric($aux['score']) && $aux['score'] < 60)
 								{
 									$class = 'stop';
