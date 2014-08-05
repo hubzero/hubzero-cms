@@ -86,7 +86,7 @@ function submitbutton(pressbutton)
 		</div>
 		<div class="input-wrap">
 			<label><?php echo JText::_('COM_RESOURCES_FIELD_CATEGORY'); ?>:</label><br />
-			<?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, 'COM_RESOURCES_SELECT', '', '', ''); ?>
+			<?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, JText::_('COM_RESOURCES_SELECT'), '', '', ''); ?>
 		</div>
 		<div class="input-wrap">
 			<label for="field-contributable"><?php echo JText::_('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />

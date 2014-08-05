@@ -50,7 +50,7 @@ if ($canDo->get('core.delete'))
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="category"><?php echo JText::_('COM_RESOURCES_FILTER_CATEGORY'); ?>:</label>
-		<?php echo ResourcesHtml::selectType($this->cats, 'category', $this->filters['category'], 'COM_RESOURCES_SELECT', '', '', ''); ?>
+		<?php echo ResourcesHtml::selectType($this->cats, 'category', $this->filters['category'], JText::_('COM_RESOURCES_SELECT'), '', '', ''); ?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
 	</fieldset>
