@@ -117,7 +117,7 @@ class plgTagsAnswers extends JPlugin
 					(SELECT COUNT(*) FROM #__answers_responses AS r WHERE r.question_id=a.id) AS rcount, 
 					NULL AS data1, NULL AS data2, NULL AS data3 ";
 
-		$f_from  = " FROM #__answers_questions AS a, #__tags_object AS t WHERE a.id=t.objectid AND t.tbl='answers' AND t.tagid IN ($ids)";
+		$f_from  = " FROM #__answers_questions AS a, #__tags_object AS t WHERE a.id=t.objectid AND t.tbl='answers' AND t.tagid IN ($ids) AND a.state!=2";
 		$f_from .= " GROUP BY a.id HAVING uniques=" . count($tags);
 		$order_by  = " ORDER BY ";
 		switch ($sort)
