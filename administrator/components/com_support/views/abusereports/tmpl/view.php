@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_ABUSE_REPORTS'), 'support.png');
 JToolBarHelper::save();
-JToolBarHelper::cancel();
+//JToolBarHelper::cancel();
 
 $reporter = JUser::getInstance($this->report->created_by);
 
@@ -55,7 +55,7 @@ if (is_object($this->reported))
 	$link = str_replace('/administrator', '', $this->reported->href);
 }
 
-JHTML::_('behavior.modal');
+JHTML::_('behavior.modal', 'a.modals');
 
 ?>
 <script type="text/javascript">
@@ -80,7 +80,7 @@ function submitbutton(pressbutton)
 				<tbody>
 					<tr>
 						<td>
-							<h4><?php echo '<a class="modal" href="' . $link . '">'.$this->escape($this->title) . '</a>: '; ?></h4>
+							<h4><?php echo '<a class="modals" href="' . $link . '">'.$this->escape($this->title) . '</a>: '; ?></h4>
 							<p><?php echo (is_object($this->reported)) ? stripslashes($this->reported->text) : ''; ?></p>
 							<?php if (is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject!='') {
 								echo '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>';
