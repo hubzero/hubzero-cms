@@ -92,7 +92,7 @@ window.addEvent('domready', function(){
 						<li><a href="#" onclick="return false;" id="details" class="active">Details</a></li>
 						<li><a href="#" onclick="return false;" id="managers">Managers</a></li>
 						<li><a href="#" onclick="return false;" id="datetime">Dates/Times</a></li>
-						<li><a href="#" onclick="return false;" id="badge">Badge</a></li>
+						<li><a href="#" onclick="return false;" id="badge">Recognition/Rewards</a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -391,6 +391,8 @@ window.addEvent('domready', function(){
 					}
 					?>
 				</fieldset>
+
+				<?php $params = new JRegistry($this->row->get('params')); ?>
 
 				<?php
 					JPluginHelper::importPlugin('courses');
@@ -738,6 +740,31 @@ window.addEvent('domready', function(){
 		<?php } ?>
 		</div>
 		<div id="page-badge" class="tab">
+			<?php if ($this->course->config()->get('certificate')) { ?>
+				<fieldset class="adminform">
+					<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_CERTIFICATE'); ?></span></legend>
+
+					<table class="admintable">
+						<tbody>
+							<tr>
+								<th class="key" width="250">
+									<label for="params-certificate"><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE'); ?>:</label>
+								</th>
+								<td>
+									<select name="params[certificate]" id="params-certificate">
+										<option value="0"<?php echo ($params->get('certificate', 0) == 0) ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_NO'); ?></option>
+										<option value="1"<?php echo ($params->get('certificate', 0) == 1) ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_YES'); ?></option>
+									</select>
+									<span class="hint"><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</fieldset>
+			<?php } else { ?>
+				<input type="hidden" name="params[certificate]" value="0" />
+			<?php } ?>
+
 			<script type="text/javascript">
 				jQuery(document).ready(function(jq){
 					var $ = jq;
