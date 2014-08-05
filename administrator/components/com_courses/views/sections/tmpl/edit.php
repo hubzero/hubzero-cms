@@ -716,23 +716,23 @@ jQuery(document).ready(function($){
 		<?php } ?>
 		</div>
 		<div id="page-badge" class="tab">
-			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_CERTIFICATE'); ?></span></legend>
+			<?php $certificate = $this->course->certificate();
+			if ($certificate->exists() && $certificate->hasFile()) { ?>
+				<fieldset class="adminform">
+					<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_CERTIFICATE'); ?></span></legend>
 
-				<?php $certificate = $this->course->certificate();
-				if ($certificate->exists() && $certificate->hasFile()) { ?>
-				<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?>">
-					<label for="params-certificate"><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE'); ?>:</label><br />
-					<select name="params[certificate]" id="params-certificate">
-						<option value="0"<?php echo ($params->get('certificate', 0) == 0) ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_NO'); ?></option>
-						<option value="1"<?php echo ($params->get('certificate', 0) == 1) ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_YES'); ?></option>
-					</select>
-					<span class="hint"><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?></span>
-				</div>
-				<?php } else { ?>
-					<input type="hidden" name="params[certificate]" value="0" />
-				<?php } ?>
-			</fieldset>
+					<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?>">
+						<label for="params-certificate"><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE'); ?>:</label><br />
+						<select name="params[certificate]" id="params-certificate">
+							<option value="0"<?php echo ($params->get('certificate', 0) == 0) ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_NO'); ?></option>
+							<option value="1"<?php echo ($params->get('certificate', 0) == 1) ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_YES'); ?></option>
+						</select>
+						<span class="hint"><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?></span>
+					</div>
+				</fieldset>
+			<?php } else { ?>
+				<input type="hidden" name="params[certificate]" value="0" />
+			<?php } ?>
 
 			<script type="text/javascript">
 				jQuery(document).ready(function(jq){
