@@ -71,8 +71,16 @@ class plgHubzeroAutocompleter extends \Hubzero\Plugin\Plugin
 		$type  = (isset($atts[7])) ? $atts[7] : 'multi'; // Allow single or multiple entries
 		$dsabl = (isset($atts[8])) ? $atts[8] : '';      // Readonly input
 
-		$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
+		$base = rtrim(JURI::getInstance()->base(true), '/');
 		$datascript = $base . '/index.php';
+
+		$base = str_replace('/administrator', '', $base);
+
+		if ($opt != 'members')
+		{
+			$datascript = str_replace('/administrator', '', $datascript);
+		}
+
 		// Push some needed scripts and stylings to the template but ensure we do it only once
 		if ($this->_pushscripts)
 		{
