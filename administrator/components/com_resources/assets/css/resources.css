@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/components/com_resources/resources.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        administrator/components/com_resources/assets/css/resources.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -10,30 +10,7 @@
     com_resources
     - - - - - - - - -
 */
-	/*.yes,
-	.enabled,
-	.writeable,
-	.public,
-	a.public {
-		color: green;
-	}
-	.no,
-	.disabled,
-	.unwriteable,
-	.registered, 
-	a.registered {
-		color: red;
-	}
-	.special, 
-	a.special { 
-		color: black; 
-	}
-	.enabled,
-	.writeable,
-	.disabled,
-	.unwriteable {
-		font-weight: bold;
-	}*/
+
 	.clear {
 		clear: both;
 		margin: 0;
@@ -65,61 +42,12 @@
 		content: "\f014";
 		color: #bbb;
 	}
-	.hasassoc,
-	.noassoc { 
-		padding: 0;
-		margin: 0;
-		display: block;
-		width: 12px;
-		height: 12px;
-		border: none;
-	}
-	.hasassoc { 
-		background: url("../img/tags.gif") 0 0 no-repeat; 
-	}
-	.noassoc { 
-		background: url("../img/tags.gif") 0 -12px no-repeat; 
-	}
-	.hasassoc:hover,
-	.noassoc:hover { 
-		border: none; 
-	}
-	ul.key {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	ul.key li.draft,
-	ul.key li.draftinternal,
-	ul.key li.draftexternal,
-	ul.key li.submitted,
-	ul.key li.published,
-	ul.key li.pending,
-	ul.key li.expired,
-	ul.key li.deleted,
-	ul.key li.new,
-	ul.key li.unpublished { 
-		margin: 0;
-		padding-left: 18px;
-		width: auto;
-		height: auto;
-	}
-	.draft:hover,
-	.draftinternal:hover,
-	.draftexternal:hover,
-	.new:hover,
-	.published:hover,
-	.pending:hover,
-	.expired:hover,
-	.unpublished:hover,
-	.deleted:hover,
-	.upload:hover { 
-		border: none;
-	}
+
 	.check { 
 		text-indent: 50px; 
 		overflow: hidden;
 	}
+
 	#author-list { 
 		list-style: none;
 		margin: 0.5em;
@@ -138,6 +66,7 @@
 		font-weight: bold;
 		color: #999;
 	}
+
 	#resource-custom-fields label {
 		display: block;
 	}
@@ -160,6 +89,7 @@
 		max-width: 10em;
 		margin-bottom: 0em;
 	}
+
 	.handle {
 		display: block;
 		overflow: hidden;
