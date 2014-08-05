@@ -65,7 +65,7 @@ $this->css()
 
 			<label>
 				<?php echo JText::_('EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required"><?php echo JText::_('EVENTS_CAL_LANG_REQUIRED'); ?></span>
-				<input type="text" name="title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+				<input type="text" name="title" maxlength="250" value="<?php echo $this->escape(html_entity_decode(stripslashes($this->row->title))); ?>" />
 			</label>
 
 			<label>

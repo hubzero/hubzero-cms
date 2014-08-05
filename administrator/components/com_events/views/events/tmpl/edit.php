@@ -35,7 +35,7 @@ var HUB = {};
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required">required</span></label><br />
-				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
+				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(html_entity_decode(stripslashes($this->row->title))); ?>" /></td>
 			</div>
 
 			<div class="input-wrap">

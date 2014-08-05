@@ -1770,7 +1770,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$row->catid = intval($row->catid);
 		}
 
-		$row->title = htmlentities($row->title);
+		//$row->title = htmlentities($row->title);
 
 		$row->content = $_POST['econtent'];
 		$row->content = $this->_clean($row->content);
@@ -1925,7 +1925,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$this->setError($row->getError());
 			$this->tags = $tags;
 			// Fall through to the edit view
-			$this->edit($row);
+			$this->editTask($row);
 			return;
 		}
 		if (!$row->store())
@@ -1934,7 +1934,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$this->setError($row->getError());
 			$this->tags = $tags;
 			// Fall through to the edit view
-			$this->edit($row);
+			$this->editTask($row);
 
 			return;
 		}
