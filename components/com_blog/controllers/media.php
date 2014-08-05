@@ -339,11 +339,9 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 			break;
 
 			case 'group':
-				jimport('joomla.plugin.plugin');
-				$plugin = JPluginHelper::getPlugin('groups', 'blog');
-				$params = new JRegistry($plugin->params);
-				$p = $params->get('uploadpath');
-				$p = str_replace('{{gid}}', $id, $p);
+				$groupParams = JComponentHelper::getParams('com_groups');
+				$uploadpath = $groupParams->get('uploadpath', '/site/groups');
+				$p = rtrim($uploadpath, DS) . DS . $id . DS . 'uploads' . DS  . 'blog';
 			break;
 
 			case 'site':

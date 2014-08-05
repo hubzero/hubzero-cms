@@ -1634,7 +1634,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$base_path = $this->config->get('uploadpath') . DS . $groupID . DS . 'blog';
 			if (!file_exists(JPATH_ROOT . DS . $base_path . DS . $file))
 			{
-				$base_path = $this->config->get('uploadpath') . DS . $group->get('gidNumber') . DS . 'blog';
+				$base_path = $this->config->get('uploadpath') . DS . $group->get('gidNumber') . DS . 'uploads' . DS . 'blog';
 			}
 		}
 		else
