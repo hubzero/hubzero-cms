@@ -112,11 +112,11 @@ $row = &$this->rows[$i];
 				<td>
 <?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
 					<span class="checkedout hasTip" title="Checked out::<?php echo $this->escape(stripslashes($row->editor)); ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+						<?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
 					</span>
 <?php } else { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
+						<?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
 					</a>
 <?php } ?>
 				</td>

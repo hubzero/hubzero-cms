@@ -1821,7 +1821,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			$row->catid = intval($row->catid);
 		}
 
-		$row->title = htmlentities($row->title);
+		//$row->title = htmlentities($row->title);
 
 		$row->content = $_POST['econtent'];
 		$row->content = $this->_clean($row->content);

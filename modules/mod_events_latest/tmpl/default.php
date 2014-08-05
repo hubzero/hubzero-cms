@@ -49,7 +49,7 @@ if ($this->getError()) { ?>
 					<span class="day"><?php echo JHtml::_('date', $event->publish_up, 'd'); ?></span>
 				</td>
 				<td class="event-title">
-					<a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id=' . $event->id); ?>"><?php echo $this->escape(stripslashes($event->title)); ?></a>
+					<a href="<?php echo JRoute::_('index.php?option=com_events&task=details&id=' . $event->id); ?>"><?php echo $this->escape(html_entity_decode(stripslashes($event->title))); ?></a>
 				</td>
 			</tr>
 			<?php

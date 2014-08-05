@@ -72,7 +72,7 @@ if ($start_date == $stop_date) {
 	$html .= "\t\t\t".'<dd class="endtime">'.JHTML::_('date',$this->row->publish_down, 'g:i a T', $timezone).'&nbsp;'.'</dd>'."\n";
 }
 $html .= "\t\t".'</dl><div class="ewrap">'."\n";
-$html .= "\t\t".'<p class="title"><a href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. stripslashes($this->row->title) .'</a></p>'."\n";
+$html .= "\t\t".'<p class="title"><a href="'. JRoute::_('index.php?option='.$this->option.'&task=details&id='.$this->row->id) .'">'. html_entity_decode(stripslashes($this->row->title)) .'</a></p>'."\n";
 $html .= "\t\t".'<p class="category"><strong>Category:</strong> '. stripslashes($this->categories[$this->row->catid]) .'</p>'."\n";
 $info = '';
 foreach ($this->fields as $field)

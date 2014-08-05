@@ -36,7 +36,7 @@ var HUB = {};
 				<tbody>
 					<tr>
 						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?>: *</td>
-						<td><input type="text" name="title" size="45" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
+						<td><input type="text" name="title" size="45" maxlength="250" value="<?php echo $this->escape(html_entity_decode(stripslashes($this->row->title))); ?>" /></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>:</td>
