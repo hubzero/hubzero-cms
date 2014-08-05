@@ -17,6 +17,7 @@ $hasContent = empty($this->item->module) || $this->item->module == 'custom' || $
 
 $script = "Joomla.submitbutton = function(task)
 	{
+		console.log('task ' + task);
 			if (task == 'module.cancel' || document.formvalidator.isValid(document.id('module-form'))) {";
 if ($hasContent) {
 	$script .= $this->form->getField('content')->save();
@@ -29,9 +30,10 @@ $script .= "	Joomla.submitform(task, document.getElementById('module-form'));
 				alert('".$this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED'))."');
 			}
 	}";
-
-JFactory::getDocument()->addScriptDeclaration($script);
 ?>
+<script>
+	<?php echo $script; ?>
+</script>
 <form action="<?php echo JRoute::_('index.php?option=com_modules&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="module-form" class="form-validate">
 	<div class="width-60 fltlft">
 		<fieldset class="adminform">
