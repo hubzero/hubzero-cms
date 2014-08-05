@@ -47,7 +47,8 @@ JToolBarHelper::help('entry.html', true);
 <script type="text/javascript">
 function submitbutton(pressbutton) 
 {
-	var form = document.adminForm;
+	var form = document.adminForm,
+		title = document.getElementById('field-title');
 
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
@@ -55,7 +56,7 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (form.greeting.value == ''){
+	if (title.value == ''){
 		alert("<?php echo JText::_('Error! You must fill in a title!'); ?>");
 	} else {
 		submitform(pressbutton);
