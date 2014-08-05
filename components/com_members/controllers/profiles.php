@@ -129,11 +129,11 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 					$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
 					$xgroups = $profile->getGroups('all');
 					$usersgroups = array();
-					if (!empty($xgroups)) 
+					if (!empty($xgroups))
 					{
 						foreach ($xgroups as $group)
 						{
-							if ($group->regconfirmed) 
+							if ($group->regconfirmed)
 							{
 								$usersgroups[] = $group->gidNumber;
 							}
