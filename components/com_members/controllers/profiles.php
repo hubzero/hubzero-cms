@@ -113,39 +113,53 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		$restrict = '';
-		/*if ($this->_authorize() !== 'admin')
+
+		//if ($this->_authorize() !== 'admin')
+		if (!$this->juser->authorise('core.admin', $this->_option)
+		 && !$this->juser->authorise('core.manage', $this->_option))
 		{
-			$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
-			$xgroups = $profile->getGroups('all');
-			$usersgroups = array();
-			if (!empty($xgroups)) 
+			switch ($this->config->get('user_messaging'))
 			{
-				foreach ($xgroups as $group)
-				{
-					if ($group->regconfirmed) 
+				case 2:
+					$restrict = " AND xp.public=1";
+				break;
+
+				case 1:
+				default:
+					$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+					$xgroups = $profile->getGroups('all');
+					$usersgroups = array();
+					if (!empty($xgroups)) 
 					{
-						$usersgroups[] = $group->gidNumber;
+						foreach ($xgroups as $group)
+						{
+							if ($group->regconfirmed) 
+							{
+								$usersgroups[] = $group->gidNumber;
+							}
+						}
 					}
-				}
-			}
-			
-			$members = null;
-			if (!empty($usersgroups))
-			{
-				$query = "SELECT DISTINCT uidNumber 
-						FROM #__xgroups_members
-						WHERE gidNumber IN (" . implode(',', $usersgroups) . ")";
 
-				$this->database->setQuery($query);
-				$members = $this->database->loadResultArray();
-			}
+					$members = null;
+					if (!empty($usersgroups))
+					{
+						$query = "SELECT DISTINCT uidNumber 
+								FROM `#__xgroups_members`
+								WHERE gidNumber IN (" . implode(',', $usersgroups) . ")";
 
-			if (!$members || empty($members))
-			{
-				$members = array($this->juser->get('id'));
+						$this->database->setQuery($query);
+						$members = $this->database->loadResultArray();
+					}
+
+					if (!$members || empty($members))
+					{
+						$members = array($this->juser->get('id'));
+					}
+
+					$restrict = " AND xp.uidNumber IN (" . implode(',', $members) . ")";
+				break;
 			}
-			$restrict = " AND (xp.public=1 OR xp.uidNumber IN (" . implode(',', $members) . "))";
-		}*/
+		}
 
 		$filters = array();
 		$filters['limit']  = 20;
