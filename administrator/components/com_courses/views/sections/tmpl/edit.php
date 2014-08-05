@@ -85,7 +85,7 @@ jQuery(document).ready(function($){
 						<li><a href="#" onclick="return false;" id="details" class="active"><?php echo JText::_('JDETAILS'); ?></a></li>
 						<li><a href="#" onclick="return false;" id="managers"><?php echo JText::_('COM_COURSES_FIELDSET_MANAGERS'); ?></a></li>
 						<li><a href="#" onclick="return false;" id="datetime"><?php echo JText::_('COM_COURSES_FIELDSET_DATES'); ?></a></li>
-						<li><a href="#" onclick="return false;" id="badge"><?php echo JText::_('COM_COURSES_FIELDSET_BADGE'); ?></a></li>
+						<li><a href="#" onclick="return false;" id="badge"><?php echo JText::_('COM_COURSES_FIELDSET_REWARDS'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -149,7 +149,7 @@ jQuery(document).ready(function($){
 
 					<div class="input-wrap">
 						<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>:</label><br />
-						<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" /></td>
+						<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 					</div>
 
 					<fieldset>
@@ -716,6 +716,24 @@ jQuery(document).ready(function($){
 		<?php } ?>
 		</div>
 		<div id="page-badge" class="tab">
+			<fieldset class="adminform">
+				<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_CERTIFICATE'); ?></span></legend>
+
+				<?php $certificate = $this->course->certificate();
+				if ($certificate->exists() && $certificate->hasFile()) { ?>
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?>">
+					<label for="params-certificate"><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE'); ?>:</label><br />
+					<select name="params[certificate]" id="params-certificate">
+						<option value="0"<?php echo ($params->get('certificate', 0) == 0) ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_NO'); ?></option>
+						<option value="1"<?php echo ($params->get('certificate', 0) == 1) ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_YES'); ?></option>
+					</select>
+					<span class="hint"><?php echo JText::_('COM_COURSES_CERTIFICATE_AVAILABLE_EXPLANATION'); ?></span>
+				</div>
+				<?php } else { ?>
+					<input type="hidden" name="params[certificate]" value="0" />
+				<?php } ?>
+			</fieldset>
+
 			<script type="text/javascript">
 				jQuery(document).ready(function(jq){
 					var $ = jq;
