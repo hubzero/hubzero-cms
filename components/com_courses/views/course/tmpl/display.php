@@ -179,6 +179,7 @@ $this->js('courses.overview.js');
 		$c = 0;
 		if ($offerings->total())
 		{
+			$found = false;
 			$now = JFactory::getDate()->toSql();
 
 			if ($this->course->isManager())
@@ -199,6 +200,8 @@ $this->js('courses.overview.js');
 						$dflt = $offering->sections()->fetch('first');
 					}
 					$offering->section($dflt->get('alias'));
+
+					$found = true;
 					?>
 					<div class="offering-info">
 						<table>
@@ -259,7 +262,73 @@ $this->js('courses.overview.js');
 					<?php
 				}
 			}
-			else
+			// If the user is a student
+			else if ($this->course->isStudent())
+			{
+				foreach ($offerings as $offering)
+				{
+					if (!$offering->isAvailable())
+					{
+						continue;
+					}
+					$c++;
+
+					foreach ($offering->sections() as $sect)
+					{
+						// If section is in draft mode or not published
+						if ($sect->isDraft() || !$sect->isPublished())
+						{
+							continue;
+						}
+						// If section hasn't started
+						if ($sect->get('publish_up') != '0000-00-00 00:00:00' && $sect->get('publish_up') > $now)
+						{
+							continue;
+						}
+						// If a publish down time is set and that time happened before now
+						if ($sect->get('publish_down') != '0000-00-00 00:00:00' && $sect->get('publish_down') <= $now)
+						{
+							continue;
+						}
+						// If not already a member and enrollment is closed
+						if (!$sect->isMember())
+						{
+							continue;
+						}
+
+						$found = true;
+
+						$offering->section($sect->get('alias'));
+						?>
+						<div class="offering-info">
+							<table>
+								<tbody>
+									<tr>
+										<th scope="row"><?php echo JText::_('Offering'); ?>:</th>
+										<td>
+											<?php echo $this->escape(stripslashes($offering->get('title'))); ?>
+										</td>
+									</tr>
+									<tr>
+										<th scope="row"><?php echo JText::_('Section'); ?>:</th>
+										<td>
+											<?php echo $this->escape(stripslashes($offering->section()->get('title'))); ?>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<p>
+								<a class="access btn" href="<?php echo JRoute::_($offering->link('enter')); ?>">
+									<?php echo JText::_('COM_COURSES_ACCESS_COURSE'); ?>
+								</a>
+							</p>
+						</div><!-- / .offering-info -->
+						<?php
+					}
+				}
+			}
+
+			if (!$found)
 			{
 				foreach ($offerings as $offering) 
 				{
