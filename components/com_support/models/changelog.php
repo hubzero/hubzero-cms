@@ -44,6 +44,13 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	private $_log = array();
 
 	/**
+	 * Log format
+	 *
+	 * @var string
+	 */
+	private $_format = 'json';
+
+	/**
 	 * Is the question open?
 	 * 
 	 * @return     boolean
@@ -60,6 +67,8 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 			}
 			else
 			{
+				$this->_format = 'html';
+
 				$log = array(
 					'changes'       => array(),
 					'notifications' => array(),
@@ -176,6 +185,16 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		{
 			$this->_log['cc'] = array();
 		}
+	}
+
+	/**
+	 * Get the format
+	 *
+	 * @return  string
+	 */
+	public function format()
+	{
+		return $this->_format;
 	}
 
 	/**
