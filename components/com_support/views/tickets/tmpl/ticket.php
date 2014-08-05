@@ -296,6 +296,11 @@ $cc = array();
 			}
 
 			$o = ($o == 'odd') ? 'even' : 'odd';
+
+			if ($comment->changelog()->format() != 'html')
+			{
+				$cc = $comment->changelog()->get('cc');
+			}
 			?>
 			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->get('id'); ?>">
 				<p class="comment-member-photo">
@@ -621,10 +626,6 @@ $cc = array();
 
 					<label>
 						<?php echo JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
-						if (isset($comment))
-						{
-							$cc = $comment->changelog()->get('cc');
-						}
 						$mc = $dispatcher->trigger('onGetMultiEntry', array(array('members', 'cc', 'acmembers', '', implode(', ', $cc))));
 						if (count($mc) > 0) {
 							echo '<span class="hint">' . JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];

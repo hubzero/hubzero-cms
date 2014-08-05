@@ -244,6 +244,11 @@ $cc = array();
 						$cite = $this->escape(stripslashes($comment->creator('name')));
 						$name = '<a href="' . JRoute::_('index.php?option=com_members&task=edit&id[]=' . $comment->creator('id')) . '">' . $cite . ' (' . $this->escape($comment->creator('username')) . ')</a>';
 					}
+
+					if ($comment->changelog()->format() != 'html')
+					{
+						$cc = $comment->changelog()->get('cc');
+					}
 					?>
 					<li class="<?php echo $access .' comment'; ?>" id="c<?php echo $comment->get('id'); ?>">
 						<p class="comment-member-photo">
@@ -399,10 +404,6 @@ $cc = array();
 						<div class="input-wrap">
 							<label for="comment-field-message">
 								<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC'); ?> <?php
-								if (isset($comment))
-								{
-									$cc = $comment->changelog()->get('cc');
-								}
 								$mc = $dispatcher->trigger('onGetMultiEntry', array(
 									array(
 										'members',   // The component to call
