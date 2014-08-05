@@ -10,10 +10,11 @@
     com_resources
     - - - - - - - - -
 */
-	.yes,
+	/*.yes,
 	.enabled,
 	.writeable,
-	.public, a.public {
+	.public,
+	a.public {
 		color: green;
 	}
 	.no,
@@ -32,53 +33,38 @@
 	.disabled,
 	.unwriteable {
 		font-weight: bold;
-	}
+	}*/
 	.clear {
 		clear: both;
 		margin: 0;
 		padding: 0;
 	}
-	.draft,
-	.draftinternal,
-	.draftexternal,
-	.submitted,
-	.check,
-	.published,
-	.pending,
-	.expired,
-	.unpublished,
-	.deleted,
-	.upload { 
-		padding: 0; 
-		display: block; 
-		width: 12px; 
-		height: 12px; 
+
+	.state.pending:before {
+		content: "\f05d";
+		color: #a3ca60;
 	}
-	.draft span,
-	.draftinternal span,
-	.draftexternal span,
-	.submitted span,
-	.hasassoc span,
-	.noassoc span,
-	.published span,
-	.pending span,
-	.expired span,
-	.unpublished span,
-	.deleted span,
-	.upload span { 
-		display: none; 
-	}	
-	.check,
-	.published { background: url("../img/check.gif") 0 0 no-repeat; }
-	.pending { background: url("../img/check_circle.gif") 0 0 no-repeat; }
-	.expired { background: url("../img/check_star.gif") 0 0 no-repeat; }
-	.unpublished { background: url("../img/minus.gif") 0 0 no-repeat; }
-	.upload { background: url("../img/upload.gif") 0 0 no-repeat; }
-	.submitted { background: url("../img/pending.gif") 0 0 no-repeat; }
-	.draftexternal, 
-	.draft { background: url("../img/draft_external.gif") 0 0 no-repeat; }
-	.draftinternal { background: url("../img/draft_internal.gif") 0 0 no-repeat; }
-	.deleted { background: url("../img/deleted.gif") 0 0 no-repeat; }
+	.state.expired:before {
+		content: "\f058";
+		color: #333;
+	}
+	.state.submitted:before {
+		content: "\22EF";
+		color: orange;
+	}
+	.state.draftexternal:before {
+		content: "\26AA";
+		color: orange;
+	}
+	.state.draftinternal:before {
+		content: "\26AA";
+		color: blue;
+	}
+	.state.deleted:before,
+	.state.trashed:before {
+		content: "\f014";
+		color: #bbb;
+	}
 	.hasassoc,
 	.noassoc { 
 		padding: 0;

@@ -175,7 +175,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			break;
 		case 4:
 			$alt   = JText::_('JTRASHED');
-			$class = 'deleted';
+			$class = 'trashed';
 			$task  = 'publish';
 			break;
 		case 5:
@@ -275,11 +275,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
-					<span class="<?php echo $class;?>">
+					<span class="state <?php echo $class;?>">
 						<span><?php echo $alt; ?></span>
 					</span>
 				<?php } else { ?>
-					<a class="<?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } ?>

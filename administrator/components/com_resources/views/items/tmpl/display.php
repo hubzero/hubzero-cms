@@ -65,8 +65,8 @@ if ($canDo->get('core.delete'))
 }
 
 JHTML::_('behavior.tooltip');
-//jimport('joomla.html.html.grid');
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
+
+$this->css();
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -190,7 +190,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			break;
 		case 4:
 			$alt   = JText::_('JTRASHED');
-			$class = 'deleted';
+			$class = 'trashed';
 			$task  = 'publish';
 			break;
 		case 5:
@@ -267,18 +267,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-				<?php if ($row->type == 7) { ?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_RESOURCES_WARNING_TOOLS_USE_PIPELINE'); ?>">
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</span>
-				<?php } else { ?>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</a>
-				<?php } ?>
+					<?php if ($row->type == 7) { ?>
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_RESOURCES_WARNING_TOOLS_USE_PIPELINE'); ?>">
+							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						</span>
+					<?php } else { ?>
+						<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
-					<a class="<?php echo $class;?> hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $alt; ?> :: <?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+					<a class="state <?php echo $class; ?> hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $alt; ?> :: <?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>

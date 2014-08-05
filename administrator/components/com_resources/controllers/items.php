@@ -67,10 +67,6 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// Push some styles to the template
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
-
 		// Get configuration
 		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
@@ -225,15 +221,6 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
-
-		// Get sections for learning modules
-		// TODO: Phase out all learning modules code
-		$this->view->sections = array();
-		if ($this->view->parent->type == 4)
-		{
-			$rt = new ResourcesType($this->database);
-			$this->view->sections = $rt->getTypes(29);
-		}
 
 		// Set any errors
 		if ($this->getError())
