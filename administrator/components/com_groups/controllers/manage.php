@@ -569,11 +569,10 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$projectName = $group->get('cn');
 
 		// instantiate new gitlab client
-		$client = new \Gitlab\Client($gitlabUrl);
-		$client->authenticate($gitlabKey, \Gitlab\Client::AUTH_URL_TOKEN);
+		$client = new GroupsHelperGitlab($gitlabUrl, $gitlabKey);
 
 		// get list of groups
-		$groups = $client->api('groups')->all();
+		$groups = $client->groups();
 
 		// attempt to get already existing group
 		$gitLabGroup = null;
@@ -589,12 +588,14 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// create group if doesnt exist
 		if ($gitLabGroup == null)
 		{
-			$gitLabGroup = $client->api('groups')
-				->create($groupName, strtolower($groupName));
+			$gitLabGroup = $client->createGroup(array(
+				'name' => $groupName,
+				'path' => strtolower($groupName)
+			));
 		}
 
 		//get groups projects
-		$projects = $client->api('projects')->all();
+		$projects = $client->projects();
 
 		// attempt to get already existing project
 		$gitLabProject = null;
@@ -610,14 +611,14 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// create project if doesnt exist
 		if ($gitLabProject == null)
 		{
-			$gitLabProject = $client->api('projects')->create($projectName, array(
-				'namespace_id' => $gitLabGroup['id'],
-				'name'         => $projectName,
-				'description'  => $group->get('description'),
-				'issues_enabled' => true,
+			$gitLabProject = $client->createProject(array(
+				'namespace_id'           => $gitLabGroup['id'],
+				'name'                   => $projectName,
+				'description'            => $group->get('description'),
+				'issues_enabled'         => true,
 				'merge_requests_enabled' => true,
-				'wiki_enabled' => true,
-				'snippets_enabled' => true,
+				'wiki_enabled'           => true,
+				'snippets_enabled'       => true,
 			));
 		}
 
@@ -652,8 +653,10 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 		// protect master branch
 		// allows only admins to accept Merge Requests
-		$project = new \Gitlab\Model\Project($gitLabProject['id'], $client);
-		$project->protectBranch('master');
+		$protected = $client->protectBranch(array(
+			'id' => $gitLabProject['id'],
+			'branch' => 'master'
+		));
 	}
 
 	/**

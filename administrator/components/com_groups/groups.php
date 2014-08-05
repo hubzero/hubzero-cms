@@ -53,6 +53,7 @@ require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'module' . DS . 'archiv
 
 // Include Helpers
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'groups.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'gitlab.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'view.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'pages.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'document.php';
