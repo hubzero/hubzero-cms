@@ -55,6 +55,23 @@ $this->css()
 </ul>
 <?php endif; ?>
 
+<?php if ($juser->get('id') == $this->member->get('uidNumber') && !$this->filters['year'] && !$this->filters['search'] && !$this->model->entries('count', $this->filters)) { ?>
+
+	<div class="introduction">
+		<div class="introduction-message">
+			<p><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_EMPTY'); ?></p>
+		</div>
+		<div class="introduction-questions">
+			<p><strong><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_WHAT_IS_A_BLOG'); ?></strong></p>
+			<p><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_WHAT_IS_A_BLOG_EXPLANATION'); ?></p>
+
+			<p><strong><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_HOW_TO_START'); ?></strong></p>
+			<p><?php echo JText::_('PLG_MEMBERS_BLOG_INTRO_HOW_TO_START_EXPLANATION'); ?></p>
+		</div>
+	</div><!-- / .introduction -->
+
+<?php } else { ?>
+
 <form method="get" action="<?php echo JRoute::_($base); ?>">
 	<section class="section">
 		<div class="subject">
@@ -306,3 +323,5 @@ $this->css()
 		</aside><!-- / .aside -->
 	</section>
 </form>
+
+<?php } ?>

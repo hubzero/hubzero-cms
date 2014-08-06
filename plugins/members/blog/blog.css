@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        plugins/members/blog/blog.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -156,10 +156,10 @@
 		background: transparent;
 		border: none;
 		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-ms-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
 	}
 	div.entry .entry-content:before,
 	div.entry .entry-content:after {
@@ -276,6 +276,41 @@
 		margin: 0;
 		padding: 0.5em;
 		background: #efefef;
+	}
+
+/* Instructions */
+	.introduction {
+		width: 32em;
+		margin: 3em auto;
+		background-color: #fff;
+		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		   -moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		    -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		border: 1px solid #ddd\9; /* [!] IE 8 */
+		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
+	}
+	.introduction .introduction-message {
+		padding: 1em 1.4em;
+		text-align: center;
+		font-size: 1.2em;
+	}
+	.introduction .introduction-message:before {
+		content: "\2298";
+		font-family: "Fontcons";
+		display: block;
+		font-size: 7em;
+		line-height: 1;
+		color: #ccc;
+		margin: 0.1em 0;
+	}
+	.introduction .introduction-questions {
+		padding: 1em 1.4em;
+		background-color: #f0f0f0;
+	}
+	.introduction ol {
+		list-style: decimal;
 	}
 
 /* Hide the sidebar if the page is too narrow */
