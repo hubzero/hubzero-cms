@@ -271,7 +271,7 @@ class PublicationUtilities
 		}
 		else
 		{
-			$creator = JUser::getInstance($row->created_by);
+			$creator = \Hubzero\User\Profile::getInstance($row->created_by);
 			$creatorName = $creator->get('name');
 			$creatorOrcid = $creator->get('orcid');
 		}
