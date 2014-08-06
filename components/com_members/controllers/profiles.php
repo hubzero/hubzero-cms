@@ -166,39 +166,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$filters['start']  = 0;
 		$filters['search'] = strtolower(trim(JRequest::getString('value', '')));
 
-		// allow search of name by pieces
-		$searchWhere  = "";
-		$searchPieces = explode(' ', $filters['search']);
-		switch (count($searchPieces))
-		{
-			case 3:
-				$searchWhere  = "(LOWER(xp.name) LIKE " . $this->database->quote('%' . $filters['search'] . '%');
-				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote($searchPieces[0] . '%');
-				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote('%' . $searchPieces[1] . '%');
-				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote('%' . $searchPieces[2]) . ")";
-				break;
-			case 2:
-				$searchWhere  = "(LOWER(xp.name) LIKE " . $this->database->quote('%' . $filters['search'] . '%');
-				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote($searchPieces[0] . '%');
-				$searchWhere .= " OR LOWER(xp.name) LIKE " . $this->database->quote('%' . $searchPieces[1]) . ")";
-				break;
-			case 1:
-			default:
-				$searchWhere  = "(LOWER(xp.name) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . ")";
-		}
-
-		// Fetch results
-		/*$query = "SELECT u.id, u.name, u.username
-				FROM #__users AS u
-				WHERE LOWER(u.name) LIKE '%".$filters['search']."%'
-				OR LOWER(u.username) LIKE '%".$filters['search']."%'
-				OR LOWER(u.email) LIKE '%".$filters['search']."%'
-				ORDER BY u.name ASC";*/
-		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public
+		// match member names on all three name parts		
+		$match = "MATCH(xp.givenName,xp.middleName,xp.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
+		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public, $match as rel
 				FROM #__xprofiles AS xp
 				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE $searchWhere AND xp.emailConfirmed>0 $restrict
-				ORDER BY xp.name ASC
+				WHERE $match AND xp.emailConfirmed>0 $restrict
+				ORDER BY rel DESC, xp.name ASC
 				LIMIT " . $filters['start'] . "," . $filters['limit'];
 		$this->database->setQuery($query);
 		$rows = $this->database->loadObjectList();
