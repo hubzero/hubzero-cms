@@ -1204,10 +1204,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$crypter = new JSimpleCrypt();
 			$session_id = $crypter->decrypt($token);
 
-			$db	= JFactory::getDBO();
-			$query = "SELECT * FROM #__session WHERE session_id = ".$db->Quote($session_id);
-			$db->setQuery($query);
-			$session = $db->loadObject();
+			$session = Hubzero\Session\Helper::getSession($session_id);
 
 			$juser = JFactory::getUser($session->userid);
 			$juser->guest = 0;

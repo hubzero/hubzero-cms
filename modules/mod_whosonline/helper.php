@@ -1,72 +1,72 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_whosonline
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2011 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
-class modWhosonlineHelper
+use Hubzero\Session\Helper as SessionHelper;
+
+class modWhosonlineHelper extends \Hubzero\Module\Module
 {
-	// show online count
-	static function getOnlineCount() {
-		$db		= JFactory::getDbo();
-		// calculate number of guests and users
-		$result	= array();
-		$user_array  = 0;
-		$guest_array = 0;
-		$query	= $db->getQuery(true);
-		$query->select('guest, usertype, client_id');
-		$query->from('#__session');
-		$query->where('client_id = 0');
-		$db->setQuery($query);
-		$sessions = (array) $db->loadObjectList();
+	public function display()
+	{
+		//get all sessions
+		$sessions = SessionHelper::getAllSessions(array(
+			'distinct' => 1,
+			'client'   => 0
+		));
+		
+		// vars to hold guests & logged in members
+		$this->guestCount   = 0;
+		$this->loggedInCount = 0;
+		$this->loggedInList  = array();
 
-		if (count($sessions)) {
-			foreach ($sessions as $session) {
-				// if guest increase guest count by 1
-				if ($session->guest == 1 && !$session->usertype) {
-					$guest_array ++;
-				}
-				// if member increase member count by 1
-				if ($session->guest == 0) {
-					$user_array ++;
-				}
-			}
-		}
-
-		$result['user']  = $user_array;
-		$result['guest'] = $guest_array;
-
-		return $result;
-	}
-
-	// show online member names
-	static function getOnlineUserNames($params) {
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-		$query->select('a.username, a.time, a.userid, a.usertype, a.client_id');
-		$query->from('#__session AS a');
-		$query->where('a.userid != 0');
-		$query->where('a.client_id = 0');
-		$query->group('a.userid');
-		$user = JFactory::getUser();
-		if (!$user->authorise('core.admin') && $params->get('filter_groups', 0) == 1)
+		// get guest and logged in counts/list
+		foreach ($sessions as $session)
 		{
-			$groups = $user->getAuthorisedGroups();
-			if (empty($groups))
+			if ($session->guest == 1)
 			{
-				return array();
+				$this->guestCount++;
 			}
-			$query->leftJoin('#__user_usergroup_map AS m ON m.user_id = a.userid');
-			$query->leftJoin('#__usergroups AS ug ON ug.id = m.group_id');
-			$query->where('ug.id in (' . implode(',', $groups) . ')');
-			$query->where('ug.id <> 1');
+			else
+			{
+				$this->loggedInCount++;
+				$profile = Hubzero\User\Profile::getInstance($session->userid);
+				if ($profile)
+				{
+					$this->loggedInList[] = $profile;
+				}
+			}
 		}
-		$db->setQuery($query);
-		return (array) $db->loadObjectList();
+		
+		// render view
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 }

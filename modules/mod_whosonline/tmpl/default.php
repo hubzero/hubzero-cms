@@ -10,21 +10,54 @@
 defined('_JEXEC') or die;
 ?>
 
-<?php if ($showmode == 0 || $showmode == 2) : ?>
-	<?php $guest = JText::plural('MOD_WHOSONLINE_GUESTS', $count['guest']); ?>
-	<?php $member = JText::plural('MOD_WHOSONLINE_MEMBERS', $count['user']); ?>
-	<p><?php echo JText::sprintf('MOD_WHOSONLINE_WE_HAVE', $guest, $member); ?></p>
-<?php endif; ?>
+<div class="<?php echo $this->params->get('moduleclass_sfx', ''); ?>">
+	<?php if ($this->params->get('showmode', 0) == 0 || $this->params->get('showmode', 0) == 2) : ?>
+		<table>
+			<thead>
+				<tr>
+					<th><?php echo JText::_('MOD_WHOSONLINE_LOGGEDIN'); ?></th>
+					<th><?php echo JText::_('MOD_WHOSONLINE_GUESTS'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><?php echo number_format($this->loggedInCount); ?></td>
+					<td><?php echo number_format($this->guestCount); ?></td>
+				</tr>
+			</tbody>
+		</table>
+	<?php endif; ?>
 
-<?php if (($showmode > 0) && count($names)) : ?>
-	<ul  class="whosonline<?php echo $moduleclass_sfx ?>" >
-	<?php if ($params->get('filter_groups')):?>
-		<p><?php echo JText::_('MOD_WHOSONLINE_SAME_GROUP_MESSAGE'); ?></p>
-	<?php endif;?>
-	<?php foreach($names as $name) : ?>
-		<li>
-			<?php echo $name->username; ?>
-		</li>
-	<?php endforeach;  ?>
-	</ul>
-<?php endif;
+	<?php if ($this->params->get('showmode', 0) == 1 || $this->params->get('showmode', 0) == 2) : ?>
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2"><?php echo JText::_('MOD_WHOSONLINE_LOGGEDIN_NAME'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($this->loggedInList as $loggedin) : ?>
+					<tr>
+						<td><?php echo $loggedin->get('name'); ?></td>
+						<td align="right">
+							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $loggedin->get('uidNumber')); ?>">
+								<?php echo JText::_('MOD_WHOSONLINE_LOGGEDIN_VIEW_PROFILE'); ?>
+							</a>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	<?php endif; ?>
+	<table>
+		<tbody>
+			<tr>
+				<td align="center">
+					<a class="btn btn-secondary opposite icon-next" href="<?php echo JRoute::_('index.php?option=com_members&task=activity'); ?>">
+						<?php echo JText::_('MOD_WHOSONLINE_VIEW_ALL_ACTIVITIY'); ?>
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

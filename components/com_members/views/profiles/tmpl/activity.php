@@ -69,50 +69,42 @@ $this->css()
 				{
 					$cls = (($cls == 'even') ? 'odd' : 'even');
 
-					for ($i = 0; $i < count($users[$userkey]) - 4; $i++)
+					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
+					
+					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['name'])) .'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$users[$userkey]['uidNumber']).'">'.$this->escape($userkey).'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data">';
+					switch ($users[$userkey]['orgtype'])
 					{
-						if ($i) {
-							$cls .=  ' sameuser';
-						}
-						$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
-						if ($i) {
-							$html .= "\t\t\t".'<td colspan="5">&nbsp;</td>'."\n";
-						} else {
-							$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['name'])) .'</td>'."\n";
-							$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&username='.$userkey).'">'.$this->escape($userkey).'</td>'."\n";
-							$html .= "\t\t\t".'<td class="textual-data">';
-							switch ($users[$userkey]['orgtype'])
-							{
-								case 'universitystudent':
-									$html .= JText::_('UNIVERSITY_STUDENT');
-									break;
-								case 'university':
-								case 'universityfaculty':
-									$html .= JText::_('UNIVERSITY_FACULTY');
-									break;
-								case 'universitystaff':
-									$html .= JText::_('UNIVERSITY_STAFF');
-									break;
-								case 'precollege':
-								case 'precollegefacultystaff': $html .= JText::_('PRECOLLEGE_STAFF'); break;
-								case 'precollegestudent':  $html .= JText::_('PRECOLLEGE_STUDENT'); break;
-								case 'educational': $html .= JText::_('EDUCATIONAL');          break;
-								case 'nationallab': $html .= JText::_('NATIONALLAB');  break;
-								case 'industry':    $html .= JText::_('INDUSTRY');   break;
-								case 'government':  $html .= JText::_('GOVERNMENT');    break;
-								case 'military':    $html .= JText::_('MILITARY');             break;
-								case 'personal':    $html .= JText::_('PERSONAL');             break;
-								case 'unemployed':  $html .= JText::_('UNEMPLOYED'); break;
-								default: $html .=  $users[$userkey]['orgtype']; break;
-							}
-							$html .= '</td>'."\n";
-							$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['org'])) .'</td>'."\n";
-							$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey]['countryresident']) .'</td>'."\n";
-						}
-						$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey][$i]['ip']) .'</td>'."\n";
-						$html .= "\t\t\t".'<td class="textual-data">'. MembersHtml::valformat($users[$userkey][$i]['idle'], 3) .'</td>'."\n";
-						$html .= "\t\t".'</tr>'."\n";
+						case 'universitystudent':
+							$html .= JText::_('UNIVERSITY_STUDENT');
+							break;
+						case 'university':
+						case 'universityfaculty':
+							$html .= JText::_('UNIVERSITY_FACULTY');
+							break;
+						case 'universitystaff':
+							$html .= JText::_('UNIVERSITY_STAFF');
+							break;
+						case 'precollege':
+						case 'precollegefacultystaff': $html .= JText::_('PRECOLLEGE_STAFF'); break;
+						case 'precollegestudent':  $html .= JText::_('PRECOLLEGE_STUDENT'); break;
+						case 'educational': $html .= JText::_('EDUCATIONAL');          break;
+						case 'nationallab': $html .= JText::_('NATIONALLAB');  break;
+						case 'industry':    $html .= JText::_('INDUSTRY');   break;
+						case 'government':  $html .= JText::_('GOVERNMENT');    break;
+						case 'military':    $html .= JText::_('MILITARY');             break;
+						case 'personal':    $html .= JText::_('PERSONAL');             break;
+						case 'unemployed':  $html .= JText::_('UNEMPLOYED'); break;
+						default: $html .=  $users[$userkey]['orgtype']; break;
 					}
+					$html .= '</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['org'])) .'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey]['countryresident']) .'</td>'."\n";
+					
+					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey][0]['ip']) .'</td>'."\n";
+					$html .= "\t\t\t".'<td class="textual-data">'. MembersHtml::valformat($users[$userkey][0]['idle'], 3) .'</td>'."\n";
+					$html .= "\t\t".'</tr>'."\n";
 				}
 			} else {
 				$html .= "\t\t".'<tr class="odd">'."\n";
@@ -123,7 +115,7 @@ $this->css()
 			?>
 		</tbody>
 	</table>
-
+	<br /><br />
 	<table>
 		<caption><?php echo JText::_('COM_MEMBERS_ACTIVITY_TABLE2'); ?></caption>
 		<thead>

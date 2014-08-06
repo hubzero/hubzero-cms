@@ -31,6 +31,7 @@
 namespace Modules\WhosOnline;
 
 use Hubzero\Module\Module;
+use Hubzero\Session\Helper as SessionHelper;
 
 /**
  * Module class for showing users online
@@ -44,33 +45,14 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		// create objects
+		// get current user
 		$this->juser = \JFactory::getUser();
 
-		// hides Administrator or Super Administrator from list depending on usertype
-		$and = '';
-		if ($this->juser->get('gid') == 24)
-		{
-			$and = " AND gid != 25 ";
-		}
-
-		// manager check
-		if ($this->juser->get('gid') == 23)
-		{
-			$and  = " AND gid != 25 ";
-			$and .= " AND gid != 24 ";
-		}
-
-		// get users online
-		$database = \JFactory::getDBO();
-		$database->setQuery(
-			"SELECT username, MAX(time) as time, userid, usertype, client_id 
-				FROM `#__session`
-				WHERE userid != 0 $and
-				GROUP BY userid, client_id
-				ORDER BY time DESC"
-		);
-		$this->rows = $database->loadObjectList();
+		// get active sessions (users online)
+		$this->rows = SessionHelper::getAllSessions(array(
+			'guest'    => 0,
+			'distinct' => 1
+		));
 
 		// Get the view
 		parent::display();
