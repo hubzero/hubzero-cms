@@ -38,53 +38,6 @@ defined('_JEXEC') or die('Restricted access');
 class modLatestusage extends \Hubzero\Module\Module
 {
 	/**
-	 * Get the count of users currently online
-	 *
-	 * @return     array
-	 */
-	private function _getOnlineCount()
-	{
-		$db = JFactory::getDBO();
-		$sessions = null;
-
-		// calculate number of guests and members
-		$result = array();
-		$user_array = 0;
-		$guest_array = 0;
-
-		$query = "SELECT guest, usertype, client_id FROM #__session WHERE client_id = 0";
-		$db->setQuery($query);
-		$sessions = $db->loadObjectList();
-
-		if ($db->getErrorNum())
-		{
-			JError::raiseWarning(500, $db->stderr());
-		}
-
-		if (count($sessions))
-		{
-			foreach ($sessions as $session)
-			{
-				// If guest increase guest count by 1
-				if ($session->guest == 1 && !$session->usertype)
-				{
-					$guest_array++;
-				}
-				// If member increase member count by 1
-				if ($session->guest == 0)
-				{
-					$user_array++;
-				}
-			}
-		}
-
-		$result['user']  = $user_array;
-		$result['guest'] = $guest_array;
-
-		return $result;
-	}
-
-	/**
 	 * Display module content
 	 *
 	 * @return     void

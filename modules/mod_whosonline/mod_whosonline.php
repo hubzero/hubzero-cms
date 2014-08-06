@@ -12,17 +12,6 @@ defined('_JEXEC') or die;
 // Include the whosonline functions only once
 require_once dirname(__FILE__).'/helper.php';
 
-$showmode = $params->get('showmode', 0);
+$whoseonline = new modWhosonlineHelper($params, $module);
+$whoseonline->display();
 
-if ($showmode == 0 || $showmode == 2) {
-	$count	= modWhosonlineHelper::getOnlineCount();
-}
-
-if ($showmode > 0) {
-	$names	= modWhosonlineHelper::getOnlineUserNames($params);
-}
-
-$linknames = $params->get('linknames', 0);
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
-
-require JModuleHelper::getLayoutPath('mod_whosonline', $params->get('layout', 'default'));
