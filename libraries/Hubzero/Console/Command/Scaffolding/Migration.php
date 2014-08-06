@@ -93,7 +93,7 @@ class Migration extends Scaffolding
 		{
 			$extension = ($this->arguments->getOpt('e')) ? $this->arguments->getOpt('e') : $this->arguments->getOpt('extension');
 
-			if ($extension != 'core' && !$this->isValidExtension($extension, $base))
+			if ($extension != 'core' && !$this->isValidExtension($extension, $base) && !$this->arguments->getOpt('i'))
 			{
 				$this->output->error("Error: the extension provided ({$extension}) does not appear to be valid.");
 			}
@@ -211,6 +211,15 @@ class Migration extends Scaffolding
 				should be given the extension "core"',
 				'Example: -e=com_courses, --extension=plg_members_dashboard',
 				true
+			)
+			->addArgument(
+				'-i: ignore validity check',
+				'Normally, migrations scaffolding tries to check the validity of the provided
+				extension name by checking for the existance of a corresponding
+				directory within the framework. Occasionally, migrations need to be
+				written for non-existent extensions. This option will override the
+				validity check and allow you to create the migration anyways.',
+				'Example: -i'
 			)
 			->addArgument(
 				'--install-dir: installation directory',
