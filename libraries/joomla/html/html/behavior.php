@@ -55,7 +55,6 @@ abstract class JHtmlBehavior
 		if ($type != 'core' && empty(self::$loaded[__METHOD__]['core']))
 		{
 			self::framework(false, $debug);
-			//JHtml::_('stylesheet', 'system/jquery.ui.css', array(), true);
 		}
 
 		// We need to make sure the framework is first, regardless of where/when
@@ -64,37 +63,86 @@ abstract class JHtmlBehavior
 		// or plugins may have already pushed.
 		if ($type == 'core')
 		{
-			$document = JFactory::getDocument();
-			if ($document instanceof JDocumentHTML)
-			{
-				$data = $document->getHeadData();
-				$scripts = $data['scripts'];
-				$data['scripts'] = array();
-				$data['scripts'][str_replace('/administrator', '', JURI::base(true)) . '/media/system/js/jquery.js'] = array('mime' => 'text/javascript', 'defer' => false, 'async' => false);
-				$data['scripts'][str_replace('/administrator', '', JURI::base(true)) . '/media/system/js/jquery.migrate.js'] = array('mime' => 'text/javascript', 'defer' => false, 'async' => false);
-
-				$document->setHeadData($data);
-				if (JFactory::getApplication()->isAdmin())
-				{
-					JHtml::_('script', 'system/core.js', false, true);
-				}
-				foreach ($scripts as $key => $foo)
-				{
-					$document->addScript($key);
-				}
-			}
-		}
-		else
-		{
-			JHtml::_('script', 'system/jquery' . ($type != 'core' ? '.' . $type : '') . '.js', false, true, false, false, $debug);
+			self::_pushScriptTo(0, JURI::root(true) . '/media/system/js/jquery.js');
 			if (JFactory::getApplication()->isAdmin())
 			{
 				JHtml::_('script', 'system/core.js', false, true);
 			}
 		}
+		else
+		{
+			self::_pushScriptTo(1, JURI::root(true) . '/media/system/js/jquery.ui.js');
+			//JHtml::_('stylesheet', 'system/jquery.ui.css', array(), true);
+		}
 		self::$loaded[__METHOD__][$type] = true;
 
 		return;
+	}
+
+	/**
+	 * Push a script to a specific sport int he scripts list
+	 *
+	 * @param   integer $index
+	 * @param   string  $url
+	 * @param   string  $type
+	 * @param   boolean $defer
+	 * @param   boolean $async
+	 * @return  void
+	 */
+	private static function _pushScriptTo($index, $url, $type = 'text/javascript', $defer = false, $async = false)
+	{
+		$document = JFactory::getDocument();
+		if ($document instanceof JDocumentHTML)
+		{
+			$pushed = false;
+
+			// Get the old data
+			$data = $document->getHeadData();
+			$scripts = $data['scripts'];
+
+			// Reset the scripts data
+			// We need a fresh array to reorganize things
+			$data['scripts'] = array();
+
+			// We can't reset the script data with $document->setHeadData($data); and then
+			// use $document->addScript() because JDocument will ignore the empty array we
+			// just set $data['scripts'] to and keep the old data. So, all we'd end up
+			// doing is appending items. SO, we populate a new array and set the head data
+			// to that.
+
+			// Loop through old data and look for the
+			// spot to insert the new data
+			$i = 0;
+			foreach ($scripts as $key => $foo)
+			{
+				// Found the spot?
+				if ($i == $index)
+				{
+					$data['scripts'][$url] = array(
+						'mime'  => $type,
+						'defer' => $defer,
+						'async' => $async
+					);
+					$pushed = true;
+				}
+				$data['scripts'][$key] = $foo;
+
+				$i++;
+			}
+
+			// We didn't find out spot?
+			// Append to the end
+			if (!$pushed)
+			{
+				$data['scripts'][$url] = array(
+					'mime'  => $type,
+					'defer' => $defer,
+					'async' => $async
+				);
+			}
+
+			$document->setHeadData($data);
+		}
 	}
 
 	/**
