@@ -99,7 +99,7 @@ class UsersViewLogin extends JViewLegacy
 		// Set return if is isn't already
 		if (is_null($return) && is_object($active))
 		{
-			$return = $active->params->get('login_redirect_url', '/members/myaccount');
+			$return = $active->params->get('login_redirect_url', JRoute::_('index.php?option=com_members&task=myaccount'));
 			$return = base64_encode($return);
 		}
 
