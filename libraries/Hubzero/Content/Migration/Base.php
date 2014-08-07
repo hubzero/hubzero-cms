@@ -69,6 +69,13 @@ class Base
 	protected $options = array();
 
 	/**
+	 * Errors
+	 *
+	 * @var array
+	 **/
+	protected $errors = array();
+
+	/**
 	 * Whether or not we're running in protected mode
 	 *
 	 * @var bool
@@ -116,7 +123,7 @@ class Base
 	}
 
 	/**
-	 * undocumented function
+	 * Get option - these are specified/overwritten by the individual migrations/hooks
 	 *
 	 * @param  (string) $key
 	 * @return (string) $value
@@ -217,6 +224,28 @@ class Base
 		}
 
 		return false;
+	}
+
+	/**
+	 * Set an error
+	 *
+	 * @param  (string) $message
+	 * @param  (string) $type
+	 * @return void
+	 **/
+	public function setError($message, $type='fatal')
+	{
+		$this->errors[] = array('type' => $type, 'message' => $message);
+	}
+
+	/**
+	 * Get errors
+	 *
+	 * @return (array) - errors
+	 **/
+	public function getErrors()
+	{
+		return $this->errors;
 	}
 
 	/**
