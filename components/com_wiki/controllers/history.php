@@ -281,7 +281,7 @@ class WikiControllerHistory extends \Hubzero\Component\SiteController
 		//$revision->load($id);
 
 		// Get a count of all approved revisions
-		if ($this->page->revisions('count', array('approved' => 1))->total() <= 1)
+		if ($this->page->revisions('count', array('approved' => 1)) <= 1)
 		{
 			// Can't delete - it's the only approved version!
 			$this->setRedirect(
