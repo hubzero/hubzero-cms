@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for moving group blog file/image uploads to subfolder in groups uploads.
  **/
 class Migration20140805223444PlgGroupsBlog extends Base
 {

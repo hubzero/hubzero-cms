@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding fulltext index to xprofiles giveName, middleName, and surname fields.
  **/
 class Migration20140805185942ComMembers extends Base
 {
