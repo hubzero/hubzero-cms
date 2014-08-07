@@ -125,8 +125,10 @@ $this->css('orcid.css');
 		?>
 	</div>
 
+<?php if ($this->config->get('orcid_service', 'members') != 'public') { ?>
 	<h4>Create a new ORCID</h4>
 	<p>If you can't find your ID or would like to create a new one, just click on the "Create new ORCID" button below to generate a new ORCID based on the info in your profile. You will then receive an email from ORCID to claim the generated ORCID.</p>
 
 	<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
+<?php } ?>
 </section>

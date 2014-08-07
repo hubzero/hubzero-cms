@@ -36,6 +36,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MembersControllerOrcid extends \Hubzero\Component\SiteController
 {
+	protected $_services = array(
+		'public'  => 'pub.orcid.org',
+		'members' => 'api.orcid.org',
+		'sandbox' => 'api.sandbox.orcid.org'
+	);
+
 	/**
 	 * Recursively parse XML
 	 *
@@ -97,7 +103,10 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	private function _fetchXml($fname, $lname, $email)
 	{
-		$url = 'http://api.' . $this->config->get('orcid_service', 'orcid.org') . '/search/orcid-bio?q=';
+		$srv = $this->config->get('orcid_service', 'members');
+
+		$url = 'http://' . $this->_services[$srv] . '/search/orcid-bio?q=';
+		$tkn = $this->config->get('orcid_' . $srv . '_token', '8b9f8396-0e9d-4b74-96b0-fbcfdc678716');
 
 		$bits = array();
 
@@ -120,7 +129,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 		$initedCurl = curl_init();
 		curl_setopt($initedCurl, CURLOPT_URL, $url);
-		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/orcid+xml', 'Authorization: Bearer 8b9f8396-0e9d-4b74-96b0-fbcfdc678716'));
+		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/orcid+xml', 'Authorization: Bearer ' . $tkn));
 		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
@@ -277,6 +286,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	{
 		$this->fetchTask(true);
 
+		$this->view->config = $this->config;
 		$this->view->display();
 	}
 
@@ -307,10 +317,37 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	 */
 	public function createTask()
 	{
+		$output = new stdClass();
+		$output->success = 1;
+		$output->orcid   = '';
+		$output->message = '';
+
+		$srv = $this->config->get('orcid_service', 'members');
+		$url = 'http://' . $this->_services[$srv] . '/orcid-profile';
+		$tkn = $this->config->get('orcid_' . $srv . '_token');
+
+		if (!$tkn)
+		{
+			$output->success = 0;
+			$output->message = JText::_('Failed in creating account. Service is not configured properly.');
+
+			echo json_encode($output);
+			exit();
+		}
+
 		$first_name  = JRequest::getVar('fname', '');
 		$last_name   = JRequest::getVar('lname', '');
 		$email       = JRequest::getVar('email', '');
 		$returnOrcid = JRequest::getInt('return', 0);
+
+		if (!$first_name || !$last_name || !$email)
+		{
+			$output->success = 0;
+			$output->message = JText::sprintf('Failed in creating account. Missing information. First name: "%s", Last name: "%s", Email: "%s".', $first_name, $last_name, $email);
+
+			echo json_encode($output);
+			exit();
+		}
 
 		$xml_data = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'.
 					'<orcid-message'.
@@ -331,12 +368,10 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 						'</orcid-profile>'.
 					'</orcid-message>';
 
-		$url = 'http://api.' . $this->config->get('orcid_service', 'orcid.org') . '/orcid-profile';
-
 		$initedCurl = curl_init($url);
 		curl_setopt($initedCurl, CURLOPT_POST, 1);
 		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/xml', 'Content-Type: application/vdn.orcid+xml', 'Authorization: Bearer 8b9f8396-0e9d-4b74-96b0-fbcfdc678716'));
+		curl_setopt($initedCurl, CURLOPT_HTTPHEADER, array('Accept: application/xml', 'Content-Type: application/vdn.orcid+xml', 'Authorization: Bearer ' . $tkn));
 		curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "$xml_data");
 		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
 		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
@@ -344,11 +379,6 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 		$curl_response = curl_exec($initedCurl);
 		curl_close($initedCurl);
 		$parsed_response = $this->_http_parse_headers($curl_response);
-
-		$output = new stdClass();
-		$output->success = 1;
-		$output->orcid   = '';
-		$output->message = '';
 
 		$pathComponents = array();
 		if (isset($parsed_response['Location']))
