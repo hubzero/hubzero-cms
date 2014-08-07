@@ -78,20 +78,38 @@ class Migration20140805223444PlgGroupsBlog extends Base
 					$return = new \stdClass();
 					$return->error = new \stdClass();
 					$return->error->type = 'warning';
-					$return->error->message = 'Failed to move files to blog uploads folder. Try running again with elevated privileges';
+					$return->error->message = 'Failed to move files to blog uploads folder. Try running again with elevated privileges.';
 					return $return;
 				}
 			}
 
+			$res = false;
+			try
+			{
+				$res = \JFolder::delete($currentBlogUploadFolder);
+			}
+			catch (Exception $e)
+			{
+				$return = new \stdClass();
+				$return->error = new \stdClass();
+				$return->error->type = 'info';
+				$return->error->message = 'Folder deletion succeeded but failed to write to logs.';
+			}
+
 			// delete original folder
-			if (!\JFolder::delete($currentBlogUploadFolder))
+			if (!$res)
 			{
 				$return = new \stdClass();
 				$return->error = new \stdClass();
 				$return->error->type = 'warning';
-				$return->error->message = 'Failed to delete original blog uploads folder. Try running again with elevated privileges';
+				$return->error->message = 'Failed to delete original blog uploads folder. Try running again with elevated privileges.';
 				return $return;
 			}
+		}
+
+		if (isset($return))
+		{
+			return $return;
 		}
 
 		umask($old);
