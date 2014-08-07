@@ -464,6 +464,11 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$y = intval($c->year);
 				$m = intval($c->month);
 
+				if (!$y && !$m)
+				{
+					continue;
+				}
+
 				if (!isset($users[$c->created_by]->closed[$y]))
 				{
 					$users[$c->created_by]->closed[$y] = array();
