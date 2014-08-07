@@ -104,14 +104,19 @@ class Helper
 	public static function getMemberPhoto($member, $anonymous=0, $thumbit=true)
 	{
 		static $dfthumb;
+		static $dffull;
 
 		$config = \JComponentHelper::getParams('com_members');
 
 		// Get the default picture
 		// We need to do this here as it may be needed by the Gravatar service
+		if (!$dffull)
+		{
+			$dffull = DS . ltrim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
+		}
 		if (!$dfthumb)
 		{
-			$dfthumb = DS . ltrim($config->get('defaultpic', '/components/com_members/assets/img/profile.gif'), DS);
+			$dfthumb = $dffull;
 			if ($thumbit)
 			{
 				$dfthumb = self::thumbit($dfthumb);
@@ -210,7 +215,7 @@ class Helper
 		}
 
 		// Add the default picture last
-		$paths[] = $dfthumb;
+		$paths[] = ($thumbit) ? $dfthumb : $dffull;
 
 		// Start running through paths until we find a valid one
 		foreach ($paths as $path)
