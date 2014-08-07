@@ -282,7 +282,7 @@ class PublicationAuthor extends JTable
 		$query .= $get_uids == 1
 				? "A.user_id"
 				: "A.*, x.name as p_name, x.username, x.organization as p_organization, x.public as open,
-				x.picture, x.givenName, x.middleName, x.surname, PO.invited_name, PO.invited_email ";
+				x.picture, x.givenName, x.middleName, x.surname, x.orcid, PO.invited_name, PO.invited_email ";
 		if ($get_uids == 2)
 		{
 			$query  = "SELECT A.project_owner_id";
@@ -360,7 +360,7 @@ class PublicationAuthor extends JTable
 		}
 
 		$query  = "SELECT A.id as owner_id, x.uidNumber as uid, ";
-		$query .= " COALESCE( A.name , x.name ) as name, x.username, COALESCE( A.organization , x.organization ) as organization ";
+		$query .= " COALESCE( A.name , x.name ) as name, x.username, x.orcid, COALESCE( A.organization , x.organization ) as organization ";
 		$query .= " FROM #__xprofiles as x  ";
 		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id AND A.publication_version_id=".$vid." ";
 		$query .= " AND A.status=1 AND A.role = 'submitter' ";
@@ -460,7 +460,7 @@ class PublicationAuthor extends JTable
 		}
 
 		$query  = "SELECT A.*, x.username, x.organization as p_organization, ";
-		$query .= " x.name as p_name, x.givenName, x.surname, x.username,
+		$query .= " x.name as p_name, x.givenName, x.surname, x.username, x.orcid,
 					x.picture, NULL as invited_email, NULL as invited_name, ";
 		$query .= " COALESCE( A.name , x.name ) as name,
 					COALESCE( A.organization , x.organization ) as organization, ";
@@ -501,7 +501,7 @@ class PublicationAuthor extends JTable
 
 		$query  = "SELECT  A.*, po.invited_email as invited_email, po.invited_name as invited_name,  ";
 		$query .= "x.name as p_name, x.username, x.organization as p_organization,
-				   x.picture, x.surname, x.givenName, ";
+				   x.picture, x.surname, x.givenName, x.orcid, ";
 		$query .= " COALESCE( A.name , x.name ) as name, x.username,
 					COALESCE( A.organization , x.organization ) as organization, ";
 		$query .= " COALESCE( A.firstName, x.givenName) firstName, ";
@@ -733,7 +733,7 @@ class PublicationAuthor extends JTable
 		}
 
 		$query	 = " SELECT PO.invited_email, PO.invited_name,
-					x.name, x.organization, x.uidNumber, x.givenName, x.surname ";
+					x.name, x.organization, x.uidNumber, x.givenName, x.surname, x.orcid ";
 		$query  .= " FROM #__project_owners as PO  ";
 		$query  .= " LEFT JOIN #__xprofiles as x ON x.uidNumber=PO.userid ";
 		$query  .= " WHERE PO.id=".$owner_id." LIMIT 1";
