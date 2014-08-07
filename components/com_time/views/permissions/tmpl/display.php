@@ -31,29 +31,26 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'base.php';
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
 
-require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'contacts.php';
-require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'hubs.php';
-require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'records.php';
-require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'tasks.php';
+$this->css()
+     ->css($this->controller);
+?>
 
-require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'hub.php';
-require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'permissions.php';
-
-require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'charts.php';
-require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'html.php';
-require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'filters.php';
-
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'overview'));
-if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'overview';
-}
-require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php';
-$controllerName = 'TimeController' . ucfirst($controllerName);
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+<div class="com_time_permissions_container">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="POST">
+		<div class="permissions-box">
+			<fieldset class="permissions">
+				<?php echo $this->permissions->label; ?>
+				<?php echo $this->permissions->input; ?>
+			</fieldset>
+		</div>
+		<input type="hidden" name="task" value="save" />
+		<input type="hidden" name="scope" value="<?php echo $this->scope; ?>" />
+		<input type="hidden" name="scope_id" value="<?php echo $this->scope_id; ?>" />
+		<p class="submit">
+			<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_TIME_PERMISSIONS_SAVE'); ?>" />
+			<button type="button" class="btn btn-secondary cancel"><?php echo JText::_('COM_TIME_PERMISSIONS_CANCEL'); ?></button>
+		</p>
+	</form>
+</div>

@@ -36,6 +36,7 @@
 .com_time_reports .report-select-type {
 	border-top: 1px solid #CCCCCC;
 	border-bottom: 1px solid #CCCCCC;
+	border-left: 1px solid #CCCCCC;
 	padding: 15px;
 	background-color: #F9F9F9;
 }

@@ -55,6 +55,14 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 	<section class="com_time_content com_time_hubs">
 		<div id="content-header-extra">
 			<ul id="useroptions">
+				<?php if ($this->row->id && $this->permissions->can('edit.permissions')) : ?>
+					<li>
+						<?php $permRoute = JRoute::_('index.php?option=' . $this->option . '&controller=permissions&scope=' . $this->controller . '&scope_id=' . $this->row->id . '&tmpl=component'); ?>
+						<a class="icon-config btn permissions-button" href="<?php echo $permRoute; ?>">
+							<?php echo JText::_('COM_TIME_HUBS_PERMISSIONS'); ?>
+						</a>
+					</li>
+				<?php endif; ?>
 				<li class="last">
 					<a class="icon-reply btn" href="<?php echo JRoute::_($base . $this->start); ?>">
 						<?php echo JText::_('COM_TIME_HUBS_ALL_HUBS'); ?>

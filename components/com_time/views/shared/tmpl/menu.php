@@ -30,6 +30,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+if (!isset($this->permissions))
+{
+	$this->permissions = new TimeModelPermissions($this->option);
+}
+
 ?>
 
 <div class="com_time_navigation">
@@ -40,6 +46,10 @@ defined('_JEXEC') or die('Restricted access');
 
 			foreach (array('overview', 'records', 'tasks', 'hubs', 'reports') as $tab)
 			{
+				if (!$this->permissions->can('view.' . $tab))
+				{
+					continue;
+				}
 				$cls  = ($this->controller == $tab) ? ' active' : '';
 				$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $tab);
 
@@ -49,21 +59,27 @@ defined('_JEXEC') or die('Restricted access');
 	</ul>
 	<div class="com_time_quick_links">
 		<ul>
-			<li>
-				<a class="new-record" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=records&task=new'); ?>">
-					<?php echo JText::_('COM_TIME_NEW_RECORD'); ?>
-				</a>
-			</li>
-			<li>
-				<a class="new-task" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tasks&task=new'); ?>">
-					<?php echo JText::_('COM_TIME_NEW_TASK'); ?>
-				</a>
-			</li>
-			<li>
-				<a class="new-hub" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=hubs&task=new'); ?>">
-					<?php echo JText::_('COM_TIME_NEW_HUB'); ?>
-				</a>
-			</li>
+			<?php if ($this->permissions->can('new.records')) : ?>
+				<li>
+					<a class="new-record" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=records&task=new'); ?>">
+						<?php echo JText::_('COM_TIME_NEW_RECORD'); ?>
+					</a>
+				</li>
+			<?php endif; ?>
+			<?php if ($this->permissions->can('new.tasks')) : ?>
+				<li>
+					<a class="new-task" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tasks&task=new'); ?>">
+						<?php echo JText::_('COM_TIME_NEW_TASK'); ?>
+					</a>
+				</li>
+			<?php endif; ?>
+			<?php if ($this->permissions->can('new.hubs')) : ?>
+				<li>
+					<a class="new-hub" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=hubs&task=new'); ?>">
+						<?php echo JText::_('COM_TIME_NEW_HUB'); ?>
+					</a>
+				</li>
+			<?php endif; ?>
 		</ul>
 	</div>
 </div>

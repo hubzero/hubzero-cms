@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset
+		name="permissions">
+
+		<field
+			name="hubs"
+			type="rules"
+			label="COM_TIME_PERMISSIONS_LABEL"
+			class="inputbox"
+			validate="rules"
+			filter="rules"
+			component="com_time"
+			section="hubs" />
+	</fieldset>
+
+	<fieldset>
+		<field
+			name="asset_id"
+			type="hidden" />
+	</fieldset>
+</form>

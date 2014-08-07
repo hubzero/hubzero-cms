@@ -1,0 +1,27 @@
+/**
+ * @package     hubzero-cms
+ * @file        components/com_time/assets/css/permissions.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* --------------------------
+	Hub permissions
+----------------------------- */
+.com_time_permissions_container {
+	margin: 30px;
+}
+.com_time_permissions_container fieldset label#hubs-lbl {
+	text-align: center;
+	display: block;
+	font-size: 1.5em;
+}
+.com_time_permissions_container .rule-desc {
+	text-align: center;
+}
+.com_time_permissions_container .rule-notes {
+	margin-top: 15px;
+}
+.com_time_permissions_container .submit {
+	text-align: center;
+}

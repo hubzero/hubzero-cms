@@ -163,6 +163,49 @@ HUB.Plugins.TimeHubs = {
 				}
 			});
 		});
+
+		// --------------------
+		// Permissions dialog
+		// --------------------
+
+		var perms = $(".permissions-button");
+
+		// Add click event to permissions button
+		perms.click(function ( e ) {
+			// Prevent delete action
+			e.preventDefault();
+
+			// Create a ajax call to save the contact
+			$.fancybox({
+				type: 'iframe',
+				href: $(e.target).attr('href'),
+				autoSize: false,
+				width: ($(window).width())*3/4,
+				height: ($(window).height())*3/4,
+				afterLoad: function (upcoming, current) {
+					var contents = $(upcoming.content).contents();
+					contents.find('.cancel').click(function ( e ) {
+						e.preventDefault();
+						$.fancybox.close();
+					});
+
+					contents.find('.com_time_permissions_container form').submit(function ( e ) {
+						e.preventDefault();
+
+						$.ajax({
+							url: $(this).attr('action'),
+							data: $(this).serializeArray(),
+							dataType: "json",
+							type: $(this).attr('method'),
+							cache: false,
+							success: function ( json ) {
+								$.fancybox.close();
+							}
+						});
+					});
+				}
+			});
+		});
 	} // end initialize
 };
 

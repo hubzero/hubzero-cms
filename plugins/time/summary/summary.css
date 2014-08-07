@@ -11,6 +11,7 @@
 .plg_time_summary .filters {
 	width: 20%;
 	border-right: 1px solid #CCCCCC;
+	border-left: 1px solid #CCCCCC;
 	background: #F9F9F9;
 	padding: 15px;
 	height: 525px;

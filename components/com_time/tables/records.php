@@ -332,7 +332,7 @@ Class TimeRecords extends JTable
 	 */
 	public function getSummaryHours($filters=array())
 	{
-		$query  = "SELECT p.name AS pname, sum(time) as hours";
+		$query  = "SELECT p.name AS pname, sum(time) as hours, h.id AS hub_id";
 		$query .= $this->buildquery();
 		$where  = array();
 		if (isset($filters['uid']) && !empty($filters['uid']))

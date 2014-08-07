@@ -57,41 +57,32 @@ class TimeControllerBase extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Check authorization
-		if (!$this->authorize())
-		{
-			JError::raiseError(401, JText::_('COM_TIME_ERROR_NOT_AUTHORIZED'));
-			return;
-		}
+		// Set up permissions model
+		$this->permissions = new TimeModelPermissions($this->_option);
 
 		// Execute the task
 		parent::execute();
 	}
 
 	/**
-	 * Check authorization
+	 * Set up a few things for all views and do permissions check
 	 *
-	 * @return bool
+	 * @return void
 	 **/
-	private function authorize()
+	protected function _onBeforeDoTask()
 	{
-		// @FIXME: add parameter for group access
-		$accessgroup = $this->config->get('accessgroup', 'time');
+		// Set action
+		$action = (($this->_task) ? $this->_task : 'view') . '.' . $this->_controller;
 
-		// Check if they're a member of admin group
-		$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-		if ($ugs && count($ugs) > 0)
+		// Make sure action can be performed
+		if (!$this->permissions->can($action))
 		{
-			foreach ($ugs as $ug)
-			{
-				if ($ug->cn == $accessgroup)
-				{
-					return true;
-				}
-			}
+			JError::raiseError(401, JText::_('COM_TIME_ERROR_NOT_AUTHORIZED'));
+			return;
 		}
 
-		return false;
+		// Pass permissions model to our view
+		$this->view->permissions = $this->permissions;
 	}
 
 	/**

@@ -62,6 +62,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		);
 
 		$database         = JFactory::getDbo();
+		$permissions      = new TimeModelPermissions('com_time');
 		$hubTbl           = new TimeHubs($database);
 		$taskTbl          = new TimeTasks($database);
 		$recordTbl        = new TimeRecords($database);
@@ -124,21 +125,27 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$view->hubs[$record->hid] = array(
-					'name'  => $record->hname,
-					'tasks' => array(
-						$record->pid => array(
-							'name'    => $record->pname,
-							'total'   => $record->time,
-							'records' => array(
-								$record
+				if ($permissions->can('view.report', 'hubs', $record->hid))
+				{
+					$view->hubs[$record->hid] = array(
+						'name'  => $record->hname,
+						'tasks' => array(
+							$record->pid => array(
+								'name'    => $record->pname,
+								'total'   => $record->time,
+								'records' => array(
+									$record
+								)
 							)
-						)
-					),
-					'total' => $record->time
-				);
+						),
+						'total' => $record->time
+					);
+				}
 			}
 		}
+
+		// Pass permissions to view
+		$view->permissions = $permissions;
 
 		return $view->loadTemplate();
 	}
@@ -150,13 +157,14 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getTimePerTask()
 	{
-		$database   = JFactory::getDbo();
-		$records    = new TimeRecords($database);
-		$hub_id     = JRequest::getInt('hub_id',  null);
-		$task_id    = JRequest::getInt('task_id', null);
-		$start      = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$end        = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
-		$summary    = $records->getSummaryHours(
+		$database    = JFactory::getDbo();
+		$records     = new TimeRecords($database);
+		$permissions = new TimeModelPermissions('com_time');
+		$hub_id      = JRequest::getInt('hub_id',  null);
+		$task_id     = JRequest::getInt('task_id', null);
+		$start       = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$end         = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$summary     = $records->getSummaryHours(
 			array(
 				'orderby'    => 'hours',
 				'orderdir'   => 'ASC',
@@ -166,6 +174,20 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 				'end_date'   => $end
 			)
 		);
+
+		if ($summary && count($summary) > 0)
+		{
+			foreach ($summary as $k => $v)
+			{
+				if (!$permissions->can('view.report', 'hubs', $v->hub_id))
+				{
+					unset($summary[$k]);
+				}
+			}
+		}
+
+		// Reindex and encode
+		$summary = array_values($summary);
 		echo json_encode($summary);
 
 		exit();

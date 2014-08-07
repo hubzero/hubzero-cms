@@ -51,7 +51,9 @@ $base    = 'index.php?option=com_time&controller=reports';
 				<label for="hub_id"><?php echo JText::_('PLG_TIME_SUMMARY_HUB_NAME'); ?>: </label>
 				<?php $options[] = JHTML::_('select.option', null, JText::_('PLG_TIME_SUMMARY_NO_HUB_SELECTED')); ?>
 				<?php foreach ($this->hubsList as $hub) : ?>
-					<?php $options[] = JHTML::_('select.option', $hub->id, JText::_($hub->name)); ?>
+					<?php if ($this->permissions->can('view.report', 'hubs', $hub->id)) : ?>
+						<?php $options[] = JHTML::_('select.option', $hub->id, JText::_($hub->name)); ?>
+					<?php endif; ?>
 				<?php endforeach; ?>
 				<?php echo JHTML::_('select.genericlist', $options, 'hub_id', null, 'value', 'text', $this->hub_id); ?>
 			</div>
@@ -59,7 +61,9 @@ $base    = 'index.php?option=com_time&controller=reports';
 				<label for="task_id"><?php echo JText::_('PLG_TIME_SUMMARY_TASK_NAME'); ?>: </label>
 				<?php $options = array(JHTML::_('select.option', null, JText::_('PLG_TIME_SUMMARY_NO_TASK_SELECTED'))); ?>
 				<?php foreach ($this->tasksList as $task) : ?>
-					<?php $options[] = JHTML::_('select.option', $task->id, JText::_($task->name)); ?>
+					<?php if ($this->permissions->can('view.report', 'hubs', $task->hub_id)) : ?>
+						<?php $options[] = JHTML::_('select.option', $task->id, JText::_($task->name)); ?>
+					<?php endif; ?>
 				<?php endforeach; ?>
 				<?php echo JHTML::_('select.genericlist', $options, 'task_id', null, 'value', 'text', $this->task_id); ?>
 			</div>

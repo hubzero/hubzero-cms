@@ -92,6 +92,13 @@ Class TimeHubs extends JTable
 	var $notes = null;
 
 	/**
+	 * asset id
+	 *
+	 * @var int
+	 */
+	var $asset_id = null;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   database object
@@ -100,6 +107,55 @@ Class TimeHubs extends JTable
 	function __construct( &$db )
 	{
 		parent::__construct('#__time_hubs', 'id', $db );
+	}
+
+	/**
+	 * Method to compute the name of the asset
+	 *
+	 * @return  string
+	 */
+	protected function _getAssetName()
+	{
+		$k = $this->_tbl_key;
+		return 'com_time.hubs.' . (int) $this->$k;
+	}
+
+	/**
+	 * Method to return the title to use for the asset table
+	 *
+	 * @return  string
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Get the parent asset id for the record
+	 *
+	 * @param   JTable   $table  A JTable object for the asset parent.
+	 * @param   integer  $id     The id for the asset
+	 *
+	 * @return  integer  The id of the asset's parent
+	 */
+	protected function _getAssetParentId($table = null, $id = null)
+	{
+		$assetId = null;
+
+		// Build the query to get the asset id for the parent category
+		$query = $this->_db->getQuery(true);
+		$query->select('id');
+		$query->from('#__assets');
+		$query->where('name = ' . $this->_db->quote('com_time'));
+
+		// Get the asset id from the database
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadResult())
+		{
+			$assetId = (int) $result;
+		}
+
+		return ($assetId) ? $assetId : parent::_getAssetParentId($table, $id);
 	}
 
 	/**
