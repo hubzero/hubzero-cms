@@ -352,6 +352,9 @@ class SiteController extends Object implements ControllerInterface
 		// Record the actual task being fired
 		$doTask .= 'Task';
 
+		// On before do task hook
+		$this->_onBeforeDoTask();
+
 		// Call the task
 		$this->$doTask();
 	}
@@ -601,5 +604,15 @@ class SiteController extends Object implements ControllerInterface
 
 		return false;
 	}
-}
 
+	/**
+	 * Perform before actually calling the given task
+	 *
+	 * @return void
+	 * @author 
+	 **/
+	protected function _onBeforeDoTask()
+	{
+		// Do nothing - override in subclass
+	}
+}
