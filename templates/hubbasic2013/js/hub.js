@@ -97,6 +97,9 @@ jQuery(document).ready(function(jq){
 			// because it can't start animating the fade in of the new tip until the old tip is
 			// done. Solution is to disable one of the animations.
 			hide: false,
+			content: function () {
+				return $(this).attr('title');
+			},
 			create: function(event, ui) {
 				var tip = $(this),
 					tipText = tip.attr('title');
