@@ -94,13 +94,14 @@ function WikiParseRoute($segments)
 		case 'media':
 			$vars['controller'] = 'media';
 		break;
-		
+
 		case 'history':
 		case 'compare':
 		case 'approve':
+		case 'deleterevision':
 			$vars['controller'] = 'history';
 		break;
-		
+
 		case 'addcomment':
 		case 'savecomment':
 		case 'reportcomment':
@@ -108,14 +109,13 @@ function WikiParseRoute($segments)
 		case 'comments':
 			$vars['controller'] = 'comments';
 		break;
-		
+
 		case 'delete':
 		case 'edit':
 		case 'save':
 		case 'rename':
 		case 'saverename':
 		case 'approve':
-		case 'deleterevision':
 		default:
 			$vars['controller'] = 'page';
 		break;
