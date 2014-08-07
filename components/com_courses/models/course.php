@@ -748,15 +748,15 @@ class CoursesModelCourse extends CoursesModelAbstract
 		switch ($what)
 		{
 			case 'array':
-				$tags = $ct->get_tags_on_object($this->get('id'), 0, 0);
+				$tags = $ct->get_tags_on_object($this->get('id'), 0, 0, null, 0, (JFactory::getApplication()->isAdmin() ? 1 : 0));
 			break;
 
 			case 'string':
-				$tags = $ct->get_tag_string($this->get('id'));
+				$tags = $ct->get_tag_string($this->get('id'), 0, 0, null, 0, (JFactory::getApplication()->isAdmin() ? 1 : 0));
 			break;
 
 			case 'cloud':
-				$tags = $ct->get_tag_cloud(0, 0, $this->get('id'));
+				$tags = $ct->get_tag_cloud(0, (JFactory::getApplication()->isAdmin() ? 1 : 0), $this->get('id'));
 			break;
 		}
 
