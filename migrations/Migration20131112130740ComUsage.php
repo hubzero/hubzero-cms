@@ -124,12 +124,6 @@ class Migration20131112130740ComUsage extends Base
 			$this->db->query();
 		}
 
-		// Set up return if needed
-		$return = new \stdClass();
-		$return->error = new \stdClass();
-		$return->error->type = 'warning';
-		$return->error->message = 'Failed to create stats table. Try running again with elevated privileges';
-
 		if (!$statsDb->tableExists('countries'))
 		{
 			try
@@ -149,7 +143,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -185,7 +180,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -245,7 +241,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -267,7 +264,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -289,7 +287,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -311,7 +310,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -356,7 +356,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -380,7 +381,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -425,7 +427,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -443,7 +446,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -472,7 +476,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -500,7 +505,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -524,7 +530,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -548,7 +555,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -570,7 +578,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -594,7 +603,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -618,7 +628,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -642,7 +653,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -665,7 +677,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -688,7 +701,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -712,7 +726,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 
@@ -730,7 +745,8 @@ class Migration20131112130740ComUsage extends Base
 			catch (Exception $e)
 			{
 				// Internally catch errors and only return a warning.
-				return $return;
+				$this->setError('Failed to create stats table. Try running again with elevated privileges', 'warning');
+				return false;
 			}
 		}
 	}

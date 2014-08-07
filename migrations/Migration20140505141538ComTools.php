@@ -21,11 +21,8 @@ class Migration20140505141538ComTools extends Base
 
 		if (!$mwdb->connected())
 		{
-			$return = new \stdClass();
-			$return->error = new \stdClass();
-			$return->error->type = 'warning';
-			$return->error->message = 'Failed to connect to the middleware database';
-			return $return;
+			$this->setError('Failed to connect to the middleware database', 'warning');
+			return false;
 		}
 
 		if ($mwdb->tableExists('host')
@@ -49,11 +46,8 @@ class Migration20140505141538ComTools extends Base
 
 		if (!$mwdb->connected())
 		{
-			$return = new \stdClass();
-			$return->error = new \stdClass();
-			$return->error->type = 'warning';
-			$return->error->message = 'Failed to connect to the middleware database';
-			return $return;
+			$this->setError('Failed to connect to the middleware database', 'warning');
+			return false;
 		}
 
 		if ($mwdb->tableExists('host')

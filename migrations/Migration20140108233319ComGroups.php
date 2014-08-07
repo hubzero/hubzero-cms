@@ -47,11 +47,8 @@ class Migration20140108233319ComGroups extends Base
 				// create uploads folder
 				if (!\JFolder::create( $groupUploadFolder ))
 				{
-					$return = new \stdClass();
-					$return->error = new \stdClass();
-					$return->error->type = 'warning';
-					$return->error->message = 'Failed to create uploads folder. Try running again with elevated privileges';
-					return $return;
+					$this->setError('Failed to create uploads folder. Try running again with elevated privileges', 'warning');
+					return false;
 				}
 			}
 
@@ -65,20 +62,12 @@ class Migration20140108233319ComGroups extends Base
 				$to   = $groupUploadFolder . DS . $groupFile;
 				if (!\JFile::move( $from, $to ))
 				{
-					$return = new \stdClass();
-					$return->error = new \stdClass();
-					$return->error->type = 'warning';
-					$return->error->message = 'Failed to move files to uploads folder. Try running again with elevated privileges';
-					return $return;
+					$this->setError('Failed to move files to uploads folder. Try running again with elevated privileges', 'warning');
+					return false;
 				}
 			}
 		}
 
 		umask($old);
-	}
-
-	public function down()
-	{
-
 	}
 }

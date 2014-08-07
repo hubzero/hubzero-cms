@@ -21,11 +21,8 @@ class Migration20140804153815Core extends Base
 
 		if (!$mwdb->connected())
 		{
-			$return = new \stdClass();
-			$return->error = new \stdClass();
-			$return->error->type = 'warning';
-			$return->error->message = 'Failed to connect to the middleware database';
-			return $return;
+			$this->setError('Failed to connect to the middleware database', 'warning');
+			return false;
 		}
 
 		/* We can just drop the old tables because they were never used on a live hub */
@@ -49,11 +46,8 @@ class Migration20140804153815Core extends Base
 
 		if (!$mwdb->connected())
 		{
-			$return = new \stdClass();
-			$return->error = new \stdClass();
-			$return->error->type = 'warning';
-			$return->error->message = 'Failed to connect to the middleware database';
-			return $return;
+			$this->setError('Failed to connect to the middleware database', 'warning');
+			return false;
 		}
 
 		/* We can just drop the old tables because they were never used on a live hub */

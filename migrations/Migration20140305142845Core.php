@@ -25,12 +25,8 @@ class Migration20140305142845Core extends Base
 
 		if (!$result)
 		{
-			$return = new \stdClass();
-			$return->error = new \stdClass();
-			$return->error->type = 'fatal';
-			$return->error->message = 'Missing MySQL timezone table. Please ensure the necessary timezone setup migration has been run.';
-
-			return $return;
+			$this->setError('Missing MySQL timezone table. Please ensure the necessary timezone setup migration has been run.', 'fatal');
+			return false;
 		}
 
 		// Now do our best guess as to whether or not this has already been run
@@ -59,12 +55,8 @@ class Migration20140305142845Core extends Base
 
 		if (!$need_to_run)
 		{
-			$return = new \stdClass();
-			$return->error = new \stdClass();
-			$return->error->type = 'fatal';
-			$return->error->message = 'The timezone conversion appears to have already run. You should confirm this and mark this migration as run if necessary (muse migration -fm --file=Migration20140305142845Core.php)';
-
-			return $return;
+			$this->setError('The timezone conversion appears to have already run. You should confirm this and mark this migration as run if necessary (muse migration -fm --file=Migration20140305142845Core.php)', 'fatal');
+			return false;
 		}
 
 		$updates = array(

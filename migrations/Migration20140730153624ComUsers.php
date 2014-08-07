@@ -32,11 +32,8 @@ class Migration20140730153624ComUsers extends Base
 			}
 			else
 			{
-				$return = new \stdClass();
-				$return->error = new \stdClass();
-				$return->error->type = 'warning';
-				$return->error->message = 'Failed to convert new user type paramter of "' . $user_type . '" to an ID.';
-				return $return;
+				$this->setError('Failed to convert new user type paramter of "' . $user_type . '" to an ID.', 'warning');
+				return false;
 			}
 		}
 	}
