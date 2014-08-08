@@ -519,7 +519,7 @@ $cc = array();
 								<select name="resolved" id="ticket-field-status">
 									<option value=""<?php if ($this->row->isOpen() && $this->row->get('status') < 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?></option>
 									<option value="1"<?php if ($this->row->get('status') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_WAITING'); ?></option>
-									<optgroup label="<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?>">
+									<optgroup label="<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED'); ?>">
 										<option value="noresolution"<?php if (!$this->row->isOpen() && $this->row->get('resolved') == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
 										<?php
 										if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='')
