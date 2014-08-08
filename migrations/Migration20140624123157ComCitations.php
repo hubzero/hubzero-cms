@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for changing uid from username to int
  **/
 class Migration20140624123157ComCitations extends Base
 {
@@ -50,13 +50,5 @@ class Migration20140624123157ComCitations extends Base
 		$query = "ALTER TABLE `jos_citations` CHANGE uid uid INT(11);";
 		$this->db->setQuery($query);
 		$this->db->query();
-	}
-
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-
 	}
 }

@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for adding plugin entry for time summary
  **/
 class Migration20140721163818PlgTimeSummary extends Base
 {
