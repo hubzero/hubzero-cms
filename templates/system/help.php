@@ -30,6 +30,10 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+// include frameworks
+JHTML::_('behavior.framework', true);
+JHTML::_('behavior.modal');
 ?>
 <!DOCTYPE html>
 <html>
