@@ -77,38 +77,36 @@ class Geocode
 			}
 		}
 
+		if (!count($p))
+		{
+			return self::$countries;
+		}
+
 		// Instantiate the Geocoder service and pass it the list of providers
 		$geocoder = new \Geocoder\Geocoder();
 		$geocoder->registerProvider(new \Geocoder\Provider\ChainProvider($p));
 
 		// Try to get some data...
-		try
+		$geocoder->setResultFactory(new Result\CountriesResultFactory());
+
+		$countries = array();
+
+		if ($data = $geocoder->geocode($continent))
 		{
-			$geocoder->setResultFactory(new Result\CountriesResultFactory());
-
-			$countries = array();
-
-			if ($data = $geocoder->geocode($continent))
+			foreach ($data as $item)
 			{
-				foreach ($data as $item)
-				{
-					$country = new \stdClass();
-					$country->code      = $item->getCountryCode();
-					$country->name      = $item->getCountry();
-					$country->continent = $item->getRegion();
+				$country = new \stdClass();
+				$country->code      = $item->getCountryCode();
+				$country->name      = $item->getCountry();
+				$country->continent = $item->getRegion();
 
-					$countries[] = $country;
-				}
+				$countries[] = $country;
 			}
-
-			self::$countries[$continent] = $countries;
-
-			return self::$countries[$continent];
 		}
-		catch (\Exception $e)
-		{
-			echo $e->getMessage();
-		}
+
+		self::$countries[$continent] = $countries;
+
+		return self::$countries[$continent];
 	}
 
 	/**
@@ -137,33 +135,31 @@ class Geocode
 			}
 		}
 
+		if (!count($p))
+		{
+			return '';
+		}
+
 		// Instantiate the Geocoder service and pass it the list of providers
 		$geocoder = new \Geocoder\Geocoder();
 		$geocoder->registerProvider(new \Geocoder\Provider\ChainProvider($p));
 
 		// Try to get some data...
-		try
-		{
-			$geocoder->setResultFactory(new Result\CountryResultFactory());
+		$geocoder->setResultFactory(new Result\CountryResultFactory());
 
-			$country = $code;
-			if ($data = $geocoder->geocode($code))
-			{
-				if (is_array($data))
-				{
-					$country = $data[0]->getCountry();
-				}
-				else
-				{
-					$country = $data->getCountry();
-				}
-			}
-			return $country;
-		}
-		catch (\Exception $e)
+		$country = $code;
+		if ($data = $geocoder->geocode($code))
 		{
-			echo $e->getMessage();
+			if (is_array($data))
+			{
+				$country = $data[0]->getCountry();
+			}
+			else
+			{
+				$country = $data->getCountry();
+			}
 		}
+		return $country;
 	}
 
 	/**
@@ -198,19 +194,17 @@ class Geocode
 			}
 		}
 
+		if (!count($p))
+		{
+			return '';
+		}
+
 		// Instantiate the Geocoder service and pass it the list of providers
 		$geocoder = new \Geocoder\Geocoder();
 		$geocoder->registerProvider(new \Geocoder\Provider\ChainProvider($p));
 
 		// Try to get some data...
-		try
-		{
-			return $geocoder->geocode($address);
-		}
-		catch (\Exception $e)
-		{
-			throw new $e;
-		}
+		return $geocoder->geocode($address);
 	}
 
 	/**
@@ -239,6 +233,11 @@ class Geocode
 			}
 		}
 
+		if (!count($p))
+		{
+			return '';
+		}
+
 		$latitude =  isset($coordinates['latitude'])  ? $coordinates['latitude']  : $coordinates[0];
 		$longitude = isset($coordinates['longitude']) ? $coordinates['longitude'] : $coordinates[1];
 
@@ -247,14 +246,7 @@ class Geocode
 		$geocoder->registerProvider(new \Geocoder\Provider\ChainProvider($p));
 
 		// Try to get some data...
-		try
-		{
-			return $geocoder->reverse($latitude, $longitude);
-		}
-		catch (\Exception $e)
-		{
-			echo $e->getMessage();
-		}
+		return $geocoder->reverse($latitude, $longitude);
 	}
 
 	/**
