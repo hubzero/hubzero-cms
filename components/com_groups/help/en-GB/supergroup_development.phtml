@@ -31,61 +31,46 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<h1>Super Group Development</h1>
-<p>In efforts to make super group development easier, we are utilizing a code management tool called <a href="https://www.gitlab.com/" target="_blank">Gitlab</a>. Similar to Github in functionality and looks, it provides an easy way for the developers to write &amp; push code and give the HUBzero team the security we needed to allow third party developers to commit code to production machines.</p>
+<h1>Super Group Development (Overview)</h1>
 
-<?php if (JFactory::getUser()->get('usertype') == 'Super Administrator') : ?>
-	<h2>HUB Setup</h2>
-	<p>Each HUB can choose to integrate with Gitlab or not. If your HUB chooses to integrate then there are few steps to get setup and running.</p>
-	<ol>
-		<li>Gitlab integration must be enabled in the Groups config, under the "super" tab. The Gitlab url must also be supplied along with the API key of an admin account on Gitlab (found under the "account" tab in profile section). This allows the HUB to do the initial group/project creation when the super group is created.</li>
-		<li>In order for the HUB (www-data user) to make the first commit to the project, including the basic super group template and folder structure, the www-data user must have an SSH Key. That SSH key must also be added to the same admin account on Gitlab. This first commit actually creates the git repository.</li>
-		<li>The last step for HUB setup is to SSH as the www-data user to the Gitlab machine. This will approve the RSA fingerprint of the Gitlab machine for the www-data user and add the machine to the known_hosts file. If this step is omitted the hubs attempt to make the inital commit will be denied.</li>
-	</ol>
-	<hr />
-<?php endif; ?>
-
-<h2>Group Setup</h2>
-<p>When a super group is created on the HUB, most of the initial setup for that super group is done automatically. If you are working on a super group that was created prior to May 2014, then this setup will need to be done manually for that super group to work with Gitlab. Please enter a ticket through the support system detailing the the super group and that you would like to have your group integrated into Gitlab.</p>
-
-<p>The other part of the setup process is giving user access and permissions. This must be done manually by the HUBzero development team. Please submit a ticket indicating the super group and any users (name, preferred username, &amp; email address) that will need to have access in Gitlab for the project.
+<h4>Table of Contents</h4>
+<ul>
+	<li><a href="#whatisgitlab">What is Gitlab?</a></li>
+	<li><a href="#whygithub">Why Gitlab?</a></li>
+</ul>
 
 <hr />
 
-<h2>User (Developer) Setup</h2>
-<p>Once you have submitted a ticket for access to Gitlab, you will recieve an email within 48 hours with all the details you need to login to your account. The email will contain a temporary password that you will be forced to update upon login. After you login and change your password, you also need to upload an SSH key, in order to make commits and push to Gitlab. To do that, go to your profile, then SSH Keys and click "Add SSH Key" button. If you are unsure of how to create an SSH key there is a link at the top of the "Add an SSH Key" page that links to a help page with detailed instructions.</p>
-
-<p class="info">You can add multiple SSH keys if you plan to make commits from multiple machines.</p>
-
-<p>You should also receive an email regarding access given to your project. Once you login to your account, you can view any projects you have access to, by clicking the "Projects" tab below the top toolbar. You should also see updates for all your projects on your home or dashboard within Gitlab.</p>
+<h3 id="whatisgitlab">What is Gitlab?</h3>
+<p>In efforts to make super group development easier, we are utilizing a code management tool called <a href="https://www.gitlab.com/" target="_blank">Gitlab</a>. Similar to <a href="https://www.github.com/" target="_blank">Github</a> in functionality and looks, it provides an easy way for the developers to write &amp; push code and give the HUBzero team the security we needed to allow third party developers to commit code to production machines.</p>
 
 <hr />
 
-<h2>The Process</h2>
-<p>If your familiar with the "fork &amp; merge" workflow on Github, then the super group integration with Gitlab will be easy. Basically the "fork &amp; merge" workflow means that instead of everyone modifiying and committing to a single repository, each user "forks" the super group project, creating their own version of the project. That user can then clone the repository to wherever they want (dev machine, local machine, etc) and then make the necessary changes. When they are ready to move their changes to the super group on the live site, they make local commits and push to their "forked" project. Then through the Gitlab web interface they make a "merge request", including any of the changes they want brought over. This will alert the HUBzero developement team to merge the requested changes.</p>
+<h3 id="whygithub">Why Gitlab?</h3>
+<p>There are many benefits for both parties (the developer &amp; the Hub team) to using a tool like Gitlab for managing the code of a super group.</p>
+
+<h6>Security</h6>
+<p>Live site access can be very dangerous for even a very experienced developer. The use of Gitlab removes the need to access the live site all together. The developer can code and test in whatever environement they want, add their changes and the hub can pull in the approved changes right through the HUB admin interface.</p>
+
+<p>Gitlab also allows the HUB team to monitor and approve code after the developer has pushed their updates. Changes MUST be approved by the HUB team before they can be moved to the live site.</p>
 
 <hr />
 
-<h2>Security</h2>
-<p>Since the main repository is write protected and can only be updated through merge requests approved by the Hubzero development team, each developer must work on a forked copy and merge the changes when they are ready.</p>
-<p>It gives the Hubzero development team the ability to review code before it gets moved to a production hub.</p>
+<h6>Developer Freedom</h6>
+<p>Developers will actually work on whats called a "forked" copy of the super group repository. This means they they are working on their very own version of the super group code and can do whatever they want to it without affecting the live site super group or any other developers also working on the super group.</p>
 
 <hr />
 
-<h2>Developer Freedom</h2>
-<p>Developers can do whatever they want with their "forked" copy of the repository without affecting the other developers.</p>
-<p>They can clone the repository to whatever machine they want and make necessary changes.</p>
-<p>They can choose to continually keep it up to date or just create a "fork" to make a single change and then delete it after the merge has been approved.</p>
+<h6>Frequent Updates</h6>
+<p>Managing the super groups by Gitlab (outside of the main CMS), allows for more regular updates. At any point after the hub is configured to work with Gitlab, any hub admin who has access to the groups adminstrator panel can update the the super groups code.</p>
 
 <hr />
 
-<h2>Frequent Updates</h2>
-<p>Managing the super groups by Gitlab (outside of the main CMS), allows for more regular updates.
-<p>At any point after the hub is configured to work with Gitlab, any hub admin who has access to the groups adminstrator panel can update the the super groups code. Since each super group pulls from the main repo that is write protected running the "Pull Code" command wont do anything unless "merge requests" were approved and merged in since the last time code was pulled.</p>
+<h6>Extra Features</h6>
+<p>Along with a nice code browser/editor, Gitlab comes with an Issue tracker and Wiki section for each project. Each project has the ability to use those sections however these please.</p>
 
-<p>Along with pulling in any new code that had been merged, any migrations that had not been run previously will also be run.</p>
 
-<hr />
 
-<h2>Extra Features</h2>
-<p>Along with a nice code browser/editor, Gitlab comes with an Issue tracker and Wiki section for each project. Each project has the ability to use those sections however these please</p>
+
+
+
