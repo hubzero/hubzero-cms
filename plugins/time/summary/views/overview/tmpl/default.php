@@ -85,45 +85,51 @@ $base    = 'index.php?option=com_time&controller=reports';
 	</div>
 	<?php if (count($this->hubs) > 0) : ?>
 		<div class="charts">
-			<h3>Overview</h3>
-			<div class="tasks-bar"></div>
+			<div class="overview">
+				<h3>Overview</h3>
+				<div class="tasks-bar"></div>
+			</div>
+			<div class="report">
 			<h3>Report</h3>
-			<?php foreach ($this->hubs as $hub) : ?>
-				<div class="report-hub">
-					<div class="clickable">
-						<div class="report-hub-name"><?php echo $hub['name']; ?></div>
-						<div class="report-hub-hours">
-							<?php echo (isset($hub['total']) ? $hub['total'] : '0') . ' hour' . (isset($hub['total']) && $hub['total'] != 1 ? 's' : ''); ?>
-						</div>
-						<div class="report-filler">blah</div>
-					</div>
-					<div class="respondable">
-						<?php if (isset($hub['tasks']) && count($hub['tasks']) > 0) : ?>
-							<?php foreach ($hub['tasks'] as $task) : ?>
-								<div class="report-task">
-									<div class="report-task-name"><?php echo $task['name']; ?></div>
-									<div class="report-task-hours">
-										<?php echo (isset($task['total']) ? $task['total'] : '0') . ' hour' . (isset($task['total']) && $task['total'] != 1 ? 's' : ''); ?>
-									</div>
-									<div class="report-filler">blah</div>
+				<div class="reports">
+					<?php foreach ($this->hubs as $hub) : ?>
+						<div class="report-hub">
+							<div class="clickable">
+								<div class="report-hub-name"><?php echo $hub['name']; ?></div>
+								<div class="report-hub-hours">
+									<?php echo (isset($hub['total']) ? $hub['total'] : '0') . ' hour' . (isset($hub['total']) && $hub['total'] != 1 ? 's' : ''); ?>
 								</div>
-								<?php if (isset($task['records']) && count($task['records']) > 0) : ?>
-									<?php foreach ($task['records'] as $record) : ?>
-										<div class="report-record">
-											<div class="report-record-name">
-												<?php echo JFactory::getUser($record->user_id)->get('name') . ' - '; ?>
-												<?php echo !empty($record->description) ? $record->description : '[no description available]'; ?>
+								<div class="report-filler">blah</div>
+							</div>
+							<div class="respondable">
+								<?php if (isset($hub['tasks']) && count($hub['tasks']) > 0) : ?>
+									<?php foreach ($hub['tasks'] as $task) : ?>
+										<div class="report-task">
+											<div class="report-task-name"><?php echo $task['name']; ?></div>
+											<div class="report-task-hours">
+												<?php echo (isset($task['total']) ? $task['total'] : '0') . ' hour' . (isset($task['total']) && $task['total'] != 1 ? 's' : ''); ?>
 											</div>
-											<div class="report-record-hours"><?php echo $record->time . ' hour' . ($record->time != 1 ? 's' : ''); ?></div>
 											<div class="report-filler">blah</div>
 										</div>
+										<?php if (isset($task['records']) && count($task['records']) > 0) : ?>
+											<?php foreach ($task['records'] as $record) : ?>
+												<div class="report-record">
+													<div class="report-record-name">
+														<?php echo JFactory::getUser($record->user_id)->get('name') . ' - '; ?>
+														<?php echo !empty($record->description) ? $record->description : '[no description available]'; ?>
+													</div>
+													<div class="report-record-hours"><?php echo $record->time . ' hour' . ($record->time != 1 ? 's' : ''); ?></div>
+													<div class="report-filler">blah</div>
+												</div>
+											<?php endforeach; ?>
+										<?php endif; ?>
 									<?php endforeach; ?>
 								<?php endif; ?>
-							<?php endforeach; ?>
-						<?php endif; ?>
-					</div>
+							</div>
+						</div>
+					<?php endforeach; ?>
 				</div>
-			<?php endforeach; ?>
+			</div>
 		</div>
 	<?php else : ?>
 		<p class="warning no-data">No data available for these parameters.</p>
