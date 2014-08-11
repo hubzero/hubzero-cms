@@ -215,6 +215,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 						<li><?php echo JText::_('PLG_GROUPS_COLLECTIONS_INSTRUCT_POST_STEP3'); ?></li>
 						<li><?php echo JText::_('PLG_GROUPS_COLLECTIONS_INSTRUCT_POST_STEP4'); ?></li>
 					</ol>
+					<div class="new-post">
+						<a class="icon-add add" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
+							<?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_POST'); ?>
+						</a>
+					</div>
 				</div><!-- / .instructions -->
 				<div class="questions">
 					<p><strong><?php echo JText::_('PLG_GROUPS_COLLECTIONS_INSTRUCT_POST_TITLE'); ?></strong></p>

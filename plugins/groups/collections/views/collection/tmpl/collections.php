@@ -162,6 +162,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 						<li><?php echo JText::_('PLG_GROUPS_COLLECTIONS_INSTRUCT_COLLECTION_STEP2'); ?></li>
 						<li><?php echo JText::_('PLG_GROUPS_COLLECTIONS_INSTRUCT_COLLECTION_STEP3'); ?></li>
 					</ol>
+					<div class="new-collection">
+						<a class="add" href="<?php echo JRoute::_($base . '&scope=new'); ?>">
+							<span><?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION'); ?></span>
+						</a>
+					</div>
 				</div><!-- / .instructions -->
 				<div class="questions">
 					<p><strong><?php echo JText::_('PLG_GROUPS_COLLECTIONS_INSTRUCT_COLLECTION_ABOUT_TITLE'); ?></strong></p>
