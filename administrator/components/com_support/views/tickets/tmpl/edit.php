@@ -570,13 +570,13 @@ function submitbutton(pressbutton)
 
 if ($('#comment-field-template').length) {
 	$('#comment-field-template').on('change', function() {
-		if ($(this).value != 'mc') {
-			var hi = document.getElementById($(this).val()).value;
-			var co = document.getElementById('comment-field-comment');
-			co.value = hi;
+		var co = $('#comment-field-comment');
+
+		if ($(this).val() != 'mc') {
+			var hi = $('#' + $(this).val()).val();
+			co.val(hi);
 		} else {
-			var co = document.getElementById('comment-field-comment');
-			co.value = '';
+			co.val('');
 		}
 	});
 }
@@ -584,13 +584,14 @@ if ($('#comment-field-template').length) {
 if ($('#comment-field-access').length) {
 	$('#comment-field-access').on('click', function() {
 		var es = $('#email_submitter');
-		if ($(this).checked == true) {
-			if (es.checked == true) {
-				es.checked = false;
-				es.disabled = true;
+
+		if ($(this).prop('checked')) {
+			if (es.prop('checked') == true) {
+				es.prop('checked', false);
+				es.prop('disabled', true);
 			}
 		} else {
-			es.disabled = false;
+			es.prop('disabled', false);
 		}
 	});
 }

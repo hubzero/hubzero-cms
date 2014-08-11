@@ -171,11 +171,12 @@ $juser = JFactory::getUser();
 ?>
 	<form action="index.php" method="post" name="adminForm" id="queryForm">
 		<fieldset>
-			<div style="float: right">
-				<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('JAPPLY');?></button>
-				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_('JCANCEL');?></button>
-			</div>
-			<div class="configuration" >
+			<div class="configuration">
+				<div class="configuration-options">
+					<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('JAPPLY');?></button>
+					<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_('JCANCEL');?></button>
+				</div>
+
 				<?php echo JText::_('COM_SUPPORT_QUERY_BUILDER'); ?>
 			</div>
 		</fieldset>
