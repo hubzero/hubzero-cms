@@ -307,7 +307,7 @@ $this->css()
 							</p>
 							<p>
 								<a class="ticket-content" title="<?php echo $this->escape($row->content('parsed')); ?>" href="<?php echo JRoute::_($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-									<?php echo ($row->content('clean') ? $this->escape($row->content('clean', 200)) : JText::_('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
+									<?php echo ($row->content('clean') ? $row->content('clean', 200) : JText::_('COM_SUPPORT_NO_CONTENT_FOUND')); ?>
 								</a>
 							</p>
 						<?php if ($tags || $row->isOwned() || $row->get('group')) { ?>
