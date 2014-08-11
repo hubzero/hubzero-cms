@@ -29,7 +29,7 @@
  */
 
 namespace Hubzero\Session\Storage;
-use Hubzero\Session\Storage as StorageInterface;
+use Hubzero\Session\StorageInterface;
 use JFactory;
 
 class Database implements StorageInterface
@@ -60,6 +60,25 @@ class Database implements StorageInterface
 			"SELECT * 
 				FROM `#__session`
 				WHERE session_id = " . $database->quote($id) . "
+				GROUP BY userid, client_id
+				ORDER BY time DESC"
+		);
+
+		// get session
+		return $database->loadObject();
+	}
+
+	
+	public static function sessionWithUserid($userid)
+	{
+		// get database
+		$database = self::getDBO();
+
+		// query database
+		$database->setQuery(
+			"SELECT * 
+				FROM `#__session`
+				WHERE userid = " . $database->quote($userid) . "
 				GROUP BY userid, client_id
 				ORDER BY time DESC"
 		);

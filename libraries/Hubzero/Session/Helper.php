@@ -57,9 +57,20 @@ class Helper
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
-	public static function getSession($id = null)
+	public static function getSession($id)
 	{
 		return self::storage()->session($id);
+	}
+
+	/**
+	 * Get Session by User Id
+	 * 
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
+	public static function getSessionWithUserId($userid)
+	{
+		return self::storage()->sessionWithUserid($userid);
 	}
 	
 	/**

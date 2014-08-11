@@ -184,16 +184,19 @@ class plgUserJoomla extends JPlugin
 		// Check to see the the session already exists.
 		$app = JFactory::getApplication();
 		$app->checkSession();
-
-		// Update the user related fields for the Joomla sessions table.
-		$db->setQuery(
-			'UPDATE '.$db->quoteName('#__session') .
-			' SET '.$db->quoteName('guest').' = '.$db->quote($instance->get('guest')).',' .
-			'	'.$db->quoteName('username').' = '.$db->quote($instance->get('username')).',' .
-			'	'.$db->quoteName('userid').' = '.(int) $instance->get('id') .
-			' WHERE '.$db->quoteName('session_id').' = '.$db->quote($session->getId())
-		);
-		$db->query();
+		
+		if ($app->getCfg('session_handler') == 'database')
+		{
+			// Update the user related fields for the Joomla sessions table.
+			$db->setQuery(
+				'UPDATE '.$db->quoteName('#__session') .
+				' SET '.$db->quoteName('guest').' = '.$db->quote($instance->get('guest')).',' .
+				'	'.$db->quoteName('username').' = '.$db->quote($instance->get('username')).',' .
+				'	'.$db->quoteName('userid').' = '.(int) $instance->get('id') .
+				' WHERE '.$db->quoteName('session_id').' = '.$db->quote($session->getId())
+			);
+			$db->query();
+		}
 
 		// Hit the user last visit field
 		$instance->setLastVisit();

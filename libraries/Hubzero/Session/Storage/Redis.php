@@ -30,7 +30,7 @@
 
 namespace Hubzero\Session\Storage;
 use Hubzero\Redis\Database;
-use Hubzero\Session\Storage as StorageInterface;
+use Hubzero\Session\StorageInterface;
 
 class Redis implements StorageInterface
 {
@@ -75,6 +75,33 @@ class Redis implements StorageInterface
 
 		// get all key => values for hash
 		return (object) $database->hgetall($id);
+	}
+
+	/**
+	 * Get single session data (with Userid)
+	 * 
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
+	public static function sessionWithUserid($userid)
+	{
+		// get list of all sessions
+		$sessions = self::allSessions(array(
+			'guest' => 0,
+			'distinct' => 1
+		));
+
+		// see if any session matches our userid
+		foreach ($sessions as $session)
+		{
+			if ($session->userid == $userid)
+			{
+				return $session;
+			}
+		}
+
+		// nothing found
+		return null;
 	}
 
 	/**

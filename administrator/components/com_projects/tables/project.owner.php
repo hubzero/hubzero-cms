@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+use Hubzero\Session\Helper as SessionHelper;
+
 /**
  * Table class for project owners (team members)
  */
@@ -615,11 +617,6 @@ class ProjectOwner extends JTable
 			{
 				$query	.= " , pa.organization as a_organization, pa.name as a_name, pa.credit ";
 			}
-			if ($online)
-			{
-				$query .= ', (SELECT COUNT(*) FROM #__session AS S
-							 WHERE S.guest = 0 AND S.userid=o.userid) as online';
-			}
 		}
 		else
 		{
@@ -682,9 +679,22 @@ class ProjectOwner extends JTable
 		{
 			$query.= " LIMIT " . $limitstart . ", " . $limit;
 		}
-
+		
 		$this->_db->setQuery( $query );
-		return $this->_db->loadObjectList();
+		$owners = $this->_db->loadObjectList();
+
+		// if we want online owners
+		// use session helper class
+		if ($online)
+		{
+			foreach ($owners as $k => $owner)
+			{
+				$online = SessionHelper::getSessionWithUserId($owner->userid);
+				$owners[$k]->online = count($online);
+			}
+		}
+
+		return $owners;
 	}
 
 	/**
@@ -696,7 +706,7 @@ class ProjectOwner extends JTable
 	 * @param      integer $join verify if group exists
 	 * @return     object
 	 */
-	public function	getProjectGroups ( $projectid = NULL, $what='o.groupid', $native = 0, $join = 0 )
+	public function	getProjectGroups( $projectid = NULL, $what='o.groupid', $native = 0, $join = 0 )
 	{
 		if ($projectid === NULL)
 		{
