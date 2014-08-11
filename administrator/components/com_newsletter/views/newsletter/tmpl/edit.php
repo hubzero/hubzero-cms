@@ -48,8 +48,8 @@ $primary = $this->newsletter_primary;
 $secondary = $this->newsletter_secondary;
 
 // Instantiate the sliders object
-jimport('joomla.html.pane');
-$tabs = JPane::getInstance('sliders');
+//jimport('joomla.html.pane');
+//$tabs = JPane::getInstance('sliders');
 
 jimport('joomla.html.editor');
 $editor = JEditor::getInstance();
@@ -141,7 +141,7 @@ function submitbutton(pressbutton)
 				$link = $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works');
 				$hint = JText::sprintf('COM_NEWSLETTER_NEWSLETTER_WHAT_IS_TRACKING', $link);
 			?>
-			<div class="input-wrap" data-hint="<?php echo $hint; ?>">
+			<div class="input-wrap" data-hint="<?php echo $this->escape($hint); ?>">
 				<label for="newsletter-tracking"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_EMAIL_TRACKING'); ?>:</label>
 				<select name="newsletter[tracking]" id="newsletter-tracking">
 					<option value="1" <?php if ($this->newsletter->tracking) : ?>selected="selected"<?php endif; ?>>
@@ -261,22 +261,18 @@ function submitbutton(pressbutton)
 			<?php if ($this->newsletter->template == '-1' || (!$this->newsletter->template && $this->newsletter->content != '')) : ?>
 				<fieldset class="adminform">
 					<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT'); ?></legend>
-					<table class="admintable">
-						<tbody>
-							<tr>
-								<td>
-									<strong><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML'); ?></strong> (<span class="hint"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT'); ?></span>)
-									<textarea name="newsletter[html_content]" id="" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->html_content ); ?></textarea>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<strong><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN'); ?></strong> (<span class="hint"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT'); ?></span>)
-									<textarea name="newsletter[plain_content]" id="" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->plain_content ); ?></textarea>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+
+					<div class="input-wrap" data-hint="<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT'); ?>">
+						<label for="newsletter-html_content"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML'); ?></label>
+						<textarea name="newsletter[html_content]" id="newsletter-html_content" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->html_content ); ?></textarea>
+						<span class="hint"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT'); ?></span>
+					</div>
+
+					<div class="input-wrap" data-hint="<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT'); ?>">
+						<label for="newsletter-plain_content"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN'); ?></label>
+						<textarea name="newsletter[plain_content]" id="newsletter-plain_content" cols="100" rows="20"><?php echo $this->escape( $this->newsletter->plain_content ); ?></textarea>
+						<span class="hint"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT'); ?></span>
+					</div>
 				</fieldset>
 			<?php else : ?>
 				<a name="primary-stories"></a>
@@ -287,9 +283,11 @@ function submitbutton(pressbutton)
 							<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES_ADD'); ?>
 						</a>
 					</legend>
-					<?php echo $tabs->startPane("content-pane"); ?>
+					<?php //echo $tabs->startPane("content-pane"); ?>
+					<?php echo JHtml::_('sliders.start', 'content-pane'); ?>
 						<?php for ($i=0,$n=count($primary); $i<$n; $i++) : ?>
-							<?php echo $tabs->startPanel(($i+1) . ". " . $primary[$i]->title, "pstory-".($i+1)."") ; ?>
+							<?php //echo $tabs->startPanel(($i+1) . ". " . $primary[$i]->title, "pstory-".($i+1)."") ; ?>
+							<?php echo JHtml::_('sliders.panel', ($i+1) . ". " . $primary[$i]->title, "pstory-" . ($i+1)); ?>
 								<table class="admintable">
 									<tbody>
 										<tr>
@@ -333,9 +331,10 @@ function submitbutton(pressbutton)
 										</tr>
 									</tbody>
 								</table>
-							<?php echo $tabs->endPanel(); ?>
+							<?php //echo $tabs->endPanel(); ?>
 						<?php endfor; ?>
-					<?php echo $tabs->endPane(); ?>
+					<?php //echo $tabs->endPane(); ?>
+					<?php echo JHtml::_('sliders.end'); ?>
 				</fieldset>
 				<hr />
 				<a name="secondary-stories"></a>
@@ -346,9 +345,11 @@ function submitbutton(pressbutton)
 							<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES_ADD'); ?>
 						</a>
 					</legend>
-					<?php echo $tabs->startPane("content-pane2"); ?>
+					<?php //echo $tabs->startPane("content-pane2"); ?>
+					<?php echo JHtml::_('sliders.start', 'content-pane2'); ?>
 						<?php for ($i=0,$n=count($secondary); $i<$n; $i++) : ?>
-							<?php echo $tabs->startPanel(($i+1) . ". " . $secondary[$i]->title, "sstory-".($i+1)."") ; ?>
+							<?php //echo $tabs->startPanel(($i+1) . ". " . $secondary[$i]->title, "sstory-".($i+1)."") ; ?>
+							<?php echo JHtml::_('sliders.panel', ($i+1) . ". " . $secondary[$i]->title, "sstory-" . ($i+1)); ?>
 								<table class="admintable">
 									<tbody>
 										<tr>
@@ -392,9 +393,10 @@ function submitbutton(pressbutton)
 										</tr>
 									</tbody>
 								</table>
-							<?php echo $tabs->endPanel(); ?>
+							<?php //echo $tabs->endPanel(); ?>
 						<?php endfor; ?>
-					<?php echo $tabs->endPane(); ?>
+					<?php //echo $tabs->endPane(); ?>
+					<?php echo JHtml::_('sliders.end'); ?>
 				</fieldset>
 			<?php endif; ?>
 		<?php endif; ?>
