@@ -164,11 +164,6 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			$document = JFactory::getDocument();
 			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_GROUPS_BLOG'));
 
-			if (is_numeric($this->action)) 
-			{
-				$this->action = 'entry';
-			}
-
 			switch ($this->action)
 			{
 				// Feeds
@@ -330,10 +325,17 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		{
 			$bits = $this->_parseUrl();
 
+			// if we have 3 pieces, then there is year/month/entry
+			// display entry
+			if (count($bits) > 2)
+			{
+				return $this->_entry();
+			}
+
 			$view->filters['year']  = (isset($bits[0])) ? $bits[0] : $view->filters['year'];
 			$view->filters['month'] = (isset($bits[1])) ? $bits[1] : $view->filters['month'];
 		}
-
+		
 		$view->canpost = $this->_getPostingPermissions();
 
 		$juser = JFactory::getUser();
