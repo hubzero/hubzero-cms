@@ -29,8 +29,9 @@
  */
 namespace Hubzero\Session;
 
-interface Storage
+interface StorageInterface
 {
 	public static function session($id);
+	public static function sessionWithUserid($userId);
 	public static function allSessions($filters = array());
 }
