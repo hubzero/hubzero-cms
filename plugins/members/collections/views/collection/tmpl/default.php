@@ -211,6 +211,11 @@ $this->css()
 						<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_POST_INSTRUCTIONS_STEP3'); ?></li>
 						<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_POST_INSTRUCTIONS_STEP4'); ?></li>
 					</ol>
+					<div class="new-post">
+						<a class="icon-add add" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+							<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST'); ?>
+						</a>
+					</div>
 				</div><!-- / .instructions -->
 				<div class="questions">
 					<p><strong><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHAT_IS_POST'); ?></strong></p>

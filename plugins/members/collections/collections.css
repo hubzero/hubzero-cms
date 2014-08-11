@@ -982,3 +982,8 @@
 		-o-box-shadow: none;
 		box-shadow: none;
 	}
+	.instructions .new-post,
+	.instructions .new-collection {
+		margin: 3em 1em 2em 1em;
+		font-size: 0.85em;
+	}

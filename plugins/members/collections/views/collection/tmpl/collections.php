@@ -202,6 +202,11 @@ $this->css()
 						<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_COLLECTION_INSTRUCTIONS_STEP2'); ?></li>
 						<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_COLLECTION_INSTRUCTIONS_STEP3'); ?></li>
 					</ol>
+					<div class="new-collection">
+						<a class="icon-add add" href="<?php echo JRoute::_($base . '&task=new'); ?>">
+							<span><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_COLLECTION'); ?></span>
+						</a>
+					</div>
 				</div><!-- / .instructions -->
 				<div class="questions">
 					<p><strong><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_WHAT_IS_COLLECTION'); ?></strong></p>
