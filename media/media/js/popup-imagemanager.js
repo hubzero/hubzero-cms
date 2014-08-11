@@ -10,6 +10,15 @@
  * @subpackage	Media
  * @since		1.5
  */
+Array.prototype.associate = function (keys) {
+	var result = {};
+
+	this.forEach(function (el, i) {
+		result[keys[i]] = el;
+	});
+
+	return result;
+};
 
 (function() {
 	var ImageManager = this.ImageManager = {
@@ -17,8 +26,8 @@
 		{
 			o = this._getUriObject(window.self.location.href);
 			//console.log(o);
-			q = new Hash(this._getQueryObject(o.query));
-			this.editor = decodeURIComponent(q.get('e_name'));
+			q = this._getQueryObject(o.query); //new Hash(this._getQueryObject(o.query));
+			this.editor = decodeURIComponent(q.e_name); // q.get('e_name'));
 
 			// Setup image manager fields object
 			this.fields			= new Object();
@@ -29,7 +38,7 @@
 			this.fields.caption	= $("#f_caption");
 
 			// Setup image listing objects
-			this.folderlist = $('#folderlist');
+			this.folderlist = document.getElementById('folderlist');
 
 			this.frame		= window.frames['imageframe'];
 			this.frameurl	= this.frame.location.href;
@@ -37,7 +46,7 @@
 			// Setup imave listing frame
 			this.imageframe = $('#imageframe');
 			this.imageframe.manager = this;
-			this.imageframe.addEvent('load', function(){ ImageManager.onloadimageview(); });
+			this.imageframe.on('load', function(){ ImageManager.onloadimageview(); });
 
 			// Setup folder up button
 			this.upbutton = $('#upbutton');
@@ -53,7 +62,7 @@
 			var folder = this.getImageFolder();
 			for(var i = 0; i < this.folderlist.length; i++)
 			{
-				if(folder == this.folderlist.options[i].value) {
+				if (folder == this.folderlist.options[i].value) {
 					this.folderlist.selectedIndex = i;
 					break;
 				}
@@ -61,14 +70,20 @@
 
 			a = this._getUriObject($('#uploadForm').attr('action'));
 			//console.log(a);
-			q = new Hash(this._getQueryObject(a.query));
-			q.set('folder', folder);
+			q = this._getQueryObject(a.query); //new Hash(this._getQueryObject(a.query));
+			//q.set('folder', folder);
+			q.folder = folder;
 			var query = [];
-			q.each(function(v, k){
+			/*q.each(function(v, k){
 				if (v !== null) {
 					this.push(k+'='+v);
 				}
-			}, query);
+			}, query);*/
+			$.each(q, function(k, v){
+				if (v !== null) {
+					query.push(k+'='+v);
+				}
+			});
 			a.query = query.join('&');
 			var portString = '';
 			if (typeof(a.port) !== 'undefined' && a.port != 80) {
@@ -89,11 +104,11 @@
 		{
 			extra = '';
 			// Get the image tag field information
-			var url		= this.fields.url.get('value');
-			var alt		= this.fields.alt.get('value');
-			var align	= this.fields.align.get('value');
-			var title	= this.fields.title.get('value');
-			var caption	= this.fields.caption.get('value');
+			var url		= this.fields.url.val(); //get('value');
+			var alt		= this.fields.alt.val(); //get('value');
+			var align	= this.fields.align.val(); //get('value');
+			var title	= this.fields.title.val(); //get('value');
+			var caption	= this.fields.caption.val(); //get('value');
 
 			if (url != '') {
 				// Set alt attribute
@@ -137,7 +152,7 @@
 		},
 
 		getFolder: function() {
-			return this.folderlist.get('value');
+			return this.folderlist.value;
 		},
 
 		upFolder: function()
@@ -180,10 +195,10 @@
 
 		showMessage: function(text)
 		{
-			var message  = $('#message');
-			var messages = $('#messages');
+			var message  = document.getElementById('message');
+			var messages = document.getElementById('messages');
 
-			if(message.firstChild)
+			if (message.firstChild)
 				message.removeChild(message.firstChild);
 
 			message.appendChild(document.createTextNode(text));
@@ -206,8 +221,8 @@
 				var key = unescape( KeyVal[0] );
 				var val = unescape( KeyVal[1] ).replace(/\+ /g, ' ');
 				params[key] = val;
-		   }
-		   return params;
+			}
+			return params;
 		},
 
 		refreshFrame: function()
@@ -226,10 +241,16 @@
 		_getQueryObject: function(q) {
 			var vars = q.split(/[&;]/);
 			var rs = {};
-			if (vars.length) vars.each(function(val) {
+			/*if (vars.length) vars.each(function(val) {
 				var keys = val.split('=');
 				if (keys.length && keys.length == 2) rs[encodeURIComponent(keys[0])] = encodeURIComponent(keys[1]);
-			});
+			});*/
+			if (vars.length) {
+				$.each(vars, function(k, val) {
+					var keys = val.split('=');
+					if (keys.length && keys.length == 2) rs[encodeURIComponent(keys[0])] = encodeURIComponent(keys[1]);
+				});
+			}
 			return rs;
 		},
 

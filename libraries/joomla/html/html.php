@@ -386,51 +386,51 @@ abstract class JHtml
 									// Try to deal with plugins group in the media folder
 									if (file_exists(JPATH_ROOT . "/media/$extension/$element/$folder/$file"))
 									{
-										$includes[] = JURI::root(true) . "/media/$extension/$element/$folder/$file";
+										$includes[] = JURI::root(true) . "/media/$extension/$element/$folder/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/$extension/$element/$folder/$file");
 										break;
 									}
 									// Try to deal with classical file in a a media subfolder called element
 									elseif (file_exists(JPATH_ROOT . "/media/$extension/$folder/$element/$file"))
 									{
-										$includes[] = JURI::root(true) . "/media/$extension/$folder/$element/$file";
+										$includes[] = JURI::root(true) . "/media/$extension/$folder/$element/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/$extension/$folder/$element/$file");
 										break;
 									}
 									// Try to deal with system files in the template folder
 									elseif (file_exists(JPATH_THEMES . "/$template/$folder/system/$element/$file"))
 									{
-										$includes[] = JURI::root(true) . "/templates/$template/$folder/system/$element/$file";
+										$includes[] = JURI::root(true) . "/templates/$template/$folder/system/$element/$file" . '?v=' . filemtime(JPATH_THEMES . "/$template/$folder/system/$element/$file");
 										break;
 									}
 									// Try to deal with system files in the media folder
 									elseif (file_exists(JPATH_ROOT . "/media/system/$folder/$element/$file"))
 									{
-										$includes[] = JURI::root(true) . "/media/system/$folder/$element/$file";
+										$includes[] = JURI::root(true) . "/media/system/$folder/$element/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/system/$folder/$element/$file");
 										break;
 									}
 								}
 								// Try to deals in the extension media folder
 								elseif (file_exists(JPATH_ROOT . "/media/$extension/$folder/$file"))
 								{
-									$includes[] = JURI::root(true) . "/media/$extension/$folder/$file";
+									$includes[] = JURI::root(true) . "/media/$extension/$folder/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/$extension/$folder/$file");
 									break;
 								}
 								// Try to deal with system files in the template folder
 								elseif (file_exists(JPATH_THEMES . "/$template/$folder/system/$file"))
 								{
-									$includes[] = JURI::root(true) . "/templates/$template/$folder/system/$file";
+									$includes[] = JURI::root(true) . "/templates/$template/$folder/system/$file" . '?v=' . filemtime(JPATH_THEMES . "/$template/$folder/system/$file");
 									break;
 								}
 								// Try to deal with system files in the media folder
 								elseif (file_exists(JPATH_ROOT . "/media/system/$folder/$file"))
 								{
-									$includes[] = JURI::root(true) . "/media/system/$folder/$file";
+									$includes[] = JURI::root(true) . "/media/system/$folder/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/system/$folder/$file");
 									break;
 								}
 							}
 							// Try to deal with system files in the media folder
 							elseif (file_exists(JPATH_ROOT . "/media/system/$folder/$file"))
 							{
-								$includes[] = JURI::root(true) . "/media/system/$folder/$file";
+								$includes[] = JURI::root(true) . "/media/system/$folder/$file" . '?v=' . filemtime(JPATH_ROOT . "/media/system/$folder/$file");
 								break;
 							}
 						}
