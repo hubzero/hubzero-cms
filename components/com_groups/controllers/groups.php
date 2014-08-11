@@ -1367,7 +1367,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 				->addHeader('X-Component', 'com_groups')
 				->addHeader('X-Component-Object', 'group_deleted')
 				->addHeader('X-Component-ObjectId', $deletedgroup->get('gidNumber'))
-				->addPart($html, 'text/html')
+				->addPart($html, 'text/plain')
 				->send();
 		
 		// log deleted group
