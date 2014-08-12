@@ -266,3 +266,8 @@ a.dv-link > i.icon-external-link {
 	transition: all 0.1s ease-out;
 	-webkit-background-clip: padding-box;
 }
+
+/* Fix for Safari 7 width issue with top level style sheet's max-width: 100% */
+table#dv-spreadsheet-tbl {
+	max-width: none !important;
+}
