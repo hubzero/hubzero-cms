@@ -180,7 +180,7 @@ function view($dd = false) {
 		}
 	?>
 	<a name="dv_top"></a>
-	<div id="dv-spreadsheet" class="ss_wrapper" style="padding: 20px 10px; overflow: hidden;">
+	<div id="dv-spreadsheet">
 	
 	<?php if(!JRequest::getVar('show_table_only', false)): ?>
 
