@@ -253,23 +253,6 @@ class EventsEvent extends JTable
 	}
 
 	/**
-	 * Increase event hit count
-	 * 
-	 * @param      integer $oid Event ID
-	 * @return     void
-	 */
-	public function hit($oid=NULL)
-	{
-		$k = $this->_tbl_key;
-		if ($oid !== NULL) 
-		{
-			$this->$k = intval($oid);
-		}
-		$this->_db->setQuery("UPDATE $this->_tbl SET hits=(hits+1) WHERE id=" . $this->_db->Quote($this->id));
-		$this->_db->query();
-	}
-
-	/**
 	 * Set an event to published
 	 * 
 	 * @param      integer $oid Event ID

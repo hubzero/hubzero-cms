@@ -134,8 +134,9 @@ class ContentViewArticle extends JViewLegacy
 
 		// Increment the hit counter of the article.
 		if (!$this->params->get('intro_only') && $offset == 0) {
-			$model = $this->getModel();
-			$model->hit();
+			// [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
+			//$model = $this->getModel();
+			//$model->hit();
 		}
 
 		//Escape strings for HTML output
@@ -187,7 +188,7 @@ class ContentViewArticle extends JViewLegacy
 				$category = $category->getParent();
 			}
 			$path = array_reverse($path);
-			foreach($path as $item)
+			foreach ($path as $item)
 			{
 				$pathway->addItem($item['title'], $item['link']);
 			}

@@ -278,8 +278,6 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Up the hit counter
-		//$this->page->hit();
 		if (JRequest::getVar('format', '') == 'raw')
 		{
 			JRequest::setVar('no_html', 1);
