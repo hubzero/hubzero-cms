@@ -1276,9 +1276,6 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Get contribtool params
 		$tconfig = JComponentHelper::getParams('com_tools');
 
-		// Record the hit
-		$this->model->resource->hit();
-
 		// Get Resources plugins
 		JPluginHelper::importPlugin('resources');
 		$dispatcher = JDispatcher::getInstance();
