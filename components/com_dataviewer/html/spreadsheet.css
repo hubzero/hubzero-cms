@@ -176,6 +176,12 @@ ul.ui-autocomplete li a {
 	white-space: nowrap;
 }
 
+#dv-spreadsheet {
+	display: inline-block;
+	background: white;
+	padding: 20px 10px;
+}
+
 #dv-spreadsheet-tbl thead hr {
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -259,4 +265,9 @@ a.dv-link > i.icon-external-link {
 	-moz-transition: all 0.1s ease-out;
 	transition: all 0.1s ease-out;
 	-webkit-background-clip: padding-box;
+}
+
+/* Fix for Safari 7 width issue with top level style sheet's max-width: 100% */
+table#dv-spreadsheet-tbl {
+	max-width: none !important;
 }

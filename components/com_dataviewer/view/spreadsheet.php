@@ -81,7 +81,7 @@ function view($dd = false) {
 	}
 
 	if ($dd) {
-
+		
 		$dv_conf['settings']['show_filter_options'] = isset($dd['filter_options'])? $dd['filter_options']: true;
 
 		$custom_field_url = '';
@@ -101,11 +101,11 @@ function view($dd = false) {
 		$dv_conf['settings']['limit'] = (isset($dd['display_limit']))? $dd['display_limit']: $dv_conf['settings']['limit'];
 		$dv_conf['settings']['hide_data'] = isset($dd['hide_data']);
 		$dv_conf['settings']['serverside'] = (isset($dd['serverside']) && $dd['serverside'])? true: false;
-
+		
 		if(!isset($dd['customizer']) && isset($dv_conf['customizer'])) {
 			$dd['customizer'] = $dv_conf['customizer'];
 		}
-
+		
 		if(isset($dd['customizer']) && $dd['customizer'] === false) {
 			unset($dd['customizer']);
 		}
@@ -180,8 +180,8 @@ function view($dd = false) {
 		}
 	?>
 	<a name="dv_top"></a>
-	<div id="dv-spreadsheet" class="ss_wrapper" style="padding: 20px 10px; overflow: hidden;">
-
+	<div id="dv-spreadsheet">
+	
 	<?php if(!JRequest::getVar('show_table_only', false)): ?>
 
 		<div id="dv_title" style="margin: 0;">
@@ -234,7 +234,7 @@ function view($dd = false) {
 
 			<?php if(isset($dd['show_maps'])): ?>
 			<button id="dv-spreadsheet-maps" class="btn btn-mini" title="Display Maps">
-				<i class="icon-map-marker"></i >
+				<i class="icon-map-marker"></i > 
 				<span class="lbl">Maps</span>
 			</button>
 			<?php endif; ?>
@@ -390,7 +390,7 @@ function view($dd = false) {
 
 
 	<?php endif; //Table Only ?>
-
+		
 
 		<div id="dv-spreadsheet-container" style="margin: 0px; padding; 0px; <?=$hide_str?>">
 		<table id="dv-spreadsheet-tbl" style="margin-top: 0;">
@@ -409,7 +409,7 @@ function view($dd = false) {
 				} else {
 					$filter_msg = "	\n\nClick on the search box to list all the entries in the column";
 				}
-
+				
 				if (isset($conf['filter_hint'])) {
 					$filter_hint = $conf['filter_hint'];
 				} else {
