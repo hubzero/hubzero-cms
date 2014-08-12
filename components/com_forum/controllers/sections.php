@@ -79,7 +79,9 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 
 		$this->view->model = $this->model;
 
-		if (!$this->view->sections->total())
+		if (!$this->view->sections->total()
+		 && $this->config->get('access-create-section')
+		 && JRequest::getWord('action') == 'populate')
 		{
 			if (!$this->model->setup())
 			{

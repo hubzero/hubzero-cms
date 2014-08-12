@@ -192,6 +192,47 @@
 		margin-top: 2em;
 	}
 
+	.instructions {
+		width: 30em;
+		margin: 90px auto;
+		padding: 5em 0 0 0;
+		text-align: center;
+		position: relative;
+	}
+	.instructions p {
+		font-size: 1.5em;
+		line-height: 1.8em;
+		font-weight: 300;
+		margin: 0 0 2em 0;
+	}
+	.instructions:before {
+		position: absolute;
+		top: 0px;
+		left: 50%;
+		font-size: 5em;
+		margin-left: -0.5em;
+		content: "\f086";
+		font-family: "Fontcons";
+	}
+	.instructions legend,
+	.instructions label {
+		display: none;
+	}
+	.instructions .input-wrap {
+		display: table;
+		width: 100%;
+	}
+	.instructions .input-cell {
+		display: table-cell;
+	}
+	.instructions .input-cell input[type=text] {
+		width: 100%;
+	}
+	.instructions .input-cell:last-child {
+		width: 5.75em;
+		text-align: right;
+	}
+
 /* IE 7 */
 	html>body .entries .entry-options .edit,
 	html>body .entries .entry-options .delete {

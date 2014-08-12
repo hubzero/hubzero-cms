@@ -48,6 +48,7 @@ $juser = JFactory::getUser();
 </header>
 
 <section class="main section">
+<?php if ($this->sections->total()) { ?>
 	<div class="section-inner">
 		<div class="subject">
 			<?php foreach ($this->notifications as $notification) { ?>
@@ -275,4 +276,41 @@ $juser = JFactory::getUser();
 			<?php } ?>
 		</aside><!-- / .aside -->
 	</div>
+<?php } else { ?>
+	<div class="instructions">
+		<?php if ($this->config->get('access-create-section')) { ?>
+			<p class="notification"><?php echo JText::sprintf('COM_FORUM_EMPTY_MODERATOR', JRoute::_('index.php?option=' . $this->option . '&action=populate')); ?></p>
+
+			<div class="container">
+				<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post">
+					<fieldset class="entry-section">
+						<legend><?php echo JText::_('COM_FORUM_NEW_SECTION'); ?></legend>
+
+						<span class="input-wrap">
+							<label for="field-title"><span><?php echo JText::_('COM_FORUM_FIELD_TITLE'); ?></span></label>
+							<span class="input-cell">
+								<input type="text" name="fields[title]" id="field-title" value="" placeholder="<?php echo JText::_('COM_FORUM_ENTER_TITLE'); ?>" />
+							</span>
+							<span class="input-cell">
+								<input type="submit" class="btn" value="<?php echo JText::_('COM_FORUM_CREATE'); ?>" />
+							</span>
+						</span>
+
+						<input type="hidden" name="task" value="save" />
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="controller" value="sections" />
+						<input type="hidden" name="fields[id]" value="" />
+						<input type="hidden" name="fields[scope]" value="site" />
+						<input type="hidden" name="fields[scope_id]" value="0" />
+						<input type="hidden" name="fields[access]" value="0" />
+
+						<?php echo JHTML::_('form.token'); ?>
+					</fieldset>
+				</form>
+			</div><!-- / .container -->
+		<?php } else { ?>
+			<p class="notification"><?php echo JText::_('COM_FORUM_EMPTY_NOT_MODERATOR'); ?></p>
+		<?php } ?>
+	</div>
+<?php } ?>
 </section><!-- /.main -->
