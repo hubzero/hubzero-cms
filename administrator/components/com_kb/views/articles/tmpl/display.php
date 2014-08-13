@@ -145,7 +145,7 @@ foreach ($this->rows as $row)
 							</span>
 					<?php } else { ?>
 						<?php if ($canDo->get('core.edit')) { ?>
-							<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>">
+							<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>">
 								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 							</a>
 						<?php } else { ?>
@@ -160,7 +160,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;section=<?php echo $this->filters['section']; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
+						<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;section=<?php echo $this->filters['section']; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>

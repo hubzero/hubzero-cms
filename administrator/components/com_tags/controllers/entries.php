@@ -145,7 +145,11 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$id = JRequest::getInt('id', 0, 'request');
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
 
 			$this->view->tag = new TagsModelTag(intval($id));
 		}
@@ -235,10 +239,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		$ids = JRequest::getVar('id', array());
-		if (!is_array($ids))
-		{
-			$ids = array();
-		}
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Make sure we have an ID
 		if (empty($ids))
@@ -281,14 +282,11 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 	public function mergeTask()
 	{
 		// Incoming
-		$ids  = JRequest::getVar('id', array());
+		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
 		$step = JRequest::getInt('step', 1);
 		$step = ($step) ? $step : 1;
-
-		if (!is_array($ids))
-		{
-			$ids = array(0);
-		}
 
 		// Make sure we have some IDs to work with
 		if ($step == 1
@@ -414,14 +412,11 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 	public function pierceTask()
 	{
 		// Incoming
-		$ids  = JRequest::getVar('id', array());
+		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
 		$step = JRequest::getInt('step', 1);
 		$step = ($step) ? $step : 1;
-
-		if (!is_array($ids))
-		{
-			$ids = array(0);
-		}
 
 		// Make sure we have some IDs to work with
 		if ($step == 1
