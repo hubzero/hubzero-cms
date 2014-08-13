@@ -966,6 +966,12 @@ class ResourcesHtml
 						$class = 'video' . $class;
 					}
 
+					$pt = ResourcesType::getRecordInstance($resource->type);
+					if ($pt->alias == 'databases')
+					{
+						$mesg = "Dataview";
+					}
+
 					if ($xact)
 					{
 						$action = $xact;
