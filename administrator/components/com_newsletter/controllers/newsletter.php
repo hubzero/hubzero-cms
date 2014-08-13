@@ -281,14 +281,17 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$newsletter['modified_by'] 		= $this->juser->get('id');
 
 		// if no plain text was entered lets take the html content
-		if (!isset($newsletter['plain_content']) || $newsletter['plain_content'] == '')
+		if (isset($newsletter['plain_content']))
 		{
-			$newsletter['plain_content'] = strip_tags($newsletter['html_content']);
-			$newsletter['plain_content'] = preg_replace('/(?:(?:\r\n|\r|\n)\s*){2}\n/', '', $newsletter['plain_content']);
-		}
+			if ($newsletter['plain_content'] == '')
+			{
+				$newsletter['plain_content'] = strip_tags($newsletter['html_content']);
+				$newsletter['plain_content'] = preg_replace('/(?:(?:\r\n|\r|\n)\s*){2}\n/', '', $newsletter['plain_content']);
+			}
 
-		// remove html from plain content
-		$newsletter['plain_content']    = strip_tags($newsletter['plain_content']);
+			// remove html from plain content
+			$newsletter['plain_content']    = strip_tags($newsletter['plain_content']);
+		}
 
 		//save campaign
 		if (!$newsletterNewsletter->save($newsletter))
@@ -475,13 +478,25 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	{
 		//get the request vars
 		$id = JRequest::getInt('id', 0);
+		$no_html = JRequest::getInt('no_html', 0);
 
 		//get the newsletter
 		$newsletterNewsletter = new NewsletterNewsletter($this->database);
 		$newsletterNewsletter->load($id);
 
+		// output title 
+		if ($no_html == 0)
+		{
+			$content  = '<h2 class="modal-title">' . JText::_('COM_NEWSLETTER_PREVIEW') . '</h2><br /><br />';
+			$content .= '<iframe width="100%" height="100%" src="index.php?option=com_newsletter&task=preview&id='.$id.'&no_html=1"></iframe>';
+		}
+		else
+		{
+			$content = $newsletterNewsletter->buildNewsletter($newsletterNewsletter);
+		}
+
 		//build newsletter for displaying preview
-		echo $newsletterNewsletter->buildNewsletter($newsletterNewsletter);
+		echo $content;
 	}
 
 	/**

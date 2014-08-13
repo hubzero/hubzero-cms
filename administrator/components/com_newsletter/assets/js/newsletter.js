@@ -137,7 +137,7 @@ HUB.Administrator.Newsletter = {
 		
 		$.fancybox({
 			type: 'iframe',
-			href: 'index.php?option=com_newsletter&task=preview&id=' + id + '&no_html=1',
+			href: 'index.php?option=com_newsletter&task=preview&id=' + id + '&tmpl=component',
 			scrollOutside: false
 		})
 	},

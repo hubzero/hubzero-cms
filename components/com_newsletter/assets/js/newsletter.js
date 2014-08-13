@@ -1,21 +1,3 @@
-/**
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
- * All rights reserved.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-
 //-----------------------------------------------------------
 //  Ensure we have our namespace
 //-----------------------------------------------------------
@@ -26,12 +8,74 @@ if (!HUB) {
 //-----------------------------------------------------------
 //  Highlight table rows when clicking checkbox
 //-----------------------------------------------------------
-HUB.Newsletter = {	
+
+if (!jq) {
+	var jq = $;
+}
+
+HUB.Newsletter = {
+	jQuery: jq,
+	
+	unsubscribe: function()
+	{
+		var $ = this.jQuery;
+		
+		if ($("#reason").length)
+		{
+			$("#reason-alt").hide();
+			
+			$("#reason").on('change', function(event) {
+				var value = $(this).val();
+				if (value == 'Other')
+				{
+					$("#reason-alt").show();
+				}
+				else
+				{
+					$("#reason-alt").hide();
+				}
+			});
+		}
+	},
+	
+	iframe: function()
+	{
+		var $ = this.jQuery,
+			$iframe = $("#newsletter-iframe");
+		
+		//if we have the iframe
+		if ($iframe.length )
+		{
+			//on iframe load
+			$iframe.load(function(){
+				
+				//make links open in new window
+				$iframe.contents().find('a').attr('target', '_blank');
+				
+				//hide view in browser link meant for email
+				$iframe.contents().find('.display-browser').hide();
+				
+				//set height of iframe to height of contents
+				var height = $iframe.contents().find('html').innerHeight();
+				$iframe.attr('height', height + 15);
+			});
+			
+		}
+	},
+	
 	initialize: function() {
-		console.log("COM Newsletters")
+		var $ = this.jQuery;
+		
+		//unsubscribe reason
+		HUB.Newsletter.unsubscribe();
+		
+		//view newsletter iframe
+		HUB.Newsletter.iframe();
 	}
 }
 
-//----------------------------------------------------------
+//-----------------------------------------------------------
 
-window.addEvent('domready', HUB.Newsletter.initialize);
+jQuery(document).ready(function($){
+	HUB.Newsletter.initialize();
+});
