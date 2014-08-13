@@ -345,7 +345,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 
 			case 'text':
 			default:
-				$key = strtolower($question['answer']);
+				$key = strtolower(JText::_($question['answer']));
 
 				$html .= "\t" . JText::_($question['question']) . "\n";
 				$html .= "\t" . '<input type="text" name="captcha[answer]" id="captcha-answer" value="" />' . "\n";
@@ -359,7 +359,8 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 		$currentSession = JFactory::getSession();
 		$currentSession->set('securiy_code' . JRequest::getVar('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
 
-		if ($this->_verified) {
+		if ($this->_verified)
+		{
 			$html  = '<input type="hidden" name="captcha[answer]" id="captcha-answer" value="' . $key . '" />' . "\n";
 		}
 
