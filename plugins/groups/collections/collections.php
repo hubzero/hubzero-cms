@@ -542,15 +542,39 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		$view->filters['collection_id'] = $view->collection->get('id');
 
+		$count = array(
+			'count' => true,
+			'collection_id' => $view->collection->get('id')
+		);
+
+		if (!$this->params->get('access-manage-collection'))
+		{
+			$view->filters['access'] = 0;
+			$count['access'] = $view->filters['access'];
+		}
+		if ($this->authorized)
+		{
+			$count['access'] = -1;
+			$view->filters['access'] = -1;
+		}
+
+		$view->collections = $this->model->collections($count);
+		$view->posts       = $this->model->posts($count);
+		$view->followers   = $this->model->followers($count);
+		if ($this->params->get('access-can-follow'))
+		{
+			$view->following   = $this->model->following($count);
+		}
+
 		$view->filters['count'] = true;
-		$view->posts = $view->collection->posts($view->filters);
+		$view->count = $view->collection->posts($view->filters);
 
 		$view->filters['count'] = null;
 		$view->rows = $view->collection->posts($view->filters);
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->posts,
+			$view->count,
 			$view->filters['start'],
 			$view->filters['limit']
 		);
@@ -733,6 +757,11 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 			$view->filters['access'] = 0;
 			$count['access'] = $view->filters['access'];
 		}
+		if ($this->authorized)
+		{
+			$count['access'] = -1;
+			$view->filters['access'] = -1;
+		}
 
 		$view->collections = $this->model->collections($count);
 		$view->posts       = $this->model->posts($count);
@@ -746,11 +775,12 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		//$view->filters['user_id'] = JFactory::getUser()->get('id');
 
+		$view->count = $view->posts;
 		$view->rows = $view->collection->posts($view->filters);
 
 		jimport('joomla.html.pagination');
 		$view->pageNav = new JPagination(
-			$view->posts,
+			$view->count,
 			$view->filters['start'],
 			$view->filters['limit']
 		);

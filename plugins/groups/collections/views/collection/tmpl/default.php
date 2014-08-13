@@ -56,10 +56,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 	     ->set('params', $this->params)
 	     ->set('name', $this->name)
 	     ->set('active', ($this->collection->exists() ? '' : 'posts'))
-	     ->set('collections', ($this->collection->exists() ? 0 : $this->collections))
+	     ->set('collections', $this->collections)
 	     ->set('posts', $this->posts)
-	     ->set('followers', ($this->collection->exists() ? 0 : $this->followers))
-	     ->set('following', ($this->params->get('access-can-follow') ? $this->following : 0))
+	     ->set('followers', $this->followers) //->set('following', $this->following)
 	     ->display();
 	?>
 
@@ -77,7 +76,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 				"<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>"
 			</span>
 			<span class="posts count">
-				<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_STATS_POSTS', '<strong>' . $this->rows->total() . '</strong>'); ?>
+				<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_STATS_POSTS', '<strong>' . $this->count . '</strong>'); ?>
 			</span>
 			<?php if (!$juser->get('guest')) { ?>
 				<?php if ($this->collection->isFollowing()) { ?>
