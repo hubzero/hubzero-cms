@@ -34,7 +34,7 @@ $this->css()
 ?>
 <div class="mod_<?php echo $this->module->name; ?>">
 	<?php if ($this->results) { ?>
-		<ul id="activity-list<?php echo $this->module->id; ?>" data-url="<?php echo JURI::base(true) . '?feedactivity=1&start='; ?>">
+		<ul id="activity-list<?php echo $this->module->id; ?>" data-url="<?php echo JURI::base(true) . '?feedactivity=1&amp;start='; ?>">
 			<?php
 			foreach ($this->results as $result)
 			{

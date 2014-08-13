@@ -137,7 +137,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-created"><?php echo JText::_('COM_ANSWERS_FIELD_CREATED'); ?>:</label><br />
-				<?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'question[created]', 'field-created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?></td>
+				<?php echo JHTML::_('calendar', $this->row->get('created', JFactory::getDate()->toSql()), 'question[created]', 'field-created', 'Y-m-d H:i:s', array('class' => 'calendar-field')); ?>
 			</div>
 
 			<div class="input-wrap">

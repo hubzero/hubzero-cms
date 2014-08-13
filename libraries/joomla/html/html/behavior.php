@@ -490,7 +490,7 @@ abstract class JHtmlBehavior
 				$opt['width']  = $params['size']['width'];
 				$opt['height'] = $params['size']['height'];
 			}
-			$opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ var atts = $(this.element).attr("rel"); }';
+			$opt['beforeLoad'] = (isset($params['onOpen'])) ? $params['onOpen'] : '\\function(){ var atts = $(this.element).attr("data-rel"); }';
 			$opt['onCancel']   = (isset($params['onClose'])) ? $params['onClose'] : null;
 			$opt['onUpdate']   = (isset($params['onUpdate'])) ? $params['onUpdate'] : null;
 			$opt['onMove']     = (isset($params['onMove'])) ? $params['onMove'] : null;

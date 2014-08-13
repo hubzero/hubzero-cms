@@ -50,7 +50,7 @@ class JButtonPopup extends JButton
 		$class = $this->fetchIconClass($name);
 		$doTask = $this->_getCommand($name, $url, $width, $height, $top, $left);
 
-		$html  = "<a class=\"modal\" href=\"$doTask\" data-title=\"$text\" rel=\"{handler: 'iframe', size: {x: $width, y: $height}, onClose: function() {" . $onClose . "}}\">\n";
+		$html  = "<a class=\"modal\" href=\"$doTask\" data-title=\"$text\" data-rel=\"{handler: 'iframe', size: {x: $width, y: $height}, onClose: function() {" . $onClose . "}}\">\n";
 		$html .= "<span class=\"$class\">\n";
 		$html .= "$text\n";
 		$html .= "</span>\n";

@@ -214,22 +214,26 @@ if ($user->authorise('core.manage', 'com_menus'))
 		}
 		elseif ($menuType->home == 1 && $menuType->language == '*')
 		{
-			$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-default.png', '*', array('title' => JText::_('MOD_HUBMENU_HOME_DEFAULT')), true).'</span>';
+			//$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-default.png', '*', array('title' => JText::_('MOD_HUBMENU_HOME_DEFAULT')), true).'</span>';
+			$titleicon = ' <span class="home" title="' . JText::_('MOD_HUBMENU_HOME_DEFAULT') . '">' . '*' . '</span>';
 		}
 		elseif ($menuType->home > 1)
 		{
-			$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-language.png', $menuType->home, array('title' => JText::_('MOD_HUBMENU_HOME_MULTIPLE')), true).'</span>';
+			//$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-language.png', $menuType->home, array('title' => JText::_('MOD_HUBMENU_HOME_MULTIPLE')), true).'</span>';
+			$titleicon = ' <span class="home multiple" title="' . JText::_('MOD_HUBMENU_HOME_MULTIPLE') . '">' . $menuType->home . '</span>';
 		}
 		else
 		{
 			$image = JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', NULL, NULL, true, true);
 			if (!$image)
 			{
-				$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-language.png', $alt, array('title' => $menuType->title_native), true).'</span>';
+				//$titleicon = ' <span>'.JHtml::_('image', 'menu/icon-16-language.png', $alt, array('title' => $menuType->title_native), true).'</span>';
+				$titleicon = ' <span title="' . $menuType->title_native . '">' . $alt . '</span>';
 			}
 			else
 			{
-				$titleicon = ' <span>'.JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', $alt, array('title'=>$menuType->title_native), true).'</span>';
+				//$titleicon = ' <span>'.JHtml::_('image', 'mod_languages/'.$menuType->image.'.gif', $alt, array('title'=>$menuType->title_native), true).'</span>';
+				$titleicon = ' <span title="' . $menuType->title_native . '">' . $alt . '</span>';
 			}
 		}
 		$menu->addChild(
