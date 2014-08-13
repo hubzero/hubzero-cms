@@ -95,7 +95,7 @@ class TitleIndexMacro extends WikiMacro
 		if ($et) 
 		{
 			// Get pages with a prefix
-			if ($this->domain) 
+			if ($this->domain && substr(strtolower($et), 0, 4) != 'help') 
 			{
 				$sql .= "LOWER(p.pagename) LIKE '" . strtolower($et) . "%' AND p.`group_cn`=" . $this->_db->quote($this->domain);
 			} 
