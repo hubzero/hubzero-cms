@@ -636,25 +636,14 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$newsletterMailinglist = new NewsletterMailinglist($this->database);
 		$this->view->mailinglists = $newsletterMailinglist->getLists();
 
-		//get jquery plugin & parse params
-		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
-		$jqueryPlugin->params = (isset($jqueryPlugin->params)) ? $jqueryPlugin->params : new StdClass;
-		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
+		// add jquery ui
+		JHTML::_('behavior.framework', true);
 
 		// get document object
 		$document = JFactory::getDocument();
 
-		//add jquery if we dont have the jquery plugin enabled or not active on admin
-		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
-		{
-			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
-			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
-			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.ui.js' );
-			$document->addStylesheet( DS . 'media' . DS . 'system' . DS . 'css' . DS . 'jquery.ui.css' );
-		}
-
 		// add newsletter js
-		$document->addScript( 'components/com_newsletter/assets/js/newsletter.jquery.js' );
+		$document->addScript('components/com_newsletter/assets/js/newsletter.js');
 
 		//check if we have any errors
 		if ($this->getError())
