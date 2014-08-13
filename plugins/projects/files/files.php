@@ -703,7 +703,7 @@ class plgProjectsFiles extends JPlugin
 
 		// Provisioned project?
 		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
-		$prefix = $prov ? JPATH_ROOT : $this->prefix;
+		$prefix = $this->_project->id ? $this->prefix : JPATH_ROOT;
 
 		// Does subdirectory exist?
 		if (!is_dir($prefix. $this->path. DS . $this->subdir))
@@ -721,7 +721,7 @@ class plgProjectsFiles extends JPlugin
 		);
 
 		// Get file list
-		if ($prov)
+		if (!$this->_project->id)
 		{
 			$view->files = $this->getMemberFiles($this->path, $this->subdir);
 		}
@@ -3619,7 +3619,7 @@ class plgProjectsFiles extends JPlugin
 			// Get file extention
 			$ext = explode('.', $fpath);
 			$ext = count($ext) > 1 ? end($ext) : '';
-
+			
 			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
 			{
 				// Get git object
@@ -3672,7 +3672,7 @@ class plgProjectsFiles extends JPlugin
 		{
 			// Which revision are we downloading?
 			$hash 	  = JRequest::getVar('hash', '');
-			$servas   = basename($file);
+			$serveas   = basename($file);
 
 			// Multiple files selected
 			if ($multifile)
