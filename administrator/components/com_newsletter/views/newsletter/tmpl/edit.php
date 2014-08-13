@@ -36,10 +36,10 @@ $text = ($this->task == 'edit' ? JText::_('COM_NEWSLETTER_EDIT') : JText::_('COM
 JToolBarHelper::title(JText::_('COM_NEWSLETTER') . ': ' . $text, 'newsletter.png');
 
 //add buttons to toolbar
-JToolBarHelper::save();
+JToolBarHelper::apply();
 if ($this->newsletter->id)
 {
-	JToolBarHelper::apply();
+	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();
 
