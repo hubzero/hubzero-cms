@@ -154,10 +154,10 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array(0));
-			if (is_array($ids) && !empty($ids))
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
 			{
-				$id = $ids[0];
+				$id = $id[0];
 			}
 
 			// Load the article
@@ -317,6 +317,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource
 		if (count($ids) < 1)
@@ -378,6 +379,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 		$state = JRequest::getInt('state', 0);
 
 		// Check for a resource

@@ -129,16 +129,16 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>">
 						<span><?php echo $row->content('clean', 75); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_ANSWERS_SET_STATE', $task); ?>">
+					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=<?php echo $task;?>&amp;id=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_ANSWERS_SET_STATE', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
-				<td style="white-space: nowrap;">
+				<td>
 					<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 				</td>
 				<td>

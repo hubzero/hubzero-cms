@@ -121,10 +121,10 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
-		if (is_array($ids))
+		$id = JRequest::getVar('id', array(0));
+		if (is_array($id))
 		{
-			$id = intval($ids[0]);
+			$id = intval($id[0]);
 		}
 
 		// load infor from database
@@ -396,6 +396,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
 		if (empty($ids))
@@ -459,6 +460,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)

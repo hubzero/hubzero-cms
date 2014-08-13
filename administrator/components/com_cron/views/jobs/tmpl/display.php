@@ -141,7 +141,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					<?php } else { ?>
@@ -152,7 +152,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_CRON_SET_THIS_TO', $task); ?>">
+						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_CRON_SET_THIS_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -163,12 +163,20 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time datetime="<?php echo $row->get('publish_up'); ?>"><?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? JFactory::getDate($row->get('publish_up'))->format(JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_CRON_NO_DATE_SET'); ?></time>
+						<?php if ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') { ?>
+							<time datetime="<?php echo $row->get('publish_up'); ?>"><?php echo JFactory::getDate($row->get('publish_up'))->format(JText::_('DATE_FORMAT_HZ1')); ?></time>
+						<?php } else { ?>
+							<?php echo JText::_('COM_CRON_NO_DATE_SET'); ?>
+						<?php } ?>
 					</span>
 				</td>
 				<td>
 					<span class="datetime">
-						<time datetime="<?php echo $row->get('publish_down'); ?>"><?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? JFactory::getDate($row->get('publish_down'))->format(JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_CRON_NONE'); ?></time>
+						<?php if ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') { ?>
+							<time datetime="<?php echo $row->get('publish_down'); ?>"><?php echo JFactory::getDate($row->get('publish_down'))->format(JText::_('DATE_FORMAT_HZ1')); ?></time>
+						<?php } else { ?>
+							<?php echo JText::_('COM_CRON_NONE'); ?>
+						<?php } ?>
 					</span>
 				</td>
 				<td>
@@ -178,12 +186,21 @@ if ($this->results)
 				</td>
 				<td>
 					<span class="datetime">
-						<time datetime="<?php echo $this->escape($row->get('last_run')); ?>"><?php echo $this->escape($row->get('last_run')); ?></time>
+						<?php if ($row->get('last_run') && $row->get('last_run') != '0000-00-00 00:00:00') { ?>
+							<time datetime="<?php echo $this->escape($row->get('last_run')); ?>"><?php echo $this->escape($row->get('last_run')); ?></time>
+						<?php } else { ?>
+							<?php echo $this->escape($row->get('last_run')); ?>
+						<?php } ?>
 					</span>
 				</td>
 				<td>
 					<span class="datetime">
-						<time datetime="<?php echo $this->escape($row->get('next_run')); ?>"><?php echo $this->escape(($row->started() ? $row->get('next_run') : $row->get('publish_up'))); ?></time>
+						<?php $nxt = ($row->started() ? $row->get('next_run') : $row->get('publish_up')); ?>
+						<?php if ($nxt && $nxt != '0000-00-00 00:00:00') { ?>
+							<time datetime="<?php echo $this->escape($nxt); ?>"><?php echo $this->escape($nxt); ?></time>
+						<?php } else { ?>
+							<?php echo $this->escape($nxt); ?>
+						<?php } ?>
 					</span>
 				</td>
 				<!-- <td>

@@ -164,10 +164,10 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
-		if (is_array($ids))
+		$id = JRequest::getVar('id', array(0));
+		if (is_array($id))
 		{
-			$id = $ids[0];
+			$id = $id[0];
 		}
 
 		// Load object
@@ -272,6 +272,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) <= 0)
 		{
@@ -342,6 +343,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$publish = ($this->_task == 'close') ? 1 : 0;
 

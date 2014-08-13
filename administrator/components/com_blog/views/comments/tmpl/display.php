@@ -130,21 +130,21 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php echo $row->get('treename'); ?>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo \Hubzero\Utility\String::truncate($this->escape($row->content('clean')), 90); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo \Hubzero\Utility\String::truncate($this->escape($row->content('clean')), 90); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+							<?php echo \Hubzero\Utility\String::truncate($this->escape($row->content('clean')), 90); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo \Hubzero\Utility\String::truncate($this->escape($row->content('clean')), 90); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=anonymous&amp;state=<?php echo $state; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=anonymous&amp;state=<?php echo $state; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>

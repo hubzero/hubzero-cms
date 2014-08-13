@@ -159,16 +159,11 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		// Incoming
 		$id = 0;
 		$qid = JRequest::getInt('qid', 0);
-		$ids = JRequest::getVar('id', array());
-		if (is_array($ids) && !empty($ids))
+		$id = JRequest::getVar('id', array());
+		if (is_array($id) && !empty($id))
 		{
-			$id = $ids[0];
+			$id = $id[0];
 		}
-		/*if (!$qid)
-		{
-			$qid = $id;
-			$id = 0;
-		}*/
 
 		if (is_object($row))
 		{
@@ -261,6 +256,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
@@ -309,7 +305,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 
 		if (!is_array($id))
 		{
-			$id = array(0);
+			$id = array($id);
 		}
 
 		$publish = ($this->_task == 'accept') ? 1 : 0;

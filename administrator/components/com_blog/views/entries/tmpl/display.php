@@ -232,7 +232,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				<?php } else { ?>
@@ -247,7 +247,7 @@ foreach ($this->rows as $row)
 				<td>
 					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -263,7 +263,7 @@ foreach ($this->rows as $row)
 					</time>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=setcomments&amp;state=<?php echo $state; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=setcomments&amp;state=<?php echo $state; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>

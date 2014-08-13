@@ -220,10 +220,10 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array(0));
-			if (is_array($ids) && !empty($ids))
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
 			{
-				$id = $ids[0];
+				$id = $id[0];
 			}
 
 			// Load the article

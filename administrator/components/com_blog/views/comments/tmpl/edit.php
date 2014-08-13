@@ -107,6 +107,7 @@ function submitbutton(pressbutton)
 					<td>
 						<?php echo $this->row->get('entry_id'); ?>
 						<input type="hidden" name="fields[entry_id]" id="field-entry_id" value="<?php echo $this->escape($this->row->get('entry_id')); ?>" />
+						<input type="hidden" name="entry_id" value="<?php echo $this->escape($this->row->get('entry_id')); ?>" />
 					</td>
 				</tr>
 			</tbody>
