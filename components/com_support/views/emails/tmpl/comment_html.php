@@ -350,6 +350,22 @@ $this->commentor = JFactory::getUser($this->comment->created_by);
 														$comment = $this->attach->parse($comment);
 													?>
 														<p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></p>
+														<?php
+														$model = new SupportModelComment($this->comment);
+														if ($model->attachments()->total()) { ?>
+															<div class="comment-attachments" style="margin: 2em 0 0 0; padding: 0; text-align: left;">
+																<?php
+																foreach ($model->attachments() as $attachment)
+																{
+																	if (!trim($attachment->get('description')))
+																	{
+																		$attachment->set('description', $attachment->get('filename'));
+																	}
+																	echo '<p class="attachment" style="margin: 0.5em 0; padding: 0; text-align: left;"><a href="' . $base . '/' . ltrim(JRoute::_($attachment->link()), '/') . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+																}
+																?>
+															</div><!-- / .comment-body -->
+														<?php } ?>
 													</td>
 												</tr>
 											</tbody>
