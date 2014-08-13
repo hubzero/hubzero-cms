@@ -1360,78 +1360,81 @@ HUB.Plugins.CoursesProgress = {
 			navHeaders = $('.nav-header-fixed'),
 			offset     = scroll - container.offset().top + 60;
 
-		if (scroll >= e.data.offsetMax) {
-			container.removeClass('fixedHeaders').addClass('maxHeaders');
-			$('.maxHeaders .gradebook-column .cell:first-child').css('top', (e.data.offsetMax - container.offset().top + 60));
+		// Only worry about this if there are students in the list
+		if ($('.cell-entry').length) {
+			if (scroll >= e.data.offsetMax) {
+				container.removeClass('fixedHeaders').addClass('maxHeaders');
+				$('.maxHeaders .gradebook-column .cell:first-child').css('top', (e.data.offsetMax - container.offset().top + 60));
 
-			$('.maxHeaders .controls-wrap').css({
-				'top'   : (e.data.offsetMax - container.offset().top)
-			});
+				$('.maxHeaders .controls-wrap').css({
+					'top'   : (e.data.offsetMax - container.offset().top)
+				});
 
-			$('.nav-header-fixed').remove();
-			$('.controls-wrap').show();
-			$('.gradebook-column .cell:first-child').show();
-		} else if (scroll >= e.data.offset && !navHeaders.length) {
-			var html = $('<div class="nav-header-fixed"></div>'),
-				cntr = $('.controls-wrap'),
-				head = $('.gradebook-column .cell:first-child'),
-				offl = $('.gradebook-container-inner').offset().left,
-				offr = ($(window).width() - (offl + $('.gradebook-container-inner').outerWidth()));
+				$('.nav-header-fixed').remove();
+				$('.controls-wrap').show();
+				$('.gradebook-column .cell:first-child').show();
+			} else if (scroll >= e.data.offset && !navHeaders.length) {
+				var html = $('<div class="nav-header-fixed"></div>'),
+					cntr = $('.controls-wrap'),
+					head = $('.gradebook-column .cell:first-child'),
+					offl = $('.gradebook-container-inner').offset().left,
+					offr = ($(window).width() - (offl + $('.gradebook-container-inner').outerWidth()));
 
-			container.removeClass('maxHeaders').addClass('fixedHeaders');
+				container.removeClass('maxHeaders').addClass('fixedHeaders');
 
-			headers = '';
-			head.each(function ( i, v ) {
-				var orig = v;
-				v = $(v).clone();
-				$(v).css('top', 0);
+				headers = '';
+				head.each(function ( i, v ) {
+					var orig = v;
+					v = $(v).clone();
+					$(v).css('top', 0);
 
-				if (i === 0) {
-					$(v).css('top', 60);
-				}
+					if (i === 0) {
+						$(v).css('top', 60);
+					}
 
-				if (i === 1) {
-					headers += '<div class="header-fixed-slidable"><div class="header-fixed-slidable-inner">';
-				}
+					if (i === 1) {
+						headers += '<div class="header-fixed-slidable"><div class="header-fixed-slidable-inner">';
+					}
 
-				if (i !== 0) {
-					headers += '<div class="gradebook-column" data-asset-id="'+$(orig).parent().data('asset-id')+'">';
-				}
+					if (i !== 0) {
+						headers += '<div class="gradebook-column" data-asset-id="'+$(orig).parent().data('asset-id')+'">';
+					}
 
-				headers += v[0].outerHTML;
+					headers += v[0].outerHTML;
 
-				if (i !== 0) {
-					headers += '</div>';
-				}
+					if (i !== 0) {
+						headers += '</div>';
+					}
 
-				if (i === head.length) {
-					headers += '</div></div>';
-				}
-			});
+					if (i === head.length) {
+						headers += '</div></div>';
+					}
+				});
 
-			html.css({
-				left  : offl,
-				right : offr
-			});
+				html.css({
+					left  : offl,
+					right : offr
+				});
 
-			html.append(cntr.clone());
-			html.append('<div class="main-headers">'+headers+'</div>');
-			cntr.hide();
-			head.hide();
+				html.append(cntr.clone());
+				html.append('<div class="main-headers">'+headers+'</div>');
+				cntr.hide();
+				head.hide();
 
-			html.find('.header-fixed-slidable-inner').css('left', $('.slidable-inner').css('left'));
-			container.append(html);
-		} else if (scroll <= e.data.offset && navHeaders.length) {
-			container.removeClass('fixedHeaders maxHeaders');
-			$('.nav-header-fixed').remove();
-			$('.controls-wrap').show();
-			$('.gradebook-column .cell:first-child').css('top', 0).show();
-		}
+				html.find('.header-fixed-slidable-inner').css('left', $('.slidable-inner').css('left'));
+				container.append(html);
+			} else if (scroll <= e.data.offset && navHeaders.length) {
+				container.removeClass('fixedHeaders maxHeaders');
+				$('.nav-header-fixed').remove();
+				$('.controls-wrap').show();
+				$('.gradebook-column .cell:first-child').css('top', 0).show();
+			}
 
-		if (navigation.offset().top >= e.data.navMax && navigation.hasClass('fixed')) {
-			navigation.removeClass('fixed');
-		} else if ((navigation.offset().top + 40 - window.innerHeight) >= window.pageYOffset ) {
-			navigation.addClass('fixed');
+			if (navigation.offset().top >= e.data.navMax && navigation.hasClass('fixed')) {
+				navigation.removeClass('fixed');
+			} else if ((navigation.offset().top + 40 - window.innerHeight) >= window.pageYOffset ) {
+				navigation.addClass('fixed');
+			}
 		}
 	},
 
