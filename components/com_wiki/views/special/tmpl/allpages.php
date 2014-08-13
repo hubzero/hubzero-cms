@@ -52,31 +52,45 @@ $where = '';
 $namespace = urldecode(JRequest::getVar('namespace', ''));
 if ($namespace)
 {
-	$where .= "AND LOWER(wp.pagename) LIKE '" . $database->getEscaped(strtolower($namespace)) . "%'";
+	$where .= "AND LOWER(wp.pagename) LIKE " . $database->quote(strtolower($namespace) . '%');
 }
 
-$query = "SELECT COUNT(*) 
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
+if ($scp = $this->page->get('scope'))
+{
+	$scope = "AND (wp.scope LIKE " . $database->quote($scp . '%');
+	if ($this->page->get('group_cn') && (!$namespace || $namespace == 'Help:'))
+	{
+		$scope .= " OR LOWER(wp.pagename) LIKE " . $database->quote('Help:%');
+	}
+	$scope .= ") ";
+}
+else
+{
+	$scope = "AND (wp.scope='' OR wp.scope IS NULL) ";
+}
+
+$query = "SELECT COUNT(*)
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
+				$scope
 				AND wp.state < 2
 				$where
-				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)";
+				AND wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_version` AS wv2 WHERE wv2.pageid = wv.pageid)";
 
 $database->setQuery($query);
 $total = $database->loadResult();
 
 $query = "SELECT wv.pageid, (CASE WHEN (wp.`title` IS NOT NULL AND wp.`title` !='') THEN wp.`title` ELSE wp.`pagename` END) AS `title`, wp.pagename, wp.scope, wp.group_cn, wp.access, wv.version, wv.created_by, wv.created
-			FROM #__wiki_version AS wv 
-			INNER JOIN #__wiki_page AS wp 
-				ON wp.id = wv.pageid 
-			WHERE wv.approved = 1 
-				" . ($this->page->get('scope') ? "AND wp.scope LIKE '" . $database->getEscaped($this->page->get('scope')) . "%' " : "AND (wp.scope='' OR wp.scope IS NULL) ") . "
+			FROM `#__wiki_version` AS wv
+			INNER JOIN `#__wiki_page` AS wp
+				ON wp.id = wv.pageid
+			WHERE wv.approved = 1
+				$scope
 				AND wp.state < 2
 				$where
-				AND wv.id = (SELECT MAX(wv2.id) FROM #__wiki_version AS wv2 WHERE wv2.pageid = wv.pageid)
+				AND wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_version` AS wv2 WHERE wv2.pageid = wv.pageid)
 			ORDER BY title $dir";
 
 $database->setQuery($query);
