@@ -49,23 +49,6 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 			$this->view->setError($this->getError());
 		}
 
-		//get jquery plugin & parse params
-		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
-		if (!is_object($jqueryPlugin))
-		{
-			$jqueryPlugin = new StdClass;
-			$jqueryPlugin->params = '{}';
-		}
-		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
-
-		//add jquery if we dont have the jquery plugin enabled or not active on admin
-		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
-		{
-			$document = JFactory::getDocument();
-			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
-			$document->addScript( DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
-		}
-
 		//set view vars
 		$this->view->code     = ($this->code) ? $this->code : '';
 		$this->view->preview  = ($this->preview) ? $this->preview : '';

@@ -59,6 +59,7 @@ HUB.Administrator.Newsletter = {
 		}
 		
 		HUB.Administrator.Newsletter.locationMap();
+		HUB.Administrator.Newsletter.mailingListAndCount();
 	},
 	
 	sendNewsletterCheck: function()
@@ -140,6 +141,42 @@ HUB.Administrator.Newsletter = {
 			href: 'index.php?option=com_newsletter&task=preview&id=' + id + '&tmpl=component',
 			scrollOutside: false
 		})
+	},
+
+	mailingListAndCount: function()
+	{
+		var $ = this.jQuery;
+
+		$('#mailinglist').on('change', function(event) {
+			var value = $(this).val();
+			if (value != '' && value != 0)
+			{
+				$.ajax({
+					type: 'get',
+					dataType: 'json',
+					url: 'index.php?option=com_newsletter&controller=mailinglist&task=emailcount&mailinglistid='+value+'&no_html=1',
+					success: function(data)
+					{
+						var emailCount = data.length;
+
+						//show count
+						$('#mailinglist-count').show();
+
+						//set actual counter
+						$('#mailinglist-count').find('#mailinglist-count-count').html(emailCount);
+
+						//add list of emails
+						$('#mailinglist-emails').html('<br />--------------------------------<br />' + data.join('<br />'));
+					}
+				});
+			}
+			else
+			{
+				$('#mailinglist-count').hide();
+			}
+		});
+
+		$('#mailinglist-count').hide();
 	},
 	
 	locationMap: function() 

@@ -636,15 +636,6 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$newsletterMailinglist = new NewsletterMailinglist($this->database);
 		$this->view->mailinglists = $newsletterMailinglist->getLists();
 
-		// add jquery ui
-		JHTML::_('behavior.framework', true);
-
-		// get document object
-		$document = JFactory::getDocument();
-
-		// add newsletter js
-		$document->addScript('components/com_newsletter/assets/js/newsletter.js');
-
 		//check if we have any errors
 		if ($this->getError())
 		{

@@ -36,6 +36,13 @@ JToolBarHelper::title(JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_STATS'), 'stat
 
 //add buttons
 JToolBarHelper::custom('cancel', 'back', '', 'COM_NEWSLETTER_TOOLBAR_BACK', false);
+
+// add css & js to view
+$this->css();
+$this->js()
+     ->js('jvectormap/jquery.jvectormap.min.js', 'system')
+     ->js('jvectormap/maps/jquery.jvectormap.us.js', 'system')
+     ->js('jvectormap/maps/jquery.jvectormap.world.js', 'system');
 ?>
 
 <?php
@@ -45,130 +52,125 @@ JToolBarHelper::custom('cancel', 'back', '', 'COM_NEWSLETTER_TOOLBAR_BACK', fals
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
+	<fieldset class="adminform">
+		<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_STATISTICS'); ?></legend>
+		<table class="adminlist">
+			<tbody>
+				<tr>
+					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENRATE'); ?>:</th>
+					<td>
+						<?php
+							if (count($this->recipients) > 0)
+							{
+								echo number_format((count($this->opens) / count($this->recipients)) * 100) . '% ';
+								echo JText::sprintf('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENED', count($this->opens), count($this->recipients));
+							}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_BOUNCERATE'); ?>:</th>
+					<td>
+						<?php
+							if (count($this->recipients) > 0)
+							{
+								echo (count($this->bounces) / count($this->recipients)) * 100 . '% ';
+							}
+						?>
+					</td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_FORWARDS'); ?>:</th>
+					<td>
+						<?php echo count($this->forwards); ?>
+					</td>
+				</tr>
+				<tr>
+					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_PRINTS'); ?>:</th>
+					<td>
+						<?php echo count($this->prints); ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
 
-	<table class="adminlist">
-		<thead>
-			<tr>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_STATISTIC'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_VALUE'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENRATE'); ?>:</th>
-				<td>
-					<?php
-						if (count($this->recipients) > 0)
-						{
-							echo number_format((count($this->opens) / count($this->recipients)) * 100) . '% ';
-							echo JText::sprintf('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENED', count($this->opens), count($this->recipients));
-						}
-					?>
-				</td>
-			</tr>
-			<tr>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_BOUNCERATE'); ?>:</th>
-				<td>
-					<?php
-						if (count($this->recipients) > 0)
-						{
-							echo (count($this->bounces) / count($this->recipients)) * 100 . '% ';
-						}
-					?>
-				</td>
-			</tr>
-			<tr>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_FORWARDS'); ?>:</th>
-				<td>
-					<?php echo count($this->forwards); ?>
-				</td>
-			</tr>
-			<tr>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_PRINTS'); ?>:</th>
-				<td>
-					<?php echo count($this->prints); ?>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<br />
-	<hr />
+	<fieldset class="adminform">
+		<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENS_BY_LOCATION'); ?></legend>
+		<div class="col width-30">
+			<table class="adminlist">
+				<thead>
+					<tr>
+						<th colspan="2"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS'); ?></th>
+						<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT'); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($this->opensGeo['country'] as $country => $count) : ?>
+						<tr>
+							<td width="20px">
+								<?php if ($country != 'undetermined') : ?>
+									<img src="/media/system/images/flags/<?php echo strtolower($country); ?>.gif" style="vertical-align:middle;">
+								<?php endif; ?>
+							</td>
+							<td><?php echo strtoupper($country); ?></td>
+							<td width="40px"><?php echo $count; ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<div class="col width-70 fltrt">
+			<?php
+				//removed undertermined as we cant put that on the map
+				//json encode so we can get value with js
+				unset($this->opensGeo['country']['undetermined']);
+				unset($this->opensGeo['state']['undetermined']);
+				$countryGeo = strtoupper(json_encode( $this->opensGeo['country'] ));
+				$stateGeo = strtoupper(json_encode( $this->opensGeo['state'] ));
+			?>
+			<div id="world-map-data" data-src='<?php echo $countryGeo; ?>'></div>
+			<div id="us-map-data" data-src='<?php echo $stateGeo; ?>'></div>
+			<div id="location-map-container">
+				<div id="us-map"></div>
+				<div id="world-map"></div>
+				<div class="jvectormap-world">World Map</div>
+			</div>
+		</div>
+	</fieldset>
 
-	<h3><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_OPENS_BY_LOCATION'); ?></h3>
-	<div class="col width-30">
+	<fieldset class="adminform">
+		<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS'); ?></legend>
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th colspan="2"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS'); ?></th>
-					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_TOP_LOCATIONS_OPENS_COUNT'); ?></th>
+					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_URL'); ?></th>
+					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_COUNT'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($this->opensGeo['country'] as $country => $count) : ?>
+				<?php if (count($this->clicks) > 0) : ?>
+					<?php foreach ($this->clicks as $url => $count) : ?>
+						<tr>
+							<td>
+								<?php
+									echo '<a target="_blank" href="' . $url . '">' . $url . '</a>';
+								?>
+							</td>
+							<td><?php echo number_format($count); ?></td>
+						</tr>
+					<?php endforeach; ?>
+				<?php else : ?>
 					<tr>
-						<td width="20px">
-							<?php if ($country != 'undetermined') : ?>
-								<img src="/media/system/images/flags/<?php echo strtolower($country); ?>.gif" style="vertical-align:middle;">
-							<?php endif; ?>
+						<td colspan="2">
+							<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_NO_CLICK_THROUGHS'); ?>
 						</td>
-						<td><?php echo strtoupper($country); ?></td>
-						<td width="40px"><?php echo $count; ?></td>
 					</tr>
-				<?php endforeach; ?>
+				<?php endif; ?>
 			</tbody>
 		</table>
-	</div>
-	<div class="col width-70">
-		<?php
-			//removed undertermined as we cant put that on the map
-			//json encode so we can get value with js
-			unset($this->opensGeo['country']['undetermined']);
-			unset($this->opensGeo['state']['undetermined']);
-			$countryGeo = strtoupper(json_encode( $this->opensGeo['country'] ));
-			$stateGeo = strtoupper(json_encode( $this->opensGeo['state'] ));
-		?>
-		<div id="world-map-data" data-src='<?php echo $countryGeo; ?>'></div>
-		<div id="us-map-data" data-src='<?php echo $stateGeo; ?>'></div>
-		<div id="location-map-container">
-			<div id="us-map"></div>
-			<div id="world-map"></div>
-			<div class="jvectormap-world">World Map</div>
-		</div>
-	</div>
-	<br class="clear" />
-	<br />
-	<hr />
-
-	<h3><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS'); ?></h3>
-	<table class="adminlist">
-		<thead>
-			<tr>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_URL'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_COUNT'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php if (count($this->clicks) > 0) : ?>
-				<?php foreach ($this->clicks as $url => $count) : ?>
-					<tr>
-						<td>
-							<?php
-								echo '<a target="_blank" href="' . $url . '">' . $url . '</a>';
-							?>
-						</td>
-						<td><?php echo number_format($count); ?></td>
-					</tr>
-				<?php endforeach; ?>
-			<?php else : ?>
-				<tr>
-					<td colspan="2">
-						<?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_NO_CLICK_THROUGHS'); ?>
-					</td>
-				</tr>
-			<?php endif; ?>
-		</tbody>
-	</table>
+	</fieldset>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

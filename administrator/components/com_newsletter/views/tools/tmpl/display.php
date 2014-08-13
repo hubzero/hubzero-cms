@@ -33,6 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 //set title
 JToolBarHelper::title(JText::_( 'COM_NEWSLETTER_NEWSLETTER_TOOLS' ), 'tools.png');
+
+// add jquery
+JHtml::_('behavior.framework');
 ?>
 
 <?php

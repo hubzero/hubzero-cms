@@ -129,31 +129,6 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 			$this->view->clicks[$clickAction->url] = (isset($this->view->clicks[$clickAction->url])) ? $this->view->clicks[$clickAction->url] + 1 : 1;
 		}
 
-		//get jquery plugin & parse params
-		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
-		if (!is_object($jqueryPlugin))
-		{
-			$jqueryPlugin = new StdClass;
-			$jqueryPlugin->params = '{}';
-		}
-		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
-
-		//add jquery if we dont have the jquery plugin enabled or not active on admin
-		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
-		{
-			$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
-			$document = JFactory::getDocument();
-			$document->addScript( $base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.js' );
-			$document->addScript( $base . DS . 'media' . DS . 'system' . DS . 'js' . DS . 'jquery.noconflict.js' );
-
-			$document->addScript( $base . '/media/system/js/jvectormap/jquery.jvectormap.min.js' );
-			$document->addScript( $base . '/media/system/js/jvectormap/maps/jquery.jvectormap.us.js' );
-			$document->addScript( $base . '/media/system/js/jvectormap/maps/jquery.jvectormap.world.js' );
-
-			$document->addScript( 'components/com_newsletter/assets/js/newsletter.jquery.js?v=' . time() );
-			$document->addStyleSheet( 'components/com_newsletter/assets/css/newsletter.css' );
-		}
-
 		// Set any errors
 		if ($this->getError())
 		{
@@ -164,7 +139,12 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 		$this->view->display();
 	}
 
-
+	/**
+	 * Get Opens and Return as JSON
+	 * 
+	 * @param  [type] $mailingId [description]
+	 * @return [type]            [description]
+	 */
 	public function getOpensGeoTask( $mailingId = null )
 	{
 		//are we getting through ajax
