@@ -61,7 +61,7 @@ $this->css('jquery.ui.css', 'system');
 		</p>
 		<p>
 			<label>
-				<span>Time limit:</span><input type="number" class="minutes" name="deployment[timeLimit]" value="<?php echo htmlentities(($val = $this->dep->getTimeLimit()) ? $val : '') ?>" /> minutes
+				<span>Time limit:</span><input type="number" step="1" min="0" class="minutes" name="deployment[timeLimit]" value="<?php echo htmlentities(($val = $this->dep->getTimeLimit()) ? $val : '') ?>" /> minutes
 			</label>
 			<?php if ($showErrors && $this->dep->hasErrors('timeLimit')): ?>
 			<ul class="error">
@@ -73,7 +73,7 @@ $this->css('jquery.ui.css', 'system');
 		</p>
 		<p>
 			<label>
-				<span>Attempts:</span><input type="number" class="minutes" name="deployment[allowedAttempts]" value="<?php echo htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1') ?>" /> allowed attempts
+				<span>Attempts:</span><input type="number" step="1" min="0" class="minutes" name="deployment[allowedAttempts]" value="<?php echo htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1') ?>" /> allowed attempts
 			</label>
 			<?php if ($showErrors && $this->dep->hasErrors('allowedAttempts')): ?>
 			<ul class="error">
