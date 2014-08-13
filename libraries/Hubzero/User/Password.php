@@ -281,6 +281,11 @@ class Password
 	{
 		$db = \JFactory::getDBO();
 
+		if (!$this->__get('user_id'))
+		{
+			return false;
+		}
+
 		$query = "UPDATE #__users_password SET ";
 
 		$classvars = get_class_vars(__CLASS__);
@@ -320,7 +325,7 @@ class Password
 			}
 		}
 
-		$query .= " WHERE `user_id`=" . $db->Quote($this->__get('user_id')) . " LIMIT 1;";
+		$query .= " WHERE `user_id`=" . $db->Quote($this->__get('user_id'));
 
 		if ($first == true)
 		{
