@@ -1957,7 +1957,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				{
 					$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
 
-					$emails[] = array(
+					$email = array(
 						$to['email'],
 						'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
 					);
@@ -2677,7 +2677,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$this->database->setQuery($query);
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '', JText::_('COM_SUPPORT_NONE'), 'value', 'text');
+			$users[] = JHTML::_('select.option', '0', JText::_('COM_SUPPORT_NONE'), 'value', 'text');
 			$users = array_merge($users, $this->database->loadObjectList());
 		}
 		else
