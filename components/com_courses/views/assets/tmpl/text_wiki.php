@@ -50,7 +50,15 @@ $this->model->set('content', stripslashes($this->model->get('content')));
 ?>
 
 <header id="content-header">
-	<h2><?php echo $this->asset->title; ?></h2>
+	<h2><?php echo $this->asset->title ?></h2>
+
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-prev back btn" href="<?php echo JRoute::_($this->course->offering()->link() . '&active=outline'); ?>">
+				<?php echo JText::_('Back to course'); ?>
+			</a>
+		</p>
+	</div>
 </header>
 
 <div class="wiki-page-body">

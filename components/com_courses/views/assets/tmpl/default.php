@@ -25,6 +25,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 ?>
-<p>
-	<?php echo $this->escape(stripslashes($this->asset->get('title'))); ?>
-</p>
+<header id="content-header">
+	<h2><?php echo $this->asset->title ?></h2>
+
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-prev back btn" href="<?php echo JRoute::_($this->course->offering()->link() . '&active=outline'); ?>">
+				<?php echo JText::_('Back to course'); ?>
+			</a>
+		</p>
+	</div>
+</header>
