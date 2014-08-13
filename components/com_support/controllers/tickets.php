@@ -1143,149 +1143,152 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			}
 		}
 
-		// Only do the following if a comment was posted
-		// otherwise, we're only recording a changelog
-		$old = new SupportModelTicket();
-		$old->set('tags', '');
-
-		$rowc = new SupportModelComment();
-		$rowc->set('ticket', $row->get('id'));
-		$rowc->set('created', JFactory::getDate()->toSql());
-		$rowc->set('created_by', $this->juser->get('id'));
-		$rowc->set('access', 1);
-		$rowc->set('comment', JText::_('COM_SUPPORT_TICKET_SUBMITTED'));
-
-		// Compare fields to find out what has changed for this ticket and build a changelog
-		$rowc->changelog()->diff($old, $row);
-
-		$rowc->changelog()->cced(JRequest::getVar('cc', ''));
-
-		// Save the data
-		if (!$rowc->store())
+		if (!$this->juser->get('guest') && $acl->check('update', 'tickets') > 0)
 		{
-			JError::raiseError(500, $rowc->getError());
-			return;
-		}
+			// Only do the following if a comment was posted
+			// otherwise, we're only recording a changelog
+			$old = new SupportModelTicket();
+			$old->set('tags', '');
 
-		if ($row->get('owner'))
-		{
-			$rowc->addTo(array(
-				'role'  => JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
-				'name'  => $row->owner('name'),
-				'email' => $row->owner('email'),
-				'id'    => $row->owner('id')
-			));
-		}
+			$rowc = new SupportModelComment();
+			$rowc->set('ticket', $row->get('id'));
+			$rowc->set('created', JFactory::getDate()->toSql());
+			$rowc->set('created_by', $this->juser->get('id'));
+			$rowc->set('access', 1);
+			$rowc->set('comment', JText::_('COM_SUPPORT_TICKET_SUBMITTED'));
 
-		// Add any CCs to the e-mail list
-		foreach ($rowc->changelog()->get('cc') as $cc)
-		{
-			$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
-		}
+			// Compare fields to find out what has changed for this ticket and build a changelog
+			$rowc->changelog()->diff($old, $row);
 
-		// Check if the notify list has eny entries
-		if (count($rowc->to()))
-		{
-			$encryptor = new \Hubzero\Mail\Token();
+			$rowc->changelog()->cced(JRequest::getVar('cc', ''));
 
-			$allowEmailResponses = false;
-			if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
-			{
-				$allowEmailResponses = true;
-			}
-
-			$subject = JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
-
-			$from = array(
-				'name'      => JText::sprintf('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
-				'email'     => $jconfig->getValue('config.mailfrom'),
-				'multipart' => md5(date('U'))
-			);
-
-			$message = array();
-
-			// Plain text email
-			$eview = new \Hubzero\Component\View(array(
-				'name'   => 'emails',
-				'layout' => 'comment_plain'
-			));
-			$eview->option     = $this->_option;
-			$eview->controller = $this->_controller;
-			$eview->comment    = $rowc;
-			$eview->ticket     = $row;
-			$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
-
-			$message['plaintext'] = $eview->loadTemplate();
-			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
-
-			// HTML email
-			$eview->setLayout('comment_html');
-
-			$message['multipart'] = $eview->loadTemplate();
-			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
-
-			// Send e-mail to admin?
-			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
-
-			foreach ($rowc->to('ids') as $to)
-			{
-				if ($allowEmailResponses)
-				{
-					// The reply-to address contains the token
-					$token = $encryptor->buildEmailToken(1, 1, $to['id'], $row->get('id'));
-					$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
-				}
-
-				// Get the user's email address
-				if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
-				{
-					$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
-				}
-				$rowc->changelog()->notified(
-					$to['role'],
-					$to['name'],
-					$to['email']
-				);
-			}
-
-			foreach ($rowc->to('emails') as $to)
-			{
-				$token = $encryptor->buildEmailToken(1, 1, -9999, $row->get('id'));
-
-				$emails[] = array(
-					$to['email'],
-					'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
-				);
-
-				if ($allowEmailResponses)
-				{
-					// In this case each item in email in an array, 1- To, 2:reply to address
-					SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
-				}
-				else
-				{
-					// email is just a plain 'ol string
-					SupportUtilities::sendEmail($to['email'], $subject, $message, $from);
-				}
-
-				$rowc->changelog()->notified(
-					$to['role'],
-					$to['name'],
-					$to['email']
-				);
-			}
-		}
-
-		// Were there any changes?
-		if (count($rowc->changelog()->get('notifications')) > 0
-		 || count($rowc->changelog()->get('cc')) > 0
-		 || count($rowc->changelog()->get('changes')) > 0)
-		{
 			// Save the data
 			if (!$rowc->store())
 			{
-				$this->setError($rowc->getError());
+				JError::raiseError(500, $rowc->getError());
+				return;
+			}
+
+			if ($row->get('owner'))
+			{
+				$rowc->addTo(array(
+					'role'  => JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
+					'name'  => $row->owner('name'),
+					'email' => $row->owner('email'),
+					'id'    => $row->owner('id')
+				));
+			}
+
+			// Add any CCs to the e-mail list
+			foreach ($rowc->changelog()->get('cc') as $cc)
+			{
+				$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
+			}
+
+			// Check if the notify list has eny entries
+			if (count($rowc->to()))
+			{
+				$encryptor = new \Hubzero\Mail\Token();
+
+				$allowEmailResponses = false;
+				if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
+				{
+					$allowEmailResponses = true;
+				}
+
+				$subject = JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
+
+				$from = array(
+					'name'      => JText::sprintf('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
+					'email'     => $jconfig->getValue('config.mailfrom'),
+					'multipart' => md5(date('U'))
+				);
+
+				$message = array();
+
+				// Plain text email
+				$eview = new \Hubzero\Component\View(array(
+					'name'   => 'emails',
+					'layout' => 'comment_plain'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->comment    = $rowc;
+				$eview->ticket     = $row;
+				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
+
+				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+				// HTML email
+				$eview->setLayout('comment_html');
+
+				$message['multipart'] = $eview->loadTemplate();
+				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
+				// Send e-mail to admin?
+				JPluginHelper::importPlugin('xmessage');
+				$dispatcher = JDispatcher::getInstance();
+
+				foreach ($rowc->to('ids') as $to)
+				{
+					if ($allowEmailResponses)
+					{
+						// The reply-to address contains the token
+						$token = $encryptor->buildEmailToken(1, 1, $to['id'], $row->get('id'));
+						$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+					}
+
+					// Get the user's email address
+					if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
+					{
+						$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
+					}
+					$rowc->changelog()->notified(
+						$to['role'],
+						$to['name'],
+						$to['email']
+					);
+				}
+
+				foreach ($rowc->to('emails') as $to)
+				{
+					$token = $encryptor->buildEmailToken(1, 1, -9999, $row->get('id'));
+
+					$emails[] = array(
+						$to['email'],
+						'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+					);
+
+					if ($allowEmailResponses)
+					{
+						// In this case each item in email in an array, 1- To, 2:reply to address
+						SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
+					}
+					else
+					{
+						// email is just a plain 'ol string
+						SupportUtilities::sendEmail($to['email'], $subject, $message, $from);
+					}
+
+					$rowc->changelog()->notified(
+						$to['role'],
+						$to['name'],
+						$to['email']
+					);
+				}
+			}
+
+			// Were there any changes?
+			if (count($rowc->changelog()->get('notifications')) > 0
+			 || count($rowc->changelog()->get('cc')) > 0
+			 || count($rowc->changelog()->get('changes')) > 0)
+			{
+				// Save the data
+				if (!$rowc->store())
+				{
+					$this->setError($rowc->getError());
+				}
 			}
 		}
 

@@ -294,7 +294,7 @@ $this->css()
 						<td colspan="6">
 							<p>
 								<span class="ticket-author">
-									<?php echo $this->escape($row->get('name')); echo ($row->submitter('id')) ? ' (<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->submitter('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
+									<?php echo $this->escape($row->get('name')); echo ($row->submitter('id')) ? ' (<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->submitter('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : ''); ?>
 								</span>
 								<span class="ticket-datetime">
 									@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created(); ?></time>

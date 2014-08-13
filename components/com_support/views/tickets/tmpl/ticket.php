@@ -48,7 +48,7 @@ $usertype = JText::_('COM_SUPPORT_UNKNOWN');
 if ($this->row->get('login'))
 {
 	$submitter = $this->row->submitter();
-	if ($submitter->get('name'))
+	if ($submitter->get('id'))
 	{
 		jimport( 'joomla.user.helper' );
 		$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
@@ -65,7 +65,7 @@ if ($this->row->get('login'))
 }
 else
 {
-	$name  = '<a rel="email" href="mailto:' . $this->row->get('email') . '">' . $this->escape(stripslashes($this->row->name)) . '</a>';
+	$name  = '<a rel="email" href="mailto:' . $this->row->get('email') . '">' . $this->escape(stripslashes($this->row->get('name'))) . '</a>';
 }
 
 $prev = null;
