@@ -3081,7 +3081,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			if (!$ajax) { return false; }
 			$result = JText::_('COM_PROJECTS_ERROR_NAME_INVALID_NUMERIC');
 		}
-		
+
 		// Verify tool name uniqueness
 		elseif ($tool)
 		{
