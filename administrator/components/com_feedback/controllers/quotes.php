@@ -151,7 +151,8 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming ID
-			$id = JRequest::getInt('id', 0);
+			$id = JRequest::getVar('id', array(0));
+			$id = (is_array($id) ? $id[0] : $id);
 
 			// Initiate database class and load info
 			$this->view->row = new FeedbackQuotes($this->database);
@@ -311,19 +312,12 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		$row = new FeedbackQuotes($this->database);
+
 		foreach ($ids as $id)
 		{
-			$id = intval($id);
-
-			// Load the quote
-			$row = new FeedbackQuotes($this->database);
-			$row->load($id);
-
-			// Delete associated files
-			$row->deletePicture($this->config);
-
 			// Delete the quote
-			$row->delete();
+			$row->delete(intval($id));
 		}
 
 		// Output messsage and redirect

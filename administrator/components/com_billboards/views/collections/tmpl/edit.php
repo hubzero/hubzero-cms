@@ -33,23 +33,21 @@ defined('_JEXEC') or die('Restricted access');
 $text = ($this->task == 'editcollection' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'addedit.png');
-JToolBarHelper::save('savecollection');
-JToolBarHelper::cancel('cancelcollection');
+JToolBarHelper::save();
+JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('collection');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	var form = document.adminForm;
-
-	if (pressbutton == 'cancelcollection') {
-		submitformpressbutton);
+	if (pressbutton == 'cancel') {
+		submitform(pressbutton);
 		return;
 	}
 
 	// form field validation
-	if ($('name').value == '') {
+	if ($('#field-name').val() == '') {
 		alert('<?php echo JText::_('COM_BILLBOARDS_ERROR_COLLECTION_NO_NAME'); ?>');
 	} else {
 		submitform(pressbutton);
@@ -62,8 +60,8 @@ function submitbutton(pressbutton)
 		<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="name"><?php echo JText::_('COM_BILLBOARDS_FIELD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-			<input type="text" name="collection[name]" id="name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
+			<label for="field-name"><?php echo JText::_('COM_BILLBOARDS_FIELD_COLLECTION_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+			<input type="text" name="collection[name]" id="field-name" value="<?php echo $this->escape(stripslashes($this->row->name)); ?>" size="50" />
 		</div>
 	</fieldset>
 	<input type="hidden" name="collection[id]" value="<?php echo $this->row->id; ?>" />

@@ -103,7 +103,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
  			<tr>
- 				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
+ 				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
  			</tr>
 		</tfoot>
 		<tbody>
@@ -139,35 +139,35 @@ foreach ($this->rows as $row)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-			<?php if ($row->get('checked_out') && $row->get('checked_out') != $juser->get('id')) { ?>
-					<span class="checkedout" title="Checked out :: <?php echo $this->escape($row->get('editor')); ?>">
-						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-					</span>
-			<?php } else { ?>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>">
-						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-					</span>
-				<?php } ?>
-			<?php } ?>
-				<?php if ($tags) { ?>
-					<br /><span><?php echo JText::_('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
-				<?php } ?>
+					<?php if ($row->get('checked_out') && $row->get('checked_out') != $juser->get('id')) { ?>
+							<span class="checkedout" title="Checked out :: <?php echo $this->escape($row->get('editor')); ?>">
+								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+							</span>
+					<?php } else { ?>
+						<?php if ($canDo->get('core.edit')) { ?>
+							<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_EDIT_ARTICLE'); ?>">
+								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+							</a>
+						<?php } else { ?>
+							<span>
+								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+							</span>
+						<?php } ?>
+					<?php } ?>
+					<?php if ($tags) { ?>
+						<br /><span><?php echo JText::_('COM_KB_TAGS'); ?>: <?php echo $tags; ?></span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;section=<?php echo $this->filters['section']; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>&amp;section=<?php echo $this->filters['section']; ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $class; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->get('ctitle')); echo ($row->get('cctitle') ? ' (' . $this->escape($row->get('cctitle')) . ')' : ''); ?>

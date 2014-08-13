@@ -107,34 +107,36 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $i; ?>
 				</td>
 				<td>
-					<input type="checkbox" name="id" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onClick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onClick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<time datetime="<?php echo $row->date; ?>"><?php echo JHTML::_('date', $row->date, JText::_('DATE_FORMAT_HZ1')); ?></time>
+					<?php if ($row->date && $row->date != '0000-00-00 00:00:00') { ?>
+						<time datetime="<?php echo $row->date; ?>"><?php echo JHTML::_('date', $row->date, JText::_('DATE_FORMAT_HZ1')); ?></time>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->fullname)); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->fullname)); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+							<?php echo $this->escape(stripslashes($row->fullname)); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->fullname)); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo ($row->org) ? $this->escape(stripslashes($row->org)) : '&nbsp;';?></td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
-						<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($row->quote), 100)); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape($quotepreview); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+							<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($row->quote), 100)); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape($quotepreview); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo ($row->notable_quote == 1) ? '<span class="state yes"><span>' . JText::_('JYES') . '</span></span>' : ''; ?>

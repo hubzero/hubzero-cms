@@ -76,8 +76,8 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('COM_KB_DETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field->section"><?php echo JText::_('COM_KB_PARENT_CATEGORY'); ?>:</label><br />
-				<?php echo KbHelperHtml::sectionSelect($this->sections, $this->row->get('section'), 'fields[section]'); ?>
+				<label for="field-section"><?php echo JText::_('COM_KB_PARENT_CATEGORY'); ?>:</label><br />
+				<?php echo KbHelperHtml::sectionSelect($this->sections, $this->row->get('section'), 'fields[section]', 'field-section'); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />

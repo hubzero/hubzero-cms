@@ -50,7 +50,6 @@ JToolBarHelper::help('billboard');
 
 <script type="text/javascript">
 function submitbutton(pressbutton) {
-	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
@@ -58,7 +57,7 @@ function submitbutton(pressbutton) {
 
 	// Do field validation:
 	// Make sure there's a billboard name and that there's a css class if there's CSS
-	if ($('billboardname').value == "") {
+	if ($('#billboardname').val() == "") {
 		alert("<?php echo JText::_('COM_BILLBOARDS_MUST_HAVE_A_NAME', true); ?>");
 	} else {
 		submitform(pressbutton);
@@ -69,7 +68,7 @@ function submitbutton(pressbutton) {
 jQuery(document).ready(function($){
 	var styling        = $('#styling');
 	var styling_table  = $('#styling_table');
-	var slider         = new Fx.Slide(styling_table).hide();
+	var slider         = styling_table.hide();
 
 	styling.on('click', function(e) {
 		e.preventDefault();
@@ -103,13 +102,12 @@ jQuery(document).ready(function($){
 				<label for="billboardbackgroundimg"><?php echo JText::_('COM_BILLBOARDS_FIELD_BACKGROUND_IMG'); ?>:</label><br />
 				<?php echo $this->image_location; ?>
 				<input type="text" name="billboard[background_img]" id="billboardbackgroundimg" value="<?php echo $this->escape(stripslashes($this->row->background_img)); ?>" size="25" />
-				<a class="modal" href="<?php echo JRoute::_('index.php?option=com_media&view=images&tmpl=component&folder='.$this->media_path); ?>" rel="{handler: 'iframe', size: {x: 640, y: 520}}"><?php echo JText::_('COM_BILLBOARDS_UPLOAD_IMAGE'); ?></a>
+				<a class="modal" href="<?php echo JRoute::_('index.php?option=com_media&view=images&tmpl=component&folder=' . $this->media_path); ?>" data-rel="{handler: 'iframe', size: {x: 640, y: 520}}"><?php echo JText::_('COM_BILLBOARDS_UPLOAD_IMAGE'); ?></a>
 			</div>
 			<div class="input-wrap">
 				<label for="billboard[text]"><?php echo JText::_('COM_BILLBOARDS_FIELD_TEXT'); ?>:</label><br />
 				<?php
-					$editorText =  JEditor::getInstance();
-					echo $editorText->display('billboard[text]', $this->escape(stripslashes($this->row->text)), '', '', 45, 13, false);
+					echo JEditor::getInstance()->display('billboard[text]', $this->escape(stripslashes($this->row->text)), '', '', 45, 13, false);
 				?>
 			</div>
 		</fieldset>
@@ -151,8 +149,7 @@ jQuery(document).ready(function($){
 				<div class="input-wrap">
 					<label for="billboard[css]"><?php echo JText::_('COM_BILLBOARDS_FIELD_CSS'); ?>:</label><br />
 					<?php
-						$editorCSS =  JEditor::getInstance();
-						echo $editorCSS->display('billboard[css]', $this->escape(stripslashes($this->row->css)), '', '', 45, 13, false);
+						echo JEditor::getInstance()->display('billboard[css]', $this->escape(stripslashes($this->row->css)), '', '', 45, 13, false);
 					?>
 				</div>
 			</div>
