@@ -3058,12 +3058,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			if (!$ajax) { return false; }
 			$result = JText::_('COM_PROJECTS_ERROR_NAME_EMPTY');
 		}
-		// Check for illegal characters
-		elseif (preg_match('/[^a-z0-9]/', $name))
-		{
-			if (!$ajax) { return false; }
-			$result = JText::_('COM_PROJECTS_ERROR_NAME_INVALID');
-		}
 		// Check for length
 		elseif (strlen($name) < intval($min_length))
 		{
@@ -3075,6 +3069,19 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			if (!$ajax) { return false; }
 			$result = JText::_('COM_PROJECTS_ERROR_NAME_TOO_LONG');
 		}
+		// Check for illegal characters
+		elseif (preg_match('/[^a-z0-9]/', $name))
+		{
+			if (!$ajax) { return false; }
+			$result = JText::_('COM_PROJECTS_ERROR_NAME_INVALID');
+		}
+		// Check for all numeric (not allowed)
+		elseif (is_numeric($name))
+		{
+			if (!$ajax) { return false; }
+			$result = JText::_('COM_PROJECTS_ERROR_NAME_INVALID_NUMERIC');
+		}
+		
 		// Verify tool name uniqueness
 		elseif ($tool)
 		{
