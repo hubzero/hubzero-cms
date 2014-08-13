@@ -151,7 +151,7 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 				<td>
 					<?php echo $row->treename; ?>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
 						<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($row->ctext)), 90); ?>
 					</a>
 				<?php } else { ?>
@@ -164,12 +164,12 @@ for ($i=0, $n=count($rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->name)); ?>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=anonymous&amp;state=<?php echo $state2; ?>&amp;id[]=<?php echo $row->id; ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=anonymous&amp;state=<?php echo $state2; ?>&amp;id=<?php echo $row->id; ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo $calt2; ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state <?php echo $cls1; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $state1; ?>&amp;id[]=<?php echo $row->id; ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo $cls1; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $state1; ?>&amp;id=<?php echo $row->id; ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
 						<span><?php echo $calt1; ?></span>
 					</a>
 				</td>

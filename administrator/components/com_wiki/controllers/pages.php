@@ -282,6 +282,8 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	{
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
 		if (count($ids) <= 0)
 		{
 			$this->setRedirect(

@@ -158,30 +158,30 @@ foreach ($this->rows as $row)
 					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</span>
+					<?php } ?>
 					<br /><?php if ($row->get('scope')) { ?><span style="color: #999; font-size: 90%"><?php echo $this->escape(stripslashes($row->get('scope'))); ?>/</span> &nbsp; <?php } ?><span style="color: #999; font-size: 90%"><?php echo $this->escape(stripslashes($row->get('pagename'))); ?></span>
 				</td>
 				<td>
 					<?php echo $this->escape($row->param('mode')); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->get('id'); ?>&amp;state=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-						<?php echo $alt; ?>
-					</a>
-				<?php } else { ?>
-					<span class="access <?php echo $color_access; ?>">
-						<?php echo $alt; ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->get('id'); ?>&amp;state=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+							<?php echo $alt; ?>
+						</a>
+					<?php } else { ?>
+						<span class="access <?php echo $color_access; ?>">
+							<?php echo $alt; ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<span class="group">
@@ -207,15 +207,15 @@ foreach ($this->rows as $row)
 					</span>
 				</td> -->
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;pageid=<?php echo $row->get('id'); ?>">
-						<?php echo JText::sprintf('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
-					</a>
-				<?php } else { ?>
-					<span class="comment">
-						<?php echo JText::sprintf('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;pageid=<?php echo $row->get('id'); ?>">
+							<?php echo JText::sprintf('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
+						</a>
+					<?php } else { ?>
+						<span class="comment">
+							<?php echo JText::sprintf('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
 <?php

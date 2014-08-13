@@ -335,6 +335,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
 		{
@@ -390,6 +391,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids    = JRequest::getVar('id', array());
+		$ids    = (!is_array($ids) ? array($ids) : $ids);
 		$pageid = JRequest::getInt('pageid', 0);
 
 		// Check for an ID

@@ -60,16 +60,15 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('lists');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
+/*function submitbutton(pressbutton)
 {
-	var form = document.adminForm;
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
 	// do field validation
 	submitform(pressbutton);
-}
+}*/
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
@@ -152,37 +151,37 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK',$task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK',$task);?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $class; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" class="<?php echo $color_access; ?>" title="<?php echo JText::_('COM_WISHLIST_CHANGE_ACCESS'); ?>">
-						<?php echo $groupname; ?>
-					</a>
-				<?php } else { ?>
-					<span class="<?php echo $color_access; ?>">
-						<?php echo $groupname; ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" class="<?php echo $color_access; ?>" title="<?php echo JText::_('COM_WISHLIST_CHANGE_ACCESS'); ?>">
+							<?php echo $groupname; ?>
+						</a>
+					<?php } else { ?>
+						<span class="<?php echo $color_access; ?>">
+							<?php echo $groupname; ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<span class="glyph category">
@@ -195,15 +194,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 				</td>
 				<td>
-				<?php if ($row->wishes > 0) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=wishes&amp;wishlist=<?php echo $row->id; ?>">
-						<span><?php echo $row->wishes . ' ' . JText::_('COM_WISHLIST_LIST_WISHES'); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $row->wishes; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($row->wishes > 0) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=wishes&amp;wishlist=<?php echo $row->id; ?>">
+							<span><?php echo $row->wishes . ' ' . JText::_('COM_WISHLIST_LIST_WISHES'); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $row->wishes; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
 <?php

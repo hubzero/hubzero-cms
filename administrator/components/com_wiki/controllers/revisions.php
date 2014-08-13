@@ -151,10 +151,10 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
-		if (is_array($ids) && !empty($ids))
+		$id = JRequest::getVar('id', array(0));
+		if (is_array($id) && !empty($id))
 		{
-			$id = $ids[0];
+			$id = $id[0];
 		}
 
 		$pageid = JRequest::getInt('pageid', 0);
@@ -298,7 +298,10 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		$pageid = JRequest::getInt('pageid', 0);
+
 		$ids = JRequest::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
 		if (count($ids) <= 0)
 		{
 			$this->setRedirect(

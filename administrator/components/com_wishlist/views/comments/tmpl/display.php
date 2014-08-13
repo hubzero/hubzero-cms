@@ -157,15 +157,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php echo $row->prfx; ?>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>">
-						<span><?php echo $this->escape($comment); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $this->escape($comment); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>">
+							<span><?php echo $this->escape($comment); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $this->escape($comment); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->name)); ?>
@@ -174,26 +174,26 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<time datetime="<?php echo $row->created; ?>"><?php echo $row->created; ?></time>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id[]=<?php echo $row->id; ?>&amp;wish=<?php echo $this->filters['wish']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK', $task);?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id=<?php echo $row->id; ?>&amp;wish=<?php echo $this->filters['wish']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK', $task);?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $class; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="<?php echo $aclass; ?> state" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $atask; ?>&amp;id[]=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $aalt; ?>">
-						<span><?php echo $aalt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="<?php echo $aclass; ?> state">
-						<span><?php echo $aalt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="<?php echo $aclass; ?> state" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $atask; ?>&amp;id=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $aalt; ?>">
+							<span><?php echo $aalt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="<?php echo $aclass; ?> state">
+							<span><?php echo $aalt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
 <?php

@@ -168,11 +168,11 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array(0));
+			$id = JRequest::getVar('id', array(0));
 
-			if (is_array($ids) && !empty($ids))
+			if (is_array($id) && !empty($id))
 			{
-				$id = $ids[0];
+				$id = $id[0];
 			}
 
 			// Load category
@@ -410,7 +410,9 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$wishlist = JRequest::getInt('wishlist', 0);
+
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
@@ -556,11 +558,9 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$cid = JRequest::getInt('cid', 0);
-		$ids = JRequest::getVar('id', array(0));
-		if (!is_array($ids))
-		{
-			$ids = array(0);
-		}
+
+		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
