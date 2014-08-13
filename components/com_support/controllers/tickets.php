@@ -1143,7 +1143,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			}
 		}
 
-		if (!$this->juser->get('guest') && $acl->check('update', 'tickets') > 0)
+		if (!$this->juser->get('guest') && $this->acl->check('update', 'tickets') > 0)
 		{
 			// Only do the following if a comment was posted
 			// otherwise, we're only recording a changelog
