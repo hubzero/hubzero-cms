@@ -25,6 +25,9 @@ jQuery(document).ready(function($) {
 		dataType   : "json",
 		type       : 'POST',
 		cache      : false,
+		success    : function ( data, textStatus, jqXHR ) {
+			HUB.CoursesOutline.message.hide();
+		},
 		statusCode : {
 			// 200 created
 			200: function ( data, textStatus, jqXHR ) {
@@ -1999,8 +2002,19 @@ HUB.CoursesOutline = {
 			errorBox = $('.error-box'),
 			error    = $('.error-message');
 
-			error.html(message);
-			errorBox.slideDown('fast');
+			if (errorBox.is(':visible')) {
+				errorBox.animate({
+					opacity: 0.4
+				}, 100, function() {
+					error.html(message);
+					$(this).animate({
+						opacity: 1
+					}, 100);
+				});
+			} else {
+				error.html(message);
+				errorBox.slideDown('fast');
+			}
 
 			if (timeout) {
 				setTimeout(this.hide, timeout);
