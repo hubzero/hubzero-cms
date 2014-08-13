@@ -634,10 +634,13 @@
 		font-size: 2em;
 		text-align: center;
 		margin-top: 2em;
-		line-height: 1.2em;
+		line-height: 1.4em;
 		padding: 2em 2em 0 2em;
 		color: #bbb;
 		text-shadow: 0 1px 1px #fff;
+		background: #f9f9f9;
+	}
+	.comments-frame form .instructions {
 		border-top: 1px solid #ccc;
 	}
 	.comments-toolbar {

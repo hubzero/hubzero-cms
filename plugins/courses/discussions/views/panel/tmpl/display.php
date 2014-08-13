@@ -202,6 +202,18 @@ if (count($inst) > 0)
 				</div><!-- / .comments-toolbar -->
 				<div class="comments-frame">
 
+					<?php
+					$c = 0;
+					foreach ($this->sections as $section)
+					{
+						if ($section->categories)
+						{
+							$c++;
+						}
+					}
+					if ($c) {
+					?>
+
 					<form action="<?php echo JRoute::_($base); ?>" method="post" id="commentform"<?php if ($this->data) { echo ' class="hide"'; } ?> enctype="multipart/form-data">
 						<p class="comment-member-photo">
 							<?php
@@ -310,7 +322,14 @@ if (count($inst) > 0)
 							<?php echo JText::_('Click on a comment on the left to view a discussion or start your own above.'); ?>
 						</p>
 					</form>
-
+					<?php } else { ?>
+						<p class="instructions">
+							<?php echo JText::_('This forum is currently empty and requires some set-up by the course managers before it can be used.'); ?>
+							<?php if ($this->course->access('manage', 'offering')) { ?>
+								<br /><br /><?php echo JText::_('Discussions require at least one section and category before posts can be made. Click the "manage" button to set up this forum.'); ?>
+							<?php } ?>
+						</p>
+					<?php } ?>
 					<div class="comment-thread"><?php if ($this->data) { echo $this->data->html; } ?></div>
 				</div><!-- / .comments-frame -->
 			</div><!-- / .comments-panel -->
