@@ -136,6 +136,11 @@ if ($rows)
 			$k = 0;
 			foreach ($column as $row)
 			{
+				if ($this->page->get('group_cn') && !$row->scope)
+				{
+					$row->scope = $this->page->get('scope');
+				}
+
 				if (strtoupper(substr($row->title, 0, 1)) != $index)
 				{
 					$index = strtoupper(substr($row->title, 0, 1));
