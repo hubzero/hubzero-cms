@@ -73,7 +73,7 @@ $this->css('jquery.ui.css', 'system');
 		</p>
 		<p>
 			<label>
-				<span>Attempts:</span><input type="number" step="1" min="0" class="minutes" name="deployment[allowedAttempts]" value="<?php echo htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1') ?>" /> allowed attempts
+				<span>Attempts:</span><input type="number" step="1" min="1" class="minutes" name="deployment[allowedAttempts]" value="<?php echo htmlentities(($val = $this->dep->getAllowedAttempts()) ? $val : '1') ?>" /> allowed attempts
 			</label>
 			<?php if ($showErrors && $this->dep->hasErrors('allowedAttempts')): ?>
 			<ul class="error">
