@@ -1566,7 +1566,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// Bind new content
 		$row = new CollectionsModelCollection();
