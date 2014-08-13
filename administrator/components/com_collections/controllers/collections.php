@@ -140,6 +140,11 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 			$this->view->row = new CollectionsModelCollection($id);
 		}
 
+		if (!$this->view->row->exists())
+		{
+			$this->view->row->set('created_by', $this->juser->get('id'));
+		}
+
 		// Set any errors
 		if ($this->getError())
 		{
