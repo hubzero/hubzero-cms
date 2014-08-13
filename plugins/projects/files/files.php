@@ -3619,7 +3619,7 @@ class plgProjectsFiles extends JPlugin
 			// Get file extention
 			$ext = explode('.', $fpath);
 			$ext = count($ext) > 1 ? end($ext) : '';
-			
+
 			if ((!$remote || $remote['converted'] == 0) && $ok == 1)
 			{
 				// Get git object
