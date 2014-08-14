@@ -105,7 +105,7 @@ function submitbutton(pressbutton)
 	var form = document.adminForm;
 
 	if (pressbutton == 'resetrating') {
-		if (confirm('<?php echo JText::_('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET'); ?>'){
+		if (confirm('<?php echo JText::_('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET'); ?>')) {
 			submitform(pressbutton);
 			return;
 		} else {
@@ -149,7 +149,7 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (form.title.value == ''){
+	if (form.title.value == '') {
 		alert('<?php echo JText::_('COM_PUBLICATIONS_ERROR_MISSING_TITLE'); ?>');
 	}
 	else {
@@ -402,14 +402,14 @@ function popratings()
 	<div class="input-wrap">
 		<textarea name="message" id="message" rows="5" cols="50"></textarea>
 		<input type="hidden" name="admin_action" value="" />
-		<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" onclick="javascript: submitbutton('message')" />
+		<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" onclick="submitbutton('message')" />
 		<?php if ($this->row->state == 1) { ?>
-			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" onclick="javascript: submitbutton('unpublish')" />
+			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" onclick="submitbutton('unpublish')" />
 		<?php } else if ($this->row->state == 0) { ?>
-			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" onclick="javascript: submitbutton('republish')" />
+			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" onclick="submitbutton('republish')" />
 		<?php } else if ($this->row->state == 5) { ?>
-			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" onclick="javascript: submitbutton('publish')" />
-			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" onclick="javascript: submitbutton('revert')" />
+			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" onclick="submitbutton('publish')" />
+			<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" onclick="submitbutton('revert')" />
 		<?php } ?>
 	</div>
 </fieldset>

@@ -144,7 +144,7 @@
 	.new:before,
 	.archived:before,
 	.expired:before {
-		content: "\f058";
+		content: "\f058" !important;
 	}
 	.draft:before {
 		content: "\f05d";
