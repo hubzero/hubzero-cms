@@ -96,6 +96,11 @@ jQuery(document).ready(function($) {
 			'height' : $('.content-box').height()
 		});
 	}
+
+	// Hide deleted items box if nothing is there
+	if (!$('.assets-deleted li').length) {
+		$('.trash').hide();
+	}
 });
 
 HUB.CoursesOutline = {
@@ -756,6 +761,11 @@ HUB.CoursesOutline = {
 				data: form,
 				statusCode: {
 					200: function( data ) {
+						// If trash is hidden, show it now
+						if (!$('.trash').is(':visible')) {
+							$('.trash').fadeIn();
+						}
+
 						// Report a message?
 						asset.hide('transfer', {to:'.header .trash', className: "transfer-effect", easing: "easeOutCubic", duration: 1000}, function() {
 							// Clone the asset for insertion to the deleted list
