@@ -168,6 +168,6 @@ $assets = array();
 		<input type="hidden" name="type" value="wiki" />
 
 		<input type="submit" value="Submit" class="wiki-submit submit" />
-		<input type="button" value="Cancel" class="cancel" />
+		<input type="button" value="Cancel" class="cancel" data-new="<?php echo (isset($id)) ? 'false' : 'true'; ?>" />
 	</form>
 </div>

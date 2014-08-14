@@ -1206,6 +1206,17 @@ HUB.CoursesOutline = {
 					var t = $(this);
 					content.find('.cancel').click(function() {
 						$.contentBox('close');
+
+						// If pushing cancel on a new wiki that had been auto-saved, delete the wiki
+						if ($(this).data('new') && $(this).siblings('#asset_id').val()) {
+							var data = $(this).parents('.edit-form').serializeArray();
+							data.push({name : 'state', value : 2});
+
+							$.ajax({
+								url: '/api/courses/asset/save',
+								data: data
+							});
+						}
 					});
 
 					content.find('.edit-form').submit(function ( e ) {
