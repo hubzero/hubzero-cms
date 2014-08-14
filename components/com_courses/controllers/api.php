@@ -87,6 +87,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 					case 'preview':         $this->assetPreview();         break;
 					case 'save':            $this->assetSave();            break;
 					case 'delete':          $this->assetDelete();          break;
+					case 'deletefile':      $this->assetDeleteFile();      break;
 					case 'reorder':         $this->assetReorder();         break;
 					case 'togglepublished': $this->assetTogglePublished(); break;
 					case 'getformid':       $this->assetGetFormId();       break;
@@ -514,7 +515,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$pathinfo = pathinfo($file_name);
 			$ext      = $pathinfo['extension'];
 		}
-		elseif($contentType = JRequest::getWord('type', false))
+		elseif ($contentType = JRequest::getWord('type', false))
 		{
 			// @FIXME: having this here breaks the responder model idea
 			// The content type handlers could respond to a function that assesses the incoming data?
@@ -1032,6 +1033,57 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 				'deleted'  => $deleted
 			),
 			200, 'OK');
+		return;
+	}
+
+	/**
+	 * Delete an asset file
+	 *
+	 * @return 200 ok on success
+	 */
+	private function assetDeleteFile()
+	{
+		// Set the responce type
+		$this->setMessageType($this->format);
+
+		// Require authorization
+		$authorized = $this->authorize();
+		if (!$authorized['manage'])
+		{
+			$this->setMessage('You don\'t have permission to do this', 401, 'Unauthorized');
+			return;
+		}
+
+		// Include needed file(s)
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php');
+
+		// Grab incoming id, if applicable
+		$id       = JRequest::getInt('id', null);
+		$filename = JRequest::getVar('filename', null);
+
+		// Create our object
+		$asset = new CoursesModelAsset($id);
+
+		if ($asset->get('course_id') != $this->course->get('id'))
+		{
+			$this->setMessage('Asset is not a part of this course.', 500, 'Internal server error');
+			return;
+		}
+
+		$basePath = $asset->path($this->course->get('id'));
+		$path     = $basePath . $filename;
+		$dirname  = dirname($path);
+
+		if (!is_file(JPATH_ROOT . $path) || $dirname != rtrim($basePath, DS))
+		{
+			$this->setMessage('Illegal file path', 500, 'Internal server error');
+			return;
+		}
+
+		unlink(JPATH_ROOT . $path);
+
+		// Return message
+		$this->setMessage('File deleted', 200, 'OK');
 		return;
 	}
 

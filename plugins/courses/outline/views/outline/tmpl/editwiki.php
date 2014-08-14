@@ -97,25 +97,20 @@ $assets = array();
 			</div>
 			<div class="wiki-files-available-wrapper">
 				<div class="wiki-files-available">
-					<?php
-					$path = $asset->path($this->course->get('id'));
-						if ($path && is_dir(JPATH_ROOT . $path))
-						{
-							$files = array_diff(scandir(JPATH_ROOT . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store'));
-							echo '<ul class="wiki-files-list">';
-							foreach ($files as $file)
-							{
-								echo '<li class="wiki-file">';
-								echo $file;
-								echo "</li>";
-							}
-							echo "</ul>";
-						}
-						else
-						{
-							echo '<p>No files found</p>';
-						}
-					?>
+					<?php $path = $asset->path($this->course->get('id')); ?>
+					<?php if ($path && is_dir(JPATH_ROOT . $path)) : ?>
+						<?php $files = array_diff(scandir(JPATH_ROOT . $asset->path($this->course->get('id'))), array('..', '.', '.DS_Store')); ?>
+						<ul class="wiki-files-list">
+							<?php foreach ($files as $file) : ?>
+								<li class="wiki-file">
+									<span class="wiki-files-filename"><?php echo $file; ?></span>
+									<div class="wiki-files-delete"></div>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					<?php else : ?>
+						<p>No files found</p>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>

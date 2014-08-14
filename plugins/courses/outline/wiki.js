@@ -38,14 +38,20 @@ jQuery(document).ready(function($) {
 			var html = '';
 			if ($('.wiki-files-available ul').length) {
 				$.each(data.files, function ( i, file ) {
-					html += '<li class="wiki-file">'+file.name+"</li>";
+					html += '<li class="wiki-file">';
+					html += '<span class="wiki-files-filename">' + file.name + '</span>';
+					html += '<div class="wiki-files-delete"></div>';
+					html += '</li>';
 				});
 
 				$('.wiki-files-list').prepend(html);
 			} else {
 				html  = '<ul class="wiki-files-list">';
 				$.each(data.files, function ( i, file ) {
-					html += '<li class="wiki-file">'+file.name+"</li>";
+					html += '<li class="wiki-file">';
+					html += '<span class="wiki-files-filename">' + file.name + '</span>';
+					html += '<div class="wiki-files-delete"></div>';
+					html += '</li>';
 				});
 				html += '</ul>';
 				$('.wiki-files-available').html(html);
@@ -70,5 +76,25 @@ jQuery(document).ready(function($) {
 		for ( var instance in CKEDITOR.instances ) {
 			CKEDITOR.instances[instance].updateElement();
 		}
+	});
+
+	$('.wiki-files-available').on('click', '.wiki-files-delete', function() {
+		var t    = $(this),
+			data = t.parents('.edit-form').serializeArray();
+
+		data.push({name : "filename", value : t.prev('.wiki-files-filename').html()});
+
+		$.ajax({
+			url        : '/api/courses/asset/deletefile',
+			dataType   : "json",
+			type       : 'POST',
+			cache      : false,
+			data       : data,
+			success    : function ( data, textStatus, jqXHR ) {
+				t.parents('.wiki-file').fadeOut(500, function() {
+					$(this).remove();
+				});
+			}
+		});
 	});
 });

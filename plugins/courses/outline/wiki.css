@@ -120,3 +120,17 @@
 	border-bottom: 1px solid #CCC;
 	margin: 5px 10px;
 }
+.wiki-files-filename {
+	margin-right: 20px;
+}
+.wiki-files-delete {
+	position: relative;
+	float: right;
+}
+.wiki-files-delete:before {
+	content: "\f014";
+	font-family: "fontcons";
+}
+.wiki-files-delete:hover {
+	cursor: pointer;
+}
