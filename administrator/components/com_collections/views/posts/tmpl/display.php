@@ -33,14 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = CollectionsHelperPermissions::getActions('post');
 
 JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . JText::_('COM_COLLECTIONS_POSTS'), 'collection.png');
-if ($canDo->get('core.create')) 
+/*if ($canDo->get('core.create')) 
 {
 	JToolBarHelper::addNew();
 }
 if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::editList();
-}
+}*/
 if ($canDo->get('core.delete')) 
 {
 	JToolBarHelper::deleteList();
@@ -62,6 +62,8 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
+		<p class="warning">Posts are currently not editable via the adminitrator interface.</p>
+
 		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label> 
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" />
 
@@ -122,15 +124,15 @@ foreach ($this->rows as $row)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
+				<?php /*if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_COLLECTIONS_EDIT_CATEGORY'); ?>">
 						<span><?php echo $row->item()->description('clean', 75); ?></span>
 					</a>
-				<?php } else { ?>
+				<?php } else {*/ ?>
 					<span>
 						<span><?php echo $row->item()->description('clean', 75); ?></span>
 					</span>
-				<?php } ?>
+				<?php //} ?>
 				</td>
 				<td>
 					<time datetime="<?php echo $row->get('created'); ?>"><?php echo $row->get('created'); ?></time>

@@ -126,22 +126,6 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 					</p>
 				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-					<?php if ($this->params->get('access-manage-collection')) { ?>
-						<?php if ($this->params->get('access-edit-collection')) { ?>
-							<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/edit'); ?>">
-								<span><?php echo JText::_('Edit'); ?></span>
-							</a>
-						<?php } ?>
-						<?php if ($this->params->get('access-delete-collection')) { ?>
-							<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/delete'); ?>">
-								<span><?php echo JText::_('Delete'); ?></span>
-							</a>
-						<?php } ?>
-					<?php } else { ?>
-							<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/collect'); ?>">
-								<span><?php echo JText::_('Collect'); ?></span>
-							</a>
-					<?php } ?>
 						<?php if ($row->isFollowing()) { ?>
 							<a class="unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo JText::_('Follow'); ?>" data-text-unfollow="<?php echo JText::_('Unfollow'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/unfollow'); ?>">
 								<span><?php echo JText::_('Unfollow'); ?></span>
@@ -151,6 +135,22 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 								<span><?php echo JText::_('Follow'); ?></span>
 							</a>
 						<?php } ?>
+					<?php if ($this->params->get('access-manage-collection')) { ?>
+						<?php if ($this->params->get('access-edit-collection')) { ?>
+							<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
+								<span><?php echo JText::_('Edit'); ?></span>
+							</a>
+						<?php } ?>
+						<?php if ($this->params->get('access-delete-collection')) { ?>
+							<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
+								<span><?php echo JText::_('Delete'); ?></span>
+							</a>
+						<?php } ?>
+					<?php } else { ?>
+							<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=' . $row->get('alias') . '/collect'); ?>">
+								<span><?php echo JText::_('Collect'); ?></span>
+							</a>
+					<?php } ?>
 					</div><!-- / .actions -->
 				<?php } ?>
 				</div><!-- / .meta -->

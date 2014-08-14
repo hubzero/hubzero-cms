@@ -291,6 +291,8 @@
 		background-color: #f0f0f0;
 	}
 	.post .actions a {
+		overflow: hidden;
+		white-space: nowrap;
 		display: inline-block;
 		margin: 0.5em 0.2em 0 0.2em;
 		padding: 0.3em .7em;
@@ -343,11 +345,15 @@
 	}
 	.post .actions a.edit:before {
 		content: "\270E";
-		margin-right: 0;
+		margin-right: 0.5em;
 	}
 	.post .actions a.delete:before {
 		content: "\f014";
-		margin-right: 0;
+		margin-right: 0.5em;
+	}
+	.post .actions a.edit,
+	.post .actions a.delete {
+		width: 0.75em;
 	}
 	.icon-follow:before {
 		content: "\f06e";

@@ -131,11 +131,7 @@ if ($this->rows->total() > 0)
 					</p>
 				<?php if (!$this->juser->get('guest')) { ?>
 					<div class="actions">
-					<?php if ($item->get('created_by') == $this->juser->get('id')) { ?>
-						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/edit'); ?>">
-							<span><?php echo JText::_('Edit'); ?></span>
-						</a>
-					<?php } else { ?>
+					<?php if ($item->get('created_by') != $this->juser->get('id')) { ?>
 						<a class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo JText::_('Like'); ?>" data-text-unlike="<?php echo JText::_('Unlike'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/vote'); ?>">
 							<span><?php echo ($item->get('voted')) ? JText::_('Unlike') : JText::_('Like'); ?></span>
 						</a>
@@ -146,11 +142,16 @@ if ($this->rows->total() > 0)
 						<a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/collect'); ?>">
 							<span><?php echo JText::_('Collect'); ?></span>
 						</a>
-					<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-delete-item'))) { ?>
-						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/delete'); ?>">
+					<?php if ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-manage-collection')) { ?>
+						<a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/edit'); ?>" title="<?php echo JText::_('Edit'); ?>">
+							<span><?php echo JText::_('Edit'); ?></span>
+						</a>
+					<?php } ?>
+					<?php if ($row->get('original') && ($item->get('created_by') == $this->juser->get('id') || $this->params->get('access-manage-collection'))) { ?>
+						<a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/delete'); ?>" title="<?php echo JText::_('Delete'); ?>">
 							<span><?php echo JText::_('Delete'); ?></span>
 						</a>
-					<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-edit-item')) { ?>
+					<?php } else if ($row->get('created_by') == $this->juser->get('id') || $this->params->get('access-manage-collection')) { ?>
 						<a class="unpost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo JRoute::_($base . '&scope=post/' . $row->get('id') . '/remove'); ?>">
 							<span><?php echo JText::_('Remove'); ?></span>
 						</a>
