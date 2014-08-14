@@ -248,23 +248,21 @@ $group = JRequest::getVar('group', '');
 					</div>
 					<div class="col span6 omega">
 						<label for="ticket-field-status">
-							<?php echo JText::_('COM_SUPPORT_COMMENT_STATUS'); ?>
-							<select name="problem[resolved]" id="ticket-field-status">
-								<option value=""><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_OPEN'); ?></option>
-								<option value="1"><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_WAITING'); ?></option>
+							<?php
+							$row = new SupportModelTicket();
+							echo JText::_('COM_SUPPORT_COMMENT_STATUS'); ?>:
+							<select name="problem[status]" id="ticket-field-status">
+								<optgroup label="<?php echo JText::_('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
+									<option value="0" selected="selected"><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_NEW'); ?></option>
+									<?php foreach ($row->statuses('open') as $status) { ?>
+										<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
+									<?php } ?>
+								</optgroup>
 								<optgroup label="<?php echo JText::_('COM_SUPPORT_CLOSED'); ?>">
-									<option value="noresolution"><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
-									<?php
-									if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='')
-									{
-										foreach ($this->lists['resolutions'] as $anode)
-										{
-											?>
-											<option value="<?php echo $this->escape($anode->alias); ?>"><?php echo $this->escape(stripslashes($anode->title)); ?></option>
-											<?php
-										}
-									}
-									?>
+									<option value="0"><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
+									<?php foreach ($row->statuses('closed') as $status) { ?>
+										<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
+									<?php } ?>
 								</optgroup>
 							</select>
 						</label>

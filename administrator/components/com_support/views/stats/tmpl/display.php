@@ -41,19 +41,19 @@ JHTML::_('behavior.framework');
 $this->css();
 
 $database = JFactory::getDBO();
-$sql = "SELECT resolved
+$sql = "SELECT status
 		FROM #__support_tickets
 		WHERE open=0
 		AND type='{$this->type}' ";
-		if ($this->group)
-		{
-			$sql .= " AND `group`='{$this->group}' ";
-		}
-		else
+		if ($this->group == '_none_')
 		{
 			$sql .= " AND (`group`='' OR `group` IS NULL)";
 		}
-		$sql .= " ORDER BY resolved ASC";
+		else if ($this->group)
+		{
+			$sql .= " AND `group`='{$this->group}' ";
+		}
+		$sql .= " ORDER BY status ASC";
 $database->setQuery($sql);
 $resolutions = $database->loadObjectList();
 
@@ -61,13 +61,13 @@ $total = count($resolutions);
 $res = array();
 foreach ($resolutions as $resolution)
 {
-	if (!isset($res[$resolution->resolved]))
+	if (!isset($res[$resolution->status]))
 	{
-		$res[$resolution->resolved] = 1;
+		$res[$resolution->status] = 1;
 	}
 	else
 	{
-		$res[$resolution->resolved]++;
+		$res[$resolution->status]++;
 	}
 }
 
@@ -393,22 +393,22 @@ function getMonthName($month)
 						<tbody>
 							<tr class="odd">
 								<th scope="row"><?php echo JText::_('COM_SUPPORT_STATS_NO_RESOLUTION'); ?></th>
-								<td><?php echo (isset($res['noresolution'])) ? $res['noresolution'] : '0'; ?></td>
-								<td><?php echo (isset($res['noresolution'])) ? $res['noresolution']/$total : '0'; ?></td>
+								<td><?php echo (isset($res[0])) ? $res[0] : '0'; ?></td>
+								<td><?php echo (isset($res[0])) ? $res[0]/$total : '0'; ?></td>
 							</tr>
 						<?php
-							$sr = new SupportResolution($database);
-							$resolutions = $sr->getResolutions();
+							$sr = new SupportTableStatus($database);
+							$resolutions = $sr->find('list', array('open' => 0));
 
 							$cls = 'odd';
 							$data = array(
-								"{label: '" . JText::_('COM_SUPPORT_STATS_NO_RESOLUTION') . "', data: " . (isset($res['noresolution']) ? $res['noresolution']/$total : '0') . ", color: '" . $colors[0] . "'}"
+								"{label: '" . JText::_('COM_SUPPORT_STATS_NO_RESOLUTION') . "', data: " . (isset($res[0]) ? $res[0]/$total : '0') . ", color: '" . $colors[0] . "'}"
 							);
 							$i = 1;
 							foreach ($resolutions as $resolution)
 							{
 								$r  = "{label: '" . $this->escape(addslashes($resolution->title)) . "', data: ";
-								$r .= (isset($res[$resolution->alias])) ? round(($res[$resolution->alias]/$total)*100, 2) : 0;
+								$r .= (isset($res[$resolution->id])) ? round(($res[$resolution->id]/$total)*100, 2) : 0;
 								$r .= ", color: '" . $colors[$i] . "'}";
 								$data[] = $r;
 
@@ -416,8 +416,8 @@ function getMonthName($month)
 						?>
 							<tr class="<?php echo $cls; ?>">
 								<th scope="row"><?php echo $this->escape(stripslashes($resolution->title)); ?></th>
-								<td><?php echo (isset($res[$resolution->alias])) ? $res[$resolution->alias] : '0'; ?></td>
-								<td><?php echo (isset($res[$resolution->alias])) ? round($res[$resolution->alias]/$total*100, 2) : '0'; ?></td>
+								<td><?php echo (isset($res[$resolution->id])) ? $res[$resolution->id] : '0'; ?></td>
+								<td><?php echo (isset($res[$resolution->id])) ? round($res[$resolution->id]/$total*100, 2) : '0'; ?></td>
 							</tr>
 						<?php
 								$i++;

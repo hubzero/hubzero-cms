@@ -603,16 +603,20 @@
 	}
 	/* Status */
 	#tktlist .status {
-		display: inline-block;
 		width: 16px;
 		height: 16px;
 		overflow: hidden;
 		text-align: left;
 		font-weight: normal;
+		display: none;
+	}
+	#tktlist .status.new,
+	#tktlist .status.waiting,
+	#tktlist .status.closed {
+		display: inline-block;
 	}
 	#tktlist .open {
 		color: #66AA00;
-		display: none;
 	}
 	#tktlist .new {
 		color: #ff1177;

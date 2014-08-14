@@ -56,7 +56,7 @@ if ($this->condition->expressions)
 				<option value="group"<?php if ($expression->fldval == 'group') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_GROUP'); ?></option>
 				<option value="id"<?php if ($expression->fldval == 'id') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
 				<option value="report"<?php if ($expression->fldval == 'report') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
-				<option value="resolved"<?php if ($expression->fldval == 'resolved') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>
+				<?php /*<option value="resolved"<?php if ($expression->fldval == 'resolved') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
 				<option value="severity"<?php if ($expression->fldval == 'severity') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
 				<option value="tag"<?php if ($expression->fldval == 'tag') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
 				<option value="type"<?php if ($expression->fldval == 'type') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>

@@ -195,7 +195,7 @@ class SupportModelConditions extends JObject
 				$this->_value('0', 'closed', false)
 			)
 		);
-		$conditions->status = $this->_expression(
+		/*$conditions->status = $this->_expression(
 			array(
 				$this->_operator('=', 'is', true),
 				$this->_operator('!=', 'is not', false)
@@ -205,6 +205,25 @@ class SupportModelConditions extends JObject
 				$this->_value('1', 'open', true),
 				$this->_value('2', 'waiting', false)
 			)
+		);*/
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'status.php');
+		$sr = new SupportTableStatus($this->database);
+		$status = $sr->find('list', array('sort' => 'open', 'sort_Dir' => 'DESC'));
+		$items = 'text';
+		if (isset($status) && is_array($status)) 
+		{
+			$items = array();
+			foreach ($status as $anode) 
+			{
+				$items[] = $this->_value($anode->id, $this->escape(($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title)));
+			}
+		}
+		$conditions->status = $this->_expression(
+			array(
+				$this->_operator('=', 'is', true),
+				$this->_operator('!=', 'is not', false)
+			),
+			$items
 		);
 		$conditions->created = $this->_expression(
 			array(
@@ -257,7 +276,7 @@ class SupportModelConditions extends JObject
 			$items
 		);
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'resolution.php');
+		/*include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'resolution.php');
 		$sr = new SupportResolution($this->database);
 		$resolutions = $sr->getResolutions();
 		$items = 'text';
@@ -280,7 +299,7 @@ class SupportModelConditions extends JObject
 				$this->_operator('!=', 'is not', false)
 			),
 			$items
-		);
+		);*/
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'category.php');
 		$sc = new SupportCategory($this->database);

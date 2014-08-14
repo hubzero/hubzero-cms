@@ -78,9 +78,9 @@ JSubMenuHelper::addEntry(
 	$controllerName == 'messages'
 );
 JSubMenuHelper::addEntry(
-	JText::_('COM_SUPPORT_RESOLUTIONS'),
-	'index.php?option=com_support&controller=resolutions',
-	$controllerName == 'resolutions'
+	JText::_('COM_SUPPORT_STATUSES'),
+	'index.php?option=com_support&controller=statuses',
+	$controllerName == 'statuses'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_SUPPORT_ABUSE_REPORTS'),

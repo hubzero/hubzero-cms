@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'status.php');
+
 /**
  * Support controller class for ticket stats
  */

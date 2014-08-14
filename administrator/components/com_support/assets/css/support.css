@@ -925,7 +925,7 @@
 		width: 100%;
 		max-width: 100%;
 		line-height: 1;
-		padding: 0.81803399em .61803399em 0.81803399em 30px;
+		padding: 0.81803399em 0.61803399em;
 		color: #eee;
 		display: block;
 		-webkit-box-sizing: border-box;
@@ -1363,16 +1363,22 @@
 	}
 	/* Status */
 	#tktlist .status {
-		display: inline-block;
-		width: 16px;
-		height: 16px;
+		display: none;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
+		margin: 0.5em auto 0 auto;
 		overflow: hidden;
 		text-align: left;
 		font-weight: normal;
 	}
+	#tktlist .new,
+	#tktlist .waiting,
+	#tktlist .closed {
+		display: block;
+	}
 	#tktlist .open {
 		color: #66AA00;
-		display: none;
 	}
 	#tktlist .new {
 		color: #ff1177;
@@ -1387,8 +1393,8 @@
 	#tktlist .status.closed:before, 
 	#tktlist .status.waiting:before,
 	#tktlist .status.new:before {
-		font-size: 16px;
-		line-height: 16px;
+		font-size: 1em;
+		line-height: 1;
 		font-family: 'Fontcons';
 		margin-right: 0.2em;
 	}
@@ -1411,10 +1417,15 @@
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="status-before">&#x273D;&nbsp;</small>' + this.innerHTML);
 	}
 	/* Severity */
+	#tktlist tr td.tkt-severity {
+		width: 32px;
+	}
 	#tktlist .ticket-severity {
 		display: block;
-		width: 0px;
-		height: 0px;
+		width: 0;
+		height: 0;
+		margin: 0;
+		padding: 0;
 		border: 16px solid #e9e9e9;
 		border-color: #e9e9e9 #e9e9e9 transparent transparent;
 		text-align: right;

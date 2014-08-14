@@ -36,6 +36,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_s
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'watching.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'comment.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'tags.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'status.php');
 
 /**
  * Support model for a ticket
@@ -272,50 +273,38 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		switch ($as)
 		{
 			case 'text':
-				switch ($this->get('open'))
+				if ($this->get('status'))
 				{
-					case 1:
-						switch ($this->get('status'))
+					foreach ($this->statuses() as $s)
+					{
+						if ($this->get('status') == $s->get('id'))
 						{
-							case 2:
-								$status = JText::_('COM_SUPPORT_TICKET_STATUS_WAITING');
-							break;
-							case 1:
-								$status = JText::_('COM_SUPPORT_TICKET_STATUS_OPEN');
-							break;
-							case 0:
-							default:
-								$status = JText::_('COM_SUPPORT_TICKET_STATUS_NEW');
+							$status = $s->get('title');
 							break;
 						}
-					break;
-					case 0:
-						$status = JText::_('COM_SUPPORT_TICKET_STATUS_RESOLVED');
-					break;
+					}
+				}
+				else
+				{
+					$status = ($this->get('open') ? JText::_('COM_SUPPORT_TICKET_STATUS_NEW') : JText::_('COM_SUPPORT_TICKET_STATUS_RESOLVED'));
 				}
 			break;
 
 			case 'class':
-				switch ($this->get('open'))
+				if ($this->get('status'))
 				{
-					case 1:
-						switch ($this->get('status'))
+					foreach ($this->statuses() as $s)
+					{
+						if ($this->get('status') == $s->get('id'))
 						{
-							case 2:
-								$status = 'waiting';
-							break;
-							case 1:
-								$status = 'open';
-							break;
-							case 0:
-							default:
-								$status = 'new';
+							$status = $s->get('alias');
 							break;
 						}
-					break;
-					case 0:
-						$status = 'closed';
-					break;
+					}
+				}
+				else
+				{
+					$status = ($this->get('open') ? 'new' : 'closed');
 				}
 			break;
 
@@ -465,6 +454,71 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				return $this->_data->get('comments.list');
 			break;
 		}
+	}
+
+	/**
+	 * Get a count of or list of ticket statuses
+	 *
+	 * @param      string  $rtrn    Data to return state in [count, list]
+	 * @param      array   $filters Filters to apply to the query
+	 * @param      boolean $clear   Clear data cache?
+	 * @return     mixed
+	 */
+	public function statuses($rtrn='all', $filters=array(), $clear=false)
+	{
+		static $statuses;
+
+		if (!isset($statuses) || $clear)
+		{
+			$tbl = new SupportTableStatus($this->_db);
+
+			if (!isset($filters['sort']))
+			{
+				$filters['sort'] = 'id';
+				$filters['sort_Dir'] = 'ASC';
+			}
+
+			$statuses = array();
+			if ($rows = $tbl->find('list', $filters))
+			{
+				foreach ($rows as $row)
+				{
+					$statuses[] = new SupportModelStatus($row);
+				}
+			}
+		}
+
+		switch (strtolower($rtrn))
+		{
+			case 'open':
+				$results = array();
+				foreach ($statuses as $status)
+				{
+					if ($status->get('open'))
+					{
+						$results[] = $status;
+					}
+				}
+			break;
+
+			case 'closed':
+				$results = array();
+				foreach ($statuses as $status)
+				{
+					if (!$status->get('open'))
+					{
+						$results[] = $status;
+					}
+				}
+			break;
+
+			case 'all':
+			default:
+				$results = $statuses;
+			break;
+		}
+
+		return new \Hubzero\Base\ItemList($results);
 	}
 
 	/**

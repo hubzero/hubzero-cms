@@ -39,7 +39,7 @@ statement += '<select class="fld">';
 	statement += '<option value="group">Group</option>';
 	statement += '<option value="id">ID</option>';
 	statement += '<option value="report">Report</option>';
-	statement += '<option value="resolved">Resolution</option>';
+	//statement += '<option value="resolved">Resolution</option>';
 	statement += '<option value="severity">Severity</option>';
 	statement += '<option value="tag">Tag</option>';
 	statement += '<option value="type" selected="selected">Type</option>';

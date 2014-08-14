@@ -267,11 +267,11 @@ class SupportTicket extends JTable
 			else
 			{
 				// If there's a resolution, close the ticket
-				$this->status = 0;
+				//$this->status = 0;
 				$this->open = 0;
 			}
 		}
-		else
+		/*else
 		{
 			$this->open = 1;
 			$this->status = 1;
@@ -282,6 +282,18 @@ class SupportTicket extends JTable
 		{
 			$this->open = 1;
 			$this->status = 1;
+		}*/
+
+		// All new tickets default to "new"
+		if (!$this->id)
+		{
+			$this->open   = 1;
+			$this->status = 0;
+			// If it has an owner, force it to just open, instead of new
+			if ($this->owner)
+			{
+				$this->status = 1;
+			}
 		}
 
 		// If status is "open", ensure the resolution is empty
@@ -289,17 +301,6 @@ class SupportTicket extends JTable
 		{
 			$this->closed = '0000-00-00 00:00:00';
 			$this->resolved = '';
-		}
-
-		// All new tickets default to "new"
-		if (!$this->id)
-		{
-			$this->status = 0;
-			// If it has an owner, force it to just open, instead of new
-			if ($this->owner)
-			{
-				$this->status = 1;
-			}
 		}
 
 		return true;

@@ -482,8 +482,8 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 		{
 			$this->changed(
 				JText::_('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
-				$before->status(),
-				$after->status()
+				$before->status('text'),
+				$after->status('text')
 			);
 		}
 		if ($after->get('category') != $before->get('category'))

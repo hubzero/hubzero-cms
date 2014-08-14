@@ -515,23 +515,18 @@ $cc = array();
 					<div class="col width-50 fltrt">
 						<div class="input-wrap">
 							<label for="ticket-field-status">
-								<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?>
-								<select name="resolved" id="ticket-field-status">
-									<option value=""<?php if ($this->row->isOpen() && $this->row->get('status') < 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?></option>
-									<option value="1"<?php if ($this->row->get('status') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_WAITING'); ?></option>
+								<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?>:
+								<select name="status" id="ticket-field-status">
+									<optgroup label="<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
+										<?php foreach ($this->row->statuses('open') as $status) { ?>
+											<option value="<?php echo $status->get('id'); ?>"<?php if ($this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
+										<?php } ?>
+									</optgroup>
 									<optgroup label="<?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED'); ?>">
-										<option value="noresolution"<?php if (!$this->row->isOpen() && $this->row->get('resolved') == 'noresolution') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
-										<?php
-										if (isset($this->lists['resolutions']) && $this->lists['resolutions']!='')
-										{
-											foreach ($this->lists['resolutions'] as $anode)
-											{
-												?>
-												<option value="<?php echo $this->escape($anode->alias); ?>"<?php if ($anode->alias == $this->row->get('resolved')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($anode->title)); ?></option>
-												<?php
-											}
-										}
-										?>
+										<option value="0"<?php if (!$this->row->isOpen() && $this->row->get('status') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
+										<?php foreach ($this->row->statuses('closed') as $status) { ?>
+											<option value="<?php echo $status->get('id'); ?>"<?php if (!$this->row->isOpen() && $this->row->get('status') == $status->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape($status->get('title')); ?></option>
+										<?php } ?>
 									</optgroup>
 								</select>
 							</label>
