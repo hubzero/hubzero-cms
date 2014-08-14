@@ -117,7 +117,7 @@ function getMonthName($month)
 		case 0: $monthname = JText::_('October');   break;
 		case 11: $monthname = JText::_('November');  break;
 		case 12: $monthname = JText::_('December');  break;
-    }
+	}
 	return $monthname;
 }
 ?>

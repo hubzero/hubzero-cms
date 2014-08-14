@@ -39,7 +39,7 @@ statement += '<select class="fld">';
 	statement += '<option value="group">Group</option>';
 	statement += '<option value="id">ID</option>';
 	statement += '<option value="report">Report</option>';
-	//statement += '<option value="resolved">Resolution</option>';
+	statement += '<option value="status">Status</option>';
 	statement += '<option value="severity">Severity</option>';
 	statement += '<option value="tag">Tag</option>';
 	statement += '<option value="type" selected="selected">Type</option>';
@@ -53,9 +53,11 @@ statement += '<select class="op">';
 statement += '</select>'
 
 statement += '<select class="val">';
-	statement += '<option value="0">user submitted</option>';
+	statement += '<option value="0">issue</option>';
 	statement += '<option value="1">automatic</option>';
 	statement += '<option value="3">tool</option>';
+	statement += '<option value="4">request</option>';
+	statement += '<option value="5">question</option>';
 statement += '</select>';
 
 //statement += '<input type="text" class="val" />';
