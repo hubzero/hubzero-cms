@@ -264,7 +264,7 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 										. ' "' . $pubtitle . '"';
 
 							$admin = $objAA->checkActivity( $this->project->id, $activity);
-							 if ($this->publication_allowed && $admin != 1) { ?>
+							 if ($admin != 1) { ?>
 							<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH')
 							. ' <a href="' . $this->url . '/?action=republish' . a . 'version=' . $this->pub->version . '">'
 							. JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REPUBLISH').' &raquo;</a>';  ?></p></li>
@@ -318,9 +318,7 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 
 						// Kicked back to authors
 						case 7:
-						?>
-
-						<?php if ($complete) { ?>
+							if ($complete) { ?>
 						<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_RESUBMIT');  ?></p>
 							<p class="centeralign"><a href="<?php echo $this->url.'/?action=review'. a . 'version='.$this->pub->version; ?>" class="btn btn-success active"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_RESUBMIT_TO_PUBLISH_REVIEW'); ?></a></p></li>
 						<?php } else { ?>
@@ -330,7 +328,6 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 							</li>
 						<?php }
 						break;
-
 
 						// Pending
 						case 5: ?>
