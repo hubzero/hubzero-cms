@@ -603,17 +603,19 @@
 	}
 	/* Status */
 	#tktlist .status {
-		width: 16px;
-		height: 16px;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
 		overflow: hidden;
 		text-align: left;
 		font-weight: normal;
 		display: none;
+		margin: 0.4em auto 0 auto;
 	}
 	#tktlist .status.new,
 	#tktlist .status.waiting,
 	#tktlist .status.closed {
-		display: inline-block;
+		display: block;
 	}
 	#tktlist .open {
 		color: #66AA00;
@@ -631,8 +633,8 @@
 	#tktlist .status.closed:before, 
 	#tktlist .status.waiting:before,
 	#tktlist .status.new:before {
-		font-size: 16px;
-		line-height: 16px;
+		font-size: 1em;
+		line-height: 1;
 		font-family: 'Fontcons';
 		margin-right: 0.2em;
 	}

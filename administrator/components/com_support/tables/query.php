@@ -434,6 +434,14 @@ class SupportQuery extends JTable
 				{
 					$expr->val = $juser->get($uid);
 				}
+				else if (strtolower($expr->fldval) == 'owner')
+				{
+					$user = JUser::getInstance($expr->val);
+					if ($user)
+					{
+						$expr->val = $user->get('id');
+					}
+				}
 				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
 			}
 		}
