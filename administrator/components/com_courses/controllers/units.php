@@ -147,16 +147,12 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$id = JRequest::getVar('id', array(0));
 
 			// Get the single ID we're working with
-			if (is_array($ids))
+			if (is_array($id))
 			{
-				$id = (!empty($ids)) ? $ids[0] : 0;
-			}
-			else
-			{
-				$id = 0;
+				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
 			$this->view->row = CoursesModelUnit::getInstance($id);
@@ -264,16 +260,12 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 	public function copyTask()
 	{
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = JRequest::getVar('id', 0);
 
 		// Get the single ID we're working with
-		if (is_array($ids))
+		if (is_array($id))
 		{
-			$id = (!empty($ids)) ? $ids[0] : 0;
-		}
-		else
-		{
-			$id = 0;
+			$id = (!empty($id)) ? $id[0] : 0;
 		}
 
 		if (!$id)
@@ -317,6 +309,7 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Get the single ID we're working with
 		if (!is_array($ids))
@@ -400,11 +393,8 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 	public function stateTask($state=0)
 	{
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
-		if (!is_array($ids))
-		{
-			$ids = array(0);
-		}
+		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
