@@ -472,7 +472,13 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$this->view->model = $this->model;
 
-		if (!$this->view->sections->total())
+		//get authorization
+		$this->_authorize('section');
+		$this->_authorize('category');
+
+		if (!$this->view->sections->total()
+		 && $this->params->get('access-create-section')
+		 && JRequest::getWord('action') == 'populate')
 		{
 			if (!$this->model->setup())
 			{
@@ -480,10 +486,6 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			}
 			$this->view->sections = $this->model->sections('list', array('state' => 1));
 		}
-
-		//get authorization
-		$this->_authorize('section');
-		$this->_authorize('category');
 
 		$this->view->model  = $this->model;
 		$this->view->config = $this->params;

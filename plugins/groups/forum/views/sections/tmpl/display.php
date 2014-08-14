@@ -20,6 +20,7 @@ if ($this->config->get('access-manage-section')) {
 <?php } ?>
 
 <section class="main section">
+<?php if ($this->sections->total()) { ?>
 	<div class="subject">
 		<?php foreach ($this->notifications as $notification) { ?>
 			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
@@ -265,4 +266,43 @@ if ($this->config->get('access-manage-section')) {
 			</p>
 		</div>
 	</aside><!-- / .aside -->
+<?php } else { ?>
+	<div class="instructions">
+		<?php if ($this->config->get('access-create-section')) { ?>
+			<p class="notification"><?php echo JText::sprintf('PLG_GROUPS_FORUM_EMPTY_MODERATOR', JRoute::_($base. '&action=populate')); ?></p>
+
+			<div class="container">
+				<form method="post" action="<?php echo JRoute::_($base); ?>">
+					<fieldset class="entry-section">
+						<legend><?php echo JText::_('PLG_GROUPS_FORUM_NEW_SECTION'); ?></legend>
+
+						<span class="input-wrap">
+							<label for="field-title"><span><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_TITLE'); ?></span></label>
+							<span class="input-cell">
+								<input type="text" name="fields[title]" id="field-title" value="" placeholder="<?php echo JText::_('PLG_GROUPS_FORUM_ENTER_TITLE'); ?>" />
+							</span>
+							<span class="input-cell">
+								<input type="submit" class="btn" value="<?php echo JText::_('PLG_GROUPS_FORUM_CREATE'); ?>" />
+							</span>
+						</span>
+
+						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+						<input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
+						<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
+						<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
+						<input type="hidden" name="active" value="forum" />
+						<input type="hidden" name="action" value="savesection" />
+
+						<input type="hidden" name="fields[id]" value="" />
+						<input type="hidden" name="fields[access]" value="0" />
+
+						<?php echo JHTML::_('form.token'); ?>
+					</fieldset>
+				</form>
+			</div><!-- / .container -->
+		<?php } else { ?>
+			<p class="notification"><?php echo JText::_('PLG_GROUPS_FORUM_EMPTY_NOT_MODERATOR'); ?></p>
+		<?php } ?>
+	</div>
+<?php } ?>
 </section><!-- /.main -->

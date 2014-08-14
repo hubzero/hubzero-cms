@@ -271,7 +271,6 @@ $this->css()
 		</form>
 	</div><!-- / .subject -->
 	<aside class="aside">
-		<p><?php echo JText::_('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>
 	</aside><!-- /.aside -->
 </section><!-- / .below section -->
 <?php } ?>
