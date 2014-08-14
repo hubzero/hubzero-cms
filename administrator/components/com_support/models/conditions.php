@@ -209,13 +209,13 @@ class SupportModelConditions extends JObject
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'status.php');
 		$sr = new SupportTableStatus($this->database);
 		$status = $sr->find('list', array('sort' => 'open', 'sort_Dir' => 'DESC'));
-		$items = 'text';
+		$items = array();
+		$items[] = $this->_value(0, $this->escape('open: New'), true);
 		if (isset($status) && is_array($status))
 		{
-			$items = array();
 			foreach ($status as $anode)
 			{
-				$items[] = $this->_value($anode->id, $this->escape(($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title)));
+				$items[] = $this->_value($anode->id, $this->escape(($anode->open ? 'open: ' : 'closed: ') . stripslashes($anode->title)), false);
 			}
 		}
 		$conditions->status = $this->_expression(
