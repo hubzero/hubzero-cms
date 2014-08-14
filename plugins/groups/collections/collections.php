@@ -320,7 +320,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'count' => true
 		);
-		if (!$this->params->get('access-manage-collection'))
+		if (!$this->params->get('access-manage-collection') && !$authorized)
 		{
 			$filters['access'] = 0;
 		}
