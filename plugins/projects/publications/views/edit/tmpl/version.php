@@ -256,7 +256,7 @@ $showCitations = $typeParams->get('show_citations', 0);
 					$missing = substr($missing,0,strlen($missing) - 1);
 					echo '<strong>'.$missing.'</strong>';
 					echo ' '.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_INFORMATION');
- 					?></p>
+					?></p>
 				</li>
 				<?php } ?>
 				<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_READY');  ?> <?php if ($this->pubconfig->get('doi_service')) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_DOI');  } ?></p>
