@@ -750,7 +750,7 @@ class PublicationHelper extends JObject
 				$class  = 'unpublished';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_UNPUBLISHED');
 				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED'))
-					.' ' . JHTML::_('date', $row->published_down, $dateFormat, $tz);
+					.' ' . JHTML::_('date', $row->published_down, $dateFormat);
 				break;
 
 			case 1:
