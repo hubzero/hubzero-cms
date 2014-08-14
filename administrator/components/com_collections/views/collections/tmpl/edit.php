@@ -71,6 +71,9 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<?php } ?>
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -86,9 +89,10 @@ function submitbutton(pressbutton)
 				</div>
 			</div>
 			<div class="col width-50 fltrt">
-				<div class="input-wrap">
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?>">
 					<label for="field-title"><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_ID'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 					<input type="text" name="fields[object_id]" id="field-object_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('object_id'))); ?>" />
+					<span class="hint"><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?></span>
 				</div>
 			</div>
 			<div class="clr"></div>

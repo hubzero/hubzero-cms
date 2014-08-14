@@ -186,7 +186,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		$row = new CollectionsModelCollection($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -194,7 +194,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError());
 			$this->editTask($row);
 			return;
 		}
@@ -237,7 +237,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 				// Delete the entry
 				if (!$entry->delete())
 				{
-					$this->addComponentMessage($entry->getError(), 'error');
+					$this->setError($entry->getError());
 				}
 			}
 		}
@@ -245,7 +245,8 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		// Set the redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_COLLECTIONS_ITEMS_DELETED')
+			($this->getError() ? implode('<br />', $this->getErrors()) : JText::_('COM_COLLECTIONS_ITEMS_DELETED')),
+			($this->getError() ? 'error' : null)
 		);
 	}
 
