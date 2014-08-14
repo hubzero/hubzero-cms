@@ -38,15 +38,17 @@ jQuery(document).ready(function(jq){
 		});
 	});
 
-	$('.datepicker').datetimepicker({
-		duration: '',
-		showTime: true,
-		constrainInput: false,
-		stepMinutes: 1,
-		stepHours: 1,
-		altTimeField: '',
-		time24h: true,
-		timeFormat: 'HH:mm:00',
-		dateFormat: 'yy-mm-dd'
-	});
+	if ($('.datepicker').length) {
+		$('.datepicker').datetimepicker({
+			duration: '',
+			showTime: true,
+			constrainInput: false,
+			stepMinutes: 1,
+			stepHours: 1,
+			altTimeField: '',
+			time24h: true,
+			timeFormat: 'HH:mm:00',
+			dateFormat: 'yy-mm-dd'
+		});
+	}
 });
