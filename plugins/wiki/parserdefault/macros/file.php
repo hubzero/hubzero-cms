@@ -101,7 +101,7 @@ class FileMacro extends WikiMacro
 		}
 
 		// Parse arguments
-        // We expect the 1st argument to be a filename
+		// We expect the 1st argument to be a filename
 		$args   = explode(',', $content);
 		$file   = array_shift($args);
 
@@ -247,7 +247,7 @@ class FileMacro extends WikiMacro
 					$this->attr['rel']  = 'external';
 				}
 			}
-            return;
+			return;
 		}
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
