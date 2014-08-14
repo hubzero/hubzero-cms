@@ -25,16 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$yearFormat = '%Y';
-$dateFormat = '%m/%d/%Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$yearFormat = 'Y';
-	$dateFormat = 'm/d/Y';
-	$tz = false;
-}
+$dateFormat = 'm/d/Y';
 
 $pubHelper 		= $this->pub->_helpers->pubHelper;
 $htmlHelper 	= $this->pub->_helpers->htmlHelper;
@@ -118,7 +109,7 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 			<input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->version_id; ?>" />
 			<input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
 			<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-			<?php if($this->project->provisioned == 1 ) { ?>
+			<?php if ($this->project->provisioned == 1 ) { ?>
 			<input type="hidden" name="task" value="submit" />
 			<?php } ?>
 		</fieldset>
@@ -142,15 +133,15 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL'); ?>:</td>
-							<td class="tbl-input"><span <?php if(($this->pub->version == 'dev' || $this->pub->state == 4) && $this->task != 'edit') { echo 'id="edit-vlabel" class="pub-edit"'; } ?>><?php echo $this->pub->version_label;  ?></span> <?php if($this->pub->main == 1) { echo '<span id="v-label">('.JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_DEFAULT').')</span>'; } ?></td>
+							<td class="tbl-input"><span <?php if (($this->pub->version == 'dev' || $this->pub->state == 4) && $this->task != 'edit') { echo 'id="edit-vlabel" class="pub-edit"'; } ?>><?php echo $this->pub->version_label;  ?></span> <?php if ($this->pub->main == 1) { echo '<span id="v-label">('.JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_DEFAULT').')</span>'; } ?></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_NUMBER'); ?>:</td>
-							<td class="tbl-input"><span><?php echo $this->pub->version_number;  ?></span><?php if($this->pub->versions) { ?> &nbsp; &nbsp;<span >[<a href="<?php echo $this->url . '/?action=versions'; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_VERSIONS'); ?></a>]</span><?php } ?></td>
+							<td class="tbl-input"><span><?php echo $this->pub->version_number;  ?></span><?php if ($this->pub->versions) { ?> &nbsp; &nbsp;<span >[<a href="<?php echo $this->url . '/?action=versions'; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_VERSIONS'); ?></a>]</span><?php } ?></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CREATED')); ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->created, $dateFormat, $tz).' ('.ProjectsHtml::timeAgo($this->pub->created).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->created, $dateFormat).' ('.ProjectsHtml::timeAgo($this->pub->created).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 						</tr>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CREATED_BY')); ?>:</td>
@@ -165,23 +156,23 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 							<td class="tbl-input">
 								<span class="<?php echo $class; ?>"> <?php echo $status; ?></span>
 								<?php if ($this->pub->published_up > $now ) { ?>
-								<span class="embargo"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EMBARGO') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_UNTIL') . ' ' . JHTML::_('date', $this->pub->published_up, $dateFormat, $tz); ?></span>
+								<span class="embargo"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EMBARGO') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_UNTIL') . ' ' . JHTML::_('date', $this->pub->published_up, $dateFormat); ?></span>
 								<?php } ?>
 							</td>
 						</tr>
-						<?php if($this->pub->doi) { ?>
+						<?php if ($this->pub->doi) { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DOI'); ?>:</td>
 							<td class="tbl-input"><?php echo $this->pub->doi ? $this->pub->doi : JText::_('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
-							<?php if($this->pub->doi) { echo ' <a href="' . $this->config->get('doi_verify', 'http://n2t.net/ezid/id/') . 'doi:' . $this->pub->doi . '" rel="external">[&rarr;]</a>'; } ?>
+							<?php if ($this->pub->doi) { echo ' <a href="' . $this->config->get('doi_verify', 'http://n2t.net/ezid/id/') . 'doi:' . $this->pub->doi . '" rel="external">[&rarr;]</a>'; } ?>
 							</td>
 						</tr>
 						<?php } ?>
-						<?php if(($this->pubconfig->get('issue_arch') && $this->pub->state == 6) || $this->pub->ark) { ?>
+						<?php if (($this->pubconfig->get('issue_arch') && $this->pub->state == 6) || $this->pub->ark) { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ARCH'); ?>:</td>
 							<td class="tbl-input"><?php echo $this->pub->ark ? $this->pub->ark : JText::_('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
-							<?php if($this->pub->ark) { echo ' <a href="' . $this->config->get('doi_verify', 'http://n2t.net/ezid/id/') . 'ark:' . $this->pub->ark . '" rel="external">[&rarr;]</a>'; } ?>
+							<?php if ($this->pub->ark) { echo ' <a href="' . $this->config->get('doi_verify', 'http://n2t.net/ezid/id/') . 'ark:' . $this->pub->ark . '" rel="external">[&rarr;]</a>'; } ?>
 							</td>
 						</tr>
 						<?php } ?>
@@ -190,19 +181,19 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 							if ($this->pub->submitted && $this->pub->submitted != '0000-00-00 00:00:00')  { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTED'); ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->submitted, $dateFormat, $tz); ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->submitted, $dateFormat); ?></td>
 						</tr>
 
 						<?php } elseif ($this->pub->published_up <= $now) { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLISH_FROM'); ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->published_up, $dateFormat, $tz).' ('.ProjectsHtml::timeAgo($this->pub->published_up).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->published_up, $dateFormat).' ('.ProjectsHtml::timeAgo($this->pub->published_up).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 						</tr>
 						<?php } ?>
 						<?php if ($this->pub->accepted != '0000-00-00 00:00:00') { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCEPTED'); ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->accepted, $dateFormat, $tz).' ('.ProjectsHtml::timeAgo($this->pub->accepted).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->accepted, $dateFormat).' ('.ProjectsHtml::timeAgo($this->pub->accepted).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 						</tr>
 						<?php } ?>
 						<?php } elseif ($this->pub->state != 3) {
@@ -226,13 +217,13 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 						?>
 						<tr>
 							<td class="tbl-lbl"><?php echo $show_action; ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $date, $dateFormat, $tz) . ' (' . ProjectsHtml::timeAgo($date).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $date, $dateFormat) . ' (' . ProjectsHtml::timeAgo($date).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 						</tr>
 						<?php } ?>
-						<?php if($this->pub->state == 0) { ?>
+						<?php if ($this->pub->state == 0) { ?>
 						<tr>
 							<td class="tbl-lbl"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED')); ?>:</td>
-							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->published_down, $dateFormat, $tz).' ('.ProjectsHtml::timeAgo($this->pub->published_down).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
+							<td class="tbl-input"><?php echo JHTML::_('date', $this->pub->published_down, $dateFormat).' ('.ProjectsHtml::timeAgo($this->pub->published_down).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_AGO').')'; ?></td>
 						</tr>
 						<?php } ?>
 						<tr>
@@ -262,6 +253,25 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 					{
 						// Unpublished
 						case 0:
+							// Check who unpublished this
+							$objAA = new ProjectActivity( $this->database );
+							$pubtitle = \Hubzero\Utility\String::truncate($this->pub->title, 100);
+							$activity = JText::_('PLG_PROJECTS_PUBLICATIONS_ACTIVITY_UNPUBLISHED');
+							$activity.= ' '.strtolower(JText::_('version'))
+										. ' ' . $this->pub->version_label
+										. ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_OF')
+										. ' ' . strtolower(JText::_('publication'))
+										. ' "' . $pubtitle . '"';
+
+							$admin = $objAA->checkActivity( $this->project->id, $activity);
+							 if ($this->publication_allowed && $admin != 1) { ?>
+							<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_PUBLISH')
+							. ' <a href="' . $this->url . '/?action=republish' . a . 'version=' . $this->pub->version . '">'
+							. JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REPUBLISH').' &raquo;</a>';  ?></p></li>
+							<?php } ?>
+							<?php if ($admin == 1) { ?>
+							<li id="next-question"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_BY_ADMIN');  ?></p></li>
+							<?php }
 						break;
 
 						// Published
