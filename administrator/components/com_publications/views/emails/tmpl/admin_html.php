@@ -84,7 +84,7 @@ $showThumb = $config->get('showthumbemail', 0);
 // Get publication thumbnail
 if ($showThumb)
 {
-	$thumb 		= PublicationsHtml::getThumbSrc($this->row->publication_id, $this->row->id, $pubconfig);
+	$thumb 		= PublicationsAdminHtml::getThumbSrc($this->row->publication_id, $this->row->id, $pubconfig);
 	$thumb 		= $thumb ? rtrim($base, DS) . DS . trim($thumb, DS) : NULL;
 	$showThumb 	= $thumb ? true : false;
 }
