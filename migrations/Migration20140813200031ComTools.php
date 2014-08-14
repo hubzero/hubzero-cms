@@ -21,8 +21,11 @@ class Migration20140813200031ComTools extends Base
 
 		if (!$mwdb->connected())
 		{
-			$this->setError('Failed to connect to the middleware database', 'warning');
-			return false;
+			$return = new \stdClass();
+			$return->error = new \stdClass();
+			$return->error->type = 'warning';
+			$return->error->message = 'Failed to connect to the middleware database';
+			return $return;
 		}
 
 		if ($mwdb->tableExists('joblog'))
