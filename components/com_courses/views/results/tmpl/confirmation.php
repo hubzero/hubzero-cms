@@ -55,22 +55,34 @@ $dep  = $this->dep;
 	<?php endif; ?>
 	<?php if ($this->dep->getAllowedAttempts() > 1) : ?>
 		<?php $attempt = $resp->getAttemptNumber(); ?>
-		You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
-		This was your <strong><?php echo FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
+		<p>
+			You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
+			This was your <strong><?php echo FormHelper::toOrdinal((int)$attempt) ?></strong> attempt.
+		</p>
 		<form action="<?php echo JRoute::_($this->base . '&task=form.complete') ?>">
 			<input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
-			View another attempt:
-			<select name="attempt">
-				<?php for ($i = 1; $i <= $this->dep->getAllowedAttempts(); $i++) { ?>
-					<?php
-						if ($i == $attempt) :
-							continue;
-						endif;
-					?>
-					<option value="<?php echo $i ?>"><?php echo FormHelper::toOrdinal($i) ?> attempt</option>
-				<?php } ?>
-			</select>
-			<input class="btn btn-secondary" type="submit" value="GO" />
+			<?php $completedAttempts = $resp->getCompletedAttempts(); ?>
+			<?php if ($completedAttempts && count($completedAttempts) > 0) : ?>
+				<p>
+					View another completed attempt:
+					<select name="attempt">
+						<?php foreach ($completedAttempts as $completedAttempt) : ?>
+							<option value="<?php echo $completedAttempt ?>"<?php echo ($completedAttempt == $attempt) ? ' selected="selected"' : ''; ?>><?php echo FormHelper::toOrdinal($completedAttempt) ?> attempt</option>
+						<?php endforeach; ?>
+					</select>
+					<input class="btn btn-secondary" type="submit" value="GO" />
+				</p>
+
+				<?php $nextAttempt = (count($completedAttempts) < $dep->getAllowedAttempts()) ? (count($completedAttempts)+1) : null; ?>
+			<?php endif; ?>
+
+			<?php if ($dep->getState() == 'active' && isset($nextAttempt)) : ?>
+				<p>
+					<a href="<?php echo JRoute::_($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
+						<button type="button" class="btn btn-warning">Take your next attampt!</button>
+					</a>
+				</p>
+			<?php endif; ?>
 		</form>
 	<?php endif; ?>
 </section>

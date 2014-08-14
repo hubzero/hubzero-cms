@@ -335,6 +335,20 @@ class PdfFormRespondent
 	}
 
 	/**
+	 * Get array of completed attempts
+	 *
+	 * @return array
+	 **/
+	public function getCompletedAttempts()
+	{
+		$dbh   = JFactory::getDBO();
+		$query  = 'SELECT `attempt` FROM `#__courses_form_respondents` WHERE `deployment_id` = ' . $dbh->quote($this->depId);
+		$query .= ' AND `member_id` = ' . $dbh->quote($this->member_id) . ' AND `finished` IS NOT NULL ORDER BY `attempt` ASC';
+		$dbh->setQuery($query);
+		return $dbh->loadColumn();
+	}
+
+	/**
 	 * Get version # for which this respondent is completing the form
 	 *
 	 * @return integer
