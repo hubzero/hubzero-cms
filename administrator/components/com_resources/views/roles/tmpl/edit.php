@@ -46,16 +46,13 @@ JToolBarHelper::cancel();
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	var form = document.getElementById('adminForm');
-
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
 
 	// form field validation
-	var field = document.getElementById('field-title');
-	if (field.value == '') {
+	if ($('#field-title').val() == '') {
 		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else {
 		submitform( pressbutton );
@@ -75,7 +72,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
 				<label for="field-alias"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[alias]" id="field-alias"value="<?php echo $this->escape($this->row->alias); ?>" />
+				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->alias); ?>" />
 				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 

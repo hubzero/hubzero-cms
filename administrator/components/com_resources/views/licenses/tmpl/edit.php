@@ -45,22 +45,17 @@ JToolBarHelper::cancel();
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	/*var form = document.getElementById('adminForm');
-
 	if (pressbutton == 'cancel') {
-		submitform( pressbutton );
+		submitform(pressbutton);
 		return;
 	}
 
 	// form field validation
-	var field = document.getElementById('field-title');
-	if (field.value == '') {
-		alert( 'Type must have a title' );
+	if ($('#field-title').val() == '') {
+		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else {
-		alert('vff');*/
-		submitform( pressbutton );
-		return;
-	//}
+		submitform(pressbutton);
+	}
 }
 </script>
 
@@ -70,7 +65,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label></br />
+				<label for="field-title"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" size="35" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 
@@ -86,10 +81,9 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label><?php echo JText::_('COM_RESOURCES_FIELD_CONTENT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<?php
-				echo JFactory::getEditor()->display('fields[text]', stripslashes($this->row->text), '', '', '45', '10', false);
-				?>
+				<label for="field-text"><?php echo JText::_('COM_RESOURCES_FIELD_CONTENT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<textarea name="fields[text]" id="field-text" cols="45" rows="15"><?php echo $this->escape(stripslashes($this->row->text)); ?></textarea>
+				<?php //echo JFactory::getEditor()->display('fields[text]', $this->escape(stripslashes($this->row->text)), '', '', 45, 15, false, 'field-text', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
 
 			<input type="hidden" name="fields[ordering]" value="<?php echo $this->row->ordering; ?>" />

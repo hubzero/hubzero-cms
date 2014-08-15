@@ -132,11 +132,11 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array(0));
+			$this->view->authorid = JRequest::getVar('id', array(0));
 
-			if (is_array($ids) && !empty($ids))
+			if (is_array($this->view->authorid))
 			{
-				$this->view->authorid = $ids[0];
+				$this->view->authorid = (!empty($this->view->authorid) ? $this->view->authorid[0] : 0);
 			}
 
 			// Load category

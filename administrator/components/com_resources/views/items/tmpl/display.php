@@ -121,13 +121,8 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="9"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
-			<?php /*<tr>
-				<td colspan="9">
-					ResourcesHtml::statusKey();
-				</td>
-			</tr> */ ?>
 		</tfoot>
 		<tbody>
 <?php
@@ -272,13 +267,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 						</span>
 					<?php } else { ?>
-						<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+						<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
 							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 						</a>
 					<?php } ?>
 				</td>
 				<td>
-					<a class="state <?php echo $class; ?> hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $alt; ?> :: <?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+					<a class="state <?php echo $class; ?> hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $alt; ?> :: <?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
@@ -289,9 +284,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td style="white-space: nowrap">
 					<?php if ($row->modified == '0000-00-00 00:00:00') { echo JText::_('COM_RESOURCES_NOT_MODIFIED'); } else { ?>
-					<time datetime="<?php echo ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created); ?>">
-						<?php echo JHTML::_('date', ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created), JText::_('DATE_FORMAT_HZ1')); ?>
-					</time>
+						<time datetime="<?php echo ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created); ?>">
+							<?php echo JHTML::_('date', ($row->modified != '0000-00-00 00:00:00' ? $row->modified : $row->created), JText::_('DATE_FORMAT_HZ1')); ?>
+						</time>
 					<?php } ?>
 				</td>
 				<td>

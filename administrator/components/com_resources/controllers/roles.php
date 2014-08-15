@@ -143,7 +143,10 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 		{
 			// Incoming (expecting an array)
 			$id = JRequest::getVar('id', array(0));
-			$id = (is_array($id)) ? $id[0] : 0;
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? $id[0] : 0);
+			}
 
 			// Load the object
 			$this->view->row = new ResourcesContributorRole($this->database);
@@ -254,6 +257,7 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 
 		// Incoming (expecting an array)
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
 		if (empty($ids))

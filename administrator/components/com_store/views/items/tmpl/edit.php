@@ -80,15 +80,15 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 			<div class="input-wrap">
-				<label for="field-price"><?php echo JText::_('COM_STORE_PRICE'); ?>:</label><br />
+				<label for="field-price"><?php echo JText::_('COM_STORE_PRICE'); ?>:</label>
 				<input type="text" name="price" id="field-price" value="<?php echo $this->escape(stripslashes($this->row->price)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_STORE_TITLE'); ?>:</label></td>
+				<label for="field-title"><?php echo JText::_('COM_STORE_TITLE'); ?>:</label>
 				<input type="text" name="title" id="field-title" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_STORE_WARNING_DESCR'); ?>">
-				<label for="field-description"><?php echo JText::_('COM_STORE_DESCRIPTION'); ?>:</label><br />
+				<label for="field-description"><?php echo JText::_('COM_STORE_DESCRIPTION'); ?>:</label>
 				<textarea name="description" id="field-description" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
 				<span class="hint"><?php echo JText::_('COM_STORE_WARNING_DESCR'); ?></span>
 			</div>
@@ -120,7 +120,7 @@ function submitbutton(pressbutton)
 <?php
 	if ($this->row->id != 0) {
 ?>
-			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->row->id; ?>"></iframe>
+			<iframe style="width: 100%" height="350" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->row->id; ?>"></iframe>
 <?php
 	} else {
 		echo '<p class="alert">' . JText::_('COM_STORE_MUST_BE_SAVED_BEFORE_PICTURE') . '</p>';

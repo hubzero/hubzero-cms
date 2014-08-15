@@ -156,11 +156,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 			$id = JRequest::getVar('id', array(0));
 			if (is_array($id))
 			{
-				$id = $id[0];
-			}
-			else
-			{
-				$id = 0;
+				$id = (!empty($id) ? $id[0] : 0);
 			}
 
 			// Load the object
@@ -243,6 +239,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Incoming (expecting an array)
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
 		if (empty($ids))
@@ -307,7 +304,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Load row
 		$row = new ResourcesLicense($this->database);
-		$row->load( (int) $id[0]);
+		$row->load((int) $id[0]);
 
 		// Update order
 		$row->move($dir);

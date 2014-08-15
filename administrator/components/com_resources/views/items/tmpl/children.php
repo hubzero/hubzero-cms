@@ -60,6 +60,8 @@ if ($canDo->get('core.delete'))
 	JToolBarHelper::deleteList();
 }
 
+$this->css();
+
 JHTML::_('behavior.tooltip');
 include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 
@@ -95,7 +97,7 @@ function submitbutton(pressbutton)
 		<?php if ($this->filters['parent_id'] > 0) { ?>
 			<tr>
 				<th colspan="9">
-					<?php echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]=' . $this->filters['parent_id'] . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>'; ?>
+					<?php echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id=' . $this->filters['parent_id'] . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>'; ?>
 				</th>
 			</tr>
 		<?php } ?>
@@ -219,7 +221,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			break;
 	}
 
-
 	if (!isset($row->child_id))
 	{
 		$row->child_id = $row->id;
@@ -261,39 +262,39 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->child_id; ?>
 				</td>
 				<td>
-				<?php if ((($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != $juser->get('id')) || !$canDo->get('core.edit')) { ?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
-					</span>
-					<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
-				<?php } else { ?>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
-					</a>
-					<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
-				<?php } ?>
+					<?php if ((($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00') && $row->checked_out != $juser->get('id')) || !$canDo->get('core.edit')) { ?>
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</span>
+						<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
+					<?php } else { ?>
+						<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</a>
+						<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
-					<span class="state <?php echo $class;?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } else { ?>
-					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } ?>
+					<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
+						<span class="state <?php echo $class;?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } else { ?>
+						<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
-					<span class="access <?php echo $color_access; ?>">
-						<span><?php echo $row->groupname; ?></span>
-					</span>
-				<?php } else { ?>
-					<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('COM_RESOURCES_CHANGE_ACCESS'); ?>">
-						<span><?php echo JText::_($row->groupname); ?></span>
-					</a>
-				<?php } ?>
+					<?php if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00' || !$canDo->get('core.edit.state')) { ?>
+						<span class="access <?php echo $color_access; ?>">
+							<span><?php echo $row->groupname; ?></span>
+						</span>
+					<?php } else { ?>
+						<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('COM_RESOURCES_CHANGE_ACCESS'); ?>">
+							<span><?php echo JText::_($row->groupname); ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $typec; ?>

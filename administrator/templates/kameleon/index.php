@@ -33,6 +33,8 @@ defined('_JEXEC') or die;
 
 $app = JFactory::getApplication();
 
+JHTML::_('behavior.framework', true);
+
 // Load base styles
 $this->addStyleSheet('templates/' . $this->template . '/css/index.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/index.css'));
 // Load theme

@@ -30,12 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
-
-// Push some styles to the template
-$document = JFactory::getDocument();
-$document->addStyleSheet('components' . DS . $this->option . DS . 'assets' . DS . 'css' . DS . 'resources.css');
-
 $canDo = ResourcesHelperPermissions::getActions('type');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
@@ -49,20 +43,20 @@ JToolBarHelper::cancel();
 
 JHTML::_('behavior.framework', true);
 
+$this->css();
+
 $params = new JRegistry($this->row->params);
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	var form = document.getElementById('item-form');
-
-	if (pressbutton == 'canceltype') {
+	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
 
 	// form field validation
-	if (form.title.value == '') {
+	if ($('#field-type').val() == '') {
 		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
 	} else {
 		submitform(pressbutton);
@@ -72,50 +66,47 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" id="item-form" name="adminForm">
 	<div class="col width-50 fltlft">
-	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
-		<div class="input-wrap">
-			<label for="field-type"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-			<input type="text" name="type" id="field-type" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" />
-		</div>
-		<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
-			<label for="field-alias"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
-			<input type="text" name="alias" id="field-alias" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
-			<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
-		</div>
-		<div class="input-wrap">
-			<label><?php echo JText::_('COM_RESOURCES_FIELD_CATEGORY'); ?>:</label><br />
-			<?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, JText::_('COM_RESOURCES_SELECT'), '', '', ''); ?>
-		</div>
-		<div class="input-wrap">
-			<label for="field-contributable"><?php echo JText::_('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />
-			<input type="checkbox" name="contributable" id="field-contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_RESOURCES_FIELD_CONTRIBUTABLE_EXPLANATION'); ?>
-		</div>
-	<?php if ($this->row->category != 27) { ?>
-		<div class="input-wrap">
-			<label for="params-linkaction"><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION'); ?>:</label><br />
-			<select name="params[linkAction]" id="params-linkaction">
-				<option value="extension"<?php echo ($params->get('linkAction') == 'extension') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_BY_EXT'); ?></option>
-				<option value="external"<?php echo ($params->get('linkAction') == 'external') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW'); ?></option>
-				<option value="lightbox"<?php echo ($params->get('linkAction') == 'lightbox') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX'); ?></option>
-				<option value="download"<?php echo ($params->get('linkAction') == 'download') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD'); ?></option>
-			</select>
-		</div>
-	<?php } ?>
-		<div class="input-wrap">
-			<label for="field-description"><?php echo JText::_('COM_RESOURCES_FIELD_DESCIPTION'); ?>:</label><br />
-			<?php
-				$editor = JFactory::getEditor();
-				echo $editor->display('description', stripslashes($this->row->description), '', '', '45', '10', false, 'field-description', null, null, array('class' => 'minimal'));
-			?>
-		</div>
+			<div class="input-wrap">
+				<label for="field-type"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<input type="text" name="type" id="field-type" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->type)); ?>" />
+			</div>
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?>">
+				<label for="field-alias"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS'); ?>:</label><br />
+				<input type="text" name="alias" id="field-alias" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /><br />
+				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_ALIAS_HINT'); ?></span>
+			</div>
+			<div class="input-wrap">
+				<label><?php echo JText::_('COM_RESOURCES_FIELD_CATEGORY'); ?>:</label><br />
+				<?php echo ResourcesHtml::selectType($this->categories, 'category', $this->row->category, JText::_('COM_RESOURCES_SELECT'), '', '', ''); ?>
+			</div>
+			<div class="input-wrap">
+				<label for="field-contributable"><?php echo JText::_('COM_RESOURCES_FIELD_CONTRIBUTABLE'); ?>:</label><br />
+				<input type="checkbox" name="contributable" id="field-contributable" value="1"<?php echo ($this->row->contributable) ? ' checked="checked"' : ''; ?> /> <?php echo JText::_('COM_RESOURCES_FIELD_CONTRIBUTABLE_EXPLANATION'); ?>
+			</div>
+			<?php if ($this->row->category != 27) { ?>
+				<div class="input-wrap">
+					<label for="params-linkaction"><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION'); ?>:</label><br />
+					<select name="params[linkAction]" id="params-linkaction">
+						<option value="extension"<?php echo ($params->get('linkAction') == 'extension') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_BY_EXT'); ?></option>
+						<option value="external"<?php echo ($params->get('linkAction') == 'external') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW'); ?></option>
+						<option value="lightbox"<?php echo ($params->get('linkAction') == 'lightbox') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX'); ?></option>
+						<option value="download"<?php echo ($params->get('linkAction') == 'download') ? ' selected="selected"':''; ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD'); ?></option>
+					</select>
+				</div>
+			<?php } ?>
+			<div class="input-wrap">
+				<label for="field-description"><?php echo JText::_('COM_RESOURCES_FIELD_DESCIPTION'); ?>:</label><br />
+				<?php echo JFactory::getEditor()->display('description', stripslashes($this->row->description), '', '', '45', '10', false, 'field-description', null, null, array('class' => 'minimal')); ?>
+			</div>
 
-		<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-		<input type="hidden" name="task" value="save" />
-	</fieldset>
+			<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
+			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+			<input type="hidden" name="task" value="save" />
+		</fieldset>
 	</div>
 	<div class="col width-50 fltrt">
 		<fieldset class="adminform">
@@ -178,10 +169,10 @@ function submitbutton(pressbutton)
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="<?php echo '5';//($this->row->id) ? '5' : '4'; ?>">
-							<button id="add-custom-field" href="#addRow">
+						<td colspan="5">
+							<a class="button" id="add-custom-field" href="#addRow">
 								<span><?php echo JText::_('COM_RESOURCES_NEW_ROW'); ?></span>
-							</button>
+							</a>
 						</td>
 					</tr>
 				</tfoot>
@@ -371,7 +362,7 @@ function submitbutton(pressbutton)
 								.on('click', function(e){
 									e.preventDefault();
 
-									Fields.addOption(jq(this).attr('rel'));
+									Fields.addOption(jq(this).attr('data-rel'));
 								});
 						});
 					},

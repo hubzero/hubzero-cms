@@ -84,7 +84,7 @@ class ResourcesElementList extends ResourcesElement
 		$html[] = '<caption>' . JText::_('COM_RESOURCES_LIST_OPTION_HELP') . '</caption>';
 		$html[] = '<tfoot>';
 		$html[] = '<tr>';
-		$html[] = '<td colspan="4" class="option-button"><button rel="'.$name.'" class="add-custom-option"><span>' . JText::_('COM_RESOURCES_NEW_OPTION') . '</span></button></td>';
+		$html[] = '<td colspan="2" class="option-button"><button data-rel="'.$name.'" class="add-custom-option"><span>' . JText::_('COM_RESOURCES_NEW_OPTION') . '</span></button></td>';
 		$html[] = '</tr>';
 		$html[] = '</tfoot>';
 		$html[] = '<tbody>';

@@ -59,6 +59,8 @@ function submitbutton(pressbutton)
 	if (document.getElementById('field-content').value == ''){
 		alert('<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
 	} else {
+		<?php echo JFactory::getEditor()->save('text'); ?>
+
 		submitform(pressbutton);
 	}
 }
@@ -71,7 +73,7 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-content"><?php echo JText::_('COM_WISHLIST_COMMENT'); ?>:</label><br />
-				<textarea name="fields[content]" id="field-content" cols="35" rows="30"><?php echo $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))); ?></textarea>
+				<?php echo JFactory::getEditor()->display('fields[content]', $this->escape(preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', stripslashes($this->row->content))), '', '', 50, 30, false, 'field-content', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
 		</fieldset>
 	</div>

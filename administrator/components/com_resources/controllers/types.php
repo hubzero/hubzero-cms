@@ -144,10 +144,6 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 			{
 				$id = $id[0];
 			}
-			else
-			{
-				$id = 0;
-			}
 
 			// Load the object
 			$this->view->row = new ResourcesType($this->database);
@@ -185,8 +181,9 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		$row = new ResourcesType($this->database);
 		if (!$row->bind($_POST))
 		{
-			echo ResourcesHtml::alert($row->getError());
-			exit();
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
 		}
 		$row->contributable = ($row->contributable) ? $row->contributable : '0';
 		$row->alias = ($row->alias) ? $row->alias : $this->_normalize($row->type, true);
@@ -308,6 +305,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 		// Incoming (expecting an array)
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
 		if (empty($ids))
