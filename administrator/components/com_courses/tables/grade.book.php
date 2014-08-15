@@ -79,6 +79,20 @@ class CoursesTableGradeBook extends JTable
 	var $override = NULL;
 
 	/**
+	 * datetime
+	 *
+	 * @var string
+	 */
+	var $score_recorded = NULL;
+
+	/**
+	 * datetime
+	 *
+	 * @var string
+	 */
+	var $override_recorded = NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
@@ -356,7 +370,7 @@ class CoursesTableGradeBook extends JTable
 							$key = $u.'.'.$asset->id;
 							if (!array_key_exists($key, $existing_grades))
 							{
-								$inserts[] = "('{$u}', NULL, 'asset', '{$asset->id}')";
+								$inserts[] = "('{$u}', NULL, 'asset', '{$asset->id}', NULL)";
 							}
 							else if (!is_null($existing_grades[$key]['score']))
 							{
@@ -369,16 +383,17 @@ class CoursesTableGradeBook extends JTable
 					case 'expired':
 						foreach ($member_id as $u)
 						{
-							$score = (isset($results[$u]['score'])) ? $results[$u]['score'] : '0.00';
+							$score    = (isset($results[$u]['score'])) ? $results[$u]['score'] : '0.00';
+							$finished = (isset($results[$u]['finished'])) ? '\''.$results[$u]['finished'].'\'' : 'NULL';
 
 							$key = $u.'.'.$asset->id;
 							if (!array_key_exists($key, $existing_grades))
 							{
-								$inserts[] = "('{$u}', '{$score}', 'asset', '{$asset->id}')";
+								$inserts[] = "('{$u}', '{$score}', 'asset', '{$asset->id}', {$finished})";
 							}
 							else if ($existing_grades[$key]['score'] != $score)
 							{
-								$updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$score}' WHERE `id` = '".$existing_grades[$key]['id']."'";
+								$updates[] = "UPDATE `#__courses_grade_book` SET `score` = '{$score}', `score_recorded` = {$finished} WHERE `id` = '".$existing_grades[$key]['id']."'";
 							}
 						}
 					break;
@@ -397,11 +412,11 @@ class CoursesTableGradeBook extends JTable
 								$key = $u.'.'.$asset->id;
 								if (!array_key_exists($key, $existing_grades))
 								{
-									$inserts[] = "('{$u}', {$score}, 'asset', '{$asset->id}')";
+									$inserts[] = "('{$u}', {$score}, 'asset', '{$asset->id}', '" . $results[$u]['finished'] . "')";
 								}
 								else if ($existing_grades[$key]['score'] != $score)
 								{
-									$updates[] = "UPDATE `#__courses_grade_book` SET `score` = {$score} WHERE `id` = '".$existing_grades[$key]['id']."'";
+									$updates[] = "UPDATE `#__courses_grade_book` SET `score` = {$score}, `score_recorded` = '" . $results[$u]['finished'] . "' WHERE `id` = '".$existing_grades[$key]['id']."'";
 								}
 							}
 							// Form is active and they haven't finished it yet!
@@ -410,11 +425,11 @@ class CoursesTableGradeBook extends JTable
 								$key = $u.'.'.$asset->id;
 								if (!array_key_exists($key, $existing_grades))
 								{
-									$inserts[] = "('{$u}', NULL, 'asset', '{$asset->id}')";
+									$inserts[] = "('{$u}', NULL, 'asset', '{$asset->id}', NULL)";
 								}
 								else if (!is_null($existing_grades[$key]['score']))
 								{
-									$updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL WHERE `id` = '".$existing_grades[$key]['id']."'";
+									$updates[] = "UPDATE `#__courses_grade_book` SET `score` = NULL, `score_recorded` = NULL WHERE `id` = '".$existing_grades[$key]['id']."'";
 								}
 							}
 						}
@@ -425,7 +440,7 @@ class CoursesTableGradeBook extends JTable
 			// Build query and run
 			if (count($inserts) > 0)
 			{
-				$query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`) VALUES\n";
+				$query  = "INSERT INTO `#__courses_grade_book` (`member_id`, `score`, `scope`, `scope_id`, `score_recorded`) VALUES\n";
 				$query .= implode(",\n", $inserts);
 
 				$this->_db->setQuery($query);

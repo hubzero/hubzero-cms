@@ -132,11 +132,19 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			{
 				if ($grade->override)
 				{
-					$grades[$grade->member_id]['assets'][$grade->scope_id] = array('score'=>$grade->override, 'override'=>true);
+					$grades[$grade->member_id]['assets'][$grade->scope_id] = array(
+						'score'    => $grade->override,
+						'date'     => $grade->override_recorded,
+						'override' => true
+					);
 				}
 				else
 				{
-					$grades[$grade->member_id]['assets'][$grade->scope_id] = array('score'=>$grade->score, 'override'=>false);
+					$grades[$grade->member_id]['assets'][$grade->scope_id] = array(
+						'score'    => $grade->score,
+						'date'     => $grade->score_recorded,
+						'override' => false
+					);
 				}
 			}
 		}

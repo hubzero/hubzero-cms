@@ -108,13 +108,23 @@ foreach ($assets as $asset)
 			$score = '--';
 		}
 
-		if (isset($asset->unit_id) && $asset->unit_id)
+		// Get the date the grade was entered
+		if (!is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date']))
 		{
-			$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>'N/A', 'url'=>$url);
+			$date = JHTML::_('date', $grades[$this->member->get('id')]['assets'][$asset->id]['date'], 'r');
 		}
 		else
 		{
-			$details['aux'][] = array('title'=>$asset->title, 'score'=>$score);
+			$date = "N/A";
+		}
+
+		if (isset($asset->unit_id) && $asset->unit_id)
+		{
+			$details['forms'][$unit->get('id')][] = array('title'=>$title, 'score'=>$score, 'date'=>$date, 'url'=>$url);
+		}
+		else
+		{
+			$details['aux'][] = array('title'=>$asset->title, 'score'=>$score, 'date'=>$date);
 		}
 
 		$isValidForm = false;
@@ -136,8 +146,6 @@ foreach ($assets as $asset)
 				// Get whether or not we should show scores at this point
 				$results_closed = $dep->getResultsClosed();
 
-				$resp = $dep->getRespondent($this->member->get('id'));
-
 				// Form is still active and they are allowed to see their score
 				if ($results_closed == 'score' || $results_closed == 'details')
 				{
@@ -150,9 +158,9 @@ foreach ($assets as $asset)
 				}
 
 				// Get the date of the completion
-				if (!is_null($resp->getEndTime()))
+				if (!is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date']))
 				{
-					$date = JHTML::_('date', $resp->getEndTime(), 'r');
+					$date = JHTML::_('date', $grades[$this->member->get('id')]['assets'][$asset->id]['date'], 'r');
 				}
 				else
 				{
@@ -167,10 +175,8 @@ foreach ($assets as $asset)
 
 			// Form is still active
 			case 'active':
-				$resp = $dep->getRespondent($this->member->get('id'));
-
-				// Form is active and they have completed it!
-				if ($resp->getEndTime() && $resp->getEndTime() != '')
+				// Get the date of the completion
+				if (!is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date']))
 				{
 					// Get whether or not we should show scores at this point
 					$results_open = $dep->getResultsOpen();
@@ -187,7 +193,7 @@ foreach ($assets as $asset)
 					}
 
 					// Get the date of the completion
-					$date = JHTML::_('date', $resp->getEndTime(), 'r');
+					$date = JHTML::_('date', $grades[$this->member->get('id')]['assets'][$asset->id]['date'], 'r');
 
 					// They have completed this form, therefor set increment_count_taken equal to true
 					$increment_count_taken = true;
@@ -522,7 +528,7 @@ $progress_timeline .= '</div>';
 						<tr>
 							<td class="grade-details-title"><?php echo JText::_('Assignment') ?></td>
 							<td class="grade-details-score"><?php echo JText::_('Score') ?></td>
-							<td class="grade-details-date"><?php echo JText::_('Date taken') ?></td>
+							<td class="grade-details-date"><?php echo JText::_('Date recorded') ?></td>
 						</tr>
 					</thead>
 					<tbody>
@@ -553,7 +559,7 @@ $progress_timeline .= '</div>';
 							<tr class="<?php echo $class ?>">
 								<td class="grade-details-title"><?php echo $aux['title'] ?></td>
 								<td class="grade-details-score"><?php echo $aux['score'] . (is_numeric($aux['score']) ? '%' : '') ?></td>
-								<td class="grade-details-date">N/A</td>
+								<td class="grade-details-date"><?php echo $aux['date'] ?></td>
 							</tr>
 						<?php endforeach; ?>
 					</tbody>

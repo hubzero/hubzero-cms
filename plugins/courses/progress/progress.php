@@ -871,6 +871,7 @@ class plgCoursesProgress extends JPlugin
 		}
 
 		$grade->set('override', $grade_value);
+		$grade->set('override_recorded', \JFactory::getDate()->toSql());
 
 		if (!$grade->store())
 		{
@@ -919,6 +920,7 @@ class plgCoursesProgress extends JPlugin
 		}
 
 		$grade->set('override', NULL);
+		$grade->set('override_recorded', NULL);
 
 		// Store (true to update nulls)
 		if (!$grade->store(true))

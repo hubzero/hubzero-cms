@@ -1601,6 +1601,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			if ($score > $gradebook->get('score'))
 			{
 				$gradebook->set('score', $score);
+				$gradebook->set('score_recorded', \JFactory::getDate()->toSql());
 				if (!$gradebook->store())
 				{
 					$this->setMessage($gradebook->getError(), 500, 'Internal error');
@@ -1614,6 +1615,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 			$gradebook->set('score', $score);
 			$gradebook->set('scope', 'asset');
 			$gradebook->set('scope_id', $asset_id);
+			$gradebook->set('score_recorded', \JFactory::getDate()->toSql());
 			if (!$gradebook->store())
 			{
 				$this->setMessage($gradebook->getError(), 500, 'Internal error');

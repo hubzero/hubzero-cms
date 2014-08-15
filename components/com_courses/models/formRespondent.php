@@ -180,17 +180,23 @@ class PdfFormRespondent
 		if (!$gradebook->get('id'))
 		{
 			$grade = array(
-				'member_id' => $this->member_id,
-				'score'     => $score,
-				'scope'     => 'asset',
-				'scope_id'  => $asset_id
+				'member_id'      => $this->member_id,
+				'score'          => $score,
+				'scope'          => 'asset',
+				'scope_id'       => $asset_id,
+				'score_recorded' => \JFactory::getDate()->toSql()
 			);
 
 			$gradebook->save($grade);
 		}
 		elseif ($score > $gradebook->get('score'))
 		{
-			$gradebook->save(array('score'=>$score));
+			$gradebook->save(
+				array(
+					'score'          => $score,
+					'score_recorded' => \JFactory::getDate()->toSql()
+				)
+			);
 		}
 	}
 
