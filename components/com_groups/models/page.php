@@ -244,7 +244,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	 */
 	public function getNextOrder( $gidNumber )
 	{
-		$where = "gidNumber=" . $this->_db->quote($gidNumber);
+		$where = "gidNumber=" . $this->_db->quote($gidNumber) . " AND state != 2";
 		$order = $this->_tbl->getNextOrder($where);
 		return $order;
 	}

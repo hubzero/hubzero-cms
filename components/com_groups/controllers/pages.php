@@ -490,6 +490,12 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			$state = 1;
 		}
 
+		// set ordering to 999 when deleting
+		if ($state == 2)
+		{
+			$page->set('ordering', 999);
+		}
+
 		// set the page state
 		$page->set('state', $state);
 

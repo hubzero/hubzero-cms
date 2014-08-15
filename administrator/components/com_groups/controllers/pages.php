@@ -310,6 +310,9 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			//set to deleted state
 			$page->set('state', $page::APP_STATE_DELETED);
 
+			// set ordering to 999 when deleting
+			$page->set('ordering', 999);
+
 			// save module
 			if (!$page->store(true))
 			{
