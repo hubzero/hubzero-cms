@@ -322,7 +322,7 @@ $cc = array();
 	<?php } // end if (count($comments) > 0) ?>
 
 	<div class="col width-70 fltlft">
-		<fieldset>
+		<fieldset id="commentform">
 			<legend><span><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS'); ?></span></legend>
 
 			<div class="new ticket">
