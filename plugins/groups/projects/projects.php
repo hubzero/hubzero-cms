@@ -113,7 +113,10 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
 
 		// Set filters
 		$filters = array();
@@ -197,6 +200,35 @@ class plgGroupsProjects extends \Hubzero\Plugin\Plugin
 
 		// Return the output
 		return $arr;
+	}
+
+	/**
+	 * On after group membership changes - re-sync with projects
+	 *
+	 * @param      object  $group      Current group
+	 * @return     array
+	 */
+	public function onAfterStoreGroup($group)
+	{
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+
+		// Get group projects
+		$obj  = new Project($this->_database);
+		$objO = new ProjectOwner( $this->_database );
+		$projects = $obj->getGroupProjects($group->get('gidNumber'), $this->_juser->get('id'));
+
+		// Project-group sync
+		if ($projects)
+		{
+			foreach ($projects as $project)
+			{
+				$objO->reconcileGroups($project->id, $project->owned_by_group);
+				$objO->sysGroup($project->alias, $this->_config->get('group_prefix', 'pr-'));
+			}
+		}
 	}
 
 	/**
