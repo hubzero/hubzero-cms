@@ -237,6 +237,17 @@ $this->css();
 							$row = new SupportModelTicket($row);
 						}
 
+						if ($row->get('status'))
+						{
+							foreach ($row->statuses() as $status)
+							{
+								if ($status->get('id') == $row->get('status'))
+								{
+									break;
+								}
+							}
+						}
+
 						$comments = 0;
 
 						$lastcomment = '0000-00-00 00:00:00';
@@ -257,7 +268,7 @@ $this->css();
 						}
 						?>
 						<tr class="<?php echo (!$row->isOpen() ? 'closed' : ''); ?>">
-							<th>
+							<th<?php if ($row->get('status')) { echo ($status->get('color') ? ' style="border-left-color: #' . $status->get('color') . ';"' : ''); } ?>>
 								<span class="ticket-id">
 									<?php echo $row->get('id'); ?>
 								</span>

@@ -38,6 +38,8 @@ JToolBarHelper::save();
 JToolBarHelper::spacer();
 JToolBarHelper::cancel();
 
+$this->css('jquery.colpick.css', 'system')
+     ->js('jquery.colpick.js', 'system');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton) 
@@ -54,6 +56,22 @@ function submitbutton(pressbutton)
 		submitform(pressbutton);
 	}
 }
+
+jQuery(document).ready(function($){
+	var col = $('#field-color');
+
+	col.colpick({
+		layout: 'hex',
+		colorScheme: 'dark',
+		submit: 1,
+		onSubmit: function(hsb,hex,rgb,el) {
+			col.val(hex);
+		}
+		/*onChange:function(hsb,hex,rgb,el,bySetColor) {
+			col.val(hex);
+		}*/
+	});
+});
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
@@ -72,13 +90,22 @@ function submitbutton(pressbutton)
 				<span class="hint"><?php echo JText::_('COM_SUPPORT_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
-			<div class="input-wrap">
-				<label for="field-open"><?php echo JText::_('COM_SUPPORT_FIELD_FOR'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
-				<select name="fields[open]" id="field-open">
-					<option value="1"<?php if ($this->row->get('open') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_FIELD_FOR_OPEN'); ?></option>
-					<option value="0"<?php if ($this->row->get('open') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_FIELD_FOR_CLOSED'); ?></option>
-				</select>
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-open"><?php echo JText::_('COM_SUPPORT_FIELD_FOR'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+					<select name="fields[open]" id="field-open">
+						<option value="1"<?php if ($this->row->get('open') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_FIELD_FOR_OPEN'); ?></option>
+						<option value="0"<?php if ($this->row->get('open') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_FIELD_FOR_CLOSED'); ?></option>
+					</select>
+				</div>
 			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<label for="field-color"><?php echo JText::_('Color'); ?>:</label>
+					<input type="text" name="fields[color]" id="field-color" value="<?php echo $this->escape($this->row->get('color')); ?>" />
+				</div>
+			</div>
+			<div class="clr"></div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">

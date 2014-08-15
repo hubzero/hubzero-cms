@@ -1254,12 +1254,17 @@
 		padding: 1.22606798em .61803399em;
 		border-bottom: 1px solid #e0e0e0;
 	}
-	#tktlist thead tr th:first-child, 
-	#tktlist thead tr td:first-child, 
+	#tktlist thead tr th:first-child,
+	#tktlist thead tr td:first-child {
+		border-left: 5px solid #6a6a6a;
+	}
 	#tktlist tbody tr th,
 	#tktlist tbody tr th:first-child, 
 	#tktlist tbody tr td:first-child {
-		padding-left: 1.61803399em;
+		/*padding-left: 1.61803399em;*/
+		border-left-width: 5px;
+		border-left-style: solid;
+		border-left-color: transparent;
 	}
 	#tktlist tbody tr th,
 	#tktlist tbody tr th:first-child, 

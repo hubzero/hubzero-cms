@@ -464,16 +464,23 @@
 		padding: 1.22606798em .61803399em;
 		border: none;
 		border-bottom: 1px solid #e0e0e0;
+		border-left: ;
 	}
 	#tktlist tfoot td {
 		padding: 0.61803399em 1.61803399em 1.61803399em 1.61803399em;
 	}
-	#tktlist thead tr th:first-child, 
-	#tktlist thead tr td:first-child, 
+	#tktlist thead tr th:first-child,
+	#tktlist thead tr td:first-child {
+		padding-left: 1.61803399em;
+		border-left: 5px solid #6a6a6a;
+	}
 	#tktlist tbody tr th,
-	#tktlist tbody tr th:first-child, 
+	#tktlist tbody tr th:first-child,
 	#tktlist tbody tr td:first-child {
 		padding-left: 1.61803399em;
+		border-left-width: 5px;
+		border-left-style: solid;
+		border-left-color: transparent;
 	}
 	#tktlist tbody tr th,
 	#tktlist tbody tr th:first-child, 
