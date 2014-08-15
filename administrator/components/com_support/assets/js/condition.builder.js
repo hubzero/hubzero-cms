@@ -53,11 +53,9 @@ statement += '<select class="op">';
 statement += '</select>'
 
 statement += '<select class="val">';
-	statement += '<option value="0">issue</option>';
+	statement += '<option value="0">user submitted</option>';
 	statement += '<option value="1">automatic</option>';
 	statement += '<option value="3">tool</option>';
-	statement += '<option value="4">request</option>';
-	statement += '<option value="5">question</option>';
 statement += '</select>';
 
 //statement += '<input type="text" class="val" />';
