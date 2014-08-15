@@ -201,7 +201,9 @@ class cli
 			$user = \JComponentHelper::getParams('com_update')->get('system_user', 'hubadmin');
 		}
 
-		$cmd = '/usr/bin/sudo -u ' . $user . ' ' . JPATH_ROOT . DS . 'cli' . DS . 'muse.php' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
+		$sudo = (get_current_user() != $user) ? '/usr/bin/sudo -u ' . $user . ' ' : '';
+
+		$cmd = $sudo . JPATH_ROOT . DS . 'cli' . DS . 'muse.php' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
 
 		return shell_exec($cmd);
 	}
