@@ -11,7 +11,8 @@
 defined('_JEXEC') or die;
 
 
-function view($dd = false) {
+function view($dd = false) 
+{
 	global $com_name, $html_path, $dv_conf;
 	$name = $dd['dv_id'];
 
@@ -187,9 +188,9 @@ function view($dd = false) {
 		<div id="dv_title" style="margin: 0;">
 			<h2 class="ui-corner-all" style="display: inline-block;">
 				<i class="icon-table"></i>
-				<?=$dd['title']?>
+				<?php print $dd['title']; ?>
 			</h2>
-			&nbsp;<h4 id="dv_return_link_container" style="display: inline-block; margin: 0;"><?=$return?></h4>
+			&nbsp;<h4 id="dv_return_link_container" style="display: inline-block; margin: 0;"><?php print $return; ?></h4>
 		</div>
 		<div id="dv-spreadsheet-toolbar" class="ui-corner-top">
 			<?php if(!isset($dd['top_menu']['download']['show']) || $dd['top_menu']['download']['show'] != false): ?>
@@ -279,7 +280,7 @@ function view($dd = false) {
 				<?php if(isset($dd['charts_list'])): ?>
 				<select id="dv_chart_name" style="width: 100%;">
 					<?php $pd_id = 0; foreach($dd['charts_list'] as $cl): ?>
-					<option value="<?=$pd_id?>"><?=$cl['title']?></option>
+					<option value="<?php print $pd_id?>"><?php print $cl['title']; ?></option>
 					<?php $pd_id++; endforeach; ?>
 				</select>
 
@@ -343,14 +344,14 @@ function view($dd = false) {
 			<div id="dv_customizer_content" style="height:100%; width:auto;" class="ui-widget-content ui-corner-all">
 				<div id="dv_customizer_group_by" title="Customizer Group Rows" style="display: none; width: 500px; height: 350px;">
 					<p>You can use this option to group rows of the views by certain fields to reduce duplicate rows</p>
-					<div id="dv_customizer_group_by_list"><?=$group_by?></div>
+					<div id="dv_customizer_group_by_list"><?php print $group_by; ?></div>
 				</div>
 				<p id="dv_customizer_title_container" style="padding-left: 10px;">
-					New Title: <input id="dv_customizer_view_title" value="<?=$dd['title']?>" type="text" style="width: 550px;" />
+					New Title: <input id="dv_customizer_view_title" value="<?php print $dd['title']; ?>" type="text" style="width: 550px;" />
 					&nbsp;&nbsp;
-					<input id="dv_customizer_group_by_btn" data-view-url="<?=$dv_conf['settings']['view_url']?>" value="Group By [Reduce Duplicates]" type="button" style="display: none; padding: 2px;" />
+					<input id="dv_customizer_group_by_btn" data-view-url="<?php print $dv_conf['settings']['view_url']; ?>" value="Group By [Reduce Duplicates]" type="button" style="display: none; padding: 2px;" />
 					&nbsp;&nbsp;
-					<input id="dv_customizer_launch_view_btn" data-view-url="<?=$dv_conf['settings']['view_url']?>" value="Launch Custom View" type="button" style="display: none; padding: 2px;" />
+					<input id="dv_customizer_launch_view_btn" data-view-url="<?php print $dv_conf['settings']['view_url']; ?>" value="Launch Custom View" type="button" style="display: none; padding: 2px;" />
 				</p>
 				<table border="0">
 					<tr id="dv_customizer_lists_top">
@@ -361,7 +362,7 @@ function view($dd = false) {
 						<td>
 							<div class="dv_customizer_lists" style="overflow: auto;">
 							<ul id="dv_customizer_full_list" class="dv_customizer_col_lists">
-								<?=$full_list?>
+								<?php print $full_list; ?>
 							</ul>
 							</div>
 						</td>
@@ -369,7 +370,7 @@ function view($dd = false) {
 						<td>
 							<div class="dv_customizer_lists" style="overflow: auto;">
 							<ul id="dv_customizer_selected" class="dv_customizer_col_lists">
-								<?=$selected?>
+								<?php print $selected; ?>
 							</ul>
 							</div>
 						</td>
@@ -383,7 +384,7 @@ function view($dd = false) {
 		<div id="more_information" style="display: none; min-width: 300px;"></div>
 		<?php if($help_file): ?>
 		<div id="dv_help_dialog" style="display: none;">
-			<iframe src="<?=$help_file?>" id="modalIframeId" width="100%" height="100%" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" title="Help">IFRAMES not supported by the browser</iframe>
+			<iframe src="<?php print $help_file; ?>" id="modalIframeId" width="100%" height="100%" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" title="Help">IFRAMES not supported by the browser</iframe>
 			</div>
 		</div>
 		<?php endif; ?>
@@ -392,7 +393,7 @@ function view($dd = false) {
 	<?php endif; //Table Only ?>
 		
 
-		<div id="dv-spreadsheet-container" style="margin: 0px; padding; 0px; <?=$hide_str?>">
+		<div id="dv-spreadsheet-container" style="margin: 0px; padding; 0px; <?php print $hide_str; ?>">
 		<table id="dv-spreadsheet-tbl" style="margin-top: 0;">
 	<?php
 		print '<thead></thead><tfoot><tr>';
@@ -472,7 +473,7 @@ function view($dd = false) {
 		<!-- Start: Dialog boxes -->
 		<div id="truncated_text_dialog" style="display: none; overflow: auto;" title="Full Text"></div>
 
-		<div id="dv_filters_dialog" title="<?=$dd['title']?> : Filters">
+		<div id="dv_filters_dialog" title="<?php print $dd['title']; ?> : Filters">
 			<div id="dv_filters_tabs">
 				<ul></ul>
 			</div>
@@ -480,16 +481,16 @@ function view($dd = false) {
 		<!-- End: Dialog boxes -->
 
 		<script>
-			dv_data = <?=$f_data?>;
-			dv_settings = <?=json_encode($dv_conf['settings'])?>;
-			dv_show_filters = <?=$dv_show_filters?>;
-			dv_settings.show_charts = <?=JRequest::getInt('show_chart', 'undefined');?>;
-			dv_show_customizer = <?=($show_customizer)? 'true': 'false';?>;
-			var dv_show_maps = <?=JRequest::getString('show_map', 'undefined');?>;
+			dv_data = <?php print $f_data; ?>;
+			dv_settings = <?php print json_encode($dv_conf['settings']); ?>;
+			dv_show_filters = <?php print $dv_show_filters; ?>;
+			dv_settings.show_charts = <?php print JRequest::getInt('show_chart', 'undefined');?>;
+			dv_show_customizer = <?php print ($show_customizer)? 'true': 'false';?>;
+			var dv_show_maps = <?php print JRequest::getString('show_map', 'undefined');?>;
 		</script>
 
 		<form style="display: none;" id="dv-spreadsheet-dl" method="POST"
-			action="<?=$dv_conf['settings']['data_url']?>&nolimit=true<?=$custom_view_url . $custom_field_url?>">
+			action="<?php print $dv_conf['settings']['data_url']; ?>&nolimit=true<?php print $custom_view_url . $custom_field_url; ?>">
 		</form>
 	</div>
 	<?php
