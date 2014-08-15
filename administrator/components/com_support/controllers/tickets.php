@@ -323,6 +323,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				if ($watch == 'start')
 				{
 					$this->view->row->watch($this->juser);
+					if (!$this->view->row->isWatching($this->juser, true))
+					{
+						$this->setError(JText::_('COM_SUPPORT_ERROR_FAILED_TO_WATCH'));
+					}
 				}
 			}
 		}
