@@ -312,7 +312,7 @@ class plgAuthenticationGoogle extends JPlugin
 				// Set cookie with login preference info
 				$prefs                  = array();
 				$prefs['user_id']       = $user->get('id');
-				$prefs['user_img']      = $user_profile['picture'];
+				$prefs['user_img']      = $user_profile['picture'] . '?sz=100';
 				$prefs['authenticator'] = 'google';
 
 				$namespace = 'authenticator';
