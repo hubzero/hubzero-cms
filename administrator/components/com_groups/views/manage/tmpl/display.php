@@ -56,7 +56,7 @@ if ($canDo->get('core.edit'))
 }
 if ($canDo->get('core.delete'))
 {
-	JToolBarHelper::deleteList();
+	JToolBarHelper::deleteList('COM_GROUPS_DELETE_CONFIRM', 'delete');
 }
 JToolBarHelper::spacer();
 JToolBarHelper::help('groups');
