@@ -1249,6 +1249,11 @@
 		text-shadow: none;
 		padding: 0;
 	}
+	#tktlist thead th a:after,
+	#tktlist thead td a:after {
+		content: "";
+		display: none;
+	}
 	#tktlist tbody th, 
 	#tktlist tbody td {
 		padding: 1.22606798em .61803399em;
