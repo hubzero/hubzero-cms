@@ -1567,6 +1567,10 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			return;
 		}
 
+		// clean up file, strip double "uploads" & trim directory sep
+		$file = str_replace('uploads', '', $file);
+		$file = ltrim($file, DS);
+
 		// get extension
 		$extension = pathinfo($file, PATHINFO_EXTENSION);
 
@@ -1654,24 +1658,47 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$base_path .= DS . $group->get('gidNumber') . DS . 'uploads';
 		}
 
+		// trim base path
+		$base_path = ltrim($base_path, DS);
+
+		// only can serve files from within /site/groups/{group_id}/uploads/
+		$pathCheck = JPATH_ROOT . DS . $base_path;
+
 		// Final path of file
-		$file_path = $base_path . DS . $file;
+		$file_path     = $base_path . DS . $file;
 		$alt_file_path = null;
+
+		// if super group offer alt path outside uploads
 		if ($group->isSuperGroup())
 		{
 			$alt_file_path = str_replace('/uploads', '', $base_path) . DS . $file;
+
+			// if super group can serve files anywhere inside /site/groups/{group_id}
+			$pathCheck     = JPATH_ROOT . DS . ltrim($alt_file_path);
 		}
 
 		// Ensure the file exist
 		if (!file_exists(JPATH_ROOT . DS . $file_path))
 		{
-			if (!file_exists(JPATH_ROOT . DS . $alt_file_path))
+			if ($alt_file_path == null || !file_exists(JPATH_ROOT . DS . $alt_file_path))
 			{
 				$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_FILE_NOT_FOUND') . ' ' . $file);
+				return;
 			}
 			else
 			{
 				$file_path = $alt_file_path;
+			}
+		}
+
+		// get full path, expanding ../
+		if ($realPath = realpath(JPATH_ROOT . DS . $file_path))
+		{
+			// make sure requested file is within acceptable dir
+			if (strpos($realPath, $pathCheck) === false)
+			{
+				$this->_errorHandler( 404, JText::_('COM_GROUPS_ERROR_FILE_NOT_FOUND') . ' ' . $file);
+				return;
 			}
 		}
 
