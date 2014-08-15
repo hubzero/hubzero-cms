@@ -917,7 +917,8 @@ class MembersModelRegistration
 
 		if ($registrationURL != REG_HIDE)
 		{
-			if (!empty($registration['web']) && !MembersHelperUtility::validurl($registration['web']))
+			$registration['web'] = trim($registration['web']);
+			if (!empty($registration['web']) && (strstr($registration['web'], ' ') || !MembersHelperUtility::validurl($registration['web'])))
 			{
 				$this->_invalid['web'] = 'Invalid web site URL. You may be using characters that are not allowed.';
 			}
