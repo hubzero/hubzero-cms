@@ -384,16 +384,16 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					<div class="grid">
 						<div class="col span9">
 							<label<?php echo (!empty($this->xregistration->_invalid['orcid']) ? ' class="fieldWithErrors"' : ''); ?>>
-								<?php echo JText::_('ORCID'); ?>: <?php echo ($this->registrationORCID == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+								<?php echo JText::_('COM_MEMBERS_ORCID'); ?>: <?php echo ($this->registrationORCID == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 								<input name="orcid" id="orcid" type="text" value="<?php echo $this->escape($this->registration['orcid']); ?>" />
 								<?php echo (!empty($this->xregistration->_invalid['orcid'])) ? '<span class="error">' . $this->xregistration->_invalid['orcid'] . '</span>' : ''; ?>
 							</label>
 						</div>
 						<div class="col span3 omega">
-							<a class="btn icon-search" id="orcid-fetch" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=orcid'); ?>"><?php echo JText::_('Find your ID'); ?></a>
+							<a class="btn icon-search" id="orcid-fetch" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=orcid'); ?>"><?php echo JText::_('COM_MEMBERS_REGISTER_FIND_ID'); ?></a>
 						</div>
 					</div>
-					<p>ORCID provides a persistent digital identifier that distinguishes you from every other researcher and supports automated linkages between you and your professional activities ensuring that your work is recognized. <a rel="external" href="http://orcid.org">Find out more.</a></p>
+					<p><img src="<?php echo $this->img('orcid-logo.png'); ?>" width="80" alt="ORCID" /> <?php echo JText::_('COM_MEMBERS_ORCID_EXPLANATION'); ?></p>
 				<?php } ?>
 
 				<?php if ($this->registrationURL != REG_HIDE) { ?>

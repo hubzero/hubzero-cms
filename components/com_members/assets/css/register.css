@@ -118,3 +118,7 @@
 	.account-activation ol {
 		list-style: decimal;
 	}
+	p img {
+		margin: 0 1em 1em 0;
+		float: left;
+	}
