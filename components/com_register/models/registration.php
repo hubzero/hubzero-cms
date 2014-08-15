@@ -912,13 +912,14 @@ class RegisterModelRegistration
 		}
 
 		if ($registrationURL != REG_HIDE)
-		{   
-			if (!empty($registration['web']) && !RegisterHelperUtility::validurl($registration['web']))
+		{
+			$registration['web'] = trim($registration['web']);
+			if (!empty($registration['web']) && (strstr($registration['web'], ' ') || !RegisterHelperUtility::validurl($registration['web'])))
 			{
 				$this->_invalid['web'] = 'Invalid web site URL. You may be using characters that are not allowed.';
 			}
 		}
-		
+
 		if ($registrationPhone == REG_REQUIRED)
 		{
 			if (empty($registration['phone']))
