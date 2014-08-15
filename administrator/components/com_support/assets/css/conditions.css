@@ -1,25 +1,27 @@
 /**
  * @package     hubzero-cms
- * @file        administrator/components/com_support/support.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        administrator/components/com_support/assets/css/conditions.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+	#item-form td fieldset {
+		border: none;
+		margin: 0;
+	}
+	#item-form fieldset>p .selector,
+	#item-form .input-wrap .selector {
+		width: auto;
+	}
+
 	.fields,
 	.query {
-		/*margin: 1em 0;
-		box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.2);
-		border-radius: 0.5em;
-		background: rgba(255, 255, 255, 0.6);*/
 		padding: 0.5em 1em 1em 1em;
-		
-		
 	}
 	.fields.sort {
 		padding-top: 1.5em;
 	}
 	.query {
-		
 	}
 	.query fieldset {
 		margin: 0;
@@ -31,7 +33,7 @@
 		margin: 0;
 		padding: 0.5em;
 	}
-	.query fieldset div {
+	.query fieldset div.querycntnr {
 		position: relative;
 	}
 	.query fieldset legend,
@@ -66,7 +68,7 @@
 		font-size: 18px;
 		padding-right: 0.2em;
 	}
-	.query fieldset div span {
+	.query fieldset div.querycntnr span.query-btns {
 		position: absolute;
 		bottom: 0.5em;
 		right: 0;
@@ -111,8 +113,6 @@
 		text-indent: 0;
 		font-size: 24px;
 		line-height: 17px;
-		/*font-weight: bold;
-		font-family: 'Fontcons';*/
 	}
 	html.chrome .query fieldset button.remove:before,
 	html.chrome .query fieldset button.add:before {
@@ -138,9 +138,6 @@
 		color: #cacaca;
 	}
 	.query .head {
-		/* for IE */
 		filter: alpha(opacity=50);
-		/* CSS 3 standard */
 		opacity: 0.5;
 	}
-	
