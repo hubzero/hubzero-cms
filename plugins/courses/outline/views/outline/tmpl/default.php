@@ -114,6 +114,12 @@ if (!$this->course->offering()->access('view')) { ?>
 						<p class="info">
 							Content for this unit will be available starting <?php echo JHTML::_('date', $unit->get('publish_up'), "F j, Y, g:i a T"); ?>.
 						</p>
+				<?php } elseif (!$isManager && $unit->ended()) { ?>
+					<div class="unit-availability comingSoon">
+						<!-- <p class="status">Coming soon</p> -->
+						<p class="info">
+							Content for this unit expired on <?php echo JHTML::_('date', $unit->get('publish_down'), "F j, Y, g:i a T"); ?>.
+						</p>
 				<?php } else { ?>
 					<div class="unit-availability">
 						
