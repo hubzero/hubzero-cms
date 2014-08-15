@@ -363,6 +363,11 @@ class Git
 				$return['status']  = 'fatal';
 				$return['message'] = trim(substr($response, stripos($response, 'fatal') + 6));
 			}
+			else if (stripos($response, 'error') !== false)
+			{
+				$return['status']  = 'fatal';
+				$return['message'] = trim(substr($response, stripos($response, 'error') + 6));
+			}
 			else
 			{
 				$return['status'] = 'unknown';
