@@ -77,7 +77,13 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-section"><?php echo JText::_('COM_KB_PARENT_CATEGORY'); ?>:</label><br />
-				<?php echo KbHelperHtml::sectionSelect($this->sections, $this->row->get('section'), 'fields[section]', 'field-section'); ?>
+				<select name="fields[section]" id="field-section">
+					<option value="0"><?php echo JText::_('COM_KB_SELECT_CATEGORY'); ?></option>
+					<?php foreach ($this->sections as $section) { ?>
+						<?php if ($section->get('id') == $this->row->get('id')) { continue; } ?>
+						<option value="<?php echo $section->get('id'); ?>" <?php if ($this->row->get('section') == $section->get('id')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+					<?php } ?>
+				</select>
 			</div>
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_KB_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
