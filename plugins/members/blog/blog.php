@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     hubzero-cms
- * @author      Alissa Nedossekina <alisa@purdue.edu>
+ * @author      Shawn Rice <zooley@purdue.edu>
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  *
@@ -238,7 +238,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$start = false;
 			foreach ($path as $bit)
 			{
-				if ($bit == 'members' && !$start)
+				if ($bit == $this->_name && !$start)
 				{
 					$start = true;
 					continue;
@@ -248,11 +248,11 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 					$paths[] = $bit;
 				}
 			}
-			if (count($paths) >= 2)
+			/*if (count($paths) >= 1)
 			{
-				array_shift($paths);  // Remove member ID
+				//array_shift($paths);  // Remove member ID
 				array_shift($paths);  // Remove 'blog'
-			}
+			}*/
 			$path = $paths;
 		}
 
