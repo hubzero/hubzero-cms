@@ -28,4 +28,7 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
+	<fieldset name="basic">
+		<field name="system_user" type="text" menu="hide" default="hubadmin" label="COM_UPDATE_SYSTEM_USER_LABEL" description="COM_UPDATE_SYSTEM_USER_DESC" size="50" />
+	</fieldset>
 </config>

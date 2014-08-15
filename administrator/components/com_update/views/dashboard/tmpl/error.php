@@ -31,43 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$option = 'com_update';
+JToolBarHelper::title(JText::_('CMS Updater: Dashboard'));
+JToolBarHelper::preferences($this->option, '550');
+?>
 
-if (!JFactory::getUser()->authorise('core.manage', $option))
-{
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-}
-
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'cli.php';
-
-$controllerName = JRequest::getCmd('controller', 'dashboard');
-
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	$controllerName = 'dashboard';
-}
-
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php';
-
-$controllerName = 'UpdateController' . ucfirst(strtolower($controllerName));
-
-JSubMenuHelper::addEntry(
-	JText::_('Dashboard'),
-	'index.php?option='.$option.'&controller=dashboard',
-	$controllerName == 'UpdateControllerDashboard'
-);
-JSubMenuHelper::addEntry(
-	JText::_('Repository'),
-	'index.php?option='.$option.'&controller=repository',
-	$controllerName == 'UpdateControllerRepository'
-);
-JSubMenuHelper::addEntry(
-	JText::_('Database'),
-	'index.php?option='.$option.'&controller=database',
-	$controllerName == 'UpdateControllerDatabase'
-);
-
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+<p class="error">
+	<?php echo $this->message; ?>
+</p>

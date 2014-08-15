@@ -64,6 +64,17 @@ class UpdateControllerDashboard extends \Hubzero\Component\AdminController
 		$this->view->upcoming  = json_decode(cli::update(true));
 		$this->view->migration = json_decode(cli::migration());
 
+		if (!isset($this->view->repositoryMechanism))
+		{
+			$this->view->message = 'Please ensure that the component is properly configured';
+			$this->view->setLayout('error');
+		}
+		elseif ($this->view->repositoryMechanism != 'GIT')
+		{
+			$this->view->message = 'The CMS update component currently only supports repositories managed via GIT';
+			$this->view->setLayout('error');
+		}
+
 		// Output the HTML
 		$this->view->display();
 	}

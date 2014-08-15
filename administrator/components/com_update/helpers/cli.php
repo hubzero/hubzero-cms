@@ -43,7 +43,14 @@ class cli
 	 **/
 	public static function version()
 	{
-		return self::call('', 'repository', array('--version'));
+		static $version = null;
+
+		if (!isset($version))
+		{
+			$version = self::call('', 'repository', array('--version'));
+		}
+
+		return $version;
 	}
 
 	/**
@@ -53,7 +60,14 @@ class cli
 	 **/
 	public static function mechanism()
 	{
-		return self::call('', 'repository', array('--mechanism'));
+		static $mechanism = null;
+
+		if (!isset($mechanism))
+		{
+			$mechanism = self::call('', 'repository', array('--mechanism'));
+		}
+
+		return $mechanism;
 	}
 
 	/**
@@ -180,7 +194,14 @@ class cli
 	 **/
 	private static function call($cmd, $task='repository', $args=array())
 	{
-		$cmd = 'sudo ' . JPATH_ROOT . DS . 'cli' . DS . 'muse.php' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
+		static $user = null;
+
+		if (!isset($user))
+		{
+			$user = \JComponentHelper::getParams('com_update')->get('system_user', 'hubadmin');
+		}
+
+		$cmd = '/usr/bin/sudo -u ' . $user . ' ' . JPATH_ROOT . DS . 'cli' . DS . 'muse.php' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
 
 		return shell_exec($cmd);
 	}
