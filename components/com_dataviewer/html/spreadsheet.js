@@ -612,36 +612,39 @@ jQuery(document).ready(function($) {
 
 	// Search and Page number position
 	function update_pos() {
-		$('#dv-spreadsheet-tbl_wrapper .dataTables_filter').css("position","absolute");
-		$('#dv-spreadsheet-tbl_wrapper .dataTables_info').css("position","absolute");
-		$('#dv-spreadsheet-tbl_wrapper .dataTables_paginate').last().css("position","absolute");
-		$('#dv-spreadsheet-tbl_wrapper .dataTables_paginate').first().css("position","absolute");
-		$('#dv_ss_charts_container .dv_ss_charts').css("position","absolute");
-
+		var left_min = 200;
+		var scroll_left = $(document).scrollLeft();
 		var ww = $(window).width();
 		var sw = $('#dv-spreadsheet-tbl_wrapper.dataTables_wrapper').width();
 
+		var sstm = parseInt((scroll_left + $('#dv-spreadsheet-tbl_wrapper .dataTables_filter').position().left)/2) - 110;
+
 		var searchw = $('#dv-spreadsheet-tbl_wrapper .dataTables_filter').width();
 
-		var ssr = $(document).scrollLeft() + ww - searchw - 40;
+		var ssr = scroll_left + ww - searchw - 40;
+		ssr = ((sstm + 450) < ssr) ? ssr : sstm + 450;
 		if ((ssr + searchw) > sw) {
 			ssr = sw - searchw - 5;
 		}
+
 		$('#dv-spreadsheet-tbl_wrapper .dataTables_filter').css('left', ssr + 'px');
 
 		var pagew = $('#dv-spreadsheet-tbl_wrapper .dataTables_paginate').last().width();
-		var spr = $(document).scrollLeft() + ww - pagew - 45;
+		var spr = scroll_left + ww - pagew - 45;
+		spr = ((sstm + 400) < spr) ? spr : sstm + 400;
 		if ((spr + pagew) > sw) {
 			spr = sw - pagew - 45;
 		}
+
 		$('#dv-spreadsheet-tbl_wrapper .dataTables_paginate').last().css('left', spr + 'px');
 
-		var sstm = parseInt(($(document).scrollLeft() + $('#dv-spreadsheet-tbl_wrapper .dataTables_filter').position().left)/2) - 110;
-		var ssbm = parseInt(($(document).scrollLeft() + $('#dv-spreadsheet-tbl_wrapper .dataTables_paginate').last().position().left)/2) - 80;
-//		$('#dv-spreadsheet-tbl_wrapper .dataTables_info').first().css('left', sstm + 'px');
-		$('#dv-spreadsheet-tbl_wrapper .dataTables_info').last().css('left', ssbm + 'px');
+		sstm = (left_min < sstm) ? sstm : left_min;
+
+		var ssbm = parseInt((scroll_left + $('#dv-spreadsheet-tbl_wrapper .dataTables_paginate').last().position().left)/2) - 80;
+
 		$('#dv-spreadsheet-tbl_wrapper .dataTables_paginate').first().css('left', sstm + 'px');
-		$('#dv_ss_charts_container .dv_ss_charts').css("left", $(document).scrollLeft() + 20 + 'px');
+		$('#dv-spreadsheet-tbl_wrapper .dataTables_info').last().css('left', ssbm + 'px');
+		$('#dv_ss_charts_container .dv_ss_charts').css("left", scroll_left + 20 + 'px');
 
 		move_filters();
 	}

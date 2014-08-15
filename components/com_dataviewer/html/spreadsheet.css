@@ -271,3 +271,14 @@ a.dv-link > i.icon-external-link {
 table#dv-spreadsheet-tbl {
 	max-width: none !important;
 }
+
+
+/* Floating dataview controls */
+div#dv-spreadsheet-tbl_filter, div#dv-spreadsheet-tbl_info, #dv-spreadsheet-tbl_wrapper .dataTables_paginate {
+	position: absolute;
+}
+
+#dv_ss_charts_container .dv_ss_charts {
+	position: absolute;
+}
+
