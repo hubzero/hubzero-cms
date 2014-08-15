@@ -187,6 +187,12 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 									Content for this unit will be available starting <?php echo JHTML::_('date', $unit->get('publish_up'), "F j, Y, g:i a T"); ?>.
 								</p>
 							</div>
+				<?php } elseif (!$isManager && $unit->ended()) { ?>
+							<div class="grid">
+								<p class="info">
+									Content for this unit expired on <?php echo JHTML::_('date', $unit->get('publish_down'), "F j, Y, g:i a T"); ?>.
+								</p>
+							</div>
 				<?php } else if (!$isManager && !$prerequisites->hasMet('unit', $unit->get('id'))) { ?>
 							<div class="grid">
 								<p class="info">
