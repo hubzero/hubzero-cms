@@ -34,7 +34,7 @@ $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CR
 
 JToolBarHelper::title(JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TICKET') . ': ' . $text, 'support.png');
 JToolBarHelper::save();
-JToolBarHelper::apply();
+//JToolBarHelper::apply();
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('ticket');
