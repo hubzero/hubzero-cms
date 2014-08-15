@@ -38,9 +38,9 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if ($('pagetitle').value == '') {
+	if ($('#pagetitle').val() == '') {
 		alert(<?php echo JText::_('COM_WIKI_ERROR_MISSING_TITLE'); ?>);
-	} else if ($('pagename').value == '') {
+	} else if ($('#pagename').val() == '') {
 		alert(<?php echo JText::_('COM_WIKI_ERROR_MISSING_PAGENAME'); ?>);
 	} else {
 		submitform(pressbutton);
@@ -79,14 +79,14 @@ function submitbutton(pressbutton)
 			<div class="clr"></div>
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_WIKI_FIELD_AUTHORS_HINT'); ?>">
-				<label for="authors"><?php echo JText::_('COM_WIKI_FIELD_AUTHORS'); ?>:</label><br />
-				<textarea name="page[authors]" id="pageauthors" col="35" rows="3"><?php echo $this->escape($this->row->authors('string')); ?></textarea>
+				<label for="pageauthors"><?php echo JText::_('COM_WIKI_FIELD_AUTHORS'); ?>:</label><br />
+				<textarea name="page[authors]" id="pageauthors" cols="35" rows="3"><?php echo $this->escape($this->row->authors('string')); ?></textarea>
 				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_AUTHORS_HINT'); ?></span>
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?>">
 				<label for="field-tags"><?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:</label><br />
-				<textarea name="page[tags]" id="field-tags" col="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
+				<textarea name="page[tags]" id="field-tags" cols="35" rows="3"><?php echo $this->escape(stripslashes($this->row->tags('string'))); ?></textarea>
 				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
 			</div>
 		</fieldset>
@@ -124,7 +124,7 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="state"><?php echo JText::_('COM_WIKI_FIELD_STATE'); ?>:</label><br />
+				<label for="pagestate"><?php echo JText::_('COM_WIKI_FIELD_STATE'); ?>:</label><br />
 				<select name="page[state]" id="pagestate">
 					<option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WIKI_STATE_OPEN'); ?></option>
 					<option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WIKI_STATE_LOCKED'); ?></option>

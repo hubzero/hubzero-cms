@@ -132,7 +132,10 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
 
 		$id = JRequest::getVar('id', array(0));
-		$id = intval($id[0]);
+		if (is_array($id))
+		{
+			$id = (!empty($id) ? $id[0] : 0);
+		}
 
 		$this->view->row = new SupportQuery($this->database);
 		$this->view->row->load($id);
@@ -276,7 +279,9 @@ class SupportControllerQueries extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$ids     = JRequest::getVar('id', array());
+		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
 		$no_html = JRequest::getInt('no_html', 0);
 		$tmpl    = JRequest::getVar('component', '');
 

@@ -106,8 +106,6 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -115,7 +113,11 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$id = JRequest::getInt('id', 0);
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? $id[0] : 0);
+			}
 
 			// Initiate database class and load info
 			$this->view->row = new SupportMessage($this->database);
@@ -129,7 +131,17 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
+	}
+
+	/**
+	 * Save changes to a record and return to edit form
+	 *
+	 * @return	void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
 	}
 
 	/**
@@ -137,7 +149,7 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 	 *
 	 * @return	void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -175,11 +187,16 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Output messsage and redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SUPPORT_MESSAGE_SUCCESSFULLY_SAVED')
-		);
+		if ($redirect)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_SUPPORT_MESSAGE_SUCCESSFULLY_SAVED')
+			);
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
@@ -194,6 +211,7 @@ class SupportControllerMessages extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
