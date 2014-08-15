@@ -115,11 +115,11 @@ class NewsletterMailing extends JTable
 		parent::__construct( '#__newsletter_mailings', 'id', $db );
 	}
 
-	public function getMailings( $id = null )
+	public function getMailings( $id = null, $nid = null )
 	{
 		$sql = "SELECT * FROM {$this->_tbl} WHERE deleted=0";
 
-		if($id)
+		if ($id)
 		{
 			$sql .= " AND id=".$id;
 			$this->_db->setQuery($sql);
@@ -127,6 +127,11 @@ class NewsletterMailing extends JTable
 		}
 		else
 		{
+			if (isset($nid))
+			{
+				$sql .= " AND nid=" . $this->_db->quote($nid);
+			}
+
 			$sql .= " ORDER BY date DESC";
 			$this->_db->setQuery($sql);
 			return $this->_db->loadObjectList();

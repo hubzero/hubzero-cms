@@ -636,6 +636,17 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$newsletterMailinglist = new NewsletterMailinglist($this->database);
 		$this->view->mailinglists = $newsletterMailinglist->getLists();
 
+		//get the mailings
+		$newsletterMailing = new NewsletterMailing($this->database);
+		$this->view->mailings = $newsletterMailing->getMailings(null, $id);
+
+		// get # left to send
+		foreach ($this->view->mailings as $k => $mailing)
+		{
+			$this->database->setQuery("SELECT COUNT(*) FROM `#__newsletter_mailing_recipients` WHERE mid=" . $this->database->quote($mailing->id) . " AND status='queued'");
+			$mailing->queueCount = $this->database->loadResult();
+		}
+
 		//check if we have any errors
 		if ($this->getError())
 		{
