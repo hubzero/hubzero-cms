@@ -168,15 +168,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row->code); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_JOBS_PUBLISH_INFO'); ?>::<?php echo $info; ?>">
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_JOBS_PUBLISH_INFO'); ?>::<?php echo $info; ?>">
-						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_JOBS_PUBLISH_INFO'); ?>::<?php echo $info; ?>">
+							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="editlinktip hasTip" title="<?php echo JText::_('COM_JOBS_PUBLISH_INFO'); ?>::<?php echo $info; ?>">
+							<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<span class="glyph company"><?php echo $this->escape($row->companyName); ?></span>, <br />

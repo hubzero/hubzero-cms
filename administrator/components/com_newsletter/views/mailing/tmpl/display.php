@@ -70,10 +70,10 @@ Joomla.submitbutton = function(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="30"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->mailings); ?>);" /></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_MAILING_DATE'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->mailings); ?>);" /></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILING_DATE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILING_PERCENT_COMPLETE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -113,8 +113,11 @@ Joomla.submitbutton = function(pressbutton)
 			<?php endif; ?>
 		</tbody>
 	</table>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

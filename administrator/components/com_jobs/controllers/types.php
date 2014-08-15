@@ -168,8 +168,6 @@ class JobsControllerTypes extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -178,7 +176,7 @@ class JobsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			// Incoming (expecting an array)
 			$id = JRequest::getVar('id', array(0));
-			$id = (is_array($id)) ? $id[0] : 0;
+			$id = (is_array($id)) ? $id[0] : $id;
 
 			// Load the object
 			$this->view->row = new JobType($this->database);
@@ -195,7 +193,7 @@ class JobsControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -244,6 +242,7 @@ class JobsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Incoming (expecting an array)
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
 		if (empty($ids))

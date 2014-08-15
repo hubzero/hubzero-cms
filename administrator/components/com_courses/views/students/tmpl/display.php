@@ -173,26 +173,26 @@ foreach ($this->rows as $row)
 					<?php echo $this->escape($row->get('user_id')); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo $this->escape(stripslashes($row->get('name'))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->get('name'))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id=<?php echo $row->get('id'); ?>">
+							<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id[]=<?php echo $row->get('id'); ?>">
-						<?php echo $this->escape(stripslashes($row->get('email'))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->get('email'))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id=<?php echo $row->get('id'); ?>">
+							<?php echo $this->escape(stripslashes($row->get('email'))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->get('email'))); ?>
+						</span>
+					<?php } ?>
 				</td>
 			<?php if (!$this->filters['offering']) { ?>
 				<td>
@@ -208,11 +208,11 @@ foreach ($this->rows as $row)
 					</span>
 				</td>
 				<td>
-				<?php if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') { ?>
-					<?php echo JHTML::_('date', $row->get('enrolled'), JText::_('DATE_FORMAT_HZ1')); ?>
-				<?php } else { ?>
-					<?php echo JText::_('(unknown)'); ?>
-				<?php } ?>
+					<?php if ($row->get('enrolled') && $row->get('enrolled') != '0000-00-00 00:00:00') { ?>
+						<time datetime="<?php echo $row->get('enrolled'); ?>"><?php echo JHTML::_('date', $row->get('enrolled'), JText::_('DATE_FORMAT_HZ1')); ?></time>
+					<?php } else { ?>
+						<?php echo JText::_('COM_COURSES_UNKNOWN'); ?>
+					<?php } ?>
 				</td>
 			</tr>
 <?php

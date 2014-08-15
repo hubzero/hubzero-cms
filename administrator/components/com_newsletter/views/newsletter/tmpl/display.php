@@ -90,23 +90,23 @@ Joomla.submitbutton = function(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->newsletters); ?>);" /></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_NAME'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_PUBLIC'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SENT'); ?></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_TRACKING'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->newsletters); ?>);" /></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_NAME'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_PUBLIC'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_SENT'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_TRACKING'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php if (count($this->newsletters) > 0) : ?>
 				<?php foreach ($this->newsletters as $k => $newsletter) : ?>
 					<tr>
-						<td width="30px">
-							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $newsletter->id; ?>" onclick="isChecked(this.checked);" />
+						<td>
+							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $newsletter->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
-						<td><?php echo $newsletter->name; ?></td>
+						<td><?php echo $this->escape($newsletter->name); ?></td>
 						<td><?php echo ($newsletter->type == 'html') ? JText::_('COM_NEWSLETTER_FORMAT_HTML') : JText::_('COM_NEWSLETTER_FORMAT_PLAIN'); ?></td>
 						<td>
 							<?php
@@ -129,25 +129,25 @@ Joomla.submitbutton = function(pressbutton)
 								echo ($activeTemplate) ? $activeTemplate : JText::_('COM_NEWSLETTER_NO_TEMPLATE_FOUND');
 							?>
 						</td>
-						<td width="50px">
+						<td>
 							<?php if ($newsletter->published) : ?>
-								<font color="green"><?php echo JText::_('JYES'); ?></font>
+								<span style="color: green;"><?php echo JText::_('JYES'); ?></span>
 							<?php else : ?>
-								<font color="red"><?php echo JText::_('JNO'); ?></font>
+								<span style="color: red;"><?php echo JText::_('JNO'); ?></span>
 							<?php endif; ?>
 						</td>
-						<td width="50px">
+						<td>
 							<?php if ($newsletter->sent) : ?>
-								<font color="green"><?php echo JText::_('JYES'); ?></font>
+								<span style="color: green;"><?php echo JText::_('JYES'); ?></span>
 							<?php else : ?>
-								<font color="red"><?php echo JText::_('JNO'); ?></font>
+								<span style="color: red;"><?php echo JText::_('JNO'); ?></span>
 							<?php endif; ?>
 						</td>
-						<td width="50px">
+						<td>
 							<?php if ($newsletter->tracking) : ?>
 								<strong><?php echo JText::_('JYES'); ?></strong>
 							<?php else : ?>
-								<em><font color="red"><?php echo JText::_('JNO'); ?></font></em>
+								<em><span style="color: red;"><?php echo JText::_('JNO'); ?></span></em>
 							<?php endif; ?>
 						</td>
 					</tr>
@@ -162,8 +162,11 @@ Joomla.submitbutton = function(pressbutton)
 			<?php endif; ?>
 		</tbody>
 	</table>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="add" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

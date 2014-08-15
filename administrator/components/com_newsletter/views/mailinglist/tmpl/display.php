@@ -44,13 +44,11 @@ JToolBarHelper::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT');
 JToolBarHelper::spacer();
 JToolBarHelper::preferences($this->option, '550');
 ?>
-
-
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->lists); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->lists); ?>);" /></th>
 				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_NAME'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_PRIVACY'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_ACTIVE_SUBSCRIBERS'); ?></th>
@@ -61,7 +59,7 @@ JToolBarHelper::preferences($this->option, '550');
 			<?php if (count($this->lists) > 0) : ?>
 				<?php foreach ($this->lists as $k => $list) : ?>
 					<tr>
-						<td width="30">
+						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $list->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
@@ -89,8 +87,11 @@ JToolBarHelper::preferences($this->option, '550');
 			<?php endif; ?>
 		</tbody>
 	</table>
+
 	<input type="hidden" name="option" value="com_newsletter" />
 	<input type="hidden" name="controller" value="mailinglist" />
 	<input type="hidden" name="task" value="add" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

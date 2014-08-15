@@ -205,19 +205,15 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$id = JRequest::getVar('id', array(0));
 
 			// Get the single ID we're working with
-			if (is_array($ids))
+			if (is_array($id))
 			{
-				$id = (!empty($ids)) ? $ids[0] : 0;
-			}
-			else
-			{
-				$id = 0;
+				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$course_id = $this->view->offering->get('course_id');
+			$course_id  = $this->view->offering->get('course_id');
 			$section_id = $this->view->offering->section()->get('id');
 
 			$this->view->row = CoursesModelStudent::getInstance($id, null, null, null); //, $course_id, $offering, $section_id);
@@ -374,16 +370,10 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
+
 		$offering_id = JRequest::getInt('offering', 0);
 		$section_id  = JRequest::getInt('section', 0);
-
-		//$offering = CoursesModelOffering::getInstance($offering_id);
-
-		// Get the single ID we're working with
-		if (!is_array($ids))
-		{
-			$ids = array();
-		}
 
 		$num = 0;
 
@@ -433,7 +423,6 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : '')
 		);
 	}
-
 
 	/**
 	 * Save students info as CSV file
@@ -485,5 +474,4 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		// Output the CSV
 		$this->view->display();
 	}
-
 }

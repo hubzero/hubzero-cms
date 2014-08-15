@@ -80,15 +80,15 @@ if ($this->rows)
 					<?php echo $this->escape($avalue); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $avalue; ?>">
-						<span><?php echo $this->escape($alabel); ?></span>
-					</a>
-				<?php } else { ?>
-					<span>
-						<span><?php echo $this->escape($alabel); ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $avalue; ?>">
+							<span><?php echo $this->escape($alabel); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $this->escape($alabel); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
 <?php

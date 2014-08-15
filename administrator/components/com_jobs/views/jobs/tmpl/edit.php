@@ -201,12 +201,12 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_JOBS_FIELD_EXTERNAL_URL_HINT'); ?>">
 				<label for="applyExternalUrl"><?php echo JText::_('COM_JOBS_FIELD_EXTERNAL_URL'); ?>:</label><br />
-				<input type="text" name="applyExternalUrl" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->applyExternalUrl)); ?>" />
+				<input type="text" name="applyExternalUrl" id="applyExternalUrl" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->applyExternalUrl)); ?>" />
 				<span class="hint"><?php echo JText::_('COM_JOBS_FIELD_EXTERNAL_URL_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">
-				<input type="checkbox" class="option" name="applyInternal" value="1" <?php if ($this->row->applyInternal) { echo 'checked="checked"'; } ?>  />
-				<label><?php echo JText::_('COM_JOBS_FIELD_APPLY_INTERNAL'); ?></label>
+				<input type="checkbox" class="option" name="applyInternal" id="applyInternal" value="1" <?php if ($this->row->applyInternal) { echo 'checked="checked"'; } ?>  />
+				<label for="applyInternal"><?php echo JText::_('COM_JOBS_FIELD_APPLY_INTERNAL'); ?></label>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
@@ -217,11 +217,11 @@ function submitbutton(pressbutton)
 				<input type="text" name="contactName" id="contactName" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactName)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="contactEmail"><?php echo JText::_('COM_JOBS_FIELD_CONTACT_EMAIL'); ?>:</label></th>
+				<label for="contactEmail"><?php echo JText::_('COM_JOBS_FIELD_CONTACT_EMAIL'); ?>:</label>
 				<input type="text" name="contactEmail" id="contactEmail" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactEmail)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="contactPhone"><?php echo JText::_('COM_JOBS_FIELD_CONTACT_PHONE'); ?>:</label></th>
+				<label for="contactPhone"><?php echo JText::_('COM_JOBS_FIELD_CONTACT_PHONE'); ?>:</label>
 				<input type="text" name="contactPhone" id="contactPhone" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->contactPhone)); ?>" />
 			</div>
 		</fieldset>

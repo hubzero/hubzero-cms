@@ -53,22 +53,22 @@ JToolBarHelper::preferences($this->option, '550');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->templates); ?>);" /></th>
-				<th><?php echo JText::_('COM_NEWSLETTER_TEMPLATE'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->templates); ?>);" /></th>
+				<th scope="col"><?php echo JText::_('COM_NEWSLETTER_TEMPLATE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php if (count($this->templates) > 0) : ?>
 				<?php foreach ($this->templates as $k => $template) : ?>
 					<tr>
-						<td width="30">
+						<td>
 							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $template->id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
 							<?php echo $template->name; ?>
 							<?php if (!$template->editable) : ?>
 								<br />
-								<span class="hint"><?php echo JText::_('This template is not editable or deletable. Copy it to create a new template.'); ?></span>
+								<span class="hint"><?php echo JText::_('COM_NEWSLETTER_TEMPLATE_NOT_EDITABLE_OR_DELETABLE'); ?></span>
 							<?php endif; ?>
 						</td>
 					</tr>
@@ -83,8 +83,11 @@ JToolBarHelper::preferences($this->option, '550');
 			<?php endif; ?>
 		</tbody>
 	</table>
+
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="add" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

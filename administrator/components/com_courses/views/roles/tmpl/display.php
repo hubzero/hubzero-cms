@@ -58,7 +58,7 @@ JToolBarHelper::help('roles');
 	</fieldset>
 	<div class="clr"></div>
 
-	<table class="adminlist"
+	<table class="adminlist">
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
@@ -92,7 +92,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
 						<span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
 					</a>
 				<?php } else { ?>
@@ -103,7 +103,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
 				<?php } else { ?>

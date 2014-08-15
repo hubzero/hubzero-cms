@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 		<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 		<div class="input-wrap">
-			<label for="type"><?php echo JText::_('COM_JOBS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+			<label for="category"><?php echo JText::_('COM_JOBS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 			<input type="text" name="category" id="category" size="30" maxlength="100" value="<?php echo $this->escape(stripslashes($this->row->category)); ?>" />
 		</div>
 		<div class="input-wrap">

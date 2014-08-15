@@ -311,12 +311,6 @@ class CoursesControllerUnits extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		// Get the single ID we're working with
-		if (!is_array($ids))
-		{
-			$ids = array();
-		}
-
 		$num = 0;
 
 		// Do we have any IDs?

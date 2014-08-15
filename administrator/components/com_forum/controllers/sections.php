@@ -131,22 +131,18 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		// Incoming
-		$ids = JRequest::getVar('id', array());
-		$id = 0;
-		if (is_array($ids) && !empty($ids))
-		{
-			$id = intval($ids[0]);
-		}
-
 		if (is_object($row))
 		{
 			$this->view->row = $row;
 		}
 		else
 		{
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? intval($id[0]) : 0);
+			}
+
 			// load infor from database
 			$this->view->row = new ForumModelSection($id);
 		}
@@ -166,7 +162,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -235,6 +231,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
@@ -318,6 +315,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -379,6 +377,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 		// Incoming
 		$state = JRequest::getInt('access', 0);
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)

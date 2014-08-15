@@ -203,7 +203,7 @@ function submitbutton(pressbutton)
 if ($this->results)
 {
 	$k = 0;
-	for ($i=0, $n=count( $this->results ); $i < $n; $i++)
+	for ($i=0, $n=count($this->results); $i < $n; $i++)
 	{
 		$row =& $this->results[$i];
 		switch ($row->state)
@@ -263,26 +263,26 @@ if ($this->results)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape(stripslashes($row->title)); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->title)); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->title)); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $cls; ?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $cls; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<span class="access <?php echo $color_access; ?>">
@@ -290,33 +290,31 @@ if ($this->results)
 					</span>
 				</td>
 				<td>
-				<?php //if ($this->escape($row->group_alias)) { ?>
 					<span class="scope">
 						<span><?php echo isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope) . ' (' . $this->escape($row->scope_id) . ')'; ?></span>
 					</span>
-				<?php //} ?>
 				</td>
 				<td>
-				<?php if ($row->threads > 0) { ?>
-					<a class="glyph thread" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<? echo $row->id; ?>" title="<?php echo JText::_('COM_FORUM_VIEW_THREADS_FOR'); ?>">
-						<span><?php echo $row->threads; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="glyph thread">
-						<span><?php echo $row->threads; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($row->threads > 0) { ?>
+						<a class="glyph thread" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_FORUM_VIEW_THREADS_FOR'); ?>">
+							<span><?php echo $row->threads; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="glyph thread">
+							<span><?php echo $row->threads; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($row->posts > 0) { ?>
-					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<? echo $row->id; ?>" title="<?php echo JText::_('COM_FORUM_VIEW_POSTS_FOR'); ?>">
-						<span><?php echo $row->posts; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="glyph comment">
-						<span><?php echo $row->posts; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($row->posts > 0) { ?>
+						<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_FORUM_VIEW_POSTS_FOR'); ?>">
+							<span><?php echo $row->posts; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="glyph comment">
+							<span><?php echo $row->posts; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 			</tr>
 <?php
@@ -334,5 +332,5 @@ if ($this->results)
 	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

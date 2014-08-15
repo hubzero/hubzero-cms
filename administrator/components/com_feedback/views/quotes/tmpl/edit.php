@@ -160,7 +160,7 @@ jQuery(document).ready(function($) {
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_FEEDBACK_USER_ID_EXPLANATION'); ?>">
 				<label for="field-user_id"><?php echo JText::_('COM_FEEDBACK_USER_ID'); ?>:</label><br />
-				<input type="text" name="user_id" id="field-user_id" value="<?php echo $this->escape(stripslashes($this->row->user_id)); ?>" <?php if ($this->row->id && $this->row->user_id!=0) { echo 'readonly="true"'; } ?> />
+				<input type="text" name="user_id" id="field-user_id" value="<?php echo $this->escape(stripslashes($this->row->user_id)); ?>" <?php if ($this->row->id && $this->row->user_id!=0) { echo 'readonly="readonly"'; } ?> />
 				<?php
 					if (!$this->row->id) {
 						echo '<span class="hint">' . JText::_('COM_FEEDBACK_USER_ID_EXPLANATION') . '</span>';
@@ -172,10 +172,10 @@ jQuery(document).ready(function($) {
 				<legend><?php echo JText::_('COM_FEEDBACK_AUTHOR_CONSENTS'); ?>:</legend>
 
 				<div class="input-wrap">
-					<input type="checkbox" name="publish_ok" id="publish_ok" value="1" <?php if ($this->row->publish_ok == 1) { echo ' checked="checked"'; } if ($this->row->id) { echo ('disabled="disabled"'); } ?>  />
+					<input type="checkbox" name="publish_ok" id="publish_ok" value="1" <?php if ($this->row->publish_ok == 1) { echo ' checked="checked"'; } if ($this->row->id) { echo (' disabled="disabled"'); } ?>  />
 					<label for="publish_ok"><?php echo JText::_('COM_FEEDBACK_AUTHOR_CONSENT_PUBLISH'); ?></label><br />
 
-					<input type="checkbox" name="contact_ok" id="contact_ok" value="1" <?php if ($this->row->contact_ok == 1) { echo ' checked="checked"'; } if ($this->row->id) { echo ('disabled="disabled"'); } ?> />
+					<input type="checkbox" name="contact_ok" id="contact_ok" value="1" <?php if ($this->row->contact_ok == 1) { echo ' checked="checked"'; } if ($this->row->id) { echo (' disabled="disabled"'); } ?> />
 					<label for="contact_ok"><?php echo JText::_('COM_FEEDBACK_AUTHOR_CONSENT_CONTACT'); ?></label>
 				</div>
 			</fieldset>

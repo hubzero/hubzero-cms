@@ -221,16 +221,8 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		// Incoming
 		$section = JRequest::getInt('section_id', 0);
-		$id = 0;
-		$ids = JRequest::getVar('id', array());
-		if (is_array($ids) && !empty($ids))
-		{
-			$id = intval($ids[0]);
-		}
 
 		$this->view->section = new ForumTableSection($this->database);
 		$this->view->section->load($section);
@@ -241,6 +233,12 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 		}
 		else
 		{
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? intval($id[0]) : 0);
+			}
+
 			$this->view->row = new ForumTableCategory($this->database);
 			$this->view->row->load($id);
 		}
@@ -292,7 +290,7 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -361,7 +359,9 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$section = JRequest::getInt('section_id', 0);
+
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
@@ -431,7 +431,9 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$section = JRequest::getInt('section_id', 0);
+
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -488,8 +490,10 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$section = JRequest::getInt('section_id', 0);
-		$state = JRequest::getInt('access', 0);
+		$state   = JRequest::getInt('access', 0);
+
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)

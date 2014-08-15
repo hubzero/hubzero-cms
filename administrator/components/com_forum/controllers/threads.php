@@ -388,12 +388,12 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
+		$id = JRequest::getVar('id', array(0));
 		$parent = JRequest::getInt('parent', 0);
 		$this->view->parent = $parent;
-		if (is_array($ids))
+		if (is_array($id))
 		{
-			$id = intval($ids[0]);
+			$id = intval($id[0]);
 		}
 
 		// Incoming
@@ -679,7 +679,9 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$category = JRequest::getInt('category_id', 0);
+
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (count($ids) > 0)
@@ -739,7 +741,9 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$category = JRequest::getInt('category_id', 0);
+
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -796,8 +800,10 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$category = JRequest::getInt('category_id', 0);
-		$state = JRequest::getInt('sticky', 0);
+		$state    = JRequest::getInt('sticky', 0);
+
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -854,8 +860,10 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$category = JRequest::getInt('category_id', 0);
-		$state = JRequest::getInt('access', 0);
+		$state    = JRequest::getInt('access', 0);
+
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
