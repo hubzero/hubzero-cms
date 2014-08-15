@@ -420,7 +420,8 @@ class GroupsHelperPages
 			$layout = ($version === null) ? '_view_notapproved' : '_view_unpublished';
 			
 			// show unpublished or no version layout
-			if ($authorized == 'manager')
+			if ($authorized == 'manager'
+				|| \Hubzero\User\Profile::userHasPermissionForGroupAction($group, 'group.pages'))
 			{
 				$view->setLayout($layout);
 				$view->group   = $group;

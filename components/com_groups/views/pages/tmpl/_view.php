@@ -59,7 +59,8 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 
 <div class="group-page page-<?php echo $this->page->get('alias'); ?>">
 	
-	<?php if ($newerVersion && $this->authorized == 'manager') : ?>
+	<?php if ($newerVersion 
+			&& ($this->authorized == 'manager' || \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages'))) : ?>
 		<div class="group-page group-page-notice notice-info">
 			<h4>Newer Version Pending Approval</h4>
 			<p>A newer version of this page has been submitted and is pending approval from a site administrator. Approvals are made during normal business hours Monday - Friday 8am to 5pm <abbr title="Eastern Standard Time">EST</abbr>.</p>
@@ -115,7 +116,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest')) ||
 			<?php endif; ?>
 		</div> 
 		
-		<?php if ($this->authorized == 'manager') : ?>
+		<?php if ($this->authorized == 'manager' || \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
 			<div class="page-controls col span2 omega">
 				<ul class="page-controls">
 				<?php if ($this->page->get('id') != 0) : ?>
