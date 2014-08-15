@@ -491,7 +491,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		// Create a new support comment object and populate it
 		$rowc = new SupportModelComment();
-		$rowc->set('ticket', $id);
+		$rowc->set('ticket', $row->get('id'));
 		$rowc->set('comment', nl2br($comment));
 		$rowc->set('created', JFactory::getDate()->toSql());
 		$rowc->set('created_by', $this->juser->get('id'));

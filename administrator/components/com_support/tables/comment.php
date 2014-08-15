@@ -106,14 +106,14 @@ class SupportComment extends JTable
 		$this->comment = trim($this->comment);
 		if (!$this->comment && trim($this->changelog) == '')
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_COMMENT'));
+			$this->setError(JText::_('COM_SUPPORT_ERROR_BLANK_COMMENT'));
 			return false;
 		}
 
 		$this->ticket = intval($this->ticket);
 		if (!$this->ticket)
 		{
-			$this->setError(JText::_('SUPPORT_ERROR_BLANK_TICKET'));
+			$this->setError(JText::_('COM_SUPPORT_ERROR_BLANK_TICKET'));
 			return false;
 		}
 

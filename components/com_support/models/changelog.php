@@ -257,7 +257,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 				$clog[] = '<ul class="' . $type . '">';
 				foreach ($log as $items)
 				{
-					if ($type == 'changes')
+					if ($type == 'changes' && $items['before'] != $items['after'])
 					{
 						$clog[] = '<li>' . JText::sprintf('COM_SUPPORT_CHANGELOG_BEFORE_AFTER', $items['field'], $items['before'], $items['after']) . '</li>';
 					}

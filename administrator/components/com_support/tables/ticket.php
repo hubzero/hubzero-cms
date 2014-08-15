@@ -233,7 +233,7 @@ class SupportTicket extends JTable
 		{
 			if (!trim($this->report))
 			{
-				$this->setError(JText::_('SUPPORT_ERROR_BLANK_REPORT'));
+				$this->setError(JText::_('COM_SUPPORT_ERROR_BLANK_REPORT'));
 				return false;
 			}
 
