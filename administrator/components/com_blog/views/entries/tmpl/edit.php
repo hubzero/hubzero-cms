@@ -116,6 +116,7 @@ Joomla.submitbutton = function(pressbutton) {
 					?>
 				</div>
 			</div>
+			<div class="clr"></div>
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_BLOG_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
