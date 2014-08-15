@@ -560,7 +560,7 @@ HUB.Groups = {
 			activeTab = window.location.hash.replace('#', '');
 			$('.group-page-manager .tabs a').removeClass('current');
 			$('.group-page-manager form > fieldset').hide();
-			$('.group-page-manager .tabs a[data-tab="' + activeTab + '"').addClass('current');
+			$('.group-page-manager .tabs a[data-tab="' + activeTab + '"]').addClass('current');
 			$('.group-page-manager form > fieldset[data-tab-content="' + activeTab + '"]').show();
 		});
 

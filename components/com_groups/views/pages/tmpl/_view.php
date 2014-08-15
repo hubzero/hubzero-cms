@@ -59,7 +59,8 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 
 <div class="group-page page-<?php echo $this->page->get('alias'); ?>">
 
-	<?php if ($newerVersion && $this->authorized == 'manager') : ?>
+	<?php if ($newerVersion
+			&& ($this->authorized == 'manager' || \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages'))) : ?>
 		<div class="group-page group-page-notice notice-info">
 			<h4><?php echo JText::_('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL'); ?></h4>
 			<p><?php echo JText::_('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL_DESC'); ?></p>
@@ -115,7 +116,7 @@ if (($pagePrivacy== 'registered' && $this->juser->get('guest'))
 			<?php endif; ?>
 		</div>
 
-		<?php if ($this->authorized == 'manager') : ?>
+		<?php if ($this->authorized == 'manager' || \Hubzero\User\Profile::userHasPermissionForGroupAction($this->group, 'group.pages')) : ?>
 			<div class="page-controls col span2 omega">
 				<ul class="page-controls">
 				<?php if ($this->page->get('id') != 0) : ?>
