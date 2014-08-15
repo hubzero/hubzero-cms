@@ -11,7 +11,7 @@
 defined('_JEXEC') or die;
 
 
-function view($dd = false) 
+function view($dd = false)
 {
 	global $com_name, $html_path, $dv_conf;
 	$name = $dd['dv_id'];
@@ -57,7 +57,7 @@ function view($dd = false)
 
 	dv_add_script('jquery.lazyload.min.js');
 
-	if(isset($dd['show_maps'])) {
+	if (isset($dd['show_maps'])) {
 		dv_add_script('/leaflet/leaflet.js');
 		dv_add_css('/leaflet/leaflet.css');
 		dv_add_script('dv_maps.js');
@@ -82,7 +82,7 @@ function view($dd = false)
 	}
 
 	if ($dd) {
-		
+
 		$dv_conf['settings']['show_filter_options'] = isset($dd['filter_options'])? $dd['filter_options']: true;
 
 		$custom_field_url = '';
@@ -102,12 +102,12 @@ function view($dd = false)
 		$dv_conf['settings']['limit'] = (isset($dd['display_limit']))? $dd['display_limit']: $dv_conf['settings']['limit'];
 		$dv_conf['settings']['hide_data'] = isset($dd['hide_data']);
 		$dv_conf['settings']['serverside'] = (isset($dd['serverside']) && $dd['serverside'])? true: false;
-		
-		if(!isset($dd['customizer']) && isset($dv_conf['customizer'])) {
+
+		if (!isset($dd['customizer']) && isset($dv_conf['customizer'])) {
 			$dd['customizer'] = $dv_conf['customizer'];
 		}
-		
-		if(isset($dd['customizer']) && $dd['customizer'] === false) {
+
+		if (isset($dd['customizer']) && $dd['customizer'] === false) {
 			unset($dd['customizer']);
 		}
 
@@ -133,7 +133,7 @@ function view($dd = false)
 
 			if (isset($dd['group_by'])) {
 				$arr = explode(',', $dd['group_by']);
-				foreach($arr as $a) {
+				foreach ($arr as $a) {
 					$a = trim($a);
 					$lbl = isset($dd['cols'][$a]['label'])? $dd['cols'][$a]['label']: $a;
 					$group_by .= '<div class="dv_customizer_group_by_item_div" style="padding: 3px; margin: 5px; border: 1px #EEE solid;"><input type="checkbox" checked="checked" class="dv_customizer_group_by_item" value="' . $a . '" /> &nbsp;<label style="cursor: pointer;">' . str_replace('<br />', ' ', $lbl) . '</label></div>';
@@ -145,7 +145,7 @@ function view($dd = false)
 		$f_data = filter($res, $dd);
 		$d_arr = json_decode($f_data, true);
 
-		if(isset($dd['show_maps'])) {
+		if (isset($dd['show_maps'])) {
 			$document->addScript('//maps.google.com/maps/api/js?sensor=false');
 		}
 
@@ -160,7 +160,7 @@ function view($dd = false)
 
 
 		$return = '';
-		if(isset($dd['return']) && isset($dd['return']['raw'])) {
+		if (isset($dd['return']) && isset($dd['return']['raw'])) {
 			$return = $dd['return']['raw'];
 		} elseif (isset($dd['return'])) {
 			$return = '<span id="dv_return_link" style="font-size: 1.1em; margin-left: 10px; padding-top: 12px;"><a href="' . $dd['return']['url'] . '"><strong>' . $dd['return']['label'] . '</strong></a></span>';
@@ -174,7 +174,7 @@ function view($dd = false)
 			$dv_conf['settings']['data_url'] .= '&filter=' . $filter;
 			$dv_conf['settings']['filters']['fv_vals'] = $filter;
 			$ff = explode('||', $filter);
-			foreach($ff as $f) {
+			foreach ($ff as $f) {
 				$f = explode('|', $f);
 				$filted_view[$f[0]] = $f[1];
 			}
@@ -182,8 +182,8 @@ function view($dd = false)
 	?>
 	<a name="dv_top"></a>
 	<div id="dv-spreadsheet">
-	
-	<?php if(!JRequest::getVar('show_table_only', false)): ?>
+
+	<?php if (!JRequest::getVar('show_table_only', false)): ?>
 
 		<div id="dv_title" style="margin: 0;">
 			<h2 class="ui-corner-all" style="display: inline-block;">
@@ -193,21 +193,21 @@ function view($dd = false)
 			&nbsp;<h4 id="dv_return_link_container" style="display: inline-block; margin: 0;"><?php print $return; ?></h4>
 		</div>
 		<div id="dv-spreadsheet-toolbar" class="ui-corner-top">
-			<?php if(!isset($dd['top_menu']['download']['show']) || $dd['top_menu']['download']['show'] != false): ?>
+			<?php if (!isset($dd['top_menu']['download']['show']) || $dd['top_menu']['download']['show'] != false): ?>
 			<button class="btn btn-mini dv-btn-download" data-format="csv" title="Download Data as a spreadsheet">
 				<i class="icon-download"> </i >
 				<span class="lbl">Download</span>
 			</button>
 			<?php endif; ?>
 
-			<?php if(!isset($dd['top_menu']['fullscreen']['show']) || $dd['top_menu']['fullscreen']['show'] != false): ?>
+			<?php if (!isset($dd['top_menu']['fullscreen']['show']) || $dd['top_menu']['fullscreen']['show'] != false): ?>
 			<button id="dv-btn-fullscreen" class="btn btn-mini" title="Fullscreen" data-screen-mode=''>
 				<i class="icon-fullscreen"> </i >
 				<span class="lbl">Fullscreen</span>
 			</button>
 			<?php endif; ?>
 
-			<?php if(isset($dd['filters']) && count($dd['filters'])>0): ?>
+			<?php if (isset($dd['filters']) && count($dd['filters'])>0): ?>
 			<button id="dv-btn-filters" class="btn btn-mini" title="Filter Dialog">
 				<i class="icon-filter"> </i >
 				<span class="lbl">Filter Dialog</span>
@@ -219,28 +219,28 @@ function view($dd = false)
 				<span class="lbl">Clear Filters</span>
 			</button>
 
-			<?php if(!isset($dd['top_menu']['no_wrap']['show']) || $dd['top_menu']['no_wrap']['show'] != false): ?>
+			<?php if (!isset($dd['top_menu']['no_wrap']['show']) || $dd['top_menu']['no_wrap']['show'] != false): ?>
 			<button id="dv-btn-no-wrap" class="btn btn-mini" title="Disable text wrapping for all cells." data-current="normal">
 				<i class="icon-text-width"> </i >
 				<span class="lbl">No-Wrap</span>
 			</button>
 			<?php endif; ?>
 
-			<?php if(isset($dd['custom_charts']) || isset($dd['charts_list'])): ?>
+			<?php if (isset($dd['custom_charts']) || isset($dd['charts_list'])): ?>
 			<button id="dv-spreadsheet-charts" class="btn btn-mini" title="Display charts">
 				<i class="icon-bar-chart"> </i >
 				<span class="lbl">Charts</span>
 			</button>
 			<?php endif; ?>
 
-			<?php if(isset($dd['show_maps'])): ?>
+			<?php if (isset($dd['show_maps'])): ?>
 			<button id="dv-spreadsheet-maps" class="btn btn-mini" title="Display Maps">
-				<i class="icon-map-marker"></i > 
+				<i class="icon-map-marker"></i >
 				<span class="lbl">Maps</span>
 			</button>
 			<?php endif; ?>
 
-			<?php if(isset($dd['customizer'])): ?>
+			<?php if (isset($dd['customizer'])): ?>
 			<button id="dv-customizer-btn" class="btn btn-mini" title="Enables users to select a sub-set of columns to view.">
 				<i class="icon-edit"> </i >
 				<span class="lbl">Customize DataView</span>
@@ -250,21 +250,21 @@ function view($dd = false)
 
 		<div style="display: none;">
 			<span id="dv_top_toolbar" class="ui-corner-top" style="padding: 3px 5px 3px 3px; margin: 0; border-style: inset; border-bottom-width: 0px;">
-				<?php if($help_file): ?>
+				<?php if ($help_file): ?>
 				<button id="dv_show_help">Help</button>
 				<?php endif; ?>
-				<?php if(isset($dd['show_maps'])): ?>
+				<?php if (isset($dd['show_maps'])): ?>
 				<input type="checkbox" id="dv_maps" class="dv_panel_btn" /><label for="dv_maps">Map</label>
 				<?php endif; ?>
-				<?php if(isset($dd['customizer']) && $show_customizer): ?>
+				<?php if (isset($dd['customizer']) && $show_customizer): ?>
 				<input type="checkbox" id="" class="dv_panel_btn" /><label for="dv-customizer-btn"></label>
-				<?php elseif(isset($dd['customizer'])): ?>
+				<?php elseif (isset($dd['customizer'])): ?>
 				<input type="checkbox" id="dv-customizer-btn" class="dv_panel_btn" /><label for="dv-customizer-btn">Customize View</label>
 				<?php endif; ?>
 			</span>
 		</div>
 
-		<?php if(isset($dd['custom_charts']) || isset($dd['charts_list'])): ?>
+		<?php if (isset($dd['custom_charts']) || isset($dd['charts_list'])): ?>
 		<div id="dv_charts_panel" style="display: none; clear: both; width: 860px; height: 380px; padding: 5px 10px 10px 5px; margin-top: 0; border: 1px solid #DDD; background: #EEE;" class="ui-corner-bottom dv_top_pannel">
 			<button id="dv_pdcharts_download_btn" class="btn btn-mini btn-success" title="Download chart as an image"  style="float: right; z-index: 1; margin: 3px;">
 				<i class="icon-download"> </i >
@@ -277,9 +277,9 @@ function view($dd = false)
 
 			<div style="float:left; height: 380px; width: 245px;">
 				<div id="dv_charts_control_panel" style="padding: 0 5px; ">
-				<?php if(isset($dd['charts_list'])): ?>
+				<?php if (isset($dd['charts_list'])): ?>
 				<select id="dv_chart_name" style="width: 100%;">
-					<?php $pd_id = 0; foreach($dd['charts_list'] as $cl): ?>
+					<?php $pd_id = 0; foreach ($dd['charts_list'] as $cl): ?>
 					<option value="<?php print $pd_id?>"><?php print $cl['title']; ?></option>
 					<?php $pd_id++; endforeach; ?>
 				</select>
@@ -293,7 +293,7 @@ function view($dd = false)
 		</div>
 		<?php endif; ?>
 
-		<?php if(isset($dd['show_maps'])): ?>
+		<?php if (isset($dd['show_maps'])): ?>
 		<div id="dv_maps_panel" style="position: relative; display: none; clear: both; width: 800px; height: 300px; padding: 3px 5px 3px 5px; margin-top: 0;" class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
 			<button class="btn btn-inverse btn-mini" title="Click here to reload the map" id="dv_map_reload" style="float: left;">
 				<i class="icon-refresh"></i > Reload Map
@@ -313,11 +313,11 @@ function view($dd = false)
 		</div>
 		<?php endif; ?>
 
-		<?php if(isset($dd['customizer'])): ?>
+		<?php if (isset($dd['customizer'])): ?>
 		<?php
 			$full_list = '';
 			$selected = '';
-			foreach($dd['cols'] as $id=>$prop) {
+			foreach ($dd['cols'] as $id=>$prop) {
 				if (!isset($prop['hide']) || (isset($prop['hide']) && $prop['hide'] != 'hide')) {
 					if (!isset($prop['label'])) {
 						$prop['label'] = $id;
@@ -382,7 +382,7 @@ function view($dd = false)
 		<?php endif; ?>
 
 		<div id="more_information" style="display: none; min-width: 300px;"></div>
-		<?php if($help_file): ?>
+		<?php if ($help_file): ?>
 		<div id="dv_help_dialog" style="display: none;">
 			<iframe src="<?php print $help_file; ?>" id="modalIframeId" width="100%" height="100%" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto" title="Help">IFRAMES not supported by the browser</iframe>
 			</div>
@@ -391,7 +391,7 @@ function view($dd = false)
 
 
 	<?php endif; //Table Only ?>
-		
+
 
 		<div id="dv-spreadsheet-container" style="margin: 0px; padding; 0px; <?php print $hide_str; ?>">
 		<table id="dv-spreadsheet-tbl" style="margin-top: 0;">
@@ -399,7 +399,7 @@ function view($dd = false)
 		print '<thead></thead><tfoot><tr>';
 		$colid = 0;
 		foreach ($dd['cols'] as $id => $conf) {
-			if(!isset($conf['hide'])) {
+			if (!isset($conf['hide'])) {
 				$label = isset($conf['label']) ? $conf['label'] : $id;
 				$label = str_replace('<br />', ' ', $label);
 				$label = html_entity_decode(strip_tags($label), ENT_QUOTES, 'UTF-8');
@@ -410,7 +410,7 @@ function view($dd = false)
 				} else {
 					$filter_msg = "	\n\nClick on the search box to list all the entries in the column";
 				}
-				
+
 				if (isset($conf['filter_hint'])) {
 					$filter_hint = $conf['filter_hint'];
 				} else {

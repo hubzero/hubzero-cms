@@ -47,7 +47,7 @@ function get_dd($db_id)
 		$r = $db->loadAssoc();
 
 		$td = json_decode($r['table_definition'], true);
-
+		
 		$dd['db'] = $dv_conf['db'];
 		$dd['db']['name'] = 'ds_' . $r['datastore_id'];
 		$dd['table'] = $td['name'];
@@ -69,7 +69,7 @@ function get_dd($db_id)
 				);
 			}
 
-			foreach($td['columns'] as $col) {
+			foreach ($td['columns'] as $col) {
 				if ($col['name'] != '__ds_rec_id') {
 					if ($col['type'] == 'file') {
 						$dd['cols'][$td['name'] . '.' . $col['name']]['type'] = 'file';
@@ -96,15 +96,15 @@ function get_dd($db_id)
 		$dsid = $db_id['name'];
 		$path = "{$dv_conf['base_path']}/datadefinitions";
 		$dd_file = "$dv_id.json";
-		if(file_exists("$path/$dd_file")) {
+		if (file_exists("$path/$dd_file")) {
 			$dd = json_decode(file_get_contents("$path/$dd_file"), true);
 		} else {
 			return false;
 		}
 	}
+	
 
-
-
+	
 	$dd['db_id'] = $db_id;
 	$dd['dv_id'] = $dv_id;
 
@@ -112,11 +112,11 @@ function get_dd($db_id)
 
 	$dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : array();
 
-	if(isset($dd['conf']['proc_mode_switch'])) {
+	if (isset($dd['conf']['proc_mode_switch'])) {
 		$dv_conf['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
 	}
 
-	if(isset($dd['conf']['proc_switch_threshold'])) {
+	if (isset($dd['conf']['proc_switch_threshold'])) {
 		$dv_conf['proc_switch_threshold'] = $dd['conf']['proc_switch_threshold'];
 	}
 
@@ -130,9 +130,9 @@ function get_dd($db_id)
 			$dd['total_records'] = $total;
 
 			$vis_col_count = 0;
-			if(isset($dd['cols'])) {
+			if (isset($dd['cols'])) {
 				$vis_col_count = count(array_filter($dd['cols'], function ($col) {
-						return !isset($col['hide']);
+						return !isset($col['hide']); 
 					})
 				);
 			}
@@ -146,7 +146,7 @@ function get_dd($db_id)
 
 	// Record Filters
 	if (isset($dd['record_filters']) && is_array($dd['record_filters'])) {
-		foreach($dd['record_filters'] as $f) {
+		foreach ($dd['record_filters'] as $f) {
 			switch($f['type']) {
 				case 'E':
 					$dd['where'][] = array('raw'=>$f['col'] . " = '" . $f['val'] . "'");
@@ -180,12 +180,12 @@ function get_dd($db_id)
 	/* ACL */
 
 	// Dataviews attached to resources & publised
-	$sql = "SELECT r.id, r.published, r.access, r.group_owner, r.group_access, dv.path
-		FROM jos_datastore_resources AS dr
-			LEFT JOIN (jos_resources AS r, jos_resource_assoc ra, jos_resources AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id)
-		WHERE r.id IS NOT NULL
-			AND r.published = 1
-			AND dr.datastore_id = {$db_id['name']}
+	$sql = "SELECT r.id, r.published, r.access, r.group_owner, r.group_access, dv.path 
+		FROM jos_datastore_resources AS dr 
+			LEFT JOIN (jos_resources AS r, jos_resource_assoc ra, jos_resources AS dv) ON (r.id = dr.resource_id AND ra.parent_id = r.id AND ra.child_id = dv.id) 
+		WHERE r.id IS NOT NULL 
+			AND r.published = 1 
+			AND dr.datastore_id = {$db_id['name']} 
 			AND dv.path = '/dataviewer/view/{$db_id['name']}:ds/$dv_id/'";
 	$db->setQuery($sql);
 	$res = $db->loadAssoc();
@@ -206,14 +206,14 @@ function get_dd($db_id)
 
 	if (!isset($dd['acl'])) {
 		$dd['acl']['allowed_users'] = $managers;
-	} elseif(!isset($dd['acl']['registered']) || !isset($dd['acl']['public'])) {
+	} elseif (!isset($dd['acl']['registered']) || !isset($dd['acl']['public'])) {
 		$dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
 		$dd['acl']['allowed_users'] = array_merge($dd['acl']['allowed_users'], $managers);
 	}
 
 	// Giving Hub admins full access to the DataStore dataviews
 	$juser = JFactory::getUser();
-	if ($juser->get('usertype') == 'Super Administrator' || $juser->get('usertype') == 'Administrator' || $juser->get('usertype') == 'Manager' ) {
+	if (JAccess::check($juser->get('id'), 'core.admin')) {
 		$dd['acl']['allowed_users'] = isset($dd['acl']['allowed_users']) ? $dd['acl']['allowed_users'] : array();
 		$dd['acl']['allowed_users'][] = $juser->get('username');
 	}
@@ -259,12 +259,12 @@ function _dd_post($dd)
 		// Ordering
 		$order_cols = $dd['cols'];
 		$dd['cols'] = array();
-		foreach($custom_view as $cv_col) {
+		foreach ($custom_view as $cv_col) {
 			$dd['cols'][$cv_col] = $order_cols[$cv_col];
 		}
 
 		// Hiding
-		foreach($order_cols as $id=>$prop) {
+		foreach ($order_cols as $id=>$prop) {
 			if (!in_array($id, $custom_view)) {
 				$dd['cols'][$id] = $prop;
 
@@ -292,7 +292,7 @@ function pathway($dd)
 	if (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 		$ref_title = "Datastore";
 		$pathway->addItem($ref_title, '/datastores/' . $db_id['name'] . '#tables');
-	} elseif(isset($_SERVER['HTTP_REFERER'])) {
+	} elseif (isset($_SERVER['HTTP_REFERER'])) {
 		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
 		$pathway->addItem($ref_title, $_SERVER['HTTP_REFERER']);
