@@ -198,6 +198,9 @@ var Conditions = {
 		
 		var values = Conditions.option[val].values;
 		var select = $('<input type="text" class="val" />');
+		if (val == 'created') {
+			select.attr('placeholder', 'YYYY-MM-DD');
+		}
 
 		if (values instanceof Array) {
 			select = $('<select class="val"></select>');
@@ -205,7 +208,7 @@ var Conditions = {
 				if (this.sel) {
 					val = this.val;
 				}
-			    select.append('<option value="' + this.val + '">' + this.label + '</option>');
+				select.append('<option value="' + this.val + '">' + this.label + '</option>');
 			});
 			select.val(val);
 		}

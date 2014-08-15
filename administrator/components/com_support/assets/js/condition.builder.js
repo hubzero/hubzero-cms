@@ -201,6 +201,9 @@ var Conditions = {
 
 		var values = Conditions.option[val].values;
 		var select = $('<input type="text" class="val" />');
+		if (val == 'created') {
+			select.attr('placeholder', 'YYYY-MM-DD');
+		}
 
 		if (values instanceof Array) {
 			select = $('<select class="val"></select>');
