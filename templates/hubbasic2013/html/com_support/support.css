@@ -13,6 +13,10 @@
 	     -o-box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 	        box-shadow: inset -3px 0px 4px -3px rgba(0, 0, 0, 0.25);
 }
+.com_support #ticketForm ul.views ul {
+	border-top: 1px solid #d1d1d1;
+	border-top: 1px solid rgba(0, 0, 0, 0.075);
+}
 .com_support #ticketForm ul.views li {
 	border-bottom: 1px solid #d1d1d1;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.075);
@@ -27,7 +31,6 @@
 #ticketForm ul.views li a span {
 	background: rgba(255, 255, 255, 0.6);
 	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
-	
 }
 #ticketForm #page-sidebar h3 {
 	background: rgba(255, 255, 255, 0.2);
