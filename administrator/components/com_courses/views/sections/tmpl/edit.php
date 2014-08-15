@@ -373,7 +373,7 @@ jQuery(document).ready(function($){
 					<div class="input-wrap">
 						<label for="params-progress-calculation"><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION'); ?>:</label><br />
 						<select name="params[progress_calculation]" id="params-progress-calculation">
-							<option value=""<?php echo ($params->get('progress_calculation', '') == '') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_INHERIT'); ?></option>
+							<option value=""<?php echo ($params->get('progress_calculation', '') == '') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_INHERIT_FROM_OFFERING'); ?></option>
 							<option value="all"<?php echo ($params->get('progress_calculation', '') == 'all') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_ALL'); ?></option>
 							<option value="graded"<?php echo ($params->get('progress_calculation', '') == 'graded') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_GRADED'); ?></option>
 							<option value="videos"<?php echo ($params->get('progress_calculation', '') == 'videos') ? 'selected="selected"' : '' ?>><?php echo JText::_('COM_COURSES_PROGRESS_CALCULATION_VIDEOS'); ?></option>
