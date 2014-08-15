@@ -34,6 +34,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'query.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'ticket.php');
 
 /**
  * Support controller class for tickets
