@@ -240,7 +240,7 @@ class plgMembersBlog extends JPlugin
 			$start = false;
 			foreach ($path as $bit)
 			{
-				if ($bit == 'members' && !$start)
+				if ($bit == $this->_name && !$start)
 				{
 					$start = true;
 					continue;
@@ -250,11 +250,11 @@ class plgMembersBlog extends JPlugin
 					$paths[] = $bit;
 				}
 			}
-			if (count($paths) >= 2)
+			/*if (count($paths) >= 2)
 			{
 				array_shift($paths);  // Remove member ID
 				array_shift($paths);  // Remove 'blog'
-			}
+			}*/
 			$path = $paths;
 		}
 
@@ -302,8 +302,8 @@ class plgMembersBlog extends JPlugin
 		{
 			$bits = $this->_parseUrl();
 
-			$view->filters['year']  = (isset($bits[0])) ? $bits[0] : $view->filters['year'];
-			$view->filters['month'] = (isset($bits[1])) ? $bits[1] : $view->filters['month'];
+			$view->filters['year']  = (isset($bits[0]) && is_numeric($bits[0])) ? $bits[0] : $view->filters['year'];
+			$view->filters['month'] = (isset($bits[1]) && is_numeric($bits[1])) ? $bits[1] : $view->filters['month'];
 		}
 
 		// Check logged-in status
@@ -384,8 +384,8 @@ class plgMembersBlog extends JPlugin
 		{
 			$bits = $this->_parseUrl();
 
-			$filters['year']  = (isset($bits[0])) ? $bits[0] : $filters['year'];
-			$filters['month'] = (isset($bits[1])) ? $bits[1] : $filters['month'];
+			$filters['year']  = (isset($bits[0]) && is_numeric($bits[0])) ? $bits[0] : $filters['year'];
+			$filters['month'] = (isset($bits[1]) && is_numeric($bits[1])) ? $bits[1] : $filters['month'];
 		}
 
 		// Build some basic RSS document information
