@@ -147,7 +147,7 @@ function get_dd($db_id)
 	// Record Filters
 	if (isset($dd['record_filters']) && is_array($dd['record_filters'])) {
 		foreach ($dd['record_filters'] as $f) {
-			switch($f['type']) {
+			switch ($f['type']) {
 				case 'E':
 					$dd['where'][] = array('raw'=>$f['col'] . " = '" . $f['val'] . "'");
 					break;
