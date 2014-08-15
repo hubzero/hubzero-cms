@@ -78,7 +78,7 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 		{
 			$this->_tbl->load( $oid );
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
 			$this->bind( $oid );
 		}
@@ -92,10 +92,11 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 		// build array of filters
 		$filters = array(
 			'gidNumber' => $this->get('gidNumber'),
-			'category'  => $this->get('id')
+			'category'  => $this->get('id'),
+			'state'     => array(0,1)
 		);
 
-		switch(strtolower($rtrn))
+		switch (strtolower($rtrn))
 		{
 			case 'count':
 				$this->_pages_count = $tbl->count($filters);
