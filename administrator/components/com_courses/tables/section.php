@@ -282,9 +282,14 @@ class CoursesTableSection extends JTable
 			$where[] = "os.offering_id=" . $this->_db->Quote(intval($filters['offering_id']));
 		}
 
-		if (isset($filters['state']))
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "os.state=" . $this->_db->Quote(intval($filters['state']));
+		}
+
+		if (isset($filters['is_default']) && $filters['is_default'] >= 0)
+		{
+			$where[] = "os.is_default=" . $this->_db->Quote(intval($filters['is_default']));
 		}
 
 		if (isset($filters['enrollment']))

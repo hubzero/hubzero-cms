@@ -633,6 +633,8 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		// Do we have any IDs?
 		if (!empty($ids))
 		{
+			$offering_id = 0;
+
 			foreach ($ids as $id)
 			{
 				// Load the course page
@@ -644,6 +646,8 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 					continue;
 				}
 
+				$offering_id = $model->get('offering_id');
+
 				// Delete course
 				if (!$model->delete())
 				{
@@ -652,6 +656,31 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 				}
 
 				$num++;
+			}
+
+			if ($num && $offering_id)
+			{
+				$filters = array(
+					'count'       => true,
+					'offering_id' => $offering_id,
+					'is_default'  => 1
+				);
+				$offering = CoursesModelOffering::getInstance($filters['offering_id']);
+
+				if (!$offering->sections($filters))
+				{
+					$sections = $offering->sections(array(
+						'count'    => false,
+						'sort'     => 'id',
+						'sort_Dir' => 'ASC',
+						'limit'    => 1,
+						'start'    => 0
+					));
+					foreach ($sections as $section)
+					{
+						$section->makeDefault();
+					}
+				}
 			}
 		}
 
