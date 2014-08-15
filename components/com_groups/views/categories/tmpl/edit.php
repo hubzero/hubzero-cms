@@ -79,7 +79,7 @@ if ($this->category->get('id'))
 
 		<p class="submit">
 			<button type="submit" class="btn btn-info save icon-save"><?php echo JText::_('COM_GROUPS_PAGES_SAVE_CATEGORY'); ?></button>
-			<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#pagecategories'); ?>" class="btn"><?php echo JText::_('COM_GROUPS_PAGES_CANCEL'); ?></a>
+			<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages#categories'); ?>" class="btn cancel"><?php echo JText::_('COM_GROUPS_PAGES_CANCEL'); ?></a>
 		</p>
 		<input type="hidden" name="option" value="com_groups" />
 		<input type="hidden" name="controller" value="categories" />
