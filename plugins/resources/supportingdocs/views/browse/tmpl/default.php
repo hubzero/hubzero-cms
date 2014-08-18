@@ -190,12 +190,53 @@ else
 					//$child->title = str_replace('&amp;quot;', '&quot;', $child->title);
 
 					// width & height
-					$attribs = new JRegistry($child->attribs);
-					$width  = intval($attribs->get('width', 640));
-					$height = intval($attribs->get('height', 360));
-					if ($width > 0 && $height > 0)
+					if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $child->path))
 					{
-						$class .= ' ' . $width . 'x' . $height;
+						if (!preg_match("/(?:https?:|mailto:|ftp:|gopher:|news:|file:)/", $child->path))
+						{
+							/*JComponentHelper::getParams('com_tools');
+							$base_path = $config->get('uploadpath', '/site/resources');
+							if ($base_path)
+							{
+								$base_path = DS . trim($base_path, DS);
+							}*/
+							$filename = $child->path;
+
+							// Does the path start with a slash?
+							if (substr($filename, 0, 1) != DS)
+							{
+								$filename = DS . $filename;
+								// Does the beginning of the $resource->path match the config path?
+								if (substr($filename, 0, strlen($base)) == $base)
+								{
+									// Yes - this means the full path got saved at some point
+								}
+								else
+								{
+									// No - append it
+									$filename = $base . $filename;
+								}
+							}
+
+							// Add JPATH_ROOT
+							$filename = JPATH_ROOT . $filename;
+
+							list($width, $height) = getimagesize($filename);
+							if ($width > 0 && $height > 0)
+							{
+								$class .= ' ' . $width . 'x' . $height;
+							}
+						}
+					}
+					else
+					{
+						$attribs = new JRegistry($child->attribs);
+						$width  = intval($attribs->get('width', 640));
+						$height = intval($attribs->get('height', 360));
+						if ($width > 0 && $height > 0)
+						{
+							$class .= ' ' . $width . 'x' . $height;
+						}
 					}
 
 					// user guide
