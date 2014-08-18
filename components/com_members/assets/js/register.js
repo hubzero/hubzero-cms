@@ -621,7 +621,7 @@ HUB.Register = {
 				if (response.success) {
 					if (response.orcid) {
 						alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
-						window.parent.document.getElementById('orcid').value = orcid;
+						window.parent.document.getElementById('orcid').value = response.orcid;
 						parent.jQuery.fancybox.close();
 					} else {
 						alert('ORCID service reported a successful creation but we failed to retrieve an ORCID. Please contact support.');
