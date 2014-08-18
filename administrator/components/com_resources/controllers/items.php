@@ -1692,7 +1692,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 
 		if ($nouser)
 		{
-			$users[] = JHTML::_('select.option', '0', 'COM_RESOURCES_DO_NOT_CHANGE', 'value', 'text');
+			$users[] = JHTML::_('select.option', '0', JText::_('COM_RESOURCES_DO_NOT_CHANGE'), 'value', 'text');
 			$users = array_merge($users, $result);
 		}
 		else
