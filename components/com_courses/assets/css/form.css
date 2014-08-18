@@ -57,7 +57,7 @@ label {
 	border: 2px solid #DBDB95;
 	background: #FFFFe0;
 	border-radius: 4px;
-	position: absolute;
+	position: absolute !important;
 	cursor: crosshair;
 }
 .missing-answer {

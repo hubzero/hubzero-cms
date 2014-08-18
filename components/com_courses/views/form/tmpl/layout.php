@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css('form.css')
      ->js('layout.js');
 
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
 \Hubzero\Document\Assets::addSystemScript('jquery.iframe-transport');
 \Hubzero\Document\Assets::addSystemScript('jquery.fileupload');
 
