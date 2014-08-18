@@ -171,7 +171,7 @@ else
 								break;
 
 							case 'hubpresenter':
-							 	$liclass = ' class="presentation"';
+								$liclass = ' class="presentation"';
 								$class = 'hubpresenter';
 								break;
 							default:
