@@ -128,7 +128,7 @@ class plgProjectsTodo extends JPlugin
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if(empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
 				return;
 			}
 		}
@@ -296,7 +296,7 @@ class plgProjectsTodo extends JPlugin
 		$used = array();
 		if (!empty($lists))
 		{
-			foreach($lists as $list)
+			foreach ($lists as $list)
 			{
 				$used[] = $list->color;
 			}
@@ -361,7 +361,7 @@ class plgProjectsTodo extends JPlugin
 		if ($todoid && $objTD->loadTodo($this->_project->id, $todoid) && $objTD->state != 2 )
 		{
 			$layout = ($this->_task == 'edit') ? 'edit' : 'default';
-			
+
 			// Show to-do item with comments
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -726,7 +726,7 @@ class plgProjectsTodo extends JPlugin
 				$comments = $objC->deleteComments($todoid, "todo");
 
 				// Delete all associated activities
-				foreach($activities as $a)
+				foreach ($activities as $a)
 				{
 					$objAA = new ProjectActivity( $this->_database );
 					$objAA->loadActivity($a, $this->_project->id);
@@ -747,7 +747,7 @@ class plgProjectsTodo extends JPlugin
 				$todos = $objTD->getTodos( $this->_project->id, $filters = array('todolist' => $list) );
 				if (count($todos) > 0)
 				{
-					foreach($todos as $todo)
+					foreach ($todos as $todo)
 					{
 						if ($objTD->loadTodo($this->_project->id, $todo->id))
 						{
@@ -763,7 +763,7 @@ class plgProjectsTodo extends JPlugin
 								$comments = $objC->deleteComments( $todo->id, "todo" );
 
 								// Delete all associated activities
-								foreach($activities as $a)
+								foreach ($activities as $a)
 								{
 									$objAA = new ProjectActivity( $this->_database );
 									$objAA->loadActivity( $a, $this->_project->id );
