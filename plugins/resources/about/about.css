@@ -46,3 +46,9 @@
 	.resource .citations li {
 		border: none;
 	}
+	#component-body .abouttab {
+		margin-right: 0;
+	}
+	#component-body #about-section {
+		padding: 0;
+	}
