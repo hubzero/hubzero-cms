@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for adding indices and setting default field value for #__abuse_reports
  **/
-class Migration20140818140800ComSupport extends Base
+class Migration20140818160800ComSupport extends Base
 {
 	/**
 	 * Up
@@ -48,9 +48,9 @@ class Migration20140818140800ComSupport extends Base
 				$this->db->query();
 			}
 
-			if (!$this->db->tableHasKey('#__abuse_reports', 'idx_reference'))
+			if (!$this->db->tableHasKey('#__abuse_reports', 'idx_category_referenceid'))
 			{
-				$query = "ALTER TABLE `#__abuse_reports` ADD INDEX `idx_reference` (`category`, `referenceid`);";
+				$query = "ALTER TABLE `#__abuse_reports` ADD INDEX `idx_category_referenceid` (`category`, `referenceid`);";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
