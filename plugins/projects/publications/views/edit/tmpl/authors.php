@@ -71,7 +71,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 		<div class="two columns first" id="c-selector">
 		 <div class="c-inner">
 			<h4><?php echo $ptitle; ?> <?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } ?></h4>
-			<?php if($canedit) { ?>
+			<?php if ($canedit) { ?>
 			<p><?php echo $instruct; ?></p>
 			<!-- Load content selection browser //-->
 			<div id="c-show" class="c-panel-authors">
@@ -105,7 +105,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 							<input type="text" name="newmember" id="newmember" value="" size="35" />
 						<?php } ?>
 					</label>
-					<?php if($this->project->provisioned == 1 ) { ?>
+					<?php if ($this->project->provisioned == 1 ) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<?php } ?>
 					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_ADD'); ?>" class="btn yesbtn" id="add-author" />
@@ -117,7 +117,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 			<?php } else { ?>
 				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 			<?php } ?>
-			<?php if($this->project->provisioned == 1 ) { ?>
+			<?php if ($this->project->provisioned == 1 ) { ?>
 				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_PROV_WARNING').' <a href="'
 				. JRoute::_('index.php?option=com_publications' . a . 'task=submit' . a . 'pid='
 				. $this->pub->id) . '?active=team' . a . 'action=editauthors' . a . 'version='. $this->pub->version_number . ' " class="showinbox">'
@@ -126,7 +126,6 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 		 </div>
 		</div>
 		<div class="two columns second" id="c-output">
-		 <div class="c-inner">
 			<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 			<fieldset>
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
@@ -143,69 +142,69 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 				<input type="hidden" name="selections" id="selections" value="" />
 				<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-				<?php if($this->project->provisioned == 1 ) { ?>
+				<?php if ($this->project->provisioned == 1 ) { ?>
 				<input type="hidden" name="task" value="submit" />
 				<?php } ?>
 			</fieldset>
-			<div>
-				<?php if($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if(count($this->authors) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
-				<?php } ?>
-			</div>
-			<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS')); ?>: </h5>
-			<ul id="c-authors" class="c-list <?php if(!$canedit) { ?>noedit<?php } ?>">
-				<li id="nosel" <?php if(count($this->authors) > 0) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_NONE_SELECTED'); ?></li>
+			 <div class="c-inner">
+					<?php if ($canedit) { ?>
+					<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->authors) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
+					<?php } ?>
+
+				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS')); ?>: </h5>
+				<ul id="c-authors" class="c-list <?php if (!$canedit) { ?>noedit<?php } ?>">
+					<li id="nosel" <?php if (count($this->authors) > 0) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_NONE_SELECTED'); ?></li>
+					<?php
+					// If we have authors selected
+					if (count($this->authors) > 0) {
+						$o = 1;
+						foreach ($this->authors as $author) {
+							$org = $author->organization ? $author->organization : $author->p_organization;
+							$name = $author->name ? $author->name : $author->p_name;
+							$name = trim($name) ? $name : $author->invited_name;
+							$name = trim($name) ? $name : $author->invited_email;
+
+							$active = in_array($author->project_owner_id, $this->teamids) ? 1 : 0;
+							if ($active == 0) {
+								$missing++;
+							}
+							else if (!$author->user_id) {
+								$unconfirmed++;
+							}
+							?>
+						<li id="clone-author::<?php echo $author->project_owner_id; ?>" class="c-drag <?php if ($active == 0) { echo 'i-missing'; } ?> clone-<?php echo $author->project_owner_id; ?>" >
+							<span class="a-ordernum"><?php echo $o; ?></span>
+							<?php if ($canedit) { ?>
+							<span class="c-edit"><a href="<?php echo $this->url.'?vid='.$this->row->id.a.'uid='.$author->user_id.a.'move='.$this->move.a.'action=editauthor'.a.'owner='.$author->project_owner_id . a . 'version=' . $this->version; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT'); ?></a></span>
+							<?php } ?>
+							<span class="a-wrap">
+								<span class="a-authorname"><?php echo stripslashes($name); ?></span><span class="a-org"><?php echo $org ? ', '.stripslashes($org) : ''; ?></span>
+								<span class="a-credit"><?php echo stripslashes($author->credit); ?></span>
+							</span>
+						</li>
+					<?php $o++; } }  ?>
+				</ul>
 				<?php
-				// If we have authors selected
-				if(count($this->authors) > 0) {
-					$o = 1;
-					foreach($this->authors as $author) {
-						$org = $author->organization ? $author->organization : $author->p_organization;
-						$name = $author->name ? $author->name : $author->p_name;
-						$name = trim($name) ? $name : $author->invited_name;
-						$name = trim($name) ? $name : $author->invited_email;
+					// Showing submitter?
+					if ($this->typeParams->get('show_submitter') && $this->submitter)
+					{ ?>
 
-						$active = in_array($author->project_owner_id, $this->teamids) ? 1 : 0;
-						if($active == 0) {
-							$missing++;
-						}
-						else if(!$author->user_id) {
-							$unconfirmed++;
-						}
-						?>
-					<li id="clone-author::<?php echo $author->project_owner_id; ?>" class="c-drag <?php if($active == 0) { echo 'i-missing'; } ?> clone-<?php echo $author->project_owner_id; ?>" >
-						<span class="a-ordernum"><?php echo $o; ?></span>
-						<?php if($canedit) { ?>
-						<span class="c-edit"><a href="<?php echo $this->url.'?vid='.$this->row->id.a.'uid='.$author->user_id.a.'move='.$this->move.a.'action=editauthor'.a.'owner='.$author->project_owner_id . a . 'version=' . $this->version; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT'); ?></a></span>
-						<?php } ?>
-						<span class="a-wrap">
-							<span class="a-authorname"><?php echo stripslashes($name); ?></span><span class="a-org"><?php echo $org ? ', '.stripslashes($org) : ''; ?></span>
-							<span class="a-credit"><?php echo stripslashes($author->credit); ?></span>
-						</span>
-					</li>
-				<?php $o++; } }  ?>
-			</ul>
-			<?php
-				// Showing submitter?
-				if ($this->typeParams->get('show_submitter') && $this->submitter)
-				{ ?>
-
-				<p class="submitter"><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
-					<?php echo $this->submitter->name; ?><?php echo $this->submitter->organization ? ', ' . $this->submitter->organization : ''; ?>
-					<span class="block hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?></span>
-				</p>
-			<?php }
-			?>
-			<?php if($canedit) { ?>
-			<p id="c-instruct"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
-			<?php } ?>
+					<p class="submitter"><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
+						<?php echo $this->submitter->name; ?><?php echo $this->submitter->organization ? ', ' . $this->submitter->organization : ''; ?>
+						<span class="block hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?></span>
+					</p>
+				<?php }
+				?>
+				<?php if ($canedit) { ?>
+				<p id="c-instruct"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_HINT_DRAG'); ?></p>
+				<?php } ?>
+				<?php if ($missing > 0) { ?>
+					<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_AUTHORS_MISSING'); ?></p>
+				<?php } else if ($unconfirmed > 0) { ?>
+					<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_AUTHORS_UNCONFIRMED'); ?></p>
+				<?php } ?>
+			 </div>
 			</form>
-			<?php if($missing > 0) { ?>
-				<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_AUTHORS_MISSING'); ?></p>
-			<?php } else if($unconfirmed > 0) { ?>
-				<p class="pub-info"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_AUTHORS_UNCONFIRMED'); ?></p>
-			<?php } ?>
-		 </div>
 		</div>
 	</div>
 </div>
