@@ -79,7 +79,7 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 			<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 			<input type="hidden" name="add_metadata" value="<?php echo ($this->typeParams->get('show_metadata', 0)) ? 1 : 0; ?>" />
 			<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-			<?php if($this->project->provisioned == 1 ) { ?>
+			<?php if ($this->project->provisioned == 1 ) { ?>
 			<input type="hidden" name="task" value="submit" />
 			<?php } ?>
 		</fieldset>
@@ -105,13 +105,13 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 	  <div id="c-pane" class="columns">
 		 <div class="c-inner">
 			<?php if (!$noedit) { ?>
-			<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if(count($this->checked['description']) == 0) { echo 'class="disabled"'; } ?> class="c-continue" id="c-continue" /></span>
+			<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->checked['description']) == 0) { echo 'class="disabled"'; } ?> class="c-continue" id="c-continue" /></span>
 			<?php } ?>
 			<h4><?php echo $ptitle; ?></h4>
 			<?php if ($noedit) { ?>
 				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 			<?php }
-			elseif($canedit) { ?>
+			elseif ($canedit) { ?>
 			<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_DESCRIPTION_WRITE'); ?></p>
 			<?php } else { ?>
 				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TITLE_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
@@ -122,9 +122,9 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 						<td colspan="2">
 							<label>
 								<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>:
-								<?php if($canedit) { ?>
-								<span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+								<?php if ($canedit) { ?>
 								<span class="pub-info-pop tooltips" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_TITLE').' :: '.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_TITLE_ABOUT'); ?>">&nbsp;</span>
+								<span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 								<input name="title" id="pub_title" maxlength="200" size="35" type="text" value="<?php echo $this->row->title; ?>" class="long pubinput" />
 								<?php } else { ?>
 									<p class="pubt"><?php echo stripslashes($this->row->title); ?></p>
@@ -136,9 +136,9 @@ $noedit  = ($canedit || in_array($this->active, $this->mayupdate)) ? 0 : 1;
 						<td colspan="2">
 							<label>
 								<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_COMPOSE_MINI_ABSTRACT'); ?>:
-								<?php if($canedit) { ?>
-									<span class="required"><?php echo JText::_('REQUIRED'); ?></span>
+								<?php if ($canedit) { ?>
 									<span class="pub-info-pop tooltips" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ABSTRACT').' :: '.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_TIPS_ABSTRACT_ABOUT'); ?>">&nbsp;</span>
+									<span class="required"><?php echo JText::_('REQUIRED'); ?></span>
 									<textarea name="abstract" id="pub_abstract" cols="40" rows="3" class="pubinput"><?php echo $this->row->abstract; ?></textarea>
 									<span id="counter_abstract" class="leftfloat mini"></span>
 								<?php } else { ?>

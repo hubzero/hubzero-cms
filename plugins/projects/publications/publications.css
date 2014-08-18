@@ -1867,9 +1867,10 @@
 		margin: 0;
 		color: #999;
 		line-height: 1.2em;
-		font-size: 70%;
+		font-size: 1em;
 		float: right;
-		margin-right: 1em;
+		margin-right: 0.5em;
+		margin-top: -0.5em;
 	}
 	.pub-info {
 		*background: transparent url("/components/com_projects/assets/img/icons/questionmark.png") 0 0 no-repeat;
