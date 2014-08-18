@@ -120,7 +120,7 @@ class plgProjectsTeam extends JPlugin
 
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas )) {
-			if(empty($this->_area) || !in_array($this->_area['name'], $areas)) {
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) {
 				return;
 			}
 		}
@@ -270,7 +270,7 @@ class plgProjectsTeam extends JPlugin
 		$view->filters['sortby']   = JRequest::getVar( 't_sortby', 'name');
 		$view->filters['sortdir']  = JRequest::getVar( 't_sortdir', 'ASC');
 		$view->filters['status']   = JRequest::getVar( 't_status', 'active');
-		if(!$edit)
+		if (!$edit)
 		{
 			$view->filters['online']   = 1;
 		}
@@ -726,7 +726,7 @@ class plgProjectsTeam extends JPlugin
 				// Send out emails
 				if ($this->_config->get('messaging') == 1)
 				{
-					foreach($uids as $user)
+					foreach ($uids as $user)
 					{
 						$this->sendInviteEmail( $user, '', '', $role );
 					}
@@ -764,11 +764,12 @@ class plgProjectsTeam extends JPlugin
 		}
 		else
 		{
-			$this->_redirect = $setup
+			$url = $setup
 							? JRoute::_('index.php?option=' . $this->_option
 							. a . 'alias=' . $this->_project->alias . a . 'task=setup' . a . 'step=1')
 							: JRoute::_('index.php?option=' . $this->_option
 							. a . 'alias=' . $this->_project->alias . a . 'task=edit' . a . 'edit=team');
+			$this->_referer = $url;
 		}
 
 		return; // redirect
@@ -1257,7 +1258,7 @@ class plgProjectsTeam extends JPlugin
 				$deleted = 0;
 				$changed = 0;
 
-				foreach($view->team as $member)
+				foreach ($view->team as $member)
 				{
 					$role = JRequest::getInt('role_' . $member->id, 0);
 

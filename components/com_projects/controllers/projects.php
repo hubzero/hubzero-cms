@@ -727,8 +727,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				$this->_option,
 				$authorized,
 				$this->juser->get('id'),
-				'',
-				'',
+				$this->getNotifications('success'),
+				$this->getNotifications('error'),
 				'save'
 			));
 
@@ -935,9 +935,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 
 		// Get messages	and errors
 		$this->view->msg = isset($this->_msg) ? $this->_msg : $this->getNotifications('success');
-		if ($this->getError())
+		$error = $this->getError() ? $this->getError() : $this->getNotifications('error');
+		if ($error)
 		{
-			$this->view->setError( $this->getError() );
+			$this->view->setError( $error );
 		}
 
 		$this->view->display();
