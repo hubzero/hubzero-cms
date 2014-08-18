@@ -23,54 +23,51 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Ahmed Abdel-Gawad <aabdelga@purdue.edu>
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$orcid_html = '';
-
-$orcid_html .= "<ol class=\"results\" id=\"orcid-results-list\">\n";
-
-foreach ($this->records as $record)
-{
-	$fname = array_key_exists('given-names', $record) ? $record['given-names'] : '';
-	$lname = array_key_exists('family-name', $record) ? $record['family-name'] : '';
-	$orcid_uri = array_key_exists('uri', $record) ? $record['uri'] : '';
-	$orcid = array_key_exists('path', $record) ? $record['path'] : '';
-
-	$orcid_html .= "<li class=\"public\">";
-		$orcid_html .= "<div class=\"grid\">";
-			$orcid_html .= "<div class=\"col span4\">";
-				$orcid_html .= "<p class=\"title\">";
-					$orcid_html .= "<a target=\"_blank\" href=\"" . $orcid_uri . "\">";
-							$orcid_html .= $fname . " " . $lname;
-					$orcid_html .= "</a>";
-				$orcid_html .= "</p>";
-			$orcid_html .= "</div>";
-			$orcid_html .= "<div class=\"col span4\">";
-				$orcid_html .= $orcid;
-			$orcid_html .= "</div>";
-			$orcid_html .= "<div class=\"col span4 omega\">";
-
-				$orcid_html .= "<a style=\"text-decoration: none;\" class=\"btn\" onclick=\"" . $this->callbackPrefix . "associateOrcid('', '" . $orcid ."')\"> " . JText::_('Associate this ORCID') . "</a>";
-			$orcid_html .= "</div>";
-		$orcid_html .= "</div>";
-	$orcid_html .= "</li>";
-}
-
-if (count($this->records) == 0)
-{
-	$orcid_html .= "<li class=\"public\">";
-		$orcid_html .= "<p class=\"title\">";
-			$orcid_html .= "No results found.";
-		$orcid_html .= "</p>";
-	$orcid_html .= "</li>";
-}
-
-$orcid_html .= "</ol>";
-
-echo $orcid_html;
+?>
+<table class="results" id="orcid-results-list">
+	<tbody>
+		<?php if (count($this->records)) { ?>
+			<?php
+			foreach ($this->records as $record)
+			{
+				$fname     = array_key_exists('given-names', $record) ? $record['given-names'] : '';
+				$lname     = array_key_exists('family-name', $record) ? $record['family-name'] : '';
+				$orcid_uri = array_key_exists('uri', $record)         ? $record['uri'] : '';
+				$orcid     = array_key_exists('path', $record)        ? $record['path'] : '';
+				?>
+				<tr>
+					<td>
+						<a class="title" rel="external" href="<?php echo $orcid_uri; ?>">
+							<?php echo $fname . ' ' . $lname; ?>
+						</a>
+					</td>
+					<td>
+						<span class="orcid">
+							<?php echo $orcid; ?>
+						</span>
+					</td>
+					<td>
+						<a class="btn" onclick="<?php echo $this->callbackPrefix . 'associateOrcid("", "' . $orcid . '");'; ?>">
+							<?php echo JText::_('Associate this ORCID'); ?>
+						</a>
+					</td>
+				</tr>
+				<?php
+			}
+			?>
+		<?php } else { ?>
+			<tr>
+				<td class="no-results">
+					<?php echo JText::_('No results found.'); ?>
+				</td>
+			</tr>
+		<?php } ?>
+	</tbody>
+</table>

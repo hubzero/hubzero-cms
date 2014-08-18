@@ -17,16 +17,26 @@
 	margin: 0 0 1em 0;
 	padding: 0 0 0.2em 0;
 	border-bottom: 2px solid #ccc;
-	border-bottom: 2px solid rgba(0, 0, 0, 0.1)
+	border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 #component-body fieldset {
-	border: 1px solid #ccc;
-	border: 1px solid rgba(0, 0, 0, 0.2);
 	padding: 1em;
+	border: none;
+	background: #f9f9f9;
+	background: rgba(100, 100, 100, 0.05);
+	-webkit-border-radius: 0.25em;
+	   -moz-border-radius: 0.25em;
+	    -ms-border-radius: 0.25em;
+	     -o-border-radius: 0.25em;
+	        border-radius: 0.25em;
+}
+#component-body .orcid-create {
+	border-bottom: 1px solid #e1e1e1;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+	padding-bottom: 0.5em;
 }
 #component-body fieldset legend {
-	margin: 0;
-	padding: 0 1em;
+	display: none;
 }
 #component-body fieldset p {
 	margin-top: 0;
@@ -35,24 +45,24 @@
 #component-body fieldset label input {
 	width: 100%;
 }
-
-#component-body ul {
-	margin: 1em 0 1em 1.5em;
-}
-#component-body li {
-	margin: 0 0 1em 0;
-}
-
-.results {
-	margin: 0;
+#component-body table.results {
+	margin: 1.5em 0 0 0;
 	padding: 0;
-	list-style: none;
 }
-.results li {
-	margin: 1em 0;
+#component-body table.results,
+#component-body table.results tr td,
+#component-body table.results tr th {
+	border: none;
 }
-
+#component-body table.results tr:nth-child(odd) {
+	background-color: #f9f9f9;
+	background-color: rgba(100, 100, 100, 0.05);
+}
+#component-body .no-results {
+	text-align: center;
+	font-style: italic;
+}
 #component-body h4 {
 	font-weight: bold;
-	margin-top: 2em;
+	margin: 1.5em 0 0 0;
 }

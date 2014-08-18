@@ -78,15 +78,11 @@ $this->css('orcid.css');
 <section class="main section">
 	<form name="orcid-search-form">
 		<h3>Associate your <b>ORCID</b> (Open Researcher and Contributor ID)</h3>
-		<p>To include your ORCID in your profile:</p>
-
-		<h4>Search for an existing ORCID</h4>
-		<p>If you have created an ORCID in the past or your institution has generated one for you, all you have to do is fill in the fields below and search for your unique ID from the list.</p>
-
+		<!-- <p>To include your ORCID in your profile:</p> -->
 		<fieldset>
-			<legend>Search ORCID</legend>
+			<legend>Profile Info</legend>
 
-			<p>Please fill in any of the following fields:</p>
+			<!-- <p>Please fill in any of the following fields:</p> -->
 
 			<div class="grid nobreak">
 				<div class="col span4">
@@ -108,27 +104,45 @@ $this->css('orcid.css');
 					</label>
 				</div>
 			</div>
+
+			<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(JURI::base(true), '/'); ?>" />
 		</fieldset>
-		<p>
-			<a id="get-orcid-results" class="btn" href="javascript:;"> <?php echo JText::_('Search ORCID'); ?></a>
-		</p>
 
-		<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(JURI::base(true), '/'); ?>" />
+		<?php if ($this->config->get('orcid_service', 'members') != 'public') { ?>
+			<div class="orcid-section orcid-create">
+				<h4>Create a new ORCID</h4>
+				<div class="grid nobreak">
+					<div class="col span8">
+						<p>If you can't find your ID or would like to create one, click the "Create new ORCID" button to generate a new ID based on the info above. You will receive an email from ORCID to claim the new ID.</p>
+					</div>
+					<div class="col span4 omega">
+						<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
+
+		<div class="orcid-section orcid-search">
+			<h4>Search for an existing ORCID</h4>
+			<div class="grid nobreak">
+				<div class="col span8">
+					<p>If you have created an ORCID or your institution has generated one for you, fill in the fields above and search for your ID from the list.</p>
+				</div>
+				<div class="col span4 omega">
+					<p>
+						<a id="get-orcid-results" class="btn" href="javascript:;"> <?php echo JText::_('Search ORCID'); ?></a>
+					</p>
+				</div>
+			</div>
+
+			<div id="section-orcid-results">
+				<?php
+				if (isset($this->orcid_records_html))
+				{
+					echo $this->orcid_records_html;
+				}
+				?>
+			</div>
+		</div>
 	</form>
-
-	<div id="section-orcid-results">
-		<?php
-		if (isset($this->orcid_records_html))
-		{
-			echo $this->orcid_records_html;
-		}
-		?>
-	</div>
-
-<?php if ($this->config->get('orcid_service', 'members') != 'public') { ?>
-	<h4>Create a new ORCID</h4>
-	<p>If you can't find your ID or would like to create a new one, just click on the "Create new ORCID" button below to generate a new ORCID based on the info in your profile. You will then receive an email from ORCID to claim the generated ORCID.</p>
-
-	<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
-<?php } ?>
 </section>

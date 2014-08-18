@@ -564,6 +564,10 @@
 		line-height: 40px;
 	}
 
+	#orcid-fetch {
+		margin-top: 1.65em;
+	}
+
 /* Member Address */
 	.member-address-form {
 	}
