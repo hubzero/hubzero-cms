@@ -111,12 +111,4 @@ class Migration20140818160255ComCitations extends Base
 			$this->db->query();
 		}
 	}
-
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-
-	}
 }
