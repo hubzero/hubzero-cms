@@ -166,7 +166,7 @@ class plgProjectsTeam extends JPlugin
 			\Hubzero\Document\Assets::addPluginScript('projects', 'team');
 			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'team');
 
-			switch($this->_task)
+			switch ($this->_task)
 			{
 				case 'edit':
 				case 'setup':
@@ -393,7 +393,7 @@ class plgProjectsTeam extends JPlugin
 
 		// Get curation model
 		$view->publication->_curationModel = new PublicationsCuration($this->_database,
-		 	$view->publication->_type->curation);
+			$view->publication->_type->curation);
 
 		// Make sure block exists, else use default
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
