@@ -79,17 +79,17 @@ function submitbutton(pressbutton)
 			<label for="filter-by"><?php echo JText::_('COM_WISHLIST_FILTERBY'); ?>:</label>
 			<select name="filterby" id="filter-by">
 				<option value="all"<?php echo ($this->filters['filterby'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_NONE'); ?></option>
-				<option value="granted"<?php echo ($this->filters['filterby'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_GRANTED'); ?></option>
-				<option value="open"<?php echo ($this->filters['filterby'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_OPEN'); ?></option>
-				<option value="accepted"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_ACCEPTED'); ?></option>
-				<option value="pending"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_PENDING'); ?></option>
-				<option value="rejected"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_REJECTED'); ?></option>
-				<option value="withdrawn"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_WITHDRAWN'); ?></option>
-				<option value="deleted"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_DELETED'); ?></option>
-				<option value="useraccepted"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_USER_ACCEPTED'); ?></option>
-				<option value="private"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_PRIVATE'); ?></option>
-				<option value="public"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_PUBLIC'); ?></option>
-				<option value="assigned"<?php echo ($this->filters['filterby'] == 'resource') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_ASSIGNED'); ?></option>
+				<option value="granted"<?php echo ($this->filters['filterby'] == 'granted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_GRANTED'); ?></option>
+				<option value="open"<?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_OPEN'); ?></option>
+				<option value="accepted"<?php echo ($this->filters['filterby'] == 'accepted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_ACCEPTED'); ?></option>
+				<option value="pending"<?php echo ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_PENDING'); ?></option>
+				<option value="rejected"<?php echo ($this->filters['filterby'] == 'rejected') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_REJECTED'); ?></option>
+				<option value="withdrawn"<?php echo ($this->filters['filterby'] == 'withdrawn') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_WITHDRAWN'); ?></option>
+				<option value="deleted"<?php echo ($this->filters['filterby'] == 'deleted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_DELETED'); ?></option>
+				<option value="useraccepted"<?php echo ($this->filters['filterby'] == 'useraccepted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_USER_ACCEPTED'); ?></option>
+				<option value="private"<?php echo ($this->filters['filterby'] == 'private') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_PRIVATE'); ?></option>
+				<option value="public"<?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_PUBLIC'); ?></option>
+				<option value="assigned"<?php echo ($this->filters['filterby'] == 'assigned') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_ASSIGNED'); ?></option>
 			</select>
 		</div>
 	</fieldset>
@@ -97,15 +97,20 @@ function submitbutton(pressbutton)
 
 	<table class="adminlist">
 		<thead>
+			<?php if ($this->wishlist->id) { ?>
 			<tr>
 				<th colspan="8">
 					(<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->wishlist->title)); ?>
 				</th>
 			</tr>
+			<?php } ?>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_WISH_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_TITLE', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php if (!$this->wishlist->id) { ?>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_WISHLIST_ID', 'wishlist', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php } ?>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_PROPOSED_BY', 'proposed_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_PROPOSED', 'proposed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_WISHLIST_STATE', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
@@ -175,6 +180,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 					<?php } ?>
 				</td>
+				<?php if (!$this->wishlist->id) { ?>
+					<td>
+						<?php echo $row->wishlist; ?>
+					</td>
+				<?php } ?>
 				<td>
 					<?php echo $this->escape(stripslashes($row->authorname)); ?>
 				</td>

@@ -56,6 +56,7 @@ class Helper extends Module
 			}
 			$wishlist = $model->get('id');
 		}
+		$this->wishlist = $wishlist;
 
 		$queries = array(
 			'granted'   => 1,

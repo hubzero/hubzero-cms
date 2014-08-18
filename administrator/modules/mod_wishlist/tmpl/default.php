@@ -86,29 +86,29 @@ $total = $this->granted + $this->accepted + $this->pending + $this->removed + $t
 			<tbody>
 				<tr>
 					<td class="pending-items">
-						<a href="index.php?option=com_wishlist&amp;status=0&amp;accepted=0" title="<?php echo JText::_('MOD_WISHLIST_PENDING_TITLE'); ?>"><?php echo $this->escape($this->pending); ?></a>
+						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=pending" title="<?php echo JText::_('MOD_WISHLIST_PENDING_TITLE'); ?>"><?php echo $this->escape($this->pending); ?></a>
 						<span><?php echo JText::_('MOD_WISHLIST_PENDING'); ?></span>
 					</td>
 					<td class="accepted-items">
-						<a href="index.php?option=com_wishlist&amp;status=0&amp;accepted=1" title="<?php echo JText::_('MOD_WISHLIST_ACCEPTED_TITLE'); ?>"><?php echo $this->escape($this->accepted); ?></a>
+						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=accepted" title="<?php echo JText::_('MOD_WISHLIST_ACCEPTED_TITLE'); ?>"><?php echo $this->escape($this->accepted); ?></a>
 						<span><?php echo JText::_('MOD_WISHLIST_ACCEPTED'); ?></span>
 					</td>
 					<td class="granted-items">
-						<a href="index.php?option=com_wishlist&amp;status=1" title="<?php echo JText::_('MOD_WISHLIST_GRANTED_TITLE'); ?>"><?php echo $this->escape($this->granted); ?></a>
+						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=granted" title="<?php echo JText::_('MOD_WISHLIST_GRANTED_TITLE'); ?>"><?php echo $this->escape($this->granted); ?></a>
 						<span><?php echo JText::_('MOD_WISHLIST_GRANTED'); ?></span>
 					</td>
 				</tr>
 				<tr>
 					<td class="rejected-items">
-						<a href="index.php?option=com_wishlist&amp;status=3" title="<?php echo JText::_('MOD_WISHLIST_REJECTED_TITLE'); ?>"><?php echo $this->escape($this->rejected); ?></a>
+						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=rejected" title="<?php echo JText::_('MOD_WISHLIST_REJECTED_TITLE'); ?>"><?php echo $this->escape($this->rejected); ?></a>
 						<span><?php echo JText::_('MOD_WISHLIST_REJECTED'); ?></span>
 					</td>
 					<td class="withdrawn-items">
-						<a href="index.php?option=com_wishlist&amp;status=4" title="<?php echo JText::_('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>"><?php echo $this->escape($this->withdrawn); ?></a>
+						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=withdrawn" title="<?php echo JText::_('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>"><?php echo $this->escape($this->withdrawn); ?></a>
 						<span><?php echo JText::_('MOD_WISHLIST_WITHDRAWN'); ?></span>
 					</td>
 					<td class="removed-items">
-						<a href="index.php?option=com_wishlist&amp;status=2" title="<?php echo JText::_('MOD_WISHLIST_REMOVED_TITLE'); ?>"><?php echo $this->escape($this->removed); ?></a>
+						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=deleted" title="<?php echo JText::_('MOD_WISHLIST_REMOVED_TITLE'); ?>"><?php echo $this->escape($this->removed); ?></a>
 						<span><?php echo JText::_('MOD_WISHLIST_REMOVED'); ?></span>
 					</td>
 				</tr>
