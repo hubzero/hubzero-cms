@@ -82,7 +82,6 @@ $allow_import = $config->get('citation_import', 1);
 		 </div>
 		</div>
 		<div class="two columns second" id="c-output">
-		 <div class="c-inner">
 			<form action="<?php echo $this->url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
 				<fieldset>
 					<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" id="projectid" />
@@ -102,36 +101,37 @@ $allow_import = $config->get('citation_import', 1);
 					<input type="hidden" name="task" value="submit" />
 					<?php } ?>
 				</fieldset>
-				<?php if ($canedit) { ?>
-						<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
-				<?php } ?>
-				<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS'); ?>: </h5>
-				<ul id="c-citations" class="c-list">
-					<li id="nosel" <?php if ($this->citations) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_NONE'); ?></li>
-				<?php if ($this->citations) {
+		 		<div class="c-inner">
+					<?php if ($canedit) { ?>
+							<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+					<?php } ?>
+					<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS'); ?>: </h5>
+					<ul id="c-citations" class="c-list">
+						<li id="nosel" <?php if ($this->citations) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_NONE'); ?></li>
+					<?php if ($this->citations) {
 
-					$formatter = new CitationFormat;
-					$formatter->setTemplate($this->format);
+						$formatter = new CitationFormat;
+						$formatter->setTemplate($this->format);
 
-					foreach ($this->citations as $cite) {
-						$citeText = $cite->formatted
-							? $cite->formatted
-							: CitationFormat::formatReference($cite, '');
-					?>
-					<li id="citation-<?php echo $cite->id; ?>" class="c-drag">
-						<span class="c-citation"><?php echo $citeText; ?></span>
+						foreach ($this->citations as $cite) {
+							$citeText = $cite->formatted
+								? $cite->formatted
+								: CitationFormat::formatReference($cite, '');
+						?>
+						<li id="citation-<?php echo $cite->id; ?>" class="c-drag">
+							<span class="c-citation"><?php echo $citeText; ?></span>
 
-						<span class="c-delete"><a href="<?php echo JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias . a . 'active=links' . a . 'action=deletecitation').'/?pid=' . $this->pub->id . '&cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>
-						<?php if (!$cite->formatted) { ?>
-						<span class="c-edit"><a href="<?php echo JRoute::_('index.php?option=com_citations&task=edit&id=' . $cite->id); ?>" rel="external">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>]</a></span>
-						<?php } ?>
-					</li>
-					<?php
-					}
-				} ?>
-				</ul>
+							<span class="c-delete"><a href="<?php echo JRoute::_('index.php?option=com_projects' . a . 'alias=' . $this->project->alias . a . 'active=links' . a . 'action=deletecitation').'/?pid=' . $this->pub->id . '&cid=' . $cite->id; ?>">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DELETE'); ?>]</a></span>
+							<?php if (!$cite->formatted) { ?>
+							<span class="c-edit"><a href="<?php echo JRoute::_('index.php?option=com_citations&task=edit&id=' . $cite->id); ?>" rel="external">[<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>]</a></span>
+							<?php } ?>
+						</li>
+						<?php
+						}
+					} ?>
+					</ul>
+			 	</div>
 			</form>
-		 </div>
 		</div>
 	</div>
 </div>
