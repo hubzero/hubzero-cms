@@ -66,7 +66,7 @@ $canedit = (
 		<input type="hidden" name="vid" id="vid" value="<?php echo $this->row->id; ?>" />
 		<input type="hidden" name="required" id="required" value="<?php echo in_array($this->active, $this->required) ? 1 : 0; ?>" />
 		<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-		<?php if($this->project->provisioned == 1 ) { ?>
+		<?php if ($this->project->provisioned == 1 ) { ?>
 		<input type="hidden" name="task" value="submit" />
 		<?php } ?>
 	</fieldset>
@@ -96,10 +96,10 @@ $canedit = (
 		<div class="two columns second" id="c-output">
 		 <div class="c-inner">
 			<span class="c-submit">
-				<?php if($canedit) { ?>
-						<span class="c-submit"><input type="submit" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+				<?php if ($canedit) { ?>
+						<span class="c-submit"><input type="submit" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 				<?php } ?>
-				<?php if($this->pub->state != 1 && !$this->move && $this->publication_allowed && $canedit) { echo '<span class="btn-hint"><a href="'.$this->url.'/?section=version">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT').'</a></span>'; } ?>
+				<?php if ($this->pub->state != 1 && !$this->move && $this->publication_allowed && $canedit) { echo '<span class="btn-hint"><a href="'.$this->url.'/?section=version">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT').'</a></span>'; } ?>
 			</span>
 			<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>: </h5>
 			<?php
@@ -130,12 +130,12 @@ $canedit = (
   <div id="c-pane" class="columns">
 	 <div class="c-inner">
 		<span class="c-submit">
-			<?php if($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
+			<?php if ($canedit) { ?>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" id="c-continue" /></span>
 			<?php } ?>
 		<?php echo '<span class="btn-hint"><a href="'.$this->url.'/?section=version">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT').'</a></span>'; ?>
 		</span>
-		<h4><?php echo $ptitle; ?> <span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></h4>
+		<h4><?php echo $ptitle; ?></h4>
 		<?php
 		$model = new PublicationsModelPublication($this->pub);
 		if ($canedit) { ?>
@@ -144,7 +144,7 @@ $canedit = (
 			<tbody>
 				<tr>
 					<td>
-						<label>
+						<label><?php if (in_array($this->active, $this->required)) { ?><span class="required"><?php echo JText::_('REQUIRED'); ?></span><?php } else { ?><span class="optional"><?php echo JText::_('OPTIONAL'); ?></span><?php } ?>
 							<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$this->pub->version_label.' '.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOTES')); ?>:
 							<?php
 							echo \JFactory::getEditor()->display('notes', $this->escape($model->notes('raw')), '', '', 35, 20, false, 'pub_notes', null, null, array('class' => 'minimal no-footer'));
