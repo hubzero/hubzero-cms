@@ -218,8 +218,11 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		}
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(), 'request');
-		$id  = (isset($ids[0])) ? $ids[0] : 0;
+		$id = JRequest::getVar('id', array(), 'request');
+		if (is_array($id))
+		{
+			$id = (!empty($id)) ? $id[0] : 0;
+		}
 
 		// Load the event object
 		$this->view->row = new EventsEvent($this->database);

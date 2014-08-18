@@ -44,6 +44,7 @@ class EventsControllerPages extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		$ids = JRequest::getVar('id', array(0));
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
@@ -116,15 +117,12 @@ class EventsControllerPages extends \Hubzero\Component\AdminController
 	 */
 	public function addTask()
 	{
-		$ids = JRequest::getVar('id', array());
-		if (is_array($ids))
+		$id = JRequest::getVar('id', array());
+		if (is_array($id))
 		{
-			$id = (!empty($ids)) ? $ids[0] : 0;
+			$id = (!empty($id)) ? $id[0] : 0;
 		}
-		else
-		{
-			$id = 0;
-		}
+
 		JRequest::setVar('id', array());
 		$this->editTask($id);
 	}
@@ -141,16 +139,11 @@ class EventsControllerPages extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$eid = ($eid) ? $eid : JRequest::getInt('event', 0);
-		$ids = JRequest::getVar('id', array());
 
-		// Get the single ID we're working with
-		if (is_array($ids))
+		$id = JRequest::getVar('id', array());
+		if (is_array($id))
 		{
-			$id = (!empty($ids)) ? $ids[0] : 0;
-		}
-		else
-		{
-			$id = 0;
+			$id = (!empty($id)) ? $id[0] : 0;
 		}
 
 		// Initiate database class and load info

@@ -86,7 +86,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -103,22 +103,22 @@ $row = &$this->rows[$i];
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-				<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
-					&nbsp;
-				<?php } else { ?>
-					<input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
-				<?php } ?>
+					<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
+						&nbsp;
+					<?php } else { ?>
+						<input type="checkbox" id="cb<?php echo $i;?>" name="id[]" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
-					<span class="checkedout hasTip" title="Checked out::<?php echo $this->escape(stripslashes($row->editor)); ?>">
-						<?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
-					</span>
-				<?php } else { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
-					</a>
-				<?php } ?>
+					<?php if ($row->checked_out && $row->checked_out != $juser->get('id')) { ?>
+						<span class="checkedout hasTip" title="Checked out::<?php echo $this->escape(stripslashes($row->editor)); ?>">
+							<?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
+						</span>
+					<?php } else { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+							<?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
 					<span>
@@ -126,7 +126,7 @@ $row = &$this->rows[$i];
 					</span>
 				</td>
 				<td>
-				<?php
+					<?php
 					$now = JFactory::getDate()->toSql();
 					$alt = JText::_('COM_EVENTS_EVENT_UNPUBLISHED');
 					if ($now <= $row->publish_up && $row->state == "1") {
@@ -158,11 +158,11 @@ $row = &$this->rows[$i];
 					$pages = $p->getCount(array('event_id'=>$row->id));
 
 					if ($times) {
-				?>
-					<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('COM_EVENTS_EVENT_PUBLISH_INFO');?>::<?php echo $times; ?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } ?>
+					?>
+						<a class="state <?php echo $row->state ? 'publish' : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?php echo $i;?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?php echo JText::_('COM_EVENTS_EVENT_PUBLISH_INFO');?>::<?php echo $times; ?>">
+							<span><?php echo $alt; ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td style="white-space: nowrap;">
 					<?php echo $times; ?>
@@ -187,7 +187,7 @@ $row = &$this->rows[$i];
 					<?php endif; ?>
 				</td>
 				<td style="white-space: nowrap;">
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;id[]=<?php echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;id=<?php echo $row->id; ?>">
 						<?php echo JText::sprintf('COM_EVENTS_EVENT_NUMBER_OF_PAGES', $pages); ?>
 					</a>
 				</td>
