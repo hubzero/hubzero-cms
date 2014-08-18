@@ -97,16 +97,15 @@ if (!$this->app->sess) {
 		</noscript>
 		<p id="troubleshoot" class="help"><?php echo JText::_('COM_TOOLS_SESSION_FAILS_TO_START'); ?></p>
 
-		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>">
+		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px;">
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
 			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
 			<?php
-			$this->view('session_' . (JRequest::getInt('novnc', 0) ? 'novnc' : 'java'), 'sessions')
-			     ->set('option', $this->option)
-			     ->set('output', $this->output)
-			     ->set('app', $this->app)
-			     ->set('readOnly', $readOnly)
-			     ->display();
+			JPluginHelper::importPlugin('tools');
+			$dispatcher = JDispatcher::getInstance();
+
+			$output = $dispatcher->trigger('onToolSessionView', array($this->app, $this->output, $readOnly));
+			echo implode("\n", $output);
 			?>
 		</div><!-- / #app-content -->
 		<div id="app-footer">
