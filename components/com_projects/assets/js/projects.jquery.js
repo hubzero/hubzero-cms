@@ -220,6 +220,10 @@ HUB.Projects = {
 									$('#ajax-selections').val(selections);
 								}
 							}
+							if (HUB.ProjectTodo)
+							{
+								HUB.ProjectTodo.initialize();
+							}
 							// Reviewers
 							HUB.Projects.resetApproval();
 						}

@@ -412,12 +412,8 @@
 /* Todo - ajax inline editing
 --------------------------------------------- */
 	.todo-content textarea {
-		width: 180px;
+		width: 100%;
 		height: 100px;
-		border: none;
-		background: none;
-		border-bottom: 1px solid #CCC;
-		font-style: italic;
 		line-height: 1.3em;
 		font-size: 1em;
 		font-family: 'Times', sans-serif;
@@ -459,11 +455,45 @@
 		font-size: 85%;
 	}
 	.todoeditoptions {
-		margin-left: 3em;
 		font-size: 85%;
 		font-style: normal;
 		border-bottom: 1px solid #CCC;
-		width: 70%;
+	}
+	.td-options {
+		margin: 0 4em;	
+		font-size: 85%;
+		width: 55%;
+		border-top: 1px dotted #CCC;
+	}
+	.td-options span {
+		margin: 0 1em;
+	}
+	.comment-wrap {
+		margin: 3em 3em 1em 3em;
+	}
+	.td-details {
+		font-size: 85%;
+		padding-left: 1em;
+		border-left: 4px solid #EFEFEF;
+		line-height: 1em;
+	}
+	.td-details p {
+		color: #999;
+	}
+	#td-item .todo-content {
+		padding: 1em 2em;
+	}
+	.pinboard #td-item .todo-body {
+		background: none;
+		border-bottom: 1px solid #CCC;
+		padding: 0.5em 0;
+		margin-bottom: 1em;
+		display: block;
+	}
+	.pinboard #td-item {
+		float: none;
+		width: auto;
+		margin: 0 2em;
 	}
 	
 /* Todo - due box display
@@ -506,28 +536,6 @@
 	}
 	.pinboard li.pin_green .todo-due {
 		background: green;
-	}
-	
-/* Item page
---------------------------------------------- */
-	.pinboard #td-item .todo-body {
-		background: none;
-		border-bottom: 1px solid #CCC;
-		padding: 0.5em 0;
-		margin-bottom: 1em;
-		display: block;
-	}
-	.pinboard #td-item .td-info {
-		padding: 0;
-		margin: 0;
-		font-size: 85%;
-		color: #999;
-		margin-top: -1em;
-		margin-bottom: 1em;
-	}
-	.pinboard #td-item {
-		float: none;
-		width: 200px;
 	}
 
 /* Todo form 
@@ -767,6 +775,14 @@
 		color: #6699cc;
 		display: inline;
 	}
+	.todo-edits {
+		margin-top: 1em;
+		padding: 1em 0;
+		border-top: 1px dotted #CCCCCC;
+	}
+	.todo-edits select {
+		display: block;
+	}
 	
 /* Pop-up calendar
 --------------------------------------------- */
@@ -961,6 +977,7 @@
 --------------------------------------------- */
 
 	.trash:before,
+	.edit:before,
 	.checked:before,
 	.pinboard li .comment-blurb a:before {
 		content: "";
@@ -985,6 +1002,9 @@
 	}
 	.trash:before {
 		content: "\f014";
+	}
+	.edit:before {
+		content: "\270E";
 	}
 	
 /* Misc

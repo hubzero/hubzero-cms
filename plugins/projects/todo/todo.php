@@ -203,10 +203,6 @@ class plgProjectsTodo extends JPlugin
 					$arr['html'] = $this->save();
 					break;
 
-				case 'edit':
-					$arr['html'] = $this->save();
-					break;
-
 				case 'reorder':
 				case 'sortitems':
 					$arr['html'] = $this->reorder();
@@ -225,6 +221,7 @@ class plgProjectsTodo extends JPlugin
 					break;
 
 				case 'view':
+				case 'edit':
 					$arr['html'] = $this->item();
 					break;
 
@@ -363,12 +360,15 @@ class plgProjectsTodo extends JPlugin
 
 		if ($todoid && $objTD->loadTodo($this->_project->id, $todoid) && $objTD->state != 2 )
 		{
+			$layout = ($this->_task == 'edit') ? 'edit' : 'default';
+			
 			// Show to-do item with comments
 			$view = new \Hubzero\Plugin\View(
 				array(
-					'folder'=>'projects',
-					'element'=>'todo',
-					'name'=>'item'
+					'folder'	=>'projects',
+					'element'	=>'todo',
+					'name'		=>'item',
+					'layout'	=> $layout
 				)
 			);
 
@@ -520,7 +520,7 @@ class plgProjectsTodo extends JPlugin
 				}
 				else
 				{
-					$this->setError(JText::_('COM_PROJECTS_TODO_WRONG_DATE_FORMAT'));
+					$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_WRONG_DATE_FORMAT'));
 				}
 			}
 			else
@@ -544,8 +544,8 @@ class plgProjectsTodo extends JPlugin
 			else
 			{
 				$this->_msg = $todoid
-					?  JText::_('COM_PROJECTS_TODO_ITEM_SAVED')
-					: JText::_('COM_PROJECTS_TODO_NEW_ITEM_SAVED');
+					?  JText::_('PLG_PROJECTS_TODO_TODO_ITEM_SAVED')
+					: JText::_('PLG_PROJECTS_TODO_TODO_NEW_ITEM_SAVED');
 			}
 		}
 		// Assign todo
@@ -565,8 +565,8 @@ class plgProjectsTodo extends JPlugin
 				else
 				{
 					$this->_msg = $mine
-						? JText::_('COM_PROJECTS_TODO_ASSIGNED_TO_MINE')
-						: JText::_('COM_PROJECTS_TODO_REASSIGNED');
+						? JText::_('PLG_PROJECTS_TODO_TODO_ASSIGNED_TO_MINE')
+						: JText::_('PLG_PROJECTS_TODO_TODO_REASSIGNED');
 				}
 			}
 		}
@@ -590,15 +590,15 @@ class plgProjectsTodo extends JPlugin
 				else
 				{
 					$this->_msg = $state == 1
-						? JText::_('COM_PROJECTS_TODO_MARKED_COMPLETED')
-						: JText::_('COM_PROJECTS_TODO_MARKED_INCOMPLETE');
+						? JText::_('PLG_PROJECTS_TODO_TODO_MARKED_COMPLETED')
+						: JText::_('PLG_PROJECTS_TODO_TODO_MARKED_INCOMPLETE');
 
 					if ($state == 1)
 					{
 						// Record activity
 						$objAA = new ProjectActivity ( $this->_database );
 						$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
-							JText::_('COM_PROJECTS_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to-do',
+							JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_COMPLETED'), $objTD->id, 'to-do',
 							JRoute::_('index.php?option=' . $this->_option . a .
 							'alias=' . $this->_project->alias . a . 'active=todo'. a .
 							'action=view') . '/?todoid=' . $objTD->id, 'todo', 1 );
@@ -626,10 +626,10 @@ class plgProjectsTodo extends JPlugin
 				// Store content
 				if (!$objTD->store())
 				{
-					$this->setError(JText::_('COM_PROJECTS_TODO_ERROR_LIST_SAVE'));
+					$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_ERROR_LIST_SAVE'));
 				}
 				else {
-					$this->_msg = JText::_('COM_PROJECTS_TODO_LIST_SAVED');
+					$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_LIST_SAVED');
 				}
 			}
 		}
@@ -639,7 +639,7 @@ class plgProjectsTodo extends JPlugin
 		if ($new)
 		{
 			$aid = $objAA->recordActivity($this->_project->id, $this->_uid,
-				JText::_('COM_PROJECTS_ACTIVITY_TODO_ADDED'), $objTD->id, 'to-do',
+				JText::_('PLG_PROJECTS_TODO_ACTIVITY_TODO_ADDED'), $objTD->id, 'to-do',
 				JRoute::_('index.php?option=' . $this->_option . a .
 				'alias=' . $this->_project->alias . a . 'active=todo' . a .
 				'action=view') . '/?todoid=' . $objTD->id, 'todo', 1);
@@ -718,7 +718,7 @@ class plgProjectsTodo extends JPlugin
 			// Delete todo
 			if (!$objTD->deleteTodo($this->_project->id, $todoid))
 			{
-				$this->setError(JText::_('COM_PROJECTS_TODO_DELETED_ERROR'));
+				$this->setError(JText::_('PLG_PROJECTS_TODO_TODO_DELETED_ERROR'));
 			}
 			else
 			{
@@ -733,7 +733,7 @@ class plgProjectsTodo extends JPlugin
 				    $objAA->deleteActivity();
 				}
 
-				$this->_msg = JText::_('COM_PROJECTS_TODO_DELETED');
+				$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_DELETED');
 			}
 		}
 		else if ($list && $objTD->getListName($this->_project->id, $list))
@@ -777,7 +777,7 @@ class plgProjectsTodo extends JPlugin
 
 			// Clean-up colored items
 			$objTD->deleteList( $this->_project->id, $list );
-			$this->_msg = JText::_('COM_PROJECTS_TODO_LIST_DELETED');
+			$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_LIST_DELETED');
 		}
 
 		// Pass success or error message
@@ -870,7 +870,7 @@ class plgProjectsTodo extends JPlugin
 			// delete comment
 			if ($objC->deleteComment())
 			{
-				$this->_msg = JText::_('COM_PROJECTS_COMMENT_DELETED');
+				$this->_msg = JText::_('PLG_PROJECTS_TODO_COMMENT_DELETED');
 			}
 
 			// delete associated activity
@@ -928,7 +928,7 @@ class plgProjectsTodo extends JPlugin
 			}
 			else
 			{
-				$this->_msg = JText::_('COM_PROJECTS_COMMENT_POSTED');
+				$this->_msg = JText::_('PLG_PROJECTS_TODO_COMMENT_POSTED');
 			}
 			// Get new entry ID
 			if (!$objC->id) {
@@ -939,10 +939,10 @@ class plgProjectsTodo extends JPlugin
 			$objAA = new ProjectActivity( $this->_database );
 			if ($objC->id )
 			{
-				$what = JText::_('COM_PROJECTS_TODO_ITEM');
+				$what = JText::_('PLG_PROJECTS_TODO_TODO_ITEM');
 				$url = '#tr_'.$parent_activity; // same-page link
 				$aid = $objAA->recordActivity( $this->_project->id,
-					$this->_uid, JText::_('COM_PROJECTS_COMMENTED').' '.JText::_('COM_PROJECTS_ON').' '.$what,
+					$this->_uid, JText::_('PLG_PROJECTS_TODO_COMMENTED').' '.JText::_('PLG_PROJECTS_TODO_ON').' '.$what,
 					$objC->id, $what, $url, 'quote', 0 );
 			}
 
