@@ -32,7 +32,7 @@ function submitbutton(pressbutton)
 	submitform( pressbutton );
 }
 </script>
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
