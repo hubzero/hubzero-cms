@@ -649,37 +649,39 @@ HUB.Members.Profile = {
 		});
 		
 		//add/edit addresses
-		$('.add-address, .edit-address').fancybox({
-			type: 'ajax',
-			width: 700,
-			height: 'auto',
-			autoSize: false,
-			fitToView: false,  
-			titleShow: false,
-			tpl: {
-				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-			},
-			beforeLoad: function() {
-				href = $(this).attr('href');
-				if (href.indexOf('?') == -1) {
-					href += '?no_html=1';
-				} else {
-					href += '&no_html=1';
-				}
-				$(this).attr('href', href);
-			},
-			afterShow: function() {
-				if ($('#hubForm-ajax')) {
-					$('#hubForm-ajax').submit(function(e) {
-						e.preventDefault();
-						$.post($(this).attr('action'),$(this).serialize(), function(data) {
-							$.fancybox.close();
-							HUB.Members.Profile.editReloadSections();
+		if ($('.add-address, .edit-address').length) {
+			$('.add-address, .edit-address').fancybox({
+				type: 'ajax',
+				width: 700,
+				height: 'auto',
+				autoSize: false,
+				fitToView: false,  
+				titleShow: false,
+				tpl: {
+					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+				},
+				beforeLoad: function() {
+					href = $(this).attr('href');
+					if (href.indexOf('?') == -1) {
+						href += '?no_html=1';
+					} else {
+						href += '&no_html=1';
+					}
+					$(this).attr('href', href);
+				},
+				afterShow: function() {
+					if ($('#hubForm-ajax')) {
+						$('#hubForm-ajax').submit(function(e) {
+							e.preventDefault();
+							$.post($(this).attr('action'),$(this).serialize(), function(data) {
+								$.fancybox.close();
+								HUB.Members.Profile.editReloadSections();
+							});
 						});
-					});
+					}
 				}
-			}
-		});
+			});
+		}
 	},
 	
 	locateMe: function()
@@ -846,7 +848,7 @@ HUB.Members.Profile = {
 				if (response.success) {
 					if (response.orcid) {
 						alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
-						window.parent.document.getElementById('orcid').value = orcid;
+						window.parent.document.getElementById('orcid').value = response.orcid;
 						parent.jQuery.fancybox.close();
 					} else {
 						alert('ORCID service reported a successful creation but we failed to retrieve an ORCID. Please contact support.');
@@ -869,31 +871,33 @@ jQuery(document).ready(function($){
 	HUB.Members.Profile.initialize();
 
 	// Iframe method
-	$('#orcid-fetch').fancybox({
-		type: 'iframe',   // change this to 'ajax' if you want to use AJAX
-		width: 700,
-		height: 'auto',
-		autoSize: false,
-		fitToView: false,
-		titleShow: false,
-		closeClick: false,
-		helpers: { 
-			overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox
-		},
-		tpl: {
-			wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-		},
-		beforeLoad: function() {
-			href = $(this).attr('href');
-			if (href.indexOf('?') == -1) {
-					href += '?tmpl=component';    // Change to no_html=1 if using AJAX
-			} else {
-					href += '&tmpl=component';    // Change to no_html=1 if using AJAX
+	if ($('#orcid-fetch').length) {
+		$('#orcid-fetch').fancybox({
+			type: 'iframe',   // change this to 'ajax' if you want to use AJAX
+			width: 700,
+			height: 'auto',
+			autoSize: false,
+			fitToView: false,
+			titleShow: false,
+			closeClick: false,
+			helpers: { 
+				overlay : {closeClick: false} // prevents closing when clicking OUTSIDE fancybox
+			},
+			tpl: {
+				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+			},
+			beforeLoad: function() {
+				href = $(this).attr('href');
+				if (href.indexOf('?') == -1) {
+						href += '?tmpl=component';    // Change to no_html=1 if using AJAX
+				} else {
+						href += '&tmpl=component';    // Change to no_html=1 if using AJAX
+				}
+				$(this).attr('href', href);
+			},
+			afterClose: function() {
+				HUB.Members.Profile.editReloadSections();
 			}
-			$(this).attr('href', href);
-		},
-		afterClose: function() {
-			HUB.Members.Profile.editReloadSections();
-		}
-	});
+		});
+	}
 });
