@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // get base url
-$JURI       =& JURI::getInstance();
+$JURI       = JURI::getInstance();
 $groupLink  = rtrim($JURI->base(), DS) . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn'));
 $acceptLink = rtrim($JURI->base(), DS) . JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept');
 
