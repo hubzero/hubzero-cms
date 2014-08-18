@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for adding indices and setting default field value for #__abuse_reports
+ * Migration script for adding indices to com_wishlist tables
  **/
 class Migration20140818161500ComWishlist extends Base
 {
