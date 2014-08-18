@@ -54,7 +54,6 @@ function submitbutton(pressbutton)
 				<th colspan="2"><?php echo JHTML::_('grid.sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
-				<th><?php echo JText::_('Activity count'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -106,22 +105,21 @@ function submitbutton(pressbutton)
 				$tags = $pt->get_tag_cloud(3, 1, $row->id);
 			?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td style="width: 10px;"><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>
-				<td style="width: 30px;"><?php echo $row->id; ?></td>
-				<td style="width: 30px;"><?php echo '<img src="'.$thumb.'" width="30" height="30" alt="'.$this->escape($row->alias).'" />'; ?></td>
-				<td>
+				<td class="minitd"><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>
+				<td class="minitd"><?php echo $row->id; ?></td>
+				<td class="minitd"><?php echo '<img src="'.$thumb.'" width="30" height="30" alt="'.$this->escape($row->alias).'" />'; ?></td>
+				<td class="maxitd">
 					<a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>"><?php echo stripslashes($row->title); ?></a><br /><strong><?php echo stripslashes($row->alias); ?></strong>
-					<?php if ($tags) { ?>
-						<span class="project-tags block">
-							<?php echo $tags; ?>
-						</span>
-					<?php } ?>
+				<?php if ($tags) { ?>
+					<span class="project-tags block">
+						<?php echo $tags; ?>
+					</span>
+				<?php } ?>
 				</td>
-				<td style="width: 20px;"><?php echo $ownerclass; ?></td>
+				<td class="minitd"><?php echo $ownerclass; ?></td>
 				<td><?php echo $owner; ?></td>
 				<td><?php echo $status; ?></td>
 				<td><?php echo ($row->private == 1) ? '<span class="private">&nbsp;</span>' : ''; ?></td>
-				<td class="centeralign"><?php echo $row->activity; ?></td>
 			</tr>
 			<?php
 				$k = 1 - $k;

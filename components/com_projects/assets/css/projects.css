@@ -3370,3 +3370,27 @@
 	#hubForm small.hubform-before {
 		display: none;
 	}
+/* Admin */
+	.project-tags .tags {
+		list-style: none;
+		margin-top: 1em;
+		margin-bottom: 0;
+		font-size: 85%;
+	}
+	.project-tags .tags li {
+		display: inline;
+		margin: 0 9px 0 0;
+		background: #EFEFEF;
+	}
+	.project-tags .tags li a {
+		font-size: bold;
+	}
+	.project-tags .tags li:before {
+		font-family: 'Fontcons';
+		content: "\f02c";
+		font-weight: normal;
+		padding-right: 0.2em;
+	}
+	.maxitd {
+		width: 50%;
+	}
