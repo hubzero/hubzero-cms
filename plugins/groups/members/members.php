@@ -1033,6 +1033,9 @@ class plgGroupsMembers extends \Hubzero\Plugin\Plugin
 			'action'    => 'membership_invite_cancelled',
 			'comments'  => array_merge($users, $user_emails)
 		));
+
+		$app = JFactory::getApplication();
+		$app->redirect(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'),'','',true);
 	}
 
 	public function addRole()
