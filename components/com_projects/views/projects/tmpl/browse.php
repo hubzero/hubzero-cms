@@ -98,34 +98,32 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_OWNER') . '">';
 		$html .= JText::_('COM_PROJECTS_OWNER').'</a></th>'.n;
 
-		$html .= t.t.t.t.'<th';
 		if (!$this->guest) {
-			if ($this->filters['sortby'] == 'status') {
+			$html .= t.t.t.t.'<th';
+			if ($this->filters['sortby'] == 'status')
+			{
 				$html .= ' class="activesort"';
 			}
-				$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=status'
-				.a.'sortdir='.$sortbyDir.'" class="re_sort" title="'
-					. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_STATUS') . '">';
-				$html .= JText::_('COM_PROJECTS_STATUS').'</a>';
+			$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=status'
+			.a.'sortdir='.$sortbyDir.'" class="re_sort" title="'
+				. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_STATUS') . '">';
+			$html .= JText::_('COM_PROJECTS_STATUS').'</a>';
+			$html .='</th>'.n;
 		}
-		else {
-			$html .= '>';
-		}
-		$html .='</th>'.n;
-		$html .= t.t.t.t.'<th';
-		if (!$this->guest) {
-			if ($this->filters['sortby'] == 'role') {
+
+		if (!$this->guest)
+		{
+			$html .= t.t.t.t.'<th';
+			if ($this->filters['sortby'] == 'role')
+			{
 				$html .= ' class="activesort"';
 			}
-				$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=role'
-				.a.'sortdir='.$sortbyDir.'" class="re_sort" 	 title="'
-					. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_MY_ROLE') . '">';
-				$html .= JText::_('COM_PROJECTS_MY_ROLE').'</a>';
+			$html .= '><a href="'. JRoute::_('index.php?option='.$this->option.a.'task=browse').'/?sortby=role'
+			.a.'sortdir='.$sortbyDir.'" class="re_sort" 	 title="'
+				. JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_MY_ROLE') . '">';
+			$html .= JText::_('COM_PROJECTS_MY_ROLE').'</a>';
+			$html .='</th>'.n;
 		}
-		else {
-			$html .= '>';
-		}
-		$html .='</th>'.n;
 		$html .= t.t.t.'</tr>'.n;
 		$html .= t.t.t.'</thead>'.n;
 		$html .= t.t.t.'<tbody>'.n;
@@ -147,28 +145,38 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= '<td class="mini faded">';
 			$html .= ($row->owned_by_group) ? '<span class="i_group"><a href="/groups/'.$row->groupcn.'">'.$row->groupname.'</a></span>' : '<span class="i_user"><a href="/members/'.$row->created_by_user.'">'.$row->authorname.'</a></span>';
 			$html .= '</td>'.n;
-
-			$html .= t.t.t.t.'<td class="mini faded">';
-			if ($row->owner && $row->confirmed == 1) {
-				if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
-					$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('COM_PROJECTS_ACTIVE').'</a></span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
+			if (!$this->guest)
+			{
+				$html .= t.t.t.t.'<td class="mini faded">';
+				if ($row->owner && $row->confirmed == 1) {
+					if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
+						$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('COM_PROJECTS_ACTIVE').'</a></span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
+					}
+					else if ($row->setup_stage < $setup_complete) {
+							$html .= '<span class="setup"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('COM_PROJECTS_STATUS_SETUP').'</a></span> '.JText::_('COM_PROJECTS_IN_PROGRESS');
+					}
+					else if ($row->state == 0) {
+						$html .= '<span class="faded italic">'.JText::_('COM_PROJECTS_STATUS_INACTIVE').'</span> ';
+					}
+					else if ($row->state == 5) {
+						$html .= '<span class="italic pending">'.JText::_('COM_PROJECTS_STATUS_PENDING').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
+					}
 				}
-				else if ($row->setup_stage < $setup_complete) {
-						$html .= '<span class="setup"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('COM_PROJECTS_STATUS_SETUP').'</a></span> '.JText::_('COM_PROJECTS_IN_PROGRESS');
+				else
+				{
+					$html .= JText::_('COM_PROJECTS_NA');
 				}
-				else if ($row->state == 0) {
-					$html .= '<span class="faded italic">'.JText::_('COM_PROJECTS_STATUS_INACTIVE').'</span> ';
+				$html .= '</td>'.n;
+				$html .= t.t.t.t.'<td class="mini faded">';
+				if ($row->owner && $row->confirmed == 1) {
+					$html .= $row->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR') ;
 				}
-				else if ($row->state == 5) {
-					$html .= '<span class="italic pending">'.JText::_('COM_PROJECTS_STATUS_PENDING').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
+				else
+				{
+					$html .= JText::_('COM_PROJECTS_NA');
 				}
+				$html .= '</td>'.n;
 			}
-			$html .= '</td>'.n;
-			$html .= t.t.t.t.'<td class="mini faded">';
-			if ($row->owner && $row->confirmed == 1) {
-				$html .= $row->role == 1 ? JText::_('COM_PROJECTS_LABEL_OWNER') : JText::_('COM_PROJECTS_LABEL_COLLABORATOR') ;
-			}
-			$html .= '</td>'.n;
 			$html .= t.t.t.'</tr>'.n;
 		}
 		$html .= t.t.t.'</tbody>'.n;
