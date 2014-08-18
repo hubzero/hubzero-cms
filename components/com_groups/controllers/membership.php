@@ -333,20 +333,24 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 				$groupInvitees[$profile->get('email')] = $profile->get('name');
 			}
 		}
+
+		// only email regular invitees if we have any
+		if (count($groupInvitees) > 0)
+		{
+			// create new message
+			$message = new \Hubzero\Mail\Message();
 		
-		// create new message
-		$message = new \Hubzero\Mail\Message();
-	
-		// build message object and send
-		$message->setSubject($subject)
-				->addFrom($from['email'], $from['name'])
-				->setTo($groupInvitees)
-				->addHeader('X-Mailer', 'PHP/' . phpversion())
-				->addHeader('X-Component', 'com_groups')
-				->addHeader('X-Component-Object', 'group_invite')
-				->addPart($html, 'text/plain')
-				->send();
-		
+			// build message object and send
+			$message->setSubject($subject)
+					->addFrom($from['email'], $from['name'])
+					->setTo($groupInvitees)
+					->addHeader('X-Mailer', 'PHP/' . phpversion())
+					->addHeader('X-Component', 'com_groups')
+					->addHeader('X-Component-Object', 'group_invite')
+					->addPart($html, 'text/plain')
+					->send();
+		}
+
 		// send message to users invited via email
 		foreach ($inviteemails as $mbr)
 		{
@@ -367,7 +371,7 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			// build message object and send
 			$message->setSubject($subject)
 					->addFrom($from['email'], $from['name'])
-					->setTo($mbr['email'])
+					->setTo(array($mbr['email']))
 					->addHeader('X-Mailer', 'PHP/' . phpversion())
 					->addHeader('X-Component', 'com_groups')
 					->addHeader('X-Component-Object', 'group_inviteemail')
