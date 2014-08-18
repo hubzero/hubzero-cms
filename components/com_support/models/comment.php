@@ -246,14 +246,14 @@ class SupportModelComment extends \Hubzero\Base\Model
 					}
 
 					$comment = $this->get('comment');
-					if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
-					{
+					//if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
+					//{
 						$comment = preg_replace("/<br\s?\/>/i", '', $comment);
 						$comment = htmlentities($comment, ENT_COMPAT, 'UTF-8');
 						$comment = nl2br($comment);
 						$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
 						$comment = preg_replace('/  /', ' &nbsp;', $comment);
-					}
+					//}
 
 					$comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
 					$this->set('comment.parsed', $comment);
