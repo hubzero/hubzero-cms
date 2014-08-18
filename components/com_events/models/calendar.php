@@ -93,7 +93,7 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 		{
 			$this->_tbl->load( $oid );
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
 			$this->bind( $oid );
 		}
@@ -313,7 +313,7 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 
 		//make uid keys for array
 		//makes it easier to diff later on
-		foreach($incomingEvents as $k => $incomingEvent)
+		foreach ($incomingEvents as $k => $incomingEvent)
 		{
 			//get old and new key
 			$oldKey = $k;
@@ -338,7 +338,7 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 		}
 
 		//create new events for each event we pull
-		foreach($incomingEvents as $uid => $incomingEvent)
+		foreach ($incomingEvents as $uid => $incomingEvent)
 		{
 			// fetch event from our current events by uid
 			$event = $currentEvents->fetch('ical_uid', $uid);
@@ -423,13 +423,20 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 	 *
 	 * @return [type] [description]
 	 */
-	public function delete()
+	public function delete($deleteEvents = false)
 	{
 		// if subscription delete events
-		if ($this->isSubscription())
+		if ($this->isSubscription() || $deleteEvents)
 		{
 			// delete events
 			$sql = "DELETE FROM `#__events` WHERE `calendar_id`=" . $this->_db->quote($this->get('id'));
+			$this->_db->setQuery($sql);
+			$this->_db->query();
+		}
+		else
+		{
+			// update all events, resetting their calendar
+			$sql = "UPDATE `#__events` SET `calendar_id`=0 WHERE `calendar_id`=" . $this->_db->quote($this->get('id'));
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 		}

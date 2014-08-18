@@ -390,7 +390,7 @@ table.group-event-details {
 	content: '\f017';
 }
 .group-registrants tbody tr:nth-child(2n),
-.group-calendars tbody tr:nth-child(2n) {
+.group-calendars tbody tr:nth-child(3n) {
 	background:#efefef;
 }
 .yes {
@@ -410,6 +410,16 @@ table.group-event-details {
 a.refresh:before {
 	content: '\f021';
 	font-family: 'Fontcons';
+}
+.delete-confirm {
+	display: none;
+}
+.delete-confirm td {
+	text-align: center;
+	padding: 20px 0;
+}
+.delete-confirm h3 {
+	margin-top: 0;
 }
 
 /* Event Import */

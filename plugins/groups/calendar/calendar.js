@@ -38,6 +38,8 @@ HUB.Plugins.GroupCalendar = {
 		
 		// handle subscribe url changing
 		HUB.Plugins.GroupCalendar.subscribeUrl();
+
+		HUB.Plugins.GroupCalendar.calendarDelete();
 	},
 
 	calendar: function()
@@ -178,6 +180,21 @@ HUB.Plugins.GroupCalendar = {
 				$calendar.fullCalendar('refetchEvents');
 			}
 		}, 'json');
+	},
+
+	calendarDelete: function()
+	{
+		var $ = this.jQuery;
+
+		$('.group-calendars .delete').on('click', function(event) {
+			event.preventDefault();
+			$(this).parents('tr').next('.delete-confirm').toggle();
+		});
+
+		$('.group-calendars .delete-cancel').on('click', function(event) {
+			event.preventDefault();
+			$(this).parents('tr').toggle();
+		});
 	},
 	
 	calendarPicker: function()

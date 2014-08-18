@@ -781,6 +781,17 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//load event data
 		$view->event = new EventsModelEvent( $eventId );
 
+		// make sure we have event
+		if (!$view->event->get('id'))
+		{
+			$this->redirect(
+				JRoute::_('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&year=' . $this->year . '&month=' . $this->month),
+				JText::_('Event not found.'),
+				'error'
+			);
+			return;
+		}
+
 		//get registrants count
 		$eventsRespondent = new EventsRespondent( array('id' => $eventId ) );
 		$view->registrants = $eventsRespondent->getCount();
@@ -1608,13 +1619,15 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function deleteCalendar()
 	{
 		//get the passed in event id
-		$calendarId = JRequest::getVar('calendar_id','');
+		$calendarId   = JRequest::getVar('calendar_id','');
+		$events       = JRequest::getVar('events','delete');
+		$deleteEvents = ($events == 'delete') ? true : false;
 
 		// get the calendar
 		$calendar = EventsModelcalendar::getInstance($calendarId);
 
 		//delete the calendar
-		$calendar->delete();
+		$calendar->delete($deleteEvents);
 
 		//inform and redirect
 		$this->redirect(
