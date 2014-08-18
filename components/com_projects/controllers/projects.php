@@ -1053,9 +1053,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		
 		// Get messages	and errors	
 		$view->msg = isset($this->_msg) ? $this->_msg : $this->getNotifications('success');
-		if ($this->getError()) 
+		$error = $this->getError() ? $this->getError() : $this->getNotifications('error');
+		if ($error) 
 		{
-			$view->setError( $this->getError() );
+			$view->setError( $error );
 		}
 		
 		$view->display();
