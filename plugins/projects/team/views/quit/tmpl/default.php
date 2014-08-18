@@ -25,12 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Use id or alias in urls?
-$goto  = 'alias=' . $this->project->alias;
 ?>
 <div id="abox-content">
 <h3><?php echo JText::_('COM_PROJECTS_LEAVE_PROJECT'); ?></h3>
-<form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto); ?>">
+<form id="hubForm-ajax" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&amp;alias=' . $this->project->alias); ?>">
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="action" value="quit" />
@@ -38,18 +36,18 @@ $goto  = 'alias=' . $this->project->alias;
 		<input type="hidden" name="active" value="team" />
 		<input type="hidden" name="confirm" value="1" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<?php if($this->onlymanager) { ?>
-			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_PROJECT_ONLY_MANAGER'); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=edit').'/?edit=team'; ?>"><?php echo JText::_('COM_PROJECTS_TEAM'); ?></a>.</p>
-		<?php } else if($this->group) {
+		<?php if ($this->onlymanager) { ?>
+			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_PROJECT_ONLY_MANAGER'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&amp;alias=' . $this->project->alias . '&amp;task=edit').'/?edit=team'; ?>"><?php echo JText::_('COM_PROJECTS_TEAM'); ?></a>.</p>
+		<?php } else if ($this->group) {
 		$group = \Hubzero\User\Group::getInstance( $this->group );
 		?>
-			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups'.a.'cn='.$group->get('gidNumber')); ?>"><?php echo $group->get('description'); ?></a> <?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT'); ?></p>
+			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER'); ?> <a href="<?php echo JRoute::_('index.php?option=com_groups&amp;cn='.$group->get('gidNumber')); ?>"><?php echo $group->get('description'); ?></a> <?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT'); ?></p>
 		<?php } else { ?>
 			<p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_PROJECT_NOTE'); ?></p>
 			<h4><?php echo JText::_('COM_PROJECTS_TEAM_LEAVE_PROJECT'); ?></h4>
 			<p>
-				<span><input type="submit" class="confirm" value="<?php echo JText::_('COM_PROJECTS_LEAVE_PROJECT'); ?>" /></span>
-				<span><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto); ?>" class="confirm"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+				<span><input type="submit" class="btn btn-success active" value="<?php echo JText::_('COM_PROJECTS_LEAVE_PROJECT'); ?>" /></span>
+				<span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&amp;alias=' . $this->project->alias); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
 			</p>
 		<?php } ?>
 	</fieldset>
