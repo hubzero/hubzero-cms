@@ -56,7 +56,7 @@ $privacy = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_
 			<tr>
 				<td class="htd"><?php echo JText::_('COM_PROJECTS_TITLE'); ?></td>
 				<td><?php echo $view->project->title; ?></td>
-				<?php if($view->config->get('grantinfo', 0) && $view->params->get( 'grant_title')) { ?>
+				<?php if ($view->config->get('grantinfo', 0) && $view->params->get( 'grant_title')) { ?>
 					<td rowspan="5" class="grantinfo">
 						<h4><?php echo JText::_('COM_PROJECTS_INFO_GRANTINFO'); ?></h4>
 						<p>
@@ -64,7 +64,7 @@ $privacy = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_
 							<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:</span> <?php echo $view->params->get( 'grant_PI', 'N/A'); ?></span>
 							<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:</span> <?php echo $view->params->get( 'grant_agency', 'N/A'); ?></span>
 							<span class="block"><span class="faded"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:</span> <?php echo $view->params->get( 'grant_budget', 'N/A'); ?></span>
-							<?php if($view->project->role == 1) { ?>
+							<?php if ($view->project->role == 1) { ?>
 								<a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . 'task=edit' . a . $goto).'/?edit=settings'; ?>"><?php echo JText::_('COM_PROJECTS_EDIT_THIS'); ?></a>
 							<?php } ?>
 						</p>
@@ -79,20 +79,20 @@ $privacy = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_
 				<td class="htd"><?php echo JText::_('COM_PROJECTS_TYPE'); ?></td>
 				<td><?php echo $view->project->projecttype; ?></td>
 			</tr>
-			<?php if($view->project->about) { ?>
-			<tr>
-				<td class="htd"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></td>
-				<td><?php echo $view->project->about; ?></td>
-			</tr>
-			<?php } ?>
 			<tr>
 				<td class="htd"><?php echo JText::_('COM_PROJECTS_ACCESS'); ?></td>
-				<td><p><?php echo $privacy; ?> <?php if(!$view->project->private) { ?><span class="mini faded">[<a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . $goto . a . 'preview=1'); ?>"><?php echo JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'); ?></a>]</span><?php } ?></p></td>
+				<td><?php echo $privacy; ?> <?php if (!$view->project->private) { ?><span class="mini faded">[<a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . $goto . a . 'preview=1'); ?>"><?php echo JText::_('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE'); ?></a>]</span><?php } ?></td>
 			</tr>
 			<tr>
 				<td class="htd"><?php echo JText::_('COM_PROJECTS_CREATED'); ?></td>
 				<td><?php echo JHTML::_('date', $view->project->created, $dateFormat, $tz); ?></td>
 			</tr>
+			<?php if ($view->project->about) { ?>
+			<tr>
+				<td class="htd"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></td>
+				<td><?php echo $view->project->about; ?></td>
+			</tr>
+			<?php } ?>
 		</tbody>
 	</table>
 </div><!-- / .basic info -->
