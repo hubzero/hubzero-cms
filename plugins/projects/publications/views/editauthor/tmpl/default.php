@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $name = $this->author->name ? $this->author->name : $this->author->p_name;
 $name = trim($name) ? $name : $this->author->invited_name;
 
-if(trim($name)) {
+if (trim($name)) {
 	$nameParts    = explode(" ", $name);
 	$lastname  	  = end($nameParts);
 	$firstname    = count($nameParts) > 1 ? $nameParts[0] : '';
@@ -36,7 +36,7 @@ if(trim($name)) {
 else {
 	$firstname = htmlspecialchars($this->author->givenName);
 	$lastname  = htmlspecialchars($this->author->surname);
-	if(!$this->author->user_id)
+	if (!$this->author->user_id)
 	{
 		$name = $this->author->invited_email;
 	}
@@ -46,11 +46,11 @@ $lastname = $this->author->lastName ? htmlspecialchars($this->author->lastName) 
 
 // Don't display email in name fields
 $regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
-if(preg_match($regex, $lastname))
+if (preg_match($regex, $lastname))
 {
 	$lastname = '';
 }
-if(preg_match($regex, $firstname))
+if (preg_match($regex, $firstname))
 {
 	$firstname = '';
 }
@@ -65,7 +65,7 @@ $default_thumb 	= DS . trim($mconfig->get('defaultpic'), DS);
 // Get profile thumb image
 $thumb = '';
 
-if($this->author->picture && $this->author->user_id) {
+if ($this->author->picture && $this->author->user_id) {
 	$curthumb = $ih->createThumbName($this->author->picture);
 	$thumb = $path.DS.\Hubzero\Utility\String::pad($this->author->user_id).DS.$curthumb;
 }
@@ -100,12 +100,11 @@ if ($this->getError()) {
 				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />
 				<input type="hidden" name="selections" id="ajax-selections" value="" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-				<?php if($this->project->provisioned == 1 ) { ?>
+				<?php if ($this->project->provisioned == 1 ) { ?>
 				<input type="hidden" name="task" value="submit" />
 				<?php } ?>
 			</fieldset>
 			<div class="author-edit">
-
 				<?php if ($this->author->id) { ?>
 				<div class="profile-info">
 					<p><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $name; ?>" />
@@ -124,26 +123,30 @@ if ($this->getError()) {
 					<span class="faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_LAST_NAME')); ?>*:</span>
 					<input type="text" name="lastName" value="<?php echo $lastname;  ?>" maxlength="255" />
 				</label>
+				<div class="clear"></div>
 				<label for="organization">
 					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_ORGANIZATION')); ?>*:</span>
 					<input type="text" name="organization" class="long" value="<?php echo $this->author->organization ? htmlspecialchars($this->author->organization) : htmlspecialchars($this->author->p_organization); ?>" maxlength="255" /></label>
-				<?php if(!$this->author->username) { ?>
+				<div class="clear"></div>
+				<?php if (!$this->author->username) { ?>
 					<label for="email">
 						<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL')); ?>:</span>
-						<input type="text" name="email" class="long" value="<?php echo $this->author->invited_email ? $this->author->invited_email : ''; ?>" maxlength="255" /><span class="optional"><?php echo JText::_('OPTIONAL'); ?></span></label>
+						<input type="text" name="email" class="long" value="<?php echo $this->author->invited_email ? $this->author->invited_email : ''; ?>" maxlength="255" /><span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
+					</label>
+					<div class="clear"></div>
 				<?php } ?>
 				<label for="credit">
 					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_CREDIT')); ?>:</span>
 					<input type="text" name="credit" class="long" value="<?php echo htmlspecialchars($this->author->credit); ?>" maxlength="255"  /><span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
 				</label>
-
+				<div class="clear"></div>
 				<p class="hint"><?php echo ($this->author->username)
 					? JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_TIPS')
 					: JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_UNCONFIRMED_TIPS') ; ?></p>
 
 				<p class="submitarea">
 					<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
-					<?php if($this->ajax) { ?>
+					<?php if ($this->ajax) { ?>
 					<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 					<?php } else {
 						$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
