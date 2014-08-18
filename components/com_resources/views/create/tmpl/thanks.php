@@ -155,12 +155,6 @@ $this->css('create.css');
 						<li>visiting the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">new contribution</a> page</li>
 					</ul>
 				</div>
-			<?php } else { ?>
-				<div class="entry-content" id="submission">
-					<h4>What happens now?</h4>
-					<p>Your contribution is now publicly available. You may view it <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id); ?>">here</a>.</p>
-				</div>
-			<?php } ?>
 				<div class="entry-content" id="retract">
 					<h4>Ooops! I missed something and/or submitted too early!</h4>
 					<p>No worries! You can retract a submission by following these steps:</p>
@@ -170,6 +164,21 @@ $this->css('create.css');
 						<li>Click "retract".</li>
 					</ul>
 				</div>
+			<?php } else { ?>
+				<div class="entry-content" id="submission">
+					<h4>What happens now?</h4>
+					<p>Your contribution is now publicly available. You may view it <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id); ?>">here</a>.</p>
+				</div>
+				<div class="entry-content" id="retract">
+					<h4>Ooops! I missed something and/or submitted too early!</h4>
+					<p>No worries! You can either <a href="<?php echo JRoute::_('index.php?option=com_support'); ?>">contact the site administrators</a> and ask the submission be retracted (set back to "draft" status) or modify a submission by following these steps:</p>
+					<ul>
+						<li>Visit the <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->resource->id); ?>">resource's page</a> while <strong>logged in</strong>.</li>
+						<li>You should see an "edit" button or link next to the title of the resource.</li>
+						<li>Click "edit" and make the desired edits. Changes on approved resource take effect immediately and do not require approval.</li>
+					</ul>
+				</div>
+			<?php } ?>
 			</div><!-- / .container-block -->
 		</div><!-- / .container -->
 	</div><!-- /.subject -->
