@@ -302,6 +302,7 @@ class NewsletterHelper
 	 */
 	public static function addTrackingToEmailMessage( $emailMessage, $emailToken )
 	{
+		$emailMessage = str_replace('&#8203;', '', $emailMessage);
 		$emailMessage = self::addclickTrackingtoEmailMessage( $emailMessage, $emailToken );
 		$emailMessage = self::addOpenTrackingToEmailMessage( $emailMessage, $emailToken );
 		$emailMessage = self::addPrintTrackingToEmailMessage( $emailMessage, $emailToken );

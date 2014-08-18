@@ -294,7 +294,7 @@ class NewsletterNewsletter extends JTable
 			$sql .= " AND published=1";
 		}
 		
-		if($id)
+		if ($id)
 		{
 			$sql .= " AND id=".$id;
 			$this->_db->setQuery($sql);
@@ -415,13 +415,13 @@ class NewsletterNewsletter extends JTable
 		$campaignParsed = str_replace("{{COPYRIGHT}}", date("Y"), $campaignParsed);
 		
 		//replace .org, .com., .net, .edu 's
-		if ($campaign->type == 'html')
-		{
-			$campaignParsed = str_replace(".org", "&#8203;.org", $campaignParsed);
-			$campaignParsed = str_replace(".com", "&#8203;.com", $campaignParsed);
-			$campaignParsed = str_replace(".net", "&#8203;.net", $campaignParsed);
-			$campaignParsed = str_replace(".edu", "&#8203;.edu", $campaignParsed);
-		}
+		// if ($campaign->type == 'html')
+		// {
+		// 	$campaignParsed = str_replace(".org", "&#8203;.org", $campaignParsed);
+		// 	$campaignParsed = str_replace(".com", "&#8203;.com", $campaignParsed);
+		// 	$campaignParsed = str_replace(".net", "&#8203;.net", $campaignParsed);
+		// 	$campaignParsed = str_replace(".edu", "&#8203;.edu", $campaignParsed);
+		// }
 		
 		//do we want to strip <html> & <body> tags
 		if ($stripHtmlAndBodyTags)
