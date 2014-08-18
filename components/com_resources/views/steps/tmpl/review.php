@@ -151,6 +151,7 @@ $this->css('create.css')
 <?php } else { ?>
 		<div class="explaination">
 			<h4><?php echo JText::_('COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT'); ?></h4>
+		<?php if ($this->config->get('autoapprove', 0) != 1) { ?>
 			<p>
 				<?php echo JText::sprintf(
 					'COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT_ANSWER',
@@ -158,6 +159,15 @@ $this->css('create.css')
 					'<a href="' . JRoute::_('index.php?option=com_whatsnew') . '">' . JText::_('What\'s New') . '</a>'
 				); ?>
 			</p>
+		<?php } else { ?>
+			<p>
+				<?php echo JText::sprintf(
+					'COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT_AUTOAPPROVED_ANSWER',
+					'<a href="' . JRoute::_('index.php?option=' . $this->option) . '">' . JText::_('resources') . '</a>',
+					'<a href="' . JRoute::_('index.php?option=com_whatsnew') . '">' . JText::_('What\'s New') . '</a>'
+				); ?>
+			</p>
+		<?php } ?>
 		</div>
 		<fieldset>
 			<legend><?php echo JText::_('COM_CONTRIBUTE_AUTHORIZATION_LEGEND'); ?></legend>
@@ -173,7 +183,7 @@ $this->css('create.css')
 				<?php echo JText::sprintf(
 					'COM_CONTRIBUTE_AUTHORIZATION_MUST_ATTRIBUTE',
 					$jconfig->getValue('config.sitename'),
-					'<a class="popup 760x560" href="/legal/license">' . JText::_('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>'
+					'<a class="popup 760x560" href="' . JURI::base(true) . '/legal/license">' . JText::_('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>'
 				); ?>
 			</label>
 	<?php if ($this->config->get('cc_license')) { ?>
