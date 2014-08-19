@@ -298,8 +298,6 @@ class Base
 	 **/
 	public function getParams($element)
 	{
-		$params = new \JRegistry();
-
 		if ($this->baseDb->tableExists('#__components'))
 		{
 			if (substr($element, 0, 4) == 'plg_')
@@ -334,6 +332,10 @@ class Base
 		if ($params)
 		{
 			$params = new \JRegistry($params);
+		}
+		else
+		{
+			$params = new \JRegistry();
 		}
 
 		return $params;
