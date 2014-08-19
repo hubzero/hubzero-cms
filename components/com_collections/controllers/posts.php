@@ -450,8 +450,22 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		$collection_title = JRequest::getVar('collection_title', '');
 		$collection_id = JRequest::getInt('collection_id', 0);
 		$item_id       = JRequest::getInt('item_id', 0);
+
+		if ($collection_title)
+		{
+			$collection = new CollectionsModelCollection();
+			$collection->set('title', $collection_title);
+			$collection->set('object_id', $this->juser->get('id'));
+			$collection->set('object_type', 'member');
+			if (!$collection->store())
+			{
+				$this->setError($collection->getError());
+			}
+			$collection_id = $collection->get('id');
+		}
 
 		// Try loading the current collection/post to see
 		// if this has already been posted to the collection (i.e., no duplicates)
