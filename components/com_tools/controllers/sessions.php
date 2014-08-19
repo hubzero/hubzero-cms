@@ -682,7 +682,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$ms->load($app->sess);
 		$ms->sessname = $app->caption;
 		$ms->params   = $params;
-		$ms->zone_id  = $app->zone_id;
 		if (!$ms->store())
 		{
 			echo $ms->getError();
@@ -1122,34 +1121,34 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$status = $this->middleware($command, $output);
 
 
-		if ($app->params->get('vncEncoding',0)) 
+		if ($app->params->get('vncEncoding',0))
 		{
 		        $output->encoding = trim($app->params->get('vncEncoding',''),'"');
 		}
 
-		if ($app->params->get('vncShowControls',0)) 
+		if ($app->params->get('vncShowControls',0))
 		{
 		        $output->show_controls = trim($app->params->get('vncShowControls',''),'"');
 		}
 
-		if ($app->params->get('vncShowLocalCursor',0)) 
+		if ($app->params->get('vncShowLocalCursor',0))
 		{
 		        $output->show_local_cursor = trim($app->params->get('vncShowLocalCursor',''),'"');
 		}
 
-		if ($app->params->get('vncDebug',0)) 	
+		if ($app->params->get('vncDebug',0))
 		{
 		        $output->debug = trim($app->params->get('vncDebug',''),'"');
 		}
 
-		foreach($output as $key=>$value)
+		foreach ($output as $key=>$value)
 		{
 			$output->$key = strval($value);
 		}
 
 		$boolean_keys = array('debug','show_local_cursor','show_controls','view_only','trust_all_vnc_certs', 'view_only', 'wsproxy_encrypt');
 
-		foreach($boolean_keys as $key)
+		foreach ($boolean_keys as $key)
 		{
 			if (isset($output->$key))
 			{
@@ -1248,32 +1247,32 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if (empty($output->class))
 		{
 			$cls = array();
-			if ($app->params->get('noResize', 0)) 
+			if ($app->params->get('noResize', 0))
 			{
 			        $cls[] = 'no-resize';
 			}
-			if ($app->params->get('noPopout', 0)) 
+			if ($app->params->get('noPopout', 0))
 			{
 			        $cls[] = 'no-popout';
 			}
-			if ($app->params->get('noPopoutClose', 0)) 
+			if ($app->params->get('noPopoutClose', 0))
 			{
-        			$cls[] = 'no-popout-close';
+				$cls[] = 'no-popout-close';
 			}
-			if ($app->params->get('noPopoutMaximize', 0)) 
+			if ($app->params->get('noPopoutMaximize', 0))
 			{
 			        $cls[] = 'no-popout-maximize';
 			}
-			if ($app->params->get('noRefresh', 0)) 
+			if ($app->params->get('noRefresh', 0))
 			{
 			        $cls[] = 'no-refresh';
 			}
 
 			$output->class = "thisapp";
 
-			if (!empty($cls)) 
-			{ 
-				$output->class .= ' ' . implode(' ', $cls); 
+			if (!empty($cls))
+			{
+				$output->class .= ' ' . implode(' ', $cls);
 			}
 		}
 
@@ -1662,6 +1661,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 					'width' => 'width=\"(\d+)\"',
 					'height' => 'height=\"(\d+)\"',
 					'port' => '<param name=\"PORT\" value=\"?(\d+)\"?>',
+					'host' => '<param name=\"HOST\" value=\"?([^>]+)\"?>',
 					'encpassword' => '<param name=\"ENCPASSWORD\" value=\"?([^>]+)\"?>',
 					'name' => '<param name=\"name\" value=\"?([^>]+)\"?>',
 					'connect' => '<param name=\"CONNECT\" value=\"?([^>]+)\"?>',
