@@ -144,6 +144,7 @@ class plgProjectsLinks extends JPlugin
 			$this->_option 		= $option;
 			$this->_authorized 	= $authorized;
 			$this->_uid 		= $uid;
+			$this->_msg 		= $msg;
 
 			if (!$this->_uid)
 			{

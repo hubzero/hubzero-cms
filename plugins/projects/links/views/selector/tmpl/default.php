@@ -37,8 +37,15 @@ $elementId 	= $this->element;
 // Get requirements
 $blocks   		= $this->publication->_curationModel->_progress->blocks;
 $blockParams   	= $blocks->$step->manifest->params;
-$element  		= $blocks->$step->manifest->elements->$elementId;
-$typeParams   	= $element->params->typeParams;
+if ($blocks->$step->manifest->elements)
+{
+	$element  		= $blocks->$step->manifest->elements->$elementId;
+	$typeParams   	= $element->params->typeParams;
+}
+else
+{
+	$typeParams = NULL;
+}
 
 $label  	= isset($typeParams->addLabel) ? $typeParams->addLabel : JText::_('PLG_PROJECTS_LINKS_SELECTOR_TYPE_URL');
 $action 	= isset($typeParams->typeAction) ? $typeParams->typeAction : 'parseurl';
@@ -62,6 +69,9 @@ $newCiteUrl   = $this->project->provisioned == 1
 		? JRoute::_( $route) . '?active=links&action=newcite'
 		: JRoute::_( $route . '&active=links&action=newcite') .'/?p=' . $this->props . a . 'pid='
 		. $this->publication->id . a . 'vid=' . $this->publication->version_id;
+
+// Save Selection URL
+$url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias=' . $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
 ?>
 <div id="abox-content-wrap">
