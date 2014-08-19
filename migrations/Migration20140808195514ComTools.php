@@ -15,11 +15,7 @@ class Migration20140808195514ComTools extends Base
 	 **/
 	public function up()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
-
-		$mwdb = MwUtils::getMWDBO();
-
-		if (!$mwdb->connected())
+		if (!$mwdb = $this->getMWDBO())
 		{
 			$this->setError('Failed to connect to the middleware database', 'warning');
 			return false;
@@ -45,11 +41,7 @@ class Migration20140808195514ComTools extends Base
 	 **/
 	public function down()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
-
-		$mwdb = MwUtils::getMWDBO();
-
-		if (!$mwdb->connected())
+		if (!$mwdb = $this->getMWDBO())
 		{
 			$this->setError('Failed to connect to the middleware database', 'warning');
 			return false;
