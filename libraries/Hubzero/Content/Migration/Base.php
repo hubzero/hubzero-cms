@@ -134,6 +134,48 @@ class Base
 	}
 
 	/**
+	 * Return a middleware database object
+	 *
+	 * @return object
+	 */
+	public function getMWDBO()
+	{
+		static $instance;
+
+		if (!is_object($instance))
+		{
+			$config = $this->getParams('com_tools');
+
+			$options['driver']   = 'pdo';
+			$options['host']     = $config->get('mwDBHost');
+			$options['port']     = $config->get('mwDBPort');
+			$options['user']     = $config->get('mwDBUsername');
+			$options['password'] = $config->get('mwDBPassword');
+			$options['database'] = $config->get('mwDBDatabase');
+			$options['prefix']   = $config->get('mwDBPrefix');
+
+			try
+			{
+				$instance = \JDatabase::getInstance($options);
+			}
+			catch (\PDOException $e)
+			{
+				$instance = NULL;
+				return false;
+			}
+
+			// Test the connection
+			if (!$instance->connected())
+			{
+				$instance = NULL;
+				return false;
+			}
+		}
+
+		return $instance;
+	}
+
+	/**
 	 * Try to get the root credentials from a variety of locations
 	 *
 	 * @return (mixed) $return - array of creds or false on failure
@@ -246,6 +288,55 @@ class Base
 	public function getErrors()
 	{
 		return $this->errors;
+	}
+
+	/**
+	 * Get element params
+	 *
+	 * @param  $option  - (string) com_xyz
+	 * @return (object) - JRegistry of params
+	 **/
+	public function getParams($element)
+	{
+		$params = new \JRegistry();
+
+		if ($this->baseDb->tableExists('#__components'))
+		{
+			if (substr($element, 0, 4) == 'plg_')
+			{
+				$ext = explode("_", $element);
+				$query = "SELECT `params` FROM `#__plugins` WHERE `folder` = " . $this->baseDb->quote($ext[1]) . " AND `element` = " . $this->baseDb->quote($ext[2]);
+			}
+			else
+			{
+				$query = "SELECT `params` FROM `#__components` WHERE `option` = " . $this->baseDb->quote($element);
+			}
+
+			$this->baseDb->setQuery($query);
+			$params = $this->baseDb->loadResult();
+		}
+		else
+		{
+			if (substr($element, 0, 4) == 'plg_')
+			{
+				$ext = explode("_", $element);
+				$query = "SELECT `params` FROM `#__extensions` WHERE `folder` = " . $this->baseDb->quote($ext[1]) . " AND `element` = " . $this->baseDb->quote($ext[2]);
+			}
+			else
+			{
+				$query = "SELECT `params` FROM `#__extensions` WHERE `element` = " . $this->baseDb->quote($element);
+			}
+
+			$this->baseDb->setQuery($query);
+			$params = $this->baseDb->loadResult();
+		}
+
+		if ($params)
+		{
+			$params = new \JRegistry($params);
+		}
+
+		return $params;
 	}
 
 	/**
