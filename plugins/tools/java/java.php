@@ -90,6 +90,8 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 	 */
 	protected function canRender()
 	{
+		$browser = new \Hubzero\Browser\Detector();
+
 		if ($allowed = trim($this->params->get('browsers')))
 		{
 			$browsers = array();
@@ -111,7 +113,6 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 				}
 			}
 
-			$browser = new \Hubzero\Browser\Detector();
 			foreach ($browsers as $minimum)
 			{
 				if ($minimum->os != '*' && $minimum->os != strtolower($browser->os()))
@@ -130,6 +131,20 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 				}
 
 				if ($minimum->minor < $browser->minor())
+				{
+					return false;
+				}
+			}
+		}
+
+		if ($regexes = trim($this->params->get('regexes')))
+		{
+			$regexes = explode("\n", $regexes);
+			foreach ($regexes as $disallow)
+			{
+				$disallow = trim($disallow);
+
+				if (preg_match("/$disallow/i", $browser->agent(), $matches))
 				{
 					return false;
 				}
