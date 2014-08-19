@@ -42,6 +42,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+				<field name="browsers" type="textarea" rows="15" cols="40" default="" label="Minimum OS/Browsers" description="A list of minimum OS/Browser required. One entry per line, the pattern is 'OS, BROWSER MAJOR.MINOR'. If all OSes apply, us an asterisk." />
 			</fieldset>
 		</fields>
 	</config>

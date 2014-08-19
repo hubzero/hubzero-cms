@@ -60,6 +60,11 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		if (!$this->canRender())
+		{
+			return;
+		}
+
 		$session->rendered = true;
 
 		$view = new \Hubzero\Plugin\View(array(
@@ -76,6 +81,62 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 					->set('readOnly', $readOnly)
 					->set('params', $this->params)
 					->loadTemplate();
+	}
+
+	/**
+	 * Check if the plugin can render for the provided browser
+	 * 
+	 * @return  boolean
+	 */
+	protected function canRender()
+	{
+		if ($allowed = trim($this->params->get('browsers')))
+		{
+			$browsers = array();
+
+			$allowed = explode("\n", $allowed);
+			foreach ($allowed as $allow)
+			{
+				$allow = trim($allow);
+
+				if (preg_match('/(.+?),\s+([^\s]+)\s+(\d)\.(\d)/i', $allow, $matches))
+				{
+					$req = new stdClass;
+					$req->name  = strtolower(trim($matches[2]));
+					$req->major = intval($matches[3]);
+					$req->minor = intval($matches[4]);
+					$req->os    = strtolower(trim($matches[1]));
+
+					$browsers[] = $req
+				}
+			}
+
+			$browser = new \Hubzero\Browser\Detector();
+			foreach ($browsers as $minimum)
+			{
+				if ($minimum->os != '*' && $minimum->os != strtolower($browser->os()))
+				{
+					continue;
+				}
+
+				if ($minimum->name != strtolower($browser->name()))
+				{
+					continue;
+				}
+
+				if ($minimum->major < $browser->major())
+				{
+					return false;
+				}
+
+				if ($minimum->minor < $browser->minor())
+				{
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 }
 
