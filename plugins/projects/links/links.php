@@ -637,7 +637,7 @@ class plgProjectsLinks extends JPlugin
 
 		// Get curation model
 		$view->publication->_curationModel = new PublicationsCuration($this->_database,
-		 	$view->publication->_type->curation);
+		$view->publication->_type->curation);
 
 		// Make sure block exists, else use default
 		if (!$view->publication->_curationModel->setBlock( $block, $step ))
@@ -889,7 +889,7 @@ class plgProjectsLinks extends JPlugin
 						: '<h5>' . ProjectsHtml::shortenText($finalUrl, 100) . '</h5>';
 
 				//Get all images found on this page
-			   	$jpgs = $html->find('img[src$=jpg],img[src$=png]');
+				$jpgs = $html->find('img[src$=jpg],img[src$=png]');
 				$images = array();
 
 				if ($jpgs)
@@ -924,7 +924,7 @@ class plgProjectsLinks extends JPlugin
 						{
 							$images[] = $src;
 						}
-				   	}
+					}
 				}
 
 				if ($images)
@@ -1011,14 +1011,14 @@ class plgProjectsLinks extends JPlugin
 		if ($citation == true)
 		{
 			curl_setopt ($ch, CURLOPT_HTTPHEADER,
-		    	array (
+			array (
 				"Accept: text/x-bibliography; style=" . $format
 		    ));
 		}
 		else
 		{
 			curl_setopt ($ch, CURLOPT_HTTPHEADER,
-		    	array (
+			array (
 				"Accept: application/x-datacite+xml;q=0.9, application/citeproc+json;q=1.0"
 			));
 		}
@@ -1051,13 +1051,13 @@ class plgProjectsLinks extends JPlugin
 		// JSON
 		if ( $contenttype == "application/citeproc+json" )
 		{
-		   	if ($rawData == true)
+			if ($rawData == true)
 			{
 				return $metadata;
 			}
 
 			// crossref DOI
-		   	$metadata = json_decode($metadata, true);
+			$metadata = json_decode($metadata, true);
 
 			// Parse data
 			$data = self::parseDoiData($data, $metadata);
