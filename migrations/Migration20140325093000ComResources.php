@@ -19,10 +19,10 @@ class Migration20140325093000ComResources extends Base
 		$params = $this->getParams('com_resources');
 		$upload = $params->get('uploadpath', '/site/resources');
 
-    if (!is_dir(JPATH_ROOT.DS.trim($upload, DS)))
-    {
-      mkdir(JPATH_ROOT.DS.trim($upload, DS));
-    }
+		if (!is_dir(JPATH_ROOT.DS.trim($upload, DS)))
+		{
+			mkdir(JPATH_ROOT.DS.trim($upload, DS));
+		}
 
 		$path = JPATH_ROOT . DS . trim($upload, DS) . DS . 'import' . DS;
 		if (!is_dir($path))
