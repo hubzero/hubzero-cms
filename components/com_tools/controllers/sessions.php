@@ -688,7 +688,6 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		$ms->load($app->sess);
 		$ms->sessname = $app->caption;
 		$ms->params   = $params;
-		$ms->zone_id  = $app->zone_id;
 		if (!$ms->store()) 
 		{
 			echo $ms->getError();
@@ -1677,6 +1676,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 					'width' => 'width=\"(\d+)\"',
 					'height' => 'height=\"(\d+)\"',
 					'port' => '<param name=\"PORT\" value=\"?(\d+)\"?>',
+					'host' => '<param name=\"HOST\" value=\"?([^>]+)\"?>',
 					'encpassword' => '<param name=\"ENCPASSWORD\" value=\"?([^>]+)\"?>',
 					'name' => '<param name=\"name\" value=\"?([^>]+)\"?>',
 					'connect' => '<param name=\"CONNECT\" value=\"?([^>]+)\"?>',

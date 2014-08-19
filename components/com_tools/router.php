@@ -222,6 +222,7 @@ function toolsParseRoute($segments)
 			break;
 
 			// Sessions controller
+			case 'reinvoke':
 			case 'invoke':
 				$vars['option'] = 'com_tools';
 				$vars['controller'] = 'sessions';
