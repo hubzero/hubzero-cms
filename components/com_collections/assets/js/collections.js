@@ -97,41 +97,46 @@ jQuery(document).ready(function(jq){
 				});
 
 			// Add collect trigger
-			container.find('a.repost').fancybox({
-				type: 'ajax',
-				width: 500,
-				height: 'auto',
-				autoSize: false,
-				fitToView: false,
-				titleShow: false,
-				tpl: {
-					wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
-				},
-				beforeLoad: function() {
-					$(this).attr('href', $(this).attr('href').nohtml());
-				},
-				afterLoad: function(current, previous) {
-					scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
-					current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
-				},
-				beforeShow: function() {
-					if (scrp && scrp.length) {
-						scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
-						eval(scrp);
-					}
-				},
-				afterShow: function() {
-					var el = this.element;
-					if ($('#hubForm')) {
-						$('#hubForm').on('submit', function(e) {
-							e.preventDefault();
-							$.post($(this).attr('action'), $(this).serialize(), function(data) {
-								$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
-								$.fancybox.close();
-							});
-						});
-					}
+			container.find('a.repost').each(function(i, el) {
+				if ($(el).hasClass('tooltips')) {
+					return;
 				}
+				$(el).fancybox({
+					type: 'ajax',
+					width: 500,
+					height: 'auto',
+					autoSize: false,
+					fitToView: false,
+					titleShow: false,
+					tpl: {
+						wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
+					},
+					beforeLoad: function() {
+						$(this).attr('href', $(this).attr('href').nohtml());
+					},
+					afterLoad: function(current, previous) {
+						scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
+						current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
+					},
+					beforeShow: function() {
+						if (scrp && scrp.length) {
+							scrp = scrp[0].replace(/<script type=\"text\/javascript\">/ig, '').replace(/<\/script>/ig, '');
+							eval(scrp);
+						}
+					},
+					afterShow: function() {
+						var el = this.element;
+						if ($('#hubForm')) {
+							$('#hubForm').on('submit', function(e) {
+								e.preventDefault();
+								$.post($(this).attr('action'), $(this).serialize(), function(data) {
+									$('#b' + $(el).attr('data-id') + ' .reposts').text(data);
+									$.fancybox.close();
+								});
+							});
+						}
+					}
+				});
 			});
 
 			// Add collect trigger
