@@ -10,7 +10,7 @@
 
 .notificationColor(@successText, @successBackground, @successBorder) {
 	background-color: @successBackground;
-	//color: @successText !important;
+	color: @successText;
 	border-color: @successBorder;
 }
 
@@ -43,7 +43,7 @@
 		font-weight: 500;
 		border: none; //0.27em solid #eee;
 		.border-radius(0.27em);
-		text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+		//text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
 		background-color: #222;
 	}
 	.info,
@@ -93,6 +93,7 @@
 	.warning,
 	#system-message dd.warning {
 		.notificationColor(@warningText, @warningBackground, @warningBorder);
+		//text-shadow: none;
 	}
 	.error,
 	#system-message dd.error {
