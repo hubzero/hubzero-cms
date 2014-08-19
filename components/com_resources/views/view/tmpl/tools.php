@@ -217,6 +217,14 @@ if ($mode != 'preview')
 				?>
 			</div><!-- / .aside launcharea -->
 		</div>
+
+		<?php
+		// Display canonical
+		$this->view('_canonical')
+		     ->set('option', $this->option)
+		     ->set('model', $this->model)
+		     ->display();
+		?>
 	</div><!-- / .subject -->
 	<aside class="aside rankarea">
 		<?php
