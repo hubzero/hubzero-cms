@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<div class="<?php echo $this->params->get('moduleclass_sfx',''); ?>session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
+<div class="<?php echo $this->params->get('moduleclass_sfx',''); ?> session-list <?php if (!$this->params->get('show_storage', 1)) { echo 'without-storage'; } ?>">
 	<ul>
 		<?php if (count($this->sessions) > 0) : ?>
 			<?php foreach ($this->sessions as $k => $session) : ?>
@@ -105,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
 								<?php echo date("F d, Y @ g:ia", strtotime($session->accesstime)); ?>
 							</div>
 
-							<?php if($this->juser->get('username') != $session->username) : ?>
+							<?php if ($this->juser->get('username') != $session->username) : ?>
 								<div class="session-sharing">
 									<span>Session Owner:</span>
 									<?php
@@ -120,7 +120,7 @@ defined('_JEXEC') or die('Restricted access');
 									<?php echo ucfirst( JText::_('MOD_MYSESSIONS_RESUME') ); ?>
 								</a>
 								<?php $tcls = ($this->params->get('terminate_double_check', 1)) ? 'terminate-confirm' : 'terminate'; ?>
-								<?php if($this->juser->get('username') == $session->username) : ?>
+								<?php if ($this->juser->get('username') == $session->username) : ?>
 									<a class="btn icon-terminate <?php echo $tcls; ?>" href="<?php echo $terminateLink; ?>" title="<?php echo JText::_('MOD_MYSESSIONS_TERMINATE_TITLE'); ?>">
 										<?php echo ucfirst( JText::_('MOD_MYSESSIONS_TERMINATE') ); ?>
 									</a>
