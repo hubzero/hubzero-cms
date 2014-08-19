@@ -1827,7 +1827,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Incoming
 		$name 		= trim(JRequest::getVar( 'name', '', 'post' ));
 		$title 		= trim(JRequest::getVar( 'title', '', 'post' ));
-		$about 		= trim(JRequest::getVar( 'about', '', 'post', 'none', 2 ));
 		$type 		= JRequest::getInt( 'type', 1, 'post' );
 		$private 	= JRequest::getInt( 'private', 1, 'post' );
 		$restricted = JRequest::getVar( 'restricted', '', 'post' );
@@ -1881,7 +1880,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					}
 				}
 				$obj->title = \Hubzero\Utility\String::truncate($title, 250);
-				$obj->about = rtrim($about);
+				$obj->about = trim(JRequest::getVar( 'about', '', 'post', 'none', 2 ));
 				$obj->type 	= $type;
 
 				// save advanced permissions

@@ -27,7 +27,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Do some text cleanup
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
-$this->project->about = ProjectsHtml::cleanText($this->project->about);
 
 $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this->project->title : $this->title;
 
@@ -118,12 +117,10 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	$html .= t.t.'<a name="ext"></a>'.n;
 	$html .= t.t.'<h2>'.JText::_('COM_PROJECTS_DESCRIBE_PROJECT').'</h2>'.n;
 	$html .= t.t.t.'<label>'.JText::_('COM_PROJECTS_ABOUT'). ': <span class="optional">'.JText::_('OPTIONAL').'</span>';
-	//$html .= t.t.t.'<span class="hint rightfloat">'.JText::_('COM_PROJECTS_PLEASE_USE').' <a href="/topics/Help:WikiFormatting" rel="external">'.JText::_('COM_PROJECTS_WIKI_FORMATTING').'</a> '.JText::_('COM_PROJECTS_WIKI_TO_COMPOSE').'</span> '.n;
 	$html .= t.t.t.'<span class="clear"></span>'.n;
 	if ($this->project->id)
 	{
 		$project = new ProjectsModelProject($this->project);
-		//$html .= t.t.t.'<p id="previewit" class="previewit showaslink">'.JText::_('COM_PROJECTS_PREVIEW').'</p>'.n;
 		$html .= \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null, array('class' => 'minimal no-footer'));
 	}
 	else
