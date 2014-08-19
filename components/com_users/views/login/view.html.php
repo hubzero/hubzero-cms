@@ -123,6 +123,7 @@ class UsersViewLogin extends JViewLegacy
 			{
 				$pparams = new JRegistry($p->params);
 				$remember_me_default = $pparams->get('remember_me_default', 0);
+				$this->site_display  = $pparams->get('display_name', JFactory::getApplication()->getCfg('sitename'));
 			}
 		}
 

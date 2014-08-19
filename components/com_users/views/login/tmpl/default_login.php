@@ -94,7 +94,7 @@ $primary     = JRequest::getWord('primary', false);
 			<div class="or"></div>
 			<div class="local">
 				<a href="<?php echo JRoute::_('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $this->returnQueryString); ?>">
-					<?php echo JText::sprintf('Sign in with your %s account', $app->getCfg('sitename')); ?>
+					<?php echo JText::sprintf('Sign in with your %s account', ((isset($this->site_display)) ? $this->site_display : $app->getCfg('sitename'))); ?>
 				</a>
 			</div>
 		</div>
