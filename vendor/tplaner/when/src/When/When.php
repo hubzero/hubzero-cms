@@ -25,7 +25,14 @@ class When extends \DateTime
 
     public function __construct($time = "now", $timezone = NULL)
     {
-        $this->startDate = parent::__construct($time, $timezone);
+        if ($timezone == null && version_compare(PHP_VERSION, '5.4.0', '<'))
+        {
+            $this->startDate = parent::__construct($time);
+        }
+        else
+        {
+            $this->startDate = parent::__construct($time, $timezone);
+        }
     }
 
     public function startDate($startDate)
