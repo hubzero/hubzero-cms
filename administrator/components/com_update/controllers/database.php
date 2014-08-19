@@ -70,19 +70,23 @@ class UpdateControllerDatabase extends \Hubzero\Component\AdminController
 			'int'
 		);
 
-		$this->view->rows = array();
+		$this->view->rows  = array();
+		$this->view->total = 0;
 		$migrations = json_decode(cli::migration(true, true));
-		foreach ($migrations as $status => $files)
+		if ($migrations && count($migrations) > 0)
 		{
-			$files = array_reverse($files);
-			foreach ($files as $entry)
+			foreach ($migrations as $status => $files)
 			{
-				$row = array('entry'=>$entry, 'status'=>$status);
-				$this->view->rows[] = $row;
+				$files = array_reverse($files);
+				foreach ($files as $entry)
+				{
+					$row = array('entry'=>$entry, 'status'=>$status);
+					$this->view->rows[] = $row;
+				}
 			}
+			$this->view->total = count($this->view->rows);
+			$this->view->rows  = array_splice($this->view->rows, $this->view->filters['start'], $this->view->filters['limit']);
 		}
-		$this->view->total = count($this->view->rows);
-		$this->view->rows  = array_splice($this->view->rows, $this->view->filters['start'], $this->view->filters['limit']);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
