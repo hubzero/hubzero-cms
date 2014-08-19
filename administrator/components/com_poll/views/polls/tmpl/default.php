@@ -89,7 +89,7 @@
 		{
 			$row = &$this->items[$i];
 
-			$link = JRoute::_('index.php?option=com_poll&view=poll&task=edit&cid[]='. $row->id);
+			$link = JRoute::_('index.php?option=com_poll&view=poll&task=edit&cid='. $row->id);
 
 			//$checked 	= JHTML::_('grid.checkedout',   $row, $i );
 			//$published 	= JHTML::_('grid.published', $row, $i );
@@ -114,51 +114,48 @@
 					<?php } ?>
 				</td>
 				<td>
-				<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) {
-					echo $row->title;
-				} else {
-					?>
-					<span class="editlinktip hasTip" title="<?php echo $this->escape($row->title); ?>">
-						<a href="<?php echo $link; ?>">
-							<?php echo $this->escape($row->title); ?>
+					<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) {
+						echo $row->title;
+					} else { ?>
+						<span class="editlinktip hasTip" title="<?php echo $this->escape($row->title); ?>">
+							<a href="<?php echo $link; ?>">
+								<?php echo $this->escape($row->title); ?>
+							</a>
+						</span>
+					<?php } ?>
+				</td>
+				<td>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class;?>" href="index.php?option=com_poll&amp;task=<?php echo $task; ?>&amp;cid=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task); ?>">
+							<span><?php echo $alt; ?></span>
 						</a>
-					</span>
-					<?php
-				}
-				?>
+					<?php } else { ?>
+						<span class="state <?php echo $class; ?>">
+							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class;?>" href="index.php?option=com_poll&amp;task=<?php echo $task; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task); ?>">
-						<span><?php echo $alt; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class;?>">
-						<span><?php echo $alt; ?></span>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="state <?php echo $class2; ?>" href="index.php?option=com_poll&amp;task=<?php echo $task2; ?>&amp;cid=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task2); ?>">
+							<span><?php echo $alt2; ?></span>
+						</a>
+					<?php } else { ?>
+						<span class="state <?php echo $class2; ?>">
+							<span><?php echo $alt2; ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class2;?>" href="index.php?option=com_poll&amp;task=<?php echo $task2; ?>&amp;cid[]=<? echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task2); ?>">
-						<span><?php echo $alt2; ?></span>
-					</a>
-				<?php } else { ?>
-					<span class="state <?php echo $class2;?>">
-						<span><?php echo $alt2; ?></span>
-					</span>
-				<?php } ?>
-				</td>
-				<td align="center">
 					<?php echo $row->voters; ?>
 				</td>
-				<td align="center">
+				<td>
 					<?php echo $row->numoptions; ?>
 				</td>
-				<td align="center">
+				<td>
 					<?php echo $row->lag; ?>
 				</td>
-				<td align="center">
+				<td>
 					<?php echo $row->id; ?>
 				</td>
 			</tr>

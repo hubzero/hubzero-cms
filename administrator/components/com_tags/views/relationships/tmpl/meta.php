@@ -60,7 +60,7 @@ $types = $dbh->loadAssocList('id');
 window.resourceTypes = <?php echo json_encode(array_values($types)); ?>;
 </script>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post">
+<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" id="item-form">
 	<div class="col width-70 fltlft">
 		<div id="fas">
 <?php
@@ -69,68 +69,43 @@ foreach ($fas as $fa):
 ?>
 			<fieldset class="adminform" id="group-<?php echo $fa['id']; ?>">
 				<legend><span><?php echo JText::_('COM_TAGS_GROUP'); ?></span></legend>
-				<table class="admintable">
-					<tfoot>
-						<tr>
-							<td colspan="3">
-								<button class="delete-group" id="delete-<?php echo $fa['id']; ?>" rel="group-<?php echo $fa['id']; ?>"><?php echo JText::_('COM_TAGS_DELETE_GROUP'); ?></button>
-							</td>
-						</tr>
-					</tfoot>
-					<tbody>
-						<tr>
-							<th class="key"><label><?php echo JText::_('COM_TAGS_GROUP_NAME'); ?>:</label></th>
-							<td colspan="2"><input type="text" name="name-<?php echo $fa['id']; ?>" value="<?php echo str_replace('"', '&quot;', $fa['raw_tag']); ?>" /></td>
-						</tr>
-						<tr>
-							<th rowspan="4" class="key"><label for="types-<?php echo $fa['id']; ?>[]"><?php echo JText::_('COM_TAGS_GROUP_RESOURCE_TYPES'); ?>:</label></th>
-							<td colspan="2">
-								<select id="types-<?php echo $fa['id']; ?>" name="types-<?php echo $fa['id']; ?>[]" multiple="multiple" size="<?php echo count($types); ?>">
-									<?php foreach ($types as $type): ?>
-										<option value="<?php echo $type['id']; ?>" <?php if (isset($type_ids[$type['id']])) echo 'selected="selected" '; ?>><?php echo $type['type']; ?></option>
-									<?php endforeach; ?>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="optional" <?php if (is_null($fa['mandatory_depth'])) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_OPTIONAL'); ?></label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="mandatory" <?php if (!is_null($fa['mandatory_depth']) && $fa['mandatory_depth'] < 2) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_MANDATORY'); ?></label>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['mandatory_depth'] > 1) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_MANDATORY'); ?></label> <label><?php echo JText::_('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>:</label>
-							</td>
-							<td>
-								 <input type="text" name="mandatory-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['mandatory_depth'] > 1) echo $fa['mandatory_depth']; ?>" />
-							</td>
-						</tr>
-						<tr>
-							<th rowspan="3" class="key"><label for="types-<?php echo $fa['id']; ?>[]"><?php echo JText::_('COM_TAGS_GROUP_SELECTION_TYPE'); ?>:</label></th>
-							<td colspan="2">
-								<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="multiple" <?php if (!is_null($fa['multiple_depth']) && $fa['multiple_depth'] < 2) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_GROUP_MULTI_SELECT'); ?></label>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="single" <?php if (is_null($fa['multiple_depth'])) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_GROUP_SINGLE_SELECT_RADIO'); ?> </label>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['multiple_depth'] > 1) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_GROUP_SINGLE_SELECT'); ?></label> <label><?php echo JText::_('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>: </label>
-							</td>
-							<td>
-								 <input type="text" name="multiple-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['multiple_depth'] > 1) echo $fa['multiple_depth']; ?>" />
-							</td>
-						</tr>
-					</tbody>
-				</table>
+
+				<div class="input-wrap">
+					<label for="name-<?php echo $fa['id']; ?>"><?php echo JText::_('COM_TAGS_GROUP_NAME'); ?>:</label>
+					<input type="text" name="name-<?php echo $fa['id']; ?>" id="name-<?php echo $fa['id']; ?>" value="<?php echo str_replace('"', '&quot;', $fa['raw_tag']); ?>" />
+				</div>
+
+				<fieldset>
+					<legend><?php echo JText::_('COM_TAGS_GROUP_RESOURCE_TYPES'); ?>:</legend>
+
+					<div class="input-wrap">
+						<select id="types-<?php echo $fa['id']; ?>" name="types-<?php echo $fa['id']; ?>[]" multiple="multiple" size="<?php echo count($types); ?>">
+							<?php foreach ($types as $type): ?>
+								<option value="<?php echo $type['id']; ?>" <?php if (isset($type_ids[$type['id']])) echo 'selected="selected" '; ?>><?php echo $type['type']; ?></option>
+							<?php endforeach; ?>
+						</select>
+
+						<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="optional" <?php if (is_null($fa['mandatory_depth'])) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_OPTIONAL'); ?></label><br />
+						<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="mandatory" <?php if (!is_null($fa['mandatory_depth']) && $fa['mandatory_depth'] < 2) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_MANDATORY'); ?></label><br />
+						<label><input type="radio" name="mandatory-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['mandatory_depth'] > 1) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_MANDATORY'); ?></label> <label><?php echo JText::_('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>:</label><br />
+						<input type="text" class="option" name="mandatory-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['mandatory_depth'] > 1) echo $fa['mandatory_depth']; ?>" />
+					</div>
+				</fieldset>
+
+				<fieldset>
+					<legend><?php echo JText::_('COM_TAGS_GROUP_SELECTION_TYPE'); ?>:</legend>
+					<div class="input-wrap">
+						<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="multiple" <?php if (!is_null($fa['multiple_depth']) && $fa['multiple_depth'] < 2) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_GROUP_MULTI_SELECT'); ?></label><br />
+						<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="single" <?php if (is_null($fa['multiple_depth'])) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_GROUP_SINGLE_SELECT_RADIO'); ?> </label><br />
+						<label><input type="radio" name="multiple-<?php echo $fa['id']; ?>" value="depth" <?php if ($fa['multiple_depth'] > 1) echo 'checked="checked" '; ?>/> <?php echo JText::_('COM_TAGS_GROUP_SINGLE_SELECT'); ?></label> <label><?php echo JText::_('COM_TAGS_GROUP_UNTIL_DEPTH'); ?>: </label><br />
+
+						<input type="text" name="multiple-depth-<?php echo $fa['id']; ?>" value="<?php if ($fa['multiple_depth'] > 1) echo $fa['multiple_depth']; ?>" />
+					</div>
+				</fieldset>
+
+				<div class="input-wrap">
+					<button class="delete-group" id="delete-<?php echo $fa['id']; ?>" rel="group-<?php echo $fa['id']; ?>"><?php echo JText::_('COM_TAGS_DELETE_GROUP'); ?></button>
+				</div>
 			</fieldset>
 <?php
 endforeach;

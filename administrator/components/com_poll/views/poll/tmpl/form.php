@@ -1,6 +1,5 @@
-<?php defined('_JEXEC') or die('Restricted access'); ?>
+<?php defined('_JEXEC') or die('Restricted access');
 
-<?php
 	$cid = JRequest::getVar( 'cid', array(0), '', 'array' );
 	$edit=JRequest::getVar( 'edit', true );
 	JArrayHelper::toInteger($cid, array(0));
@@ -10,7 +9,7 @@
 	JToolBarHelper::title(  JText::_( 'COM_POLL' ).': ' . $text, 'poll.png');
 	if ($this->poll->id)
 	{
-		JToolBarHelper::Preview('index.php?option=com_poll&controller=poll&cid[]='.$cid[0]);
+		JToolBarHelper::preview('index.php?option=com_poll&controller=poll&cid='.$cid[0]);
 		JToolBarHelper::spacer();
 	}
 	JToolBarHelper::save();
@@ -24,13 +23,11 @@
 	}
 	JToolBarHelper::spacer();
 	JToolBarHelper::help( 'screen.polls.edit' );
-?>
 
-<?php
 JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 ?>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 	function submitbutton(pressbutton) {
 		var form = document.adminForm;
 		if (pressbutton == 'cancel') {
@@ -59,20 +56,20 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 				<input class="inputbox" type="text" name="title" id="field-title" value="<?php echo $this->escape($this->poll->title); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="alias"><?php echo JText::_( 'COM_POLL_FIELD_ALIAS' ); ?>:</label><br />
+				<label for="field-alias"><?php echo JText::_( 'COM_POLL_FIELD_ALIAS' ); ?>:</label><br />
 				<input class="inputbox" type="text" name="alias" id="field-alias" value="<?php echo $this->escape($this->poll->alias); ?>" />
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_( 'COM_POLL_FIELD_LAG_HINT' ); ?>">
-				<label for="lag"><?php echo JText::_( 'COM_POLL_FIELD_LAG' ); ?>:</label><br />
+				<label for="field-lag"><?php echo JText::_( 'COM_POLL_FIELD_LAG' ); ?>:</label><br />
 				<input class="inputbox" type="text" name="lag" id="field-lag" value="<?php echo $this->escape($this->poll->lag); ?>" />
 				<span class="hint"><?php echo JText::_( 'COM_POLL_FIELD_LAG_HINT' ); ?></span>
 			</div>
 			<div class="input-wrap">
-				<label for="field-published"><?php echo JText::_( 'COM_POLL_FIELD_PUBLISHED' ); ?>:</label><br />
+				<label><?php echo JText::_( 'COM_POLL_FIELD_PUBLISHED' ); ?>:</label><br />
 				<?php echo JHTML::_( 'select.booleanlist',  'published', 'class="inputbox"', $this->poll->published ); ?>
 			</div>
 			<div class="input-wrap">
-				<label for="field-open"><?php echo JText::_( 'COM_POLL_FIELD_OPEN' ); ?>:</label><br />
+				<label><?php echo JText::_( 'COM_POLL_FIELD_OPEN' ); ?>:</label><br />
 				<?php echo JHTML::_( 'select.booleanlist',  'open', 'class="inputbox"', $this->poll->open ); ?>
 			</div>
 		</fieldset>
@@ -82,16 +79,17 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_( 'COM_POLL_FIELDSET_OPTIONS' ); ?></span></legend>
 
-		<?php for ($i=0, $n=count( $this->options ); $i < $n; $i++ ) { ?>
-			<div class="input-wrap">
-				<label for="polloption<?php echo $this->options[$i]->id; ?>"><?php echo JText::_( 'COM_POLL_FIELD_OPTION' ); ?> <?php echo ($i+1); ?></label><br />
-				<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape(str_replace('&#039;', "'", $this->options[$i]->text)); ?>" />
-			</div>
-			<?php } for (; $i < 12; $i++) { ?>
-			<div class="input-wrap">
-				<label for="polloption<?php echo $i + 1; ?>"><?php echo JText::_( 'COM_POLL_FIELD_OPTION' ); ?> <?php echo $i + 1; ?></label><br />
-				<input class="inputbox" type="text" name="polloption[]" id="polloption<?php echo $i + 1; ?>" value="" />
-			</div>
+			<?php for ($i=0, $n=count( $this->options ); $i < $n; $i++ ) { ?>
+				<div class="input-wrap">
+					<label for="polloption<?php echo $this->options[$i]->id; ?>"><?php echo JText::_( 'COM_POLL_FIELD_OPTION' ); ?> <?php echo ($i+1); ?></label><br />
+					<input class="inputbox" type="text" name="polloption[<?php echo $this->options[$i]->id; ?>]" id="polloption<?php echo $this->options[$i]->id; ?>" value="<?php echo $this->escape(str_replace('&#039;', "'", $this->options[$i]->text)); ?>" />
+				</div>
+			<?php } ?>
+			<?php for (; $i < 12; $i++) { ?>
+				<div class="input-wrap">
+					<label for="polloption<?php echo $i + 1; ?>"><?php echo JText::_( 'COM_POLL_FIELD_OPTION' ); ?> <?php echo $i + 1; ?></label><br />
+					<input class="inputbox" type="text" name="polloption[]" id="polloption<?php echo $i + 1; ?>" value="" />
+				</div>
 			<?php } ?>
 		</fieldset>
 	</div>

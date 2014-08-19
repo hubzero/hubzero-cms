@@ -40,7 +40,7 @@ JHTML::_('behavior.tooltip');
 
 $this->css('tag_graph.css');
 ?>
-<form id="tag-sel" action="" method="get">
+<form id="tag-sel" action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="get">
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_TAGS_FIND_TAG'); ?></span></legend>
 		<table class="admintable">
@@ -128,4 +128,4 @@ $this->css('tag_graph.css');
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.layout.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.geom.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/tag_graph.js"></script>
-<script src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.jquery.js"></script>
+<script src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
