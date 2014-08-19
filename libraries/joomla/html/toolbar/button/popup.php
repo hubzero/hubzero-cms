@@ -96,6 +96,8 @@ class JButtonPopup extends JButton
 		{
 			$url = JURI::base() . $url;
 		}
+		$url = str_replace('&amp;', '&', $url);
+		$url = str_replace('&', '&amp;', $url);
 
 		return $url;
 	}
