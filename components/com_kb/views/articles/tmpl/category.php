@@ -134,7 +134,6 @@ $this->css()
 					<?php
 					$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
 					$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-	
 					echo $this->pageNav->getListFooter();
 					?>
 					<div class="clearfix"></div>
