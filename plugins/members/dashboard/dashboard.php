@@ -423,6 +423,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		include_once JPATH_ROOT . DS . 'plugins' . DS . 'members' . DS . 'dashboard' . DS . 'models' . DS . 'preferences.php';
 
 		// add assets
+		JHTML::_('behavior.modal');
 		\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard');
 		\Hubzero\Document\Assets::addPluginStylesheet('members', 'dashboard', 'dashboard.admin');
 		\Hubzero\Document\Assets::addPluginScript('members', 'dashboard', 'dashboard.admin');
