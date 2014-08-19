@@ -167,11 +167,11 @@ jQuery(document).ready(function($){
 
 					if ($this->mem['num_seg'] > 1 || $this->mem['num_seg'] == 1 && count($this->mem['block_lists'][0]) > 1)
 					{
-						$mem_note = "Memory Usage<br /><font size=-2>(multiple slices indicate fragments)</font>";
+						$mem_note = 'Memory Usage<br /><span style="font-size: 0.85em">(multiple slices indicate fragments)</span>';
 					}
 					else
 					{
-						$mem_note = "Memory Usage";
+						$mem_note = 'Memory Usage';
 					}
 				?>
 			</tbody>
@@ -227,14 +227,14 @@ jQuery(document).ready(function($){
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th colspan="2">
+					<th<?php if (isset($this->mem['adist'])) { echo ' colspan="2"'; } ?>>
 						Detailed Memory Usage and Fragmentation
 					</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<th colspan="2">
+					<th<?php if (isset($this->mem['adist'])) { echo ' colspan="2"'; } ?>>
 				<?php
 					// Fragementation: (freeseg - 1) / total_seg
 					$nseg = $freeseg = $fragsize = $freetotal = 0;
@@ -267,9 +267,9 @@ jQuery(document).ready(function($){
 					if ($this->graphics_avail)
 					{
 						$size='width='.(2*GRAPH_SIZE+150).' height='.(GRAPH_SIZE+10);
-						echo "<img alt=\"\" $size src=\"index.php?option={$this->option}&controller={$this->controller}&task=mkimage&IMG=3&time=$time\" />";
+						echo "<img alt=\"\" $size src=\"index.php?option={$this->option}&amp;controller={$this->controller}&amp;task=mkimage&amp;IMG=3&amp;time=$time\" />";
 					}
-					echo "</br>Fragmentation: $frag";
+					echo "<br />Fragmentation: $frag";
 					echo "</th>";
 					echo "</tr>";
 					if (isset($this->mem['adist']))
@@ -279,7 +279,7 @@ jQuery(document).ready(function($){
 							$cur = pow(2,$i); $nxt = pow(2,$i+1)-1;
 							if ($i==0) $range = "1";
 							else $range = "$cur - $nxt";
-							echo "<tr><th align=right>$range</th><td align=right>$v</td></tr>\n";
+							echo "<tr><th>$range</th><td>$v</td></tr>\n";
 						}
 					}
 				?>

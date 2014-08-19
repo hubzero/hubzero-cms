@@ -33,8 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 // Menu items
 JToolBarHelper::title(JText::_('COM_SYSTEM_APC_SYSTEM'), 'config.png');
 
-$this->MYREQUEST = $this->MYREQUEST;
-$MY_SELF   = $this->MY_SELF;
+//$this->MYREQUEST = $this->MYREQUEST;
+$this->MYREQUEST = str_replace('&amp;', '&', $this->MYREQUEST);
+$this->MYREQUEST = str_replace('&', '&amp;', $this->MYREQUEST);
+$this->MY_SELF_WO_SORT = str_replace('&amp;', '&', $this->MY_SELF_WO_SORT);
+$this->MY_SELF_WO_SORT = str_replace('&', '&amp;', $this->MY_SELF_WO_SORT);
+$MY_SELF   = str_replace('&amp;', '&', $this->MY_SELF);
+$MY_SELF   = str_replace('&', '&amp;', $MY_SELF);
 $cache     = $this->cache;
 
 ?>
@@ -74,15 +79,15 @@ $cache     = $this->cache;
 						if (!$entry['deletion_time']) $value = "None";
 					}
 					echo
-						"<tr class=tr-$m>",
-						"<td class=td-0>",ucwords(preg_replace("/_/"," ",$k)),"</td>",
-						"<td class=td-last>",(preg_match("/time/",$k) && $value!='None') ? date(DATE_FORMAT,$value) : $value,"</td>",
+						"<tr class=\"tr-$m\">",
+						"<td class=\"td-0\">",ucwords(preg_replace("/_/"," ",$k)),"</td>",
+						"<td class=\"td-last\">",(preg_match("/time/",$k) && $value!='None') ? date(DATE_FORMAT,$value) : $value,"</td>",
 						"</tr>";
 					$m=1-$m;
 				}
 				if ($fieldkey == 'info')
 				{
-					echo "<tr class=tr-$m><td class=td-0>Stored Value</td><td class=td-last><pre>";
+					echo "<tr class=\"tr-$m\"><td class=\"td-0\">Stored Value</td><td class=\"td-last\"><pre>";
 					$output = var_export(apc_fetch($entry[$fieldkey]),true);
 					echo htmlspecialchars($output);
 					echo "</pre></td></tr>\n";
@@ -165,22 +170,22 @@ $cache     = $this->cache;
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S',$fieldheading,   "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Hits',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Size',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Last accessed', "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M','Last modified', "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Created at',    "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S',$fieldheading,   "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Hits',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Size',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Last accessed', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M','Last modified', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Created at',    "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 <?php
 		if ($fieldname=='info')
 		{
 			$cols+=1;
 ?>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Timeout', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Timeout', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 <?php
 		}
 ?>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D','Deleted at', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D','Deleted at', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -221,8 +226,8 @@ $cache     = $this->cache;
 				{
 					$field_value = $this->escape(strip_tags($entry[$fieldname], ''));
 					echo
-						'<tr class=tr-',$i%2,'>',
-						"<td class=td-0><a href=\"$MY_SELF&OB=",$this->MYREQUEST['OB'],"&SH=",md5($entry[$fieldkey]),"\">",$field_value,'</a></td>',
+						'<tr class="tr-',$i%2,'">',
+						"<td class=\"td-0\"><a href=\"$MY_SELF&amp;OB=",$this->MYREQUEST['OB'],"&amp;SH=",md5($entry[$fieldkey]),"\">",$field_value,'</a></td>',
 						'<td class="td-n center">',$entry['num_hits'],'</td>',
 						'<td class="td-n right">',$entry['mem_size'],'</td>',
 						'<td class="td-n center">',date(DATE_FORMAT,$entry['access_time']),'</td>',
@@ -247,7 +252,7 @@ $cache     = $this->cache;
 					else if ($this->MYREQUEST['OB'] == OB_USER_CACHE)
 					{
 						echo '<td class="td-last center">';
-						echo '[<a href="', $MY_SELF, '&OB=', $this->MYREQUEST['OB'], '&DU=', urlencode($entry[$fieldkey]), '">Delete Now</a>]';
+						echo '[<a href="', $MY_SELF, '&amp;OB=', $this->MYREQUEST['OB'], '&amp;DU=', urlencode($entry[$fieldkey]), '">Delete Now</a>]';
 						echo '</td>';
 					}
 					else
@@ -265,13 +270,13 @@ $cache     = $this->cache;
 		}
 		else
 		{
-			echo '<tr class=tr-0><td class="center" colspan="',$cols,'"><i>No data</i></td></tr>';
+			echo '<tr class="tr-0"><td class="center" colspan="',$cols,'"><i>No data</i></td></tr>';
 		}
 		echo '</tbody></table>';
 
 		if ($list && $i < count($list))
 		{
-			echo "<a href=\"$MY_SELF&OB=",$this->MYREQUEST['OB'],"&COUNT=0\"><i>",count($list)-$i,' more available...</i></a>';
+			echo "<a href=\"$MY_SELF&amp;OB=",$this->MYREQUEST['OB'],"&amp;COUNT=0\"><i>",count($list)-$i,' more available...</i></a>';
 		}
 	}
 ?>

@@ -30,6 +30,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->MY_SELF_WO_SORT = str_replace('&amp;', '&', $this->MY_SELF_WO_SORT);
+$this->MY_SELF_WO_SORT = str_replace('&', '&amp;', $this->MY_SELF_WO_SORT);
+$this->MY_SELF   = str_replace('&amp;', '&', $this->MY_SELF);
+$this->MY_SELF   = str_replace('&', '&amp;', $this->MY_SELF);
+
 // Menu items
 JToolBarHelper::title(JText::_('COM_SYSTEM_APC_USER'), 'config.png');
 ?>
@@ -68,7 +73,7 @@ JToolBarHelper::title(JText::_('COM_SYSTEM_APC_USER'), 'config.png');
 						if (!$entry['deletion_time']) $value = "None";
 					}
 					echo
-						'<tr class=tr-' . $m . '>',
+						'<tr class="tr-' . $m . '">',
 						'<td class="td-0">',ucwords(preg_replace("/_/"," ",$k)),'</td>',
 						'<td class="td-last">',(preg_match("/time/",$k) && $value!='None') ? date(DATE_FORMAT,$value) : $value,'</td>',
 						'</tr>';
@@ -76,7 +81,7 @@ JToolBarHelper::title(JText::_('COM_SYSTEM_APC_USER'), 'config.png');
 				}
 				if ($fieldkey == 'info')
 				{
-					echo "<tr class=tr-$m><td class=td-0>Stored Value</td><td class=td-last><pre>";
+					echo "<tr class=\"tr-$m\"><td class=\"td-0\">Stored Value</td><td class=\"td-last\"><pre>";
 					$output = var_export(apc_fetch($entry[$fieldkey]),true);
 					echo htmlspecialchars($output);
 					echo "</pre></td></tr>\n";
@@ -158,17 +163,17 @@ JToolBarHelper::title(JText::_('COM_SYSTEM_APC_USER'), 'config.png');
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S',$fieldheading,   "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Hits',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Size',          "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Last accessed', "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M','Last modified', "&OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Created at',    "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S',$fieldheading,   "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Hits',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Size',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Last accessed', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M','Last modified', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Created at',    "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			<?php if ($fieldname=='info') { ?>
 				<?php $cols+=1; ?>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Timeout', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Timeout', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			<?php } ?>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D','Deleted at', "&OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D','Deleted at', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -264,7 +269,7 @@ JToolBarHelper::title(JText::_('COM_SYSTEM_APC_USER'), 'config.png');
 
 	if ($list && $i < count($list))
 	{
-		echo "<a href=\"$this->MY_SELF&OB=",$this->MYREQUEST['OB'],"&COUNT=0\"><i>",count($list)-$i,' more available...</i></a>';
+		echo "<a href=\"$this->MY_SELF&amp;OB=",$this->MYREQUEST['OB'],"&amp;COUNT=0\"><i>",count($list)-$i,' more available...</i></a>';
 	}
 
 ?>

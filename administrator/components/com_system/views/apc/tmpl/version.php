@@ -38,8 +38,8 @@ JToolBarHelper::title(JText::_('COM_SYSTEM_APC_VERSION'), 'config.png');
 	$this->view('_submenu')->display();
 ?>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
-	<div class="info">
+<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="item-form">
+	<div class="information">
 		<h2>APC Version Information</h2>
 <?php
 	if (defined('PROXY'))
@@ -98,6 +98,7 @@ JToolBarHelper::title(JText::_('COM_SYSTEM_APC_VERSION'), 'config.png');
 			echo nl2br(htmlspecialchars(current($match[2])))."</blockquote>";
 			next($match[2]);
 		}
+		echo '</div>';
 		echo '</div>';
 	}
 ?>
