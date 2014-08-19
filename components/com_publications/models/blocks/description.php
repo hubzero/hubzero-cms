@@ -228,7 +228,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 				$value = trim(JRequest::getVar( $field, '', 'post' ));
 				$value = ($input == 'editor')
 					? stripslashes($value)
-					: \Hubzero\Utility\Sanitize::clean(htmlspecialchars($value));
+					: \Hubzero\Utility\Sanitize::clean($value);
 
 				if (!$value && $required)
 				{
