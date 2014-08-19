@@ -593,3 +593,13 @@
     background: #484848;
     color: #FFF;
 }
+
+/* Hide resize handle and module links (remove & settings) */
+.static .gs-resize-handle,
+.static .module-links {
+    display: none !important;
+}
+/* No move cursor on module title hover */
+.static .module-title:hover {
+    cursor: default !important;
+}

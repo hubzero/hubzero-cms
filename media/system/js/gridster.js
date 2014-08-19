@@ -2973,6 +2973,8 @@
 
         if (y_units <= 0) { return false; }
 
+        if (!this.can_go_down($widget)) { return false; } //break;
+
         el_grid_data = $widget.coords().grid;
         actual_row = el_grid_data.row;
         moved = [];
@@ -3166,6 +3168,8 @@
         var result = true;
         if (initial_row === 1) { return false; }
 
+        if (this.is_static($el)) { return false; }
+
         this.for_each_column_occupied(el_grid_data, function(col) {
             var $w = this.is_widget(col, prev_row);
 
@@ -3182,7 +3186,15 @@
         return result;
     };
 
+    fn.can_go_down = function($el)
+    {
+        return (this.is_static($el)) ? false : true;
+    };
 
+    fn.is_static = function($el)
+    {
+        return $($el).hasClass('static');
+    };
 
     /**
     * Check if it's possible to move a widget to a specific col/row. It takes
@@ -3200,6 +3212,7 @@
     fn.can_move_to = function(widget_grid_data, col, row, max_row) {
         var ga = this.gridmap;
         var $w = widget_grid_data.el;
+        
         var future_wd = {
             size_y: widget_grid_data.size_y,
             size_x: widget_grid_data.size_x,

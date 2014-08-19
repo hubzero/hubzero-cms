@@ -45,7 +45,7 @@ $view->fields = $fields->getFieldset('basic');
 $settingsHtml = trim($view->loadTemplate());
 ?>
 
-<div class="module <?php echo strtolower($this->module->module); ?> draggable sortable"
+<div class="module <?php echo strtolower($this->module->module) . ' ' . $params->get('moduleclass_sfx'); ?>  draggable sortable"
 	data-row="<?php echo $this->module->positioning->row; ?>"
 	data-col="<?php echo $this->module->positioning->col; ?>"
 	data-sizex="<?php echo $this->module->positioning->size_x; ?>"

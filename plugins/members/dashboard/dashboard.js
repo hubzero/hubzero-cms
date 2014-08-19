@@ -66,7 +66,7 @@ HUB.Plugins.MemberDashboard = {
 
 		// instantiate gridster
 		dashboard.modules = $('.modules').gridster({
-			static_class: 'module-static',
+			// static_class: 'module-static',
 			widget_selector: '.module',
 			widget_margins: [dashboard.settings.col_margin_horz, dashboard.settings.col_margin_vert],
 			widget_base_dimensions: [dashboard.settings.col_width, dashboard.settings.col_height],
@@ -90,7 +90,8 @@ HUB.Plugins.MemberDashboard = {
 				}
 			},
 			draggable: {
-				handle: 'h3', 
+				handle: 'h3',
+				items: '.gs-w:not(.static)',
 				stop: function(event, ui) {
 					dashboard.save();	
 				}
