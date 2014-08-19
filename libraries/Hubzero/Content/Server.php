@@ -369,10 +369,14 @@ class Server extends Object
 		}
 
 		//output headers
-
 		if ($partial)
 		{
 			header('HTTP/1.1 206 Partial content');
+
+			if (!$multipart)
+			{
+				header("Content-range: bytes $first-$last/$filesize");
+			}
 		}
 
 		if (isset($_SERVER['HTTP_USER_AGENT']))
@@ -433,6 +437,7 @@ class Server extends Object
 			ob_end_clean();
 		}
 
+
 		foreach ($ranges as $range)
 		{
 			$first = $result[$range]['first'];
@@ -441,10 +446,6 @@ class Server extends Object
 			if ($multipart)
 			{
 				echo "\r\n--$boundary\r\n";
-			}
-
-			if ($partial)
-			{
 				echo "Content-type: " . self::$_contentType . "\r\n";
 				echo "Content-range: bytes $first-$last/$filesize\r\n\r\n";
 			}
