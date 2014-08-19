@@ -54,22 +54,22 @@ $return = DS . trim(str_replace(JURI::base(),'', JURI::current()), DS);
 									<ul>
 										<li id="account-dashboard">
 											<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>">
-												<span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_DASHBOARD'); ?></span>
+												<span><?php echo JText::_('TPL_SYSTEM_ACCOUNT_DASHBOARD'); ?></span>
 											</a>
 										</li>
 										<li id="account-profile">
 											<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'); ?>">
-												<span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_PROFILE'); ?></span>
+												<span><?php echo JText::_('TPL_SYSTEM_ACCOUNT_PROFILE'); ?></span>
 											</a>
 										</li>
 										<li id="account-messages">
 											<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages'); ?>">
-												<span><?php echo JText::_('TPL_HUBBASIC_ACCOUNT_MESSAGES'); ?></span>
+												<span><?php echo JText::_('TPL_SYSTEM_ACCOUNT_MESSAGES'); ?></span>
 											</a>
 										</li>
 										<li id="account-logout">
 											<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout&return=' . base64_encode($return)); ?>">
-												<span><?php echo JText::_('TPL_HUBBASIC_LOGOUT'); ?></span>
+												<span><?php echo JText::_('TPL_SYSTEM_LOGOUT'); ?></span>
 											</a>
 										</li>
 									</ul>
@@ -79,14 +79,14 @@ $return = DS . trim(str_replace(JURI::base(),'', JURI::current()), DS);
 							<ul class="menu loggedout">
 								<?php if (JComponentHelper::getParams('com_users')->get('allowUserRegistration') != '0') : ?>
 									<li id="account-register">
-										<a href="<?php echo JRoute::_('index.php?option=com_register&return=' . base64_encode($return)); ?>" title="<?php echo JText::_('TPL_HUBBASIC_SIGN_UP'); ?>">
-											<?php echo JText::_('TPL_HUBBASIC_REGISTER'); ?>
+										<a href="<?php echo JRoute::_('index.php?option=com_register&return=' . base64_encode($return)); ?>" title="<?php echo JText::_('TPL_SYSTEM_SIGN_UP'); ?>">
+											<?php echo JText::_('TPL_SYSTEM_REGISTER'); ?>
 										</a>
 									</li>
 								<?php endif; ?>
 								<li id="account-login">
-									<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.JRequest::getCmd('cn','').'&task=login&return=' . base64_encode($return)); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>">
-										<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>
+									<a href="<?php echo JRoute::_('index.php?option=com_groups&cn='.JRequest::getCmd('cn','').'&task=login&return=' . base64_encode($return)); ?>" title="<?php echo JText::_('TPL_SYSTEM_LOGIN'); ?>">
+										<?php echo JText::_('TPL_SYSTEM_LOGIN'); ?>
 									</a>
 								</li>
 							</ul>
