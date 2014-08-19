@@ -68,7 +68,8 @@ class modReportProblems extends \Hubzero\Module\Module
 
 		$this->referrer = JRequest::getVar('REQUEST_URI','','server');
 		$this->referrer = str_replace('&amp;', '&', $this->referrer);
-		$this->referrer = str_replace('&', '&amp;', $this->referrer);
+		//$this->referrer = str_replace('&', '&amp;', $this->referrer);
+		$this->referrer = base64_encode($this->referrer);
 
 		$browser = new \Hubzero\Browser\Detector();
 

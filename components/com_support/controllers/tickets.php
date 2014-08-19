@@ -725,7 +725,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			'topic'      => '',
 			'short'      => '',
 			'long'       => '',
-			'referer'    => JRequest::getVar('HTTP_REFERER', NULL, 'server'),
+			'referer'    => base64_encode(JRequest::getVar('HTTP_REFERER', NULL, 'server')),
 			'tool'       => JRequest::getVar('tool', '')
 		);
 
@@ -1066,7 +1066,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$row->set('ip', $ip);
 		$row->set('hostname', $hostname);
 		$row->set('uas', JRequest::getVar('HTTP_USER_AGENT', '', 'server'));
-		$row->set('referrer', $problem['referer']);
+		$row->set('referrer', base64_decode($problem['referer']));
 		$row->set('cookies', (JRequest::getVar('sessioncookie', '', 'cookie') ? 1 : 0));
 		$row->set('instances', 1);
 		$row->set('section', 1);
