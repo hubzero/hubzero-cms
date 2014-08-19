@@ -52,7 +52,6 @@ JToolBarHelper::help('types');
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	var form = $('adminForm');
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
@@ -82,12 +81,12 @@ function submitbutton(pressbutton)
 						<?php echo $t['id']; ?>
 					</td>
 					<td>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $t['id']; ?>">
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $t['id']; ?>">
 							<span><?php echo $this->escape($t['type']); ?></span>
 						</a>
 					</td>
 					<td>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $t['id']; ?>">
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $t['id']; ?>">
 							<span><?php echo $this->escape($t['type_title']); ?></span>
 						</a>
 					</td>

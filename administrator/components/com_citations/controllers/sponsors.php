@@ -89,9 +89,13 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? $id[0] : 0);
+			}
 
 			$this->view->sponsor = new CitationsSponsor($this->database);
-			$this->view->sponsor = $this->view->sponsor->getSponsor($id[0]);
+			$this->view->sponsor = $this->view->sponsor->getSponsor($id);
 		}
 
 		// Set any errors
@@ -164,6 +168,7 @@ class CitationsControllerSponsors extends \Hubzero\Component\AdminController
 
 		// Incoming (expecting an array)
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
 		if (empty($ids))

@@ -139,9 +139,9 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
 
-			if (is_array($id) && !empty($id))
+			if (is_array($id))
 			{
-				$id = $id[0];
+				$id = (!empty($id) ? $id[0] : 0);
 			}
 
 			// Load category
@@ -230,6 +230,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
 		{

@@ -61,12 +61,12 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th scope="col" width="20px"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->imports->count(); ?>);" /></th>
 				<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS'); ?></th>
-				<th scope="col" width="200px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
-				<th scope="col" width="200px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN'); ?></th>
-				<th scope="col" width="30px"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT'); ?></th>
 			</tr>
 		</thead>
 		<tbody>

@@ -39,7 +39,6 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Display imports
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function displayTask()
@@ -69,7 +68,6 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Add an Import
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function addTask()
@@ -80,17 +78,18 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an Import
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function editTask()
 	{
-		// set layout
-		$this->view->setLayout('edit');
+		JRequest::setVar('hidemainmenu', 1);
 
 		// get request vars
-		$ids = JRequest::getVar('id', array());
-		$id  = (isset($ids[0])) ? $ids[0] : null;
+		$id = JRequest::getVar('id', array());
+		if (is_array($id))
+		{
+			$id = (!empty($id)) ? $id[0] : null;
+		}
 
 		// get the import object
 		$this->view->hook = new Resources\Model\Import\Hook( $id );
@@ -105,13 +104,12 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
 	 * Save an Import
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function saveTask()
@@ -177,13 +175,17 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 
 	/**
 	 * Show Raw immport hook file
-	 * @return [type] [description]
+	 *
+	 * @return  void
 	 */
 	public function rawTask()
 	{
 		// get request vars
-		$ids = JRequest::getVar('id', array());
-		$id  = (isset($ids[0])) ? $ids[0] : null;
+		$id = JRequest::getVar('id', array());
+		if (is_array($id))
+		{
+			$id = (!empty($id)) ? $id[0] : null;
+		}
 
 		// create hook model object
 		$this->hook = new Resources\Model\Import\Hook($id);
@@ -209,7 +211,6 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Delete Import
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function removeTask()
@@ -219,6 +220,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 
 		// get request vars
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// loop through all ids posted
 		foreach ($ids as $id)
@@ -253,9 +255,8 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Method to create import filespace if needed
 	 *
-	 * @access private
-	 * @param  ResourcesModelImportHook Object
-	 * @return BOOL
+	 * @param   object  $hook Resources\Model\Import\Hook
+	 * @return  boolean
 	 */
 	private function _createImportFilespace(Resources\Model\Import\Hook $hook)
 	{

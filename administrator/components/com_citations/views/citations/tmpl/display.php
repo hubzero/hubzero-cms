@@ -94,7 +94,7 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col" width="100px"><?php echo JText::_('TYPE'); ?></th>
+				<th scope="col"><?php echo JText::_('TYPE'); ?></th>
 				<th scope="col"><?php echo JText::_('TITLE'); ?> / <?php echo JText::_('AUTHORS'); ?></th>
 				<th scope="col"><?php echo JText::_('YEAR') ?></th>
 				<th scope="col"><?php echo JText::_('AFFILIATED'); ?></th>
@@ -145,18 +145,18 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							$author = utf8_encode($author);
 						}
 					?>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
-						<?php echo $this->escape($title); ?>
-					</a>
-					<br />
-					<small><?php echo $this->escape($author); ?></small>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape($title); ?></a><br />
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+							<?php echo $this->escape($title); ?>
+						</a>
+						<br />
 						<small><?php echo $this->escape($author); ?></small>
-					</span>
-				<?php } ?>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape($title); ?></a><br />
+							<small><?php echo $this->escape($author); ?></small>
+						</span>
+					<?php } ?>
 				</td>
 				<td><?php echo $this->escape($row->year); ?></td>
 				<td>

@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'editcollection' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS_COLLECTIONS') . ': ' . $text, 'addedit.png');
 JToolBarHelper::save();

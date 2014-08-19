@@ -131,9 +131,9 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
 
-			if (is_array($id) && !empty($id))
+			if (is_array($id))
 			{
-				$id = $id[0];
+				$id = (!empty($id) ? $id[0] : 0);
 			}
 
 			// Load category
@@ -227,6 +227,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
 		{
@@ -365,7 +366,8 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
+		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource
 		if (count($ids) < 1)

@@ -39,7 +39,6 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Display imports
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function displayTask()
@@ -73,7 +72,6 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Add an Import
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function addTask()
@@ -84,13 +82,11 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an Import
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function editTask()
 	{
-		// set layout
-		$this->view->setLayout('edit');
+		JRequest::setVar('hidemainmenu', 1);
 
 		// get request vars
 		$ids = JRequest::getVar('id', array());
@@ -129,13 +125,12 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
 	 * Save an Import
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function saveTask()
@@ -239,7 +234,6 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Delete Import
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function removeTask()
@@ -282,7 +276,6 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Run Import as Dry Run
 	 *
-	 * @access    public
 	 * @return     void
 	 */
 	public function runTestTask()
@@ -336,7 +329,8 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 
 	/**
 	 * Actually Run Import
-	 * @return JSON encoded records that just got inserted or would be
+	 * 
+	 * @return  string JSON encoded records that just got inserted or would be
 	 */
 	public function doRunTask()
 	{
@@ -384,7 +378,8 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 
 	/**
 	 * Get progress of import task
-	 * @return string JSON encoded total and position
+	 * 
+	 * @return  string JSON encoded total and position
 	 */
 	public function progressTask()
 	{
@@ -411,7 +406,6 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Return Hook for Post Parsing or Post Convert
 	 *
-	 * @access    private
 	 * @param     $type      Hook we want
 	 * @param     $import    Resource Import Model
 	 * @return    Closure
@@ -464,9 +458,8 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Method to create import filespace if needed
 	 *
-	 * @access private
-	 * @param  ResourcesModelImport Object
-	 * @return BOOL
+	 * @param   object  $import Resources\Model\Import
+	 * @return  boolean
 	 */
 	private function _createImportFilespace(Resources\Model\Import $import)
 	{

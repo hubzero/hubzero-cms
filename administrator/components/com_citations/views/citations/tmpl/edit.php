@@ -278,42 +278,34 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="abstract"><?php echo JText::_('Abstract'); ?>:</label><br />
-				<?php echo $editor->display('citation[abstract]', stripslashes($this->row->abstract), '', '', '50', '10'); ?>
+				<?php echo $editor->display('citation[abstract]', stripslashes($this->row->abstract), '', '', 50, 10, false, 'abstract'); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="note"><?php echo JText::_('NOTES'); ?>:</label><br />
-				<?php echo $editor->display('citation[note]', stripslashes($this->row->note), '', '', '50', '10'); ?>
+				<?php echo $editor->display('citation[note]', stripslashes($this->row->note), '', '', 50, 10, false, 'note'); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="keywords"><?php echo JText::_('Keywords'); ?>:</label><br />
-				<?php echo $editor->display('citation[keywords]', stripslashes($this->row->keywords), '', '', '50', '10'); ?>
+				<?php echo $editor->display('citation[keywords]', stripslashes($this->row->keywords), '', '', 50, 10, false, 'keywords'); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="research_notes"><?php echo JText::_('Research Notes'); ?>:</label><br />
-				<?php echo $editor->display('citation[research_notes]', stripslashes($this->row->research_notes), '', '', '50', '10'); ?>
+				<?php echo $editor->display('citation[research_notes]', stripslashes($this->row->research_notes), '', '', 50, 10, false, 'research_notes'); ?>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('MANUAL_FORMAT'); ?></span></legend>
-			<table class="adminform">
-				<tbody>
-					<tr>
-						<th class="key"><?php echo JText::_('MANUAL_FORMAT_FORMAT'); ?>:</th>
-						<td colspan="3">
-							<select id="format_type" name="citation[format]">
-								<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo JText::_('MANUAL_FORMAT_FORMAT_APA'); ?></option>
-								<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo JText::_('MANUAL_FORMAT_FORMAT_IEEE'); ?></option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<th class="key"><?php echo JText::_('MANUAL_FORMAT_CITATION'); ?>:</th>
-						<td colspan="3">
-							<?php echo $editor->display('citation[formatted]', stripslashes($this->row->formatted), '500px', '100px', '50', '10'); ?>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="format_type"><?php echo JText::_('MANUAL_FORMAT_FORMAT'); ?>:</label>
+				<select id="format_type" name="citation[format]">
+					<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo JText::_('MANUAL_FORMAT_FORMAT_APA'); ?></option>
+					<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo JText::_('MANUAL_FORMAT_FORMAT_IEEE'); ?></option>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="citation-formatted"><?php echo JText::_('MANUAL_FORMAT_CITATION'); ?>:</label>
+				<?php echo $editor->display('citation[formatted]', stripslashes($this->row->formatted), '', '', 50, 10, false, 'citation-formatted'); ?>
+			</div>
 		</fieldset>
 
 	</div>
@@ -331,7 +323,7 @@ function submitbutton(pressbutton)
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="3"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo JText::_('ADD_A_ROW'); ?></a></td>
+						<td colspan="2"><a href="#" onclick="HUB.Citations.addRow('assocs');return false;"><?php echo JText::_('ADD_A_ROW'); ?></a></td>
 					</tr>
 				</tfoot>
 				<tbody>
@@ -371,8 +363,8 @@ function submitbutton(pressbutton)
 							//echo ' <option value="topic"';
 							//echo ($assocs[$i]->tbl == 'topic') ? ' selected="selected"': '';
 							//echo '>'.JText::_('TOPIC').'</option>'."\n";
-							echo '</select>'."\n";
-							echo '   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$assocs[$i]->oid.'" size="5" /></td>'."\n";
+							echo '</select></td>'."\n";
+							echo '   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$assocs[$i]->oid.'" size="5" />'."\n";
 							echo '<input type="hidden" name="assocs['.$i.'][id]" value="'.$assocs[$i]->id.'" />'."\n";
 							echo '<input type="hidden" name="assocs['.$i.'][cid]" value="'.$assocs[$i]->cid.'" /></td>'."\n";
 							echo '  </tr>'."\n";

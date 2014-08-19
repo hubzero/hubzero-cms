@@ -114,7 +114,7 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-field-type_title"><?php echo JText::_('CITATION_TYPES_TITLE'); ?></label><br />
+				<label for="field-type_title"><?php echo JText::_('CITATION_TYPES_TITLE'); ?></label><br />
 				<input type="text" name="type[type_title]" id="field-type_title" value="<?php echo $title; ?>" />
 			</div>
 

@@ -56,85 +56,63 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="index.php?option=com_resources&amp;controller=importhooks&amp;task=save" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+<form action="index.php?option=com_resources&amp;controller=importhooks&amp;task=save" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELDSET_DETAILS'); ?></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key" width="200px">
-							<label for="field-type">
-								<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE'); ?>
-							</label>
-						</td>
-						<td>
-							<select name="hook[type]" id="field-type">
-								<option value="postparse">
-									<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTPARSE'); ?>
-								</option>
-								<option <?php if ($this->hook->get('type') == 'postmap') { echo 'selected="selected"'; } ?> value="postmap">
-									<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTMAP'); ?>
-								</option>
-								<option <?php if ($this->hook->get('type') == 'postconvert') { echo 'selected="selected"'; } ?> value="postconvert">
-									<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTCONVERT'); ?>
-								</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="key" width="200px">
-							<label for="field-name">
-								<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_NAME'); ?>
-							</label>
-						</td>
-						<td>
-							<input type="text" name="hook[name]" id="field-name" value="<?php echo $this->escape($this->hook->get('name')); ?>" />
-						</td>
-					</tr>
-					<tr>
-						<td class="key">
-							<label for="field-notes">
-								<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_NOTES'); ?>
-							</label>
-						</td>
-						<td>
-							<textarea name="hook[notes]" id="field-notes" rows="5"><?php echo $this->escape($this->hook->get('notes')); ?></textarea>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-type">
+					<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE'); ?>
+				</label>
+				<select name="hook[type]" id="field-type">
+					<option value="postparse">
+						<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTPARSE'); ?>
+					</option>
+					<option <?php if ($this->hook->get('type') == 'postmap') { echo 'selected="selected"'; } ?> value="postmap">
+						<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTMAP'); ?>
+					</option>
+					<option <?php if ($this->hook->get('type') == 'postconvert') { echo 'selected="selected"'; } ?> value="postconvert">
+						<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTCONVERT'); ?>
+					</option>
+				</select>
+			</div>
+			<div class="input-wrap">
+				<label for="field-name">
+					<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_NAME'); ?>
+				</label>
+				<input type="text" name="hook[name]" id="field-name" value="<?php echo $this->escape($this->hook->get('name')); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-notes">
+					<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_NOTES'); ?>
+				</label>
+				<textarea name="hook[notes]" id="field-notes" rows="5"><?php echo $this->escape($this->hook->get('notes')); ?></textarea>
+			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELDSET_FILE'); ?></legend>
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key" width="200px">
-							<label for="field-name">
-								<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT'); ?>
-							</label>
-						</td>
-						<td>
-							<?php
-								if ($this->hook->get('file'))
-								{
-									echo JText::sprintf('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT_CURRENT', $this->hook->get('file'));
-									echo ' &mdash; <a target="_blank" href="' . JRoute::_('index.php?option=com_resources&controller=importhooks&task=raw&id[]='.$this->hook->get('id')) . '">'.JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW').'</a><br />';
-								}
-							?>
-							<input type="file" name="file" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<div class="input-wrap">
+				<label for="field-name">
+					<?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT'); ?>
+				</label>
+				<?php
+					if ($this->hook->get('file'))
+					{
+						echo JText::sprintf('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT_CURRENT', $this->hook->get('file'));
+						echo ' &mdash; <a target="_blank" href="' . JRoute::_('index.php?option=com_resources&controller=importhooks&task=raw&id='.$this->hook->get('id')) . '">'.JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_SCRIPT_VIEWRAW').'</a><br />';
+					}
+				?>
+				<input type="file" name="file" />
+			</div>
 		</fieldset>
 
 	</div>
 	<div class="col width-30 fltrt">
 		<?php if ($this->hook->get('id')) : ?>
-			<table class="meta" summary="Metadata">
+			<table class="meta">
 				<tbody>
 					<tr>
 						<th><?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_ID'); ?></th>

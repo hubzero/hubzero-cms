@@ -165,7 +165,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="glyph category" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+					<a class="glyph category" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 					</a>
 				<?php } else { ?>
@@ -176,7 +176,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->get('id'); ?>" title="<?php echo JText::sprintf('COM_COLLECTIONS_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>" title="<?php echo JText::sprintf('COM_COLLECTIONS_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>

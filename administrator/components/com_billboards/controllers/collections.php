@@ -103,7 +103,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		$id = JRequest::getVar('id', array(0));
 		if (!is_array($id))
 		{
-			$id = array(0);
+			$id = array($id);
 		}
 		$cid = $id[0];
 
@@ -171,10 +171,10 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(0));
+		$ids = JRequest::getVar('id', array());
 		if (!is_array($ids))
 		{
-			$ids = array(0);
+			$ids = array($ids);
 		}
 
 		// Loop through the selected collections to delete

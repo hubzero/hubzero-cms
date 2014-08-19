@@ -90,7 +90,10 @@ class CitationsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
-			$id = (is_array($id)) ? $id[0] : 0;
+			if (is_array($id))
+			{
+				$id = (!empty($id)) ? $id[0] : 0;
+			}
 
 			$this->view->type = new CitationsType($this->database);
 			$this->view->type->load($id);
@@ -163,6 +166,7 @@ class CitationsControllerTypes extends \Hubzero\Component\AdminController
 
 		// Incoming (expecting an array)
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Ensure we have an ID to work with
 		if (empty($ids))

@@ -103,7 +103,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		$cid = JRequest::getVar('cid', array(0));
 		if (!is_array($cid))
 		{
-			$cid = array(0);
+			$cid = array($cid);
 		}
 		$uid = $cid[0];
 
@@ -187,7 +187,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	 *
 	 * @return void
 	 */
-	protected function save()
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -291,10 +291,10 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming (expecting an array)
-		$ids = JRequest::getVar('cid', array(0));
+		$ids = JRequest::getVar('cid', array());
 		if (!is_array($ids))
 		{
-			$ids = array(0);
+			$ids = array($ids);
 		}
 
 		// Make sure we have IDs to work with
@@ -335,10 +335,10 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming (we're expecting an array)
-		$ids = JRequest::getVar('cid', array(0));
+		$ids = JRequest::getVar('cid', array());
 		if (!is_array($ids))
 		{
-			$ids = array(0);
+			$ids = array($ids);
 		}
 
 		// Loop through the IDs

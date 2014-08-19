@@ -133,7 +133,10 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 		//get request vars - expecting an array id[]=4232
 		$id = JRequest::getVar('id', array());
-		$id = (is_array($id) && !empty($id)) ? $id[0] : 0;
+		if (is_array($id))
+		{
+			$id = (!empty($id)) ? $id[0] : 0;
+		}
 
 		//get all citations sponsors
 		$cs = new CitationsSponsor($this->database);
@@ -416,7 +419,7 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 		if (!is_array($ids))
 		{
-			$ids = array();
+			$ids = array($ids);
 		}
 
 		// Make sure we have IDs to work with
