@@ -128,9 +128,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 			$database = JFactory::getDBO();
 
-			$document = JFactory::getDocument();
-			$document->addScript('plugins' . DS . 'projects' . DS . 'blog' . DS . 'blog.js');
-
 			// Set vars
 			$this->_task = JRequest::getVar('action', '');
 			$this->_database = $database;
