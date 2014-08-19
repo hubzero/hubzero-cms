@@ -107,7 +107,7 @@ class plgToolsJava extends \Hubzero\Plugin\Plugin
 					$req->minor = intval($matches[4]);
 					$req->os    = strtolower(trim($matches[1]));
 
-					$browsers[] = $req
+					$browsers[] = $req;
 				}
 			}
 
