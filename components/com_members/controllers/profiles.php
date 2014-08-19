@@ -165,6 +165,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
 		$filters['search'] = strtolower(trim(JRequest::getString('value', '')));
+		$filters['search'] = $filters['search'] . '*';
 
 		// match member names on all three name parts		
 		$match = "MATCH(xp.givenName,xp.middleName,xp.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
