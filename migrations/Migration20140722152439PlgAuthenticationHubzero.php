@@ -15,8 +15,7 @@ class Migration20140722152439PlgAuthenticationHubzero extends Base
 	 **/
 	public function up()
 	{
-		$hubzero     = \JPluginHelper::getPlugin('authentication', 'hubzero');
-		$params      = new \JRegistry($hubzero->params);
+		$params      = $this->getParams('plg_authentication_hubzero');
 		$admin_login = $params->get('admin_login');
 
 		if (is_null($admin_login))
@@ -32,8 +31,7 @@ class Migration20140722152439PlgAuthenticationHubzero extends Base
 	 **/
 	public function down()
 	{
-		$hubzero     = \JPluginHelper::getPlugin('authentication', 'hubzero');
-		$params      = new \JRegistry($hubzero->params);
+		$params      = $this->getParams('plg_authentication_hubzero');
 		$admin_login = $params->get('admin_login');
 
 		if (isset($admin_login))

@@ -16,7 +16,7 @@ class Migration20140528145010ComRegister extends Base
 	 **/
 	public function up()
 	{
-		$rparams = \JComponentHelper::getParams('com_register');
+		$rparams = $this->getParams('com_register');
 		$values = $rparams->toArray();
 
 		$this->db->setQuery("SELECT * FROM `#__extensions` WHERE `type`='component' AND `element`='com_members' LIMIT 1");
@@ -97,7 +97,7 @@ class Migration20140528145010ComRegister extends Base
 	{
 		$this->addComponentEntry('register');
 
-		$rparams = \JComponentHelper::getParams('com_members');
+		$rparams = $this->getParams('com_members');
 		$values = $rparams->toArray();
 
 		$this->db->setQuery("SELECT * FROM `#__extensions` WHERE `type`='component' AND `element`='com_register' LIMIT 1");

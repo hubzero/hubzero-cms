@@ -15,8 +15,7 @@ class Migration20140730181124PlgSystemHubzero extends Base
 	 **/
 	public function up()
 	{
-		$plugin = \JPluginHelper::getPlugin('system', 'hubzero');
-		$params = new \JRegistry($plugin->params);
+		$params = $this->getParams('plg_system_hubzero');
 		$search = $params->get('search');
 
 		if ($search && $search == 'ysearch')

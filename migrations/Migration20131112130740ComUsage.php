@@ -16,7 +16,7 @@ class Migration20131112130740ComUsage extends Base
 	public function up()
 	{
 		// Get stats DB object
-		$config     = \JComponentHelper::getParams('com_usage');
+		$config     = $this->getParams('com_usage');
 		$siteConfig = \JFactory::getConfig();
 
 		$options['driver']   = $config->get('statsDBDriver');

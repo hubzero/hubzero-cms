@@ -16,7 +16,7 @@ class Migration20140325093000ComResources extends Base
 	public function up()
 	{
 		// make import path if doesnt exist
-		$params = \JComponentHelper::getParams('com_resources');
+		$params = $this->getParams('com_resources');
 		$upload = $params->get('uploadpath', '/site/resources');
 
     if (!is_dir(JPATH_ROOT.DS.trim($upload, DS)))

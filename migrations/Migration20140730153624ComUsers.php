@@ -15,7 +15,7 @@ class Migration20140730153624ComUsers extends Base
 	 **/
 	public function up()
 	{
-		$params    = \JComponentHelper::getParams('com_users');
+		$params    = $this->getParams('com_users');
 		$user_type = $params->get('new_usertype');
 
 		if (is_string($user_type) && strlen($user_type) > 2)
