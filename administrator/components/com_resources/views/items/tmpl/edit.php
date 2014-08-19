@@ -443,15 +443,14 @@ function popratings()
 		} else {
 			echo JHtml::_('sliders.panel', JText::_('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
 			?>
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_LINK_ACTION_HINT'); ?>">
-				<label for="param-link_action"><?php echo JText::_('COM_RESOURCES_FIELD_LINK_ACTION'); ?></label><br />
+			<div class="input-wrap">
+				<label for="param-link_action"><?php echo JText::_('COM_RESOURCES_FIELD_LINK_ACTION_HINT'); ?>:</label><br />
 				<select name="params[link_action]" id="param-link_action">
 					<option value="0"<?php if (!$this->params->get('link_action')) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT'); ?></option>
 					<option value="1"<?php if ($this->params->get('link_action') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW'); ?></option>
 					<option value="2"<?php if ($this->params->get('link_action') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX'); ?></option>
 					<option value="3"<?php if ($this->params->get('link_action') == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD'); ?></option>
 				</select>
-				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_LINK_ACTION_HINT'); ?></span>
 			</div>
 			<?php
 		}
