@@ -861,8 +861,6 @@ HUB.ProjectPublicationsDraft = {
 		}
 
 		return selected;
-
-		//$('#actags').val(selected);
 	},
 
 	// License
@@ -878,7 +876,6 @@ HUB.ProjectPublicationsDraft = {
 		{
 			return false;
 		}
-
 		if (ltext.length)
 		{
 			ltext.unbind();
@@ -895,7 +892,17 @@ HUB.ProjectPublicationsDraft = {
 				HUB.ProjectPublicationsDraft.checkLicense();
 			});
 		}
-
+		// Load template text
+		var reload 	 = $('#reload');
+		var template = $('#license-template');
+		if (reload.length && template.length && ltext.length) 
+		{
+			reload.on('click', function(e)
+			{
+				ltext.val(template.html());
+				HUB.ProjectPublicationsDraft.checkLicense();
+			});
+		}
 	},
 
 	// License
@@ -910,7 +917,7 @@ HUB.ProjectPublicationsDraft = {
 		var required 	= $(element).hasClass('el-required') ? 1 : 0;
 
 		// Check for default text
-		if (ltext.length && !HUB.ProjectPublicationsDraft(ltext.val()))
+		if (ltext.length && !HUB.ProjectPublicationsDraft.checkLicenseText(ltext.val()))
 		{
 			complete = 0;
 		}
@@ -936,7 +943,7 @@ HUB.ProjectPublicationsDraft = {
 	checkLicenseText: function(text)
 	{
 		var $ = this.jQuery;
-		if(text == '') {
+		if (text == '') {
 			return false;
 		}
 		var defaults = [
@@ -948,23 +955,23 @@ HUB.ProjectPublicationsDraft = {
 		];
 
 		var matches = /YEAR/;
-		if(text.match(matches) != null) {
+		if (text.match(matches) != null) {
 			return false;
 		}
 		var matches = /OWNER/;
-		if(text.match(matches) != null) {
+		if (text.match(matches) != null) {
 			return false;
 		}
 		var matches = /ORGANIZATION/;
-		if(text.match(matches) != null) {
+		if (text.match(matches) != null) {
 			return false;
 		}
 		var matches = /URL/;
-		if(text.match(matches) != null) {
+		if (text.match(matches) != null) {
 			return false;
 		}
 		var matches = /ONE LINE DESCRIPTION/;
-		if(text.match(matches) != null) {
+		if (text.match(matches) != null) {
 			return false;
 		}
 

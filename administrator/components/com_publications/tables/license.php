@@ -307,11 +307,6 @@ class PublicationLicense extends JTable
 		$include = isset($manifest->params->include) ? $manifest->params->include : array();
 		$exclude = isset($manifest->params->exclude) ? $manifest->params->exclude : array();
 
-		if ($selected)
-		{
-			$include[] = $selected->id;
-		}
-
 		$sortby  = isset($filters['sortby']) && $filters['sortby'] != '' ? $filters['sortby'] : 'ordering';
 
 		$query = "SELECT * FROM $this->_tbl WHERE active=1 ";
@@ -338,6 +333,10 @@ class PublicationLicense extends JTable
 				$query .= $i == count($exclude) ? " " : " AND ";
 			}
 			$query .= " )";
+		}
+		if ($selected && !in_array($selected->id, $include))
+		{
+			$query .= " OR id=" . $selected->id;
 		}
 
 		$query.= " ORDER BY ordering";
