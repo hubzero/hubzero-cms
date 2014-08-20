@@ -134,7 +134,7 @@
 	}
 /* Events listing */
 	.com_events ul.events {
-    	list-style-type: none !important;
+		list-style-type: none !important;
 		margin: 0;
 		padding-left: 0;
 		border-bottom: 1px solid #ddd;
@@ -149,30 +149,36 @@
 		border-bottom: none;
 	}
 	.com_events ul.events > li {
-    	clear: left;
-    	margin: 0 !important;
-    	padding: 0 0 1em 0;
-    	border-top: 1px solid #ddd;
+		clear: left;
+		margin: 0 !important;
+		padding: 0 0 1em 0;
+		border-top: 1px solid #ddd;
 		background: none;
 		list-style: none;
+	}
+	.com_events ul.events > li .ewrap:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: left;
 	}
 	.com_events ul.events > li ul.events li {
 		clear: none;
 	}
 	.com_events ul.events li li {
-    	margin-left:  20px;
+		margin-left:  20px;
 	}
 	.com_events ul.events div.ewrap {
 		margin: 0 0 0 170px;
 	}
 	.com_events ul.events dl.event-details {
-    	float: left;
-    	margin: 1.1em 20px 2em 0 !important;
-    	padding: 0;
-    	width: 150px;
-    	color: #777;
-    	font-size: 11px;
-    	text-align: right;
+		float: left;
+		margin: 1.1em 20px 2em 0 !important;
+		padding: 0;
+		width: 150px;
+		color: #777;
+		font-size: 11px;
+		text-align: right;
 	}
 	.com_events ul.events dl.event-details dt {
 		font-weight: bold;
