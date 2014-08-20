@@ -255,6 +255,16 @@ class Migration20130924000013Core extends Base
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
+
+				// Now make sure something is set for the admin template
+				$query = "SELECT `id` FROM `#__template_styles` WHERE `client_id` = 1 AND `home` = 1";
+				$this->db->setQuery($query);
+				if (!$this->db->query())
+				{
+					$query = "UPDATE `#__template_styles` SET `home` = '1' WHERE `client_id` = 1 LIMIT 1";
+					$this->db->setQuery($query);
+					$this->db->query();
+				}
 			}
 		}
 
