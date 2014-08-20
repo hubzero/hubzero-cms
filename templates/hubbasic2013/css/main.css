@@ -2415,6 +2415,10 @@ System styles
 	
 	/* ------------------ Main navigation ------------------------- */
 	
+	#nav ul.menu ul li.parent>a:after {
+		display: none;
+	}
+	
 	#main-navigation {
 		max-height: 0;
 	}
@@ -2494,6 +2498,13 @@ System styles
 		opacity: 1;
 		position: static;
 		margin-top: 5px;
+	}
+	
+	#nav ul.menu ul ul {
+		border: none;
+		-moz-column-count: auto;
+		-webkit-column-count: auto;
+		column-count: auto;
 	}
 	
 	/* ------------------ End main navigation ------------------------- */
