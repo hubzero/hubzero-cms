@@ -164,7 +164,7 @@ defined('_JEXEC') or die('Restricted access');
 	<li>Get the repository url. From your forked repository page you should see a text box with the git repo url in it. Copy that URL to your clipboard</li>
 	<li>
 		Go to the machine where you want to clone the repository to and type the following into a terminal window:
-		<pre>git clone git@gitlab.hubzero.org:theuser/mytestgroup.git</pre>
+		<pre>git clone git@gitlab.hubzero.org:theuser/mytestgroup.git; mv mytestgroup/* mytestgroup/.git* .; rmdir mytestgroup;</pre>
 	</li>
 	<li>The repository content will be copied to a "mytestgroup" directory within the current directory</li>
 </ol>
