@@ -407,7 +407,7 @@ $this->css('course.css')
 									<td>
 										<?php echo $offering->sections()->total() > 1 ? JText::_('COM_COURSES_SECTIONS_MANY') : $this->escape(stripslashes($dflt->get('title'))); ?>
 									</td>
-								</tr
+								</tr>
 							</tbody>
 						</table>
 						<p>
