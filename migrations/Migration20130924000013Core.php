@@ -261,7 +261,7 @@ class Migration20130924000013Core extends Base
 				$this->db->setQuery($query);
 				if (!$this->db->loadResult())
 				{
-					$query = "UPDATE `#__template_styles` SET `home` = '1' WHERE `client_id` = 1 LIMIT 1";
+					$query = "UPDATE `#__template_styles` SET `home` = '1' WHERE `template` = 'hubbasicadmin'";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
