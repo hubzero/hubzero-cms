@@ -32,13 +32,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'WhatsnewPeriod'
- *
- * Long description (if any) ...
+ * Whats New helper class for time periods
  */
 class WhatsnewPeriod extends JObject
 {
-
 	/**
 	 * The original search text - should NEVER BE CHANGED
 	 *

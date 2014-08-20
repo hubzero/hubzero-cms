@@ -132,8 +132,8 @@ foreach ($this->cats as $cat)
 	<h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
-	<section class="main section">
+<section class="main section">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get" class="section-inner">
 		<div class="subject">
 			<div class="container">
 			<?php
@@ -365,5 +365,5 @@ foreach ($this->cats as $cat)
 		<?php } ?>
 			<input type="hidden" name="category" value="<?php echo $this->escape($this->active); ?>" />
 		</aside><!-- / .aside -->
-	</section><!-- / .main section -->
-</form>
+	</form>
+</section><!-- / .main section -->

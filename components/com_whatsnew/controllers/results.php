@@ -461,12 +461,10 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Short description for '_jtext'
+	 * Get the translated text value for a give time period
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $period Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param      string $period Time period
+	 * @return     string
 	 */
 	private function _jtext($period)
 	{
@@ -503,11 +501,9 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Short description for '_getAreas'
+	 * Get a list of active plugins
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return     array
 	 */
 	private function _getAreas()
 	{
