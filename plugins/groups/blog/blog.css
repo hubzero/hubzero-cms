@@ -63,6 +63,10 @@
 	ol.blog-entries .unpublished .entry-title:before {
 		content: "(unpublished)";
 	}
+	ol.blog-entries .private .entry-title:before {
+		content: "\f023";
+		font-family: "Fontcons";
+	}
 	ol.blog-entries dl.entry-meta {
 		margin: 0.5em 0;
 		padding: 0;

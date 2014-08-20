@@ -123,25 +123,25 @@ $this->css()
 				{
 					$cls = ($cls == 'even') ? 'odd' : 'even';
 
-					if ($row->ended())
-					{
-						$cls .= ' expired';
-					}
-					if ($row->get('state') == 0)
-					{
-						$cls .= ' unpublished';
-					}
 					if (!$row->isAvailable())
 					{
 						if ($row->get('created_by') != JFactory::getUser()->get('id'))
 						{
 							continue;
 						}
-						$cls .= ' pending';
+						$clse = ' pending';
+					}
+					if ($row->ended())
+					{
+						$clse = ' expired';
+					}
+					if ($row->get('state') == 0)
+					{
+						$clse = ' private';
 					}
 
 					?>
-					<li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
+					<li class="<?php echo $cls . $clse; ?>" id="e<?php echo $row->get('id'); ?>">
 						<article>
 							<h4 class="entry-title">
 								<a href="<?php echo JRoute::_($row->link()); ?>">
