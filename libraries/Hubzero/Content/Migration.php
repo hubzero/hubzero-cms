@@ -107,6 +107,13 @@ class Migration
 	private $tbl_name = '#__migrations';
 
 	/**
+	 * Whether or not to ignore callbacks
+	 *
+	 * @var bool
+	 **/
+	private $ignoreCallbacks = false;
+
+	/**
 	 * Constructor
 	 *
 	 * @param $docroot - default null, which should then resolve to hub docroot
@@ -650,7 +657,7 @@ class Migration
 	 * @param $direction - up or down
 	 * @return void
 	 **/
-	protected function recordMigration($file, $scope, $hash, $direction)
+	public function recordMigration($file, $scope, $hash, $direction)
 	{
 		// Try inserting a migration record into the database
 		try
@@ -681,6 +688,26 @@ class Migration
 	}
 
 	/**
+	 * Set ignore callbacks to true
+	 *
+	 * @return void
+	 **/
+	public function ignoreCallbacks()
+	{
+		$this->ignoreCallbacks = true;
+	}
+
+	/**
+	 * Set ignore callbacks to false
+	 *
+	 * @return void
+	 **/
+	public function honorCallbacks()
+	{
+		$this->ignoreCallbacks = false;
+	}
+
+	/**
 	 * Logging mechanism
 	 *
 	 * @param $message - message to log
@@ -691,7 +718,7 @@ class Migration
 	{
 		$this->log[] = array('message' => $message, 'type' => $type);
 
-		if (isset($this->callbacks['message']) && is_callable($this->callbacks['message']))
+		if (!$this->ignoreCallbacks && isset($this->callbacks['message']) && is_callable($this->callbacks['message']))
 		{
 			$this->callbacks['message']($message, $type);
 		}
