@@ -35,7 +35,7 @@ $year  = date("Y", strtotime($this->event->get('publish_up')));
 $month = date("m", strtotime($this->event->get('publish_up')));
 ?>
 
-<?php if($this->getError()) { ?>
+<?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
@@ -98,6 +98,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			$timezone     = timezone_name_from_abbr('',$this->event->get('time_zone')*3600, NULL);
 			$publish_up   = $this->event->get('publish_up');
 			$publish_down = $this->event->get('publish_down');
+			$allday_event = $this->event->get('allday');
 
 			// show alternative event start/ends
 			// used for repeating events
@@ -109,7 +110,18 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 				$publish_down = JFactory::getDate($end)->toSql();
 			}
 		?>
-		<?php if ($publish_down != '0000-00-00 00:00:00') : ?>
+		<?php if ($allday_event) : ?>
+			<tr>
+				<th class="date"></th>
+				<td width="50%">
+					<?php echo JHTML::_('date', $publish_up, 'l, F d, Y'); ?>
+				</td>
+				<th class="time"></th>
+				<td>
+					<?php echo JText::_('All Day Event'); ?>
+				</td>
+			</tr>
+		<?php elseif ($publish_down != '0000-00-00 00:00:00') : ?>
 			<tr>
 				<th class="date"></th>
 				<td colspan="3">

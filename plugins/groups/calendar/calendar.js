@@ -338,7 +338,7 @@ HUB.Plugins.GroupCalendar = {
 					//make sure we only allow ics files
 					if (file.type != 'text/calendar')
 					{
-						hub.alert('Pleas upload a valid iCalendar File (.ics)');
+						hub.alert('Please upload a valid iCalendar File (.ics)');
 					}
 					else
 					{
@@ -355,6 +355,45 @@ HUB.Plugins.GroupCalendar = {
 					$('#event_website').val( eventDetails.website );
 					$('#event_start_date').val( eventDetails.start );
 					$('#event_end_date').val( eventDetails.end );
+
+					var repeat   = eventDetails.recurrence.FREQ,
+						interval = eventDetails.recurrence.INTERVAL,
+						count    = eventDetails.recurrence.COUNT,
+						until    = eventDetails.recurrence.UNTIL;
+					
+					if (repeat)
+					{
+						$('.event_recurrence_freq').val(repeat.toLowerCase()).trigger('change');
+						$('.event_recurrence_interval').val(interval);
+
+						if (count)
+						{
+							$('#after').trigger('click');
+							$('.event_recurrence_end_count').val(count);
+						}
+						else if (until)
+						{
+							$('#on').trigger('click');
+							$('.event_recurrence_end_date').val(until);
+						}
+						else
+						{
+							// reset end
+							$('#never').trigger('click');
+							$('.event_recurrence_end_count').val('');
+							$('.event_recurrence_end_date').val('');
+						}
+					}
+					else
+					{
+						// reset everything
+						$('.event_recurrence_freq').val('').trigger('change');
+						$('.event_recurrence_interval').val(1);
+						$('#never').trigger('click');
+						$('.event_recurrence_end_count').val('');
+						$('.event_recurrence_end_date').val('');
+					}
+					
 				},
 				fail: function(e, data) {
 					console.log('fail');

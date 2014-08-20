@@ -754,6 +754,14 @@ class When extends \DateTime
                 $this->bydays = array("0" . $dayOfWeekAbr);
             }
         }
+
+        if ($this->freq === "yearly")
+        {
+            if (!isset($this->bydays))
+            {
+                $this->bydays = array('SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA');
+            }
+        }
     }
 
     protected static function createItemsList($list, $delimiter)

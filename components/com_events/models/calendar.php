@@ -35,7 +35,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'tables' . DS . 'calendar.php';
 
 //include icalendar file reader
-require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'ical.reader.php';
+require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
 
 class EventsModelCalendar extends \Hubzero\Base\Model
 {
@@ -301,8 +301,8 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 		}
 
 		//read calendar file
-		$iCalReader = new iCalReader( $calendarUrl );
-		$incomingEvents = $iCalReader->events();
+		$icalparser = new icalparser( $calendarUrl );
+		$incomingEvents = $icalparser->getEvents();
 
 		// check to make sure we have events
 		if (count($incomingEvents) < 1)
@@ -349,19 +349,9 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 				$event = new EventsModelEvent();
 			}
 
-			// make sure we handle all day events from Google
-			if (strlen($incomingEvent['DTSTART']) == 8)
-			{
-				$incomingEvent['DTSTART'] .= 'T05000Z';
-			}
-			if (strlen($incomingEvent['DTEND']) == 8)
-			{
-				$incomingEvent['DTEND'] .= 'T050000Z';
-			}
-
-			//get the start and end dates and parse to unix timestamp
-			$start = JFactory::getDate($incomingEvent['DTSTART']);
-			$end   = JFactory::getDate($incomingEvent['DTEND']);
+			// start & end are already datetime objects
+			$start = $incomingEvent['DTSTART'];
+			$end   = $incomingEvent['DTEND'];
 
 			// set the timezone
 			$tz = new DateTimezone(JFactory::getConfig()->get('offset'));
@@ -371,6 +361,39 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 			// set publish up/down
 			$publish_up   = $start->toSql();
 			$publish_down = $end->toSql();
+			$allday       = (isset($incomingEvent['ALLDAY']) && $incomingEvent['ALLDAY'] == 1) ? 1 : 0;
+			$rrule        = null;
+
+			// handle rrule
+			if (isset($incomingEvent['RRULE']))
+			{
+				// add frequency
+				$rrule = 'FREQ=' . $incomingEvent['RRULE']['FREQ'];
+
+				// add interval
+				if (!isset($incomingEvent['RRULE']['INTERVAL']))
+				{
+					$incomingEvent['RRULE']['INTERVAL'] = 1;
+				}
+				$rrule .= ';INTERVAL=' . $incomingEvent['RRULE']['INTERVAL'];
+
+				// count
+				if (isset($incomingEvent['RRULE']['COUNT']))
+				{
+					$rrule .= ';COUNT=' . $incomingEvent['RRULE']['COUNT'];
+				}
+
+				// until
+				if (isset($incomingEvent['RRULE']['UNTIL']))
+				{
+					if (strlen($incomingEvent['RRULE']['UNTIL']) == 8)
+					{
+						$incomingEvent['RRULE']['UNTIL'] .= 'T000000Z';
+					}
+					$until = JFactory::getDate($incomingEvent['RRULE']['UNTIL']);
+					$rrule .= ';UNTIL=' . $until->format('Ymd\THis\Z');
+				}
+			}
 
 			// handle all day events
 			if ($start->add(new DateInterval('P1D')) == $end)
@@ -383,11 +406,13 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 			$event->set('content', isset($incomingEvent['DESCRIPTION']) ? $incomingEvent['DESCRIPTION'] : '');
 			$event->set('content', stripslashes(str_replace('\n', "\n", $event->get('content'))));
 			$event->set('adresse_info', isset($incomingEvent['LOCATION']) ? $incomingEvent['LOCATION'] : '');
-			$event->set('extra_info', isset($incomingEvent['URL;VALUE=URI']) ? $incomingEvent['URL;VALUE=URI'] : '');
+			$event->set('extra_info', isset($incomingEvent['URL']) ? $incomingEvent['URL'] : '');
 			$event->set('modified', JFactory::getDate()->toSql());
 			$event->set('modified_by', JFactory::getUser()->get('id'));
 			$event->set('publish_up', $publish_up);
 			$event->set('publish_down', $publish_down);
+			$event->set('allday', $allday);
+			$event->set('repeating_rule', $rrule);
 
 			// new event
 			if (!$event->get('id'))

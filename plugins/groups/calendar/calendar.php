@@ -394,7 +394,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event            = new stdClass;
 			$event->id        = $rawEvent->get('id');
 			$event->title     = $rawEvent->get('title');
-			$event->allDay    = false;
+			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
 			$event->start     = JFactory::getDate($rawEvent->get('publish_up'))->toUnix();
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-'.$rawEvent->get('calendar_id') : 'calendar-0';
@@ -962,36 +962,45 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 	private function import()
 	{
 		//include icalendar file reader
-		require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'ical.reader.php';
+		require_once JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'calendar' . DS . 'icalparser.php';
 
 		//get incoming
 		$file = JRequest::getVar('import', array(), 'files');
 
-		//read calendar file
-		$iCalReader = new iCalReader( $file['tmp_name'] );
-		$icalEvent = $iCalReader->firstEvent();
-
-		//get the start and end dates and parse to unix timestamp
-		$start = $iCalReader->iCalDateToUnixTimestamp($icalEvent['DTSTART']);
-		$end   = $iCalReader->iCalDateToUnixTimestamp($icalEvent['DTEND']);
+		// parse file & get first event
+		$icalparser = new IcalParser($file['tmp_name']);
+		$icalEvent = $icalparser->getFirstEvent();
 
 		// get values from ical File
 		$title       = (isset($icalEvent['SUMMARY'])) ? $icalEvent['SUMMARY'] : '';
 		$description = (isset($icalEvent['DESCRIPTION'])) ? $icalEvent['DESCRIPTION'] : '';
 		$location    = (isset($icalEvent['LOCATION'])) ? $icalEvent['LOCATION'] : '';
-		$website     = (isset($icalEvent['URL;VALUE=URI'])) ? $icalEvent['URL;VALUE=URI'] : '';
+		$website     = (isset($icalEvent['URL'])) ? $icalEvent['URL'] : '';
+		$start       = (isset($icalEvent['DTSTART']) && ($icalEvent['DTSTART'] instanceof DateTime)) ? $icalEvent['DTSTART'] : new DateTime();
+		$end         = (isset($icalEvent['DTEND']) && ($icalEvent['DTEND'] instanceof DateTime)) ? $icalEvent['DTEND'] : new DateTime();
+		$recurrence  = (isset($icalEvent['RRULE'])) ? $icalEvent['RRULE'] : array();
+
+		// normalize until date
+		if (isset($recurrence['UNTIL']))
+		{
+			$tz = JFactory::getApplication()->getCfg('offset');
+			$until = new DateTime($recurrence['UNTIL']);
+			$until->setTimezone(new DateTimezone($tz));
+			$recurrence['UNTIL'] = $until->format('m/d/Y');
+		}
 
 		//object to hold event data
-		$event           = new stdClass;
-		$event->title    = $title;
-		$event->content  = stripslashes(str_replace('\n', "\n", $description));
-		$event->start    = JFactory::getDate($start)->format("m/d/Y @ g:i a");
-		$event->end      = JFactory::getDate($end)->format("m/d/Y @ g:i a");
-		$event->location = $location;
-		$event->website  = $website;
+		$event             = new stdClass;
+		$event->title      = $title;
+		$event->content    = stripslashes(str_replace('\n', "\n", $description));
+		$event->start      = $start->format("m/d/Y @ g:i a");
+		$event->end        = $end->format("m/d/Y @ g:i a");
+		$event->location   = $location;
+		$event->website    = $website;
+		$event->recurrence = $recurrence;
 
 		//return event details
-		echo json_encode(array('event'=>$event));
+		echo json_encode(array('event'=> $event));
 		exit();
 	}
 

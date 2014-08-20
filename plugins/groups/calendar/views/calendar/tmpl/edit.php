@@ -165,7 +165,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						<?php echo JText::_('Repeating Settings'); ?>
 					</legend>
 					<label><?php echo JText::_('Recurrence:'); ?> <span class="optional">Optional</span>
-						<select name="reccurance[freq]">
+						<select name="reccurance[freq]" class="event_recurrence_freq">
 							<?php foreach ($freqs as $k => $v) : ?>
 								<?php $sel = ($repeating['freq'] == $k) ? 'selected="selected"' : ''; ?>
 								<option <?php echo $sel; ?> value="<?php echo $k; ?>"><?php echo $v; ?></option>
@@ -175,7 +175,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 
 					<div class="reccurance-options options-daily">
 						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
-							<select name="reccurance[interval][daily]" class="daily-days">
+							<select name="reccurance[interval][daily]" class="daily-days event_recurrence_interval">
 								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'daily' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -187,7 +187,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 
 					<div class="reccurance-options options-weekly">
 						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
-							<select name="reccurance[interval][weekly]" class="weekly-weeks">
+							<select name="reccurance[interval][weekly]" class="weekly-weeks event_recurrence_interval">
 								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'weekly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -199,7 +199,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 
 					<div class="reccurance-options options-monthly">
 						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
-							<select name="reccurance[interval][monthly]" class="monthly-months">
+							<select name="reccurance[interval][monthly]" class="monthly-months event_recurrence_interval">
 								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 									<?php $sel = ($repeating['freq'] == 'monthly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -211,7 +211,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 
 					<div class="reccurance-options options-yearly">
 						<label for=""><?php echo JText::_('Repeat Every:'); ?><br />
-							<select name="reccurance[interval][yearly]" class="yearly-years">
+							<select name="reccurance[interval][yearly]" class="yearly-years event_recurrence_interval">
 								<?php for ($i=1, $n=31; $i < $n; $i++) : ?>
 								<?php $sel = ($repeating['freq'] == 'yearly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
 									<option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -227,11 +227,11 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						</label>
 						<label for="after">
 							<input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"  <?php if ($repeating['end'] == 'count') { echo 'checked="checked"'; } ?> /> After
-							<input type="text" name="reccurance[ends][count]" placeholder="5" class="after-input" value="<?php echo $repeating['count']; ?>" /> times
+							<input type="text" name="reccurance[ends][count]" placeholder="5" class="after-input event_recurrence_end_count" value="<?php echo $repeating['count']; ?>" /> times
 						</label>
 						<label for="on">
 							<input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"  <?php if ($repeating['end'] == 'until') { echo 'checked="checked"'; } ?> /> On
-							<input type="text" name="reccurance[ends][until]" placeholder="mm/dd/yyyy" class="on-input no-legacy-placeholder-support" value="<?php echo $repeating['until']; ?>" />
+							<input type="text" name="reccurance[ends][until]" placeholder="mm/dd/yyyy" class="on-input event_recurrence_end_date no-legacy-placeholder-support" value="<?php echo $repeating['until']; ?>" />
 						</label>
 					</label>
 				</fieldset>

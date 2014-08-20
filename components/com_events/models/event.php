@@ -201,11 +201,11 @@ class EventsModelEvent extends \Hubzero\Base\Model
 		// handle end
 		if ($rule['end'] == 'count')
 		{
-			$readable .= JText::sprintf('COM_EVENTS_REPEATS_END_COUNT', $rule['count']);
+			$readable .= ' ' . JText::sprintf('COM_EVENTS_REPEATS_END_COUNT', $rule['count']);
 		}
 		else if ($rule['end'] == 'until')
 		{
-			$readable .= JText::sprintf('COM_EVENTS_REPEATS_END_UNTIL', $rule['until']);
+			$readable .= ' ' . JText::sprintf('COM_EVENTS_REPEATS_END_UNTIL', $rule['until']);
 		}
 
 		// return
