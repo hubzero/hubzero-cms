@@ -27,312 +27,266 @@ if (!HUB) {
 // Project Setup JS
 //----------------------------------------------------------
 
-HUB.ProjectSetup = {
+if (!jq) {
+	var jq = $;
+}
 
+HUB.ProjectSetup = {
+	jQuery: jq,
+	
 	initialize: function() 
 	{
-		var hubfrm 			= $('hubForm');
-		var sbjt 			= $('verificationarea');
-		var moveon 			= $('moveon');
-		var describe 		= $('describe');
-		var describearea 	= $('describearea');
-		var ptitle 			= $('ptitle');
-		var sbjt_t 			= $('verificationarea_title');
-		var next_desc		= $('next_desc');
-		var next_step		= $('next_step');
+		var $ 				= this.jQuery;
+		var hubfrm 			= $('#hubForm');
+		var sbjt 			= $('#verificationarea');
+		var moveon 			= $('#moveon');
+		var describe 		= $('#describe');
+		var describearea 	= $('#describearea');
+		var ptitle 			= $('#ptitle');
+		var sbjt_t 			= $('#verificationarea_title');
+		var next_desc		= $('#next_desc');
+		var next_step		= $('#next_step');
 		
 		// Setup
-		var rest  = $$('.restricted-opt');
-		var resta = $$('.restricted-answer');
+		var rest  = $('.restricted-opt');
+		var resta = $('.restricted-answer');
+		
 		if(rest.length > 0 && resta.length > 0)
 		{
 			HUB.ProjectSetup.enableButton();
-			if($('restricted-yes'))
-			{
-				rest.each(function(item) 
-				{	
-					item.removeEvents();
-					HUB.ProjectSetup.showStopSigns(item);			
-					item.addEvent('click', function(e) {
-						resta.each(function(ritem) 
-						{
-							ritem.checked = false;
-						});
-						$('restricted-yes').checked = true;
-						
-						HUB.ProjectSetup.showStopSigns(item);
-						HUB.ProjectSetup.enableButton();
-					});
-				});
-			}
-
-			if($('restricted-no'))
-			{
-				$('restricted-no').addEvent('click', function(e) {
-					rest.each(function(item) 
-					{
-						item.checked = false;
-						HUB.ProjectSetup.showStopSigns(item);
-						HUB.ProjectSetup.enableButton();
-					});	
-				});	
-			}
 			
+			$('.restricted-opt').each(function(i, item) {
+				$(item).off('click');
+				HUB.ProjectSetup.showStopSigns(item);
+				$(item).on('click', function(e) {
+					$('.restricted-answer').each(function(ritem) {
+						$(ritem).removeAttr("checked");
+					});
+					$('#restricted-yes').attr('checked', 'checked');
+					HUB.ProjectSetup.showStopSigns(item);
+					HUB.ProjectSetup.enableButton();
+				});
+			});
+
+			$('#restricted-no').on('click', function(e) {
+				$('.restricted-opt').each(function(i, item) {
+					$(item).removeAttr("checked");
+				});	
+			});	
+						
 			// Check if can proceed
-			if($$('.option').length > 0)
+			if($('.option').length > 0)
 			{
-				$$('.option').each(function(item) 
+				$('.option').each(function(i, item) 
 				{
-					item.addEvent('click', function(e) {
+					$(item).on('click', function(e) {
 						HUB.ProjectSetup.enableButton();
 					});
 				});
-			}
-		}
-		
-		// Setup pre-screen
-		if ($('f-restricted-no') && $('f-restricted-explain'))
-		{
-			$('f-restricted-no').addEvent('click', function(e) {
-				$('f-restricted-explain').addClass('hidden');
-			});
-			if ($('f-restricted-no').checked == true)
-			{
-				$('f-restricted-explain').addClass('hidden');
-			}
-		}
-		
-		if ($('f-restricted-yes') && $('f-restricted-explain'))
-		{
-			$('f-restricted-yes').addEvent('click', function(e) {
-				$('f-restricted-explain').removeClass('hidden');
-			});
-		}
+			}				
+		}		
 	
-		// Show/hide options to describe project		
-		if($('pid') && ($('pid').value == '' || $('pid').value == 0)) 
+		// Setup pre-screen
+		if ($('#f-restricted-no').length && $('#f-restricted-explain'))
+		{
+			$('#f-restricted-no').on('click', function(e) {
+				$('#f-restricted-explain').addClass('hidden');
+			});
+			if ($('#f-restricted-no').attr('checked') == 'checked')
+			{
+				$('#f-restricted-explain').addClass('hidden');
+			}
+		}
+
+		if ($('#f-restricted-yes').length && $('#f-restricted-explain'))
+		{
+			$('#f-restricted-yes').on('click', function(e) {
+				$('#f-restricted-explain').removeClass('hidden');
+			});
+		}	
+				
+		// Show/hide options to describe project
+		if ($('#pid') && ($('#pid').val() == '' || $('#pid').val() == 0))  
 		{
 			// Show by default for those with JS enabled
-			if($('moveon')) 
-			{
-				$('moveon').style.display = 'block';	
+			if ($('#moveon')) {
+				$('#moveon').css('display', 'block');
 			}
 			// Hide by default for those with JS enabled
-			if($('describearea')) 
-			{
-				$('describearea').style.display = 'none';	
+			if ($('#describearea')) {
+				$('#describearea').css('display', 'none');
 			}
 			
 			// Title verification
-			if($('describe') && $('ptitle')) 
-			{
+			if ($('#describe') && $('#ptitle')) {
 				var keyupTimerA = '';
-				$('ptitle').addEvent('keyup', function(e) 
-				{
-					 if(keyupTimerA) 
-					 {
-						clearTimeout(keyupTimerA);	
-					 }
-
-					 var keyupTimerA = setTimeout((function() 
-					 {  
-						if($('ptitle').value.length > 5) {
-							if($('verificationarea_title'))	{
-								$('verificationarea_title').innerHTML = '<p class="verify_passed">Title looks good &rarr;</p>';
+				$('#ptitle').on('keyup', function(e) {
+					 var keyupTimerA = setTimeout((function() { 
+						if ($('#ptitle').val().length > 2) {
+							if ($('#verificationarea_title').length) {
+								$('#verificationarea_title').html('<p class="verify_passed">Title looks good &rarr;</p>');
+							}
+						} else {
+							if ($('#verificationarea_title').length) {
+								$('#verificationarea_title').html('<p class="verify_failed">Title too short &rarr;</p>');
 							}
 						}
-						else {
-							if($('verificationarea_title'))	{
-								$('verificationarea_title').innerHTML = '<p class="verify_failed">Title too short &rarr;</p>';
-							}
-						}
-						HUB.ProjectSetup.watchInput(hubfrm.verified.value, $('ptitle').value.length, $('describe'), $('moveon'));					
+						HUB.ProjectSetup.watchInput($('#verified').val(), $('#ptitle').val().length, $('#describe'), $('#moveon'));
 					}), 500);
+				});
+				
+				$('#ptitle').on('keydown', function(e) {
+					if (keyupTimerA) {
+						clearTimeout(keyupTimerA);
+					}
 				});
 			}
 			
 			// Show description fields
-			if($('next_desc')) 
-			{
-				$('next_desc').addEvent('click', function(e) 
-				{
-						var e = new Event(e).stop();
-						$(hubfrm).extended.value = 1;
-						$(hubfrm).save_stage.value = 0;
-						$(hubfrm).submit();
+			if ($('#next_desc')) {
+				$('#next_desc').on('click', function(e) {
+					e.preventDefault();
+					$('#extended').val(1);
+					$('#save_stage').val(0);
+					$(hubfrm).submit();
 				});
 			}
 			
-			// Go to next step		
-			if($('next_step')) 
-			{
-				$('next_step').addEvent('click', function(e) 
-				{
-						var e = new Event(e).stop();
-						$(hubfrm).extended.value = 0;
-						$(hubfrm).save_stage.value = 1;
-						$(hubfrm).submit();
+			// Go to next step
+			if ($('#next_step')) {
+				$('#next_step').on('click', function(e) {
+					e.preventDefault();
+					$('#extended').val(0);
+					$('#save_stage').val(1);
+					$(hubfrm).submit();
 				});
 			}
 		}
 
 		// Verifier for project alias
-		if ($('verificationarea')) 
-		{
-			var keyupTimerB = '';
-			$('name').addEvent('keyup', function(e) 
-			{
-				if(keyupTimerB) {
-					clearTimeout(keyupTimerB);		
+		if ($('#verificationarea')) {
+			var keyupTimerB = '';			
+			
+			$('#name').on('keydown', function(eventInstance) {
+				if (keyupTimerB) {
+					clearTimeout(keyupTimerB);
 				}
+				
+				var eventInstance = eventInstance || window.event;
+				var key = eventInstance.keyCode || eventInstance.which;
+
+				// Disallow spaces
+				if (key == 32 )
+				{
+				  	eventInstance.preventDefault(); 
+				}
+			});
+				
+			$('#name').on('keyup', function(e) {
 
 				// Clean up entered value
-				$('name').value = HUB.Projects.cleanupText($('name').value);
-
-				$('verificationarea').empty();
+				//$(this).val(HUB.Projects.cleanupText($(this).val()));
+				
+				$('#verificationarea').empty();
 				var keyupTimerB = setTimeout((function() {  
-					var p = new Element('p', {'id':'loading-section'});				
-					p.injectInside($('verificationarea'));
-					var response = '';
-					new Ajax('index.php?option=com_projects&task=verify&no_html=1&ajax=1&name=' + hubfrm.name.value + '&pid=' + hubfrm.id.value,{
-							'method' : 'get',
-							onComplete: function(response) { 
-								if(response) {
-									var bits = response.split('::');
-									var out  = '<p class="' + bits[0] + '">' + bits[1] + ' &rarr;</p>';
-									$('verificationarea').innerHTML = out;
-								}
+					$('#verificationarea').append('<p id="loading-section"></p>');
 
-								if(response.contains('passed')) { hubfrm.verified.value = 1; } 
-								else { hubfrm.verified.value = 0; }
+					$.get('index.php?option=com_projects&task=verify&no_html=1&ajax=1&name=' 
+					+ $('#name').val() + '&pid=' + $('#pid').val(), {}, function(data) {
+						if (data) {
+							var bits = data.split('::');
+							var out  = '<p class="' + bits[0] + '">' + bits[1] + ' &rarr;</p>';
+							$('#verificationarea').html(out);
+						}
 
-								if($('pid') && ($('pid').value == '' || $('pid').value == 0)) {
-									HUB.ProjectSetup.watchInput(hubfrm.verified.value, $('ptitle').value.length, $('describe'), $('moveon'));
-								}
-							}
-					}).request();
-				}), 1000);				
+						if (data.search("passed") >= 0) { 
+							$('#verified').val(1);
+						} else { 
+							$('#verified').val(0);
+						}
+
+						if ($('#pid') && ($('#pid').val() == '' || $('#pid').val() == 0)) {
+							HUB.ProjectSetup.watchInput($('#verified').val(), $('#ptitle').val().length, $('#describe'), $('#moveon'));
+						}
+					});
+				}), 1000);
 			});
 		}
 		
 		// Activate provisioned project
-		if($('verify-alias')) {
+		if ($('#verify-alias')) 
+		{
 			HUB.ProjectSetup.enableButtonActivate();
 			var keyupTimer1 = '';
-			$('new-alias').addEvent('keyup', function(e) {
-				if(keyupTimer1) {
-					clearTimeout(keyupTimer1);		
+			$('#new-alias').on('keyup', function(e) {
+				if (keyupTimer1) {
+					clearTimeout(keyupTimer1);
 				}
-				$('new-alias').value = HUB.Projects.cleanupText($('new-alias').value);
-				$('verify-alias').empty();
+				
+				$('#new-alias').val(HUB.Projects.cleanupText($('#new-alias').val()));
+				$('#verify-alias').empty();
+				
 				var keyupTimer1 = setTimeout((function() {  
-					var p = new Element('p', {'id':'loading-section'});				
-					p.injectInside($('verify-alias'));
-					var response = '';
-					new Ajax('index.php?option=com_projects&task=verify&no_html=1&ajax=1&name='+$('new-alias').value+'&pid='+$('projectid').value,{
-							'method' : 'get',
-							onComplete: function(response) { 
-								if(response) {
-									var bits = response.split('::');
-									var out  = '<p class="' + bits[0] + '">' + bits[1] + '</p>';
-									$('verify-alias').innerHTML = out;
-									if(response.contains('passed')) { $('verified').value = 1; } 
-									else { $('verified').value = 0; }
-									HUB.ProjectSetup.enableButtonActivate();
-								}
-							}
-					}).request();
+					$('#verify-alias').append('<p id="loading-section"></p>');
+
+					$.get('index.php?option=com_projects&task=verify&no_html=1&ajax=1&name='
+					+ $('#new-alias').val()+'&pid='+$('#projectid').val(), {}, function(data) {
+						if (data) {
+							var bits = data.split('::');
+							var out  = '<p class="' + bits[0] + '">' + bits[1] + '</p>';
+							$('#verify-alias').html(out);
+						}
+
+						if (data.search("passed") >= 0) { 
+							$('#verified').val(1);
+						} else { 
+							$('#verified').val(0);
+						}
+
+						HUB.ProjectSetup.enableButtonActivate();
+					});
 				}), 1000);
 			});
 
-			if($('agree'))
-			{
-				$('agree').removeEvents();
-				$('agree').addEvent('click', function(e) {
+			if ($('#agree')) {
+				$('#agree').off('click');
+				$('#agree').on('click', function(e) {
 					HUB.ProjectSetup.enableButtonActivate();
 				});
 			}
 		}		
 	},
 	
-	watchInput: function(verified, supplied, elshow, elhide) {
-		if(verified==1 && supplied > 5) {
-			elhide.style.display = 'none';
-			elshow.style.display = 'block';
-		}
-		else {
-			elhide.style.display = 'block';
-			elshow.style.display = 'none';
-		}
-	},
-	
-	showStopSigns: function(el)
+	watchInput: function(verified, supplied, elshow, elhide) 
 	{
-		var oid = el.getProperty('id');
-		var obox = 'stop-' + oid;
-		if(el.checked == true && $(obox).hasClass('hidden'))
-		{
-			$(obox).removeClass('hidden');
-		}
-		else
-		{
-			$(obox).addClass('hidden');
-		}
-	},
-	
-	enableButtonActivate: function() 
-	{
-		var con = $('b-continue');
-		var passed = 1;
-		
-		if (con)
-		{
-			if($('verified') && $('verified').value == 0 || $('new-alias').value == '')
-			{
-				passed = 0;
-			}
-			if($('agree') && $('agree') && $('agree').checked == false)
-			{
-				passed = 0;
-			}
-
-			if(passed == 1 && con.hasClass('disabled')) { 
-				con.removeClass('disabled'); 
-			}
-			if(passed == 0 && !con.hasClass('disabled')) {
-				con.addClass('disabled');
-			}
-
-			con.removeEvents();
-			con.addEvent('click', function(e) {
-				new Event(e).stop();
-				if(!con.hasClass('disabled')) {
-					if($('activate-form')) {					
-						$('activate-form').submit();
-					}
-				}
-			});
+		if (verified == 1 && supplied > 2) {
+			elhide.css('display', 'none');
+			elshow.css('display', 'block');
+		} else {
+			elhide.css('display', 'block');
+			elshow.css('display', 'none');
 		}
 	},
 	
 	enableButton: function() 
 	{
-		var con = $('btn-finalize');
+		var $ = this.jQuery;
+		var con = $('#btn-finalize');
 		var passed = 1;
 		
-		if($('export') && $('export').checked == true)
+		if($('#export') && $('#export').attr('checked') == 'checked')
 		{
 			passed = 0;
 		}
-		if($('hipaa') && $('hipaa').checked == true)
+		if($('#hipaa') && $('#hipaa').attr('checked') == 'checked')
 		{
 			passed = 0;
 		}
-		if($('irb') && $('irb').checked == true && $('agree_irb').checked == false )
+		if($('#irb') && $('#irb').attr('checked') == 'checked' && $('#agree_irb').attr('checked') != 'checked' )
 		{
 			passed = 0;
 		}
-		if($('ferpa') && $('ferpa').checked == true && $('agree_ferpa').checked == false )
+		if($('#ferpa') && $('#ferpa').attr('checked') == 'checked' && $('#agree_ferpa').attr('checked') != 'checked' )
 		{
 			passed = 0;
 		}
@@ -344,16 +298,67 @@ HUB.ProjectSetup = {
 			con.addClass('disabled');
 		}
 		
-		con.removeEvents();
-		con.addEvent('click', function(e) {
-			new Event(e).stop();
-			if(!con.hasClass('disabled')) {
-				if($('hubForm')) {					
-					$('hubForm').submit();
+		con.off('click');
+		con.on('click', function(e) {
+			e.preventDefault();
+			if (!con.hasClass('disabled')) {
+				if ($('#hubForm')) {
+					$('#hubForm').submit();
 				}
 			}
 		});
+	},
+	
+	showStopSigns: function(el)
+	{
+		var $ = this.jQuery;
+		
+		var oid = $(el).attr('id');
+		var obox = '#stop-' + oid;
+		
+		if($(el).attr('checked') == 'checked' && $(obox).hasClass('hidden'))
+		{
+			$(obox).removeClass('hidden');
+		}
+		else
+		{
+			$(obox).addClass('hidden');
+		}
+	},
+	
+	enableButtonActivate: function() 
+	{
+		var $ = this.jQuery;
+		var con = $('#b-continue');
+		
+		if (con)
+		{
+			var passed = 1;
+
+			if (($('#verified') && $('#verified').val() == 0) || ($('#new-alias') && $('#new-alias').val() == '')) {
+				passed = 0;
+			}
+			
+			if (passed == 1 && con.hasClass('disabled')) { 
+				con.removeClass('disabled'); 
+			}
+			if (passed == 0 && !con.hasClass('disabled')) {
+				con.addClass('disabled');
+			}
+
+			con.off('click');
+			con.on('click', function(e) {
+				e.preventDefault();
+				if (!con.hasClass('disabled')) {
+					if ($('#activate-form')) {
+						$('#activate-form').submit();
+					}
+				}
+			});
+		}
 	}
 }
 	
-window.addEvent('domready', HUB.ProjectSetup.initialize);
+jQuery(document).ready(function($){
+	HUB.ProjectSetup.initialize();
+});

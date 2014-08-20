@@ -26,11 +26,15 @@ if (!HUB) {
 //----------------------------------------------------------
 // Project Component JS
 //----------------------------------------------------------
+if (!jq) {
+	var jq = $;
+}
 
 HUB.Projects = {
-
+	jQuery: jq,
+		
 	initialize: function() 
-	{					
+	{											
 		// Fix up users with no JS
 		HUB.Projects.fixJS();
 		
@@ -43,299 +47,375 @@ HUB.Projects = {
 		// Reviewers
 		HUB.Projects.addFiltering();
 		
+		// Fade-out status message
+		HUB.Projects.addMessageFade();
 	},
 	
 	addFiltering: function()
 	{
+		var $ = this.jQuery;
 		// Browse projects - filtering
-		var filterby = $$('.filterby');
-		if(filterby.length > 0) 
-		{
-			filterby.each(function(item) 
-			{
-				item.addEvent('change', function(e) {
-					if($('browseForm'))
-					{
-						$('browseForm').submit();
-					}
-				});
+		$(".filterby").each(function(i, item) {
+			$(item).on('change', function(e) {
+				if ($('#browseForm')) {
+					$('#browseForm').submit();
+				}
 			});
-		}
+		});
+	},
+
+	addMessageFade: function()
+	{
+		var $ = this.jQuery;
+		
+		if ($("#status-msg").length > 0)
+		{
+			var keyupTimer = setTimeout((function() 
+			{  
+				if (!$("#status-msg").hasClass('ajax-loading') && $('#status-msg').html().trim() != '')
+				{
+					$("#status-msg").animate({opacity:0.0}, 2000, function() {
+					    $('#status-msg').html('');
+					});	
+				}
+			}), 4000);
+		}		
 	},
 	
 	addConfirms: function()
 	{
+		var $ = this.jQuery;
 		// Confirm delete
-		if($('suspend')) 
+		$('#suspend').on('click', function(e) 
 		{
-			$('suspend').addEvent('click', function(e) 
-			{
-				new Event(e).stop();			
-				HUB.Projects.addConfirm($('suspend'), 
-				'Are you sure you want to suspend this project?', 
-				'Yes, suspend', 'No, do not suspend');
-			});
-		}
+			e.preventDefault();			
+			HUB.Projects.addConfirm($('#suspend'), 
+			'Are you sure you want to suspend this project?', 
+			'Yes, suspend', 'No, do not suspend');
+		});
+		
+		// Confirm delete
+		$('#delproject').on('click', function(e) 
+		{
+			e.preventDefault();			
+			HUB.Projects.addConfirm($('#delproject'), 
+			'Are you sure you want to delete this project? <br />This is a permanent action and cannot be undone.', 
+			'Yes, delete', 'No, do not delete');
+		});
 
 		// Confirm revert
-		if($('confirm-revert')) 
-		{
-			$('confirm-revert').addEvent('click', function(e) 
+		$('#confirm-revert').on('click', function(e) 
 			{
-				new Event(e).stop();			
-				HUB.Projects.addConfirm($('confirm-revert'), 
+				e.preventDefault();			
+				HUB.Projects.addConfirm($('#confirm-revert'), 
 				'Are you sure you want to revert this project to draft mode?', 
 				'Yes, revert', 'No, keep as pending');
-			});
-		}		
+		});		
 	},
 	
 	// Refresh counts of project activities and resources
 	refreshCount: function(what) 
 	{	
-		if($('projectid')) {
-			var url = 'index.php?option=com_projects&task=showcount&no_html=1&pid=' + $('projectid').value;
-			if(what=='publications' && $('c-publications') && $('c-publications-num')) {				
-				new Ajax(url + '&what=publication', {
-						'method' : 'get',
-						'update' : $('c-publications-num')
-				}).request();
+		var $ = this.jQuery;
+		if ($('#projectid')) {
+			var url = 'index.php?option=com_projects&task=showcount&no_html=1&pid=' + $('#projectid').val();
+			
+			if (what=='publications' && $('#c-publications') && $('#c-publications-num')) {
+				$.get(url + '&what=publication', {}, function(data) {
+					$('#c-publications-num').html(data);
+				});
 			}
-			if(what=='files' && $('c-files') && $('c-files-num')) {
-				new Ajax(url + '&what=files', {
-						'method' : 'get',
-						'update' : $('c-files-num')
-				}).request();
+			if (what=='files' && $('#c-files') && $('#c-files-num')) {
+				$.get(url + '&what=files', {}, function(data) {
+					$('#c-files-num').html(data);
+				});
 			}
-			if(what=='team' && $('c-team') && $('c-team-num')) {
-				new Ajax(url + '&what=team', {
-						'method' : 'get',
-						'update' : $('c-team-num')
-				}).request();
+			if (what=='team' && $('#c-team') && $('#c-team-num')) {
+				$.get(url + '&what=team', {}, function(data) {
+					$('#c-team-num').html(data);
+				});
 			}
-			if(what=='todo' && $('c-todo') && $('c-todo-num')) {
-				new Ajax(url + '&what=todo', {
-						'method' : 'get',
-						'update' : $('c-todo-num')
-				}).request();
+			if (what=='todo' && $('#c-todo') && $('#c-todo-num')) {
+				$.get(url + '&what=todo', {}, function(data) {
+					$('#c-todo-num').html(data);
+				});
 			}
-			if(what=='newactivity' && $('c-new') && $('c-new-num')) {
-				new Ajax(url + '&what=newactivity', {
-						'method' : 'get',
-						'update' : $('c-new-num')
-				}).request();
-			}	
+			if (what=='newactivity' && $('#c-new') && $('#c-new-num')) {
+				$.get(url + '&what=newactivity', {}, function(data) {
+					$('#c-new-num').html(data);
+				});
+			}
 		}
 	},
 	
 	// Launch SqueezeBox with Ajax actions	
 	launchBox: function() 
-	{	
-		if (typeof(SqueezeBoxHub) != "undefined") {
-			if (!SqueezeBoxHub) 
-			{
-				SqueezeBoxHub.initialize({ size: {x: 600, y: 500} });
+	{
+		var $ = this.jQuery;
+		var bWidth 	= 600;
+		var bHeight = 500;
+		var css 	= 'sbp-window';
+		var cBtn	= 1;
+		
+		$('.showinbox').each(function(i, item) {
+			// Clean up
+			$(item).off('click');
+			
+			var href = $(item).attr('href');
+			if (href.search('&no_html=1') == -1) {
+				href = href + '&no_html=1';
 			}
-
-			var inbox = $$('.showinbox');
-			if(inbox.length > 0) 
+			if (href.search('&ajax=1') == -1) {
+				href = href + '&ajax=1';
+			}
+			$(item).attr('href', href);	
+			
+			// TEX compiler view
+			if ($(item).hasClass('tex-menu'))
 			{
-				inbox.each(function(item) 
-				{	
-					// Clean up
-					item.removeEvents();				
+				bWidth = 800;
+			}
+						
+			// Open box on click
+			$(item).on('click', function(e) {
+				e.preventDefault();
+				
+				// New publication process: fileselector
+				if ($(this).hasClass('item-add'))
+				{
+					bWidth = 700;				
+				}
+				if ($(this).hasClass('nox'))
+				{
+					cBtn = 0;
+				}		
 
-					// Open box on click
-					item.addEvent('click', function(e) {
-						new Event(e).stop();
-
-						var href = item.href;
-						if(href.search('&ajax=1') == -1) {
-							item.href = item.href + '&ajax=1';	
-						}
-						if(href.search('&no_html=1') == -1) {
-							item.href = item.href + '&no_html=1';	
-						}					
-
-						if(!item.hasClass('inactive')) 
-						{						
-							// Modal box for actions
-							SqueezeBoxHub.fromElement(item,{						
-								size: {x: 600, y: 500}, 
-								classWindow: 'sbp-window',
-								classOverlay: 'sbp-overlay',
-								handler: 'url', 
-								ajaxOptions: {
-									method: 'get',
-									onComplete: function() 
-									{	
-										// Activate cancel button
-										if($('cancel-action')) {
-											$('cancel-action').addEvent('click', function(e) {
-												SqueezeBoxHub.close();
-											});
-										}
-
-										// Pass selections (publications)
-										if($('ajax-selections') && $('section'))
-										{
-											if(HUB.ProjectPublications) 
-											{
-												var replacement = '';
-												if($('section').value == 'gallery' || $('section').value == 'content') {
-													replacement = 'clone-';	
-												}
-												else {
-													replacement = 'clone-author::';		
-												}
-												var selections = HUB.ProjectPublications.gatherSelections(replacement);
-												$('ajax-selections').value = selections;
-											}
-										}
-										// Reviewers
-										HUB.Projects.resetApproval();									
+				if (!$(this).hasClass('inactive')) {
+					// Modal box for actions
+					$.fancybox(this,{
+						type: 'ajax',
+						width: bWidth,
+						height: 'auto',
+						autoSize: false,
+						fitToView: false,
+						wrapCSS: css,
+						closeBtn: cBtn,
+						afterShow: function() {
+							if ($('#cancel-action')) {
+								$('#cancel-action').on('click', function(e) {
+									$.fancybox.close();
+								});
+							}
+							
+							// Publication process
+							if ($('#ajax-selections') && $('#section')) {
+								if (HUB.ProjectPublications) {
+									var replacement = '';
+									if ($('#section').val() == 'gallery' || $('#section').val() == 'content') {
+										replacement = 'clone-';	
+									} else {
+										replacement = 'clone-author::';
 									}
+									var selections = HUB.ProjectPublications.gatherSelections(replacement);
+									$('#ajax-selections').val(selections);
 								}
-							});
-						}			
-					});						  												  
-				});
-			}
-		}		
+							}
+							if (HUB.ProjectTodo)
+							{
+								HUB.ProjectTodo.initialize();
+							}
+							// Reviewers
+							HUB.Projects.resetApproval();
+						}
+					});
+				}
+			});
+		});
 	},
 	
 	resetApproval: function() 
 	{
-		if($('grant_approval') && $('rejected') )
-		{
-			$('grant_approval').addEvent('keyup', function(e) 
-			{
-				if($('grant_approval').value != '')
-				{
-					$('rejected').checked = false;
+		var $ = this.jQuery;
+		if ($('#grant_approval') && $('#rejected')) {
+			$('#grant_approval').on('keyup', function(e) {
+				if ($('#grant_approval').val() != '') {
+					$('#rejected').attr('checked', 'checked');
 				}
 			});
-			$('rejected').addEvent('click', function(e) 
-			{
-				if($('rejected').checked  == true)
-				{
-					$('grant_approval').value = '';
+			$('#rejected').on('click', function(e) {
+				if ($('#rejected').attr('checked') != 'undefined' && $('#rejected').attr('checked') == 'checked') {
+					$('#grant_approval').val('');
 				}
 			});
 		}
 	},
 	
-	setCounter: function(el, numel ) 
-	{		
-		var maxchars = 250;			
-		var current_length = el.value.length;
-		var remaining_chars = maxchars-current_length;
-		if(remaining_chars < 0) 
-		{
+	setCounter: function(el, numel) 
+	{
+		var $ = this.jQuery;
+		var maxchars = 250,
+			current_length = $(el).val().length,
+			remaining_chars = maxchars-current_length;
+
+		if (remaining_chars < 0) {
 			remaining_chars = 0;
 		}
-		
-		// Show remaining characters
-		if(numel) 
-		{
-			if(remaining_chars <= 10)
-			{
-				numel.innerHTML = remaining_chars + ' chars remaining';
-				$(numel.parentNode).setStyle('color', '#ff0000');			
+
+		if ($(numel).length) {
+			if (remaining_chars <= 10) {
+				$(numel).css('color', '#ff0000').html(remaining_chars + ' chars remaining');
 			} else {
-				$(numel.parentNode).setStyle('color', '#999999');
-				numel.innerHTML = '';
+				$(numel).css('color', '#999999').html('');
 			}
 		}
 		
-		// Do not let more characters
-		if (remaining_chars == 0) 
-		{
-			el.setProperty('value', el.getProperty('value').substr(0,maxchars));
+		if (remaining_chars == 0) {
+			$(el).val($(el).val().substr(0, maxchars));
 		}			
 	},
 	
 	cleanupText: function(text) 
 	{
 		// Clean up entered value
-		var cleaned = text.toLowerCase();
-		cleaned = cleaned.replace('_', '');
-		cleaned = cleaned.replace('-', '');
-		cleaned = cleaned.replace(' ', '');
-		cleaned = cleaned.replace(/[|&;$%@"<>()+,#!?.~*^=-_]/g, '');
+		var cleaned = text.toLowerCase()
+						  .replace('_', '')
+						  .replace('-', '')
+						  .replace(' ', '')
+						  .replace(/[|&;$%@"<>()+,#!?.~*^=-_]/g, '');
 		return cleaned;
 	},
 	
-	fixJS: function()
+	fixJS: function() 
 	{
+		var $ = this.jQuery;
+		var js_off = $(".nojs"),
+			js_on = $(".js");
+			
 		// Hide all no-js messages
-		var nojs = $$('.nojs');
-		if(nojs.length > 0) 
+		if (js_off.length)
 		{
-			nojs.each(function(item) {
-				item.style.display = 'none';
-			});	
+			js_off.each(function(i, item) {
+				$(item).css('display', 'none');
+			});
 		}
-
+		
 		// Show all js-only options
-		var js = $$('.js');
-		if(js.length > 0) 
+		if (js_on.length)
 		{
-			js.each(function(item) {
-				item.removeClass('js');
+			js_on.each(function(i, item) {
+				$(item).removeClass('js');
 			});	
 		}
 	},
 	
 	addConfirm: function (link, question, yesanswer, noanswer) 
-	{			
-		if($('confirm-box')) 
-		{
-			$('confirm-box').remove();	
+	{	
+		var $ = this.jQuery;
+		if ($('#confirm-box')) {
+			$('#confirm-box').remove();
 		}
 
+		var href = $(link).attr('href');
+
 		// Add confirmation
-		var confirm =  new Element('div', {
-			'class': 'confirmaction'
-		}).inject(link.parentNode.parentNode, 'before');
-		confirm.setProperty('id', 'confirm-box');
-		confirm.style.display = 'block';
+		var ancestor = $(link).parent().parent();
+		$(ancestor).after('<div class="confirmaction" id="confirm-box" style="display:block;">' + 
+			'<p>' + question + '</p>' + 
+			'<p>' + 
+				'<a href="' + href + '" class="confirm">' + yesanswer + '</a>' + 
+				'<a href="#" class="cancel" id="confirm-box-cancel">' + noanswer + '</a>' + 
+			'</p>' + 
+		'</div>');
 		
-		var href = link.href;
-
-		var p = new Element('p');
-		p.injectInside(confirm);
-		p.innerHTML = question;
-
-		var p2 = new Element('p');
-		p2.injectInside(confirm);
-
-		var a1 = new Element('a', {
-			'href': link.href,
-			'class': 'confirm'
-		}).injectInside(p2);
-		a1.innerHTML = yesanswer;
-
-		var a2 = new Element('a', {
-			'href': '#',
-			'class': 'cancel',
-			'events': {
-				'click': function(evt){
-					(new Event(evt)).stop();
-					$('confirm-box').remove();
-				}
-			}
-		}).injectInside(p2);
-		a2.innerHTML = noanswer;
+		$('#confirm-box-cancel').on('click', function(e){
+			e.preventDefault();
+			$('#confirm-box').remove();
+		});
 		
 		// Move close to item
-		var coord = link.parentNode.getCoordinates();	
+		var coord = $($(link).parent()).position();
 		
-		// Scroll
-		var myFx = new Fx.Scroll(window).scrollTo(coord['left'], (coord['top'] - 200));
-					
-		$('confirm-box').setStyles({'left': coord['left'], 'top': coord['top'] });
+		/*
+		$('html, body').animate({
+			scrollTop: $(link).offset().top
+		}, 2000); */
+		
+		$('#confirm-box').css('left', coord.left).css('top', coord.top + 200);
+	},
+	
+	loadingIma: function(txt)
+	{
+		var html = '<span id="fbwrap">' + 
+			'<span id="facebookG">' +
+			' <span id="blockG_1" class="facebook_blockG"></span>' +
+			' <span id="blockG_2" class="facebook_blockG"></span>' +
+			' <span id="blockG_3" class="facebook_blockG"></span> ';
+		
+		if (txt)
+		{
+			html = html + txt;
+		}
+		
+		html = html + 
+			'</span>' +
+		'</span>';
+		
+		return html;
+	},
+	
+	setStatusMessage: function (txt, loading)
+	{
+		var $ = this.jQuery;	
+
+		var log = $('#status-msg').empty();
+		
+		if (loading == 1)
+		{
+			$('#status-msg').addClass('ajax-loading');
+			
+			if (!txt)
+			{
+				txt = 'Please wait while we are performing your request...';	
+			} 
+			
+			var html = HUB.Projects.loadingIma(txt);
+		}
+		else
+		{
+			var html = txt;
+		}
+				
+		// Add element
+		if (txt)
+		{
+			$('#status-msg').html(html);
+			$('#status-msg').css({'opacity':100});	
+		}
+		else
+		{
+			$('#status-msg').css('opacity', 0);
+			return;
+		}		
+	},
+	
+	getArrayIndex: function (obj, arr)
+	{
+		if (!Array.indexOf)
+		{
+			// Fix for indexOf in IE browsers
+			for (var i = 0, j = arr.length; i < j; i++) 
+			{
+			   if (arr[i] === obj) { return i; }
+			}
+			return -1;
+		}
+		else
+		{
+			return arr.indexOf(obj);
+		}
 	}
 }		
 	
-window.addEvent('domready', HUB.Projects.initialize);
+jQuery(document).ready(function($){
+	HUB.Projects.initialize();
+});
