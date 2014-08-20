@@ -119,7 +119,7 @@ class Base
 		}
 
 		// Call function
-		call_user_func_array(array($this->callbacks[$callback], $func), $args);
+		return call_user_func_array(array($this->callbacks[$callback], $func), $args);
 	}
 
 	/**
