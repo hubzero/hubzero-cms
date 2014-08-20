@@ -59,7 +59,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$this->view->total = $prObj->getCount($this->view->filters);
 
 		// If count is zero, i.e. no records, let's add some default password rules
-		if($this->view->total == 0)
+		if ($this->view->total == 0)
 		{
 			// Add default rules if we don't have any already
 			$prObj->defaultContent();
