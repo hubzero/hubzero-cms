@@ -74,11 +74,11 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_members&controller=points',
 	$controllerName == 'points'
 );
-/*JSubMenuHelper::addEntry(
+JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
 	'index.php?option=' . $option . '&controller=plugins', //'index.php?option=com_plugins&view=plugins&filter_folder=members&filter_type=members'
 	$controllerName == 'plugins'
-);*/
+);
 JSubMenuHelper::addEntry(
 	JText::_('Password Rules'),
 	'index.php?option=com_members&controller=passwordrules',
