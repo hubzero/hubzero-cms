@@ -112,23 +112,23 @@ $this->css()
 						<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
 						<div class="grid">
 						<?php
-							$i = 0;	
+							$i = 0;
 							$filters = array();
 							$filters['limit']    = JRequest::getInt('limit', 3);
 							$filters['start']    = JRequest::getInt('limitstart', 0);
 							$filters['order']    = JRequest::getWord('order', 'recent');
 							$filters['category'] = 0;
 							$filters['state']    = 1;
-							$filters['access']   = 0;	
+							$filters['access']   = 0;
 							foreach ($this->archive->categories('list', array('sort' => 'title', 'sort_Dir' => 'ASC')) as $row)
 							{
-								$i++;	
+								$i++;
 								switch ($i)
 								{
 									case 1: $cls = ''; break;
 									case 2: $cls = ' omega'; break;
-								}	
-								$filters['section'] = $row->get('id');	
+								}
+								$filters['section'] = $row->get('id');
 								$articles = $row->articles('list', $filters);
 								?>
 							<div class="col span-half<?php echo $cls; ?>">

@@ -145,7 +145,7 @@ if (!$this->filters['filterby'] == 'none')
 						<caption>
 							<?php
 								$s = ($this->total > 0) ? $this->filters['start']+1 : $this->filters['start'];
-								$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;	
+								$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 								if ($this->filters['q'] != '')
 								{
 									echo JText::sprintf('COM_ANSWERS_SEARCH_FOR', $this->escape($this->filters['q']), JText::_('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby'])));
@@ -167,7 +167,7 @@ if (!$this->filters['filterby'] == 'none')
 						if (!$row->get('anonymous'))
 						{
 							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->get('name'))) . '</a>';
-						}	
+						}
 						$cls  = ($row->isclosed())   ? 'answered' : '';
 						$cls  = ($row->isReported()) ? 'flagged'  : $cls;
 						$cls .= ($row->get('created_by') == $juser->get('id')) ? ' mine' : '';

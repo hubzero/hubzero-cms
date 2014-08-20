@@ -167,7 +167,7 @@ if (!$this->filters['filterby'] == 'none')
 						<caption>
 							<?php
 								$s = ($this->filters['start'] > 0) ? $this->filters['start']+1 : $this->filters['start'];
-								$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;	
+								$e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
 								if ($this->filters['q'] != '') {
 									echo JText::sprintf('COM_ANSWERS_SEARCH_FOR', $this->escape($this->filters['q']), JText::_('COM_ANSWERS_FILTER_' . strtoupper($this->filters['filterby'])));
 								} else {
@@ -182,12 +182,12 @@ if (!$this->filters['filterby'] == 'none')
 			foreach ($this->results as $row)
 			{
 				$row->reports = (isset($row->reports)) ? $row->reports : 0;
-				$row->points = $row->points ? $row->points : 0;	
+				$row->points = $row->points ? $row->points : 0;
 				// author name
 				$name = JText::_('COM_ANSWERS_ANONYMOUS');
 				if (!$row->anonymous) {
 					$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$row->userid).'">'.$this->escape(stripslashes($row->name)).'</a>';
-				}	
+				}
 				$cls  = ($row->state == 1) ? 'answered' : '';
 				$cls  = ($row->reports) ? 'flagged' : $cls;
 				$cls .= ($row->created_by == $juser->get('username')) ? ' mine' : '';
@@ -265,7 +265,7 @@ if (!$this->filters['filterby'] == 'none')
 					<?php
 					$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
-					$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);	
+					$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);
 					echo $this->pageNav->getListFooter();
 					?>
 					<div class="clearfix"></div>

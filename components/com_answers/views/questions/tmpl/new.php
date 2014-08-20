@@ -82,9 +82,9 @@ $this->css();
 				<label>
 					<?php echo JText::_('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
 					<?php
-					JPluginHelper::importPlugin('hubzero');	
+					JPluginHelper::importPlugin('hubzero');
 					$tf = JDispatcher::getInstance()->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tag)));
-					$tf = implode("\n", $tf);	
+					$tf = implode("\n", $tf);
 					echo $tf ? $tf : '<textarea name="tags" id="actags" rows="6" cols="35">' .  $this->escape($this->tag) . '</textarea>';
 					?>
 				</label>
