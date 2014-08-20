@@ -27,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 
 if ($this->comments) { ?>
 	<ol class="comments">
-	<?php
+		<?php
 		$cls = 'odd';
 		if (isset($this->cls))
 		{
@@ -42,6 +42,7 @@ if ($this->comments) { ?>
 			     ->set('option', $this->option)
 			     ->set('comment', $comment)
 			     ->set('obj_type', $this->obj_type)
+			     ->set('obj_id', $this->obj_id)
 			     ->set('obj', $this->obj)
 			     ->set('params', $this->params)
 			     ->set('depth', $this->depth)
@@ -49,6 +50,6 @@ if ($this->comments) { ?>
 			     ->set('url', $this->url)
 			     ->display();
 		}
-	?>
+		?>
 	</ol>
 <?php } ?>

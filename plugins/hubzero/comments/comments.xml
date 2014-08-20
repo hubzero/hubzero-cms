@@ -33,37 +33,39 @@
 	</languages>
 	<config>
 		<fields name="params">
-			<field name="comments_depth" type="text" size="3" default="3" label="PLG_HUBZERO_COMMENTS_DEPTH_LABEL" description="PLG_HUBZERO_COMMENTS_DEPTH_DESC"/>
-			<field name="comments_limit" type="text" size="5" default="25" label="PLG_HUBZERO_COMMENTS_LIMIT_LABEL" description="PLG_HUBZERO_COMMENTS_LIMIT_DESC"/>
-			<field name="comments_viewable" type="list" default="0" label="PLG_HUBZERO_COMMENTS_VIEWABLE_LABEL" description="PLG_HUBZERO_COMMENTS_VIEWABLE_DESC">
-				<option value="0">Anyone</option>
-				<option value="1">Logged-in users</option>
-			</field>
-			<field name="comments_editable" type="list" default="1" label="PLG_HUBZERO_COMMENTS_EDITABLE_LABEL" description="PLG_HUBZERO_COMMENTS_EDITABLE_DESC">
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-			<field name="comments_deletable" type="list" default="0" label="PLG_HUBZERO_COMMENTS_DELETABLE_LABEL" description="PLG_HUBZERO_COMMENTS_DELETABLE_DESC">
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-			<field name="comments_votable" type="list" default="1" label="PLG_HUBZERO_COMMENTS_VOTABLE_LABEL" description="PLG_HUBZERO_COMMENTS_VOTABLE_DESC">
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-			<field name="comments_close" type="list" default="year" label="PLG_HUBZERO_COMMENTS_CLOSE_LABEL" description="PLG_HUBZERO_COMMENTS_CLOSE_DESC">
-				<option value="never">PLG_HUBZERO_COMMENTS_CLOSE_NEVER</option>
-				<option value="now">PLG_HUBZERO_COMMENTS_CLOSE_NOW</option>
-				<option value="day">PLG_HUBZERO_COMMENTS_CLOSE_DAY</option>
-				<option value="week">PLG_HUBZERO_COMMENTS_CLOSE_WEEK</option>
-				<option value="month">PLG_HUBZERO_COMMENTS_CLOSE_MONTH</option>
-				<option value="6months">PLG_HUBZERO_COMMENTS_CLOSE_6MONTHS</option>
-				<option value="year">PLG_HUBZERO_COMMENTS_CLOSE_YEAR</option>
-			</field>
-			<field name="comments_feed" type="list" default="1" label="PLG_HUBZERO_COMMENTS_FEED_LABEL" description="PLG_HUBZERO_COMMENTS_FEED_DESC">
-				<option value="0">PLG_HUBZERO_COMMENTS_DISABLED</option>
-				<option value="1">PLG_HUBZERO_COMMENTS_ENABLED</option>
-			</field>
+			<fieldset name="basic">
+				<field name="comments_depth" type="text" size="3" default="3" label="PLG_HUBZERO_COMMENTS_DEPTH_LABEL" description="PLG_HUBZERO_COMMENTS_DEPTH_DESC"/>
+				<field name="comments_limit" type="text" size="5" default="25" label="PLG_HUBZERO_COMMENTS_LIMIT_LABEL" description="PLG_HUBZERO_COMMENTS_LIMIT_DESC"/>
+				<field name="comments_viewable" type="list" default="0" label="PLG_HUBZERO_COMMENTS_VIEWABLE_LABEL" description="PLG_HUBZERO_COMMENTS_VIEWABLE_DESC">
+					<option value="0">Anyone</option>
+					<option value="1">Logged-in users</option>
+				</field>
+				<field name="comments_editable" type="list" default="1" label="PLG_HUBZERO_COMMENTS_EDITABLE_LABEL" description="PLG_HUBZERO_COMMENTS_EDITABLE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="comments_deletable" type="list" default="0" label="PLG_HUBZERO_COMMENTS_DELETABLE_LABEL" description="PLG_HUBZERO_COMMENTS_DELETABLE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="comments_votable" type="list" default="1" label="PLG_HUBZERO_COMMENTS_VOTABLE_LABEL" description="PLG_HUBZERO_COMMENTS_VOTABLE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field name="comments_close" type="list" default="year" label="PLG_HUBZERO_COMMENTS_CLOSE_LABEL" description="PLG_HUBZERO_COMMENTS_CLOSE_DESC">
+					<option value="never">PLG_HUBZERO_COMMENTS_CLOSE_NEVER</option>
+					<option value="now">PLG_HUBZERO_COMMENTS_CLOSE_NOW</option>
+					<option value="day">PLG_HUBZERO_COMMENTS_CLOSE_DAY</option>
+					<option value="week">PLG_HUBZERO_COMMENTS_CLOSE_WEEK</option>
+					<option value="month">PLG_HUBZERO_COMMENTS_CLOSE_MONTH</option>
+					<option value="6months">PLG_HUBZERO_COMMENTS_CLOSE_6MONTHS</option>
+					<option value="year">PLG_HUBZERO_COMMENTS_CLOSE_YEAR</option>
+				</field>
+				<field name="comments_feed" type="list" default="1" label="PLG_HUBZERO_COMMENTS_FEED_LABEL" description="PLG_HUBZERO_COMMENTS_FEED_DESC">
+					<option value="0">PLG_HUBZERO_COMMENTS_DISABLED</option>
+					<option value="1">PLG_HUBZERO_COMMENTS_ENABLED</option>
+				</field>
+			</fieldset>
 		</fields>
 	</config>
 </extension>

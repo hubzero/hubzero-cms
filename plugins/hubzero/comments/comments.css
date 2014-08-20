@@ -129,7 +129,7 @@
 		margin: 0;
 		padding: 0;
 	}
-	/* List */
+	/* List 
 	ol.comments {
 		list-style-type: none !important;
 		margin: 0;
@@ -149,7 +149,7 @@
 	ol.comments li li {
 		padding-left: 70px;
 	}
-	/* Options */
+	/* Options 
 	ol.comments .comment-options {
 		color: #fff;
 		font-size: 90%;
@@ -178,11 +178,11 @@
 	.reply:hover {
 		background-position: 0 -20px;
 	}
-	/* Member photo */
+	/* Member photo 
 	ol.comments p.comment-member-photo {
 		float: left;
 		margin: 0;
-		padding: 0 20px 0 0; /*105px;*/
+		padding: 0 20px 0 0;
 		width: 50px;
 		height: 50px;
 		overflow: hidden;
@@ -203,9 +203,9 @@
 		top: 20px;
 		right: 0px;
 	}
-	/* Content */
+	/* Content 
 	ol.comments .comment-content {
-		margin: 0 0 1em 70px; /*125px;*/
+		margin: 0 0 1em 70px;
 		background-color: #fafafa;
 		border: 10px solid #f2f2f2;
 		padding: 0 1em;
@@ -225,7 +225,7 @@
 	ol.comments .comment-voting .thumbsvote {
 		margin-top: 0.5em;
 	}
-	/* Author comments */
+	/* Author comments 
 	ol.comments .author .comment-content,
 	ol.comments .author ol.comments .author .comment-content {
 		background-color: #fdfbf8;
@@ -244,7 +244,7 @@
 	ol.comments .author ol.comments .author ol.comments .comment-anchor {
 		border-color: transparent #f2f2f2 transparent transparent;
 	}
-	/* Chosen comments */
+	/* Chosen comments 
 	ol.comments .chosen .comment-content {
 		background-color: #f9f8fd;
 		border-color: #eeecf9;
@@ -252,11 +252,11 @@
 	ol.comments .chosen .comment-anchor {
 		border-color: transparent #eeecf9 transparent transparent;
 	}	
-	/* Details (date, time) */
+	/* Details (date, time) 
 	ol.comments span.comment-details {
 		color: #bfbfbf;
 	}
-	/* Permalink */
+	/* Permalink 
 	ol.comments .permalink {
 		border: none;
 		color: #bfbfbf;
@@ -270,7 +270,7 @@
 		background: transparent;
 	}
 
-	/* Show/hide options */
+	/* Show/hide options 
 	ol.comments .comment-options a {
 		visibility: hidden;
 	}
@@ -305,7 +305,7 @@
 	ol.comments .comment-options a.active:before {
 		content: "\2716";
 	}
-/* Add comment */
+/* Add comment 
 	.comment-add {
 		margin: 0 -1.61803399em -0.61803399em -1.61803399em;
 		padding: 1.61803399em;
