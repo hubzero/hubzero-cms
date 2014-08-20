@@ -201,6 +201,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array(), 'post');
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Get the single ID we're working with
 		if (!is_array($ids))

@@ -88,7 +88,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 <?php } ?>
 
 <?php if (count($this->stats) > 0) { ?>
-		<table class="adminlist" summary="Summary of user point activity">
+		<table class="adminlist">
 			<caption>Economy Activity Stats as of <?php echo JHTML::_('date', date( "Y-m-d H:i:s" ), JText::_('DATE_FORMAT_HZ1')); ?></caption>
 			<thead>
 				<tr>

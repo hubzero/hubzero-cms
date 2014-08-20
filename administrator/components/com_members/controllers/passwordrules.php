@@ -104,21 +104,19 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($id=0)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
 		$this->view->setLayout('edit');
 
 		if (!$id)
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$id = JRequest::getVar('id', array());
 
 			// Get the single ID we're working with
-			if (is_array($ids))
+			if (is_array($id))
 			{
-				$id = (!empty($ids)) ? $ids[0] : 0;
-			}
-			else
-			{
-				$id = 0;
+				$id = (!empty($id)) ? $id[0] : 0;
 			}
 		}
 
@@ -302,7 +300,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 		if (!is_array($ids))
 		{
-			$ids = array(0);
+			$ids = array($ids);
 		}
 
 		// Loop through the IDs
@@ -361,6 +359,10 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		if (!is_array($ids))
+		{
+			$ids = array($ids);
+		}
 
 		// Do we have any IDs?
 		if (!empty($ids))
@@ -400,7 +402,9 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/**

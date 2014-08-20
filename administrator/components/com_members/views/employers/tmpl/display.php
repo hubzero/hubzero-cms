@@ -93,12 +93,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape(stripslashes($row->type)); ?>
 					</a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 				</td>

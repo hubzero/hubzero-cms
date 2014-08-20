@@ -105,16 +105,12 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$id = JRequest::getVar('id', array(0));
 
 			// Get the single ID we're working with
-			if (is_array($ids))
+			if (is_array($id))
 			{
-				$id = (!empty($ids)) ? $ids[0] : 0;
-			}
-			else
-			{
-				$id = 0;
+				$id = (!empty($id)) ? $id[0] : 0;
 			}
 		}
 
@@ -127,7 +123,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$selected   = '';
 		$options[]  = JHTML::_('select.option', '0', JText::_('custom'), 'value', 'text');
 
-		foreach($classes as $class)
+		foreach ($classes as $class)
 		{
 			$options[] = JHTML::_('select.option', $class->id, JText::_($class->alias), 'value', 'text');
 			if ($class->id == $this->view->row->class_id)
@@ -239,6 +235,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (!empty($ids))
@@ -374,16 +371,12 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$id = JRequest::getVar('id', array());
 
 			// Get the single ID we're working with
-			if (is_array($ids))
+			if (is_array($id))
 			{
-				$id = (!empty($ids)) ? $ids[0] : 0;
-			}
-			else
-			{
-				$id = 0;
+				$id = (!empty($id)) ? $id[0] : 0;
 			}
 		}
 
@@ -479,6 +472,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (!empty($ids))

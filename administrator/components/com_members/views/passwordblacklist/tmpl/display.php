@@ -38,7 +38,7 @@ JToolBarHelper::deleteList();
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist" summary="<?php echo JText::_('PASSWORD_BLACKLIST_TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 		 	<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
@@ -68,7 +68,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape($row->word); ?>
 					</a>
 				</td>

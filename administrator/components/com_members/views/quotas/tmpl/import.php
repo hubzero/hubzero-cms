@@ -33,67 +33,64 @@ defined('_JEXEC') or die( 'Restricted access' );
 JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS_IMPORT'), 'user.png');
 ?>
 
-<style>
-	.submit-button {
-		text-align: center;
-	}
-</style>
-
 <?php
 	$this->view('_submenu')
 	     ->display();
 ?>
 
-<?php if ($this->getError()) : ?>
-	<p class="error"><?php echo $this->getError(); ?></p>
-<?php endif; ?>
+<div id="item-form">
+	<?php if ($this->getError()) : ?>
+		<p class="error"><?php echo $this->getError(); ?></p>
+	<?php endif; ?>
 
-<div class="col width-70 fltlft">
-	<form action="index.php" method="post" name="adminForm">
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_LEGEND'); ?></span></legend>
+	<div class="col width-70 fltlft">
+		<form action="index.php" method="post" name="adminForm">
+			<fieldset class="adminform">
+				<legend><span><?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_LEGEND'); ?></span></legend>
 
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="processImport" />
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="task" value="processImport" />
 
-			<div class="input-wrap">
-				<label for="conf_text"><?php echo JText::_('COM_MEMBERS_QUOTA_CONF_TEXT'); ?>:</label>
-				<p class="info conf-text-note"><?php echo JText::_('COM_MEMBERS_QUOTA_CONF_TEXT_NOTE'); ?></p>
-				<textarea name="conf_text" id="conf_text" cols="30" rows="10"></textarea>
-			</div>
-			<div class="input-wrap">
-				<label for="overwrite_existing"><?php echo JText::_('COM_MEMBERS_QUOTA_OVERWRITE_EXISTING'); ?></label>
-				<input type="checkbox" name="overwrite_existing" value="1" />
-			</div>
-			<p class="submit-button">
-				<input class="btn btn-primary" type="submit" value="<?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
-			</p>
-		</fieldset>
-		<?php echo JHTML::_('form.token'); ?>
-	</form>
-</div>
-<div class="col width-30 fltrt">
-	<table class="meta">
-		<tbody>
-			<tr>
-				<th><?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_MISSING_USERS'); ?>:</th>
-				<td>
-					<form action="index.php" method="post">
-						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-						<input type="hidden" name="task" value="importMissing" />
-						<input type="submit" value="<?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
-					</form>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<p>
-						<?php echo JText::_('COM_MEMBERS_QUOTA_MISSING_USERS_IMPORT_DESCRIPTION'); ?>
-					</p>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+				<div class="input-wrap">
+					<label for="conf_text"><?php echo JText::_('COM_MEMBERS_QUOTA_CONF_TEXT'); ?>:</label>
+					<p class="info conf-text-note"><?php echo JText::_('COM_MEMBERS_QUOTA_CONF_TEXT_NOTE'); ?></p>
+					<textarea name="conf_text" id="conf_text" cols="30" rows="10"></textarea>
+				</div>
+				<div class="input-wrap">
+					<label for="overwrite_existing"><?php echo JText::_('COM_MEMBERS_QUOTA_OVERWRITE_EXISTING'); ?></label>
+					<input type="checkbox" name="overwrite_existing" id="overwrite_existing" value="1" />
+				</div>
+				<p class="submit-button">
+					<input class="btn btn-primary" type="submit" value="<?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
+				</p>
+			</fieldset>
+			<?php echo JHTML::_('form.token'); ?>
+		</form>
+	</div>
+	<div class="col width-30 fltrt">
+		<table class="meta">
+			<tbody>
+				<tr>
+					<th><?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_MISSING_USERS'); ?>:</th>
+					<td>
+						<form action="index.php" method="post">
+							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+							<input type="hidden" name="task" value="importMissing" />
+							<input type="submit" value="<?php echo JText::_('COM_MEMBERS_QUOTA_IMPORT_SUBMIT'); ?>" />
+						</form>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<p>
+							<?php echo JText::_('COM_MEMBERS_QUOTA_MISSING_USERS_IMPORT_DESCRIPTION'); ?>
+						</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="clr"></div>
 </div>

@@ -74,12 +74,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editClass&amp;id[]=<? echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editClass&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape($row->id); ?>
 					</a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editClass&amp;id[]=<? echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editClass&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape($row->alias); ?>
 					</a>
 				</td>

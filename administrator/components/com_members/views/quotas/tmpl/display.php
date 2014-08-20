@@ -35,6 +35,8 @@ JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS'), 'user.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::custom('restoreDefault', 'restore', 'restore', 'Default');
+
+$this->css('quotas.css');
 ?>
 
 <script type="text/javascript">
@@ -72,27 +74,6 @@ JToolBarHelper::custom('restoreDefault', 'restore', 'restore', 'Default');
 	});
 </script>
 
-<style>
-	.usage-unavailable {
-		display: none;
-	}
-	.usage-outer {
-		display: none;
-		border: 1px solid #AAAAAA;
-		margin: 5px 0 0 10px;
-		height: 10px;
-	}
-	.usage-inner {
-		background: green;
-		width: 0%;
-		height: 100%;
-		box-shadow: inset 0 0 5px #F1F1F1;
-	}
-	.usage-inner.max {
-		background: red;
-	}
-</style>
-
 <?php
 	$this->view('_submenu')
 	     ->display();
@@ -129,12 +110,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape($row->user_id); ?>
 					</a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
 						<?php echo $this->escape($row->username); ?>
 					</a>
 				</td>

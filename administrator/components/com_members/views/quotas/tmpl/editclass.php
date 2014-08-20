@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ($this->task == 'editClass' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTA_CLASSES').': <small><small>[ '. $text.' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTA_CLASSES') . ': ' . $text, 'user.png');
 JToolBarHelper::apply('applyClass');
 JToolBarHelper::save('saveClass');
 JToolBarHelper::cancel('cancelClass');
@@ -61,35 +61,26 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_MEMBERS_QUOTA_CLASS_LEGEND'); ?></span></legend>
 
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="saveClass" />
-
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-alias"><?php echo JText::_('COM_MEMBERS_QUOTA_ALIAS'); ?>:</label></td>
-						<td><input <?php echo ($this->row->alias == 'default') ? 'readonly' : ''; ?> type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-soft_blocks"><?php echo JText::_('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?>:</label></td>
-						<td><input type="text" name="fields[soft_blocks]" id="field-soft_blocks" value="<?php echo $this->escape(stripslashes($this->row->soft_blocks)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-hard_blocks"><?php echo JText::_('COM_MEMBERS_QUOTA_HARD_BLOCKS'); ?>:</label></td>
-						<td><input type="text" name="fields[hard_blocks]" id="field-hard_blocks" value="<?php echo $this->escape(stripslashes($this->row->hard_blocks)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-soft_files"><?php echo JText::_('COM_MEMBERS_QUOTA_SOFT_FILES'); ?>:</label></td>
-						<td><input type="text" name="fields[soft_files]" id="field-soft_files" value="<?php echo $this->escape(stripslashes($this->row->soft_files)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-hard_files"><?php echo JText::_('COM_MEMBERS_QUOTA_HARD_FILES'); ?>:</label></td>
-						<td><input type="text" name="fields[hard_files]" id="field-hard_files" value="<?php echo $this->escape(stripslashes($this->row->hard_files)); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-alias"><?php echo JText::_('COM_MEMBERS_QUOTA_ALIAS'); ?>:</label>
+				<input <?php echo ($this->row->alias == 'default') ? 'readonly' : ''; ?> type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->alias)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-soft_blocks"><?php echo JText::_('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?>:</label>
+				<input type="text" name="fields[soft_blocks]" id="field-soft_blocks" value="<?php echo $this->escape(stripslashes($this->row->soft_blocks)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-hard_blocks"><?php echo JText::_('COM_MEMBERS_QUOTA_HARD_BLOCKS'); ?>:</label>
+				<input type="text" name="fields[hard_blocks]" id="field-hard_blocks" value="<?php echo $this->escape(stripslashes($this->row->hard_blocks)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-soft_files"><?php echo JText::_('COM_MEMBERS_QUOTA_SOFT_FILES'); ?>:</label>
+				<input type="text" name="fields[soft_files]" id="field-soft_files" value="<?php echo $this->escape(stripslashes($this->row->soft_files)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-hard_files"><?php echo JText::_('COM_MEMBERS_QUOTA_HARD_FILES'); ?>:</label>
+				<input type="text" name="fields[hard_files]" id="field-hard_files" value="<?php echo $this->escape(stripslashes($this->row->hard_files)); ?>" />
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
@@ -107,5 +98,11 @@ function submitbutton(pressbutton)
 		</table>
 	</div>
 	<div class="clr"></div>
+
+	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="saveClass" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

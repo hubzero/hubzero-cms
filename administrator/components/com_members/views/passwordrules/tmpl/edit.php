@@ -62,34 +62,30 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-rule"><?php echo JText::_('PASSWORD_RULES_RULE'); ?>:</label></td>
-						<td><?php echo $this->rules_list; ?></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-description"><?php echo JText::_('PASSWORD_RULES_DESCRIPTION'); ?>:</label></td>
-						<td><input type="text" name="fields[description]" id="field-description" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-failuremsg"><?php echo JText::_('PASSWORD_RULES_FAILURE_MESSAGE'); ?>:</label></td>
-						<td><input type="text" name="fields[failuremsg]" id="failuremsg" value="<?php echo $this->escape(stripslashes($this->row->failuremsg)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-value"><?php echo JText::_('PASSWORD_RULES_VALUE'); ?>:</label></td>
-						<td><input type="text" name="fields[value]" id="field-value" value="<?php echo $this->escape(stripslashes($this->row->value)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-group"><?php echo JText::_('PASSWORD_RULES_GROUP'); ?>:</label></td>
-						<td><input type="text" name="fields[group]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->grp)); ?>" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="field-class"><?php echo JText::_('PASSWORD_RULES_CLASS'); ?>:</label></td>
-						<td><input type="text" name="fields[class]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->class)); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-rule"><?php echo JText::_('PASSWORD_RULES_RULE'); ?>:</label>
+				<?php echo $this->rules_list; ?>
+			</div>
+			<div class="input-wrap">
+				<label for="field-description"><?php echo JText::_('PASSWORD_RULES_DESCRIPTION'); ?>:</label>
+				<input type="text" name="fields[description]" id="field-description" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-failuremsg"><?php echo JText::_('PASSWORD_RULES_FAILURE_MESSAGE'); ?>:</label>
+				<input type="text" name="fields[failuremsg]" id="field-failuremsg" value="<?php echo $this->escape(stripslashes($this->row->failuremsg)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-value"><?php echo JText::_('PASSWORD_RULES_VALUE'); ?>:</label>
+				<input type="text" name="fields[value]" id="field-value" value="<?php echo $this->escape(stripslashes($this->row->value)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-group"><?php echo JText::_('PASSWORD_RULES_GROUP'); ?>:</label>
+				<input type="text" name="fields[group]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->grp)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-class"><?php echo JText::_('PASSWORD_RULES_CLASS'); ?>:</label>
+				<input type="text" name="fields[class]" id="field-class" value="<?php echo $this->escape(stripslashes($this->row->class)); ?>" />
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">

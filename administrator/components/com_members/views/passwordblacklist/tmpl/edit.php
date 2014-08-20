@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('MEMBERS_PASSWORD_BLACKLIST').': <small><small>[ '. $text.' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('MEMBERS_PASSWORD_BLACKLIST') . ': ' . $text, 'user.png');
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -62,14 +62,10 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="field-word"><?php echo JText::_('PASSWORD_BLACKLIST_WORD'); ?>:</label></td>
-						<td><input type="text" name="fields[word]" id="word" value="<?php echo $this->escape(stripslashes($this->row->word)); ?>" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-word"><?php echo JText::_('PASSWORD_BLACKLIST_WORD'); ?>:</label>
+				<input type="text" name="fields[word]" id="field-word" value="<?php echo $this->escape(stripslashes($this->row->word)); ?>" />
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">

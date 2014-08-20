@@ -202,13 +202,8 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array(), 'post');
-
-		// Get the single ID we're working with
-		if (!is_array($ids))
-		{
-			$ids = array();
-		}
+		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (!empty($ids))
