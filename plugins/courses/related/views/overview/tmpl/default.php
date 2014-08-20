@@ -31,7 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$this->css();
+$this->css()
+     ->js();
 ?>
 <div id="related-courses" class="after section">
 	<h3>
