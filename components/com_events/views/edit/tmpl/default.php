@@ -33,6 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
      ->css('calendar.css')
+     ->css('jquery.ui.css', 'system')
      ->js();
 ?>
 <header id="content-header">
