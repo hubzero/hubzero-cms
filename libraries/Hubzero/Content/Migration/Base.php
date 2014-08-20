@@ -834,6 +834,24 @@ class Base
 				$this->baseDb->query();
 			}
 		}
+		else
+		{
+			$query = "SELECT `id` FROM `#__modules` WHERE `module` = '{$element}'";
+			$this->baseDb->setQuery($query);
+			$ids = $this->baseDb->loadColumn();
+
+			if ($ids && count($ids) > 0)
+			{
+				// Delete modules and module menu entries
+				$query = "DELETE FROM `#__modules` WHERE `id` IN (" . implode(',', $ids) . ")";
+				$this->baseDb->setQuery($query);
+				$this->baseDb->query();
+
+				$query = "DELETE FROM `#__modules_menu` WHERE `moduleid` IN (" . implode(',', $ids) . ")";
+				$this->baseDb->setQuery($query);
+				$this->baseDb->query();
+			}
+		}
 	}
 
 	/**
