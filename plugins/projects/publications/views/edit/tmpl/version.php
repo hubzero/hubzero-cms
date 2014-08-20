@@ -155,7 +155,7 @@ $showCitations = $typeParams->get('show_citations', 0);
 					<tr>
 						<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DOI'); ?>:</td>
 						<td class="tbl-input"><?php echo $this->row->doi ? $this->row->doi : JText::_('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
-						<?php if ($this->row->doi) { echo ' <a href="' . $this->config->get('doi_verify', 'http://n2t.net/ezid/id/') . 'doi:' . $this->row->doi . '" rel="external">[&rarr;]</a>'; } ?>
+						<?php if ($this->row->doi) { echo ' <a href="' . $this->pubconfig->get('doi_verify', 'http://data.datacite.org/') . $this->row->doi . '" rel="external">[&rarr;]</a>'; } ?>
 						</td>
 					</tr>
 					<?php } ?>
@@ -163,7 +163,7 @@ $showCitations = $typeParams->get('show_citations', 0);
 					<tr>
 						<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ARCH'); ?>:</td>
 						<td class="tbl-input"><?php echo $this->row->ark ? $this->row->ark : JText::_('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
-						<?php if ($this->row->ark) { echo ' <a href="' . $this->config->get('doi_verify', 'http://n2t.net/ezid/id/') . 'ark:' . $this->row->ark . '" rel="external">[&rarr;]</a>'; } ?>
+						<?php if ($this->row->ark) { echo ' <a href="' . $this->pubconfig->get('doi_verify', 'http://n2t.net/ezid/id/') . 'ark:' . $this->row->ark . '" rel="external">[&rarr;]</a>'; } ?>
 						</td>
 					</tr>
 					<?php } ?>

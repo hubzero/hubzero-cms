@@ -164,7 +164,7 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DOI'); ?>:</td>
 							<td class="tbl-input"><?php echo $this->pub->doi ? $this->pub->doi : JText::_('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
-							<?php if ($this->pub->doi) { echo ' <a href="' . $this->config->get('doi_verify', 'http://n2t.net/ezid/id/') . 'doi:' . $this->pub->doi . '" rel="external">[&rarr;]</a>'; } ?>
+							<?php if ($this->pub->doi) { echo ' <a href="' . $this->pubconfig->get('doi_verify', 'http://data.datacite.org/') . $this->pub->doi . '" rel="external">[&rarr;]</a>'; } ?>
 							</td>
 						</tr>
 						<?php } ?>
@@ -172,7 +172,7 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 						<tr>
 							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ARCH'); ?>:</td>
 							<td class="tbl-input"><?php echo $this->pub->ark ? $this->pub->ark : JText::_('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
-							<?php if ($this->pub->ark) { echo ' <a href="' . $this->config->get('doi_verify', 'http://n2t.net/ezid/id/') . 'ark:' . $this->pub->ark . '" rel="external">[&rarr;]</a>'; } ?>
+							<?php if ($this->pub->ark) { echo ' <a href="' . $this->pubconfig->get('doi_verify', 'http://n2t.net/ezid/id/') . 'ark:' . $this->pub->ark . '" rel="external">[&rarr;]</a>'; } ?>
 							</td>
 						</tr>
 						<?php } ?>
