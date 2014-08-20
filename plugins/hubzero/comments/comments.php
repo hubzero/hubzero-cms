@@ -58,7 +58,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 	 * @param      string  $authorized Authorization level
 	 * @return     string HTML
 	 */
-	public function onAfterDisplayContent($obj, $option, $url=null, $allowedExtensions = array())
+	public function onAfterDisplayContent($obj, $option, $url=null, $params = null)
 	{
 		// Ensure we have needed vars
 		if (!is_object($obj))
@@ -86,6 +86,11 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		$this->view->depth    = 0;
 
 		$this->_authorize();
+
+		if ($params instanceof JRegistry)
+		{
+			$this->params->merge($params);
+		}
 
 		$this->view->params   = $this->params;
 
