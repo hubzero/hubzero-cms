@@ -33,17 +33,11 @@ $route = $this->project->provisioned == 1
 $url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?option=com_projects&alias='
 	. $this->project->alias . '&active=publications&pid=' . $this->publication->id);
 
-$i = 0;
-
-$block   = $this->block;
-$step  	 = $this->step;
-
-// Get requirements
-$blocks   = $this->publication->_curationModel->_progress->blocks;
-$params   = $blocks->$step->manifest->params;
-
 $config = JComponentHelper::getParams( 'com_publications' );
 $citationFormat = $config->get('citation_format', 'apa');
+
+// Use new curation flow?
+$useBlocks  = $config->get('curation', 0);
 
 ?>
 <div id="abox-content" class="citation-edit">
@@ -63,15 +57,20 @@ $citationFormat = $config->get('citation_format', 'apa');
 				<input type="hidden" name="pid" value="<?php echo $this->publication->id; ?>" />
 				<input type="hidden" name="vid" value="<?php echo $this->publication->version_id; ?>" />
 				<input type="hidden" name="alias" value="<?php echo $this->project->alias; ?>" />
+				<?php if ($useBlocks) { ?>
 				<input type="hidden" name="p" value="<?php echo $this->props; ?>" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="additem" />
-				<input type="hidden" name="cite[id]" value="<?php echo $this->row->id; ?>" />
-				<input type="hidden" name="cite[affiliated]" value="1" />
 				<?php if ($this->project->provisioned == 1) { ?>
 					<input type="hidden" name="task" value="submit" />
 					<input type="hidden" name="ajax" value="0" />
 				<?php }  ?>
+				<?php } else { ?>
+					<input type="hidden" name="active" value="links" />
+					<input type="hidden" name="action" value="savecite" />
+				<?php } ?>
+				<input type="hidden" name="cite[id]" value="<?php echo $this->row->id; ?>" />
+				<input type="hidden" name="cite[affiliated]" value="1" />
 			</fieldset>
 			<?php if (!$this->row->id) { ?>
 			<p class="requirement"><?php echo JText::_('PLG_PROJECTS_LINKS_SELECTOR_ADD_CITATION_NOTE'); ?></p>

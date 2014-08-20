@@ -132,7 +132,8 @@ class plgProjectsLinks extends JPlugin
 		}
 
 		$tasks = array('browser', 'select' , 'parseurl',
-			'parsedoi', 'addcitation', 'deletecitation', 'newcite');
+			'parsedoi', 'addcitation', 'deletecitation',
+			'newcite', 'editcite', 'savecite');
 
 		// Publishing?
 		if ( in_array($this->_task, $tasks) )
@@ -179,6 +180,12 @@ class plgProjectsLinks extends JPlugin
 				case 'select':
 				case 'newcite':
 					$html = $this->select();
+					break;
+				case 'editcite':
+					$html = $this->editcite();
+					break;
+				case 'savecite':
+					$html = $this->savecite();
 					break;
 			}
 
@@ -261,7 +268,6 @@ class plgProjectsLinks extends JPlugin
 		// Incoming
 		$url 		= JRequest::getVar('citation-doi', '');
 		$url		= $url ? $url : urldecode(JRequest::getVar('url'));
-		$vid 		= JRequest::getInt('versionid', 0);
 		$version 	= JRequest::getVar('version', 'dev');
 		$pid 		= JRequest::getInt('pid', 0);
 
@@ -295,7 +301,91 @@ class plgProjectsLinks extends JPlugin
 			? 'index.php?option=com_publications' . a . 'task=submit'
 			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias
 				. a . 'active=publications';
-		$url = JRoute::_($route . a . 'pid=' . $pid).'/?version=' . $version . '&section=citations';
+		$url = JRoute::_($route . a . 'pid=' . $pid)
+			.'/?version=' . $version . '&section=citations';
+
+		$this->_referer = $url;
+		return;
+	}
+
+	/**
+	 * Attach a citation to a publication (in non-curated flow)
+	 *
+	 * @return     string
+	 */
+	public function savecite()
+	{
+		// Incoming
+		$cite 		= JRequest::getVar('cite', array(), 'post', 'none', 2);
+		$pid  		= JRequest::getInt('pid', 0);
+		$version 	= JRequest::getVar('version', 'dev');
+
+		$new  = $cite['id'] ? false : true;
+
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_citations' . DS . 'tables' . DS . 'association.php' );
+
+		if (!$pid || !$cite['type'] || !$cite['title'])
+		{
+			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_MISSING_REQUIRED'));
+		}
+		else
+		{
+			$citation = new CitationsCitation( $this->_database );
+			if (!$citation->bind($cite))
+			{
+				$this->setError($citation->getError());
+			}
+			else
+			{
+				$citation->created 		= $new == true ? JFactory::getDate()->toSql() : $citation->created;
+				$citation->uid			= $new == true ? $this->_uid : $citation->uid;
+				$citation->published	= 1;
+
+				if (!$citation->store(true))
+				{
+					// This really shouldn't happen.
+					$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_CITATIONS_ERROR_SAVE'));
+				}
+			}
+			// Create association
+			if (!$this->getError() && $new == true && $citation->id)
+			{
+				$assoc 		 = new CitationsAssociation( $this->_database );
+				$assoc->oid  = $pid;
+				$assoc->tbl  = 'publication';
+				$assoc->type = 'owner';
+				$assoc->cid  = $citation->id;
+
+				// Store new content
+				if (!$assoc->store())
+				{
+					$this->setError($assoc->getError());
+				}
+			}
+
+			$this->_msg = JText::_('PLG_PROJECTS_LINKS_CITATION_SAVED');
+		}
+
+		// Pass success or error message
+		if ($this->getError())
+		{
+			$this->_message = array('message' => $this->getError(), 'type' => 'error');
+		}
+		elseif (isset($this->_msg) && $this->_msg)
+		{
+			$this->_message = array('message' => $this->_msg, 'type' => 'success');
+		}
+
+		// Build pub url
+		$route = $this->_project->provisioned
+			? 'index.php?option=com_publications' . a . 'task=submit'
+			: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias
+				. a . 'active=publications';
+		$url = JRoute::_($route . a . 'pid=' . $pid)
+			.'/?version=' . $version . '&section=citations';
 
 		$this->_referer = $url;
 		return;
@@ -687,6 +777,96 @@ class plgProjectsLinks extends JPlugin
 		$view->step 		= $step;
 		$view->props		= $props;
 		$view->filter		= $filter;
+
+		// Get messages	and errors
+		$view->msg = $this->_msg;
+		if ($this->getError())
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Edit citation view
+	 *
+	 * @return     string
+	 */
+	public function editcite()
+	{
+		// Incoming
+		$cid    = JRequest::getInt( 'cid', 0 );
+		$pid    = JRequest::getInt( 'pid', 0 );
+		$vid    = JRequest::getInt( 'vid', 0 );
+
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'links',
+				'name'		=>'selector',
+				'layout'	=>'edit'
+			)
+		);
+
+		// Load classes
+		$objP  			= new Publication( $this->_database );
+		$view->version 	= new PublicationVersion( $this->_database );
+
+		// Load publication version
+		$view->version->load($vid);
+		if (!$view->version->id)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
+		}
+
+		// Get publication
+		$view->publication = $objP->getPublication($view->version->publication_id,
+			$view->version->version_number, $this->_project->id);
+
+		if (!$view->publication)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_LINKS_SELECTOR_ERROR_NO_PUBID'));
+		}
+
+		// On error
+		if ($this->getError())
+		{
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'	=>'projects',
+					'element'	=>'files',
+					'name'		=>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_citations' . DS . 'tables' . DS . 'type.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_citations' . DS . 'tables' . DS . 'citation.php' );
+
+		// Load the object
+		$view->row = new CitationsCitation($this->_database);
+		$view->row->load($cid);
+
+		// get the citation types
+		$ct = new CitationsType($this->_database);
+		$view->types = $ct->getType();
+
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->project 		= $this->_project;
+		$view->authorized 	= $this->_authorized;
+		$view->uid 			= $this->_uid;
+		$view->task			= $this->_task;
+		$view->ajax			= JRequest::getInt( 'ajax', 0 );
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;

@@ -4,7 +4,7 @@
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
+ * version 2 as published by the Free Software Foundation.
  */
 
 /*
@@ -53,7 +53,7 @@
 
 /* Metadata panel
 --------------------------------------------- */
-	
+
 	.metadata-compose {
 		margin: 1em 0;
 	}
@@ -67,10 +67,10 @@
 	.metadata-compose textarea {
 		height: 100px !important;
 	}
-	
+
 /* Publication categories
 --------------------------------------------- */
-	
+
 	.restype {
 		color: #999;
 		font-size: 85%;
@@ -105,7 +105,7 @@
 	}
 	.restype .dataset:before {
 		content: "\f071";
-	}	
+	}
 	.restype .wiki:before {
 		content: "\f072";
 	}
@@ -150,7 +150,7 @@
 		width: 30px;
 	}
 
-/* Publications intro 
+/* Publications intro
 --------------------------------------------- */
 	#pubintro {
 		min-height: 340px;
@@ -201,9 +201,9 @@
 	#pubintro h3 {
 		color: #448985;
 		margin: 0 0 0.2em 0;
-		padding: 0 !important;	
+		padding: 0 !important;
 	}
-	
+
 /* Start */
 	#suggestions ul {
 		list-style: none;
@@ -226,8 +226,8 @@
 	}
 	#contrib-section .omega p {
 		font-size: 85%;
-	}	
-	
+	}
+
 /* Status bar publication version
 --------------------------------------------- */
 	#review-wrap p#version-label
@@ -257,8 +257,8 @@
 	p#version-label.active a {
 		border-bottom: 1px dotted #000;
 	}
-	
-/* Status bar: setup & publication steps 
+
+/* Status bar: setup & publication steps
 --------------------------------------------- */
 	ul#status-bar {
 		padding: 0;
@@ -267,7 +267,7 @@
 		float: right;
 		font-size: 85%;
 		/*min-width: 60%;*/
-		color: #ccc;	
+		color: #ccc;
 	}
 	ul#status-bar li {
 		display: inline;
@@ -285,10 +285,10 @@
 		border-bottom: none;
 	}
 	ul#status-bar li a {
-		color: #666;	
+		color: #666;
 	}
 	ul#status-bar li a:hover {
-		color: #000;	
+		color: #000;
 	}
 	ul#status-bar li a, ul#status-bar li a:hover {
 		border: none;
@@ -353,7 +353,7 @@
 		content: "\25B6";
 	}
 
-/* Status color 
+/* Status color
 --------------------------------------------- */
 	.published {
 		color: #52ad4b;
@@ -373,7 +373,7 @@
 	.pending {
 		color: orange !important;
 	}
-	
+
 /* Publication status
 --------------------------------------------- */
 	.draft, .published, .unpublished, .expired, .pending, .posted, .archived, .ready {
@@ -406,7 +406,7 @@
 		content: "\2757";
 		color: red;
 	}
-	.published:before, 
+	.published:before,
 	.ready:before,
 	.unpublished:before,
 	.pending:before,
@@ -421,9 +421,9 @@
 		margin: 0.5em 2em;
 		color: red;
 	}
-	
+
 /* Publications - Audience skill level
---------------------------------------------- */	
+--------------------------------------------- */
 	.audiencelevel, #c-browser .audiencelevel, ul.c-list .audiencelevel {
 		list-style: none;
 		margin: 0;
@@ -431,8 +431,8 @@
 		margin-left: 2px;
 		display: inline;
 	}
-	.audiencelevel li, 
-	#c-browser .audiencelevel li, 
+	.audiencelevel li,
+	#c-browser .audiencelevel li,
 	ul.c-list .audiencelevel li {
 		display: inline;
 		padding: 0;
@@ -442,36 +442,36 @@
 		border: none;
 		background: url("images/circlerating.gif") 0 2px no-repeat !important;
 	}
-	.audiencelevel li span, 
-	#c-browser .audiencelevel li span, 
+	.audiencelevel li span,
+	#c-browser .audiencelevel li span,
 	ul.c-list audiencelevel li span {
 		margin:-1px;
 		padding:0;
 	}
-	.audiencelevel li.level0, 
-	#c-browser .audiencelevel li.level0, 
+	.audiencelevel li.level0,
+	#c-browser .audiencelevel li.level0,
 	ul.c-list .audiencelevel li.level0  {
 		background-position: 0 2px !important;
 		padding-left:17px !important;
 		margin-right:0.3em;
 	}
-	.audiencelevel li.level1, 
-	#c-browser .audiencelevel li.level1, 
+	.audiencelevel li.level1,
+	#c-browser .audiencelevel li.level1,
 	ul.c-list .audiencelevel li.level1  {
 		background-position: -21px 2px !important;
 	}
-	.audiencelevel li.level2, 
-	#c-browser .audiencelevel li.level2, 
+	.audiencelevel li.level2,
+	#c-browser .audiencelevel li.level2,
 	ul.c-list .audiencelevel li.level2 {
 		background-position: -39px 2px !important;
 	}
-	.audiencelevel li.level3, 
-	#c-browser .audiencelevel li.level3, 
+	.audiencelevel li.level3,
+	#c-browser .audiencelevel li.level3,
 	ul.c-list .audiencelevel li.level3 {
 		background-position: -57px 2px !important;
 	}
-	.audiencelevel li.level4, 
-	#c-browser .audiencelevel li.level4, 
+	.audiencelevel li.level4,
+	#c-browser .audiencelevel li.level4,
 	ul.c-list .audiencelevel li.level4 {
 		background-position: -93px 2px !important;
 	}
@@ -487,20 +487,20 @@
 	.skill_level4 {
 		color: #000000;
 	}
-	.audiencelevel li.level0_isoff, 
-	#tagbrowser .audiencelevel li.level0_isoff, 
+	.audiencelevel li.level0_isoff,
+	#tagbrowser .audiencelevel li.level0_isoff,
 	ul.c-list .audiencelevel li.level0_isoff {
 		display: none !important;
 	}
-	.audiencelevel li.txtlabel, 
+	.audiencelevel li.txtlabel,
 	ul.c-list .audiencelevel li.txtlabel {
 		padding: 0;
 		padding-left: 5px;
 		background: none !important;
 		color: #666666;
 	}
-	.audiencelevel li.isoff, 
-	#c-browser .audiencelevel li.isoff, 
+	.audiencelevel li.isoff,
+	#c-browser .audiencelevel li.isoff,
 	ul.c-list .audiencelevel li.isoff {
 		background-position: -111px 2px !important;
 		border: none;
@@ -511,7 +511,7 @@
 	table.skillset td.circle, .circle {
 		width: 70px;
 		padding: 0;
-	}	
+	}
 	.audience_wrap {
 		display: block;
 		position: absolute;
@@ -520,7 +520,7 @@
 	.aud-desc {
 		padding-left: 70px;
 	}
-	
+
 /* Misc
 --------------------------------------------- */
 	.showstatus {
@@ -533,7 +533,7 @@
 	.tbl-input {
 		color: #000000;
 	}
-	#pubpane table .prime, 
+	#pubpane table .prime,
 	#hubForm-ajax table .prime {
 		border: 1px solid #afcee2;
 		background: #f0f9ff;
@@ -555,9 +555,9 @@
 	th.thmini, td.thmini {
 		width: 5px;
 	}
-	
-/* Publication content tables 
---------------------------------------------- */	
+
+/* Publication content tables
+--------------------------------------------- */
 	table.tbl-panel {
 		margin: 0 0 0 0;
 		border: 4px solid #eaeaea;
@@ -583,13 +583,13 @@
 		font-size: 1em !important;
 		font-weight: normal;
 	}
-	
+
 /* Publication Authors list
 --------------------------------------------- */
 	#pub-editor table td input.aorder {
-		width: 15px;	
+		width: 15px;
 		height: 12px;
-		border: 1px solid #CCC;	
+		border: 1px solid #CCC;
 		font-size: 85%;
 		text-align: center;
 	}
@@ -627,8 +627,8 @@
 		text-align: right;
 		color: #999;
 	}
-	
-/* New publication 
+
+/* New publication
 --------------------------------------------- */
 	#pub-body {
 		display: block;
@@ -674,7 +674,7 @@
 	#pub-editor #c-output {
 		background: #fdfdfb url("images/bigarrow.gif") left 6em no-repeat;
 		border: 1px solid #d3c3b4;
-		margin-left: -4px;	
+		margin-left: -4px;
 	}
 	#pub-editor .columns h4 {
 		font-size: 130%;
@@ -743,7 +743,7 @@
 	ul.c-list {
 		list-style: none;
 		margin: 0;
-		padding: 0.5em 0.5em;	
+		padding: 0.5em 0.5em;
 		background: #f4fcff;
 		border: 1px solid #dae6ec;
 		font-size: 85%;
@@ -775,7 +775,7 @@
 	ul#c-browser {
 		list-style: none;
 		margin: 0;
-		padding: 0;	
+		padding: 0;
 		font-size: 85%;
 		max-height: 200px;
 		overflow: auto;
@@ -853,7 +853,7 @@
 	}
 	ul#c-browser li:last-child:hover {
 		border-bottom: 1px solid #dae6ec;
-	} 
+	}
 	#c-item-picker ul#c-browser li:last-child:hover, #c-item-picker  ul#c-browser li:last-child  {
 		/*border: none;*/
 	}
@@ -924,7 +924,7 @@
 		width: 100%;
 		display: block;
 	}
-	
+
 /* Attached notes */
 	ul#c-browser li.wikilevel_2:before,
 	ul#c-browser li.wikilevel_3:before,
@@ -954,7 +954,7 @@
 	ul#c-browser li.c-picked + ol .wikilevel_3 {
 		background: #f2fafd;
 	}
-	
+
 /* Content picker
 --------------------------------------------- */
 	ul#c-filelist {
@@ -998,12 +998,12 @@
 		padding: 0;
 		margin-top: 0.5em;
 	}
-	form#hubForm-ajax label.a-label input.long, 
+	form#hubForm-ajax label.a-label input.long,
 	form#hubForm-ajax label.a-label textarea {
 		width: 90% !important;
 	}
 
-/* Gallery 
+/* Gallery
 --------------------------------------------- */
 	.pane-gallery ul.c-list li {
 		padding: 1em 0;
@@ -1068,7 +1068,7 @@
 	#gallery-thumb .g-title input.long {
 		width: 300px !important;
 	}
-	
+
 /* Publication - edit selected item
 --------------------------------------------- */
 	.c-edit {
@@ -1092,8 +1092,8 @@
 		*margin-top: -1em !important;
 	}
 
-/* Publication tags 
---------------------------------------------- */	
+/* Publication tags
+--------------------------------------------- */
 	.pane-tags .c-list .tagged, .pane-tags .c-list .tagged:hover {
 		display: block;
 		float: left;
@@ -1103,14 +1103,14 @@
 		cursor: default;
 		/*border-right: 1px solid #DFD5AF;
 		border-bottom: 1px solid #DFD5AF;*/
-		-moz-border-radius: 6px; 
-		-webkit-border-radius: 6px; 
+		-moz-border-radius: 6px;
+		-webkit-border-radius: 6px;
 		border: 1px solid #DFD5AF;
 		white-space: nowrap;
 		margin: 5px 0;
 		margin-right: 10px;
-	}	
-	.pane-tags .c-list .admin { 
+	}
+	.pane-tags .c-list .admin {
 		background: #FFF2EF;
 		/*border-right: 1px solid #efccc2;
 		border-bottom: 1px solid #efccc2;*/
@@ -1190,7 +1190,7 @@
 	#addtag-form label {
 		float: left;
 		width: 70%;
-	}	
+	}
 
 /* Publication authors selection
 --------------------------------------------- */
@@ -1215,7 +1215,7 @@
 	.a-credit {
 		margin: 0;
 		padding: 0 0 0.5em 0;
-		margin-left: 2em;		
+		margin-left: 2em;
 		color: #9d9089;
 		line-height: 1.2em;
 		display: block;
@@ -1277,9 +1277,9 @@
 		margin-right: 1em;
 		margin-top: 2em;
 	}
-	
+
 /* Edit content item
---------------------------------------------- */	
+--------------------------------------------- */
 	.content-edit .long, .author-edit .long {
 		min-width: 350px;
 	}
@@ -1298,7 +1298,7 @@
 	.author-edit {
 		padding-top: 1em;
 	}
-	
+
 /* Publications review screen
 --------------------------------------------- */
 	.reviewpub {
@@ -1461,7 +1461,7 @@
 		display: inline-block;
 		float: left;
 	}
-		
+
 /* Publications review  - authors list
 --------------------------------------------- */
 	#authorslist p {
@@ -1496,12 +1496,12 @@
 		margin-left: -1.5em;
 		position: absolute;
 	}
-	
+
 /* Screenshot slider */
 	#showcase {
 		background: #e8eaee;
 		width: 100%;
-		height: 90px; 
+		height: 90px;
 		margin-top: 0;
 		overflow: hidden;
 		position: relative;
@@ -1515,14 +1515,14 @@
 		padding: 4px;
 		float: left;
 		position: relative;
-	}	
+	}
 	#showcase img:hover {
 		background: #fff none repeat scroll 0 0;
 		border: 1px solid #8fb9d0;
 		margin: 3px;
 		padding: 5px;
-	}	
-	#showcase-prev, 
+	}
+	#showcase-prev,
 	#showcase-next {
 		height: 90px;
 		background: #f4f5f7;
@@ -1535,13 +1535,13 @@
 		opacity: 0.5;
 		filter: alpha(opacity=50);
 	}
-	#showcase-prev:hover, 
+	#showcase-prev:hover,
 	#showcase-next:hover {
-		background-color: #FFF;	
+		background-color: #FFF;
 		opacity: 0.7;
-		filter: alpha(opacity=70);	
-	}		
-	.inactive, 
+		filter: alpha(opacity=70);
+	}
+	.inactive,
 	.inactive:hover {
 		cursor: default !important;
 		background-color: #e9e9e9 !important;
@@ -1557,7 +1557,7 @@
 	}
 	#showcase-next {
 		float: right;
-		border-left: 1px solid #c8cfd8;	
+		border-left: 1px solid #c8cfd8;
 		border-right: 1px solid #e8e8e8;
 		background: #f4f5f7 url("/components/com_publications/assets/img/showcase_next.png") 0 50% no-repeat;
 	}
@@ -1572,7 +1572,7 @@
 		position: relative;
 		left: 0;
 	}
-	
+
 /* Publication primary content options
 --------------------------------------------- */
 	#pub-options {
@@ -1583,7 +1583,7 @@
 		font-size: 85%;
 	}
 	#pub-options div {
-		padding: 1em 0.5em;	
+		padding: 1em 0.5em;
 		background: #FFFFFF;
 		border: 1px solid #dae6ec;
 	}
@@ -1613,7 +1613,7 @@
 	#pub-options .serveas_invoke div {
 		background: #FFFFFF url("images/serveas/invoke.jpg") center center no-repeat;
 	}
-	.serveas_download p, .serveas_tardownload p, 
+	.serveas_download p, .serveas_tardownload p,
 	.serveas_inlineview p, .serveas_external p,
 	.serveas_invoke p,
 	#pub-editor .columns #pub-options label {
@@ -1712,7 +1712,7 @@
 		background: url("images/next_ready.png") 0 0 no-repeat;
 	}
 	ul.next-options li#next-question {
-		
+
 	}
 	ul.next-options li#next-question p,
 	ul.next-options li#next-citation p {
@@ -1731,7 +1731,7 @@
 	}
 	ul.next-options li#next-citation:before {
 		content: "\275D";
-		color: #777;	
+		color: #777;
 	}
 	*/
 	ul.next-options p {
@@ -1747,7 +1747,7 @@
 	ul.next-options .btncancel {
 		padding: 0.5em 1em !important;
 	}
-	
+
 /* Misc
 --------------------------------------------- */
 	.manageit,
@@ -1778,7 +1778,7 @@
 		width: auto;
 		white-space: nowrap;
 	}
-	
+
 /* Form within publication edit screens
 --------------------------------------------- */
 	#pub-editor.pane-desc .c-inner label, #pub-editor.pane-desc .c-inner label input {
@@ -1858,7 +1858,7 @@
 		border: 1px solid #CCC;
 		margin-right: 0.5em;
 	}
-	
+
 /* Publication info tips
 --------------------------------------------- */
 	.pub-info-pop {
@@ -1880,7 +1880,7 @@
 		font-size: 70%;
 		text-align: justify;
 	}
-	
+
 /* Publication licenses
 --------------------------------------------- */
 	.license {
@@ -1889,19 +1889,19 @@
 		text-align: left;
 		padding: 0.5em 0 10px 22px;
 		}
-	.opensource { 
+	.opensource {
 		background: url("/components/com_publications/assets/img/logos/opensource.gif") 0 0 no-repeat;
 		}
-	.closedsource { 
+	.closedsource {
 		background: url("/components/com_publications/assets/img/logos/closedsource.gif") 0 0 no-repeat;
-		}	
-	.cc { 
+		}
+	.cc {
 		background: url("/components/com_publications/assets/img/logos/cc.gif") -0.5em 0.5em no-repeat;
 		}
-	.com_publications .custom, .content-publications .custom { 
+	.com_publications .custom, .content-publications .custom {
 		background: url("/components/com_publications/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 		}
-	.standard { 
+	.standard {
 		background: url("/components/com_publications/assets/img/logos/license.gif") -0.5em 0.5em no-repeat;
 		}
 /* Citation
@@ -1917,7 +1917,7 @@
 
 /* Publication stats
 -------------------------------------------- */
-	
+
 	.pubstats-overall {
 		padding: 0.5em 1em;
 		margin: 1em 0 2em 0;
@@ -1934,7 +1934,7 @@
 		height: 16px;
 		font-size: 16px;
 		font-family: 'Fontcons';
-		color: #f2d271;	
+		color: #f2d271;
 		margin-right: 0.3em;
 	}
 	.pubstats .info-pop {
@@ -1946,8 +1946,8 @@
 		font-weight: normal;
 		position: absolute;
 	}
-	
-/* Citations 
+
+/* Citations
 --------------------------------------------- */
 	.c-panel-citations {
 		padding: 1em 0;
@@ -1955,7 +1955,7 @@
 	.c-delete, #c-citations .c-edit {
 		float: right;
 		margin-top: -1.5em;
-		margin-left: 1em;
+		margin-left: 0.5em;
 	}
 	.c-citation {
 		display: block;
@@ -1963,23 +1963,30 @@
 	}
 	#c-citations li {
 		text-align: justify;
+		padding-top: 0.5em;
+		padding-bottom: 0.5em;
+		margin-bottom: 0.5em;
+		border-bottom: 1px dotted #CCC;
+	}
+	#c-citations li:last-child {
+		border: none;
 	}
 	#c-citations li.c-drag {
 		width: auto;
 	}
 	#c-citations li .c-delete, #c-citations li .c-edit {
-		display: none;
+		margin-top: -1em;
 	}
 	#c-citations li:hover .c-delete, #c-citations li:hover .c-edit {
 		display: block;
 	}
-	
+
 /* Provisioned projects
 ---------------------------- */
 	#abox-content {
 		text-align: left;
 	}
-	
+
 /* Misc
 --------------------------------------------- */
 	input::-webkit-input-placeholder,
@@ -2009,7 +2016,7 @@
 		font-size: 0.7em;
 		margin-right: 0.5em;
 	}
-		
+
 /* Display messages
 --------------------------------------------- */
 	#plg-content.content-publications .result {
@@ -2034,7 +2041,7 @@
 	@media all and (max-width: 1100px) {
 		p#version-label {
 			margin-top: 2.5em;
-		}		
+		}
 		li#sub-bar {
 			/*display: none !important;*/
 			margin-left: 5em !important;

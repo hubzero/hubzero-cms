@@ -2167,6 +2167,9 @@ class plgProjectsPublications extends JPlugin
 
 				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
 				\Hubzero\Document\Assets::addPluginScript('projects', 'links');
+				$document = JFactory::getDocument();
+				$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications'
+					. DS . 'css' . DS . 'selector.css');
 
 				break;
 

@@ -304,6 +304,11 @@
 		color: #666;
 		padding-right: 3em;
 	}
+	.citation-edit .requirement {
+		width: 90%;
+		font-size: 85%;
+		padding: 1em;
+	}
 
 /* Link selector
 ---------------------------- */
