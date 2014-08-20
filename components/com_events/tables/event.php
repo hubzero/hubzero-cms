@@ -423,14 +423,15 @@ class EventsEvent extends JTable
 			break;
 
 			case 'day':
-				$select_date = $filters['select_date'];
+				$select_date     = $filters['select_date'];
+				$select_date_fin = $filters['select_date_fin'];
 
 				$sql = "SELECT $this->_tbl.* FROM #__categories AS b, $this->_tbl
 					WHERE $this->_tbl.catid = b.id AND
-						((publish_up >= " . $this->_db->quote($select_date . ' 00:00:00') . " AND publish_up <= " . $this->_db->quote($select_date . ' 23:59:59') . ") 
-						OR (publish_down >= " . $this->_db->quote($select_date . ' 00:00:00') . " AND publish_down <= " . $this->_db->quote($select_date . ' 23:59:59') . ") 
-						OR (publish_up <= " . $this->_db->quote($select_date . ' 00:00:00') . " AND publish_down >= " . $this->_db->quote($select_date . ' 23:59:59') . ") 
-						OR (publish_up >= " . $this->_db->quote($select_date . ' 00:00:00') . " AND publish_down <= " . $this->_db->quote($select_date . ' 23:59:59') . "))";
+						((publish_up >= " . $this->_db->quote($select_date) . " AND publish_up <= " . $this->_db->quote($select_date_fin) . ") 
+						OR (publish_down >= " . $this->_db->quote($select_date) . " AND publish_down <= " . $this->_db->quote($select_date_fin) . ") 
+						OR (publish_up <= " . $this->_db->quote($select_date) . " AND publish_down >= " . $this->_db->quote($select_date_fin) . ") 
+						OR (publish_up >= " . $this->_db->quote($select_date) . " AND publish_down <= " . $this->_db->quote($select_date_fin) . "))";
 
 				$sql .= ($filters['category'] != 0) ? " AND b.id=" . $filters['category'] : "";
 				$sql .= " AND $this->_tbl.state = '1'";
