@@ -123,6 +123,7 @@ $this->css()
 				{
 					$cls = ($cls == 'even') ? 'odd' : 'even';
 
+					$clse = '';
 					if (!$row->isAvailable())
 					{
 						if ($row->get('created_by') != JFactory::getUser()->get('id'))
