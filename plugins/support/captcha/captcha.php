@@ -329,7 +329,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'list':
-				$key = strtolower($question['answer']);
+				$key = strtolower(JText::_($question['answer']));
 				$numseq = count($this->_sequence);
 				$set = rand(0, $numseq-1);
 
@@ -338,7 +338,7 @@ class plgSupportCaptcha extends \Hubzero\Plugin\Plugin
 				$html .= "\t\t" . '<option value="">' . JText::_('PLG_SUPPORT_TEXTCAPTCHA_SELECT_ANSWER') . '</option>' . "\n";
 				foreach ($this->_sequence[$set] as $row)
 				{
-					$html .= "\t\t" . '<option value="' . $question['options'][$row] . '">' . JText::_($question['options'][$row]) . '</option>' . "\n";
+					$html .= "\t\t" . '<option value="' . JText::_($question['options'][$row]) . '">' . JText::_($question['options'][$row]) . '</option>' . "\n";
 				}
 				$html .= "\t" . '</select>' . "\n";
 			break;
