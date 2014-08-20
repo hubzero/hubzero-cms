@@ -49,7 +49,7 @@ if ($canDo->get('core.edit'))
 }*/
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
-	<fieldset id="filter">
+	<fieldset id="filter-bar">
 		<?php echo $this->states; ?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
@@ -101,8 +101,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	$row = &$this->rows[$i];
 
 	//$link = JRoute::_( 'index.php?option='.$this->option.'&controller='.$this->controller.'&client='. $this->client .'&task=edit&cid[]='. $row->id );
-	$link = 'index.php?option=com_plugins&task=plugin.edit&extension_id=' . $row->id . '&component=' . $row->folder;
-	//$link = 'index.php?option=com_plugins&view=plugin&layout=edit&extension_id=' . $row->id . '&component=' . $row->folder;
+	$link = 'index.php?option=com_plugins&amp;task=plugin.edit&amp;extension_id=' . $row->id . '&amp;component=' . $row->folder;
 
 	$access 	= JHTML::_('grid.access', $row, $i);
 	//$checked 	= JHTML::_('grid.checkedout', $row, $i);
@@ -135,34 +134,34 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
-<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-<?php
-					if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
-						echo $this->escape($row->name);
-					} else {
-?>
-					<a class="editlinktip hasTip" href="<?php echo $link; ?>" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
-						<span><?php echo $this->escape($row->name); ?></span>
-					</a>
-<?php } ?>
+					<?php
+						if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit')) {
+							echo $this->escape($row->name);
+						} else {
+					?>
+						<a class="editlinktip hasTip" href="<?php echo $link; ?>" title="<?php echo JText::_( 'Edit Plugin' );?>::<?php echo $row->name; ?>">
+							<span><?php echo $this->escape($row->name); ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
-<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit.state')) { ?>
-					<span class="state <?php echo $cls; ?>">
-						<span class="text"><?php echo $alt; ?></span>
-					</span>
-<?php } else { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('Set this to %s',$task);?>">
-						<span class="text"><?php echo $alt; ?></span>
-					</a>
-<?php } ?>
+					<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out) || !$canDo->get('core.edit.state')) { ?>
+						<span class="state <?php echo $cls; ?>">
+							<span class="text"><?php echo $alt; ?></span>
+						</span>
+					<?php } else { ?>
+						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('Set this to %s',$task);?>">
+							<span class="text"><?php echo $alt; ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td class="order">
 					<span><?php echo $this->pagination->orderUpIcon($i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'Move Up', $row->ordering); ?></span>
@@ -170,15 +169,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php $disabled = $row->ordering ?  '' : 'disabled="disabled"'; ?>
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>"  <?php echo $disabled ?> class="text_area" style="text-align: center" />
 				</td>
-				<td align="center">
+				<td>
 					<?php echo $access; ?>
 				</td>
-				<td nowrap="nowrap">
-<?php if (in_array($row->element, $this->manage)) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
-						<span><?php echo JText::_('Manage'); ?></span>
-					</a>
-<?php } ?>
+				<td>
+					<?php if (in_array($row->element, $this->manage)) { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
+							<span><?php echo JText::_('Manage'); ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->element); ?>

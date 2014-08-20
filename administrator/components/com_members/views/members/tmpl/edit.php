@@ -35,7 +35,7 @@ $canDo = MembersHelper::getActions('component');
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
 JToolBarHelper::title(JText::_('MEMBER') . ': ' . $text, 'user.png');
-if ($canDo->get('core.edit'))
+if ($canDo->get('core.edit')) 
 {
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
@@ -64,22 +64,19 @@ if (!$surname) {
 JHtml::_('behavior.switcher', 'submenu');
 ?>
 <script type="text/javascript">
-function submitbutton(pressbutton)
+function submitbutton(pressbutton) 
 {
 	var form = document.adminForm;
-
+	
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
 	}
-
+	
 	submitform(pressbutton);
 }
 </script>
 
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode('<br />', (array)$this->getError()); ?></p>
-<?php } ?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
 
 <div class="col width-60 fltlft">
@@ -149,7 +146,7 @@ function submitbutton(pressbutton)
 					$rot = new MembersTableOrganizationType(JFactory::getDBO());
 					$types = $rot->getTypes();
 
-					if (!$types || count($types) <= 0)
+					if (!$types || count($types) <= 0) 
 					{
 						$types = array(
 							'universityundergraduate' => JText::_('University / College Undergraduate'),
@@ -165,10 +162,10 @@ function submitbutton(pressbutton)
 							'unemployed'              => JText::_('Retired / Unemployed')
 						);
 					}
-					foreach ($types as $type => $title)
+					foreach ($types as $type => $title) 
 					{
 						echo '<option value="' . $type . '"';
-						if ($this->profile->get('orgtype') == $type)
+						if ($this->profile->get('orgtype') == $type) 
 						{
 							echo ' selected="selected"';
 						}
@@ -224,14 +221,14 @@ function submitbutton(pressbutton)
 		</fieldset>
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('IMAGE'); ?></span></legend>
-
+			
 			<?php
 			if ($this->profile->get('uidNumber') != '') {
 				$pics = stripslashes($this->profile->get('picture'));
 				$pics = explode(DS, $pics);
 				$file = end($pics);
 			?>
-			<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+			<iframe height="350" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 			<?php
 			} else {
 				echo '<p class="warning">'.JText::_('MEMBER_PICTURE_ADDED_LATER').'</p>';
@@ -272,7 +269,7 @@ function submitbutton(pressbutton)
 
 				?>
 				<div class="input-wrap">
-					<input type="radio" class="option" name="profile[disability]" id="disabilityyes" value="yes" <?php echo (!$dis_noanswer && !in_array('no',$this->profile->get('disability')) && !in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/>
+					<input type="radio" class="option" name="profile[disability]" id="disabilityyes" value="yes" <?php echo (!$dis_noanswer && !in_array('no',$this->profile->get('disability')) && !in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> 
 					<label><?php echo JText::_('YES'); ?></label>
 
 					<div class="input-wrap">
@@ -285,10 +282,10 @@ function submitbutton(pressbutton)
 						<input name="profile[disabilities][other]" id="disabilityother" type="text" value="<?php echo $this->escape($disother); ?>" /></label>
 					</div>
 
-					<input type="radio" class="option" name="profile[disability]" id="disabilityno" value="no" <?php echo (in_array('no',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/>
+					<input type="radio" class="option" name="profile[disability]" id="disabilityno" value="no" <?php echo (in_array('no',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> 
 					<label><?php echo JText::_('NO_NONE'); ?></label>
 					<br />
-					<input type="radio" class="option" name="profile[disability]" id="disabilityrefused" value="refused" <?php echo (in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/>
+					<input type="radio" class="option" name="profile[disability]" id="disabilityrefused" value="refused" <?php echo (in_array('refused',$this->profile->get('disability'))) ? 'checked="checked" ' : ''; ?>/> 
 					<label><?php echo JText::_('REFUSED'); ?></label>
 				</div>
 			</fieldset>
@@ -301,7 +298,7 @@ function submitbutton(pressbutton)
 					<div class="input-wrap">
 						<label><?php echo JText::_('COL_RACE_TRIBE'); ?>: <input name="racenativetribe" id="profile[nativeTribe]" type="text" value="<?php echo $this->escape($this->profile->get('nativeTribe')); ?>" /></label><br />
 					</div>
-					<label><input type="checkbox" class="option" name="profile[race][asian]" id="raceasian" valu="asian" <?php echo (in_array('asian',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_ASIAN'); ?></label><br />
+					<label><input type="checkbox" class="option" name="profile[race][asian]" id="raceasian" value="asian" <?php echo (in_array('asian',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_ASIAN'); ?></label><br />
 					<label><input type="checkbox" class="option" name="profile[race][black]" id="raceblack" value="black" <?php echo (in_array('black',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_BLACK'); ?></label><br />
 					<label><input type="checkbox" class="option" name="profile[race][hawaiian]" id="racehawaiian" value="hawaiian" <?php echo (in_array('hawaiian',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_PACIFIC_ISLANDER'); ?></label><br />
 					<label><input type="checkbox" class="option" name="profile[race][white]" id="racewhite" value="white" <?php echo (in_array('white',$this->profile->get('race'))) ? 'checked="checked" ' : ''; ?>/> <?php echo JText::_('COL_RACE_WHITE'); ?></label><br />
@@ -350,59 +347,13 @@ function submitbutton(pressbutton)
 				<legend><span><?php echo JText::_('PASSWORD'); ?></span></legend>
 
 				<div class="input-wrap">
-					<?php echo JText::_('CURRENT_PASSWORD'); ?>:</td>
-					<input type="text" name="profile[currentpassword]" disabled="disabled" <?php echo ($this->profile->get('userPassword')) ? "value=\"{$this->profile->get('userPassword')}\"" : 'placeholder="no local password set"'; ?> /></td>
+					<?php echo JText::_('CURRENT_PASSWORD'); ?>:
+					<input type="text" name="profile[currentpassword]" disabled="disabled" <?php echo ($this->profile->get('userPassword')) ? "value=\"{$this->profile->get('userPassword')}\"" : 'placeholder="no local password set"'; ?> />
 				</div>
 				<div class="input-wrap">
 					<label for="newpass"><?php echo JText::_('NEW_PASSWORD'); ?>:</label>
 					<input type="password" name="newpass" id="newpass" value="" />
 					<p class="warning"><strong>NOTE:</strong> Entering anything above will reset the user's password.</p>
-					<?php if (count($this->password_rules) > 0) : ?>
-						<?php $this->css('password.css'); ?>
-						<script type="text/javascript">
-							/*jQuery(document).ready(function ( $ )
-							{
-								var password = $('#newpass'),
-								checkPass    = function() {
-									// Create an ajax call to check the potential password
-									$.ajax({
-										url: "/api/members/checkpass",
-										type: "POST",
-										data: "password1="+password.val(),
-										dataType: "html",
-										cache: false,
-										success: function ( html ) {
-											if(html.length > 0 && password.val() != '')
-											{
-												$('.passrules').html(html);
-											}
-											else
-											{
-												// Probably deleted password, so reset classes
-												$('.passrules').find('li').removeClass('error passed').addClass('empty');
-											}
-										}
-									});
-								};
-
-								password.on('keyup', checkPass);
-							});*/
-						</script>
-						<div><?php echo JText::_('PASSWORD_RULES'); ?>:</div>
-						<ul class="passrules">
-							<?php foreach ($this->password_rules as $rule) : ?>
-								<?php if (!empty($rule)) : ?>
-									<?php if ($this->validated && is_array($this->validated) && in_array($rule, $this->validated)) : ?>
-										<li class="pass-error"><?php echo $rule; ?></li>
-									<?php elseif ($this->validated) : ?>
-										<li class="pass-passed"><?php echo $rule; ?></li>
-									<?php else : ?>
-										<li class="pass-empty"><?php echo $rule; ?></li>
-									<?php endif; ?>
-								<?php endif; ?>
-							<?php endforeach ?>
-						</ul>
-					<?php endif; ?>
 				</div>
 				<div class="input-wrap">
 					<label title="shadowLastChange"><?php echo JText::_('SHADOW_LAST_CHANGE'); ?>:</label>
@@ -410,7 +361,7 @@ function submitbutton(pressbutton)
 						if (is_object($this->password) && $this->password->get('shadowLastChange'))
 						{
 							$shadowLastChange = $this->password->get('shadowLastChange')*86400;
-							echo date("Y-m-d", $shadowLastChange);
+							echo date("Y-m-d", $shadowLastChange); 
 							echo " ({$this->password->get('shadowLastChange')})";
 							echo " - " . intval((time()/86400) - ($shadowLastChange/86400)) . " days ago";
 						}
@@ -440,14 +391,14 @@ function submitbutton(pressbutton)
 				<fieldset class="adminform">
 					<legend><span><?php echo JText::_('GROUPS'); ?></span></legend>
 
-					<iframe width="100%" height="500" name="grouper" id="grouper" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=groups&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+					<iframe height="500" name="grouper" id="grouper" src="index.php?option=<?php echo $this->option; ?>&amp;controller=groups&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 				</fieldset>
 			</div>
 			<div id="page-hosts" class="tab">
 				<fieldset class="adminform">
 					<legend><span><?php echo JText::_('HOSTS'); ?></span></legend>
 
-					<iframe width="100%" height="500" name="hosts" id="hosts" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=hosts&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+					<iframe height="500" name="hosts" id="hosts-list" src="index.php?option=<?php echo $this->option; ?>&amp;controller=hosts&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
 				</fieldset>
 			</div>
 		</div>
@@ -474,7 +425,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<th><?php echo JText::_('COL_REGHOST'); ?></th>
-					<td><?php
+					<td><?php 
 						echo ($this->profile->get('regHost')) ? $this->profile->get('regHost').'<br />' : '';
 						echo ($this->profile->get('regIP')) ? $this->profile->get('regIP') : '';
 					?></td>
@@ -509,11 +460,11 @@ function submitbutton(pressbutton)
 			</tbody>
 		</table>
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('DETAILS'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
 				<label for="email"><?php echo JText::_('COL_EMAIL'); ?></label>
-			<?php
+			<?php 
 			if ($this->profile->get('emailConfirmed') == 1) {
 				$confirmed = '<label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" checked="checked" /> '.JText::_('EMAIL_CONFIRMED').'</label>';
 			} elseif ($this->profile->get('emailConfirmed') == 2) {
@@ -529,13 +480,13 @@ function submitbutton(pressbutton)
 				}
 			} else {
 				$confirmed  = '['.JText::_('EMAIL_UNKNOWN_STATUS').'] <label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> '.JText::_('EMAIL_CONFIRM').'</label>';
-			}
+			} 
 			?>
 			<?php if ($this->profile->get('email')) { ?>
 							<input type="text" name="profile[email]" id="email" value="<?php echo $this->escape(stripslashes($this->profile->get('email'))); ?>" /> (<?php echo $confirmed; ?>)
 			<?php } else { ?>
 							<span style="color:#c00;"><?php echo JText::_('EMAIL_NONE_ON_FILE'); ?></span><br />
-							<input type="text" name="profile[email]" id="email" value="" />
+							<input type="text" name="profile[email]" id="email" value="" /> 
 
 							<input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" />
 							<label for="emailConfirmed"><?php echo JText::_('EMAIL_CONFIRM'); ?></label>
@@ -554,8 +505,8 @@ function submitbutton(pressbutton)
 				<input type="text" name="profile[loginShell]" id="loginShell" value="<?php echo $this->escape($this->profile->get('loginShell')); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for=""><?php echo JText::_('COL_ADMINISTRATOR'); ?></label>
-				<?php echo ($this->profile->get('admin') ? implode(', ', $this->profile->get('admin')) : '--'); ?></td>
+				<label><?php echo JText::_('COL_ADMINISTRATOR'); ?></label>
+				<?php echo ($this->profile->get('admin') ? implode(', ', $this->profile->get('admin')) : '--'); ?>
 			</div>
 		</fieldset>
 	</div>

@@ -310,7 +310,8 @@ class MembersControllerPlugins extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getVar('id', array(0), '', 'array');
+		$id = JRequest::getVar('id', array(), '', 'array');
+		$id = (!is_array($id) ? array($id) : $id);
 		JArrayHelper::toInteger($id, array(0));
 
 		$client = JRequest::getWord('filter_client', 'site');

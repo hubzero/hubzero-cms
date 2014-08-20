@@ -324,7 +324,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$members = $this->group->get('members');
 
 		// Incoming array of users to promote
-		$mbrs = JRequest::getVar('id', array(0));
+		$mbrs = JRequest::getVar('id', array());
+		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
 		{
@@ -403,7 +404,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$managers = $this->group->get('managers');
 
 		// Incoming array of users to promote
-		$mbrs = JRequest::getVar('id', array(0));
+		$mbrs = JRequest::getVar('id', array());
+		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
 		{
@@ -489,7 +491,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$users = array();
 
 		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('id', array(0));
+		$mbrs = JRequest::getVar('id', array());
+		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
 		{
@@ -567,7 +570,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$users_man = array();
 
 		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('id', array(0));
+		$mbrs = JRequest::getVar('id', array());
+		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
 		{
@@ -651,7 +655,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$invitees = $this->group->get('invitees');
 
 		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('id', array(0));
+		$mbrs = JRequest::getVar('id', array());
+		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
 		{
@@ -730,7 +735,8 @@ class GroupsControllerMembership extends \Hubzero\Component\AdminController
 		$users = array();
 
 		// Incoming array of users to demote
-		$mbrs = JRequest::getVar('id', array(0));
+		$mbrs = JRequest::getVar('id', array());
+		$mbrs = (!is_array($mbrs) ? array($mbrs) : $mbrs);
 
 		foreach ($mbrs as $mbr)
 		{

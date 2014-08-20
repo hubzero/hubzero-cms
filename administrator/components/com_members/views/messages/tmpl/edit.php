@@ -34,7 +34,7 @@ $canDo = MembersHelper::getActions('component');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
-JToolBarHelper::title(JText::_('MEMBER').': <small><small>[ '. $text.' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('MEMBER') . ': ' . JText::_('Messaging') . ': ' . $text, 'user.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -45,8 +45,6 @@ JToolBarHelper::cancel();
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	var form = document.adminForm;
-
 	if (pressbutton == 'cancel') {
 		submitform(pressbutton);
 		return;
@@ -55,35 +53,26 @@ function submitbutton(pressbutton)
 	submitform(pressbutton);
 }
 </script>
-<?php if ($this->getErrors()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php } ?>
 <form action="index.php" method="post" name="adminForm" id="item-form">
+	<?php if ($this->getErrors()) { ?>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<?php } ?>
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Message Action'); ?></span></legend>
 
-			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="save" />
-
-			<table class="admintable">
-			 <tbody>
-			<tr>
-			   <td class="key"><label for="field-component"><?php echo JText::_('Component'); ?>:</label></td>
-			   <td><input type="text" name="fields[component]" id="field-component" value="<?php echo $this->escape(stripslashes($this->row->component)); ?>" /></td>
-			  </tr>
-			  <tr>
-			   <td class="key"><label for="field-action"><?php echo JText::_('Action'); ?>:</label></td>
-			   <td><input type="text" name="fields[action]" id="field-action" value="<?php echo $this->escape(stripslashes($this->row->action)); ?>" /></td>
-			  </tr>
-			  <tr>
-			   <td class="key"><label for="field-component"><?php echo JText::_('Action Description'); ?>:</label></td>
-			   <td><input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" /></td>
-			  </tr>
-			</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="field-component"><?php echo JText::_('Component'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[component]" id="field-component" value="<?php echo $this->escape(stripslashes($this->row->component)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-action"><?php echo JText::_('Action'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[action]" id="field-action" value="<?php echo $this->escape(stripslashes($this->row->action)); ?>" />
+			</div>
+			<div class="input-wrap">
+				<label for="field-component"><?php echo JText::_('Action Description'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
@@ -97,5 +86,11 @@ function submitbutton(pressbutton)
 		</table>
 	</div>
 	<div class="clr"></div>
+
+	<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+	<input type="hidden" name="task" value="save" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

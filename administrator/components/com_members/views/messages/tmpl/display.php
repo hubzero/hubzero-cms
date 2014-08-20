@@ -34,7 +34,7 @@ $canDo = MembersHelper::getActions('component');
 
 $juser =  JFactory::getUser();
 
-JToolBarHelper::title(JText::_('MEMBERS'), 'user.png');
+JToolBarHelper::title(JText::_('MEMBERS') . ': ' . JText::_('Messaging'), 'user.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 	</fieldset>
 	<div class="clr"></div>
 
-	<table class="adminlist" summary="<?php echo JText::_('TABLE_SUMMARY'); ?>">
+	<table class="adminlist">
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
@@ -91,7 +91,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8">
+				<td colspan="5">
 					<?php echo $this->pageNav->getListFooter(); ?>
 				</td>
 			</tr>
@@ -105,9 +105,9 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
-<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->id; ?>
@@ -118,15 +118,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					</span>
 				</td>
 				<td>
-<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->id; ?>">
-						<?php echo $this->escape($row->action); ?>
-					</a>
-<?php } else { ?>
-					<span>
-						<?php echo $this->escape($row->action); ?>
-					</span>
-<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<? echo $row->id; ?>">
+							<?php echo $this->escape($row->action); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape($row->action); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<span class="description">

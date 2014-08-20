@@ -187,16 +187,12 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$id = JRequest::getVar('id', array());
 
 		// Get the single ID we're working with
-		if (is_array($ids))
+		if (is_array($id))
 		{
-			$id = (!empty($ids)) ? $ids[0] : '';
-		}
-		else
-		{
-			$id = '';
+			$id = (!empty($id)) ? $id[0] : 0;
 		}
 
 		// determine task
@@ -238,7 +234,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		foreach ($arr as $key => $value)
 		{
 			$newArr[$key] = (is_array($value) ? $this->_multiArrayMap($func, $value) : $func($value));
-	    }
+		}
 
 		return $newArr;
 	}
@@ -674,7 +670,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// Get the single ID we're working with
 		if (!is_array($ids))
 		{
-			$ids = array();
+			$ids = array($ids);
 		}
 
 		// vars to hold results of pull
@@ -762,7 +758,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// Get the single ID we're working with
 		if (!is_array($ids))
 		{
-			$ids = array();
+			$ids = array($ids);
 		}
 
 		// Do we have any IDs?
@@ -876,7 +872,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// Get the single ID we're working with
 		if (!is_array($ids))
 		{
-			$ids = array();
+			$ids = array($ids);
 		}
 
 		// Do we have any IDs?
@@ -931,7 +927,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// Get the single ID we're working with
 		if (!is_array($ids))
 		{
-			$ids = array();
+			$ids = array($ids);
 		}
 
 		// Do we have any IDs?
@@ -983,7 +979,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// Get the single ID we're working with
 		if (!is_array($ids))
 		{
-			$ids = array();
+			$ids = array($ids);
 		}
 
 		// Do we have any IDs?

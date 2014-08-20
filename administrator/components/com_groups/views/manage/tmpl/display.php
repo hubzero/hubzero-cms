@@ -86,9 +86,9 @@ function submitbutton(pressbutton)
 			<option value="all"<?php echo ($this->filters['type'][0] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_GROUPS_TYPE'); ?></option>
 			<option value="hub"<?php echo ($this->filters['type'][0] == 'hub') ? ' selected="selected"' : ''; ?>>Hub</option>
 			<option value="super"<?php echo ($this->filters['type'][0] == 'super') ? ' selected="selected"' : ''; ?>>Super</option>
-<?php if ($canDo->get('core.admin')) { ?>
-			<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>System</option>
-<?php } ?>
+			<?php if ($canDo->get('core.admin')) { ?>
+				<option value="system"<?php echo ($this->filters['type'][0] == 'system') ? ' selected="selected"' : ''; ?>>System</option>
+			<?php } ?>
 			<option value="project"<?php echo ($this->filters['type'][0] == 'project') ? ' selected="selected"' : ''; ?>>Project</option>
 			<option value="course"<?php echo ($this->filters['type'][0] == 'course') ? ' selected="selected"' : ''; ?>>Course</option>
 		</select>
@@ -186,7 +186,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->cn; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->cn; ?>">
 						<?php echo $this->escape(stripslashes($row->description)); ?>
 					</a>
 				<?php } else { ?>
@@ -197,7 +197,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->cn; ?>">
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->cn; ?>">
 						<?php echo $this->escape($row->cn); ?>
 					</a>
 				<?php } else { ?>
@@ -210,13 +210,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($row->published) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_UNPUBLISH'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_UNPUBLISH'); ?>">
 						<span class="state publish">
 							<span class="text"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } else { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_PUBLISH'); ?>">
+					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_PUBLISH'); ?>">
 						<span class="state unpublish">
 							<span class="text"><?php echo JText::_('COM_GROUPS_UNPUBLISHED'); ?></span>
 						</span>
@@ -227,7 +227,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if (!$group->get('approved')) { ?>
-					<a class="jgrid state no" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id[]=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_APPROVE'); ?>">
+					<a class="jgrid state no" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_APPROVE'); ?>">
 						<span class="not-approved">
 							<span class="text"><?php echo JText::_('COM_GROUPS_APPROVE'); ?></span>
 						</span>
@@ -252,7 +252,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;gid=<?php echo $row->cn; ?>">Group Pages</a>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;gid=<?php echo $row->cn; ?>"><?php echo JText::_('COM_GROUPS_PAGES'); ?></a>
 					<?php } ?>
 				</td>
 			</tr>

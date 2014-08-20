@@ -129,7 +129,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		$this->view->setLayout('edit');
+		JRequest::setVar('hidemainmenu', 1);
 
 		if (is_object($row))
 		{
@@ -138,16 +138,12 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		else
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$id = JRequest::getVar('id', array());
 
 			// Get the single ID we're working with
-			if (is_array($ids))
+			if (is_array($id))
 			{
-				$id = (!empty($ids)) ? $ids[0] : 0;
-			}
-			else
-			{
-				$id = 0;
+				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
 			// Initiate database class and load info
@@ -165,7 +161,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -245,6 +241,7 @@ class MembersControllerMessages extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have any IDs?
 		if (!empty($ids))

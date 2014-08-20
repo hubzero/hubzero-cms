@@ -186,7 +186,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 	else
 	{
-		$lvisit = JHTML::_('date', $row->lastvisitDate, 'Y-m-d');
+		$lvisit = '<time datetime="' . $row->lastvisitDate . '">' . JHTML::_('date', $row->lastvisitDate, 'Y-m-d') . '</time>';
 	}
 
 	if ($row->picture)
@@ -204,13 +204,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->uidNumber; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->uidNumber; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $row->uidNumber; ?>
 				</td>
 				<td>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<? echo $row->uidNumber; ?>" title="<?php echo $this->escape(stripslashes($row->name)); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><span class=&quot;glyph org&quot;><?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : '[organization unknown]'; ?></span><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; ?></span>">
+					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->uidNumber; ?>" title="<?php echo $this->escape(stripslashes($row->name)); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><span class=&quot;glyph org&quot;><?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : '[organization unknown]'; ?></span><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; ?></span>">
 						<?php echo $this->escape(stripslashes($row->surname)) . ', ' . $this->escape(stripslashes($row->givenName)) . ' ' . $this->escape(stripslashes($row->middleName)); ?>
 					</a>
 				</td>
@@ -218,12 +218,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row->username); ?>
 				</td>
 				<td>
-				<?php if (trim($row->email)) { ?>
-					<a href="mailto:<?php echo $row->email; ?>"><?php echo $this->escape($row->email); ?></a>
-				<?php } ?>
+					<?php if (trim($row->email)) { ?>
+						<a href="mailto:<?php echo $row->email; ?>"><?php echo $this->escape($row->email); ?></a>
+					<?php } ?>
 				</td>
 				<td>
-					<a class="state <?php echo $state; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $state; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
 						<span class="text"><?php echo $alt; ?></span>
 					</a>
 				</td>
@@ -231,7 +231,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<time datetime="<?php echo $row->registerDate; ?>"><?php echo JHTML::_('date', $row->registerDate, 'Y-m-d'); ?></time>
 				</td>
 				<td>
-					<time datetime="<?php echo $row->lastvisitDate; ?>"><?php echo $lvisit; ?></time>
+					<?php echo $lvisit; ?>
 				</td>
 			</tr>
 <?php
