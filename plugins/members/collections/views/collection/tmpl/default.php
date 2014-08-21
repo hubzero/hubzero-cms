@@ -94,7 +94,7 @@ $this->css()
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>">
-			<?php if ($this->params->get('access-create-collection')) { ?>
+			<?php if ($this->params->get('access-create-collection') && !JRequest::getInt('no_html', 0)) { ?>
 				<div class="post new-post">
 					<a class="icon-add add" href="<?php echo JRoute::_($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
 						<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_NEW_POST'); ?>

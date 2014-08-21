@@ -79,7 +79,7 @@ $this->css()
 	<section class="main section">
 		<?php if ($this->rows->total() > 0) { ?>
 			<div id="posts" data-base="<?php echo JURI::base(true); ?>" class="view-as <?php echo $mode; ?>">
-				<?php if (!$juser->get('guest')) { ?>
+				<?php if (!$juser->get('guest') && !JRequest::getInt('no_html', 0)) { ?>
 					<div class="post new-post">
 						<a class="icon-add add" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=collections&task=post/new'); ?>">
 							<?php echo JText::_('COM_COLLECTIONS_NEW_POST'); ?>
