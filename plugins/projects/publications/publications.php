@@ -4011,7 +4011,7 @@ class plgProjectsPublications extends JPlugin
 					JRoute::_('index.php?option=' . $this->_option . a .
 					'alias=' . $this->_project->alias . a . 'active=publications' . a .
 					'pid=' . $row->publication_id) . '/?version=' . $row->version_number,
-				 	'publication', 1 );
+					'publication', 1 );
 		}
 
 		// Send out notifications
