@@ -1926,7 +1926,7 @@
 	}
 	.viewallstats {
 		float: right;
-		margin-top: -2.5em;
+		margin-top: -3em;
 	}
 	.viewallstats a:before {
 		content: "\f012";
