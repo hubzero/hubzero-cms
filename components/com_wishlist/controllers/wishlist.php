@@ -153,7 +153,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	{
 		if (JFactory::getUser()->get('guest'))
 		{
-			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->getTask(), false, true), 'server'));
+			$return = base64_encode(JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task, false, true), 'server'));
 			JFactory::getApplication()->redirect(
 				JRoute::_('index.php?option=com_users&view=login&return=' . $return),
 				$this->_msg,
