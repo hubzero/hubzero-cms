@@ -334,9 +334,7 @@ function popratings()
 	</div>
 		<div class="input-wrap">
 			<label for="publish_up"><?php echo JText::_('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
-			<?php $up = $this->row->published_up != '0000-00-00 00:00:00'
-						? JHTML::_('date', $this->row->published_up, 'Y-m-d H:i:s') : NULL; ?>
-			<?php echo JHTML::_('calendar', $up, 'published_up', 'published_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+			<?php echo JHTML::_('calendar', ($this->row->published_up != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->row->published_up, 'Y-m-d H:i:s')) : ''), 'published_up', 'published_up'); ?>
 		</div>
 		<div class="input-wrap">
 			<label for="publish_down"><?php echo JText::_('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
@@ -348,12 +346,12 @@ function popratings()
 						? JHTML::_('date', $this->row->published_down, 'Y-m-d H:i:s') : NULL;
 				}
 			?>
-			<?php echo JHTML::_('calendar', $down, 'published_down', 'published_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+			<?php echo JHTML::_('calendar', $down, 'published_down', 'published_down'); ?>
 		</div>
 	<div class="input-wrap">
 		<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_DOI'); ?>:</label>
 		<input type="text" id="doi" name="doi" value="<?php echo $this->row->doi; ?>" />
-	</div>	
+	</div>
 
 	<div class="input-wrap">
 		<table class="admintable">
