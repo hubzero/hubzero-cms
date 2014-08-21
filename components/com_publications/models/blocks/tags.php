@@ -191,7 +191,7 @@ class PublicationsBlockTags extends PublicationsModelBlock
 
 		// Save category
 		$cat = JRequest::getInt( 'pubtype', 0 );
-		if ($cat && $objP->_category->id != $cat)
+		if ($cat && $pub->_category->id != $cat)
 		{
 			$objP->category = $cat;
 			$objP->store();
@@ -210,8 +210,13 @@ class PublicationsBlockTags extends PublicationsModelBlock
 		// Start status
 		$status 	 = new PublicationsModelStatus();
 
-		$tagsHelper 	= new PublicationTags( $this->_parent->_db);
-		$status->status = $tagsHelper->countTags($pub->id) > 0 ? 1 : 0;
+		$tagsHelper  = new PublicationTags( $this->_parent->_db);
+
+		// Required?
+		$required = $manifest->params->required;
+		$count = $tagsHelper->countTags($pub->id);
+		$status->status = $required && $count == 0 ? 0 : 1;
+		$status->status = !$required && $count == 0 ? 2 : $status->status;
 
 		return $status;
 	}

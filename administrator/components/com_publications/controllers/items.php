@@ -501,9 +501,9 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
 
 			// Get manifest from either version record (published) or master type
-			$manifest   = $this->view->pub->curation
-						? $this->view->pub->curation
-						: $this->view->pub->_type->curation;
+			$manifest   = $pub->curation
+						? $pub->curation
+						: $pub->_type->curation;
 
 			// Get curation model
 			$pub->_curationModel = new PublicationsCuration($this->database, $manifest);
@@ -1591,19 +1591,67 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		require_once( JPATH_ROOT . DS . 'components' . DS
 			. 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
 
-		if ($pid)
-		{
-			JPluginHelper::importPlugin( 'projects', 'publications' );
-			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger( 'archivePub', array($pid, $vid) );
+		// Load publication & version classes
+		$objP  = new Publication( $this->database );
+		$objV  = new PublicationVersion( $this->database );
+		$mt    = new PublicationMasterType( $this->database );
 
-			$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
+		// Use new curation flow?
+		$useBlocks  = $this->config->get('curation', 0);
+
+		if (!$objP->load($pid) || !$objV->load($vid))
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			return;
+		}
+		$pub = $objP->getPublication($pid, $objV->version_number, $objP->project_id);
+		if (!$pub)
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION') );
+			return;
 		}
 
+		if ($useBlocks)
+		{
+			$pub->version 	= $objV->version_number;
+
+			// Load publication project
+			$pub->_project = new Project($this->database);
+			$pub->_project->load($pub->project_id);
+
+			// Get master type info
+			$mt = new PublicationMasterType( $this->database );
+			$pub->_type = $mt->getType($pub->base);
+			$typeParams = new JParameter( $pub->_type->params );
+
+			// Get attachments
+			$pContent = new PublicationAttachment( $this->database );
+			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
+
+			// Get authors
+			$pAuthors 			= new PublicationAuthor( $this->database );
+			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
+
+			// Get manifest from either version record (published) or master type
+			$manifest   = $pub->curation
+						? $pub->curation
+						: $pub->_type->curation;
+
+			// Get curation model
+			$pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+
+			// Set pub assoc and load curation
+			$pub->_curationModel->setPubAssoc($pub);
+		}
+
+		JPluginHelper::importPlugin( 'projects', 'publications' );
+		$dispatcher = JDispatcher::getInstance();
+		$result = $dispatcher->trigger( 'archivePub', array($pub, $objV) );
+
+		$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
+
 		// Checkin the resource
-		$row = new Publication($this->database);
-		$row->load($pid);
-		$row->checkin();
+		$objV->checkin();
 
 		$url = 'index.php?option=' . $this->_option . '&controller='
 			. $this->_controller . '&task=edit' . '&id[]=' . $pid . '&version=' . $version;

@@ -323,7 +323,7 @@
 	.el-updated .status-notice {
 		color: black;
 		background: #FFF;
-		display: block;
+		display: block !important;
 	}
 	.el-failed .edit-notice {
 		display: block;
@@ -335,7 +335,7 @@
 	.el-failed .status-notice {
 		color: black;
 		background: #FFF;
-		display: block;
+		display: block !important;
 	}
 	.notice-text {
 		display: none;

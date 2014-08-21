@@ -256,6 +256,7 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 		{
 			$row->modified 	  = JFactory::getDate()->toSql();
 			$row->modified_by = $actor;
+			$this->_parent->set('_update', 1);
 		}
 
 		// Report error

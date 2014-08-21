@@ -202,6 +202,10 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 
 		// Incoming
 		$url = JRequest::getVar('citation-doi', '');
+		if (!$url)
+		{
+			return true;
+		}
 
 		$parts 	= explode("doi:", $url);
 		$doi   	= count($parts) > 1 ? $parts[1] : $url;
@@ -380,10 +384,10 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 			$pub->_citations = $c->getCitations( 'publication', $pub->id );
 		}
 
-		if ($pub->_citations)
-		{
-			$status->status = 1;
-		}
+		// Required?
+		$required = $manifest->params->required;
+		$status->status = $required && (!$pub->_citations || count($pub->_citations) == 0) ? 0 : 1;
+		$status->status = !$required && (!$pub->_citations || count($pub->_citations) == 0) ? 2 : $status->status;
 
 		return $status;
 	}

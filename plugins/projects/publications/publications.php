@@ -750,6 +750,11 @@ class plgProjectsPublications extends JPlugin
 		$pub->_project 	= $this->_project;
 		$pub->_type    	= $mt->getType($pub->base);
 
+		// Get type info
+		$pub->_category = new PublicationCategory( $this->_database );
+		$pub->_category->load($pub->category);
+		$pub->_category->_params = new JParameter( $pub->_category->params );
+
 		// Get manifest from either version record (published) or master type
 		$manifest   = $pub->curation
 					? $pub->curation
@@ -3953,7 +3958,8 @@ class plgProjectsPublications extends JPlugin
 	 */
 	public function onAfterChangeState( $pub, $row, $originalStatus = 3 )
 	{
-		$state = $row->state;
+		$state  = $row->state;
+		$notify = 1;
 
 		// Log activity in curation history
 		$pub->_curationModel->saveHistory($pub, $this->_uid, $originalStatus, $state, 0 );
@@ -4001,10 +4007,64 @@ class plgProjectsPublications extends JPlugin
 		{
 			$objAA = new ProjectActivity ( $this->_database );
 			$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
-				   $action, $row->publication_id, $pubtitle,
-				   JRoute::_('index.php?option=' . $this->_option . a .
-				   'alias=' . $this->_project->alias . a . 'active=publications' . a .
-				   'pid=' . $row->publication_id) . '/?version=' . $row->version_number, 'publication', 1 );
+					$action, $row->publication_id, $pubtitle,
+					JRoute::_('index.php?option=' . $this->_option . a .
+					'alias=' . $this->_project->alias . a . 'active=publications' . a .
+					'pid=' . $row->publication_id) . '/?version=' . $row->version_number,
+				 	'publication', 1 );
+		}
+
+		// Send out notifications
+		$profile = \Hubzero\User\Profile::getInstance($this->_uid);
+		$actor 	 = $profile
+				? $profile->get('name')
+				: JText::_('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
+		$juri 	 = JURI::getInstance();
+		$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
+		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+		$message = $actor . ' ' . html_entity_decode($action) . '  - ' . $link;
+
+		if ($notify)
+		{
+			$admingroup = $this->_config->get('admingroup', '');
+			$group = \Hubzero\User\Group::getInstance($admingroup);
+			$admins = array();
+
+			if ($admingroup && $group)
+			{
+				$members 	= $group->get('members');
+				$managers 	= $group->get('managers');
+				$admins 	= array_merge($members, $managers);
+				$admins 	= array_unique($admins);
+
+				ProjectsHelper::sendHUBMessage(
+					'com_projects',
+					$this->_config,
+					$this->_project,
+					$admins,
+					JText::_('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS'),
+					'projects_new_project_admin',
+					'publication',
+					$message
+				);
+			}
+		}
+
+		// Notify project managers (in all cases)
+		$objO = new ProjectOwner($this->_database);
+		$managers = $objO->getIds($this->_project->id, 1, 1);
+		if (!$this->_project->provisioned && !empty($managers))
+		{
+			ProjectsHelper::sendHUBMessage(
+				'com_projects',
+				$this->_config,
+				$this->_project,
+				$managers,
+				JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
+				'projects_admin_notice',
+				'publication',
+				$message
+			);
 		}
 
 		// Pass success or error message
@@ -4211,42 +4271,14 @@ class plgProjectsPublications extends JPlugin
 		// Embargo?
 		if ($pubdate)
 		{
-			$date = explode('-', $pubdate);
-			if (count($date) == 3)
-			{
-				$year 	= $date[0];
-				$month 	= $date[1];
-				$day 	= $date[2];
-				if (intval($month) && intval($day) && intval($year))
-				{
-					if (strlen($day) == 1)
-					{
-						$day='0' . $day;
-					}
-
-					if (strlen($month) == 1)
-					{
-						$month = '0' . $month;
-					}
-					if (checkdate($month, $day, $year))
-					{
-						$pubdate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year))->toSql();
-					}
-				}
-			}
+			$pubdate = $this->parseDate($pubdate);
 
 			$tenYearsFromNow = JFactory::getDate(strtotime("+10 years"))->toSql();
 
 			// Stop if more than 10 years from now
 			if ($pubdate > $tenYearsFromNow)
 			{
-				$this->setError(JText::_('Embargo period on a publication cannot extend for more than 10 years. Please choose an earlier date.') );
-				$url .= '/?action= ' . $this->_task . '&version=' . $version;
-				$this->_message = array('message' => $this->getError(), 'type' => 'error');
-
-				// Redirect
-				$this->_referer = $url;
-				return;
+				$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_EMBARGO') );
 			}
 		}
 
@@ -4354,7 +4386,7 @@ class plgProjectsPublications extends JPlugin
 				$published = $this->_publishAttachments($row);
 
 				// Produce archival package
-				$this->archivePub($pid, $row->id);
+				$this->archivePub($pub, $row);
 
 				// Display status message
 				switch ($state)
@@ -4401,16 +4433,15 @@ class plgProjectsPublications extends JPlugin
 						   'pid=' . $pid) . '/?version=' . $row->version_number, 'publication', 1 );
 				}
 
-				// Notify administrator of a new publication
+				// Send out notifications
 				$profile = \Hubzero\User\Profile::getInstance($this->_uid);
-
-				$juri = JURI::getInstance();
-
-				$sef = JRoute::_('index.php?option=com_publications' . a . 'id=' . $pid );
-				if (substr($sef,0,1) == '/')
-				{
-					$sef = substr($sef,1,strlen($sef));
-				}
+				$actor 	 = $profile
+						? $profile->get('name')
+						: JText::_('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
+				$juri 	 = JURI::getInstance();
+				$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
+				$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+				$message = $actor . ' ' . html_entity_decode($action) . '  - ' . $link;
 
 				if ($notify)
 				{
@@ -4433,13 +4464,12 @@ class plgProjectsPublications extends JPlugin
 							JText::_('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS'),
 							'projects_new_project_admin',
 							'publication',
-							$profile->get('name') . ' ' . $action . '  - ' . $juri->base()
-								. $sef . '/?version=' . $row->version_number
+							$message
 						);
 					}
 				}
 
-				// Notify project managers
+				// Notify project managers (in all cases)
 				$objO = new ProjectOwner($this->_database);
 				$managers = $objO->getIds($this->_project->id, 1, 1);
 				if (!$this->_project->provisioned && !empty($managers))
@@ -4452,8 +4482,7 @@ class plgProjectsPublications extends JPlugin
 						JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
 						'projects_admin_notice',
 						'publication',
-						$profile->get('name') . ' ' . html_entity_decode($action) . ' - ' . $juri->base()
-							. $sef . '/?version=' . $row->version_number
+						$message
 					);
 				}
 			}
@@ -7301,22 +7330,24 @@ class plgProjectsPublications extends JPlugin
 	/**
 	 * Archive data in a publication and package
 	 *
-	 * @param      integer  	$db_name
-	 * @param      integer  	$version
+	 * @param      object  	$pub	Publication object
+	 * @param      object  	$row	Version object
 	 *
 	 * @return     string data
 	 */
-	public function archivePub($pid = 0, $vid = 0)
+	public function archivePub( $pub, $row)
 	{
-		if (!$pid || !$vid)
+		if (!$pub || !$row)
 		{
 			return false;
 		}
+		$pid = $pub->id;
+		$vid = $row->id;
 
 		$database = JFactory::getDBO();
 
 		// Archival name
-		$tarname = JText::_('Publication').'_'.$pid.'.zip';
+		$tarname = JText::_('Publication') . '_' . $pid . '.zip';
 
 		// Load publication & version classes
 		$objP  = new Publication( $database );
@@ -7399,7 +7430,7 @@ class plgProjectsPublications extends JPlugin
 			$sDocs 		= $pContent->getAttachmentsArray( $vid, '4' );
 			$pDocs 		= $pContent->getAttachmentsArray( $vid, '1' );
 
-			$mFolder 	= JText::_('Publication').'_'.$pid;
+			$mFolder 	= JText::_('Publication') . '_' . $pid;
 
 			// Add primary and supporting content
 			$mainFiles = array();

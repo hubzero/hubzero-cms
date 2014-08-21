@@ -217,16 +217,15 @@ $termsUrl = $config->get('deposit_terms', '');
 						// Do we have a submitter choice?
 						$submitter = $this->pub->_submitter->name;
 						$submitter.= $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : '';
-						$submitter.= '<input type="hidden" name="submitter" value="' . $this->pub->_submitter->user_id. '" />';
-						if ($this->pub->_submitter->user_id != $juser->get('id'))
+						$submitter.= '<input type="hidden" name="submitter" value="' . $this->pub->_submitter->uid. '" />';
+						if ($this->pub->_submitter->uid != $juser->get('id'))
 						{
 							$submitter  = '<select name="submitter">' . "\n";
 							$submitter .= '<option value="' . $juser->get('id') . '" selected="selected">' . $juser->get('name')
 								. '</option>' . "\n";
-							$submitter .= '<option value="' . $this->pub->_submitter->user_id . '">' . $this->pub->_submitter->name . '</option>' . "\n";
+							$submitter .= '<option value="' . $this->pub->_submitter->uid . '">' . $this->pub->_submitter->name . '</option>' . "\n";
 							$submitter .= '</select>';
 						}
-
 					?>
 					<label>
 						<span class="review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
