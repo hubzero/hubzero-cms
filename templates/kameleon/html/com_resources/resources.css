@@ -1,0 +1,78 @@
+@import url("../../../../components/com_resources/assets/css/resources.css");
+
+	.com_resources .container .container-block,
+	.com_resources .container .results {
+		background: transparent;
+		border: none;
+	}
+	.com_resources .container .results > li {
+		padding: 30px 0;
+		margin: 0;
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.com_resources .container .results > li:first-child {
+		border-top: none;
+	}
+	.com_resources .container .results p {
+		margin: 1em 0 0 0;
+	}
+	.com_resources .container .results p.title {
+		font-weight: 400;
+		font-size: 1.1em;
+		line-height: 1;
+		margin: 0 0 0.5em 0;
+	}
+	.com_resources .container .results li p:last-child {
+		margin-bottom: 0;
+	}
+	.com_resources .container .results .details {
+		font-style: italic;
+		font-size: 11px;
+		margin: 0.5em 0;
+	}
+	.com_resources .container .results .details span {
+		color: transparent;
+	}
+	.results .metadata {
+		margin-top: -2.5em;
+	}
+	.results .metadata p {
+		text-align: right;
+	}
+
+	.com_resources #content-header {
+		color: #f1f1f1;
+		color: rgba(255, 255, 255, 0.75);
+	}
+	.com_resources #content-header .span8 a,
+	.com_resources #content-header .aside a {
+		color: #fff;
+	}
+	.com_resources #content-header .metadata {
+		border: 1px solid #fff;
+		border: 1px solid rgba(255, 255, 255, 0.5);
+		background: rgba(255, 255, 255, 0.1);
+		margin: 0 0 30px 0;
+	}
+	.com_resources #content-header h2 {
+		padding: 0 0 0.5em 0;
+	}
+	.com_resources section.section .tabbed {
+		padding: 0;
+	}
+	.com_resources section.section .tabbed .subject {
+		padding: 0;
+	}
+	.com_resources section.section .tabbed>.section {
+		margin: 30px 30px 30px 60px;
+	}
+	.com_resources section.section .subject+.rankarea {
+		border: none;
+		background: transparent;
+	}
+	.com_resources section.upperpane .subject {
+		padding: 0 0 30px 60px;
+	}
+	.com_resources .tabbed .sub-menu {
+		padding-left: 60px;
+	}
