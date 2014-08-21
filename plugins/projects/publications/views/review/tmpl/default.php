@@ -89,7 +89,7 @@ $jconfig = JFactory::getConfig();
 $sitename = $jconfig->getValue('config.sitename');
 
 // Get access info
-if($show_access) {
+if ($show_access) {
 	switch ($this->pub->access)
 	{
 		case 0: default:
@@ -109,9 +109,9 @@ if($show_access) {
 
 // Restricted to group?
 $groups = '';
-if($this->access_groups && ($this->pub->access == 2 || $this->pub->access == 3)) {
+if ($this->access_groups && ($this->pub->access == 2 || $this->pub->access == 3)) {
 	$i = 1;
-	foreach($this->access_groups as $gr) {
+	foreach ($this->access_groups as $gr) {
 		$groups .= $gr->description;
 		$groups .= $i == count($this->access_groups) ? '' : ', ';
 		$i++;
@@ -134,7 +134,7 @@ $append .= '</span>';
 <p class="mini"><?php echo ($this->row->state == 1)
 	? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_OVERVIEW_SUMMARY_BELOW')) . ' '
 	: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SUMMARY_BELOW')) . ' '; ?>
-	<?php if($this->row->state != 1 && !$this->publication_allowed) {
+	<?php if ($this->row->state != 1 && !$this->publication_allowed) {
 		echo ' <span class="urgency block">' . JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_MISSING_PARTS').'</span> ';
 	}
 	elseif ($this->publication_allowed)
@@ -151,26 +151,26 @@ $append .= '</span>';
 </p>
 <?php } ?>
 
-<?php if($this->publication_allowed && $canpublish) { ?>
+<?php if ($this->publication_allowed && $canpublish) { ?>
 <div class="review-controls">
 	<div class="next_action">
 		<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_WHAT_TO_EXPECT'); ?></h5>
 		<ul class="toexpect">
-			<?php if($republish) { ?>
+			<?php if ($republish) { ?>
 			<li><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED_REPUBLISH'); ?></li>
 			<?php } ?>
-			<?php if(!$archive && !$republish && !$post) { ?>
+			<?php if (!$archive && !$republish && !$post) { ?>
 			<li><?php
 					echo ($this->pubconfig->get('autoapprove', 0) || $post)
 					? JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NOT_NEEDED')
 					: JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_APPROVAL_NEEDED'); ?>
 			</li>
 			<?php } ?>
-			<?php if(!$this->row->doi && !$republish && !$post && $doi_txt && $this->pubconfig->get('doi_service')) { ?>
+			<?php if (!$this->row->doi && !$republish && !$post && $doi_txt && $this->pubconfig->get('doi_service')) { ?>
 			<li><?php echo $doi_txt; ?></li>
 			<?php } ?>
 			<li>
-				<?php if($show_access) { ?>
+				<?php if ($show_access) { ?>
 				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACCESS_IS').' <strong>'.strtolower($access).'</strong> - '.$access_tip; ?>.
 				<?php } else {
 					if ($this->task == 'publish' || $republish)
@@ -283,7 +283,7 @@ else if ($this->authorized == 3)
 			</div>
 			<?php echo $this->pub->abstract ? '<p>'.\Hubzero\Utility\String::truncate(stripslashes($this->pub->abstract), 250).'</p>'  : ''; ?>
 		 </div>
-			<?php if($show_gallery) { ?>
+			<?php if ($show_gallery) { ?>
 			<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY')); ?></p>
 			<?php
 				// Show gallery
@@ -301,7 +301,7 @@ else if ($this->authorized == 3)
 			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION'); ?></p>
 			<?php echo $description ? $description  : '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
 			<?php
-				if($show_metadata )
+				if ($show_metadata )
 				{
 					// Show metadata
 					echo $metadata['html']
@@ -309,7 +309,7 @@ else if ($this->authorized == 3)
 					: '<p class="pub-review-label">'.JText::_('PLG_PROJECTS_PUBLICATIONS_METADATA').'</p><p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 				}
 			?>
-			<?php if($show_notes) { ?>
+			<?php if ($show_notes) { ?>
 			<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_NOTES')); ?></p>
 			<?php
 				// Show notes
@@ -321,7 +321,7 @@ else if ($this->authorized == 3)
 				}
 			?>
 			<?php } ?>
-			<?php if($show_tags) { ?>
+			<?php if ($show_tags) { ?>
 			<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TAGS')); ?></p>
 			<?php
 				// Show tags
@@ -344,7 +344,7 @@ else if ($this->authorized == 3)
 			<div class="three columns first second">
 				<ul class="c-list">
 					<li>
-				<?php	foreach($this->primary as $att) {
+				<?php	foreach ($this->primary as $att) {
 
 						// Draw item
 						$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem',
@@ -370,17 +370,17 @@ else if ($this->authorized == 3)
 				<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SERVEAS_NOTE_'.strtoupper($serveas)); ?>
 			</div>
 			<div class="clear"></div>
-			<?php if($this->version == 'dev') { ?>
+			<?php if ($this->version == 'dev') { ?>
 				<p class="footnote">*<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_UPDATED_NOTICE'); ?>
-				<?php if(!$post) { echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_REPUB_NOTICE')); } ?>
+				<?php if (!$post) { echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_REPUB_NOTICE')); } ?>
 				</p>
 			<?php } ?>
 			<?php } ?>
 			<p class="pub-review-label"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUPPORTING_DOCS'); ?></p>
-				<?php if(count($this->secondary) > 0) { ?>
+				<?php if (count($this->secondary) > 0) { ?>
 				<ul class="c-list">
 					<li>
-				<?php	foreach($this->secondary as $att) {
+				<?php	foreach ($this->secondary as $att) {
 					// Draw item
 					$itemHtml = $this->_typeHelper->dispatchByType($att->type, 'drawItem',
 					$data = array(
@@ -398,19 +398,19 @@ else if ($this->authorized == 3)
 					echo $itemHtml;
 				 } ?>
 				</ul>
-				<?php if($this->version == 'dev') { ?>
+				<?php if ($this->version == 'dev') { ?>
 					<p class="footnote">*<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_UPDATED_NOTICE'); ?></p>
 				<?php } ?>
 				<?php } else { echo '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; } ?>
 
-				<?php if($show_license) { ?>
+				<?php if ($show_license) { ?>
 					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE')); ?></p>
 					<?php echo $this->license
 								? PublicationsHtml::showLicense( $this->pub, $this->version, 'com_publications', $this->license )
 								: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>'; ?>
 				<?php } ?>
 
-				<?php if($this->pubconfig->get('show_audience')) { ?>
+				<?php if ($this->pubconfig->get('show_audience')) { ?>
 					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_AUDIENCE')); ?></p>
 					<?php
 						$ra 		= new PublicationAudience( $this->database );
@@ -420,11 +420,11 @@ else if ($this->authorized == 3)
 						: '<p class="nocontent">'.JText::_('PLG_PROJECTS_PUBLICATIONS_NONE').'</p>';
 					?>
 				<?php } ?>
-				<?php if($show_access) { ?>
+				<?php if ($show_access) { ?>
 					<p class="pub-review-label"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS')); ?></p>
 					<p class="mini">
-					<?php echo '<span class="dark"><strong>'.$access.'</strong></span> - '.$access_tip; if($groups) { echo ': '.$groups; }?></p>
-					<?php if(!$post) { ?><p class="mini"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE').' '; ?><strong>
+					<?php echo '<span class="dark"><strong>'.$access.'</strong></span> - '.$access_tip; if ($groups) { echo ': '.$groups; }?></p>
+					<?php if (!$post) { ?><p class="mini"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE').' '; ?><strong>
 					<?php echo ($this->pub->access == 3) ? JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE_PRIVATE') : JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PAGE_OPEN');  ?></strong>.
 					</p><?php } ?>
 				<?php } ?>
