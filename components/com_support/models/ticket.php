@@ -290,6 +290,24 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				}
 			break;
 
+			case 'color':
+				if ($this->get('status'))
+				{
+					foreach ($this->statuses() as $s)
+					{
+						if ($this->get('status') == $s->get('id'))
+						{
+							$status = $s->get('color');
+							break;
+						}
+					}
+				}
+				else
+				{
+					$status ='transparent';
+				}
+			break;
+
 			case 'class':
 				if ($this->get('status'))
 				{

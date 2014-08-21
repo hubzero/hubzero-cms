@@ -263,17 +263,6 @@ $this->css()
 						$row = new SupportModelTicket($row);
 					}
 
-					if ($row->get('status'))
-					{
-						foreach ($row->statuses() as $status)
-						{
-							if ($status->get('id') == $row->get('status'))
-							{
-								break;
-							}
-						}
-					}
-
 					$comments = 0;
 
 					$lastcomment = '0000-00-00 00:00:00';
@@ -294,7 +283,7 @@ $this->css()
 					}
 					?>
 					<tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
-						<td<?php if ($row->get('status')) { echo ($status->get('color') ? ' style="border-left-color: #' . $status->get('color') . ';"' : ''); } ?>>
+						<td<?php if ($row->get('status')) { echo ($row->status('color') ? ' style="border-left-color: #' . $row->status('color') . ';"' : ''); } ?>>
 							<span class="ticket-id">
 								<?php echo $row->get('id'); ?>
 							</span>
