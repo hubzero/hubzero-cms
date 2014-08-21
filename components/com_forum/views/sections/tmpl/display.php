@@ -213,7 +213,8 @@ $juser = JFactory::getUser();
 						$lname = JText::_('COM_FORUM_ANONYMOUS');
 						if (!$post->get('anonymous'))
 						{
-							$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
+							//$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
+							$lname = $this->escape(stripslashes($post->creator('name')));
 						}
 						foreach ($this->sections as $section)
 						{
@@ -231,14 +232,17 @@ $juser = JFactory::getUser();
 							}
 						}
 						?>
-						<a class="entry-date" href="<?php echo JRoute::_($post->link()); ?>">
+						<a class="entry-comment" href="<?php echo JRoute::_($post->link()); ?>">
+							<?php echo $post->content('clean', 170); ?>
+						</a>
+						<span class="entry-author">
+							<?php echo $lname; ?>
+						</span>
+						<span class="entry-date">
 							<span class="entry-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
 							<span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span>
 							<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span>
 							<span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
-						</a>
-						<span class="entry-author">
-							<?php echo JText::sprintf('COM_FORUM_BY_USER', $lname); ?>
 						</span>
 					<?php } else { ?>
 						<?php echo JText::_('COM_FORUM_NONE'); ?>
