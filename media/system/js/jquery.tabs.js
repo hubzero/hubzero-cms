@@ -45,7 +45,7 @@
 
 			//parentsdl.css('height', dlHeight + currentHeight);
 
-			location.hash = $(this).attr('href');
+			//location.hash = $(this).attr('href');
 
 			return false;
 		});
