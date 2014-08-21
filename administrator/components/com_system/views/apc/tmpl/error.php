@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_SYSTEM_APCn'), 'config.png');
+JToolBarHelper::title(JText::_('COM_SYSTEM_APC'), 'config.png');
 
 if ($this->getError()) { ?>
 <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
