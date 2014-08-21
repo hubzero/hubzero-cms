@@ -1131,7 +1131,7 @@
 		background: #e1e1e1 url("../images/layout/noise-lite.png");
 		border: none;
 		color: #666;
-		margin: -1px -15px 3em -15px;
+		margin: -1px 0 3em 0;
 	}
 	/* White background for icon */
 	body #introduction small.intro-before,
@@ -1697,6 +1697,9 @@
 		    -ms-box-sizing: border-box;
 		     -o-box-sizing: border-box;
 		        box-sizing: border-box;
+	}
+	section.section>.section-inner {
+		display: table-row;
 	}
 	section.section .subject {
 		display: table-cell;
