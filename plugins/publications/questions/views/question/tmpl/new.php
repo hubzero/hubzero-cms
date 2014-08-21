@@ -63,7 +63,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			</label>
 
 			<label>
-				<?php echo JText::_('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
+				<?php echo JText::_('COM_ANSWERS_TAGS'); ?>:<br />
 				<?php
 				JPluginHelper::importPlugin('hubzero');
 
