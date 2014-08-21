@@ -1778,3 +1778,12 @@ fieldset.assignment label {
 .com_groups #content-header {
 	padding-right: 180px;
 }
+
+/* Table styles on group page */
+.group-page table {
+	border: none;
+}
+.group-page table th,
+.group-page table td {
+	border: 1px solid #dadada;
+}
