@@ -47,8 +47,20 @@ if ($canonical = $this->model->attribs->get('canonical', ''))
 		$url = rtrim(JURI::base(), DS) . DS . ltrim($url, DS);
 	}
 	?>
-	<div class="new-version">
-		<p>A newer version is available at <a href="<?php echo $url; ?>"><?php echo $title; ?></a></p>
+	<div class="new-version grid">
+		<div class="col span8">
+			&nbsp;
+		</div>
+		<div class="col span4 omega">
+			<p><?php echo JText::_('COM_RESOURCES_NEWER_VER_AVAIL'); ?></p>
+		</div>
 	</div>
+	<div class="new-version-message">
+		<div class="inner">
+			<h3><?php echo JText::_('COM_RESOURCES_NEWER_VER_AVAIL'); ?></h3>
+			<p><?php echo JText::_('COM_RESOURCES_NEWER_VER_AVAIL_EXTENDED'); ?> <a href="<?php echo $url; ?>"><?php echo $title; ?></a></p>
+		</div>
+	</div>
+
 	<?php
 }
