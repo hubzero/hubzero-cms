@@ -195,6 +195,6 @@ class MenusViewItems extends JViewLegacy
 			JToolBarHelper::custom('items.rebuild', 'refresh.png', 'refresh_f2.png', 'JToolbar_Rebuild', false);
 			JToolBarHelper::divider();
 		}
-		JToolBarHelper::help('JHELP_MENUS_MENU_ITEM_MANAGER');
+		JToolBarHelper::help('items');
 	}
 }

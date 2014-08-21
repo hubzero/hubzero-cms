@@ -1,0 +1,176 @@
+<article>
+	<h1>Menu Manager: Menu ITems</h1>
+
+	<h2> <span class="mw-headline" id="How_to_access">How to access</span></h2>
+<p>Select <b>Menus → [name of the menu]</b> from the drop-down menu on the back-end of your Joomla! installation. For example, if a Menu is called "Main Menu", select <b>Menus → Main Menu</b>. Or navigate to the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager" title="Help25:Menus Menu Manager">Menu Manager</a> and click on the icon in the Menu Items column.</p>
+<h2> <span class="mw-headline" id="Description">Description</span></h2>
+<p>The Menu Item Manager lists the menu items contained in a menu created using the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager" title="Help25:Menus Menu Manager">Menu Manager</a>.</p>
+
+<h2> <span class="mw-headline" id="Column_Headers">Column Headers</span></h2>
+<ul>
+<li><b>Checkbox</b>. Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</li>
+</ul>
+<ul>
+<li><b>Title</b>. The name of the item. For a Menu Item, the Title will display in the Menu. For an Article or Category, the Title may optionally be displayed on the web page. This entry is required. You can open the item for editing by clicking on the Title.</li>
+</ul>
+<ul>
+<li><b>Published</b>. Whether the item has been published or not. You can change the Published state by clicking on the icon in this column.</li>
+</ul>
+<ul>
+<li><b>Ordering</b>. The order in which to display items. You can sort the list by order number by clicking on the Ordering label in the column heading. If the list is sorted by this column, you can change the order by clicking the arrows or by entering the sequential order and clicking the 'Save Order' icon. This is shown in the screen below.
+
+Note that the ordering is only defined within a single category. For this reason, it is easier to re-order the list if you use the Category filter to select one category. Note that the display order on a page can often be overridden the 'Advanced Options' section of each <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Item_Manager_Edit" title="Help25:Menus Menu Item Manager Edit">Menu Item</a>.</li>
+</ul>
+<ul>
+<li><b>Access.</b> The viewing level access for this item.</li>
+</ul>
+<ul>
+<li><b>Menu Item Type.</b> The Menu Item Type selected when this menu item was created. This can be one of the core menu item types or a menu item type provided by an installed extension.</li>
+</ul>
+<ul>
+<li><b>Home</b>. The yellow star icon designates which menu item is the current Home Page. Clicking on an empty Star icon will designate that menu item as the new Home Page.</li>
+</ul>
+<ul>
+<li><b>Language</b>. Item language.</li>
+</ul>
+<ul>
+<li><b>ID</b>. This is a unique identification number for this item assigned automatically by Joomla!. It is used to identify the item internally, and you cannot change this number. When creating a new item, this field displays 0 until you save the new entry, at which point a new ID is assigned to it.</li>
+</ul>
+<h2> <span class="mw-headline" id="Toolbar">Toolbar</span></h2>
+<p>At the top right you will see the toolbar. The functions are:</p>
+<ul>
+<li><b>New</b>. Opens the editing screen to create a new menu item.</li>
+<li><b>Edit</b>. Opens the editing screen for the selected menu item. If more than one menu item is selected (where applicable), only the first menu item will be opened. The editing screen can also be opened by clicking on the Title or Name of the menu item.</li>
+<li><b>Publish</b>. Makes the selected menu items available to visitors to your website.</li>
+<li><b>Unpublish</b>. Makes the selected menu items unavailable to visitors to your website.</li>
+<li><b>Check In</b>. Checks-in the selected menu items. Works with one or multiple menu items selected.</li>
+<li><b>Trash</b>. Changes the status of the selected menu items to indicate that they are trashed. Trashed menu items can still be recovered by selecting "Trashed" in the Select Status filter and changing the status of the menu items to Published or Unpublished as preferred. To permanently delete trashed menu items, select "Trashed" in the Select Status filter, select the menu items to be permanently deleted, then click the Empty Trash toolbar icon.</li>
+<li><b>Home</b>. Makes the page associated with the currently selected menu item the home page of your site. That is, it becomes the default page on your website.</li>
+<li><b>Rebuild</b>. Reconstructs and refreshes the relevant table. Normally, you do <i>not</i> need to rebuild this table. This function is provided in case the data in the table becomes corrupted.</li>
+<li><b>Help</b>. Opens this help screen.</li>
+</ul>
+<h2> <span class="mw-headline" id="Options">Options</span></h2>
+<h3> <span class="mw-headline" id="Buttons_Common_to_All_Tabs">Buttons Common to All Tabs</span></h3>
+<ul>
+<li><b>Save</b>. Saves the banner options and stays in the current screen.</li>
+<li><b>Save &amp; Close</b>. Saves the banner options and closes the current screen.</li>
+<li><b>Cancel/Close</b>. Closes the current screen and returns to the previous screen without saving any modifications you may have made.</li>
+</ul>
+<h3> <span class="mw-headline" id="Page_Display_Options">Page Display Options</span></h3>
+<ul>
+<li><b>Browser Page Title.</b> Optional text for the "Browser Page Title" Element. If blank - a default value is used.</li>
+<li><b>Show Page Heading.</b> (Show/Hide) Show or hide the Browser page title (above) in the heading of the page.</li>
+<li><b>Page Heading.</b> Optional alternative text for the page heading.</li>
+<li><b>Page Class.</b> Add an optional page class to elements in the page. It allows CSS styling specific to menu items pages.</li>
+</ul>
+<h3> <span class="mw-headline" id="Permissions_Tab">Permissions Tab</span></h3>
+<p>This screen allows you to set the component permissions in Joomla. This is important to consider if you have sites with many different user categories all of whom need to have different accessibilities to the component. The screenshot below describes what you should see and the text below that describes what each permission level gives the user access to:</p>
+
+<p>You work on one Group at a time by opening the slider for that group. You change the permissions in the Select New Settings drop-down list boxes. The options for each value are Inherited, Allowed, or Denied. The Calculated Setting column shows you the setting in effect. It is either Not Allowed (the default), Allowed, or Denied. Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.</p>
+<p>The default values used here are the ones set in the <a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Site_Global_Configuration#Permissions" title="Help25:Site Global Configuration">Global Configuration Permissions Tab</a></p>
+<dl>
+<dd>
+<dl>
+<dt>Configure</dt>
+<dd>Open the menus component option screens (the modal window these options are in)</dd>
+<dt>Access Administration Interface</dt>
+<dd>Open the menus component manger screens</dd>
+<dt>Create&#160;</dt>
+<dd>Create new menus in the component</dd>
+<dt>Delete&#160;</dt>
+<dd>Delete existing menus in the component</dd>
+<dt>Edit&#160;</dt>
+<dd>Edit existing menus in the component</dd>
+<dt>Edit State&#160;</dt>
+<dd>Change an menus state (Publish, Unpublish, Archive, and Trash) in the component.</dd>
+</dl>
+</dd>
+</dl>
+<p>There are two very important points to understand from this screen. The first is to see how the permissions can be inherited from the parent Group. The second is to see how you can control the default permissions by Group and by Action. This provides a lot of flexibility. For example, if you wanted Shop Suppliers to be able to have the ability to create an article about their product, you could just change their Create value to "Allowed". If you wanted to not allow members of Administrator group to delete objects or change their state, you would change their permissions in these columns to Inherited (or Denied). It is also important to understand that the ability to have child groups is completely optional. It allows you to save some time when setting up new groups. However, if you like, you can set up all groups to have Public as the parent and not inherit any permissions from a parent group.</p>
+<h2> <span class="mw-headline" id="List_Filters">List Filters</span></h2>
+<ul>
+<li><b>Filter by Partial Title or ID.</b> In the upper left is a filter field and two buttons, as shown below.
+
+<ul>
+<li>To filter by partial title, enter part of the title and click Search.</li>
+<li>To filter by ID number, enter "id:xx", where "xx" is the ID number (for example, "id:9").</li>
+</ul>
+</li>
+</ul>
+<dl>
+<dd>Click Clear to clear the Filter field and restore the list to its unfiltered state.</dd>
+</dl>
+<ul>
+<li><b>Page Controls.</b> When the number of items is more than one page, you will see a page control bar as shown below.
+
+<ul>
+<li><b>Display #:</b> Select the number of items to show on one page.</li>
+<li><b>Start:</b> Click to go to the first page.</li>
+<li><b>Prev:</b> Click to go to the previous page.</li>
+<li><b>Page numbers:</b> Click to go to the desired page.</li>
+<li><b>Next:</b> Click to go to the next page.</li>
+<li><b>End:</b> Click to go to the last page.</li>
+</ul>
+</li>
+</ul>
+<p><br /></p>
+<ul>
+<li><b>Menu.</b> Allows you to choose a different menu item to display the items within.</li>
+</ul>
+<ul>
+<li><b>Filter by Max Levels (Category Level).</b> Lets you show only items whose category is at or above the specified level in the category hierarchy.
+
+<ul>
+<li><i>- Select Max Levels -:</i> Show all items regardless of level of their assigned category.</li>
+<li><i>1:</i> Only show items whose category is at the top level in the category hierarchy (in other words, with categories whose parent category is "- No Parent -".)</li>
+<li><i>2-10:</i> Only show items whose category is in the top 2-10 levels in the category hierarchy.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><b>Filter by Published Status.</b> Lets you show only items with the selected published status.
+
+<ul>
+<li><i>- Select Status -:</i> Shows items that are Published and Unpublished. Does <i>not</i> show items that are Trashed or Archived.</li>
+<li><i>Published:</i> Shows only items that are Published.</li>
+<li><i>Unpublished:</i> Shows only items that are Unpublished.</li>
+<li><i>Archived:</i> Shows only items that are Archived.</li>
+<li><i>Trashed:</i> Shows only items that are Trashed. <i>Important Note:</i> To permanently delete items:
+<ol>
+<li>Change the status of the items to Trashed.</li>
+<li>Change the Status filter to Trashed. At this point the trashed items will show and an icon called "Empty trash" will show in the toolbar.</li>
+<li>Select the desired trashed items and click on "Empty Trash" in the toolbar. The items will be permanently deleted.</li>
+</ol>
+</li>
+<li><i>All:</i> Shows all items regardless of published status.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><b>Filter by Viewing Access Level.</b> Lets you show only items that have a specified viewing access level. The list box will show the access levels defined for your site, similar to the example below.
+
+<ul>
+<li><i>- Select Access -:</i> Show items with any viewing access level.</li>
+<li><i>&lt;your access level&gt;:</i> Show items only with this viewing access level.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><b>Filter by Language.</b> Lets you show only items that have a specific language assigned. The list box will show the languages defined for your site, similar to the example below.
+
+<ul>
+<li><i>- Select Language - or All:</i> Show items for any language.</li>
+<li><i>&lt;your language&gt;:</i> Show items only for this language.</li>
+</ul>
+</li>
+</ul>
+<h2> <span class="mw-headline" id="Quick_Tips">Quick Tips</span></h2>
+<ul>
+<li>Select an item and click on the <i>Home</i> button to set your Home page.</li>
+<li>Set different filter options to only show some of the menu items.</li>
+</ul>
+<h2> <span class="mw-headline" id="Related_information">Related information</span></h2>
+<ul>
+<li><a href="/proxy/index.php?option=com_help&view=help&keyref=Help25:Menus_Menu_Manager" title="Help25:Menus Menu Manager">Menu Manager</a></li>
+</ul>
+</article>

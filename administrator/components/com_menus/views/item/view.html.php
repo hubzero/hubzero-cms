@@ -100,6 +100,6 @@ class MenusViewItem extends JViewLegacy
 		else {
 			$url = $help->url;
 		}
-		JToolBarHelper::help($help->key, $help->local, $url);
+		JToolBarHelper::help('item'); //$help->key, $help->local, $url);
 	}
 }
