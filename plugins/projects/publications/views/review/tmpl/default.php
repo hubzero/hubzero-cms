@@ -175,7 +175,7 @@ $append .= '</span>';
 				<?php } else {
 					if ($this->task == 'publish' || $republish)
 					{
-					 	echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_NOOPTIONS');
+						echo JText::_('PLG_PROJECTS_PUBLICATIONS_ACCESS_PUBLIC_NOOPTIONS');
 					}
 					else
 					{
