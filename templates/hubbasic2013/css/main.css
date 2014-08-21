@@ -308,6 +308,14 @@
 		font-weight: bold;
 		white-space: nowrap;
 	}
+	.ckeditor-body table {
+		border: none;
+	}
+	.ckeditor-body table th,
+	.ckeditor-body table td {
+		border: 1px solid #dadada;
+	}
+
 
 /* Core classes */
 	.nowrap {
