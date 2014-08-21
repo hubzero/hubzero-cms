@@ -36,7 +36,7 @@ $class 			= $value ? ' be-complete' : '';
 $size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
 				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
 $placeholder 	= isset($this->manifest->params->placeholder)
-			   	? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
+				? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
 
 $editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
 
