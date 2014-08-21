@@ -386,7 +386,8 @@ class IcalParser {
 	 */
 	public function getFirstEvent()
 	{
-		return $this->getEvents()[0];
+		$events = $this->getEvents();
+		return (isset($events[0])) ? $events[0] : null;
 	}
 
 	/**
