@@ -1893,3 +1893,12 @@ fieldset.assignment label {
 	padding-left: 2em;
 	padding-right: 2em;
 }
+
+/* Table styles on group page */
+.group-page table {
+	border: none;
+}
+.group-page table th,
+.group-page table td {
+	border: 1px solid #dadada;
+}
