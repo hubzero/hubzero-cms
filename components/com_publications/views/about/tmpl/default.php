@@ -216,9 +216,8 @@ $schema 	= $elements->getSchema();
 	}
 
 	$citeinstruct  = PublicationsHtml::citation( $this->option, $cite, $this->publication, $citations, $this->version );
-
 	?>
-	<h4><?php echo JText::_('COM_PUBLICATIONS_CITE_THIS'); ?></h4>
+	<h4 id="citethis"><?php echo JText::_('COM_PUBLICATIONS_CITE_THIS'); ?></h4>
 	<div class="pub-content">
 		<?php echo $citeinstruct; ?>
 	</div>
