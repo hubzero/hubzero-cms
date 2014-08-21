@@ -130,7 +130,7 @@
 		right: 8px;
 		border: 1px solid #ccc;
 	}
-	.full {
+	.post.full {
 		width: auto;
 		margin: 0;
 		position: relative;
