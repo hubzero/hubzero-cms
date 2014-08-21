@@ -5957,7 +5957,6 @@ class plgProjectsPublications extends JPlugin
 
 				// Get Git hash
 				$hash = $this->_git->gitLog($fpath, $file, '' , 'hash');
-
 				$src = $this->_createScreenshot ( $file, $hash, $from_path, $gallery_path, 'name' );
 
 				if ($pScreenshot->loadFromFilename($file, $vid))
@@ -6283,6 +6282,10 @@ class plgProjectsPublications extends JPlugin
 				JFolder::create( JPATH_ROOT . $gallery_path );
 			}
 			jimport('joomla.filesystem.file');
+			if (!file_exists($from_path. DS .$ima))
+			{
+				return false;
+			}
 			if (!JFile::copy($from_path. DS .$ima, JPATH_ROOT.$gallery_path. DS .$hashed))
 			{
 				return false;
