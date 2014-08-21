@@ -232,12 +232,12 @@ class plgProjectsPublications extends JPlugin
 		}
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/curation');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/curation');
 
 		// Get JS & CSS
 		if ($this->useBlocks)
 		{
-			\Hubzero\Document\Assets::addPluginScript('projects', 'publications', '/js/curation');
+			\Hubzero\Document\Assets::addPluginScript('projects', 'publications', 'js/curation');
 		}
 		else
 		{

@@ -199,13 +199,13 @@ $append .= '</span>';
 				// Do we have a submitter choice?
 				$submitter = $this->submitter->name;
 				$submitter.= $this->submitter->organization ? ', ' . $this->submitter->organization : '';
-				$submitter.= '<input type="hidden" name="submitter" value="' . $this->submitter->uid. '" />';
-				if ($this->submitter->uid != $this->uid)
+				$submitter.= '<input type="hidden" name="submitter" value="' . $this->submitter->user_id . '" />';
+				if ($this->submitter->user_id != $this->uid)
 				{
 					$submitter  = '<select name="submitter">' . "\n";
 					$submitter .= '<option value="' . $this->uid . '" selected="selected">' . $this->juser->get('name')
 						. '</option>' . "\n";
-					$submitter .= '<option value="' . $this->submitter->uid . '">' . $this->submitter->name . '</option>' . "\n";
+					$submitter .= '<option value="' . $this->submitter->user_id . '">' . $this->submitter->name . '</option>' . "\n";
 					$submitter .= '</select>';
 				}
 
