@@ -33,4 +33,11 @@
 		padding: 0;
 		text-align: right;
 	}
-
+	div.submitarea  {
+		text-align: center;
+		display: block;
+		padding: 2em 0;
+	}
+	div.submitarea input {
+		width: auto !important;
+	}

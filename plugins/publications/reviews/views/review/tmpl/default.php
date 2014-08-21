@@ -111,9 +111,11 @@ if ($this->review->id) {
 					<input class="option" type="checkbox" name="anonymous" id="review-anonymous" value="1"<?php if ($this->review->anonymous != 0) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('PLG_PUBLICATION_REVIEWS_FORM_ANONYMOUS'); ?>
 				</label>
-				<label>
-					<input type="submit" value="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" />
-				</label>
+				<div class="submitarea">
+					<label>
+						<input type="submit" lass="btn btn-success" value="<?php echo JText::_('PLG_PUBLICATION_REVIEWS_SUBMIT'); ?>" />
+					</label>
+				</div>
 				<div class="sidenote">
 					<p>
 						<strong>Please keep comments relevant to this entry. Comments deemed inappropriate may be removed.</strong>
