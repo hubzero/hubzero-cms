@@ -52,7 +52,7 @@ class plgCitationDefault extends \Hubzero\Plugin\Plugin
 	 */
 	public function onImportAcceptedFiles()
 	{
-		return '.txt <small>(' . JText::_('PLG_CITATION_DEFAULT_FILE') . ')</small>';
+		//return '.txt <small>(' . JText::_('PLG_CITATION_DEFAULT_FILE') . ')</small>';
 	}
 
 	/**
