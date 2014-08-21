@@ -148,7 +148,6 @@
 	#authorslist p {
 		line-height: 1.4em;
 		margin: 0.5em 0;
-		color: #000;
 	}
 	#authorslist {
 		margin-top: -1em;
@@ -158,7 +157,6 @@
 		font-size: 70%;
 	}
 	#authorslist p.orgs {
-		color: #000;
 		font-style: italic;
 	}
 	.guide { 

@@ -66,7 +66,7 @@ jQuery(document).ready(function($){
 			}
 		}
 	});
-	
+
 	$('.fixedResourceTip').tooltip({
 		position:'TOP RIGHT',
 		offset: [10,-20],
@@ -80,7 +80,11 @@ jQuery(document).ready(function($){
 			}
 		}
 	});
-	
+
+	$('#filter-type').on('change', function(e){
+		$('#resourcesform').submit();
+	});
+
 	$('.metadata').each(function(i, meta) {
 		$('.rankinfo')
 			.on('mouseover', function(e) {
@@ -90,7 +94,7 @@ jQuery(document).ready(function($){
 				$(this).removeClass('active');
 			});
 	});
-	
+
 	// Audience info pop-up
 	$('.explainscale').each(function(k, ex) {
 		$('.usagescale').each(function(i, item) {
@@ -126,7 +130,7 @@ jQuery(document).ready(function($){
 		{
 			href += '&tmpl=component';
 		}
-	
+
 		//mobile = navigator.userAgent.match(/iPad|iPhone|iPod|Android/i) != null;
 		//if (!mobile) {
 			event.preventDefault();
@@ -153,10 +157,10 @@ jQuery(document).ready(function($){
 				h = 0,
 				dw = 900,
 				dh = 600;
-		
+
 			//get the dimensions from classs name
 			dim = $(this).attr('class').split(" ").pop();
-			
+
 			//if we have dimensions then parse them
 			if (dim.match(/[0-9]{2,}x[0-9]{2,}/g)) {
 				dim = dim.split("x");
@@ -166,16 +170,16 @@ jQuery(document).ready(function($){
 				w = dw;
 				h = dh;
 			}
-			
+
 			//open poup
-	 		video_window = window.open( href,'videowindow','height=' + h + ', width=' + w + ', menubar=no, toolbar=no, titlebar=no, resizable=yes');
+			video_window = window.open( href,'videowindow','height=' + h + ', width=' + w + ', menubar=no, toolbar=no, titlebar=no, resizable=yes');
 		}
 	});
-	
+
 	//------------------------
 	// screenshot thumbnail slider
 	//------------------------
-	
+
 	var target = $('.showcase-pane')[0];
 
 	if ($('#showcase').length && target) {
@@ -184,7 +188,7 @@ jQuery(document).ready(function($){
 			moveto = 0,
 			active = 0,
 			panels = 0;
-		
+
 		var next = $('#showcase-next'),
 			prev = $('#showcase-prev');
 
@@ -196,7 +200,7 @@ jQuery(document).ready(function($){
 			prev.addClass('inactive');
 		}
 
-		// go next		
+		// go next
 		if (next.length > 0) {
 			next.on('mouseover', function() {
 				var win_width = $('#showcase-window').offset().left;
@@ -225,7 +229,7 @@ jQuery(document).ready(function($){
 				}
 			});
 		}
-		
+
 		// go prev
 		if (prev.length > 0) {
 			prev.on('mouseover', function() {
@@ -238,11 +242,11 @@ jQuery(document).ready(function($){
 					next.removeClass('inactive');
 				}
 			});
-			
+
 			prev.on('click', function() {
 				var win_width = $('#showcase-window').offset().left,
 					panels = Math.round(thwidth/win_width);	
-				
+
 				if (panels >= 1 && active > 0) {
 					active --;
 					moveto += win_width;

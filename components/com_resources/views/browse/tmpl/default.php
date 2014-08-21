@@ -67,7 +67,6 @@ $this->css()
 					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
 					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
-					<input type="hidden" name="type" value="<?php echo $this->escape($this->filters['type']); ?>" />
 					<input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 				</fieldset>
 				<?php if ($this->filters['tag']) { ?>
@@ -111,21 +110,16 @@ $this->css()
 					<?php } ?>
 				</ul>
 
-				<?php
-				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-				$qs .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
-				?>
 				<?php if (count($this->types) > 0) { ?>
 					<ul class="entries-menu filter-options">
 						<li>
-							<a<?php echo (!$this->filters['type']) ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&type=' . $qs); ?>"><?php echo JText::_('All'); ?></a>
+							<select name="type" id="filter-type">
+								<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('All Types'); ?></a>
+								<?php foreach ($this->types as $item) { ?>
+									<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->type)); ?></option>
+								<?php } ?>
+							</select>
 						</li>
-					<?php foreach ($this->types as $item) { ?>
-						<li>
-							<a<?php echo ($this->filters['type'] == $item->id) ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&type=' . $item->alias . $qs); ?>"><?php echo $this->escape(stripslashes($item->type)); ?></a>
-						</li>
-					<?php } ?>
 					</ul>
 				<?php } ?>
 
