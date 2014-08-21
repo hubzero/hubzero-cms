@@ -11,6 +11,13 @@
 .com_courses ol.entries>li {
 	padding: 1em 0 1em 180px;
 }
+.com_courses ol.entries>li.no-results {
+	padding: 30px;
+	min-height: 10px;
+}
+.com_courses ol.entries>li.no-results p {
+	margin: 0;
+}
 .com_courses ol.entries li article {
 	padding: 0 1em;
 }

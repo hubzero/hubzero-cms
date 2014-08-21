@@ -19,6 +19,13 @@
 		position: relative;
 		min-height: 100px;
 	}
+	ol.entries > li.no-results {
+		padding: 30px;
+		min-height: 1em;
+	}
+	ol.entries>li.no-results p {
+		margin: 0;
+	}
 	ol.entries > li:first-child {
 		border-top: none;
 	}
