@@ -134,11 +134,11 @@ if ($this->categories) {
 					<div class="resource-type <?php echo $cls; ?>">
 						<h3>
 							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
-								<?php echo $this->escape(stripslashes($category->type)); ?>
+								<?php echo $this->escape(strip_tags(stripslashes($category->type))); ?>
 							</a>
 						</h3>
 						<p>
-							<?php echo $this->escape(stripslashes($category->description)); ?>
+							<?php echo $this->escape(strip_tags(stripslashes($category->description))); ?>
 						</p>
 						<p>
 							<a class="read-more" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>" title="<?php echo JText::sprintf('Browse %s', $this->escape(stripslashes($category->type))); ?>">
