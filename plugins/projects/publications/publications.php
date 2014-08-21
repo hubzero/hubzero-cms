@@ -232,14 +232,12 @@ class plgProjectsPublications extends JPlugin
 		}
 
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'curation.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/curation');
 
 		// Get JS & CSS
 		if ($this->useBlocks)
 		{
-			$document->addScript('plugins' . DS . 'projects' . DS . 'publications' . DS . 'js' . DS . 'curation.js');
+			\Hubzero\Document\Assets::addPluginScript('projects', 'publications', '/js/curation');
 		}
 		else
 		{
@@ -502,8 +500,7 @@ class plgProjectsPublications extends JPlugin
 			return $view->loadTemplate();
 		}
 
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'selector.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/selector');
 
 		// Load master type
 		$mt   							= new PublicationMasterType( $this->_database );
@@ -1556,9 +1553,8 @@ class plgProjectsPublications extends JPlugin
 		$mt = new PublicationMasterType( $this->_database );
 		$choices = $mt->getTypes('alias', 1);
 
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
-		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','/css/diskspace');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files','/js/diskspace');
 
 		// Get used space
 		$helper 	   = new PublicationHelper($this->_database);
@@ -1805,8 +1801,7 @@ class plgProjectsPublications extends JPlugin
 		$version = $row->checkVersion($pid, $version) ? $version : 'default';
 
 		// Add stylesheet
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/impact');
 
 		// Is logging enabled?
 		if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
@@ -2043,24 +2038,6 @@ class plgProjectsPublications extends JPlugin
 			$view->url
 		);
 
-		// Autocompleter
-		if ($section == 'authors' || $section == 'access')
-		{
-			// Do we need to incule extra scripts?
-			$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
-			$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;
-
-			if (!$plugin || $p_params->get('noconflictSite'))
-			{
-				$document = JFactory::getDocument();
-				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'observer.js');
-				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'textboxlist.js');
-				$document->addScript('plugins' . DS . 'hubzero' . DS . 'autocompleter' . DS . 'autocompleter.js');
-				$document->addStyleSheet('plugins' . DS . 'hubzero' . DS
-					. 'autocompleter' . DS . 'autocompleter.css');
-			}
-		}
-
 		// Get extra info specific to each panel
 		switch ($section)
 		{
@@ -2172,9 +2149,7 @@ class plgProjectsPublications extends JPlugin
 
 				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
 				\Hubzero\Document\Assets::addPluginScript('projects', 'links');
-				$document = JFactory::getDocument();
-				$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications'
-					. DS . 'css' . DS . 'selector.css');
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','/css/selector');
 
 				break;
 
@@ -2825,8 +2800,7 @@ class plgProjectsPublications extends JPlugin
 		$version 	= JRequest::getVar('version', '');
 		$pubdate 	= JRequest::getVar('publish_date');
 
-		$document = JFactory::getDocument();
-		$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
+		\Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'assets/css/calendar');
 
 		// Check that version number exists
 		$row = new PublicationVersion( $this->_database );
@@ -2974,8 +2948,7 @@ class plgProjectsPublications extends JPlugin
 		$view->shots = PublicationsHtml::showGallery($gallery, $gallery_path);
 
 		// Get JS
-		$document = JFactory::getDocument();
-		$document->addScript('components' . DS . 'com_publications' . DS . 'publications.js');
+		\Hubzero\Document\Assets::addComponentScript('com_publications', 'assets/js/publications');
 
 		// Output HTML
 		$view->option 		= $this->_option;
@@ -7283,9 +7256,8 @@ class plgProjectsPublications extends JPlugin
 		);
 
 		// Include styling and js
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'diskspace.css');
-		$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','/css/diskspace');
+		\Hubzero\Document\Assets::addPluginScript('projects', 'files','/js/diskspace');
 
 		$database = JFactory::getDBO();
 

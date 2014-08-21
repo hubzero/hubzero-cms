@@ -47,7 +47,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
 	<!-- Showing status only -->
 	<div class="element_overview">
 		<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
-		<?php if ($value) {
+		<?php if (trim($value)) {
 			// Parse editor text
 			if ($editor)
 			{
@@ -59,9 +59,9 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
 				$value = '<p>' . $value . '</p>';
 			}
 			?>
-			<div class="element-value"><?php echo $value; ?></div>
+			<?php echo $value ? '<div class="element-value">' . $value . '</div>' : '<p class="noresults">' . JText::_('PLG_PROJECTS_PUBLICATIONS_NO_VALUE') . '</p>'; ?>
 		<?php } else { ?>
-			<p class="noresults">No input</p>
+			<p class="noresults"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_VALUE'); ?></p>
 		<?php } ?>
 	</div>
 </div>

@@ -1526,7 +1526,7 @@
 	#showcase-next {
 		height: 90px;
 		background: #f4f5f7;
-		width: 20px;
+		width: 5%;
 		position: relative;
 		display: inline;
 		margin: 0;
@@ -1565,10 +1565,10 @@
 		float: left;
 		left: 0;
 		position: relative;
-		width: 90%;
+		width: 70%;
 	}
 	.showcase-pane {
-		width: 2000px;
+		width: 5000px;
 		position: relative;
 		left: 0;
 	}
