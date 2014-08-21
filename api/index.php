@@ -36,7 +36,7 @@ header("HTTP/1.1 404 Not Found");
 
 if (function_exists('xdebug_disable'))
 {
-    xdebug_disable();
+	xdebug_disable();
 }
 
 ini_set('magic_quotes_runtime','0');
@@ -46,7 +46,7 @@ ini_set('output_hander','');
 ini_set('implicit_flush','0');
 
 define('_JEXEC', 1);
-define('JPROFILE',1);
+define('JPROFILE', 0);
 define('JPATH_PLATFORM', 1);
 define('DS', DIRECTORY_SEPARATOR);
 define('JPATH_ROOT', dirname( dirname(__FILE__) ));
