@@ -64,7 +64,7 @@ class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 		$objP = new Publication($database);
 		$this->_item = $objP->getPublication($referenceid, 'default');
 
-		$this->_segments['id']     = $this->_item->get('id');
+		$this->_segments['id']     = $this->_item->id;
 		$this->_segments['active'] = 'wishlist';
 	}
 
