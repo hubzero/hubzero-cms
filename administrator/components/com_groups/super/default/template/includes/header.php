@@ -18,11 +18,6 @@
 				<span>[<?php echo $this->group->get('cn'); ?>]</span>
 			</a>
 		</h1>
-		<div class="super-group-toolbar">
-			<!-- ###  Start Toolbar Include  ### -->
-				<group:include type="toolbar" />
-			<!-- ###  End Toolbar Include  ### -->
-		</div>
 	</div>
 </div>
 
