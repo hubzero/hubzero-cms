@@ -15,10 +15,9 @@
 /* Group Bar */
 .super-group-bar {
 	background: #000;
-	height: 44px;
+	/*height: 44px;*/
 	position: relative;
 	z-index: 999;
-	overflow: hidden;
 }
 
 /* Powered By */
