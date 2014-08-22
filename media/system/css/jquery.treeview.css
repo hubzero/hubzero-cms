@@ -9,11 +9,11 @@
 	margin: 0 0 0 1em;
 }
 .treeview ul {
-	margin-top: 4px;
+	margin-top: 0.5em;
 }
 .treeview li { 
 	margin: 0;
-	padding: 3px 0pt 3px 16px;
+	padding: 0.2em 0 0.2em 1em;
 	position: relative;
 }
 .treeview:after,
@@ -34,15 +34,29 @@
 	background: #999;
 	background: rgba(0, 0, 0, 0.15);
 	position: absolute;
-	top: 1em;
+	top: 0.9em;
 	left: -1em;
 }
 .treeview .hitarea {
-	height: 16px;
-	width: 16px;
-	margin-left: -16px;
+	height: 1em;
+	width: 1em;
+	text-align: center;
+	font-size: 0.85em;
+	line-height: 1;
+	margin: 0.3em 0.3em 0 -1.3em;
+	border: 1px solid #aaa;
+	background: #fff;
 	float: left;
 	cursor: pointer;
+	-webkit-border-radius: 0.25em;
+	-moz-border-radius: 0.25em;
+	-ms-border-radius: 0.25em;
+	-o-border-radius: 0.25em;
+	border-radius: 0.25em;
+}
+.treeview .hitarea:hover {
+	color: #222;
+	border-color: #222;
 }
 .treeview .hitarea:before {
 	content: "\271A";
@@ -67,7 +81,7 @@
 
 .treeview .placeholder {
 	background: url(images/ajax-loader.gif) 0 0 no-repeat;
-	height: 16px;
-	width: 16px;
+	height: 1em;
+	width: 1em;
 	display: block;
 }
