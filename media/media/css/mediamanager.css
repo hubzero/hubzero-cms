@@ -61,6 +61,16 @@
 	vertical-align: middle;
 }
 
+#upload-noflash {
+	border: none;
+	padding: 0;
+	margin-left: 0;
+	margin-right: 0;
+}
+.hidelabeltxt {
+	display: none;
+}
+
 #upload-queue {
 	list-style: none;
 	clear:both;

@@ -3,6 +3,10 @@
 	padding: 0;
 	margin: 0;
 	list-style: none;
+	position: relative;
+}
+.treeview {
+	margin: 0 0 0 1em;
 }
 .treeview ul {
 	margin-top: 4px;
@@ -10,6 +14,28 @@
 .treeview li { 
 	margin: 0;
 	padding: 3px 0pt 3px 16px;
+	position: relative;
+}
+.treeview:after,
+.treeview li ul:after {
+	content: "";
+	width: 1px;
+	background: #999;
+	background: rgba(0, 0, 0, 0.15);
+	position: absolute;
+	top: 0;
+	left: -1em;
+	bottom: 1em;
+}
+.treeview li:after {
+	content: "";
+	width: 0.8em;
+	height: 1px;
+	background: #999;
+	background: rgba(0, 0, 0, 0.15);
+	position: absolute;
+	top: 1em;
+	left: -1em;
 }
 .treeview .hitarea {
 	height: 16px;
