@@ -135,8 +135,6 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		// Load a tag object if one doesn't already exist
 		if (is_object($tag))
 		{
@@ -164,7 +162,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -181,12 +179,22 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Save an entry and return to the edit form
+	 *
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Save an entry
 	 *
 	 * @param      integer $redirect Redirect after saving? (defaults to 1 = yes)
 	 * @return     void
 	 */
-	public function saveTask($redirect=1)
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -201,7 +209,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if ($fields['admin'])
+		if (isset($fields['admin']) && $fields['admin'])
 		{
 			$row->set('admin', 1);
 		}
@@ -226,6 +234,8 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				JText::_('COM_TAGS_TAG_SAVED')
 			);
 		}
+
+		$this->editTask($row);
 	}
 
 	/**
