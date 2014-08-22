@@ -348,7 +348,7 @@ class Migration extends Base implements CommandInterface
 				}
 			}
 
-			$width = $maxScope + $maxFile + $maxUser + 28;
+			$width = $maxScope + $maxFile + $maxUser + 35;
 
 			$this->output->addLine(' ' . str_repeat('-', ($width)));
 
@@ -358,6 +358,7 @@ class Migration extends Base implements CommandInterface
 				$padding2 = $maxUser - strlen($entry->action_by);
 				$this->output->addString('| ' . $entry->scope . DS . $entry->file . ' ' . str_repeat(' ', $padding1));
 				$this->output->addString('| ' . $entry->action_by . ' ' . str_repeat(' ', $padding2));
+				$this->output->addString('| ' . $entry->direction . ' ' . (($entry->direction == 'up') ? '  ': ''));
 				$this->output->addLine('| ' . $entry->date . ' |');
 			}
 
