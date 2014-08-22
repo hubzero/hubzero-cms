@@ -38,8 +38,8 @@ $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CR
 JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . $text, 'tags.png');
 if ($canDo->get('core.edit'))
 {
-	JToolBarHelper::save();
 	JToolBarHelper::apply();
+	JToolBarHelper::save();
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
@@ -90,7 +90,7 @@ if ($this->getError())
 
 			<div class="input-wrap">
 				<label for="field-tag"><?php echo JText::_('COM_TAGS_FIELD_TAG'); ?>:</label><br />
-				<input type="text" disabled="disabled" class="disabled" name="fields[tag]" id="field-tag" size="30" maxlength="250" value="<?php echo $this->escape($this->tag->get('tag')); ?>" />
+				<input type="text" disabled="disabled" class="disabled" name="fields[tag]" id="field-tag" placeholder="<?php echo JText::_('COM_TAGS_FIELD_TAG_PLACEHOLDER'); ?>" maxlength="250" value="<?php echo $this->escape($this->tag->get('tag')); ?>" />
 			</div>
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_TAGS_FIELD_ALIAS_HINT'); ?>">
@@ -139,127 +139,127 @@ if ($this->getError())
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->tag->get('created')); ?>" />
 					</td>
 				</tr>
-			<?php if ($this->tag->exists() && $this->tag->wasModified()) { ?>
-				<tr>
-					<th class="key"><?php echo JText::_('COM_TAGS_FIELD_MODIFIER'); ?>:</th>
-					<td>
-						<?php
-						if ($this->tag->get('modified_by'))
-						{
-							$editor = JUser::getInstance($this->tag->get('modified_by'));
-							echo $this->escape(stripslashes($editor->get('name')));
-						}
-						else
-						{
-							echo JText::_('COM_TAGS_UNKNOWN');
-						}
-						?>
-						<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->tag->get('modified_by')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo JText::_('COM_TAGS_FIELD_MODIFIED'); ?>:</th>
-					<td>
-						<?php echo ($this->tag->modified() != '0000-00-00 00:00:00' ? $this->tag->modified() : JText::_('COM_TAGS_UNKNOWN')); ?>
-						<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->tag->get('modified')); ?>" />
-					</td>
-				</tr>
-			<?php } ?>
+				<?php if ($this->tag->exists() && $this->tag->wasModified()) { ?>
+					<tr>
+						<th class="key"><?php echo JText::_('COM_TAGS_FIELD_MODIFIER'); ?>:</th>
+						<td>
+							<?php
+							if ($this->tag->get('modified_by'))
+							{
+								$editor = JUser::getInstance($this->tag->get('modified_by'));
+								echo $this->escape(stripslashes($editor->get('name')));
+							}
+							else
+							{
+								echo JText::_('COM_TAGS_UNKNOWN');
+							}
+							?>
+							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->tag->get('modified_by')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th class="key"><?php echo JText::_('COM_TAGS_FIELD_MODIFIED'); ?>:</th>
+						<td>
+							<?php echo ($this->tag->modified() != '0000-00-00 00:00:00' ? $this->tag->modified() : JText::_('COM_TAGS_UNKNOWN')); ?>
+							<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->tag->get('modified')); ?>" />
+						</td>
+					</tr>
+				<?php } ?>
 			</tbody>
 		</table>
 
 		<div class="data-wrap">
-<?php
-	if ($this->tag->exists())
-	{
-		if ($logs = $this->tag->logs('list'))
-		{
-?>
-			<h4><?php echo JText::_('COM_TAGS_LOG'); ?></h4>
-			<ul class="entry-log">
-				<?php
-				foreach ($logs as $log)
+			<?php
+			if ($this->tag->exists())
+			{
+				if ($logs = $this->tag->logs('list'))
 				{
-					$actor = $this->escape(stripslashes($log->actor('name')));
+					?>
+					<h4><?php echo JText::_('COM_TAGS_LOG'); ?></h4>
+					<ul class="entry-log">
+						<?php
+						foreach ($logs as $log)
+						{
+							$actor = $this->escape(stripslashes($log->actor('name')));
 
-					$data = json_decode($log->get('comments'));
-					if (!is_object($data))
-					{
-						$data = new stdClass;
-					}
-					if (!isset($data->entries))
-					{
-						$data->entries = 0;
-					}
-					switch ($log->get('action'))
-					{
-						case 'substitute_created':
-							$c = 'created';
-							$s = JText::sprintf('COM_TAGS_LOG_ALIAS_CREATED', $data->raw_tag, $log->get('timestamp'), $actor);
-						break;
-
-						case 'substitute_edited':
-							$c = 'edited';
-							$s = JText::sprintf('COM_TAGS_LOG_ALIAS_EDITED', $data->raw_tag, $log->get('timestamp'), $actor);
-						break;
-
-						case 'substitute_deleted':
-							$c = 'deleted';
-							$s = JText::sprintf('COM_TAGS_LOG_ALIAS_DELETED', implode(', ', $data->tags), $log->get('timestamp'), $actor);
-						break;
-
-						case 'substitute_moved':
-							$c = 'moved';
-							$s = JText::sprintf('COM_TAGS_LOG_ALIAS_MOVED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
-						break;
-
-						case 'tags_removed':
-							$c = 'deleted';
-							$s = JText::sprintf('COM_TAGS_LOG_ASSOC_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
-						break;
-
-						case 'objects_copied':
-							$c = 'copied';
-							$s = JText::sprintf('COM_TAGS_LOG_ASSOC_COPIED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
-						break;
-
-						case 'objects_moved':
-							$c = 'moved';
-							$s = JText::sprintf('COM_TAGS_LOG_ASSOC_MOVED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
-						break;
-
-						case 'objects_removed':
-							$c = 'deleted';
-							if ($data->objectid || $data->tbl)
+							$data = json_decode($log->get('comments'));
+							if (!is_object($data))
 							{
-								$s = JText::sprintf('COM_TAGS_LOG_OBJ_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
+								$data = new stdClass;
 							}
-							else
+							if (!isset($data->entries))
 							{
-								$s = JText::sprintf('COM_TAGS_LOG_OBJ_REMOVED', count($data->entries), $data->tagid, $log->get('timestamp'), $actor);
+								$data->entries = 0;
 							}
-						break;
+							switch ($log->get('action'))
+							{
+								case 'substitute_created':
+									$c = 'created';
+									$s = JText::sprintf('COM_TAGS_LOG_ALIAS_CREATED', $data->raw_tag, $log->get('timestamp'), $actor);
+								break;
 
-						default:
-							$c = 'edited';
-							$s = JText::sprintf('COM_TAGS_LOG_TAG_EDITED', str_replace('_', ' ', $log->get('action')), $log->get('timestamp'), $actor);
-						break;
-					}
-					if ($s)
-					{
+								case 'substitute_edited':
+									$c = 'edited';
+									$s = JText::sprintf('COM_TAGS_LOG_ALIAS_EDITED', $data->raw_tag, $log->get('timestamp'), $actor);
+								break;
+
+								case 'substitute_deleted':
+									$c = 'deleted';
+									$s = JText::sprintf('COM_TAGS_LOG_ALIAS_DELETED', implode(', ', $data->tags), $log->get('timestamp'), $actor);
+								break;
+
+								case 'substitute_moved':
+									$c = 'moved';
+									$s = JText::sprintf('COM_TAGS_LOG_ALIAS_MOVED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
+								break;
+
+								case 'tags_removed':
+									$c = 'deleted';
+									$s = JText::sprintf('COM_TAGS_LOG_ASSOC_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
+								break;
+
+								case 'objects_copied':
+									$c = 'copied';
+									$s = JText::sprintf('COM_TAGS_LOG_ASSOC_COPIED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
+								break;
+
+								case 'objects_moved':
+									$c = 'moved';
+									$s = JText::sprintf('COM_TAGS_LOG_ASSOC_MOVED', count($data->entries), $data->old_id, $log->get('timestamp'), $actor);
+								break;
+
+								case 'objects_removed':
+									$c = 'deleted';
+									if ($data->objectid || $data->tbl)
+									{
+										$s = JText::sprintf('COM_TAGS_LOG_OBJ_DELETED', count($data->entries), $data->tbl, $data->objectid, $log->get('timestamp'), $actor);
+									}
+									else
+									{
+										$s = JText::sprintf('COM_TAGS_LOG_OBJ_REMOVED', count($data->entries), $data->tagid, $log->get('timestamp'), $actor);
+									}
+								break;
+
+								default:
+									$c = 'edited';
+									$s = JText::sprintf('COM_TAGS_LOG_TAG_EDITED', str_replace('_', ' ', $log->get('action')), $log->get('timestamp'), $actor);
+								break;
+							}
+							if ($s)
+							{
+								?>
+								<li class="<?php echo $c; ?>">
+									<span class="entry-log-data"><?php echo $s; ?></span>
+								</li>
+								<?php
+							}
+						}
 						?>
-					<li class="<?php echo $c; ?>">
-						<span class="entry-log-data"><?php echo $s; ?></span>
-					</li>
-							<?php
-					}
+					</ul>
+					<?php
 				}
-				?>
-			</ul>
-<?php
-		}
-	}
-?>
+			}
+			?>
 		</div>
 	</div>
 	<div class="clr"></div>
