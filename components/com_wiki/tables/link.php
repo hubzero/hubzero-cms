@@ -230,18 +230,15 @@ class WikiTableLink extends JTable
 
 		if ($rows = $this->find($page_id))
 		{
-			//print_r($rows);
 			foreach ($rows as $row)
 			{
 				if (!isset($links[$row->link]))
 				{
 					// Link wasn't found, delete it
 					$this->delete($row->id);
-					//echo 'notfound: ' . $row->link . '<br />';
 				}
 				else
 				{
-					//echo 'found: ' . $row->link . '<br />';
 					unset($links[$row->link]);
 				}
 			}
@@ -250,15 +247,6 @@ class WikiTableLink extends JTable
 		if (count($links) > 0)
 		{
 			$this->addLinks($links);
-			/*foreach ($links as $link)
-			{
-				$obj = new WikiLink($this->_db);
-				$obj->bind($link);
-				if ($obj->check())
-				{
-					$obj->store();
-				}
-			}*/
 		}
 		return true;
 	}

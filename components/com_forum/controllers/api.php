@@ -495,12 +495,6 @@ class ForumControllerApi extends \Hubzero\Component\ApiController
 			$data->response = $rows;
 		}
 
-		/*if ($this->getError())
-		{
-			$data->code   = 1;
-			$data->errors = $this->getErrors();
-		}*/
-//print_r($this->database); die();
 		//encode results and return response
 		$this->setMessageType($format);
 		$this->setMessage($data);

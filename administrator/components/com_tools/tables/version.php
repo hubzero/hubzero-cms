@@ -704,25 +704,24 @@ class ToolVersion extends  JTable
 	{
 		if ($curtool)
 		{
-		//print_r($thistool);
 			$resource->curversion    = $curtool->version;
 			$resource->currevision   = $curtool->revision;
-			$resource->cursource   	 = ($curtool->codeaccess=='@OPEN') ? 1: 0;
+			$resource->cursource     = ($curtool->codeaccess=='@OPEN') ? 1: 0;
 			if (!$thistool)
 			{
 				$resource->revision      = $curtool->revision;
-				$revision 			 	 = $resource->revision;
+				$revision                = $resource->revision;
 				$resource->version       = $curtool->version;
 				$resource->versionid     = $curtool->id;
-				$resource->tool      	 = $curtool->instance;
+				$resource->tool          = $curtool->instance;
 				$resource->toolpublished = 1;
-				$resource->license 		 = $curtool->license;
+				$resource->license       = $curtool->license;
 				$resource->title         = stripslashes($curtool->title);
 				$resource->introtext     = stripslashes($curtool->description);
-				$resource->fulltxt      = $curtool->fulltxt;
+				$resource->fulltxt       = $curtool->fulltxt;
 				$resource->toolsource    = ($curtool->codeaccess=='@OPEN') ? 1: 0;
-				$resource->doi 			 = isset($curtool->doi) ? $curtool->doi : '';
-				$resource->doi_label 	 = $curtool->doi_label;
+				$resource->doi           = isset($curtool->doi) ? $curtool->doi : '';
+				$resource->doi_label     = $curtool->doi_label;
 			}
 		}
 
@@ -730,34 +729,34 @@ class ToolVersion extends  JTable
 		{
 			$resource->revision      = ($thistool) ? $thistool->revision : 1;
 			$resource->revision      = ($revision !='dev') ? $resource->revision : 'dev';
-			$revision 			 	 = $resource->revision;
+			$revision                = $resource->revision;
 			$resource->versionid     = ($revision && $thistool) ? $thistool->id  : 0;
 			$resource->version       = ($revision && $thistool) ? $thistool->version  : 1;
-			$resource->tool      	 = ($revision && $thistool) ? $thistool->instance : $resource->alias.'_r'.$revision;
+			$resource->tool          = ($revision && $thistool) ? $thistool->instance : $resource->alias.'_r'.$revision;
 			$resource->toolpublished = ($revision && $thistool) ? $thistool->state    : 1;
-			$resource->license 		 = ($revision && $thistool) ? $thistool->license  : '';
+			$resource->license       = ($revision && $thistool) ? $thistool->license  : '';
 			$resource->title         = ($revision && $thistool) ? stripslashes($thistool->title) : $resource->title;
 			$resource->introtext     = ($revision && $thistool && isset($thistool->description)) ? stripslashes($thistool->description) : $resource->introtext;
-			$resource->fulltxt      = ($revision && $thistool && isset($thistool->fulltxt)) ? $thistool->fulltxt : $resource->fulltxt;
+			$resource->fulltxt       = ($revision && $thistool && isset($thistool->fulltxt)) ? $thistool->fulltxt : $resource->fulltxt;
 			$resource->toolsource    = ($thistool && isset($thistool->codeaccess) && $thistool->codeaccess=='@OPEN') ? 1: 0;
-			$resource->doi 			 = ($thistool && isset($thistool->doi)) ? $thistool->doi : '';
-			$resource->doi_label 	 = ($thistool && isset($thistool->doi_label)) ? $thistool->doi_label : 0;
+			$resource->doi           = ($thistool && isset($thistool->doi)) ? $thistool->doi : '';
+			$resource->doi_label     = ($thistool && isset($thistool->doi_label)) ? $thistool->doi_label : 0;
 		}
 		else if (!$curtool)
 		{
 			$resource->revision      = 1;
-			$revision 			 	 = $resource->revision;
+			$revision                 = $resource->revision;
 			$resource->version       = 1;
 			$resource->versionid     = 0;
-			$resource->tool      	 = $resource->alias.'_r'.$revision;
+			$resource->tool          = $resource->alias.'_r'.$revision;
 			$resource->toolpublished = 1;
-			$resource->license 		 = '';
+			$resource->license       = '';
 			$resource->title         = $resource->title;
 			$resource->introtext     = $resource->introtext;
-			$resource->fulltxt      = $resource->fulltxt;
+			$resource->fulltxt       = $resource->fulltxt;
 			$resource->toolsource    = 0;
-			$resource->doi 			 = '';
-			$resource->doi_label 	 = 0;
+			$resource->doi           = '';
+			$resource->doi_label     = 0;
 		}
 		$resource->revision      = ($revision !='dev') ? $resource->revision : 'dev';
 
