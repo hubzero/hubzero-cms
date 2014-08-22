@@ -36,9 +36,7 @@ $juser  = JFactory::getUser();
 JHTML::_('behavior.framework', true);
 JHTML::_('behavior.modal');
 
-//do we want to include jQuery
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/template.js');
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(JPATH_ROOT . '/templates/' . $this->template . '/js/hub.js'));
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
@@ -91,21 +89,23 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							<span><?php echo $config->getValue('config.sitename'); ?></span>
 						</a>
 					</h1>
-					
+
 					<div id="mobile-nav" class="show-m">
 						<ul>
-							<!--li><a id="mobile-menu"><span><?php echo JText::_('TPL_BASELAYER_MENU'); ?></span></a></li-->
-							<li><a id="mobile-menu" href="#"><p id="nav-icon"><span></span></p><em>Menu</em></a></li>
+							<li>
+								<a id="mobile-menu" href="#">
+									<p id="nav-icon"><span></span></p>
+									<em><?php echo JText::_('TPL_HUBBASIC_MENU'); ?></em>
+								</a>
+							</li>
 						</ul>
-						
 					</div>
 
-					<nav id="main-navigation" role="main">
+					<nav id="main-navigation">
 						<div class="wrapper cf">
-					
 							<div id="account" role="navigation" class="cf">
 							<?php if (!$juser->get('guest')) {
-									$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+								$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 							?>
 								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 									<li>
@@ -135,8 +135,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							<?php } else { ?>
 								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 									<li id="account-login">
-										<?php $login_route = (version_compare(JVERSION, '2.5', 'ge')) ? 'index.php?option=com_users&view=login' : 'index.php?option=com_user&view=login'; ?>
-										<a href="<?php echo JRoute::_($login_route); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
+										<a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?>"><?php echo JText::_('TPL_HUBBASIC_LOGIN'); ?></a>
 									</li>
 									<?php
 									$usersConfig =  JComponentHelper::getParams('com_users');
@@ -149,7 +148,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 								<?php /* <jdoc:include type="modules" name="account" /> */ ?>
 							<?php } ?>
 							</div><!-- / #account -->
-		
+
 							<div id="nav" role="menu">
 								<jdoc:include type="modules" name="user3" />
 							</div><!-- / #nav -->
@@ -160,19 +159,19 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 
 			<div id="sub-masthead">
 				<div class="inner">
-				<?php if ($this->countModules('helppane')) : ?>
-					<p id="tab">
-						<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
-							<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
-						</a>
-					</p>
-				<?php endif; ?>
+					<?php if ($this->countModules('helppane')) : ?>
+						<p id="tab">
+							<a href="<?php echo JRoute::_('index.php?option=com_support'); ?>" title="<?php echo JText::_('TPL_HUBBASIC_NEED_HELP'); ?>">
+								<span><?php echo JText::_('TPL_HUBBASIC_HELP'); ?></span>
+							</a>
+						</p>
+					<?php endif; ?>
 					<jdoc:include type="modules" name="search" />
 					<div id="trail">
 						<?php if (!$this->countModules('welcome')) : ?>
-						<jdoc:include type="modules" name="breadcrumbs" />
+							<jdoc:include type="modules" name="breadcrumbs" />
 						<?php else: ?>
-						<span class="pathway"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
+							<span class="pathway"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
 						<?php endif; ?>
 					</div><!-- / #trail -->
 				</div><!-- / .inner -->
