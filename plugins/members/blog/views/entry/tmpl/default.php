@@ -60,8 +60,23 @@ $this->css()
 		<?php if ($this->getError()) : ?>
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php endif; ?>
+		<?php
+			$cls = '';
 
-		<div class="entry">
+			if (!$this->row->isAvailable())
+			{
+				$cls = ' pending';
+			}
+			if ($this->row->ended())
+			{
+				$cls = ' expired';
+			}
+			if ($this->row->get('state') == 0)
+			{
+				$cls = ' private';
+			}
+		?>
+		<div class="entry<?php echo $cls; ?>">
 			<h2 class="entry-title">
 				<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>
 			</h2>

@@ -82,7 +82,23 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 		<?php } ?>
 
 	<?php if ($this->row) { ?>
-			<div class="entry" id="e<?php echo $this->row->get('id'); ?>">
+			<?php
+				$cls = '';
+
+				if (!$this->row->isAvailable())
+				{
+					$cls = ' pending';
+				}
+				if ($this->row->ended())
+				{
+					$cls = ' expired';
+				}
+				if ($this->row->get('state') == 0)
+				{
+					$cls = ' private';
+				}
+			?>
+			<div class="entry<?php echo $cls; ?>" id="e<?php echo $this->row->get('id'); ?>">
 
 				<h2 class="entry-title">
 					<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>

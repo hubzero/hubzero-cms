@@ -61,9 +61,18 @@ $this->css()
 	<div class="subject">
 		<?php
 			$cls = '';
+
 			if (!$this->row->isAvailable())
 			{
 				$cls = ' pending';
+			}
+			if ($this->row->ended())
+			{
+				$cls = ' expired';
+			}
+			if ($this->row->get('state') == 0)
+			{
+				$cls = ' private';
 			}
 		?>
 		<div class="entry<?php echo $cls; ?>" id="e<?php echo $this->row->get('id'); ?>">
