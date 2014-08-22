@@ -295,7 +295,9 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
 	}
 
 	/* ------------- */
@@ -366,6 +368,8 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	 */
 	public function editClassTask($id=0)
 	{
+		JRequest::setVar('hidemainmenu', 1);
+
 		$this->view->setLayout('editClass');
 
 		if (!$id)
