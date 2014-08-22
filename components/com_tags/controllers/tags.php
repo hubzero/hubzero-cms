@@ -347,10 +347,20 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				$name = str_replace("\n", '', stripslashes(trim($row->get('raw_tag'))));
 				$name = str_replace("\r", '', $name);
 
-				$json[] = array(
+				$item = array(
 					'id'   => $row->get('tag'),
 					'name' => $name
 				);
+
+				// Push exact matches to the front
+				if ($row->get('tag') == $filters['search'])
+				{
+					array_unshift($json, $item);
+				}
+				else
+				{
+					$json[] = $item;
+				}
 			}
 		}
 
