@@ -154,6 +154,12 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
 
+		$width = isset($this->_config->params->thumbWidth) && $this->_config->params->thumbWidth
+				? $this->_config->params->thumbWidth : 100;
+
+		$height = isset($this->_config->params->thumbHeight) && $this->_config->params->thumbHeight
+				? $this->_config->params->thumbHeight : 60;
+
 		// TBD - to come from component configs
 		$defaultMasterName  = 'master.png';
 		$defaultThumbName 	= 'thumb.gif';
@@ -182,6 +188,21 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		$thumbName = $this->_imgHelper->createThumbName(basename($path), $suffix, $format);
 		$thumbPath = dirname($path) . DS . $thumbName;
+
+		// Create/update thumb if doesn't exist or file changed
+		if (!is_file($thumbPath))
+		{
+			JFile::copy($path, $thumbPath);
+			$this->_imgHelper->set('image', basename($thumbName));
+			$this->_imgHelper->set('overwrite', true);
+			$this->_imgHelper->set('path', $configs->pubPath . DS);
+			$this->_imgHelper->set('maxWidth', $width);
+			$this->_imgHelper->set('maxHeight', $height);
+			if (!$this->_imgHelper->process())
+			{
+				return false;
+			}
+		}
 
 		// Copy to thumb
 		if (is_file($thumbPath))
