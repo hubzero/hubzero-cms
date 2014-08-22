@@ -52,6 +52,13 @@ class Server extends Object
 	private $_acceptranges;
 
 	/**
+	 * Serve with mod_xsendfile
+	 *
+	 * @var boolean
+	 */
+	private static $_allowxsendfle = false;
+
+	/**
 	 * inline or attachment
 	 *
 	 * @var string
@@ -112,6 +119,20 @@ class Server extends Object
 		}
 
 		return $this->_filename;
+	}
+
+	/**
+	 * Allow apache to serve files
+	 * @return [type] [description]
+	 */
+	public function allowXsendFile()
+	{
+		// is mod_xsendfile loaded & we have allowed xsendfile in config
+		if (in_array('mod_xsendfile', apache_get_modules())
+			&& \JFactory::getConfig()->getValue('allow_xsendfile', 0) == 1)
+		{
+			self::$_allowxsendfle = true;
+		}
 	}
 
 	/**
@@ -297,6 +318,15 @@ class Server extends Object
 		if (self::$_contentType == '##INVALID_FILE##')
 		{
 			self::$_contentType = 'application/octet-stream';
+		}
+
+		// send xsend file now (before any headers are sent)
+		if (self::$_allowxsendfle === true)
+		{
+			header('Content-Type: ' . self::$_contentType);
+			header('Content-Disposition: ' . $disposition . '; filename=' . $saveas);
+			header('X-Sendfile: ' . $filename);
+			exit(0);
 		}
 
 		if ($acceptranges
