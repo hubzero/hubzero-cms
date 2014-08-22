@@ -206,6 +206,12 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 				$ret = true;
 			}
 		}
+		else if (preg_match("/^(https?:|mailto:|ftp:|gopher:|news:|file:)/", $file))
+		{
+			$attr['desc'] = $file;
+
+			$ret = true;
+		}
 		// Check for file existence
 		else if (file_exists($this->_path($file)) || file_exists($this->_path($file, true)))
 		{
@@ -467,7 +473,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	private function _link($file)
 	{
 		$urlPtrn  = "[^=\"\'](https?:|mailto:|ftp:|gopher:|feed:|news:|file:)" . "([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_])";
-		if (preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS)
+		if (preg_match("/^(https?:|mailto:|ftp:|gopher:|news:|file:)/", $file) || preg_match("/$urlPtrn/", $file) || substr($file, 0, 1) == DS)
 		{
 			return $file;
 		}
