@@ -48,11 +48,11 @@
 				<dt>Offline Image</dt>
 				<dd>The image that will be displayed on the site when the site is offline.</dd>
 				<dt>Default Editor</dt>
-				<dd>The default <a href="index.php?option=com_help&view=help&keyref=Content_creators#Content_Editors" title="Content creators">editor</a> to use when creating articles.</dd>
+				<dd>The default <a href="index.php?option=com_help&amp;view=help&amp;keyref=Content_creators#Content_Editors" title="Content creators">editor</a> to use when creating articles.</dd>
 				<dt>Default Captcha</dt>
 				<dd>The default Captcha to use when called by extensions. Remember to correctly configure the associated plugin when selecting an option here. By default, this is set to <b>None</b>.</dd>
 				<dt>Default Access Level</dt>
-				<dd>The default access level to the site. The options here are from the <a href="/proxy/index.php?option=com_help&component=com_users&page=Users_Access_Levels">Help25:Users Access Levels</a>.</dd>
+				<dd>The default access level to the site. The options here are from the <a href="index.php?option=com_help&amp;component=com_users&amp;page=levels">Users Access Levels</a>.</dd>
 				<dt>Default List Limit</dt>
 				<dd>The length of lists in the Control Panel for all Users.  By default, this is set to <b>20</b>.</dd>
 				<dt>Default Feed Limit</dt>
@@ -75,8 +75,6 @@
 				<dd>It shows the Meta information of each article.  This Meta information is used by search engine spiders when indexing the site.  Each article can have its own Meta Data information (set under the <b>Metadata Information</b> pane when creating or editing an article).</dd>
 				<dt>Show Author Meta Tag</dt>
 				<dd>It shows the Author Meta information for articles and is used by search engine spiders when indexing the site.</dd>
-				<dt>Show Joomla! Version</dt>
-				<dd>It shows the Joomla! version in the <b>generator</b> meta tag.</dd>
 			</dl>
 		</section>
 
@@ -86,9 +84,9 @@
 			<p>SEO stands for <i>Search Engine Optimization</i>.</p>
 
 			<ul>
-				<li><b>Search Engine Friendly URLs</b>. When set to <i>Yes</i>, URLs are rewritten to be more friendly for search engine spiders. For example, the URL: <i>www.example.com/index.php?option=com_content&amp;view=etc...</i>, would turn into: <i>www.example.com/alias</i>.  Most of the items created in Joomla! have an Alias box where a search engine friendly URL can be inserted.  The default setting is <b>No</b>.</li>
-				<li><b>Use Apache <i>mod_rewrite</i></b>. When set to <i>Yes</i>, Joomla! will use the <i>mod_rewrite</i> settings of Apache when creating search engine friendly URLs.  Please note: it is advised that you do not modify any <b>.htaccess</b> file without an understanding of how it works. You must use the <b>.htaccess</b> file provided with Joomla! in order to use this setting.  To use this file, rename the <b>htaccess.txt</b> file (found in the root directory) to <b>.htaccess</b>. By default, this setting is set to <b>No</b>.</li>
-				<li><b>Adds Suffix to URL</b>. When set to <i>Yes</i>, Joomla! will add <b>.html</b> to the end of the URLs.  The default setting is <b>No</b>.</li>
+				<li><b>Search Engine Friendly URLs</b>. When set to <i>Yes</i>, URLs are rewritten to be more friendly for search engine spiders. For example, the URL: <i>www.example.com/index.php?option=com_content&amp;view=etc...</i>, would turn into: <i>www.example.com/alias</i>.  Most of the items created have an Alias box where a search engine friendly URL can be inserted.  The default setting is <b>No</b>.</li>
+				<li><b>Use Apache <i>mod_rewrite</i></b>. When set to <i>Yes</i>, the CMS will use the <i>mod_rewrite</i> settings of Apache when creating search engine friendly URLs.  Please note: it is advised that you do not modify any <b>.htaccess</b> file without an understanding of how it works. You must use the <b>.htaccess</b> file provided with the CMS in order to use this setting.  To use this file, rename the <b>htaccess.txt</b> file (found in the root directory) to <b>.htaccess</b>. By default, this setting is set to <b>No</b>.</li>
+				<li><b>Adds Suffix to URL</b>. When set to <i>Yes</i>, the CMS will add <b>.html</b> to the end of the URLs.  The default setting is <b>No</b>.</li>
 				<li><b>Unicode aliases</b>. If Yes, non-Latin characters are allowed in the alias (and URL). If No, a title that includes non-Latin characters will produce a default alias value of the current time and date (for example, "2012-12-31-17-54"). The default setting is <b>No</b>.</li>
 				<li><b>Add Site Name To Page Titles</b>. Appends the site name to all page titles. (This is what you see in your browser tab.)</li>
 			</ul>
@@ -107,16 +105,16 @@
 		<section>
 			<h3><span class="mw-headline" id="System_Settings">System Settings</span></h3>
 			<ul>
-				<li><b>Path to Log folder</b>. The path where the logs should be stored.  The Joomla! installer should automatically fill in this folder.</li>
-				<li><b>Help Server</b>. The place Joomla! looks for help information when you click the <b>Help</b> button (visible in many screens and options of the administration panel).  By default, it uses Joomla!'s main help site.</li>
+				<li><b>Path to Log folder</b>. The path where the logs should be stored.  The installer should automatically fill in this folder.</li>
+				<li><b>Help Server</b>. The place the CMS looks for help information when you click the <b>Help</b> button (visible in many screens and options of the administration panel).  By default, it uses the CMS' local files.</li>
 			</ul>
 		</section>
 		<section>
 			<h3><span class="mw-headline" id="Debug_Settings">Debug Settings</span></h3>
-			<p>For this debug settings to work the associated <a href="index.php?option=com_help&component=com_plugins&page=plugins#System_-_Debug" title="Extensions Plugin Manager Edit">plugin</a> must be activated (this is enabled by default). You can also customize further what will show in the debug modes in this plugin.</p>
+			<p>For this debug settings to work the associated <a href="index.php?option=com_help&amp;component=com_plugins&amp;page=plugins#System_-_Debug" title="Extensions Plugin Manager Edit">plugin</a> must be activated (this is enabled by default). You can also customize further what will show in the debug modes in this plugin.</p>
 			<ul>
-				<li><b>Debug System</b>. This will turn on the debugging system of Joomla!.  When set to <b>Yes</b>, this tool will provide diagnostic information, language translations, and SQL errors. If any such issues or errors occur, they will be displayed at the bottom of each page, in both the front-end and back-end.</li>
-				<li><b>Debug Language</b>. This will turn on the debugging indicators (*...*) or (?...?) for the Joomla! Language files.  Debug Language will work without the Debug System tool set to on.  But it will not provide additional detailed references which would help in correcting any errors.</li>
+				<li><b>Debug System</b>. This will turn on the debugging system of the CMS.  When set to <b>Yes</b>, this tool will provide diagnostic information, language translations, and SQL errors. If any such issues or errors occur, they will be displayed at the bottom of each page, in both the front-end and back-end.</li>
+				<li><b>Debug Language</b>. This will turn on the debugging indicators (*...*) or (?...?) for the Language files.  Debug Language will work without the Debug System tool set to on.  But it will not provide additional detailed references which would help in correcting any errors.</li>
 			</ul>
 		</section>
 		<section>
@@ -141,7 +139,7 @@
 
 		<h3><span class="mw-headline" id="Server_Settings">Server Settings</span></h3>
 		<ul>
-			<li><b>Path to Temp-folder</b>. The path where files are temporarily stored.  This is filled in by default when Joomla! is installed.</li>
+			<li><b>Path to Temp-folder</b>. The path where files are temporarily stored.  This is filled in by default when the CMS is installed.</li>
 			<li><b>GZIP Page Compression</b>. Compressing pages typically increases your site's speed.  The default setting is <b>No</b>.</li>
 			<li><b>Error Reporting</b>. This sets the appropriate level of reporting.  The default setting is <b>System Default</b>.</li>
 			<li><b>Force SSL<i>. This setting forces the site access for selected areas under SSL (https). </i></b><i>Note</i>: you must have set already the server to use SSL. Options are:
@@ -159,33 +157,33 @@
 		</ul>
 
 		<h3><span class="mw-headline" id="FTP_Settings">FTP Settings</span></h3>
-		<p>FTP stands for File Transfer Protocol.  Most of these settings are set during the initial Joomla! installation.</p>
+		<p>FTP stands for File Transfer Protocol.  Most of these settings are set during the initial installation.</p>
 		<ul>
-			<li><b>Enable FTP</b>. This setting tells Joomla! to use it's built-in FTP function instead of the normal upload process used by PHP.</li>
+			<li><b>Enable FTP</b>. This setting tells the CMS to use it's built-in FTP function instead of the normal upload process used by PHP.</li>
 			<li><b>FTP Host</b>. The host server's URL connecting the FTP.</li>
 			<li><b>FTP Port</b>. The port where the FTP is accessed.  The default setting is <b>21</b>.</li>
-			<li><b>FTP Username</b>. The username that Joomla! will use when accessing the FTP server.  Security recommendation: create another FTP user account to access a folder where files will be uploaded to.</li>
-			<li><b>FTP Password</b>. The password that Joomla! will use when accessing the FTP server.  Security recommendation: create another FTP user account to access the folder where files will be uploaded to.</li>
+			<li><b>FTP Username</b>. The username that the CMS will use when accessing the FTP server.  Security recommendation: create another FTP user account to access a folder where files will be uploaded to.</li>
+			<li><b>FTP Password</b>. The password that the CMS will use when accessing the FTP server.  Security recommendation: create another FTP user account to access the folder where files will be uploaded to.</li>
 			<li><b>FTP Root</b>. The root directory where files should be uploaded to.</li>
 		</ul>
 
 		<h3><span class="mw-headline" id="Database_Settings">Database Settings</span></h3>
-		<p>These settings are set during the initial setup of Joomla!  It is advised to leave these settings the way they are, unless you have a good understanding of how databases work.</p>
+		<p>These settings are set during the initial setup.  It is advised to leave these settings the way they are, unless you have a good understanding of how databases work.</p>
 		<ul>
-			<li><b>Database Type</b>. The type of databased to be used.  The default setting is <b>mysql</b>, but this can be changed during the initial setup of Joomla!.</li>
+			<li><b>Database Type</b>. The type of databased to be used.  The default setting is <b>mysql</b>, but this can be changed during the initial setup.</li>
 			<li><b>Host</b>. The hostname where the database is located.  It is typically set to <b>localhost</b> for most servers.  It is possible for the hostname to be located on a different server all together.</li>
 			<li><b>Database Username</b>. The username to access the database.</li>
 			<li><b>Database Name</b>. The name of the database.</li>
-			<li><b>Database Prefix</b>. The prefix used before the actual table's name.  This allows you to have multiple Joomla! installations in the same database.  The default setting is <b>jos_</b>, but this can be changed during initial setup of Joomla!.</li>
+			<li><b>Database Prefix</b>. The prefix used before the actual table's name.  This allows you to have multiple installations in the same database.  The default setting is <b>jos_</b>, but this can be changed during initial setup.</li>
 		</ul>
 
 		<h3><span class="mw-headline" id="Mail_Settings">Mail Settings</span></h3>
-		<p>The mail settings are set during the initial setup of Joomla!.  These settings can be changed whenever needed.</p>
+		<p>The mail settings are set during the initial setup.  These settings can be changed whenever needed.</p>
 		<ul>
-			<li><b>Mailer</b>. This setting sets which mailer to use to deliver emails from the site.  The default setting is <b>PHP Mail Function</b>. This can be changed during the initial setup of Joomla!.</li>
-			<li><b>From E-mail</b>. The email address used by Joomla! to send site email.</li>
-			<li><b>From Name</b>. The name Joomla! will use when sending site emails.  By default, Joomla! uses the site name during the initial setup.</li>
-			<li><b>Sendmail Path</b>. The path where the Sendmail program is located.  This is typically filled in by Joomla! during the initial setup.  This path is only used if <b>Mailer</b> is set to <b>Sendmail</b>.</li>
+			<li><b>Mailer</b>. This setting sets which mailer to use to deliver emails from the site.  The default setting is <b>PHP Mail Function</b>. This can be changed during the initial setup.</li>
+			<li><b>From E-mail</b>. The email address used to send site email.</li>
+			<li><b>From Name</b>. The name of the site will use when sending site emails.  By default, the CMS uses the site name during the initial setup.</li>
+			<li><b>Sendmail Path</b>. The path where the Sendmail program is located.  This is typically filled in during the initial setup.  This path is only used if <b>Mailer</b> is set to <b>Sendmail</b>.</li>
 			<li><b>SMTP Authentication</b>. If the SMTP server requires authentication to send mail, set this to <b>Yes</b>. Otherwise leave it at <b>No</b>.  This is only used if <b>Mailer</b> is set to <b>Sendmail</b>.</li>
 			<li><b>SMTP Security</b>. Select the security model your SMTP server uses - Default is None. Options are SSL and TTL.</li>
 			<li><b>SMTP Port</b>. Most unsecure servers use port 25 and most secure servers use port 465.</li>
@@ -204,7 +202,7 @@
 		<p>Note that the Calculated Setting column is not updated until you press the Save button in the toolbar. To check that the settings are what you want, press the Save button and check the Calculated Settings column.</p>
 
 		<h3><span class="mw-headline" id="Setting_Groups">Setting Groups</span></h3>
-		<p>The first thing to notice are the nine Actions: Site Login, Admin Login, Super Admin, Access Component, Create, Delete, Edit, Edit State. and Edit Own. These are the actions that a use can perform on an object in Joomla. The specific meaning of each action depends on the context. For the Global Configuration screen, they are defined as follows:</p>
+		<p>The first thing to notice are the nine Actions: Site Login, Admin Login, Super Admin, Access Component, Create, Delete, Edit, Edit State. and Edit Own. These are the actions that a user can perform on an object. The specific meaning of each action depends on the context. For the Global Configuration screen, they are defined as follows:</p>
 
 		<dl>
 			<dt>Site Login&#160;</dt><dd> Login to the front end of the site</dd>
@@ -226,9 +224,9 @@
 	<section id="Text_Filters">
 		<h2><span>Text Filters</span></h2>
 
-		<p>Web sites can be attacked by users entering in special HTML code. Filtering is a way to protect your Joomla web site. Filtering options give you more control over the HTML that your content providers are allowed to submit. You can be as strict or as liberal as you desire, depending on your site's needs.</p>
+		<p>Web sites can be attacked by users entering in special HTML code. Filtering is a way to protect your web site. Filtering options give you more control over the HTML that your content providers are allowed to submit. You can be as strict or as liberal as you desire, depending on your site's needs.</p>
 		<p>It is important to understand that filtering occurs at the time an article is saved, <i>after</i> it has been written or edited. Depending on your editor and filter settings, it is possible for a user to add HTML to an article during the edit session only to have that HTML removed from the article when it is saved. This can sometimes cause confusion or frustration. If you have filtering set up on your site, make sure your users understand what types of HTML are allowed.</p>
-		<p>The default setting in Joomla version 2.5 is that all users will have "black list" filtering on by default. This is designed to protect against markup commonly associated with web site attacks. So, if you do not set any filtering options, all users will have "black list" filtering done using the default list of filtered items. If you create a filter here, this overrides the default, and the default filter is no longer in effect.</p>
+		<p>The default setting is that all users will have "black list" filtering on by default. This is designed to protect against markup commonly associated with web site attacks. So, if you do not set any filtering options, all users will have "black list" filtering done using the default list of filtered items. If you create a filter here, this overrides the default, and the default filter is no longer in effect.</p>
 		<p>To access the filtering settings, click on Options and select 'Text filters'</p>
 
 		<h3><span class="mw-headline" id="Column_Headings">Column Headings</span></h3>
@@ -308,16 +306,16 @@
 		<ul>
 			<li>Most, if not all, of these settings can be set once and then left alone.</li>
 			<li>If major modifications need to be made, then consider taking the site offline to test it and to make sure everything is in working order.</li>
-			<li>The settings are saved in '&lt;Joomla-root&gt;/configuration.php'. You have to either activate the FTP-layer or make the 'configuration.php' file writable to save your changes.</li>
+			<li>The settings are saved in '&lt;root&gt;/configuration.php'. You have to either activate the FTP-layer or make the 'configuration.php' file writable to save your changes.</li>
 		</ul>
 	</section>
 
 	<section id="Related_Information">
 		<h2><span>Related Information</span></h2>
 		<ul>
-			<li><a href="index.php?option=com_help&view=help&keyref=Help25:Site_Control_Panel" title="Site Control Panel">Control panel</a></li>
+			<li><a href="index.php?option=com_help&amp;component=cpanel&amp;page=cpanel" title="Site Control Panel">Control panel</a></li>
 			<li><a rel="nofollow" class="external text" href="http://httpd.apache.org/docs/2.2/howto/htaccess.html">Info about .htaccess</a></li>
-			<li><a href="index.php?option=com_help&view=help&keyref=Access_Control_List/1.6-2.5/Tutorial" title="Access Control List/1.6-2.5/Tutorial" class="mw-redirect">ACL Tutorial</a></li>
+			<li><a href="index.php?option=com_help&amp;component=users&amp;page=acl" title="Access Control List Tutorial" class="mw-redirect">ACL Tutorial</a></li>
 		</ul>
 	</section>
 </article>
