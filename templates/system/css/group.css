@@ -18,6 +18,7 @@
 	height: 44px;
 	position: relative;
 	z-index: 999;
+	overflow: hidden;
 }
 
 /* Powered By */
