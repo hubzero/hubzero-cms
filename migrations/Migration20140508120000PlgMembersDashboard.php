@@ -111,9 +111,12 @@ class Migration20140508120000PlgMembersDashboard extends Base
 		// if we have some prefs to move over
 		if (count($newpreferences) > 0)
 		{
-			$query = "INSERT INTO `#__xprofiles_dashboard_preferences`(uidNumber,preferences,modified) VALUES " . implode(',', $newpreferences) ;
-			$this->db->setQuery($query);
-			$this->db->query();
+			foreach ($newpreferences as $pref)
+			{
+				$query = "INSERT INTO `#__xprofiles_dashboard_preferences`(uidNumber,preferences,modified) VALUES " . $pref ;
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 
 		// drop old myhub tables
