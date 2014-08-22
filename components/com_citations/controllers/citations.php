@@ -564,8 +564,6 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$this->view->setLayout('edit');
-
 		//get the citation types
 		$ct = new CitationsType($this->database);
 		$types = $ct->getType();
@@ -680,7 +678,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				$this->view->setError($error);
 			}
 		}
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -743,6 +741,10 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		//get the posted vars
 		$c = $_POST;
+		if (isset($c['format_type']))
+		{
+			$c['format'] = $c['format_type'];
+		}
 
 		//get tags
 		$tags = trim(JRequest::getVar('tags', ''));

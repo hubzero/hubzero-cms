@@ -74,11 +74,9 @@ $pid = JRequest::getInt( 'publication', 0 );
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul>
-			<li class="last">
-				<a class="browse btn" href="<?php echo $backLink ?>"><?php echo JText::_('COM_CITATIONS_BACK'); ?></a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-browse browse btn" href="<?php echo $backLink ?>"><?php echo JText::_('COM_CITATIONS_BACK'); ?></a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
@@ -87,7 +85,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 		<h3><?php echo JText::_('COM_CITATIONS_CITATION_FOR'); ?> <?php echo JText::_('COM_CITATIONS_PUBLICATION') . ' #' . $pid; ?></h3>
 	<?php } ?>
 	<?php if ($this->getError()) { ?>
-			<p class="error"><?php echo $this->getError(); ?></p>
+		<p class="error"><?php echo $this->getError(); ?></p>
 	<?php } ?>
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm" class="add-citation">
 		<div class="explaination">
@@ -345,7 +343,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 			<p class="warning"><?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_HINT'); ?></p>
 			<label for="format_type">
 				<?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_FORMAT'); ?>:
-				<select id="format_type" name="format">
+				<select id="format_type" name="format_type">
 					<option value="apa" <?php echo ($this->row->format == 'apa') ? 'selected="selected"' : ''; ?>><?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_APA'); ?></option>
 					<option value="ieee" <?php echo ($this->row->format == 'ieee') ? 'selected="selected"' : ''; ?>><?php echo JText::_('COM_CITATIONS_MANUALLY_FORMAT_IEEE'); ?></option>
 				</select>
@@ -449,7 +447,7 @@ $pid = JRequest::getInt( 'publication', 0 );
 							echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"': '';
 							echo '>'.JText::_('COM_CITATIONS_PUBLICATION').'</option>'."\n";
 							echo '</select></td>'."\n";
-							echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" /></td>'."\n";
+							echo "\t\t\t".'   <td><input type="text" name="assocs['.$i.'][oid]" value="'.$this->assocs[$i]->oid.'" />'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][id]" value="'.$this->assocs[$i]->id.'" />'."\n";
 							echo "\t\t\t\t".'<input type="hidden" name="assocs['.$i.'][cid]" value="'.$this->assocs[$i]->cid.'" /></td>'."\n";
 							echo "\t\t\t".'  </tr>'."\n";
