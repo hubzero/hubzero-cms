@@ -415,7 +415,7 @@
 		</field>
 		<field
 			name="MetaVersion"
-			type="radio"
+			type="hidden"
 			default="0"
 			label="COM_CONFIG_FIELD_METAVERSION_LABEL"
 			description="COM_CONFIG_FIELD_METAVERSION_DESC"
