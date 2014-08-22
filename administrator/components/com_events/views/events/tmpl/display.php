@@ -41,6 +41,9 @@ JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 
+JToolBarHelper::spacer();
+JToolBarHelper::help('events');
+
 $juser = JFactory::getUser();
 
 JHTML::_('behavior.tooltip');

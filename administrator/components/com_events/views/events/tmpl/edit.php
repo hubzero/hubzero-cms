@@ -6,6 +6,8 @@ $text = ($this->task == 'edit') ? JText::_('COM_EVENTS_EDIT') : JText::_('COM_EV
 JToolBarHelper::title(JText::_('COM_EVENTS_EVENT').': '. $text, 'event.png');
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
+JToolBarHelper::help('event');
 
 $editor = JFactory::getEditor();
 
