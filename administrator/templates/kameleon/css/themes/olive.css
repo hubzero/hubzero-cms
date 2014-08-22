@@ -18,10 +18,10 @@
 	div.configuration,
 	h2.modal-title,
 	.light .main-navigation {
-		background: #607581;
+		background: #69805f;
 	}
 	.light .main-navigation ul#menu ul {
-		background: #607581;
+		background: #69805f;
 	}
 	.light .main-navigation ul#menu ul li {
 		background-color: rgba(0, 0, 0, 0.2);
@@ -40,8 +40,8 @@
 	}
 	.dark .toolbar-box li a span:after {
 		text-shadow:
-		     -1px -1px 0 #607581,
-		      1px -1px 0 #607581,
-		      -1px 1px 0 #607581,
-		       1px 1px 0 #607581;
+		     -1px -1px 0 #69805f,
+		      1px -1px 0 #69805f,
+		      -1px 1px 0 #69805f,
+		       1px 1px 0 #69805f;
 	}
