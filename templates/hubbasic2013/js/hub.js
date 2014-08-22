@@ -88,7 +88,8 @@ jQuery(document).ready(function(jq){
 
 	// Init tooltips
 	if (jQuery.ui && jQuery.ui.tooltip) {
-		$('.hasTip, .tooltips').tooltip({
+		$(document).tooltip({
+			items: '.hasTip, .tooltips',
 			position: {
 				my: 'center bottom',
 				at: 'center top'
@@ -98,9 +99,6 @@ jQuery(document).ready(function(jq){
 			// done. Solution is to disable one of the animations.
 			hide: false,
 			content: function () {
-				return $(this).attr('title');
-			},
-			create: function(event, ui) {
 				var tip = $(this),
 					tipText = tip.attr('title');
 
@@ -108,6 +106,7 @@ jQuery(document).ready(function(jq){
 					var parts = tipText.split('::');
 					tip.attr('title', parts[1]);
 				}
+				return $(this).attr('title');
 			},
 			tooltipClass: 'tooltip'
 		});
