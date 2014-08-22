@@ -644,7 +644,7 @@ class Base
 	 * @param $element - (string) plugin element
 	 * @param $enabled - (int)    whether or not the plugin should be enabled
 	 * @param $params  - (array)  plugin params (if already known)
-	 * @param $params  - (string) client (site=0, admin=1)
+	 * @param $client  - (int)    client (site=0, admin=1)
 	 * @return bool
 	 **/
 	public function addModuleEntry($element, $enabled=1, $params='', $client=0)
@@ -670,6 +670,62 @@ class Base
 
 			$query = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
 			$query .= " VALUES ('{$name}', 'module', '{$element}', '', {$client}, {$enabled}, 1, 0, '', ".$this->baseDb->quote($params).", '', '', 0, '0000-00-00 00:00:00', {$ordering}, 0)";
+			$this->baseDb->setQuery($query);
+			$this->baseDb->query();
+		}
+	}
+
+	/**
+	 * Instead of just adding to the extensions table, install module in modules table
+	 *
+	 * @param $module   - (string)     module name
+	 * @param $position - (string)     module position
+	 * @param $params   - (array)      params (if already known)
+	 * @param $client   - (int)        client (site=0, admin=1)
+	 * @param $menus    - (int, array) menus to install to (0=all)
+	 * @return void
+	 **/
+	public function installModule($module, $position, $params='', $client=0, $menus=0)
+	{
+		$title    = $this->baseDb->quote(ucfirst($module));
+		$position = $this->baseDb->quote($position);
+		$module   = $this->baseDb->quote('mod_' . strtolower($module));
+		$client   = $this->baseDb->quote((int)$client);
+		$access   = ($this->baseDb->tableExists('#__extensions')) ? 1 : 0;
+
+		// Build params string
+		if (is_array($params) && !$this->baseDb->tableExists('#__extensions'))
+		{
+			$p = '';
+			foreach ($params as $k => $v)
+			{
+				$p .= "{$k}={$v}\n";
+			}
+
+			$params = $this->baseDb->quote($p);
+		}
+		else
+		{
+			$params = $this->baseDb->quote(json_encode($params));
+		}
+
+		$query = "SELECT MAX(ordering) FROM `#__modules` WHERE `position` = {$position}";
+		$this->baseDb->setQuery($query);
+		$ordering = (int)(($this->baseDb->loadResult()) ? $this->baseDb->loadResult() + 1 : 0);
+
+		$query  = "INSERT INTO `#__modules` ";
+		$query .= "(`title` , `content`, `ordering` , `position` , `published`, `module` , `access` , `showtitle`, `params` , `client_id`) VALUES ";
+		$query .= "({$title}, ''       , {$ordering}, {$position}, 1          , {$module}, {$access}, 0          , {$params}, {$client}  )";
+
+		$this->baseDb->setQuery($query);
+		$this->baseDb->query();
+		$id = $this->baseDb->quote($this->baseDb->insertid());
+
+		$menus = (array)$menus;
+		foreach ($menus as $menu)
+		{
+			$menu  = $this->baseDb->quote($menu);
+			$query = "INSERT INTO `#__modules_menu` (`moduleid`, `menuid`) VALUES ({$id}, {$menu})";
 			$this->baseDb->setQuery($query);
 			$this->baseDb->query();
 		}
