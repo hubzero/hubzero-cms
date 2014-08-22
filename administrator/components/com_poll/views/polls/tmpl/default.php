@@ -4,7 +4,7 @@
 
 	$canDo = PollHelper::getActions('component');
 
-	JToolBarHelper::title(  JText::_( 'COM_POLL' ), 'poll.png' );
+	JToolBarHelper::title(JText::_('COM_POLL'), 'poll.png');
 	if ($canDo->get('core.edit.state'))
 	{
 		JToolBarHelper::publishList();
@@ -25,7 +25,7 @@
 		JToolBarHelper::addNewX();
 	}
 	JToolBarHelper::spacer();
-	JToolBarHelper::help( 'screen.polls' );
+	JToolBarHelper::help('polls');
 ?>
 
 <form action="index.php?option=com_poll" method="post" name="adminForm" id="adminForm">

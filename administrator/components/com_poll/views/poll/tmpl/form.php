@@ -22,7 +22,7 @@
 		JToolBarHelper::cancel();
 	}
 	JToolBarHelper::spacer();
-	JToolBarHelper::help( 'screen.polls.edit' );
+	JToolBarHelper::help('poll');
 
 JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 ?>
