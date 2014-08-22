@@ -45,6 +45,12 @@ if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !JRequest::getI
 $app         = JFactory::getApplication();
 $usersConfig = JComponentHelper::getParams('com_users');
 $primary     = JRequest::getWord('primary', false);
+
+// use some reflections to inspect plugins for special behavior (added for shibboleth)
+$refl = array();
+foreach ($this->authenticators as $a):
+	$refl[$a['name']] = new \ReflectionClass("plgAuthentication{$a['name']}");
+endforeach;
 ?>
 <?php if ($this->params->get('show_page_title', 1)) : ?>
 	<header id="content-header">
@@ -64,7 +70,7 @@ $primary     = JRequest::getWord('primary', false);
 				<?php endif; ?>
 			</div>
 			<div class="lower">
-				<div class="instructions"><?php echo JText::sprintf('Sign in with %s', ucfirst($primary)); ?></div>
+				<div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(NULL, $this->returnQueryString) : JText::sprintf('Sign in with %s', ucfirst($primary)); ?></div>
 			</div>
 		</div>
 	</a>
@@ -79,16 +85,15 @@ $primary     = JRequest::getWord('primary', false);
 			<div class="instructions"><?php echo JText::_('Choose your sign in method:'); ?></div>
 			<div class="options">
 				<?php foreach ($this->authenticators as $a) : ?>
-					<a class="<?php echo $a['name']; ?> account" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
 						<?php 
-							$refl = new \ReflectionClass("plgAuthentication{$a['name']}");
-							if ($refl->hasMethod('onRenderOption') && ($html = $refl->getMethod('onRenderOption')->invoke(NULL))):
+							if ($refl[$a['name']]->hasMethod('onRenderOption') && ($html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(NULL, $this->returnQueryString))):
 								echo is_array($html) ? implode("\n", $html) : $html;
 							else:
 						?>
-						<div class="signin"><?php echo JText::sprintf('Sign in with %s', $a['display']); ?></div>
+							<a class="<?php echo $a['name']; ?> account" href="<?php echo JRoute::_('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $this->returnQueryString); ?>">
+								<div class="signin"><?php echo JText::sprintf('Sign in with %s', $a['display']); ?></div>
+							</a>
 						<?php endif; ?>
-					</a>
 				<?php endforeach; ?>
 			</div>
 			<div class="or"></div>
@@ -117,7 +122,7 @@ $primary     = JRequest::getWord('primary', false);
 						<input tabindex="2" type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo JText::_('password'); ?>" />
 						<div class="loading"></div>
 					</div>
-					<div class="input-error">blah blah</div>
+					<div class="input-error"></div>
 				</div>
 				<div class="submission">
 					<input type="submit" value="<?php echo JText::_('Sign in'); ?>" class="login-submit btn btn-primary" />
