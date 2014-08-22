@@ -31,8 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$option = JRequest::getCmd('option');
 $config = JFactory::getConfig();
-$juser = JFactory::getUser();
+$juser  = JFactory::getUser();
 
 //do we want to include jQuery
 if (JPluginHelper::isEnabled('system', 'jquery'))
@@ -157,7 +158,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <?php endif; ?>
 
 		<div id="wrap">
-			<main id="content" class="<?php echo JRequest::getCmd('option'); ?>">
+			<main id="content" class="<?php echo $option; ?>">
 				<div id="content-wrap">
 					<?php if ($this->getBuffer('message')) : ?>
 						<jdoc:include type="message" />
