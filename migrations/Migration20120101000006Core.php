@@ -44,6 +44,13 @@ class Migration20120101000006Core extends Base
 		$this->addPluginEntry('authentication', 'linkedin');
 		$this->addPluginEntry('user', 'ldap');
 
+		// Modules
+		$this->installModule('search', 'search', array(
+			'label' => 'Search',
+			'width' => '20',
+			'text'  => 'Search'
+		));
+
 		// Deletes
 		$this->deleteComponentEntry('userpoints');
 		$this->deleteComponentEntry('xpoll');
@@ -163,28 +170,28 @@ class Migration20120101000006Core extends Base
 
 		// Update support tickets to use new open field
 		$query = "UPDATE `#__support_tickets` SET `open`=0 WHERE `status`=2";
-		$this->db->query($query);
+		$this->db->setQuery($query);
 		$this->db->query();
 		$query = "UPDATE `#__support_tickets` SET `status`=2, `open`=1 WHERE `status`=1";
-		$this->db->query($query);
+		$this->db->setQuery($query);
 		$this->db->query();
 		$query = "UPDATE `#__support_tickets` SET `status`=1 WHERE (`owner` != '' AND `owner` IS NOT NULL) AND `open`=1 AND `status`=0";
-		$this->db->query($query);
+		$this->db->setQuery($query);
 		$this->db->query();
 
 		// Change xpoll module entries to use poll module
 		$query = "UPDATE `#__modules` SET `module`='mod_poll' WHERE `module`='mod_xpoll'";
-		$this->db->query($query);
+		$this->db->setQuery($query);
 		$this->db->query();
 
 		// Change to use hub menu module
 		$query = "UPDATE `#__modules` SET `module`='mod_hubmenu' WHERE `module`='mod_menu' AND `client_id`='1'";
-		$this->db->query($query);
+		$this->db->setQuery($query);
 		$this->db->query();
 
 		// Update login redirect url
 		$query = "UPDATE `#__menu` SET `params` = REPLACE(`params`,'login=/myhub','login=/members/myaccount/') WHERE `alias` = 'login'";
-		$this->db->query($query);
+		$this->db->setQuery($query);
 		$this->db->query();
 	}
 }
