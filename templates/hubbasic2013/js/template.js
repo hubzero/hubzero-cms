@@ -29,6 +29,11 @@ jQuery(document).ready(function($) {
 });
 
 $(window).resize(function() {
+	if (!hubbasic2013.mobileNav)
+	{
+		return;
+	}
+	
 	// Check if the state changed, do something then)
 	if (hubbasic2013.mobileNav.css('display') != hubbasic2013.windowState) {
 		// update window state to the current one
