@@ -688,6 +688,28 @@ class Migration
 	}
 
 	/**
+	 * Return migration run history
+	 *
+	 * @return (array)
+	 **/
+	public function history()
+	{
+		try
+		{
+			$query = "SELECT * FROM " . $this->db->quoteName($this->get('tbl_name'));
+			$this->db->setQuery($query);
+			$results = $this->db->loadObjectList();
+
+			return $results;
+		}
+		catch (\PDOException $e)
+		{
+			$this->log("Failed to retrieve history.", 'error');
+			return false;
+		}
+	}
+
+	/**
 	 * Set ignore callbacks to true
 	 *
 	 * @return void

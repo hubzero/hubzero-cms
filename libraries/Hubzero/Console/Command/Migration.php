@@ -317,6 +317,59 @@ class Migration extends Base implements CommandInterface
 	}
 
 	/**
+	 * Report migration run info
+	 *
+	 * @return void
+	 **/
+	public function history()
+	{
+		$migration = new \Hubzero\Content\Migration();
+		$history   = $migration->history();
+		$output    = array();
+		$maxFile   = 0;
+		$maxUser   = 0;
+		$maxScope  = 0;
+
+		if ($history && count($history) > 0)
+		{
+			foreach ($history as $entry)
+			{
+				if (strlen($entry->file) > $maxFile)
+				{
+					$maxFile = strlen($entry->file);
+				}
+				if (strlen($entry->action_by) > $maxUser)
+				{
+					$maxUser = strlen($entry->action_by);
+				}
+				if (strlen($entry->scope) > $maxScope)
+				{
+					$maxScope = strlen($entry->scope);
+				}
+			}
+
+			$width = $maxScope + $maxFile + $maxUser + 28;
+
+			$this->output->addLine(' ' . str_repeat('-', ($width)));
+
+			foreach ($history as $entry)
+			{
+				$padding1 = $maxFile - strlen($entry->file);
+				$padding2 = $maxUser - strlen($entry->action_by);
+				$this->output->addString('| ' . $entry->scope . DS . $entry->file . ' ' . str_repeat(' ', $padding1));
+				$this->output->addString('| ' . $entry->action_by . ' ' . str_repeat(' ', $padding2));
+				$this->output->addLine('| ' . $entry->date . ' |');
+			}
+
+			$this->output->addLine(' ' . str_repeat('-', ($width)));
+		}
+		else
+		{
+			$this->addLine('No history to display.');
+		}
+	}
+
+	/**
 	 * Output help documentation
 	 *
 	 * @return void
