@@ -56,16 +56,16 @@ class plgSearchKB extends SearchPlugin
 	public static function onSearch($request, &$results)
 	{
 		$terms = $request->get_term_ar();
-		$weight = 'match(f.title, f.params, f.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
+		$weight = 'match(f.title, f.`fulltxt`) against (\'' . join(' ', $terms['stemmed']) . '\')';
 
 		$addtl_where = array();
 		foreach ($terms['mandatory'] as $mand)
 		{
-			$addtl_where[] = "(f.title LIKE '%$mand%' OR f.params LIKE '%$mand%' OR f.`fulltxt` LIKE '%$mand%')";
+			$addtl_where[] = "(f.title LIKE '%$mand%' OR f.`fulltxt` LIKE '%$mand%')";
 		}
 		foreach ($terms['forbidden'] as $forb)
 		{
-			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.params NOT LIKE '%$forb%' AND f.`fulltxt` NOT LIKE '%$forb%')";
+			$addtl_where[] = "(f.title NOT LIKE '%$forb%' AND f.`fulltxt` NOT LIKE '%$forb%')";
 		}
 
 		$user = JFactory::getUser();
