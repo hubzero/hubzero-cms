@@ -298,6 +298,27 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 	}
 
 	/**
+	 * Default Task
+	 * 
+	 * @return [type] [description]
+	 */
+	public function displayTask()
+	{
+		switch ($this->config->getCfg('startview', 'month'))
+		{
+			case 'week':
+				$this->weekTask();
+				break;
+			case 'year':
+				$this->yearTask();
+				break;
+			case 'month':
+			default:
+				$this->monthTask();
+		}
+	}
+
+	/**
 	 * List events for a given year
 	 *
 	 * @return     void
