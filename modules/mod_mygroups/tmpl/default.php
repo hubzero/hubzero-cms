@@ -36,10 +36,16 @@ $groups = $this->groups;
 $total = count($this->groups);
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
+	<?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>
 	<ul class="module-nav grouped">
-		<li><a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_groups&task=browse'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
-		<li><a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
-	</ul>  
+		<?php if ($this->params->get('button_show_all', 1)) { ?>
+			<li><a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_groups&task=browse'); ?>"><?php echo JText::_('MOD_MYGROUPS_ALL_GROUPS'); ?></a></li>
+		<?php } ?>
+		<?php if ($this->params->get('button_show_add', 1)) { ?>
+			<li><a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_groups&task=new'); ?>"><?php echo JText::_('MOD_MYGROUPS_NEW_GROUP'); ?></a></li>
+		<?php } ?>
+	</ul>
+	<?php } ?>
 
 	<?php if ($groups && $total > 0) { ?>
 		<ul class="compactlist mygroups">

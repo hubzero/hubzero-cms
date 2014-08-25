@@ -36,8 +36,8 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename module="mod_mygroups">mod_mygroups.php</filename>
 		<filename>index.html</filename>
-        <filename>tmpl/index.html</filename>
-        <filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
 		<filename>mod_mygroups.css</filename>
 	</files>
 	<config>
@@ -45,6 +45,14 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
 				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." member_dashboard="1" />
+				<field name="button_show_all" type="list" default="1" label="Show All Groups Button" description="Select wether to show the link to the all groups listing.">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="button_show_add" type="list" default="1" label="Show New Group Button" description="Select wether to show the link to the create group form.">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
