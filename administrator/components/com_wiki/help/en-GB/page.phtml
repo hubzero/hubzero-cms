@@ -1,5 +1,85 @@
 <article>
 	<h1><span>Wiki Manager: Edit Page</span></h1>
 
-	<p>-- Needs filling in --</p>
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#details">Details</a></li>
+		<li><a href="#parameters">Parameters</a></li>
+	</ul>
+
+	<section id="description">
+		<h2><span>Description</span></h2>
+		<p>This is where you can add a new Page or edit an existing Page.</p>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar. The functions are:</p>
+		<dl>
+			<dt>Save</dt>
+			<dd>Save changes and return to the edit form.</dd>
+
+			<dt>Save &amp; Close</dt>
+			<dd>Save changes and return to the listing of entries.</dd>
+
+			<dt>Cancel</dt>
+			<dd>Discard any changes made and return to the listing of entries.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="details">
+		<h2><span>Details</span></h2>
+
+		<dl>
+			<dt>Title</dt>
+			<dd>The title of the page. When a page isn't provided, one is generated from the provided pagename. Spaces are injected between camel-cased words.</dd>
+
+			<dt>Pagename</dt>
+			<dd>This is the primary identifier for a page and is also used for URLs. Pagenames are camel-cased (each new word starts with a capital letter) and may contain only numers, letters, and colons. Anything preceding a colon will be the namespace for the page.</dd>
+
+			<dt>Scope</dt>
+			<dd>This consists of the path leading up to the current page, including parent pages. For example, if a page of "ChildPage" has a parent of "ParentPage", the scope will be "ParentPage"</dd>
+
+			<dt>Group</dt>
+			<dd>The group associated with the wiki this entry resides in.</dd>
+
+			<dt>Authors</dt>
+			<dd>A comma-separated list of usernames. Each user represented will have full edit capabilities for a page is the <strong>mode</strong> is set to "Knol".</dd>
+
+			<dt>Tags</dt>
+			<dd>This is an optional, comma-separated list of keywords or phrases that describe the content of the entry.</dd>
+		</dl>
+	</section>
+	<section id="parameters">
+		<h2><span>Parameters</span></h2>
+
+		<dl>
+			<dt>Mode</dt>
+			<dd>Who has access to edit the page and how the page is rendered:
+				<ul>
+					<li><span style="color:green">Wiki</span>: All logged-in users have access to edit.</li>
+					<li><span style="color:red">Knol</span>: Only the defined lsit of <strong>authors</strong> have edit access. The list of authors will also be presented on the page.</li>
+					<li><span style="color:black">Static</span>: Does nto apply the standard wiki page tabs and rendering. This is for pages that have their carefully designated layouts and need full use of the available component output area.</li>
+				</ul>
+
+				<p>Enter the desired level using the drop-down list box.</p>
+			</dd>
+
+			<dt>State</dt>
+			<dd>The permissions status of the page. Locked pages cannot be edited by users. Trashed pages will not show up in the public wiki.</dd>
+
+			<dt>Access</dt>
+			<dd>Who has access to view the page:
+				<ul>
+					<li><span style="color:green">Public</span>: Everyone has access</li>
+					<li><span style="color:red">Registered</span>: Only registered users have access</li>
+					<li><span style="color:black">Special</span>: Only users with author status or higher have access</li>
+				</ul>
+
+				<p>Enter the desired level using the drop-down list box.</p>
+			</dd>
+		</dl>
+	</section>
 </article>
