@@ -35,6 +35,19 @@
 		margin: 0;
 		padding: 0.3em;
 	}
+	#small-page .delete {
+		display: block;
+		white-space: nowrap;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
+		font-size: 1em;
+		overflow: hidden;
+		border: none;
+	}
+	#small-page .delete:hover {
+		color: #c00;
+	}
 	#small-page #filepath li.home a, 
 	#small-page #filepath li.home span {
 		background: url("/components/com_tools/assets/img/home.gif") 0 0 no-repeat;
