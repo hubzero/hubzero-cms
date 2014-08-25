@@ -414,15 +414,19 @@
 	ul.supdocln li {
 		display: inline;
 		}
+	ul.supdocln li:before {
+		display: none;
+	}
+	ul.supdocln li a:before {
+		display: none;
+	}
 	ul.supdocln li a {
-		/*padding-left: 20px;*/
 		padding-bottom: 0.5em;
 		color: #8d7a62;
 		text-decoration: underline;
 	}
 	ul.supdocln li.otherdocs a {
 		padding-left: 0;
-		/*margin-left: 15px;*/
 		}
 	ul.supdocln li a:hover {
 		border: none;
