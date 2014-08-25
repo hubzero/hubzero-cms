@@ -432,6 +432,7 @@ class PublicationsModelAttachments extends JObject
 		$this->_types[$signature] = new $elementClass($this);
 		return $this->_types[$signature];
 	}
+	
 	/**
 	 * Bundle elements
 	 *
@@ -482,7 +483,6 @@ class PublicationsModelAttachments extends JObject
 				&$readme,
 				$bundleDir
 			);
-
 		}
 		return;
 	}

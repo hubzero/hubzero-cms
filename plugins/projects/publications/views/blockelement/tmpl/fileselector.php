@@ -229,7 +229,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 
 					$data->hash	  	= $att->vcs_hash;
 					$data->gone 	= is_file($this->path . DS . $att->path) ? false : true;
-					
+
 					// Get file size
 					$data->size		= $att->vcs_hash
 									? $git->gitLog($this->path, $att->path, $att->vcs_hash, 'size') : NULL;
