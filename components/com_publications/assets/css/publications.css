@@ -444,6 +444,7 @@
 	}
 	ul.supdocln li.archival-package a {
 		padding-left: 0;
+		margin-left: 0;
 	}
 
 /* Inline view */
