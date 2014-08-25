@@ -36,8 +36,19 @@ CKEDITOR.dialog.add( 'hubzeroEquationDialog', function( editor ) {
 			
 			if (image.is('img'))
 			{
-				equationTextarea.val(image.getAttribute('data-equation'));
-				equationPreview.attr('src', latexUrl + image.getAttribute('data-equation'));
+				// get source from data attr
+				var equation = image.getAttribute('data-equation');
+
+				// get source from image url
+				if (equation == null)
+				{
+					var source = image.getAttribute('src');
+					source = decodeURIComponent(source);
+					equation = source.replace(latexUrl, '').trim();
+				}
+				
+				equationTextarea.val(equation);
+				equationPreview.attr('src', latexUrl + equation);
 			}
 			
 			// show preview
