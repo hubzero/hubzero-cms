@@ -33,6 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
+	<?php if ($this->params->get('button_show_add', 1)) { ?>
 	<ul class="module-nav">
 		<li>
 			<a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_wishlist&task=add&category=general&rid=1'); ?>">
@@ -40,6 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 			</a>
 		</li>
 	</ul>
+	<?php } ?>
 
 	<h4>
 		<a href="<?php echo JRoute::_('index.php?option=com_wishlist&category=general&rid=1&filterby=submitter'); ?>">

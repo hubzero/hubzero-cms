@@ -33,18 +33,24 @@ defined('_JEXEC') or die('Restricted access');
 
 $juser = JFactory::getUser();
 ?>
+<?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>
 <ul class="module-nav">
+	<?php if ($this->params->get('button_show_all', 1)) { ?>
 	<li>
 		<a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_answers'); ?>">
 			<?php echo JText::_('MOD_MYQUESTIONS_ALL_QUESTIONS'); ?>
 		</a>
 	</li>
+	<?php } ?>
+	<?php if ($this->params->get('button_show_add', 1)) { ?>
 	<li>
 		<a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_answers&task=new'); ?>">
 			<?php echo JText::_('MOD_MYQUESTIONS_NEW_QUESTION'); ?>
 		</a>
 	</li>
+	<?php } ?>
 </ul>
+<?php } ?>
 
 <h4>
 	<a href="<?php echo JRoute::_('index.php?option=com_answers&task=search&area=mine&filterby=open'); ?>">

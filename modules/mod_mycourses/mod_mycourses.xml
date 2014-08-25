@@ -45,6 +45,10 @@ HUBzero is a registered trademark of Purdue University.
 			<fieldset name="basic">
 				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
 				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." member_dashboard="1" />
+				<field name="button_show_all" type="list" default="1" label="Show All Courses Button" description="Select wether to show the link to the all courses listing.">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

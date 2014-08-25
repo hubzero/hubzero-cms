@@ -35,18 +35,24 @@ $projects = $this->rows;
 $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="'.$this->moduleclass.'"' : '';?> id="myprojects">
+	<?php if ($this->params->get('button_show_all', 1) || $this->params->get('button_show_add', 1)) { ?>
 	<ul class="module-nav">
+		<?php if ($this->params->get('button_show_all', 1)) { ?>
 		<li>
 			<a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_projects&task=browse'); ?>">
 				<?php echo JText::_('MOD_MYPROJECTS_ALL_PROJECTS'); ?>
 			</a>
 		</li>
+		<?php } ?>
+		<?php if ($this->params->get('button_show_add', 1)) { ?>
 		<li>
 			<a class="icon-plus" href="<?php echo JRoute::_('index.php?option=com_projects&task=start'); ?>">
 				<?php echo JText::_('MOD_MYPROJECTS_NEW_PROJECT'); ?>
 			</a>
 		</li>
+		<?php } ?>
 	</ul>
+	<?php } ?>
 
 	<?php if ($projects && $this->total > 0) { ?>
 		<ul class="compactlist">

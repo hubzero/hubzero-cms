@@ -58,6 +58,14 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>
+				<field name="button_show_all" type="list" default="1" label="Show All Questions Button" description="Select wether to show the link to the all questions listing.">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="button_show_add" type="list" default="1" label="Show New Question Button" description="Select wether to show the link to the create question form.">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
 				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." member_dashboard="1" />
 			</fieldset>
 		</fields>

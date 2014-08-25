@@ -36,6 +36,7 @@ $juser = JFactory::getUser();
 $total = count($this->courses);
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
+	<?php if ($this->params->get('button_show_all', 1)) { ?>
 	<ul class="module-nav">
 		<li>
 			<a class="icon-browse" href="<?php echo JRoute::_('index.php?option=com_courses&task=browse'); ?>">
@@ -43,6 +44,7 @@ $total = count($this->courses);
 			</a>
 		</li>
 	</ul>
+	<?php } ?>
 
 	<?php if ($this->courses && $total > 0) { ?>
 		<ul class="compactlist">
