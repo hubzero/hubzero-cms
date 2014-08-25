@@ -38,11 +38,11 @@ $html .= "\t\t".'<ul class="module-nav"><li><a class="icon-plus" href="'.JRoute:
 
 $tools = $this->tools;
 if ($this->show_tools && $tools) {
-	$html .= '<h4>'.JText::_('MOD_MYCONTRIBUTIONS_TOOLS').' ';
+	$html .= '<h4><a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline&task=pipeline').'">' . JText::_('MOD_MYCONTRIBUTIONS_TOOLS').' ';
 	if (count($tools) > $this->limit_tools)  {
-		$html .= '<small><a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline&task=pipeline').'">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').' '.count($tools).'</a></small>';
+		$html .= '<span>' . JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').' '.count($tools) . '</span>';
 	}
-	$html .= '</h4>'."\n";
+	$html .= '</a></h4>'."\n";
 	//$html .= '<div class="category-wrap">'."\n";
 	$html .= '<ul class="compactlist">'."\n";
 	for ($i=0; $i < count($tools); $i++)
@@ -111,12 +111,12 @@ if ($this->show_tools && $tools) {
 	}
 	$html .= '</ul>'."\n";
 	//$html .= '</div>'."\n";
-	$html .= '<h4>'.JText::_('MOD_MYCONTRIBUTIONS_OTHERS_IN_PROGRESS');
+	$html .= '<h4><a href="'.JRoute::_('index.php?option=com_members&id=' . $juser->get('id')) . '&active=contributions">'.JText::_('MOD_MYCONTRIBUTIONS_OTHERS_IN_PROGRESS');
 	if ($this->contributions && count($this->contributions) > $this->limit_other)  {
 		$juser = JFactory::getUser();
-		$html .= ' <small><a href="'.JRoute::_('index.php?option=com_members&id=' . $juser->get('id')) . '&active=contributions">'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').'</a></small>'."\n";
+		$html .= '<span>'.JText::_('MOD_MYCONTRIBUTIONS_VIEW_ALL').'</span>'."\n";
 	}
-	$html .= '</h4>'."\n";
+	$html .= '</a></h4>'."\n";
 }
 
 $contributions = $this->contributions;
