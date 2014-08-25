@@ -81,7 +81,7 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 	 * @param      string $key Property to retrieve
 	 * @return     string
 	 */
-	public function item($key)
+	public function item($key = '')
 	{
 		switch (strtolower($key))
 		{
@@ -218,7 +218,7 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 				'index.php?option=' . $this->get('option')
 			);
 			$pathway->addItem(
-				stripslashes($this->_item->title),
+				stripslashes($this->_item->get('description')),
 				'index.php?option=' . $this->get('option') . '&cn=' . $this->_segments['cn']
 			);
 			$pathway->addItem(
