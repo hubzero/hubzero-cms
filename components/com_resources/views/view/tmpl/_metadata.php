@@ -33,6 +33,11 @@ defined('_JEXEC') or die('Restricted access');
 $data = '';
 foreach ($this->sections as $section)
 {
+	if ($section['area'] == 'collect')
+	{
+		echo (isset($section['metadata'])) ? $section['metadata'] : '';
+		continue;
+	}
 	$data .= (isset($section['metadata'])) ? $section['metadata'] : '';
 }
 
