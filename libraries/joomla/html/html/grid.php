@@ -47,7 +47,7 @@ abstract class JHtmlGrid
 
 		if ($toggle)
 		{
-			$html = '<a class="state grid_' . $bool . ' hasTip" title="' . $title . '" rel="{id:\'cb' . $i . '\', task:\'' . $task . '\'}" href="#toggle"><span>' . $title . '</span></a>';
+			$html = '<a class="state grid_' . $bool . ' hasTip" title="' . $title . '" rel="{\'id\':\'cb' . $i . '\', \'task\':\'' . $task . '\'}" href="#toggle"><span>' . $title . '</span></a>';
 		}
 		else
 		{
@@ -348,7 +348,8 @@ abstract class JHtmlGrid
 		jQuery(document).ready(function($){
 			$("a.move_up, a.move_down, a.grid_true, a.grid_false, a.trash")
 				.on("click", function(){
-					args = JSON.decode($(this).attr("rel"));
+					console.log($(this).attr("rel").replace(/\'/g, \'"\'));
+					args = jQuery.parseJSON($(this).attr("rel").replace(/\'/g, \'"\'));
 					listItemTask(args.id, args.task);
 				});
 
