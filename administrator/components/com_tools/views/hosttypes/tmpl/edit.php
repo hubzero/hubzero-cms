@@ -34,8 +34,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('New Host'));
 
 JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_HOST_TYPES') . ': ' . $text, 'tools.png');
+JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
+JToolBarHelper::spacer();
 JToolBarHelper::help('hosttype');
 ?>
 <script type="text/javascript">

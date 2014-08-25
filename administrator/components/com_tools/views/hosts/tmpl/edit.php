@@ -34,6 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_HOSTS') . ': '. $text, 'tools.png');
+JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();

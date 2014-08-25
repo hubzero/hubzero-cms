@@ -221,8 +221,6 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		// Get the middleware database
 		$mwdb = MwUtils::getMWDBO();
 
@@ -273,7 +271,17 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		// Display results
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
+	}
+
+	/**
+	 * Save changes to a record and return to edit form
+	 *
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
 	}
 
 	/**
@@ -281,7 +289,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 	 *
 	 * @return     void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -357,11 +365,17 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			Jtext::_('COM_TOOLS_ITEM_SAVED'),
-			'message'
-		);
+		if ($redirect)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				Jtext::_('COM_TOOLS_ITEM_SAVED'),
+				'message'
+			);
+			return;
+		}
+
+		$this->editTask($row);
 	}
 
 	/**

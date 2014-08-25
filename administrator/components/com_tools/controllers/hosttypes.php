@@ -138,19 +138,17 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		// Incoming
-		$item = JRequest::getVar('item', '', 'get');
-
-		$mwdb = MwUtils::getMWDBO();
-
 		if (is_object($row))
 		{
 			$this->view->row = $row;
 		}
 		else
 		{
+			// Incoming
+			$item = JRequest::getVar('item', '', 'get');
+
+			$mwdb = MwUtils::getMWDBO();
+
 			$this->view->row = new MwHosttype($mwdb);
 			$this->view->row->load($item);
 		}
@@ -176,16 +174,14 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		}
 
 		// Display results
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
-	 * Short description for 'hosttype_refs'
+	 * Get a count of references
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param      mixed $value
+	 * @return     integer
 	 */
 	private function _refs($value)
 	{
@@ -205,11 +201,21 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Save changes to a record and return to edit form
+	 *
+	 * @return     void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Save changes to a record
 	 *
 	 * @return     void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -270,11 +276,17 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			Jtext::_('COM_TOOLS_ITEM_SAVED'),
-			'message'
-		);
+		if ($redirect)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				Jtext::_('COM_TOOLS_ITEM_SAVED'),
+				'message'
+			);
+			return;
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
