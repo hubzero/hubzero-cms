@@ -70,4 +70,5 @@ $this->js();
 		<p><?php echo JText::_('MOD_MYTOOLS_ALL_TOOLS_EXPLANATION'); ?></p>
 	</div>
 </div>
+<input type="hidden" class="mytools_favs" value="<?php echo implode(',', $this->favs); ?>" />
 <?php } ?>

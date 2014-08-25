@@ -68,7 +68,7 @@ HUB.Modules.MyTools	 = {
 				} else {
 					$(this).parent().addClass('favd');
 				}
-				mod.updateFavs();
+				mod.updateFavs($(this).parents('.module').first());
                 return false;
 			},function (e) {
                 e.preventDefault();
@@ -77,31 +77,61 @@ HUB.Modules.MyTools	 = {
 				} else {
 					$(this).parent().addClass('favd');
 				}
-				mod.updateFavs();
+				mod.updateFavs($(this).parents('.module').first());
                 return false;
             })
 		});
+
+		// move current favs to settings cont
+		if ($('.mytools_favs').length)
+		{
+			// add settings pane if doesnt exist
+			var settingsPaneExists = $(mod).find('.module-settings').length;
+			if (settingsPaneExists == 0)
+			{
+				$('.mod_mytools').find('.module-main').prepend('<div class="module-settings"><form></form></div>');
+			}
+
+			// get favs
+			var favs = $('.mytools_favs').val();
+
+			// only have one input
+			$('.mod_mytools').find('.mytools_favs').remove();
+			$('.mod_mytools').find('.module-settings form').append('<input class="mytools_favs" type="hidden" name="params[favs]" value="' + favs + '" />');
+		}
 		
+		// init tool search
 		HUB.Modules.MyTools.toolSearch();
 	},
 
-	updateFavs: function() {
-		var mod = this,
-			$ = this.jQuery,
+	updateFavs: function(mod) {
+		var $ = this.jQuery,
 			settings = this.settings,
 			f = [],
-			uid = $('#uid').val(),
-			id = $($(settings.container).parent().parent().parent()).attr('id').replace('mod_','');
+			uid = $('#uid').val();
+			// id = $($(settings.container).parent().parent().parent()).attr('id').replace('mod_','');
+			//id = $(mod).attr('data-moduleid');
 		
 		$(settings.favd).each(function(i, elm) {
 			f.push($(elm).attr('id'));
 		});
-		
-		$.get(settings.ajax.url + 'saveparams&mid='+id+'&id='+uid, {'params[myhub_favs]': f.join(',')}, function(data){
-			$.get(settings.ajax.url + 'refresh&mid='+id+'&id='+uid+'&fav='+f.join(','), {}, function(data) {
-	            $('#favtools').html(data);
-			});
-		});
+
+		// add settings pane if doesnt exist
+		var settingsPaneExists = $(mod).find('.module-settings').length;
+		if (settingsPaneExists == 0)
+		{
+			$(mod).find('.module-main').prepend('<div class="module-settings"><form></form></div>');
+		}
+
+		// only have one input
+		$(mod).find('.mytools_favs').remove();
+		$(mod).find('.module-settings form').append('<input class="mytools_favs" type="hidden" name="params[favs]" value="' + f.join(',') + '" />');
+
+		// save dashboard
+		if (HUB.Plugins.MemberDashboard)
+		{
+			HUB.Plugins.MemberDashboard.save();
+		}
 	},
 	
 	activate: function(tab) {

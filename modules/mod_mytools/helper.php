@@ -240,10 +240,10 @@ class modToolList extends \Hubzero\Module\Module
 		}
 		$html .= "\t\t" . '</ul>' . "\n";
 
-		if ($type == 'favs')
-		{
-			$this->favs = $favs;
-		}
+		// if ($type == 'favs')
+		// {
+		// 	$this->favs = $favs;
+		// }
 		return $html;
 	}
 
@@ -318,7 +318,7 @@ class modToolList extends \Hubzero\Module\Module
 			}
 
 			// Get the user's list of favorites
-			$fav = $params->get('myhub_favs');
+			$fav = $params->get('favs');
 			if ($fav)
 			{
 				$favs = explode(',', $fav);
