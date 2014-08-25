@@ -28,7 +28,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+$this->css()
+     ->js();
 ?>
 <div class="hub-mail">
 	<table class="hub-message">
