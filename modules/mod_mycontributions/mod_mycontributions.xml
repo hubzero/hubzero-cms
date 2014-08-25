@@ -52,7 +52,7 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
-				<field name="show_tools" type="radio" default="1" label="Show tools separately" description="Select whether to show tool contributions separately from other types" member_dashboard="1">
+				<field name="show_tools" type="radio" default="1" label="Show tools" description="Select whether to show tool contributions" member_dashboard="1">
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
