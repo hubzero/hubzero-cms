@@ -432,7 +432,7 @@ class PublicationsModelAttachments extends JObject
 		$this->_types[$signature] = new $elementClass($this);
 		return $this->_types[$signature];
 	}
-	
+
 	/**
 	 * Bundle elements
 	 *
