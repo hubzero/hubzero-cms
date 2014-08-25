@@ -26,7 +26,7 @@
 	}
 	.sortable #alltools ul {
 		/*height: 20.3em;*/
-		max-height:300px;
+		/*max-height:300px;*/
 		overflow: auto;
 		position: relative; /* fix IE 6,7 - quirky support for overflow:auto, this line fixes it */
 		border-top: 1px solid #ddd;
