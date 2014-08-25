@@ -35,6 +35,8 @@ JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTA_CLASSES'), 'user.png');
 JToolBarHelper::addNew('addClass');
 JToolBarHelper::editList('editClass');
 JToolBarHelper::deleteList('Are you sure?', 'deleteClass');
+JToolBarHelper::spacer();
+JToolBarHelper::help('quotaclasses');
 ?>
 
 <?php

@@ -1,0 +1,80 @@
+<article>
+	<h1><span>Members: Quota Classes</span></h1>
+
+	<ul class="nav">
+		<li><a href="#overview">Overview</a></li>
+		<li><a href="#column-headers">Column Headers</a></li>
+		<li><a href="#toolbar">Toolbar</a></li>
+		<li><a href="#sub-menu">Sub-menu Links</a></li>
+		<li><a href="#possible-values">Possible Values</a></li>
+	</ul>
+
+	<section id="overview">
+		<h2><span>Overview</span></h2>
+
+		<p>File system quota classes can be managed here. Changing these numbers will adjust all members currently assign that class.</p>
+	</section>
+	<section id="column-headers">
+		<h2><span>Column Headers</span></h2>
+
+		<dl>
+			<dt>Checkbox</dt>
+			<dd>Check this box to select one or more items. To select all items, check the box in the column heading. After one or more boxes are checked, click a toolbar button to take an action on the selected item or items. Many toolbar actions, such as Publish and Unpublish, can work with multiple items. Others, such as Edit, only work on one item at a time. If multiple items are checked and you press Edit, the first item will be opened for editing.</dd>
+
+			<dt>ID</dt>
+			<dd>This is a unique identification number for this item assigned automatically by the system. It is used to identify the item internally and cannot be changed. When creating a new item, this field is 0 until the entry is saved, at which point a new ID is assigned to it.</dd>
+
+			<dt>Alias</dt>
+			<dd>The short name given to an individual class for easy identification.</dd>
+
+			<dt>Soft Blocks Limit</dt>
+			<dd>The first sentence or so of the posted response.</dd>
+
+			<dt>Hard Blocks Limit</dt>
+			<dd>The accepted status of the response. Indicates if the response is the official chosen or "Accepted" answer to the question.</dd>
+
+			<dt>Soft Files Limit</dt>
+			<dd>The date this post was created. This date is added automatically upon creation.</dd>
+
+			<dt>Hard Files Limit</dt>
+			<dd>The dauthor of the article.</dd>
+		</dl>
+	</section>
+	<section id="toolbar">
+		<h2><span>Toolbar</span></h2>
+		<p>At the top right you will see the toolbar.</p>
+		<p>The functions are:</p>
+		<dl>
+			<dt>New</dt>
+			<dd>Opens the editing screen to create a new quota class.</dd>
+
+			<dt>Edit</dt>
+			<dd>Opens the editing screen for the selected entry. If more than one entry is selected (where applicable), only the first entry will be opened. The editing screen can also be opened by clicking on the <strong>Alias</strong> of the entry.</dd>
+
+			<dt>Delete</dt>
+			<dd>Permanently deletes selected items.</dd>
+
+			<dt>Help</dt>
+			<dd>Opens this help screen.</dd>
+		</dl>
+	</section>
+	<section id="sub-menu">
+		<h2><span>Sub-menu Links</span></h2>
+		<p>At the top left, you will see sub-menu options. The links are:</p>
+		<dl>
+			<dt>Members</dt>
+			<dt>Quota Classes (this page)</dt>
+			<dt>Import</dt>
+		</dl>
+	</section>
+	<section id="possible-values">
+		<h2><span>Possible Values</span></h2>
+		<p>Of the 4 columns available, the soft and hard block limits are the most important and should be considered as described below. Typically the hard limit will be larger than the soft limit. The limit block size is 1024.</p>
+		<dl>
+			<dt>Soft Blocks Limit</dt>
+			<dd>This limit is the point at which a user will be warned that their quota has been exceeded. At that point, they will have seven days to rectify the issue. After seven days, if they have not reduced their storage below the soft limit, they will no longer be able to write to the file system.</d>
+			<dt>Hard Blocks Limit</dt>
+			<dd>At no point can the user exceed this amount of storage on the file system. Irrelavent of the seven day warning period mentioned above, this limit cannot be exceeded.</d>
+		</dl>
+	</section>
+</article>
