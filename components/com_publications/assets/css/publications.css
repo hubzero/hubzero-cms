@@ -413,11 +413,9 @@
 		}
 	ul.supdocln li {
 		display: inline;
+		margin: 0;
 		}
 	ul.supdocln li:before {
-		display: none;
-	}
-	ul.supdocln li a:before {
 		display: none;
 	}
 	ul.supdocln li a {
@@ -433,7 +431,7 @@
 		text-decoration: none;
 		background: none;
 		}
-	.com_publications .aside ul.supdocln li.archival-package:before {
+	.com_publications .aside ul.supdocln li.archival-package a:before {
 		content: "";
 		width: 16px;
 		height: 16px;
