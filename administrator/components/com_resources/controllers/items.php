@@ -49,8 +49,8 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$this->registerTask('accessprotected', 'access');
 		$this->registerTask('accessprivate', 'access');
 
-		$this->registerTask('publish', 'state');
-		$this->registerTask('unpublish', 'state');
+		//$this->registerTask('publish', 'state');
+		//$this->registerTask('unpublish', 'state');
 
 		$this->registerTask('add', 'editTask');
 
@@ -1320,21 +1320,53 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Sets the state of a resource to published
+	 * Redirects to main listing
+	 *
+	 * @return     void
+	 */
+	public function publishTask()
+	{
+		$this->stateTask(1);
+	}
+
+	/**
+	 * Sets the state of a resource to unpublished
+	 * Redirects to main listing
+	 *
+	 * @return     void
+	 */
+	public function unpublishTask()
+	{
+		$this->stateTask(0);
+	}
+
+	/**
+	 * Sets the state of a resource to archived
+	 * Redirects to main listing
+	 *
+	 * @return     void
+	 */
+	public function archiveTask()
+	{
+		$this->stateTask(-1);
+	}
+
+	/**
 	 * Sets the state of a resource
 	 * Redirects to main listing
 	 *
 	 * @return     void
 	 */
-	public function stateTask()
+	public function stateTask($publish=1)
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
-		$publish = ($this->_task == 'publish') ? 1 : 0;
-
 		// Incoming
 		$pid = JRequest::getInt('pid', 0);
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for a resource
 		if (count($ids) < 1)
@@ -1346,6 +1378,8 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
+
+		$i = 0;
 
 		// Loop through all the IDs
 		foreach ($ids as $id)
@@ -1381,25 +1415,32 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 				// Store and checkin the resource
 				$resource->store();
 				$resource->checkin();
+
+				$i++;
 			}
 		}
 
-		if ($publish == '-1')
+		$message = null;
+		if ($i)
 		{
-			$this->_message = JText::sprintf('COM_RESOURCES_ITEMS_ARCHIVED', count($ids));
-		}
-		elseif ($publish == '1')
-		{
-			$this->_message = JText::sprintf('COM_RESOURCES_ITEMS_PUBLISHED', count($ids));
-		}
-		elseif ($publish == '0')
-		{
-			$this->_message = JText::sprintf('COM_RESOURCES_ITEMS_UNPUBLISHED', count($ids));
+			if ($publish == -1)
+			{
+				$message = JText::sprintf('COM_RESOURCES_ITEMS_ARCHIVED', $i);
+			}
+			elseif ($publish == 1)
+			{
+				$message = JText::sprintf('COM_RESOURCES_ITEMS_PUBLISHED', $i);
+			}
+			elseif ($publish == 0)
+			{
+				$message = JText::sprintf('COM_RESOURCES_ITEMS_UNPUBLISHED', $i);
+			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			$this->buildRedirectURL($pid)
+			$this->buildRedirectURL($pid),
+			$message
 		);
 	}
 
