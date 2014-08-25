@@ -665,6 +665,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		// Incoming user ID
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Do we have an ID?
 		if (empty($ids))
