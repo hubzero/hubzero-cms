@@ -48,6 +48,7 @@ if ($count < 1 || $this->admin)
 <div class="module-settings">
 	<h4><?php echo JText::sprintf('%s Settings', $this->escape($this->module->title)); ?></h4>
 	<form action="index.php" method="post">
+		<?php $i = 0; ?>
 		<?php foreach ($this->fields as $field) : ?>
 			<?php
 				if (strtolower($field->type) == 'spacer')
@@ -66,8 +67,10 @@ if ($count < 1 || $this->admin)
 				{
 					$field->setValue($this->params[$name]);
 				}
+
+				$i++;
 			?>
-			<label>
+			<label for="<?php echo 'param' . $i; ?>">
 				<span class="tooltipss" title="<?php echo $field->description; ?>">
 					<?php echo $field->title; ?>:
 				</span>
