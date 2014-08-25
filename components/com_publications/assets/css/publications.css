@@ -419,6 +419,9 @@
 	ul.supdocln li:before {
 		display: none;
 	}
+	.com_publications .aside ul.supdocln li a:before {
+		display: none;
+	}
 	ul.supdocln li a {
 		padding-bottom: 0.5em;
 		color: #8d7a62;
