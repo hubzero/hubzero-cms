@@ -96,7 +96,7 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		// load versions
 		$pageVersionArchive = new GroupsModelPageVersionArchive();
 		$this->_versions = $pageVersionArchive->versions('list', array(
-			'pageid'  => $this->get('id'),
+			'pageid'  => $this->get('id', -1),
 			'orderby' => 'version DESC'
 		));
 	}
