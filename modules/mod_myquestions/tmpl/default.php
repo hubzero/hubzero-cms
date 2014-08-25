@@ -123,11 +123,15 @@ $juser = JFactory::getUser();
 		</a>
 	</h4>
 	<p class="category-header-details">
-	<?php if ($this->interests) { ?>
-		<span class="configure">[<a href="<?php echo JRoute::_('index.php?option=com_members&task=edit&id=' . $juser->get('id')); ?>"><?php echo JText::_('MOD_MYQUESTIONS_EDIT'); ?></a>]</span>
-	<?php } else { ?>
-		<span class="configure">[<a href="<?php echo JRoute::_('index.php?option=com_members&task=edit&id=' . $juser->get('id')); ?>"><?php echo JText::_('MOD_MYQUESTIONS_ADD_INTERESTS'); ?></a>]</span>
-	<?php } ?>
+		<span class="configure">
+			[<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile#profile-interests'); ?>">
+			<?php if ($this->interests) { ?>
+				<?php echo JText::_('MOD_MYQUESTIONS_EDIT'); ?>
+			<?php } else { ?>
+				<?php echo JText::_('MOD_MYQUESTIONS_ADD_INTERESTS'); ?>
+			<?php } ?>
+			</a>]
+		</span>
 		<span class="q"><?php echo JText::_('MOD_MYQUESTIONS_MY_INTERESTS') . ': ' . $this->intext; ?></span>
 	</p>
 	<?php if ($this->otherquestions) { ?>
