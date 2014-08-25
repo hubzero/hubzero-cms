@@ -65,8 +65,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<dl class="module-details">
 					<dt><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_VERSION'); ?></dt>
 					<dd><?php echo $xml->attributes()->version; ?></dd>
-					<dt><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_DESCRIPTION'); ?></dt>
-					<dd><?php echo $xml->description; ?></dd>
+
+					<?php if ($xml->description != 'MOD_CUSTOM_XML_DESCRIPTION') : ?>
+						<dt><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_DESCRIPTION'); ?></dt>
+						<dd><?php echo $xml->description; ?></dd>
+					<?php endif; ?>
 
 					<?php if (count($xml->images->image) > 0) : ?>
 						<dt><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_SCREENSHOTS'); ?></dt>
