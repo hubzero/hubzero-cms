@@ -256,6 +256,7 @@ class plgMembersCourses extends JPlugin
 		switch ($who)
 		{
 			case 'student':
+				$now = JFactory::getDate()->toSql();
 				if ($what == 'count')
 				{
 					$this->database->setQuery("SELECT COUNT(*)  
@@ -264,7 +265,8 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1 AND s.id=m.section_id");
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1
+						AND (s.publish_down='0000-00-00 00:00:00' OR s.publish_down < " . $this->database->quote($now) .")");
 					$results = $this->database->loadResult();
 				}
 				else
@@ -276,7 +278,8 @@ class plgMembersCourses extends JPlugin
 							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 							LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1 AND o.state!=2
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1 AND o.state!=2
+						AND (s.publish_down='0000-00-00 00:00:00' OR s.publish_down < " . $this->database->quote($now) .")
 						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
 					$results = $this->database->loadObjectList();
 				}
@@ -291,7 +294,7 @@ class plgMembersCourses extends JPlugin
 							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 							LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-							WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager'");
+							WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager'");
 					$results = $this->database->loadResult();
 				}
 				else
@@ -304,7 +307,7 @@ class plgMembersCourses extends JPlugin
 							LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 							LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 							LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager' 
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias='manager' 
 						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
 					/*$this->database->setQuery("
 						(
@@ -334,7 +337,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor'));
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor'));
 					$results = $this->database->loadResult();
 				}
 				else
@@ -346,7 +349,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor') . "
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor') . "
 						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
 					$results = $this->database->loadObjectList();
 				}
@@ -361,7 +364,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta'));
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta'));
 					$results = $this->database->loadResult();
 				}
 				else
@@ -373,7 +376,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta') . "
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta') . "
 						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
 					$results = $this->database->loadObjectList();
 				}
@@ -388,7 +391,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote($who));
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=0 AND r.alias=" . $this->database->Quote($who));
 					$results = $this->database->loadResult();
 				}
 				else
@@ -400,7 +403,7 @@ class plgMembersCourses extends JPlugin
 						LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 						LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 						LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-						WHERE m.user_id=" . (int) $this->member->get('uidNumber') . " AND r.alias=" . $this->database->Quote($who) . "
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND r.alias=" . $this->database->Quote($who) . "
 						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
 					$results = $this->database->loadObjectList();
 				}

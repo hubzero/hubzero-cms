@@ -49,13 +49,14 @@ class modMyCourses extends \Hubzero\Module\Module
 		$db = JFactory::getDBO();
 
 		// Get all groups the user is a member of
-		$query = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default 
+		$query = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, o.state AS offering_state, s.state AS section_state, s.alias AS section_alias, s.title AS section_title, s.is_default 
 					FROM #__courses AS c 
 					JOIN #__courses_members AS m ON m.course_id=c.id
 					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
 					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
 					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $db->quote($uid);
+					WHERE c.state IN (1, 3)
+					AND m.user_id=" . $db->quote($uid);
 
 		/*$query2 = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default 
 					FROM #__courses AS c 
@@ -108,16 +109,39 @@ class modMyCourses extends \Hubzero\Module\Module
 			break;
 		}*/
 
+		$now = JFactory::getDate()->toSql();
+
 		$db->setQuery($query);
 
 		$result = $db->loadObjectList();
+		$rows = array();
 
 		if (empty($result))
 		{
-			return array();
+			return $rows;
 		}
 
-		return $result;
+		foreach ($result as $row)
+		{
+			if (is_numeric($row->offering_state) && in_array($row->offering_state, array(0, 2)))
+			{
+				continue;
+			}
+
+			if (is_numeric($row->section_state) && in_array($row->section_state, array(0, 2)))
+			{
+				continue;
+			}
+
+			if ($row->ends && $row->ends != '0000-00-00 00:00:00' && $row->ends < $now)
+			{
+				continue;
+			}
+
+			$rows[] = $row;
+		}
+
+		return $rows;
 	}
 
 	/**
