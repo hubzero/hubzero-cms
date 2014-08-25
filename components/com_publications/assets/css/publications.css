@@ -415,18 +415,19 @@
 		display: inline;
 		}
 	ul.supdocln li a {
-		padding-left: 20px;
+		/*padding-left: 20px;*/
 		padding-bottom: 0.5em;
 		color: #8d7a62;
 		text-decoration: underline;
-		}
+	}
 	ul.supdocln li.otherdocs a {
 		padding-left: 0;
-		margin-left: 15px;
+		/*margin-left: 15px;*/
 		}
 	ul.supdocln li a:hover {
 		border: none;
 		text-decoration: none;
+		background: none;
 		}
 	.com_publications .aside ul.supdocln li.archival-package:before {
 		content: "";
