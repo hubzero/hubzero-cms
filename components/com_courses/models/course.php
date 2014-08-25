@@ -890,7 +890,9 @@ class CoursesModelCourse extends CoursesModelAbstract
 			default:
 				$content = stripslashes($this->get('description'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-				$content = html_entity_decode($content);
+				//$content = html_entity_decode($content);
+				//$content = str_replace("\xC2\xA0", ' ', $content);
+				$content = str_replace(array('&lt;', '&gt;'), array('<', '>'), $content);
 			break;
 		}
 
