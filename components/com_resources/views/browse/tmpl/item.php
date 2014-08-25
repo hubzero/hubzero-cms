@@ -75,6 +75,11 @@ switch ($this->line->access)
 	case 0:
 	default: $cls = 'public';    break;
 }
+
+if ($this->config->get('supportedtag'))
+{
+	$cls .= ' supported';	
+}
 ?>
 
 <li class="<?php echo $cls; ?>">
