@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 	<header id="content-header">
 		<h2><?php echo $this->title; ?></h2>
-		<div style="padding: 1em; width: 80%;">
-			<?php if($this->getError()) { echo '<p class="error">'.$this->getError().'</p>'; } else { echo $this->publication->license_text; } ?>
+		<div class="license-wrap">
+			<?php if ($this->getError()) { echo '<p class="error">'.$this->getError().'</p>'; } else { echo '<pre>' . $this->publication->license_text . '</pre>'; } ?>
 		</div>
 	</header>

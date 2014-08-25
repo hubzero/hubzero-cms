@@ -1641,7 +1641,7 @@
 		padding: 0.5em 0;
 	}
 	.grad-blue .launch-wrap .version-info {
-		/*background: #fef1d1;*/
+		background: #fef1d1;
 		border: none;
 	}
 	.launch-wrap .version-info p
@@ -1760,4 +1760,11 @@
 /* New */
 	.com_publications .grid {
 		border: none !important;
+	}
+/* License view */
+	.license-wrap {
+		padding: 0 2em 2em 2em;
+	}
+	.license-wrap pre {
+		background: #f5f4f5;
 	}

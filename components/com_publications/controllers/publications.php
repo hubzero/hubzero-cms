@@ -2045,9 +2045,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Output HTML
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$this->view->setError( $this->getError() );
 		}
-		$view->display();
+		$this->view->display();
 	}
 
 	/**
