@@ -78,7 +78,7 @@ switch ($this->line->access)
 
 if ($this->config->get('supportedtag'))
 {
-	$cls .= ' supported';	
+	$cls .= ' supported';
 }
 ?>
 
