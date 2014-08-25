@@ -1869,7 +1869,7 @@ class PublicationsCuration extends JObject
 				$zip,
 				$elements,
 				$this->_pub,
-				&$readme,
+				$readme,
 				$bundleDir
 			);
 

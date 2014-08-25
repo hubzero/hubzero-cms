@@ -145,7 +145,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	 * @return  boolean
 	 */
 	public function addToBundle( $zip, $attachments, $element, $elementId,
-		$pub, $blockParams, $readme, $bundleDir)
+		$pub, $blockParams, &$readme, $bundleDir)
 	{
 		// Get configs
 		$configs  = $this->getConfigs($element->params, $elementId, $pub, $blockParams);

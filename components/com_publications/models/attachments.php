@@ -439,7 +439,7 @@ class PublicationsModelAttachments extends JObject
 	 * @return object
 	 */
 	public function bundleItems($zip = NULL, $elements = NULL,
-		$pub = NULL, $readme = NULL, $bundleDir)
+		$pub = NULL, &$readme, $bundleDir)
 	{
 		if ($zip === NULL || empty($elements) || $pub === NULL)
 		{
@@ -480,7 +480,7 @@ class PublicationsModelAttachments extends JObject
 				$element->id,
 				$pub,
 				$element->block,
-				&$readme,
+				$readme,
 				$bundleDir
 			);
 		}
