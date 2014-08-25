@@ -279,6 +279,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 												if ($ag->assets()->total())
 												{
 													// Loop through the assets
+													$k = 0;
 													foreach ($ag->assets() as $a)
 													{
 														if ((($a->isAvailable() || $a->get('type') == 'form') && $a->isPublished()) || $isManager)
@@ -336,29 +337,31 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 
 															$found[] = '<li>' . $link . '</li>';
 
-															if ($a->get('type') == 'video')
+															//if ($a->get('type') == 'video')
+															if ($k == 0)
 															{
-																$play = $link;
+																$play = '<a class="asset-primary ' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($ag->get('title'))) . '</a>';
 															}
+															$k++;
 														}
 													}
 												}
 												?>
-													<li class="<?php echo 'collapsed'; //($play ? ' class="collapsed"' : ''); ?>">
-														<span class="asset-primary<?php echo $acls; ?>"><?php
-														//if (trim($ag->get('title')) !== '--')
-														//{
-															echo $this->escape(stripslashes($ag->get('title')));
-														//}
-														?></span>
+													<li class="collapsed">
 														<?php
-														if (count($found) > 0)
+														if (count($found) == 1)
+														{
+															echo $play;
+														}
+														else
+														{
+															echo '<span class="asset-primary' . $acls . '">' . $this->escape(stripslashes($ag->get('title'))) . '<span class="asset-more"></span></span>';
+														}
+														?>
+														<?php
+														if (count($found) > 1)
 														{
 															echo '<ul>' . implode("\n", $found) . '</ul>';
-														}
-														if ($play)
-														{
-															echo '<span class="asset-play">' . $play . '</span>';
 														}
 														?>
 													</li>

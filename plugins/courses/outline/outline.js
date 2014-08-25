@@ -12,7 +12,16 @@ if (!jq) {
 jQuery(document).ready(function(jq) {
 	var $ = jq;
 
-	$('.asset-primary').on('click', function(){
+	$('span.asset-primary').on('click', function(){
+		var el = $($(this).parent());
+		if (el.hasClass('collapsed')) {
+			el.removeClass('collapsed');
+		} else {
+			el.addClass('collapsed');
+		}
+	});
+
+	$('.unit-content h3').on('click', function(){
 		var el = $($(this).parent());
 		if (el.hasClass('collapsed')) {
 			el.removeClass('collapsed');

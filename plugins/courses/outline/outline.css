@@ -117,6 +117,25 @@
 		font-style: normal;
 		margin: 0;
 		overflow: hidden;
+		cursor: pointer;
+		position: relative;
+	}
+	#course-outline h3:after {
+		content: "";
+		position: absolute;
+		top: 1.7em;
+		right: 17px;
+		display: block;
+		width: 0;
+		height: 0;
+		overflow: hidden;
+		border: 6px solid transparent;
+		border-color: #bbb transparent transparent transparent;
+	}
+	#course-outline .collapsed h3:after {
+		top: 1.5em;
+		right: 20px;
+		border-color: transparent #bbb transparent transparent;
 	}
 	#course-outline .unit-description {
 		margin: 0;
@@ -124,16 +143,6 @@
 		background: #f1f1f1;
 		border-bottom: 6px solid #e9e9e9;
 	}
-	/*#course-outline .status {
-		color: #555;
-		font-size: 1em;
-		margin: 0;
-		padding: 1em;
-		position: absolute;
-		top: 1px;
-		right: 10px;
-		background: transparent;
-	}*/
 
 	#course-outline h4 {
 		font-size: 1.2em;
@@ -141,6 +150,10 @@
 		margin: 0;
 		padding: 20px 20px 0 30px;
 		text-align: left;
+	}
+
+	#course-outline .collapsed .unit-availability {
+		display: none;
 	}
 
 	#course-outline .asset-group-description {
@@ -164,27 +177,23 @@
 		list-style: none;
 	}
 
-	#course-outline .asset-play a {
+	#course-outline .asset-more {
 		position: absolute;
-		top: 0.9em;
-		right: 20px;
+		top: 2.2em;
+		right: 17px;
 		display: block;
-		width: 1em;
-		height: 1em;
+		width: 0;
+		height: 0;
 		overflow: hidden;
-		border: 2px solid #bbb;
-		-webkit-border-radius: 50%;
-		-moz-border-radius: 50%;
-		-ms-border-radius: 50%;
-		-o-border-radius: 50%;
-		border-radius: 50%;
-		font-size: 1.2em;
-		padding: 0.5em;
-		white-space: nowrap;
-		line-height: 1;
-		color: #bbb;
+		border: 6px solid transparent;
+		border-color: #bbb transparent transparent transparent;
 	}
-	#course-outline .asset-play a:before {
+	#course-outline .collapsed .asset-more {
+		top: 1.8em;
+		right: 20px;
+		border-color: transparent #bbb transparent transparent;
+	}
+	/*#course-outline .asset-play a:before {
 		content: "\25B6";
 		font-family: "Fontcons";
 		margin-right: 1em;
@@ -193,7 +202,7 @@
 	#course-outline .asset-play a:hover {
 		color: #222;
 		border-color: #222;
-	}
+	}*/
 	#course-outline .asset-list li {
 		position: relative;
 	}
