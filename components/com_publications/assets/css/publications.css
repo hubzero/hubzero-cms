@@ -414,7 +414,8 @@
 	ul.supdocln li {
 		display: inline;
 		margin: 0;
-		}
+		margin-left: -20px;
+	}
 	ul.supdocln li:before {
 		display: none;
 	}
@@ -431,7 +432,7 @@
 		text-decoration: none;
 		background: none;
 		}
-	.com_publications .aside ul.supdocln li.archival-package a:before {
+	.com_publications .aside ul.supdocln li.archival-package:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -448,6 +449,9 @@
 	ul.supdocln li.archival-package a {
 		padding-left: 0;
 		margin-left: 0;
+	}
+	ul.supdocln li.archival-package a:before {
+		display: none;
 	}
 
 /* Inline view */
