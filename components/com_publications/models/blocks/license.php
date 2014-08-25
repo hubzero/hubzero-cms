@@ -192,7 +192,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 
 		// Incoming - license screen agreements
 		$license = JRequest::getInt( 'license', 0, 'post' );
-		$text 	 = JRequest::getVar( 'license_text', '', 'post');
+		$text 	 = \Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'license_text', '', 'post'));
 		$agree 	 = JRequest::getInt( 'agree', 0, 'post');
 
 		if ($license)
@@ -215,6 +215,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 			}
 
 			$row->license_type = $license;
+			$text = preg_replace("/\r/", '', $text);
 			$row->license_text = $text;
 
 			$row->store();

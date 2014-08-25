@@ -227,11 +227,12 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 					$params = new JParameter( $att->params );
 					$data->pubThumb = $params->get('pubThumb', NULL);
 
+					$data->hash	  	= $att->vcs_hash;
+					$data->gone 	= is_file($this->path . DS . $att->path) ? false : true;
+					
 					// Get file size
 					$data->size		= $att->vcs_hash
 									? $git->gitLog($this->path, $att->path, $att->vcs_hash, 'size') : NULL;
-					$data->hash	  	= $att->vcs_hash;
-					$data->gone 	= is_file($this->path . DS . $att->path) ? false : true;
 					$data->gitStatus= $data->gone
 								? JText::_('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE')
 								: $projectsHelper->showGitInfo($gitpath, $this->path, $att->vcs_hash, $att->path);

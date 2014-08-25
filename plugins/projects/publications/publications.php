@@ -4040,6 +4040,12 @@ class plgProjectsPublications extends JPlugin
 			);
 		}
 
+		// Produce archival package
+		if ($state == 1 || $state == 5)
+		{
+			$pub->_curationModel->package();
+		}
+
 		// Pass success or error message
 		if ($this->getError())
 		{

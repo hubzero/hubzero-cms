@@ -1642,11 +1642,17 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 			// Set pub assoc and load curation
 			$pub->_curationModel->setPubAssoc($pub);
-		}
 
-		JPluginHelper::importPlugin( 'projects', 'publications' );
-		$dispatcher = JDispatcher::getInstance();
-		$result = $dispatcher->trigger( 'archivePub', array($pub, $objV) );
+			// Produce archival package
+			$pub->_curationModel->package();
+		}
+		else
+		{
+			// Archival for non-curated publications
+			JPluginHelper::importPlugin( 'projects', 'publications' );
+			$dispatcher = JDispatcher::getInstance();
+			$result = $dispatcher->trigger( 'archivePub', array($pub, $objV) );
+		}
 
 		$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
 

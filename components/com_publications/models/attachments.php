@@ -432,4 +432,58 @@ class PublicationsModelAttachments extends JObject
 		$this->_types[$signature] = new $elementClass($this);
 		return $this->_types[$signature];
 	}
+	/**
+	 * Bundle elements
+	 *
+	 * @return object
+	 */
+	public function bundleItems($zip = NULL, $elements = NULL,
+		$pub = NULL, $readme = NULL, $bundleDir)
+	{
+		if ($zip === NULL || empty($elements) || $pub === NULL)
+		{
+			return false;
+		}
+
+		$i = 0;
+		foreach ($elements as $element)
+		{
+			// File?
+			if ($element->manifest->params->type != 'file')
+			{
+				continue;
+			}
+
+			// Load attachment type
+			$type = $this->loadAttach($element->manifest->params->type);
+
+			if ($type === false)
+			{
+				return false;
+			}
+
+			$attachments = $pub->_attachments;
+			$attachments = isset($attachments['elements'][$element->id])
+						 ? $attachments['elements'][$element->id] : NULL;
+
+			if ($attachments)
+			{
+				$i++;
+			}
+
+			// Add to bundle
+			$type->addToBundle(
+				$zip,
+				$attachments,
+				$element->manifest,
+				$element->id,
+				$pub,
+				$element->block,
+				&$readme,
+				$bundleDir
+			);
+
+		}
+		return;
+	}
 }

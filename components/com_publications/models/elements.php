@@ -320,7 +320,10 @@ class PublicationsElements
 				foreach ($fs as $f)
 				{
 					$field = explode('=', $f);
-
+					if (count($field) <= 1)
+					{
+						return false;
+					}
 					$element = new stdClass();
 					$element->name = $field[0];
 					$element->label = $field[1];
@@ -343,7 +346,9 @@ class PublicationsElements
 					$this->_schema[$group] = $obj;
 				}
 			}
-		} else {
+		}
+		else
+		{
 			$result = true;
 		}
 

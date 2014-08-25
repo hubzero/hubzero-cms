@@ -380,6 +380,7 @@ function popratings()
 						<td><?php echo $this->row->accepted; ?></td>
 					</tr>
 			<?php } ?>
+		<?php }  ?>
 			<tr>
 				<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ARCHIVAL'); ?></td>
 				<td>	<?php if (file_exists($this->archPath)) { ?>
@@ -389,8 +390,6 @@ function popratings()
 					<?php } ?>
 				</td>
 			</tr>
-		<?php }  ?>
-
 			</tbody>
 		</table>
 	</div>

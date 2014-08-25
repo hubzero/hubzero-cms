@@ -1762,4 +1762,151 @@ class PublicationsCuration extends JObject
 
 		return false;
 	}
+
+	/**
+	 * Produce publication package
+	 *
+	 *
+	 * @return     boolean
+	 */
+	public function package()
+	{
+		if (!$this->_pub)
+		{
+			return false;
+		}
+
+		// Get elements in primary and supporting role
+		$prime    = $this->getElements(1);
+		$second   = $this->getElements(2);
+		$elements = array_merge($prime, $second);
+
+		// Do we have items to package?
+		if (!$elements)
+		{
+			return false;
+		}
+
+		// Get publications helper
+		$helper = new PublicationHelper($this->_db, $this->_pub->version_id, $this->_pub->id);
+
+		// Get publication path
+		$pubBase = $helper->buildPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
+
+		// Set archival properties
+		$bundleDir  = $this->_pub->title;
+		$tarname 	= JText::_('Publication') . '_' . $this->_pub->id . '.zip';
+		$tarpath 	= $pubBase . DS . $tarname;
+		$licFile 	= $pubBase . DS . 'LICENSE.txt';
+		$readmeFile = $pubBase . DS . 'README.txt';
+
+		// Get attachment type model
+		$attModel = new PublicationsModelAttachments($this->_db);
+
+		// Start README
+		$readme  = $this->_pub->title . "\n ";
+		$readme .= 'Version ' . $this->_pub->version_label . "\n ";
+
+		// List authors
+		if (isset($this->_pub->_authors) && $this->_pub->_authors)
+		{
+			$readme .= 'Authors: ' . "\n ";
+
+			foreach ($this->_pub->_authors as $author)
+			{
+				$readme .= ($author->name) ? $author->name : $author->p_name;
+				$org = ($author->organization) ? $author->organization : $author->p_organization;
+
+				if ($org)
+				{
+					$readme .= ', ' . $org;
+				}
+				$readme .= "\n ";
+			}
+		}
+
+		// Add DOI if available
+		if ($this->_pub->doi)
+		{
+			$readme .= 'doi:' . $this->_pub->doi . "\n ";
+		}
+
+		// Add license information
+		$objL = new PublicationLicense( $this->_db );
+		if ($objL->loadLicense($this->_pub->license_type) && $objL->id)
+		{
+			$readme .= "\n " . "\n ";
+			$readme .= 'License: ' . "\n ";
+			$readme .= $objL->title . "\n ";
+
+			// Custom license text?
+			if ($this->_pub->license_text)
+			{
+				$readme .= $this->_pub->license_text . "\n ";
+
+				// Create license file
+				$handle  = fopen($licFile, 'w');
+				fwrite($handle, $this->_pub->license_text);
+				fclose($handle);
+			}
+			elseif ($objL->text)
+			{
+				$readme .= $objL->text . "\n ";
+			}
+		}
+
+		$readme .= "\n ";
+		$readme .= '#####################################' . "\n ";
+		$readme .= 'Included Publication Materials:' . "\n ";
+		$readme .= '#####################################' . "\n ";
+
+		// Create bundle
+		$zip = new ZipArchive;
+		if ($zip->open($tarpath, ZipArchive::OVERWRITE) === TRUE)
+		{
+			// Bundle file attachments
+			$attModel->bundleItems(
+				$zip,
+				$elements,
+				$this->_pub,
+				&$readme,
+				$bundleDir
+			);
+
+			// Add license file
+			if (file_exists($licFile))
+			{
+				$where = $bundleDir . DS . basename($licFile);
+				$zip->addFile($licFile, $where);
+				$readme   .= "\n" . 'License File: ' . "\n";
+				$readme   .= '>>> ' . basename($licFile) . "\n";
+			}
+
+			// Add readme
+			if ($readme)
+			{
+				$where = $bundleDir . DS . basename($readmeFile);
+				$readme   .= "\n" . 'Archival Info:' . "\n";
+				$readme   .= '>>> ' . basename($readmeFile) . "\n";
+				$readme .= "\n ";
+				$readme .= "\n ";
+				$readme .= '--------------------------------------------' . "\n ";
+				$readme .= 'Archival package produced ' . JFactory::getDate()->toSql();
+
+				$handle  = fopen($readmeFile, 'w');
+				fwrite($handle, $readme);
+				fclose($handle);
+
+				$zip->addFile($readmeFile, $where);
+			}
+
+			$zip->close();
+		}
+		else
+		{
+		    return false;
+		}
+
+		return true;
+	}
 }

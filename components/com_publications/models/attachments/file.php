@@ -140,6 +140,62 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	}
 
 	/**
+	 * Add to zip bundle
+	 *
+	 * @return  boolean
+	 */
+	public function addToBundle( $zip, $attachments, $element, $elementId,
+		$pub, $blockParams, $readme, $bundleDir)
+	{
+		// Get configs
+		$configs  = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
+		$filePath = NULL;
+
+		// Add inside bundles
+		if ($configs->multiZip && $attachments && count($attachments) > 1)
+		{
+			$filePath  = $this->bundle($attachments, $configs, false);
+			$bPath 	   = $configs->pubBase . DS . 'bundles';
+			if (is_file($filePath))
+			{
+				$where  = $bundleDir;
+				$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				$where .= DS . basename($filePath);
+				$zip->addFile($filePath, $where);
+				$readme   .= "\n" . $element->label . ': ' . "\n";
+				$readme   .= '>>> ' . str_replace($bPath . DS, '', $filePath) . "\n";
+			}
+		}
+		elseif ($attachments)
+		{
+			$readme   .= "\n" . $element->label . ': ' . "\n";
+
+			// Add separately
+			foreach ($attachments as $attach)
+			{
+				$filePath = $this->getFilePath($attach->path, $attach->id, $configs);
+
+				$fileinfo = pathinfo($filePath);
+				$a_dir  = $fileinfo['dirname'];
+				$a_dir	= trim(str_replace($configs->pubPath, '', $a_dir), DS);
+
+				$fPath  = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
+				$fPath .= basename($filePath);
+				$where  = $bundleDir;
+				$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				$where .= DS . $fPath;
+
+				if ($zip->addFile($filePath, $where))
+				{
+					$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $fPath) . "\n";
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Draw list
 	 *
 	 * @return  boolean
@@ -308,14 +364,14 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			if (count($attachments) > 1)
 			{
 				$fpath = $this->bundle($attachments, $configs, false);
+				$title = $configs->bundleTitle;
 			}
 			else
 			{
 				$attach = $attachments[0];
 				$fpath = $this->getFilePath($attach->path, $attach->id, $configs);
+				$title = $configs->title ? $configs->title : JText::_('Download content');
 			}
-
-			$title = $configs->title ? $configs->title : JText::_('Download content');
 
 			if ($configs->fancyLauncher)
 			{
@@ -1227,7 +1283,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			$ext = explode('.', $file);
 			$ext = end($ext);
 
-			if ($ext && !in_array($ext, $formats))
+			if ($ext && !in_array(strtolower($ext), $formats))
 			{
 				return false;
 			}
@@ -1260,7 +1316,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			$ext = explode('.', $file);
 			$ext = end($ext);
 
-			if ($ext && in_array($ext, $formats))
+			if ($ext && in_array(strtolower($ext), $formats))
 			{
 				$i++;
 			}
