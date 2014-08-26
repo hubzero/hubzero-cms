@@ -61,11 +61,11 @@ $this->css()
 			<a href="<?php echo JRoute::_($course->link()); ?>">
 				<div class="course-details">
 					<div class="course-identity">
-						<?php /*if ($logo = $course->logo()) { ?>
+						<?php if ($logo = $course->logo()) { ?>
 							<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('PLG_COURSES_RELATED_LOGO'); ?>" />
-						<?php } else {*/ ?>
+						<?php } else { ?>
 							<span></span>
-						<?php //} ?>
+						<?php } ?>
 						<?php if ($course->get('rating', 0) > 4) { ?>
 							<div>
 								<strong><?php echo JText::_('PLG_COURSES_RELATED_TOP_RATED'); ?></strong> <span class="rating">&#x272D;&#x272D;&#x272D;&#x272D;&#x272D;</span>
