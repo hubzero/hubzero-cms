@@ -311,6 +311,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 	 */
 	public function wishTask()
 	{
+		$this->view->setLayout('wish');
+
 		$wishid  	= JRequest::getInt('wishid', 0);
 		$id  		= JRequest::getInt('id', 0);
 		$refid  	= JRequest::getInt('rid', 0);
