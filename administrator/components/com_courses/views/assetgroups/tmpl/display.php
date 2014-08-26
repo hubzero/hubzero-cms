@@ -134,7 +134,7 @@ foreach ($this->rows as $row)
 			$alt = JText::_('COM_COURSES_PUBLISHED');
 		break;
 		case 2:
-			$class = 'expire';
+			$class = 'trash';
 			$task = 'publish';
 			$alt = JText::_('COM_COURSES_TRASHED');
 		break;
@@ -145,7 +145,7 @@ foreach ($this->rows as $row)
 		break;
 	}
 ?>
-			<tr class="<?php echo "row$k"; ?>">
+			<tr class="<?php echo "row$k" . ($row->get('state') == 2 ? ' archived' : ''); ?>">
 				<td>
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
