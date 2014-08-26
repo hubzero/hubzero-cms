@@ -406,6 +406,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$this->view->setError($error);
 			}
 		}
+		$this->view->config = $this->config;
 		$this->view->setName('browse')
 					->setLayout('tags')
 					->display();
