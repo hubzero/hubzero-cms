@@ -87,7 +87,7 @@ class GroupsControllerAbstract extends \Hubzero\Component\SiteController
 		$return = 'index.php?option=' . $this->_option . '&cn=' . $this->cn;
 
 		// append controller
-		if (isset($this->_controller) && $this->_controller != 'groups')
+		if (isset($this->_controller) && $this->_controller != 'groups' && $this->_controller != 'membership')
 		{
 			$return .= '&controller=' . $this->_controller;
 		}
