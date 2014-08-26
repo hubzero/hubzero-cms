@@ -706,7 +706,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 				if ($s_top == $top)
 				{
 					$html .= "\t\t\t\t" . '<option value="' . $data[$top]['id'] . '" selected="selected">' . htmlentities($data[$top]['name']) . '</option>' . "\n";
-					if ($row->description)
+					if (isset($row->description))
 					{
 						$description = $row->description;
 					}
@@ -734,7 +734,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 			$s_top_name = $data[$s_top]['name'];
 			$html .= '<table summary="' . $s_top_name . '">' . "\n";
 			$html .= "\t" . '<caption>' . $s_top_name . '</caption>' . "\n";
-			if(!empty($description))
+			if (!empty($description))
 			{
 				$html .= "\t" . '<p class="info">' . $description . '</p>' . "\n";
 			}
