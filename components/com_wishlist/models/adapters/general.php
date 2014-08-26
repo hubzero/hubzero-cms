@@ -234,9 +234,9 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 			case 'comment':
 				if ($this->get('wishid'))
 				{
-					$segments['task'] = 'reply';
+					$segments['task'] = 'wish';
 					$segments['wishid'] = $this->get('wishid');
-					$segments['cat'] = 'wish';
+					//$segments['cat'] = 'wish';
 					$anchor = '#commentform';
 				}
 			break;
