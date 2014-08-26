@@ -1437,9 +1437,16 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		if ($status == 0) 
 		{
 			echo '<p>Stopping ' . $sess . '<br />';
-			foreach ($output as $line)
+			if (is_array($output))
 			{
-				echo $line . "\n";
+				foreach ($output as $line)
+				{
+					echo $line . "\n";
+				}
+			}
+			else if (is_string($output))
+			{
+				echo $output . "\n";
 			}
 			echo '</p>'."\n";
 		}
