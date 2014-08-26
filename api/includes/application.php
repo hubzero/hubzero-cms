@@ -428,25 +428,42 @@ class Hubzero_API extends JApplication
 			}			
 		}
 
-		$oauthp = new \Hubzero\Oauth\Provider($params);
-		$oauthp->setRequestTokenPath('/api/oauth/request_token');
-		$oauthp->setAccessTokenPath('/api/oauth/access_token');
-		$oauthp->setAuthorizePath('/api/oauth/authorize');
+		/*
+		    If request has a Basic Auth header Oauth will throw an exception if the header doesn't
+		    conform to the OAuth protocol. We catch that (or any other)  exception and proceed as 
+		    if there was no oauth data.
 
-		$result = $oauthp->validateRequest($this->request->get('request'), $this->request->get('method'));
+		    @TODO A better approach might be to inspect the Basic Auth header and see if it even
+		    looks like OAuth was being attempted and throw an Oauth compliant error if it was.
+		*/
+
+		try
+		{	
+			$oauthp = new \Hubzero\Oauth\Provider($params);
+		
+			$oauthp->setRequestTokenPath('/api/oauth/request_token');
+			$oauthp->setAccessTokenPath('/api/oauth/access_token');
+			$oauthp->setAuthorizePath('/api/oauth/authorize');
+
+			$result = $oauthp->validateRequest($this->request->get('request'), $this->request->get('method'));
 	
-		if (is_array($result))
+			if (is_array($result))
+			{
+				$this->response->setResponseProvides('application/x-www-form-urlencoded');
+				$this->response->setMessage($result['message'], $result['status'], $result['reason']);
+				return false;
+			}
+
+			$this->_provider = $oauthp;
+		
+			$this->_authn['oauth_token'] = $oauthp->getToken();
+			$this->_authn['consumer_key'] = $oauthp->getConsumerKey();
+		}
+		catch (Exception $e)
 		{
-			//$this->response->setResponseProvides('application/x-www-form-urlencoded;q=1.0,text/html;q=0.9');
-			$this->response->setResponseProvides('application/x-www-form-urlencoded');
-			$this->response->setMessage($result['message'], $result['status'], $result['reason']);
-			return false;
+			$result = false;
 		}
 
-		$this->_provider = $oauthp;
-		
-		$this->_authn['oauth_token'] = $oauthp->getToken();
-		$this->_authn['consumer_key'] = $oauthp->getConsumerKey();
 		$this->_authn['user_id'] = null;
 		
 		if ($this->_authn['oauth_token'])
