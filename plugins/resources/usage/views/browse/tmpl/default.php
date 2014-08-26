@@ -41,7 +41,7 @@ $this->css()
      ->js('flot/jquery.flot.crosshair.min.js', 'system');
 
 // Set the base URL
-$url = 'index.php?option=' . $option . '&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id) . '&active=usage';
+$url = 'index.php?option=' . $this->option . '&' . ($this->resource->alias ? 'alias=' . $this->resource->alias : 'id=' . $this->resource->id) . '&active=usage';
 
 $img1 = $this->chart_path . $this->dthis . '-' . $this->period . '-' . $this->resource->id . '-Users.gif';
 $img2 = $this->chart_path . $this->dthis . '-' . $this->period . '-' . $this->resource->id . '-Jobs.gif';
@@ -678,7 +678,7 @@ if ($results)
 
 				var month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-				dataurl = '<?php echo base; ?>/index.php?option=com_resources&id=<?php echo $this->resource->id; ?>&active=usage&action=top&datetime=';
+				dataurl = '<?php echo $base; ?>/index.php?option=com_resources&id=<?php echo $this->resource->id; ?>&active=usage&action=top&datetime=';
 
 				function updateTables(yyyy, mm) {
 					var dt = yyyy + '/' + mm + '/01';
