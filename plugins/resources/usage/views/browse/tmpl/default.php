@@ -247,10 +247,11 @@ if ($results)
 					$this->params->get('pie_chart_color10', '#3a3a3a'),
 				);
 
-				$datetime = str_replace('-00 00:00:00', '', $current->datetime);
+				//$datetime = str_replace('-00 00:00:00', '', $current->datetime);
+				$matches = explode('-', $current->datetime);
+				$datetime = $matches[0] . '-' . $matches[1];
 
 				$tid = plgResourcesUsage::getTid($this->resource->id, $datetime);
-
 
 				if (intval($this->params->get('cache', 1)))
 				{
