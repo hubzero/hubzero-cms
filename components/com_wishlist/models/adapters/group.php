@@ -137,7 +137,7 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 			case 'edit':
 				if ($this->get('wishid'))
 				{
-					$segments['task'] = 'edit';
+					$segments['task'] = 'editwish';
 					$segments['wishid'] = $this->get('wishid');
 				}
 			break;
@@ -162,6 +162,107 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 
 				$segments['task'] = 'settings';
 				$segments['id'] = $this->get('wishlist');
+			break;
+
+			case 'savesettings':
+				unset($segments['category']);
+				unset($segments['rid']);
+
+				$segments['task'] = 'savesettings';
+				$segments['listid'] = $this->get('wishlist');
+			break;
+
+			case 'comments':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['com'] = 1;
+					$anchor = '#comments';
+				}
+			break;
+
+			case 'changestatus':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'changestatus';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'withdraw':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'delete';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'addbonus':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'addbonus';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'privacy':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'editprivacy';
+					$segments['wishid'] = $this->get('wishid');
+				}
+			break;
+
+			case 'move':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'move';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'comment':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['cat'] = 'wish';
+					$anchor = '#commentform';
+				}
+			break;
+
+			case 'editplan':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'editplan';
+					$anchor = '#plan';
+				}
+			break;
+
+			case 'rank':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'rank';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'report':
+			case 'reportabuse':
+				return 'index.php?option=com_support&task=reportabuse&category=wish&id=' . $this->get('wishid') . '&parent=' . $this->get('wishlist');
 			break;
 
 			case 'permalink':
