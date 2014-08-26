@@ -163,10 +163,10 @@ class plgUsageOverview extends JPlugin
 				}
 				$html .= "\t\t\t" . '<td' . $cls . '>' . trim($this->_fmt_result($val, $row->valfmt)) . '</td>' . "\n";
 			}
-		}
-		if ($i == 1) 
-		{
-			$html .= $this->_empty_rows(10);
+			if ($i == 1) 
+			{
+				$html .= $this->_empty_rows(10);
+			}
 		}
 		return $html;
 	}
