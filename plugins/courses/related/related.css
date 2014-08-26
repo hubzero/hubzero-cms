@@ -61,6 +61,13 @@
 		background: #f1f1f1;
 		text-align: center;
 	}
+	.course-block .course-identity span:after {
+		content: "\f09c";
+		font-family: "Fontcons";
+		font-size: 7em;
+		color: #e1e1e1;
+		line-height: 1.6em;
+	}
 	/* Extra info */
 	.course-block .course-identity div {
 		display: block;
