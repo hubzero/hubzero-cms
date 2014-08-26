@@ -78,7 +78,9 @@ endforeach;
 	<div class="auth">
 		<div class="person">
 			<?php if (isset($user_img)) : ?>
-				<img src="<?php echo $user_img; ?>" alt="<?php echo JText::_('User profile picture'); ?>" />
+				<?php $img_properties = getimagesize(JPATH_ROOT . DS . $user_img); ?>
+				<?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
+				<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo JText::_('User profile picture'); ?>" />
 			<?php endif; ?>
 		</div>
 		<div class="default" style="display:<?php echo ($primary || count($this->authenticators) == 0) ? 'none' : 'block'; ?>;">

@@ -83,6 +83,14 @@
 	z-index: 4;
 	position: relative;
 }
+.auth img.wide {
+	max-height: 100%;
+	max-width: none;
+}
+.auth img.tall {
+	max-height: none;
+	max-width: 100%;
+}
 .auth .instructions {
 	font-size: 1.5em;
 	text-align: center;
