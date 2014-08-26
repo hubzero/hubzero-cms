@@ -87,6 +87,11 @@ class CollectionsModelAbstract extends \Hubzero\Base\Model
 			{
 				$this->_creator = new \Hubzero\User\Profile();
 			}
+			if ($this->_creator->get('uidNumber') && !$this->_creator->get('name'))
+			{
+				$user = JUser::getInstance($this->_creator->get('uidNumber'));
+				$this->_creator->set('name', $user->get('name', JText::_('(unknown)')));
+			}
 		}
 		if ($property)
 		{
