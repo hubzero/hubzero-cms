@@ -61,7 +61,7 @@ $this->css()
 	<div class="subject">
 	<?php
 	if ($this->row) {
-		$html  = '<h3>'. stripslashes($this->row->title);
+		$html  = '<h3>'. $this->escape(stripslashes($this->row->title));
 		if ($this->authorized || $this->row->created_by == $juser->get('id')) {
 			$html .= '&nbsp;&nbsp;';
 			$html .= '<a class="edit" href="'. JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.JText::_('EVENTS_EDIT').'">'.strtolower(JText::_('EVENTS_EDIT')).'</a>'."\n";
