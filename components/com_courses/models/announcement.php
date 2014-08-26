@@ -140,7 +140,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 						'domain'   => ''
 					);
 
-					$content = stripslashes($this->get('content'));
+					$content = $this->get('content');
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
@@ -161,7 +161,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 
 			case 'raw':
 			default:
-				$content = stripslashes($this->get('content'));
+				$content = $this->get('content');
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				$content = html_entity_decode($content);
 			break;

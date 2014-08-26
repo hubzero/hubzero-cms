@@ -321,7 +321,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 						'domain'   => ''
 					);
 
-					$content = (string) stripslashes($this->get('content', ''));
+					$content = str_replace(array('\"', "\'"), array('"', "'"), (string) $this->get('content', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
@@ -343,7 +343,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 
 			case 'raw':
 			default:
-				$content = stripslashes($this->get('content'));
+				$content = str_replace(array('\"', "\'"), array('"', "'"), $this->get('content'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}

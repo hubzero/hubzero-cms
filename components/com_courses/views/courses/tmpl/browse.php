@@ -104,7 +104,7 @@ $juser = JFactory::getUser();
 					?>
 					<p class="course-group-img">
 						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
-							<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
+							<img src="<?php echo $group->getLogo(); ?>" <?php echo $atts; ?> alt="<?php echo $this->escape($group->get('description')); ?>" />
 						</a>
 					</p>
 					<p class="course-group-description">
@@ -112,7 +112,7 @@ $juser = JFactory::getUser();
 					</p>
 					<h3 class="course-group-title">
 						<a href="<?php echo JRoute::_('index.php?option=com_courses&task=browse&group=' . $group->get('cn')); ?>">
-							<?php echo $this->escape(stripslashes($group->get('description'))); ?>
+							<?php echo $this->escape($group->get('description')); ?>
 						</a>
 					</h3>
 				</div>
@@ -191,13 +191,13 @@ $juser = JFactory::getUser();
 							<article>
 								<h4>
 									<a class="entry-title" href="<?php echo JRoute::_($course->link()); ?>">
-										<?php echo $this->escape(stripslashes($course->get('title'))); ?>
+										<?php echo $this->escape($course->get('title')); ?>
 									</a>
 								</h4>
 								<p class="course-identity">
 									<a href="<?php echo JRoute::_($course->link()); ?>">
 										<?php if ($logo = $course->logo()) { ?>
-											<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($course->get('title'))); ?>" />
+											<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape($course->get('title')); ?>" />
 										<?php } else { ?>
 											<span></span>
 										<?php } ?>
@@ -229,7 +229,7 @@ $juser = JFactory::getUser();
 									</dd>
 								</dl>
 								<p class="entry-content">
-									<?php echo \Hubzero\Utility\String::truncate(stripslashes($course->get('blurb')), 200); ?>
+									<?php echo \Hubzero\Utility\String::truncate($course->get('blurb'), 200); ?>
 								</p>
 							</article>
 						</li>

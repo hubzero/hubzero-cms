@@ -44,7 +44,7 @@ switch ($this->count)
 			<div class="course-details">
 				<div class="course-identity">
 					<?php if ($logo = $this->course->logo()) { ?>
-						<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+						<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
 					<?php } else { ?>
 						<span></span>
 					<?php } ?>
@@ -60,11 +60,11 @@ switch ($this->count)
 					<?php } ?>
 				</div>
 				<h3 class="course-title">
-					<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+					<?php echo $this->escape($this->course->get('title')); ?>
 				</h3>
 			<?php if ($this->course->get('blurb')) { ?>
 				<p class="course-description">
-					<?php echo \Hubzero\Utility\String::truncate($this->escape(stripslashes($this->course->get('blurb'))), 130); ?>
+					<?php echo \Hubzero\Utility\String::truncate($this->escape($this->course->get('blurb')), 130); ?>
 				</p>
 			<?php } ?>
 			</div>

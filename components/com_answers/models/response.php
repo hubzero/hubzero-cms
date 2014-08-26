@@ -196,7 +196,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 						'domain'   => ''
 					);
 
-					$content = (string) stripslashes($this->get('answer', ''));
+					$content = str_replace(array('\"', "\'"), array('"', "'"), (string) $this->get('answer', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
@@ -218,7 +218,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 
 			case 'raw':
 			default:
-				$content = $this->get('answer');
+				$content = str_replace(array('\"', "\'"), array('"', "'"), $this->get('answer'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}

@@ -539,7 +539,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 						'domain'   => ''
 					);
 
-					$content = (string) stripslashes($this->get('question', ''));
+					$content = str_replace(array('\"', "\'"), array('"', "'"), (string) $this->get('question', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
@@ -562,7 +562,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 			case 'raw':
 			default:
-				$content = stripslashes($this->get('question'));
+				$content = str_replace(array('\"', "\'"), array('"', "'"), $this->get('question'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}
@@ -603,7 +603,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 						'domain'   => ''
 					);
 
-					$content = (string) stripslashes($this->get('subject', ''));
+					$content = (string) $this->get('subject', '');
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						'com_answers.question.subject',
 						&$this,
@@ -626,7 +626,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 
 			case 'raw':
 			default:
-				$content = stripslashes($this->get('subject'));
+				$content = $this->get('subject');
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}

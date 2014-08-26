@@ -71,7 +71,7 @@ $this->css('jquery.datepicker.css', 'system')
 			<label for="entrycontent">
 				<?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?>
 				<?php
-				echo JFactory::getEditor()->display('entry[content]', stripslashes($this->entry->get('content')), '', '', 50, 30, false, 'entrycontent');
+				echo JFactory::getEditor()->display('entry[content]', $this->entry->content('raw'), '', '', 50, 30, false, 'entrycontent');
 				?>
 			</label>
 			<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>

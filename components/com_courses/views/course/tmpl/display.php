@@ -61,11 +61,11 @@ $this->css('course.css')
 			<?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
 				<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
 					<label for="field_title">
-						<input type="text" name="course[title]" id="field_title" value="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+						<input type="text" name="course[title]" id="field_title" value="<?php echo $this->escape($this->course->get('title')); ?>" />
 					</label>
 
 					<label for="field_blurb">
-						<textarea name="course[blurb]" id="field_blurb" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?></textarea>
+						<textarea name="course[blurb]" id="field_blurb" cols="50" rows="5"><?php echo $this->escape($this->course->get('blurb')); ?></textarea>
 					</label>
 
 					<label for="actags">
@@ -115,11 +115,11 @@ $this->css('course.css')
 
 				<div id="course-header"<?php if ($this->course->get('logo')) { echo ' class="with-identity"'; } ?>>
 					<h2>
-						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
+						<?php echo $this->escape($this->course->get('title')); ?>
 					</h2>
 				</div>
 				<p>
-					<?php echo $this->escape(stripslashes($this->course->get('blurb'))); ?>
+					<?php echo $this->escape($this->course->get('blurb')); ?>
 				</p>
 
 				<?php echo $this->course->tags('cloud'); ?>

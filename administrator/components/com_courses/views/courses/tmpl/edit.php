@@ -106,16 +106,16 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
 				<label for="field-alias"><?php echo JText::_('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" size="50" />
+				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->get('alias')); ?>" size="50" />
 				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" size="50" />
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" size="50" />
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_BLURB_HINT'); ?>">
 				<label for="field-blurb"><?php echo JText::_('COM_COURSES_FIELD_BLURB'); ?>:</label><br />
-				<textarea name="fields[blurb]" id="field-blurb" cols="40" rows="3"><?php echo $this->escape(stripslashes($this->row->get('blurb'))); ?></textarea>
+				<textarea name="fields[blurb]" id="field-blurb" cols="40" rows="3"><?php echo $this->escape($this->row->get('blurb')); ?></textarea>
 				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_BLURB_HINT'); ?></span>
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?>">

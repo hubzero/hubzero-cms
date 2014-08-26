@@ -91,7 +91,7 @@ $this->css();
 	
 				<label for="field-subject">
 					<?php echo JText::_('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
-					<input type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape(stripslashes($this->question->get('subject', ''))); ?>" />
+					<input type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->question->get('subject', '')); ?>" />
 				</label>
 	
 				<label for="field-question">
@@ -99,7 +99,7 @@ $this->css();
 					<?php
 						echo $this->helpers()->editor(
 							'fields[question]', // name
-							stripslashes($this->question->get('question', '')), // content
+							$this->question->content('raw'), // content
 							35,  // cols
 							10,   // rows
 							'field-question'   // id

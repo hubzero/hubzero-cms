@@ -95,7 +95,7 @@ class CoursesModelPage extends CoursesModelAbstract
 						$config['filepath'] = DS . trim($this->config()->get('uploadpath', '/site/courses'), DS) . DS . $this->get('course_id') . DS . 'sections' . DS . $this->get('section_id') . DS . 'pagefiles';
 					}
 
-					$content = stripslashes($this->get('content'));
+					$content = $this->get('content');
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
@@ -116,7 +116,7 @@ class CoursesModelPage extends CoursesModelAbstract
 
 			case 'raw':
 			default:
-				$content = stripslashes($this->get('content'));
+				$content = $this->get('content');
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				$content = html_entity_decode($content);
 			break;

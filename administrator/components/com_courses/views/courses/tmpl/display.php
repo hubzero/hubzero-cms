@@ -120,11 +120,11 @@ foreach ($this->rows as $row)
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
 					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						<?php echo $this->escape($row->get('title')); ?>
 					</a>
 				<?php } else { ?>
 					<span>
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						<?php echo $this->escape($row->get('title')); ?>
 					</span>
 				<?php } ?>
 				</td>

@@ -72,7 +72,7 @@ $this->css()
 		<label for="entry_content">
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
 			<?php
-			echo JFactory::getEditor()->display('entry[content]', $this->escape(stripslashes($this->entry->get('content'))), '', '', 50, 30, false, 'entry_content');
+			echo JFactory::getEditor()->display('entry[content]', $this->escape($this->entry->content('raw')), '', '', 50, 30, false, 'entry_content');
 			?>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
@@ -119,7 +119,7 @@ $this->css()
 			<div class="col span6">
 				<label for="field-publish_up">
 					<?php echo JText::_('PLG_GROUPS_BLOG_PUBLISH_UP'); ?>
-					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(stripslashes(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s'))); ?>" />
+					<input type="text" name="entry[publish_up]" id="field-publish_up" size="35" value="<?php echo $this->escape(JHTML::_('date', $this->entry->get('publish_up'), 'Y-m-d H:i:s')); ?>" />
 					<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 				</label>
 			</div>
@@ -130,7 +130,7 @@ $this->css()
 						$down = '';
 						if ($this->entry->get('publish_down') != '')
 						{
-							$down = $this->escape(stripslashes(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')));
+							$down = $this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s'));
 						}
 					?>
 					<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo $down; ?>" />

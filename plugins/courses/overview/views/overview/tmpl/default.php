@@ -40,7 +40,7 @@ if ($this->course->access('edit', 'course') && $field == 'description')
 	<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
 		<label for="field_description">
 			<?php
-				echo \JFactory::getEditor()->display('course[description]', $this->escape(stripslashes($this->course->description('raw'))), '', '', 35, 50, false, 'field_description');
+				echo \JFactory::getEditor()->display('course[description]', $this->escape($this->course->description('raw')), '', '', 35, 50, false, 'field_description');
 			?>
 		</label>
 

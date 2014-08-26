@@ -59,7 +59,7 @@ $juser = JFactory::getUser();
 			<label for="field_content">
 				<?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?></span>
 				<?php
-				echo \JFactory::getEditor()->display('fields[content]', $this->escape(stripslashes($this->model->content('raw'))), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
+				echo \JFactory::getEditor()->display('fields[content]', $this->escape($this->model->content('raw')), '', '', 35, 5, false, 'field_content', null, null, array('class' => 'minimal no-footer'));
 				?>
 			</label>
 

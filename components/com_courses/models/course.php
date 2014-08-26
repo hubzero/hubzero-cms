@@ -867,7 +867,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 						'domain'   => $this->get('alias')
 					);
 
-					$content = stripslashes((string) $this->get('description', ''));
+					$content = (string) $this->get('description', '');
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						'com_courses.course.description',
 						&$this,
@@ -888,7 +888,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 
 			case 'raw':
 			default:
-				$content = stripslashes($this->get('description'));
+				$content = $this->get('description');
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				//$content = html_entity_decode($content);
 				//$content = str_replace("\xC2\xA0", ' ', $content);
