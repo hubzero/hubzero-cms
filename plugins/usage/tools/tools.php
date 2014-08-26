@@ -456,7 +456,7 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 							{
 								$html .= $i - 1;
 							}
-						   	$html .= ' - ' . $month . ' ' . $i . '</option>' . "\n";
+							$html .= ' - ' . $month . ' ' . $i . '</option>' . "\n";
 						}
 					}
 				}
