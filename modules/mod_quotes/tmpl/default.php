@@ -62,28 +62,34 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 					</div>
 				<?php } ?>
 				<blockquote cite="<?php echo $this->escape(stripslashes($quote->fullname)); ?>">
-				<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
-					<p>
-						<?php echo $this->escape(stripslashes($quote->quote)); ?>
-					</p>
-				<?php } else { ?>
-					<p>
-					<?php if ($quote->short_quote != $quote->quote) { ?>
-						<?php echo $this->escape(rtrim(stripslashes($quote->short_quote), '.')); ?>
-						 &#8230;
-						<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $quote->id; ?>" title="<?php echo JText::sprintf('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
-							<?php echo JText::_('MOD_QUOTES_MORE'); ?>
-						</a>
+					<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
+						<p>
+							<?php echo $this->escape(stripslashes($quote->quote)); ?>
+						</p>
 					<?php } else { ?>
-						<?php echo $this->escape(stripslashes($quote->short_quote)); ?>
+						<p>
+							<?php
+							if (!trim($quote->short_quote))
+							{
+								$quote->short_quote = \Hubzero\Utility\String::truncate($quote->quote, 250);
+							}
+							?>
+							<?php if ($quote->short_quote != $quote->quote) { ?>
+								<?php echo $this->escape(rtrim(stripslashes($quote->short_quote), '.')); ?>
+								 &#8230;
+								<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $quote->id; ?>" title="<?php echo JText::sprintf('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->fullname))); ?>">
+									<?php echo JText::_('MOD_QUOTES_MORE'); ?>
+								</a>
+							<?php } else { ?>
+								<?php echo $this->escape(stripslashes($quote->short_quote)); ?>
+							<?php } ?>
+						</p>
 					<?php } ?>
-					</p>
-				<?php } ?>
 				</blockquote>
 				<p class="cite">
 					<?php
 					$user = JFactory::getUser($quote->user_id);
-					$userPicture = \Hubzero\User\Profile::getInstance($quote->user_id)->getPicture();
+					$userPicture = \Hubzero\User\Profile\Helper::getMemberPhoto($quote->user_id);
 					echo '<img src="' . $userPicture . '" alt="' . $user->get('name') . '" width="30" height="30" />';
 					?>
 					<cite><?php echo $this->escape(stripslashes($quote->fullname)); ?></cite>
