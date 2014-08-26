@@ -207,6 +207,7 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 			$item->object_id   = $this->get('id');
 			$item->title       = $this->get('title');
 			$item->description = $this->get('description');
+			$item->access      = $this->get('access', 0);
 
 			if (!$item->check())
 			{
@@ -239,6 +240,7 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 				$item->object_id   = $this->get('id');
 				$item->title       = $this->get('title');
 				$item->description = $this->get('description');
+				$item->access      = $this->get('access', 0);
 
 				if (!$item->check())
 				{

@@ -382,8 +382,8 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$count['access'] = 0;
-			$view->filters['access'] = 0;
+			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$count['access'] = $view->filters['access'];
 		}
 
 		$view->collections = $this->model->collections($count);
@@ -549,7 +549,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = 0;
+			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
 			$count['access'] = $view->filters['access'];
 		}
 		if ($this->authorized)
@@ -754,7 +754,7 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = 0;
+			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
 			$count['access'] = $view->filters['access'];
 		}
 		if ($this->authorized)

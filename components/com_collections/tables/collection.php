@@ -284,6 +284,11 @@ class CollectionsTableCollection extends JTable
 			return false;
 		}
 
+		if ($this->access === null)
+		{
+			$this->access = 0;
+		}
+
 		$tbl = new CollectionsTableCollection($this->_db);
 		$tbl->load($this->alias, $this->object_id, $this->object_type);
 

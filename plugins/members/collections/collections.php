@@ -316,8 +316,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$count['access'] = 0;
-			$view->filters['access'] = 0;
+			$count['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$view->filters['access'] = $count['access'];
 		}
 
 		/*$filters['count'] = true;
@@ -406,8 +406,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		$filters = array();
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$filters['access'] = 0;
-			$count['access'] = 0;
+			$filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$count['access'] = $filters['access'];
 		}
 
 		//$filters['count'] = true;
@@ -482,8 +482,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = 0;
-			$count['access']   = 0;
+			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$count['access']   = $view->filters['access'];
 		}
 
 		$view->filters['count'] = true;
@@ -577,8 +577,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		);
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = 0;
-			$count['access'] = 0;
+			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
+			$count['access'] = $view->filters['access'];
 		}
 
 		$view->collections = $this->model->collections($count);
@@ -872,7 +872,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		if (!$this->params->get('access-manage-collection'))
 		{
-			$view->filters['access'] = 0;
+			$view->filters['access'] = ($this->juser->get('guest') ? 0 : array(0, 1));
 			$count['access'] = $view->filters['access'];
 		}
 

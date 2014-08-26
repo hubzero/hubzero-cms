@@ -214,6 +214,7 @@ $this->css()
 	<input type="hidden" name="fields[created]" value="<?php echo $item->get('created'); ?>" />
 	<input type="hidden" name="fields[created_by]" value="<?php echo $item->get('created_by'); ?>" />
 	<input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $dir; ?>" />
+	<input type="hidden" name="fields[access]" id="field-dir" value="<?php echo $item->get('access', 0); ?>" />
 
 	<input type="hidden" name="post[id]" value="<?php echo $this->entry->get('id'); ?>" />
 	<input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->entry->get('item_id'); ?>" />

@@ -163,6 +163,11 @@ class CollectionsTableItem extends JTable
 			return false;
 		}
 
+		if ($this->access === null)
+		{
+			$this->access = 0;
+		}
+
 		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
