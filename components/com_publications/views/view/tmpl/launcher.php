@@ -49,7 +49,6 @@ $route = $this->publication->project_provisioned == 1
 			? 'index.php?option=com_publications&task=submit'
 			: 'index.php?option=com_projects&alias=' . $this->publication->project_alias . '&active=publications';
 $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . $this->version;
-
 ?>
 <!--[if gte IE 9]>
   <style type="text/css">
@@ -98,18 +97,17 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
 			<?php
 				if ($elements)
 				{
-					foreach ($elements as $element)
-					{
-						// Draw button
-						$launcher = $attModel->drawLauncher(
-							$element->manifest->params->type,
-							$this->publication,
-							$element,
-							$authorized
-						);
+					$element = $elements[0];
 
-						echo $launcher;
-					}
+					// Draw button
+					$launcher = $attModel->drawLauncher(
+						$element->manifest->params->type,
+						$this->publication,
+						$element,
+						$elements,
+						$authorized
+					);
+					echo $launcher;
 				}
 			?>
 			<div class="version-info">

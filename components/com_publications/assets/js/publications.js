@@ -119,6 +119,26 @@ HUB.Publications = {
 			});
 		}
 
+		// Launch options
+		if ($('#launch-primary').length > 0 && $('#launch-choices').length > 0)
+		{
+			var keyupTimer = '';
+			$('#launch-primary').click(function(e) {
+				e.preventDefault();
+				if (keyupTimer) {
+					clearTimeout(keyupTimer);
+				}
+				if ($('#launch-choices').hasClass('hidden'))
+				{
+					$('#launch-choices').removeClass('hidden');
+					var keyupTimer = setTimeout((function()
+					{
+						$('#launch-choices').addClass('hidden');
+					}), 6000);
+				}
+			});
+		}
+
 		//Hubpresenter
 		$(".hubpresenter, .video").each(function(i, el) {
 			if ($(el).attr('href') && $(el).attr('href').indexOf('?') == -1) {

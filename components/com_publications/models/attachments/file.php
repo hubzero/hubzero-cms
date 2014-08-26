@@ -136,6 +136,10 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Allow rename?
 		$configs->allowRename = false;
 
+		// Archival path
+		$tarname  = JText::_('Publication') . '_' . $pub->id . '.zip';
+		$configs->archPath	= $configs->pubBase . DS . $tarname;
+
 		return $configs;
 	}
 
@@ -302,7 +306,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	 *
 	 * @return  boolean
 	 */
-	public function drawLauncher( $element, $elementId, $pub, $blockParams, $authorized)
+	public function drawLauncher( $element, $elementId, $pub, $blockParams, $elements, $authorized )
 	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
@@ -310,6 +314,10 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$attachments = $pub->_attachments;
 		$attachments = isset($attachments['elements'][$elementId])
 					 ? $attachments['elements'][$elementId] : NULL;
+
+		$showArchive = isset($pub->_curationModel->_manifest->params->show_archival)
+				? $pub->_curationModel->_manifest->params->show_archival :  0;
+		$showArchive = ($showArchive && file_exists($configs->archPath)) ? true : false;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments(
@@ -375,7 +383,8 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 			if ($configs->fancyLauncher)
 			{
-				$html  = PublicationsHtml::drawLauncher('ic-download', $pub, $url, $title, $disabled, $pop);
+				$html  = PublicationsHtml::drawLauncher('ic-download', $pub, $url,
+						$title, $disabled, $pop, 'download', $showArchive);
 			}
 			else
 			{

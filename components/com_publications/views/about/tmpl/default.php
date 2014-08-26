@@ -31,9 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$useBlocks = $this->config->get('curation', 0);
-
-$abstract = stripslashes($this->publication->abstract);
+$useBlocks 	= $this->config->get('curation', 0);
+$webpath 	= $this->config->get('webpath');
+$abstract	= stripslashes($this->publication->abstract);
 
 // Set the document description
 if ($this->publication->abstract)
@@ -93,7 +93,6 @@ $schema 	= $elements->getSchema();
 		else
 		{
 			// Get gallery path
-			$webpath 		= $this->config->get('webpath');
 			$gallery_path 	= $this->helper->buildPath(
 				$this->publication->id,
 				$this->publication->version_id,
@@ -142,14 +141,40 @@ $schema 	= $elements->getSchema();
 
 			if ($elements)
 			{
+				$append = NULL;
+				// Get file path
+				$path 	= $this->helper->buildPath(
+					$this->publication->id,
+					$this->publication->version_id,
+					$webpath,
+					'',
+					1
+				);
+				$licFile 	= $path . DS . 'LICENSE.txt';
+				if (file_exists($licFile))
+				{
+					$licenseUrl = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=license' . '&v=' . $this->publication->version_id);
+					$append = '<li><a href="' . $licenseUrl . '" class="license-terms play" rel="external">' . JText::_('COM_PUBLICATIONS_LICENSE_TERMS') . '</a></li>';
+				}
+
+				// Archival path
+				$tarname  = JText::_('Publication') . '_' . $this->publication->id . '.zip';
+				$archPath	= $path . DS . $tarname;
+
+				$showArchive = isset($this->publication->_curationModel->_manifest->params->show_archival)
+						? $this->publication->_curationModel->_manifest->params->show_archival :  0;
+				$archiveUrl = JRoute::_('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&v=' . $this->publication->version_number . '&render=archive');
+				$showArchive = ($showArchive && file_exists($archPath)) ? true : false;
+
 				// Draw list
 				$list = $attModel->listItems(
 					$elements,
 					$this->publication,
-					$this->authorized
+					$this->authorized,
+					$append
 				);
 				?>
-				<h4><?php echo $listLabel; ?></h4>
+				<h4 class="list-header"><?php echo $listLabel ? $listLabel : JText::_('COM_PUBLICATIONS_CONTENT_LIST'); ?><?php if ($showArchive) { ?><span class="viewalltypes archival-package"><a href="<?php echo $archiveUrl; ?>"><?php echo JText::_('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></span> <?php } ?></h4>
 				<div class="pub-content">
 					<?php echo $list; ?>
 				</div>

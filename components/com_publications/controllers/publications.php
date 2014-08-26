@@ -890,7 +890,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	{
 		// Incoming
 		$aid	  = JRequest::getInt( 'a', 0 );             // Attachment id
-		$element  = JRequest::getInt( 'el', 0 );            // Element id
+		$element  = JRequest::getInt( 'el', 1 );            // Element id, default to first
 
 		if (!$this->publication)
 		{
@@ -1220,6 +1220,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Check if user has access to content
 		$this->_checkRestrictions($publication, $version);
 
+		// Use new curation flow?
+		$useBlocks  = $this->config->get('curation', 0);
+
 		// Serve attachments by element, with handler support (NEW)
 		if ($element)
 		{
@@ -1301,11 +1304,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 			// Get archival package
 			$downloadable = $this->_archiveFiles (
-				$publication->id,
-				$publication->version_id,
+				$publication,
+				$objPV,
 				$archPath,
-				$tarname,
-				$publication->state
+				$tarname
 			);
 		}
 		elseif ($render == 'video' || $this->task == 'video' || $serveas == 'video')
@@ -1972,14 +1974,36 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	/**
 	 * Create archive file
 	 *
-	 * @param      object 	$files
+	 * @param      object 	$pub
+	 * @param      object 	$objPV
 	 * @param      string 	$path
 	 * @param      string 	$tarname
 	 *
 	 * @return     mixed, array with data or success, False on failure
 	 */
-	private function _archiveFiles( $pid, $vid, $path, $tarname, $state = 3 )
+	private function _archiveFiles( $pub, $objPV, $path, $tarname )
 	{
+		// Use new curation flow?
+		$useBlocks  = $this->config->get('curation', 0);
+
+		if ($useBlocks)
+		{
+			// We need our curation model to parse elements
+			if (JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+				. DS . 'models' . DS . 'curation.php')
+			{
+				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications'
+					. DS . 'models' . DS . 'curation.php');
+			}
+			else
+			{
+				JError::raiseError( 404,
+				 	JText::_('COM_PUBLICATIONS_ERROR_LOADING_REQUIRED_LIBRARY')
+				);
+				return;
+			}
+		}
+
 		$tarpath = JPATH_ROOT . $path . DS . $tarname;
 
 		$archive = array();
@@ -1987,17 +2011,57 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$archive['name'] = $tarname;
 
 		// Check if archival is already there (locked version)
-		if (($state == 1 || $state == 0 || $state == 6) && file_exists($tarpath))
+		if (($pub->state == 1 || $pub->state == 0 || $pub->state == 6) && file_exists($tarpath))
 		{
 			return $archive;
 		}
 
 		// Produce archive package
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
+		require_once( JPATH_ROOT . DS . 'components' . DS
+			. 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
 
-		JPluginHelper::importPlugin( 'projects', 'publications' );
-		$dispatcher = JDispatcher::getInstance();
-		$result = $dispatcher->trigger( 'archivePub', array($pid, $vid) );
+		if ($useBlocks)
+		{
+			$pub->version 	= $objPV->version_number;
+
+			// Load publication project
+			$pub->_project = new Project($this->database);
+			$pub->_project->load($pub->project_id);
+
+			// Get master type info
+			$mt = new PublicationMasterType( $this->database );
+			$pub->_type = $mt->getType($pub->base);
+			$typeParams = new JParameter( $pub->_type->params );
+
+			// Get attachments
+			$pContent = new PublicationAttachment( $this->database );
+			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
+
+			// Get authors
+			$pAuthors 			= new PublicationAuthor( $this->database );
+			$pub->_authors 		= $pAuthors->getAuthors($pub->version_id);
+
+			// Get manifest from either version record (published) or master type
+			$manifest   = $pub->curation
+						? $pub->curation
+						: $pub->_type->curation;
+
+			// Get curation model
+			$pub->_curationModel = new PublicationsCuration($this->database, $manifest);
+
+			// Set pub assoc and load curation
+			$pub->_curationModel->setPubAssoc($pub);
+
+			// Produce archival package
+			$pub->_curationModel->package();
+		}
+		else
+		{
+			// Archival for non-curated publications
+			JPluginHelper::importPlugin( 'projects', 'publications' );
+			$dispatcher = JDispatcher::getInstance();
+			$result = $dispatcher->trigger( 'archivePub', array($pub, $objPV) );
+		}
 
 		return $archive;
 	}

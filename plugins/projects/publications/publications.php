@@ -7420,7 +7420,7 @@ class plgProjectsPublications extends JPlugin
 				$mainFiles = JFolder::files($contentPath, '.', true, true);
 			}
 
-			if (!empty($mainFiles))
+			if (!empty($mainFiles) && $pDocs && $sDocs)
 			{
 				foreach ($mainFiles as $e)
 				{

@@ -140,18 +140,18 @@ if ($experiment == false)
 
 		if ($elements)
 		{
-			foreach ($elements as $element)
-			{
-				// Draw button
-				$launcher = $attModel->drawLauncher(
-					$element->manifest->params->type,
-					$this->publication,
-					$element,
-					$authorized
-				);
+			$element = $elements[0];
 
-				$html .= $launcher;
-			}
+			// Draw button
+			$launcher = $attModel->drawLauncher(
+				$element->manifest->params->type,
+				$this->publication,
+				$element,
+				$elements,
+				$authorized
+			);
+
+			$html .= $launcher;
 		}
 	}
 	elseif ($content['primary'] && count($content['primary']) > 0 && $tab != 'play')

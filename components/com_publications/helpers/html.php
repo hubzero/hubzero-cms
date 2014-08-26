@@ -1334,7 +1334,7 @@ class PublicationsHtml
 	 * @param      string  $pop      Pop-up content
 	 * @return     string
 	 */
-	public static function drawLauncher( $icon, $pub, $url, $title, $disabled, $pop, $action = '' )
+	public static function drawLauncher( $icon, $pub, $url, $title, $disabled, $pop, $action = 'download',  $showArchive = false)
 	{
 		if ($disabled)
 		{
@@ -1343,9 +1343,18 @@ class PublicationsHtml
 		}
 		else
 		{
+			$archiveUrl = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
 			?>
 			<div class="button-highlighter">
-				<p class="launch-primary <?php echo $icon; ?>"><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" <?php echo $action; ?>></a></p>
+				<p class="launch-primary <?php echo $icon; ?>"><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" id="launch-primary"></a></p>
+				<?php if ($showArchive == true) { ?>
+				<div class="launch-choices hidden" id="launch-choices">
+					<div>
+						<p><a href="<?php echo $url; ?>" title="<?php echo $title; ?>" class="download"><?php echo $title; ?></a></p>
+						<p><a href="<?php echo $archiveUrl; ?>" class="archival" title="<?php echo JText::_('COM_PUBLICATIONS_DOWNLOAD_BUNDLE'); ?>"><?php echo JText::_('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></p>
+					</div>
+				</div>
+			<?php } ?>
 			</div>
 
 	<?php	}

@@ -59,7 +59,7 @@
 	.aside.extracontent li a:hover {
 		background: none;
 	}
-	.extracontent li a:before {
+	.extracontent li a:before, .launch-choices a:before {
 		content: "";
 		display: block;
 		position: absolute;
@@ -87,7 +87,8 @@
 	.extracontent .course a:before  {
 		content: "\f09c";
 	}
-	.extracontent .download a:before  {
+	.extracontent .download a:before,
+	.launch-choices a.download:before {
 		content: "\f019";
 	}
 	.extracontent .note a:before {
@@ -113,6 +114,9 @@
 	}
 	.extracontent .browseall a:before {
 		content: "\2192";
+	}
+	.launch-choices a.archival:before {
+		content: "\f005";
 	}
 
 /* Intro */
@@ -435,7 +439,8 @@
 		text-decoration: none;
 		background: none;
 		}
-	.com_publications .aside ul.supdocln li.archival-package:before {
+	.com_publications .aside ul.supdocln li.archival-package:before,
+	.archival-package a:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -455,6 +460,20 @@
 	}
 	ul.supdocln li.archival-package a:before {
 		display: none;
+	}
+	.get-archival {
+		position: absolute;
+		margin-top: -1.5em;
+		text-align: right;
+	}
+	.get-archival.archival-package a:before {
+		width: 22px;
+		height: 22px;
+		font-size: 22px;
+	}
+	.list-header {
+		background: #EFEFEF;
+		height: 25px;
 	}
 
 /* Inline view */
@@ -893,7 +912,17 @@
 	.gpl {
 		background: url("../img/logos/gnu.gif") -0.5em 0.5em no-repeat !important;
 		}
-
+	.license-terms:before {
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #CCC;
+		border: none;
+		content: "\f02e";
+		margin-right: 0.3em;
+		margin-left: 0.3em;
+	}
 /* Resource tip bubble */
 	.resource-tip {
 		width: 310px;
@@ -1626,6 +1655,38 @@
 		width: 60%;
 		padding-top: 6em;
 	}
+	.launch-choices {
+		position: absolute;
+		background: #000000;
+		margin-left: 50px;
+		border: 10px solid #000000;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;
+		border-radius: 10px;
+		width: auto;
+		z-index: 2000;
+	}
+	.launch-choices div {
+		background: #333;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		-khtml-border-radius: 10px;
+		border-radius: 10px;
+		padding: 1em;
+		padding-left: 1.5em;
+	}
+	.launch-choices a {
+		color: #FFFFFF;
+		border-bottom: 1px dotted #CCC;
+	}
+	.launch-choices a:before {
+		margin-left: 0.5em;
+	}
+	.launch-choices p {
+		padding: 0.1em 1em;
+		margin: 0;
+	}
 	.unavailable {
 		margin-top: 5em;
 		font-size: 80%;
@@ -1767,4 +1828,8 @@
 	}
 	.license-wrap pre {
 		background: #f5f4f5;
+	}
+/* Misc */
+	.hidden {
+		display: none;
 	}

@@ -62,6 +62,7 @@ if ($useBlocks)
 				$element->manifest->params->type,
 				$this->publication,
 				$element,
+				$elements,
 				$this->authorized
 			);
 

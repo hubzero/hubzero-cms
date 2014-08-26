@@ -201,7 +201,7 @@ class PublicationsModelAttachments extends JObject
 	 *
 	 * @return object
 	 */
-	public function listItems($elements = NULL, $pub = NULL, $authorized = true)
+	public function listItems($elements = NULL, $pub = NULL, $authorized = true, $append = NULL)
 	{
 		if (empty($elements) || $pub === NULL)
 		{
@@ -238,7 +238,7 @@ class PublicationsModelAttachments extends JObject
 				$authorized
 			);
 		}
-
+		$output .= $append;
 		$output .= '</ul>';
 
 		return $i > 0 ? $output : false;
@@ -249,7 +249,7 @@ class PublicationsModelAttachments extends JObject
 	 *
 	 * @return object
 	 */
-	public function drawLauncher($name = NULL, $pub = NULL, $element = NULL, $authorized = true)
+	public function drawLauncher($name = NULL, $pub = NULL, $element = NULL, $elements = NULL, $authorized = true)
 	{
 		if ($name === NULL || $element === NULL || $pub === NULL)
 		{
@@ -265,7 +265,7 @@ class PublicationsModelAttachments extends JObject
 		}
 
 		// Draw link
-		return $type->drawLauncher($element->manifest, $element->id, $pub, $element->block, $authorized);
+		return $type->drawLauncher($element->manifest, $element->id, $pub, $element->block, $elements, $authorized);
 	}
 
 	/**
