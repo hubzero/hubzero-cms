@@ -182,7 +182,8 @@ class HelpControllerHelp extends \Hubzero\Component\SiteController
 		//make sure we have a component
 		if ($name == '')
 		{
-			return array();
+			$name = str_replace('com_', '', $component);
+			return array('name' => ucfirst($name), 'option' => $component, 'pages' => array());
 		}
 		
 		//path to help pages
