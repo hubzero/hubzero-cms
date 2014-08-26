@@ -679,9 +679,9 @@ class Hubzero_API extends JApplication
 	 * @return     string Return description (if any) ...
 	 */
 	function getName()
-    {
-        return 'api';
-    }
+	{
+		return 'api';
+	}
 
 	/**
 	 * Short description for 'getUserState'
