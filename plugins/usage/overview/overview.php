@@ -107,16 +107,17 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 	{
 		$html = '';
 
+		$i = 0;
+
 		$sql = "SELECT value, valfmt FROM summary_user_vals WHERE rowid='$id' AND period='$period' AND datetime='$datetime' ORDER BY colid";
 		$db->setQuery($sql);
 		$results = $db->loadObjectList();
 		if ($results)
 		{
-			$i = 0;
 			foreach ($results as $row)
 			{
 				$i++;
-				$cls = ($i >= 7) ? ' class="group"' : '';
+				$cls = ($i >= 6) ? ' class="group"' : '';
 				if ($i == 1)
 				{
 					$cls = ' class="highlight"';
@@ -154,9 +155,9 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 				$html .= "\t\t\t" . '<td' . $cls . '>' . trim($this->_fmt_result($val, $row->valfmt)) . '</td>' . "\n";
 			}
 		}
-		if ($i == 1)
+		if ($i == 0)
 		{
-			$html .= $this->_empty_rows(10);
+			$html .= $this->_empty_rows(11);
 		}
 		return $html;
 	}
@@ -228,7 +229,7 @@ class plgUsageOverview extends \Hubzero\Plugin\Plugin
 		$i = 0;
 		for ($i=0, $n; $i < $n; $i++)
 		{
-			$cls = ($i >= 5) ? ' class="group"' : '';
+			$cls = ($i >= 6) ? ' class="group"' : '';
 			$html .= "\t\t\t" . '<td' . $cls . '>-</td>' . "\n";
 		}
 		return $html;
