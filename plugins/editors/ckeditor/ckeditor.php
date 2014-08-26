@@ -302,7 +302,7 @@ class plgEditorCkeditor extends JPlugin
 		$config->protectedSource               = array('/<group:include([^>]*)\\/>/g', '/{xhub:([^}]*)}/gi');
 		$config->extraAllowedContent           = 'style(*)[*]; mark(*)[*]; span(*)[*]; *(*)[*]{*}';
 		$config->disableNativeSpellChecker     = false;
-		$config->scayt_autoStartup             = true;
+		$config->scayt_autoStartup             = false;
 		$config->scayt_contextCommands         = 'all';
 		$config->scayt_maxSuggestions          = 5;
 		$config->scayt_moreSuggestions         = 'off';
