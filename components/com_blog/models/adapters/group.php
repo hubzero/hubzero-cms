@@ -66,11 +66,11 @@ class BlogModelAdapterGroup extends BlogModelAdapterAbstract
 		$this->_segments['cn']     = $this->_item->get('cn');
 		$this->_segments['active'] = 'blog';
 
-		$config = new JRegistry(
-			JPluginHelper::getPlugin('groups', 'blog')->params
-		);
+		$groupParams = JComponentHelper::getParams('com_groups');
+		$uploadpath = $groupParams->get('uploadpath', '/site/groups');
+		$uploadpath = trim($uploadpath, DS) . DS . $this->get('scope_id') . DS . 'uploads' . DS . 'blog';
 
-		$this->set('path', str_replace('{{gid}}', $this->get('scope_id'), $config->get('uploadpath', '/site/groups/{{gid}}/blog')));
+		$this->set('path', $uploadpath);
 		$this->set('scope', $this->_segments['cn'] . '/blog');
 		$this->set('option', $this->_segments['option']);
 	}
