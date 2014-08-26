@@ -156,7 +156,7 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 						{
 							// Was this asset already used elsewhere on the page?
 							// This should generally only happen with the video asset
-							if ($a->get('id') == $used)
+							if ($a->get('id') == $used || $a->isDeleted())
 							{
 								continue;
 							}
