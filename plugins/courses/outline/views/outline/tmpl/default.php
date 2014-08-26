@@ -104,7 +104,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 				echo implode("\n", $results);
 
 				$this->member  = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
-				$progress      = $this->course->offering()->gradebook()->progress($this->member->get('id'));
+				$progress      = ($this->member->get('id')) ? $this->course->offering()->gradebook()->progress($this->member->get('id')) : array();
 				if (is_null($this->member->get('section_id')))
 				{
 					$this->member->set('section_id', $this->course->offering()->section()->get('id'));
