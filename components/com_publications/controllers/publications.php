@@ -1998,7 +1998,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			else
 			{
 				JError::raiseError( 404,
-				 	JText::_('COM_PUBLICATIONS_ERROR_LOADING_REQUIRED_LIBRARY')
+					JText::_('COM_PUBLICATIONS_ERROR_LOADING_REQUIRED_LIBRARY')
 				);
 				return;
 			}

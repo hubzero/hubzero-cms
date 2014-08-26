@@ -119,7 +119,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	 * @return  string HTML
 	 */
 	public function drawLauncher( $element, $elementId, $pub, $blockParams, $elements, $authorized )
-	{	
+	{
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
