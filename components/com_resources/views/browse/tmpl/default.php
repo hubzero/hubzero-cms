@@ -78,6 +78,7 @@ $this->css()
 						$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
 						$url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
 
+						$rt = new ResourcesTags($database);
 						$tags = $rt->parseTopTags($this->filters['tag']);
 						foreach ($tags as $tag)
 						{
