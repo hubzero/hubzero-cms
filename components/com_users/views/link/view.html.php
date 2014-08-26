@@ -67,9 +67,11 @@ class UsersViewLink extends JViewLegacy
 		$plugins = JPluginHelper::getPlugin('authentication');
 
 		// Get the display name for the current plugin being used
+		JPluginHelper::importPlugin('authentication', $hzad->authenticator);
 		$plugin       = JPluginHelper::getPlugin('authentication', $hzad->authenticator);
 		$pparams      = new JRegistry($plugin->params);
-		$display_name = $pparams->get('display_name', ucfirst($plugin->name));
+		$refl         = new ReflectionClass("plgAuthentication{$plugin->name}");
+		$display_name = $pparams->get('display_name', $refl->hasMethod('onGetLinkDescription') ? $refl->getMethod('onGetLinkDescription')->invoke(NULL) : ucfirst($plugin->name));
 
 		// Look for conflicts - first check in the hub accounts
 		$profile_conflicts = \Hubzero\User\Profile\Helper::find_by_email($hzal->email);
