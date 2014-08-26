@@ -35,7 +35,7 @@ if (!$this->sub)
 {
 	$this->css();
 }
-$this->js()
+$this->js('wiki.js', 'com_wiki')
      ->js('jquery.fileuploader.js', 'system');
 
 $juser = JFactory::getUser();
