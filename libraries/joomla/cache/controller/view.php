@@ -39,15 +39,15 @@ class JCacheControllerView extends JCacheController
 			return false;
 		}
 
-                $view = func_get_arg(0);
-                $method = func_get_arg(1);
-                $wrkarounds = ($numargs > 2) ? func_get_arg(2) : true;
+		$view = func_get_arg(0);
+		$method = func_get_arg(1);
+		$wrkarounds = ($numargs > 2) ? func_get_arg(2) : true;
 
 		// If an id is not given generate it from the request
-		if ($id == false)
-		{
+		//if ($id == false)
+		//{
 			$id = $this->_makeId($view, $method);
-		}
+		//}
 
 		$data = false;
 		$data = $this->cache->get($id);
