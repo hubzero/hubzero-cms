@@ -201,7 +201,7 @@ function popratings()
 			</div>
 	</fieldset>
 	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span></legend>
+		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span> <span class="sidenote add"><a href="index.php?option=com_publications&amp;task=addauthor&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_ADD_AUTHOR'); ?></a></span></legend>
 		<fieldset>
 		<div class="input-wrap" id="publiction-authors">
 			<?php echo $this->lists['authors']; ?>
@@ -332,10 +332,14 @@ function popratings()
 			<option value="0"<?php echo ($this->row->state == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
 		</select>
 	</div>
-		<div class="input-wrap">
-			<label for="publish_up"><?php echo JText::_('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
+	<div class="input-wrap">
+		<label for="access"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ACCESS'); ?>:</label>
+		<?php echo $this->lists['access']; ?>
+	</div>
+	<div class="input-wrap">
+		<label for="publish_up"><?php echo JText::_('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
 			<?php echo JHTML::_('calendar', ($this->row->published_up != '0000-00-00 00:00:00' ? $this->escape(JHTML::_('date', $this->row->published_up, 'Y-m-d H:i:s')) : ''), 'published_up', 'published_up'); ?>
-		</div>
+	</div>
 		<div class="input-wrap">
 			<label for="publish_down"><?php echo JText::_('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
 			<?php

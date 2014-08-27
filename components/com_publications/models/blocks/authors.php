@@ -332,6 +332,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 
 		// Do we have an owner with this email/uid?
+		$owner = NULL;
 		if ($uid)
 		{
 			$owner = $objO->getOwnerId( $pub->_project->id, $uid );

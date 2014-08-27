@@ -43,6 +43,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	 */
 	public function execute()
 	{
+		$this->_task = strtolower(JRequest::getVar('task', '','request'));
 		parent::execute();
 	}
 
@@ -342,6 +343,21 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$this->view->license
 		);
 
+		// Get access
+		$this->view->lists['access'] = PublicationsAdminHtml::selectAccess('Public,Registered,Private', $this->view->pub->access);
+
+		// Get groups
+		$filters = array(
+			'authorized' => 'admin',
+			'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
+			'type'       => array(1, 3),
+			'sortby'     => 'description'
+		);
+		$groups = \Hubzero\User\Group::find($filters);
+
+		// Build <select> of groups
+		$this->view->lists['groups'] = PublicationsAdminHtml::selectGroup($groups, $this->view->pub->group_owner);
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -544,6 +560,16 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Add author form
+	 *
+	 * @return void
+	 */
+	public function addauthorTask()
+	{
+		$this->editauthorTask();
+	}
+
+	/**
 	 * Edit author name and details
 	 *
 	 * @return     void
@@ -553,21 +579,47 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Incoming
 		$author = JRequest::getInt( 'author', 0 );
 
+		$this->view->setLayout('editauthor');
+
 		$this->view->author = new PublicationAuthor( $this->database );
-		if (!$this->view->author->load($author))
+		if ($this->_task == 'editauthor' && !$this->view->author->load($author))
 		{
 			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD') );
 			return;
 		}
 
+		// Version ID
+		$vid = JRequest::getInt( 'vid', $this->view->author->publication_version_id );
+
 		$this->view->row = new PublicationVersion( $this->database );
 		$this->view->pub = new Publication( $this->database );
 
 		// Load version
-		$this->view->row->load($this->view->author->publication_version_id);
+		if (!$this->view->row->load($vid))
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			return;
+		}
 
 		// Load publication
-		$this->view->pub->load($this->view->row->publication_id);
+		$pid = JRequest::getInt( 'pid', $this->view->row->publication_id );
+		if (!$this->view->pub->load($pid))
+		{
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
+			return;
+		}
+
+		// Instantiate project owner
+		$objO = new ProjectOwner($this->database);
+		$filters 					= array();
+		$filters['limit']    		= 0;
+		$filters['start']    		= 0;
+		$filters['sortby']   		= 'name';
+		$filters['sortdir']  		= 'ASC';
+		$filters['status']   		= 'active';
+
+		// Get all active team members
+		$this->view->team = $objO->getOwners($this->view->pub->project_id, $filters);
 
 		// Set any errors
 		if ($this->getError())
@@ -654,68 +706,76 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$firstName 	= JRequest::getVar( 'firstName', '', 'post' );
 		$lastName 	= JRequest::getVar( 'lastName', '', 'post' );
 		$org 		= JRequest::getVar( 'organization', '', 'post' );
-
-		$pAuthor = new PublicationAuthor( $this->database );
-		if (!$author || !$pAuthor->load($author))
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_AUTHOR'),
-				'error'
-			);
-			return;
-		}
-
-		// Save name before changes
-		$oldName = $pAuthor->name;
+		$uid 		= JRequest::getInt( 'user_id', 0, 'post' );
 
 		// Set redirect URL
 		$url = 'index.php?option=' . $this->_option . '&controller='
 			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
 
-		$pAuthor->organization = $org;
-		$pAuthor->firstName    = $firstName ? $firstName : $pAuthor->firstName;
-		$pAuthor->lastName     = $lastName ? $lastName : $pAuthor->lastName;
-		$name 				   = $pAuthor->firstName . ' ' . $pAuthor->lastName;
-		$pAuthor->name    	   = $name ? $name : $pAuthor->name;
-		if (!$pAuthor->store())
+		// Instantiate publication object
+		$objP = new Publication( $this->database );
+		if (!$objP->load($id))
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_ERROR_FAILED_TO_SAVE_AUTHOR'),
+				JText::_('COM_PUBLICATIONS_NOT_FOUND'),
 				'error'
 			);
 			return;
 		}
 
-		// Instantiate Version
-		$row = new PublicationVersion($this->database);
-		$row->load($pAuthor->publication_version_id);
+		$pub = $objP->getPublication($id, $version);
 
-		// Instantiate publication object
-		$objP = new Publication( $this->database );
-		$objP->load($row->publication_id);
+		// Load publication project
+		$pub->_project = new Project($this->database);
+		$pub->_project->load($pub->project_id);
 
-		// Update DOI in case of name change
-		if ($row->doi && $oldName != $pAuthor->name)
+		// Get language file
+		$lang = JFactory::getLanguage();
+		$lang->load('plg_projects_publications');
+
+		// Save via block
+		$blocksModel = new PublicationsModelBlocks($this->database);
+		$block = $blocksModel->loadBlock('authors');
+
+		$block->addItem(NULL, 0, $pub, $this->juser->get('id'));
+		if ($block->getError())
 		{
-			// Get updated authors
-			$authors = $pAuthor->getAuthors($pAuthor->publication_version_id);
-
-			// Collect DOI metadata
-			$metadata = $this->_collectMetadata($row, $objP, $authors);
-
-			if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
-			{
-				$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI').' '.$doierr);
-			}
+			$this->setRedirect(
+				$url,
+				$block->getError(),
+				'error'
+			);
+			return;
 		}
+		else
+		{
+			// Instantiate Version
+			$row = new PublicationVersion($this->database);
+			$row->load($pub->version_id);
 
-		// Redirect back to publication
-		$this->setRedirect(
-			$url,
-			JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
-		);
+			// Update DOI in case of name change
+			if ($row && $row->doi)
+			{
+				// Get updated authors
+				$authors = $pAuthor->getAuthors($row->id);
+
+				// Collect DOI metadata
+				$metadata = $this->_collectMetadata($row, $pub, $authors);
+
+				if (!PublicationUtilities::updateDoi($row->doi, $row, $authors, $this->config, $metadata, $doierr))
+				{
+					$this->setError(JText::_('COM_PUBLICATIONS_ERROR_DOI') . ' ' . $doierr);
+				}
+			}
+
+			// Redirect back to publication
+			$this->setRedirect(
+				$url,
+				JText::_('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR')
+			);
+			return;
+		}
 	}
 
 	/**
@@ -816,12 +876,17 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$description 	= trim(JRequest::getVar( 'description', '', 'post' ));
 		$description 	= stripslashes($description);
 		$release_notes 	= stripslashes(trim(JRequest::getVar( 'release_notes', '', 'post' )));
+		$group_owner	= JRequest::getInt( 'group_owner', 0, 'post' );
 		$metadata 		= '';
 		$activity 		= '';
 
 		// Save publication record
 		$objP->alias    = trim(JRequest::getVar( 'alias', '', 'post' ));
 		$objP->category = trim(JRequest::getInt( 'category', 0, 'post' ));
+		if (!$project->owner_by_group)
+		{
+			$objP->group_owner = $group_owner;
+		}
 		$objP->store();
 
 		// Get metadata
@@ -871,9 +936,9 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$row->metadata 		= $metadata ? $metadata : $row->metadata;
 		$row->published_up 	= $published_up ? $published_up : $row->published_up;
 		$row->release_notes	= $release_notes;
-		$row->license_type	= JRequest::getInt( 'license_type', 0, 'post' );
 		$row->license_text	= trim(JRequest::getVar( 'license_text', '', 'post' ));
 		$row->license_type	= JRequest::getInt( 'license_type', 0, 'post' );
+		$row->access		= JRequest::getInt( 'access', 0, 'post' );
 
 		// publish up
 		$published_up 		= trim(JRequest::getVar( 'published_up', '', 'post' ));

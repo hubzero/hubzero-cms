@@ -539,3 +539,14 @@
 		background: #c3f8f6;
 		padding: 0.2em 0.5em;
 	}
+	.sidenote {
+		float: right;
+		margin-right: 1em !important;
+		font-size: 85%;
+		text-transform: capitalize;
+	}
+	.sidenote:before {
+		width: 22px;
+		height: 22px;
+		font-size: 22px;
+	}
