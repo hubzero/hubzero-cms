@@ -280,7 +280,7 @@ class ToolsHelperUtils
 		$path .= ResourcesHtml::build_path( $createdDate, $resourceId, '');
 
 		//append version id if we have one
-		if($versionId)
+		if ($versionId)
 		{
 			$path .= DS . $versionId;
 		}
@@ -389,7 +389,7 @@ class ToolsHelperUtils
 		$exportAllowed = ToolsHelperUtils::getToolExportAccess( $toolVersion->exportControl );
 		$isToolPublished = ($toolVersion->state == 1);
 		$isToolDev = ($toolVersion->state == 3);
-	    $isToolGroupControlled = ($toolVersion->toolaccess == '@GROUP');
+		$isToolGroupControlled = ($toolVersion->toolaccess == '@GROUP');
 
 		//check for dev tools
 		if ($isToolDev)
@@ -407,13 +407,13 @@ class ToolsHelperUtils
 			}
 		}
 		//check for published tools
-		else if($isToolPublished)
+		else if ($isToolPublished)
 		{
 			//are we checking for a group controlled tool
-			if($isToolGroupControlled)
+			if ($isToolGroupControlled)
 			{
 				//if were not in the group that controls it and not admin we must deny
-				if(!$ingroup && !$admin)
+				if (!$ingroup && !$admin)
 				{
 					$access->valid = 0;
 					$access->error->message = 'This tool may only be accessed by members of it\'s access control groups.';
@@ -426,7 +426,7 @@ class ToolsHelperUtils
 			}
 			else
 			{
-				if(!$exportAllowed->valid)
+				if (!$exportAllowed->valid)
 				{
 					$access->valid = 0;
 					$access->error->message = 'Export Access Denied';
@@ -551,7 +551,7 @@ class ToolsHelperUtils
 		$toolVersion->loadFromName( $tool );
 
 		//make sure we have a user id
-		if(!$userid)
+		if (!$userid)
 		{
 			$userid = $juser->get('id');
 		}
@@ -606,7 +606,7 @@ class ToolsHelperUtils
 		}
 
 		//store usage
-		if(!$recentTool->store())
+		if (!$recentTool->store())
 		{
 			return false;
 		}
