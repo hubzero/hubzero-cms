@@ -130,6 +130,7 @@ class Database extends Base implements CommandInterface
 		$params['com_system']             = \JComponentHelper::getParams('com_system');
 		$params['com_tools']              = \JComponentHelper::getParams('com_tools');
 		$params['com_usage']              = \JComponentHelper::getParams('com_usage');
+		$params['com_users']              = \JComponentHelper::getParams('com_users');
 		$params['plg_projects_databases'] = \JPluginHelper::getPlugin('projects', 'databases')->params;
 
 		$db     = \JFactory::getDbo();
