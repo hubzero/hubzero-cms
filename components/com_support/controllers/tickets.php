@@ -1820,12 +1820,14 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$row->tag($row->get('tags'), $this->juser->get('id'), 1);
 
 		// Create a new support comment object and populate it
+		$access = JRequest::getInt('access', 0);
+
 		$rowc = new SupportModelComment();
 		$rowc->set('ticket', $id);
 		$rowc->set('comment', nl2br($comment));
 		$rowc->set('created', JFactory::getDate()->toSql());
 		$rowc->set('created_by', $this->juser->get('id'));
-		$rowc->set('access', JRequest::getInt('access', 0));
+		$rowc->set('access', $access);
 
 		// Compare fields to find out what has changed for this ticket and build a changelog
 		$rowc->changelog()->diff($old, $row);
@@ -1853,7 +1855,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Only do the following if a comment was posted
 		// otherwise, we're only recording a changelog
-		if ($rowc->get('comment') || $row->get('owner') != $old->get('owner'))
+		if ($rowc->get('comment') || $row->get('owner') != $old->get('owner') || $rowc->attachments()->total() > 0)
 		{
 			// Send e-mail to ticket submitter?
 			if (JRequest::getInt('email_submitter', 0) == 1)
@@ -2004,16 +2006,20 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 						$to['email']
 					);
 				}
+			}
+			else
+			{
+				// Force entry to private if no comment or attachment was made
+				$rowc->set('access', 1);
+			}
 
-				// Were there any changes?
-				if (count($rowc->changelog()->get('notifications')) > 0)
+			// Were there any changes?
+			if (count($rowc->changelog()->get('notifications')) > 0 || $access != $rowc->get('access'))
+			{
+				if (!$rowc->store())
 				{
-					// Save the data
-					if (!$rowc->store())
-					{
-						JError::raiseError(500, $rowc->getError());
-						return;
-					}
+					JError::raiseError(500, $rowc->getError());
+					return;
 				}
 			}
 		}

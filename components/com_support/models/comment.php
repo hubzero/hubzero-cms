@@ -320,10 +320,10 @@ class SupportModelComment extends \Hubzero\Base\Model
 	public function store($check=true)
 	{
 		$this->set('changelog', $this->changelog()->__toString());
-		if (!$this->get('comment'))
+		/*if (!$this->get('comment'))
 		{
 			$this->set('access', 1);
-		}
+		}*/
 
 		return parent::store($check);
 	}
