@@ -50,7 +50,7 @@ class ToolsHelperUtils
 			$config = JComponentHelper::getParams('com_tools');
 			$enabled = $config->get('mw_on');
 
-			if (!$enabled) 
+			if (!$enabled && !JFactory::getapplication()->isAdmin()) 
 			{
 				return null;
 			}
