@@ -150,6 +150,12 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	 */
 	public function storyTask($row=null)
 	{
+		// Check to see if the user temp folder for holding pics is there, if so then remove it
+		if (is_dir('tmp/feedback') === true and is_dir('tmp/feedback/' . $this->juser->get('id')) === true)
+		{
+			rmdir('tmp/feedback/' . $this->juser->get('id'));
+		}
+		
 		if ($this->juser->get('guest'))
 		{
 			$here = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
@@ -300,15 +306,24 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
 			}
 		}
-
-		foreach ($files['files']['name'] as $fileIndex => $file)
+		
+		// If there is a temp dir for this user then copy the contents to the newly created folder
+		$tempDir = 'tmp/feedback/' . $this->juser->get('id');
+		$tempDirFiles = scandir($tempDir);
+		
+		if (is_dir('tmp/feedback/') === true and is_dir($tempDir) === true)
 		{
-			if (empty($file) === true)
+			foreach ($tempDirFiles as $tempDirFile)
 			{
-				continue;
+				rename($tempDir . '/' . $tempDirFile, $path . '/' . $tempDirFile);
+				array_push($addedPictures, $tempDirFile);
 			}
-			JFile::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
-			array_push($addedPictures, $files['files']['name'][$fileIndex]);
+		}
+		
+		// Check to see if the user temp folder for holding pics is there, if so then remove it
+		if (is_dir('tmp/feedback') === true and is_dir('tmp/feedback/' . $this->juser->get('id')) === true)
+		{
+			rmdir('tmp/feedback/' . $this->juser->get('id'));
 		}
 
 		// Output HTML
@@ -352,6 +367,45 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->setRedirect(
 			JRoute::_('index.php?option=com_wishlist')
 		);
+	}
+	
+	public function uploadimageTask()
+	{
+		// Set header to be json
+		header('Content-Type: text/html');
+		
+		// Check to see if the temp folder for holding the pics is there
+		if (is_dir('tmp/feedback') === false)
+		{
+			mkdir('tmp/feedback');
+		}
+		
+		// Check to see if hte user already has a folder
+		if (is_dir('tmp/feedback/' . $this->juser->get('id')) === false)
+		{
+			mkdir('tmp/feedback/' . $this->juser->get('id'));
+		}
+		
+		$path = 'tmp/feedback/' . $this->juser->get('id');
+		
+		$files = $_FILES;
+		$jsonArray = array('files' => array());
+		
+		foreach ($files['files']['name'] as $fileIndex => $file)
+		{
+			if (empty($file) === true)
+			{
+				continue;
+			}
+			JFile::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
+			
+			$jsonArray['files'][]['name'] = JURI::base() . DS . $path . DS . $files['files']['name'][$fileIndex];
+		}
+		
+		echo json_encode($jsonArray);
+		
+		// How do I have it return a blank response without a die?
+		die;
 	}
 }
 

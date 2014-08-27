@@ -34,6 +34,11 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
      ->js();
 
+$document = JFactory::getDocument();
+$document->addScript('media/system/js/jquery.ui.widget.js');
+$document->addScript('media/system/js/jquery.iframe-transport.js');
+$document->addScript('media/system/js/jquery.fileupload.js');
+
 $jconfig = JFactory::getConfig();
 ?>
 <header id="content-header">

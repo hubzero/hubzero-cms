@@ -10,25 +10,19 @@ if (!jq) {
 }
 
 jQuery(document).ready(function(jq){
-	var $ = jq,
-		fls = $("#field-files");
-
-	if (fls.length) {
-		function readURL(input) {
-			var files = Array.prototype.slice.call($(input)[0].files);
-
-			files.forEach(function(file) {
-				var reader = new FileReader();
-				reader.onload = function (e) {
-					$('#uploadImages').append('<img src="' + e.target.result + '" width="100" height="100" alt="">');
-				}
-				reader.readAsDataURL(file); 
+	$('#field-files').fileupload({
+		dataType: 'html',
+		url: '/feedback/success_story?controller=feedback&task=uploadimage&option=com_feedback',
+		formData: false,
+		done: function (e, data) {
+			var returnObject = jQuery.parseJSON(data.result);
+			$.each(returnObject.files, function (index, file) {
+				var newImageDom = document.createElement('img');
+				newImageDom.src = file.name;
+				newImageDom.width = '100';
+				newImageDom.height = '100';
+				$('#uploadImages').append(newImageDom);
 			});
 		}
-
-		fls.on('change', function(e){
-			$('#uploadImages').html("");
-			readURL(this);
-		});
-	}
+	});
 });
