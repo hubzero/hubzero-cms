@@ -145,7 +145,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 	 */
 	public function render()
 	{
-		$content = $this->args;
+		$content = strip_tags($this->args);
 
 		// args will be null if the macro is called without parenthesis.
 		if (!$content)
@@ -154,7 +154,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 		}
 
 		// Parse arguments
-        // We expect the 1st argument to be a filename
+		// We expect the 1st argument to be a filename
 		$args   = explode(',', $content);
 		$file   = array_shift($args);
 

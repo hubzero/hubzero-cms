@@ -93,7 +93,7 @@ class File extends Macro
 	 */
 	public function render()
 	{
-		$content = $this->args;
+		$content = strip_tags($this->args);
 
 		// args will be null if the macro is called without parenthesis.
 		if (!$content)
