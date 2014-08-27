@@ -290,7 +290,7 @@ $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is 
 					$this->attr['rel']  = 'external';
 				}
 			}
-            return;
+			return;
 		}
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]

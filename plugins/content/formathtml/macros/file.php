@@ -248,7 +248,7 @@ class File extends Macro
 					$this->attr['rel']  = 'external';
 				}
 			}
-            return;
+			return;
 		}
 		// Check for alignment, no key given
 		// e.g., [[File(myfile.jpg, left)]]
