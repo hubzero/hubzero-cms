@@ -32,8 +32,8 @@ JHtml::_('behavior.formvalidation');
 			<div class="help">
 				<h4>What if I have also lost my password?</h4>
 				<p>
-					Fill out this form to retrieve your username(s). The email you
-					receive will contain instructions on how to reset your password as well.
+					Fill out this form to retrieve your username(s). Then go to the 
+					<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">password reset page</a>.
 				</p>
 
 				<h4>What if I have multiple accounts?</h4>
