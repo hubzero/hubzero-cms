@@ -133,9 +133,9 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Is the file an image?
+	 * Get the file size
 	 *
-	 * @return     boolean
+	 * @return     integer
 	 */
 	public function size()
 	{
@@ -152,9 +152,9 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Is the file an image?
+	 * Get image width
 	 *
-	 * @return     boolean
+	 * @return     integer
 	 */
 	public function width()
 	{
@@ -167,9 +167,9 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Is the file an image?
+	 * Get image height
 	 *
-	 * @return     boolean
+	 * @return     integer
 	 */
 	public function height()
 	{
