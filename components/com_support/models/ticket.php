@@ -290,6 +290,24 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				}
 			break;
 
+			case 'open':
+				if ($this->get('status'))
+				{
+					foreach ($this->statuses() as $s)
+					{
+						if ($this->get('status') == $s->get('id'))
+						{
+							$status = $s->get('open');
+							break;
+						}
+					}
+				}
+				else
+				{
+					$status = ($this->get('open') ? 1 : 0);
+				}
+			break;
+
 			case 'color':
 				if ($this->get('status'))
 				{
@@ -966,6 +984,8 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 */
 	public function store($check=true)
 	{
+		$this->set('open', $this->status('open'));
+
 		$result = parent::store($check);
 
 		if ($result && !$this->_tbl->id)
