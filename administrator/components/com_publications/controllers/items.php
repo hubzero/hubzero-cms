@@ -883,7 +883,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Save publication record
 		$objP->alias    = trim(JRequest::getVar( 'alias', '', 'post' ));
 		$objP->category = trim(JRequest::getInt( 'category', 0, 'post' ));
-		if (!$project->owner_by_group)
+		if (!$project->owned_by_group)
 		{
 			$objP->group_owner = $group_owner;
 		}
