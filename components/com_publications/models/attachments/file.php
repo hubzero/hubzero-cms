@@ -374,11 +374,16 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$fpath = $this->bundle($attachments, $configs, false);
 				$title = $configs->bundleTitle;
 			}
-			else
+			elseif ($attachments)
 			{
 				$attach = $attachments[0];
 				$fpath = $this->getFilePath($attach->path, $attach->id, $configs);
 				$title = $configs->title ? $configs->title : JText::_('Download content');
+			}
+			else
+			{
+				$fpath = NULL;
+				$title = NULL;
 			}
 
 			if ($configs->fancyLauncher)

@@ -43,6 +43,6 @@ $viewer 	= $this->data->viewer;
 		</span>
 		<span class="item-title link-type">
 			 <a href="<?php echo $row->path; ?>" rel="external"><?php echo $title; ?></a>
+			<span class="item-details"><?php echo $details; ?></span>
 		</span>
-		<span class="item-details"><?php echo $details; ?></span>
 	</li>

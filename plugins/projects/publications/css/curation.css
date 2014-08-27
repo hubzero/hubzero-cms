@@ -18,9 +18,6 @@
 	.even {
 		background: #f7f7fa;
 	}
-	p#version-label {
-		margin-top: 3em;
-	}
 	p#version-label.nobar {
 		margin-top: 0;
 	}
@@ -182,6 +179,9 @@
 	}
 	ul#status-bar li a {
 		font-size: 1.1em;
+	}
+	.readytosubmit {
+		color: green !important;
 	}
 
 /* Saving params (content) */
@@ -860,6 +860,10 @@
 	}
 	.item-title .item-details {
 		font-size: 100%;
+	}
+	.item-title.link-type .item-details {
+		font-size: 85%;
+		margin-left: 0;
 	}
 	.blockelement .agreements textarea {
 		text-align: left;

@@ -73,6 +73,10 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		// Get default title
 		$configs->title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
 
+		// Fancy launcher?
+		$configs->fancyLauncher = isset($typeParams->fancyLauncher)
+			? $typeParams->fancyLauncher : 1;
+
 		return $configs;
 	}
 
@@ -366,8 +370,8 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 						return false;
 					}
 
-					$row->title    		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($title));
-					$description	   	= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($desc));
+					$row->title    		= $title;
+					$description	   	= \Hubzero\Utility\Sanitize::clean($desc);
 					$row->description 	= $description;
 					$row->abstract		= \Hubzero\Utility\String::truncate($description, 255);
 					$row->store();

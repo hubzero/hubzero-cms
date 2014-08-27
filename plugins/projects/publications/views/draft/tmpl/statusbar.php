@@ -53,9 +53,12 @@ $i = 1;
 
 ?>
 <?php if ($this->pub->id) { ?>
-	<p id="version-label" class="<?php if ($active == 'status') { echo 'active'; } ?><?php if ($this->pub->state == 5 || $this->pub->state == 0) { echo ' nobar'; } ?>">
+	<p id="version-label" class="version-label<?php if ($active == 'status') { echo ' active'; } ?><?php if ($this->pub->state == 5 || $this->pub->state == 0) { echo ' nobar'; } ?>">
 		<a href="<?php echo JRoute::_( $pubRoute) .'/?action=versions'; ?>" class="versions" id="v-picker"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
 		<a href="<?php echo JRoute::_( $pubRoute . '&version=' . $version); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION').' '.$versionLabel.' (' . $status . ')'; ?></a>
+		<?php if (($this->pub->state == 3 || $this->pub->state == 7) && $complete) { ?>
+		- <a href="<?php echo JRoute::_( $pubRoute) . '/?action=review'. a . 'version='.$this->pub->version; ?>" class="readytosubmit"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DRAFT_READY_TO_SUBMIT'); ?></a>
+		<?php } ?>
     </p>
 <?php } ?>
 
@@ -105,7 +108,7 @@ $i = 1;
 				continue;
 			}
 		?>
-		<li<?php if ($sequence == $activenum) { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_( $pubRoute . '&section=' . $blockname . '&step=' . $sequence . '&move=continue&version=' . $version); ?>" class="<?php echo $class; ?>"><?php echo $block->manifest->label; ?></a></li>
+		<li<?php if ($sequence == $activenum) { echo ' class="active"'; } ?>><a href="<?php echo JRoute::_( $pubRoute . '&section=' . $blockname . '&step=' . $sequence . '&move=continue&version=' . $version); ?>" <?php echo $class ? 'class="' . $class . '"' : '' ; ?>><?php echo $block->manifest->label; ?></a></li>
 
 	<?php } ?>
 	</ul>

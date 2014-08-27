@@ -59,7 +59,6 @@ $class 	= $pubHelper->getPubStateProperty($this->pub, 'class');
 
 // Get block content
 $blockcontent = $this->pub->_curationModel->parseBlock( 'edit' );
-
 ?>
 <?php echo $this->project->provisioned == 1
 			? $pubHelper->showPubTitleProvisioned( $this->pub, $this->route)
@@ -72,8 +71,9 @@ $blockcontent = $this->pub->_curationModel->parseBlock( 'edit' );
 <div id="pub-body">
 	<?php echo $blockcontent; ?>
  </div>
-
-
+<p class="rightfloat">
+	<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_number); ?>" class="public-page" rel="external" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+</p>
 <script>
 jQuery(document).ready(function($){
 	HUB.ProjectPublicationsDraft.initialize();
