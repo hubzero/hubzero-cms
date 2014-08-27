@@ -137,7 +137,7 @@ class Hubzero_API extends JApplication
 		$this->response = new \Hubzero\Api\Response();
 		$this->output = '';
 
-        parent::__construct($config);
+		parent::__construct($config);
 	}
 
 	/**
@@ -220,7 +220,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"E") !== false)
 			{
-				foreach($_ENV as $key => $value)
+				foreach ($_ENV as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -228,7 +228,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"G") !== false)
 			{
-				foreach($_GET as $key => $value)
+				foreach ($_GET as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -236,7 +236,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"P") !== false)
 			{
-				foreach($_POST as $key => $value)
+				foreach ($_POST as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -244,7 +244,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"C") !== false)
 			{
-				foreach($_COOKIE as $key => $value)
+				foreach ($_COOKIE as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -252,7 +252,7 @@ class Hubzero_API extends JApplication
 
 			if (stripos($variables_order,"S") !== false)
 			{
-				foreach($_SERVER as $key => $value)
+				foreach ($_SERVER as $key => $value)
 				{
 					unset($GLOBALS[$key]);
 				}
@@ -394,7 +394,7 @@ class Hubzero_API extends JApplication
 
 			if (!empty($queryvars))
 			{
-				foreach($queryvars as $key=>$value)
+				foreach ($queryvars as $key=>$value)
 				{
 					if (isset($queryvars[$key]))
 					{
@@ -409,7 +409,7 @@ class Hubzero_API extends JApplication
 
 			if (!empty($postvars))
 			{
-				foreach($postvars as $key=>$value)
+				foreach ($postvars as $key=>$value)
 				{
 					if (isset($queryvars[$key]))
 					{
@@ -438,9 +438,9 @@ class Hubzero_API extends JApplication
 		*/
 
 		try
-		{	
+		{
 			$oauthp = new \Hubzero\Oauth\Provider($params);
-		
+
 			$oauthp->setRequestTokenPath('/api/oauth/request_token');
 			$oauthp->setAccessTokenPath('/api/oauth/access_token');
 			$oauthp->setAuthorizePath('/api/oauth/authorize');
@@ -540,7 +540,7 @@ class Hubzero_API extends JApplication
 	 */
 	function dispatch()
 	{
-  		//if (!$this->_provider)
+		//if (!$this->_provider)
 		//{
 		//	return;
 		//}
