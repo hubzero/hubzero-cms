@@ -215,10 +215,6 @@ HUB.Events = {
 
 	checkRepeatValues: function() {
 		var form = HUB.Events.form;
-		//var eventid = eval(<?php echo $row->id; ?>);
-		//var recurtval = eval(<?php echo $row->reccurtype; ?>);
-		//var recurwval = "<?php echo $row->reccurweeks; ?>";
-		
 		var f = form.reccurtype;
 		if (recurtval >= 0) {
 			f[recurtval].checked = true;
