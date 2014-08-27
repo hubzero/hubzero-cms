@@ -1187,13 +1187,16 @@ class PublicationsHtml
 			. $option . '&category=' . $publication->cat_url).'">' . $publication->cat_name . '</a>';
 
 		// Show group if group project
-		if ($publication->project_group)
+		$groupId = $publication->project_group ? $publication->project_group : $publication->group_owner;
+		if ($groupId)
 		{
 			$group = new \Hubzero\User\Group();
-			if (\Hubzero\User\Group::exists($publication->project_group))
+			if (\Hubzero\User\Group::exists($groupId))
 			{
-				$group = \Hubzero\User\Group::getInstance( $publication->project_group );
-				$html .= ' | '.JText::_('COM_PUBLICATIONS_PUBLICATION_BY_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('description').'</a>';
+				$group = \Hubzero\User\Group::getInstance( $groupId );
+				$html .= ' | ' . JText::_('COM_PUBLICATIONS_PUBLICATION_BY_GROUP')
+						.' <a href="/groups/'.$group->get('cn') . '">'
+						. $group->get('description').'</a>';
 			}
 		}
 		$html .= '</p>'."\n";

@@ -72,12 +72,16 @@ class plgPublicationsGroups extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		if (!$publication->project_group)
+		if (!$publication->project_group && !$publication->group_owner)
 		{
 			return $arr;
 		}
 
-		$group = \Hubzero\User\Group::getInstance($publication->project_group);
+		// Defaults to project group, otherwise check for group owner (individual projects)
+		$groupId = $publication->project_group
+				? $publication->project_group : $publication->group_owner;
+
+		$group = \Hubzero\User\Group::getInstance($groupId);
 		if (!$group || !$group->get('gidNumber'))
 		{
 			return $arr;
