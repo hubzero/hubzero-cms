@@ -494,7 +494,7 @@ class Publication extends JTable
 	 */
 	public function getProvPublication($pid = 0, $getid = false)
 	{
-		if(!$pid)
+		if (!$pid)
 		{
 			return false;
 		}
