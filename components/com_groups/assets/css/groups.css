@@ -1895,10 +1895,13 @@ fieldset.assignment label {
 }
 
 /* Table styles on group page */
-.group-page table {
+.group-page table,
+.group-page-preview table {
 	border: none;
 }
 .group-page table th,
-.group-page table td {
+.group-page table td,
+.group-page-preview table th,
+.group-page-preview table td {
 	border: 1px solid #dadada;
 }
