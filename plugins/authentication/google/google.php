@@ -276,7 +276,16 @@ class plgAuthenticationGoogle extends JPlugin
 			$username = $user_profile['email'];
 
 			// Create the hubzero auth link
-			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'google', null, $username);
+			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$hzal = \Hubzero\Auth\Link::$method('authentication', 'google', null, $username);
+
+			if ($hzal === false)
+			{
+				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				return;
+			}
+
 			$hzal->email = $user_profile['email'];
 
 			// Set response variables

@@ -273,7 +273,16 @@ class plgAuthenticationLinkedIn extends JPlugin
 			$full_name  = $first_name . ' ' . $last_name;
 			$username   = (string) $li_id; // (make sure this is unique)
 
-			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'linkedin', null, $username);
+			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$hzal = \Hubzero\Auth\Link::$method('authentication', 'linkedin', null, $username);
+
+			if ($hzal === false)
+			{
+				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				return;
+			}
+
 			$hzal->email = (string) $profile->{'email-address'};
 
 			// Set response variables

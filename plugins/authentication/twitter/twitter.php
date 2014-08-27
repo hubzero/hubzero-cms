@@ -222,7 +222,15 @@ class plgAuthenticationTwitter extends JPlugin
 			$username = (string) $account->id;
 
 			// Create the hubzero auth link
-			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'twitter', null, $username);
+			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$hzal = \Hubzero\Auth\Link::$method('authentication', 'twitter', null, $username);
+
+			if ($hzal === false)
+			{
+				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				return;
+			}
 
 			// Set response variables
 			$response->auth_link = $hzal;

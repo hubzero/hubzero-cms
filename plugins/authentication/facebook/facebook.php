@@ -295,7 +295,16 @@ class plgAuthenticationFacebook extends JPlugin
 			}
 
 			// Create the hubzero auth link
-			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'facebook', null, $id);
+			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$hzal = \Hubzero\Auth\Link::$method('authentication', 'facebook', null, $id);
+
+			if ($hzal === false)
+			{
+				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				return;
+			}
+
 			$hzal->email = $email;
 
 			// Set response variables

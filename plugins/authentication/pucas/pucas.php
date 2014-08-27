@@ -252,7 +252,16 @@ class plgAuthenticationPUCAS extends JPlugin
 		{
 			$username = phpCAS::getUser();
 
-			$hzal = \Hubzero\Auth\Link::find_or_create('authentication', 'pucas', null, $username);
+			$method = (\JComponentHelper::getParams('com_users')->get('allowUserRegistration', false)) ? 'find_or_create' : 'find';
+			$hzal = \Hubzero\Auth\Link::$method('authentication', 'pucas', null, $username);
+
+			if ($hzal === false)
+			{
+				$response->status = JAUTHENTICATE_STATUS_FAILURE;
+				$response->error_message = 'Unknown user and new user registration is not permitted.';
+				return;
+			}
+
 			$hzal->email = $username . '@purdue.edu';
 
 			$response->auth_link = $hzal;
