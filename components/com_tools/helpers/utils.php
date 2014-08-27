@@ -395,7 +395,7 @@ class ToolsHelperUtils
 		if ($isToolDev)
 		{
 			//if were not in the dev group or an admin we must deny
-			if(!$indevgroup && !$admin)
+			if (!$indevgroup && !$admin)
 			{
 				$access->valid = 0;
 				$access->error->message = 'The development version of this tool may only be accessed by members of it\'s development group.';
