@@ -730,6 +730,43 @@ class Link
 	}
 
 	/**
+	 * Find existing auth_link entry, return false if none exists
+	 *
+	 * @param  string - $type Parameter description (if any) ...
+	 * @param  string - $authenticator Parameter description (if any) ...
+	 * @param  string - $domain Parameter description (if any) ...
+	 * @param  string - $username Parameter description (if any) ...
+	 * @return mixed  - object on success and false on failure
+	 */
+	public static function find($type, $authenticator, $domain, $username)
+	{
+		$hzad = Domain::find_or_create($type,$authenticator,$domain);
+
+		if (!is_object($hzad))
+		{
+			return false;
+		}
+
+		if (empty($username))
+		{
+			return false;
+		}
+
+		$hzal = new self();
+		$hzal->username = $username;
+		$hzal->auth_domain_id = $hzad->id;
+
+		$hzal->read();
+
+		if (empty($hzal->id))
+		{
+			return false;
+		}
+
+		return $hzal;
+	}
+
+	/**
 	 * Short description for 'find_or_create'
 	 *
 	 * Long description (if any) ...
