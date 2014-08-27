@@ -611,7 +611,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			// Compare fields to find out what has changed for this ticket and build a changelog
 			$log = array(
 				'changes'       => array(),
-				'notifications' => array()
+				'notifications' => array(),
+				'cc'            => array()
 			);
 
 			// Did the tags change?
@@ -738,11 +739,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 			if ($rowc->check())
 			{
-				// If we're only recording a changelog, make it private
-				if ($rowc->changelog && !$rowc->comment)
-				{
-					$rowc->access = 1;
-				}
 				// Save the data
 				if (!$rowc->store())
 				{
@@ -757,7 +753,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 				// Only do the following if a comment was posted or ticket was reassigned
 				// otherwise, we're only recording a changelog
-				if ($comment || $row->owner != $old->owner)
+				if ($comment || $row->owner != $old->owner || $attachment)
 				{
 					$juri = JURI::getInstance();
 					$jconfig = JFactory::getConfig();
@@ -1121,6 +1117,19 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 						// Save the data
 						if (!$rowc->store())
+						{
+							JError::raiseError(500, $rowc->getError());
+							return;
+						}
+					}
+				}
+				else
+				{
+					// Force entry to private if no comment or attachment was made
+					if ($rowc->access != 1)
+					{
+						$rowc->access = 1;
+						if (!$rowc->store()) 
 						{
 							JError::raiseError(500, $rowc->getError());
 							return;

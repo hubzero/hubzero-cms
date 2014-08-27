@@ -2345,12 +2345,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 			if ($rowc->check()) 
 			{
-				// If we're only recording a changelog, make it private
-				if ($rowc->changelog && !$rowc->comment) 
-				{
-					$rowc->access = 1;
-				}
-				
 				// Save the data
 				if (!$rowc->store()) 
 				{
@@ -2372,7 +2366,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 				// Only do the following if a comment was posted
 				// otherwise, we're only recording a changelog
-				if ($comment || $row->owner != $old->owner) 
+				if ($comment || $row->owner != $old->owner || $attach->find('count', array('comment_id' => $rowc->id)))
 				{
 					$jconfig = JFactory::getConfig();
 
@@ -2518,7 +2512,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 							}
 						}
 					}
-					
+
 					// Send e-mail to ticket owner?
 					$email_owner = JRequest::getInt('email_owner', 0);
 					if ($email_owner == 1) 
@@ -2688,6 +2682,19 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 							{
 								$this->setError(JText::_('Failed to message watchers.'));
 							}
+						}
+					}
+				}
+				else
+				{
+					// Force entry to private if no comment or attachment was made
+					if ($rowc->access != 1)
+					{
+						$rowc->access = 1;
+						if (!$rowc->store()) 
+						{
+							JError::raiseError(500, $rowc->getError());
+							return;
 						}
 					}
 				}
