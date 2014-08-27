@@ -208,4 +208,20 @@ class Message extends \Swift_Message
 
 		return $this->detach($attachment);
 	}
+
+	/**
+	 * Get an embed string for an attachment
+	 *
+	 * @param   mixed  $attachment File path (string) or object (Swift_Image)
+	 * @return  object
+	 */
+	public function getEmbed($attachment)
+	{
+		if (!($attachment instanceof \Swift_Image))
+		{
+			$attachment = \Swift_Image::fromPath($attachment);
+		}
+
+		return $this->embed($attachment);
+	}
 }
