@@ -459,6 +459,22 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				$html = $eview->loadTemplate();
 				$html = str_replace("\n", "\r\n", $html);
 
+				foreach ($row->attachments() as $attachment)
+				{
+					if ($attachment->size() < 2097152)
+					{
+						if ($attachment->isImage())
+						{
+							$file = basename($attachment->link('filepath'));
+							$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->link('filepath')) . '" alt="" />', $html);
+						}
+						else
+						{
+							$message->addAttachment($attachment->link('filepath'));
+						}
+					}
+				}
+
 				$msg->addPart($html, 'text/html');
 
 				// Loop through the addresses
@@ -603,6 +619,15 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
+				$message['attachments'] = array();
+				foreach ($rowc->attachments() as $attachment)
+				{
+					if ($attachment->size() < 2097152)
+					{
+						$message['attachments'][] = $attachment->link('filepath');
+					}
+				}
 
 				// Send e-mail to admin?
 				JPluginHelper::importPlugin('xmessage');

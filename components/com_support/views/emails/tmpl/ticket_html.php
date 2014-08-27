@@ -330,7 +330,7 @@ if ($this->ticket->submitter('id'))
 																	{
 																		$attachment->set('description', $attachment->get('filename'));
 																	}
-																	echo '<p class="attachment" style="margin: 0.5em 0; padding: 0; text-align: left;"><a href="' . $base . '/' . ltrim(JRoute::_($attachment->link()), '/') . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+																	echo '<p class="attachment" style="margin: 0.5em 0; padding: 0; text-align: left;"><a class="' . ($attachment->isImage() ? 'img' : 'file') . '" data-filename="' . $attachment->get('filename') . '" href="' . $base . '/' . ltrim(JRoute::_($attachment->link()), '/') . '">' . $attachment->get('description') . '</a></p>';
 																}
 																?>
 															</div><!-- / .comment-body -->

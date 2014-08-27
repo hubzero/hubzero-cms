@@ -1121,6 +1121,22 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$html = $eview->loadTemplate();
 			$html = str_replace("\n", "\r\n", $html);
 
+			foreach ($row->attachments() as $attachment)
+			{
+				if ($attachment->size() < 2097152)
+				{
+					if ($attachment->isImage())
+					{
+						$file = basename($attachment->link('filepath'));
+						$html = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($attachment->link('filepath')) . '" alt="" />', $html);
+					}
+					else
+					{
+						$message->addAttachment($attachment->link('filepath'));
+					}
+				}
+			}
+
 			$message->addPart($html, 'text/html');
 
 			// Loop through the addresses
@@ -1930,6 +1946,15 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$message['multipart'] = $eview->loadTemplate();
 				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
+				$message['attachments'] = array();
+				foreach ($rowc->attachments() as $attachment)
+				{
+					if ($attachment->size() < 2097152)
+					{
+						$message['attachments'][] = $attachment->link('filepath');
+					}
+				}
+
 				JPluginHelper::importPlugin('xmessage');
 
 				foreach ($rowc->to('ids') as $to)
@@ -2424,6 +2449,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				if (!JFolder::move($tmpPath, $path))
 				{
 					$this->setError(JText::_('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'));
+					JError::raiseError(500, JText::_('COM_SUPPORT_ERROR_UNABLE_TO_MOVE_UPLOAD_PATH'));
 					return '';
 				}
 				$row->updateTicketId($tmp, $listdir);

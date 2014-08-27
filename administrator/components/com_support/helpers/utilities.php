@@ -76,6 +76,26 @@ class SupportUtilities
 
 			if (is_array($contents))
 			{
+				if (isset($contents['attachments']))
+				{
+					if (!is_array($contents['attachments']))
+					{
+						$contents['attachments'] = array($contents['attachments']);
+					}
+					foreach ($contents['attachments'] as $path)
+					{
+						if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path))
+						{
+							$file = basename($path);
+							$contents['multipart'] = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($path) . '" alt="" />', $contents['multipart']);
+						}
+						else
+						{
+							$message->addAttachment($path);
+						}
+					}
+				}
+
 				$message->addPart($contents['plaintext'], 'text/plain')
 				        ->addPart($contents['multipart'], 'text/html');
 			}
