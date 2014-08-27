@@ -21,7 +21,7 @@ jQuery(function($) {
 		parent.$('body').trigger('deploymentsave');
 	}
 
-	$("#done").click(function () {
+	$("#done, #cancel").click(function () {
 		parent.$('body').trigger('deploymentcancel');
 	});
 });
