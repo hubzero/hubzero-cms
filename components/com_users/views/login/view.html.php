@@ -76,7 +76,7 @@ class UsersViewLogin extends JViewLegacy
 		// HUBzero: If we have a return set with an authenticator in it, we're linking an existing account
 		// Parse the return to retrive the authenticator, and remove it from the list below
 		$auth = '';
-		if ($return = JRequest::getVar('return', null))
+		if ($return = JRequest::getVar('return', null, 'GET', 'BASE64'))
 		{
 			$decoded_return = base64_decode($return);
 			$query  = parse_url($decoded_return);
