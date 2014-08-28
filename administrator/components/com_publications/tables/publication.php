@@ -316,6 +316,14 @@ class Publication extends JTable
 			$query .= " AND (V.published_up = '0000-00-00 00:00:00' OR V.published_up <= '".$now."') ";
 			$query .= " AND (V.published_down IS NULL OR V.published_down = '0000-00-00 00:00:00' OR V.published_down >= '".$now."') ";
 		}
+		if (isset($filters['startdate']))
+		{
+			$query .= "AND V.published_up > " . $this->_db->Quote($filters['startdate']) . " ";
+		}
+		if (isset($filters['enddate']))
+		{
+			$query .= "AND V.published_up < " . $this->_db->Quote($filters['enddate']) . " ";
+		}
 
 		if (!isset($filters['ignore_access']) || $filters['ignore_access'] == 0)
 		{
