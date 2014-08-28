@@ -580,9 +580,16 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		// Get the events for this day
 		$filters = array();
 		$filters['gid'] = $this->gid;
-		$filters['select_date'] = sprintf("%4d-%02d-%02d", $year, $month, $day);
 		$filters['category'] = $this->category;
 		$filters['scope'] = 'event';
+
+		$select_date     = sprintf("%4d-%02d-%02d 00:00:00", $year, $month, $day);
+		$select_date_fin = sprintf("%4d-%02d-%02d 23:59:59", $year, $month, $day);
+		$select_date     = JFactory::getDate($select_date, JFactory::getConfig()->get('offset'));
+		$select_date_fin = JFactory::getDate($select_date_fin, JFactory::getConfig()->get('offset'));
+		$filters['select_date'] = $select_date->toSql();
+		$filters['select_date_fin'] = $select_date_fin->toSql();
+
 
 		$ee = new EventsEvent($this->database);
 		$events = $ee->getEvents('day', $filters);
