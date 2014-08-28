@@ -578,7 +578,7 @@ class PdfFormDeployment
 				return;
 			}
 
-			if ($key == 'endTime' || $key == 'startTime')
+			if (($key == 'endTime' || $key == 'startTime') && !empty($data[$key]))
 			{
 				$data[$key] = JFactory::getDate(strtotime($data[$key]))->toSql();
 			}
