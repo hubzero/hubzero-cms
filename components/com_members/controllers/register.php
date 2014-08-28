@@ -599,6 +599,12 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		if (!isset($this->_taskMap[$this->_task]))
+		{
+			$this->_task = 'create';
+			JRequest::setVar('task', 'create');
+		}
+
 		// Set the pathway
 		$this->_buildPathway();
 
