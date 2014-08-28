@@ -269,6 +269,7 @@ a.dv-link > i.icon-external-link {
 
 /* Fix for Safari 7 width issue with top level style sheet's max-width: 100% */
 table#dv-spreadsheet-tbl {
+	min-width: 850px;
 	max-width: none !important;
 }
 
