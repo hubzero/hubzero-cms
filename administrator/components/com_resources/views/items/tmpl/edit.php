@@ -84,10 +84,8 @@ $time = strtotime($time) === false ? NULL : $time;
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
-	var form = document.adminForm;
-
 	if (pressbutton == 'resethits') {
-		if (confirm('<?php echo JText::_('COM_RESOURCES_CONFIRM_HITS_RESET'); ?>'){
+		if (confirm('<?php echo JText::_('COM_RESOURCES_CONFIRM_HITS_RESET'); ?>')){
 			submitform(pressbutton);
 			return;
 		} else {
@@ -96,7 +94,7 @@ function submitbutton(pressbutton)
 	}
 
 	if (pressbutton == 'resetrating') {
-		if (confirm('<?php echo JText::_('COM_RESOURCES_CONFIRM_RATINGS_RESET'); ?>'){
+		if (confirm('<?php echo JText::_('COM_RESOURCES_CONFIRM_RATINGS_RESET'); ?>')){
 			submitform(pressbutton);
 			return;
 		} else {
@@ -110,9 +108,9 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (form.title.value == ''){
+	if (document.getElementById('field-title').value == ''){
 		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
-	} else if (form.type.value == "-1"){
+	} else if (document.getElementById('field-type').value == "-1"){
 		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TYPE'); ?>');
 	} else {
 		<?php echo JFactory::getEditor()->save('text'); ?>
