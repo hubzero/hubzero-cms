@@ -49,7 +49,7 @@ function submitbutton(pressbutton)
 	}
 
 	// form field validation
-	if ($('#field-title').val() == '') {
+	if (document.getElementById('field-title').value == '') {
 		alert('<?php echo JText::_('COM_SUPPORT_CATEGORY_ERROR_NO_TEXT'); ?>');
 	} else {
 		submitform(pressbutton);

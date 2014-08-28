@@ -676,7 +676,6 @@ if ($this->row->id) {
 					<div class="clr"></div>
 
 				<?php if (isset($this->lists['categories']) && $this->lists['categories']) { ?>
-					<div class="input-wrap">
 						<label for="ticket-field-category">
 							<?php echo JText::_('Category'); ?>
 							<select name="category" id="ticket-field-category">
@@ -691,7 +690,6 @@ if ($this->row->id) {
 								?>
 							</select>
 						</label>
-					</div>
 				<?php } ?>
 
 					<div class="col width-50 fltlft">

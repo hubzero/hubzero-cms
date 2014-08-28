@@ -2525,6 +2525,32 @@
 		padding: 0 1.618em;
 	}
 
+	.input-wrap {
+		padding: 0.41803399em 1.61803399em;
+		margin-bottom: 1em;
+	}
+	.input-wrap .input-text,
+	.input-wrap input[type=text],
+	.input-wrap input[type=password],
+	.input-wrap input[type=email],
+	.input-wrap textarea {
+		margin-bottom: 0;
+	}
+	.input-wrap .selector {
+		width: 100%;
+	}
+	.input-wrap input[type=checkbox] {
+		display: inline-block;
+	}
+	.input-wrap .hint {
+		display: inline-block;
+		margin-top: 0.4em;
+		color: #aaa;
+	}
+	.input-wrap.input-spacer br {
+		display: none;
+	}
+
 @media only screen and (min-width: 319px) and (max-width: 320px) {
 	.main-navigation ul#menu li {
 		float: none;
