@@ -244,8 +244,8 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 		$receipt_note   = $this->config->get('receipt_note')   ? $this->config->get('receipt_note')   : '' ;
 
 		// Get front-end template name
-		$sql = "SELECT template FROM `#__templates_menu` WHERE client_id=0";
-		$this->database->setQuery( $sql );
+		$sql = "SELECT template FROM `#__template_styles` WHERE `client_id`=0 AND `home`=1";
+		$this->database->setQuery($sql);
 		$tmpl = $this->database->loadResult();
 
 		// Use header image? tcpdf config needs to be adjusted
@@ -307,11 +307,11 @@ class StoreControllerOrders extends \Hubzero\Component\AdminController
 		$dir = JPATH_ROOT . DS . 'site' . DS . 'store' . DS . 'temp';
 		$tempFile = $dir . DS . 'receipt_' . $id . '.pdf';
 
-		if (!is_dir( $dir ))
+		if (!is_dir($dir))
 		{
-			if (!JFolder::create( $dir ))
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($dir))
 			{
-				jimport('joomla.filesystem.folder');
 				JError::raiseError(500, 'Failed to create folder to store receipts');
 				return;
 			}
