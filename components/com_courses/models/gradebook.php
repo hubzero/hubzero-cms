@@ -465,7 +465,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 				foreach ($values as $unit_id=>$val)
 				{
 					// We're processing this unit/member, thus it doesn't need to be cleared - so remove it from the list of potentials
-					if (($key = array_search($member_id, $unit_ids[$unit_id])) !== false)
+					if (isset($unit_ids[$unit_id]) && ($key = array_search($member_id, $unit_ids[$unit_id])) !== false)
 					{
 						unset($unit_ids[$unit_id][$key]);
 					}
