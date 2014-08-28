@@ -61,7 +61,7 @@ if ($this->rows) {
 					$cls = 'new';
 				}
 		?>
-		<li<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?> class="cf">
+		<li class="cf<?php echo ($cls) ? ' ' . $cls : ''; ?>">
 			<div class="imageholder">
 				<?php echo StoreHtml::productimage( $this->option, $row->id, $row->root, $row->webpath, $row->title, $row->category ); ?>
 			</div>
