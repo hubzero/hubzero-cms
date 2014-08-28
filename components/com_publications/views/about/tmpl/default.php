@@ -189,6 +189,7 @@ $schema 	= $elements->getSchema();
 	{
 		if (!isset($schema->fields) || !is_array($schema->fields))
 		{
+			$schema = new stdClass();
 			$schema->fields = array();
 		}
 		foreach ($schema->fields as $field)

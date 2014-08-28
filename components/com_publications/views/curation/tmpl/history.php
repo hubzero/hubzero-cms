@@ -30,15 +30,13 @@ $blocks = $this->pub->_curationModel->_blocks;
 
 $history = $this->pub->_curationModel->getHistory($this->pub, 1);
 
-//print_r($history);
-
 ?>
 <div id="abox-content" class="history-wrap">
 	<h3><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY_VIEW'); ?></h3>
 	
 	<div class="curation-history">
 		<div class="pubtitle">
-			<p><span class="restype indlist"><?php echo $typetitle; ?></span> <?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo JText::_('COM_PUBLICATIONS_CURATION_VERSION') 
+			<p><?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo JText::_('COM_PUBLICATIONS_CURATION_VERSION') 
 			. ' ' . $this->pub->version_label; ?>
 			</p>
 		</div>	

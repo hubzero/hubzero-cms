@@ -56,7 +56,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
 				<?php foreach ($this->attachments as $att) {
 
 					$file 		= str_replace($this->path . DS, '', $att->path);
-					$ext 		= strtolower(end(explode('.', $file)));
+					$parts 		= explode('.', $att->path);
+					$ext 	= strtolower(end($parts));
 
 					// Set default title
 					$incNum		= $max > 1 ? ' (' . $i . ')' : '';

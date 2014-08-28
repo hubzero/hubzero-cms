@@ -169,10 +169,13 @@ class PublicationsCuration extends JObject
 				" ORDER BY ordering, id"
 			);
 
+			$manifest = new stdClass;
+			$manifest->blocks = new stdClass;
+			$manifest->params = new stdClass;
+
 			// Build default manifest
 			if ($blocks && !empty($blocks))
 			{
-				$manifest = new stdClass;
 				$i = 1;
 				foreach ($blocks as $blockname)
 				{
@@ -804,6 +807,7 @@ class PublicationsCuration extends JObject
 
 		$result->lastBlock 	= 0;
 		$result->firstBlock = 0;
+		$result->blocks = new stdClass();
 
 		$i = 0;
 		$k = 0;
@@ -817,7 +821,7 @@ class PublicationsCuration extends JObject
 				continue;
 			}
 			$autoStatus 		= self::getStatus($block->name, $this->_pub, $sequence);
-
+			$result->blocks->$sequence = new stdClass();
 			$result->blocks->$sequence->name 		= $block->name;
 			$result->blocks->$sequence->status 		= $autoStatus;
 			$result->blocks->$sequence->review 		= ($this->_pub->state == 5 || $this->_pub->state == 7)
@@ -1302,7 +1306,10 @@ class PublicationsCuration extends JObject
 			foreach ($manifest->elements as $elementId => $element)
 			{
 				$props = $block . '-' . $sequence . '-' . $elementId;
-
+				if (!isset($status->elements))
+				{
+					$status->elements = new stdClass();
+				}
 				$status->elements->$elementId = $this->getReviewItemStatus( $props, $pub->reviewedItems);
 
 				// Store element label (for history tracking)
@@ -1433,7 +1440,7 @@ class PublicationsCuration extends JObject
 		$status->curatornotice 	= $reviewStatus->getError();
 		$status->updated		= $reviewStatus->lastupdate;
 
-		if ($status->updated && $reviewStatus->updated_by)
+		if ($status->updated && isset($reviewStatus->updated_by) && $reviewStatus->updated_by)
 		{
 			$profile = \Hubzero\User\Profile::getInstance($reviewStatus->updated_by);
 			$by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');

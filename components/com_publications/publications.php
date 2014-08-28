@@ -30,7 +30,8 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-
+ini_set('display_errors', '1');     
+error_reporting(E_ALL | E_STRICT);
 $option = JRequest::getCmd('option', 'com_publications');
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'publication.php');

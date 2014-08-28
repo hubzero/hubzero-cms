@@ -129,6 +129,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 		$selections = JRequest::getVar( 'selecteditems', '');
 		$toAttach = explode(',', $selections);
+		$added = 0;
 
 		// Load classes
 		$pAuthor  = new PublicationAuthor( $this->_parent->_db );
@@ -187,14 +188,33 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 					// Reflect the update in curation record
 					$this->_parent->set('_update', 1);
-
+					
+					$added++;
 				}
 			}
 		}
-
-		$this->set('_message', JText::_('Author selection saved') );
+		
+		if ($added)
+		{
+			$this->set('_message', JText::_('Author selection saved') );
+		}
+		
+		// Save group owner
+		$this->saveGroupOwner($pub);
 
 		return true;
+	}
+	
+	/**
+	 * Save group owner
+	 *
+	 * @return  boolean
+	 */
+	public function saveGroupOwner( $pub )
+	{
+		// Incoming
+		$group_owner = JRequest::getInt( 'group_owner', 0);
+		// TBD
 	}
 
 	/**

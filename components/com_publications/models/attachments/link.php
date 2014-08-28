@@ -400,9 +400,10 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	public function addAttachment($path, $title, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
 		// Need to check against allowed types
+		$accept = isset($element->typeParams->accept) ? $element->typeParams->accept : NULL;
 		if ($configs->check)
 		{
-			if (!$this->checkAllowed(array($path), $element->typeParams->accept))
+			if (!$this->checkAllowed(array($path), $accept))
 			{
 				return false;
 			}

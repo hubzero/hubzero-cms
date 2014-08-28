@@ -78,7 +78,6 @@ function submitbutton(pressbutton)
 <?php } ?>
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<input type="hidden" name="author" value="<?php echo $this->author->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 			<input type="hidden" name="no_html" value="<?php echo ($tmpl == 'component') ? '1' : '0'; ?>">

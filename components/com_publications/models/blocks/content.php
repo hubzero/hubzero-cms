@@ -315,6 +315,10 @@ class PublicationsBlockContent extends PublicationsModelBlock
 			$incomplete = 0;
 			foreach ($mAttach as $elementId => $elementparams)
 			{
+				if (!isset($status->elements))
+				{
+					$status->elements = new stdClass();
+				}
 				$status->elements->$elementId = self::getElementStatus($elementId, $elementparams, $pub->_attachments);
 
 				if ($status->elements->$elementId->status >= 1)

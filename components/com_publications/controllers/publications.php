@@ -702,6 +702,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$publication->_type  	 = $publication->_mastertype;
 
 			// Initialize helpers
+			$publication->_helpers = new stdClass();
 			$publication->_helpers->pubHelper 		= new PublicationHelper(
 				$this->database,
 				$publication->version_id,
@@ -933,6 +934,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Initialize helpers
+		$this->publication->_helpers = new stdClass();
 		$this->publication->_helpers->pubHelper = new PublicationHelper(
 			$this->database,
 			$this->publication->version_id,
@@ -958,14 +960,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$curation = $this->publication->_curationModel->getElementManifest($element);
 
 		// We do need manifest!
-		if (!$curation || !$curation->element)
+		if (!$curation || !isset($curation->element) || !$curation->element)
 		{
 			return false;
 		}
 
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->database);
-
+		
 		// Serve content
 		$content = $attModel->serve(
 			$curation->element->params->type,

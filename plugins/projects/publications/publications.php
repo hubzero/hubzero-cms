@@ -1275,6 +1275,7 @@ class plgProjectsPublications extends JPlugin
 		$pub->version 	= $version;
 
 		// Initialize helpers
+		$pub->_helpers = new stdClass();
 		$pub->_helpers->pubHelper 		= new PublicationHelper($this->_database, $pub->version_id, $pub->id);
 		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
 		$pub->_helpers->projectsHelper 	= new ProjectsHelper( $this->_database );

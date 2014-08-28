@@ -338,6 +338,10 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 
 			foreach ($this->_manifest->elements as $elementId => $element)
 			{
+				if (!isset($status->elements))
+				{
+					$status->elements = new stdClass();
+				}
 				$status->elements->$elementId = self::getElementStatus($element, $pub);
 				if ($status->elements->$elementId->status >= 1)
 				{

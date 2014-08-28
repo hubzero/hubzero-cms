@@ -49,7 +49,7 @@ $defaultTitle	= $this->manifest->params->title
 $versionParams 	= new JParameter( $this->pub->params );
 $bundleName		= $versionParams->get($elName . 'bundlename', $defaultTitle);
 
-$error 			= $this->status->getError();
+$error 			= isset($this->status) ? $this->status->getError() : NULL;
 
 // Determine if current element is active/ not yet filled/ last in order
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
@@ -201,7 +201,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 
 					$data 		= new stdClass;
 					$data->path = str_replace($this->path . DS, '', $att->path);
-					$data->ext 	= strtolower(end(explode('.', $data->path)));
+					$parts 		= explode('.', $data->path);
+					$data->ext 	= strtolower(end($parts));
 
 					// Set default title
 					$incNum			= $max > 1 ? ' (' . $i . ')' : '';

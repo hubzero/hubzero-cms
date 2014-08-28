@@ -318,6 +318,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->version 	= $version;
 
 		// Initialize helpers
+		$pub->_helpers = new stdClass();
 		$pub->_helpers->pubHelper 		= new PublicationHelper($this->database, $pub->version_id, $pub->id);
 		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
 		$pub->_helpers->projectsHelper 	= new ProjectsHelper( $this->database );
