@@ -90,6 +90,14 @@
 		margin-bottom: 0em;
 	}
 
+	#toolbar-addchild .icon-32-new:before {
+		content: "\f03a"; /*\f16a";*/
+	}
+	#toolbar-addchild .icon-32-new:after {
+		content: "\271A";
+		top: 25%;
+	}
+
 	.handle {
 		display: block;
 		overflow: hidden;
