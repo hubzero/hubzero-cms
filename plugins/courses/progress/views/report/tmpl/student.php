@@ -376,7 +376,7 @@ $progress_timeline .= '</div>';
 	</div>
 <?php endif; ?>
 
-<?php if ($this->course->config()->get('certificate', '')  // The course has a certificate
+<?php if ($this->course->certificate()->exists()  // The course has a certificate
 		&& $this->course->offering()->section()->params('certificate')  // The section is allowing certificates
 		&& $this->course->offering()->gradebook()->isEligibleForRecognition($this->member->get('id'))) :  // The user is eligible for a certificate ?>
 	<div class="recognition certificate earned">
