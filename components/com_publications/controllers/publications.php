@@ -967,7 +967,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Get attachment type model
 		$attModel = new PublicationsModelAttachments($this->database);
-		
+
 		// Serve content
 		$content = $attModel->serve(
 			$curation->element->params->type,

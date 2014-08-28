@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Get blocks		
+// Get blocks
 $blocks = $this->pub->_curationModel->_blocks;
 
 $history = $this->pub->_curationModel->getHistory($this->pub, 1);
@@ -33,19 +33,19 @@ $history = $this->pub->_curationModel->getHistory($this->pub, 1);
 ?>
 <div id="abox-content" class="history-wrap">
 	<h3><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY_VIEW'); ?></h3>
-	
+
 	<div class="curation-history">
 		<div class="pubtitle">
-			<p><?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo JText::_('COM_PUBLICATIONS_CURATION_VERSION') 
+			<p><?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo JText::_('COM_PUBLICATIONS_CURATION_VERSION')
 			. ' ' . $this->pub->version_label; ?>
 			</p>
-		</div>	
+		</div>
 	<?php if ($history) { $i = 1; ?>
 		<h5><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY_EVENTS'); ?></h5>
 		<div class="history-blocks">
-	<?php 
+	<?php
 		foreach ($history as $event)
-		{ 
+		{
 			$author  = JUser::getInstance($event->created_by);
 			$trClass = $i % 2 == 0 ? ' even' : ' odd';
 			$i++;
@@ -55,8 +55,8 @@ $history = $this->pub->_curationModel->getHistory($this->pub, 1);
 					<?php echo $event->created; ?>
 					<span class="block"><?php echo $this->escape(stripslashes($author->get('name'))); ?></span>
 					<span class="block">(
-					<?php echo ($event->curator) 
-						? JText::_('COM_PUBLICATIONS_CURATION_CURATOR') 
+					<?php echo ($event->curator)
+						? JText::_('COM_PUBLICATIONS_CURATION_CURATOR')
 						: JText::_('COM_PUBLICATIONS_CURATION_AUTHOR');  ?>
 					)</span>
 				</div>

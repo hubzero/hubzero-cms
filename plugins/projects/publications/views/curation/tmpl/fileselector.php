@@ -179,7 +179,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 
 					// Draw attachment
 					echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams, $handler);
- 				} ?>
+				} ?>
 			</ul>
 		</div>
 		<?php } elseif (!$required) {  ?>
