@@ -229,7 +229,7 @@ class plgSearchResources extends SearchPlugin
 						r.publish_up AS date,
 						0.5 as weight,
 						rt.type AS section,
-						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM `#__author_assoc anames` LEFT JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
+						(SELECT group_concat(u1.name order by anames.ordering separator '\\n') FROM `#__author_assoc` anames LEFT JOIN `#__xprofiles` u1 ON u1.uidNumber = anames.authorid WHERE subtable = 'resources' AND subid = r.id)
 							AS contributors,
 						(SELECT group_concat(anames.authorid order by anames.ordering separator '\\n') FROM `#__author_assoc` anames WHERE subtable = 'resources' AND subid = r.id)
 							AS contributor_ids,
