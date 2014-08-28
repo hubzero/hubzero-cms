@@ -153,7 +153,7 @@ jQuery(document).ready(function(jq){
 		list  = $('#file-uploader-list');
 
 	if (filer.length > 0) {
-		filer.on('click', 'a.delete', function (e){
+		list.on('click', 'a.delete', function (e){
 			e.preventDefault();
 
 			$.get($(this).attr('href'), {}, function(data) {
@@ -166,17 +166,36 @@ jQuery(document).ready(function(jq){
 		});
 
 		if (typeof(qq) != 'undefined') {
+			var running = 0;
+
 			var uploader = new qq.FileUploader({
-				element: $('#file-uploader')[0],
-				action: filer.attr('data-action'),
+				element: filer[0],
+				action: filer.attr("data-action"),
 				multiple: true,
-				debug: false,
+				debug: ($('#system-debug').length ? true : false),
+				template: '<div class="qq-uploader">' +
+							'<div class="qq-upload-button"><span>' + filer.attr('data-instructions') + '</span></div>' + 
+							'<div class="qq-upload-drop-area"><span>' + filer.attr('data-instructions') + '</span></div>' +
+							'<ul class="qq-upload-list"></ul>' + 
+						'</div>',
+				onSubmit: function(id, file) {
+					running++;
+				},
 				onComplete: function(id, file, response) {
-					$('.qq-upload-list').empty();
+					running--;
+
+					// HTML entities had to be encoded for the JSON or IE 8 went nuts. So, now we have to decode it.
+					//response.html = response.html.replace(/&gt;/g, '>');
+					//response.html = response.html.replace(/&lt;/g, '<');
+					//list.append(response.html);
 
 					$.get(filer.attr('data-list'), {}, function(data) {
 						list.html(data);
 					});
+
+					if (running == 0) {
+						$('ul.qq-upload-list').empty();
+					}
 				}
 			});
 		}
