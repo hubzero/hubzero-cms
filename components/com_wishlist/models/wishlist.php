@@ -34,10 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wish.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'owner.php');
-//require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
 
 /**
- * Model class for a forum
+ * Wishlist model class
  */
 class WishlistModelWishlist extends WishlistModelAbstract
 {
@@ -58,7 +57,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Table class name
 	 *
-	 * @var object
+	 * @var string
 	 */
 	protected $_tbl_name = 'Wishlist';
 
@@ -86,9 +85,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      string  $scope    Forum scope [site, group, course]
-	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return     void
+	 * @param   string  $oid   Integer, array, or object
+	 * @param   integer $scope Scope type [group, etc.]
+	 * @return  void
 	 */
 	public function __construct($oid=null, $scope=null)
 	{
@@ -130,18 +129,14 @@ class WishlistModelWishlist extends WishlistModelAbstract
 		{
 			$this->set('category', $scope);
 		}
-		/*if (is_numeric($oid))
-		{
-			$this->set('referenceid', $oid);
-		}*/
 	}
 
 	/**
-	 * Returns a reference to a forum model
+	 * Returns a reference to this model
 	 *
-	 * @param      string  $scope    Forum scope [site, group, course]
-	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return     object ForumModelCourse
+	 * @param   string  $oid   Integer, array, or object
+	 * @param   integer $scope Scope type [group, etc.]
+	 * @return  object  WishlistModelWishlist
 	 */
 	static function &getInstance($oid=null, $scope=null)
 	{
@@ -175,12 +170,10 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Get the underlying item the list is tied to (group, etc.)
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params String or array of extra params to append
-	 * @return     string
+	 * @param   string $key
+	 * @return  string
 	 */
 	public function item($key=null)
 	{
@@ -188,10 +181,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Get the title for the wishlist
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function title()
 	{
@@ -202,9 +194,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params String or array of extra params to append
-	 * @return     string
+	 * @param   string $type   The type of link to return
+	 * @param   mixed  $params String or array of extra params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{
@@ -215,9 +207,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	 * Append an item to the breadcrumb trail.
 	 * If no item is provided, it will build the trail up to the list
 	 *
-	 * @param      string $title Breadcrumb title
-	 * @param      string $url   Breadcrumb URL
-	 * @return     string
+	 * @param   string $title Breadcrumb title
+	 * @param   string $url   Breadcrumb URL
+	 * @return  string
 	 */
 	public function pathway($title=null, $pathway=null)
 	{
@@ -228,7 +220,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
 	 *
-	 * @return    object
+	 * @return  object
 	 */
 	private function _adapter()
 	{
@@ -255,9 +247,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	}
 
 	/**
-	 * Populate the forum with defaulta wish and category
+	 * Create the wishlist
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function setup()
 	{
@@ -292,9 +284,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	}
 
 	/**
-	 * Determine if record was modified
+	 * Determine if wishlist is public or private
 	 *
-	 * @return     boolean True if modified, false if not
+	 * @return  boolean True if public, false if not
 	 */
 	public function isPublic()
 	{
@@ -308,7 +300,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Set and get a specific wish
 	 *
-	 * @return     void
+	 * @param   integer $id Wish ID
+	 * @return  object
 	 */
 	public function wish($id=null)
 	{
@@ -345,12 +338,12 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	}
 
 	/**
-	 * Get a list of wishes for a forum
+	 * Get a count or list of wishes
 	 *
-	 * @param      string  $rtrn    What data to return [count, list, first]
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    What data to return [count, list, first]
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function wishes($rtrn='', $filters=array(), $clear=false)
 	{
@@ -377,7 +370,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 			default:
 				if (!($this->_cache['wishes.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
-					if ($results = $tbl->get_wishes($this->get('id'), $filters, $this->get('admin'), $juser)) //getRecords($filters))
+					if ($results = $tbl->get_wishes($this->get('id'), $filters, $this->get('admin'), $juser))
 					{
 						foreach ($results as $key => $result)
 						{
@@ -396,43 +389,30 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	}
 
 	/**
-	 * Get a list of wishes for a forum
+	 * Get a list of owners
 	 *
-	 * @param      string  $rtrn    What data to return [count, list, first]
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn   What data to return [count, list, first]
+	 * @param   integer $native
+	 * @return  array
 	 */
 	public function owners($rtrn='', $native=0)
 	{
 		$tbl = new WishlistOwner($this->_db);
 
-
-		//if (!($this->_cache['owners.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 		if (!is_array($this->_cache['owners.list' . $native]))
 		{
 			$category = $this->get('category');
 			$this->_tbl->$category = $this->_adapter()->item();
 			if ($data = $tbl->get_owners($this->get('id'), $this->config('group', 'hubadmin'), $this->_tbl, $native))
 			{
-				$results = array();
-				/*foreach ($data as $key => $type)
-				{
-					foreach ($type as $ky => $result)
-					{
-						$type[$ky] = new WishlistModelOwner();
-						$type[$ky]->set('userid', $result);
-					}
-					$results[$key] = $type; //new \Hubzero\Base\ItemList($type);
-				}*/
 				$results = $data;
 			}
 			else
 			{
 				$results = array(
-					'individuals' => array(), //new \Hubzero\ItemList(array()),
-					'groups'      => array(), //new \Hubzero\ItemList(array()),
-					'advisory'    => array()  //new \Hubzero\ItemList(array())
+					'individuals' => array(),
+					'groups'      => array(),
+					'advisory'    => array()
 				);
 			}
 			$this->_cache['owners.list' . $native] = $results;
@@ -449,9 +429,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Remove one or more owners
 	 *
-	 * @param      string $what Owner type to remove
-	 * @param      mixed  $data integer|string|array
-	 * @return     object
+	 * @param   string $what Owner type to remove
+	 * @param   mixed  $data integer|string|array
+	 * @return  object
 	 */
 	public function remove($what, $data)
 	{
@@ -512,9 +492,9 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Add one or more owners
 	 *
-	 * @param      string $what Owner type to add
-	 * @param      mixed  $data integer|string|array
-	 * @return     object
+	 * @param   string $what Owner type to add
+	 * @param   mixed  $data integer|string|array
+	 * @return  object
 	 */
 	public function add($what, $data)
 	{
@@ -569,8 +549,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Turn a comma or space deliniated string into an array
 	 *
-	 * @param      string $string
-	 * @return     array
+	 * @param   string $string
+	 * @return  array
 	 */
 	public function _toArray($string='')
 	{
@@ -602,8 +582,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Return an ID for a user
 	 *
-	 * @param     mixed $user User ID or username
-	 * @return    integer
+	 * @param  mixed   $user User ID or username
+	 * @return integer
 	 */
 	private function _userId($user)
 	{
@@ -623,10 +603,10 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	}
 
 	/**
-	 * Return an ID for a user
+	 * Return an ID for a group
 	 *
-	 * @param     mixed $user User ID or username
-	 * @return    integer
+	 * @param   mixed   $group Group ID or cn
+	 * @return  integer
 	 */
 	private function _groupId($group)
 	{
@@ -648,10 +628,10 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string  $action    Action to check
-	 * @param      string  $assetType Type of asset to check
-	 * @param      integer $assetId   ID of item to check access on
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $action    Action to check
+	 * @param   string  $assetType Type of asset to check
+	 * @param   integer $assetId   ID of item to check access on
+	 * @return  boolean True if authorized, false if not
 	 */
 	public function access($action='view', $assetType='list', $assetId=null)
 	{
@@ -667,7 +647,6 @@ class WishlistModelWishlist extends WishlistModelAbstract
 				if ($assetType == 'wish')
 				{
 					$this->config()->set('access-create-' . $assetType, true);
-					//$this->config()->set('access-edit-' . $assetType, true);
 					$this->config()->set('access-edit-own-' . $assetType, true);
 				}
 
@@ -692,16 +671,12 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					$this->set('admin', 1);
 				}
 				// Permissions
-				//$this->config()->set('access-create-' . $assetType, $juser->authorise('core.create' . $at, $asset));
 				$this->config()->set('access-delete-' . $assetType, $juser->authorise('core.delete' . $at, $asset));
 				$this->config()->set('access-edit-' . $assetType, $juser->authorise('core.edit' . $at, $asset));
 				$this->config()->set('access-edit-state-' . $assetType, $juser->authorise('core.edit.state' . $at, $asset));
-				//$this->config()->set('access-edit-own-' . $assetType, $juser->authorise('core.edit.own' . $at, $asset));
 
 				if ($this->exists())
 				{
-					//$admingroup = $this->config()->get('group', 'hubadmin');
-
 					// Get list administrators
 					$managers = $this->owners('individuals');
 					$advisory = $this->owners('advisory');
@@ -718,8 +693,6 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					}
 					if (in_array($juser->get('id'), $advisory))
 					{
-						//$this->config()->set('access-manage-' . $assetType, true);
-						//$this->config()->set('access-delete-' . $assetType, true);
 						$this->config()->set('access-edit-' . $assetType, true);
 						$this->config()->set('access-edit-state-' . $assetType, true);
 
@@ -737,7 +710,7 @@ class WishlistModelWishlist extends WishlistModelAbstract
 	/**
 	 * Rank the wishes in this list
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function rank()
 	{
@@ -746,7 +719,6 @@ class WishlistModelWishlist extends WishlistModelAbstract
 
 		if ($this->wishes()->total() > 0)
 		{
-			//$owners = $objOwner->get_owners($this->listid, $this->admingroup, $wishlist);
 			$managers = $this->owners('individuals');
 			$advisory = $this->owners('advisory');
 

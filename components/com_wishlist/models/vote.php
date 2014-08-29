@@ -35,19 +35,19 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_w
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
 
 /**
- * Courses model class for a forum
+ * Wishlist model class for a vote
  */
 class WishlistModelVote extends WishlistModelAbstract
 {
 	/**
 	 * Table class name
 	 *
-	 * @var object
+	 * @var string
 	 */
 	protected $_tbl_name = 'WishRank';
 
 	/**
-	 * ForumModelAttachment
+	 * Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
@@ -56,8 +56,8 @@ class WishlistModelVote extends WishlistModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
-	 * @return     void
+	 * @param   mixed $oid Integer (ID), string (alias), object or array
+	 * @return  void
 	 */
 	public function __construct($oid=null, $wish=null)
 	{
@@ -106,13 +106,19 @@ class WishlistModelVote extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @return     mixed
+	 * @param   string $property What data to return
+	 * @param   mixed  $default  Default value
+	 * @return  mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('userid'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
@@ -120,7 +126,7 @@ class WishlistModelVote extends WishlistModelAbstract
 			{
 				return $this->_creator->getPicture();
 			}
-			return $this->_creator->get($property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}
@@ -128,8 +134,8 @@ class WishlistModelVote extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $rtrn What data to return
-	 * @return     boolean
+	 * @param   string  $rtrn What data to return
+	 * @return  boolean
 	 */
 	public function created($rtrn='')
 	{

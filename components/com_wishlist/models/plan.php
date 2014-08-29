@@ -35,7 +35,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_w
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
 
 /**
- * Courses model class for a forum
+ * Wishlist class for a wish plan model
  */
 class WishlistModelPlan extends WishlistModelAbstract
 {
@@ -54,14 +54,14 @@ class WishlistModelPlan extends WishlistModelAbstract
 	protected $_context = 'com_wishlist.plan.pagetext';
 
 	/**
-	 * ForumModelAttachment
+	 * WishlistodelAttachment
 	 *
 	 * @var object
 	 */
 	protected $_attachment = null;
 
 	/**
-	 * ForumModelAttachment
+	 * Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
@@ -70,8 +70,8 @@ class WishlistModelPlan extends WishlistModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
-	 * @return     void
+	 * @param   mixed $oid Integer (ID), string (alias), object or array
+	 * @return  void
 	 */
 	public function __construct($oid=null, $wish=null)
 	{
@@ -114,10 +114,10 @@ class WishlistModelPlan extends WishlistModelAbstract
 	}
 
 	/**
-	 * Returns a reference to a forum post model
+	 * Returns a reference to this model
 	 *
-	 * @param      mixed $oid ID (int) or array or object
-	 * @return     object ForumModelPost
+	 * @param   mixed  $oid ID (int) or array or object
+	 * @return  object WishlistModelPlan
 	 */
 	static function &getInstance($oid=null, $wish=null)
 	{
@@ -156,9 +156,9 @@ class WishlistModelPlan extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param      string $property Property to retrieve
-	 * @param      mixed  $default  Default value if property not set
-	 * @return     mixed
+	 * @param   string $property Property to retrieve
+	 * @param   mixed  $default  Default value if property not set
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
@@ -185,8 +185,8 @@ class WishlistModelPlan extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $rtrn What data to return
-	 * @return     boolean
+	 * @param   string $rtrn What data to return
+	 * @return  boolean
 	 */
 	public function created($rtrn='')
 	{
@@ -207,11 +207,11 @@ class WishlistModelPlan extends WishlistModelAbstract
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get the content of the entry in various formats
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  mixed String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{

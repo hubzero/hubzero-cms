@@ -34,14 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
 
 /**
- * Courses model class for a forum
+ * Wishlist class for a wish comment model
  */
 class WishlistModelComment extends WishlistModelAbstract
 {
 	/**
 	 * ForumTablePost
 	 *
-	 * @var object
+	 * @var string
 	 */
 	protected $_tbl_name = '\\Hubzero\\Item\\Comment';
 
@@ -70,13 +70,10 @@ class WishlistModelComment extends WishlistModelAbstract
 	);
 
 	/**
-	 * Returns a reference to a blog comment model
+	 * Returns a reference to this model
 	 *
-	 * This method must be invoked as:
-	 *     $comment = BlogModelComment::getInstance($id);
-	 *
-	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object BlogModelComment
+	 * @param      mixed  $oid ID (int) or alias (string)
+	 * @return     object WishlistModelComment
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -96,9 +93,9 @@ class WishlistModelComment extends WishlistModelAbstract
 	}
 
 	/**
-	 * HAs this comment been reported
+	 * Has this comment been reported
 	 *
-	 * @return     boolean True if reported, False if not
+	 * @return  boolean True if reported, False if not
 	 */
 	public function isReported()
 	{
@@ -112,8 +109,8 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     boolean
+	 * @param   string $as What format to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -140,7 +137,9 @@ class WishlistModelComment extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @return     mixed
+	 * @param   string $property What data to return
+	 * @param   mixed  $default  Default value
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
@@ -165,12 +164,12 @@ class WishlistModelComment extends WishlistModelAbstract
 	}
 
 	/**
-	 * Get a list or count of comments
+	 * Get a list or count of replies
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -256,9 +255,9 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -327,8 +326,8 @@ class WishlistModelComment extends WishlistModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string $type The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -369,7 +368,7 @@ class WishlistModelComment extends WishlistModelAbstract
 	/**
 	 * Delete an entry and its associated content
 	 *
-	 * @return     boolean True on success, false if not
+	 * @return  boolean True on success, false if not
 	 */
 	public function delete()
 	{

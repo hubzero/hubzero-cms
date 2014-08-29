@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 class WishlistModelAbstract extends \Hubzero\Base\Model
 {
 	/**
-	 * JParameter
+	 * JRegistry
 	 *
 	 * @var object
 	 */
@@ -47,10 +47,11 @@ class WishlistModelAbstract extends \Hubzero\Base\Model
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
 	 *
-	 * @param      string $key Config property to retrieve
-	 * @return     mixed
+	 * @param   string $key     Config property to retrieve
+	 * @param   mixed  $default Value to return if key isn't found
+	 * @return  mixed
 	 */
-	public function config($key=null)
+	public function config($key=null, $default=null)
 	{
 		if (!isset($this->_config))
 		{
@@ -58,7 +59,7 @@ class WishlistModelAbstract extends \Hubzero\Base\Model
 		}
 		if ($key)
 		{
-			return $this->_config->get($key);
+			return $this->_config->get($key, $default);
 		}
 		return $this->_config;
 	}

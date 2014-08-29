@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
- * Forum Tagging class
+ * Wishlist Tagging class
  */
 class WishlistModelTags extends TagsModelCloud
 {
@@ -48,8 +48,8 @@ class WishlistModelTags extends TagsModelCloud
 	/**
 	 * Turn a string of tags to an array
 	 *
-	 * @param      string $tag Tag string
-	 * @return     mixed
+	 * @param   string $tag Tag string
+	 * @return  mixed
 	 */
 	public function parseTags($tag, $remove='')
 	{
@@ -85,10 +85,10 @@ class WishlistModelTags extends TagsModelCloud
 	/**
 	 * Render a tag cloud
 	 *
-	 * @param      string  $rtrn    Format to render
-	 * @param      array   $filters Filters to apply
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     string
+	 * @param   string  $rtrn    Format to render
+	 * @param   array   $filters Filters to apply
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  string
 	 */
 	public function render($rtrn='html', $filters=array(), $clear=false)
 	{

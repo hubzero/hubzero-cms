@@ -41,7 +41,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'vote.class.php');
 
 /**
- * Courses model class for a forum
+ * Wishlist model class for a wish
  */
 class WishlistModelWish extends WishlistModelAbstract
 {
@@ -97,7 +97,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Table class name
 	 *
-	 * @var object
+	 * @var string
 	 */
 	protected $_tbl_name = 'Wish';
 
@@ -109,7 +109,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	protected $_context = 'com_wishlist.wish.about';
 
 	/**
-	 * ForumModelAttachment
+	 * WishlistModelAttachment
 	 *
 	 * @var object
 	 */
@@ -130,16 +130,16 @@ class WishlistModelWish extends WishlistModelAbstract
 	private $_plan = null;
 
 	/**
-	 * WishlistModelPlan
+	 * Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
 	private $_proposer = null;
 
 	/**
-	 * WishlistModelPlan
+	 * Cached data
 	 *
-	 * @var object
+	 * @var array
 	 */
 	private $_cache = array(
 		'tag.cloud'        => null,
@@ -156,8 +156,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Constructor
 	 * 
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
-	 * @return     void
+	 * @param   mixed $oid Integer (ID), string (alias), object or array
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
@@ -177,10 +177,10 @@ class WishlistModelWish extends WishlistModelAbstract
 	}
 
 	/**
-	 * Returns a reference to a forum post model
+	 * Returns a reference to this model
 	 *
-	 * @param      mixed $oid ID (int) or array or object
-	 * @return     object ForumModelPost
+	 * @param   mixed  $oid ID (int) or array or object
+	 * @return  object WishlistModelWish
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -219,7 +219,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @return     mixed
+	 * @param   string $property What data to return
+	 * @param   mixed  $default  Default value
+	 * @return  mixed
 	 */
 	public function proposer($property=null, $default=null)
 	{
@@ -246,7 +248,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get the attachment on the wish
 	 *
-	 * @return     void
+	 * @return  object WishlistModelAttachment
 	 */
 	public function attachment()
 	{
@@ -260,8 +262,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp for the proposed datetime
 	 *
-	 * @param      string $rtrn What data to return
-	 * @return     boolean
+	 * @param   string $rtrn What data to return
+	 * @return  boolean
 	 */
 	public function proposed($rtrn='')
 	{
@@ -271,8 +273,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp for the granted datetime
 	 *
-	 * @param      string $rtrn What data to return
-	 * @return     boolean
+	 * @param   string $rtrn What data to return
+	 * @return  boolean
 	 */
 	public function granted($rtrn='')
 	{
@@ -282,8 +284,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp for the due datetime
 	 *
-	 * @param      string $rtrn What data to return
-	 * @return     boolean
+	 * @param   string $rtrn What data to return
+	 * @return  boolean
 	 */
 	public function due($rtrn='')
 	{
@@ -293,9 +295,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $key  Field name to use
-	 * @param      string $rtrn What data to return
-	 * @return     boolean
+	 * @param   string $key  Field name to use
+	 * @param   string $rtrn What data to return
+	 * @return  string
 	 */
 	public function _date($key, $rtrn='')
 	{
@@ -318,7 +320,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Determine if wish is open
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isOpen()
 	{
@@ -332,7 +334,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Determine if wish was rejected
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isAccepted()
 	{
@@ -346,7 +348,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Determine if wish was rejected
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isRejected()
 	{
@@ -360,7 +362,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Determine if wish was withdrawn
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isWithdrawn()
 	{
@@ -374,7 +376,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Determine if wish was granted
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isGranted()
 	{
@@ -388,7 +390,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Determine if wish is private
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isPrivate()
 	{
@@ -402,7 +404,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Determine if wish was reported for abuse
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isReported()
 	{
@@ -416,8 +418,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Return wish status in various formats
 	 *
-	 * @param      string $as Format to return data in [text, alias, note, number]
-	 * @return     mixed string|integer
+	 * @param   string $as Format to return data in [text, alias, note, number]
+	 * @return  mixed  string|integer
 	 */
 	public function status($as='')
 	{
@@ -504,9 +506,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params String or array of extra params to append
-	 * @return     string
+	 * @param   string $type   The type of link to return
+	 * @param   mixed  $params String or array of extra params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{
@@ -517,7 +519,7 @@ class WishlistModelWish extends WishlistModelAbstract
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
 	 *
-	 * @return    object
+	 * @return  object
 	 */
 	private function _adapter()
 	{
@@ -554,8 +556,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Store changes to this offering
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean $check Perform data validation check?
+	 * @return  boolean False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -575,9 +577,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get tags on an entry
 	 *
-	 * @param      string  $what  Data format to return (string, array, cloud)
-	 * @param      integer $admin Get admin tags? 0=no, 1=yes
-	 * @return     mixed
+	 * @param   string  $what  Data format to return (string, array, cloud)
+	 * @param   integer $admin Get admin tags? 0=no, 1=yes
+	 * @return  mixed
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
@@ -609,7 +611,10 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Tag the entry
 	 *
-	 * @return     boolean
+	 * @param   string  $tags    Tags to apply
+	 * @param   integer $user_id ID of tagger
+	 * @param   integer $admin   Tag as admin? 0=no, 1=yes
+	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
@@ -624,9 +629,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get the state of the entry as either text or numerical value
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  mixed String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -660,12 +665,6 @@ class WishlistModelWish extends WishlistModelAbstract
 					$this->set('about.parsed', $this->get('about'));
 					$this->set('about', $content);
 
-					/*$this->set('about.parsed', $this->get('about.parsed') . $attach->getAttachment(
-						$this->get('id'),
-						$this->link('download'),
-						$this->_config
-					));*/
-
 					return $this->content($as, $shorten);
 				}
 
@@ -691,9 +690,9 @@ class WishlistModelWish extends WishlistModelAbstract
 	}
 
 	/**
-	 * Tag the entry
+	 * Get the plan for this wish
 	 *
-	 * @return     boolean
+	 * @return  object WishlistModelPlan
 	 */
 	public function plan()
 	{
@@ -706,9 +705,13 @@ class WishlistModelWish extends WishlistModelAbstract
 	}
 
 	/**
-	 * Tag the entry
+	 * Get the record either immediately before or after the current one
+	 * in a listing of records. 
 	 *
-	 * @return     boolean
+	 * @param   string  $directtion [prev|next]
+	 * @param   array   $filters    Filters to apply
+	 * @param   integer $user_id    A user ID
+	 * @return  boolean
 	 */
 	public function neighbor($direction, $filters=array(), $user_id=null)
 	{
@@ -734,11 +737,13 @@ class WishlistModelWish extends WishlistModelAbstract
 	}
 
 	/**
-	 * Vote on the entry
+	 * Rank an entry
 	 *
-	 * @return     boolean
+	 * @param   integer $effort
+	 * @param   integer $importance
+	 * @return  boolean
 	 */
-	public function rank($effort, $importance) //vote
+	public function rank($effort, $importance)
 	{
 		$juser = JFactory::getUser();
 
@@ -768,7 +773,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Vote on the entry
 	 *
-	 * @return     boolean
+	 * @param   mixed   $vote
+	 * @return  boolean
 	 */
 	public function vote($vote)
 	{
@@ -824,10 +830,10 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get a list or count of votes
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function votes($rtrn='list', $filters=array(), $clear = false)
 	{
@@ -889,10 +895,10 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear = false)
 	{
@@ -1003,10 +1009,10 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get a list or count of ranks
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function rankings($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -1020,11 +1026,6 @@ class WishlistModelWish extends WishlistModelAbstract
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				/*if (!is_numeric($this->_cache['votes.count']) || $clear)
-				{
-					$this->_cache['votes.count'] = $tbl->find('count', $filters);
-				}
-				return $this->_cache['votes.count'];*/
 				return $this->rankings('list')->total();
 			break;
 
@@ -1054,8 +1055,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Get a ranking
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @return     mixed
+	 * @param   string $rtrn Data format to return
+	 * @return  mixed
 	 */
 	public function ranking($rtrn='importance')
 	{
@@ -1073,10 +1074,10 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string  $action    Action to check
-	 * @param      string  $assetType Type of asset to check
-	 * @param      integer $assetId   ID of item to check access on
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $action    Action to check
+	 * @param   string  $assetType Type of asset to check
+	 * @param   integer $assetId   ID of item to check access on
+	 * @return  boolean True if authorized, false if not
 	 */
 	public function access($action='view', $assetType='wish', $assetId=null)
 	{
@@ -1147,8 +1148,8 @@ class WishlistModelWish extends WishlistModelAbstract
 	/**
 	 * Purge data associated with this wish
 	 *
-	 * @param      string  $what What to purge
-	 * @return     boolean True on success, false if not
+	 * @param   string  $what What to purge
+	 * @return  boolean True on success, false if not
 	 */
 	public function purge($what)
 	{
@@ -1180,7 +1181,7 @@ class WishlistModelWish extends WishlistModelAbstract
 			break;
 
 			case 'plan':
-				$plan = $this->plan(); //new WishlistModelPlan(0, $this->get('id'));
+				$plan = $this->plan();
 				if (!$plan->delete())
 				{
 					$this->setError($plan->getError());

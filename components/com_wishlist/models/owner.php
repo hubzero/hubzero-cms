@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_w
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'abstract.php');
 
 /**
- * Courses model class for a forum
+ * Wishlist class for a owner model
  */
 class WishlistModelOwner extends WishlistModelAbstract
 {
@@ -48,10 +48,10 @@ class WishlistModelOwner extends WishlistModelAbstract
 	protected $_tbl_name = 'WishlistOwner';
 
 	/**
-	 * Returns a reference to a forum post model
+	 * Returns a reference to this model
 	 *
-	 * @param      mixed $oid ID (int) or array or object
-	 * @return     object ForumModelPost
+	 * @param      mixed  $oid ID (int) or array or object
+	 * @return     object WishlistModelOwner
 	 */
 	static function &getInstance($oid=0)
 	{
