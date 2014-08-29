@@ -50,7 +50,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>
-				<field name="position" type="text" menu="hide" label="Module position" default="myhub" description="The module position to use to gather draggable modules" />
+				<field name="position" type="text" menu="hide" label="Module position" default="memberDashboard" description="The module position to use to gather draggable modules" />
 				<field name="defaults" type="text" menu="hide" label="Defaults" default="" description="The default list of modules to show" />
 			</fieldset>
 		</fields>
