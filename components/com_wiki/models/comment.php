@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'comment.php');
 
 /**
- * Courses model class for a forum
+ * Wiki model for a comment
  */
 class WikiModelComment extends \Hubzero\Base\Model
 {
@@ -69,8 +69,8 @@ class WikiModelComment extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to a wiki comment model
 	 *
-	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object WikiModelComment
+	 * @param   mixed $oid ID (int) or alias (string)
+	 * @return  object WikiModelComment
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -92,7 +92,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 	/**
 	 * Has the offering started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isReported()
 	{
@@ -106,8 +106,8 @@ class WikiModelComment extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param   string  $as What data to return
+	 * @return  boolean
 	 */
 	public function created($as='')
 	{
@@ -134,9 +134,9 @@ class WikiModelComment extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @param      string $property What data to return
-	 * @param      mixed  $default  Default value
-	 * @return     mixed
+	 * @param   string $property What data to return
+	 * @param   mixed  $default  Default value
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
@@ -163,9 +163,9 @@ class WikiModelComment extends \Hubzero\Base\Model
 	/**
 	 * Get the state of the entry as either text or numerical value
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  mixed   String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -220,8 +220,8 @@ class WikiModelComment extends \Hubzero\Base\Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param   string $type The type of link to return
+	 * @return  boolean
 	 */
 	public function link($type='')
 	{
@@ -262,12 +262,12 @@ class WikiModelComment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a list or count of comments
+	 * Get a list or count of replies
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{

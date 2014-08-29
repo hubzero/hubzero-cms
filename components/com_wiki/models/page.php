@@ -41,7 +41,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'comment.php');
 
 /**
- * Courses model class for a forum
+ * Wiki model for a page
  */
 class WikiModelPage extends \Hubzero\Base\Model
 {
@@ -118,8 +118,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Course ID or alias
-	 * @return     void
+	 * @param   integer $id    [ID, pagename, object, array]
+	 * @param   string  $scope Page scope
+	 * @return  void
 	 */
 	public function __construct($oid, $scope='')
 	{
@@ -171,9 +172,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 * Can be called with a numeric page ID, object, array, or
 	 * pagename + page scope
 	 *
-	 * @param      mixed  $oid   [ID, pagename, object, array]
-	 * @param      string $scope Page scope
-	 * @return     object ForumModelCourse
+	 * @param   mixed  $oid   [ID, pagename, object, array]
+	 * @param   string $scope Page scope
+	 * @return  object WikiModelPage
 	 */
 	static function &getInstance($pagename, $scope='')
 	{
@@ -208,8 +209,8 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Strip punctuation, spaces, make lowercase
 	 *
-	 * @param      string $data Text to normalize
-	 * @return     string
+	 * @param   string $data Text to normalize
+	 * @return  string
 	 */
 	public function normalize($data)
 	{
@@ -219,7 +220,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Has the offering started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isLocked()
 	{
@@ -233,7 +234,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Has the offering started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isStatic()
 	{
@@ -247,8 +248,8 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Returns whether a user is an author for a given page
 	 *
-	 * @param     integer $user_id
-	 * @return    boolean True if user is an author
+	 * @param   integer $user_id
+	 * @return  boolean True if user is an author
 	 */
 	public function isAuthor($user_id=0)
 	{
@@ -272,9 +273,11 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @return     mixed
+	 * @param   string $property Property to find
+	 * @param   mixed  $default  Value to return if property not found
+	 * @return  mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof JUser))
 		{
@@ -286,7 +289,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 		}
 		if ($property)
 		{
-			return $this->_creator->get($property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}
@@ -294,7 +297,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Get the pagename without the namespace
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function denamespaced()
 	{
@@ -305,7 +308,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 * Set and get a specific revision
 	 * Defaults to current revision if no version is specified
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function revision($version=null)
 	{
@@ -376,10 +379,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a revisions for a wiki page
+	 * Get a count or list of revisions
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function revisions($what='list', $filters=array(), $clear=false)
 	{
@@ -432,10 +437,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a revisions for a wiki page
+	 * Get a count or list of authors
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function authors($what='list', $filters=array(), $clear=false)
 	{
@@ -458,7 +465,6 @@ class WikiModelPage extends \Hubzero\Base\Model
 			case 'count':
 				if (!isset($this->_revisions_count) || $clear)
 				{
-					//$tbl = new WikiTableAuthor($this->_db);
 					$this->_revisions_count = $this->authors('list')->total();
 				}
 				return $this->_revisions_count;
@@ -489,11 +495,12 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a list of responses
+	 * Get a count or list of comments
 	 *
-	 * @param      string $rtrn    Data type to return [count, list]
-	 * @param      array  $filters Filters to apply to query
-	 * @return     mixed Returns an integer or array depending upon format chosen
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed   Returns an integer or array depending upon format chosen
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -549,9 +556,11 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Check if the current user is enrolled
+	 * Get tags on this entry
 	 *
-	 * @return     boolean
+	 * @param   string  $what  Data format to return
+	 * @param   integer $admin Return admin tags?
+	 * @return  mixed
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
@@ -563,7 +572,10 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Tag the entry
 	 *
-	 * @return     boolean
+	 * @param   string  $tags    Tags to apply
+	 * @param   integer $user_id ID of tagger
+	 * @param   integer $admin   Tag as admin? 0=no, 1=yes
+	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
@@ -576,8 +588,8 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param   string  $type The type of link to return
+	 * @return  boolean
 	 */
 	public function link($type='', $params=null)
 	{
@@ -585,10 +597,10 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Return a formatted timestamp
+	 * Return a formatted timestamp for created date
 	 *
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param   string $as What data to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -596,10 +608,10 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Return a formatted timestamp
+	 * Return a formatted timestamp for modified date
 	 *
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param   string $as What data to return
+	 * @return  string
 	 */
 	public function modified($as='')
 	{
@@ -609,8 +621,8 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param   string $as What data to return
+	 * @return  string
 	 */
 	private function _date($as='', $property)
 	{
@@ -638,9 +650,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
 	 *
-	 * @param      string  $as      Format to return content in [parsed, clean, raw]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string  $as      Format to return content in [parsed, clean, raw]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  mixed   String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -700,8 +712,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Get a param value
 	 *
-	 * @param	   string $key Property to return
-	 * @return     mixed
+	 * @param   string $key     Property to return
+	 * @param   mixed  $default Value to return if key isn't found
+	 * @return  mixed
 	 */
 	public function param($key='', $default=null)
 	{
@@ -715,8 +728,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Get a configuration value
 	 *
-	 * @param	   string $key Property to return
-	 * @return     mixed
+	 * @param   string $key     Property to return
+	 * @param   mixed  $default Value to return if key isn't found
+	 * @return  mixed
 	 */
 	public function config($key='', $default=null)
 	{
@@ -732,9 +746,11 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Set permissions for a user
+	 * Get permissions for a user
 	 *
-	 * @return     void
+	 * @param   string  $action
+	 * @param   string  $item
+	 * @return  boolean
 	 */
 	public function access($action='view', $item='page')
 	{
@@ -900,10 +916,10 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Bind data to the model
+	 * Rename a page
 	 *
-	 * @param      mixed $data Object or array
-	 * @return     boolean True on success, False on error
+	 * @param   string  $newpagename New page name
+	 * @return  boolean True on success, False on error
 	 */
 	public function rename($newpagename)
 	{
@@ -942,10 +958,11 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Store changes to this database entry
+	 * Store changes to this entry
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean $check  Perform data validation check?
+	 * @param   string  $action Action beign performed
+	 * @return  boolean False if error, True on success
 	 */
 	public function store($check=true, $action='page_edited')
 	{
@@ -977,7 +994,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Delete a record
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function delete()
 	{
@@ -1041,9 +1058,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Log an action
 	 *
-	 * @param     string  $action  Action taken
-	 * @param     integer $user_id Optional ID of user the action was taken on/with
-	 * @return    void
+	 * @param   string  $action  Action taken
+	 * @param   integer $user_id Optional ID of user the action was taken on/with
+	 * @return  void
 	 */
 	public function log($action='page_created', $user_id=0)
 	{
@@ -1074,7 +1091,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 	/**
 	 * Calculate the average rating for the page
 	 *
-	 * @return    void
+	 * @return  integer
 	 */
 	public function calculateRating()
 	{
@@ -1082,10 +1099,10 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Calculate the average rating for the page
+	 * Update the list of authors
 	 *
-	 * @param     integer $user_id Optional ID of user the action was taken on/with
-	 * @return    void
+	 * @param   array   $authors List of authors
+	 * @return  boolean
 	 */
 	public function updateAuthors($authors)
 	{
@@ -1093,10 +1110,9 @@ class WikiModelPage extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Calculate the average rating for the page
+	 * Get the adapter
 	 *
-	 * @param     integer $user_id Optional ID of user the action was taken on/with
-	 * @return    void
+	 * @return  object
 	 */
 	protected function _adapter()
 	{

@@ -34,15 +34,15 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'author.php');
 
 /**
- * Courses model class for a forum
+ * Wiki model for a page author
  */
 class WikiModelAuthor extends \Hubzero\Base\Model
 {
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Course ID or alias
-	 * @return     void
+	 * @param   mixed $oid Integer, object, or array
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
@@ -64,13 +64,10 @@ class WikiModelAuthor extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Returns a reference to a forum model
+	 * Returns a reference to this model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
-	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param   mixed  $oid Integer, object, or array
+	 * @return  object WikiModelAuthor
 	 */
 	static function &getInstance($oid=0)
 	{

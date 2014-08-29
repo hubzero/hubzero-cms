@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php');
 
 /**
- * Courses model class for a forum
+ * Wiki model for a page revision
  */
 class WikiModelRevision extends \Hubzero\Base\Model
 {
@@ -48,8 +48,9 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Course ID or alias
-	 * @return     void
+	 * @param   integer $oid     Integer, object, or array
+	 * @param   integer $page_id Page ID
+	 * @return  void
 	 */
 	public function __construct($oid, $page_id=0)
 	{
@@ -77,8 +78,9 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to a revision model
 	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param   integer $oid     Integer, object, or array
+	 * @param   integer $page_id Page ID
+	 * @return  object WikiModelRevision
 	 */
 	static function &getInstance($oid, $page_id=0)
 	{
@@ -113,8 +115,8 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param   string $as What data to return
+	 * @return  boolean
 	 */
 	public function created($as='')
 	{
@@ -141,9 +143,11 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @return     mixed
+	 * @param   string $property Property to find
+	 * @param   mixed  $default  Value to return if property not found
+	 * @return  mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof JUser))
 		{
@@ -155,7 +159,7 @@ class WikiModelRevision extends \Hubzero\Base\Model
 		}
 		if ($property)
 		{
-			return $this->_creator->get($property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}
@@ -168,9 +172,9 @@ class WikiModelRevision extends \Hubzero\Base\Model
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
 	 *
-	 * @param      string  $as      Format to return content in [parsed, clean, raw]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string  $as      Format to return content in [parsed, clean, raw]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  mixed   String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
