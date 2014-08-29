@@ -53,7 +53,7 @@ $assets = array();
 		<label for="content">Content: </label>
 		<?php
 		$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $asset->get('content'));
-		echo \JFactory::getEditor()->display('content', $content, '', '', 35, 10, false, 'content', null, null, array('class' => 'minimal no-footer images'));
+		echo \JFactory::getEditor()->display('content', $content, '', '', 35, 10, false, 'content'); //, null, null, array('class' => 'minimal no-footer images'));
 		?>
 
 <?php // @TODO: implement asset insertion to wiki body! ?>
