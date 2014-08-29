@@ -142,14 +142,14 @@ class Migration20140829131400PlgMembersMessages extends Base
 		{
 			if ($this->db->tableHasKey('#__xmessage_notify', 'idx_uid'))
 			{
-				$query = "ALTER TABLE `#__xmessage_notify` ADD INDEX `idx_uid` (`uid`);";
+				$query = "ALTER TABLE `#__xmessage_notify` DROP INDEX `idx_uid`;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
 
 			if ($this->db->tableHasKey('#__xmessage_notify', 'idx_method'))
 			{
-				$query = "ALTER TABLE `#__xmessage_notify` ADD INDEX `idx_method` (`method`);";
+				$query = "ALTER TABLE `#__xmessage_notify` DROP INDEX `idx_method`;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
