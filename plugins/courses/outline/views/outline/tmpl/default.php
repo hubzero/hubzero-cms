@@ -324,7 +324,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															$link = '<a class="' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($a->get('title'))) . '</a>';
 
 															// Finally, make sure prereqs have been met
-															if ($a->get('type') != 'video' && !$prerequisites->hasMet('asset', $a->get('id')) && !$isManager)
+															if (!$prerequisites->hasMet('asset', $a->get('id')) && !$isManager)
 															{
 																$info  = "This item has prerequisites that have not yet been met. Begin by completing: ";
 																$items = array();

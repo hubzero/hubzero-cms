@@ -110,6 +110,35 @@ if (!$this->course->offering()->access('view') && (!$sparams->get('preview', 0) 
 
 				if ($used)
 				{
+					// Check prerequisites
+					$member = $this->course->offering()->section()->member(JFactory::getUser()->get('id'));
+					if (is_null($member->get('section_id')))
+					{
+						$member->set('section_id', $this->course->offering()->section()->get('id'));
+					}
+					$prerequisites = $member->prerequisites($this->course->offering()->gradebook());
+
+					if (!$this->course->offering()->access('manage') && !$prerequisites->hasMet('asset', $used_asset->get('id')))
+					{
+						$prereqs      = $prerequisites->get('asset', $used_asset->get('id'));
+						$requirements = array();
+						foreach ($prereqs as $pre)
+						{
+							$reqAsset = new CoursesModelAsset($pre['scope_id']);
+							$requirements[] = $reqAsset->get('title');
+						}
+
+						$requirements = implode(', ', $requirements);
+
+						// Redirect back to the course outline
+						\JFactory::getApplication()->redirect(
+							JRoute::_($base),
+							JText::sprintf('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
+							'warning'
+						);
+						return;
+					}
+
 					echo $used_asset->render($this->course);
 
 					if ($this->course->offering()->access('manage'))
