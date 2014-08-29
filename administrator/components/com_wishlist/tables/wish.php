@@ -312,12 +312,8 @@ class Wish extends JTable
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'helpers' . DS . 'tags.php');
-
-			$tagging = new WishTags($this->_db);
-			$tags = $tagging->_parse_tags($filters['tag']);
-
-			$sql .= " AND (LOWER(ws.subject) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(ws.about) LIKE '%" . strtolower($filters['search']) . "%')";
+			$word = $this->_db->quote('%' . strtolower($filters['search']) . '%');
+			$sql .= " AND ((LOWER(ws.subject) LIKE $word) OR (LOWER(ws.about) LIKE $word)) ";
 		}
 
 		// do not show private wishes
@@ -520,10 +516,8 @@ class Wish extends JTable
 
 		if ($fullinfo && isset($filters['search']) && $filters['search'])
 		{
-			$tagging = new WishTags($this->_db);
-			$tags = $tagging->_parse_tags($filters['tag']);
-
-			$sql .= " AND (LOWER(ws.subject) LIKE '%" . strtolower($filters['search']) . "%' OR LOWER(ws.about) LIKE '%" . strtolower($filters['search']) . "%')";
+			$word = $this->_db->quote('%' . strtolower($filters['search']) . '%');
+			$sql .= " AND ((LOWER(ws.subject) LIKE $word) OR (LOWER(ws.about) LIKE $word)) ";
 		}
 		if ($fullinfo && $filters['tag'])
 		{
