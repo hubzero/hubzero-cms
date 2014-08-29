@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Support mdoel for a ticket comment
+ * Support mdoel for a ticket changelog
  */
 class SupportModelChangelog extends \Hubzero\Base\Object
 {
@@ -53,7 +53,8 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Is the question open?
 	 *
-	 * @return     boolean
+	 * @param   string  $data
+	 * @return  boolean
 	 */
 	public function __construct($data=null)
 	{
@@ -212,7 +213,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	 *
 	 * @param   string  $property  The name of the property.
 	 * @param   mixed   $default   The default value.
-	 * @return  mixed    The value of the property.
+	 * @return  mixed   The value of the property.
 	 */
 	public function get($property, $default = null)
 	{
@@ -228,7 +229,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	 *
 	 * @param   string  $property  The name of the property.
 	 * @param   mixed   $value     The value of the property to set.
-	 * @return  mixed  Previous value of the property.
+	 * @return  mixed   Previous value of the property.
 	 */
 	public function set($property, $value = null)
 	{
@@ -239,8 +240,8 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     boolean
+	 * @param   string  $as What format to return
+	 * @return  boolean
 	 */
 	public function render()
 	{
@@ -279,10 +280,10 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Add an entry to the change log
 	 *
-	 * @param      string $field  Field name
-	 * @param      string $before Old value (if any)
-	 * @param      string $after  New value (if any)
-	 * @return     object
+	 * @param   string $field  Field name
+	 * @param   string $before Old value (if any)
+	 * @param   string $after  New value (if any)
+	 * @return  object
 	 */
 	public function changed($field, $before='', $after='')
 	{
@@ -299,8 +300,8 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Add CC info to the log
 	 *
-	 * @param      string  $val Value to log
-	 * @return     object
+	 * @param   string  $val Value to log
+	 * @return  object
 	 */
 	public function cced($val)
 	{
@@ -361,10 +362,10 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Add an entry to the notifications list
 	 *
-	 * @param      string $role    User role
-	 * @param      string $name    User name
-	 * @param      string $address User email
-	 * @return     object
+	 * @param   string $role    User role
+	 * @param   string $name    User name
+	 * @param   string $address User email
+	 * @return  object
 	 */
 	public function notified($role, $name, $address)
 	{
@@ -381,11 +382,11 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Get a count of or list of attachments on this model
 	 *
-	 * @param      string $to     Category
-	 * @param      string $field  Field name
-	 * @param      string $before Old value (if any)
-	 * @param      string $after  New value (if any)
-	 * @return     object
+	 * @param   string $to     Category
+	 * @param   string $field  Field name
+	 * @param   string $before Old value (if any)
+	 * @param   string $after  New value (if any)
+	 * @return  object
 	 */
 	public function add($to, $field, $before='', $after='')
 	{
@@ -415,9 +416,9 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Remove an item form the log
 	 *
-	 * @param      string $from  Area to remove from
-	 * @param      string $field Field to remove
-	 * @return     object
+	 * @param   string $from  Area to remove from
+	 * @param   string $field Field to remove
+	 * @return  object
 	 */
 	public function remove($from, $field)
 	{
@@ -440,9 +441,9 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Log changes from one version of the ticket to the next
 	 *
-	 * @param      object $before
-	 * @param      object $after
-	 * @return     object
+	 * @param   object $before
+	 * @param   object $after
+	 * @return  object
 	 */
 	public function diff($before, $after)
 	{
@@ -510,7 +511,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 	/**
 	 * Output log as a string
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function __toString()
 	{

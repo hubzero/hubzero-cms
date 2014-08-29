@@ -72,11 +72,9 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	private $_base = 'index.php?option=com_support';
 
 	/**
-	 * Get a count of or list of attachments on this model
+	 * Constructor
 	 *
-	 * @param      string  $rtrn    Data to return state in [count, list]
-	 * @param      array   $filters Filters to apply to the query
-	 * @param      boolean $clear   Clear data cache?
+	 * @param      mixed $oid Integer, array, or object
 	 * @return     mixed
 	 */
 	public function __construct($oid=null)
@@ -98,7 +96,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to a support ticket model
 	 *
-	 * @param      mixed   $id      ID (int), array, or object
+	 * @param      mixed  $id  ID (int), array, or object
 	 * @return     object SupportModelTicket
 	 */
 	static function &getInstance($id=null)
@@ -112,7 +110,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 
 		if (!isset($instances[$id]))
 		{
-			$instances[$id] = new SupportModelTicket($id);
+			$instances[$id] = new self($id);
 		}
 
 		return $instances[$id];
@@ -126,6 +124,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 * it returns the entire JUser object
 	 *
 	 * @param      string $property User property to look up
+	 * @param      mixed  $default  Value to return if property not found
 	 * @return     mixed
 	 */
 	public function submitter($property=null, $default=null)
@@ -158,6 +157,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 * it returns the entire JUser object
 	 *
 	 * @param      string $property User property to look up
+	 * @param      mixed  $default  Value to return if property not found
 	 * @return     mixed
 	 */
 	public function owner($property=null, $default=null)
@@ -263,9 +263,9 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the status text for a status number
+	 * Get the status text for a status
 	 *
-	 * @param      integer $int Status number
+	 * @param      string $as Data to return
 	 * @return     string
 	 */
 	public function status($as='text')

@@ -89,10 +89,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	private $_base = 'index.php?option=com_kb';
 
 	/**
-	 * Returns a reference to a question model
-	 *
-	 * This method must be invoked as:
-	 *     $offering = AnswersModelQuestion::getInstance($id);
+	 * Returns a reference to this model
 	 *
 	 * @param      integer $oid Question ID
 	 * @return     object ForumModelCourse
@@ -108,7 +105,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new KbModelCategory($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -120,7 +117,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	 * @param      string  $rtrn    Data type to return [count, list]
 	 * @param      array   $filters Filters to apply to query
 	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed Returns an integer or iterator object depending upon format chosen
+	 * @return     mixed   Returns an integer or iterator object depending upon format chosen
 	 */
 	public function articles($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -197,7 +194,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	 * @param      string  $rtrn    Data type to return [count, list]
 	 * @param      array   $filters Filters to apply to query
 	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed Returns an integer or iterator object depending upon format chosen
+	 * @return     mixed   Returns an integer or iterator object depending upon format chosen
 	 */
 	public function children($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -279,7 +276,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
 	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @return     string
 	 */
 	public function link($type='')
 	{

@@ -125,6 +125,8 @@ class SupportModelComment extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
+	 * @param      string $property Property to retrieve
+	 * @param      mixed  $default  Default value if property not set
 	 * @return     mixed
 	 */
 	public function creator($property=null, $default=null)
@@ -204,11 +206,11 @@ class SupportModelComment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get the content of the entry is various formats
 	 *
 	 * @param      string  $as      Format to return state in [text, number]
 	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @return     mixed   String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -315,6 +317,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 	/**
 	 * Delete the record and all associated data
 	 *
+	 * @param     boolean $check Validate data?
 	 * @return    boolean False if error, True on success
 	 */
 	public function store($check=true)

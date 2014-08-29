@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'attachment.php');
 
 /**
- * Support mdoel for a ticket resolution
+ * Support mdoel for a ticket attachment
  */
 class SupportModelAttachment extends \Hubzero\Base\Model
 {
@@ -80,7 +80,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	/**
 	 * Process an attachment macro and output a link to the file
 	 *
-	 * @param      array $matches Macro info
+	 * @param      array  $matches Macro info
 	 * @return     string HTML
 	 */
 	public function getAttachment($matches)

@@ -90,7 +90,6 @@ class KbModelArchive extends \Hubzero\Base\Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Course ID or alias
 	 * @return     void
 	 */
 	public function __construct()
@@ -101,13 +100,10 @@ class KbModelArchive extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Returns a reference to a forum model
+	 * Returns a reference to this model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = ForumModelCourse::getInstance($alias);
-	 *
-	 * @param      mixed $oid Course ID (int) or alias (string)
-	 * @return     object ForumModelCourse
+	 * @param      string $key
+	 * @return     object KbModelArchive
 	 */
 	static function &getInstance($key='site')
 	{
@@ -120,14 +116,14 @@ class KbModelArchive extends \Hubzero\Base\Object
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new KbModelArchive();
+			$instances[$key] = new self();
 		}
 
 		return $instances[$key];
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific category
 	 *
 	 * @return     void
 	 */
@@ -159,7 +155,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get a list of categories
+	 * Get a count or list of categories
 	 *
 	 * @param      string  $rtrn    What data to return
 	 * @param      array   $filters Filters to apply to data retrieval
@@ -229,7 +225,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get a list of articles
+	 * Get a count or list of articles
 	 *
 	 * @param      string  $rtrn    What data to return
 	 * @param      array   $filters Filters to apply to data retrieval

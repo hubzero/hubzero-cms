@@ -41,7 +41,7 @@ if (!class_exists('KbModelCategory'))
 }
 
 /**
- * Courses model class for a forum
+ * Knowledgebase model for an article
  */
 class KbModelArticle extends \Hubzero\Base\Model
 {
@@ -111,7 +111,8 @@ class KbModelArticle extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
+	 * @param      mixed  $oid      Integer (ID), string (alias), object or array
+	 * @param      string $category Category alias
 	 * @return     void
 	 */
 	public function __construct($oid, $category=null)
@@ -166,7 +167,8 @@ class KbModelArticle extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to an article model
 	 *
-	 * @param      mixed $oid Article ID or alias
+	 * @param      mixed  $oid      Article ID or alias
+	 * @param      string $category Category alias
 	 * @return     object KbModelArticle
 	 */
 	static function &getInstance($oid=null)
@@ -180,7 +182,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new KbModelArticle($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -242,7 +244,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Return a formatted timestamp
+	 * Return a formatted timestamp for created date
 	 *
 	 * @param      string $as What data to return
 	 * @return     string
@@ -253,7 +255,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Return a formatted timestamp
+	 * Return a formatted timestamp for modified date
 	 *
 	 * @param      string $as What data to return
 	 * @return     string
@@ -323,9 +325,10 @@ class KbModelArticle extends \Hubzero\Base\Model
 	/**
 	 * Get a list of responses
 	 *
-	 * @param      string $rtrn    Data type to return [count, list]
-	 * @param      array  $filters Filters to apply to query
-	 * @return     mixed Returns an integer or array depending upon format chosen
+	 * @param      string  $rtrn    Data type to return [count, list]
+	 * @param      array   $filters Filters to apply to query
+	 * @param      boolean $clear   Clear cached data?
+	 * @return     mixed   Returns an integer or array depending upon format chosen
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -407,7 +410,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 *
 	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
 	 * @param      integer $admin Include amdin tags? (defaults to no)
-	 * @return     boolean
+	 * @return     mixed
 	 */
 	public function tags($as='cloud', $admin=0)
 	{
@@ -450,7 +453,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
 	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @return     string
 	 */
 	public function link($type='')
 	{
@@ -528,7 +531,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 *
 	 * @param      string  $as      Format to return content in [parsed, clean, raw]
 	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @return     mixed   String or Integer
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -703,7 +706,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 * Normalize a vote to a common format
 	 *
 	 * @param      mixed $vote String or integer
-	 * @return     string like|dislike
+	 * @return     mixed like|dislike
 	 */
 	private function _normalizeVote($vote)
 	{
@@ -772,7 +775,8 @@ class KbModelArticle extends \Hubzero\Base\Model
 	/**
 	 * Get a param value
 	 *
-	 * @param	   string $key Property to return
+	 * @param      string $key     Property to return
+	 * @param      mixed  $default Value to return if key is not found
 	 * @return     mixed
 	 */
 	public function param($key='', $default=null)

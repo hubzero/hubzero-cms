@@ -106,11 +106,10 @@ class SupportModelTags extends TagsModelCloud
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Append a tag to the existing tag list
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param      string $tag
+	 * @return     void
 	 */
 	public function append($tag)
 	{

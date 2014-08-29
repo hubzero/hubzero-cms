@@ -48,7 +48,7 @@ class SupportModelStatus extends \Hubzero\Base\Model
 	/**
 	 * Is the entry open?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isOpen()
 	{
