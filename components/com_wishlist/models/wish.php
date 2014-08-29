@@ -665,7 +665,7 @@ class WishlistModelWish extends WishlistModelAbstract
 					$this->set('about.parsed', $this->get('about'));
 					$this->set('about', $content);
 
-					return $this->content($as, $shorten);
+					return $this->get('about.parsed') ? $this->content($as, $shorten) : NULL;
 				}
 
 				$options['html'] = true;
