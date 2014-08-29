@@ -92,7 +92,7 @@ HUB.Plugins.CoursesProgress = {
 								$(window).trigger('scroll');
 
 								end_time = new Date().getTime() - start_time;
-								$('.fetching-rows-bar').stop(false, false).animate({'width':(((start+data.members.length)/members_cnt)*100)+'%'}, end_time);
+								$('.fetching-rows-bar').stop(false, false).animate({'width':(((start+data.members.length)/members_cnt)*100)+'%'}, end_time, 'linear');
 								start += limit;
 
 								if (start < members_cnt) {
