@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Group module menu model class
+ */
 class GroupsModelModuleMenu extends \Hubzero\Base\Model
 {
 	/**
@@ -40,14 +43,13 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 	 */
 	protected $_tbl_name = 'GroupsTableModuleMenu';
 
-
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed     $
-	 * @return     void
+	 * @param   mixed $oid
+	 * @return  void
 	 */
-	public function __construct( $oid )
+	public function __construct($oid)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -59,14 +61,14 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 		}
 		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 	}
 
 	/**
-	 * Get Pages Module appear on
+	 * Get page title
 	 * 
-	 * @return [type] [description]
+	 * @return  string
 	 */
 	public function getPageTitle()
 	{
@@ -83,10 +85,10 @@ class GroupsModelModuleMenu extends \Hubzero\Base\Model
 		// new group page
 		$tbl = new GroupsTablePage($this->_db);
 
-		//load page
-		$tbl->load( $this->get('pageid') );
+		// load page
+		$tbl->load($this->get('pageid'));
 
-		//return page title
+		// return page title
 		return $tbl->get('title');
 	}
 

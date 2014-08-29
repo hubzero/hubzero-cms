@@ -35,6 +35,9 @@ defined('_JEXEC') or die('Restricted access');
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page.php';
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category' . DS . 'archive.php';
 
+/**
+ * Group page archive model class
+ */
 class GroupsModelPageArchive extends JObject
 {
 	/**
@@ -45,7 +48,7 @@ class GroupsModelPageArchive extends JObject
 	private $_pages = null;
 
 	/**
-	 * Modules count
+	 * Page count
 	 *
 	 * @var integer
 	 */
@@ -73,13 +76,14 @@ class GroupsModelPageArchive extends JObject
 	public function __construct()
 	{
 		$this->_db    = JFactory::getDBO();
-		$this->_group = \Hubzero\User\Group::getInstance( JRequest::getVar('cn', '') );
+		$this->_group = \Hubzero\User\Group::getInstance(JRequest::getVar('cn', ''));
 	}
 
 	/**
 	 * Get Instance of Page Archive
 	 *
-	 * @param   $key   Instance Key
+	 * @param   string $key Instance Key
+	 * @return  object GroupsModelPageArchive
 	 */
 	static function &getInstance($key=null)
 	{
@@ -92,7 +96,7 @@ class GroupsModelPageArchive extends JObject
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new GroupsModelPageArchive();
+			$instances[$key] = new self();
 		}
 
 		return $instances[$key];
@@ -106,13 +110,13 @@ class GroupsModelPageArchive extends JObject
 	 * @param      boolean $boolean Clear cached data?
 	 * @return     mixed
 	 */
-	public function pages( $rtrn = 'list', $filters = array(), $clear = false )
+	public function pages($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		switch (strtolower($rtrn))
 		{
 			case 'alias':
 				$aliases = array();
-				if($results = $this->pages('list', $filters, true))
+				if ($results = $this->pages('list', $filters, true))
 				{
 					foreach ($results as $result)
 					{
@@ -123,7 +127,7 @@ class GroupsModelPageArchive extends JObject
 			break;
 			case 'unapproved':
 				$unapproved = array();
-				if($results = $this->pages('list', $filters, true))
+				if ($results = $this->pages('list', $filters, true))
 				{
 					foreach ($results as $k => $result)
 					{
@@ -144,7 +148,7 @@ class GroupsModelPageArchive extends JObject
 				if (!($this->_pages instanceof \Hubzero\Base\Model\ItemList) || $clear)
 				{
 					$tbl = new GroupsTablePage($this->_db);
-					if ($results = $tbl->find( $filters ))
+					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
@@ -166,7 +170,7 @@ class GroupsModelPageArchive extends JObject
 	 * @param      array   $filters     Filters passed to pages() method
 	 * @return     mixed
 	 */
-	public function reset( $key = 'home', $value = 0, $filters = array() )
+	public function reset($key = 'home', $value = 0, $filters = array())
 	{
 		// get list of pages
 		$pages = $this->pages('list', $filters);

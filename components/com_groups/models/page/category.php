@@ -34,6 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 // include needed jtables
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . DS . 'tables' . DS . 'page.category.php';
 
+/**
+ * Group page category model class
+ */
 class GroupsModelPageCategory extends \Hubzero\Base\Model
 {
 	/**
@@ -57,12 +60,17 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 	 */
 	private $_pages = null;
 
+	/**
+	 * Page count
+	 *
+	 * @var integer
+	 */
 	private $_pages_count = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed     Object Id
+	 * @param      mixed $oid Integer, array, or object
 	 * @return     void
 	 */
 	public function __construct($oid = null)
@@ -76,15 +84,22 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 		// load object
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load( $oid );
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 	}
 
-	public function getPages( $rtrn = 'list', $clear = false )
+	/**
+	 * Get pages in this category
+	 *
+	 * @param     string  $rtrn    What do we want back
+	 * @param     boolean $clear   Fetch an updated list
+	 * @return    object  \Hubzero\Base\ItemList
+	 */
+	public function getPages($rtrn = 'list', $clear = false)
 	{
 		// create page jtable
 		$tbl = new GroupsTablePage($this->_db);
@@ -93,13 +108,16 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 		$filters = array(
 			'gidNumber' => $this->get('gidNumber'),
 			'category'  => $this->get('id'),
-			'state'     => array(0,1)
+			'state'     => array(0, 1)
 		);
 
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				$this->_pages_count = $tbl->count($filters);
+				if (!isset($this->_pages_count))
+				{
+					$this->_pages_count = $tbl->count($filters);
+				}
 				return (int) $this->_pages_count;
 			break;
 			case 'list':
@@ -119,5 +137,4 @@ class GroupsModelPageCategory extends \Hubzero\Base\Model
 			break;
 		}
 	}
-
 }

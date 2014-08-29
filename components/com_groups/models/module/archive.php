@@ -35,6 +35,9 @@ defined('_JEXEC') or die('Restricted access');
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module.php';
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'module' . DS . 'menu.php';
 
+/**
+ * Group module archive model class
+ */
 class GroupsModelModuleArchive extends JObject
 {
 	/**
@@ -65,12 +68,10 @@ class GroupsModelModuleArchive extends JObject
 	 */
 	private $_config;
 
-
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Course ID or alias
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -80,7 +81,8 @@ class GroupsModelModuleArchive extends JObject
 	/**
 	 * Get Instance of Module Archive
 	 *
-	 * @param   $key   Instance Key
+	 * @param   string $key Instance Key
+	 * @return  object GroupsModelModuleArchive
 	 */
 	static function &getInstance($key=null)
 	{
@@ -93,7 +95,7 @@ class GroupsModelModuleArchive extends JObject
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new GroupsModelModuleArchive();
+			$instances[$key] = new self();
 		}
 
 		return $instances[$key];
@@ -102,14 +104,13 @@ class GroupsModelModuleArchive extends JObject
 	/**
 	 * Get a list of group modules
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    What data to return
+	 * @param   array   $filters Filters to apply to data retrieval
+	 * @param   boolean $boolean Clear cached data?
+	 * @return  mixed
 	 */
-	public function modules( $rtrn = 'list', $filters = array(), $clear = false )
+	public function modules($rtrn = 'list', $filters = array(), $clear = false)
 	{
-
 		switch (strtolower($rtrn))
 		{
 			case 'unapproved':
@@ -142,5 +143,4 @@ class GroupsModelModuleArchive extends JObject
 			break;
 		}
 	}
-
 }

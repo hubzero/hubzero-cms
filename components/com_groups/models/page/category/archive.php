@@ -34,6 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 // include needed modelss
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'category.php';
 
+/**
+ * Group page category archive model class
+ */
 class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 {
 	/**
@@ -46,7 +49,6 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed     Object Id
 	 * @return     void
 	 */
 	public function __construct()
@@ -56,14 +58,14 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Get a list of group pages
+	 * Get a list of categories
 	 *
 	 * @param      string  $rtrn    What data to return
 	 * @param      array   $filters Filters to apply to data retrieval
 	 * @param      boolean $boolean Clear cached data?
 	 * @return     mixed
 	 */
-	public function categories( $rtrn = 'list', $filters = array(), $clear = false )
+	public function categories($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		switch (strtolower($rtrn))
 		{
@@ -75,7 +77,7 @@ class GroupsModelPageCategoryArchive extends \Hubzero\Base\Model
 				if (!($this->_categories instanceof \Hubzero\Base\Model\ItemList) || $clear)
 				{
 					$tbl = new GroupsTablePageCategory($this->_db);
-					if ($results = $tbl->find( $filters ))
+					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{

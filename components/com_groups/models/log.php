@@ -34,6 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 // include needed jtables
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'log.php';
 
+/**
+ * Group log model class
+ */
 class GroupsModelLog extends \Hubzero\Base\Model
 {
 	/**
@@ -53,7 +56,7 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed     Object Id
+	 * @param      mixed $oid Object Id
 	 * @return     void
 	 */
 	public function __construct($oid = null)
@@ -69,7 +72,7 @@ class GroupsModelLog extends \Hubzero\Base\Model
 		{
 			$this->_tbl->load( $oid );
 		}
-		else if(is_object($oid) || is_array($oid))
+		else if (is_object($oid) || is_array($oid))
 		{
 			$this->bind( $oid );
 		}
@@ -95,7 +98,8 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	/**
 	 * Log a Group action
 	 *
-	 * @param    array   $options
+	 * @param   array  $options
+	 * @return  object
 	 */
 	private function log(array $options = null)
 	{
@@ -128,9 +132,9 @@ class GroupsModelLog extends \Hubzero\Base\Model
 	 *
 	 * Resolves instance of log model and runs method on instance with args
 	 *
-	 * @param    $method    Static method name
-	 * @param    $args      Method args passed
-	 * @return   void
+	 * @param    string $method  Static method name
+	 * @param    array  $args    Method args passed
+	 * @return   mixed
 	 */
 	public static function __callStatic($method, $args)
 	{

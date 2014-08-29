@@ -34,6 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 // include needed models
 require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'log.php';
 
+/**
+ * Group log archive model class
+ */
 class GroupsModelLogArchive extends \Hubzero\Base\Model
 {
 	/**
@@ -46,8 +49,7 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed     Object Id
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -58,7 +60,8 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 	/**
 	 * Get Instance of Page Archive
 	 *
-	 * @param   $key   Instance Key
+	 * @param   string $key Instance Key
+	 * @return  object GroupsModelLogArchive
 	 */
 	static function &getInstance($key=null)
 	{
@@ -69,20 +72,20 @@ class GroupsModelLogArchive extends \Hubzero\Base\Model
 		}
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new GroupsModelLogArchive();
+			$instances[$key] = new self();
 		}
 		return $instances[$key];
 	}
 
 	/**
-	 * Get a list of group pages
+	 * Get a list of logs
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    What data to return
+	 * @param   array   $filters Filters to apply to data retrieval
+	 * @param   boolean $boolean Clear cached data?
+	 * @return  object
 	 */
-	public function logs( $rtrn = 'list', $filters = array(), $clear = false )
+	public function logs($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		switch (strtolower($rtrn))
 		{

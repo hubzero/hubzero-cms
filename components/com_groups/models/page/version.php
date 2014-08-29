@@ -34,6 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 // include needed jtables
 require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'page.version.php';
 
+/**
+ * Group page version model class
+ */
 class GroupsModelPageVersion extends \Hubzero\Base\Model
 {
 	/**
@@ -60,7 +63,7 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed     Object Id
+	 * @param      mixed $oid Integer, array, or object
 	 * @return     void
 	 */
 	public function __construct($oid = null)
@@ -74,11 +77,11 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 		// load object
 		if (is_numeric($oid))
 		{
-			$this->_tbl->load( $oid );
+			$this->_tbl->load($oid);
 		}
 		else if (is_object($oid) || is_array($oid))
 		{
-			$this->bind( $oid );
+			$this->bind($oid);
 		}
 	}
 
@@ -188,10 +191,10 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 	 * Purify the HTML content via HTML Purifier
 	 *
 	 * @param     string    $content           Unpurified HTML content
-	 * @param     bool      $trustedContent    Is the content trusted?
+	 * @param     boolean   $trustedContent    Is the content trusted?
 	 * @return    string
 	 */
-	public static function purify( $content, $trustedContent = false )
+	public static function purify($content, $trustedContent = false)
 	{
 		// array to hold options
 		$options = array();

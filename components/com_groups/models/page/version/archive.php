@@ -34,6 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 // include needed modelss
 require_once JPATH_ROOT . DS . 'components' . DS . 'com_groups' . DS . 'models' . DS . 'page' . DS . 'version.php';
 
+/**
+ * Group page version archive model class
+ */
 class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 {
 	/**
@@ -53,7 +56,6 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed     Object Id
 	 * @return     void
 	 */
 	public function __construct()
@@ -70,14 +72,17 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 	 * @param      boolean $boolean Clear cached data?
 	 * @return     mixed
 	 */
-	public function versions( $rtrn = 'list', $filters = array(), $clear = false )
+	public function versions($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		$tbl = new GroupsTablePageVersion($this->_db);
 
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				$this->_versions_count = $tbl->count( $filters );
+				if (!isset($this->_versions_count))
+				{
+					$this->_versions_count = $tbl->count($filters);
+				}
 				return (int) $this->_versions_count;
 			break;
 			case 'list':
@@ -90,7 +95,7 @@ class GroupsModelPageVersionArchive extends \Hubzero\Base\Model
 						$filters['pageid'] = 0;
 					}
 
-					if ($results = $tbl->find( $filters ))
+					if ($results = $tbl->find($filters))
 					{
 						foreach ($results as $key => $result)
 						{
