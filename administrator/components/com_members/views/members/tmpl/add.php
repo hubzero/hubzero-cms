@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $canDo = MembersHelper::getActions('component');
 
-JToolBarHelper::title(JText::_('MEMBER') . ': <small><small>[ ' . JText::_('NEW') . ' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('MEMBER') . ': ' . JText::_('NEW'), 'user.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::save('new');
@@ -55,7 +55,7 @@ JToolBarHelper::cancel();
 	}
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-100 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('MEMBERS_PROFILE'); ?></span></legend>
@@ -64,34 +64,30 @@ JToolBarHelper::cancel();
 			<input type="hidden" name="task" value="edit" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 
-			<table class="admintable">
-				<tbody>
-					<tr>
-						<td class="key"><label for="username"><?php echo JText::_('COL_USERNAME'); ?>:</label></td>
-						<td><input type="text" name="profile[username]" id="username" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="email"><?php echo JText::_('COL_EMAIL'); ?>:</label></td>
-						<td><input type="text" name="profile[email]" id="email" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="password"><?php echo JText::_('COL_PASSWORD'); ?>:</label></td>
-						<td><input type="text" name="profile[password]" id="password" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="givenName"><?php echo JText::_('FIRST_NAME'); ?>:</label></td>
-						<td><input type="text" name="profile[givenName]" id="givenName" size="50" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="middleName"><?php echo JText::_('MIDDLE_NAME'); ?>:</label></td>
-						<td><input type="text" name="profile[middleName]" id="middleName" size="50" /></td>
-					</tr>
-					<tr>
-						<td class="key"><label for="surname"><?php echo JText::_('LAST_NAME'); ?>:</label></td>
-						<td><input type="text" name="profile[surname]" id="surname" size="50" /></td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="input-wrap">
+				<label for="username"><?php echo JText::_('COL_USERNAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="profile[username]" id="username" />
+			</div>
+			<div class="input-wrap">
+				<label for="email"><?php echo JText::_('COL_EMAIL'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="profile[email]" id="email" />
+			</div>
+			<div class="input-wrap">
+				<label for="password"><?php echo JText::_('COL_PASSWORD'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="profile[password]" id="password" />
+			</div>
+			<div class="input-wrap">
+				<label for="givenName"><?php echo JText::_('FIRST_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="profile[givenName]" id="givenName" size="50" />
+			</div>
+			<div class="input-wrap">
+				<label for="middleName"><?php echo JText::_('MIDDLE_NAME'); ?>:</label>
+				<input type="text" name="profile[middleName]" id="middleName" size="50" />
+			</div>
+			<div class="input-wrap">
+				<label for="surname"><?php echo JText::_('LAST_NAME'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<input type="text" name="profile[surname]" id="surname" size="50" />
+			</div>
 		</fieldset>
 		<?php echo JHTML::_('form.token'); ?>
 	</div>
