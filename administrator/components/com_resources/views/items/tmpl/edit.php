@@ -110,7 +110,7 @@ function submitbutton(pressbutton)
 	// do field validation
 	if (document.getElementById('field-title').value == ''){
 		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TITLE'); ?>');
-	} else if (document.getElementById('field-type').value == "-1"){
+	} else if (document.getElementById('type').value == "-1"){
 		alert('<?php echo JText::_('COM_RESOURCES_ERROR_MISSING_TYPE'); ?>');
 	} else {
 		<?php echo JFactory::getEditor()->save('text'); ?>
