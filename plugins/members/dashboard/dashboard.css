@@ -593,6 +593,32 @@
     background: #484848;
     color: #FFF;
 }
+.module-content form[id^=poll] h4 {
+    border-bottom: 1px solid #DDD;
+    border-top: 1px solid #DDD;
+    margin: -1px 0 0 0;
+    padding: 0;
+    display: block;
+    padding: 10px 10px 5px 10px;
+    color: #333;
+}
+.module-content form[id^=poll] ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.module-content form[id^=poll] ul li {
+    border-bottom: 1px solid #DDD;
+    padding: 5px 10px;
+    margin: 0;
+}
+.module-content form[id^=poll] ul li label {
+    margin-left: 5px;
+}
+.module-content form[id^=poll] ul li:hover {
+    background: #efefef;
+}
+
 
 /* Hide resize handle and module links (remove & settings) */
 .static .gs-resize-handle,
