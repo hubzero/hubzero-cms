@@ -37,7 +37,7 @@ defined('_JEXEC') or die('Restricted access');
 class AnswersModelAbstract extends \Hubzero\Base\Model
 {
 	/**
-	 * JUser
+	 * Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
@@ -53,8 +53,8 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     string
+	 * @param   string $as What format to return
+	 * @return  string
 	 */
 	public function created($as='')
 	{
@@ -81,9 +81,9 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param      string $property Property to retrieve
-	 * @param      mixed  $default  Default value if property not set
-	 * @return     mixed
+	 * @param   string $property Property to retrieve
+	 * @param   mixed  $default  Default value if property not set
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
@@ -106,7 +106,7 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 	/**
 	 * Was the entry reported?
 	 *
-	 * @return     boolean True if reported, False if not
+	 * @return  boolean True if reported, False if not
 	 */
 	public function isReported()
 	{
@@ -121,12 +121,13 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 	 * Get a configuration value
 	 * If no key is passed, it returns the configuration object
 	 *
-	 * @param      string $key Config property to retrieve
-	 * @return     mixed
+	 * @param   string $key     Config property to retrieve
+	 * @param   mixed  $default Default value if key not found
+	 * @return  mixed
 	 */
-	public function config($key=null)
+	public function config($key=null, $default=null)
 	{
-		if (!isset($this->_config))
+		if (!($this->_config instanceof JRegistry))
 		{
 			$this->_config = JComponentHelper::getParams('com_answers');
 		}
@@ -136,7 +137,7 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 			{
 				$this->_config->set('banking', JComponentHelper::getParams('com_members')->get('bankAccounts'));
 			}
-			return $this->_config->get($key);
+			return $this->_config->get($key, $default);
 		}
 		return $this->_config;
 	}
@@ -144,8 +145,8 @@ class AnswersModelAbstract extends \Hubzero\Base\Model
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $action Action to check
+	 * @return  boolean True if authorized, false if not
 	 */
 	public function access($action='view', $item='entry')
 	{

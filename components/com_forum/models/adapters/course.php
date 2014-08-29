@@ -50,8 +50,8 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $scope_id Scope ID (group, course, etc.)
-	 * @return     void
+	 * @param   integer $scope_id Scope ID (group, course, etc.)
+	 * @return  void
 	 */
 	public function __construct($scope_id=0)
 	{
@@ -77,9 +77,9 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string $type   The type of link to return
+	 * @param   mixed  $params Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function build($type='', $params=null)
 	{
@@ -96,10 +96,6 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 				$segments['b'] = $this->get('category');
 			}
 		}
-		/*if ($this->get('thread'))
-		{
-			$segments['c'] = $this->get('thread');
-		}*/
 
 		$anchor = '';
 
@@ -127,7 +123,6 @@ class ForumModelAdapterCourse extends ForumModelAdapterAbstract
 				{
 					$segments['action'] = 'edit';
 				}
-				//$this->base . '&action=edit&post=' . $this->comment->get('id') . '&thread=' . $this->comment->thread
 			break;
 
 			case 'delete':

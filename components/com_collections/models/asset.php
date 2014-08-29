@@ -49,9 +49,9 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed   $oid     ID, string, array, or object
-	 * @param      integer $item_id ID of the item asset is attached
-	 * @return     void
+	 * @param   mixed   $oid     ID, string, array, or object
+	 * @param   integer $item_id ID of the item asset is attached
+	 * @return  void
 	 */
 	public function __construct($oid=null, $item_id=null)
 	{
@@ -72,9 +72,9 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Returns a reference to an asset object
 	 *
-	 * @param      mixed   $oid     ID, string, array, or object
-	 * @param      integer $item_id ID of the item asset is attached
-	 * @return     object CollectionsModelAsset
+	 * @param   mixed   $oid     ID, string, array, or object
+	 * @param   integer $item_id ID of the item asset is attached
+	 * @return  object  CollectionsModelAsset
 	 */
 	static function &getInstance($oid=null, $item_id=null)
 	{
@@ -100,7 +100,7 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new CollectionsModelAsset($oid, $item_id);
+			$instances[$key] = new self($oid, $item_id);
 		}
 
 		return $instances[$key];
@@ -109,7 +109,7 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Is an asset an image?
 	 *
-	 * @return    boolean True if image, false if not
+	 * @return  boolean True if image, false if not
 	 */
 	public function image()
 	{
@@ -127,7 +127,7 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Remove a record
 	 *
-	 * @return    boolean True on success, false if errors
+	 * @return  boolean True on success, false if errors
 	 */
 	public function remove()
 	{
@@ -142,10 +142,10 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Update content
 	 *
-	 * @param     string $field  Field name
-	 * @param     string $before
-	 * @param     string $after
-	 * @return    boolean True on success, false if errors
+	 * @param   string $field  Field name
+	 * @param   string $before Old value
+	 * @param   string $after  New value
+	 * @return  boolean True on success, false if errors
 	 */
 	public function update($field, $before, $after)
 	{
@@ -162,8 +162,8 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	 * Store content
 	 * Can be passed a boolean to turn off check() method
 	 *
-	 * @param     boolean $check Call check() method?
-	 * @return    boolean True on success, false if errors
+	 * @param   boolean $check Call check() method?
+	 * @return  boolean True on success, false if errors
 	 */
 	public function store($check=true)
 	{
@@ -207,7 +207,8 @@ class CollectionsModelAsset extends CollectionsModelAbstract
 	/**
 	 * Update ordering
 	 *
-	 * @return    boolean True on success, false if errors
+	 * @param   integer $item_id ITem ID
+	 * @return  boolean True on success, false if errors
 	 */
 	public function reorder($item_id=0)
 	{

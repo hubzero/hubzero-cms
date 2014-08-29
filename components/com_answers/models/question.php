@@ -121,8 +121,8 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * This method must be invoked as:
 	 *     $offering = AnswersModelQuestion::getInstance($id);
 	 *
-	 * @param      integer $oid Question ID
-	 * @return     object AnswersModelQuestion
+	 * @param   integer $oid Question ID
+	 * @return  object  AnswersModelQuestion
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -144,7 +144,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Is the question closed?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isClosed()
 	{
@@ -158,7 +158,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Is the question open?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isOpen()
 	{
@@ -170,9 +170,10 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	}
 
 	/**
-	 * Is there a reward?
+	 * Get reward value
 	 *
-	 * @return     boolean
+	 * @param   string $val Value to return
+	 * @return  string
 	 */
 	public function reward($val='reward')
 	{
@@ -238,10 +239,10 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Get a list of responses
 	 *
-	 * @param      string  $rtrn    Data type to return [count, list]
-	 * @param      array   $filters Filters to apply to query
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed Returns an integer or array depending upon format chosen
+	 * @param   string  $rtrn    Data type to return [count, list]
+	 * @param   array   $filters Filters to apply to query
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed   Returns an integer or array depending upon format chosen
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -324,9 +325,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Get a list of chosen responses
 	 *
-	 * @param      string $rtrn    Data type to return [count, list]
-	 * @param      array  $filters Filters to apply to query
-	 * @return     mixed Returns an integer or array depending upon format chosen
+	 * @param   string $rtrn    Data type to return [count, list]
+	 * @param   array  $filters Filters to apply to query
+	 * @return  mixed  Returns an integer or array depending upon format chosen
 	 */
 	public function chosen($rtrn='list', $filters=array())
 	{
@@ -378,9 +379,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * Get tags on the entry
 	 * Optinal first agument to determine format of tags
 	 *
-	 * @param      string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
-	 * @param      integer $admin Include amdin tags? (defaults to no)
-	 * @return     mixed
+	 * @param   string  $as    Format to return state in [comma-deliminated string, HTML tag cloud, array]
+	 * @param   integer $admin Include amdin tags? (defaults to no)
+	 * @return  mixed
 	 */
 	public function tags($as='cloud', $admin=0)
 	{
@@ -409,7 +410,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Tag the entry
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
@@ -421,7 +422,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Add a single tag to the entry
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function addTag($tag=null, $user_id=0, $admin=0)
 	{
@@ -433,8 +434,8 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Get the state of the entry as either text or numerical value
 	 *
-	 * @param      string $as Format to return state in [text, number]
-	 * @return     mixed String or Integer
+	 * @param   string $as Format to return state in [text, number]
+	 * @return  mixed  String or Integer
 	 */
 	public function state($as='text')
 	{
@@ -463,8 +464,8 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string $type The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -514,9 +515,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	 * clean  - parses content and then strips tags
 	 * raw    - as is, no parsing
 	 *
-	 * @param      string  $as      Format to return content in [parsed, clean, raw]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string  $as      Format to return content in [parsed, clean, raw]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -578,9 +579,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Get the subject in various formats
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function subject($as='parsed', $shorten=0)
 	{
@@ -642,8 +643,8 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Check if a user has voted for this entry
 	 *
-	 * @param      integer $user_id Optinal user ID to set as voter
-	 * @return     integer
+	 * @param   integer $user_id Optinal user ID to set as voter
+	 * @return  integer
 	 */
 	public function voted($user_id=0)
 	{
@@ -665,9 +666,9 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Vote for the entry
 	 *
-	 * @param      integer $vote    The vote [0, 1]
-	 * @param      integer $user_id Optinal user ID to set as voter
-	 * @return     boolean False if error, True on success
+	 * @param   integer $vote    The vote [0, 1]
+	 * @param   integer $user_id Optinal user ID to set as voter
+	 * @return  boolean False if error, True on success
 	 */
 	public function vote($vote=0, $user_id=0)
 	{
@@ -728,8 +729,8 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Accept a response as the chosen answer
 	 *
-	 * @param     integer $answer_id ID of response to be chosen
-	 * @return    boolean False if error, True on success
+	 * @param   integer $answer_id ID of response to be chosen
+	 * @return  boolean False if error, True on success
 	 */
 	public function accept($answer_id=0)
 	{
@@ -796,7 +797,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Distribute points
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	public function adjustCredits()
 	{
@@ -824,7 +825,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean False if error, True on success
 	 */
 	public function delete()
 	{

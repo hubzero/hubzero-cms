@@ -35,14 +35,14 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tab
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'post.php');
 
 /**
- * Table class for forum posts
+ * Collections model class for a collection
  */
 class CollectionsModelCollection extends CollectionsModelAbstract
 {
 	/**
-	 * Resource ID
+	 * Authorization checked?
 	 *
-	 * @var mixed
+	 * @var boolean
 	 */
 	private $_authorized = false;
 
@@ -61,39 +61,40 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	protected $_context = 'com_collections.collection.description';
 
 	/**
-	 * Container for properties
+	 * ItemList
 	 *
-	 * @var array
+	 * @var object
 	 */
 	private $_posts = null;
 
 	/**
-	 * Container for properties
+	 * CollectionsModelPost
 	 *
-	 * @var array
+	 * @var object
 	 */
 	private $_post = null;
 
 	/**
-	 * Container for properties
+	 * CollectionsModelItem
 	 *
-	 * @var array
+	 * @var object
 	 */
 	private $_item = null;
 
 	/**
-	 * Container for properties
+	 * CollectionsModelFollowing
 	 *
-	 * @var array
+	 * @var object
 	 */
 	private $_following = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
+	 * @param   mixed   $oid         Integer, string, array, or object
+	 * @param   integer $object_id   ID of owner object
+	 * @param   string  $object_type Owner type [member, group]
+	 * @return  void
 	 */
 	public function __construct($oid=null, $object_id=0, $object_type='member')
 	{
@@ -128,10 +129,10 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	/**
 	 * Returns a reference to CollectionsModelCollection object
 	 *
-	 * @param      mixed   $oid         ID, array, or object
-	 * @param      integer $object_id   ID
-	 * @param      string  $object_type [member, group]
-	 * @return     object CollectionsModelCollection
+	 * @param   mixed   $oid         ID, array, or object
+	 * @param   integer $object_id   ID
+	 * @param   string  $object_type [member, group]
+	 * @return  object  CollectionsModelCollection
 	 */
 	static function &getInstance($oid=null, $object_id=0, $object_type='member')
 	{
@@ -153,14 +154,14 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Check if the course exists
+	 * Create a default collection
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   integer $object_id   ID of owner object
+	 * @param   string  $object_type Owner type [member, group]
+	 * @return  boolean
 	 */
 	public function setup($object_id, $object_type)
 	{
-		//return $this->_tbl->setup($object_id, $object_type);
 		$lang = JFactory::getLanguage();
 		$lang->load('com_collections');
 
@@ -226,7 +227,7 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	/**
 	 * Get the item entry for a collection
 	 *
-	 * @return  object
+	 * @return  object CollectionsModelItem
 	 */
 	public function item()
 	{
@@ -259,9 +260,11 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Get a list of reposts
 	 *
-	 * @return     void
+	 * [!] Not implemented yet
+	 *
+	 * @return  null
 	 */
 	public function reposts()
 	{
@@ -275,7 +278,7 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	 * Set and get a specific post
 	 *
 	 * @param   integer $id Post ID
-	 * @return  object
+	 * @return  object  CollectionsModelPost
 	 */
 	public function post($id=null)
 	{
@@ -316,9 +319,9 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	 *   Accepts an array of filters for database query
 	 *   that retrieves results
 	 *
-	 * @param      array   $filters Filters to apply
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     object
+	 * @param   array   $filters Filters to apply
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed   Integer or object
 	 */
 	public function posts($filters=array(), $clear=false)
 	{
@@ -410,14 +413,14 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	/**
 	 * Get a count of data associated with this collection
 	 *
-	 * @param      string $what What to count
-	 * @return     integer
+	 * @param   string $what What to count
+	 * @return  integer
 	 */
 	public function count($what='')
 	{
 		if (!isset($this->_counts) || !is_array($this->_counts))
 		{
-			$this->_counts = array(); //$this->_tbl->getPostTypeCount($this->get('id'));
+			$this->_counts = array();
 		}
 		$what = strtolower(trim($what));
 		switch ($what)
@@ -497,9 +500,9 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	/**
 	 * Check if someone or a group is following this collection
 	 *
-	 * @param      integer $follower_id   ID of the follower
-	 * @param      string  $follower_type Type of the follower [member, group]
-	 * @return     boolean
+	 * @param   integer $follower_id   ID of the follower
+	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @return  boolean
 	 */
 	public function isFollowing($follower_id=null, $follower_type='member')
 	{
@@ -524,9 +527,9 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	/**
 	 * Unfollow this collection
 	 *
-	 * @param      integer $follower_id   ID of the follower
-	 * @param      string  $follower_type Type of the follower [member, group]
-	 * @return     boolean
+	 * @param   integer $follower_id   ID of the follower
+	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @return  boolean
 	 */
 	public function unfollow($follower_id=null, $follower_type='member')
 	{
@@ -550,9 +553,9 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	/**
 	 * Follow this collection
 	 *
-	 * @param      integer $follower_id   ID of the follower
-	 * @param      string  $follower_type Type of the follower [member, group]
-	 * @return     boolean
+	 * @param   integer $follower_id   ID of the follower
+	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @return  boolean
 	 */
 	public function follow($follower_id=null, $follower_type='member')
 	{
@@ -573,9 +576,9 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Get the URL for this group
+	 * Get the URL for this collection
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function link()
 	{
@@ -600,9 +603,9 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function description($as='parsed', $shorten=0)
 	{

@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
 
 /**
- * Courses model class for a course
+ * Collections model for an item
  */
 class CollectionsModelItem extends CollectionsModelAbstract
 {
@@ -69,18 +69,11 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	private $_assets = null;
 
 	/**
-	 * Container for properties
+	 * Tag Cloud model
 	 *
-	 * @var array
+	 * @var object
 	 */
 	private $_tags = null;
-
-	/**
-	 * Container for properties
-	 *
-	 * @var array
-	 */
-	private $_comments = null;
 
 	/**
 	 * Container for properties
@@ -97,9 +90,8 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
+	 * @param   mixed $oid Integer, object, or array
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
@@ -130,8 +122,8 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Returns a reference to a collections item instance
 	 *
-	 * @param      mixed $oid Integer or string
-	 * @return     object CollectionsModelItem
+	 * @param   mixed $oid Integer or string
+	 * @return  object CollectionsModelItem
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -166,12 +158,9 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @access	public
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
-	 * @see		getProperties()
-	 * @since	1.5
+	 * @param   string $property The name of the property
+	 * @param   mixed  $default The default value
+	 * @return  mixed  The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -204,8 +193,8 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     string
+	 * @param   string $as What format to return
+	 * @return  string
 	 */
 	public function modified($as='')
 	{
@@ -255,9 +244,12 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Get the comments on an item
+	 * Get a count or list of the comments on an item
 	 *
-	 * @return     array
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function comments($what='list', $filters=array(), $clear=false)
 	{
@@ -305,10 +297,10 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Check if the resource exists
+	 * Get a count or a list of the assets on this entry
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   array $filters Filters to apply to data fetch
+	 * @return  mixed
 	 */
 	public function assets($filters=array())
 	{
@@ -361,10 +353,10 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Remove an asset from the list
+	 * Remove an asset
 	 *
-	 * @param      integer $asset
-	 * @return     void
+	 * @param   integer $asset
+	 * @return  boolean
 	 */
 	public function removeAsset($asset)
 	{
@@ -397,8 +389,8 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Get tags on an item
 	 *
-	 * @param      string $as How to return data
-	 * @return     mixed Returns an array of tags by default
+	 * @param   string $as How to return data
+	 * @return  mixed Returns an array of tags by default
 	 */
 	public function tags($as='array')
 	{
@@ -444,10 +436,10 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Add an asset to the list
+	 * Add a tag to the list
 	 *
-	 * @param      object $asset
-	 * @return     void
+	 * @param   object $tag
+	 * @return  void
 	 */
 	public function addTag($tag=null)
 	{
@@ -471,7 +463,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Vote for this item
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function vote()
 	{
@@ -533,8 +525,8 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 * Store content
 	 * Can be passed a boolean to turn off check() method
 	 *
-	 * @param     boolean $check Call check() method?
-	 * @return    boolean True on success, false if errors
+	 * @param   boolean $check Call check() method?
+	 * @return  boolean True on success, false if errors
 	 */
 	public function store($check=true)
 	{
@@ -660,9 +652,9 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function description($as='parsed', $shorten=0)
 	{
@@ -720,7 +712,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Get the item type
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function type()
 	{
@@ -738,12 +730,12 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Get a list of collections this item can be found in
+	 * Get a counr or list of collections this item can be found in
 	 *
-	 * @param      string  $what
-	 * @param      array   $filters
-	 * @param      boolean $clear
-	 * @return     object
+	 * @param   string  $what    What to return?
+	 * @param   array   $filters Filters to apply
+	 * @param   boolean $clear   Clear cached results?
+	 * @return  mixed
 	 */
 	public function collections($what='list', $filters=array(), $clear=false)
 	{

@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' .
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_forum' . DS . 'models' . DS . 'category.php');
 
 /**
- * Model class for a forum
+ * Model class for a forum section
  */
 class ForumModelSection extends ForumModelAbstract
 {
@@ -52,7 +52,11 @@ class ForumModelSection extends ForumModelAbstract
 	 *
 	 * @var array
 	 */
-	private $_cache = array();
+	private $_cache = array(
+		'categories_count' => null,
+		'categories'       => null,
+		'category'         => null
+	);
 
 	/**
 	 * Constructor
@@ -105,7 +109,7 @@ class ForumModelSection extends ForumModelAbstract
 	 * @param      integer $id       Section ID (integer), alias (string), array, or object
 	 * @param      string  $scope    Forum scope [site, group, course]
 	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return     object ForumModelSection
+	 * @return     object  ForumModelSection
 	 */
 	static function &getInstance($oid=0, $scope='site', $scope_id=0)
 	{
@@ -139,9 +143,10 @@ class ForumModelSection extends ForumModelAbstract
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific category
 	 *
-	 * @return     void
+	 * @param   mixed  $id Integer or string (ID or alias) for a category
+	 * @return  object
 	 */
 	public function category($id=null)
 	{
@@ -150,7 +155,7 @@ class ForumModelSection extends ForumModelAbstract
 		{
 			$this->_cache['category'] = null;
 
-			if (isset($this->_cache['categories']) && ($this->_cache['categories'] instanceof \Hubzero\Base\ItemList))
+			if ($this->_cache['categories'] instanceof \Hubzero\Base\ItemList)
 			{
 				foreach ($this->_cache['categories'] as $key => $category)
 				{
@@ -176,13 +181,12 @@ class ForumModelSection extends ForumModelAbstract
 	}
 
 	/**
-	 * Get a list of categories for a forum
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a count or list of categories
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   string  $rtrn    Data type to return?
+	 * @param   array   $filters Filters to apply to query
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function categories($rtrn='', $filters=array(), $clear=false)
 	{
@@ -209,7 +213,7 @@ class ForumModelSection extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['categories']) || !($this->_cache['categories'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['categories'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new ForumTableCategory($this->_db);
 					if (($results = $tbl->getRecords($filters)))

@@ -43,14 +43,22 @@ class ForumModel extends ForumModelAbstract
 	 *
 	 * @var array
 	 */
-	private $_cache = array();
+	private $_cache = array(
+		'section'        => null,
+		'sections_count' => null,
+		'sections_first' => null,
+		'sections'       => null,
+		'posts.count'    => null,
+		'posts.list'     => null,
+		'last'           => null
+	);
 
 	/**
 	 * Constructor
 	 *
-	 * @param      string  $scope    Forum scope [site, group, course]
-	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return     void
+	 * @param   string  $scope    Forum scope [site, group, course]
+	 * @param   integer $scope_id Forum scope ID (group ID, couse ID)
+	 * @return  void
 	 */
 	public function __construct($scope='site', $scope_id=0)
 	{
@@ -65,9 +73,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Returns a reference to a forum model
 	 *
-	 * @param      string  $scope    Forum scope [site, group, course]
-	 * @param      integer $scope_id Forum scope ID (group ID, couse ID)
-	 * @return     object ForumModelCourse
+	 * @param   string  $scope    Forum scope [site, group, course]
+	 * @param   integer $scope_id Forum scope ID (group ID, couse ID)
+	 * @return  object ForumModel
 	 */
 	static function &getInstance($scope='site', $scope_id=0)
 	{
@@ -82,7 +90,7 @@ class ForumModel extends ForumModelAbstract
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new ForumModel($scope, $scope_id);
+			$instances[$key] = new self($scope, $scope_id);
 		}
 
 		return $instances[$key];
@@ -91,9 +99,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
+	 * @param   string $property The name of the property
+	 * @param   mixed  $default The default value
+	 * @return  mixed  The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -107,9 +115,9 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
+	 * @param   string $property The name of the property
+	 * @param   mixed  $value The value of the property to set
+	 * @return  mixed  Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
@@ -121,7 +129,7 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Populate the forum with defaulta section and category
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function setup()
 	{
@@ -163,7 +171,7 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Set and get a specific section
 	 *
-	 * @return     void
+	 * @return  object
 	 */
 	public function section($id=null)
 	{
@@ -172,7 +180,7 @@ class ForumModel extends ForumModelAbstract
 		{
 			$this->_cache['section'] = null;
 
-			if (isset($this->_cache['sections']) && ($this->_cache['sections'] instanceof \Hubzero\Base\ItemList))
+			if ($this->_cache['sections'] instanceof \Hubzero\Base\ItemList)
 			{
 				foreach ($this->_cache['sections'] as $key => $section)
 				{
@@ -230,7 +238,7 @@ class ForumModel extends ForumModelAbstract
 			break;
 
 			case 'first':
-				if (!isset($this->_cache['sections_first']) || !($this->_cache['sections_first'] instanceof ForumModelSection) || $clear)
+				if (!($this->_cache['sections_first'] instanceof ForumModelSection) || $clear)
 				{
 					$filters['limit'] = 1;
 					$filters['start'] = 0;
@@ -247,7 +255,7 @@ class ForumModel extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['sections']) || !($this->_cache['sections'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['sections'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					if ($results = $tbl->getRecords($filters))
 					{
@@ -270,10 +278,10 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Get a list or count of posts for a forum
 	 *
-	 * @param      string  $rtrn    Data to return
-	 * @param      array   $filters Filters to apply to the query
-	 * @param      boolean $clear   Clear cached results?
-	 * @return     object \Hubzero\Base\ItemList
+	 * @param   string  $rtrn    Data to return
+	 * @param   array   $filters Filters to apply to the query
+	 * @param   boolean $clear   Clear cached results?
+	 * @return  mixed
 	 */
 	public function posts($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -300,7 +308,7 @@ class ForumModel extends ForumModelAbstract
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['posts.list']) || !($this->_cache['posts.list'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['posts.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new ForumTablePost($this->_db);
 
@@ -327,15 +335,13 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string  $action    Action to check
-	 * @param      string  $assetType Type of asset to check
-	 * @param      integer $assetId   ID of item to check access on
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $action    Action to check
+	 * @param   string  $assetType Type of asset to check
+	 * @param   integer $assetId   ID of item to check access on
+	 * @return  boolean True if authorized, false if not
 	 */
 	public function access($action='view', $assetType='section', $assetId=null)
 	{
-		//$assetType = 'section';
-
 		if (!$this->config()->get('access-check-done', false))
 		{
 			$this->config()->set('access-view-' . $assetType, true);
@@ -375,8 +381,8 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Return a count for the type of data specified
 	 *
-	 * @param      string $what What to count
-	 * @return     integer
+	 * @param   string $what What to count
+	 * @return  integer
 	 */
 	public function count($what='threads')
 	{
@@ -426,11 +432,11 @@ class ForumModel extends ForumModelAbstract
 	/**
 	 * Get the most recent post made in the forum
 	 *
-	 * @return     ForumModelPost
+	 * @return  object ForumModelPost
 	 */
 	public function lastActivity()
 	{
-		if (!isset($this->_cache['last']) || !($this->_cache['last'] instanceof ForumModelPost))
+		if (!($this->_cache['last'] instanceof ForumModelPost))
 		{
 			$post = new ForumTablePost($this->_db);
 			if (!($last = $post->getLastActivity($this->get('scope_id'), $this->get('scope'))))

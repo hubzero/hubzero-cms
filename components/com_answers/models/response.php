@@ -79,10 +79,10 @@ class AnswersModelResponse extends AnswersModelAbstract
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string  $rtrn    Data format to return
+	 * @param   array   $filters Filters to apply to data fetch
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -171,9 +171,9 @@ class AnswersModelResponse extends AnswersModelAbstract
 	/**
 	 * Get the contents of this entry in various formats
 	 *
-	 * @param      string  $as      Format to return state in [raw, parsed]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string  $as      Format to return state in [raw, parsed]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -235,8 +235,8 @@ class AnswersModelResponse extends AnswersModelAbstract
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     boolean
+	 * @param   string $type The type of link to return
+	 * @return  string
 	 */
 	public function link($type='')
 	{
@@ -282,7 +282,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	/**
 	 * Reset the vote count and log
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean False if error, True on success
 	 */
 	public function reset()
 	{
@@ -315,7 +315,8 @@ class AnswersModelResponse extends AnswersModelAbstract
 	/**
 	 * Mark a response as "Accepted"
 	 *
-	 * @return    boolean False if error, True on success
+	 * @param   integer $question_id Question ID
+	 * @return  boolean False if error, True on success
 	 */
 	public function accept($question_id)
 	{
@@ -345,7 +346,8 @@ class AnswersModelResponse extends AnswersModelAbstract
 	/**
 	 * Mark a response as "Rejected"
 	 *
-	 * @return    boolean False if error, True on success
+	 * @param   integer $question_id Question ID
+	 * @return  boolean False if error, True on success
 	 */
 	public function reject($question_id)
 	{
@@ -375,8 +377,8 @@ class AnswersModelResponse extends AnswersModelAbstract
 	/**
 	 * Store changes to this offering
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean $check Perform data validation check?
+	 * @return  boolean False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -433,7 +435,7 @@ class AnswersModelResponse extends AnswersModelAbstract
 	/**
 	 * Delete the record and all associated data
 	 *
-	 * @return    boolean False if error, True on success
+	 * @return  boolean False if error, True on success
 	 */
 	public function delete()
 	{

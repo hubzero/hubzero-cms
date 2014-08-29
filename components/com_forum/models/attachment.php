@@ -49,9 +49,9 @@ class ForumModelAttachment extends ForumModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed   $oid ID (integer), alias (string), array or object
-	 * @param      integer $pid Post ID
-	 * @return     void
+	 * @param   mixed   $oid ID (integer), alias (string), array or object
+	 * @param   integer $pid Post ID
+	 * @return  void
 	 */
 	public function __construct($oid=null, $pid=null)
 	{
@@ -92,9 +92,9 @@ class ForumModelAttachment extends ForumModelAbstract
 	/**
 	 * Returns a reference to a forum post attachment model
 	 *
-	 * @param      mixed   $oid ID (int), alias (string), array, or object
-	 * @param      integer $pid Post ID
-	 * @return     object ForumModelAttachment
+	 * @param   mixed   $oid ID (int), alias (string), array, or object
+	 * @param   integer $pid Post ID
+	 * @return  object  ForumModelAttachment
 	 */
 	static function &getInstance($oid=0, $pid=null)
 	{
@@ -120,7 +120,7 @@ class ForumModelAttachment extends ForumModelAbstract
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new ForumModelAttachment($oid, $pid);
+			$instances[$key] = new self($oid, $pid);
 		}
 
 		return $instances[$key];

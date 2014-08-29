@@ -35,7 +35,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tab
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'item.php');
 
 /**
- * Courses model class for a course
+ * Collections model for a post
  */
 class CollectionsModelPost extends CollectionsModelAbstract
 {
@@ -68,14 +68,10 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	private $_data = null;
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to this model
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object CollectionsModelPost
+	 * @param   mixed  $oid Integer, string, object or array
+	 * @return  object CollectionsModelPost
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -110,8 +106,8 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	/**
 	 * Bind data to the model
 	 *
-	 * @param      mixed $data Object or array
-	 * @return     boolean True on success, False on error
+	 * @param   mixed   $data Object or array
+	 * @return  boolean True on success, False on error
 	 */
 	public function bind($data=null)
 	{
@@ -175,10 +171,10 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Check if the resource exists
+	 * Get the item for this post
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   integer $oid
+	 * @return  object
 	 */
 	public function item($oid=null)
 	{
@@ -202,7 +198,7 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	/**
 	 * Check if the post is the original (first) post
 	 *
-	 * @return     boolean True if original, false if not
+	 * @return  boolean True if original, false if not
 	 */
 	public function original()
 	{
@@ -216,7 +212,7 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	/**
 	 * Remove a post
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function remove()
 	{
@@ -238,7 +234,7 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	/**
 	 * Move a post
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function move($collection_id)
 	{
@@ -262,11 +258,11 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	}
 
 	/**
-	 * Get the URL for this group
+	 * Get the URL for this post
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string $type   The type of link to return
+	 * @param   mixed  $params Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{
@@ -277,7 +273,7 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
 	 *
-	 * @return    object
+	 * @return  object
 	 */
 	private function _adapter()
 	{
@@ -306,9 +302,9 @@ class CollectionsModelPost extends CollectionsModelAbstract
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function description($as='parsed', $shorten=0)
 	{

@@ -60,20 +60,17 @@ abstract class ForumModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $scope_id Scope ID (group, course, etc.)
-	 * @return     void
+	 * @param   integer $scope_id Scope ID (group, course, etc.)
+	 * @return  void
 	 */
 	public function __construct($scope_id=0)
 	{
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Get the scope type
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @return  string
 	 */
 	public function name()
 	{
@@ -84,9 +81,9 @@ abstract class ForumModelAdapterAbstract extends \Hubzero\Base\Object
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params Optional string or associative array of params to append
-	 * @return     string
+	 * @param   string $type   The type of link to return
+	 * @param   mixed  $params Optional string or associative array of params to append
+	 * @return  string
 	 */
 	public function build($type='', $params=null)
 	{
@@ -96,8 +93,8 @@ abstract class ForumModelAdapterAbstract extends \Hubzero\Base\Object
 	/**
 	 * Flatten array of segments into querystring
 	 *
-	 * @param      array $segments An associative array of querystring bits
-	 * @return     string
+	 * @param   array $segments An associative array of querystring bits
+	 * @return  string
 	 */
 	protected function _build(array $segments)
 	{

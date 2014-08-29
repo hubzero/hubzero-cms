@@ -119,7 +119,7 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 	 */
 	public function config($key=null, $default=null)
 	{
-		if (!isset($this->_config))
+		if (!($this->_config instanceof JRegistry))
 		{
 			$this->_config = JComponentHelper::getParams('com_forum');
 		}

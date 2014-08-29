@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collection.php');
 
 /**
- * Table class for forum posts
+ * Collections archive model
  */
 class CollectionsModel extends \Hubzero\Base\Object
 {
@@ -71,7 +71,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 	/**
 	 * CollectionsModelCollection
 	 *
-	 * @var array
+	 * @var object
 	 */
 	private $_collection = null;
 
@@ -106,9 +106,9 @@ class CollectionsModel extends \Hubzero\Base\Object
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
+	 * @param   integer $id  Resource ID or alias
+	 * @param   object  &$db JDatabase
+	 * @return  void
 	 */
 	public function __construct($object_type='', $object_id=0)
 	{
@@ -119,14 +119,11 @@ class CollectionsModel extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to this model
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object CollectionsModel
+	 * @param   string $pagename The page to load
+	 * @param   string $scope    The page scope
+	 * @return  object CollectionsModel
 	 */
 	static function &getInstance($object_type='', $object_id=0)
 	{
@@ -141,7 +138,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new CollectionsModel($object_type, $object_id);
+			$instances[$oid] = new self($object_type, $object_id);
 		}
 
 		return $instances[$oid];
@@ -150,9 +147,9 @@ class CollectionsModel extends \Hubzero\Base\Object
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $default  The default value
-	 * @return    mixed The value of the property
+	 * @param   string $property The name of the property
+	 * @param   mixed  $default  The default value
+	 * @return  mixed  The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -167,9 +164,9 @@ class CollectionsModel extends \Hubzero\Base\Object
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @param     string $property The name of the property
-	 * @param     mixed  $value    The value of the property to set
-	 * @return    mixed Previous value of the property
+	 * @param   string $property The name of the property
+	 * @param   mixed  $value    The value of the property to set
+	 * @return  mixed  Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
@@ -180,9 +177,9 @@ class CollectionsModel extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Set and get a specific offering
+	 * Set and get a specific collection
 	 *
-	 * @return     void
+	 * @return  object CollectionsModelCollection
 	 */
 	public function collection($id=null)
 	{
@@ -219,13 +216,10 @@ class CollectionsModel extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get a list of resource types
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a count or list of collections
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   array $filters Filters to apply to the query that retrieves records
+	 * @return  mixed Integer or object
 	 */
 	public function collections($filters=array())
 	{
@@ -269,13 +263,10 @@ class CollectionsModel extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get a list of resource types
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a count or list of followers
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   array $filters Filters to apply to the query that retrieves records
+	 * @return  mixed Integer or object
 	 */
 	public function followers($filters=array())
 	{
@@ -308,13 +299,11 @@ class CollectionsModel extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get a list of resource types
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a count or list of following
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   array  $filters Filters to apply to the query that retrieves records
+	 * @param   string $what    Following what? A collection or a member, etc.
+	 * @return  mixed  Integer or object
 	 */
 	public function following($filters=array(), $what='all')
 	{
@@ -377,11 +366,11 @@ class CollectionsModel extends \Hubzero\Base\Object
 			{
 				if (count($members) > 0)
 				{
-					$query1 = "SELECT id FROM #__collections WHERE object_id IN (" . implode(',', $members) . ") AND object_type='member'";
+					$query1 = "SELECT id FROM `#__collections` WHERE object_id IN (" . implode(',', $members) . ") AND object_type='member'";
 				}
 				if (count($groups) > 0)
 				{
-					$query2 = "SELECT id FROM #__collections WHERE object_id IN (" . implode(',', $groups) . ") AND object_type='group'";
+					$query2 = "SELECT id FROM `#__collections` WHERE object_id IN (" . implode(',', $groups) . ") AND object_type='group'";
 				}
 				if (count($members) > 0 && count($groups) > 0)
 				{
@@ -407,13 +396,10 @@ class CollectionsModel extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get a list of resource types
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a count or list of posts
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   array $filters Filters to apply to the query that retrieves records
+	 * @return  mixed Integer or array
 	 */
 	public function posts($filters=array())
 	{
@@ -436,13 +422,15 @@ class CollectionsModel extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get a list of resource types
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of collections for a user
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * - If no type or type='member', returns an array of collections
+	 *   that user created.
+	 * - If type='group', returns an array of collections in the groups
+	 *   the user is a member of.
+	 *
+	 * @param   string $type What type ot get collections for [group, member]
+	 * @return  array
 	 */
 	public function mine($type='')
 	{
@@ -515,9 +503,9 @@ class CollectionsModel extends \Hubzero\Base\Object
 	/**
 	 * Check if someone or a group is following this collection
 	 *
-	 * @param      integer $follower_id   ID of the follower
-	 * @param      string  $follower_type Type of the follower [member, group]
-	 * @return     boolean
+	 * @param   integer $follower_id   ID of the follower
+	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @return  boolean
 	 */
 	public function isFollowing($follower_id=null, $follower_type='member')
 	{
@@ -542,9 +530,9 @@ class CollectionsModel extends \Hubzero\Base\Object
 	/**
 	 * Check if someone or a group is following this collection
 	 *
-	 * @param      integer $follower_id   ID of the follower
-	 * @param      string  $follower_type Type of the follower [member, group]
-	 * @return     boolean
+	 * @param   integer $follower_id   ID of the follower
+	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @return  boolean
 	 */
 	public function isFollowed($follower_id=null, $follower_type='member')
 	{
@@ -569,9 +557,9 @@ class CollectionsModel extends \Hubzero\Base\Object
 	/**
 	 * Unfollow this collection
 	 *
-	 * @param      integer $follower_id   ID of the follower
-	 * @param      string  $follower_type Type of the follower [member, group]
-	 * @return     boolean
+	 * @param   integer $follower_id   ID of the follower
+	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @return  boolean
 	 */
 	public function unfollow($id, $what='collection', $follower_id=0, $follower_type='member')
 	{
@@ -593,11 +581,13 @@ class CollectionsModel extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Follow this collection
+	 * Follow something [collection, member, goup]
 	 *
-	 * @param      integer $follower_id   ID of the follower
-	 * @param      string  $follower_type Type of the follower [member, group]
-	 * @return     boolean
+	 * @param   integer $id            ID of the thing being followed
+	 * @param   string  $what          What's being followed
+	 * @param   integer $follower_id   ID of the follower
+	 * @param   string  $follower_type Type of the follower [member, group]
+	 * @return  boolean
 	 */
 	public function follow($id, $what='collection', $follower_id=0, $follower_type='member')
 	{
@@ -605,10 +595,6 @@ class CollectionsModel extends \Hubzero\Base\Object
 
 		if (!$follow->exists())
 		{
-			/*if ($what == 'collection')
-			{
-				$follow = new CollectionsModelFollowing($id, $what, $follower_id, $follower_type);
-			}*/
 			$follow->bind(array(
 				'following_id'   => $id,
 				'following_type' => $what,
