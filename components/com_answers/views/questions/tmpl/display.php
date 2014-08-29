@@ -42,6 +42,8 @@ if (!$this->filters['filterby'] == 'none')
 {
 	$this->filters['filterby'] = 'all';
 }
+$sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
+
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -84,21 +86,21 @@ if (!$this->filters['filterby'] == 'none')
 	<div class="section-inner">
 		<div class="subject">
 			<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option); ?>">
-	
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_ANSWERS_SEARCH'); ?>" />
 					<fieldset class="entry-search">
 						<input type="text" name="q" value="<?php echo $this->escape($this->filters['q']); ?>" placeholder="<?php echo JText::_('COM_ANSWERS_SEARCH_PLACEHOLDER'); ?>" />
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-	
+
 						<input type="hidden" name="area" value="<?php echo $this->escape($this->filters['area']); ?>" />
-	
+
 						<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+						<input type="hidden" name="sortdir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
 						<input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); ?>" />
 						<input type="hidden" name="task" value="<?php echo $this->escape($this->task); ?>" />
 					</fieldset>
 				</div><!-- / .container -->
-	
+
 			<?php if (!$juser->get('guest')) { ?>
 				<ul class="entries-menu user-options">
 					<li>
@@ -123,12 +125,12 @@ if (!$this->filters['filterby'] == 'none')
 					</li>
 				</ul>
 			<?php } ?>
-	
+
 				<div class="container">
 					<ul class="entries-menu order-options">
 					<?php if ($this->banking) { ?>
 						<li>
-							<a<?php echo ($this->filters['sortby'] == 'rewards') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area='.urlencode($this->filters['area']).'&filterby='.urlencode($this->filters['filterby']).'&sortby=rewards'); ?>" title="<?php echo JText::_('COM_ANSWERS_SORT_REWARDS_TITLE'); ?>">
+							<a<?php echo ($this->filters['sortby'] == 'rewards') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area='.urlencode($this->filters['area']).'&filterby='.urlencode($this->filters['filterby']).'&sortby=rewards&sortdir=' . $sortdir); ?>" title="<?php echo JText::_('COM_ANSWERS_SORT_REWARDS_TITLE'); ?>">
 								<?php echo JText::_('COM_ANSWERS_SORT_REWARDS'); ?>
 							</a>
 						</li>
@@ -144,7 +146,7 @@ if (!$this->filters['filterby'] == 'none')
 							</a>
 						</li>
 					</ul>
-	
+
 					<ul class="entries-menu filter-options">
 						<li>
 							<a<?php echo ($this->filters['filterby'] == 'all' || $this->filters['filterby'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=search&area='.urlencode($this->filters['area']).'&filterby=all&sortby='.urlencode($this->filters['sortby'])); ?>" title="<?php echo JText::_('COM_ANSWERS_FILTER_ALL_TITLE'); ?>">
@@ -162,7 +164,7 @@ if (!$this->filters['filterby'] == 'none')
 							</a>
 						</li>
 					</ul>
-	
+
 					<table class="questions entries" summary="<?php echo JText::_('COM_ANSWERS_RESULTS_SUMMARY'); ?>">
 						<caption>
 							<?php
@@ -266,6 +268,7 @@ if (!$this->filters['filterby'] == 'none')
 					$this->pageNav->setAdditionalUrlParam('filterby', $this->filters['filterby']);
 					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 					$this->pageNav->setAdditionalUrlParam('area', $this->filters['area']);
+					$this->pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
 					echo $this->pageNav->getListFooter();
 					?>
 					<div class="clearfix"></div>

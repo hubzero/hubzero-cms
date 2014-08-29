@@ -463,10 +463,12 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		}
 
 		$this->view->filters['sortby']   = JRequest::getWord('sortby', 'date');
-		if (!in_array($this->view->filters['sortby'], array('date', 'votes')))
+		if (!in_array($this->view->filters['sortby'], array('date', 'votes', 'rewards')))
 		{
 			$this->view->filters['sortby'] = 'date';
 		}
+
+		$this->view->filters['sort_Dir']   = JRequest::getWord('sortdir', 'DESC');
 
 		$this->view->filters['area']     = JRequest::getVar('area', '');
 		if ($this->view->filters['area']

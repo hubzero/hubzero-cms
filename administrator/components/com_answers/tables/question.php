@@ -228,11 +228,13 @@ class AnswersTableQuestion extends JTable
 		}
 		if (!isset($filters['count']) || !$filters['count'])
 		{
+			$sortdir = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
+			$sortdir = $sortdir == 'DESC' ? 'DESC' : 'ASC';
 			switch ($filters['sortby'])
 			{
-				case 'rewards':      $query .= " ORDER BY C.reward DESC, points DESC, C.created DESC"; break;
-				case 'votes':        $query .= " ORDER BY C.helpful DESC, C.created DESC"; break;
-				case 'date':         $query .= " ORDER BY C.created DESC"; break;
+				case 'rewards':      $query .= " ORDER BY C.reward $sortdir, points $sortdir, C.created $sortdir"; break;
+				case 'votes':        $query .= " ORDER BY C.helpful $sortdir, C.created $sortdir"; break;
+				case 'date':         $query .= " ORDER BY C.created $sortdir"; break;
 				case 'random':       $query .= " ORDER BY RAND()"; break;
 				case 'responses':    $query .= " ORDER BY rcount DESC, C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
 				case 'status':       $query .= " ORDER BY C.reward DESC, points DESC, C.state ASC, C.created DESC"; break;
