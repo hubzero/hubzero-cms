@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="system">
 	<name>System - Disable Cache</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Disables the cache for specific pages</description>
@@ -40,10 +40,10 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="definitions" type="textarea" cols="30" rows="10" default="/about/contact" label="Rules" description="Add a line for each rule. Each line consists of a list of url parameters. For instance option=com_content&amp;view=article would turn off caching for com_content in article view. You can also use ? for any value, for instance option=com_content&amp;view=article&amp;id=?. Please do not forget to enable the plugin!"/>
-		        <field name="reenable_afterdispatch" type="radio" default="0" label="Re-Enable Caching After Dispatch" description="Wether caching should be enabled after a rule fired. By that the page will be cached partially, but components such as com_content won't be cached. This option doesn't work if the joomla cache plugin is enabled.">
-		            <option value="0">No</option>
-		            <option value="1">Yes</option>
-		        </field>
+				<field name="reenable_afterdispatch" type="radio" default="0" label="Re-Enable Caching After Dispatch" description="Wether caching should be enabled after a rule fired. By that the page will be cached partially, but components such as com_content won't be cached. This option doesn't work if the joomla cache plugin is enabled.">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

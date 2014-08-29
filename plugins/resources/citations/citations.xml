@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.7" type="plugin" group="resources">
 	<name>Resource - Citations</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Displays citations for a resource</description>

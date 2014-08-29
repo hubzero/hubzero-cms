@@ -29,7 +29,7 @@ HUBzero is a registered trademark of Purdue University.
 
 <extension version="1.5" type="plugin" group="groups">
 	<name>Groups - Blog</name>
-	<author>Shawn Rice</author>
+	<author>HUBzero</author>
 	<creationDate>December 2009</creationDate>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
