@@ -139,8 +139,6 @@ class CoursesTableGradeBook extends JTable
 	{
 		$query  = " FROM $this->_tbl AS gb";
 		$query .= " LEFT JOIN `#__courses_assets` ca ON gb.scope_id = ca.id";
-		$query .= " LEFT JOIN `#__courses_asset_associations` caa ON ca.id = caa.asset_id";
-		$query .= " LEFT JOIN `#__courses_asset_groups` cag ON caa.scope_id = cag.id";
 
 		if (isset($filters['section_id']) && $filters['section_id'])
 		{
@@ -149,6 +147,14 @@ class CoursesTableGradeBook extends JTable
 
 		$where = array();
 
+		if (isset($filters['asset_id']) && $filters['asset_id'])
+		{
+			if (!is_array($filters['asset_id']))
+			{
+				$filters['asset_id'] = array($filters['asset_id']);
+			}
+			$where[] = "ca.id IN (" . implode(',', $filters['asset_id']) . ")";
+		}
 		if (isset($filters['member_id']) && $filters['member_id'])
 		{
 			if (!is_array($filters['member_id']))
@@ -164,10 +170,6 @@ class CoursesTableGradeBook extends JTable
 				$filters['scope'] = array($filters['scope']);
 			}
 			$where[] = "gb.scope IN ('" . implode('\',\'', $filters['scope']) . "')";
-		}
-		if (isset($filters['asset_scope']) && $filters['asset_scope'])
-		{
-			$where[] = "caa.scope = " . $this->_db->quote($filters['asset_scope']);
 		}
 		if (isset($filters['graded']) && $filters['graded'])
 		{
@@ -207,7 +209,7 @@ class CoursesTableGradeBook extends JTable
 	 */
 	public function find($filters=array(), $key=null)
 	{
-		$query = "SELECT gb.*, cag.unit_id, ca.grade_weight" . $this->_buildQuery($filters);
+		$query = "SELECT gb.*, ca.grade_weight" . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList($key);

@@ -163,6 +163,13 @@ class CoursesModelOffering extends CoursesModelAbstract
 	private $_section = NULL;
 
 	/**
+	 * CoursesModelIterator
+	 *
+	 * @var object
+	 **/
+	private $_assets = NULL;
+
+	/**
 	 * CoursesModelPermissions
 	 *
 	 * @var object
@@ -641,6 +648,47 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 
 		return $this->_gradebook;
+	}
+
+	/**
+	 * Get a list of assets for an offering
+	 * 
+	 * Accepts an array of filters to apply to the list of assets
+	 *
+	 * @param      array $filters Filters to apply
+	 * @return     object CoursesModelIterator
+	 */
+	public function assets($filters=array())
+	{
+		if (!($this->_assets instanceof CoursesModelIterator))
+		{
+			if (!isset($filters['asset_scope_id']))
+			{
+				$filters['asset_scope_id'] = (int) $this->get('id');
+			}
+			if (!isset($filters['asset_scope']))
+			{
+				$filters['asset_scope']    = 'offering';
+			}
+
+			$tbl = new CoursesTableAsset($this->_db);
+
+			if (($results = $tbl->find(array('w' => $filters))))
+			{
+				foreach ($results as $key => $result)
+				{
+					$results[$key] = new CoursesModelAsset($result);
+				}
+			}
+			else
+			{
+				$results = array();
+			}
+
+			$this->_assets = new CoursesModelIterator($results);
+		}
+
+		return $this->_assets;
 	}
 
 	/**

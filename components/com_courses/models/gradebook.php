@@ -113,7 +113,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 
 		// Get the grades themselves
 		$filters = array('member_id'=>$member_id, 'scope'=>$scope);
-		$results = $this->_tbl->find($filters);
+		$results = $this->_grades($filters);
 
 		$grades = array();
 
@@ -168,7 +168,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			$filters['section_id'] = $this->course->offering()->section()->get('id');
 		}
 
-		$results = $this->_tbl->find($filters);
+		$results = $this->_grades($filters);
 		$grades  = array();
 
 		// Restructure data
@@ -240,8 +240,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			case 'forms':
 			case 'graded':
 				// Get count of graded items taken
-				$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'asset_scope'=>'asset_group', 'graded'=>true);
-				$grades  = $this->_tbl->find($filters);
+				$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'graded'=>true);
+				$grades  = $this->_grades($filters);
 
 				$views = array();
 				foreach ($grades as $g)
@@ -427,8 +427,8 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		$gradePolicy = new CoursesModelGradePolicies($course->offering()->section()->get('grade_policy_id'), $course->offering()->section()->get('id'));
 
 		// Calculate course grades, start by getting all grades
-		$filters = array('scope'=>'asset', 'member_id'=>$member_id, 'course_id'=>$course_id, 'graded'=>true);
-		$results = $this->_tbl->find($filters);
+		$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'graded'=>true);
+		$results = $this->_grades($filters);
 		$grades  = array();
 		$scores  = array();
 
@@ -817,7 +817,7 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		{
 			// Get count of graded items taken
 			$filters = array('member_id'=>$member_id, 'scope'=>'asset', 'graded'=>true);
-			$grades  = $this->_tbl->find($filters);
+			$grades = $this->_grades($filters);
 		}
 
 		// Restructure data
@@ -944,5 +944,66 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 		{
 			return false;
 		}
+	}
+
+	/**
+	 * Get grades for this course
+	 *
+	 * @return array
+	 **/
+	private function _grades($filters=array())
+	{
+		static $grades;
+		$key = serialize($filters);
+
+		if (!isset($grades[$key]))
+		{
+			$asset_ids = array();
+			$units_map = array();
+
+			if ($this->course->offering()->assets() && count($this->course->offering()->assets()) > 0)
+			{
+				foreach ($this->course->offering()->assets() as $a)
+				{
+					$asset_ids[] = $a->get('id');
+				}
+			}
+
+			// Get asset ids
+			if ($this->course->offering()->units())
+			{
+				foreach ($this->course->offering()->units() as $unit)
+				{
+					foreach ($unit->assetgroups() as $agt)
+					{
+						foreach ($agt->children() as $ag)
+						{
+							foreach ($ag->assets() as $a)
+							{
+								if ($a->isPublished())
+								{
+									$units_map[$a->get('id')] = $unit->get('id');
+									$asset_ids[] = $a->get('id');
+								}
+							}
+						}
+					}
+				}
+			}
+
+			$results = $this->_tbl->find($filters);
+
+			if ($results && count($results) > 0)
+			{
+				foreach ($results as $grade)
+				{
+					$grade->unit_id = isset($units_map[$grade->scope_id]) ? $units_map[$grade->scope_id] : 0;
+				}
+			}
+
+			$grades[$key] = $results;
+		}
+
+		return $grades[$key];
 	}
 }
