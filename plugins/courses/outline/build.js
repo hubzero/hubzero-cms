@@ -1052,7 +1052,7 @@ HUB.CoursesOutline = {
 			var $    = HUB.CoursesOutline.jQuery,
 			progress = parseInt(data.loaded / data.total * 100, 10);
 
-			$('.unit').find("#" + progressBarId + " .bar").stop(true, true).animate({'width': progress + '%'}, 500);
+			$('.unit').find("#" + progressBarId + " .bar").stop(true, true).animate({'width': progress + '%'}, 500, 'linear');
 
 			// If progress is 100% and extension is zip, let's add some explanation
 			if(progress == 100) {
