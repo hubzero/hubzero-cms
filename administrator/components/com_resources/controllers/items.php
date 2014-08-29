@@ -1833,7 +1833,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 
 		// get all resources
 		$db  = JFactory::getDBO();
-		$sql = "SELECT id, title, path FROM `#__resources` ORDER BY id";
+		$sql = "SELECT id, title, type, path FROM `#__resources` ORDER BY id";
 		$db->setQuery($sql);
 		$results = $db->loadObjectList();
 
@@ -1857,7 +1857,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 				{
 					$this->view->warning[] = '<span style="color: yellow;">#' . $result->id . ': ' . JText::_('COM_RESOURCES_PATH_IS_DIRECTORY') . ' ' . $path . '</span>';
 				}
-				elseif (JURI::isInternal($path) && !file_exists($base . $path))
+				elseif (JURI::isInternal($path) && !file_exists($base . $path) && $result->type != 12)
 				{
 					$this->view->missing[] = '<span style="color: red">#' . $result->id . ': ' . JText::sprintf('COM_RESOURCES_MISSING_RESOURCE_AT', $base . $path) . '</span>';
 				}
