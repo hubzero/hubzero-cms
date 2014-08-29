@@ -1818,6 +1818,11 @@
 		padding: 0.3em 0;
 		border-bottom: 1px dotted #CCC;
 	}
+
+/* Mod what's new */
+	.newpublication p {
+		padding-left: 3em;
+	}
 /* New */
 	.com_publications .grid {
 		border: none !important;
