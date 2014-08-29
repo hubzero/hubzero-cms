@@ -519,7 +519,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			{
 				// Redirect back to the course outline
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')),
+					JRoute::_($this->course->offering()->link()),
 					JText::_('COM_COURSES_ERROR_ASSET_UNAVAILABLE'),
 					'warning'
 				);
@@ -549,7 +549,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 
 			// Redirect back to the course outline
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&offering=' . $this->course->offering()->get('alias')),
+				JRoute::_($this->course->offering()->link()),
 				JText::sprintf('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
 				'warning'
 			);
