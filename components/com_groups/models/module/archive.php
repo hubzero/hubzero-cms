@@ -115,7 +115,7 @@ class GroupsModelModuleArchive extends JObject
 		{
 			case 'unapproved':
 				$unapproved = array();
-				if($results = $this->modules('list', $filters, true))
+				if ($results = $this->modules('list', $filters, true))
 				{
 					foreach ($results as $k => $result)
 					{
