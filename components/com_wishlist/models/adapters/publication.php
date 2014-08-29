@@ -75,7 +75,7 @@ class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 	 */
 	public function title()
 	{
-		return $this->_item->get('title');
+		return $this->_item->title;
 	}
 
 	/**
