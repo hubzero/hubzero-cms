@@ -69,7 +69,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 * @var array
 	 */
 	protected static $_aux_tablekeys = array(
-		'progress_factors '=> array(
+		'progress_factors' => array(
 			'id',
 			'section_id'
 		)
