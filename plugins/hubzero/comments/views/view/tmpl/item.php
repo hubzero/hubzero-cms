@@ -44,8 +44,11 @@ defined('_JEXEC') or die('Restricted access');
 
 	if ($mark = $this->params->get('onCommentMark'))
 	{
-		$marked = $mark($this->comment);
-		$cls .= ($marked ? ' ' . $marked : '');
+		if ($mark instanceof Closure)
+		{
+			$marked = (string) $mark($this->comment);
+			$cls .= ($marked ? ' ' . $marked : '');
+		}
 	}
 
 	$rtrn = $this->url ? $this->url : JRequest::getVar('REQUEST_URI', 'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments', 'server');
