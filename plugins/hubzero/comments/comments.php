@@ -90,6 +90,7 @@ class plgHubzeroComments extends \Hubzero\Plugin\Plugin
 		if ($params instanceof JRegistry)
 		{
 			$this->params->merge($params);
+			$this->params->set('onCommentMark', $params->get('onCommentMark'));
 		}
 
 		$this->view->params   = $this->params;
