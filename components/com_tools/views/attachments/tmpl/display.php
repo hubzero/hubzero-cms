@@ -162,7 +162,7 @@ if ($this->children)
 				$out .= '&nbsp;';
 			}
 			$out .= '</td>';
-			$out .= '  <td class="t"><a href="'. $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;tmpl=component&amp;id='.$child->id.'&amp;pid='.$this->resource->id.'" class="delete_ss"><span> ' . JText::_('COM_TOOLS_DELETE') . '</span></a></td>';
+			$out .= '  <td class="t"><a href="'. $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;tmpl=component&amp;id='.$child->id.'&amp;pid='.$this->resource->id.'" class="icon-delete delete"><span> ' . JText::_('COM_TOOLS_DELETE') . '</span></a></td>';
 		}
 		$out .= ' </tr>';
 

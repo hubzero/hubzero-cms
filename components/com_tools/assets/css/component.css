@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_tools/tools.css
+ * @file        components/com_tools/assets/css/component.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -12,47 +12,54 @@
 	-- -- -- -- -- -- --
 
 */
+	.edit,
+	.reorder,
+	.delete,
 	.order {
-		display: block;
-		width: 11px;
-		height: 9px;
-		text-indent: 50px;
-		border: none;
-		padding: 9px 0 0 11px;
-		overflow: hidden;
-	}
-	.order {
-		padding: 0;
-	}
-	.up {
-		background: url("/components/com_resources/assets/img/order_up.gif") 0 0 no-repeat;
-	}
-	.down {
-		background: url("/components/com_resources/assets/img/order_down.gif") 0 0 no-repeat;
-	}
-	.order:hover {
-		border: none;
-		background-position: 0 -9px;
-	}
-	.delete {
 		display: inline-block;
 		width: 1em;
 		height: 1em;
 		margin: 0;
 		padding: 0;
 		line-height: 1;
+		font-size: 1.2em;
 		overflow: hidden;
 		white-space: nowrap;
+		border: none;
+	}
+	.edit:hover,
+	.reorder:hover,
+	.delete:hover,
+	.order:hover {
+		border: none;
+	}
+	.order:before {
+		content: "";
+		font-family: "Fontcons";
+	}
+	.edit:before,
+	.reorder:before,
+	.delete:before,
+	.order:before {
+		margin-right: 0.8em;
+	}
+	.order.down:before {
+		content: "\2193";
+	}
+	.order.up:before {
+		content: "\2191";
+	}
+	.reorder:before {
+		content: "\21C4";
+	}
+
+	.hidden {
+		display: none;
 	}
 	td .caption {
 		margin-left: 25px;
 		font-size: 90%;
 		color: #999;
-	}
-	.hidden {
-		display: none;
-	}
-	td .caption {
 		margin-left: 0;
 		padding-left: 0;
 		display: block;
@@ -82,17 +89,15 @@
 		margin-bottom: 1em;
 		position: relative;
 	}
-	.screenshots, 
-	ul.screenshots, 
-	#content ul.screenshots {
+
+	ul.screenshots {
 		margin: 0 0 1em 0;
 		padding: 0.5em 0 0 0;
 		position: relative;
 		list-style: none;
 		background-image: none;
 	}
-	.screenshots li, 
-	#small-page  .screenshots li {
+	ul.screenshots li {
 		margin: 0 10px 1em 0;
 		padding: 0.5em 7px 2em 7px;
 		float: left;
@@ -102,9 +107,9 @@
 		position: relative;
 		background-image: none;
 	}
-	.screenshots a,
-	.screenshots a:hover,
-	.screenshots img { 
+	ul.screenshots a,
+	ul.screenshots a:hover,
+	ul.screenshots img { 
 		border: none;
 	}
 
@@ -117,29 +122,11 @@
 		position: relative;
 		margin-bottom: 0.3em;
 	}
-	.delete_ss {
-		display: inline-block;
-		background: transparent url("/components/com_tools/assets/img/trash.gif") 0 2px no-repeat;
-		padding: 0.2em 1.3em 0.2em 0;
-		margin-left: 0.5em;
-		width: 16px;
-		overflow: hidden;
-		text-indent: 55em;
-	}
-	.edit_ss {
-		display: inline-block;
-		background: transparent url("/components/com_tools/assets/img/contribute/edit.png") 0 0 no-repeat;
-		padding: 0.2em 1.3em 0.2em 0;
-		width: 16px;
-		overflow: hidden;
-		text-indent: 55em;
-	}
 	#small-page .ss_pop {
 		width: 100%;
 		text-align: center;
 	}
-	
-	.screenshots li .reorder_ss {
-		background: transparent url("/components/com_tools/assets/img/contribute/reorder.gif") 0 0 no-repeat;
-		padding: 0.2em 1.3em 0.2em 1em;
+
+	#authors-form {
+		margin-bottom: 2em;
 	}

@@ -42,8 +42,8 @@ if ($this->version == 'dev') {
 				<?php echo implode('<br />', $this->getErrors()); ?>
 			</p>
 		<?php } ?>
-			<div class="grid">
-				<div class="col span8">
+			<div class="grid nobreak">
+				<div class="col span7">
 					<label for="acmembers">
 						<?php echo JText::_('COM_TOOLS_AUTHORS_ENTER_LOGINS'); ?>
 						<?php
@@ -59,7 +59,7 @@ if ($this->version == 'dev') {
 				</div>
 				<div class="col span3">
 					<label>
-						<span id="new-authors-role-label"><?php echo JText::_('COM_TOOLS_AUTHORS_ROLE'); ?></span>
+						<span id="new-authors-role-label"><?php echo JText::_('COM_TOOLS_AUTHORS_ROLE'); ?></span><br />
 						<select name="role" id="new-authors-role">
 							<option value=""><?php echo JText::_('COM_TOOLS_AUTHOR'); ?></option>
 							<?php
@@ -76,7 +76,7 @@ if ($this->version == 'dev') {
 						</select>
 					</label>
 				</div>
-				<div class="col span1 omega">
+				<div class="col span2 omega">
 					<p class="submit">
 						<input type="submit" value="<?php echo JText::_('COM_TOOLS_ADD'); ?>" />
 					</p>

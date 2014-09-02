@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_tools/tools.css
+ * @file        components/com_tools/assets/css/storage.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -12,6 +12,9 @@
 	-- -- -- -- -- -- --
 
 */
+	.icon-file:before {
+		margin-right: 0.5em;
+	}
 /* Storage Management */
 	.filebrowser {
 		margin: 1.5em 0 0 0;
@@ -48,18 +51,6 @@
 	#small-page .delete:hover {
 		color: #c00;
 	}
-	#small-page #filepath li.home a, 
-	#small-page #filepath li.home span {
-		background: url("/components/com_tools/assets/img/home.gif") 0 0 no-repeat;
-		padding-left: 25px; 
-		padding-top: 0.2em;
-		padding-bottom: 0.2em;
-	}
-	#small-page #filepath li.folder a, 
-	#small-page #filepath li.folder span {
-		background: url("/components/com_tools/assets/img/folder.gif") 0 0 no-repeat;
-		padding-left: 20px; 
-	}
 	#small-page #filepath li.arrow {
 		margin: 0;
 		padding: 0;
@@ -80,17 +71,15 @@
 	#diskusage dt {
 		color: #aaa;
 	}
-	#diskusage #du-amount { 
-		position: relative; /* IE is dumb */
+	#diskusage #du-amount {
+		position: relative;
 		display: block;
 		height: 20px;
 		margin: 0 0 15px;
 		padding: 1px 0 0 0;
 		background: #edf2ea;
-		/* Rounded corners */
-		-moz-border-radius: 10px;
 		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;	
+		-moz-border-radius: 10px;
 		border-radius: 10px;
 	}
 	#diskusage #du-msg { 
@@ -115,19 +104,16 @@
 	#diskusage #du-amount div {
 		margin: 0;
 		padding: 0;
-		position: relative; 
+		position: relative;
 		background: #c9d9c0;
-		height: 18px; 
-		width: 75%; 
-		/* Rounded corners */
-		-moz-border-radius: 10px;
+		height: 18px;
+		width: 75%;
 		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;	
-		border-radius: 10px;
-		/* Shadows */
-		box-shadow: 0px 0px 2px #444;
-		-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5); /* length length length color */
-		-moz-box-shadow: #444 0px 0px 2px; /* color length length length */
+		   -moz-border-radius: 10px;
+		        border-radius: 10px;
+		-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+		   -moz-box-shadow: #444 0px 0px 2px;
+		        box-shadow: 0px 0px 2px #444;
 	}
 	#diskusage #du-amount.amount-low {
 		text-align: left;
@@ -145,9 +131,4 @@
 		text-align: left;
 		text-indent: -9999px;
 		overflow: hidden;
-	}
-
-/* IE 6 hacks */
-	* html #diskusage #du-amount {
-		float: none;
 	}

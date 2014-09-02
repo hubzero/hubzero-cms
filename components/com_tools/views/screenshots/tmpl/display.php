@@ -164,8 +164,8 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 			$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title']: JText::_('COM_TOOLS_SCREENSHOT').' #'.$k;
 			$els .= '<li>';
 				$els .= '<span class="dev_ss">';
-					$els .= '<a href="' . $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="edit_ss popup" rel="external">'.JText::_('COM_TOOLS_EDIT').'</a>';
-					$els .= '<a href="' . $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="delete_ss">'.JText::_('COM_TOOLS_DELETE').'</a>';
+					$els .= '<a href="' . $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="icon-edit edit popup" rel="external">'.JText::_('COM_TOOLS_EDIT').'</a>';
+					$els .= '<a href="' . $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=delete&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="icon-delete delete">'.JText::_('COM_TOOLS_DELETE').'</a>';
 				$els .= '</span>';
 				$els .= '<a href="' . $base . '/index.php?option='.$this->option.'&amp;controller='.$this->controller.'&amp;task=edit&amp;pid='.$this->rid.'&amp;filename='.$images[$i]['img'].'&amp;version='.$this->version.'&amp;tmpl=component" class="popup" title="'.$title.'">';
 					$els .= '<img src="'.$this->wpath.'/'.$tn.'" alt="'.$title.'" id="ss_'.$i.'" />';
@@ -176,8 +176,8 @@ for ($i=0, $n=count($images); $i < $n; $i++)
 		if ($i != ($n-1))
 		{
 			$els .= '<li style="width:20px;top:40px;">';
-				$els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid='.$this->rid.'&amp;fl='.$images[$i+1]['img'].'&amp;fr='.$images[$i]['img'].'&amp;ol='.($i+1).'&amp;or='.$i.'&amp;version='.$this->version.'&amp;tmpl=component">';
-					$els .= '<img src="' . $base . '/components/' . $this->option . '/assets/img/contribute/reorder.gif" alt="" />';
+				$els .= '<a class="icon-reorder reorder" href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid='.$this->rid.'&amp;fl='.$images[$i+1]['img'].'&amp;fr='.$images[$i]['img'].'&amp;ol='.($i+1).'&amp;or='.$i.'&amp;version='.$this->version.'&amp;tmpl=component" title="' .JText::_('COM_TOOLS_REORDER'). '">';
+					$els .= JText::_('COM_TOOLS_REORDER');
 				$els .= '</a>';
 			$els .= '</li>'."\n";
 		}

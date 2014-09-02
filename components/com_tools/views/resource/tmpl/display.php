@@ -50,8 +50,8 @@ $this->css('resource.css')
 
 	<div id="content-header-extra">
 		<ul id="useroptions">
-			<li><a class="icon-status btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-			<li class="last"><a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+			<li><a class="icon-config btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $this->row->alias); ?>"><?php echo JText::_('COM_TOOLS_TOOL_STATUS'); ?></a></li>
+			<li><a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pipeline&task=create'); ?>"><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
 		</ul>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->

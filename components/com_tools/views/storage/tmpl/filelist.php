@@ -38,12 +38,12 @@ $this->css('storage.css');
 			<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" id="filelist">
 				<table>
 					<caption>
-						<span class="home">
-						<?php if (count($this->dirtree) > 0) { ?>
-							<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>"><?php echo JText::_('COM_TOOLS_HOME'); ?></a>
-						<?php } else { ?>
-							<span><?php echo JText::_('COM_TOOLS_HOME'); ?></span>
-						<?php } ?>
+						<span class="icon-home home">
+							<?php if (count($this->dirtree) > 0) { ?>
+								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>"><?php echo JText::_('COM_TOOLS_HOME'); ?></a>
+							<?php } else { ?>
+								<span><?php echo JText::_('COM_TOOLS_HOME'); ?></span>
+							<?php } ?>
 						</span>
 						<?php
 						if (count($this->dirtree) > 0)
@@ -58,7 +58,7 @@ $this->css('storage.css');
 									$i++;
 									?>
 									<span class="arrow">&raquo;</span>
-									<span class="folder">
+									<span class="icon-folder folder">
 										<?php if ($i != count($this->dirtree)) { ?>
 											<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . $path); ?>"><?php echo ucfirst($branch); ?></a>
 										<?php } else { ?>
@@ -85,28 +85,20 @@ $this->css('storage.css');
 						$d = ($this->listdir) ? $this->listdir . DS . $name : DS . $name;
 					?>
 						<tr>
-							<td>
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&amp;listdir=' . urlencode($d)); ?>">
-									<img src="<?php echo $this->img('folder.gif'); ?>" alt="<?php echo $name; ?>" width="16" height="16" />
-								</a>
-							</td>
 							<td width="100%">
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . urlencode($d)); ?>">
+								<a class="icon-folder" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . urlencode($d)); ?>">
 									<?php echo $dir; ?>
 								</a>
 							</td>
 							<td class="file-size">
-								<?php //echo \Hubzero\Utility\Number::formatBytes(\Hubzero\Filesystem\Filesystem::size($fullpath)); ?>
 							</td>
-						<?php if ($dir != '/data' && $dir != '/sessions') { ?>
 							<td>
-								<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $numFiles; ?>);" title="<?php echo JText::_('JACTION_DELETE'); ?>">
-									<?php echo JText::_('JACTION_DELETE'); ?>
-								</a>
+								<?php if ($dir != '/data' && $dir != '/sessions') { ?>
+									<a class="delete icon-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $dir; ?>', <?php echo $numFiles; ?>);" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+										<?php echo JText::_('JACTION_DELETE'); ?>
+									</a>
+								<?php } ?>
 							</td>
-						<?php } else { ?>
-							<td> </td>
-						<?php } ?>
 						</tr>
 					<?php
 					}
@@ -115,11 +107,8 @@ $this->css('storage.css');
 					{
 					?>
 						<tr>
-							<td>
-								<img src="<?php echo $this->img('page_white.png'); ?>" alt="<?php echo $name; ?>" width="16" height="16" />
-							</td>
 							<td width="100%">
-								<?php echo $name; ?>
+								<span class="icon-file"><?php echo $name; ?></span>
 							</td>
 							<td class="file-size">
 								<?php echo \Hubzero\Utility\Number::formatBytes(filesize($fullpath)); ?>

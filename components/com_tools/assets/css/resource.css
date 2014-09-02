@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_tools/tools.css
+ * @file        components/com_tools/assets/css/resource.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -12,14 +12,20 @@
 	-- -- -- -- -- -- --
 
 */
-/*---------------------------------------------------------------
-	Steps
----------------------------------------------------------------*/
+/* Steps */
 	.steps-section {
 		margin-bottom: 0;
 		padding-bottom: 0;
 	}
-	#steps { border-bottom:1px solid #ccc; padding:0 0 0.5em 0; list-style:none; margin:1em 0 2em 0; position:relative;  }
+	#steps {
+		border-bottom: 1px solid #ccc;
+		padding: 0 0 0.5em 0;
+		list-style: none;
+		margin: 1em 0 2em 0;
+		position: relative;
+		margin-bottom: 0;
+		padding-bottom: 0.7em;
+	}
 	#steps li {
 		margin: 0 1em 0 0;
 		padding: 0 0 0.6em 0;
@@ -29,96 +35,108 @@
 		font-size: 1em;
 		font-weight: normal;
 	}
-	#steps li.intermediate{ background: url("/components/com_tools/assets/img/contribute/fc-arrow.gif") bottom center no-repeat; padding: 0 1em 0 1em; margin: 0;}
-	#steps li.prev { color: #333; background: #fff; font-weight: bold; margin: 0; }
-	#steps li.active { color: #bd6416; background: #fff; font-weight: bold; background: url("/components/com_tools/assets/img/contribute/arrow-up.gif") bottom center no-repeat; }
-	#steps li.future { color: #b1c1b3; }
-	#steps li.steps_hed { font-size:x-small; text-transform: uppercase; }
-	
-/*---------------------------------------------------------------
-	Screenshots
----------------------------------------------------------------*/
-	
+	#steps li.intermediate {
+		background: url("/components/com_tools/assets/img/contribute/fc-arrow.gif") bottom center no-repeat;
+		padding: 0 1em 0 1em;
+		margin: 0;
+	}
+	#steps li.prev {
+		color: #333;
+		background: #fff;
+		font-weight: bold;
+		margin: 0;
+	}
+	#steps li.active {
+		color: #bd6416;
+		background: #fff;
+		font-weight: bold;
+		background: url("/components/com_tools/assets/img/contribute/arrow-up.gif") bottom center no-repeat;
+	}
+	#steps li.future {
+		color: #b1c1b3;
+	}
+	#steps li.steps_hed {
+		font-size: x-small;
+		text-transform: uppercase;
+	}
+
+/* Screenshots */
 	.uploading {
-		padding:1em 0.2em 1em 0.2em;
+		padding: 1em 0.2em 1em 0.2em;
 	}
 	.ss_title {
-		margin:1em 0 1em 0;display:block;
+		margin: 1em 0 1em 0;
+		display: block;
 	}
 	.input_restricted {
-		display:inline; width:200px;
+		display: inline;
+		width: 200px;
 	}
 	.last_option {
-		margin-left:2em;
+		margin-left: 2em;
 	}
 	.upload_ss {
 		background: #f3f3f3;
-		border-top:1px solid #ccc;
-		border-bottom:1px solid #ccc;
+		border-top: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
 		margin-bottom: 1em;
-		position:relative;
+		position: relative;
 	}
-	.screenshots, ul.screenshots, #content ul.screenshots {
+	ul.screenshots {
 		margin: 0 0 1em 0;
 		padding: 0.5em 0 0 0;
-		position:relative;
-		list-style:none;
-		background-image:none;
+		position: relative;
+		list-style: none;
+		background-image: none;
 	}
-	.screenshots li, #small-page  .screenshots li {
+	ul.screenshots li {
 		margin: 0 10px 1em 0;
 		padding: 0.5em 7px 2em 7px;
 		float: left;
 		display: inline;
-		height:67px;
-		width:91px;		
-		position:relative;
-		background-image:none;
+		height: 67px;
+		width: 91px;
+		position: relative;
+		background-image: none;
 	}
-	.screenshots a,
-	.screenshots a:hover,
-	.screenshots img { 
+	ul.screenshots a,
+	ul.screenshots a:hover,
+	ul.screenshots img {
 		border: none;
 	}
-	
+
 	#small-page h3 {
-		margin-top:0;
-		margin-bottom:0.5em;
+		margin-top: 0;
+		margin-bottom: 0.5em;
 	}
 	.dev_ss {
-		float:left;
-		position:relative;
-		margin-bottom:0.3em;
-	}
-	.delete_ss {
-		background: transparent url("/components/com_tools/assets/img/trash.gif") 0 2px no-repeat;
-		padding:0.2em 1.3em 0.2em 0;
-		margin-left:0.5em;
-	}
-	.edit_ss {
-		background: transparent url("/components/com_tools/assets/img/contribute/edit.png") 0 0 no-repeat;
-		padding:0.2em 1.3em 0.2em 0;
+		float: left;
+		position: relative;
+		margin-bottom: 0.3em;
 	}
 	#small-page .ss_pop {
-		width:100%;
-		text-align:center;
+		width: 100%;
+		text-align: center;
 	}
-	
-	.screenshots li .reorder_ss {
-		background: transparent url("/components/com_tools/assets/img/contribute/reorder.gif") 0 0 no-repeat;
-		padding:0.2em 1.3em 0.2em 1em;
-	}
-	#displays_0, 
+
+	#displays_0,
 	.devversion {
 		background: url("/components/com_tools/assets/img/contribute/bgdev.gif") 0 0 repeat-X;
 	}
-	p.devversion, p.currentversion {
-	 	padding: 1em; 
+	p.devversion,
+	p.currentversion {
+		padding: 1em; 
 		margin: 0;
 	}
-	.currentversion {
-	 	background: #e4fefe;
+	p.devversion span,
+	p.currentversion span {
+		margin-left: 2em;
 	}
+	.currentversion {
+		background: #e4fefe;
+	}
+
+/* Preview pane */
 	#preview-header {
 		margin: 0;
 		padding: 0.2em 0.5em;
