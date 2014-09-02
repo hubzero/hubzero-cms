@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'student.php');
 
 /**
- * Courses model class for a course
+ * Courses model class for course permissions
  */
 class CoursesModelPermissions extends JObject
 {
@@ -99,8 +99,10 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Course offering ID or alias
-	 * @return     void
+	 * @param   integer $course_id   Course ID or alias
+	 * @param   integer $offering_id Course offering ID or alias
+	 * @param   integer $section_id  Course section ID or alias
+	 * @return  void
 	 */
 	public function __construct($course_id=null, $offering_id=null, $section_id=null)
 	{
@@ -110,13 +112,12 @@ class CoursesModelPermissions extends JObject
 	}
 
 	/**
-	 * Returns a reference to a course offering model
+	 * Returns a reference to a permissions model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = CoursesModelOffering::getInstance($alias);
-	 *
-	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object CoursesModelOffering
+	 * @param   integer $course_id   Course ID or alias
+	 * @param   integer $offering_id Course offering ID or alias
+	 * @param   integer $section_id  Course section ID or alias
+	 * @return  object CoursesModelPermissions
 	 */
 	static function &getInstance($course_id=null, $offering_id=null, $section_id=null)
 	{
@@ -131,9 +132,9 @@ class CoursesModelPermissions extends JObject
 	}
 
 	/**
-	 * Check a user's authorization
+	 * Get the component config
 	 *
-	 * @return     boolean True if authorized, false if not
+	 * @return  object JRegistry
 	 */
 	public function config()
 	{
@@ -147,9 +148,9 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
+	 * @param   string $property The name of the property
+	 * @param   mixed  $default  The default value
+	 * @return  mixed  The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -163,9 +164,9 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Modifies a property of the object, creating it if it does not already exist.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
+	 * @param   string $property The name of the property
+	 * @param   mixed  $value The value of the property to set
+	 * @return  mixed  Previous value of the property
 	 */
 	public function set($property, $value = null)
 	{
@@ -178,7 +179,7 @@ class CoursesModelPermissions extends JObject
 	 * Check if the current user has manager access
 	 * This is just a shortcut for the access check
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isManager()
 	{
@@ -188,7 +189,8 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Check if the current user is enrolled
 	 *
-	 * @return     boolean
+	 * @param   integer $user_ID
+	 * @return  boolean
 	 */
 	public function manager($user_id=null)
 	{
@@ -212,14 +214,11 @@ class CoursesModelPermissions extends JObject
 	}
 
 	/**
-	 * Get a list of units for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of managers
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @param      boolean $clear   Force a new dataset?
-	 * @return     mixed
+	 * @param   array   $filters Filters to build query from
+	 * @param   boolean $clear   Force a new dataset?
+	 * @return  mixed
 	 */
 	public function managers($filters=array(), $clear=false)
 	{
@@ -281,10 +280,10 @@ class CoursesModelPermissions extends JObject
 	}
 
 	/**
-	 * Check if the current user has manager access
+	 * Check if the current user is a student
 	 * This is just a shortcut for the access check
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isStudent()
 	{
@@ -299,7 +298,8 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Check if the current user is enrolled
 	 *
-	 * @return     boolean
+	 * @param   integer $user_id
+	 * @return  boolean
 	 */
 	public function student($user_id=null)
 	{
@@ -323,14 +323,11 @@ class CoursesModelPermissions extends JObject
 	}
 
 	/**
-	 * Get a list of units for an offering
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a list of students
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @param      boolean $clear   Force a new dataset?
-	 * @return     mixed
+	 * @param   array   $filters Filters to build query from
+	 * @param   boolean $clear   Force a new dataset?
+	 * @return  mixed
 	 */
 	public function students($filters=array(), $clear=false)
 	{
@@ -378,7 +375,7 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Calculate permissions
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _calculate()
 	{
@@ -579,8 +576,9 @@ class CoursesModelPermissions extends JObject
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $action Action to check
+	 * @param   string  $item   Item type to check action against
+	 * @return  boolean True if authorized, false if not
 	 */
 	public function access($action='view', $item='course')
 	{

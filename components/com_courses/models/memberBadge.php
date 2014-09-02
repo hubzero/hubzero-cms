@@ -56,8 +56,8 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @return     void
+	 * @param   integer $oid Record ID
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
@@ -77,8 +77,8 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	 * Member id is unique to a course and section, and badges are unique to members.
 	 * Therefore, member id also serves as a primary key of this table.
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @return     void
+	 * @param   integer $id Member ID
+	 * @return  mixed   Object on success, False on error
 	 */
 	public static function loadByMemberId($id)
 	{
@@ -99,8 +99,8 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	 *
 	 * Validation token is a unique hash that allows us to identify a users badge evidence without exposing their user id
 	 *
-	 * @param      string $token - badge assertion token
-	 * @return     void
+	 * @param    string $token Badge assertion token
+	 * @return   mixed  Object on success, False on error
 	 */
 	public static function loadByToken($token)
 	{
@@ -120,7 +120,8 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	/**
 	 * Store member badge
 	 *
-	 * @return     bool
+	 * @param   boolean $check Perform data validation? 
+	 * @return  boolean
 	 */
 	public function store($check=true)
 	{
@@ -137,7 +138,7 @@ class CoursesModelMemberBadge extends CoursesModelAbstract
 	/**
 	 * Check whether or not a student has earned the badge
 	 *
-	 * @return     bool
+	 * @return  bool
 	 */
 	public function hasEarned()
 	{

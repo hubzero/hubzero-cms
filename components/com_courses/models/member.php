@@ -38,7 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'prerequisite.php');
 
 /**
- * Courses model class for a course
+ * Member model class for a course
  */
 class CoursesModelMember extends CoursesModelAbstract
 {
@@ -66,16 +66,18 @@ class CoursesModelMember extends CoursesModelAbstract
 	/**
 	 * CoursesModelPrerequisites
 	 *
-	 * @var array
+	 * @var object
 	 **/
 	private $_prerequisites = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
+	 * @param   string $uid User ID
+	 * @param   string $cid Course ID
+	 * @param   string $oid Offering ID
+	 * @param   string $sid Section ID
+	 * @return  void
 	 */
 	public function __construct($uid, $cid=0, $oid=0, $sid=0)
 	{
@@ -106,14 +108,13 @@ class CoursesModelMember extends CoursesModelAbstract
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to a member object
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object CoursesModelMember
+	 * @param   string $uid User ID
+	 * @param   string $cid Course ID
+	 * @param   string $oid Offering ID
+	 * @param   string $sid Section ID
+	 * @return  object CoursesModelMember
 	 */
 	static function &getInstance($uid=null, $cid=0, $oid=0, $sid=0)
 	{
@@ -135,7 +136,7 @@ class CoursesModelMember extends CoursesModelAbstract
 	/**
 	 * Get member badge
 	 *
-	 * @return     obj
+	 * @return  object CoursesModelMemberBadge
 	 */
 	public function badge()
 	{
@@ -150,8 +151,8 @@ class CoursesModelMember extends CoursesModelAbstract
 	/**
 	 * Get courses prerequisites per member
 	 *
-	 * @param  (object) $gradebook
-	 * @return     obj
+	 * @param   object $gradebook
+	 * @return  object CoursesModelPrerequisite
 	 */
 	public function prerequisites($gradebook)
 	{
@@ -166,7 +167,7 @@ class CoursesModelMember extends CoursesModelAbstract
 	/**
 	 * Delete an entry and associated data
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function delete()
 	{
@@ -178,8 +179,9 @@ class CoursesModelMember extends CoursesModelAbstract
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $action Action to check
+	 * @param   string  $item   Item type to check action against
+	 * @return  boolean True if authorized, false if not
 	 */
 	public function access($action='', $item='offering')
 	{
@@ -193,7 +195,7 @@ class CoursesModelMember extends CoursesModelAbstract
 	/**
 	 * Get a unique token, generating one if it doesn't exist
 	 *
-	 * @return     obj
+	 * @return  string
 	 */
 	public function token()
 	{
@@ -209,7 +211,7 @@ class CoursesModelMember extends CoursesModelAbstract
 	/**
 	 * Generate a unique token
 	 *
-	 * @return     obj
+	 * @return  string
 	 */
 	public function generateToken()
 	{
