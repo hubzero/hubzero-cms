@@ -176,7 +176,7 @@ defined('_JEXEC') or die('Restricted access');
 
 								<label class="comment-<?php echo $this->comment->get('id'); ?>-file" for="comment-<?php echo $this->comment->get('id'); ?>-file">
 									<span class="label-text"><?php echo JText::_('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>:</span>
-									<input type="file" name="commentfile" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
+									<input type="file" name="comment_file" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
 								</label>
 
 								<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">

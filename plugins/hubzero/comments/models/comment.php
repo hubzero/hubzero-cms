@@ -518,9 +518,14 @@ class Comment extends Model
 		if ($result)
 		{
 			// Check file attachment
-			$fieldName = 'commentfile';
-			if (!empty($_FILES[$fieldName]))
+			$fieldName = 'comment_file';
+			if (!empty($_FILES[$fieldName]) && !empty($_FILES[$fieldName]['name']))
 			{
+				if ($_FILES[$fieldName]['error'])
+				{
+					$this->setError(\JText::_('PLG_HUBZERO_COMMENTS_ERROR_UPLOADING_FILE'));
+				}
+
 				$file = new Attachment();
 				$file->set('comment_id', $this->get('id'));
 
@@ -540,7 +545,7 @@ class Comment extends Model
 					jimport('joomla.filesystem.folder');
 					if (!\JFolder::create($uploadDir))
 					{
-						$this->setError(\JText::_('COM_BLOG_UNABLE_TO_CREATE_UPLOAD_PATH'));
+						$this->setError(\JText::_('PLG_HUBZERO_COMMENTS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 					}
 				}
 
@@ -561,7 +566,7 @@ class Comment extends Model
 					jimport('joomla.filesystem.file');
 					if (!\JFile::upload($fileTemp, $uploadPath))
 					{
-						$this->setError(\JText::_('ERROR MOVING FILE'));
+						$this->setError(\JText::_('PLG_HUBZERO_COMMENTS_ERROR_MOVING_FILE'));
 					}
 					else
 					{
