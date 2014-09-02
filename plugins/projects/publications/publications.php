@@ -2132,8 +2132,7 @@ class plgProjectsPublications extends JPlugin
 						$title 			= htmlspecialchars($title);
 						$abstract 		= trim(JRequest::getVar( 'abstract', '', 'post' )); 
 						$abstract 		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($abstract));
-						$description 	= trim(JRequest::getVar( 'description', '', 'post' ));	
-						$description 	= stripslashes($description);
+						$description 	= trim(JRequest::getVar( 'description', '', 'post', 'none', 2 ));	
 
 						if ($canedit) 
 						{
@@ -2287,7 +2286,7 @@ class plgProjectsPublications extends JPlugin
 					break;
 
 				case 'notes':
-					$notes = trim(JRequest::getVar( 'notes', '', 'post' ));	
+					$notes = trim(JRequest::getVar( 'notes', '', 'post', 'none', 2 ));	
 					$notes = stripslashes($notes);
 					$row->release_notes = $notes;
 					if (!$row->store()) 
