@@ -87,7 +87,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	private $_assets = NULL;
 
 	/**
-	 * JDatabase
+	 * CoursesModelIterator
 	 *
 	 * @var object
 	 */
@@ -96,9 +96,9 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
+	 * @param   mixed   $oid         Integer, string, array, or object
+	 * @param   integer $offering_id Offering the unit is linked to
+	 * @return  void
 	 */
 	public function __construct($oid=null, $offering_id=null)
 	{
@@ -124,14 +124,11 @@ class CoursesModelUnit extends CoursesModelAbstract
 	}
 
 	/**
-	 * Returns a reference to a wiki page object
+	 * Returns a reference to a unit model
 	 *
-	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
-	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object CoursesModelUnit
+	 * @param   mixed   $oid         Integer, string, array, or object
+	 * @param   integer $offering_id Offering the unit is linked to
+	 * @return  object  CoursesModelUnit
 	 */
 	static function &getInstance($oid=null, $offering_id=null)
 	{
@@ -154,8 +151,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @param     string $property The name of the property
-	 * @param     mixed  $default The default value
-	 * @return    mixed The value of the property
+	 * @param     mixed  $default  The default value
+	 * @return    mixed  The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -187,9 +184,10 @@ class CoursesModelUnit extends CoursesModelAbstract
 	}
 
 	/**
-	 * Method to set the article id
+	 * Get a specific asset group
 	 *
-	 * @param	int	Article ID number
+	 * @param   integer $id Asset group ID
+	 * @return  object
 	 */
 	public function assetgroup($id=null)
 	{
@@ -228,7 +226,9 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Reset the asset groups to top level
 	 *
-	 * @return     void
+	 * @param   mixed $idx     Index value
+	 * @param   array $filters Filters to apply to results query
+	 * @return  void
 	 */
 	public function resetAssetgroups($idx=null, $filters=array())
 	{
@@ -237,13 +237,14 @@ class CoursesModelUnit extends CoursesModelAbstract
 	}
 
 	/**
-	 * Get a list of assetgroups for an offering
+	 * Get a list of assetgroups for this entry
 	 *   Accepts either a numeric array index or a string [id, name]
 	 *   If index, it'll return the entry matching that index in the list
 	 *   If string, it'll return either a list of IDs or names
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   mixed $idx     Index value
+	 * @param   array $filters Filters to apply to results query
+	 * @return  array
 	 */
 	public function assetgroups($idx=null, $filters=array())
 	{
@@ -338,7 +339,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Set seblings
 	 *
-	 * @return     boolean
+	 * @param   mixed $siblings Array or Iterator object
+	 * @return  void
 	 */
 	public function siblings(&$siblings)
 	{
@@ -355,7 +357,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Is the current position the first one?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isFirst()
 	{
@@ -369,7 +371,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Is the current position the last one?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isLast()
 	{
@@ -383,7 +385,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Return the key for the current cursor position
 	 *
-	 * @return     mixed
+	 * @return  integer
 	 */
 	public function key()
 	{
@@ -393,7 +395,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Set cursor position to previous position and return array value
 	 *
-	 * @return     mixed
+	 * @param   string $dir
+	 * @return  mixed
 	 */
 	public function sibling($dir='next')
 	{
@@ -415,8 +418,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Get a specific asset
 	 *
-	 * @param     integer $id Asset ID
-	 * @return    object CoursesModelAsset
+	 * @param   integer $id Asset ID
+	 * @return  object  CoursesModelAsset
 	 */
 	public function asset($id=null)
 	{
@@ -441,8 +444,8 @@ class CoursesModelUnit extends CoursesModelAbstract
 	 * Get a list of assets for a unit
 	 *   Accepts an array of filters to apply to the list of assets
 	 *
-	 * @param      array $filters Filters to apply
-	 * @return     object CoursesModelIterator
+	 * @param   array $filters Filters to apply
+	 * @return  object CoursesModelIterator
 	 */
 	public function assets($filters=array())
 	{
@@ -482,10 +485,10 @@ class CoursesModelUnit extends CoursesModelAbstract
 	}
 
 	/**
-	 * Store changes to this offering
+	 * Store changes to this entry
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean $check Perform data validation check?
+	 * @return  boolean False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -526,7 +529,7 @@ class CoursesModelUnit extends CoursesModelAbstract
 	/**
 	 * Delete an entry and associated data
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function delete()
 	{

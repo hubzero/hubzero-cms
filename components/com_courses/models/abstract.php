@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'log.php');
 
 /**
- * Courses model class for a course
+ * Abstract class for course models
  */
 abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 {
@@ -43,22 +43,21 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	 *
 	 * @var integer
 	 */
-	const APP_STATE_DRAFT     = 3;
+	const APP_STATE_DRAFT = 3;
 
 	/**
-	 * CoursesTableAsset
+	 * Entry scope
 	 *
-	 * @var object
+	 * @var string
 	 */
 	protected $_scope = NULL;
 
 	/**
-	 * CoursesTableInstance
+	 * Entry creator
 	 *
 	 * @var object
 	 */
 	protected $_creator = NULL;
-
 
 	/**
 	 * Date keys coming from
@@ -73,16 +72,16 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	);
 
 	/**
-	 * JParameter
+	 * JRegistry
 	 *
 	 * @var object
 	 */
 	protected $_config = NULL;
 
 	/**
-	 * Has the offering started?
+	 * Is the entyr in draft state?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isDraft()
 	{
@@ -98,9 +97,9 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Has the offering started?
+	 * Has the entry started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function started()
 	{
@@ -123,9 +122,9 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Has the offering ended?
+	 * Has the entry ended?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function ended()
 	{
@@ -148,9 +147,9 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Check if the offering is available
+	 * Check if the entry is available
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isAvailable()
 	{
@@ -174,11 +173,13 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire user object
 	 *
-	 * @return     mixed
+	 * @param   string $property Param to return
+	 * @param   mixed  $default  Value to return if property not found
+	 * @return  mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof JUser))
 		{
@@ -186,7 +187,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 		}
 		if ($property)
 		{
-			return $this->_creator->get($property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}
@@ -194,7 +195,7 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	/**
 	 * Delete a record
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function delete()
 	{
@@ -246,9 +247,11 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Check a user's authorization
+	 * Get a parameter from the component config
 	 *
-	 * @return     boolean True if authorized, false if not
+	 * @param   string $property Param to return
+	 * @param   mixed  $default  Value to return if property not found
+	 * @return  mixed
 	 */
 	public function config($property=null, $default=null)
 	{
@@ -266,8 +269,9 @@ abstract class CoursesModelAbstract extends \Hubzero\Base\Model
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $action Action to check
+	 * @param   string  $item   Item type to check action against
+	 * @return  boolean True if authorized, false if not
 	 */
 	public function access($action='view', $item='course')
 	{

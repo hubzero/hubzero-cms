@@ -38,7 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'date.php');
 
 /**
- * Courses model class for a course
+ * Asset model class for a course
  */
 class CoursesModelAsset extends CoursesModelAbstract
 {
@@ -57,9 +57,9 @@ class CoursesModelAsset extends CoursesModelAbstract
 	protected $_scope = 'asset';
 
 	/**
-	 * Container for properties
+	 * JRegistry
 	 *
-	 * @var array
+	 * @var object
 	 */
 	protected $_params = null;
 
@@ -67,15 +67,19 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 * Auxiliary keys for assets (links to other tables)
 	 *
 	 * @var array
-	 **/
-	protected static $_aux_tablekeys = array('progress_factors'=>array('id', 'section_id'));
+	 */
+	protected static $_aux_tablekeys = array(
+		'progress_factors '=> array(
+			'id',
+			'section_id'
+		)
+	);
 
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
+	 * @param   mixed $oid Integer, array, or object
+	 * @return  void
 	 */
 	public function __construct($oid)
 	{
@@ -88,8 +92,8 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
 	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
+	 * @param	mixed  $default  The default value if property not found
+	 * @return	mixed  The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -141,10 +145,11 @@ class CoursesModelAsset extends CoursesModelAbstract
 	}
 
 	/**
-	 * Check if the resource exists
+	 * Get the asset path
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   integer $course  Course ID
+	 * @param   boolean $withUrl Append the URL?
+	 * @return  string
 	 */
 	public function path($course=0, $withUrl=true)
 	{
@@ -171,10 +176,10 @@ class CoursesModelAsset extends CoursesModelAbstract
 	}
 
 	/**
-	 * Store changes to this offering
+	 * Store changes to this entry
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean $check Perform data validation check?
+	 * @return  boolean False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -241,7 +246,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 	 *   association left, then it deletes the association,
 	 *   the asset record, and asset file(s)
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function delete()
 	{
@@ -263,8 +268,9 @@ class CoursesModelAsset extends CoursesModelAbstract
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $action Action to check
+	 * @param   string  $item   Item type to check action against
+	 * @return  boolean True if authorized, false if not
 	 */
 	public function access($action='view', $item='section')
 	{
@@ -274,7 +280,8 @@ class CoursesModelAsset extends CoursesModelAbstract
 	/**
 	 * Track asset views
 	 *
-	 * @return    void
+	 * @param   object $course CoursesModelCourse
+	 * @return  mixed
 	 */
 	public function logView($course=null)
 	{
@@ -320,10 +327,11 @@ class CoursesModelAsset extends CoursesModelAbstract
 	}
 
 	/**
-	 * Check a user's authorization
+	 * Render an asset
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   object $course CoursesModelCourse
+	 * @param   string $option Component name
+	 * @return  string
 	 */
 	public function render($course=null, $option='com_courses')
 	{
@@ -359,7 +367,8 @@ class CoursesModelAsset extends CoursesModelAbstract
 	/**
 	 * Download a wiki file
 	 *
-	 * @return     void
+	 * @param   object $course CoursesModelCourse
+	 * @return  void
 	 */
 	public function download($course)
 	{
@@ -429,10 +438,10 @@ class CoursesModelAsset extends CoursesModelAbstract
 	}
 
 	/**
-	 * Check a user's authorization
+	 * Get a count or list of parents for this entry
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   array $filters Fitlers to apply to results query
+	 * @return  array
 	 */
 	public function parents($filters=array())
 	{
@@ -459,8 +468,8 @@ class CoursesModelAsset extends CoursesModelAbstract
 	/**
 	 * Get the unit(s) to which this asset is attached
 	 *
-	 * @return void
-	 **/
+	 * @return  array
+	 */
 	public function units()
 	{
 		if (isset($this->units))

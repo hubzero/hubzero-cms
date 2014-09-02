@@ -35,7 +35,7 @@ require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_c
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'abstract.php');
 
 /**
- * Courses model class for a course
+ * Announcement model class for a course
  */
 class CoursesModelAnnouncement extends CoursesModelAbstract
 {
@@ -61,13 +61,13 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	protected $_scope = 'announcement';
 
 	/**
-	 * Returns a reference to a course model
+	 * Returns a reference to this model
 	 *
 	 * This method must be invoked as:
 	 *     $offering = CoursesModelAnnouncement::getInstance($alias);
 	 *
-	 * @param      integer $oid ID (int)
-	 * @return     object CoursesModelCourse
+	 * @param   integer $oid ID (int)
+	 * @return  object
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -89,8 +89,8 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param   string $as What data to return
+	 * @return  string
 	 */
 	public function published($as='')
 	{
@@ -114,11 +114,11 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 	}
 
 	/**
-	 * Get the state of the entry as either text or numerical value
+	 * Get the content of the entry in various formats
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     mixed String or Integer
+	 * @param   string  $as      Format to return state in [text, number]
+	 * @param   integer $shorten Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -147,7 +147,7 @@ class CoursesModelAnnouncement extends CoursesModelAbstract
 						&$config
 					));
 
-					$this->set('content_parsed', $this->get('content')); //implode('', $content));
+					$this->set('content_parsed', $this->get('content'));
 					$this->set('content', $content);
 
 					return $this->content($as, $shorten);

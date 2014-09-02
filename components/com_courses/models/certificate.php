@@ -70,8 +70,8 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	/**
 	 * Constructor
 	 * 
-	 * @param      mixed $oid Integer (ID), string (alias), object or array
-	 * @return     void
+	 * @param   mixed $oid Integer (ID), string (alias), object or array
+	 * @return  void
 	 */
 	public function __construct($oid=null, $course_id=null)
 	{
@@ -113,8 +113,8 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	/**
 	 * Returns a reference to a certificate model
 	 *
-	 * @param      mixed  $oid ID (int) or alias (string)
-	 * @return     object CoursesModelCertificate
+	 * @param   mixed  $oid ID (int) or alias (string)
+	 * @return  object CoursesModelCertificate
 	 */
 	static function &getInstance($oid=0, $course_id=0)
 	{
@@ -134,10 +134,10 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	}
 
 	/**
-	 * Create images
+	 * Check if the certificate has the needed file
 	 *
-	 * @return void
-	 **/
+	 * @return  boolean
+	 */
 	public function hasFile()
 	{
 		$path = $this->path('system');
@@ -157,7 +157,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	 * Create images
 	 *
 	 * @return void
-	 **/
+	 */
 	public function renderPageImages()
 	{
 		try
@@ -213,7 +213,7 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	 *
 	 * @param   object $fun Closure
 	 * @return  void
-	 **/
+	 */
 	public function eachPage($fun)
 	{
 		if (!$this->exists())
@@ -252,8 +252,9 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	/**
 	 * Build the path to the certificate
 	 *
+	 * @param   string $type Path type to return
 	 * @return  string
-	 **/
+	 */
 	public function path($type='')
 	{
 		if (!$this->_base)
@@ -280,11 +281,13 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	}
 
 	/**
-	 * Get a param value
+	 * Get entry properties
 	 * 
-	 * @param	   string $key     Property to return
-	 * @param	   mixed  $default Default value to return
-	 * @return     mixed
+	 * Properties are stored as en encoded string. This retrieves the 
+	 * string and decodes it or creates an object with base values if
+	 * no stored value is found.
+	 * 
+	 * @return  object
 	 */
 	public function properties()
 	{
@@ -303,8 +306,10 @@ class CoursesModelCertificate extends CoursesModelAbstract
 	}
 
 	/**
-	 * Delete a certificate
+	 * Render a certificate
 	 * 
+	 * @param   object  $user JUser
+	 * @param   string  $path Path to store rendered file to
 	 * @return  boolean True on success, false on error
 	 */
 	public function render($user=null, $path=null)

@@ -93,7 +93,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	public $_siblings = null;
 
 	/**
-	 * Params
+	 * JRegistry
 	 *
 	 * @var object
 	 */
@@ -102,9 +102,8 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id  Resource ID or alias
-	 * @param      object  &$db JDatabase
-	 * @return     void
+	 * @param   mixed $oid Integer, array, or object
+	 * @return  void
 	 */
 	public function __construct($oid)
 	{
@@ -116,9 +115,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Returns a property of the params
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
+	 * @param   string $property The name of the property
+	 * @param   mixed  $default  The default value
+	 * @return  mixed  The value of the property
  	 */
 	public function params($key, $default=null)
 	{
@@ -132,9 +131,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Returns a property of the object or the default value if the property is not set.
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
+	 * @param   string $property The name of the property
+	 * @param   mixed  $default  The default value
+	 * @return  mixed  The value of the property
  	 */
 	public function get($property, $default=null)
 	{
@@ -160,9 +159,12 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	}
 
 	/**
-	 * Method to set the article id
+	 * Get a list of child asset groups
 	 *
-	 * @param	int	Article ID number
+	 * @param   mixed   $idx
+	 * @param   boolean $populate
+	 * @param   array   $filters
+	 * @return  array
 	 */
 	public function children($idx=null, $populate=false, $filters=array())
 	{
@@ -248,8 +250,8 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Get a specific asset
 	 *
-	 * @param     integer $id Asset ID
-	 * @return    object CoursesModelAsset
+	 * @param   integer $id Asset ID
+	 * @return  object  CoursesModelAsset
 	 */
 	public function asset($id=null)
 	{
@@ -271,11 +273,11 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	}
 
 	/**
-	 * Get a list of assets for a unit
+	 * Get a list of assets
 	 *   Accepts an array of filters to apply to the list of assets
 	 *
-	 * @param      array $filters Filters to apply
-	 * @return     object CoursesModelIterator
+	 * @param   array  $filters Filters to apply
+	 * @return  object CoursesModelIterator
 	 */
 	public function assets($filters=array())
 	{
@@ -322,7 +324,8 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Set siblings
 	 *
-	 * @return     void
+	 * @param   mixed $siblings Array or Iterator object
+	 * @return  void
 	 */
 	public function siblings(&$siblings)
 	{
@@ -336,7 +339,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Is the current position the first one?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isFirst()
 	{
@@ -350,7 +353,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Is the current position the last one?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isLast()
 	{
@@ -364,7 +367,8 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Return the key for the current cursor position
 	 *
-	 * @return     mixed
+	 * @param   integer $idx
+	 * @return  mixed
 	 */
 	public function key($idx=null)
 	{
@@ -374,7 +378,8 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Set cursor position to previous position and return array value
 	 *
-	 * @return     mixed
+	 * @param   string $dir
+	 * @return  mixed
 	 */
 	public function sibling($dir='next')
 	{
@@ -398,10 +403,10 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	}
 
 	/**
-	 * Store changes to this offering
+	 * Store changes to this entry
 	 *
-	 * @param     boolean $check Perform data validation check?
-	 * @return    boolean False if error, True on success
+	 * @param   boolean $check Perform data validation check?
+	 * @return  boolean False if error, True on success
 	 */
 	public function store($check=true)
 	{
@@ -431,7 +436,7 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	/**
 	 * Delete an entry and associated data
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean True on success, false on error
 	 */
 	public function delete()
 	{
