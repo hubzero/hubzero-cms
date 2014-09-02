@@ -228,12 +228,17 @@ HUB.Publications = {
 					} else {
 						panels = Math.round(thwidth/win_width);
 					}
+					if (panels == 1 && thwidth > win_width)
+					{
+						panels = 2;
+					}
 
 					if (panels >= 1 && active < panels) {
 						active ++;
 						moveto -= win_width;
 
-						$(target).css('left', moveto);
+					//	$(target).css('left', moveto);
+						$(target).animate({ "left": moveto }, 1000);
 					}
 				});
 			}
@@ -258,7 +263,8 @@ HUB.Publications = {
 						active --;
 						moveto += win_width;
 
-						$(target).css('left', moveto);
+					//	$(target).css('left', moveto);
+						$(target).animate({ "left": moveto }, 1000);
 					}
 				});
 			}
