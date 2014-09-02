@@ -179,11 +179,14 @@
 		vertical-align: top;
 	}
 	#course-outline .grid>.span4 {
-		width: 34.40860215051%;
+		/*width: 34.40860215051%;*/
+		width: 20em;
+		min-width: 20em;
 		border-right: 1px solid #ddd;
 	}
 	#course-outline .grid>.span8 {
 		background: #fff;
+		width: 100%;
 	}
 
 	@media (max-width: 830px) {
