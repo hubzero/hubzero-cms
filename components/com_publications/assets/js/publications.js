@@ -194,14 +194,14 @@ HUB.Publications = {
 			var sidemargin = 4,
 				thumbwidth = 110,
 				moveto = 0,
-				active = 0,
+				active = 1,
 				panels = 0;
 
 			var next = $('#showcase-next'),
 				prev = $('#showcase-prev');
 
 			thwidth = $('.thumbima').length * sidemargin * 2 + $('.thumbima').length * thumbwidth;
-			var win_width = $('#showcase-window').offsetWidth;
+			var win_width = $('#showcase-window').outerWidth();
 
 			if (thwidth/win_width < 1) {
 				next.addClass('inactive');
@@ -211,7 +211,7 @@ HUB.Publications = {
 			// go next
 			if (next.length > 0) {
 				next.on('mouseover', function() {
-					var win_width = $('#showcase-window').offset().left;
+					//var win_width = $('#showcase-window').offset().left;
 					if (thwidth/win_width < 1) {
 						$(this).addClass('inactive');
 						prev.addClass('inactive');
@@ -222,7 +222,7 @@ HUB.Publications = {
 				});
 
 				next.on('click', function() {
-					var win_width = $('#showcase-window').offset().left;
+					//var win_width = $('#showcase-window').offset().left;
 					if (thwidth/win_width < 1) {
 					 	panels = 0;
 					} else {
@@ -241,7 +241,7 @@ HUB.Publications = {
 			// go prev
 			if (prev.length > 0) {
 				prev.on('mouseover', function() {
-					var win_width = $('#showcase-window').offset().left;
+					//var win_width = $('#showcase-window').offset().left;
 					if (thwidth/win_width < 1) {
 						$(this).addClass('inactive');
 						next.addClass('inactive');
@@ -252,10 +252,9 @@ HUB.Publications = {
 				});
 
 				prev.on('click', function() {
-					var win_width = $('#showcase-window').offset().left,
-						panels = Math.round(thwidth/win_width);
-
-					if (panels >= 1 && active > 0) {
+					//var win_width = $('#showcase-window').offset().left;
+					panels = Math.round(thwidth/win_width);
+					if (panels >= 1 && active > 1) {
 						active --;
 						moveto += win_width;
 
