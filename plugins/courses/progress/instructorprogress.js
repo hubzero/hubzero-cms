@@ -369,7 +369,7 @@ HUB.Plugins.CoursesProgress = {
 				},
 				sortScore = function ( a, b ) {
 					var bar = '.student-progress-bar',
-						ret = ($(a).find(bar).data('score') > $(b).find(bar).data('score')) ? val : val*-1;
+						ret = (parseFloat($(a).find(bar).data('score'), 10) > parseFloat($(b).find(bar).data('score'), 10)) ? val : val*-1;
 
 					return ret;
 				};
