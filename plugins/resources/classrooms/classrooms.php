@@ -132,23 +132,22 @@ class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 				\Hubzero\Document\Assets::addSystemScript('d3.v2.js');
 
 				$dbh = JFactory::getDBO();
-				$dbh->setQuery(
-					"SELECT DISTINCT
-						sc2.toolname AS tool,
-						sc2.clustersize AS size,
-						YEAR(sc2.cluster_start) AS year,
-						sc2.cluster_start,
-						sc2.cluster_end,
-						sc2.first_use,
-						SUBSTRING_INDEX(sc2.cluster, '|', 1) AS semester,
-						CONCAT(SUBSTRING_INDEX(sc2.cluster, '|', 1), '|', SUBSTRING_INDEX(sc2.cluster, '|', -2)) AS cluster,
-						SHA1(CONCAT(sc2.uidNumber, " . $dbh->quote(uniqid()) . ")) AS uid
-					FROM #__resource_stats_clusters sc1
-					LEFT JOIN #__resource_stats_clusters sc2 ON sc2.cluster = sc1.cluster
-					WHERE sc1.toolname = " . $dbh->quote($model->resource->alias) . "
-					ORDER BY cluster_start, first_use"
+				$tool = $dbh->quote($model->resource->alias);
+				$dbh->setQuery('SELECT DISTINCT
+					c2.toolname AS tool,
+					c2.clustersize AS size,
+					YEAR(c2.cluster_start) AS year,
+					c2.cluster_start,
+					c2.cluster_end,
+					c2.first_use,
+					SUBSTRING_INDEX(c2.cluster, \'|\', 1) AS semester,
+					CONCAT(SUBSTRING_INDEX(c2.cluster, \'|\', 1), \'|\', SUBSTRING_INDEX(c2.cluster, \'|\', -2)) AS cluster,
+					SHA1(CONCAT(c2.uidNumber, '.$dbh->quote(uniqid()).')) AS uid
+					FROM
+					(SELECT DISTINCT cluster FROM #__resource_stats_clusters WHERE toolname = '.$tool.') AS ct,
+					#__resource_stats_clusters AS c2
+					WHERE ct.cluster = c2.cluster'
 				);
-
 				$nodes = array();
 				foreach ($dbh->loadAssocList() as $row)
 				{
