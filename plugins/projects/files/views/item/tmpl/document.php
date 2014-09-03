@@ -38,7 +38,7 @@ $tex = ProjectsCompiler::isTexFile(basename($file['name']));
 	<tr class="mini faded mline">
 		<td>
 			<?php if ($file['untracked'] == 0) { ?>
-			<input type="checkbox" value="<?php echo urlencode($file['name']); ?>" name="asset[]" class="checkasset js <?php if($this->publishing && $file['pid']) { echo 'publ'; } ?>" />
+			<input type="checkbox" value="<?php echo urlencode($file['name']); ?>" name="asset[]" class="checkasset js <?php if ($this->publishing && $file['pid']) { echo 'publ'; } ?>" />
 			<?php } ?>
 		</td>
 		<td class="top_valign nobsp">
@@ -46,7 +46,7 @@ $tex = ProjectsCompiler::isTexFile(basename($file['name']));
 			<a href="<?php echo $this->url
 			. '/?' . $this->do . '=download' . a . 'subdir='.urlencode($this->subdir)
 			. a . 'file='.urlencode($file['name']); ?>"
-			<?php if($file['untracked'] == 0) { ?>
+			<?php if ($file['untracked'] == 0) { ?>
 			class="preview file:<?php echo urlencode($file['name']); ?>" <?php } ?> id="edit-c-<?php echo $c; ?>">
 			<?php echo ProjectsHtml::shortenFileName($file['name'], 50); ?></a>
 

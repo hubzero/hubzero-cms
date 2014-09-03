@@ -68,7 +68,7 @@ $ext = count($ext) > 1 ? end($ext) : '';
 $allowDiff = ($this->binary || ($this->remote && $this->remote['converted'] == 1) || $candiff <= 1 ) ? 0 : 1;
 
 ?>
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 <div id="abox-content">
 <h3><?php echo JText::_('COM_PROJECTS_FILES_SHOW_HISTORY'); ?></h3>
 <?php
@@ -83,7 +83,7 @@ if ($this->getError()) {
 	<?php if (!$this->ajax && $this->case == 'files') { ?>
 		<div id="plg-header">
 			<h3 class="files">
-				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
+				<a href="<?php echo $this->url; ?>"><?php echo $this->title; ?></a><?php if ($this->subdir) { ?> <?php echo $path_bc; ?><?php } ?>
 			<?php echo $endPath; ?>
 			</h3>
 		</div>
@@ -215,7 +215,7 @@ if ($this->getError()) {
 							|| $sLocals == $locals)) ? true : false;
 
 				?>
-				<tr <?php if($trclass) { echo 'class="' . $trclass . '"'; } ?>>
+				<tr <?php if ($trclass) { echo 'class="' . $trclass . '"'; } ?>>
 					<?php if ($allowDiff) { ?>
 					<td><?php echo '@'.$v; ?></td>
 					<?php } ?>
@@ -277,6 +277,6 @@ if ($this->getError()) {
 		</fieldset>
 </form>
 
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 </div>
 <?php } ?>
