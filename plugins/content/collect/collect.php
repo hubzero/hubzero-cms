@@ -335,7 +335,7 @@ class plgContentCollect extends JPlugin
 			}
 			else
 			{
-				$response->message = JText::sprintf('PLG_CONTENT_COLLECT_PAGE_COLLECTED', $item_id);
+				$response->message = JText::_('PLG_CONTENT_COLLECT_PAGE_COLLECTED');
 			}
 			ob_clean();
 			header('Content-type: text/plain');

@@ -329,7 +329,7 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$response->message = JText::sprintf('PLG_RESOURCES_COLLECT_ITEM_COLLECTED', $item_id);
+			$response->message = JText::_('PLG_RESOURCES_COLLECT_ITEM_COLLECTED');
 		}
 		ob_clean();
 		header('Content-type: text/plain');

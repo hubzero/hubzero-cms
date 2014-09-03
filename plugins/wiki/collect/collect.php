@@ -287,7 +287,7 @@ class plgWikiCollect extends \Hubzero\Plugin\Plugin
 			}
 			else
 			{
-				$response->message = JText::sprintf('PLG_WIKI_COLLECT_PAGE_COLLECTED', $item_id);
+				$response->message = JText::_('PLG_WIKI_COLLECT_PAGE_COLLECTED');
 			}
 			ob_clean();
 			header('Content-type: text/plain');
