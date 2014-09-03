@@ -1674,7 +1674,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			$alt_file_path = str_replace('/uploads', '', $base_path) . DS . $file;
 
 			// if super group can serve files anywhere inside /site/groups/{group_id}
-			$pathCheck     = JPATH_ROOT . DS . ltrim($alt_file_path);
+			$altPathCheck  = JPATH_ROOT . DS . ltrim($alt_file_path);
 		}
 
 		// Ensure the file exist
@@ -1688,6 +1688,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			else
 			{
 				$file_path = $alt_file_path;
+				$pathCheck = $altPathCheck;
 			}
 		}
 
