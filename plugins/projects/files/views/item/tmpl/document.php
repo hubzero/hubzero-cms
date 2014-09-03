@@ -37,7 +37,7 @@ $tex = ProjectsCompiler::isTexFile(basename($file['name']));
 ?>
 	<tr class="mini faded mline">
 		<td>
-			<?php if($file['untracked'] == 0) { ?>
+			<?php if ($file['untracked'] == 0) { ?>
 			<input type="checkbox" value="<?php echo urlencode($file['name']); ?>" name="asset[]" class="checkasset js <?php if($this->publishing && $file['pid']) { echo 'publ'; } ?>" />
 			<?php } ?>
 		</td>
@@ -50,7 +50,7 @@ $tex = ProjectsCompiler::isTexFile(basename($file['name']));
 			class="preview file:<?php echo urlencode($file['name']); ?>" <?php } ?> id="edit-c-<?php echo $c; ?>">
 			<?php echo ProjectsHtml::shortenFileName($file['name'], 50); ?></a>
 
-			<?php if($file['untracked'] == 0) { ?>
+			<?php if ($file['untracked'] == 0) { ?>
 			<span id="rename-c-<?php echo $c; ?>" class="rename js" title="<?php echo JText::_('COM_PROJECTS_FILES_RENAME_FILE_TOOLTIP'); ?>">&nbsp;</span>
 			<?php } else { ?>
 				<span class="fileoptions"><?php echo JText::_('untracked file'); ?></span>
@@ -58,10 +58,10 @@ $tex = ProjectsCompiler::isTexFile(basename($file['name']));
 		</td>
 		<td class="shrinked"></td>
 		<td class="shrinked"><?php echo $file['size']; ?></td>
-		<td class="shrinked"><?php if($file['untracked'] == 0) { ?>
+		<td class="shrinked"><?php if ($file['untracked'] == 0) { ?>
 		<a href="<?php echo $this->url . '/?' . $this->do . '=history' . a . 'subdir='.urlencode($this->subdir) . a . 'asset=' . urlencode($file['name']); ?>" title="<?php echo JText::_('COM_PROJECTS_HISTORY_TOOLTIP'); ?>"><?php echo $when; ?></a>
 		<?php } ?></td>
-		<td class="shrinked pale"><?php if($me) { echo JText::_('COM_PROJECTS_FILES_ME'); } else { echo $file['author']; } ?>
+		<td class="shrinked pale"><?php if ($me) { echo JText::_('COM_PROJECTS_FILES_ME'); } else { echo $file['author']; } ?>
 		</td>
 		<td class="shrinked nojs"><a href="<?php echo $this->url . '/?' . $this->do . '=delete' . a . 'subdir='.urlencode($this->subdir)
 		. a . 'asset='.urlencode($file['name']); ?>"
@@ -70,6 +70,6 @@ $tex = ProjectsCompiler::isTexFile(basename($file['name']));
 		. a . 'asset='.urlencode($file['name']); ?>"
 		 title="<?php echo JText::_('COM_PROJECTS_MOVE_TOOLTIP'); ?>" class="i-move">&nbsp;</a></td>
 		<?php if ($this->publishing) { ?>
-		<td class="shrinked"><?php if($file['pid'] && $file['pub_title']) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'active=publications' . a . 'alias=' . $this->project->alias . a . 'pid='.$file['pid']).'?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo \Hubzero\Utility\String::truncate($file['pub_title'], 20); ?></a><?php } ?></td>
+		<td class="shrinked"><?php if ($file['pid'] && $file['pub_title']) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'active=publications' . a . 'alias=' . $this->project->alias . a . 'pid='.$file['pid']).'?section=content'; ?>" title="<?php echo $file['pub_title'] . ' (v.' . $file['pub_version_label'] . ')' ; ?>" class="asset_resource"><?php echo \Hubzero\Utility\String::truncate($file['pub_title'], 20); ?></a><?php } ?></td>
 		<?php } ?>
 	</tr>

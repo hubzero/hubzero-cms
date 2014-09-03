@@ -3781,28 +3781,43 @@ class plgProjectsFiles extends JPlugin
 				return;
 			}
 
-			// Initiate a new content server and serve up the file
-			$xserver = new \Hubzero\Content\Server();
-			$xserver->filename($fullpath);
-			$xserver->disposition('attachment');
-			$xserver->acceptranges(false);
-			$xserver->saveas($serveas);
-			$result = $xserver->serve_attachment($fullpath, $serveas, false);
-
-			if ($deleteTemp)
+			// Cannot download zero byte files
+			if (filesize($fullpath) == 0)
 			{
-				// Delete downloaded temp file
-				JFile::delete($fullpath);
+				$this->setError(JText::_('PLG_PROJECTS_FILES_ERROR_ZERO_BYTE'));
+				if ($deleteTemp)
+				{
+					// Delete downloaded temp file
+					JFile::delete($fullpath);
+				}
 			}
 
-			if (!$result)
+			// Proceed with download
+			if (!$this->getError())
 			{
-				// Should only get here on error
-				JError::raiseError( 404, JText::_('COM_PROJECTS_SERVER_ERROR') );
-			}
-			else
-			{
-				exit;
+				// Initiate a new content server and serve up the file
+				$xserver = new \Hubzero\Content\Server();
+				$xserver->filename($fullpath);
+				$xserver->disposition('attachment');
+				$xserver->acceptranges(false);
+				$xserver->saveas($serveas);
+				$result = $xserver->serve_attachment($fullpath, $serveas, false);
+
+				if ($deleteTemp)
+				{
+					// Delete downloaded temp file
+					JFile::delete($fullpath);
+				}
+
+				if (!$result)
+				{
+					// Should only get here on error
+					JError::raiseError( 404, JText::_('COM_PROJECTS_SERVER_ERROR') );
+				}
+				else
+				{
+					exit;
+				}
 			}
 		}
 
@@ -4754,6 +4769,18 @@ class plgProjectsFiles extends JPlugin
 			$entry['date']  	= isset($gitData['date']) ? $gitData['date'] : NULL;
 			$entry['author'] 	= isset($gitData['author']) ? $gitData['author'] : NULL;
 			$entry['email'] 	= isset($gitData['email']) ? $gitData['email'] : NULL;
+			$entry['message'] 	= isset($gitData['message']) ? $gitData['message'] : NULL;
+
+			// SFTP?
+			if (preg_match("/[SFTP]/", $entry['message']))
+			{
+				$profile = \Hubzero\User\Profile::getInstance( trim($entry['author']) );
+				if ($profile)
+				{
+					$entry['author'] = $profile->get('name');
+					$entry['email'] = $profile->get('email');
+				}
+			}
 
 			// Publishing
 			$entry['pid'] 				= '';
