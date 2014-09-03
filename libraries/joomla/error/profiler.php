@@ -220,7 +220,7 @@ class JProfiler extends JObject
 			$path = '/var/log/hubzero-cms';
 		}
 
-		$logger->useFiles($path . '/profile.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP");
+		$logger->useFiles($path . '/cmsprofile.log', 'info', "%datetime% %message%\n", "Y-m-d\TH:i:s.uP");
 
 		$hubname = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'unknown';
 		$uri = JURI::getInstance()->getPath();
