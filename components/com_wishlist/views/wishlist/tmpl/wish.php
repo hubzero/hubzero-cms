@@ -449,7 +449,9 @@ $this->css()
 								<?php echo JText::_('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
 							<?php if ($this->wish->get('assigned') && $this->wish->get('assigned') != $this->juser->get('id')) { ?>
 								<span class="forbidden"> - <?php echo JText::_('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING'); ?>
-							<?php } else if ($this->wishlist->get('category')=='resource' && $this->wish->versions()) { ?>
+							<?php } 
+							// Throws error Hubzero\Base\Model; Method [versions] does not exist. 
+							/*else if ($this->wishlist->get('category')=='resource' && $this->wish->versions()) { ?>
 								<label class="doubletab">
 									<?php echo JText::_('COM_WISHLIST_IN'); ?>
 									<select name="vid" id="vid">
@@ -460,7 +462,8 @@ $this->css()
 								<?php } ?>
 									</select>
 								</label>
-							<?php } ?>
+							<?php }
+							*/ ?>
 							</label>
 
 							<p>

@@ -45,7 +45,7 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 	 * @var string
 	 */
 	protected $_segments = array(
-		'option' => 'com_resources',
+		'option' => 'com_wishlist',
 	);
 
 	/**
@@ -70,7 +70,7 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 			$this->_item->id = 0;
 		}
 
-		$this->_segments['id']     = ($this->_item->alias ? $this->_item->alias : $this->_item->id);
+	//	$this->_segments['id']     = ($this->_item->alias ? $this->_item->alias : $this->_item->id);
 		$this->_segments['active'] = 'wishlist';
 	}
 
@@ -119,13 +119,13 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 			case 'edit':
 				if ($this->get('wishid'))
 				{
-					$segments['task'] = 'edit';
+					$segments['task'] = 'editwish';
 					$segments['wishid'] = $this->get('wishid');
 				}
 			break;
 
 			case 'delete':
-				$segments['task'] = 'delete';
+				$segments['task'] = 'deletewish';
 				if ($this->get('wishid'))
 				{
 					$segments['wishid'] = $this->get('wishid');
@@ -144,6 +144,107 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 
 				$segments['task'] = 'settings';
 				$segments['id'] = $this->get('wishlist');
+			break;
+
+			case 'savesettings':
+				unset($segments['category']);
+				unset($segments['rid']);
+
+				$segments['task'] = 'savesettings';
+				$segments['listid'] = $this->get('wishlist');
+			break;
+
+			case 'comments':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['com'] = 1;
+					$anchor = '#comments';
+				}
+			break;
+
+			case 'changestatus':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'changestatus';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'withdraw':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'delete';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'addbonus':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'addbonus';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'privacy':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'editprivacy';
+					$segments['wishid'] = $this->get('wishid');
+				}
+			break;
+
+			case 'move':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'move';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'comment':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['cat'] = 'wish';
+					$anchor = '#commentform';
+				}
+			break;
+
+			case 'editplan':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'editplan';
+					$anchor = '#plan';
+				}
+			break;
+
+			case 'rank':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'rank';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'report':
+			case 'reportabuse':
+				return 'index.php?option=com_support&task=reportabuse&category=wish&id=' . $this->get('wishid') . '&parent=' . $this->get('wishlist');
 			break;
 
 			case 'permalink':
@@ -197,15 +298,15 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 		{
 			$pathway->addItem(
 				JText::_('Resources'),
-				'index.php?option=' . $this->get('option')
+				'index.php?option=com_resources'
 			);
 			$pathway->addItem(
 				stripslashes($this->_item->title),
-				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
+				'index.php?option=com_resources&id=' . $this->get('referenceid')
 			);
 			$pathway->addItem(
 				JText::_('Wishlist'),
-				'index.php?option=' . $this->get('option') . '&active=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
+				'index.php?option=com_resources&active=wishlist&id=' . $this->get('referenceid')
 			);
 		}
 		else

@@ -137,13 +137,13 @@ class WishlistModelAdapterUser extends WishlistModelAdapterAbstract
 			case 'edit':
 				if ($this->get('wishid'))
 				{
-					$segments['task'] = 'edit';
+					$segments['task'] = 'editwish';
 					$segments['wishid'] = $this->get('wishid');
 				}
 			break;
 
 			case 'delete':
-				$segments['task']  = 'delete';
+				$segments['task']  = 'deletewish';
 				if ($this->get('wishid'))
 				{
 					$segments['wishid'] = $this->get('wishid');
@@ -153,7 +153,7 @@ class WishlistModelAdapterUser extends WishlistModelAdapterAbstract
 			case 'add':
 			case 'addwish':
 			case 'new':
-				$segments['task'] = 'add';
+				$segments['task'] = 'addwish';
 			break;
 
 			case 'settings':

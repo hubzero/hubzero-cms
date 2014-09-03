@@ -144,7 +144,7 @@ class WishlistModelAdapterGeneral extends WishlistModelAdapterAbstract
 			break;
 
 			case 'delete':
-				$segments['task'] = 'delete';
+				$segments['task'] = 'deletewish';
 				if ($this->get('wishid'))
 				{
 					$segments['wishid'] = $this->get('wishid');

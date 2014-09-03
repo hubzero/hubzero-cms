@@ -478,7 +478,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 		if (!$wishlist->isPublic() && !$wish->get('admin'))
 		{
-			$this->view->setLayout('private');
+		//	$this->view->setLayout('private'); // Where did this layout go?? - throws an error is group wishes
 		}
 
 		$this->view->title      = $this->_title;

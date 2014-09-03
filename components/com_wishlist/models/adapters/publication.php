@@ -109,15 +109,15 @@ class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 			break;
 
 			case 'edit':
+				$segments['task'] = 'editwish';
 				if ($this->get('wishid'))
 				{
-					$segments['task'] = 'edit';
 					$segments['wishid'] = $this->get('wishid');
 				}
 			break;
 
 			case 'delete':
-				$segments['task'] = 'delete';
+				$segments['task'] = 'deletewish';
 				if ($this->get('wishid'))
 				{
 					$segments['wishid'] = $this->get('wishid');
