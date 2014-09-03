@@ -249,8 +249,7 @@ class ProjectsGitHelper extends JObject
 	public function gitLogAll ($path = '', $subdir = '') 
 	{
 		chdir($this->_prefix . $path);
-		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae" --name-only ' . $subdir;
-		
+		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae||%H||%s" --name-only ' . $subdir;
 		// Exec command
 		exec($this->_gitpath . ' '. $exec . ' 2>&1', $out1);
 		
@@ -267,7 +266,9 @@ class ProjectsGitHelper extends JObject
 				$entry = array();
 				$entry['date']  	= $data[0];
 				$entry['author'] 	= $data[1];
-				$entry['email'] 	= $data[2];				
+				$entry['email'] 	= $data[2];
+				$entry['hash'] 		= $data[3];
+				$entry['message'] 	= $data[4];			
 			}
 			elseif ($line != '' && !isset($collector[$line]))
 			{
@@ -1090,6 +1091,17 @@ class ProjectsGitHelper extends JObject
 				$message 	= isset($gitData['message']) ? $gitData['message'] : NULL;
 				$content	= $binary ? NULL : $this->gitLog($path, $name, $hash, 'content');
 
+				// SFTP?
+				if (preg_match("/[SFTP]/", $message))
+				{
+					$profile = \Hubzero\User\Profile::getInstance( trim($author) );
+					if ($profile)
+					{
+						$author = $profile->get('name');
+						$email = $profile->get('email');
+					}
+				}
+
 				$revision = array(
 					'date' 			=> $date,
 					'author' 		=> $author,
@@ -1352,7 +1364,7 @@ class ProjectsGitHelper extends JObject
 				$versions[$k - 1]['commitStatus'] = 'R';
 			}
 			
-			if (preg_match("/\bRenamed\b/", $current['message']) && $current['commitStatus'] == 'A')
+			if (preg_match("/\bRenamed\b/i", $current['message']) && $current['commitStatus'] == 'A')
 			{
 				$current['change'] = JText::_('COM_PROJECTS_FILE_STATUS_RENAMED');
 				$current['commitStatus'] = 'R';

@@ -4744,6 +4744,18 @@ class plgProjectsFiles extends JPlugin
 			$entry['date']  	= isset($gitData['date']) ? $gitData['date'] : NULL;
 			$entry['author'] 	= isset($gitData['author']) ? $gitData['author'] : NULL;
 			$entry['email'] 	= isset($gitData['email']) ? $gitData['email'] : NULL;
+			$entry['message'] 	= isset($gitData['message']) ? $gitData['message'] : NULL;
+
+			// SFTP?
+			if (preg_match("/[SFTP]/", $entry['message']))
+			{
+				$profile = \Hubzero\User\Profile::getInstance( trim($entry['author']) );
+				if ($profile)
+				{
+					$entry['author'] = $profile->get('name');
+					$entry['email'] = $profile->get('email');
+				}
+			}
 
 			// Publishing
 			$entry['pid'] 				= '';

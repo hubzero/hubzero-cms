@@ -148,9 +148,14 @@ if ($this->getError()) {
 				}				
 				$last 		= $i == 0 ? true : false;
 				
-				$status		= $version['remote'] 
-					? '<span class="commit-type">[' . JText::_('COM_PROJECTS_FILE_STATUS_REMOTE') . ']</span> '
-					: '<span class="commit-type">[' . JText::_('COM_PROJECTS_FILE_STATUS_LOCAL') . ']</span> ';
+				$origin		= $version['remote']
+					? JText::_('COM_PROJECTS_FILE_STATUS_REMOTE')
+					: JText::_('COM_PROJECTS_FILE_STATUS_LOCAL');
+				if (!$version['remote'] && preg_match("/[SFTP]/", $version['message']))
+				{
+					$origin = 'SFTP';
+				}
+				$status = '<span class="commit-type">[' . $origin . ']</span> ';
 				$name		= $version['remote'] && $this->remote ? $this->remote['title'] : $version['name'];
 				
 				// Get url, name and status
