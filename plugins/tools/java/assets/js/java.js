@@ -207,16 +207,20 @@ HUB.Mw = {
 		HUB.Mw.cancelConnecting();
 		
 		if ($('#theapp')) {
+			if (w == 0 && h == 0) {
+				w = $('#app-orig-width').val();
+				h = $('#app-orig-height').val();
+			}
 			if (w < 100) { w = 100; }
 			if (h < 100) { h = 100; }
-			
+
 			$('#app-content').css({
 				'width': w.toString() + 'px',
 				'height': h.toString() + 'px'
 			});
-			
+
 			$('#app-size').html(w.toString()+' x '+h.toString());
-			
+
 			if ((document.all)&&(navigator.appVersion.indexOf("MSIE 7.")!=-1)) {
 				if ($('#app-header')) {
 					$('#app-header').css('width', w.toString() + 'px');
