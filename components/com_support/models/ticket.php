@@ -985,6 +985,10 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	public function store($check=true)
 	{
 		$this->set('open', $this->status('open'));
+		if ($this->get('open'))
+		{
+			$this->set('resolved', '');
+		}
 
 		$result = parent::store($check);
 
