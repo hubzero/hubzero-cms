@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'attachment.php');
 
 /**
- * Support mdoel for a ticket attachment
+ * Support mdoel for a ticket resolution
  */
 class SupportModelAttachment extends \Hubzero\Base\Model
 {
@@ -69,8 +69,8 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	/**
 	 * Scan text for attachment macros {attachment#}
 	 *
-	 * @param      string $text Text to search
-	 * @return     string HTML
+	 * @param   string $text Text to search
+	 * @return  string HTML
 	 */
 	public function parse($text)
 	{
@@ -80,8 +80,8 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	/**
 	 * Process an attachment macro and output a link to the file
 	 *
-	 * @param      array  $matches Macro info
-	 * @return     string HTML
+	 * @param   array $matches Macro info
+	 * @return  string HTML
 	 */
 	public function getAttachment($matches)
 	{
@@ -125,7 +125,7 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	/**
 	 * Is the file an image?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isImage()
 	{
@@ -133,16 +133,26 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	}
 
 	/**
+	 * Does the file exist on the server?
+	 *
+	 * @return  boolean
+	 */
+	public function hasFile()
+	{
+		return file_exists($this->link('filepath'));
+	}
+
+	/**
 	 * Get the file size
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function size()
 	{
 		if ($this->_size === null)
 		{
 			$this->_size = 0;
-			if (file_exists($this->link('filepath')))
+			if ($this->hasFile())
 			{
 				$this->_size = filesize($this->link('filepath'));
 			}
@@ -154,13 +164,13 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	/**
 	 * Get image width
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function width()
 	{
 		if (!$this->_dimensions)
 		{
-			$this->_dimensions = $this->isImage() ? getimagesize($this->link('filepath')) : array(0, 0);
+			$this->_dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->link('filepath')) : array(0, 0);
 		}
 
 		return $this->_dimensions[0];
@@ -169,13 +179,13 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	/**
 	 * Get image height
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function height()
 	{
 		if (!$this->_dimensions)
 		{
-			$this->_dimensions = $this->isImage() ? getimagesize($this->link('filepath')) : array(0, 0);
+			$this->_dimensions = $this->isImage() && $this->hasFile() ? getimagesize($this->link('filepath')) : array(0, 0);
 		}
 
 		return $this->_dimensions[1];
@@ -183,10 +193,11 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 
 	/**
 	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * Link will vary depending upon type desired
 	 *
-	 * @param      string $type The type of link to return
-	 * @return     string
+	 * @param   string  $type     The type of link to return
+	 * @param   boolean $absolute Get the URL absolute to the domain?
+	 * @return  string
 	 */
 	public function link($type='', $absolute=false)
 	{
@@ -226,22 +237,22 @@ class SupportModelAttachment extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Delete redord and associated file
+	 * Delete record and associated file
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function delete()
 	{
-		$file = $this->get('filename');
-		$path = $this->link('filepath');
-
 		if (!parent::delete())
 		{
 			return false;
 		}
 
-		if (is_dir($path))
+		if ($this->hasFile())
 		{
+			$file = $this->get('filename');
+			$path = $this->link('filepath');
+
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path))
 			{
