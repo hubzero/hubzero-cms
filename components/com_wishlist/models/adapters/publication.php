@@ -45,7 +45,7 @@ class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 	 * @var string
 	 */
 	protected $_segments = array(
-		'option' => 'com_publications',
+		'option' => 'com_wishlist',
 	);
 
 	/**
@@ -64,7 +64,7 @@ class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 		$objP = new Publication($database);
 		$this->_item = $objP->getPublication($referenceid, 'default');
 
-		$this->_segments['id']     = $this->_item->id;
+		//$this->_segments['id']     = $this->_item->id;
 		$this->_segments['active'] = 'wishlist';
 	}
 
@@ -137,6 +137,106 @@ class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 				$segments['task'] = 'settings';
 				$segments['id'] = $this->get('wishlist');
 			break;
+			case 'savesettings':
+				unset($segments['category']);
+				unset($segments['rid']);
+
+				$segments['task'] = 'savesettings';
+				$segments['listid'] = $this->get('wishlist');
+			break;
+
+			case 'comments':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['com'] = 1;
+					$anchor = '#comments';
+				}
+			break;
+
+			case 'changestatus':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'changestatus';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'withdraw':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'delete';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'addbonus':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'addbonus';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'privacy':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'editprivacy';
+					$segments['wishid'] = $this->get('wishid');
+				}
+			break;
+
+			case 'move':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'move';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'comment':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['cat'] = 'wish';
+					$anchor = '#commentform';
+				}
+			break;
+
+			case 'editplan':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'editplan';
+					$anchor = '#plan';
+				}
+			break;
+
+			case 'rank':
+				if ($this->get('wishid'))
+				{
+					$segments['task'] = 'wish';
+					$segments['wishid'] = $this->get('wishid');
+					$segments['action'] = 'rank';
+					$anchor = '#action';
+				}
+			break;
+
+			case 'report':
+			case 'reportabuse':
+				return 'index.php?option=com_support&task=reportabuse&category=wish&id=' . $this->get('wishid') . '&parent=' . $this->get('wishlist');
+			break;
 
 			case 'permalink':
 			default:
@@ -188,16 +288,16 @@ class WishlistModelAdapterPublication extends WishlistModelAdapterAbstract
 		if (!$title)
 		{
 			$pathway->addItem(
-				JText::_('Resources'),
-				'index.php?option=' . $this->get('option')
+				JText::_('Publications'),
+				'index.php?option=com_publications'
 			);
 			$pathway->addItem(
 				stripslashes($this->_item->title),
-				'index.php?option=' . $this->get('option') . '&id=' . $this->get('referenceid')
+				'index.php?option=com_publications&id=' . $this->get('referenceid')
 			);
 			$pathway->addItem(
 				JText::_('Wishlist'),
-				'index.php?option=' . $this->get('option') . '&task=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
+				'index.php?option=com_publications&task=wishlist&id=' . $this->get('referenceid')
 			);
 		}
 		else

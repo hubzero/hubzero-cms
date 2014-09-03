@@ -27,14 +27,14 @@
 	}
 
 	.ideas .entry-id {
-		display: block;
+		display: block !important;
 		overflow: hidden;
 		width: 1.7em;
 		height: 1.7em;
 		margin: .5em 0 0 0;
 		text-align: center;
 	}
-	.group_wishlist .ideas .entry-id:before {
+	.ideas .entry-id:before {
 		content: "\f078";
 		font-family: "Fontcons";
 		font-size: 1.7em;
@@ -44,46 +44,46 @@
 		font-weight: normal;
 	}
 	/* Accepted */
-	.group_wishlist .ideas tbody tr.accepted {
+	.ideas tbody tr.accepted {
 		background: #ffe;
 	}
-	.group_wishlist .ideas tbody tr.accepted .entry-id:before {
+	.ideas tbody tr.accepted .entry-id:before {
 		content: "\f078";
 	}
 	/* Granted */
-	.group_wishlist .ideas tbody tr.granted .entry-id:before {
+	.ideas tbody tr.granted .entry-id:before {
 		content: "\2714";
 		font-size: 1.2em;
 	}
-	.group_wishlist .ideas tbody tr.granted {
+	.ideas tbody tr.granted {
 		background: #f7fef4;
 	}
 	/* Rejected */
-	.group_wishlist .ideas tbody tr.rejected .entry-id:before {
+	.ideas tbody tr.rejected .entry-id:before {
 		content: "\2716";
 		font-size: 1.2em;
 	}
-	.group_wishlist .ideas tbody tr.rejected {
+	.ideas tbody tr.rejected {
 		background: #fff6f4;
 	}
 	/* Flagged */
-	.group_wishlist .ideas tbody tr.flagged .entry-id:before {
+	.ideas tbody tr.flagged .entry-id:before {
 		content: "\2691";
 		font-size: 1.2em;
 	}
 	/* Withdrawn */
-	.group_wishlist .ideas tbody tr.withdrawn {
+	.ideas tbody tr.withdrawn {
 		background: #f1f1f1;
 	}
-	.group_wishlist .ideas tbody tr.withdrawn .entry-id:before {
+	.ideas tbody tr.withdrawn .entry-id:before {
 		content: "\2298";
 		font-size: 1.2em;
 	}
 	/* Private */
-	.group_wishlist .ideas tbody tr.private {
+	.ideas tbody tr.private {
 		background-image: none;
 	}
-	.group_wishlist .ideas tbody tr.private .entry-id:before {
+	.ideas tbody tr.private .entry-id:before {
 		content: "\f023";
 		font-size: 1.2em;
 	}
