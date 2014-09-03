@@ -1363,6 +1363,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 	 */
 	public function suggestNonExistingGroupTask()
 	{
+		// throw 404 error
+		header("HTTP/1.0 404 Not Found");
+
 		// set the neeced layout
 		$this->view->setLayout('suggest');
 
