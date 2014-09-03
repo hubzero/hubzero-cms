@@ -604,25 +604,24 @@ HUB.Register = {
 	},
 
 	associateOrcid: function(parentField, orcid) {
-		window.top.document.getElementById('orcid').value = orcid;
-
-		parent.jQuery.fancybox.close();
+		window.parent.document.getElementById('orcid').value = orcid;
+		window.parent.jQuery.fancybox.close();
 	},
 
 	createOrcid: function(fname, lname, email) {
 		var uri = $('#base_uri').val() + '/index.php?option=com_members&controller=orcid&task=create&no_html=1&fname=' + fname + '&lname=' + lname + '&email=' + email;
-		console.log(uri);
+
 		$.ajax({
 			url: uri,
 			type: 'GET',
 			success: function(data, status, jqXHR) {
-				var response =jQuery.parseJSON(data);
+				var response = jQuery.parseJSON(data);
 
 				if (response.success) {
 					if (response.orcid) {
 						alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
 						window.parent.document.getElementById('orcid').value = response.orcid;
-						parent.jQuery.fancybox.close();
+						window.parent.jQuery.fancybox.close();
 					} else {
 						alert('ORCID service reported a successful creation but we failed to retrieve an ORCID. Please contact support.');
 					}

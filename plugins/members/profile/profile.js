@@ -828,10 +828,11 @@ HUB.Members.Profile = {
 			url: url,
 			type: 'GET',
 			success: function(data, status, jqXHR) {
-				var status =jQuery.parseJSON(data);
+				var status = jQuery.parseJSON(data);
 
 				if (status) {
-					parent.jQuery.fancybox.close();
+					//window.parent.document.getElementById('orcid').value = orcid;
+					window.parent.jQuery.fancybox.close();
 				}
 			}
 		});
@@ -849,7 +850,7 @@ HUB.Members.Profile = {
 					if (response.orcid) {
 						alert('Successful creation of your new ORCID. Claim the ORCID through the link sent to your email.');
 						window.parent.document.getElementById('orcid').value = response.orcid;
-						parent.jQuery.fancybox.close();
+						window.parent.jQuery.fancybox.close();
 					} else {
 						alert('ORCID service reported a successful creation but we failed to retrieve an ORCID. Please contact support.');
 					}

@@ -54,7 +54,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 						</span>
 					</td>
 					<td>
-						<a class="btn" onclick="<?php echo $this->callbackPrefix . 'associateOrcid("", "' . $orcid . '");'; ?>">
+						<a class="btn" onclick="<?php echo $this->callbackPrefix . 'associateOrcid(\'orcid\', \'' . $orcid . '\');'; ?>">
 							<?php echo JText::_('Associate this ORCID'); ?>
 						</a>
 					</td>
