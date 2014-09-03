@@ -307,7 +307,7 @@ function handleGroupComponents($vars)
 		}
 
 		// rewrite all query string params to have "g_" prefix
-		foreach (JRequest::get() as $k => $v)
+		foreach (JRequest::get('get') as $k => $v)
 		{
 			$old = (isset($vars[$k])) ? $vars[$k] : null;
 			JRequest::setVar('sg_' . $k, $v);
