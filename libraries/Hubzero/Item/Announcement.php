@@ -415,16 +415,19 @@ class Announcement extends \JTable
 		// define subject
 		$subject = $group->get('description') . ' Group Announcement';
 
-		// create message object
-		$message = new Message();
+		foreach ($groupMembers as $email => $name)
+		{
+			// create message object
+			$message = new Message();
 
-		// set message details and send
-		$message->setSubject($subject)
-				->addFrom($from['email'], $from['name'])
-				->setTo($groupMembers)
-				->addPart($plain, 'text/plain')
-				->addPart($html, 'text/html')
-				->send();
+			// set message details and send
+			$message->setSubject($subject)
+					->addFrom($from['email'], $from['name'])
+					->setTo($email, $name)
+					->addPart($plain, 'text/plain')
+					->addPart($html, 'text/html')
+					->send();
+		}
 
 		// all good
 		return true;
