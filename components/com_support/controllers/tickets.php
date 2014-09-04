@@ -2510,6 +2510,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			}
 		}
 
+		ksort($users);
+
 		$users = JHTML::_('select.genericlist', $users, $name, ' ' . $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
@@ -2528,10 +2530,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	private function _userSelectGroup($name, $active, $nouser=0, $javascript=NULL, $group='')
 	{
 		$users = array();
-		if ($nouser)
-		{
-			$users[] = JHTML::_('select.option', '0', JText::_('COM_SUPPORT_NONE'), 'value', 'text');
-		}
 
 		if (strstr($group, ','))
 		{
@@ -2596,6 +2594,11 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			}
 
 			ksort($users);
+		}
+
+		if ($nouser)
+		{
+			array_unshift($users, JHTML::_('select.option', '0', JText::_('COM_SUPPORT_NONE'), 'value', 'text'));
 		}
 
 		$users = JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
