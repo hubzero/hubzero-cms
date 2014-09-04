@@ -32,6 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
+	 ->css('resources.css', 'com_resources')
      ->js('resources.js', 'com_resources');
 
 $config = JComponentHelper::getParams('com_resources');
