@@ -37,7 +37,24 @@ class Migration20120101000006Core extends Base
 		$this->addPluginEntry('hubzero', 'wikieditorwykiwyg');
 		$this->addPluginEntry('hubzero', 'comments');
 		$this->addPluginEntry('hubzero', 'recaptcha');
-		$this->addPluginEntry('system', 'jquery');
+		$this->addPluginEntry('system', 'jquery', 1, array(
+			"jquery"             => "1",
+			"jquerycdnpath"      => "\/\/ajax.googleapis.com\/ajax\/libs\/jquery\/1.7.2\/jquery.min.js",
+			"jqueryui"           => "1",
+			"jqueryuicdnpath"    => "\/\/ajax.googleapis.com\/ajax\/libs\/jqueryui\/1.8.6\/jquery-ui.min.js",
+			"jqueryuicss"        => "1",
+			"jqueryuicsspath"    => "\/media\/system\/css\/jquery.ui.css",
+			"jquerytools"        => "1",
+			"jquerytoolscdnpath" => "http:\/\/cdn.jquerytools.org\/1.2.5\/all\/jquery.tools.min.js",
+			"jqueryfb"           => "1",
+			"jqueryfbcdnpath"    => "\/\/fancyapps.com\/fancybox\/",
+			"jqueryfbcss"        => "1",
+			"jqueryfbcsspath"    => "\/media\/system\/css\/jquery.fancybox.css",
+			"activateSite"       => "1",
+			"noconflictSite"     => "0",
+			"activateAdmin"      => "0",
+			"noconflictAdmin"    => "0"
+		));
 		$this->addPluginEntry('authentication', 'hubzero');
 		$this->addPluginEntry('authentication', 'facebook');
 		$this->addPluginEntry('authentication', 'google');
