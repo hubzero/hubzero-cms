@@ -30,10 +30,10 @@
 	     -o-border-radius: 0.25em;
 	        border-radius: 0.25em;
 }
-#component-body .orcid-create {
+#component-body .orcid-search {
 	border-bottom: 1px solid #e1e1e1;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-	padding-bottom: 0.5em;
+	padding-bottom: 2em;
 }
 #component-body fieldset legend {
 	display: none;

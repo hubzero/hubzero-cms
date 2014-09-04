@@ -41,10 +41,16 @@ defined('_JEXEC') or die( 'Restricted access' );
 				$lname     = array_key_exists('family-name', $record) ? $record['family-name'] : '';
 				$orcid_uri = array_key_exists('uri', $record)         ? $record['uri'] : '';
 				$orcid     = array_key_exists('path', $record)        ? $record['path'] : '';
+
+				/*$scheme = JURI::getInstance()->getScheme();
+				if ($orcid_uri && substr($orcid_uri, 0, strlen($scheme)) != $scheme)
+				{
+					$orcid_uri = preg_replace('/^([^:]+)/i', $scheme, $orcid_uri);
+				}*/
 				?>
 				<tr>
 					<td>
-						<a class="title" rel="external" href="<?php echo $orcid_uri; ?>">
+						<a class="title" target="_blank" rel="external" href="<?php echo $orcid_uri; ?>">
 							<?php echo $fname . ' ' . $lname; ?>
 						</a>
 					</td>

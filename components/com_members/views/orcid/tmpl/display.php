@@ -108,20 +108,6 @@ $this->css('orcid.css');
 			<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(JURI::base(true), '/'); ?>" />
 		</fieldset>
 
-		<?php if ($this->config->get('orcid_service', 'members') != 'public') { ?>
-			<div class="orcid-section orcid-create">
-				<h4>Create a new ORCID</h4>
-				<div class="grid nobreak">
-					<div class="col span8">
-						<p>If you can't find your ID or would like to create one, click the "Create new ORCID" button to generate a new ID based on the info above. You will receive an email from ORCID to claim the new ID.</p>
-					</div>
-					<div class="col span4 omega">
-						<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
-					</div>
-				</div>
-			</div>
-		<?php } ?>
-
 		<div class="orcid-section orcid-search">
 			<h4>Search for an existing ORCID</h4>
 			<div class="grid nobreak">
@@ -144,5 +130,19 @@ $this->css('orcid.css');
 				?>
 			</div>
 		</div>
+
+		<?php if ($this->config->get('orcid_service', 'members') != 'public') { ?>
+			<div class="orcid-section orcid-create">
+				<h4>Create a new ORCID</h4>
+				<div class="grid nobreak">
+					<div class="col span8">
+						<p>If you can't find your ID or would like to create one, click the "Create new ORCID" button to generate a new ID based on the info above. You will receive an email from ORCID to claim the new ID.</p>
+					</div>
+					<div class="col span4 omega">
+						<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
 	</form>
 </section>
