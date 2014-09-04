@@ -1,9 +1,0 @@
-<phpunit
-	bootstrap="bootstrap.php"
-	colors="true"
-	stopOnFailure="false"
-	testdox="true"
-	verbose="true"
-	backupStaticAttributes="false"
-	backupGlobals="false">
-</phpunit>
