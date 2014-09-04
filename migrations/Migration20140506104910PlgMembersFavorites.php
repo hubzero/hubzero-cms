@@ -109,6 +109,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 						$stick = new CollectionsTablePost($this->db);
 						$stick->item_id       = $objs[$result->oid];
 						$stick->collection_id = $usrs[$result->uid];
+						$stick->created_by    = $result->uid;
 						if ($stick->check())
 						{
 							// Store new content
