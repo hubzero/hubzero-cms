@@ -403,7 +403,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			}
 
 			$html .= "\t\t\t" . '<dl class="rankinfo">' . "\n";
-			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . JText::_('PLG_GROUPS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . JText::_('PLG_MEMBERS_RESOURCES_RANKING') . '</dt>' . "\n";
+			$html .= "\t\t\t\t" . '<dt class="ranking"><span class="rank-' . $r . '">' . JText::_('PLG_MEMBERS_RESOURCES_THIS_HAS') . '</span> ' . number_format($row->ranking, 1) . ' ' . JText::_('PLG_MEMBERS_RESOURCES_RANKING') . '</dt>' . "\n";
 			$html .= "\t\t\t\t" . '<dd>' . "\n";
 			$html .= "\t\t\t\t\t" . '<p>' . JText::_('PLG_MEMBERS_RESOURCES_RANKING_EXPLANATION') . '</p>' . "\n";
 			$html .= "\t\t\t\t\t" . '<div>' . "\n";
