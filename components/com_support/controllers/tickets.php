@@ -887,7 +887,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$problem['long']   = trim($problem['long']);
 
 		// Make sure email address is valid
-		$validemail = $this->_isValidEmail($reporter['email']);
+		$validemail = \Hubzero\Utility\Validate::email($reporter['email']);
 
 		// Set page title
 		$this->_buildTitle();
@@ -1033,20 +1033,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			}
 		}
 
-		$tool = $this->_getTool($problem['referer']);
-		$groupID = JRequest::getVar('group', '');
-		if ($groupID)
-		{
-			$group = $groupID;
-		}
-		elseif ($tool)
-		{
-			$group = $this->_getTicketGroup(trim($tool));
-		}
-		else
-		{
-			$group = '';
-		}
+		$group = JRequest::getVar('group', '');
 
 		// Initiate class and bind data to database fields
 		$row = new SupportModelTicket();
@@ -1402,168 +1389,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Checks if a login (username) is valid
-	 *
-	 * @param      string  $login Login to validate
-	 * @return     boolean True if valid
-	 */
-	private function _isValidLogin($login)
-	{
-		if (preg_match("#^[_0-9a-zA-Z]+$#i", $login))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Checks if an email address is valid
-	 *
-	 * @param      string  $email Address to validate
-	 * @return     boolean True if valid
-	 */
-	private function _isValidEmail($email)
-	{
-		if (preg_match("#^[_\.\%0-9a-zA-Z-]+@([0-9a-zA-Z][0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6}$#i", $email))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Attempts to retrieve the tool name from a referrer string
-	 *
-	 * @param      string $referrer Referrer URL
-	 * @return     string Tool name
-	 */
-	private function _getTool($referrer)
-	{
-		$tool = '';
-
-		if (!$referrer)
-		{
-			return $tool;
-		}
-
-		if (substr($referrer, 0, 3) == '/mw')
-		{
-			$bits = explode('/', $referrer);
-			if ($bits[2] == 'invoke')
-			{
-				$longbits = explode('?', $bits[3]);
-				if (is_array($longbits))
-				{
-					$tool = trim($longbits[0]);
-				}
-				else
-				{
-					$tool = trim($bits[3]);
-				}
-			}
-			else if ($bits[2] == 'view')
-			{
-				$longbits = explode('=', $bits[3]);
-				if (is_array($longbits))
-				{
-					$tool = trim(end($longbits));
-				}
-				else
-				{
-					$tool = trim($bits[3]);
-				}
-			}
-			// Check for revision indicator
-			if (strstr($tool, '_r'))
-			{
-				$version = strrchr($tool, '_r');
-				$tool = str_replace($version, '', $tool);
-			}
-			// Check for dev indicator
-			if (strstr($tool, '_dev'))
-			{
-				$version = strrchr($tool, '_dev');
-				$tool = str_replace($version, '', $tool);
-			}
-		}
-		else if (substr($referrer, 0, 6) == '/tools' || substr($referrer, 0, 10) == '/resources')
-		{
-			$bits = explode('/', $referrer);
-			$tool = (isset($bits[2])) ? trim($bits[2]) : '';
-		}
-		else if (substr($referrer, 0, 4) == 'http')
-		{
-			$bits = explode('/', $referrer);
-			$tool = (isset($bits[4])) ? trim($bits[4]) : '';
-		}
-
-		return $tool;
-	}
-
-	/**
-	 * Checks if a tool is tagged with one of the selected tag/groups
-	 *
-	 * @param      string $tool A tool to check
-	 * @return     string Group name
-	 */
-	private function _getTicketGroup($tool)
-	{
-		// Do we have a tool?
-		if (!$tool)
-		{
-			return '';
-		}
-
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
-		$resource = new ResourcesResource($this->database);
-		$tool = str_replace(':', '-', $tool);
-		$resource->loadAlias($tool);
-
-		if (!$resource || $resource->type != 7)
-		{
-			return '';
-		}
-
-		// Get tags on the tools
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$rt = new ResourcesTags($this->database);
-		$tags = $rt->getTags($resource->id, 0, 0, 1);
-
-		if (!$tags)
-		{
-			return 'app-' . $tool;
-		}
-
-		// Get tag/group associations
-		//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
-		$tt = new TagsTableGroup($this->database);
-		$tgas = $tt->getRecords();
-
-		if (!$tgas)
-		{
-			return 'app-' . $tool;
-		}
-
-		// Loop through the tags and make a flat array so we can search quickly
-		$ts = array();
-		foreach ($tags as $tag)
-		{
-			$ts[] = $tag->tag;
-		}
-		// Loop through the tag/group array and see if one of them is in the tags list
-		foreach ($tgas as $tga)
-		{
-			if (in_array($tga->tag, $ts))
-			{
-				// We found one! So set the group
-				return $tga->cn;
-				break;
-			}
-		}
-		return 'app-' . $tool;
-	}
-
-	/**
 	 * Display a ticket and associated comments
 	 *
 	 * @return     void
@@ -1633,7 +1458,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		));
 
 		// Ensure the user is authorized to view this ticket
-		//$this->view->authorized = $this->_authorize($this->view->row->get('group'));
 		if (!$this->view->row->access('read', 'tickets'))
 		{
 			JError::raiseError(403, JText::_('COM_SUPPORT_ERROR_NOT_AUTH'));
@@ -2110,7 +1934,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	 *   section  (optional)
 	 *   upload   (optional)
 	 *
-	 * @return     mixed Return description (if any) ...
+	 * @return  string
 	 */
 	public function createTask()
 	{
@@ -2119,22 +1943,23 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$incoming = array_map('addslashes', $incoming);
 
 		// initiate class and bind posted items to database fields
-		$row = new SupportTicket($this->database);
+		$row = new SupportModelTicket();
 		if (!$row->bind($incoming))
 		{
-			return $row->getError();
+			echo $row->getError();
+			return;
 		}
+		$row->set('summary', $row->content('clean', 200));
 
 		// Check for a session token
-		$sess = JRequest::getVar('sesstoken', '');
 		$sessnum = '';
-		if ($sess)
+		if ($sess = JRequest::getVar('sesstoken', ''))
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
 			$mwdb = MwUtils::getMWDBO();
 
 			// retrieve the username and IP from session with this session token
-			$query = "SELECT * FROM session WHERE session.sesstoken='" . $sess . "' LIMIT 1";
+			$query = "SELECT * FROM session WHERE session.sesstoken=" . $this->database->quote($sess) . " LIMIT 1";
 			$mwdb->setQuery($query);
 			$viewperms = $mwdb->loadObjectList();
 
@@ -2142,165 +1967,108 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			{
 				foreach ($viewperms as $sinfo)
 				{
-					$row->login = $sinfo->username;
-					$row->ip    = $sinfo->remoteip;
-					$sessnum    = $sinfo->sessnum;
+					$row->set('login', $sinfo->username);
+					$row->set('ip', $sinfo->remoteip);
+					$sessnum = $sinfo->sessnum;
 				}
 
 				// get user's infor from login
-				$juser = JUser::getInstance($row->login);
-				$row->name  = $juser->get('name');
-				$row->email = $juser->get('email');
+				$juser = JUser::getInstance($row->get('login'));
+				$row->set('name', $juser->get('name'));
+				$row->set('email', $juser->get('email'));
 			}
 		}
 
-		$row->login = ($row->login) ? $row->login : 'automated';
+		$row->set('login', ($row->get('login') ? $row->get('login') : 'automated'));
 
-		if (strstr($row->summary, '"') || strstr($row->summary, "'"))
-		{
-			$summary = str_replace("\'","\\\\\\\\\'", $row->summary);
-			$summary = str_replace('\"','\\\\\\\\\"', $summary);
-			$query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE '%" . strtolower($summary) . "%' AND type=1 LIMIT 1";
-		}
-		else
-		{
-			$query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE '%" . strtolower($row->summary) . "%' AND type=1 LIMIT 1";
-		}
 		// check for an existing ticket with this report
-		$this->database->setQuery($query);
-		$ticket = $this->database->loadResult();
-		if ($this->database->getErrorNum())
+		$summary = $row->get('summary');
+		if (strstr($summary, '"') || strstr($summary, "'"))
 		{
-			return $this->database->stderr();
+			$summary = str_replace("\'","\\\\\\\\\'", $summary);
+			$summary = str_replace('\"','\\\\\\\\\"', $summary);
+			$query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE " . $this->database->quote('%' . strtolower($summary) . '%') . " AND type=1 LIMIT 1";
 		}
+		$query = "SELECT id FROM `#__support_tickets` WHERE LOWER(summary) LIKE " . $this->database->quote('%' . strtolower($summary) . '%') . " AND type=1 LIMIT 1";
+		$this->database->setQuery($query);
 
-		if ($ticket)
+		if ($ticket = $this->database->loadResult())
 		{
 			$changelog = '';
 
 			// open existing ticket if closed
-			$oldticket = new SupportTicket($this->database);
-			$oldticket->load($ticket);
-			$oldticket->instances++;
-			if ($oldticket->open == 0)
+			$oldticket = new SupportModelTicket($ticket);
+			$oldticket->set('instances', ($oldticket->get('instances') + 1));
+			if (!$oldticket->isOpen())
 			{
-				$oldticket->open = 1;
-				$oldticket->status = 1;
-				$oldticket->resolved = 'reopened';
+				$before = new SupportModelTicket($ticket);
 
-				$log = array(
-					'changes' => array(),
-					'notifications' => array()
-				);
+				$oldticket->set('open', 1);
+				$oldticket->set('status', 1);
+				$oldticket->set('resolved', '');
 
-				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_STATUS'),
-					'before' => SupportHtml::getStatus(0, 1),
-					'after'  => SupportHtml::getStatus($oldticket->open, $oldticket->status)
-				);
-				$log['changes'][] = array(
-					'field'  => JText::_('TICKET_FIELD_INSTANCE'),
-					'before' => ($oldticket->instances - 1),
-					'after'  => $oldticket->instances
-				);
-				$changelog = json_encode($log);
-			}
+				$rowc = new SupportModelComment();
+				$rowc->set('ticket', $ticket);
+				$rowc->set('comment', '');
+				$rowc->set('created', JFactory::getDate()->toSql());
+				$rowc->set('created_by', $this->juser->get('id'));
+				$rowc->set('access', 1);
 
-			// check content
-			if (!$oldticket->check())
-			{
-				return $oldticket->getError();
-			}
+				// Compare fields to find out what has changed for this ticket and build a changelog
+				$rowc->changelog()->diff($before, $oldticket);
 
-			// store new content
-			if (!$oldticket->store())
-			{
-				return $oldticket->getError();
-			}
-
-			// make a log note if we had to reopen the ticket
-			if ($changelog)
-			{
-				$rowc = new SupportComment($this->database);
-				$rowc->ticket     = $ticket;
-				$rowc->comment    = '';
-				$rowc->created    = JFactory::getDate()->toSql();
-				$rowc->created_by = $this->juser->get('id');//$row->login;
-				$rowc->changelog  = $changelog;
-				$rowc->access     = 1;
-
-				if ($rowc->check())
+				if (!$rowc->store(true))
 				{
-					if (!$rowc->store())
-					{
-						return $rowc->getError();
-					}
+					echo $rowc->getError();
+					return;
 				}
 			}
 
-			$status = (!$oldticket->open && $oldticket->resolved) ? $oldticket->resolved : 'open';
-			$count  = $oldticket->instances;
+			// store new content
+			if (!$oldticket->store(true))
+			{
+				echo $oldticket->getError();
+				return;
+			}
+
+			$status = $oldticket->status('text');
+			$count  = $oldticket->get('instances');
 		}
 		else
 		{
 			// set some defaults
-			$row->status    = 0;
-			$row->created   = JFactory::getDate()->toSql();
-			$row->severity  = ($row->severity) ? $row->severity : 'normal';
-			$row->category  = ($row->category) ? $row->category : JText::_('COM_SUPPORT_CATEGORY_TOOLS');
-			$row->resolved  = '';
-			$row->email     = ($row->email)    ? $row->email    : $this->_data['supportemail'];
-			$row->name      = ($row->name)     ? $row->name     : JText::_('COM_SUPPORT_AUTOMATED_REPORT');
-			$row->cookies   = ($row->cookies)  ? $row->cookies  : 1;
-			$row->instances = 1;
-			$row->section   = ($row->section)  ? $row->section  : 1;
-			$row->type      = 1;
-
-			if (!$row->summary)
-			{
-				$row->summary = $this->txt_shorten($row->report, 75);
-			}
-
-			// clean any cross-site scripting from report
-			$row->summary = \Hubzero\Utility\Sanitize::clean($row->summary);
-			$row->report  = \Hubzero\Utility\Sanitize::clean($row->report);
-			$row->report  = str_replace('<br>', '<br />', $row->report);
-			$row->report  = '' . $row->report;
-
-			// check content
-			if (!$row->check())
-			{
-				return $row->getError();
-			}
+			$row->set('status', 0);
+			$row->set('open', 1);
+			$row->set('created', JFactory::getDate()->toSql());
+			$row->set('severity', ($row->get('severity') ? $row->get('severity') : 'normal'));
+			$row->set('category', ($row->get('category') ? $row->get('category') : JText::_('COM_SUPPORT_CATEGORY_TOOLS')));
+			$row->set('resolved', '');
+			$row->set('email', ($row->get('email') ? $row->get('email') : $this->_data['supportemail']));
+			$row->set('name', ($row->get('name') ? $row->get('name') : JText::_('COM_SUPPORT_AUTOMATED_REPORT')));
+			$row->set('cookies', ($row->get('cookies') ? $row->get('cookies') : 1));
+			$row->set('instances', 1);
+			$row->set('section', ($row->get('section') ? $row->get('section') : 1));
+			$row->set('type', 1);
 
 			// store new content
-			if (!$row->store())
+			if (!$row->store(true))
 			{
-				return $row->getError();
+				echo $row->getError();
+				return;
 			}
 
-			if (!$row->id)
+			$row->tag($incoming['tags'], $this->juser->get('id'), 1);
+
+			if ($attachment = $this->uploadTask($row->get('id')))
 			{
-				$query = "SELECT id FROM #__support_tickets
-							WHERE created='" . $row->created . "'
-							AND category='" . $row->category . "'
-							AND email='" . $row->email . "'
-							AND name='" . $row->name . "'
-							AND summary='" . $row->summary . "'
-							AND report='" . $row->report . "'";
-				$this->database->setQuery($query);
-				$row->id = $this->database->loadResult();
+				$row->set('report', $row->get('report') . "\n\n" . $attachment);
+				if (!$row->store())
+				{
+					$this->setError($row->getError());
+				}
 			}
 
-			$attachment = $this->uploadTask($row->id);
-			$row->report .= ($attachment) ? "\n\n" . $attachment : '';
-			// Save the data
-			if (!$row->store())
-			{
-				$this->setError($row->getError());
-			}
-
-			$ticket = $row->id;
+			$ticket = $row->get('id');
 			$status = 'new';
 			$count  = 1;
 		}
@@ -2833,52 +2601,5 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$users = JHTML::_('select.genericlist', $users, $name, ' '. $javascript, 'value', 'text', $active, false, false);
 
 		return $users;
-	}
-
-	/**
-	 * Check if the user has authority to access the ticket
-	 *
-	 * @param      string $toolgroup A group to check access against
-	 * @return     mixed
-	 */
-	protected function _authorize($toolgroup='')
-	{
-		// Check if they are logged in
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-
-		// Check if they're a site admin (from Joomla)
-		$this->config->set('access-admin-component', $this->juser->authorise('core.admin', null));
-		$this->config->set('access-manage-component', $this->juser->authorise('core.manage', null));
-		if ($this->config->get('access-admin-component') || $this->config->get('access-manage-component'))
-		{
-			return 'admin';
-		}
-
-		// Was a specific group set in the config?
-		$group = trim($this->config->get('group'));
-		if ($group or $toolgroup)
-		{
-			// Check if they're a member of this group
-			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0)
-			{
-				foreach ($ugs as $ug)
-				{
-					if ($group && $ug->cn == $this->gid)
-					{
-						return true;
-					}
-					if ($toolgroup && $ug->cn == $toolgroup)
-					{
-						return true;
-					}
-				}
-			}
-		}
-
-		return false;
 	}
 }
