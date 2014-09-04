@@ -171,7 +171,7 @@ class Courses extends Macro
 					}
 
 					// if we have an offering
-					if ($offering->get('id'))
+					if (isset($offering))
 					{
 						// load the section (default is __default)
 						$section = $offering->section($sectionParam);
