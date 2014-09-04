@@ -430,6 +430,12 @@ class SupportQuery extends JTable
 			}
 			else
 			{
+				$uid = 'username';
+				if (strtolower($expr->fldval) == 'owner')
+				{
+					$uid = 'id';
+				}
+
 				if ($expr->val == '$me')
 				{
 					$expr->val = $juser->get($uid);
