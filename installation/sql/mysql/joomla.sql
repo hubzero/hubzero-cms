@@ -879,6 +879,7 @@ CREATE TABLE `#__users` (
   `password` varchar(100) NOT NULL default '',
   `usertype` varchar(25) NOT NULL default '',
   `block` tinyint(4) NOT NULL default '0',
+  `approved` tinyint(4) NOT NULL DEFAULT '2',
   `sendEmail` tinyint(4) default '0',
   `registerDate` datetime NOT NULL default '0000-00-00 00:00:00',
   `lastvisitDate` datetime NOT NULL default '0000-00-00 00:00:00',
