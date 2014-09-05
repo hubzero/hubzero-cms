@@ -21,6 +21,12 @@ class Migration20131111200831ComCourses extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
+		else if ($this->db->tableExists('#__courses_offering_badges') && $this->db->tableExists('#__courses_offering_section_badges'))
+		{
+			$query = "DROP TABLE `#__courses_offering_badges`";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 
 		if ($this->db->tableHasField('#__courses_offerings', 'badge_id'))
 		{
