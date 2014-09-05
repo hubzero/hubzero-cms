@@ -24,12 +24,12 @@ class GoogleMapsProvider extends AbstractProvider implements LocaleAwareProvider
     /**
      * @var string
      */
-    const ENDPOINT_URL = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false';
+    const ENDPOINT_URL = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s';
 
     /**
      * @var string
      */
-    const ENDPOINT_URL_SSL = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false';
+    const ENDPOINT_URL_SSL = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s';
 
     /**
      * @var string
@@ -130,6 +130,11 @@ class GoogleMapsProvider extends AbstractProvider implements LocaleAwareProvider
 
         $content = $this->getAdapter()->getContent($query);
 
+        // Throw exception if invalid clientID and/or privateKey used with GoogleMapsBusinessProvider
+        if (strpos($content, "Provided 'signature' is not valid for the provided client ID") !== false) {
+            throw new InvalidCredentialsException(sprintf('Invalid client ID / API Key %s', $query));
+        }
+
         if (null === $content) {
             throw new NoResultException(sprintf('Could not execute query %s', $query));
         }
@@ -141,7 +146,7 @@ class GoogleMapsProvider extends AbstractProvider implements LocaleAwareProvider
             throw new NoResultException(sprintf('Could not execute query %s', $query));
         }
 
-        if('REQUEST_DENIED' === $json->status && 'The provided API key is invalid.' === $json->error_message) {
+        if ('REQUEST_DENIED' === $json->status && 'The provided API key is invalid.' === $json->error_message) {
             throw new InvalidCredentialsException(sprintf('API key is invalid %s', $query));
         }
 

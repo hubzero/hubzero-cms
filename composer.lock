@@ -4,50 +4,8 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "31b6808bfb72c34941c9b0434c1e2a84",
+    "hash": "867c48054b5051c228fbfd8901a84ca2",
     "packages": [
-        {
-            "name": "dannytrue/phantomjs",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dannytrue/phantomjs.git",
-                "reference": "126f40bcb0cc29d4500bc950fc781fc184c40ebe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dannytrue/phantomjs/zipball/126f40bcb0cc29d4500bc950fc781fc184c40ebe",
-                "reference": "126f40bcb0cc29d4500bc950fc781fc184c40ebe",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "bin": [
-                "phantomjs",
-                "phantomjs_64"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD"
-            ],
-            "authors": [
-                {
-                    "name": "Ariya Hidayat",
-                    "email": "ariya.hidayat@gmail.com"
-                }
-            ],
-            "description": "Headless WebKit scriptable with a JavaScript API.",
-            "homepage": "http://phantomjs.org/",
-            "keywords": [
-                "jasmine",
-                "javascript",
-                "phantomjs",
-                "testing"
-            ],
-            "time": "2013-05-30 12:21:50"
-        },
         {
             "name": "ezyang/htmlpurifier",
             "version": "v4.5.0",
@@ -186,22 +144,22 @@
         },
         {
             "name": "guzzle/guzzle",
-            "version": "dev-master",
+            "version": "v3.8.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/guzzle/guzzle3.git",
-                "reference": "55ac3a0eda562f9d961dcd7dc4813713397c96a0"
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/55ac3a0eda562f9d961dcd7dc4813713397c96a0",
-                "reference": "55ac3a0eda562f9d961dcd7dc4813713397c96a0",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "php": ">=5.3.3",
-                "symfony/event-dispatcher": "~2.1"
+                "symfony/event-dispatcher": ">=2.1"
             },
             "replace": {
                 "guzzle/batch": "self.version",
@@ -228,18 +186,18 @@
                 "guzzle/stream": "self.version"
             },
             "require-dev": {
-                "doctrine/cache": "~1.3",
-                "monolog/monolog": "~1.0",
+                "doctrine/cache": "*",
+                "monolog/monolog": "1.*",
                 "phpunit/phpunit": "3.7.*",
-                "psr/log": "~1.0",
-                "symfony/class-loader": "~2.1",
-                "zendframework/zend-cache": "2.*,<2.3",
-                "zendframework/zend-log": "2.*,<2.3"
+                "psr/log": "1.0.*",
+                "symfony/class-loader": "*",
+                "zendframework/zend-cache": "<2.3",
+                "zendframework/zend-log": "<2.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.9-dev"
+                    "dev-master": "3.8-dev"
                 }
             },
             "autoload": {
@@ -274,7 +232,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-07-29 19:57:57"
+            "time": "2014-01-28 22:29:15"
         },
         {
             "name": "leafo/lessphp",
@@ -424,17 +382,17 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.5.2",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "2215d2ef6fd7ab24d55576a3d924df575c741762"
+                "reference": "8faf5cc7e80fde74a650a36e60d32ce3c3e0457b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/2215d2ef6fd7ab24d55576a3d924df575c741762",
-                "reference": "2215d2ef6fd7ab24d55576a3d924df575c741762",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/8faf5cc7e80fde74a650a36e60d32ce3c3e0457b",
+                "reference": "8faf5cc7e80fde74a650a36e60d32ce3c3e0457b",
                 "shasum": ""
             },
             "require": {
@@ -467,19 +425,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-09 09:05:48"
+            "time": "2014-07-28 13:20:46"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -586,16 +542,16 @@
         },
         {
             "name": "willdurand/geocoder",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geocoder-php/Geocoder.git",
-                "reference": "50e54f88b539de0ca3864e8e6a48412d1358d8b7"
+                "reference": "aeae3a5d2e90d9a79e83da02aa6392214e30aa09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/Geocoder/zipball/50e54f88b539de0ca3864e8e6a48412d1358d8b7",
-                "reference": "50e54f88b539de0ca3864e8e6a48412d1358d8b7",
+                "url": "https://api.github.com/repos/geocoder-php/Geocoder/zipball/aeae3a5d2e90d9a79e83da02aa6392214e30aa09",
+                "reference": "aeae3a5d2e90d9a79e83da02aa6392214e30aa09",
                 "shasum": ""
             },
             "require": {
@@ -603,6 +559,7 @@
             },
             "require-dev": {
                 "geoip/geoip": "~1.13",
+                "geoip2/geoip2": "~0.6",
                 "guzzle/guzzle": "@stable",
                 "kriswallsmith/buzz": "@stable",
                 "zendframework/zend-http": "~2.1"
@@ -611,6 +568,7 @@
                 "ext-curl": "Enabling the curl extension allows you to use the CurlHttpAdapter.",
                 "ext-geoip": "Enabling the geoip extension allows you to use the MaxMindProvider.",
                 "geoip/geoip": "If you are going to use the MaxMindBinaryProvider (conflict with geoip extension).",
+                "geoip2/geoip2": "If you are going to use the GeoIP2DatabaseProvider.",
                 "guzzle/guzzle": "Enabling Guzzle allows you to use the GuzzleHttpAdapter.",
                 "kriswallsmith/buzz": "Enabling Buzz allows you to use the BuzzHttpAdapter.",
                 "zendframework/zend-http": "Enabling Zend Http allows you to use the ZendHttpAdapter."
@@ -618,7 +576,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -633,8 +591,7 @@
             "authors": [
                 {
                     "name": "William Durand",
-                    "email": "william.durand1@gmail.com",
-                    "homepage": "http://www.willdurand.fr"
+                    "email": "william.durand1@gmail.com"
                 }
             ],
             "description": "The almost missing Geocoder PHP 5.3 library.",
@@ -645,7 +602,7 @@
                 "geocoding",
                 "geoip"
             ],
-            "time": "2014-05-16 09:11:44"
+            "time": "2014-09-02 09:06:45"
         }
     ],
     "packages-dev": [
@@ -656,7 +613,6 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dannytrue/phantomjs": 20,
         "willdurand/geocoder": 0,
         "guzzle/guzzle": 20,
         "tplaner/when": 20

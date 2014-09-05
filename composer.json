@@ -60,7 +60,6 @@
         "facebook/php-sdk-v4": "4.0.9",
         "tecnick.com/tcpdf": "6.0.017",
         "leafo/lessphp": "0.3.9",
-        "dannytrue/phantomjs": "dev-master",
         "swiftmailer/swiftmailer": "v5.0.2",
         "monolog/monolog": "1.2.*",
         "willdurand/geocoder": "@stable",
