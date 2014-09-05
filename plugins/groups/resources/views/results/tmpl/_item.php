@@ -146,7 +146,7 @@ switch ($this->row->access)
 	{
 		$text = $this->row->itext;
 	}
-
+	$text = strip_tags($text);
 	echo \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::clean(stripslashes($text)), 200) . "\n";
 	?>
 
