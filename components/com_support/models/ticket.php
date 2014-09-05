@@ -922,6 +922,10 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				return JHTML::_('date', $this->get('created'), JText::_('TIME_FORMAT_HZ1'));
 			break;
 
+			case 'local':
+				return JHTML::_('date', $this->get('created'), $this->_db->getDateFormat());
+			break;
+
 			default:
 				return $this->get('created');
 			break;

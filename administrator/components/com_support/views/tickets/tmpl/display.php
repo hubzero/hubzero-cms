@@ -271,7 +271,7 @@ $this->css();
 										<?php echo $row->get('name'); echo ($row->get('login')) ? ' (<a href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $this->escape($row->get('login')) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
 									</span>
 									<span class="ticket-datetime">
-										@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created(); ?></time>
+										@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('local'); ?></time>
 									</span>
 								<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
 									<span class="ticket-activity">
