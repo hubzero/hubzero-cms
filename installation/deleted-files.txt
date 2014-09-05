@@ -11779,3 +11779,10 @@
 ./administrator/components/com_members/views/quotas/tmpl/displayClasses.xml
 ./administrator/components/com_members/views/quotas/tmpl/editClass.php
 ./administrator/components/com_members/views/quotas/tmpl/editClass.xml
+./administrator/components/com_tags/assets/js/jquery-ui.js
+./administrator/components/com_tags/assets/js/jquery.js
+./vendor/bin/phantomjs
+./vendor/bin/phantomjs_64
+./vendor/dannytrue/phantomjs/composer.json
+./vendor/dannytrue/phantomjs/phantomjs
+./vendor/dannytrue/phantomjs/phantomjs_64
