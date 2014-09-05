@@ -204,7 +204,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 		$newsletterPdf = $newsletterPdfFolder . DS . $newsletter->alias . '.pdf';
 
 		//run command to save newsletter as pdf
-		$cmd = './vendor/bin/phantomjs_64 ';
+		$cmd = '/usr/bin/phantomjs ';
 		$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
 		$finalCommand = $cmd . ' ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
 		exec($finalCommand);
