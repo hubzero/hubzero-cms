@@ -411,7 +411,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$cmd = JPATH_ROOT . '/vendor/bin/phantomjs_64 ';
+		$cmd = '/usr/bin/phantomjs ';
 		$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
 		$finalCommand = $cmd . ' ' . $rasterizeFile . ' "' . $url . '" ' . $tempFile . ' 11in*8.5in'; //65
 		//echo $finalCommand;

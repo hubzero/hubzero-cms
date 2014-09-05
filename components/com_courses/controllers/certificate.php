@@ -109,7 +109,7 @@ class CoursesControllerCertificate extends \Hubzero\Component\SiteController
 			$url .= '&key='. JUtility::getHash($course->get('id') . $offering->get('id') . $this->juser->get('id'));
 
 			// Script execution
-			$cmd = JPATH_ROOT . '/vendor/bin/phantomjs_64 ';
+			$cmd = '/usr/bin/phantomjs ';
 			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
 			$finalCommand = $cmd . ' ' . $rasterizeFile . ' "' . $url . '" ' . $file . ' 11in*8.5in'; //65
 
