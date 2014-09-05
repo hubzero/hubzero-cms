@@ -3621,6 +3621,8 @@
       var d = document;
       var tag = d.createElement('style');
 
+      this.remove_style_tags();
+
       d.getElementsByTagName('head')[0].appendChild(tag);
       tag.setAttribute('type', 'text/css');
 
