@@ -45,103 +45,178 @@ class Migration20140110135511ComFinder extends Base
 			$this->deletePluginEntry('finder', 'content');
 			$this->deletePluginEntry('finder', 'newsfeeds');
 			$this->deletePluginEntry('finder', 'weblinks');
+		}
 
+		if ($this->db->tableExists('#__finder_filters'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_filters`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms0'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms0`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms1'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms1`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms2'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms2`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms3'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms3`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms4'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms4`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms5'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms5`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms6'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms6`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms7'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms7`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms8'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms8`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_terms9'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_terms9`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_termsa'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_termsa`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_termsb'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_termsb`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_termsc'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_termsc`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_termsd'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_termsd`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_termse'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_termse`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_links_termsf'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_links_termsf`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_taxonomy'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_taxonomy`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_taxonomy_map'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_taxonomy_map`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_terms'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_terms`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_terms_common'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_terms_common`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_tokens'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_tokens`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_tokens_aggregate'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_tokens_aggregate`;";
 			$this->db->setQuery($query);
 			$this->db->query();
+		}
 
+		if ($this->db->tableExists('#__finder_types'))
+		{
 			$query = "DROP TABLE IF EXISTS `#__finder_types`;";
 			$this->db->setQuery($query);
 			$this->db->query();

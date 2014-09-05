@@ -16,15 +16,24 @@ class Migration20140807143056ComMembers extends Base
 	public function up()
 	{
 		// drop orignal key and create new one
-		if ($this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx'))
+		if ($this->db->tableExists('#__xprofiles'))
 		{
-			$query = "ALTER TABLE `#__xprofiles` DROP INDEX jos_xprofiles_fullname_ftidx;";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if ($this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx'))
+			{
+				$query = "ALTER TABLE `#__xprofiles` DROP INDEX jos_xprofiles_fullname_ftidx;";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 
-			$query = "ALTER TABLE `#__xprofiles` ADD FULLTEXT ftidx_fullname (givenName, middleName, surname);";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableHasKey('#__xprofiles', 'ftidx_fullname')
+				&& $this->db->tableHasField('#__xprofiles', 'givenName')
+				&& $this->db->tableHasField('#__xprofiles', 'middleName')
+				&& $this->db->tableHasField('#__xprofiles', 'surname'))
+			{
+				$query = "ALTER TABLE `#__xprofiles` ADD FULLTEXT ftidx_fullname (givenName, middleName, surname);";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 	}
 
@@ -33,16 +42,24 @@ class Migration20140807143056ComMembers extends Base
 	 **/
 	public function down()
 	{
-		// drop orignal key and create new one
-		if ($this->db->tableHasKey('#__xprofiles', 'ftidx_fullname'))
+		if ($this->db->tableExists('#__xprofiles'))
 		{
-			$query = "ALTER TABLE `#__xprofiles` DROP INDEX ftidx_fullname;";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if ($this->db->tableHasKey('#__xprofiles', 'ftidx_fullname'))
+			{
+				$query = "ALTER TABLE `#__xprofiles` DROP INDEX ftidx_fullname;";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 
-			$query = "ALTER TABLE `#__xprofiles` ADD FULLTEXT jos_xprofiles_fullname_ftidx (givenName, middleName, surname);";
-			$this->db->setQuery($query);
-			$this->db->query();
+			if (!$this->db->tableHasKey('#__xprofiles', 'jos_xprofiles_fullname_ftidx')
+				&& $this->db->tableHasField('#__xprofiles', 'givenName')
+				&& $this->db->tableHasField('#__xprofiles', 'middleName')
+				&& $this->db->tableHasField('#__xprofiles', 'surname'))
+			{
+				$query = "ALTER TABLE `#__xprofiles` ADD FULLTEXT jos_xprofiles_fullname_ftidx (givenName, middleName, surname);";
+				$this->db->setQuery($query);
+				$this->db->query();
+			}
 		}
 	}
 }

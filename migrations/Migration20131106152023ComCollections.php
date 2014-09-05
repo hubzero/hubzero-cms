@@ -15,18 +15,21 @@ class Migration20131106152023ComCollections extends Base
 	 **/
 	public function up()
 	{
-		$query = "ALTER TABLE `#__collections_items` ADD FULLTEXT KEY `idx_fulltxt_title_description` (`title`, `description`);";
-
-		if (!empty($query))
+		if ($this->db->tableExists('#__collections_items')
+			&& !$this->db->tableHasKey('#__collections_items', 'idx_fulltxt_title_description')
+			&& $this->db->tableHasField('#__collections_items', 'title')
+			&& $this->db->tableHasField('#__collections_items', 'description'))
 		{
+			$query = "ALTER TABLE `#__collections_items` ADD FULLTEXT KEY `idx_fulltxt_title_description` (`title`, `description`);";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
-		$query = "ALTER TABLE `#__collections_posts` ADD FULLTEXT KEY `idx_fulltxt_description` (`description`);";
-
-		if (!empty($query))
+		if ($this->db->tableExists('#__collections_posts')
+			&& !$this->db->tableHasKey('#__collections_posts', 'idx_fulltxt_description')
+			&& $this->db->tableHasField('#__collections_posts', 'description'))
 		{
+			$query = "ALTER TABLE `#__collections_posts` ADD FULLTEXT KEY `idx_fulltxt_description` (`description`);";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -37,18 +40,16 @@ class Migration20131106152023ComCollections extends Base
 	 **/
 	public function down()
 	{
-		$query = "ALTER TABLE `#__collections_items` DROP INDEX `idx_fulltxt_title_description`;";
-
-		if (!empty($query))
+		if ($this->db->tableExists('#__collections_items') && $this->db->tableHasKey('#__collections_items', 'idx_fulltxt_title_description'))
 		{
+			$query = "ALTER TABLE `#__collections_items` DROP INDEX `idx_fulltxt_title_description`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
-		$query = "ALTER TABLE `#__collections_posts` DROP INDEX `idx_fulltxt_description`;";
-
-		if (!empty($query))
+		if ($this->db->tableExists('#__collections_posts') && $this->db->tableHasKey('#__collections_posts', 'idx_fulltxt_description'))
 		{
+			$query = "ALTER TABLE `#__collections_posts` DROP INDEX `idx_fulltxt_description`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
