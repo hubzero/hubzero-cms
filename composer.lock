@@ -1,52 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "33328377c8908088cf4ea6ad5f0e4cdf",
+    "hash": "09443504a1de182ffb637829e10052a2",
     "packages": [
-        {
-            "name": "dannytrue/phantomjs",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dannytrue/phantomjs.git",
-                "reference": "126f40bcb0cc29d4500bc950fc781fc184c40ebe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dannytrue/phantomjs/zipball/126f40bcb0cc29d4500bc950fc781fc184c40ebe",
-                "reference": "126f40bcb0cc29d4500bc950fc781fc184c40ebe",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "bin": [
-                "phantomjs",
-                "phantomjs_64"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD"
-            ],
-            "authors": [
-                {
-                    "name": "Ariya Hidayat",
-                    "email": "ariya.hidayat@gmail.com"
-                }
-            ],
-            "description": "Headless WebKit scriptable with a JavaScript API.",
-            "homepage": "http://phantomjs.org/",
-            "keywords": [
-                "jasmine",
-                "javascript",
-                "phantomjs",
-                "testing"
-            ],
-            "time": "2013-05-30 12:21:50"
-        },
         {
             "name": "ezyang/htmlpurifier",
             "version": "v4.5.0",
@@ -140,12 +99,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle3.git",
-                "reference": "92d9934f2fca1da15178c91239576ae26e505e60"
+                "reference": "305592b667786335ce6f438ac4b352932be703d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/92d9934f2fca1da15178c91239576ae26e505e60",
-                "reference": "92d9934f2fca1da15178c91239576ae26e505e60",
+                "url": "https://api.github.com/repos/guzzle/guzzle3/zipball/305592b667786335ce6f438ac4b352932be703d1",
+                "reference": "305592b667786335ce6f438ac4b352932be703d1",
                 "shasum": ""
             },
             "require": {
@@ -189,7 +148,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.8-dev"
+                    "dev-master": "3.9-dev"
                 }
             },
             "autoload": {
@@ -224,20 +183,20 @@
                 "rest",
                 "web service"
             ],
-            "time": "2014-05-07 17:04:22"
+            "time": "2014-08-28 21:08:09"
         },
         {
             "name": "kriswallsmith/buzz",
-            "version": "v0.10",
+            "version": "v0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kriswallsmith/Buzz.git",
-                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17"
+                "reference": "9d56d36a58c47e2f612f4b856ff9baa0e3375ff6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/759432d66387e3433d3b06cb6f773b97225b9b17",
-                "reference": "759432d66387e3433d3b06cb6f773b97225b9b17",
+                "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/9d56d36a58c47e2f612f4b856ff9baa0e3375ff6",
+                "reference": "9d56d36a58c47e2f612f4b856ff9baa0e3375ff6",
                 "shasum": ""
             },
             "require": {
@@ -272,7 +231,7 @@
                 "curl",
                 "http client"
             ],
-            "time": "2013-05-19 03:41:15"
+            "time": "2014-07-29 23:52:21"
         },
         {
             "name": "leafo/lessphp",
@@ -476,24 +435,27 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.4.4",
+            "version": "v2.5.4",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "e539602e5455aa086c0e81e604745af7789e4d8a"
+                "reference": "8faf5cc7e80fde74a650a36e60d32ce3c3e0457b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/e539602e5455aa086c0e81e604745af7789e4d8a",
-                "reference": "e539602e5455aa086c0e81e604745af7789e4d8a",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/8faf5cc7e80fde74a650a36e60d32ce3c3e0457b",
+                "reference": "8faf5cc7e80fde74a650a36e60d32ce3c3e0457b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "symfony/dependency-injection": "~2.0"
+                "psr/log": "~1.0",
+                "symfony/config": "~2.0",
+                "symfony/dependency-injection": "~2.0",
+                "symfony/stopwatch": "~2.2"
             },
             "suggest": {
                 "symfony/dependency-injection": "",
@@ -502,7 +464,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.5-dev"
                 }
             },
             "autoload": {
@@ -516,19 +478,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "http://symfony.com",
-            "time": "2014-04-16 10:34:31"
+            "time": "2014-07-28 13:20:46"
         },
         {
             "name": "tecnick.com/tcpdf",
@@ -592,13 +552,13 @@
             "version": "dev-develop",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tplaner/when.git",
-                "reference": "266c22fd81f05074396214807e192d3bf600e802"
+                "url": "https://github.com/tplaner/When.git",
+                "reference": "2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tplaner/when/zipball/266c22fd81f05074396214807e192d3bf600e802",
-                "reference": "266c22fd81f05074396214807e192d3bf600e802",
+                "url": "https://api.github.com/repos/tplaner/When/zipball/2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a",
+                "reference": "2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a",
                 "shasum": ""
             },
             "require": {
@@ -631,20 +591,20 @@
                 "source": "https://github.com/tplaner/when/tree/develop",
                 "issues": "https://github.com/tplaner/when/issues"
             },
-            "time": "2013-12-13 21:55:19"
+            "time": "2014-06-16 22:55:57"
         },
         {
             "name": "willdurand/geocoder",
-            "version": "2.4.2",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/geocoder-php/Geocoder.git",
-                "reference": "258e2f5c84a9cea03096f6f11ecdc0293fbc7b93"
+                "reference": "aeae3a5d2e90d9a79e83da02aa6392214e30aa09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/geocoder-php/Geocoder/zipball/258e2f5c84a9cea03096f6f11ecdc0293fbc7b93",
-                "reference": "258e2f5c84a9cea03096f6f11ecdc0293fbc7b93",
+                "url": "https://api.github.com/repos/geocoder-php/Geocoder/zipball/aeae3a5d2e90d9a79e83da02aa6392214e30aa09",
+                "reference": "aeae3a5d2e90d9a79e83da02aa6392214e30aa09",
                 "shasum": ""
             },
             "require": {
@@ -652,6 +612,7 @@
             },
             "require-dev": {
                 "geoip/geoip": "~1.13",
+                "geoip2/geoip2": "~0.6",
                 "guzzle/guzzle": "@stable",
                 "kriswallsmith/buzz": "@stable",
                 "zendframework/zend-http": "~2.1"
@@ -660,6 +621,7 @@
                 "ext-curl": "Enabling the curl extension allows you to use the CurlHttpAdapter.",
                 "ext-geoip": "Enabling the geoip extension allows you to use the MaxMindProvider.",
                 "geoip/geoip": "If you are going to use the MaxMindBinaryProvider (conflict with geoip extension).",
+                "geoip2/geoip2": "If you are going to use the GeoIP2DatabaseProvider.",
                 "guzzle/guzzle": "Enabling Guzzle allows you to use the GuzzleHttpAdapter.",
                 "kriswallsmith/buzz": "Enabling Buzz allows you to use the BuzzHttpAdapter.",
                 "zendframework/zend-http": "Enabling Zend Http allows you to use the ZendHttpAdapter."
@@ -667,7 +629,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.4-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -682,8 +644,7 @@
             "authors": [
                 {
                     "name": "William Durand",
-                    "email": "william.durand1@gmail.com",
-                    "homepage": "http://www.willdurand.fr"
+                    "email": "william.durand1@gmail.com"
                 }
             ],
             "description": "The almost missing Geocoder PHP 5.3 library.",
@@ -694,7 +655,7 @@
                 "geocoding",
                 "geoip"
             ],
-            "time": "2014-01-05 01:57:42"
+            "time": "2014-09-02 09:06:45"
         }
     ],
     "packages-dev": [
@@ -705,11 +666,11 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dannytrue/phantomjs": 20,
         "willdurand/geocoder": 0,
         "guzzle/guzzle": 20,
         "tplaner/when": 20
     },
+    "prefer-stable": false,
     "platform": [
 
     ],
