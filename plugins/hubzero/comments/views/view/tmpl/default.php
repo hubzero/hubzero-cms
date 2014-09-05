@@ -140,7 +140,7 @@ $this->css()->js();
 				<h3 class="post-comment-title">
 					<?php echo JText::_('PLG_HUBZERO_COMMENTS'); ?>
 				</h3>
-				<?php if ($this->comments) {
+				<?php if ($this->comments->count()) {
 					$this->view('list')
 					     ->set('option', $this->option)
 					     ->set('comments', $this->comments)
