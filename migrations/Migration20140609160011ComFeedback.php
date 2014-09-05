@@ -59,6 +59,14 @@ class Migration20140609160011ComFeedback extends Base
 				{
 					$tbl = new FeedbackQuotes($this->db);
 					$tbl->id = $result->fid;
+					$tbl->user_id = $result->userid;
+					$tbl->fullname = $result->fullname;
+					$tbl->org = $result->org;
+					$tbl->quote = $result->quote;
+					$tbl->notes = $result->notes;
+					$tbl->picture = $result->picture;
+					$tbl->publish_ok = 1;
+					$tbl->date = $result->date;
 					$tbl->miniquote = $result->miniquote;
 					$tbl->notable_quote = $result->notable_quotes;
 					$tbl->store();
