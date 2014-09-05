@@ -48,7 +48,7 @@ $usertype = JText::_('COM_SUPPORT_UNKNOWN');
 if ($this->row->get('login'))
 {
 	$submitter = $this->row->submitter();
-	if ($submitter->get('id'))
+	if ($submitter->get('uidNumber'))
 	{
 		jimport( 'joomla.user.helper' );
 		$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
