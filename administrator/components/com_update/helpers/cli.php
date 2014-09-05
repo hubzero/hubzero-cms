@@ -195,13 +195,21 @@ class cli
 	private static function call($cmd, $task='repository', $args=array())
 	{
 		static $user = null;
+		static $processUser = null;
 
 		if (!isset($user))
 		{
 			$user = \JComponentHelper::getParams('com_update')->get('system_user', 'hubadmin');
 		}
 
-		$sudo = (get_current_user() != $user) ? '/usr/bin/sudo -u ' . $user . ' ' : '';
+		if (!isset($processUser))
+		{
+			$processUser = posix_geteuid();
+			$processUser = posix_getpwuid($processUser);
+			$processUser = $processUser['name'];
+		}
+
+		$sudo = ($processUser != $user) ? '/usr/bin/sudo -u ' . $user . ' ' : '';
 
 		$cmd = $sudo . JPATH_ROOT . DS . 'cli' . DS . 'muse.php' . ' ' . $task . ' ' . $cmd . ' ' . ((!empty($args)) ? implode(' ', $args) : '') . ' --format=json';
 
