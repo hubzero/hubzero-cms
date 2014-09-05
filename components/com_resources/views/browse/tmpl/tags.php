@@ -45,20 +45,27 @@ $this->css()
 		<?php if ($type->id == $this->filters['type']) { ?>
 		<div id="content-header-extra">
 			<p>
-				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=2&type=' . $type->id); ?>">
+				<?php if ($type->id == 7) { ?>
+				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=com_tools&task=create'); ?>">
 					<?php
 					$name = $type->type;
-					/*if (substr($type->type, -3) == 'ies')
-					{
-						$name = $type->type; //substr($type->type, 0, -3) . 'y';
-					}
-					else */
 					if (substr($type->type, -1) == 's')
 					{
 						$name = substr($type->type, 0, -1);
 					}
 					echo JText::sprintf('Start a new %s', $this->escape(stripslashes($name))); ?>
 				</a>
+				<?php } else { ?>
+				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=1&type=' . $type->id); ?>">
+					<?php
+					$name = $type->type;
+					if (substr($type->type, -1) == 's')
+					{
+						$name = substr($type->type, 0, -1);
+					}
+					echo JText::sprintf('Start a new %s', $this->escape(stripslashes($name))); ?>
+				</a>
+				<?php } ?>
 			</p>
 		</div>
 		<?php } ?>
