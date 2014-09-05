@@ -385,6 +385,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		if ($id && isset($_POST['status']) && $_POST['status'] == 0)
+		{
+			$row->set('open', 0);
+			$row->set('resolved', JText::_('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'));
+		}
+
 		// Check content
 		if (!$row->check())
 		{

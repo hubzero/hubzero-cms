@@ -1607,6 +1607,12 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		if ($id && isset($incoming['status']) && $incoming['status'] == 0)
+		{
+			$row->set('open', 0);
+			$row->set('resolved', JText::_('COM_SUPPORT_COMMENT_OPT_CLOSED'));
+		}
+
 		// Check content
 		if (!$row->check())
 		{
