@@ -128,4 +128,7 @@ $this->css('tag_graph.css');
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.layout.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/d3/d3.geom.min.js"></script>
 <script src="<?php echo $base; ?>/administrator/components/<?php echo $this->option; ?>/assets/js/tag_graph.js"></script>
+<script type="text/javascript">
+var plgAutocompleterCss = '<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css';
+</script>
 <script src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
