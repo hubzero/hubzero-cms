@@ -46,7 +46,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="allow_customization" type="radio" default="0" label="Allow Customization" description="Allow users to customize the page or not">
+				<field name="allow_customization" type="radio" default="1" label="Allow Customization" description="Allow users to customize the page or not">
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>

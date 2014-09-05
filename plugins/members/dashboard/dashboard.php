@@ -245,7 +245,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$moduleId = JRequest::getInt('moduleid', 0);
 
 		// get list of modules
-		$modulesList = $this->_loadModules($this->params->get('position', 'myhub'));
+		$modulesList = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
 		// load member preferences
 		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
@@ -339,7 +339,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		);
 
 		// load dashboard modules
-		$view->modules = $this->_loadModules($this->params->get('position', 'myhub'));
+		$view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
 		// load member preferences
 		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
@@ -455,7 +455,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$view->modules = array();
 
 		// load dashboard modules
-		$dashboardModules = $this->_loadModules($this->params->get('position', 'myhub'));
+		$dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
 		// get default prefs
 		$preferences = $this->params->get('defaults', '[]');
@@ -527,7 +527,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		);
 
 		// load dashboard modules
-		$view->modules = $this->_loadModules($this->params->get('position', 'myhub'));
+		$view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
 		// get default prefs
 		$preferences = $this->params->get('defaults', '[]');
@@ -553,7 +553,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$moduleId = JRequest::getInt('moduleid', 0);
 
 		// get list of modules
-		$modulesList = $this->_loadModules($this->params->get('position', 'myhub'));
+		$modulesList = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
 		// get the module
 		$module = null;
@@ -606,7 +606,7 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		);
 
 		// get list of modules
-		$view->modules = $this->_loadModules($this->params->get('position', 'myhub'));
+		$view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
 		// return rendered view
 		return $view->loadTemplate();
