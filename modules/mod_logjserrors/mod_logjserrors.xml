@@ -1,17 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="module" version="1.5.0">
-	<name>Log JS Errors</name>
-	<author>Joomla! Project</author>
-	<creationDate>July 2006</creationDate>
-	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<authorEmail>admin@joomla.org</authorEmail>
-	<authorUrl>www.joomla.org</authorUrl>
+
+<!--
+@package        hubzero-cms
+@file           modules/mod_logjserrors/mod_logjserrors.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2014 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension type="module" version="1.5.0">
+	<name>Logs js errors</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
 	<version>1.5.0</version>
 	<description>Logs js errors</description>
 	<files>
-		<filename module="mod_logjserrors">mod_jserrors.php</filename>
+		<filename module="mod_logjserrors">mod_logjserrors.php</filename>
 	</files>
-	<params>
-	</params>
-</install>
+</extension>
