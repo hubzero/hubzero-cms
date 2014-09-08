@@ -70,7 +70,8 @@ class ModIncrementalRegistrationMediaPath
 	 */
 	public function get($path)
 	{
-		return file_exists($this->tpl_path . $path) ? $this->tpl_path . $path : $this->mod_path . $path;
+		$b = rtrim(JURI::base(true), '/');
+		return file_exists(JPATH_ROOT . $this->tpl_path . $path) ? $b . $this->tpl_path . $path : $b . $this->mod_path . $path;
 	}
 }
 
@@ -122,18 +123,18 @@ class ModIncrementalRegistrationController
 			return;
 		}
 
-		$media = new ModIncrementalRegistrationMediaPath;
+		$media  = new ModIncrementalRegistrationMediaPath;
 		$groups = new ModIncrementalRegistrationGroups;
-		$hasCurl = file_exists(JPATH_BASE.'/media/media/images/bigcurl.png');
+
+		$hasCurl = file_exists(JPATH_BASE . '/media/media/images/bigcurl.png');
 		if (($row = $groups->getActiveColumns($uid)) || $hasCurl)
 		{
 			if (!isset($_SESSION['return']) && !preg_match('/[.]/', $uri))
 			{
 				$_SESSION['return'] = $uri;
 			}
-			$doc = JFactory::getDocument();
-			$doc->addStylesheet($media->get('/mod_incremental_registration.css'));
-			$doc->addScript($media->get('/mod_incremental_registration.jquery.js'));
+			\Hubzero\Document\Assets::addModuleStylesheet('mod_incremental_registration');
+			\Hubzero\Document\Assets::addModuleScript('mod_incremental_registration');
 
 			if ($row)
 			{
