@@ -38,7 +38,7 @@
 	#guide-overlay {
 		display: none;
 	}
-	.fancybox-overlay #guide-overlay,
+	.fancybox-opened #guide-overlay,
 	.course_guide #guide-overlay {
 		display: block;
 	}
