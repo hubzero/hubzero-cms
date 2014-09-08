@@ -117,6 +117,12 @@ $this->css()
 							<select name="type" id="filter-type">
 								<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('All Types'); ?></a>
 								<?php foreach ($this->types as $item) { ?>
+									<?php
+									if ($item->id == 7 && !JComponentHelper::isEnabled('com_tools', true))
+									{
+										continue;
+									}
+									?>
 									<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->type)); ?></option>
 								<?php } ?>
 							</select>

@@ -68,6 +68,10 @@ $this->css('create.css')
 			}
 			if ($type->id == 7)
 			{
+				if (!JComponentHelper::isEnabled('com_tools', true))
+				{
+					continue;
+				}
 				$url = JRoute::_('index.php?option=com_tools&task=create');
 			}
 			else
@@ -96,7 +100,7 @@ $this->css('create.css')
 		<div class="col span-third <?php echo $clm; ?>">
 			<div class="type-container <?php echo $cls; ?>">
 				<p class="type-button"><a class="btn icon-<?php echo $cls; ?>" href="<?php echo $url; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></a></p>
-				<p><?php echo $this->escape(stripslashes($type->description)); ?></p>
+				<p><?php echo $this->escape(strip_tags(stripslashes($type->description))); ?></p>
 			</div>
 		</div><!-- / .col span-third <?php echo $clm; ?> -->
 <?php

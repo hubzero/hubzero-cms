@@ -115,6 +115,11 @@ if ($this->categories) {
 
 			foreach ($this->categories as $category)
 			{
+				if ($category->id == 7 && !JComponentHelper::isEnabled('com_tools', true))
+				{
+					continue;
+				}
+
 				$i++;
 				switch ($i)
 				{
@@ -124,9 +129,12 @@ if ($this->categories) {
 					default: $clm = ''; break;
 				}
 
-				if (substr($category->alias, -3) == 'ies') {
+				if (substr($category->alias, -3) == 'ies')
+				{
 					$cls = $category->alias;
-				} else {
+				}
+				else
+				{
 					$cls = rtrim($category->alias, 's');
 				}
 				?>
