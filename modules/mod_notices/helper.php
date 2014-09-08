@@ -274,6 +274,11 @@ class modNotices extends \Hubzero\Module\Module
 				$message = self::_autoLinkText($message);
 			}
 
+			if (!trim($message))
+			{
+				$this->publish = false;
+			}
+
 			$this->message = $message;
 
 			require(JModuleHelper::getLayoutPath($this->module->module));
