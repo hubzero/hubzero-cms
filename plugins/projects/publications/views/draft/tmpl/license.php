@@ -61,7 +61,8 @@ $agreed			= $versionParams->get('licenseagreement', 0);
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step, 0, 'author');
 
-$text = $this->pub->license_text ? $this->pub->license_text : $this->license->text;
+$defaultText = $this->license ? $this->license->text : NULL;
+$text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
 $text = preg_replace("/\n/", "\r", $text);
 ?>
 
