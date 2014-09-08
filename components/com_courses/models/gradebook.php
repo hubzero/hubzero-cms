@@ -410,14 +410,30 @@ class CoursesModelGradeBook extends CoursesModelAbstract
 			return false;
 		}
 
+		if (!is_null($member_id) && !empty($member_id))
+		{
+			if (!is_array($member_id))
+			{
+				$member_id = (array) $member_id;
+			}
+		}
+		else
+		{
+			// Pull all offering members
+			$members = $course->offering()->students();
+			$member_id = array();
+
+			// Get member id's for refresh filter
+			foreach ($members as $member)
+			{
+				$member_id[] = $member->get('id');
+			}
+		}
+
 		// Get our units and track which units have grades that might need to be cleared
 		$unit_ids = array();
 		$units    = $course->offering()->units();
 
-		if (!is_array($member_id))
-		{
-			$member_id = (array) $member_id;
-		}
 		foreach ($units as $unit)
 		{
 			$unit_ids[$unit->get('id')] = $member_id;
