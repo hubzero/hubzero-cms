@@ -80,7 +80,7 @@ $record = $resp->getAnswers();
 			<?php if ($dep->getState() == 'active' && isset($nextAttempt)) : ?>
 				<p>
 					<a href="<?php echo JRoute::_($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb() . '&attempt=' . $nextAttempt) ?>">
-						<button type="button" class="btn btn-warning">Take your next attampt!</button>
+						<button type="button" class="btn btn-warning">Take your next attempt!</button>
 					</a>
 				</p>
 			<?php endif; ?>
