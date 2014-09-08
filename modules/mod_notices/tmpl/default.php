@@ -25,25 +25,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if ($this->publish) { ?>
+if ($this->publish)
+{
+	$this->css();
+?>
 <div id="<?php echo $this->moduleid; ?>" class="modnotices <?php echo $this->alertlevel; ?>">
 	<p>
 		<?php echo stripslashes($this->message); ?>
-<?php
-	$page = JRequest::getVar('REQUEST_URI', '', 'server');
-	if ($page && $this->params->get('allowClose', 1))
-	{
-		$this->js();
+		<?php
+		$page = JRequest::getVar('REQUEST_URI', '', 'server');
+		if ($page && $this->params->get('allowClose', 1))
+		{
+			$this->js();
 
-		$page .= (strstr($page, '?')) ? '&' : '?';
-		$page .= $this->moduleid . '=close';
-?>
-		<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo JText::_('MOD_NOTICES_CLOSE_TITLE'); ?>">
-			<span><?php echo JText::_('MOD_NOTICES_CLOSE'); ?></span>
-		</a>
-<?php
-	}
-?>
+			$page .= (strstr($page, '?')) ? '&' : '?';
+			$page .= $this->moduleid . '=close';
+			?>
+			<a class="close" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo JText::_('MOD_NOTICES_CLOSE_TITLE'); ?>">
+				<span><?php echo JText::_('MOD_NOTICES_CLOSE'); ?></span>
+			</a>
+			<?php
+		}
+		?>
 	</p>
 </div>
 <?php } ?>

@@ -155,9 +155,9 @@ class modNotices extends \Hubzero\Module\Module
 		// Set today's time and date
 		$now = JFactory::getDate();
 
-		$database->setQuery("SELECT publish_up, publish_down FROm #__modules WHERE id=" . $this->module->id);
+		$database->setQuery("SELECT publish_up, publish_down FROM `#__modules` WHERE id=" . $this->module->id);
 		$item = $database->loadObject();
-		$this->module->publish_up = (isset($item->publish_up)) ? $item->publish_up : null;
+		$this->module->publish_up   = (isset($item->publish_up))   ? $item->publish_up   : null;
 		$this->module->publish_down = (isset($item->publish_down)) ? $item->publish_down : null;
 
 		// Get some initial parameters
@@ -229,8 +229,6 @@ class modNotices extends \Hubzero\Module\Module
 		// Only do something if the module's time frame hasn't expired
 		if ($this->publish && !$hide)
 		{
-			$this->css();
-
 			// Get some parameters
 			$this->moduleid   = $this->params->get('moduleid', 'sitenotice');
 			$this->alertlevel = $this->params->get('alertlevel', 'medium');
@@ -272,6 +270,11 @@ class modNotices extends \Hubzero\Module\Module
 			if ($this->params->get('autolink', 1))
 			{
 				$message = self::_autoLinkText($message);
+			}
+
+			if (!trim($message))
+			{
+				$this->publish = false;
 			}
 
 			$this->message = $message;
