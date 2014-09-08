@@ -38,7 +38,7 @@ use Hubzero\Console\Application;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Group command class
+ * Cache command class
  **/
 class Cache extends Base implements CommandInterface
 {
@@ -50,7 +50,6 @@ class Cache extends Base implements CommandInterface
 	public function execute()
 	{
 		$this->help();
-		return;
 	}
 
 	/**
@@ -62,60 +61,85 @@ class Cache extends Base implements CommandInterface
 	{
 		$this->output
 		     ->getHelpOutput()
-		     ->addOverview('Cache Management.')
+		     ->addOverview('Cache Management')
 		     ->render();
 	}
 
 	/**
 	 * Clear all Cache
-	 * @return [type] [description]
+	 *
+	 * @return void
 	 */
 	public function clearAllCache()
 	{
-		// path to cache folder
+		// Path to cache folder
 		$cacheDir = JPATH_ROOT . DS . 'cache' . DS . '*';
 
-		// remove recursively
+		// Remove recursively
 		foreach (glob($cacheDir) as $cacheFileOrDir)
 		{
-			$readable = str_replace(JPATH_ROOT, '', $cacheFileOrDir);
+			$readable = str_replace(JPATH_ROOT . DS, '', $cacheFileOrDir);
 			if (is_dir($cacheFileOrDir))
 			{
-				if (!@rmdir($cacheFileOrDir))
+				if (!\JFolder::delete($cacheFileOrDir))
 				{
 					$this->output->addLine('Unable to delete cache directory: ' . $readable, 'error');
+				}
+				else
+				{
+					$this->output->addLine($readable . ' deleted', 'success');
 				}
 			}
 			else
 			{
-				if (!@unlink($cacheFileOrDir))
+				// Don't delete index.html
+				if ($cacheFileOrDir != JPATH_ROOT . DS . 'cache' . DS . 'index.html')
 				{
-					$this->output->addLine('Unable to delete cache file: ' . $readable, 'error');
+					if (!@unlink($cacheFileOrDir))
+					{
+						$this->output->addLine('Unable to delete cache file: ' . $readable, 'error');
+					}
+					else
+					{
+						$this->output->addLine($readable . ' deleted', 'success');
+					}
 				}
 			}
 		}
+
+		$this->output->addLine('Clear cache complete', 'success');
 	}
 
 	/**
 	 * Clear Site.css & Site.less.cache files
 	 * 
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function clearCssCache()
 	{
 		$cacheDir = JPATH_ROOT . DS . 'cache';
 		$files = array('site.css', 'site.less.cache');
 
-		// remove each file
+		// Remove each file
 		foreach ($files as $file)
 		{
+			if (!is_file($cacheDir . DS . $file))
+			{
+				$this->output->addLine($file . ' does not exist', 'warning');
+				continue;
+			}
+
 			if (!unlink($cacheDir . DS . $file))
 			{
 				$this->output->addLine('Unable to delete cache file: ' . $file, 'error');
 			}
+			else
+			{
+				$this->output->addLine($file . ' deleted', 'success');
+			}
 		}
 
 		// success!
-		$this->output->addLine('CSS cache files removed', 'success');
+		$this->output->addLine('All CSS cache files removed!', 'success');
 	}
 }

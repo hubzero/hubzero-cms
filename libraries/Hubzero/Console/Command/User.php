@@ -404,44 +404,63 @@ class User extends Base implements CommandInterface
 	}
 
 	/**
-	 * Clear all Users Terms of Use agreement
+	 * Clear all Users Terms of Use agreements
 	 * 
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function clearTermsOfUse()
 	{
-		// confirm clearing
-		$confirm = $this->output->getResponse('Are you sure you want to clear Terms of Use for all users. This will also require agreeing to new terms with next login? (yes/no)');
+		// Initialize confirm
+		$confirm = 'no';
 
-		// did we get a yes?
+		if (!$this->output->isInteractive() && !$this->arguments->getOpt('f'))
+		{
+			$this->output->addLine('To forcibly clear all terms of use agreements for all users, please provide the -f flag. This action is irreversable.', 'warning');
+			return;
+		}
+		else if (!$this->output->isInteractive() && $this->arguments->getOpt('f'))
+		{
+			$confirm = 'yes';
+		}
+		else if ($this->output->isInteractive())
+		{
+			// Confirm clearing
+			$confirm = $this->output->getResponse('Are you sure you want to clear Terms of Use for all users? This will also require users to agree to new terms with next login? (yes/no)');
+		}
+
+		// Did we get a yes?
 		if (strtolower($confirm) == 'yes' || strtolower($confirm) == 'y')
 		{
-			// get db object
+			// Get db object
 			$dbo = \JFactory::getDbo();
 
-			// update registration config value to require re-agreeing upon next login
+			// Update registration config value to require re-agreeing upon next login
 			$params = \JComponentHelper::getParams('com_members');
 			$currentTOU = $params->get('registrationTOU','RHRH');
 			$newTOU     = substr_replace($currentTOU, 'R', 3);
 			$params->set('registrationTOU', $newTOU);
 
-			// update registration param in db
+			// Update registration param in db
 			$query = "UPDATE `#__extensions` SET `params`=" . $dbo->quote($params->toString()) . " WHERE `name`='com_members'";
 			$dbo->setQuery($query);
 			if (!$dbo->query())
 			{
-				$this->output->addLine('Unable set registration field TOU to required on next update.', 'error');
+				$this->output->error('Unable to set registration field TOU to required on next update.');
 			}
 
-			// clear all old tou states
+			// Clear all old TOU states
 			$dbo->setQuery("UPDATE `#__xprofiles` SET `usageAgreement`=0;");
 			if (!$dbo->query())
 			{
-				$this->output->addLine('Unable to clear terms of use.', 'error');
+				$this->output->error('Unable to clear xprofiles terms of use.');
 			}
 
-			// output message to let admin know everything went well
+			// Output message to let admin know everything went well
 			$this->output->addLine('Terms of Use successfully cleared & registration param updated!', 'success');
+		}
+		else
+		{
+			$this->output->addLine('Operation aborted.');
 		}
 	}
 
