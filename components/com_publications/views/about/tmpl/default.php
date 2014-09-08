@@ -77,7 +77,7 @@ $schema 	= $elements->getSchema();
 <div class="pubabout">
 <?php
 	// Show gallery images
-	if ($this->params->get('show_gallery'))
+	if ($this->params->get('show_gallery') || $useBlocks)
 	{
 		if ($useBlocks)
 		{
@@ -210,7 +210,7 @@ $schema 	= $elements->getSchema();
 	}
 ?>
 
-<?php if ($this->params->get('show_citation') && $this->publication->state == 1) { ?>
+<?php if (($useBlocks || $this->params->get('show_citation')) && $this->publication->state == 1) { ?>
 	<?php
 	if ($this->params->get('show_citation') == 1
 	|| $this->params->get('show_citation') == 2)
@@ -259,7 +259,7 @@ $schema 	= $elements->getSchema();
 		?>
 	</div>
 <?php } ?>
-<?php if ($this->params->get('show_tags')) {
+<?php if ($useBlocks || $this->params->get('show_tags')) {
 	$this->helper->getTagCloud( $this->authorized );
 	?>
 	<?php if ($this->helper->tagCloud) { ?>
@@ -273,7 +273,7 @@ $schema 	= $elements->getSchema();
 <?php } ?>
 <?php
 // Show version notes
-if ($this->params->get('show_notes') && $this->publication->release_notes)
+if (($useBlocks || $this->params->get('show_notes')) && $this->publication->release_notes)
 {
 	$notes = $model->notes('parsed');
 	?>
