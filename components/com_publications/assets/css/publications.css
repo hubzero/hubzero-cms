@@ -1724,7 +1724,7 @@
 	}
 	.launcher .meta {
 		text-align: right;
-		padding: 2em 1em;
+		padding: 0;
 	}
 	.launcher .metaitems {
 		list-style: none;
@@ -1751,14 +1751,12 @@
 	.metaitems li a:hover span {
 		background: orange;
 		color: #FFFFFF;
+		border: none;
 	}
 	.metaitems li a {
 		border: none;
 		color: #666;
 		display: block;
-	}
-	.metaitems li span.icon {
-
 	}
 	.metaitems li span.label {
 		padding: 0.2em 0.5em;
