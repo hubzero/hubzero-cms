@@ -1655,7 +1655,17 @@
 		background: -ms-linear-gradient(top, #3e779d, #65a9d7);
 		background: -o-linear-gradient(top, #3e779d, #65a9d7);
 	}
-	
+
+	.com_support .ticket .comment-attachments {
+		margin-top: 1.61803399em;
+	}
+
+	.com_support .attachment:before {
+		font-family: "Fontcons";
+		content: "\f092";
+		margin-right: 0.4em;
+	}
+
 	.sort-options {
 		list-style: none;
 		padding: 0;

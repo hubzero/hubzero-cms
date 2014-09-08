@@ -123,7 +123,38 @@ $cc = array();
 					</a>
 				</div>
 				<blockquote class="ticket-content" cite="<?php echo $this->escape($this->row->get('login', $this->row->get('name'))); ?>">
-					<?php echo $this->row->content('parsed'); ?>
+					<p><?php echo $this->row->content('parsed'); ?></p>
+
+					<?php if ($this->row->attachments()->total()) { ?>
+						<div class="comment-attachments">
+							<?php
+							foreach ($this->row->attachments() as $attachment)
+							{
+								if (!trim($attachment->get('description')))
+								{
+									$attachment->set('description', $attachment->get('filename'));
+								}
+
+								if ($attachment->isImage())
+								{
+									if ($attachment->width() > 400)
+									{
+										$img = '<p><a href="' . JRoute::_($attachment->link()) . '"><img src="' . JRoute::_($attachment->link()) . '" alt="' . $attachment->get('description') . '" width="400" /></a></p>';
+									}
+									else
+									{
+										$img = '<p><img src="' . JRoute::_($attachment->link()) . '" alt="' . $attachment->get('description') . '" /></p>';
+									}
+									echo $img;
+								}
+								else
+								{
+									echo '<p class="attachment"><a href="' . JRoute::_($attachment->link()) . '" title="' . $attachment->get('description') . '">' . $attachment->get('description') . '</a></p>';
+								}
+							}
+							?>
+						</div><!-- / .comment-body -->
+					<?php } ?>
 				</blockquote><!-- / .ticket-content -->
 				<div class="ticket-details">
 					<table>
