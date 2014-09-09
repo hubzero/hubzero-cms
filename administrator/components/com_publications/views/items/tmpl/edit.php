@@ -185,7 +185,10 @@ function popratings()
 			</div>
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
-				<textarea name="description" id="pub_description" cols="40" rows="10" class="pubinput"><?php echo $this->row->description; ?></textarea>
+				<?php
+					$editor = JFactory::getEditor();
+					echo $editor->display('description', $this->escape(stripslashes($this->row->description)), '', '', '40', '10', false, 'pub_description');
+				?>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
@@ -335,6 +338,10 @@ function popratings()
 	<div class="input-wrap">
 		<label for="access"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ACCESS'); ?>:</label>
 		<?php echo $this->lists['access']; ?>
+	</div>
+	<div class="input-wrap">
+		<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_GROUP_OWNER'); ?>:</label>
+		<?php echo $this->lists['groups']; ?>
 	</div>
 	<div class="input-wrap">
 		<label for="publish_up"><?php echo JText::_('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />

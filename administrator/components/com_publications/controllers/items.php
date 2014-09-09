@@ -356,7 +356,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$groups = \Hubzero\User\Group::find($filters);
 
 		// Build <select> of groups
-		$this->view->lists['groups'] = PublicationsAdminHtml::selectGroup($groups, $this->view->pub->group_owner);
+		$this->view->lists['groups'] = PublicationsAdminHtml::selectGroup($groups, $this->view->pub->group_owner, $this->view->pub->_project->owned_by_group);
 
 		// Set any errors
 		if ($this->getError())
@@ -873,9 +873,8 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$title 			= htmlspecialchars($title);
 		$abstract 		= trim(JRequest::getVar( 'abstract', '', 'post' ));
 		$abstract 		= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($abstract));
-		$description 	= trim(JRequest::getVar( 'description', '', 'post' ));
-		$description 	= stripslashes($description);
-		$release_notes 	= stripslashes(trim(JRequest::getVar( 'release_notes', '', 'post' )));
+		$description 	= trim(JRequest::getVar( 'description', '', 'post', 'none', 2 ));
+		$release_notes 	= stripslashes(trim(JRequest::getVar( 'release_notes', '', 'post', 'none', 2 )));
 		$group_owner	= JRequest::getInt( 'group_owner', 0, 'post' );
 		$metadata 		= '';
 		$activity 		= '';

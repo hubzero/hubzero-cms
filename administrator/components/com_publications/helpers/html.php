@@ -254,6 +254,25 @@ class PublicationsAdminHtml
 	}
 
 	/**
+	 * Project selection
+	 *
+	 * @param      array  $projects
+	 * @return     string Return description (if any) ...
+	 */
+	public static function selectProjects($projects)
+	{
+		$html  = '<select name="projectid" id="projectid">'."\n";
+		$html .= "\t".'<option value="0" selected="selected">' . JText::_('COM_PUBLICATIONS_SELECT_PROJECT') . '</option>';
+		foreach ($projects as $project)
+		{
+			$html .= "\t".'<option value="' . $project->id . '"';
+			$html .= '>' . trim($project->title) . ' (' . $project->alias . ')</option>'."\n";
+		}
+		$html .= '</select>'."\n";
+		return $html;
+	}
+
+	/**
 	 * Short description for 'selectGroup'
 	 *
 	 * Long description (if any) ...
@@ -262,10 +281,10 @@ class PublicationsAdminHtml
 	 * @param      unknown $value Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function selectGroup($groups, $value)
+	public static function selectGroup($groups, $value, $groupOwner)
 	{
 		$html  = '<select name="group_owner"';
-		if (!$groups) {
+		if (!$groups || $groupOwner) {
 			$html .= ' disabled="disabled"';
 		}
 		$html .= ' style="max-width: 15em;">'."\n";
@@ -274,8 +293,8 @@ class PublicationsAdminHtml
 		{
 			foreach ($groups as $group)
 			{
-				$html .= ' <option value="'.$group->cn.'"';
-				if ($value == $group->cn)
+				$html .= ' <option value="' . $group->gidNumber . '"';
+				if ($value == $group->gidNumber)
 				{
 					$html .= ' selected="selected"';
 				}
