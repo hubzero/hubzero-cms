@@ -626,16 +626,18 @@ class ResourcesTags extends TagsHandler
 					break;
 				}
 
+				$lsst = $lst;
+
 				if ($tagstring)
 				{
 					if (!in_array($tag->tag, $lst))
 					{
-						$lst[] = $tag->tag;
+						$lsst[] = $tag->tag;
 					}
 				}
 				else
 				{
-					$lst = array($tag->tag);
+					$lsst = array($tag->tag);
 				}
 
 				$tag->raw_tag = stripslashes($tag->raw_tag);
@@ -644,11 +646,11 @@ class ResourcesTags extends TagsHandler
 				if ($showsizes == 1)
 				{
 					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
 				}
 				else
 				{
-					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
+					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_resources&task=browse&tag=' . implode(',', $lsst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
 				}
 			}
 			if ($sort == 'alpha')

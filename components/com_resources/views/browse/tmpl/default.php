@@ -97,6 +97,31 @@ $this->css()
 				<?php } ?>
 			</div><!-- / .container -->
 
+			<?php if ($this->filters['tag_ignored']) { ?>
+				<div class="warning">
+					<p><?php echo JText::_('Searching only allows up to 5 tags. The following tags were ignored:'); ?></p>
+					<ol class="tags">
+					<?php
+					$url  = 'index.php?option=' . $this->option . '&task=browse';
+					$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+					$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
+					$url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
+
+					foreach ($this->filters['tag_ignored'] as $tag)
+					{
+						?>
+						<li>
+							<a href="<?php echo JRoute::_($url . '&tag=' . $tag); ?>">
+								<?php echo $this->escape(stripslashes($tag)); ?>
+							</a>
+						</li>
+						<?php
+					}
+					?>
+					</ol>
+				</div>
+			<?php } ?>
+
 			<div class="container">
 				<?php
 				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');

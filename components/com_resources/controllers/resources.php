@@ -224,8 +224,32 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			'limit'  => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
 			'start'  => JRequest::getInt('limitstart', 0),
 			'search' => JRequest::getVar('search', ''),
-			'tag'    => trim(JRequest::getVar('tag', '', 'request', 'none', 2))
+			'tag'    => trim(JRequest::getVar('tag', '', 'request', 'none', 2)),
+			'tag_ignored' => array()
 		);
+
+		if (isset($this->view->filters['tag']) && $this->view->filters['tag'] != '')
+		{
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
+			$tagging = new ResourcesTags($this->database);
+			$tags = $tagging->_parse_tags($this->view->filters['tag']);
+			if (count($tags) > 5)
+			{
+				$keep = array();
+				foreach ($tags as $i => $tag)
+				{
+					if ($i < 5)
+					{
+						$keep[] = $tag;
+					}
+					else
+					{
+						$this->view->filters['tag_ignored'][] = $tag;
+					}
+				}
+				$this->view->filters['tag'] = implode(',', $keep);
+			}
+		}
 
 		// Determine if user can edit
 		$this->view->authorized = $this->_authorize();
