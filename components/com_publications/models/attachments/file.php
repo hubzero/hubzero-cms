@@ -68,6 +68,21 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$configs->directory = isset($typeParams->directory) && $typeParams->directory
 							? $typeParams->directory : $pub->secret;
 
+		// which subdirectory to copy files to
+		$configs->subdir = isset($typeParams->subdir) && $typeParams->subdir
+							? $typeParams->subdir : NULL;
+
+		// Directory path within pub folder
+		$configs->dirPath = $configs->subdir
+							? $configs->directory . DS . $configs->subdir
+							: $configs->directory;
+
+		$defaultDirHierarchy = $configs->subdir ? 2 : 1;
+
+		// Preserve directory structure when copying from project?
+		$configs->dirHierarchy = isset($typeParams->dirHierarchy)
+							? $typeParams->dirHierarchy : $defaultDirHierarchy;
+
 		// Allow reuse of attachments to other elements
 		$configs->reuse = isset($typeParams->reuse) ? $typeParams->reuse : 1;
 
@@ -84,9 +99,6 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 							&& $blockParams->published_editing == 0
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
-
-		// Preserve directory structure when copying from project?
-		$configs->dirHierarchy = isset($typeParams->dirHierarchy) ? $typeParams->dirHierarchy : 1;
 
 		// Verify file type against allowed before attaching?
 		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
@@ -119,7 +131,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 		// Get publication paths
 		$configs->pubBase = $helper->buildPath($pub->id, $pub->version_id, '', '', 1);
-		$configs->pubPath = $helper->buildPath($pub->id, $pub->version_id, '', $configs->directory, 1);
+		$configs->pubPath = $helper->buildPath($pub->id, $pub->version_id, '', $configs->dirPath, 1);
 
 		// Log path
 		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, '', 'logs', 0);
@@ -156,7 +168,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$filePath = NULL;
 
 		// Add inside bundles
-		if ($configs->multiZip && $attachments && count($attachments) > 1)
+		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
 			$filePath  = $this->bundle($attachments, $configs, false);
 			$bPath 	   = $configs->pubBase . DS . 'bundles';
@@ -177,7 +189,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			// Add separately
 			foreach ($attachments as $attach)
 			{
-				$filePath = $this->getFilePath($attach->path, $attach->id, $configs);
+				$filePath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 
 				$fileinfo = pathinfo($filePath);
 				$a_dir  = $fileinfo['dirname'];
@@ -187,6 +199,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$fPath .= basename($filePath);
 				$where  = $bundleDir;
 				$where .= $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				$where .= $configs->subdir ? DS . $configs->subdir : '';
 				$where .= DS . $fPath;
 
 				if ($zip->addFile($filePath, $where))
@@ -197,6 +210,67 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		return true;
+	}
+
+	/**
+	 * Draw list
+	 *
+	 * @return  boolean
+	 */
+	public function drawPackageList( $attachments, $element, $elementId,
+		$pub, $blockParams, $authorized)
+	{
+		// Get configs
+		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
+
+		$list = NULL;
+
+		if (!$attachments)
+		{
+			return false;
+		}
+
+		$class = ($configs->multiZip == 1 && count($attachments) > 1) ? 'level2' : 'level1';
+
+		// Draw bundles
+		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
+		{
+			$title = $configs->bundleTitle ? $configs->bundleTitle : 'Bundle';
+			$icon  = '<img src="' . ProjectsHtml::getFileIcon('zip') . '" alt="zip" />';
+
+			// Bundle name
+			$list .= '<li>' . $icon . ' ' . $title . '</li>';
+		}
+		// List individual
+		foreach ($attachments as $attach)
+		{
+			$filePath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
+
+			if (file_exists($filePath))
+			{
+				$fileinfo = pathinfo($filePath);
+				$a_dir  = $fileinfo['dirname'];
+				$a_dir	= trim(str_replace($configs->pubPath, '', $a_dir), DS);
+				$fPath  = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
+				$fPath .= basename($filePath);
+
+				$where  = $configs->directory != $pub->secret ? DS . $configs->directory : '';
+				$where .= $configs->subdir && $class == 'level1' ? DS . $configs->subdir : '';
+				$where .= DS . $fPath;
+
+				// Get ext
+				$parts  = explode('.', $attach->path);
+				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
+				$ext	= strtolower($ext);
+				$icon   = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" />';
+
+				$list .= '<li class="' . $class . '"><span class="item-title">' . $icon . ' ' . trim($where, DS) . '</span>';
+				$list .= '<span class="item-details">' . $attach->path . '</span>';
+				$list .= '</li>';
+			}
+		}
+
+		return $list;
 	}
 
 	/**
@@ -224,9 +298,9 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		// Draw bundles
-		if ($configs->multiZip && $attachments && count($attachments) > 1)
+		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
 		{
-			$title = $configs->bundleTitle;
+			$title = $configs->bundleTitle ? $configs->bundleTitle : 'Bundle';
 			$pop   = JText::_('Download') . ' ' . $title;
 
 			$fpath = $this->bundle($attachments, $configs, false);
@@ -263,7 +337,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			foreach ($attachments as $attach)
 			{
 				// Get size
-				$fpath = $this->getFilePath($attach->path, $attach->id, $configs);
+				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 				$size = file_exists( $fpath ) ? filesize( $fpath ) : '';
 				$size = $size ? PublicationsHtml::formatsize($size) : '';
 
@@ -377,7 +451,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			elseif ($attachments)
 			{
 				$attach = $attachments[0];
-				$fpath = $this->getFilePath($attach->path, $attach->id, $configs);
+				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 				$title = $configs->title ? $configs->title : JText::_('Download content');
 			}
 			else
@@ -437,9 +511,21 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$directory  = isset($typeParams->directory) && $typeParams->directory
 					? $typeParams->directory : $newVersion->secret;
 
-		$newPath = $pub->_helpers->pubHelper->buildPath($pub->id, $newVersion->id, '', $directory, 1);
-
 		$newConfigs = new stdClass;
+
+		// Directory path within pub folder
+		$newConfigs->dirPath = $configs->subdir
+							? $directory . DS . $configs->subdir
+							: $directory;
+		// Build new path
+		$newPath = $pub->_helpers->pubHelper->buildPath(
+			$pub->id,
+			$newVersion->id,
+			'',
+			$newConfigs->dirPath,
+			1
+		);
+
 		$newConfigs->pubPath = $newPath;
 		$newConfigs->dirHierarchy = $configs->dirHierarchy;
 
@@ -478,8 +564,8 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			}
 
 			// Get paths
-			$copyFrom = $this->getFilePath($att->path, $att->id, $configs);
-			$copyTo   = $this->getFilePath($pAttach->path, $pAttach->id, $newConfigs);
+			$copyFrom = $this->getFilePath($att->path, $att->id, $configs, $att->params);
+			$copyTo   = $this->getFilePath($pAttach->path, $pAttach->id, $newConfigs, $pAttach->params);
 
 			// Make sure we have subdirectories
 			if (!is_dir(dirname($copyTo)))
@@ -551,7 +637,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				{
 					if ($attach->id == $itemId)
 					{
-						$download = $this->getFilePath($attach->path, $attach->id, $configs);
+						$download = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 						break;
 					}
 				}
@@ -563,7 +649,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			}
 			elseif (count($attachments) == 1)
 			{
-				$download = $this->getFilePath($attachments[0]->path, $attachments[0]->id, $configs);
+				$download = $this->getFilePath($attachments[0]->path, $attachments[0]->id, $configs, $attachments[0]->params);
 			}
 
 			// Perform download
@@ -616,12 +702,25 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	 *
 	 * @return  string
 	 */
-	public function getFilePath( $path, $id, $configs = NULL )
+	public function getFilePath( $path, $id, $configs = NULL, $params = NULL, $suffix = NULL )
 	{
 		// Do we transfer file with subdirectories?
-		if ($configs->dirHierarchy)
+		if ($configs->dirHierarchy == 1)
 		{
 			$fpath = $configs->pubPath . DS . trim($path, DS);
+		}
+		elseif ($configs->dirHierarchy == 2)
+		{
+			if (!$suffix && $params)
+			{
+				// Get file attachment params
+				$fParams = new JParameter( $params );
+				$suffix  = $fParams->get('suffix');
+			}
+
+			// Do not preserve dir hierarchy, but append number for same-name files
+			$name 	= $suffix ? ProjectsHtml::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
+			$fpath  = $configs->pubPath . DS . $name;
 		}
 		else
 		{
@@ -673,7 +772,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			$i = 0;
 			foreach ($attachments as $attach)
 			{
-				$fpath = $this->getFilePath($attach->path, $attach->id, $configs);
+				$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 				$fname = trim(str_replace($configs->pubPath . DS, '', $fpath), DS);
 
 				if (is_file($fpath))
@@ -990,6 +1089,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Get latest Git hash
 		$vcs_hash = $this->_git->gitLog($configs->path, $filePath, '', 'hash');
 
+		$new = 0;
 		$update = 0;
 
 		$objPA = new PublicationAttachment( $this->_parent->_db );
@@ -1010,6 +1110,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 		else
 		{
+			$new = 1;
 			$objPA->publication_id 			= $pub->id;
 			$objPA->publication_version_id 	= $pub->version_id;
 			$objPA->path 					= $filePath;
@@ -1029,6 +1130,17 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Copy file from project repo into publication directory
 		if ($objPA->store())
 		{
+			// Check for conflict in file name
+			if ($new == 1)
+			{
+				$suffix = $this->checkForDuplicate($configs->path . DS . $filePath, $objPA, $configs);
+				if ($suffix)
+				{
+					$pa = new PublicationAttachment( $this->_parent->_db );
+					$pa->saveParam($objPA, 'suffix', $suffix);
+				}
+			}
+
 			// Copy file over to where to belongs
 			if (!$this->publishAttachment($objPA, $pub, $configs, $update))
 			{
@@ -1050,6 +1162,32 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if file with same name exists in directory
+	 *
+	 * @param      object  		$objPA
+	 * @param      object  		$pub
+	 * @param      object  		$configs
+	 *
+	 * @return     boolean or error
+	 */
+	public function checkForDuplicate($copyFrom, $objPA, $configs, $suffix = 0)
+	{
+		// Get final path
+		$copyTo = $this->getFilePath($objPA->path, $objPA->id, $configs, $objPA->params, $suffix);
+
+		// check for name conflict
+		if (file_exists($copyTo))
+		{
+			$suffix = $suffix + 1;
+			return $this->checkForDuplicate($copyFrom, $objPA, $configs, $suffix );
+		}
+		else
+		{
+			return $suffix;
+		}
 	}
 
 	/**
@@ -1076,7 +1214,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 		$file 		= $objPA->path;
 		$copyFrom 	= $configs->path . DS . $file;
-		$copyTo 	= $this->getFilePath($file, $objPA->id, $configs);
+		$copyTo 	= $this->getFilePath($file, $objPA->id, $configs, $objPA->params);
 
 		// Copy
 		if (is_file($copyFrom))
@@ -1086,7 +1224,6 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			{
 				JFolder::create(dirname($copyTo));
 			}
-
 			if (!is_file($copyTo) || $update)
 			{
 				JFile::copy($copyFrom, $copyTo);

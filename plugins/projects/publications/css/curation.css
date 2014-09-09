@@ -574,19 +574,23 @@
 		list-style: none;
 	}
 	.draft-review ul.filelist img {
-		margin-right: 1em;
+		margin-right: 0.5em;
 		display: inline-block;
 		position: relative;
 		vertical-align: top;
 		margin-top: 0.2em;
 	}
-	.draft-review ul.filelist span {
-		display: inline-block;
-		width: 90%;
+	.draft-review ul.filelist span.item-details {
+		padding-left: 2em;
 	}
 	.draft-review ul.filelist li {
 		vertical-align: top;
-		line-height: 1.8em;
+		line-height: 1.2em;
+		border-bottom: 1px solid #EfEfEf;
+		min-height: 32px;
+	}
+	.draft-review ul.filelist li.level2 {
+		padding-left: 2.5em;
 	}
 	.element-instructions label {
 		display: block;

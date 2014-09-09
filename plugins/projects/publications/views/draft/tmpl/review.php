@@ -130,22 +130,6 @@ $termsUrl = $config->get('deposit_terms', '');
 
 	<?php // File list (archive package)
 		if ($showArchival) {
-
-			// Get publication path for principal content
-			$pubPath = $this->pub->_helpers->pubHelper->buildPath(
-				$this->pub->id,
-				$this->pub->version_id,
-				'',
-				$this->pub->secret,
-				1
-			);
-
-			// Get all the file names
-			$files = array();
-			if (is_dir($pubPath))
-			{
-				$files = JFolder::files( $pubPath, '.', true, true, $exclude = array('.hash'));
-			}
 		?>
 	<div class="blockelement" id="review-archival">
 		<div class="element_editing">
@@ -153,32 +137,9 @@ $termsUrl = $config->get('deposit_terms', '');
 				<span class="checker">&nbsp;</span>
 				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_PACKAGE'); ?></h5>
 				<div class="element-instructions">
-				<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_ARCHIVE_PACKAGE'); ?></p>
-				<?php if (count($files) > 0) { $i = 0; ?>
+					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_ARCHIVE_PACKAGE'); ?></p>
 					<div class="list-wrapper">
-					<ul class="filelist">
-					<?php foreach ($files as $file)
-						{
-							if (substr($file, -5, 5) == '.hash')
-							{
-								continue;
-							}
-							else
-							{
-								$trClass = $i % 2 == 0 ? ' even' : ' odd';
-
-								$parts = explode('.', $file);
-								$ext   = count($parts) > 1 ? array_pop($parts) : '';
-								$ext   = strtolower($ext);
-
-								echo '<li class="' . $trClass . '"><img alt="" src="' . ProjectsHtml::getFileIcon($ext) . '" /> <span>'
-									. str_replace($pubPath . DS, '', $file) . '</span></li>';
-
-								$i++;
-							}
-						} ?>
-					<?php } ?>
-					</ul>
+						<?php echo $this->pub->_curationModel->showPackageContents(); ?>
 					</div>
 				</div>
 			</div>
