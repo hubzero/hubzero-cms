@@ -62,14 +62,16 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_TAGS_MERGING'); ?></span></legend>
 
-			<ul>
-			<?php
-			foreach ($this->tags as $tag)
-			{
-				echo '<li>' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' (' . $this->escape($tag->get('tag')) . ' - ' . $tag->objects('count') . ')</li>' . "\n";
-			}
-			?>
-			</ul>
+			<div class="input-wrap">
+				<ul>
+					<?php
+					foreach ($this->tags as $tag)
+					{
+						echo '<li>' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' (' . $this->escape($tag->get('tag')) . ' - ' . $tag->objects('count') . ')</li>' . "\n";
+					}
+					?>
+				</ul>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-50 fltrt">
@@ -83,7 +85,7 @@ function submitbutton(pressbutton)
 				$tf = JDispatcher::getInstance()->trigger(
 					'onGetMultiEntry',
 					array(
-						array('tags', 'tags', 'actags')
+						array('tags', 'newtag', 'newtag')
 					)
 				);
 				echo (count($tf) ? implode("\n", $tf) : '<input type="text" name="newtag" id="newtag" size="25" value="" />');

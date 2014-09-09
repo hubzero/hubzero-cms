@@ -61,14 +61,16 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_TAGS_PIERCING'); ?></span></legend>
 
-			<ul>
-			<?php
-			foreach ($this->tags as $tag)
-			{
-				echo '<li>' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' (' . $this->escape($tag->get('tag')) . ' - ' . $tag->objects('count') . ')</li>' . "\n";
-			}
-			?>
-			</ul>
+			<div class="input-wrap">
+				<ul>
+					<?php
+					foreach ($this->tags as $tag)
+					{
+						echo '<li>' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' (' . $this->escape($tag->get('tag')) . ' - ' . $tag->objects('count') . ')</li>' . "\n";
+					}
+					?>
+				</ul>
+			</div>
 		</fieldset>
 	</div>
 	<div class="col width-50 fltrt">
