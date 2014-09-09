@@ -12,8 +12,12 @@
 	<files>
 		<filename module="mod_whosonline">mod_whosonline.php</filename>
 	</files>
-	<params>
-		<param name="display_limit" type="text" default="25" label="Display Limit" description="Number of people to display in module." />
-	</params>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="display_limit" type="text" default="25" label="Display Limit" description="Number of people to display in module." />
+			</fieldset>
+		</fields>
+	</config>
 </install>
 
