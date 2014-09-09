@@ -336,6 +336,21 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 																$info .= implode(", ", $items);
 																$link = '<span title="' . $info . '" class="unavailable hasTip">' . $this->escape(stripslashes($a->get('title'))) . '</span>';
 															}
+															else if ($a->get('type') == 'form' && !$isManager)
+															{
+																$crumb = $a->get('url');
+
+																if ($crumb && strlen($crumb) == PdfFormDeployment::CRUMB_LEN)
+																{
+																	$dep = PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
+
+																	if ($dep && $dep->getState() == 'pending')
+																	{
+																		continue;
+																	}
+																}
+															}
+
 
 															$found[] = '<li>' . $link . '</li>';
 
@@ -351,7 +366,11 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 												?>
 													<li class="collapsed">
 														<?php
-														if (count($found) == 1)
+														if (count($found) == 0)
+														{
+															echo '<span class="asset-primary unpublished">There are currently no items available for ' . $ag->get('title') . '.</span>';
+														}
+														else if (count($found) == 1)
 														{
 															echo $play;
 														}
