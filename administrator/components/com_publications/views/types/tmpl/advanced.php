@@ -40,11 +40,6 @@ $curParams = $manifest->params;
 $blocks	   = $manifest->blocks;
 
 $blockSelection = array('active' => array());
-$masterBlocks = array();
-foreach ($this->blocks as $b)
-{
-	$masterBlocks[$b->block] = $b;
-}
 
 ?>
 <script type="text/javascript">
