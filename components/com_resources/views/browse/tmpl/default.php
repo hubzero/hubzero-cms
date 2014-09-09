@@ -97,7 +97,7 @@ $this->css()
 				<?php } ?>
 			</div><!-- / .container -->
 
-			<?php if ($this->filters['tag_ignored']) { ?>
+			<?php if (isset($this->filters['tag_ignored']) && count($this->filters['tag_ignored']) > 0) { ?>
 				<div class="warning">
 					<p><?php echo JText::_('Searching only allows up to 5 tags. The following tags were ignored:'); ?></p>
 					<ol class="tags">
