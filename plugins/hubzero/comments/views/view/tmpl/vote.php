@@ -91,7 +91,7 @@ if (!$no_html) { ?>
 <p class="comment-voting voting">
 <?php } ?>
 	<span class="vote-like<?php echo $lcls; ?>">
-		<?php if ($this->item->get('vote') || $juser->get('id') == $this->item->get('created_by')) { ?>
+		<?php if ($this->item->get('vote') || $juser->get('id') == $this->item->get('created_by') || !$this->params->get('access-vote-comment')) { ?>
 			<span class="vote-button <?php echo ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral'; echo $cls; ?>" title="<?php echo $like_title; ?>">
 				<?php echo $this->item->get('positive', 0); ?><span> <?php echo JText::_('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
 			</span>
@@ -102,7 +102,7 @@ if (!$no_html) { ?>
 		<?php } ?>
 	</span>
 	<span class="vote-dislike<?php echo $dcls; ?>">
-		<?php if ($this->item->get('vote') || $juser->get('id') == $this->item->get('created_by')) { ?>
+		<?php if ($this->item->get('vote') || $juser->get('id') == $this->item->get('created_by') || !$this->params->get('access-vote-comment')) { ?>
 			<span class="vote-button <?php echo ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral'; echo $cls; ?>" title="<?php echo $dislike_title; ?>">
 				<?php echo $this->item->get('negative', 0); ?><span> <?php echo JText::_('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
 			</span>

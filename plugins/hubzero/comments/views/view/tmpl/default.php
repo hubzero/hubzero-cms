@@ -137,6 +137,10 @@ $this->css()->js();
 					</form>
 				<?php } ?>
 
+				<?php if ($this->params->get('comments_locked', 0) == 1) { ?>
+					<p class="info"><?php echo JText::_('PLG_HUBZERO_COMMENTS_LOCKED'); ?></p>
+				<?php } ?>
+
 				<h3 class="post-comment-title">
 					<?php echo JText::_('PLG_HUBZERO_COMMENTS'); ?>
 				</h3>
