@@ -106,6 +106,26 @@ function submitbutton(pressbutton)
 									<option value="imageviewer" <?php echo $tpValue == 'imageviewer' ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_HANDLER_IMAGE'); ?></option>
 								</select>
 							<?php }
+							elseif ($tpName == 'reuse') {  ?>
+							<select name="curation[blocks][elements][<?php echo $elementId; ?>][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+								<option value="1" <?php echo $tpValue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
+								<option value="0" <?php echo ($tpValue == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
+							</select>
+						<?php }
+							elseif ($tpName == 'dirHierarchy') {  ?>
+							<select name="curation[blocks][elements][<?php echo $elementId; ?>][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+								<option value="1" <?php echo $tpValue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_DIRHIERARCHY_PRESERVE'); ?></option>
+								<option value="0" <?php echo ($tpValue == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_DIRHIERARCHY_NOT_PRESERVE_APPEND_ID'); ?></option>
+								<option value="2" <?php echo ($tpValue == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_DIRHIERARCHY_NOT_PRESERVE_APPEND_NUMBER'); ?></option>
+							</select>
+						<?php }
+							elseif ($tpName == 'multiZip') {  ?>
+							<select name="curation[blocks][elements][<?php echo $elementId; ?>][<?php echo $sequence; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]">
+								<option value="1" <?php echo $tpValue == 1 ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_MULTIZIP_ONE'); ?></option>
+								<option value="0" <?php echo ($tpValue == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_MULTIZIP_ZERO'); ?></option>
+								<option value="2" <?php echo ($tpValue == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATION_ELEMENT_PARAMS_MULTIZIP_TWO'); ?></option>
+							</select>
+						<?php }
 								elseif (is_array($tpValue)) {
 								$tpVal = implode(',', $tpValue); ?>
 								<input type="text" name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>][<?php echo $tpName; ?>]" value="<?php echo $tpVal;  ?>" />
@@ -122,13 +142,12 @@ function submitbutton(pressbutton)
 					?>
 					<input type="text" name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $val;  ?>" />
 					<?php } else { ?>
-						<input type="text" name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $paramvalue;  ?>" />
+						<input type="<?php echo ($paramname == 'min' || $paramname == 'max') ? 'number' : 'text'; ?>" name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>]" value="<?php echo $paramvalue;  ?>" <?php if ($paramname == 'min' || $paramname == 'max') { echo ' min="0" '; } ?> />
 					<?php } ?>
 				</div>
 				<?php } ?>
 			</fieldset>
 			<?php } ?>
-
 		</fieldset>
 	<?php echo JHTML::_('form.token'); ?>
 </form>
