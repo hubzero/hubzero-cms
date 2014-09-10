@@ -44,8 +44,6 @@ class modRapidContact extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
-		$this->css();
-
 		// Field labels
 		$this->name_label    = $this->params->get('name_label', JText::_('MOD_RAPID_CONTACT_FIELD_NAME'));
 		$this->email_label   = $this->params->get('email_label', JText::_('MOD_RAPID_CONTACT_FIELD_EMAIL'));
@@ -64,7 +62,7 @@ class modRapidContact extends \Hubzero\Module\Module
 		// Error messages
 		$this->error_text    = $this->params->get('error_text', JText::_('MOD_RAPID_CONTACT_ERROR_SENDING'));
 		$this->no_email      = $this->params->get('no_email', JText::_('MOD_RAPID_CONTACT_ERROR_NO_EMAIL'));
-	    $this->invalid_email = $this->params->get('invalid_email', JText::_('MOD_RAPID_CONTACT_ERROR_INVALID_EMAIL'));
+		$this->invalid_email = $this->params->get('invalid_email', JText::_('MOD_RAPID_CONTACT_ERROR_INVALID_EMAIL'));
 
 		// From
 		$jconfig = JFactory::getConfig();
@@ -83,7 +81,7 @@ class modRapidContact extends \Hubzero\Module\Module
 		$this->anti_spam_q   = $this->params->get('anti_spam_q', JText::_('MOD_RAPID_CONTACT_ANTIPSAM'));
 		$this->anti_spam_a   = $this->params->get('anti_spam_a', '2');
 
-	    $this->mod_class_suffix = $this->params->get('moduleclass_sfx', '');
+		$this->mod_class_suffix = $this->params->get('moduleclass_sfx', '');
 
 		$disable_https       = $this->params->get('disable_https', false);
 		$exact_url           = $this->params->get('exact_url', true);
@@ -146,20 +144,20 @@ class modRapidContact extends \Hubzero\Module\Module
 
 			if ($this->error == '')
 			{
-				$mySubject = $this->_cleanXss($this->posted['subject']);
-				$myMessage = JText::sprintf('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['email']) ."\n\n". $this->_cleanXss($this->posted['message']);
+				$mySubject = \Hubzero\Utility\Sanitize::clean($this->posted['subject']);
+				$myMessage = JText::sprintf('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['email']) ."\n\n". \Hubzero\Utility\Sanitize::clean($this->posted['message']);
 
 				$this->from_email = $this->posted['email'];
-				$this->from_name  = (isset($this->posted['name']) && $this->_cleanXss($this->posted['name'])) ? $this->_cleanXss($this->posted['name']) : $this->posted['email'];
+				$this->from_name  = (isset($this->posted['name']) && \Hubzero\Utility\Sanitize::clean($this->posted['name'])) ? \Hubzero\Utility\Sanitize::clean($this->posted['name']) : $this->posted['email'];
 
-				$mailSender =  JFactory::getMailer();
-				$mailSender->addRecipient($this->recipient);
-				$mailSender->setSender(array($this->from_email, $this->from_name));
-				$mailSender->addReplyTo(array($this->posted['email'], ''));
-				$mailSender->setSubject($mySubject);
-				$mailSender->setBody($myMessage);
+				$mailSender = new \Hubzero\Mail\Message();
+				$mailSender->setSubject($mySubject)
+				           ->addFrom($this->from_email, $this->from_name)
+				           ->addTo($this->recipient)
+				           ->addReplyTo($this->posted['email'], $this->posted['name'])
+				           ->setBody($myMessage);
 
-				if (!$mailSender->Send())
+				if (!$mailSender->send())
 				{
 					$this->error = $this->error_text;
 				}
@@ -171,53 +169,5 @@ class modRapidContact extends \Hubzero\Module\Module
 		}
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
-	}
-
-	/**
-	 * Short description for 'cleanXss'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $string Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	private function _cleanXss($string)
-	{
-		// Strip out any KL_PHP, script, style, HTML comments
-		$string = preg_replace('/{kl_php}(.*?){\/kl_php}/s', '', $string);
-		$string = preg_replace("'<style[^>]*>.*?</style>'si", '', $string);
-		$string = preg_replace("'<script[^>]*>.*?</script>'si", '', $string);
-		$string = preg_replace('/<!--.+?-->/', '', $string);
-
-		$string = str_replace(
-			array('&amp;', '&lt;', '&gt;'),
-			array('&amp;amp;', '&amp;lt;', '&amp;gt;'),
-			$string
-		);
-		// Fix &entitiy\n;
-
-		$string = preg_replace('#(&\#*\w+)[\x00-\x20]+;#u',"$1;",$string);
-		$string = preg_replace('#(&\#x*)([0-9A-F]+);*#iu',"$1$2;",$string);
-		$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
-
-		// Remove any attribute starting with "on" or xmlns
-		//$string = preg_replace('#(<[^>]+[\x00-\x20\"\'])(on|xmlns)[^>]*>#iUu', "$1>", $string);
-		// Remove javascript: and vbscript: protocol
-		$string = preg_replace('#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2nojavascript...', $string);
-		$string = preg_replace('#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu', '$1=$2novbscript...', $string);
-		// <span style="width: expression(alert('Ping!'));"></span>
-		// Only works in ie...
-		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*expression[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
-		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*behaviour[\x00-\x20]*\([^>]*>#iU', "$1>", $string);
-		$string = preg_replace('#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu', "$1>", $string);
-		// Remove namespaced elements (we do not need them...)
-		$string = preg_replace('#</*\w+:\w[^>]*>#i',"",$string);
-		// Remove really unwanted tags
-		do {
-			$oldstring = $string;
-			$string = preg_replace('#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i', '', $string);
-		} while ($oldstring != $string);
-
-		return $string;
 	}
 }

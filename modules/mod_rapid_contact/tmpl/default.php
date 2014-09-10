@@ -29,62 +29,65 @@
  */
 
 // no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
+$this->css();
+?>
 <?php if ($this->recipient === '') { ?>
 	<p class="error"><?php echo JText::_('MOD_RAPID_CONTACT_ERROR_NO_RECIPIENT'); ?></p>
 <?php } else { ?>
-<form method="post" action="<?php echo $this->url; ?>" id="contactform" class="<?php echo $this->mod_class_suffix; ?>">
-	<fieldset>
-		<legend><?php echo JText::_('MOD_RAPID_CONTACT_FORM'); ?></legend>
+	<form method="post" action="<?php echo $this->url; ?>" id="contactform" class="<?php echo $this->mod_class_suffix; ?>">
+		<fieldset>
+			<legend><?php echo JText::_('MOD_RAPID_CONTACT_FORM'); ?></legend>
 
-<?php if ($this->replacement) { ?>
-		<p class="passed"><?php echo $this->replacement; ?></p>
-<?php } ?>
-<?php if ($this->pre_text) { ?>
-		<p><?php echo $this->pre_text; ?></p>
-<?php } ?>
-<?php if ($this->error) { ?>
-		<p class="error"><?php echo $this->error; ?></p>
-<?php } ?>
+			<?php if ($this->replacement) { ?>
+				<p class="passed"><?php echo $this->replacement; ?></p>
+			<?php } ?>
+			<?php if ($this->pre_text) { ?>
+				<p><?php echo $this->pre_text; ?></p>
+			<?php } ?>
+			<?php if ($this->error) { ?>
+				<p class="error"><?php echo $this->error; ?></p>
+			<?php } ?>
 
-		<label for="contact-name">
-			<?php echo $this->name_label; ?>
-		</label>
-		<span class="input">
-			<input type="text" id="contact-name" name="rp[name]" value="<?php echo $this->escape($this->posted['name']); ?>" />
-		</span>
+			<label for="contact-name">
+				<?php echo $this->name_label; ?>
+			</label>
+			<span class="input">
+				<input type="text" id="contact-name" name="rp[name]" value="<?php echo $this->escape($this->posted['name']); ?>" />
+			</span>
 
-		<label for="contact-email">
-			<?php echo $this->email_label; ?>
-		</label>
-		<span class="input">
-			<input type="text" id="contact-email" name="rp[email]" value="<?php echo $this->escape($this->posted['email']); ?>" />
-		</span>
+			<label for="contact-email">
+				<?php echo $this->email_label; ?>
+			</label>
+			<span class="input">
+				<input type="text" id="contact-email" name="rp[email]" value="<?php echo $this->escape($this->posted['email']); ?>" />
+			</span>
 
-		<label for="contact-subject">
-			<?php echo $this->subject_label; ?>
-		</label>
-		<span class="input">
-			<input type="text" id="contact-subject" name="rp[subject]" value="<?php echo $this->escape($this->posted['subject']); ?>" />
-		</span>
+			<label for="contact-subject">
+				<?php echo $this->subject_label; ?>
+			</label>
+			<span class="input">
+				<input type="text" id="contact-subject" name="rp[subject]" value="<?php echo $this->escape($this->posted['subject']); ?>" />
+			</span>
 
-		<label for="contact-comments">
-			<?php echo $this->message_label; ?>
-		</label>
-		<span class="input">
-			<textarea name="rp[message]" id="contact-comments" cols="35" rows="10"><?php echo $this->escape($this->posted['message']); ?></textarea>
-		</span>
+			<label for="contact-comments">
+				<?php echo $this->message_label; ?>
+			</label>
+			<span class="input">
+				<textarea name="rp[message]" id="contact-comments" cols="35" rows="10"><?php echo $this->escape($this->posted['message']); ?></textarea>
+			</span>
 
-<?php if ($this->enable_anti_spam) { ?>
-		<label for="contact-antispam">
-			<?php echo $this->anti_spam_q; ?>
-		</label>
-		<span class="input">
-			<input type="text" id="contact-antispam" name="rp[anti_spam_answer]" />
-		</span>
-<?php } ?>
+			<?php if ($this->enable_anti_spam) { ?>
+				<label for="contact-antispam">
+					<?php echo $this->anti_spam_q; ?>
+				</label>
+				<span class="input">
+					<input type="text" id="contact-antispam" name="rp[anti_spam_answer]" />
+				</span>
+			<?php } ?>
 
-		<span class="submit"><input type="submit" name="submit" value="<?php echo $this->button_text; ?>" /></span>
-	</fieldset>
-</form>
+			<span class="submit"><input type="submit" name="submit" value="<?php echo $this->button_text; ?>" /></span>
+		</fieldset>
+	</form>
 <?php } ?>
