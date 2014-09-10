@@ -37,8 +37,7 @@ $this->css()
 $document = JFactory::getDocument();
 $document->addScript('media/system/js/jquery.ui.widget.js');
 $document->addScript('media/system/js/jquery.iframe-transport.js');
-$document->addScript('media/system/js/jquery.fileupload.js');
-
+$this->js('jquery.fileuploader.js', 'system');
 $jconfig = JFactory::getConfig();
 ?>
 <header id="content-header">
@@ -71,11 +70,6 @@ $jconfig = JFactory::getConfig();
 			<input type="hidden" name="fields[userid]" value="<?php echo $this->row->userid; ?>" id="userid" />
 			<input type="hidden" name="fields[useremail]" value="<?php echo $this->row->useremail; ?>" id="useremail" />
 
-			<!-- <input type="hidden" name="fields[picture]" id="picture" value="" />
-			<div class="field-wrap">
-				<iframe width="100%" height="130" scrolling="no" name="filer" frameborder="0" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;id=<?php echo $this->user->get('uidNumber'); ?>"></iframe>
-			</div> -->
-
 			<label for="field-fullname">
 				<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
 				<input type="text" name="fields[fullname]" id="field-fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" />
@@ -85,13 +79,20 @@ $jconfig = JFactory::getConfig();
 				<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?>
 				<input type="text" name="fields[org]" id="field-org" value="<?php echo $this->escape($this->row->org); ?>" size="30" />
 			</label>
-
-			<label for="field-files">
-				<?php echo JText::_('COM_FEEDBACK_PICTURES'); ?>
-				<input type="file" name="files[]" id="field-files" multiple="multiple" />
-				<span id="uploadImages"></span>
-			</label>
-
+			<fieldset>
+				<legend>
+					<?php echo JText::_('COM_FEEDBACK_PICTURES'); ?>
+				</legend>
+				<div class="field-wrap">
+					<div id="ajax-uploader" data-instructions="<?php echo JText::_('COM_FEEDBACK_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo JRoute::_('/feedback/success_story?controller=feedback&task=uploadimage&option=com_feedback&no_html=1'); ?>">
+						<noscript>
+							<label for="upload">
+								<input type="file" name="files[]" id="field-files" multiple="multiple"/>
+							</label>
+						</noscript>
+					</div>
+				</div>
+			</fieldset>
 			<label<?php echo ($this->getError() && $this->row->quote == '') ? ' class="fieldWithErrors"' : ''; ?> for="field-quote">
 				<?php echo JText::_('COM_FEEDBACK_STORY_DESCRIPTION'); ?>
 				<textarea name="fields[quote]" id="field-quote" rows="40" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>

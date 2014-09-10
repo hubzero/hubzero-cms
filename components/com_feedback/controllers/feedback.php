@@ -153,7 +153,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Check to see if the user temp folder for holding pics is there, if so then remove it
 		if (is_dir('tmp/feedback') === true and is_dir('tmp/feedback/' . $this->juser->get('id')) === true)
 		{
-			rmdir('tmp/feedback/' . $this->juser->get('id'));
+			Jfolder::delete('tmp/feedback/' . $this->juser->get('id'));
 		}
 
 		if ($this->juser->get('guest'))
@@ -323,7 +323,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Check to see if the user temp folder for holding pics is there, if so then remove it
 		if (is_dir('tmp/feedback') === true and is_dir('tmp/feedback/' . $this->juser->get('id')) === true)
 		{
-			rmdir('tmp/feedback/' . $this->juser->get('id'));
+			Jfolder::delete('tmp/feedback/' . $this->juser->get('id'));
 		}
 
 		// Output HTML
@@ -369,43 +369,130 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		);
 	}
 
-	public function uploadimageTask()
+	/**
+	 * Takes recieved files and saves them to a temporary directory specific directory then returns a json object with those file names.
+	 *
+	 * @return     void
+	 */
+	public function uploadImageTask()
 	{
-		// Set header to be json
-		header('Content-Type: text/html');
-
-		// Check to see if the temp folder for holding the pics is there
-		if (is_dir('tmp/feedback') === false)
+		// Check if they're logged in
+		if ($this->juser->get('guest'))
 		{
-			mkdir('tmp/feedback');
+			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			return;
 		}
 
-		// Check to see if hte user already has a folder
-		if (is_dir('tmp/feedback/' . $this->juser->get('id')) === false)
+		//max upload size
+		$sizeLimit = $this->config->get('maxAllowed', 40000000);
+
+		// get the file
+		if (isset($_GET['qqfile']))
 		{
-			mkdir('tmp/feedback/' . $this->juser->get('id'));
+			$stream = true;
+			$file = $_GET['qqfile'];
+			$size = (int) $_SERVER["CONTENT_LENGTH"];
+		}
+		elseif (isset($_FILES['qqfile']))
+		{
+			$stream = false;
+			$file = $_FILES['qqfile']['name'];
+			$size = (int) $_FILES['qqfile']['size'];
+		}
+		else
+		{
+			echo json_encode(array('error' => JText::_('File not found')));
+			return;
 		}
 
+		//define upload directory and make sure its writable
 		$path = 'tmp/feedback/' . $this->juser->get('id');
 
-		$files = $_FILES;
-		$jsonArray = array('files' => array());
-
-		foreach ($files['files']['name'] as $fileIndex => $file)
+		if (!is_dir($path))
 		{
-			if (empty($file) === true)
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create($path))
 			{
-				continue;
+				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				return;
 			}
-			JFile::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
-
-			$jsonArray['files'][]['name'] = JURI::base() . DS . $path . DS . $files['files']['name'][$fileIndex];
 		}
 
-		echo json_encode($jsonArray);
+		if (!is_writable($path))
+		{
+			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			return;
+		}
 
-		// How do I have it return a blank response without a die?
-		die;
+		//check to make sure we have a file and its not too big
+		if ($size == 0)
+		{
+			echo json_encode(array('error' => JText::_('File is empty')));
+			return;
+		}
+		if ($size > $sizeLimit)
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			return;
+		}
+
+		// don't overwrite previous files that were uploaded
+		$pathinfo = pathinfo($file);
+		$filename = $pathinfo['filename'];
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$filename = urldecode($filename);
+		$filename = JFile::makeSafe($filename);
+		$filename = str_replace(' ', '_', $filename);
+
+		$ext = $pathinfo['extension'];
+		while (file_exists($path . DS . $filename . '.' . $ext))
+		{
+			$filename .= rand(10, 99);
+		}
+
+		$file = $path . DS . $filename . '.' . $ext;
+
+		if ($stream)
+		{
+			//read the php input stream to upload file
+			$input = fopen("php://input", "r");
+			$temp = tmpfile();
+			$realSize = stream_copy_to_stream($input, $temp);
+			fclose($input);
+
+			//move from temp location to target location which is user folder
+			$target = fopen($file , "w");
+			fseek($temp, 0, SEEK_SET);
+			stream_copy_to_stream($temp, $target);
+			fclose($target);
+		}
+		else
+		{
+			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+		}
+
+		exec("clamscan -i --no-summary --block-encrypted $file", $output, $status);
+		if ($status == 1)
+		{
+			if (JFile::delete($file))
+			{
+				echo json_encode(array(
+					'success' => false,
+					'error'  => JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.')
+				));
+				return;
+			}
+		}
+
+		//echo result
+		echo json_encode(array(
+			'success'    => true,
+			'file'       => $filename . '.' . $ext,
+			'directory'  => str_replace(JPATH_ROOT, '', $path),
+		));
 	}
 }
 
