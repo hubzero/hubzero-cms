@@ -551,9 +551,10 @@ class CoursesControllerForm extends \Hubzero\Component\SiteController
 
 			$now   = strtotime(JFactory::getDate());
 			$start = strtotime($resp->getStartTime());
+			$end   = strtotime($dep->getEndTime());
 			$dur   = $limit * 60;
 
-			if ($now > ($start + $dur))
+			if ($now > ($start + $dur) || ($dep->getEndTime() && $end < $now))
 			{
 				$ended = true;
 			}
