@@ -28,27 +28,17 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <install type="module" version="1.5">
-	<name>XPoll Title</name>
+	<name>Poll Title</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows the most popular FAQs.</description>
+	<description>MOD_POLLTITLE_DESCPOLL</description>
 	<files>
 		<filename module="mod_polltitle">mod_polltitle.php</filename>
 		<filename>index.html</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 	</files>
-	<params>
-		<param name="message" type="text" default="Tell us what you think." label="Message" description="Default message in case there are no active polls to display" />
-	</params>
-	<params group="advanced">
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
