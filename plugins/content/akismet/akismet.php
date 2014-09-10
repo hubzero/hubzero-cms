@@ -69,8 +69,9 @@ class plgContentAkismet extends JPlugin
 
 		$service = new \Hubzero\Antispam\Service(new \Plugins\Content\Akismet\Service\Provider);
 
-		$service->set('apiPublicKey', $this->params->get('apiPublicKey'))
-		        ->set('apiPrivateKey', $this->params->get('apiPrivateKey'))
+		if (!$this->params->get('apiKey')) return;
+
+		$service->set('apiKey', $this->params->get('apiKey'))
 		        ->set('apiPort', $this->params->get('apiPort', 80))
 		        ->set('akismetServer', $this->params->get('akismetServer', 'rest.akismet.com'))
 		        ->set('akismetVersion', $this->params->get('akismetVersion', '1.1'));

@@ -48,8 +48,7 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="apiPublicKey" type="text" size="10" default="" label="API Public Key" description="The API Public Key of the service selected, if applicable." />
-				<field name="apiPrivateKey" type="text" size="10" default="" label="API Private Key" description="The API Private Key of the service selected, if applicable." />
+				<field name="apiKey" type="text" size="10" default="" label="API Key" description="The API Key of the service." />
 				<field name="apiPort" type="text" size="10" default="80" label="API Port" description="The API Port to use." />
 				<field name="akismetServer" type="text" size="10" default="rest.akismet.com" label="Akismet Server" description="The URL for the Akismet server." />
 				<field name="akismetVersion" type="text" size="10" default="1.1" label="Akismet Version" description="The version of Akismet to use." />
