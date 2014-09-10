@@ -160,7 +160,7 @@ CREATE TABLE `#__answers_log` (
   `ip` varchar(15) NOT NULL DEFAULT '',
   `helpful` varchar(10) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `idx_rid` (`rid`)
+  KEY `idx_rid` (`response_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_questions` (
@@ -189,7 +189,7 @@ CREATE TABLE `#__answers_questions_log` (
   `voter` int(11) NOT NULL DEFAULT '0',
   `ip` varchar(15) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `idx_qid` (`qid`),
+  KEY `idx_qid` (`question_id`),
   KEY `idx_voter` (`voter`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -204,7 +204,7 @@ CREATE TABLE `#__answers_responses` (
   `state` tinyint(3) NOT NULL DEFAULT '0',
   `anonymous` tinyint(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `idx_qid` (`qid`),
+  KEY `idx_qid` (`question_id`),
   KEY `idx_state` (`state`),
   KEY `idx_created_by` (`created_by`),
   FULLTEXT KEY `ftidx_answer` (`answer`)
