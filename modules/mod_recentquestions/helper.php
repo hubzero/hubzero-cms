@@ -66,7 +66,7 @@ class modRecentQuestions extends \Hubzero\Module\Module
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM `#__answers_responses` AS r WHERE r.question_id=a.id) AS rcount"
 				." FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg"
 				." WHERE a.id=t.objectid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag=" . $this->database->quote($this->tag) . " OR tg.raw_tag=" . $this->database->quote($this->tag) . ")";
-			if ($st) 
+			if ($st)
 			{
 				$query .= " AND " . $st;
 			}
@@ -75,7 +75,7 @@ class modRecentQuestions extends \Hubzero\Module\Module
 		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous, (SELECT COUNT(*) FROM `#__answers_responses` AS r WHERE r.question_id=a.id) AS rcount"
 				." FROM #__answers_questions AS a";
-			if ($st) 
+			if ($st)
 			{
 				$query .= " WHERE " . $st;
 			}
