@@ -114,15 +114,18 @@ class modLoginHelper
 		{
 			$areturn = base64_decode($areturn);
 			$query   = parse_url($areturn);
-			$query   = $query['query'];
-			$query   = explode('&', $query);
-			$auth    = '';
-			foreach ($query as $q)
+			if (is_array($query) && isset($query['query']))
 			{
-				$n = explode('=', $q);
-				if ($n[0] == 'authenticator')
+				$query  = $query['query'];
+				$query  = explode('&', $query);
+				$auth   = '';
+				foreach ($query as $q)
 				{
-					$auth = $n[1];
+					$n = explode('=', $q);
+					if ($n[0] == 'authenticator')
+					{
+						$auth = $n[1];
+					}
 				}
 			}
 		}
@@ -149,8 +152,10 @@ class modLoginHelper
 			}
 		}
 
+		JPluginHelper::importPlugin('authentication');
+
 		// Set the return if we have it...
-		$r = ($return) ? "&return={$return}" : '';
+		$returnQueryString = ($return) ? "&return={$return}" : '';
 
 		require(JModuleHelper::getLayoutPath($module->module));
 	}
