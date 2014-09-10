@@ -575,7 +575,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$extended 		= JRequest::getInt( 'extended', 0, 'post');
 		$requested_step = JRequest::getInt( 'step', 6);
 		$tempid 		= JRequest::getInt( 'tempid', 0 );
-		$restricted 	= JRequest::getVar( 'restricted', 'no', 'post' );
+		$restricted 	= JRequest::getWord( 'restricted', 'no', 'post' );
 		$group 			= '';
 		$pid 			= 0;
 
@@ -646,7 +646,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 
 			// New entry or error
 			$obj->id 			= 0;
-			$obj->alias 		= JRequest::getVar( 'name', '', 'post' );
+			$obj->alias 		= JRequest::getCmd( 'name', '', 'post' );
 			$obj->title 		= JRequest::getVar( 'title', '', 'post' );
 			$obj->about 		= rtrim(\Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'about', '', 'post' )));
 			$obj->type 			= JRequest::getInt( 'type', 1, 'post' );

@@ -747,6 +747,13 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			}
 		}
 
+		// clean input
+		array_walk($fields, function($field, $key)
+		{
+			$fields[$key] = \Hubzero\Utility\Sanitize::stripScripts($field);
+			$fields[$key] = \Hubzero\Utility\Sanitize::clean($field);
+		});
+
 		// Initiate class and bind posted items to database fields
 		$row = new AnswersModelQuestion($fields['id']);
 		if (!$row->bind($fields))

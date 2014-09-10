@@ -765,6 +765,15 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$badges = trim(JRequest::getVar('badges', ''));
 		unset($c['badges']);
 
+		// clean vars
+		foreach ($c as $key => $val)
+		{
+			if (!is_array($val))
+			{
+				$c[$key] = \Hubzero\Utility\Sanitize::stripScripts($val);
+			}
+		}
+
 		// Bind incoming data to object
 		$row = new CitationsCitation($this->database);
 		if (!$row->bind($c))
@@ -782,6 +791,11 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 
 		// Field named 'uri' due to conflict with existing 'url' variable
 		$row->url = JRequest::getVar('uri', '', 'post');
+		$row->url = \Hubzero\Utility\Sanitize::clean($row->url);
+		if (!filter_var($row->url, FILTER_VALIDATE_URL))
+		{
+			$row->url = null;
+		}
 
 		// Check content for missing required data
 		if (!$row->check())

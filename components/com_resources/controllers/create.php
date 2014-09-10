@@ -317,7 +317,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	public function step_compose($row=null)
 	{
 		$group = JRequest::getVar('group', '');
-		$type = JRequest::getVar('type', '');
+		$type = JRequest::getInt('type', '');
 
 		if ($type == '7')
 		{
