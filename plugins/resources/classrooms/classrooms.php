@@ -35,6 +35,13 @@ defined('_JEXEC') or die('Restricted access');
 class plgResourcesClassrooms extends \Hubzero\Plugin\Plugin
 {
 	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
+
+	/**
 	 * Return the alias and name for this category of content
 	 *
 	 * @param      object $resource Current resource
