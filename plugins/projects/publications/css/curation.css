@@ -934,6 +934,20 @@
 	}
 	.pane-wrapper .submitter {
 		margin: 2em 0 1em 0;
+		padding: 0 1em 1em 1em;
+	}
+	.pane-wrapper .submitter p {
+		padding: 0;
+	}
+	.pane-wrapper .submitter p.hint {
+		margin: 0;
+	}
+	.pane-wrapper .submitter select {
+		margin-bottom: 1em;
+	}
+	.pane-wrapper .submitter.groupowner {
+		background: #ebf1f3;
+		border: 1px solid #CCC;
 	}
 
 /* Freeze editing

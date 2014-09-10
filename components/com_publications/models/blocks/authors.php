@@ -200,7 +200,10 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		}
 
 		// Save group owner
-		$this->saveGroupOwner($pub);
+		if (!$selections)
+		{
+			$this->saveGroupOwner($pub);
+		}
 
 		return true;
 	}
@@ -208,13 +211,25 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 	/**
 	 * Save group owner
 	 *
-	 * @return  boolean
+	 * @return  void
 	 */
 	public function saveGroupOwner( $pub )
 	{
 		// Incoming
 		$group_owner = JRequest::getInt( 'group_owner', 0);
-		// TBD
+
+		$saveGroupOwner = isset($this->_manifest->params->group_owner) ? $this->_manifest->params->group_owner : '';
+
+		if ($saveGroupOwner)
+		{
+			$objP = new Publication( $this->_parent->_db );
+
+			if ($objP->load($pub->id))
+			{
+				$objP->group_owner = $group_owner;
+				$objP->store();
+			}
+		}
 	}
 
 	/**
@@ -617,6 +632,15 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}
 
+		// Get public groups (to addign group owner)
+		$filters = array(
+			'authorized' => 'admin',
+			'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
+			'type'       => array(1, 3),
+			'sortby'     => 'description'
+		);
+		$view->groups = \Hubzero\User\Group::find($filters);
+
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
 		$view->step		= $this->_sequence;
@@ -691,7 +715,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				'about'			=> '<p>Publication authors get selected from your current project team. Anyone you add as an author will also be added to your team as a project collaborator.</p>',
 				'adminTips'		=> '',
 				'elements' 		=> array(),
-				'params'		=> array( 'required' => 1, 'published_editing' => 0, 'submitter' => 1 )
+				'params'		=> array( 'required' => 1, 'published_editing' => 0, 'submitter' => 1, 'group_owner' => 0 )
 			);
 
 			return json_decode(json_encode($manifest), FALSE);

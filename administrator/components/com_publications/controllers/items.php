@@ -1675,6 +1675,9 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		$url = 'index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit' . '&id[]=' . $pid . '&version=' . $version;
+
 		if ($useBlocks)
 		{
 			$pub->version 	= $objV->version_number;
@@ -1708,7 +1711,15 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			$pub->_curationModel->setPubAssoc($pub);
 
 			// Produce archival package
-			$pub->_curationModel->package();
+			if (!$pub->_curationModel->package())
+			{
+				// Checkin the resource
+				$objP->checkin();
+
+				// Redirect
+				$this->setRedirect( $url, JText::_('COM_PUBLICATIONS_ERROR_ARCHIVAL'), 'error');
+				return;
+			}
 		}
 		else
 		{
@@ -1721,10 +1732,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
 
 		// Checkin the resource
-		$objV->checkin();
-
-		$url = 'index.php?option=' . $this->_option . '&controller='
-			. $this->_controller . '&task=edit' . '&id[]=' . $pid . '&version=' . $version;
+		$objP->checkin();
 
 		// Redirect
 		$this->setRedirect( $url );

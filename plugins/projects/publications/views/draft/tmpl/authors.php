@@ -52,6 +52,7 @@ $move = $move ? '&move=continue' : '';
 
 $required 		= $this->manifest->params->required;
 $showSubmitter  = $this->manifest->params->submitter;
+$showGroupOwner = isset($this->manifest->params->group_owner) ? $this->manifest->params->group_owner : '';
 
 $elName = "authorList";
 
@@ -122,10 +123,33 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 			if ($showSubmitter && $this->pub->_submitter)
 			{ ?>
 
-			<p class="submitter"><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
-				<?php echo $this->pub->_submitter->name; ?><?php echo $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : ''; ?>
-				<span class="block hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?></span>
-			</p>
+			<div class="submitter"><p><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER'); ?>*: </strong>
+				<?php echo $this->pub->_submitter->name; ?><?php echo $this->pub->_submitter->organization ? ', ' . $this->pub->_submitter->organization : ''; ?></p>
+				<p class="hint">* <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SUBMITTER_ABOUT'); ?>
+				</p>
+			</div>
+		<?php }
+			if (($showGroupOwner && $this->groups) || $this->pub->_project->owned_by_group)
+			{
+				$group = new \Hubzero\User\Group();
+				if ($this->pub->_project->owned_by_group && \Hubzero\User\Group::exists($this->pub->_project->owned_by_group))
+				{
+					$group = \Hubzero\User\Group::getInstance( $this->pub->_project->owned_by_group );
+				}
+				?>
+			<div class="submitter groupowner"><p><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php if ($this->pub->_project->owned_by_group) { echo $group->description . '(' . $group->cn . ')'; } ?></p>
+				<?php if (!$this->pub->_project->owned_by_group) { ?>
+					<select name="group_owner">
+						<option value=""><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_NONE'); ?></option>
+						<?php foreach ($this->groups as $g) { ?>
+							<option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->group_owner == $g->gidNumber) { echo 'selected="selected"'; } ?>><?php echo $g->description . ' (' . $g->cn . ')'; ?></option>
+						<?php } ?>
+					</select>
+				<?php } else { ?>
+				<input type="hidden" name="group_owner" value="<?php echo $this->pub->group_owner; ?>" />
+				<?php } ?>
+				<p class="hint">* <?php echo $this->pub->_project->owned_by_group ? JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT_PROJECT') : JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_ABOUT'); ?></p>
+			</div>
 		<?php }
 		?>
 	</div>

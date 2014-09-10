@@ -1846,6 +1846,12 @@ class PublicationsCuration extends JObject
 		// Get publication path
 		$pubBase = $helper->buildPath($this->_pub->id, $this->_pub->version_id, '', '', 1);
 
+		// Empty draft?
+		if (!file_exists($pubBase))
+		{
+			return false;
+		}
+
 		// Set archival properties
 		$bundleDir  = $this->_pub->title;
 		$tarname 	= JText::_('Publication') . '_' . $this->_pub->id . '.zip';
