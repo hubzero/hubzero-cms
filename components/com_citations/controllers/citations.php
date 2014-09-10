@@ -232,6 +232,17 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// clean up filters a little
+		array_walk($this->view->filters, function($val, $key)
+		{
+			if (!is_array($val))
+			{
+				$val = trim($val);
+				$val = str_replace('"', '', $val);
+				$this->view->filters[$key] = $val;
+			}
+		});
+
 		// Instantiate a new citations object
 		$obj = new CitationsCitation($this->database);
 

@@ -557,7 +557,7 @@ class CitationsCitation extends JTable
 		//search term match
 		if (isset($filter['search']) && $filter['search'] != '')
 		{
-			$query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "' IN BOOLEAN MODE) > 0)";
+			$query .= " AND (MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) > 0)";
 
 			//if ($admin = true)
 			//{
@@ -850,7 +850,7 @@ class CitationsCitation extends JTable
 		//if we had a search term lets order by search match
 		if (isset($filter['search']) && $filter['search'] != '')
 		{
-			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST ('" . $filter['search'] . "' IN BOOLEAN MODE) DESC";
+			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) DESC";
 		}
 
 		//sort filter
@@ -934,7 +934,6 @@ class CitationsCitation extends JTable
 		}
 
 		$query .= $this->buildQuery($filter, $admin);
-
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
