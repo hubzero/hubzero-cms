@@ -58,19 +58,9 @@ $groupModules = $groupParams->get('page_modules', 0);
 	<li>
 		<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=categories'); ?>">Group Page Categories</a>
 	</li>
-
 	<?php if ((!empty($superGroups) && count($superGroups) > 0) || $groupModules) : ?>
 		<li>
 			<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=modules'); ?>">Group Page Modules</a>
-		</li>
-	<?php endif; ?>
-
-	<?php if (!empty($superGroups) && count($superGroups) > 0) : ?>
-		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=supergroup'); ?>">Super Groups</a>
-		</li>
-		<li>
-			<a href="<?php echo JRoute::_('index.php?option=com_help&component=groups&page=supergroup_development'); ?>">Super Group Development</a>
 		</li>
 	<?php endif; ?>
 	<li>
