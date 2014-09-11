@@ -119,6 +119,16 @@ class WishlistModelWishlist extends WishlistModelAbstract
 					$this->_tbl->load($oid);
 				}
 			}
+			else if (is_string($oid) && $scope)
+			{
+				$this->set('category', $scope);
+				$this->set('referenceid', $oid);
+
+				$oid = $this->_adapter()->item('id');
+
+				$this->_tbl->loadByCategory($oid, $scope);
+				$this->_adapter = null;
+			}
 			else if (is_object($oid) || is_array($oid))
 			{
 				$this->bind($oid);
