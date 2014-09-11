@@ -9,13 +9,13 @@
 // No direct access.
 defined('_JEXEC') or die;
 ?>
-<div class="fltrt">
-	<button type="button" onclick="Joomla.submitbutton('module.save');">
-		<?php echo JText::_('JSAVE');?></button>
-	<button type="button" onclick="window.parent.SqueezeBox.close();">
-		<?php echo JText::_('JCANCEL');?></button>
+<div class="configuration">
+	<div class="configuration-options">
+		<button type="button" onclick="Joomla.submitbutton('module.save');"><?php echo JText::_('JSAVE');?></button>
+		<button type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('JCANCEL');?></button>
+	</div>
+	<?php echo JText::sprintf('COM_MODULES_MANAGER_MODULE', JText::_($this->item->module)) ?>
 </div>
-<div class="clr"></div>
 
 <?php
 $this->setLayout('edit');
