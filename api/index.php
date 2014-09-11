@@ -60,7 +60,7 @@ define('JPATH_XMLRPC', JPATH_ROOT . DS . 'xmlrpc');
 define('JPATH_CACHE', JPATH_ROOT . DS . 'cache');
 define('JPATH_PLUGINS', JPATH_ROOT . DS . 'plugins');
 define('JPATH_API', JPATH_ROOT . DS . 'api');
-define('HVERSION', "1.2.0");
+define('HVERSION', "1.3.0");
 
 require(JPATH_LIBRARIES.DS.'loader.php');
 
