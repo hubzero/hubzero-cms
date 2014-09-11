@@ -62,7 +62,7 @@ class JFormFieldUser extends JFormField
 		$script[] = '			document.getElementById("' . $this->id . '_name").value = title;';
 		$script[] = '			' . $onchange;
 		$script[] = '		}';
-		$script[] = '		$.fancybbox.close();';
+		$script[] = '		$.fancybox.close();';
 		$script[] = '	}';
 
 		// Add the script to the document head.
