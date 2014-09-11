@@ -1317,6 +1317,10 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		$wishid   = JRequest::getInt('wish', 0);
 		$category = JRequest::getVar('type', '');
 		$refid    = JRequest::getInt('resource', 0);
+		if ($category == 'group')
+		{
+			$refid    = JRequest::getVar('group', '');
+		}
 
 		// some transfer options
 		$options = array();
@@ -1379,7 +1383,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			{
 				// Transfer wish
 				$wish = new WishlistModelWish($wishid);
-				$wish->set('wishlist', $newlist);
+				$wish->set('wishlist', $newlist->get('id'));
 				$wish->set('assigned', 0); // moved wish is not assigned to anyone yet
 				$wish->set('ranking', 0); // zero ranking
 				$wish->set('due', '0000-00-00 00:00:00');

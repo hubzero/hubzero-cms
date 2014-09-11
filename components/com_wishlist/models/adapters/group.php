@@ -60,6 +60,10 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 		     ->set('option', $this->_segments['option']);
 
 		$this->_item = \Hubzero\User\Group::getInstance($referenceid);
+		if (!$this->_item)
+		{
+			$this->_item = new \Hubzero\User\Group();
+		}
 
 		$this->_segments['cn']     = $this->_item->get('cn');
 		$this->_segments['active'] = 'wishlist';
