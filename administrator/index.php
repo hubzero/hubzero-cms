@@ -22,8 +22,6 @@ require_once JPATH_BASE.'/includes/framework.php';
 require_once JPATH_BASE.'/includes/helper.php';
 require_once JPATH_BASE.'/includes/toolbar.php';
 
-JLoader::import('Hubzero.Factory');
-
 // Mark afterLoad in the profiler.
 JPROFILE ? $_PROFILER->mark('afterLoad') : null;
 

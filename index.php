@@ -20,8 +20,6 @@ if (!defined('_JDEFINES')) {
 
 require_once JPATH_BASE.'/includes/framework.php';
 
-JLoader::import('Hubzero.Factory');
-
 // Mark afterLoad in the profiler.
 JPROFILE ? $_PROFILER->mark('afterLoad') : null;
 
