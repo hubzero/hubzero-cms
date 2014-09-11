@@ -3,50 +3,8 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "88ef4a3ea8ae3e6be16d0d1eaefb55c8",
+    "hash": "4321d9320b5d4d8454451964809aa837",
     "packages": [
-        {
-            "name": "dannytrue/phantomjs",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dannytrue/phantomjs.git",
-                "reference": "126f40bcb0cc29d4500bc950fc781fc184c40ebe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dannytrue/phantomjs/zipball/126f40bcb0cc29d4500bc950fc781fc184c40ebe",
-                "reference": "126f40bcb0cc29d4500bc950fc781fc184c40ebe",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "bin": [
-                "phantomjs",
-                "phantomjs_64"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD"
-            ],
-            "authors": [
-                {
-                    "name": "Ariya Hidayat",
-                    "email": "ariya.hidayat@gmail.com"
-                }
-            ],
-            "description": "Headless WebKit scriptable with a JavaScript API.",
-            "homepage": "http://phantomjs.org/",
-            "keywords": [
-                "jasmine",
-                "javascript",
-                "phantomjs",
-                "testing"
-            ],
-            "time": "2013-05-30 12:21:50"
-        },
         {
             "name": "ezyang/htmlpurifier",
             "version": "v4.5.0",
@@ -240,9 +198,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "dannytrue/phantomjs": 20
-    },
+    "stability-flags": [
+
+    ],
     "platform": [
 
     ],
