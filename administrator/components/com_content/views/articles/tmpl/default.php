@@ -95,9 +95,10 @@ $saveOrder	= $listOrder == 'a.ordering';
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
+				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
-				</th>
+				</th> -->
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 				</th>
@@ -180,9 +181,10 @@ $saveOrder	= $listOrder == 'a.ordering';
 				<td class="center nowrap">
 					<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>
+				<!-- [!] HUBZERO - (zooley) Removing hit counter as it can contribute to performance issues. Need a better way of doing this.
 				<td class="center">
 					<?php echo (int) $item->hits; ?>
-				</td>
+				</td> -->
 				<td class="center">
 					<?php if ($item->language=='*'):?>
 						<?php echo JText::alt('JALL', 'language'); ?>
