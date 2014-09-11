@@ -114,50 +114,53 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 
 		$restrict = '';
 
-		//if ($this->_authorize() !== 'admin')
-		if (!$this->juser->authorise('core.admin', $this->_option)
-		 && !$this->juser->authorise('core.manage', $this->_option))
+		$referrer = JRequest::getVar('HTTP_REFERER', NULL, 'server');
+		if ($referrer && preg_match('/members\/\d+\/messages/i', $referrer))
 		{
-			switch ($this->config->get('user_messaging'))
+			if (!$this->juser->authorise('core.admin', $this->_option)
+			 && !$this->juser->authorise('core.manage', $this->_option))
 			{
-				case 2:
-					$restrict = " AND xp.public=1";
-				break;
+				switch ($this->config->get('user_messaging'))
+				{
+					case 2:
+						$restrict = " AND xp.public=1";
+					break;
 
-				case 1:
-				default:
-					$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
-					$xgroups = $profile->getGroups('all');
-					$usersgroups = array();
-					if (!empty($xgroups))
-					{
-						foreach ($xgroups as $group)
+					case 1:
+					default:
+						$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+						$xgroups = $profile->getGroups('all');
+						$usersgroups = array();
+						if (!empty($xgroups))
 						{
-							if ($group->regconfirmed)
+							foreach ($xgroups as $group)
 							{
-								$usersgroups[] = $group->gidNumber;
+								if ($group->regconfirmed)
+								{
+									$usersgroups[] = $group->gidNumber;
+								}
 							}
 						}
-					}
 
-					$members = null;
-					if (!empty($usersgroups))
-					{
-						$query = "SELECT DISTINCT uidNumber 
-								FROM `#__xgroups_members`
-								WHERE gidNumber IN (" . implode(',', $usersgroups) . ")";
+						$members = null;
+						if (!empty($usersgroups))
+						{
+							$query = "SELECT DISTINCT uidNumber 
+									FROM `#__xgroups_members`
+									WHERE gidNumber IN (" . implode(',', $usersgroups) . ")";
 
-						$this->database->setQuery($query);
-						$members = $this->database->loadResultArray();
-					}
+							$this->database->setQuery($query);
+							$members = $this->database->loadResultArray();
+						}
 
-					if (!$members || empty($members))
-					{
-						$members = array($this->juser->get('id'));
-					}
+						if (!$members || empty($members))
+						{
+							$members = array($this->juser->get('id'));
+						}
 
-					$restrict = " AND xp.uidNumber IN (" . implode(',', $members) . ")";
-				break;
+						$restrict = " AND xp.uidNumber IN (" . implode(',', $members) . ")";
+					break;
+				}
 			}
 		}
 
