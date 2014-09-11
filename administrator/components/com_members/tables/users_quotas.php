@@ -157,7 +157,7 @@ class UsersQuotas extends JTable
 
 		if ($result)
 		{
-			$command = "update_quota '{$username}' '{$this->soft_blocks}' '{$this->hard_blocks}'";
+			$command = "update_quota '{$this->user_id}' '{$this->soft_blocks}' '{$this->hard_blocks}'";
 			$cmd = "/bin/sh ".JPATH_ROOT."/components/com_tools/scripts/mw {$command} 2>&1 </dev/null";
 
 			exec($cmd, $results, $status);
