@@ -56,7 +56,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		$this->course = CoursesModelCourse::getInstance($this->gid);
 
 		// Ensure we found the course info
-		if (!$this->course->exists())
+		if (!$this->course->exists() || $this->course->isDeleted() || $this->course->isUnpublished())
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
 			return;
@@ -72,7 +72,7 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 		}
 
 		// Ensure we found the course info
-		if (!$this->course->offering($offering))
+		if (!$this->course->offering($offering)->exists() || $this->course->offering($offering)->isDeleted() || $this->course->offering($offering)->isUnpublished())
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_OFFERING_FOUND'));
 			return;

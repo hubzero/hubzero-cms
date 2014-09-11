@@ -340,7 +340,7 @@ $this->css('course.css')
 			{
 				foreach ($offerings as $offering)
 				{
-					if ($offering->isDeleted())
+					if ($offering->isDeleted() || $offering->isUnpublished())
 					{
 						continue;
 					}
