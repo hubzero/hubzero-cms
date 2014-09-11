@@ -6,6 +6,23 @@ $pdf = $this->pdf;
 $progress = $this->resp->getProgress();
 $realLimit = $this->dep->getRealTimeLimit();
 $incomplete = $this->incomplete;
+
+// This is the time left for the form
+// It's the lesser of the allowed time and the time until the form closes
+$timeLeft = max($realLimit*60, 0);
+
+// First, see if they've already started the form
+if ($this->resp->getStartTime())
+{
+	// This is the time left since starting form
+	$timeLeft2 = max(($this->dep->getTimeLimit() * 60) - (strtotime(JFactory::getDate()) - strtotime($this->resp->getStartTime())), 0);
+
+	// Take individual time remaining...assuming it's less than actual time remaining
+	if ($timeLeft2 < $timeLeft)
+	{
+		$timeLeft = $timeLeft2;
+	}
+}
 ?>
 
 <header id="content-header">
@@ -20,7 +37,7 @@ $incomplete = $this->incomplete;
 		if ($this->dep->getTimeLimit()):
 	?>
 	<script type="text/javascript">
-		window.timeLeft = <?php echo max($realLimit*60, 0); ?>;
+		window.timeLeft = <?php echo $timeLeft; ?>;
 	</script>
 	<?php
 		endif;
