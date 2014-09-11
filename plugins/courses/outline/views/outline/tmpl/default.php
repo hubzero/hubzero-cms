@@ -368,7 +368,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 														<?php
 														if (count($found) == 0)
 														{
-															echo '<span class="asset-primary unpublished">There are currently no items available for ' . $ag->get('title') . '.</span>';
+															echo '<span class="asset-primary ended">' . $ag->get('title') . '</span>';
 														}
 														else if (count($found) == 1)
 														{
