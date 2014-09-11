@@ -205,7 +205,7 @@ $juser = JFactory::getUser();
 		{
 			$o = 'even';
 	?>
-	<section class="section">
+	<section class="section" id="series">
 		<table class="child-listing">
 			<colgroup class="lecture_name"></colgroup>
 			<colgroup class="lecture_online"></colgroup>

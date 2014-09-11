@@ -267,7 +267,7 @@ $juser = JFactory::getUser();
 			$sortbys['ranking'] = JText::_('RANKING');
 		}
 		?>
-		<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->_option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
+		<form method="get" id="series" action="<?php echo JRoute::_('index.php?option=' . $this->_option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
 			<section class="section">
 				<div class="subject">
 					<h3>

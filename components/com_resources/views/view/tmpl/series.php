@@ -277,7 +277,7 @@ $juser = JFactory::getUser();
 		// Get children
 		$children = $this->model->children('standalone', $filters['limit'], $filters['start'], $filters['sortby']);
 		?>
-		<form method="get" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
+		<form method="get" id="series" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id)); ?>">
 			<section class="section">
 				<div class="subject">
 					<h3>
