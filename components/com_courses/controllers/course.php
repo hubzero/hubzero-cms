@@ -134,6 +134,12 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
+		if (!$this->course->isPublished() && !$this->course->isDraft())
+		{
+			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
+			return;
+		}
+
 		if (!$this->course->access('view'))
 		{
 			JError::raiseError(404, JText::_('COM_COURSES_NO_COURSE_FOUND'));
