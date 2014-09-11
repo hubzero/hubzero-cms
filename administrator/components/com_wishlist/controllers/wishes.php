@@ -337,9 +337,9 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		//$create_revision = JRequest::getInt('create_revision', 0, 'post');
 		$plan = JRequest::getVar('plan', array(), 'post', 'none', 2);
 		$plan['create_revision'] = isset($plan['create_revision']) ? $plan['create_revision'] : 0;
+		$plan['wishid'] = ($plan['wishid'] ? $plan['wishid'] : $row->id);
 
 		// Initiate extended database class
 		$page = new WishlistPlan($this->database);
@@ -351,7 +351,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		else
 		{
 			// Existing page - load it up
-			$page->load($fields['id']);
+			$page->load($plan['id']);
 
 			// Get the revision before changes
 			$old = $page;
@@ -365,25 +365,24 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 			$page->id = 0;
 		}
 
-		if (!$page->check())
+		if ($page->pagetext)
 		{
-			$this->addComponentMessage($page->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+			$page->version = ($page->version ? $page->version : $page->version + 1);
 
-		if (!$page->store())
-		{
-			$this->addComponentMessage($page->getError(), 'error');
-			$this->editTask($row);
-			return;
-		}
+			if (!$page->check())
+			{
+				$this->addComponentMessage($page->getError(), 'error');
+				$this->editTask($row);
+				return;
+			}
 
-		//$page->wishid     = $wishid;
-		//$page->created_by = JRequest::getInt('created_by', $juser->get('id'), 'post');
-		//$page->created    = JFactory::getDate()->toSql();
-		//$page->approved   = 1;
-		//$page->pagetext   = rtrim($_POST['pagetext']);
+			if (!$page->store())
+			{
+				$this->addComponentMessage($page->getError(), 'error');
+				$this->editTask($row);
+				return;
+			}
+		}
 
 		if ($redirect)
 		{
