@@ -138,7 +138,7 @@ class MwUtils
 	 */
 	public static function createHomeDirectory($username)
 	{
-		$command = "update_quota '{$username}' '1000000' '3000000'";
+		$command = "create_userhome '{$username}'";
 		$cmd = "/bin/sh components/com_tools/scripts/mw {$command} 2>&1 </dev/null";
 
 		exec($cmd, $results, $status);
