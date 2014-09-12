@@ -92,7 +92,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 		// Fancy launcher?
 		$configs->fancyLauncher = isset($typeParams->fancyLauncher)
-			? $typeParams->fancyLauncher : 1;
+			? $typeParams->fancyLauncher : 0;
 
 		// Allow changes in non-draft version?
 		$configs->freeze 	= isset($blockParams->published_editing)
@@ -240,6 +240,15 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 			// Bundle name
 			$list .= '<li>' . $icon . ' ' . $title . '</li>';
+		}
+		// Draw directories
+		if ($configs->multiZip == 2 && $configs->subdir)
+		{
+			$icon  = '<img src="/plugins/projects/files/images/folder.gif" alt="" />';
+
+			// Bundle name
+			$list .= '<li>' . $icon . ' ' . $configs->subdir . '</li>';
+			$class = 'level2';
 		}
 		// List individual
 		foreach ($attachments as $attach)
@@ -467,15 +476,22 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			}
 			else
 			{
-				// Get ext
-				$parts  = explode('.', $fpath);
-				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
-				$ext	= strtolower($ext);
-
-				// One launcher for all files
 				$label = JText::_('Download');
-				$label.= $ext ?  ' <span class="caption">(' . strtoupper($ext) . ')</span>' : '';
-
+				// Link to bundle
+				if ($showArchive == true)
+				{
+					$url = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number . '&render=archive');
+					$label .= ' ' . JText::_('Bundle');
+					$title = $pub->title . ' ' . JText::_('Bundle');
+				}
+				else
+				{
+					// Get ext
+					$parts  = explode('.', $fpath);
+					$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
+					$ext	= strtolower($ext);
+					$label.= $ext ?  ' <span class="caption">(' . strtoupper($ext) . ')</span>' : '';
+				}
 				$class = 'btn btn-primary active icon-next';
 				$class .= $disabled ? ' link_disabled' : '';
 
