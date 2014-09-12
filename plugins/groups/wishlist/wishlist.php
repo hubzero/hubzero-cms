@@ -190,7 +190,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 			if (\Hubzero\User\Group::exists($gid))
 			{
 				$group = \Hubzero\User\Group::getInstance($gid);
-				$id = $obj->createlist($category, $gid, 0, $cn . ' ' . JText::_('WISHLIST_NAME_GROUP'));
+				$id = $obj->createlist($category, $gid, 0, $cn . ' ' . JText::_('PLG_GROUPS_WISHLIST_NAME_GROUP'));
 			}
 		}
 
@@ -200,7 +200,7 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		//if we dont have a wishlist display error
 		if (!$wishlist)
 		{
-			$arr['html'] = '<p class="error">' . JText::_('ERROR_WISHLIST_NOT_FOUND') . '</p>';
+			$arr['html'] = '<p class="error">' . JText::_('PLG_GROUPS_WISHLIST_ERROR_WISHLIST_NOT_FOUND') . '</p>';
 			return $arr;
 		}
 
