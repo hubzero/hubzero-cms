@@ -74,7 +74,7 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if (document.getElementById('field-about').value == ''){
+	if (document.getElementById('field-subject').value == ''){
 		alert('<?php echo JText::_('COM_WISHLIST_ERROR_MISSING_TEXT'); ?>');
 	} else {
 		<?php echo JFactory::getEditor()->save('text'); ?>
