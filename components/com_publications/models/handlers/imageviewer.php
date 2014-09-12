@@ -79,7 +79,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 					'required_ext' 		=> array(),
 					'min_allowed' 		=> 1,
 					'max_allowed' 		=> 1000,
-					'thumbSuffix' 		=> '-thumb',
+					'thumbSuffix' 		=> '_tn',
 					'thumbFormat' 		=> 'png',
 					'thumbWidth' 		=> '100',
 					'thumbHeight' 		=> '60',
@@ -110,7 +110,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		// Get settings
 		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
-				? $this->_config->params->thumbSuffix : '-tn';
+				? $this->_config->params->thumbSuffix : '_tn';
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
@@ -149,7 +149,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		// Get settings
 		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
-				? $this->_config->params->thumbSuffix : '-tn';
+				? $this->_config->params->thumbSuffix : '_tn';
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
@@ -261,7 +261,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		// Get settings
 		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
-				? $this->_config->params->thumbSuffix : '-tn';
+				? $this->_config->params->thumbSuffix : '_tn';
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
@@ -420,7 +420,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		// Get settings
 		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
-				? $this->_config->params->thumbSuffix : '-tn';
+				? $this->_config->params->thumbSuffix : '_tn';
 
 		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
 				? $this->_config->params->thumbFormat : 'png';
