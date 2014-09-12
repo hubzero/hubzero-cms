@@ -135,7 +135,7 @@ $termsUrl = $config->get('deposit_terms', '');
 		<div class="element_editing">
 			<div class="pane-wrapper">
 				<span class="checker">&nbsp;</span>
-				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_PACKAGE'); ?></h5>
+				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE'); ?></h5>
 				<div class="element-instructions">
 					<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_ARCHIVE_PACKAGE'); ?></p>
 					<div class="list-wrapper">
