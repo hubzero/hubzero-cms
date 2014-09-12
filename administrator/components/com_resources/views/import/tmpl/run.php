@@ -97,6 +97,7 @@ function submitbutton(pressbutton)
 						<script id="resource-template" type="text/x-handlebars-template">
 							<h3 class="resource-title">
 								{{#if record.errors}}<span class="has-errors"><?php echo JText::_('COM_RESOURCES_IMPORT_RUN_RESULT_CONTAINSERRORS'); ?></span>{{/if}}
+								{{#if record.notices}}<span class="has-notices"><?php echo JText::_('COM_RESOURCES_IMPORT_RUN_RESULT_CONTAINSNOTICES'); ?></span>{{/if}}
 								{{{ record.resource.title }}}
 							</h3>
 							
