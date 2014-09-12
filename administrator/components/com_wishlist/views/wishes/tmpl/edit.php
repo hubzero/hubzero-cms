@@ -236,7 +236,7 @@ function submitbutton(pressbutton)
 					<option value="1"<?php echo ($this->row->status == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATUS_GRANTED'); ?></option>
 					<option value="2"<?php echo ($this->row->status == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATUS_DELETED'); ?></option>
 					<option value="3"<?php echo ($this->row->status == 3) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATUS_REJECTED'); ?></option>
-					<option value="3"<?php echo ($this->row->status == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATUS_WITHDRAWN'); ?></option>
+					<option value="4"<?php echo ($this->row->status == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATUS_WITHDRAWN'); ?></option>
 				</select>
 			</div>
 		</fieldset>
