@@ -24,7 +24,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 	$useBlocks  = $this->config->get('curation', 0);
-	$experiment = $useBlocks ? true : false;
+//	$experiment = $useBlocks ? true : false;
+	$experiment = false;
 
 	/* Non-Tool Publication page view  */
 
