@@ -4621,8 +4621,8 @@ class plgProjectsPublications extends JPlugin
 					$helper = new PublicationHelper( $this->_database );
 
 					// Build publication path
-					$base_path = $this->_pubconfig->get('webpath');
-					$path = $helper->buildPath($pid, $vid, $base_path, '', 1);
+					$path    =  JPATH_ROOT . DS . trim($this->_pubconfig->get('webpath'), DS)
+							. DS .  \Hubzero\Utility\String::pad( $pid );
 
 					// Delete all files
 					if (is_dir($path))
