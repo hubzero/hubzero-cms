@@ -32,33 +32,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Hubzero_API'
- *
- * Long description (if any) ...
+ * API application class
  */
 class Hubzero_API extends JApplication
 {
-	function reset()
-	{
-		$this->unregister_long_arrays();
-		$this->unregister_globals();
-		$this->fix_http_headers();
-		$this->handle_method_override();
-
-		$this->_enabled = false;
-		$this->_component = false;
-		$this->_route = array();
-		$this->provider = null;
-		$this->_authn = array();
-
-		$this->request = new \Hubzero\Api\Request();
-		$this->response = new \Hubzero\Api\Response();
-		$this->output = '';
-		JFactory::getSession()->restart();
-		$this->checkSession();
-		return $this; // chaining
-	}
-
 	/**
 	 * Description for '_authn'
 	 *
@@ -101,8 +78,13 @@ class Hubzero_API extends JApplication
 	 */
 	public $request = null;
 
-
+	/**
+	 * Output
+	 *
+	 * @var string
+	 */
 	public $output = '';
+
 	/**
 	 * Description for '_provider'
 	 *
@@ -111,14 +93,13 @@ class Hubzero_API extends JApplication
 	private $_provider = null;
 
 	/**
-	 * Short description for '__construct'
+	 * Class constructor.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $config Parameter description (if any) ...
-	 * @return     void
+	 * @param   array  $config  A configuration array including optional elements such as session
+	 * session_name, clientId and others. This is not exhaustive.
+	 * @return  void
 	 */
-	function __construct($config = array())
+	public function __construct($config = array())
 	{
 		JLoader::import('joomla.user.user');
 		JLoader::register('JText' , JPATH_LIBRARIES . DS . 'joomla' . DS . 'methods.php');
@@ -141,13 +122,41 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
+	 * Reset the application
+	 *
+	 * @return  object
+	 */
+	public function reset()
+	{
+		$this->unregister_long_arrays();
+		$this->unregister_globals();
+		$this->fix_http_headers();
+		$this->handle_method_override();
+
+		$this->_enabled   = false;
+		$this->_component = false;
+		$this->_route     = array();
+		$this->provider   = null;
+		$this->_authn     = array();
+
+		$this->request  = new \Hubzero\Api\Request();
+		$this->response = new \Hubzero\Api\Response();
+		$this->output   = '';
+
+		JFactory::getSession()->restart();
+		$this->checkSession();
+
+		return $this; // chaining
+	}
+
+	/**
 	 * For clients that can't (or programmer to lazy to) support all
 	 * HTTP methods allow the method to be specified via HTTP_X_HTTP_METHOD_OVERRIDE
 	 * header.
 	 *
 	 * @return     void
 	 */
-	function handle_method_override()
+	public function handle_method_override()
 	{
 		// @FIXME: should maybe only be valid if the real method is GET
 
@@ -167,7 +176,7 @@ class Hubzero_API extends JApplication
 	 *
 	 * @return     void
 	 */
-	function fix_http_headers()
+	public function fix_http_headers()
 	{
 		if (function_exists('apache_request_headers'))
 		{
@@ -184,7 +193,7 @@ class Hubzero_API extends JApplication
 
 		if (ini_get('expose_php'))
 		{
-		    $_SERVER['HTTP_X_POWERED_BY'] = 'PHP';
+			$_SERVER['HTTP_X_POWERED_BY'] = 'PHP';
 		}
 	}
 
@@ -193,7 +202,7 @@ class Hubzero_API extends JApplication
 	 *
 	 * @return     void
 	 */
-	function unregister_long_arrays()
+	public function unregister_long_arrays()
 	{
 		if (ini_get('register_long_arrays'))
 		{
@@ -212,7 +221,7 @@ class Hubzero_API extends JApplication
 	 *
 	 * @return     void
 	 */
-	function unregister_globals()
+	public function unregister_globals()
 	{
 		if (ini_get('register_globals'))
 		{
@@ -262,13 +271,12 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Short description for 'initialise'
+	 * Initialise the application.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @param   array  $options  An optional associative array of configuration settings.
+	 * @return  void
 	 */
-	function initialise()
+	public function initialise($options = array())
 	{
 		$this->response->setCachable(false);
 		$this->response->setAcceptableMediaTypes($this->request->getHeader('Accept'));
@@ -279,13 +287,16 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Short description for 'route'
+	 * Route the application.
 	 *
-	 * Long description (if any) ...
+	 * Routing is the process of examining the request environment to determine which
+	 * component should receive the request. The component optional parameters
+	 * are then set in the request object to be processed when the application is being
+	 * dispatched.
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
-	function route()
+	public function route()
 	{
 		if (!$this->_enabled)
 		{
@@ -362,13 +373,11 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Short description for 'authenticate'
+	 * Authenticate requests
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  mixed
 	 */
-	function authenticate()
+	public function authenticate()
 	{
 		if (!$this->_route)
 		{
@@ -466,7 +475,7 @@ class Hubzero_API extends JApplication
 
 		$this->_authn['user_id'] = null;
 
-		if ($this->_authn['oauth_token'])
+		if (isset($this->_authn['oauth_token']) && $this->_authn['oauth_token'])
 		{
 			$data = $oauthp->getTokenData();
 
@@ -498,7 +507,7 @@ class Hubzero_API extends JApplication
 			{
 				$db = JFactory::getDBO();
 				$timeout = JFactory::getConfig()->getValue('config.timeout');
-				$query = "SELECT userid FROM #__session WHERE session_id=" . $db->Quote($session_id) . "AND " .
+				$query = "SELECT userid FROM `#__session` WHERE session_id=" . $db->Quote($session_id) . "AND " .
 					" time + " . (int) $timeout . " <= NOW() AND client_id = 0;";
 
 				$db->setQuery($query);
@@ -515,7 +524,13 @@ class Hubzero_API extends JApplication
 		$this->request->validApiKey = !empty($this->_authn['consumer_key']);
 	}
 
-	function getAuthN($key = null)
+	/**
+	 * Get authenticated value
+	 *
+	 * @param   string $key
+	 * @return  mixed
+	 */
+	public function getAuthN($key = null)
 	{
 		if ($key === null)
 		{
@@ -525,20 +540,25 @@ class Hubzero_API extends JApplication
 		if (in_array($key, array('session_id', 'user_id', 'oauth_token', 'consumer_key')))
 		{
 			if (array_key_exists($key, $this->_authn))
+			{
 				return $this->_authn[$key];
+			}
 
 			return null;
 		}
 	}
 
 	/**
-	 * Short description for 'dispatch'
+	 * Dispatch the application.
 	 *
-	 * Long description (if any) ...
+	 * Dispatching is the process of pulling the option from the request object and
+	 * mapping them to a component. If the component does not exist, it handles
+	 * determining a default component to dispatch.
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @param   string  $component  The component to dispatch.
+	 * @return  void
 	 */
-	function dispatch()
+	public function dispatch($component = null)
 	{
 		//if (!$this->_provider)
 		//{
@@ -560,18 +580,19 @@ class Hubzero_API extends JApplication
 			$output = ob_get_clean();
 
 			$this->response->appendBody($output);
-
 		}
 	}
 
 	/**
-	 * Short description for 'render'
+	 * Render the application.
 	 *
-	 * Long description (if any) ...
+	 * Rendering is the process of pushing the document buffers into the template
+	 * placeholders, retrieving data from the document and pushing it into
+	 * the JResponse buffer.
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	function render()
+	public function render()
 	{
 		global $_HUBZERO_API_START;
 
@@ -581,13 +602,12 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Short description for 'execute'
+	 * Execute
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @param   boolean  $capture  Capture output?
+	 * @return  void
 	 */
-	function execute($capture = false)
+	public function execute($capture = false)
 	{
 		global $_HUBZERO_API_START;
 
@@ -620,178 +640,177 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Short description for 'close'
+	 * Exit the application.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @param   integer  $code  Exit code
+	 * @return  void     Dies
 	 */
-	function close()
+	public function close($code = 0)
 	{
-		die('close() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'redirect'
+	 * Enqueue a system message.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @param   string   $url      The URL to redirect to. Can only be http/https URL
+	 * @param   string   $msg      An optional message to display on redirect.
+	 * @param   string   $msgType  An optional message type. Defaults to message.
+	 * @param   boolean  $moved    True if the page is 301 Permanently Moved, otherwise 303 See Other is assumed.
+	 * @return  void     Dies
 	 */
-	function redirect()
+	public function redirect($url, $msg = '', $msgType = 'message', $moved = false)
 	{
-		die('redirect() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'enqueueMessage'
+	 * Invalid in API application context
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $msg Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $msg   The message to enqueue.
+	 * @param   string  $type  The message type. Default is message.
+	 * @return  void
 	 */
-	function enqueueMessage( $msg, $type = 'message' )
+	public function enqueueMessage($msg, $type = 'message')
 	{
-		die('enqueueMessage() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'getMessageQueue'
+	 * Get the system message queue.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
-	function getMessageQueue()
+	public function getMessageQueue()
 	{
-		die('getMessageQueue() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	// function getCfg( $varname ) inherited
 
 	/**
-	 * Short description for 'getName'
+	 * Method to get the application name.
 	 *
-	 * Long description (if any) ...
+	 * The dispatcher name is by default parsed using the classname, or it can be set
+	 * by passing a $config['name'] in the class constructor.
 	 *
-	 * @return     string Return description (if any) ...
+	 * @return  string  The name of the dispatcher.
 	 */
-	function getName()
+	public function getName()
 	{
 		return 'api';
 	}
 
 	/**
-	 * Short description for 'getUserState'
+	 * Gets a user state.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $key      The path of the state.
+	 * @param   mixed   $default  Optional default value, returned if the internal value is null.
+	 * @return  void    Dies
 	 */
-	function getUserState( $key )
+	public function getUserState($key, $default = null)
 	{
-		die('getUserState() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'setUserState'
+	 * Sets the value of a user state variable.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $key    The path of the state.
+	 * @param   string  $value  The value of the variable.
+	 * @return  void    Dies
 	 */
-	function setUserState( $key, $value )
+	public function setUserState($key, $value)
 	{
-		die('setUserState() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'getUserStateFromRequest'
+	 * Gets the value of a user state variable.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $key Parameter description (if any) ...
-	 * @param      unknown $request Parameter description (if any) ...
-	 * @param      unknown $default Parameter description (if any) ...
-	 * @param      string $type Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $key      The key of the user state variable.
+	 * @param   string  $request  The name of the variable passed in a request.
+	 * @param   string  $default  The default value for the variable if not found. Optional.
+	 * @param   string  $type     Filter for the variable, for valid values see {@link JFilterInput::clean()}. Optional.
+	 * @return  void    Dies
 	 */
-	function getUserStateFromRequest( $key, $request, $default = null, $type = 'none' )
+	public function getUserStateFromRequest($key, $request, $default = null, $type = 'none')
 	{
-		die('getUserStateFromRequest() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'registerEvent'
+	 * Registers a handler to a particular event group.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $event Parameter description (if any) ...
-	 * @param      unknown $handler Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $event    The event name.
+	 * @param   mixed   $handler  The handler, a function or an instance of a event object.
+	 * @return  void
 	 */
-	static function registerEvent($event, $handler)
+	public static function registerEvent($event, $handler)
 	{
-		die('registerEvent() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'triggerEvent'
+	 * Calls all handlers associated with an event group.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $event Parameter description (if any) ...
-	 * @param      unknown $args Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $event  The event name.
+	 * @param   array   $args   An array of arguments.
+	 * @return  void
 	 */
-	function triggerEvent($event, $args=null)
+	public function triggerEvent($event, $args=null)
 	{
-		die('triggerEvent() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'login'
+	 * Login authentication function.
 	 *
-	 * Long description (if any) ...
+	 * Username and encoded password are passed the onUserLogin event which
+	 * is responsible for the user validation. A successful validation updates
+	 * the current session record with the user's details.
 	 *
-	 * @param      unknown $credentials Parameter description (if any) ...
-	 * @param      array $options Parameter description (if any) ...
-	 * @return     void
+	 * Username and encoded password are sent as credentials (along with other
+	 * possibilities) to each observer (authentication plugin) for user
+	 * validation.  Successful validation will update the current session with
+	 * the user details.
+	 *
+	 * @param   array  $credentials  Array('username' => string, 'password' => string)
+	 * @param   array  $options      Array('remember' => boolean)
+	 * @return  void
 	 */
-	function login($credentials, $options = array())
+	public function login($credentials, $options = array())
 	{
-		die('login() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'logout'
+	 * Logout authentication function.
 	 *
-	 * Long description (if any) ...
+	 * Passed the current user information to the onUserLogout event and reverts the current
+	 * session record back to 'anonymous' parameters.
+	 * If any of the authentication plugins did not successfully complete
+	 * the logout routine then the whole method fails. Any errors raised
+	 * should be done in the plugin as this provides the ability to give
+	 * much more information about why the routine may have failed.
 	 *
-	 * @param      unknown $userid Parameter description (if any) ...
-	 * @param      array $options Parameter description (if any) ...
-	 * @return     void
+	 * @param   integer  $userid   The user to load - Can be an integer or string - If string, it is converted to ID automatically
+	 * @param   array    $options  Array('clientid' => array of client id's)
+	 * @return  void
 	 */
-	function logout($userid = null, $options = array())
+	public function logout($userid = null, $options = array())
 	{
-		die('logout() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'getRouter'
+	 * Returns the application JRouter object.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      array $options Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $name     The name of the application.
+	 * @param   array   $options  An optional associative array of configuration settings.
+	 * @return  JRouter  A JRouter object
 	 */
-	static function &getRouter($name = null, $options = array())
+	static public function getRouter($name = null, array $options = array())
 	{
 		//die('getRouter() invalid in API application context');
 		/*
@@ -808,7 +827,6 @@ class Hubzero_API extends JApplication
 		return $router;
 		*/
 
-
 		$config = JFactory::getConfig();
 		$options['mode'] = $config->getValue('config.sef');
 		$router =& parent::getRouter('api', $options);
@@ -816,279 +834,45 @@ class Hubzero_API extends JApplication
 	}
 
 	/**
-	 * Short description for 'getPathway'
+	 * Returns the application JPathway object.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      array $options Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $name     The name of the application.
+	 * @param   array   $options  An optional associative array of configuration settings.
+	 * @return  void
 	 */
-	function &getPathway($name = null, $options = array())
+	public function getPathway($name = null, $options = array())
 	{
-		die('getPathway() invalid in API application context');
+		die(__METHOD__ . ' invalid in API application context');
 	}
 
 	/**
-	 * Short description for 'getMenu'
+	 * Returns the application JPathway object.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      array $options Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $name     The name of the application/client.
+	 * @param   array   $options  An optional associative array of configuration settings.
+	 * @return  void
 	 */
-	function &getMenu($name = null, $options = array())
+	public function getMenu($name = null, $options = array())
 	{
 		//die('getMenu() invalid in API application context');
 		$options = array();
-		$menu =& parent::getMenu('site', $options);
+		$menu = parent::getMenu('site', $options);
 		return $menu;
 	}
 
 	/**
-	 * Short description for '_createSession'
+	 * Create the user session.
 	 *
-	 * Long description (if any) ...
+	 * Old sessions are flushed based on the configuration value for the cookie
+	 * lifetime. If an existing session, then the last access time is updated.
+	 * If a new session, a session id is generated and a record is created in
+	 * the #__sessions table.
 	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @return     void
+	 * @param   string  $name  The sessions name.
+	 * @return  JSession  JSession on success. May call exit() on database error.
 	 */
-	function _createSession( $name )
+	protected function _createSession($name)
 	{
 		return parent::_createSession(JUtility::getHash('site'));
-	}
-
-	/**
-	 * Short description for 'appendPathWay'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      unknown $link Parameter description (if any) ...
-	 * @return     void
-	 */
-	function appendPathWay( $name, $link = null )
-	{
-		die('appendPathWay() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getCustomPathWay'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function getCustomPathWay()
-	{
-		die('getCustomPathWay() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getHead'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function getHead()
-	{
-		die('getHead() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'addMetaTag'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      unknown $content Parameter description (if any) ...
-	 * @param      string $prepend Parameter description (if any) ...
-	 * @param      string $append Parameter description (if any) ...
-	 * @return     void
-	 */
-	function addMetaTag( $name, $content, $prepend = '', $append = '' )
-	{
-		die('addMetaTag() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'appendMetaTag'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      unknown $content Parameter description (if any) ...
-	 * @return     void
-	 */
-	function appendMetaTag( $name, $content )
-	{
-		die('appendMetaTag() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'prependMetaTag'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $name Parameter description (if any) ...
-	 * @param      unknown $content Parameter description (if any) ...
-	 * @return     void
-	 */
-	function prependMetaTag( $name, $content )
-	{
-		die('prependMetaTag() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'addCustomHeadTag'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $html Parameter description (if any) ...
-	 * @return     void
-	 */
-	function addCustomHeadTag( $html )
-	{
-		die('addCustomHeadTag() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getBlogSectionCount'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function getBlogSectionCount( )
-	{
-		die('getBlogSectionCount() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getBlogCategoryCount'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function getBlogCategoryCount( )
-	{
-		die('getBlogCategoryCount() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getGlobalBlogSectionCount'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function getGlobalBlogSectionCount( )
-	{
-		die('getGlobalBlogSectionCount() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getStaticContentCount'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function getStaticContentCount( )
-	{
-		die('getStaticContentCount() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getContentItemLinkCount'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function getContentItemLinkCount( )
-	{
-		die('getContentItemLinkCount() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getPath'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $varname Parameter description (if any) ...
-	 * @param      unknown $user_option Parameter description (if any) ...
-	 * @return     void
-	 */
-	function getPath($varname, $user_option = null)
-	{
-		die('getPath() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getBasePath'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $client Parameter description (if any) ...
-	 * @param      boolean $addTrailingSlash Parameter description (if any) ...
-	 * @return     void
-	 */
-	function getBasePath($client=0, $addTrailingSlash = true)
-	{
-		die('getBasePath() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getUser'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function &getUser()
-	{
-		die('getUser() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getItemid'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     void
-	 */
-	function getItemid( $id )
-	{
-		die('getItemid() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'setPageTitle'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $title Parameter description (if any) ...
-	 * @return     void
-	 */
-	function setPageTitle( $title=null )
-	{
-		die('setPageTitle() invalid in API application context');
-	}
-
-	/**
-	 * Short description for 'getPageTitle'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
-	 */
-	function getPageTitle()
-	{
-		die('getPageTitle() invalid in API application context');
 	}
 }
