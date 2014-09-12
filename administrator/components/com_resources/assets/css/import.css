@@ -143,8 +143,14 @@ hr {
 	display: none;
 }
 .results .resource-title .has-errors {
+	display: inline-block;
 	font-weigh: bold;
 	color: #F00;
+}
+.results .resource-title .has-notices {
+	display: inline-block;
+	font-weigh: bold;
+	color: #3149A5;
 }
 .results .resource-title:hover {
 	cursor: pointer;
