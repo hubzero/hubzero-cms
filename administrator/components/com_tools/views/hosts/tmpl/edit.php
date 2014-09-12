@@ -83,8 +83,8 @@ function submitbutton(pressbutton)
 			</div>
 
 			<div class="input-wrap">
-				<label for="field-venue_id"><?php echo JText::_('COM_TOOLS_FIELD_ZONE'); ?>:</label><br />
-				<select name="fields[venue_id]" id="field-venue_id">
+				<label for="field-zone_id"><?php echo JText::_('COM_TOOLS_FIELD_ZONE'); ?>:</label><br />
+				<select name="fields[zone_id]" id="field-zone_id">
 					<option value="0"><?php echo JText::_('COM_TOOLS_SELECT'); ?></option>
 					<?php
 						if ($this->zones)
