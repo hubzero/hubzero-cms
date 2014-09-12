@@ -358,7 +358,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-				'notice'
+				'error'
 			);
 			return;
 		}
@@ -375,8 +375,8 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				$url,
-				JText::_('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
-				'notice'
+				JText::_('COM_PUBLICATIONS_ERROR_SAVING_ADVANCED_CURATION'),
+				'error'
 			);
 			return;
 		}
