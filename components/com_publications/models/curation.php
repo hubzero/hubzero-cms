@@ -990,7 +990,7 @@ class PublicationsCuration extends JObject
 	 * @param   integer $sequence	Block order in curation
 	 * @return  integer
 	 */
-	public function getNextBlock( $name, $sequence = 0)
+	public function getNextBlock( $name, $sequence = 0, $activeId = 1)
 	{
 		$sequence = $sequence ? $sequence : $this->_blockorder;
 		if (!$sequence)
@@ -1077,7 +1077,7 @@ class PublicationsCuration extends JObject
 	 * @param   integer $sequence	Block order in curation
 	 * @return  integer
 	 */
-	public function getPreviousBlock( $name, $sequence = 0)
+	public function getPreviousBlock( $name, $sequence = 0, $activeId = 1)
 	{
 		$sequence = $sequence ? $sequence : $this->_blockorder;
 		if (!$sequence)
