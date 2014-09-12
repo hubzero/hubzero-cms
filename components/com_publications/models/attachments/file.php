@@ -204,7 +204,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 				if ($zip->addFile($filePath, $where))
 				{
-					$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $fPath) . "\n";
+					$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
 				}
 			}
 		}
@@ -298,7 +298,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		}
 
 		// Draw bundles
-		if ($configs->multiZip == 1 && $attachments && count($attachments) > 1)
+		if ($configs->multiZip && $attachments && count($attachments) > 1)
 		{
 			$title = $configs->bundleTitle ? $configs->bundleTitle : 'Bundle';
 			$pop   = JText::_('Download') . ' ' . $title;
