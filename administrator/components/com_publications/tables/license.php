@@ -452,6 +452,27 @@ class PublicationLicense extends JTable
 	}
 
 	/**
+	 * Get license by title
+	 *
+	 * @param      string $title License title
+	 * @return     mixed False if error, Object on success
+	 */
+	public function getLicenseByTitle ( $title = '' )
+	{
+		if (!$title)
+		{
+			return false;
+		}
+		$query = "SELECT * FROM $this->_tbl ";
+		$query.= " WHERE title LIKE '$title'";
+		$query.= " LIMIT 1";
+
+		$this->_db->setQuery( $query );
+		$result = $this->_db->loadObjectList();
+		return $result ? $result[0] : false;
+	}
+
+	/**
 	 * Get license by pub version id
 	 *
 	 * @param      integer $vid Pub version ID
