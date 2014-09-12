@@ -386,7 +386,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		// Record user's vote (new way)
 		if ($cat)
 		{
-			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS . 'vote.class.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->_option . DS  . 'tables' . DS . 'vote.php');
 
 			$v = new Vote($this->database);
 			$v->referenceid = $row->get('id');

@@ -38,7 +38,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'tags.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'plan.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'vote.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'vote.class.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'vote.php');
 
 /**
  * Wishlist model class for a wish
@@ -1171,7 +1171,6 @@ class WishlistModelWish extends WishlistModelAbstract
 			case 'vote':
 			case 'votes':
 			case 'feedback':
-				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'vote.class.php');
 				$v = new Vote($this->_db);
 				if (!$v->deleteVotes(array('id' => $this->get('id'), 'category' => 'wish')))
 				{
