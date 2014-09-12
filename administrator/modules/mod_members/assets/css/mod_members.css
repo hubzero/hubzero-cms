@@ -34,6 +34,9 @@
 	.mod_members .stats-overview tbody tr td.unconfirmed a {
 		color: orange;
 	}
+	.mod_members .stats-overview tbody tr td.newest a {
+		color: #999;
+	}
 	.mod_members .stats-overview tbody tr td>span {
 		font-size: 0.35em;
 		font-weight: 400;

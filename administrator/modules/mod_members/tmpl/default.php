@@ -39,7 +39,7 @@ $total = $this->confirmed + $this->unconfirmed;
 	<table class="stats-overview">
 		<tbody>
 			<tr>
-				<td colspan="2">
+				<td colspan="3">
 					<div>
 						<div class="graph">
 							<strong class="bar" style="width: <?php echo round(($this->confirmed / $total) * 100, 2); ?>%"><span><?php echo round(($this->confirmed / $total) * 100, 2); ?>%</span></strong>
@@ -55,6 +55,10 @@ $total = $this->confirmed + $this->unconfirmed;
 				<td class="unconfirmed">
 					<a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>"><?php echo $this->escape($this->unconfirmed); ?></a>
 					<span><?php echo JText::_('MOD_MEMBERS_UNCONFIRMED'); ?></span>
+				</td>
+				<td class="newest">
+					<a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo gmdate("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('MOD_MEMBERS_NEW_TITLE'); ?>"><?php echo $this->escape($this->pastDay); ?></a>
+					<span><?php echo JText::_('MOD_MEMBERS_NEW'); ?></span>
 				</td>
 			</tr>
 		</tbody>
