@@ -44,9 +44,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 	$dirHierarchy = isset($this->params->dirHierarchy) ? $this->params->dirHierarchy : 1;
 
-	if ($dirHierarchy)
+	if ($dirHierarchy == 1)
 	{
 		$file = $this->data->path;
+	}
+	elseif ($dirHierarchy == 2)
+	{
+		// Get file attachment params
+		$file 	= isset($this->data->suffix) && $this->data->suffix  ? ProjectsHtml::fixFileName(basename($data->path), ' (' . $this->data->suffix . ')') : basename($data->path);
 	}
 	else
 	{

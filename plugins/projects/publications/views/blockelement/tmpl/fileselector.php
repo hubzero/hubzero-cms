@@ -227,6 +227,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 					// Is attachment (image) also publication thumbnail
 					$params = new JParameter( $att->params );
 					$data->pubThumb = $params->get('pubThumb', NULL);
+					$data->suffix = $params->get('suffix', NULL);
 
 					$data->hash	  	= $att->vcs_hash;
 					$data->gone 	= is_file($this->path . DS . $att->path) ? false : true;

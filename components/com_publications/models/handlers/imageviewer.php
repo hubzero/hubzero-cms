@@ -172,9 +172,17 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
 
-		if ($configs->dirHierarchy)
+		if ($configs->dirHierarchy == 1)
 		{
 			$path = $configs->pubPath . DS . $row->path;
+		}
+		elseif ($configs->dirHierarchy == 2)
+		{
+			// Get file attachment params
+			$fParams = new JParameter( $row->params );
+			$suffix  = $fParams->get('suffix');
+			$name 	= $suffix ? ProjectsHtml::fixFileName(basename($row->path), ' (' . $suffix . ')') : basename($row->path);
+			$path  = $configs->pubPath . DS . $name;
 		}
 		else
 		{
@@ -303,9 +311,17 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$els .=  '<div class="showcase-pane">'."\n";
 		foreach ($attachments as $attach)
 		{
-			if ($dirHierarchy)
+			if ($dirHierarchy == 1)
 			{
 				$fpath = $pubPath . DS . trim($attach->path, DS);
+			}
+			elseif ($dirHierarchy == 2)
+			{
+				// Get file attachment params
+				$fParams = new JParameter( $attach->params );
+				$suffix  = $fParams->get('suffix');
+				$name 	= $suffix ? ProjectsHtml::fixFileName(basename($attach->path), ' (' . $suffix . ')') : basename($attach->path);
+				$fpath  = $pubPath . DS . $name;
 			}
 			else
 			{
@@ -439,9 +455,17 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		foreach ($attachments as $attach)
 		{
-			if ($attConfigs->dirHierarchy)
+			if ($attConfigs->dirHierarchy == 1)
 			{
 				$fpath = $path . DS . trim($attach->path, DS);
+			}
+			elseif ($attConfigs->dirHierarchy == 2)
+			{
+				// Get file attachment params
+				$fParams = new JParameter( $attach->params );
+				$suffix  = $fParams->get('suffix');
+				$name 	= $suffix ? ProjectsHtml::fixFileName(basename($attach->path), ' (' . $suffix . ')') : basename($attach->path);
+				$fpath  = $path . DS . $name;
 			}
 			else
 			{

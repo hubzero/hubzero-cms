@@ -164,6 +164,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status 
 					// Is attachment (image) also publication thumbnail
 					$params = new JParameter( $att->params );
 					$data->pubThumb = $params->get('pubThumb', NULL);
+					$data->suffix = $params->get('suffix', NULL);
 
 					// Get file size
 					$data->size		= $att->vcs_hash
