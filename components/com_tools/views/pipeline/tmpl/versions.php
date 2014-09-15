@@ -65,7 +65,7 @@ $this->css('pipeline.css')
 			<?php if ($this->action != 'dev' && $this->status['state'] != ToolsHelperHtml::getStatusNum('Published')) { ?>
 				<?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
 					<h4><?php echo JText::_('COM_TOOLS_VERSION_PLS_CONFIRM'); ?> <?php echo($this->action == 'edit') ? JText::_('COM_TOOLS_NEXT'): JText::_('COM_TOOLS_THIS'); ?> <?php echo JText::_('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
-				<?php } else if($this->action == 'new' && $this->status['toolname']) { // new version is required ?>
+				<?php } else if ($this->action == 'new' && $this->status['toolname']) { // new version is required ?>
 					<h4><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_ENTER_UNIQUE_VERSION'); ?>:</h4>
 				<?php } ?>
 					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']); ?>" method="post" id="versionForm">
