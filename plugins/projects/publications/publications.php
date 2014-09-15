@@ -1047,6 +1047,11 @@ class plgProjectsPublications extends JPlugin
 
 		// Determine publication master type
 		$choices  	= $mt->getTypes('alias', 1);
+		if (count($choices) == 1)
+		{
+			$base = $choices[0];
+		}
+
 		$mastertype = in_array($base, $choices) ? $base : 'files';
 
 		$now = JFactory::getDate()->toSql();
