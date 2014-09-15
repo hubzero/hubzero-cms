@@ -34,7 +34,7 @@ if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
-		$data[$match[1]] = PublicationsHtml::_txtUnpee($match[2]);
+		$data[$match[1]] = $match[2];
 	}
 }
 
@@ -90,13 +90,14 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 			</h5>
 			<?php if (!$coming && $value) {
 				// Parse editor text
+				$val = $value;
 				if ($editor)
 				{
 					$model = new PublicationsModelPublication($this->pub);
-					$value = $model->parse($aliasmap, $this->manifest->params->field, 'parsed');
+					$val = $model->parse($aliasmap, $this->manifest->params->field, 'parsed');
 				}
 				?>
-				<div class="element-value"><?php echo $value; ?></div>
+				<div class="element-value"><?php echo $val; ?></div>
 			<?php } ?>
 		</div>
 	</div>

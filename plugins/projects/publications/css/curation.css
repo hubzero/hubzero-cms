@@ -654,7 +654,7 @@
 		display: block;
 	}
 	.el-coming h5.element-title:hover .element-options {
-		display: none;
+		/*display: none;*/
 	}
 	#pub-editor .columns .draftflow .el-coming h5.element-title {
 		color: #CCC;
