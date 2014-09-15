@@ -296,7 +296,7 @@ class PublicationMasterType extends JTable
 			$types = array();
 			if ($results)
 			{
-				foreach($results as $result)
+				foreach ($results as $result)
 				{
 					$types[] = $result->alias;
 				}
