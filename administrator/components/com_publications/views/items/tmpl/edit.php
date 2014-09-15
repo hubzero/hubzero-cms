@@ -68,6 +68,12 @@ if (count($matches) > 0)
 
 $customFields = $rt->customFields && $rt->customFields != '{"fields":[]}' ? $rt->customFields : '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
 
+if ($this->useBlocks)
+{
+	$customFields = $this->pub->_curationModel->getMetaSchema();
+}
+
+
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
 $elements 	= new PublicationsElements($data, $customFields);

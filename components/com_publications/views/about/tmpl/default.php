@@ -70,8 +70,8 @@ if ($useBlocks)
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
-$elements 	= new PublicationsElements($data, $customFields);
-$schema 	= $elements->getSchema();
+$metaElements 	= new PublicationsElements($data, $customFields);
+$schema 	= $metaElements->getSchema();
 
 ?>
 <div class="pubabout">
@@ -197,7 +197,7 @@ $schema 	= $elements->getSchema();
 			if (isset($data[$field->name])) {
 				if ($field->name == 'citations') {
 					$citations = $data[$field->name];
-				} else if ($value = $elements->display($field->type, $data[$field->name])) {
+				} else if ($value = $metaElements->display($field->type, $data[$field->name])) {
 				?>
 				<h4><?php echo $field->label; ?></h4>
 				<div class="pub-content">
