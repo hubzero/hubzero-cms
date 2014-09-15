@@ -48,11 +48,10 @@ function setTask(task)
 	$('#task').value = task;
 }
 jQuery(document).ready(function($){
-	//window.top.document.updateUploader && window.top.document.updateUploader();
 	$('a.edit-asset').on('click', function(e) {
 		e.preventDefault();
-		//window.top.document.assetform.fromElement(el);
-		window.top.document.$.fancybox.open($(this).attr('href'), {handler: 'iframe', size: {x: 570, y: 550}});
+
+		window.parent.$.fancybox.open($(this).attr('href'), {type: 'iframe', size: {x: 570, y: 550}});
 	});
 });
 
@@ -64,7 +63,7 @@ jQuery(document).ready(function($){
 		<thead>
 			<tr>
 				<th colspan="<?php echo (!$this->filters['zone'] ? 9 : 8); ?>" style="text-align:right;">
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=add&amp;zone=<?php echo $this->filters['zone']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo JText::_('COM_TOOLS_ADD_LOCATION'); ?></a>
+					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=add&amp;zone=<?php echo $this->filters['zone']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>" class="button edit-asset" rel="{type: 'iframe', size: {x: 570, y: 550}}"><?php echo JText::_('COM_TOOLS_ADD_LOCATION'); ?></a>
 				</th>
 			</tr>
 			<tr>
