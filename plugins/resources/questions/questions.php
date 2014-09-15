@@ -331,11 +331,13 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		}
 
 		// Ensure the user added a tag
+		/*
 		if (!$tags)
 		{
 			$this->setError(JText::_('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
 			return $this->_new($row);
 		}
+		*/
 
 		// Store new content
 		if (!$row->store(true))
