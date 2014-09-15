@@ -119,7 +119,6 @@ if ($this->wishlist->exists())
 
 							<input type="hidden" name="task" value="<?php echo $this->escape($this->task); /* XSS fix, see ticket 1420*/ ?>" />
 							<input type="hidden" name="newsearch" value="1" />
-							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						</fieldset>
 						<?php if ($this->filters['tag']) { ?>
 							<fieldset class="applied-tags">
