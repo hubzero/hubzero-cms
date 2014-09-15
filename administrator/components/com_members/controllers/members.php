@@ -240,7 +240,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$profile->getError(),
+				$user->getError(),
 				'error'
 			);
 			return;
