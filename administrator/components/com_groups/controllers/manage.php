@@ -709,8 +709,41 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// make sure we have a git repo
 			if (!is_dir($uploadPath . DS . '.git'))
 			{
-				$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));
-				continue;
+				// only do stage setup on stage
+				$environment = strtolower(JFactory::getConfig()->get('application_env', 'development'));
+				if ($environment != 'stage')
+				{
+					$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));
+					continue;
+				}
+
+				// build group & project names
+				$host        = explode('.', $_SERVER['HTTP_HOST']);
+				$groupName   = strtolower($host[0]);
+				$projectName = $group->get('cn');
+
+				// get gitlab config
+				$gitlabUrl = $this->config->get('super_gitlab_url', '');
+				$gitlabKey = $this->config->get('super_gitlab_key', '');
+
+				// instantiate new gitlab client
+				$client        = new GroupsHelperGitlab($gitlabUrl, $gitlabKey);
+				$gitlabGroup   = $client->group($groupName);
+				$gitlabProject = $client->project($projectName);
+
+				// if we didnt get both a matching project & group continue
+				if (!$gitlabGroup || !$gitlabProject)
+				{
+					$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));
+					continue;
+				}
+
+				// setup stage environment
+				$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
+				$cmd .= str_replace('/' . $group->get('gidNumber'), '', $uploadPath) . ' ' . $group->get('gidNumber') . ' ' . $gitlabProject['ssh_url_to_repo'] . ' 2>&1';
+
+				// execute command
+				$output = shell_exec($cmd);
 			}
 
 			// build command to run via shell

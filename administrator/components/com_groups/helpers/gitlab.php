@@ -77,6 +77,24 @@ class GroupsHelperGitlab
 	}
 
 	/**
+	 * Get a Group by name
+	 * 
+	 * @param  [type] $name [description]
+	 * @return [type]       [description]
+	 */
+	public function group($name)
+	{
+		foreach ($this->groups() as $group)
+		{
+			if ($group['name'] == $name)
+			{
+				return $group;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Create group based on params
 	 * 
 	 * @param  array  $params Group params
@@ -95,6 +113,24 @@ class GroupsHelperGitlab
 	public function projects()
 	{
 		return $this->_getRequest('projects');
+	}
+
+	/**
+	 * Get Project by Name
+	 * 
+	 * @param  [type] $name [description]
+	 * @return [type]       [description]
+	 */
+	public function project($name)
+	{
+		foreach ($this->projects() as $project)
+		{
+			if ($project['name'] == $name)
+			{
+				return $project;
+			}
+		}
+		return false;
 	}
 
 	/**
