@@ -391,7 +391,8 @@ class PublicationMasterType extends JTable
 			return false;
 		}
 
-		include_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_publications'.DS.'tables'.DS.'publication.php' );
+		include_once( JPATH_ROOT . DS . 'administrator' . DS
+			. 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php' );
 
 		$p = new Publication( $this->_db );
 

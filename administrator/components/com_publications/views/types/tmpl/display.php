@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . JText::_('COM_PUBLICATIONS_MASTER_TYPES') . ']', 'addedit.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
+JToolBarHelper::spacer();
+JToolBarHelper::deleteList();
 
 // Use new curation flow?
 $useBlocks  = $this->config->get('curation', 0);

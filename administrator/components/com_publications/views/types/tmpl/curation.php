@@ -32,7 +32,10 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION') . ' ' . JText::_('COM_PUBLICATIONS_MASTER_TYPE') . ': [ ' . $text . ' ]', 'addedit.png');
-JToolBarHelper::apply();
+if ($this->row->id)
+{
+	JToolBarHelper::apply();
+}
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
