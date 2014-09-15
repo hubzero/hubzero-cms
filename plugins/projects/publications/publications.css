@@ -221,6 +221,9 @@
 		font-size: 85%;
 		vertical-align: middle;
 	}
+	#suggestions ul a:before {
+		content: "\270D";
+	}
 	.welcome  {
 		height: auto;
 	}
@@ -1674,66 +1677,6 @@
 		content: "\271A";
 		color: green;
 	}
-	/*
-	ul.next-options li#next-publish {
-		background: url("images/next_publish.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-post {
-		background: url("images/next_post.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-newversion {
-		background: url("images/next_newversion.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-cancel {
-		background: url("images/next_cancel.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-retire {
-		background: url("images/next_retire.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-usage {
-		background: url("images/next_usage.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-share {
-		background: url("images/next_share.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-edit {
-		background: url("images/next_edit.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-pending {
-		background: url("images/next_pending.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-archive {
-		background: url("images/next_archive.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-draft {
-		background: url("images/next_draft.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-ready {
-		background: url("images/next_ready.png") 0 0 no-repeat;
-	}
-	ul.next-options li#next-question {
-
-	}
-	ul.next-options li#next-question p,
-	ul.next-options li#next-citation p {
-		margin-top: -3em;
-	}
-	ul.next-options li#next-question:before,
-	ul.next-options li#next-citation:before {
-		width: 32px;
-		height: 32px;
-		font-size: 32px;
-		font-family: 'Fontcons';
-		content: "\f05a";
-		color: #89c685;
-		display: inline;
-		margin-left: -40px;
-	}
-	ul.next-options li#next-citation:before {
-		content: "\275D";
-		color: #777;
-	}
-	*/
 	ul.next-options p {
 		margin-top: 0;
 		padding-bottom: 1em;
