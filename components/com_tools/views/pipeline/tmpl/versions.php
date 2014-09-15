@@ -175,7 +175,7 @@ $this->css('pipeline.css')
 			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_WHY_NEED_NUMBER_ANSWER'); ?></p>
 			<h3><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE'); ?></h3>
 			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_ONE'); ?></p>
-			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_ONE'); ?></p>
+			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_TWO'); ?></p>
 			<p><?php echo JText::_('COM_TOOLS_CONTRIBTOOL_VERSION_HOW_DECIDE_ANSWER_THREE'); ?></p>
 		</div>
 	</div><!-- / .grid -->
