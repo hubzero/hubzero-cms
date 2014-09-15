@@ -157,7 +157,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 							}
 							$used[] = $g->gidNumber;
 							?>
-							<option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->group_owner == $g->gidNumber) { echo 'selected="selected"'; } ?>><?php echo $g->description . ' (' . $g->cn . ')'; ?></option>
+							<option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->group_owner == $g->gidNumber) { echo 'selected="selected"'; } ?>><?php echo \Hubzero\Utility\String::truncate($g->description, 30) . ' (' . $g->cn . ')'; ?></option>
 						<?php } ?>
 					</select>
 				<?php } else { ?>
