@@ -207,7 +207,7 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 								</td>
 							<?php if ($this->config->get('banking')) { ?>
 								<td class="reward">
-								<?php if ($row->get('reward') == 1) { ?>
+								<?php if ($row->get('reward')) { ?>
 									<span class="entry-reward">
 										<?php echo $row->get('points'); ?>
 										<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points')); ?>">

@@ -226,12 +226,12 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 										</span>
 									</span>
 								</td>
-							<?php if ($this->banking) { ?>
+							<?php if ($this->config->get('banking')) { ?>
 								<td class="reward">
-								<?php if (isset($row->reward) && $row->reward == 1 && $this->banking && $row->points) { ?>
+								<?php if (isset($row->reward) && $row->reward == 1 && $row->points) { ?>
 									<span class="entry-reward">
 										<?php echo $row->points; ?>
-										<a href="<?php echo $this->infolink; ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->points); ?>">
+										<a href="<?php echo $this->config->get('infolink'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->points); ?>">
 											<?php echo JText::_('COM_ANSWERS_POINTS'); ?>
 										</a>
 									</span>

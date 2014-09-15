@@ -232,7 +232,7 @@ class AnswersTableQuestion extends JTable
 			$sortdir = $sortdir == 'DESC' ? 'DESC' : 'ASC';
 			switch ($filters['sortby'])
 			{
-				case 'rewards':      $query .= " ORDER BY C.reward $sortdir, points $sortdir, C.created $sortdir"; break;
+				case 'rewards':      $query .= " ORDER BY points $sortdir, C.created $sortdir"; break;
 				case 'votes':        $query .= " ORDER BY C.helpful $sortdir, C.created $sortdir"; break;
 				case 'date':         $query .= " ORDER BY C.created $sortdir"; break;
 				case 'random':       $query .= " ORDER BY RAND()"; break;
