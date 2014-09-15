@@ -370,9 +370,8 @@
 	}
 	.item-options span {
 		position: relative;
-		margin-left: -6em;
 		text-align: right;
-		width: 80px;
+		width: auto;
 	}
 	ul.itemlist li:hover .item-options {
 		display: block;
