@@ -132,16 +132,31 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus
 			if (($showGroupOwner && $this->groups) || $this->pub->_project->owned_by_group)
 			{
 				$group = new \Hubzero\User\Group();
+				$used = array();
 				if ($this->pub->_project->owned_by_group && \Hubzero\User\Group::exists($this->pub->_project->owned_by_group))
 				{
 					$group = \Hubzero\User\Group::getInstance( $this->pub->_project->owned_by_group );
+				}
+				if ($this->pub->group_owner)
+				{
+					$group = \Hubzero\User\Group::getInstance( $this->pub->group_owner );
+					if ($group)
+					{
+						$this->groups[] = $group;
+					}
 				}
 				?>
 			<div class="submitter groupowner"><p><strong><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php if ($this->pub->_project->owned_by_group) { echo $group->description . '(' . $group->cn . ')'; } ?></p>
 				<?php if (!$this->pub->_project->owned_by_group) { ?>
 					<select name="group_owner">
 						<option value=""><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_NONE'); ?></option>
-						<?php foreach ($this->groups as $g) { ?>
+						<?php foreach ($this->groups as $g) {
+							if (in_array($g->gidNumber, $used))
+							{
+								continue;
+							}
+							$used[] = $g->gidNumber;
+							?>
 							<option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->group_owner == $g->gidNumber) { echo 'selected="selected"'; } ?>><?php echo $g->description . ' (' . $g->cn . ')'; ?></option>
 						<?php } ?>
 					</select>

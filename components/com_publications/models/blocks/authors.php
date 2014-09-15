@@ -632,14 +632,8 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			$pub->_submitter 	= $pAuthors->getSubmitter($pub->version_id, $pub->created_by);
 		}
 
-		// Get public groups (to addign group owner)
-		$filters = array(
-			'authorized' => 'admin',
-			'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
-			'type'       => array(1, 3),
-			'sortby'     => 'description'
-		);
-		$view->groups = \Hubzero\User\Group::find($filters);
+		// Get creator groups
+		$view->groups = \Hubzero\User\Helper::getGroups($pub->_project->owned_by_user, 'members', 1);
 
 		$view->pub		= $pub;
 		$view->manifest = $this->_manifest;
