@@ -126,7 +126,7 @@ class plgResourcesUsage extends \Hubzero\Plugin\Plugin
 		{
 			$stats = new ResourcesStats($database);
 		}
-		$stats->loadStats($model->resource->id, $period, $dthis);
+		$stats->loadStats($model->resource->id, $period); //, $dthis);
 
 		$clusters = new ResourcesStatsClusters($database);
 		$clusters->loadStats($model->resource->id);
