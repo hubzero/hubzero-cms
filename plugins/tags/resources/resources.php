@@ -192,7 +192,6 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'type.php');
 		$rt = new ResourcesType($database);
 
 		if (isset($filters['select']) && $filters['select'] == 'count')
