@@ -134,14 +134,4 @@ class Progress extends Output
 		// Back up all the way
 		$this->backspace($length);
 	}
-
-	/**
-	 * Do backspaces to overwrite existing text
-	 *
-	 * @return void
-	 **/
-	private function backspace($spaces=1)
-	{
-		echo chr(27) . "[{$spaces}D";
-	}
 }
