@@ -83,9 +83,9 @@ $k = 0;
 	}
 
 	// Version status
-	$status = PublicationHelper::getPubStateProperty($v, 'status');
-	$class = PublicationHelper::getPubStateProperty($v, 'class');
-	$date = PublicationHelper::getPubStateProperty($v, 'date');
+	$status = PublicationsAdminHtml::getPubStateProperty($v, 'status');
+	$class = PublicationsAdminHtml::getPubStateProperty($v, 'class');
+	$date = PublicationsAdminHtml::getPubStateProperty($v, 'date');
 
 	$options = '<a href="index.php?option=' . $this->option . '&amp;controller='
 		. $this->controller . '&amp;task=edit&amp;id[]=' . $this->pub->id . '&amp;version='.$v->version_number.'">'
