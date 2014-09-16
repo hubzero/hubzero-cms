@@ -60,7 +60,7 @@ function GroupsBuildRoute(&$query)
 		unset($query['gid']);
 	}
 
-	if (!empty($query['controller']))
+	if (!empty($query['controller']) && $query['controller'] != 'groups')
 	{
 		$segments[] = $query['controller'];
 		unset($query['controller']);
