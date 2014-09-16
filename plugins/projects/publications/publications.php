@@ -94,6 +94,27 @@ class plgProjectsPublications extends JPlugin
 	{
 		$area = array();
 
+		// Check if plugin is restricted to certain projects
+		$projects = $this->_params->get('restricted') ? ProjectsHelper::getParamArray($this->_params->get('restricted')) : array();
+
+		if (!empty($projects))
+		{
+			$alias  = JRequest::getVar( 'alias', '' );
+			$id     = JRequest::getVar( 'id', '' );
+
+			if (!$alias)
+			{
+				$database = JFactory::getDBO();
+				$obj = new Project( $database );
+				$alias = $obj->getAlias( $id );
+			}
+
+			if (!$alias || !in_array($alias, $projects))
+			{
+				return $area;
+			}
+		}
+
 		if (JPluginHelper::isEnabled('projects', 'publications')
 			&& is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_publications' . DS . 'tables' . DS . 'publication.php'))
@@ -1254,7 +1275,7 @@ class plgProjectsPublications extends JPlugin
 						. $this->_project->alias . a . 'active=publications';
 
 		// If publication not found, raise error
-		if ($pid && !$pub)
+		if (($pid && !$pub) || $pub->state == 2)
 		{
 			$this->_referer = JRoute::_($route);
 			$this->_message = array(

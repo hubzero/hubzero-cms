@@ -50,6 +50,7 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="0">No</option>
 					<option value="1">Yes</option>
 				</field>
+				<field name="restricted" type="text" menu="hide" default="" label="Restricted to projects" description="Comma-separated aliases of projects that have databases plugin enabled (empty field means NO RESTRICTIONS)" />
 			</fieldset>
 		</fields>
 	</config>
