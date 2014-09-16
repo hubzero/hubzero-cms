@@ -106,12 +106,13 @@ class Arguments
 	/**
 	 * Getter for those additional options that a given command may use
 	 *
-	 * @param  (string) $key - option name to retieve value for
+	 * @param  (string) $key     - option name to retieve value for
+	 * @param  (mixed)  $default - default value for option
 	 * @return void
 	 **/
-	public function getOpt($key)
+	public function getOpt($key, $default=false)
 	{
-		return (isset($this->opts[$key])) ? $this->opts[$key] : false;
+		return (isset($this->opts[$key])) ? $this->opts[$key] : $default;
 	}
 
 	/**
