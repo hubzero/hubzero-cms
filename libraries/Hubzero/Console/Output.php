@@ -240,6 +240,42 @@ class Output
 	}
 
 	/**
+	 * Send beep
+	 *
+	 * @return (object) $this - for method chaining
+	 **/
+	public function beep()
+	{
+		echo chr(7);
+
+		return $this;
+	}
+
+	/**
+	 * Send backspace
+	 *
+	 * @param  (int)    $spaces      - number of spaces to back up
+	 * @param  (bool)   $destructive - whether or not to destroy existing chars
+	 * @return (object) $this        - for method chaining
+	 **/
+	public function backspace($spaces=1, $destructive=false)
+	{
+		echo chr(27) . "[" . (int)$spaces . "D";
+
+		if ($destructive)
+		{
+			for ($i=0; $i < $spaces; $i++)
+			{
+				echo chr(32);
+			}
+
+			echo chr(27) . "[" . (int)$spaces . "D";
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Get response from the user
 	 *
 	 * @param  (string) $prompt - question to ask user
