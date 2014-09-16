@@ -193,50 +193,6 @@
         "homepage": "http://leafo.net/lessphp/"
     },
     {
-        "name": "dannytrue/phantomjs",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/dannytrue/phantomjs.git",
-            "reference": "126f40bcb0cc29d4500bc950fc781fc184c40ebe"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/dannytrue/phantomjs/zipball/126f40bcb0cc29d4500bc950fc781fc184c40ebe",
-            "reference": "126f40bcb0cc29d4500bc950fc781fc184c40ebe",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2013-05-30 12:21:50",
-        "bin": [
-            "phantomjs",
-            "phantomjs_64"
-        ],
-        "type": "library",
-        "installation-source": "dist",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD"
-        ],
-        "authors": [
-            {
-                "name": "Ariya Hidayat",
-                "email": "ariya.hidayat@gmail.com"
-            }
-        ],
-        "description": "Headless WebKit scriptable with a JavaScript API.",
-        "homepage": "http://phantomjs.org/",
-        "keywords": [
-            "jasmine",
-            "javascript",
-            "phantomjs",
-            "testing"
-        ]
-    },
-    {
         "name": "swiftmailer/swiftmailer",
         "version": "v5.0.2",
         "version_normalized": "5.0.2.0",
