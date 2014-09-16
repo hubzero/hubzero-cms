@@ -184,7 +184,7 @@ class Publication extends JTable
 	 * @param      array 		$usergroups
 	 * @return     query string
 	 */
-	public function buildQuery( $filters = array(), $usergroups = array() )
+	public function buildQuery( $filters = array(), $usergroups = array(), $admin = false )
 	{
 		$juser 		= JFactory::getUser();
 		$now 		= JFactory::getDate()->toSql();
@@ -325,6 +325,12 @@ class Publication extends JTable
 			$query .= "AND V.published_up < " . $this->_db->Quote($filters['enddate']) . " ";
 		}
 
+		// Do not show deleted
+		if ($admin == false || (isset($filters['status']) && $filters['status'] != 2))
+		{
+			$query .= " AND V.state != 2 ";
+		}
+
 		if (!isset($filters['ignore_access']) || $filters['ignore_access'] == 0)
 		{
 			$query .= " AND (V.access != 3)  ";
@@ -447,7 +453,7 @@ class Publication extends JTable
 	public function getCount( $filters = array(), $usergroups = array(), $admin = false )
 	{
 		$filters['count'] = 1;
-		$query = $this->buildQuery( $filters, $usergroups );
+		$query = $this->buildQuery( $filters, $usergroups, $admin );
 
 		$sql  = "SELECT C.id";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques ".$query : " ".$query;
@@ -485,7 +491,7 @@ class Publication extends JTable
 
 	//	$sql .= ", (SELECT MAX(version_number) FROM #__publication_versions WHERE publication_id=C.id AND state=1 ) AS latest ";
 		$sql .= (isset($filters['tag']) && $filters['tag'] != '') ? ", TA.tag, COUNT(DISTINCT TA.tag) AS uniques " : " ";
-		$sql .= $this->buildQuery( $filters, $usergroups );
+		$sql .= $this->buildQuery( $filters, $usergroups, $admin );
 		$start = isset($filters['start']) ? $filters['start'] : 0;
 		$sql .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $start . ", " . $filters['limit'] : "";
 

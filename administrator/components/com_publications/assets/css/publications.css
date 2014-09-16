@@ -54,7 +54,8 @@
 	.upload,
 	.archived,
 	.ready,
-	.wip {
+	.wip,
+	.deleted {
 		padding: 0;
 		display: block;
 		width: 12px;
@@ -76,7 +77,8 @@
 	.upload span,
 	.ready span,
 	.archived span,
-	.wip span {
+	.wip span,
+	.deleted span {
 		display: none;
 		}
 
@@ -103,11 +105,14 @@
 	.preserving {
 		color: blue;
 	}
+	.deleted {
+		color: black;
+	}
 
 	/* Publication status
 	--------------------------------------------- */
 	.draft, .published, .unpublished, .expired, .pending,
-	.preserving, .posted, .archived, .ready, .new, .wip {
+	.preserving, .posted, .archived, .ready, .new, .wip, .deleted {
 		padding: 0.2em 0.5em;
 	}
 	.archived:before,
@@ -123,7 +128,8 @@
 	.archival:before,
 	.item_on:before,
 	.item_off:before,
-	.wip:before {
+	.wip:before,
+	.deleted:before {
 		content: "";
 		width: 16px;
 		height: 16px;
@@ -148,6 +154,9 @@
 	}
 	.draft:before {
 		content: "\f05d";
+	}
+	.deleted:before {
+		content: "\2296";	
 	}
 	.wip:before {
 		content: "\2757";
@@ -219,7 +228,8 @@
 	.ready:hover,
 	.archived:hover,
 	.upload:hover,
-	.wip:hover { border: none; }
+	.wip:hover,
+	.deleted:hover { border: none; }
 
 	.check { text-indent: 50px; overflow: hidden; }
 	#author-list, .content-list {

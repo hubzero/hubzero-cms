@@ -34,6 +34,7 @@ JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
 JToolBarHelper::editList();
+JToolBarHelper::spacer();
 JToolBarHelper::deleteList();
 
 JHTML::_('behavior.tooltip');
@@ -67,6 +68,7 @@ function submitbutton(pressbutton)
 			<option value="7"<?php echo ($this->filters['status'] == 7) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
 			<option value="1"<?php echo ($this->filters['status'] == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
 			<option value="4"<?php echo ($this->filters['status'] == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_READY'); ?></option>
+			<option value="2"<?php echo ($this->filters['status'] == 2) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
 		</select>
 
 		<label for="category"><?php echo JText::_('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>:</label>

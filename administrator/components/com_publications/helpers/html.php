@@ -99,6 +99,7 @@ class PublicationsAdminHtml
 				<li class="wip"><?php echo JText::_('COM_PUBLICATIONS_VERSION_WIP'); ?></li>
 				<li class="published"><?php echo JText::_('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></li>
 				<li class="unpublished"><?php echo JText::_('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></li>
+				<li class="deleted"><?php echo JText::_('COM_PUBLICATIONS_VERSION_DELETED'); ?></li>
 			</ul>
 		<?php
 	}
@@ -714,6 +715,11 @@ class PublicationsAdminHtml
 			case 7:
 				$class	= 'wip';
 				$status = JText::_('COM_PUBLICATIONS_VERSION_WIP');
+				break;
+
+			case 2:
+				$class	= 'deleted';
+				$status = JText::_('COM_PUBLICATIONS_VERSION_DELETED');
 				break;
 		}
 
