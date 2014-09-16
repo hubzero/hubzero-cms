@@ -691,7 +691,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			else
 			{
 				// Force entry to private if no comment or attachment was made
-				$rowc->set('access', 1);
+				if (!$rowc->get('comment') && $rowc->attachments()->total() <= 0)
+				{
+					$rowc->set('access', 1);
+				}
 			}
 
 			// Were there any changes?

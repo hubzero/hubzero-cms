@@ -482,17 +482,14 @@ $cc = array();
 					<?php if ($this->row->isSubmitter()) { ?>
 						<?php if (!$this->row->isOpen()) { ?>
 							<label class="option" for="field-status">
-								<input class="option" type="checkbox" name="ticket[resolved]" id="field-status" value="" />
+								<input class="option" type="checkbox" name="ticket[status]" id="field-status" value="1" />
 								<?php echo JText::_('COM_SUPPORT_COMMENT_REOPEN'); ?>
 							</label>
-							<input type="hidden" name="ticket[open]" value="1" />
-							<input type="hidden" name="ticket[status]" value="1" />
 						<?php } else { ?>
 							<label class="option" for="field-status">
-								<input class="option" type="checkbox" name="ticket[resolved]" id="field-status" value="noresolution" />
+								<input class="option" type="checkbox" name="ticket[status]" id="field-status" value="0" />
 								<?php echo JText::_('COM_SUPPORT_COMMENT_CLOSE'); ?>
 							</label>
-							<input type="hidden" name="ticket[open]" value="0" />
 						<?php } ?>
 					<?php } ?>
 				<?php } // ACL can update ticket (admin) ?>
