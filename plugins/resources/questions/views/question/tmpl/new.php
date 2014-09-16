@@ -83,7 +83,7 @@ $this->css();
 			<label for="field-question">
 				<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
 				<?php
-				echo JFactory::getEditor()->display('question[question]', $this->escape(stripslashes($this->row->get('question'))), '', '', 50, 10, false, 'field-question');
+				echo JFactory::getEditor()->display('question[question]', $this->escape($this->row->get('question')), '', '', 50, 10, false, 'field-question');
 				?>
 			</label>
 
