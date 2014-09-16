@@ -107,10 +107,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		$model = new Publication($this->database);
 
 		// Get record count
-		$this->view->total = $model->getCount($this->view->filters);
+		$this->view->total = $model->getCount($this->view->filters, NULL, true);
 
 		// Get publications
-		$this->view->rows = $model->getRecords($this->view->filters);
+		$this->view->rows = $model->getRecords($this->view->filters, NULL, true);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -1487,6 +1487,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
+		$erase = JRequest::getInt('erase', 0);
 
 		// Ensure we have some IDs to work with
 		if (count($ids) < 1)
@@ -1541,12 +1542,19 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					JError::raiseError( 404, JText::_('COM_PUBLICATIONS_VERSION_MAIN_ERROR_DELETE') );
 					return;
 				}
-
-				// Delete the version
-				if ($row->delete())
+				if ($erase == 1)
 				{
-					// Delete associations to the version
-					$this->deleteVersionExistence($row->id, $id);
+					// Delete the version
+					if ($row->delete())
+					{
+						// Delete associations to the version
+						$this->deleteVersionExistence($row->id, $id);
+					}
+				}
+				else
+				{
+					$row->state = 2;
+					$row->store();
 				}
 			}
 			else
@@ -1558,12 +1566,20 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					$objV = new PublicationVersion( $this->database );
 					if ($objV->loadVersion($id, $v->version_number))
 					{
-						// Delete the version
-						if ($objV->delete())
+						if ($erase == 1)
 						{
-							// Delete associations to the version
-							$this->deleteVersionExistence($objV->id, $id);
-							$i++;
+							// Delete the version
+							if ($objV->delete())
+							{
+								// Delete associations to the version
+								$this->deleteVersionExistence($v->id, $id);
+								$i++;
+							}
+						}
+						else
+						{
+							$objV->state = 2;
+							$objV->store();
 						}
 					}
 				}
@@ -1590,7 +1606,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					}
 				}
 			}
-
 		}
 
 		// Redirect
