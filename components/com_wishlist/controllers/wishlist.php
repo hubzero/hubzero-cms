@@ -1015,7 +1015,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 		$row->set('anonymous', JRequest::getInt('anonymous', 0));
 		$row->set('private', JRequest::getInt('private', 0));
-		$row->set('about', \Hubzero\Utility\Sanitize::clean($row->get('about')));
+		//$row->set('about', \Hubzero\Utility\Sanitize::clean($row->get('about')));
 		$row->set('proposed', ($wishid ? $row->get('proposed') : JFactory::getDate()->toSql()));
 
 		// store new content
