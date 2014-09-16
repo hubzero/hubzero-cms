@@ -1486,11 +1486,10 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id 	 = JRequest::getInt( 'id', 0 );
-		$version = JRequest::getVar( 'version', '' );
+		$ids = JRequest::getVar('id', array(0));
 
 		// Ensure we have some IDs to work with
-		if (!$id)
+		if (count($ids) < 1)
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
@@ -1500,45 +1499,152 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Load publication
-		$objP = new Publication( $this->database );
-		if (!$objP->load($id))
-		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
-			return;
-		}
+		$version = count($ids) == 1 ? JRequest::getVar( 'version', 'all' ) : 'all';
 
-		if ($version != 'all')
-		{
-			// Check that version exists
-			$version = $row->checkVersion($id, $version) ? $version : 'default';
+		jimport('joomla.filesystem.folder');
 
-			// Load version
-			$row = new PublicationVersion($this->database);
-			if (!$row->loadVersion($pid, $version))
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
+
+		foreach ($ids as $id)
+		{
+			// Load publication
+			$objP = new Publication( $this->database );
+			if (!$objP->load($id))
 			{
-				JError::raiseError( 404, JText::_('COM_PUBLICATIONS_VERSION_NOT_FOUND') );
+				JError::raiseError( 404, JText::_('COM_PUBLICATIONS_NOT_FOUND') );
 				return;
 			}
 
-			// Save version ID
-			$vid = $row->id;
-		}
-		else
-		{
-			// Delete all versions
+			$projectId = $objP->project_id;
+
+			$row = new PublicationVersion( $this->database );
+
+			// Get versions
+			$versions = $row->getVersions( $id, $filters = array('withdev' => 1));
+
+			if ($version != 'all' && count($versions) > 1)
+			{
+				// Check that version exists
+				$version = $row->checkVersion($id, $version) ? $version : 'dev';
+
+				// Load version
+				if (!$row->loadVersion($id, $version))
+				{
+					JError::raiseError( 404, JText::_('COM_PUBLICATIONS_VERSION_NOT_FOUND') );
+					return;
+				}
+
+				// Cannot delete main version if other versions exist
+				if ($row->main)
+				{
+					JError::raiseError( 404, JText::_('COM_PUBLICATIONS_VERSION_MAIN_ERROR_DELETE') );
+					return;
+				}
+
+				// Delete the version
+				if ($row->delete())
+				{
+					// Delete associations to the version
+					$this->deleteVersionExistence($row->id, $id);
+				}
+			}
+			else
+			{
+				// Delete all versions
+				$i = 0;
+				foreach ($versions as $v)
+				{
+					$objV = new PublicationVersion( $this->database );
+					if ($objV->loadVersion($id, $v->version_number))
+					{
+						// Delete the version
+						if ($objV->delete())
+						{
+							// Delete associations to the version
+							$this->deleteVersionExistence($objV->id, $id);
+							$i++;
+						}
+					}
+				}
+
+				// All versions deleted?
+				if ($i == count($versions))
+				{
+					// Delete pub record and all associations
+					$objP->delete($id);
+					$objP->deleteExistence($id);
+
+					// Delete related publishing activity from feed
+					$objAA = new ProjectActivity( $this->database );
+					$objAA->deleteActivityByReference($projectId, $id, 'publication');
+
+					// Build publication path
+					$path    =  JPATH_ROOT . DS . trim($this->config->get('webpath'), DS)
+							. DS .  \Hubzero\Utility\String::pad( $id );
+
+					// Delete all files
+					if (is_dir($path))
+					{
+						JFolder::delete($path);
+					}
+				}
+			}
+
 		}
 
 		// Redirect
 		$output = ($version != 'all')
 			? JText::_('COM_PUBLICATIONS_SUCCESS_VERSION_DELETED')
-			: JText::_('COM_PUBLICATIONS_SUCCESS_RECORDS_DELETED');
+			: JText::_('COM_PUBLICATIONS_SUCCESS_RECORDS_DELETED') . ' (' . count($ids) . ')';
 		$this->setRedirect(
 			$this->buildRedirectURL(),
 			$output
 		);
 
 		return;
+	}
+
+	/**
+	 * Deletes assoc with pub version
+	 *
+	 * @return     void
+	 */
+	public function deleteVersionExistence($vid, $pid)
+	{
+		// Delete authors
+		$pa = new PublicationAuthor( $this->database );
+		$authors = $pa->deleteAssociations($vid);
+
+		// Delete attachments
+		$pContent = new PublicationAttachment( $this->database );
+		$pContent->deleteAttachments($vid);
+
+		// Delete screenshots
+		$pScreenshot = new PublicationScreenshot( $this->database );
+		$pScreenshot->deleteScreenshots($vid);
+
+		// Delete access accosiations
+		$pAccess = new PublicationAccess( $this->database );
+		$pAccess->deleteGroups($vid);
+
+		// Delete audience
+		$pAudience = new PublicationAudience( $this->database );
+		$pAudience->deleteAudience($vid);
+
+		// Get publications helper
+		$helper = new PublicationHelper($this->database);
+
+		// Build publication path
+		$path = $helper->buildPath($pid, $vid, $this->config->get('webpath'), '', 1);
+
+		// Delete all files
+		if (is_dir($path))
+		{
+			JFolder::delete($path);
+		}
+
+		return true;
 	}
 
 	/**

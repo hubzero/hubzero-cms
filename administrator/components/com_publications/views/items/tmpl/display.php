@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'), 'addedit.png');
 JToolBarHelper::preferences($this->option, '550');
 JToolBarHelper::spacer();
+JToolBarHelper::editList();
+JToolBarHelper::deleteList();
 
 JHTML::_('behavior.tooltip');
 //jimport('joomla.html.html.grid');
@@ -76,6 +78,7 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
+				<th></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JHTML::_('grid.sort', JText::_('COM_PUBLICATIONS_FIELD_TITLE'), 'title', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th><?php echo JText::_('@v.'); ?></th>
@@ -88,7 +91,7 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="9"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="10"><?php echo $this->pageNav->getListFooter(); ?></td>
 			</tr>
 		</tfoot>
 		<tbody>
@@ -111,6 +114,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 
 	// See if it's checked out or not
 	$checked = '';
+	$checkedInfo = '';
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')
 	{
 		$info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
@@ -120,7 +124,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 		$info .= ($row->checked_out)
 				 ? JText::_('COM_PUBLICATIONS_FIELD_CHECKED_OUT_BY') . ': '.$row->checked_out . '<br />'
 				 : '';
-		$checked = ' ['.JText::_('COM_PUBLICATIONS_FIELD_CHECKED_OUT').']';
+		$checkedInfo = ' ['.JText::_('COM_PUBLICATIONS_FIELD_CHECKED_OUT').']';
+		$checked = JHtml::_('image', 'admin/checked_out.png', null, null, true) . '</span>';
+	}
+	else
+	{
+		$checked = JHTML::_('grid.id', $i, $row->id, false, 'id');
 	}
 
 	// What's the publication status?
@@ -133,12 +142,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?> <?php echo $row->state == 5 ? 'attention' : ''; ?>">
 				<td>
+					<?php echo $checked; ?>
+				</td>
+				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
 					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_( 'COM_PUBLICATIONS_PUBLISH_INFO' );?>::<?php echo $info; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-					</a><?php if ($checked) { echo $checked; } ?>
+					</a><?php if ($checkedInfo) { echo $checkedInfo; } ?>
 				</td>
 				<td>
 					<?php echo $row->version_label; ?>
