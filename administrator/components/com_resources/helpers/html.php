@@ -155,7 +155,7 @@ class ResourcesHtml
 	public static function selectAccess($as, $value, $name = 'access')
 	{
 		$as = explode(',',$as);
-		$html  = '<select name="' . $name . '">' . "\n";
+		$html  = '<select name="' . $name . '" id="field-' . str_replace(array('[',']'), '', $name) . '">' . "\n";
 		for ($i=0, $n=count($as); $i < $n; $i++)
 		{
 			$html .= "\t" . '<option value="' . $i . '"';
@@ -178,12 +178,12 @@ class ResourcesHtml
 	 */
 	public static function selectGroup($groups, $value, $name = 'group_owner', $class = '')
 	{
-		$html  = '<select class="'.$class.'" name="'.$name.'"';
+		$html  = '<select class="'.$class.'" name="'.$name.'" id="field-' . str_replace(array('[',']'), '', $name) . '"';
 		if (!$groups)
 		{
 			$html .= ' disabled="disabled"';
 		}
-		$html .= ' style="max-width: 15em;">' . "\n";
+		$html .= '>' . "\n";
 		$html .= ' <option value="">' . JText::_('Select group ...') . '</option>' . "\n";
 		if ($groups)
 		{

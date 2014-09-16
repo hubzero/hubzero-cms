@@ -844,10 +844,12 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if ($isNew)
 		{
 			// New entry
-			$row->created    = $row->created ? $row->created : JFactory::getDate()->toSql();
+			$row->created    = $row->created    ? $row->created    : JFactory::getDate()->toSql();
 			$row->created_by = $row->created_by ? $row->created_by : $this->juser->get('id');
-			$row->access	 = 0;
-		} else {
+			$row->access     = 0;
+		}
+		else
+		{
 			$old = new ResourcesResource($this->database);
 			$old->load($row->id);
 
@@ -856,7 +858,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			// Updating entry
 			$row->modified    = JFactory::getDate()->toSql();
 			$row->modified_by = $this->juser->get('id');
-			//$row->created     = $row->created ? $row->created : JFactory::getDate()->toSql();
+
 			if ($created_by_id)
 			{
 				$row->created_by = $row->created_by ? $row->created_by : $created_by_id;
@@ -985,8 +987,11 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Code cleaner for xhtml transitional compliance
-		$row->introtext = str_replace('<br>', '<br />', $row->introtext);
-		$row->fulltxt   = str_replace('<br>', '<br />', $row->fulltxt);
+		if ($row->type != 7)
+		{
+			$row->introtext = str_replace('<br>', '<br />', $row->introtext);
+			$row->fulltxt   = str_replace('<br>', '<br />', $row->fulltxt);
+		}
 
 		// Check content
 		if (!$row->check())
@@ -1037,14 +1042,15 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$rt->tag_object($this->juser->get('id'), $row->id, $tags, 1, 1);
 
 		// Incoming authors
-		$authorsOldstr = JRequest::getVar('old_authors', '', 'post');
-		$authorsNewstr = JRequest::getVar('new_authors', '', 'post');
-		if (!$authorsNewstr)
+		if ($row->type != 7)
 		{
-			$authorsNewstr = $authorsOldstr;
-		}
-		//if ($authorsNewstr != $authorsOldstr)
-		//{
+			$authorsOldstr = JRequest::getVar('old_authors', '', 'post');
+			$authorsNewstr = JRequest::getVar('new_authors', '', 'post');
+			if (!$authorsNewstr)
+			{
+				$authorsNewstr = $authorsOldstr;
+			}
+
 			include_once(JPATH_COMPONENT . DS . 'tables' . DS . 'contributor.php');
 
 			$authorsNew = explode(',', $authorsNewstr);
@@ -1100,7 +1106,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 					}
 				}
 			}
-		//}
+		}
 
 		// If this is a child, add parent/child association
 		$pid = JRequest::getInt('pid', 0, 'post');

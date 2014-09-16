@@ -181,6 +181,18 @@ function popratings()
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
+	<?php if ($this->row->type == 7) { ?>
+			<div class="input-wrap">
+				<p class="warning"><?php echo JText::_('COM_RESOURCES_WARNING_TOOLS_USE_PIPELINE'); ?></p>
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?>">
+				<label for="attrib-canonical"><?php echo JText::_('COM_RESOURCES_FIELD_CANONICAL'); ?>:</label><br />
+				<input type="text" name="attrib[canonical]" id="attrib-canonical" maxlength="250" value="<?php echo $this->attribs->get('canonical', ''); ?>" />
+				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?></span>
+			</div>
+	<?php } else { ?>
+
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
@@ -266,9 +278,11 @@ function popratings()
 				echo $editor->display('fulltxt', $this->escape(stripslashes($this->row->fulltxt)), '', '', '45', '15', false, 'field-fulltxt');
 				?>
 			</div>
+
+	<?php } ?>
 		</fieldset>
 
-	<?php if ($this->row->standalone == 1) { ?>
+	<?php if ($this->row->standalone == 1 && $this->row->type != 7) { ?>
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('Custom fields'); ?></span></legend>
 
@@ -351,7 +365,7 @@ function popratings()
 		</table>
 	<?php } ?>
 
-	<?php if ($this->row->standalone == 1) { ?>
+	<?php if ($this->row->standalone == 1 && $this->row->type != 7) { ?>
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_RESOURCES_FIELDSET_CONTRIBUTORS'); ?></span></legend>
 
@@ -398,8 +412,8 @@ function popratings()
 			<?php // if ($this->row->standalone == 1) { ?>
 				<div class="input-wrap">
 					<label for="publish_up"><?php echo JText::_('COM_RESOURCES_FIELD_PUBLISH_UP'); ?>:</label><br />
-					<?php $up = JHTML::_('date', $this->row->publish_up, 'Y-m-d H:i:s'); ?>
-					<?php echo JHTML::_('calendar', $up, 'publish_up', 'publish_up', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+					<?php $up = ($this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00' ? JHTML::_('date', $this->row->publish_up, 'Y-m-d H:i:s') : ''); ?>
+					<?php echo JHTML::_('calendar', $up, 'publish_up', 'publish_up', "Y-m-d H:i:s", array('class' => 'inputbox')); ?>
 				</div>
 				<div class="input-wrap">
 					<label for="publish_down"><?php echo JText::_('COM_RESOURCES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
@@ -410,7 +424,7 @@ function popratings()
 							$down = JHTML::_('date', $this->row->publish_down, 'Y-m-d H:i:s');
 						}
 					?>
-					<?php echo JHTML::_('calendar', $down, 'publish_down', 'publish_down', "%Y-%m-%d", array('class' => 'inputbox')); ?>
+					<?php echo JHTML::_('calendar', $down, 'publish_down', 'publish_down', "Y-m-d H:i:s", array('class' => 'inputbox')); ?>
 				</div>
 			<?php // } ?>
 		</div>
