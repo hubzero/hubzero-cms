@@ -322,10 +322,10 @@ function submitbutton(pressbutton)
 function saveAndUpdate()
 {
 	submitbutton('save');
-	window.top.setTimeout(function(){
-		var src = window.parent.document.getElementById('locations').src;
-		window.parent.document.getElementById('locations').src = src;
+	window.parent.setTimeout(function(){
+		var src = window.parent.document.getElementById('locationslist').src;
 
+		window.parent.document.getElementById('locationslist').src = src + '&';
 		window.parent.$.fancybox.close();
 	}, 700);
 }

@@ -258,7 +258,7 @@ function submitbutton(pressbutton)
 			<fieldset class="adminform">
 				<legend><span><?php echo JText::_('COM_TOOLS_FIELDSET_LOCATIONS'); ?></span></legend>
 			<?php if ($this->row->get('id')) { ?>
-				<iframe width="100%" height="400" name="locations" id="locations" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;tmpl=component&amp;zone=<?php echo $this->row->get('id'); ?>"></iframe>
+				<iframe width="100%" height="400" name="locationslist" id="locationslist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;tmpl=component&amp;zone=<?php echo $this->row->get('id'); ?>"></iframe>
 			<?php } else { ?>
 				<p><?php echo JText::_('COM_TOOLS_LOCATIONS_ADDED_LATER'); ?></p>
 			<?php } ?>
