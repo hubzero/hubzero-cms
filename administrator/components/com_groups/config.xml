@@ -92,6 +92,15 @@ HUBzero is a registered trademark of Purdue University.
 	</fieldset>
 	<fieldset name="pages" label="COM_GROUPS_CONFIG_FIELDSET_PAGES">
 		<field name="approvers" type="textarea" default="" label="COM_GROUPS_CONFIG_PAGES_PAGE_APPROVERS" description="COM_GROUPS_CONFIG_PAGES_PAGE_APPROVERS_DESC" size="50" />
+		<field name="page_depth" type="text" default="5" label="COM_GROUPS_CONFIG_PAGES_PAGE_DEPTH" description="COM_GROUPS_CONFIG_PAGES_PAGE_DEPTH_DESC" size="50" />
+		<field name="page_comments" type="list" default="0" label="COM_GROUPS_CONFIG_PAGES_COMMENTS" description="COM_GROUPS_CONFIG_PAGES_COMMENTS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="page_author" type="list" default="0" label="COM_GROUPS_CONFIG_PAGES_AUTHOR" description="COM_GROUPS_CONFIG_PAGES_AUTHOR_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="page_modules" type="list" default="0" label="COM_GROUPS_CONFIG_PAGES_MODULES" description="COM_GROUPS_CONFIG_PAGES_MODULES_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>

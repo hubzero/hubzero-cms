@@ -34,6 +34,187 @@ defined('_JEXEC') or die( 'Restricted access' );
 class GroupsHelperPages
 {
 	/**
+	 * Build default home page object,
+	 * Check to see if group have a home page override
+	 *
+	 * @param    object    $group    \Hubzero\User\Group Object
+	 * @param    array     $pages    \Hubzero\Base\ItemList
+	 * @return   object
+	 */
+	public static function addHomePage($group, $pages = null)
+	{
+		// check to see if we have a home page override
+		if ($pages->fetch('home', 1) !== null)
+		{
+			$home = $pages->fetch('home', 1);
+			$home->set('alias', 'overview');
+			return $pages;
+		}
+
+		// create page object
+		$home = new GroupsModelPage(0);
+		$home->set('id', 0)
+			 ->set('gidNumber', $group->get('gidNumber'))
+			 ->set('title', 'Home')
+			 ->set('alias', 'overview')
+			 ->set('ordering', 0)
+			 ->set('state', 1)
+			 ->set('privacy', 'default')
+			 ->set('home', 1)
+			 ->set('parent', 0);
+
+		// create page version object
+		$homeVersion = new GroupsModelPageVersion(0);
+		$homeVersion->set('pageid', 0)
+					->set('version', 1)
+					->set('approved', 1)
+					->set('content', self::getDefaultHomePage($group));
+
+		// add the version to home page object
+		$home->versions()->add($homeVersion);
+
+		// add default home page to view
+		$pages->add($home);
+
+		// return updated pages
+		return $pages;
+	}
+
+	/**
+	 * Get Default Home Page
+	 *
+	 * @param    Object    $group    \Hubzero\User\Group Object
+	 * @return   String
+	 */
+	public static function getDefaultHomePage( $group )
+	{
+		// create view object
+		$view = new \Hubzero\Component\View(array(
+			'name'   => 'pages',
+			'layout' => '_view_default'
+		));
+
+		// pass vars to view
+		$view->juser = JFactory::getUser();
+		$view->group = $group;
+
+		// get group desc
+		$view->publicDesc  = $view->group->getDescription('parsed', 0, 'public');
+		$view->privateDesc = $view->group->getDescription('parsed', 0, 'private');
+
+		// make sure we have a public desc
+		if ($view->publicDesc == '')
+		{
+			$view->publicDesc = $view->group->get('description');
+		}
+
+		// return template
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Is page Active based on current segment
+	 * 
+	 * @param  [type]  $page [description]
+	 * @return boolean       [description]
+	 */
+	public static function isPageActive($page)
+	{
+		$segments = self::getCurrentPathSegments();
+		return $page->get('alias') == array_pop($segments);
+	}
+
+	/**
+	 * Get Current Route Segments
+	 * 
+	 * @return [type] [description]
+	 */
+	private static function getCurrentPathSegments()
+	{
+		// get current path
+		$uri  = JURI::getInstance();
+
+		// get group
+		$cn = JRequest::getVar('cn','');
+		$group = Hubzero\User\Group::getInstance($cn);
+
+		// use JRoute so in case the hub is /members/groups/... instead of top level /groups
+		$base = JRoute::_('index.php?option=com_groups&cn=' .$group->get('cn'));
+
+		// remove /groups/{group_cname} from path
+		$path = str_replace($base, '', $uri->getPath());
+
+		// get path segments & clean up
+		$segments = explode(DS, trim($path, DS));
+		$segments = array_filter($segments);
+
+		// return path segments
+		return $segments;
+	}
+
+	/**
+	 * Get True Group Tab
+	 *
+	 * Since we trick the overview tab to allow for displaying group pages, 
+	 * php pages, group login, or group components, this allows us to get the true active tab
+	 * for use with displaying the correct content
+	 *
+	 * @param    $group    \Hubzero\User\Group Object
+	 * @return   string
+	 */
+	public static function getActivePage($group, $pages = array())
+	{
+		// get path segments
+		$segments = self::getCurrentPathSegments();
+
+		// vars to hold page objs
+		$page = null;
+		$prevPage = $homePage = $pages->filter(function($page)
+		{
+			if ($page->get('alias') == 'overview'
+				&& $page->get('depth') == 0)
+			{
+				return $page;
+			}
+		})[0];
+
+		// if we dont have segments that means were on the 
+		// overview page
+		if (count($segments) == 0
+			|| $segments[0] == 'overview')
+		{
+			return $homePage;
+		}
+
+		// loop through each segment to to get right page
+		foreach ($segments as $k => $segment)
+		{
+			// make sure a page was found
+			foreach ($pages as $p)
+			{
+				if ($p->get('alias') == $segment
+					&& $p->get('depth') == ($k + 1))
+				{
+					$page = $p;
+				}
+			}
+
+			// make sure we have page
+			// make sure page is child of parent
+			if (!$page || $page->get('parent') != $prevPage->get('id'))
+			{
+				return null;
+			}
+
+			// hold on to the page
+			$prevPage = $page;
+		}
+
+		// return page object
+		return $page;
+	}
+
+	/**
 	 * Is Current User a Page Approver?
 	 *
 	 * @return void
@@ -43,7 +224,6 @@ class GroupsHelperPages
 		$username  = (!is_null($username)) ? $username : JFactory::getUser()->get('username');
 		return (in_array($username, self::getPageApprovers())) ? true : false;
 	}
-
 
 	/**
 	 * Get page approvers
@@ -55,7 +235,6 @@ class GroupsHelperPages
 		$approvers = JComponentHelper::getParams('com_groups')->get('approvers', '');
 		return array_map("trim", explode(',', $approvers));
 	}
-
 
 	/**
 	 * Get page approvers Emails and names
@@ -399,6 +578,14 @@ class GroupsHelperPages
 			'layout' => '_view'
 		));
 
+		// if super group add super group folder
+		// to available paths
+		if ($group->isSuperGroup())
+		{
+			$base = $group->getBasePath();
+			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template');
+		}
+
 		// get needed vars
 		$database    = JFactory::getDBO();
 		$juser       = JFactory::getUser();
@@ -465,6 +652,7 @@ class GroupsHelperPages
 		$view->page       = $page;
 		$view->version    = $version;
 		$view->authorized = $authorized;
+		$view->config     = JComponentHelper::getParams('com_groups');
 
 		// return rendered template
 		return $view->loadTemplate();
@@ -617,7 +805,7 @@ class GroupsHelperPages
 	 * @param    $page   Group page object
 	 * @return   void
 	 */
-	public static function generatePreview( $page, $version = 0 )
+	public static function generatePreview( $page, $version = 0, $contentOnly = false )
 	{
 		// get groups
 		$gidNumber = $page->get('gidNumber');
@@ -669,6 +857,12 @@ class GroupsHelperPages
 				return $content;
 			};
 			$content = $eval();
+		}
+
+		// do we want to retun only content?
+		if ($contentOnly)
+		{
+			return $content;
 		}
 
 		// get group css

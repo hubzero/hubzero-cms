@@ -65,6 +65,13 @@ $ordering  = $this->page->get('ordering', null);
 $state     = $this->page->get('state', 1);
 $privacy   = $this->page->get('privacy', 'default');
 $home      = $this->page->get('home', 0);
+$parent    = $this->page->get('parent', 0);
+
+// determine comments setting
+$groupParams = new JRegistry($this->group->get('params'));
+$groupCommentSetting = $groupParams->get('page_comments', $this->config->get('page_comments', 0));
+$groupCommentSettingString = ($groupCommentSetting == 1) ? 'Yes' : 'No';
+$comments  = intval($this->page->get('comments', $groupCommentSetting));
 
 // default some form vars
 $pageHeading = JText::_("COM_GROUPS_PAGES_ADD_PAGE");
@@ -99,12 +106,13 @@ if ($this->page->get('id'))
 					<legend><?php echo JText::_('COM_GROUPS_PAGES_PAGE_DETAILS'); ?></legend>
 					<label for="field-title">
 						<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_TITLE'); ?>:</strong> <span class="required"><?php echo JText::_('COM_GROUPS_FIELD_REQUIRED'); ?></span>
-						<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($title)); ?>" />
+						<?php $readonly = ($home) ? 'readonly="readonly"' : ''; ?>
+						<input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($title)); ?>" <?php echo $readonly; ?> />
 					</label>
 					<label for="field-url">
 						<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_URL'); ?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
-						<input type="text" name="page[alias]" id="field-url" value="<?php echo $this->escape($alias); ?>" />
-						<span class="hint">Page URL's can only contain lowercase alphanumeric characters and underscores. Spaces will be removed.</span>
+						<input type="text" name="page[alias]" id="field-url" value="<?php echo $this->escape($alias); ?>" <?php echo $readonly; ?> />
+						<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_URL_HINT'); ?></span>
 					</label>
 					<label for="pagecontent">
 						<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_CONTENT'); ?>:</strong> <span class="required"><?php echo JText::_('COM_GROUPS_FIELD_REQUIRED'); ?></span>
@@ -168,20 +176,11 @@ if ($this->page->get('id'))
 					<legend><?php echo JText::_('COM_GROUPS_PAGES_PAGE_PUBLISH'); ?></legend>
 					<label>
 						<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_STATUS'); ?>:</strong> <span class="required"><?php echo JText::_('COM_GROUPS_FIELD_REQUIRED'); ?></span>
-						<select name="page[state]" class="fancy-select">
+						<select name="page[state]" class="fancy-select" <?php echo $readonly; ?>>
 							<option value="1" <?php if ($state == 1) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_PAGE_STATUS_PUBLISHED'); ?></option>
 							<option value="0" <?php if ($state == 0) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_PAGE_STATUS_UNPUBLISHED'); ?></option>
 						</select>
 					</label>
-
-					<?php if ($this->page->get('id')) : ?>
-						<label>
-							<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_VERSIONS'); ?>:</strong> <br />
-							<a class="btn icon-history" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=versions&pageid=' . $this->page->get('id')); ?>">
-								<?php echo JText::sprintf('COM_GROUPS_PAGES_PAGE_VERSIONS_BROWSE', $this->page->versions()->count()); ?>
-							</a>
-						</label>
-					<?php endif; ?>
 
 					<label>
 						<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_PRIVACY'); ?>:</strong> <span class="required"><?php echo JText::_('COM_GROUPS_FIELD_REQUIRED'); ?></span>
@@ -199,28 +198,31 @@ if ($this->page->get('id'))
 							<option value="members" <?php if ($privacy == "members") { echo 'selected="selected"'; } ?>><?php echo JText::_('COM_GROUPS_PAGES_PAGE_PRIVACY_PRIVATE'); ?></option>
 						</select>
 					</label>
+
+					<?php if ($this->page->get('id')) : ?>
+						<label>
+							<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_VERSIONS'); ?>:</strong> <br />
+							<a class="btn icon-history" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=versions&pageid=' . $this->page->get('id')); ?>">
+								<?php echo JText::sprintf('COM_GROUPS_PAGES_PAGE_VERSIONS_BROWSE', $this->page->versions()->count()); ?>
+							</a>
+						</label>
+					<?php endif; ?>
 				</fieldset>
 
 				<div class="form-controls cf">
 					<a href="<?php echo JRoute::_($return_link); ?>" class="cancel"><?php echo JText::_('COM_GROUPS_PAGES_CANCEL'); ?></a>
-					<button type="submit" class="btn btn-info opposite save icon-save"><?php echo JText::_('COM_GROUPS_PAGES_SAVE_PAGE'); ?></button>
+					<div class="btn-group save">
+						<button type="submit" class="btn btn-info btn-main icon-save"><?php echo JText::_('COM_GROUPS_PAGES_SAVE_PAGE'); ?></button>
+						<span class="btn dropdown-toggle btn-info"></span>
+						<ul class="dropdown-menu">
+							<li><a class="icon-save active" data-action="save" href="javascript:void(0);"><?php echo JText::_('COM_GROUPS_PAGES_SAVE_PAGE'); ?></a></li>
+							<li><a class="icon-apply" data-action="apply" href="javascript:void(0);"><?php echo JText::_('COM_GROUPS_PAGES_APPLY_PAGE'); ?></a></li>
+						</ul>
+					</div>
 				</div>
 
 				<fieldset>
 					<legend><?php echo JText::_('COM_GROUPS_PAGES_PAGE_SETTINGS'); ?></legend>
-					<?php if ($this->page->get('id')) : ?>
-						<label for="page-ordering">
-							<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_ORDER'); ?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
-							<select name="page[ordering]" class="fancy-select">
-								<?php foreach ($this->order as $order) : ?>
-									<?php $sel = ($order->get('title') == $title) ? 'selected="selected"' : ''; ?>
-									<option <?php echo $sel; ?> value="<?php echo $order->get('ordering'); ?>">
-										<?php echo ($order->get('ordering') + 0) . '. '; ?><?php echo $order->get('title'); ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-						</label>
-					<?php endif; ?>
 
 					<label for="page-category" class="page-category-label">
 						<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_CATEGORY'); ?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
@@ -234,8 +236,56 @@ if ($this->page->get('id'))
 						</select>
 						<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_CATEGORY_HINT'); ?></span>
 					</label>
+					
+					<?php if ($this->page->get('home') == 0) : ?>
+						<label for="page-parent" class="page-parent-label">
+							<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_PARENT'); ?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
+							<select name="page[parent]" class="page-parent">
+								<?php foreach ($this->pages as $page) : ?>
+									<?php if ($page->get('id') == $id) { continue; } ?>
+									<?php $sel = ($parent == $page->get('id')) ? 'selected="selected"' : ''; ?>
+									<option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
+										<?php echo $page->heirarchyIndicator(' &ndash; ') . $page->get('title'); ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+							<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_PARENT_HINT'); ?></span>
+						</label>
+					<?php endif; ?>
 
+
+					<?php if ($this->page->get('id') && $this->page->get('home') == 0) : ?>
+						<label for="page-ordering">
+							<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_ORDER'); ?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
+							<select name="page[left]" class="page-ordering fancy-select">
+								<?php foreach ($this->pages as $page) : ?>
+									
+									<?php $sel = ($page->get('title') == $title) ? 'selected="selected"' : ''; ?>
+									<option <?php echo $sel; ?> data-parent="<?php echo $page->get('parent'); ?>" value="<?php echo $page->get('lft'); ?>">
+										<?php echo $page->get('lft') . ' ' . $page->get('title'); ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+							<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_ORDER_HINT'); ?></span>
+						</label>
+					<?php endif; ?>
+
+					<hr class="divider" />
+
+					<label>
+						<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS'); ?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
+						<select name="page[comments]" class="fancy-select">
+							<option><?php echo JText::sprintf('COM_GROUPS_PAGES_PAGE_COMMENTS_INHERIT', $groupCommentSettingString); ?></option>
+							<option value="0" <?php if ($comments === 0) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
+							<option value="1" <?php if ($comments === 1) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
+							<option value="2" <?php if ($comments === 2) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
+						</select>
+						<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_HINT'); ?></span>
+					</label>
+					
 					<?php if ($this->group->isSuperGroup() && count($this->pageTemplates) > 0) : ?>
+						<hr class="divider" />
+
 						<label for="page-template">
 							<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_TEMPLATE'); ?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
 							<select name="page[template]" class="fancy-select">
@@ -247,19 +297,10 @@ if ($this->page->get('id'))
 									<option <?php echo $sel; ?> value="<?php echo $tmpl; ?>"><?php echo $name; ?></option>
 								<?php endforeach;?>
 							</select>
+							<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_TEMPLATE_HINT'); ?></span>
 						</label>
 					<?php endif; ?>
-
-					<label>
-						<strong><?php echo JText::_('COM_GROUPS_PAGES_PAGE_HOME'); ?>:</strong> <span class="optional"><?php echo JText::_('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
-						<select name="page[home]" class="fancy-select">
-							<option value="0" <?php if ($home == 0) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_PAGE_HOME_USE_CURRENT'); ?></option>
-							<option value="1" <?php if ($home == 1) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_PAGE_HOME_SET'); ?></option>
-						</select>
-						<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_HOME_HINT'); ?></span>
-					</label>
 				</fieldset>
-
 			</div>
 		</div>
 

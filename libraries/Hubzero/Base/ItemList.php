@@ -328,6 +328,17 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 	}
 
 	/**
+	 * Run a filter over each of the items
+	 *
+	 * @param  Closure  $callback
+	 * @return array
+	 */
+	public function filter(Closure $callback)
+	{
+		return new static(array_filter($this->_data, $callback));
+	}
+
+	/**
 	 * Merge Item Lists
 	 *
 	 * @param  object $data Hubzero\Base\ItemList
@@ -344,5 +355,15 @@ class ItemList implements SeekableIterator, Countable, ArrayAccess
 		}
 
 		return new static($this->_data);
+	}
+
+	/**
+	 * Reverse data order.
+	 * 
+	 * @return new \Hubzero\Base\ItemList
+	 */
+	public function reverse()
+	{
+		return new static(array_reverse($this->_data));
 	}
 }

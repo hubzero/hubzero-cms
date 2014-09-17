@@ -66,6 +66,7 @@ defined('_JEXEC') or die('Restricted access');
 					$this->view('vote')
 					     ->set('option', $this->option)
 					     ->set('item', $this->comment)
+					     ->set('params', $this->params)
 					     ->set('url', $this->url)
 					     ->display();
 				}

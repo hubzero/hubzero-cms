@@ -31,9 +31,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-function isSystemUser( $userid )
+if (!function_exists('isSystemUser'))
 {
-	return ($userid < 1000) ? null : $userid;
+	function isSystemUser( $userid )
+	{
+		return ($userid < 1000) ? null : $userid;
+	}
 }
 
 // get group params

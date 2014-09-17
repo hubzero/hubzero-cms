@@ -129,7 +129,11 @@
 	background: #0397A7;
 	padding: 10px 0;
 }
-.super-group-menu li:hover ul {
+.super-group-menu ul ul ul {
+	margin-left: 100%;
+	top: 0px;
+}
+.super-group-menu li:hover > ul {
 	left: 0px;
 }
 .super-group-menu ul ul li {

@@ -283,6 +283,37 @@ else
 						</fieldset>
 					</fieldset>
 				<?php endif; ?>
+
+				<fieldset id="page-settings">
+					<legend><?php echo JText::_('COM_GROUPS_PAGES_SETTINGS_TITLE'); ?></legend>
+					<p><?php echo JText::_('COM_GROUPS_PAGES_SETTINGS_DESC'); ?></p>
+					<?php
+						$params   = new JRegistry($this->group->get('params'));
+						$comments = $params->get('page_comments', $this->config->get('page_comments', 0));
+						$author   = $params->get('page_author', $this->config->get('page_author', 0));
+					?>
+					<div class="grid">
+						<div class="col span6">
+							<label><?php echo JText::_('COM_GROUPS_PAGES_SETTING_COMMENTS'); ?>:
+								<select name="params[page_comments]">
+									<option <?php if ($comments == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
+									<option <?php if ($comments == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
+									<option <?php if ($comments == 2) { echo 'selected="selected"'; } ?> value="2"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
+								</select>
+								<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT'); ?></span>
+							</label>
+						</div>
+						<div class="col span6 omega">
+							<label><?php echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR'); ?>:
+								<select name="params[page_author]">
+									<option <?php if ($author == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR_NO'); ?></option>
+									<option <?php if ($author == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR_YES'); ?></option>
+								</select>
+								<span class="hint"><?php echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT'); ?></span>
+							</label>
+						</div>
+					</div>
+				</fieldset>
 			</div>
 
 			<div class="col span4 omega floating-iframe-col">

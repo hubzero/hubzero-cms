@@ -37,6 +37,10 @@ a.fs-dropdown-selected-item {
 	height: 18px;
 	overflow: hidden;
 }
+.readonly a.fs-dropdown-selected-item {
+	opacity: 0.75;
+	cursor: default;
+}
 a.fs-dropdown-selected-item span {
 	display: inline-block;
 	line-height: 22px;

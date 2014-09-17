@@ -69,18 +69,6 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_GROUPS_PAGES_PAGE_SETTINGS'); ?></span></legend>
-
-			<?php if ($this->page->get('id')) : ?>
-				<div class="input-wrap">
-					<label for="field-order"><?php echo JText::_('COM_GROUPS_PAGES_ORDER'); ?>:</label><br />
-					<select name="page[ordering]" id="field-order">
-						<?php foreach ($this->order as $k => $order) : ?>
-							<?php $sel = ($order->get('title') == $this->page->get('title')) ? 'selected="selected"' : ''; ?>
-							<option <?php echo $sel ;?> value="<?php echo $order->get('ordering'); ?>"><?php echo ($order->get('ordering') + 0) . '. '; ?><?php echo $order->get('title'); ?></option>
-						<?php endforeach; ?>
-					</select>
-				</div>
-			<?php endif; ?>
 			<div class="input-wrap">
 				<label for="field-category"><?php echo JText::_('COM_GROUPS_PAGES_CATEGORY'); ?>:</label><br />
 				<select name="page[category]" id="field-category">
@@ -91,6 +79,22 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 					<?php endforeach; ?>
 				</select>
 			</div>
+
+			<?php if (!$this->page->get('home')) : ?>
+				<div class="input-wrap">
+					<label for="field-order"><?php echo JText::_('COM_GROUPS_PAGES_PARENT'); ?>:</label><br />
+					<select name="page[parent]" id="field-order">
+						<?php foreach ($this->pages as $page) : ?>
+							<?php if ($page->get('id') == $this->page->get('id')) { continue; } ?>
+							<?php $sel = ($this->page->get('parent') == $page->get('id')) ? 'selected="selected"' : ''; ?>
+							<option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
+								<?php echo $page->heirarchyIndicator(' &ndash; ') . $page->get('title'); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+			<?php endif; ?>
+
 			<?php if ($this->group->isSuperGroup()) : ?>
 				<div class="input-wrap">
 					<label for="field-order"><?php echo JText::_('COM_GROUPS_PAGES_TEMPLATE'); ?>:</label><br />
@@ -105,13 +109,6 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 					</select>
 				</div>
 			<?php endif; ?>
-			<div class="input-wrap">
-				<label for="field-home"><?php echo JText::_('COM_GROUPS_PAGES_HOME'); ?>:</label><br />
-				<select name="page[home]" id="field-home">
-					<option value="0" <?php if ($this->page->get('home') == 0) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_HOME_USE'); ?></option>
-					<option value="1" <?php if ($this->page->get('home') == 1) { echo "selected"; } ?>><?php echo JText::_('COM_GROUPS_PAGES_HOME_SET'); ?></option>
-				</select>
-			</div>
 		</fieldset>
 
 		<fieldset class="adminform">
@@ -119,7 +116,7 @@ JHtml::_('behavior.modal', 'a.version', array('handler' => 'iframe', 'fullScreen
 
 			<div class="input-wrap">
 				<label for="field-state"><?php echo JText::_('COM_GROUPS_PAGES_STATE'); ?>:</label><br />
-				<select name="page[state]" id="field-state">
+				<select name="page[state]" id="field-state" <?php if ($this->page->get('home') == 1) { echo 'disabled="disabled"'; } ?>>
 					<?php
 					$states = array(
 						1 => JText::_('COM_GROUPS_PAGES_STATE_PUBLISHED'),

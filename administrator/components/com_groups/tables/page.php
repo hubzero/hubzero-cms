@@ -54,6 +54,34 @@ Class GroupsTablePage extends JTable
 	 *
 	 * @var string
 	 */
+	var $parent = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var string
+	 */
+	var $depth = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var string
+	 */
+	var $lft = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var string
+	 */
+	var $rgt = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var string
+	 */
 	var $category = NULL;
 
 	/**
@@ -82,13 +110,6 @@ Class GroupsTablePage extends JTable
 	 *
 	 * @var integer
 	 */
-	var $ordering = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
 	var $state = 1;
 
 	/**
@@ -104,6 +125,13 @@ Class GroupsTablePage extends JTable
 	 * @var integer
 	 */
 	var $home   = NULL;
+
+	/**
+	 * int(11)
+	 *
+	 * @var integer
+	 */
+	var $comments = NULL;
 
 	/**
 	 * Constructor
@@ -158,7 +186,15 @@ Class GroupsTablePage extends JTable
 		$sql .= $this->_buildQuery( $filters );
 
 		$this->_db->setQuery($sql);
-		return $this->_db->loadObjectList();
+
+		if (isset($filters['returnas']) && $filters['returnas'] == 'array')
+		{
+			return $this->_db->loadAssocList();
+		}
+		else
+		{
+			return $this->_db->loadObjectList();
+		}
 	}
 
 
@@ -206,6 +242,30 @@ Class GroupsTablePage extends JTable
 		if (isset($filters['category']))
 		{
 			$where[] = "category=" . $this->_db->quote( $filters['category'] );
+		}
+
+		// home
+		if (isset($filters['home']))
+		{
+			$where[] = "home=" . $this->_db->quote( $filters['home'] );
+		}
+
+		// parent
+		if (isset($filters['depth']))
+		{
+			$where[] = "depth=" . $this->_db->quote( $filters['depth'] );
+		}
+
+		// left
+		if (isset($filters['left']))
+		{
+			$where[] = "lft > " . $this->_db->quote( $filters['left'] );
+		}
+
+		// right
+		if (isset($filters['right']))
+		{
+			$where[] = "rgt < " . $this->_db->quote( $filters['right'] );
 		}
 
 		// if we have and conditions

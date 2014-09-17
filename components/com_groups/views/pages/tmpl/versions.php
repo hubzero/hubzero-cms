@@ -33,9 +33,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $editPageUrl = 'index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=edit&pageid='.$this->page->get('id');
 
+// add page stylesheets
+$stylesheets = GroupsHelperView::getPageCss($this->group);
+$doc = JFactory::getDocument();
+foreach ($stylesheets as $stylesheet)
+{
+	$doc->addStylesheet($stylesheet);
+}
+
 // add styles & scripts
 $this->css()
-	 ->js();
+	 ->js()
+	 ->js('jquery.cycle2', 'system');
 ?>
 <header id="content-header">
 	<h2><?php echo JText::sprintf('COM_GROUPS_PAGES_VERSIONS_FOR_PAGE', $this->page->get('title')); ?></h2>
@@ -49,27 +58,48 @@ $this->css()
 	</div>
 </header>
 
-<section class="main section group-page-versions">
-	<table>
-		<thead>
-			<tr>
-				<th><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_VERSION'); ?></th>
-				<th><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_CREATED'); ?></th>
-				<th><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_APPROVED'); ?></th>
-				<th><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_ACTIONS'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach ($this->page->versions() as $k => $pageVersion) : ?>
-				<?php $cls = ($k == 0) ? 'current' : ''; ?>
-				<tr class="<?php echo $cls; ?>">
-					<td>
-						<?php
-							echo $pageVersion->get('version');
-							echo ($k == 0) ? JText::_('COM_GROUPS_PAGES_VERSIONS_CURRENT') : '';
-						?>
-					</td>
-					<td>
+<section class="main section">
+	<div class="version-manager">
+		<div class="toolbar grid">
+			<div class="col span6 title">
+				<div class="btn-group">
+					<h3 class="btn version-title"></h3>
+					<a class="btn version-source" href="javascript:void(0);"><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_VIEW_SOURCE'); ?></a>
+				</div>
+				<a class="btn version-meta" title="<?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_TOGGLE_METADATA'); ?>" href="javascript:void(0);">&hellip;</a>
+			</div>
+			<div class="col span6 omega controls">
+				<div class="btn-group">
+					<a href="javascript:void(0);" class="btn icon-prev version-prev">
+						<?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_PREVIOUS'); ?>
+					</a>
+					<span class="version-jumpto-container">
+						<select class="btn version-jumpto icon-prev">
+							<?php foreach ($this->page->versions() as $version) :?>
+								<option value="<?php echo $version->get('version'); ?>"><?php echo $version->get('version'); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</span>
+					<a href="javascript:void(0);" class="btn icon-next opposite version-next">
+						<?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_NEXT'); ?>
+					</a>
+				</div>
+				<a href="javascript:void(0);" class="btn btn-info version-restore">
+					<?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_RESTORE'); ?>
+				</a>
+			</div>
+		</div>
+		
+		<div class="content">
+			<div class="versions">
+				<?php foreach ($this->page->versions()->reverse() as $k => $pageVersion) : ?>
+					<?php $cls = ($k+1 == $this->page->versions()->count()) ? ' current' : ''; ?>
+					<div class="version <?php echo $cls; ?>" 
+						data-cycle-hash="v<?php echo $pageVersion->get('version'); ?>" 
+						data-cycle-title="Version # <?php echo $pageVersion->get('version'); ?>"
+						data-raw-url="<?php echo $pageVersion->url('raw'); ?>"
+						data-restore-url="<?php echo ($k+1 != $this->page->versions()->count()) ? $pageVersion->url('restore') : null; ?>">
+
 						<?php
 							$created = JText::_('COM_GROUPS_PAGES_PAGE_NA');
 							if ($pageVersion->get('created') != null)
@@ -87,18 +117,7 @@ $this->css()
 								$profile = \Hubzero\User\Profile::getInstance( $pageVersion->get('created_by') );
 								$created_by = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $profile->get('uidNumber')).'">'.$profile->get('name').'</a>';
 							}
-						?>
-						<div class="created">
-							<?php if ($created_by != 'n/a' && $created_by != 'System') : ?>
-								<img align="left" width="40" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
-							<?php endif; ?>
-							<span class="created-date"><?php echo $created; ?></span>
-							<span class="created-by"><?php echo $created_by; ?></span>
-						</div>
-					</td>
 
-					<td>
-						<?php
 							$approved_on = JText::_('COM_GROUPS_PAGES_PAGE_NA');
 							if ($pageVersion->get('approved_on') != null)
 							{
@@ -116,22 +135,64 @@ $this->css()
 								$approved_by = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $profile->get('uidNumber')).'">'.$profile->get('name').'</a>';
 							}
 						?>
-						<div class="approved">
-							<?php if ($approved_by != 'n/a' && $approved_by != 'System') : ?>
-								<img align="left" width="40" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
-							<?php endif; ?>
-							<span class="approved-date"><?php echo $approved_on; ?></span>
-							<span class="approved-by"><?php echo $approved_by; ?></span>
+						<div class="grid version-metadata">
+							<div class="col span3">
+								<span><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_CREATED'); ?></span>
+								<?php echo $created; ?></span>
+							</div>
+							<div class="col span3">
+								<span><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_CREATED_BY'); ?></span>
+								<?php if ($created_by != 'n/a' && $created_by != 'System') : ?>
+									<img align="left" width="20" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
+								<?php endif; ?>
+								<?php echo $created_by; ?>
+							</div>
+							<div class="col span3">
+								<span><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_APPROVED'); ?></span>
+								<?php echo $approved_on; ?>
+							</div>
+							<div class="col span3 omega">
+								<span><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_APPROVED_BY'); ?></span>
+								<?php if ($approved_by != 'n/a' && $approved_by != 'System') : ?>
+									<img align="left" width="20" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($profile->get('uidNumber')); ?>" />
+								<?php endif; ?>
+								<?php echo $approved_by; ?>
+							</div>
 						</div>
-					</td>
+						<div class="version-content">
+							<?php echo GroupsHelperPages::generatePreview($this->page, $pageVersion->get('version'), true); ?>
+						</div>
+						<div class="version-code">
+							<?php
+								$current = explode("\n", $pageVersion->content('raw'));
+								$previousVersion = $pageVersion->get('version') - 1;
+								if ($previousVersion == 0)
+								{
+									$previous = array();
+								}
+								else
+								{
+									$previous = $this->page->version($previousVersion);
+									$previous = explode("\n", $previous->content('raw'));
+								}
 
-					<td width="100px">
-						<a target="_blank" class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=raw&pageid='.$this->page->get('id').'&version='.$pageVersion->get('version')); ?>">
-							<?php echo JText::_('COM_GROUPS_PAGES_VERSIONS_VIEW_RAW'); ?>
-						</a>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-		</tbody>
-	</table>
+								// define function to format context's
+								// basically make sure lines that are not different 
+								// are outputted as code not rendered html
+								$contextFormatter = function($context)
+								{
+									return htmlentities($context);
+								};
+
+								// out formatted diff table
+								$formatter = new TableDiffFormatter();
+								$diff = $formatter->format(new Diff($previous, $current), $contextFormatter);
+								echo $diff;
+							?>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
 </section>

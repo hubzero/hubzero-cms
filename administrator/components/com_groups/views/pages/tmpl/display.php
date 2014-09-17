@@ -155,7 +155,6 @@ function submitbutton(pressbutton)
 		 	<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo $this->pages->count();?>);" /></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_TITLE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_ORDER'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_STATE'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_HOME'); ?></th>
 				<th scope="col"><?php echo JText::_('COM_GROUPS_PAGES_VERSIONS'); ?></th>
@@ -170,9 +169,26 @@ function submitbutton(pressbutton)
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($page->get('title'))); ?> <br />
-					<span class="hint" tabindex="-1"><?php echo '/groups/' . $this->group->get('cn') . '/' . $this->escape($page->get('alias')); ?></span>
+					<?php
+						// add /groups/{{group_cname}}
+						$segments = array('groups', $this->group->get('cn'));
+
+						// get parent aliases
+						$parents  = $page->getRecursiveParents($page);
+						$segments = array_merge($segments, $parents->lists('alias'));
+
+						// remove home page
+						$search = array_search('overview', $segments);
+						if ($search !== false)
+						{
+							unset($segments[$search]);
+						}
+
+						// add this page alias
+						$segments[] = $page->get('alias');
+					?>
+					<span class="hint" tabindex="-1"><?php echo DS . implode(DS, $segments); ?></span>
 				</td>
-				<td><input type="text" style="width:30px;text-align:center;" disabled="disabled" value="<?php echo ($page->get('ordering') + 0); ?>" /></td>
 				<td>
 					<?php
 					switch ($page->get('state'))

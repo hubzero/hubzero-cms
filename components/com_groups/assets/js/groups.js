@@ -31,6 +31,7 @@ HUB.Groups = {
 		HUB.Groups.pages();
 		HUB.Groups.modules();
 		HUB.Groups.categories();
+		HUB.Groups.pageVersions();
 	},
 	
 	general: function()
@@ -339,6 +340,9 @@ HUB.Groups = {
 		
 		// Tabbed Interface
 		HUB.Groups.pagesTabs();
+
+		// fixed header
+		HUB.Groups.pageManagerFixedToolbar();
 		
 		// Reorder Pages
 		HUB.Groups.pagesReorderPages();
@@ -346,6 +350,12 @@ HUB.Groups = {
 		// Page Preview
 		HUB.Groups.pagesPagePreview();
 		
+		// action changer
+		HUB.Groups.pagesEditPageActionChanger();
+
+		// edit page order
+		HUB.Groups.pagesEditPageOrder();
+
 		// page category
 		HUB.Groups.pagesEditPageCategory();
 		
@@ -353,7 +363,7 @@ HUB.Groups = {
 		$('.group-page-manager').on('keyup', '.toolbar .search input', function(event) {
 			var term = $(this).val(),
 				list = $(this).parents('fieldset').find('ul.item-list').first();
-			
+
 			HUB.Groups.pagesFilterClear();
 			HUB.Groups.pagesSearchList(term, list);
 		});
@@ -395,6 +405,141 @@ HUB.Groups = {
 		jQuery.expr[':'].caseInsensitiveContains = function(a,i,m) {
 			return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0; 
 		};
+	},
+
+	//-----
+
+	pageManagerFixedToolbar: function()
+	{
+		var $ = this.jQuery;
+
+		// make sure we have the page manager
+		if (!$('.group-page-manager').length)
+		{
+			return;
+		}
+
+		// get toolbar position
+		var toolbartop = $('.group-page-manager .tabs').offset().top;
+
+		// force set width so looks good when position = fixed
+		$('.group-page-manager .toolbar').width($('.group-page-manager .toolbar').width());
+		$('.group-page-manager .tabs').width($('.group-page-manager .tabs').width());
+
+		// mark pinned after scroll distance
+		$(window).scroll(function()
+		{			
+			var scollpos = $(window).scrollTop();
+			if (scollpos > toolbartop)
+			{
+				$('.group-page-manager').addClass('pinned');
+			}
+			else
+			{
+				$('.group-page-manager').removeClass('pinned');
+			}
+		});
+
+		// handle window resize
+		$(window).resize(function()
+		{
+			$('.group-page-manager .toolbar').width($('.group-page-manager').width() - 2);
+			$('.group-page-manager .tabs').width($('.group-page-manager').width() - 2);
+		});
+	},
+
+	//-----
+	
+	pagesEditPageActionChanger: function()
+	{
+		var $ = this.jQuery;
+
+		// only continue if on edit group page form
+		if (!$('.edit-group-page .form-controls').length)
+		{
+			return;
+		}
+
+		// allow save & apply actions
+		$('.form-controls .dropdown-menu a').on('click', function(event) {
+			event.preventDefault();
+
+			// store the action for hte user
+			if (localStorage)
+			{
+				localStorage.setItem('groups.pagemanager.action', $(this).attr('data-action'));
+			}
+
+			// change which is active
+			$('.form-controls .dropdown-menu a').removeClass('active');
+			$(this).addClass('active');
+
+			// update button text
+			var button = $(this).parents('.form-controls').find('.btn-main');
+			button.html($(this).html());
+
+			// update hidden form input
+			if ($(this).attr('data-action') == 'apply')
+			{
+				button.removeClass('icon-save').addClass('icon-apply');
+				$('input[name="task"]').val('apply');
+			}
+			else
+			{
+				button.removeClass('icon-apply').addClass('icon-save');
+				$('input[name="task"]').val('save');
+			}
+		});
+		
+		// prefill last choice
+		if (localStorage && localStorage.getItem('groups.pagemanager.action'))
+		{
+			var action = localStorage.getItem('groups.pagemanager.action');
+			var item = $('.form-controls .dropdown-menu a[data-action="'+action+'"');
+			item.trigger('click');
+		}
+	},
+
+	//-----
+
+	pagesEditPageOrder: function()
+	{
+		var $ = this.jQuery;
+
+		if (!$('.page-parent').length)
+		{
+			return;
+		}
+
+		if ($('.page-ordering').length)
+		{
+			var fs = $('.page-ordering').data('fancyselect');
+			var ordering = $('#fs-dropdown-' + fs.id);
+
+			// manually create fancy select on parent selector to handle onSelected
+			var parent = $('.page-parent').HUBfancyselect({
+				onSelected: function(t, data)
+				{
+					ordering.find('.fs-dropdown-options-container li').addClass('hide');
+					ordering.find('.fs-dropdown-options-container a[data-parent="'+data.value+'"]').parents('li').removeClass('hide');
+
+					// auto select first option if our selected option is no longer available
+					if (ordering.find('.fs-dropdown-options-container .fs-dropdown-option-selected').hasClass('hide'))
+					{
+						ordering.find('.fs-dropdown-options-container li:not(.hide) a').last().trigger('click');
+					}
+				}
+			});
+
+			// auto-select
+			var parentId = parent.data('fancyselect').id;
+			var text = $('#fs-dropdown-' + parentId).find('.fs-dropdown-option-selected a').first().text();
+			$('.page-parent').HUBfancyselect('selectText', text);
+		}
+		else
+		{
+			$('.page-parent').HUBfancyselect();
+		}	
 	},
 	
 	//-----
@@ -483,6 +628,8 @@ HUB.Groups = {
 		
 		if (search)
 		{
+			$('.group-page-manager').addClass('searching');
+
 			list.addClass('filtered').find('.no-results').remove();
 			list.find('.item-title:not(:caseInsensitiveContains("'+search+'"))').parents('li').hide();
 			list.find('.item-title:caseInsensitiveContains("'+search+'")').parents('li').show();
@@ -495,6 +642,8 @@ HUB.Groups = {
 		}
 		else
 		{
+			$('.group-page-manager').removeClass('searching');
+
 			list.find('li').show();
 			list.removeClass('filtered').find('.no-results').remove();
 		}
@@ -520,9 +669,11 @@ HUB.Groups = {
 		
 		if (filter != '')
 		{
+			$('.group-page-manager').addClass('filtering');
+
 			list.addClass('filtered').find('.no-results').remove();
-			list.find('> li:not(.' + filter + ')').hide();
-			list.find('.' + filter).show();
+			list.find('.item-container:not(.' + filter + ')').parents('li').hide();
+			list.find('.item-container.' + filter).parents('li').show();
 			
 			//add no results node
 			if (list.find('li:visible').length == 0)
@@ -532,6 +683,8 @@ HUB.Groups = {
 		}
 		else
 		{
+			$('.group-page-manager').removeClass('filtering');
+
 			list.removeClass('filtered').find('.no-results').remove();
 			list.find('li').show();
 		}
@@ -592,40 +745,107 @@ HUB.Groups = {
 	pagesReorderPages: function()
 	{
 		var $ = this.jQuery;
+
+		// only do if we have page manager
+		if (!$('.group-page-manager').length)
+		{
+			return;
+		}
 		
-		// sortable pages
-		$('.group-page-manager .pages').sortable({
-			axis: 'y',
-			containment: $('.pages').parents('fieldset'),
-			handle: '.order-grabber',
-			items: ' > li',
-			helper: 'clone',
-			opacity: 0.8,
-			revert: true,
-			update: function(event, ui) {
-				// get new order
-				var sort = $(this).sortable('toArray');
-				
-				// show loader
-				$('.pages').addClass('rebuilding');
-				
-				// ajax call to save page order
-				$.ajax({
-					url: $('.pages').attr('data-url'),
-					type: 'post',
-					dataType: 'json',
-					data: {
-						order: sort
-					},
-					success: function( data, status, jqXHR )
-					{
-						$('.pages').load(window.location.href + " .pages > *", function(){
-							$('.pages').removeClass('rebuilding');
-						});
-					}
+		// nested sortable page manager
+		$('.group-page-manager .pages').nestedSortable({
+            handle: '.item-mover',
+            cursor: "move",
+            items: 'li',
+            listType: 'ul',
+            helper: 'original',
+            opacity: 0.8,
+            revert: true,
+            tolerance: 'pointer',
+            tabSize: 35,
+            protectRoot: true,
+            scrollSensitivity: 100,
+            maxLevels: $('.item-list.pages').attr('data-max-depth'),
+            create: function()
+            {
+            	// save on initial load just to make sure we have everything setup correctly
+            	HUB.Groups.pagesReorderPagesSave(false);
+            },
+            start: function(e, ui)
+            {
+        		ui.placeholder.height(ui.item.height());
+    		},
+            update: function()
+            {
+				$(window).on('beforeunload', function(){
+					return 'The page order has not been saved. All changes will be lost if you dont save before leaving.';
 				});
+
+            	var orderButtons = $('<div class="page-order-actions"><button class="btn btn-info icon-save save-page-order">Save Order</button><button class="btn icon-ban-circle reset-page-order">Reset Order</button></div>');
+            	$('.group-page-manager .tabs').append(orderButtons);
+            }
+        });
+
+        $('.group-page-manager').on('click', '.save-page-order', function(event) {
+        	event.preventDefault();
+        	$(this).attr('disabled', 'disabled');
+        	HUB.Groups.pagesReorderPagesSave(true);
+        });
+
+        $('.group-page-manager').on('click', '.reset-page-order', function(event) {
+        	event.preventDefault();
+        	$(this).attr('disabled', 'disabled');
+        	HUB.Groups.pagesReorderPagesReset();
+        });
+	},
+
+	//-----
+
+	pagesReorderPagesSave: function(showRebuilding)
+	{
+		// get new order
+		var sort = $('.group-page-manager .pages').nestedSortable('toArray', { 
+			excludeRoot: true,
+		});
+
+		// show loader
+		if (showRebuilding)
+		{
+			$('.pages').addClass('rebuilding');
+		}
+
+		//ajax call to save page order
+		$.ajax({
+			url: $('.pages').attr('data-url'),
+			type: 'post',
+			dataType: 'json',
+			data: {
+				order: sort
+			},
+			success: function( data, status, jqXHR )
+			{
+				$('.pages').load(window.location.href + " .pages > *", function(){
+					$('.pages').removeClass('rebuilding');
+					$('.page-order-actions').fadeOut("slow", function() {
+						$(this).remove();
+					});
+				});
+				$(window).off('beforeunload');
 			}
-		});//.disableSelection();
+		});
+	},
+
+	//---
+
+	pagesReorderPagesReset: function()
+	{
+		$('.pages').load(window.location.href + " .pages > *", function(){
+			$('.page-order-actions').fadeOut("slow", function() {
+				$(this).remove();
+			});
+		});
+
+		$(window).off('beforeunload');
 	},
 	
 	//-----
@@ -641,6 +861,126 @@ HUB.Groups = {
 		});
 	},
 	
+	//-----
+	
+	pageVersions: function()
+	{
+		var $ = this.jQuery;
+		var $versions = $('.versions');
+
+		// make sure we have the version manager
+		if (!$('.version-manager').length)
+		{
+			return;
+		}
+
+		// init cycle on versions
+		$versions.cycle({
+			log: false,
+			slides: '> .version',
+			fx: 'fade',
+			paused: true,
+			allowWrap: false,
+			prev: '.version-prev',
+			next: '.version-next',
+			caption: '.version-title',
+			captionTemplate: '{{title}}',
+			autoHeight: 'container',
+			startingSlide: ($('.versions .version').length - 1),
+		});
+
+		// jump between versions
+		$('.version-jumpto').on('change', function(event) {
+			$versions.cycle('goto', ($(this).val() - 1));
+		});
+
+		// update raw/restore button links
+		// on initialize & after slide transition
+		$versions
+			.on('cycle-update-view', function(event, optionHash, slideOptionsHash, currentSlideEl) {
+				$('.version-raw').attr('href', $(currentSlideEl).attr('data-raw-url'));
+				$('.version-restore').attr('href', $(currentSlideEl).attr('data-restore-url'));
+
+				if ($('.version-restore').attr('href') == '')
+				{
+					$('.version-restore').attr('disabled', 'disabled');
+				}
+				else
+				{
+					$('.version-restore').removeAttr('disabled');
+				}
+
+				// sync jumpto select
+				$('.version-jumpto').val(optionHash.currSlide + 1);
+			});
+
+		// resize after a second to make sure we have properly sized for images
+		setTimeout(function() {
+			HUB.Groups.pageVersionMangerResize();
+		}, 1000);
+
+		// init source mode & fixed toolbar
+		HUB.Groups.pageVersionMangerActions();
+		HUB.Groups.pageVersionManagerFixedToolbar();
+	},
+
+	pageVersionMangerActions: function()
+	{
+		var $ = this.jQuery;
+		
+		// switch to source
+		$('.version-source').on('click', function(){
+			event.preventDefault();
+			$(this).toggleClass('active');
+			$('.version-content').toggle();
+			$('.version-code').toggle();
+			
+			HUB.Groups.pageVersionMangerResize();
+		});
+
+		$('.version-meta').on('click', function(){
+			event.preventDefault();
+			$(this).toggleClass('active');
+			$('.version-metadata').slideToggle(function(){
+				HUB.Groups.pageVersionMangerResize();
+			});
+		});
+	},
+
+	//-----
+	
+	pageVersionManagerFixedToolbar: function()
+	{
+		var $ = this.jQuery;
+
+		if (!$('.version-manager').length)
+		{
+			return;
+		}
+
+		// fixed toolbar
+		var toolbartop = $('.toolbar').offset().top;
+		$('.toolbar').width($('.toolbar').width());
+		$(window).scroll(function() {			
+			var scollpos = $(window).scrollTop();
+			if (scollpos > toolbartop)
+			{
+				$('.version-manager').addClass('pinned');
+			}
+			else
+			{
+				$('.version-manager').removeClass('pinned');
+			}
+		});
+	},
+
+	pageVersionMangerResize: function()
+	{
+		$('.versions').animate({
+			height: $('.cycle-slide-active').outerHeight()
+		}, 250);
+	},
+
 	//-----
 	
 	modules: function()

@@ -134,6 +134,11 @@ class GroupsModelPageArchive extends JObject
 						// get current version
 						$version = $result->versions()->first();
 
+						if (!$version)
+						{
+							continue;
+						}
+
 						// if current version is unapproved return it
 						if ($version->get('approved') == 0)
 						{
@@ -143,6 +148,13 @@ class GroupsModelPageArchive extends JObject
 				}
 				return new \Hubzero\Base\Model\ItemList($unapproved);
 			break;
+			case 'tree':
+				$tree = array();
+				if ($results = $this->pages('list', $filters, $clear))
+				{
+					$tree = $this->_buildTree($results);
+				}
+				return $tree;
 			case 'list':
 			default:
 				if (!($this->_pages instanceof \Hubzero\Base\Model\ItemList) || $clear)
@@ -181,5 +193,45 @@ class GroupsModelPageArchive extends JObject
 			$page->set($key, $value);
 			$page->store();
 		}
+	}
+
+	/**
+	 * Build Multi Dimensional Tree of Pages
+	 * 
+	 * @param  [type] $results [description]
+	 * @return [type]          [description]
+	 */
+	private function _buildTree($pages)
+	{
+		// vars to hold the tree array
+		$tmpTree = array();
+		$tree    = array();
+
+		// first loop organizes by parent
+		foreach ($pages as $page)
+		{
+			if (!isset($tmpTree[$page->get('parent')]))
+			{
+				$tmpTree[$page->get('parent')] = array();
+			}
+			if (!isset($tmpTree[$page->get('id')]))
+			{
+				$tmpTree[$page->get('id')] = array();
+			}
+
+			// add our page to the parent array
+			$tmpTree[$page->get('parent')][] = $page;
+		}
+
+		// second loop attaches children to parent
+		foreach ($pages as $page)
+		{
+			$children = $tmpTree[$page->get('id')];
+			$page->set('children', $children);
+			$tree[$page->get('parent')][] = $page;
+		}
+
+		// only return base node tree
+		return $tree[0];
 	}
 }

@@ -206,12 +206,16 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		$group   = \Hubzero\User\Group::getInstance( $this->get('gidNumber') );
 		$plugins = \Hubzero\User\Group\Helper::getPluginAccess( $group );
 		$reserved = array_keys($plugins);
-		if (in_array($alias, $reserved))
+
+		// make sure dont use a reserved alias on the first level
+		if (in_array($alias, $reserved)
+			&& $this->get('depth') <= 2
+			&& $this->get('home') == 0)
 		{
 			$alias .= '_page';
 		}
 
-		// get current page
+		// get current page as it exists in db
 		$page = new GroupsModelPage( $this->get('id') );
 		$currentAlias = $page->get('alias');
 
@@ -223,7 +227,8 @@ class GroupsModelPage extends \Hubzero\Base\Model
 			$pageArchive = GroupsModelPageArchive::getInstance();
 			$aliases = $pageArchive->pages('alias', array(
 				'gidNumber' => $group->get('gidNumber'),
-				'state'     => array(0,1)
+				'state'     => array(0,1),
+				'depth'     => $this->get('depth')
 			));
 
 			// Append random number if page already exists
@@ -287,16 +292,103 @@ class GroupsModelPage extends \Hubzero\Base\Model
 		// loag group
 		$group = \Hubzero\User\Group::getInstance($this->get('gidNumber'));
 
-		// base link
-		$pageLink = 'index.php?option=com_groups&cn=' . $group->get('cn');
+		// base link, jroute
+		$pageLink = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn'));
 
+		// get our parents
+		$parents = $this->getRecursiveParents($this);
+
+		// get array of aliases
+		$segments = $parents->lists('alias');
+		$segments = array_filter($segments);
+
+		// remove home page
+		$search = array_search('overview', $segments);
+		if ($search !== false)
+		{
+			unset($segments[$search]);
+		}
+
+		// add our current page
 		// if we not linking to the home page
 		if (!$this->get('home'))
 		{
-			$pageLink .= '&active=' . $this->get('alias');
+			$segments[] = $this->get('alias');
+		}
+
+		// if we have segments append them
+		if (count($segments) > 0)
+		{
+			$pageLink .= DS . implode($segments, DS);
 		}
 
 		// return routed link
-		return JRoute::_($pageLink);
+		return $pageLink;
+	}
+
+	/**
+	 * Get Parent Parent
+	 * 
+	 * @return object  GroupsModelPage Object
+	 */
+	public function getParent()
+	{
+		return new GroupsModelPage($this->get('parent'));
+	}
+
+	/**
+	 * Get Page Children
+	 * 
+	 * @return 
+	 */
+	public function getChildren()
+	{
+		// load pages that are decendents of this page
+		$archive  = new GroupsModelPageArchive();
+		$children = $archive->pages('list', array(
+			'gidNumber' => $this->get('gidNumber'),
+			'left'      => $this->get('lft'),
+			'right'     => $this->get('rgt'),
+			'orderby'   => 'lft ASC'
+		));
+
+		return $children;
+	}
+
+	/**
+	 * Get Parents Recursively
+	 * 
+	 * @param  [type] $page      [description]
+	 * @param  string $direction [description]
+	 * @return [type]            [description]
+	 */
+	public function getRecursiveParents($page, $sort = 'ASC')
+	{
+		// new item list object to store parents
+		// this way we have access to all page vars
+		$parents = new \Hubzero\Base\Model\ItemList();
+
+		// starting at current page loop through in 
+		// reverse order until our parent page doesnt have a parent
+		while ($page->get('parent') != 0)
+		{
+			$page = new GroupsModelPage($page->get('parent'));
+			$parents->add($page);
+		}
+
+		// return parents
+		return ($sort == 'ASC') ? $parents->reverse() : $parents;
+	}
+
+	/**
+	 * Display indicator of Heirarchy
+	 * 
+	 * @param  [type] $hierarchyIndicator [description]
+	 * @return [type]                     [description]
+	 */
+	public function heirarchyIndicator($hierarchyIndicator = ' &mdash; ')
+	{
+		$parents = $this->getRecursiveParents($this);
+		return str_repeat($hierarchyIndicator, $parents->count());
 	}
 }

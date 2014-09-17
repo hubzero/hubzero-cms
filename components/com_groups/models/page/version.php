@@ -229,4 +229,28 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 		// run hubzero html sanitize
 		return \Hubzero\Utility\Sanitize::html($content, $options);
 	}
+
+	/**
+	 * [url description]
+	 * @param  string $to [description]
+	 * @return [type]     [description]
+	 */
+	public function url($to = 'raw')
+	{
+		$page  = new GroupsModelPage($this->get('pageid'));
+		$group = \Hubzero\User\Group::getInstance($page->get('gidNumber'));
+
+		$url = 'index.php?option=com_groups&cn=' . $group->get('cn');
+		switch ($to)
+		{
+			case 'restore':
+				$url .= '&controller=pages&task=restore&pageid=' . $page->get('id') . '&version=' . $this->get('version');
+			break;
+			case 'raw':
+			default:
+				$url .= '&controller=pages&task=raw&pageid=' . $page->get('id') . '&version=' . $this->get('version');
+		}
+
+		return JRoute::_($url);
+	}
 }

@@ -93,10 +93,10 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		// get group pages
 		$pageArchive = new GroupsModelPageArchive();
-		$this->view->pages = $pageArchive->pages('list', array(
+		$this->view->pages = $pageArchive->pages('tree', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1),
-			'orderby'   => 'ordering'
+			'orderby'   => 'lft ASC'
 		));
 
 		// get page categories
@@ -133,6 +133,7 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$this->view->config        = $this->config;
 
 		//display
+		$this->view->setLayout('manager');
 		$this->view->display();
 	}
 
@@ -195,10 +196,10 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		// get a list of all pages for page ordering
 		$pageArchive = GroupsModelPageArchive::getInstance();
-		$this->view->order = $pageArchive->pages('list', array(
+		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1),
-			'orderby'   => 'ordering'
+			'orderby'   => 'lft'
 		));
 
 		// get page categories
@@ -223,17 +224,29 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// get view notifications
 		$this->view->notifications = ($this->getNotifications()) ? $this->getNotifications() : array();
 		$this->view->group         = $this->group;
+		$this->view->config        = $this->config;
 
 		//display layout
 		$this->view->display();
 	}
 
 	/**
-	 * Save Group page
+	 * Apply group page changes
 	 *
 	 * @return 	void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		// send to save task
+		$this->saveTask(true);
+	}
+
+	/**
+	 * Save group page
+	 *
+	 * @return 	void
+	 */
+	public function saveTask($apply = false)
 	{
 		// Get the page vars being posted
 		$page    = JRequest::getVar('page', array(), 'post');
@@ -243,23 +256,8 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$task = ($page['id']) ? 'update' : 'create';
 
 		// load page and version objects
-		$this->page    = new GroupsModelPage( $page['id'] );
+		$this->page    = new GroupsModelPage($page['id']);
 		$this->version = new GroupsModelPageVersion();
-
-		// ordering change
-		$ordering = null;
-		if (isset($page['ordering']) && $page['ordering'] != $this->page->get('ordering'))
-		{
-			$ordering = $page['ordering'];
-			unset($page['ordering']);
-		}
-
-		// if this is new page, get next order possible for position
-		if (!isset($page['id']) || $page['id'] == '')
-		{
-			$ordering = null;
-			$page['ordering'] = $this->page->getNextOrder($this->group->get('gidNumber'));
-		}
 
 		// bind new page properties
 		if (!$this->page->bind($page))
@@ -285,7 +283,16 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		// set page vars
 		$this->page->set('gidNumber', $this->group->get('gidNumber'));
-		$this->page->set('alias', $this->page->uniqueAlias());
+
+		// only get unique alias if not home page
+		if ($this->page->get('home') == 0)
+		{
+			$this->page->set('alias', $this->page->uniqueAlias());
+		}
+
+		// update our depth
+		$parent = $this->page->getParent();
+		$this->page->set('depth', $parent->get('depth') + 1);
 
 		// make sure we can create both the page and version
 		if (!$this->page->check() || !$this->version->check())
@@ -296,19 +303,33 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			return;
 		}
 
+		// our start should be our left (order) or the parents right - 1
+		$start = $this->page->get('left');
+		if (!$start)
+		{
+			$start = $parent->get('rgt') - 1;
+		}
+
+		// update current rights
+		$sql = "UPDATE `#__xgroups_pages` SET rgt=rgt+2 WHERE rgt>".($start-1)." AND gidNumber=1053;";
+		$this->database->setQuery($sql);
+		$this->database->query();
+
+		// update current lefts
+		$sql2 = "UPDATE `#__xgroups_pages` SET lft=lft+2 WHERE lft>".($start-1)." AND gidNumber=1053;";
+		$this->database->setQuery($sql2);
+		$this->database->query();
+
+		// set this pages left & right
+		$this->page->set('lft', $start);
+		$this->page->set('rgt', $start+1);
+
 		// save page settings
 		if (!$this->page->store(true))
 		{
 			$this->setNotification($this->page->getError(), 'error');
 			$this->editTask();
 			return;
-		}
-
-		// do we need to reorder
-		if ($ordering !== null)
-		{
-			$move = (int) $ordering - (int) $this->page->get('ordering');
-			$this->page->move($move, $this->group->get('gidNumber'));
 		}
 
 		// get currrent version #
@@ -385,9 +406,21 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			return;
 		}
 
+		// are we applying or saving?
+		if ($apply)
+		{
+			$notification = JText::sprintf('COM_GROUPS_PAGES_PAGE_SAVED_AND_LINK', $task, $this->page->url());
+			$redirect = JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id'));
+		}
+		else
+		{
+			$notification = JText::sprintf('COM_GROUPS_PAGES_PAGE_SAVED', $task);
+			$redirect = JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages');
+		}
+
 		// Push success message and redirect
-		$this->setNotification(JText::sprintf('COM_GROUPS_PAGES_PAGE_SAVED_AND_LINK', $task, $this->page->url()), 'passed');
-		$this->setRedirect( JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')) );
+		$this->setNotification( $notification, 'passed');
+		$this->setRedirect( $redirect );
 	}
 
 	/**
@@ -397,6 +430,8 @@ class GroupsControllerPages extends GroupsControllerAbstract
 	 */
 	public function versionsTask()
 	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'differenceengine.php');
+
 		//set to edit layout
 		$this->view->setLayout('versions');
 
@@ -490,14 +525,14 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			$state = 1;
 		}
 
-		// set ordering to 999 when deleting
-		if ($state == 2)
-		{
-			$page->set('ordering', 999);
-		}
-
 		// set the page state
 		$page->set('state', $state);
+
+		// make sure the home page cant be deleted
+		if ($page->get('home') == 1 && $page->get('state') != 1)
+		{
+			$page->set('state', 1);
+		}
 
 		// save
 		if (!$page->store(false))
@@ -505,6 +540,40 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			$this->setNotification($page->getError(), 'error');
 			$this->displayTask();
 			return;
+		}
+
+		// get page children
+		$children = $page->getChildren();
+
+		// if we are publishing/unpublishing
+		if ($state == 0 || $state == 1)
+		{
+			// lets mark each child the same as parent
+			foreach ($children as $child)
+			{
+				$child->set('state', $state);
+				$child->store(false);
+			}
+		}
+
+		// if deleting lets set the first childs parent 
+		// to be the deleted pages parents
+		else if ($state == 2)
+		{
+			// update the first childs parent
+			if ($firstChild = $children->first())
+			{
+				$firstChild->set('parent', $page->get('parent'));
+				$firstChild->store(false);
+			}
+
+			// adjust depth foreach child
+			// the proper depth is needed when viewing pages
+			foreach ($children as $child)
+			{
+				$child->set('depth', $child->get('depth') - 1);
+				$child->store(false);
+			}
 		}
 
 		//inform user & redirect
@@ -528,15 +597,26 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		$pagesOrder = JRequest::getVar('order', array(), 'post');
 
 		// update each page accordingly
-		foreach ($pagesOrder as $order => $page)
+		foreach ($pagesOrder as $pageOrder)
 		{
-			$order = (int) $order + 1;
-			$sql = "UPDATE `#__xgroups_pages` SET `ordering`=".$this->database->quote($order)." WHERE `id`=".$this->database->quote($page);
-			$this->database->setQuery( $sql );
-			$this->database->query();
+			// must have id
+			// dont add home page
+			if (!$pageOrder['item_id'])
+			{
+				continue;
+			}
+
+			// update the pages parent, depth, left, right, and alias
+			$page = new GroupsModelPage($pageOrder['item_id']);
+			$page->set('parent', $pageOrder['parent_id']);
+			$page->set('depth', ($pageOrder['depth'] - 1));
+			$page->set('lft', $pageOrder['left']);
+			$page->set('rgt', $pageOrder['right']);
+			$page->set('alias', $page->uniqueAlias());
+			$page->store(false);
 		}
 
-		//we successfully redirected
+		//we successfully reordered
 		echo json_encode(array('reordered'=>true));
 	}
 
@@ -661,5 +741,58 @@ class GroupsControllerPages extends GroupsControllerAbstract
 			echo $pageVersion->get('content');
 		}
 		exit();
+	}
+
+	/**
+	 * Restore Page Version
+	 * 
+	 * @return [type] [description]
+	 */
+	public function restoreTask()
+	{
+		// get reqest vars
+		$pageid  = JRequest::getInt('pageid', 0, 'get');
+		$version = JRequest::getInt('version', null, 'get');
+
+		// page object
+		$page = new GroupsModelPage( $pageid );
+
+		// make sure page belongs to this group
+		if (!$page->belongsToGroup($this->group))
+		{
+			JError::raiseError(403, JText::_('COM_GROUPS_PAGES_PAGE_NOT_AUTH'));
+		}
+
+		// load page version
+		$pageVersion = $page->version($version);
+
+		// do we have a page version
+		if ($pageVersion === null)
+		{
+			JError::raiseError(404, JText::_('COM_GROUPS_PAGES_PAGE_VERSION_NOT_FOUND'));
+		}
+
+		// get the current version for this page
+		$currentVersionNumber = $page->version('current')->get('version');
+
+		// duplicate page version unsetting the id & updating version #
+		$newVersion = clone $pageVersion;
+		$newVersion->set('id', null);
+		$newVersion->set('version', $currentVersionNumber + 1);
+
+		// attempt to save new version
+		if (!$newVersion->store(false, $this->group->isSuperGroup()))
+		{
+			$this->setNotification($newVersion->getError(), 'error');
+			$this->versionsTask();
+			return;
+		}
+
+		// redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $page->get('id')),
+			JText::sprintf('COM_GROUPS_PAGES_PAGE_VERSION_RESTORED', $page->get('title'), $version, JFactory::getDate($pageVersion->get('created'))->format('M d, Y @ g:ia')),
+			'passed'
+		);
 	}
 }

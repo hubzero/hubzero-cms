@@ -68,7 +68,6 @@ class GroupsHelperView
 		return self::$_tab;
 	}
 
-
 	/**
 	 * Get group plugins
 	 *
@@ -210,7 +209,6 @@ class GroupsHelperView
 		}
 	}
 
-
 	/**
 	 * Display group menu
 	 *
@@ -225,11 +223,12 @@ class GroupsHelperView
 		));
 
 		// get group pages if any
+		// only get published items that arent set as the home page
 		$pageArchive = GroupsModelPageArchive::getInstance();
-		$pages = $pageArchive->pages('list', array(
+		$pages = $pageArchive->pages('tree', array(
 			'gidNumber' => $group->get('gidNumber'),
 			'state'     => array(1),
-			'orderby'   => 'ordering ASC'
+			'orderby'   => 'lft ASC'
 		), true);
 
 		// pass vars to view
@@ -246,6 +245,64 @@ class GroupsHelperView
 		return $view->loadTemplate();
 	}
 
+	/**
+	 * Output menu
+	 * 
+	 * @param  [type] $pageArray [description]
+	 * @return [type]            [description]
+	 */
+	public static function buildRecursivePageMenu($group, $pageArray)
+	{
+		// get user object
+		$juser = JFactory::getUser();
+
+		// get overview section access
+		$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'overview');
+
+		$out = '';
+		if (sizeof($pageArray) > 0)
+		{
+			$out = '<ul>';
+			foreach ($pageArray as $key => $page)
+			{
+				// dont show page links if there isnt an approved version
+				if ($page->approvedVersion() === null)
+				{
+					continue;
+				}
+
+				// page access settings
+				$pageAccess = ($page->get('privacy') == 'default') ? $access : $page->get('privacy');
+
+				// is this the active page?
+				$cls  = (GroupsHelperPages::isPageActive($page)) ? 'active' : '';
+
+				//page menu item
+				if (($pageAccess == 'registered' && $juser->get('guest')) ||
+				  ($pageAccess == 'members' && !in_array($juser->get("id"), $group->get('members'))))
+				{
+					$out .= "<li class=\"protected\"><span class=\"page\">{$title}</span></li>";
+				}
+				else
+				{
+					$out .= '<li class="' . $cls . '">';
+					$out .= '<a class="page" title="' . $page->get('title') . '" href="' . $page->url() . '">' . $page->get('title') . '</a>';
+				}
+
+				// do we have child menu items
+		        if (!is_array($page->get('children')))
+		        {
+		            $out .= '</li>';
+		        }
+		        else
+		        {
+					$out .= self::buildRecursivePageMenu($group, $page->get('children')) . '</li>';
+		        }
+		    }
+		    $out .= '</ul>';
+		}
+	    return $out;
+	}
 
 	/**
 	 * Display "Before" group content
@@ -416,8 +473,9 @@ class GroupsHelperView
 			// if template is defined
 			if (preg_match('|Template Name:(.*)$|mi', $contents, $header))
 			{
-				$tmpl = trim($header[1]);
-				$file = array_pop(explode(DS, $file));
+				$tmpl  = trim($header[1]);
+				$parts = explode(DS, $file);
+				$file  = array_pop($parts);
 				$pageTemplates[$tmpl] = $file;
 			}
 		}
@@ -525,5 +583,248 @@ class GroupsHelperView
 
 		//return false if they are none of the above
 		return false;
+	}
+
+	/**
+	 * Attach Custom Error Handler/Page if we can
+	 *
+	 * @return     array
+	 */
+	public static function attachCustomErrorHandler( $group )
+	{
+		// are we a super group?
+		// and do we have an error template?
+		if (!$group->isSuperGroup()
+			|| !GroupsHelperTemplate::hasTemplate($group, 'error'))
+		{
+			return;
+		}
+
+		// attach custom error handler
+		JError::setErrorHandling(E_ERROR, 'callback', array('GroupsHelperView', 'handleCustomError'));
+	}
+
+
+	/**
+	 * Custom Error Callback, Builds custom error page for super groups
+	 *
+	 * @return     array
+	 */
+	public static function handleCustomError( JException $error )
+	{
+		// get error template
+		// must wrap in output buffer to capture contents since returning content through output method returns to the
+		// method that called handleSuperGroupError with call_user_func
+		ob_start();
+		$template = new GroupsHelperTemplate();
+		$template->set('group', \Hubzero\User\Group::getInstance(JRequest::getVar('cn', '')))
+			     ->set('tab', JRequest::getVar('active','overview'))
+			     ->set('error', $error )
+			     ->parse()
+			     ->render();
+
+		// output content
+		$template->output(true);
+		$errorTemplate = ob_get_clean();
+
+		// bootstrap Jdocument
+		// add custom error template as component buffer
+		$document = JFactory::getDocument();
+		$document->addStylesheet('/media/cms/css/debug.css');
+		$document->addStylesheet('/components/com_groups/assets/css/groups.css');
+		$document->setBuffer($errorTemplate, array('type'=>'component', 'name' => ''));
+		$fullTemplate = $document->render(false, array('template' => 'hubbasic2013', 'file'=>'group.php'));
+
+		// echo to screen
+		$app = JFactory::getApplication();
+		JResponse::allowCache(false);
+		JResponse::setHeader('Content-Type', 'text/html');
+		JResponse::setHeader('status', $error->getCode() . ' ' . str_replace("\n", ' ', $error->getMessage()));
+		JResponse::setBody($fullTemplate);
+		echo JResponse::toString();
+		$app->close(0);
+	}
+
+	/**
+	 * Display Super Group Login
+	 *
+	 * @return     array
+	 */
+	public static function superGroupLogin($group)
+	{
+		//get user and application objects
+		$juser = JFactory::getUser();
+		$app   = JFactory::getApplication();
+
+		// if user is already logged in go to
+		if (!$juser->get('guest'))
+		{
+			$app->redirect(
+					JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')),
+					JText::sprintf('COM_GROUPS_VIEW_ALREADY_LOGGED_IN', $juser->get('name'), $juser->get('email')),
+					'warning'
+				);
+		}
+
+		// create view object
+		$view = new \Hubzero\Component\View(array(
+			'name'   => 'pages',
+			'layout' => '_view_login'
+		));
+
+		// if super group add super group folder
+		// to available paths
+		if ($group->isSuperGroup())
+		{
+			$base = $group->getBasePath();
+			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template');
+		}
+
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display Super Group Components
+	 *
+	 * @return     array
+	 */
+	public static function superGroupComponents($group, $tab = '')
+	{
+		// var to hold component content
+		$componentContent = null;
+
+		// make sure this is a super group
+		if (!$group->isSuperGroup())
+		{
+			return $componentContent;
+		}
+
+		// get group upload path
+		$uploadPath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+
+		// build path to group component
+		$templateComponentFolder = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'components' . DS . 'com_' . $tab;
+		$templateComponentFile   = $templateComponentFolder . DS . $tab . '.php';
+
+		// do we have a group component?
+		if (!is_dir($templateComponentFolder) || !file_exists($templateComponentFile))
+		{
+			return $componentContent;
+		}
+
+		// define path to group comonent
+		define('JPATH_GROUPCOMPONENT', $templateComponentFolder);
+
+		// Call plugin to capture super group component route segments
+		JDispatcher::getInstance()->trigger('onBeforeRenderSuperGroupComponent', array());
+
+		// include and render component
+		ob_start();
+		include $templateComponentFile;
+		$componentContent = ob_get_contents();
+		ob_end_clean();
+
+		// create view object
+		$view = new \Hubzero\Component\View(array(
+			'name'   => 'pages',
+			'layout' => '_view_component'
+		));
+
+		// if super group add super group folder
+		// to available paths
+		if ($group->isSuperGroup())
+		{
+			$base = $group->getBasePath();
+			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template');
+		}
+
+		$view->content = $componentContent;
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Display Super Group Pages
+	 *
+	 * @return     array
+	 */
+	public static function superGroupPhpPages( $group )
+	{
+		// var to hold content
+		$phpPageContent = null;
+
+		// make sure this is a super group
+		if (!$group->isSuperGroup())
+		{
+			return $phpPageContent;
+		}
+
+		// get URI path
+		$path = JURI::getInstance()->getPath();
+		$path = trim(str_replace('groups'.DS.$group->get('cn'), '', $path), DS);
+
+		// make sure we have a path. if no path means were attempting to access the home page
+		if ($path == '')
+		{
+			$path = 'overview';
+		}
+
+		// get group upload path
+		$uploadPath = JComponentHelper::getparams( 'com_groups' )->get('uploadpath');
+
+		// build path to php page in template
+		$templatePhpPagePath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $group->get('gidNumber') . DS . 'pages' . DS . $path . '.php';
+
+		// if the file is not a valid path
+		if (!is_file($templatePhpPagePath))
+		{
+			return $phpPageContent;
+		}
+
+		// include & render php file
+		ob_start();
+		include $templatePhpPagePath;
+		$phpPageContent = ob_get_contents();
+		ob_end_clean();
+
+		//create new group document helper
+		$groupDocument = new GroupsHelperDocument();
+
+		// set group doc needed props
+		// parse and render content
+		$groupDocument->set('group', $group)
+			          ->set('page', null)
+			          ->set('document', $phpPageContent)
+			          ->parse()
+			          ->render();
+
+		// get doc content
+		$phpPageContent = $groupDocument->output();
+
+		// run as closure to ensure no $this scope
+		$eval = function() use ($phpPageContent)
+		{
+			ob_start();
+			eval("?> $phpPageContent <?php ");
+			$document = ob_get_clean();
+			return $document;
+		};
+		$phpPageContent = $eval();
+
+		// create view object
+		$view = new \Hubzero\Component\View(array(
+			'name'   => 'pages',
+			'layout' => '_view_php'
+		));
+
+		// if super group add super group folder
+		// to available paths
+		if ($group->isSuperGroup())
+		{
+			$base = $group->getBasePath();
+			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template');
+		}
+
+		$view->content = $phpPageContent;
+		return $view->loadTemplate();
 	}
 }

@@ -1100,7 +1100,7 @@ class DiffFormatter
 	 * @param      mixed $diff Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	function format($diff)
+	function format($diff, Closure $formatContextOutput = null)
 	{
 		$xi = $yi = 1;
 		$block = false;
@@ -1151,6 +1151,11 @@ class DiffFormatter
 
 			foreach ($context as $ctx)
 			{
+				if ($formatContextOutput)
+				{
+					$ctx = $formatContextOutput($ctx);
+				}
+
 				$this->i++;
 				echo "\t\t".'<tr>'."\n";
 				echo "\t\t\t".'<th>'.$this->i.'</th>'."\n";
@@ -1338,7 +1343,8 @@ class DiffFormatter
 	 * @param      unknown $closing Parameter description (if any) ...
 	 * @return     void
 	 */
-	function _changed($orig, $closing) {
+	function _changed($orig, $closing)
+	{
 		$this->_deleted($orig);
 		echo "---\n";
 		$this->_added($closing);

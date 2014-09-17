@@ -69,41 +69,10 @@ defined('_JEXEC') or die('Restricted access');
 					$item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" title=\"{$this->group->get('description')}'s Overview Page\" href=\"{$link}\">Overview</a>";
 				}
 
-				$item .= "<ul class=\"\">";
-
-				foreach ($this->pages as $page)
-				{
-					// dont show home page in menu
-					// dont show page links if there isnt an approved version
-					if ($page->get('home') == 1 || $page->approvedVersion() === null)
-					{
-						continue;
-					}
-
-					// page access settings
-					$pageAccess = ($page->get('privacy') == 'default') ? $access : $page->get('privacy');
-
-					// page vars
-					$title = $page->get('title');
-					$cls = ($trueTab == $page->get('alias')) ? 'active' : '';
-					$link = JRoute::_('index.php?option=com_groups&cn='.$this->group->get("cn").'&active='.$page->get('alias'));
-
-					//page menu item
-					if (($pageAccess == 'registered' && $this->juser->get('guest')) ||
-					  ($pageAccess == 'members' && !in_array($this->juser->get("id"), $this->group->get('members'))))
-					{
-						$item .= "<li class=\"protected\"><span class=\"page\">{$title}</span></li>";
-					}
-					else
-					{
-						$item .= "<li class=\"{$cls}\">";
-						$item .= "<a href=\"{$link}\" class=\"page\" title=\"{$this->group->get('description')}'s {$title} Page\">{$title}</a>";
-						$item .= "</li>";
-					}
-				}
-
-				$item .= "</ul>";
-				$item .= "</li>";
+				// append pages html
+				// only pass in the children of the root node
+				// basically skip the overview page here
+				$item .= GroupsHelperView::buildRecursivePageMenu($this->group, $this->pages[0]->get('children'));
 			}
 			else
 			{

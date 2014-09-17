@@ -30,87 +30,33 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-// add styles & scripts
-$this->css()
-	 ->js()
-     ->css('jquery.fancyselect.css', 'system')
-     ->js('jquery.fancyselect', 'system');
-
-// has home override
-$hasHomeOverride = false;
-if (file_exists(JPATH_ROOT . DS . $this->group->getBasePath() . DS . 'pages' . DS . 'overview.php'))
-{
-	$hasHomeOverride = true;
-}
 ?>
-<header id="content-header">
-	<h2><?php echo $this->title; ?></h2>
+<ul class="toolbar toolbar-pages">
+	<li class="new">
+		<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=pages&task=add'); ?>">
+			<?php echo JText::_('COM_GROUPS_PAGES_NEW_PAGE'); ?>
+		</a>
+	</li>
+	<li class="filter">
+		<select>
+			<option value=""><?php echo JText::_('COM_GROUPS_PAGES_PAGE_FILTER'); ?></option>
+			<?php foreach ($this->categories as $category) : ?>
+				<option data-color="#<?php echo $category->get('color'); ?>" value="<?php echo $category->get('id'); ?>"><?php echo $category->get('title'); ?></option>
+			<?php endforeach; ?>
+		</select>
+	</li>
+	<li class="filter-search-divider"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_OR'); ?></li>
+	<li class="search">
+		<input type="text" placeholder="<?php echo JText::_('COM_GROUPS_PAGES_PAGE_SEARCH'); ?>" />
+	</li>
+</ul>
 
-	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
-				<a class="icon-group group btn popup 1200x600" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn').'&controller=media&task=filebrowser&tmpl=component&path=/uploads'); ?>">
-					<?php echo JText::_('COM_GROUPS_ACTION_UPLOAD_MANAGER'); ?>
-				</a>
-				<a class="icon-group group btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&cn='.$this->group->get('cn')); ?>">
-					<?php echo JText::_('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
-				</a>
-			</li>
-		</ul>
-	</div><!-- / #content-header-extra -->
-</header>
-
-<section class="main section">
-	<?php foreach ($this->notifications as $notification) : ?>
-		<p class="<?php echo $notification['type']; ?>">
-			<?php echo $notification['message']; ?>
-		</p>
-	<?php endforeach; ?>
-
-	<?php if ($this->group->isSuperGroup() && $hasHomeOverride) : ?>
-		<p class="info"><?php echo JText::_('COM_GROUPS_PAGES_SUPER_GROUP_HAS_HOME_OVERRIDE'); ?></p>
-	<?php endif; ?>
-
-	<div class="group-page-manager">
-		<ul class="tabs clearfix">
-			<li><a data-tab="pages" href="#pages"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGES'); ?></a></li>
-			<li><a data-tab="categories" href="#categories"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_PAGE_CATEGORIES'); ?></a></li>
-			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
-				<li><a data-tab="modules" href="#modules"><?php echo JText::_('COM_GROUPS_PAGES_MANAGE_MODULES'); ?></a></li>
-			<?php endif ;?>
-		</ul>
-
-		<form action="index.php" method="post" id="hubForm" class="full">
-			<fieldset data-tab-content="pages">
-				<?php
-					$this->view('list')
-					     ->set('group', $this->group)
-					     ->set('categories', $this->categories)
-					     ->set('pages', $this->pages)
-					     ->display();
-				?>
-			</fieldset>
-
-			<fieldset data-tab-content="categories">
-				<?php
-					$this->view('list', 'categories')
-					     ->set('group', $this->group)
-					     ->set('categories', $this->categories)
-					     ->display();
-				?>
-			</fieldset>
-
-			<?php if ($this->group->isSuperGroup() || $this->config->get('page_modules', 0) == 1) : ?>
-				<fieldset data-tab-content="modules">
-					<?php
-						$this->view('list', 'modules')
-						     ->set('group', $this->group)
-						     ->set('modules', $this->modules)
-						     ->display();
-					?>
-				</fieldset>
-			<?php endif; ?>
-		</form>
-	</div>
-</section>
+<?php
+	$this->view('list')
+		 ->set('level', 0)
+		 ->set('pages', $this->pages)
+		 ->set('categories', $this->categories)
+		 ->set('group', $this->group)
+		 ->set('config', $this->config)
+		 ->display();
+?>

@@ -334,25 +334,23 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																	</td>
 																</tr>
 
-																<?php if (!$this->group->isSuperGroup()) : ?>
-																	<tr>
-																		<td align="left">&nbsp;</td>
-																	</tr>
-																	<tr>
-																		<td style="text-align: left;font-weight: bold;" align="left">
-																			<?php echo JText::_('Logo:'); ?>
-																		</td>
-																	</tr>
-																	<tr>
-																		<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
-																			<?php if ($this->group->get('logo')) : ?>
-																				<img src="<?php echo $base . DS . ltrim($this->group->getLogo(), DS); ?>" width="50px" />
-																			<?php else : ?>
-																				&lt;Not Set&gt;
-																			<?php endif; ?>
-																		</td>
-																	</tr>
-																<?php endif ;?>
+																<tr>
+																	<td align="left">&nbsp;</td>
+																</tr>
+																<tr>
+																	<td style="text-align: left;font-weight: bold;" align="left">
+																		<?php echo JText::_('Logo:'); ?>
+																	</td>
+																</tr>
+																<tr>
+																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
+																		<?php if ($this->group->get('logo')) : ?>
+																			<img src="<?php echo $base . DS . ltrim($this->group->getLogo(), DS); ?>" width="50px" />
+																		<?php else : ?>
+																			&lt;Not Set&gt;
+																		<?php endif; ?>
+																	</td>
+																</tr>
 
 																<tr>
 																	<td align="left">&nbsp;</td>
@@ -479,6 +477,58 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																		</td>
 																	</tr>
 																<?php endif; ?>
+
+																<tr>
+																	<td align="left">&nbsp;</td>
+																</tr>
+																<tr>
+																	<td style="text-align: left;font-weight: bold;" align="left">
+																		<?php echo JText::_('Page Comments:'); ?>
+																	</td>
+																</tr>
+																<tr>
+																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
+																		<?php
+																			$gparams = new JParameter($this->group->get('params'));
+																			if ($gparams->get('page_comments') == 2)
+																			{
+																				echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK');
+																			}
+																			elseif ($gparams->get('page_comments') == 1)
+																			{
+																				echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_YES');
+																			}
+																			else
+																			{
+																				echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_NO');
+																			}
+																		?>
+																	</td>
+																</tr>
+
+																<tr>
+																	<td align="left">&nbsp;</td>
+																</tr>
+																<tr>
+																	<td style="text-align: left;font-weight: bold;" align="left">
+																		<?php echo JText::_('Page Author Details:'); ?>
+																	</td>
+																</tr>
+																<tr>
+																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
+																		<?php
+																			$gparams = new JParameter($this->group->get('params'));
+																			if ($gparams->get('page_author') == 1)
+																			{
+																				echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR_YES');
+																			}
+																			else
+																			{
+																				echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR_NO');
+																			}
+																		?>
+																	</td>
+																</tr>
 
 															</tbody>
 														</table>

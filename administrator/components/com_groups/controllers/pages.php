@@ -76,7 +76,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
 			'state'     => array(0,1,2),
-			'orderby'   => 'ordering'
+			'orderby'   => 'lft ASC'
 		));
 
 		// get page approvers
@@ -92,7 +92,7 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			$this->view->needsAttention = $pageArchive->pages('unapproved', array(
 				'gidNumber' => $this->group->get('gidNumber'),
 				'state'     => array(0,1),
-				'orderby'   => 'ordering'
+				'orderby'   => 'lft ASC'
 			));
 		}
 
@@ -143,10 +143,10 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 
 		// get a list of all pages for creating module menu
 		$pageArchive = GroupsModelPageArchive::getInstance();
-		$this->view->order = $pageArchive->pages('list', array(
+		$this->view->pages = $pageArchive->pages('list', array(
 			'gidNumber' => $this->group->get('gidNumber'),
-			'state'     => array(0,1,2),
-			'orderby'   => 'ordering'
+			'state'     => array(0,1),
+			'orderby'   => 'lft ASC'
 		));
 
 		// get page categories
@@ -193,21 +193,6 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		$this->page    = new GroupsModelPage( $page['id'] );
 		$this->version = new GroupsModelPageVersion();
 
-		// ordering change
-		$ordering = null;
-		if (isset($page['ordering']) && $page['ordering'] != $this->page->get('ordering'))
-		{
-			$ordering = $page['ordering'];
-			unset($page['ordering']);
-		}
-
-		// if this is new page, get next order possible for position
-		if (!isset($page['id']) || $page['id'] == '')
-		{
-			$ordering = null;
-			$page['ordering'] = $this->page->getNextOrder();
-		}
-
 		// bind new page properties
 		if (!$this->page->bind($page))
 		{
@@ -242,13 +227,6 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// do we need to reorder
-		if ($ordering !== null)
-		{
-			$move = (int) $ordering - (int) $this->page->get('ordering');
-			$this->page->move($move);
-		}
-
 		// set page version vars
 		$this->version->set('pageid', $this->page->get('id'));
 		$this->version->set('version', $this->version->get('version') + 1);
@@ -275,6 +253,40 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 			$this->setNotification($this->version->getError(), 'error');
 			$this->editTask();
 			return;
+		}
+
+		// get page children
+		$children = $this->page->getChildren();
+
+		// if we are publishing/unpublishing
+		if ($page['state'] == 0 || $page['state'] == 1)
+		{
+			// lets mark each child the same as parent
+			foreach ($children as $child)
+			{
+				$child->set('state', $page['state']);
+				$child->store(false);
+			}
+		}
+
+		// if deleting lets set the first childs parent 
+		// to be the deleted pages parents
+		else if ($page['state'] == 2)
+		{
+			// update the first childs parent
+			if ($firstChild = $children->first())
+			{
+				$firstChild->set('parent', $this->page->get('parent'));
+				$firstChild->store(false);
+			}
+
+			// adjust depth foreach child
+			// the proper depth is needed when viewing pages
+			foreach ($children as $child)
+			{
+				$child->set('depth', $child->get('depth') - 1);
+				$child->store(false);
+			}
 		}
 
 		// log edit
@@ -306,6 +318,17 @@ class GroupsControllerPages extends \Hubzero\Component\AdminController
 		{
 			// load modules
 			$page = new GroupsModelPage( $pageid );
+
+			// cant delete home
+			if ($page->get('home') == 1)
+			{
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->gid,
+					JText::_('COM_GROUPS_PAGES_CANT_DELETE_HOME'),
+					'error'
+				);
+				return;
+			}
 
 			//set to deleted state
 			$page->set('state', $page::APP_STATE_DELETED);
