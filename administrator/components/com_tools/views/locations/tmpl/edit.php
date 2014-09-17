@@ -326,21 +326,21 @@ function saveAndUpdate()
 		var src = window.parent.document.getElementById('locations').src;
 		window.parent.document.getElementById('locations').src = src;
 
-		window.parent.document.assetform.close();
+		window.parent.$.fancybox.close();
 	}, 700);
 }
 </script>
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="index.php" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
 <?php if ($this->tmpl == 'component') { ?>
 	<fieldset>
-		<div style="float: right">
-			<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('COM_TOOLS_SAVE'); ?></button>
-			<button type="button" onclick="window.parent.document.assetform.close();"><?php echo JText::_('COM_TOOLS_CANCEL'); ?></button>
-		</div>
 		<div class="configuration">
+			<div class="configuration-options">
+				<button type="button" onclick="saveAndUpdate();"><?php echo JText::_('COM_TOOLS_SAVE'); ?></button>
+				<button type="button" onclick="window.parent.$.fancybox.close();"><?php echo JText::_('COM_TOOLS_CANCEL'); ?></button>
+			</div>
 			<?php echo $text; ?>
 		</div>
 	</fieldset>
