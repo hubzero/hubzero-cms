@@ -1157,7 +1157,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Load version by ID
 		$objPV 	  = new PublicationVersion( $this->database );
-		if ($vid  && !$objPV->load($vid))
+		if ($vid && !$objPV->load($vid))
 		{
 			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			$this->introTask();
@@ -1307,7 +1307,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			// Get archival package
 			$downloadable = $this->_archiveFiles (
 				$publication,
-				$objPV,
 				$archPath,
 				$tarname
 			);
@@ -1983,7 +1982,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	 *
 	 * @return     mixed, array with data or success, False on failure
 	 */
-	private function _archiveFiles( $pub, $objPV, $path, $tarname )
+	private function _archiveFiles( $pub, $path, $tarname )
 	{
 		// Use new curation flow?
 		$useBlocks  = $this->config->get('curation', 0);
@@ -2024,7 +2023,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		if ($useBlocks)
 		{
-			$pub->version 	= $objPV->version_number;
+			$pub->version 	= $pub->version_number;
 
 			// Load publication project
 			$pub->_project = new Project($this->database);
@@ -2062,7 +2061,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			// Archival for non-curated publications
 			JPluginHelper::importPlugin( 'projects', 'publications' );
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger( 'archivePub', array($pub, $objPV) );
+			$result = $dispatcher->trigger( 'archivePub', array($pub->id, $pub->version_id) );
 		}
 
 		return $archive;

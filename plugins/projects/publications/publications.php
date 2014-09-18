@@ -4102,7 +4102,7 @@ class plgProjectsPublications extends JPlugin
 			{
 				if (strlen($day) == 1)
 				{
-					$day='0' . $day;
+					$day = '0' . $day;
 				}
 
 				if (strlen($month) == 1)
@@ -4391,7 +4391,7 @@ class plgProjectsPublications extends JPlugin
 				$published = $this->_publishAttachments($row);
 
 				// Produce archival package
-				$this->archivePub($pub, $row);
+				$this->archivePub($row->publication_id, $row->id);
 
 				// Display status message
 				switch ($state)
@@ -6298,39 +6298,69 @@ class plgProjectsPublications extends JPlugin
 		$hashed = $ih->createThumbName($filename, '-'.substr($hash, 0, 6));
 		$thumb = $ih->createThumbName($filename, '-'.substr($hash, 0, 6).'_tn', $extension = 'png');
 
-		/*
-		if (is_file(JPATH_ROOT . $gallery_path. DS .$thumb)
-			&& is_file(JPATH_ROOT . $gallery_path. DS .$hashed))
+		// Make sure the path exist
+		if (!is_dir( JPATH_ROOT.$gallery_path ))
 		{
-			$src = $gallery_path. DS .$thumb;
+			jimport('joomla.filesystem.folder');
+			JFolder::create( JPATH_ROOT . $gallery_path );
+		}
+		jimport('joomla.filesystem.file');
+		if (!file_exists($from_path. DS .$ima))
+		{
+			return false;
+		}
+		if (!JFile::copy($from_path. DS .$ima, JPATH_ROOT.$gallery_path. DS .$hashed))
+		{
+			return false;
 		}
 		else
 		{
-		*/
-			// Make sure the path exist
-			if (!is_dir( JPATH_ROOT.$gallery_path ))
+			// Is image?
+			$ext = explode('.', $filename);
+			$ext = end($ext);
+			if (in_array(strtolower($ext), $this->_image_ext))
 			{
-				jimport('joomla.filesystem.folder');
-				JFolder::create( JPATH_ROOT . $gallery_path );
-			}
-			jimport('joomla.filesystem.file');
-			if (!file_exists($from_path. DS .$ima))
-			{
-				return false;
-			}
-			if (!JFile::copy($from_path. DS .$ima, JPATH_ROOT.$gallery_path. DS .$hashed))
-			{
-				return false;
+				// Also create a thumbnail
+				JFile::copy($from_path . DS .$ima, JPATH_ROOT . $gallery_path . DS . $thumb);
+				$ih->set('image',$thumb);
+				$ih->set('overwrite',true);
+				$ih->set('path',JPATH_ROOT . $gallery_path . DS);
+				$ih->set('maxWidth', 100);
+				$ih->set('maxHeight', 60);
+				if (!$ih->process())
+				{
+					return false;
+				}
+				else
+				{
+					$src = $gallery_path. DS .$thumb;
+				}
 			}
 			else
 			{
-				// Is image?
-				$ext = explode('.', $filename);
-				$ext = end($ext);
-				if (in_array(strtolower($ext), $this->_image_ext))
+				// Do we have a thumbnail from Google?
+				$objRFile = new ProjectRemoteFile ($this->_database);
+				$remote   = $objRFile->getConnection($this->_project->id, '', 'google', $ima);
+				$default  = '';
+
+				if ($remote)
 				{
-					// Also create a thumbnail
-					JFile::copy($from_path . DS .$ima, JPATH_ROOT . $gallery_path . DS . $thumb);
+					$rthumb = substr($remote['id'], 0, 20) . '_' . strtotime($remote['modified']) . '.png';
+					$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
+					$to_path = $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
+					if ($rthumb && is_file(JPATH_ROOT. DS . $to_path . DS . $rthumb))
+					{
+						$default = $to_path . DS . $rthumb;
+					}
+				}
+
+				// Copy default video thumbnail
+				$default = $default ? $default
+						: trim($this->_pubconfig->get('video_thumb', 'components/com_publications/images/video_thumb.gif'), DS);
+
+				if (is_file(JPATH_ROOT . DS . $default))
+				{
+					JFile::copy(JPATH_ROOT . DS . $default, JPATH_ROOT . $gallery_path . DS . $thumb);
 					$ih->set('image',$thumb);
 					$ih->set('overwrite',true);
 					$ih->set('path',JPATH_ROOT . $gallery_path . DS);
@@ -6347,50 +6377,10 @@ class plgProjectsPublications extends JPlugin
 				}
 				else
 				{
-					// Do we have a thumbnail from Google?
-					$objRFile = new ProjectRemoteFile ($this->_database);
-					$remote   = $objRFile->getConnection($this->_project->id, '', 'google', $ima);
-					$default  = '';
-
-					if ($remote)
-					{
-						$rthumb = substr($remote['id'], 0, 20) . '_' . strtotime($remote['modified']) . '.png';
-						$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
-						$to_path = $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
-						if ($rthumb && is_file(JPATH_ROOT. DS . $to_path . DS . $rthumb))
-						{
-							$default = $to_path . DS . $rthumb;
-						}
-					}
-
-					// Copy default video thumbnail
-					$default = $default ? $default
-							: trim($this->_pubconfig->get('video_thumb', 'components/com_publications/images/video_thumb.gif'), DS);
-
-					if (is_file(JPATH_ROOT . DS . $default))
-					{
-						JFile::copy(JPATH_ROOT . DS . $default, JPATH_ROOT . $gallery_path . DS . $thumb);
-						$ih->set('image',$thumb);
-						$ih->set('overwrite',true);
-						$ih->set('path',JPATH_ROOT . $gallery_path . DS);
-						$ih->set('maxWidth', 100);
-						$ih->set('maxHeight', 60);
-						if (!$ih->process())
-						{
-							return false;
-						}
-						else
-						{
-							$src = $gallery_path. DS .$thumb;
-						}
-					}
-					else
-					{
-						return false;
-					}
+					return false;
 				}
 			}
-	/*	} */
+		}
 
 		return $return == 'src' ? $src : $hashed;
 	}
@@ -7342,19 +7332,19 @@ class plgProjectsPublications extends JPlugin
 	 *
 	 * @return     string data
 	 */
-	public function archivePub( $pub, $row)
+	public function archivePub( $pid, $vid)
 	{
-		if (!$pub || !$row)
+		if (!$pid || !$vid)
 		{
 			return false;
 		}
-		$pid = $pub->id;
-		$vid = $row->id;
 
 		$database = JFactory::getDBO();
 
 		// Archival name
 		$tarname = JText::_('Publication') . '_' . $pid . '.zip';
+
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
 
 		// Load publication & version classes
 		$objP  = new Publication( $database );
@@ -7414,7 +7404,7 @@ class plgProjectsPublications extends JPlugin
 		$readme .= 'Included Publication Materials:' . "\n ";
 
 		// Build publication path
-		$base_path = $this->_pubconfig->get('webpath');
+		$base_path = $pubconfig->get('webpath');
 		$path = $helper->buildPath($pid, $vid, $base_path);
 
 		$galleryPath = JPATH_ROOT . $path . DS . 'gallery';
@@ -7446,7 +7436,7 @@ class plgProjectsPublications extends JPlugin
 				$mainFiles = JFolder::files($contentPath, '.', true, true);
 			}
 
-			if (!empty($mainFiles) && $pDocs && $sDocs)
+			if (!empty($mainFiles) && ($pDocs || $sDocs))
 			{
 				foreach ($mainFiles as $e)
 				{

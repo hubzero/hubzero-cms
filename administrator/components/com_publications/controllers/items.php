@@ -1487,7 +1487,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
-		$erase = JRequest::getInt('erase', 0);
+		$erase = JRequest::getInt('erase', 1);
 
 		// Ensure we have some IDs to work with
 		if (count($ids) < 1)
@@ -1801,7 +1801,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		if ($useBlocks)
 		{
-			$pub->version 	= $objV->version_number;
+			$pub->version 	= $pub->version_number;
 
 			// Load publication project
 			$pub->_project = new Project($this->database);
@@ -1847,7 +1847,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			// Archival for non-curated publications
 			JPluginHelper::importPlugin( 'projects', 'publications' );
 			$dispatcher = JDispatcher::getInstance();
-			$result = $dispatcher->trigger( 'archivePub', array($pub, $objV) );
+			$result = $dispatcher->trigger( 'archivePub', array($pid, $vid) );
 		}
 
 		$this->_message = JText::_('COM_PUBLICATIONS_SUCCESS_ARCHIVAL');
