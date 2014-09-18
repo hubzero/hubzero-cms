@@ -76,7 +76,7 @@ class typeLinks extends JObject
 	 *
 	 * @var boolean
 	 */
-	var $_changeAllowed  	= true;
+	var $_changeAllowed  	= false;
 
 	/**
 	 * Allow to create a new publication with exact same content?
@@ -111,7 +111,7 @@ class typeLinks extends JObject
 	 *
 	 * @var string
 	 */
-	var $_serveChoices  = array('external', 'citation');
+	var $_serveChoices  = array('external');
 
 	/**
 	 * Constructor
