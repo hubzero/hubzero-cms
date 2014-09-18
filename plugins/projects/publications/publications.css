@@ -271,6 +271,7 @@
 		font-size: 85%;
 		/*min-width: 60%;*/
 		color: #ccc;
+		min-height: 50px;
 	}
 	ul#status-bar li {
 		display: inline;
