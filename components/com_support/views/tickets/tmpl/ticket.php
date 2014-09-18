@@ -422,7 +422,7 @@ $cc = array();
 					<label>
 						<?php echo JText::_('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
 						<?php
-						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string'))));
+						$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->row->tags('string', null))));
 
 						if (count($tf) > 0) {
 							echo $tf[0];

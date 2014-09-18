@@ -481,7 +481,7 @@ $cc = array();
 							if (count($tf) > 0) {
 								echo $tf[0];
 							} else { ?>
-								<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
+								<input type="text" name="tags" id="tags" value="<?php echo $this->escape($this->row->tags('string', null)); ?>" />
 							<?php } ?>
 						</label>
 					</div>
