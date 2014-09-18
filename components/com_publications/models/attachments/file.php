@@ -910,12 +910,8 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			return false;
 		}
 
-		// Get all connections for path
-		$pContent = new PublicationAttachment( $this->_parent->_db );
-		$connections = $pContent->getConnections($pub->version_id, array('path' => $row->path));
-
 		// Remove file
-		if (!$this->unpublishAttachment($row, $pub, $configs, $connections))
+		if (!$this->unpublishAttachment($row, $pub, $configs))
 		{
 			$this->setError(JText::_('There was a problem removing published file'));
 		}
@@ -1268,6 +1264,12 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			{
 				self::scanFile($objPA, $copyTo, $pub, $configs);
 			}
+
+			// Produce thumbnail (if applicable)
+			if ($configs->handler && $configs->handler->getName() == 'imageviewer')
+			{
+				$configs->handler->makeThumbnail($objPA, $pub, $configs);
+			}
 		}
 		else
 		{
@@ -1283,29 +1285,13 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	 * @param      object  		$objPA
 	 * @param      object  		$pub
 	 * @param      object  		$configs
-	 * @param      boolean  	$update   force update of file
 	 *
 	 * @return     boolean or error
 	 */
-	public function unpublishAttachment($row, $pub, $configs, $connections)
+	public function unpublishAttachment($row, $pub, $configs)
 	{
-		if ($configs->dirHierarchy)
-		{
-			// The path is used by other elements, keep the file
-			if (count($connections) > 1)
-			{
-				return true;
-			}
-
-			$deletePath = $configs->pubPath . DS . $row->path;
-		}
-		else
-		{
-			// Attach record number to file name
-			$name 	= ProjectsHtml::fixFileName(basename($row->path), '-' . $row->id);
-
-			$deletePath = $configs->pubPath . DS . $name;
-		}
+		// Get file path
+		$deletePath = $this->getFilePath($row->path, $row->id, $configs, $row->params);
 
 		// Hash file
 		$hfile =  $deletePath . '.hash';
