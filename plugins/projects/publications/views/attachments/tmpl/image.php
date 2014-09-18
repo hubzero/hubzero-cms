@@ -36,12 +36,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	$format = isset($this->config->params->thumbFormat) && $this->config->params->thumbFormat
 			? $this->config->params->thumbFormat : 'png';
 
-	$width = isset($this->config->params->thumbWidth) && $this->config->params->thumbWidth
-			? $this->config->params->thumbWidth : 100;
-
-	$height = isset($this->config->params->thumbHeight) && $this->config->params->thumbHeight
-			? $this->config->params->thumbHeight : 60;
-
 	$dirHierarchy = isset($this->params->dirHierarchy) ? $this->params->dirHierarchy : 1;
 
 	if ($dirHierarchy == 1)
@@ -66,23 +60,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 	if (!is_file($filePath))
 	{
 		return;
-	}
-
-	$md5 = hash_file('sha256', $filePath);
-
-	// Create/update thumb if doesn't exist or file changed
-	if (!is_file($thumbPath) || $md5 != $data->md5)
-	{
-		JFile::copy($filePath, $thumbPath);
-		$ih->set('image', basename($thumbName));
-		$ih->set('overwrite', true);
-		$ih->set('path', $data->pubPath . DS);
-		$ih->set('maxWidth', $width);
-		$ih->set('maxHeight', $height);
-		if (!$ih->process())
-		{
-			return false;
-		}
 	}
 
 	// Image src
