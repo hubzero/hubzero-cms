@@ -1306,8 +1306,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		// Make sure the resource is published and standalone
 		if (!$this->model->resource->standalone || !$this->model->published()) 
 		{
-			JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
-			return;
+			// allow viewing if preview mode & user = creator
+			if (JRequest::getWord('mode', '') != 'preview'
+				|| $this->model->resource->created_by != JFactory::getUser()->get('id'))
+			{
+				JError::raiseError(403, JText::_('COM_RESOURCES_ALERTNOTAUTH'));
+				return;
+			}
 		}
 
 		// Is the visitor authorized to view this resource?
