@@ -238,7 +238,7 @@ class ProjectOwner extends JTable
 		$query .= " AND (o.userid > 0 OR o.invited_email IS NOT NULL) ";	// email is required!
 
 		$this->_db->setQuery( $query );
-	 	return $this->_db->loadResult();
+		return $this->_db->loadResult();
 
 	}
 
@@ -338,7 +338,7 @@ class ProjectOwner extends JTable
 		$result = $this->_db->loadObjectList();
 		if ($result)
 		{
-			foreach($result as $r)
+			foreach ($result as $r)
 			{
 				$ids[] = $get_uids ? $r->userid : $r->id;
 			}
@@ -470,7 +470,7 @@ class ProjectOwner extends JTable
 		if ($result)
 		{
 			$i = 1;
-			foreach($result as $entry)
+			foreach ($result as $entry)
 			{
 				$name = $entry->name ? $entry->name : $entry->invited_email;
 				$name = $name ? $name : $entry->invited_name;
@@ -794,14 +794,16 @@ class ProjectOwner extends JTable
 			}
 			if (!empty($owners))
 			{
-				foreach ($owners as $o) {
-				 	$array_owners[] =  $o->uidNumber;
+				foreach ($owners as $o) 
+				{
+					$array_owners[] =  $o->uidNumber;
 				}
 			}
 			if (!empty($ownersingroups))
 			{
-				foreach ($ownersingroups as $g) {
-				 	$array_ownersingroups[] =  $g->uidNumber;
+				foreach ($ownersingroups as $g) 
+				{
+					$array_ownersingroups[] =  $g->uidNumber;
 					// Not in group any longer
 					if (!in_array($g->uidNumber, $array_members ) )	{
 						$owners_to_delete[] = $g->uidNumber;
@@ -815,7 +817,7 @@ class ProjectOwner extends JTable
 			// Add owners
 			if (!empty($owners_to_add))
 			{
-				foreach($owners_to_add as $newcomer)
+				foreach ($owners_to_add as $newcomer)
 				{
 					$added = $this->saveOwners($projectid, 0, $newcomer, $array_member_groups[$newcomer], 0, 1, $array_groups_native[$array_member_groups[$newcomer]] );
 				}
@@ -1197,7 +1199,7 @@ class ProjectOwner extends JTable
 					return $added;
 				}
 
-				foreach($owners as $owner)
+				foreach ($owners as $owner)
 				{
 					$query  = "SELECT status FROM $this->_tbl WHERE userid='$owner' AND projectid='$projectid' LIMIT 1";
 					$this->_db->setQuery( $query );
