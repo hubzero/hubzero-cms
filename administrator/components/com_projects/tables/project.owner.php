@@ -353,17 +353,27 @@ class ProjectOwner extends JTable
 	 * @param      integer $uid
 	 * @return     integer or NULL
 	 */
-	public function getOwnerId( $projectid = NULL, $uid = 0 )
+	public function getOwnerId( $projectid = NULL, $uid = 0, $name = NULL )
 	{
-		if ($projectid === NULL or intval($uid) == 0)
+		if ($projectid === NULL)
 		{
 			return false;
 		}
 
-		$query = "SELECT id FROM $this->_tbl WHERE projectid=$projectid AND userid=$uid ";
+		if ($name && intval($uid) == 0)
+		{
+			$query = "SELECT id FROM $this->_tbl WHERE projectid=$projectid AND invited_name=" . $this->_db->Quote($name);
+		}
+		elseif (intval($uid))
+		{
+			$query = "SELECT id FROM $this->_tbl WHERE projectid=$projectid AND userid=$uid ";
+		}
+		else
+		{
+			return false;
+		}
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
-
 	}
 
 	/**
