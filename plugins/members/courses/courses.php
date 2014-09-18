@@ -255,7 +255,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 							LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 							LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
 						WHERE c.state=1 AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1
-							AND (s.publish_down='0000-00-00 00:00:00' OR s.publish_down < " . $this->database->quote($now) .") AND o.state=1");
+							AND (s.publish_down='0000-00-00 00:00:00' OR s.publish_down < " . $this->database->quote($now) .") AND s.state=1 AND o.state=1");
 					$results = $this->database->loadResult();
 				}
 				else
@@ -268,7 +268,7 @@ class plgMembersCourses extends \Hubzero\Plugin\Plugin
 							LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 							LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
 						WHERE c.state=1 AND m.user_id=" . (int) $this->member->get('uidNumber') . " AND m.student=1
-							AND (s.publish_down='0000-00-00 00:00:00' OR s.publish_down < " . $this->database->quote($now) .") AND o.state=1
+							AND (s.publish_down='0000-00-00 00:00:00' OR s.publish_down < " . $this->database->quote($now) .") AND s.state=1 AND o.state=1
 						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit']);
 					$results = $this->database->loadObjectList();
 				}
