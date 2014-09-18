@@ -524,6 +524,26 @@
 		width: 100%;
 		text-align: left;
 	}
+	#primary-document_pop {
+		display: none;
+		position: absolute;
+		top: 90px;
+		right: 260px;
+		width: 222px;
+		font-size: 90%;
+		margin: 0;
+		padding: 0;
+		z-index: 900;
+	}
+	#primary-document_pop div {
+		padding: 0;
+		display: block;
+		position: relative;
+	}
+	#primary-document_pop p {
+		margin-top: 0;
+		padding-top: 1em;
+	}
 	.overviewcontainer header#content-header {
 		border: none;
 		margin-bottom: 0;
