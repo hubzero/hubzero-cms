@@ -152,21 +152,22 @@ class Events extends GroupMacro
 
 				//build date
 				$date = '';
-				$publishUp   = strtotime($event->publish_up);
-				$publishDown = strtotime($event->publish_down);
-				if (date("z", $publishUp) == date("z", $publishDown))
+				$publishUp   = $event->publish_up;
+				$publishDown = $event->publish_down;
+
+				if (date("z", strtotime($publishUp)) == date("z", strtotime($publishDown)))
 				{
-					$date  = \JFactory::getDate($publishUp)->format('m/d/Y @ g:i a');
-					$date .= ' &mdash; ' . \JFactory::getDate($publishDown)->format('g:i a');
+					$date  = \JHTML::_('date', $publishUp, 'm/d/Y @ g:i a');
+					$date .= ' &mdash; ' . \JHTML::_('date', $publishDown, 'g:i a');
 				}
 				else if (isset($event->publish_down) && $event->publish_down != '' && $event->publish_down != '0000-00-00 00:00:00')
 				{
-					$date  = \JFactory::getDate($publishUp)->format('m/d/Y @ g:i a');
-					$date .= ' &mdash; <br />&nbsp;&nbsp;&nbsp;' . \JFactory::getDate($publishDown)->format('m/d/Y @ g:i a');
+					$date  = \JHTML::_('date', $publishUp, 'm/d/Y @ g:i a');
+					$date .= ' &mdash; ' . \JHTML::_('date', $publishDown, 'm/d/Y @ g:i a');
 				}
 				else
 				{
-					$date  = \JFactory::getDate($publishUp)->format('m/d/Y @ g:i a');
+					$date  = \JHTML::_('date', $publishUp, 'm/d/Y @ g:i a');
 				}
 
 				//shorten content
