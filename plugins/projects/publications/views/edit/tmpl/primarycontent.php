@@ -55,11 +55,11 @@ else
 
 ?>
 
-<?php if($this->pub->id && $this->row->title) { ?>
+<?php if ($this->pub->id && $this->row->title) { ?>
 	<?php echo $this->project->provisioned == 1
 				? $this->helper->showPubTitleProvisioned( $this->pub, $this->route)
 				: $this->helper->showPubTitle( $this->pub, $this->route, $this->title); ?>
-<?php } else if($this->project->provisioned == 1 ) { ?>
+<?php } else if ($this->project->provisioned == 1 ) { ?>
 	<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION')); ?></h3>
 <?php } else { ?>
 	<div id="plg-header">
@@ -101,7 +101,7 @@ else
 					<?php echo $infotext; ?>
 				</p>
 				<?php } ?>
-				<?php if($this->project->provisioned == 1 && !$this->pub->id) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LOOKING_FOR_PROJECT_' . strtoupper($this->_pubTypeHelper->_base)).'</p>'; } ?>
+				<?php if ($this->project->provisioned == 1 && !$this->pub->id) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LOOKING_FOR_PROJECT_' . strtoupper($this->_pubTypeHelper->_base)).'</p>'; } ?>
 				<?php } else { ?>
 					<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 				<?php } ?>
@@ -122,7 +122,7 @@ else
 				<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-				<?php if($this->project->provisioned == 1 ) { ?>
+				<?php if ($this->project->provisioned == 1 ) { ?>
 				<input type="hidden" name="task" value="submit" />
 				<?php } ?>
 				<input type="hidden" name="move" id="move" value="<?php echo $this->move; ?>" />
@@ -134,14 +134,14 @@ else
 
 			<div class="c-inner">
 			<?php if ($canedit) { ?>
-				<span class="c-submit"><input type="submit" class="btn" value="<?php if($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if(count($this->attachments) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
+				<span class="c-submit"><input type="submit" class="btn" value="<?php if ($this->move) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_AND_CONTINUE'); } else { echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_CHANGES'); } ?>" <?php if (count($this->attachments) == 0) { echo 'class="disabled"'; } ?> id="c-continue" /></span>
 			<?php } ?>
 				<h5><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION')).' '.JText::_('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT'); ?>: </h5>
-				<ul id="c-filelist" class="c-list <?php if(!$canedit || !$this->pub->id) { ?>noedit<?php } ?>">
-					<li id="nosel" <?php if($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
+				<ul id="c-filelist" class="c-list <?php if (!$canedit || !$this->pub->id) { ?>noedit<?php } ?>">
+					<li id="nosel" <?php if ($this->pub->id) { echo 'class="hidden"'; } ?> ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_CONTENT_SELECTED_CLICK'); ?></li>
 					<?php
 					// If we have content items selected
-					if(count($this->attachments) > 0)
+					if (count($this->attachments) > 0)
 					{
 						$i = 1;
 
@@ -155,7 +155,7 @@ else
 							$prop = $this->_typeHelper->dispatchByType($att->type, 'getMainProperty');
 
 							?>
-							<li id="clone-<?php echo $att->type ?>::<?php echo urlencode($att->$prop); ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if($gone) { echo ' i-missing'; } ?>">
+							<li id="clone-<?php echo $att->type ?>::<?php echo urlencode($att->$prop); ?>" class="<?php echo 'attached-' . $i; ?> c-drag <?php if ($gone) { echo ' i-missing'; } ?>">
 
 							<?php
 									// Draw item
