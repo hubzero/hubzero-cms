@@ -84,6 +84,21 @@ jQuery(document).ready(function($) {
 		}
 	}, true);
 
+	// Setup dialog message box
+	$('#dialog-confirm').dialog({
+		resizable: false,
+		width: 450,
+		modal: true,
+		autoOpen: false,
+		title: 'What do you want to do with these files?',
+		buttons: {
+			Cancel: function() {
+				// Close the dialog box
+				$(this).dialog("close");
+			}
+		}
+	});
+
 	// Initialize Objects
 	HUB.CoursesOutline.asset.init();
 	HUB.CoursesOutline.assetgroup.init();
@@ -878,21 +893,6 @@ HUB.CoursesOutline = {
 			message    = '',
 			targetName = '',
 			ulCount    = 0;
-
-			// Setup dialog message box
-			dialog.dialog({
-				resizable: false,
-				width: 450,
-				modal: true,
-				autoOpen: false,
-				title: 'What do you want to do with these files?',
-				buttons: {
-					Cancel: function() {
-						// Close the dialog box
-						$(this).dialog("close");
-					}
-				}
-			});
 
 			$(this).fileupload({
 				dropZone: $(this),
