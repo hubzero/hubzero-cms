@@ -45,8 +45,8 @@ $ptitle = '';
 if ($this->version == 'dev')
 {
 	$ptitle .= $this->last_idx > $this->current_idx
-		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE_EDIT_'.strtoupper($this->base))).' '
-		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE_SELECT_'.strtoupper($this->base))).' ' ;
+		? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE_EDIT_'.strtoupper($this->_pubTypeHelper->_base))).' '
+		: ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE_SELECT_'.strtoupper($this->_pubTypeHelper->_base))).' ' ;
 }
 else
 {
@@ -73,7 +73,7 @@ else
 	$this->contribHelper->drawStatusBar($this, 'primary');
 
 	// Information text
-	$infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'. strtoupper($this->base));
+	$infotext = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_INFO_PRIMARY_CONTENT_MORE_'. strtoupper($this->_pubTypeHelper->_base));
 
 	// Section body starts:
 ?>
@@ -88,7 +88,7 @@ else
 			<div class="c-inner" id="c-item-picker">
 				<h4><?php echo $ptitle; ?></h4>
 				<?php if ($canedit) { ?>
-				<p><?php echo $selOff ? JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_CHOICE_FROM_'.strtoupper($this->base)) : JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_FROM_'.strtoupper($this->base)); ?></p>
+				<p><?php echo $selOff ? JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_CHOICE_FROM_'.strtoupper($this->_pubTypeHelper->_base)) : JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SELECT_FROM_'.strtoupper($this->_pubTypeHelper->_base)); ?></p>
 				<!-- Load content selection browser //-->
 				<div id="c-show">
 					<noscript>
@@ -101,7 +101,7 @@ else
 					<?php echo $infotext; ?>
 				</p>
 				<?php } ?>
-				<?php if($this->project->provisioned == 1 && !$this->pub->id) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LOOKING_FOR_PROJECT_' . strtoupper($this->base)).'</p>'; } ?>
+				<?php if($this->project->provisioned == 1 && !$this->pub->id) { echo '<p class="notice">'.JText::_('PLG_PROJECTS_PUBLICATIONS_LOOKING_FOR_PROJECT_' . strtoupper($this->_pubTypeHelper->_base)).'</p>'; } ?>
 				<?php } else { ?>
 					<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADVANCED_CANT_CHANGE').' <a href="'.$this->url.'/?action=newversion">'.ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')).'</a>'; ?></p>
 				<?php } ?>
@@ -117,7 +117,7 @@ else
 				<input type="hidden" name="version" value="<?php echo $this->version; ?>" />
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="save" />
-				<input type="hidden" name="base" id="base" value="<?php echo $this->base; ?>" />
+				<input type="hidden" name="base" id="base" value="<?php echo $this->_pubTypeHelper->_base; ?>" />
 				<input type="hidden" name="primary" id="primary" value="1" />
 				<input type="hidden" name="section" id="section" value="<?php echo $this->active; ?>" />
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
