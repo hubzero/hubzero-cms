@@ -144,15 +144,20 @@ class PublicationHanlder extends JTable
 		$this->_db->setQuery( $query );
 		$result = $this->_db->loadObjectList();
 
-		// Collect configs
+		// Parse configs
 		if ($result)
 		{
 			$output = array();
+			$output['params'] = array();
 			foreach ($result[0] as $field => $value)
 			{
 				if ($field == 'params')
 				{
-					$output['params'] = $value ? json_decode($value, TRUE) : NULL;
+					$params = json_decode($value, TRUE);
+					foreach ($params as $paramName => $paramValue)
+					{
+						$output['params'][$paramName] = $paramValue;
+					}
 				}
 				else
 				{
@@ -160,7 +165,7 @@ class PublicationHanlder extends JTable
 				}
 			}
 
-			return $output['params'] ? json_decode(json_encode($output), FALSE) : false;
+			return $output;
 		}
 
 		return false;

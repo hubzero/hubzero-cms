@@ -61,36 +61,46 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 	 */
 	public function getConfig()
 	{
+		// Defaults
+		$configs = array(
+			'name' 			=> 'imageviewer',
+			'label' 		=> 'Image Gallery',
+			'title' 		=> 'Viewer for image files',
+			'about'			=> 'Selected images will be viewed together in a slideshow',
+			'params'	=> array(
+				'allowed_ext' 		=> array('gif', 'jpg', 'png', 'bmp', 'jpeg'),
+				'required_ext' 		=> array(),
+				'min_allowed' 		=> 1,
+				'max_allowed' 		=> 1000,
+				'thumbSuffix' 		=> '_tn',
+				'thumbFormat' 		=> 'png',
+				'thumbWidth' 		=> '100',
+				'thumbHeight' 		=> '60',
+				'masterWidth' 		=> '600',
+				'masterHeight' 		=> '400',
+				'defaultThumb'		=> '/components/com_publications/assets/img/resource_thumb.gif'
+			)
+		);
+
 		// Load config from db
 		$obj = new PublicationHanlder($this->_parent->_db);
+		$savedConfig = $obj->getConfig($this->_name);
 
-		$this->_config = $obj->getConfig($this->_name);
-
-		// Fall back
-		if (!$this->_config)
+		if ($savedConfig)
 		{
-			$configs = array(
-				'name' 			=> 'imageviewer',
-				'label' 		=> 'Image Gallery',
-				'title' 		=> 'Viewer for image files',
-				'about'			=> 'Selected images will be viewed together in a slideshow',
-				'params'	=> array(
-					'allowed_ext' 		=> array('gif', 'jpg', 'png', 'bmp', 'jpeg'),
-					'required_ext' 		=> array(),
-					'min_allowed' 		=> 1,
-					'max_allowed' 		=> 1000,
-					'thumbSuffix' 		=> '_tn',
-					'thumbFormat' 		=> 'png',
-					'thumbWidth' 		=> '100',
-					'thumbHeight' 		=> '60',
-					'masterWidth' 		=> '600',
-					'masterHeight' 		=> '400',
-					'defaultThumb'		=> '/components/com_publications/assets/img/resource_thumb.gif'
-				)
-			);
-
-			$this->_config = json_decode(json_encode($configs), FALSE);
+			foreach ($configs as $configName => $configValue)
+			{
+				if ($configName == 'params')
+				{
+					foreach ($configValue as $paramName => $paramValue)
+					{
+						$configs['params'][$paramName] = isset($savedConfig['params'][$paramName]) && $savedConfig['params'][$paramName] ? $savedConfig['params'][$paramName] : $paramValue;
+					}
+				}
+			}
 		}
+
+		$this->_config = json_decode(json_encode($configs), FALSE);
 
 		return $this->_config;
 	}
@@ -108,13 +118,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		// Get settings
-		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
-				? $this->_config->params->thumbSuffix : '_tn';
-
-		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
-				? $this->_config->params->thumbFormat : 'png';
-
 		// Get image helper
 		if (!$this->_imgHelper)
 		{
@@ -123,7 +126,11 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
 
-		$thumbName = $this->_imgHelper->createThumbName(basename($path), $suffix, $format);
+		$thumbName = $this->_imgHelper->createThumbName(
+			basename($path),
+			$this->_config->params->thumbSuffix,
+			$this->_config->params->thumbFormat
+		);
 		$thumbPath = dirname($path) . DS . $thumbName;
 
 		if (is_file($thumbPath))
@@ -147,19 +154,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		// Get settings
-		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
-				? $this->_config->params->thumbSuffix : '_tn';
-
-		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
-				? $this->_config->params->thumbFormat : 'png';
-
-		$width = isset($this->_config->params->thumbWidth) && $this->_config->params->thumbWidth
-				? $this->_config->params->thumbWidth : 100;
-
-		$height = isset($this->_config->params->thumbHeight) && $this->_config->params->thumbHeight
-				? $this->_config->params->thumbHeight : 60;
-
 		// TBD - to come from component configs
 		$defaultMasterName  = 'master.png';
 		$defaultThumbName 	= 'thumb.gif';
@@ -172,29 +166,16 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->_imgHelper = new ProjectsImgHandler();
 		}
 
-		if ($configs->dirHierarchy == 1)
-		{
-			$path = $configs->pubPath . DS . $row->path;
-		}
-		elseif ($configs->dirHierarchy == 2)
-		{
-			// Get file attachment params
-			$fParams = new JParameter( $row->params );
-			$suffix  = $fParams->get('suffix');
-			$name 	= $suffix ? ProjectsHtml::fixFileName(basename($row->path), ' (' . $suffix . ')') : basename($row->path);
-			$path  = $configs->pubPath . DS . $name;
-		}
-		else
-		{
-			// Attach record number to file name
-			$name 	= ProjectsHtml::fixFileName(basename($row->path), '-' . $row->id);
-			$path = $configs->pubPath . DS . $name;
-		}
+		$path = $this->getFilePath($row->path, $row->id, $configs, $row->params);
 
 		$copyToThumb  = $configs->pubBase . DS . $defaultThumbName;
 		$copyToMaster = $configs->pubBase . DS . $defaultMasterName;
 
-		$thumbName = $this->_imgHelper->createThumbName(basename($path), $suffix, $format);
+		$thumbName = $this->_imgHelper->createThumbName(
+			basename($path),
+			$this->_config->params->thumbSuffix,
+			$this->_config->params->thumbFormat
+		);
 		$thumbPath = dirname($path) . DS . $thumbName;
 
 		// Create/update thumb if doesn't exist or file changed
@@ -204,8 +185,8 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->_imgHelper->set('image', basename($thumbName));
 			$this->_imgHelper->set('overwrite', true);
 			$this->_imgHelper->set('path', $configs->pubPath . DS);
-			$this->_imgHelper->set('maxWidth', $width);
-			$this->_imgHelper->set('maxHeight', $height);
+			$this->_imgHelper->set('maxWidth', $this->_config->params->thumbWidth);
+			$this->_imgHelper->set('maxHeight', $this->_config->params->thumbHeight);
 			if (!$this->_imgHelper->process())
 			{
 				return false;
@@ -246,7 +227,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$currentDefault->saveParam($row, 'pubThumb', '1');
 
 		return true;
-
 	}
 
 	/**
@@ -267,16 +247,18 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		// Show first element
 		$element = $elements[0];
 
-		// Get settings
-		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
-				? $this->_config->params->thumbSuffix : '_tn';
-
-		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
-				? $this->_config->params->thumbFormat : 'png';
-
 		$manifest 		= $element->manifest;
 		$params   		= $manifest->params->typeParams;
 		$dirHierarchy 	= isset($params->dirHierarchy) ? $params->dirHierarchy : 1;
+
+		// Get files directory
+		$directory = isset($params->directory) && $params->directory
+							? $params->directory : $pub->secret;
+		$pubPath = $pub->_helpers->pubHelper->buildPath($pub->id, $pub->version_id, '', $directory, 0);
+
+		$configs 		= new stdClass;
+		$configs->dirHierarchy = $dirHierarchy;
+		$configs->pubPath = $pubPath;
 
 		// Do we have attachments?
 		$attachments = isset($pub->_attachments['elements'][$element->id])
@@ -301,36 +283,18 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		$k 		= 0;
 		$g 		= 0;
 
-		// Get files directory
-		$directory = isset($params->directory) && $params->directory
-							? $params->directory : $pub->secret;
-		$pubPath = $pub->_helpers->pubHelper->buildPath($pub->id, $pub->version_id, '', $directory, 0);
-
 		$i = 0;
 
 		$els .=  '<div class="showcase-pane">'."\n";
 		foreach ($attachments as $attach)
 		{
-			if ($dirHierarchy == 1)
-			{
-				$fpath = $pubPath . DS . trim($attach->path, DS);
-			}
-			elseif ($dirHierarchy == 2)
-			{
-				// Get file attachment params
-				$fParams = new JParameter( $attach->params );
-				$suffix  = $fParams->get('suffix');
-				$name 	= $suffix ? ProjectsHtml::fixFileName(basename($attach->path), ' (' . $suffix . ')') : basename($attach->path);
-				$fpath  = $pubPath . DS . $name;
-			}
-			else
-			{
-				// Attach record number to file name
-				$name 	= ProjectsHtml::fixFileName(basename($attach->path), '-' . $attach->id);
-				$fpath  = $pubPath . DS . $name;
-			}
+			$fpath = $this->getFilePath($attach->path, $attach->id, $configs, $attach->params);
 
-			$thumbName = $this->_imgHelper->createThumbName(basename($fpath), $suffix, $format);
+			$thumbName = $this->_imgHelper->createThumbName(
+				basename($fpath),
+				$this->_config->params->thumbSuffix,
+				$this->_config->params->thumbFormat
+			);
 			$thumbPath = dirname($fpath) . DS . $thumbName;
 
 			if (is_file(JPATH_ROOT . DS . $fpath) && is_file(JPATH_ROOT . DS . $thumbPath))
@@ -434,13 +398,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->getConfig();
 		}
 
-		// Get settings
-		$suffix = isset($this->_config->params->thumbSuffix) && $this->_config->params->thumbSuffix
-				? $this->_config->params->thumbSuffix : '_tn';
-
-		$format = isset($this->_config->params->thumbFormat) && $this->_config->params->thumbFormat
-				? $this->_config->params->thumbFormat : 'png';
-
 		// Get image helper
 		if (!$this->_imgHelper)
 		{
@@ -455,26 +412,13 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		foreach ($attachments as $attach)
 		{
-			if ($attConfigs->dirHierarchy == 1)
-			{
-				$fpath = $path . DS . trim($attach->path, DS);
-			}
-			elseif ($attConfigs->dirHierarchy == 2)
-			{
-				// Get file attachment params
-				$fParams = new JParameter( $attach->params );
-				$suffix  = $fParams->get('suffix');
-				$name 	= $suffix ? ProjectsHtml::fixFileName(basename($attach->path), ' (' . $suffix . ')') : basename($attach->path);
-				$fpath  = $path . DS . $name;
-			}
-			else
-			{
-				// Attach record number to file name
-				$name 	= ProjectsHtml::fixFileName(basename($attach->path), '-' . $attach->id);
-				$fpath  = $path . DS . $name;
-			}
+			$fpath = $this->getFilePath($attach->path, $attach->id, $attConfigs, $attach->params);
 
-			$thumbName = $this->_imgHelper->createThumbName(basename($fpath), $suffix, $format);
+			$thumbName = $this->_imgHelper->createThumbName(
+				basename($fpath),
+				$this->_config->params->thumbSuffix,
+				$this->_config->params->thumbFormat
+			);
 			$thumbPath = dirname($fpath) . DS . $thumbName;
 
 			$title 		= $attach->title ? $attach->title : $attConfigs->title;
@@ -494,7 +438,62 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		}
 
 		return $html;
+	}
 
+	/**
+	 * Make thumb
+	 *
+	 * @return  void
+	 */
+	public function makeThumbnail( $row, $pub, $configs)
+	{
+		// Make sure we got config
+		if (!$this->_config)
+		{
+			$this->getConfig();
+		}
+
+		// Get image helper
+		if (!$this->_imgHelper)
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+				. DS . 'helpers' . DS . 'imghandler.php' );
+			$this->_imgHelper = new ProjectsImgHandler();
+		}
+
+		$fpath = $this->getFilePath($row->path, $row->id, $configs, $row->params);
+
+		$thumbName = $this->_imgHelper->createThumbName(
+			basename($fpath),
+			$this->_config->params->thumbSuffix,
+			$this->_config->params->thumbFormat
+		);
+		$thumbPath = $configs->pubPath . DS . $thumbName;
+
+		// No file found
+		if (!is_file($fpath))
+		{
+			return;
+		}
+
+		$md5 = hash_file('sha256', $fpath);
+
+		// Create/update thumb if doesn't exist or file changed
+		if (!is_file($thumbPath) || $md5 != $row->content_hash)
+		{
+			JFile::copy($fpath, $thumbPath);
+			$this->_imgHelper->set('image', basename($thumbName));
+			$this->_imgHelper->set('overwrite', true);
+			$this->_imgHelper->set('path', $configs->pubPath . DS);
+			$this->_imgHelper->set('maxWidth', $this->_config->params->thumbWidth);
+			$this->_imgHelper->set('maxHeight', $this->_config->params->thumbHeight);
+			if (!$this->_imgHelper->process())
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -540,5 +539,40 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Build file path depending on configs
+	 *
+	 * @return  string
+	 */
+	public function getFilePath( $path, $id, $configs = NULL, $params = NULL, $suffix = NULL )
+	{
+		// Do we transfer file with subdirectories?
+		if ($configs->dirHierarchy == 1)
+		{
+			$fpath = $configs->pubPath . DS . trim($path, DS);
+		}
+		elseif ($configs->dirHierarchy == 2)
+		{
+			if (!$suffix && $params)
+			{
+				// Get file attachment params
+				$fParams = new JParameter( $params );
+				$suffix  = $fParams->get('suffix');
+			}
+
+			// Do not preserve dir hierarchy, but append number for same-name files
+			$name 	= $suffix ? ProjectsHtml::fixFileName(basename($path), ' (' . $suffix . ')') : basename($path);
+			$fpath  = $configs->pubPath . DS . $name;
+		}
+		else
+		{
+			// Attach record number to file name
+			$name 	= ProjectsHtml::fixFileName(basename($path), '-' . $id);
+			$fpath  = $configs->pubPath . DS . $name;
+		}
+
+		return $fpath;
 	}
 }
