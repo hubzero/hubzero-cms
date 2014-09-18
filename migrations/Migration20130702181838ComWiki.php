@@ -25,18 +25,27 @@ class Migration20130702181838ComWiki extends Hubzero_Migration
 
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'tables' . DS . 'revision.php';
 
-		$version = new WikiPageRevision($db);
-		$version->loadByVersion($result->pageid, $result->version);
-
-		$hostname = php_uname('n');
-
-		// No need to run this on nanoHUB
-		if (stripos($hostname, 'nanohub') === false)
+		if ($result)
 		{
-			$pagetext = preg_replace('/(nanoHUB)/', 'This site', $result->pagetext);
-			$pagehtml = preg_replace('/(nanoHUB)/', 'This site', $result->pagehtml);
+			$cls = 'WikiPageRevision';
+			if (class_exists('WikiTableRevision'))
+			{
+				$cls = 'WikiTableRevision';
+			}
 
-			$version->save(array('pagetext'=>$pagetext, 'pagehtml'=>$pagehtml));
+			$version = new $cls($db);
+			$version->loadByVersion($result->pageid, $result->version);
+
+			$hostname = php_uname('n');
+
+			// No need to run this on nanoHUB
+			if (stripos($hostname, 'nanohub') === false)
+			{
+				$pagetext = preg_replace('/(nanoHUB)/', 'This site', $result->pagetext);
+				$pagehtml = preg_replace('/(nanoHUB)/', 'This site', $result->pagehtml);
+
+				$version->save(array('pagetext'=>$pagetext, 'pagehtml'=>$pagehtml));
+			}
 		}
 	}
 }
