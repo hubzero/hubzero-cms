@@ -144,12 +144,19 @@ class PublicationTypesHelper extends JObject
 	public function dispatch( $base = NULL, $task = NULL, $data = array() )
 	{
 		$output 		 = NULL;
-		$this->_base 	 = $base;
 
 		if ($base === NULL || $task === NULL)
 		{
 			return false;
 		}
+
+		// Default to files
+		if (!is_file(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS
+			. 'models' . DS . 'types' . DS . $base . '.php'))
+		{
+			$base = 'files';
+		}
+		$this->_base 	 = $base;
 
 		if (is_file(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS
 			. 'models' . DS . 'types' . DS . $base . '.php'))
