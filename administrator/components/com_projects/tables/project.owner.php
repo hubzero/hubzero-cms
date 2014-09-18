@@ -794,14 +794,14 @@ class ProjectOwner extends JTable
 			}
 			if (!empty($owners))
 			{
-				foreach ($owners as $o) 
+				foreach ($owners as $o)
 				{
 					$array_owners[] =  $o->uidNumber;
 				}
 			}
 			if (!empty($ownersingroups))
 			{
-				foreach ($ownersingroups as $g) 
+				foreach ($ownersingroups as $g)
 				{
 					$array_ownersingroups[] =  $g->uidNumber;
 					// Not in group any longer
