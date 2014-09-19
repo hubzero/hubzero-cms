@@ -34,6 +34,8 @@ HUB.User = {
 
 		$('input:checkbox').uniform();
 
+		$('#username, #password').placeholder();
+
 		$('.local').click(function ( e ) {
 
 		});

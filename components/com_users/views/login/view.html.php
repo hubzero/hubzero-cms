@@ -51,6 +51,7 @@ class UsersViewLogin extends JViewLegacy
 		\Hubzero\Document\Assets::addSystemStylesheet('uniform.css');
 		\Hubzero\Document\Assets::addSystemScript('jquery.uniform');
 		\Hubzero\Document\Assets::addSystemScript('jquery.hoverIntent');
+		\Hubzero\Document\Assets::addSystemScript('placeholder');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
