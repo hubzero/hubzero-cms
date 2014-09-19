@@ -154,14 +154,23 @@ class Base
 			$options['database'] = $config->get('mwDBDatabase');
 			$options['prefix']   = $config->get('mwDBPrefix');
 
-			try
+			if ((!isset($options['password']) || $options['password'] == '')
+			 && (!isset($options['user'])     || $options['user'] == '')
+			 && (!isset($options['database']) || $options['database'] == ''))
 			{
-				$instance = \JDatabase::getInstance($options);
+				$instance = $this->db;
 			}
-			catch (\PDOException $e)
+			else
 			{
-				$instance = NULL;
-				return false;
+				try
+				{
+					$instance = \JDatabase::getInstance($options);
+				}
+				catch (\PDOException $e)
+				{
+					$instance = NULL;
+					return false;
+				}
 			}
 
 			// Test the connection
