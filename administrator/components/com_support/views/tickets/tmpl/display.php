@@ -262,7 +262,7 @@ $this->css();
 									<?php echo $row->get('id'); ?>
 								</span>
 								<span class="<?php echo $row->status('class'); ?> status hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . JText::_('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status('text'); echo (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''); ?>">
-									<?php echo JText::_('COM_SUPPORT_TICKET_STATUS_' . strtoupper($status)); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+									<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 								</span>
 							</th>
 							<td>
