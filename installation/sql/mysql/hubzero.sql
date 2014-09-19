@@ -37,7 +37,7 @@ CREATE TABLE `app` (
   `timeout` int(10) unsigned NOT NULL DEFAULT '0',
   `command` varchar(255) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `display` (
   `hostname` varchar(40) NOT NULL DEFAULT '',
@@ -48,7 +48,7 @@ CREATE TABLE `display` (
   `vncpass` varchar(16) NOT NULL DEFAULT '',
   `status` varchar(20) NOT NULL DEFAULT '',
   KEY `idx_hostname` (`hostname`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `domainclass` (
   `class` tinyint(4) NOT NULL DEFAULT '0',
@@ -59,13 +59,13 @@ CREATE TABLE `domainclass` (
   PRIMARY KEY (`domain`),
   KEY `idx_class` (`class`) USING BTREE,
   KEY `idx_domain_class` (`domain`,`class`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `domainclasses` (
   `class` tinyint(4) NOT NULL DEFAULT '0',
   `name` varchar(64) NOT NULL,
   PRIMARY KEY (`class`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `fileperm` (
   `sessnum` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -74,7 +74,7 @@ CREATE TABLE `fileperm` (
   `fwport` smallint(5) unsigned NOT NULL DEFAULT '0',
   `cookie` varchar(16) NOT NULL DEFAULT '',
   PRIMARY KEY (`sessnum`,`fileuser`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `host` (
   `hostname` varchar(40) NOT NULL DEFAULT '',
@@ -84,13 +84,13 @@ CREATE TABLE `host` (
   `portbase` int(11) NOT NULL DEFAULT '0',
   `venue_id` int(11),
   PRIMARY KEY (`hostname`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `hosttype` (
   `name` varchar(40) NOT NULL DEFAULT '',
   `value` bigint(20) unsigned NOT NULL DEFAULT '0',
   `description` varchar(255) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `job` (
   `sessnum` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -106,7 +106,7 @@ CREATE TABLE `job` (
   UNIQUE KEY `uidx_jobid` (`jobid`),
   KEY `idx_start` (`start`),
   KEY `idx_heartbeat` (`heartbeat`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `joblog` (
   `sessnum` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -122,7 +122,7 @@ CREATE TABLE `joblog` (
   PRIMARY KEY (`sessnum`,`job`,`event`,`venue`),
   KEY `idx_sessnum` (`sessnum`),
   KEY `idx_event` (`event`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__abuse_reports` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -137,7 +137,7 @@ CREATE TABLE `#__abuse_reports` (
   `reviewed_by` INT(11)  NOT NULL  DEFAULT '0',
   `note` TEXT  NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__announcements` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -152,7 +152,7 @@ CREATE TABLE `#__announcements` (
   `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `sticky` tinyint(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -160,7 +160,7 @@ CREATE TABLE `#__answers_log` (
   `ip` varchar(15) DEFAULT NULL,
   `helpful` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_questions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -177,7 +177,7 @@ CREATE TABLE `#__answers_questions` (
   FULLTEXT KEY `ftidx_question` (`question`),
   FULLTEXT KEY `ftidx_subject` (`subject`),
   FULLTEXT KEY `ftidx_question_subject` (`question`,`subject`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_questions_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -186,7 +186,7 @@ CREATE TABLE `#__answers_questions_log` (
   `voter` int(11) DEFAULT NULL,
   `ip` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__answers_responses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -200,7 +200,7 @@ CREATE TABLE `#__answers_responses` (
   `anonymous` tinyint(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_answer` (`answer`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__auth_domain` (
   `authenticator` varchar(255) DEFAULT NULL,
@@ -209,7 +209,7 @@ CREATE TABLE `#__auth_domain` (
   `params` varchar(255) DEFAULT NULL,
   `type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__auth_link` (
   `auth_domain_id` int(11) DEFAULT NULL,
@@ -221,7 +221,7 @@ CREATE TABLE `#__auth_link` (
   `username` varchar(255) DEFAULT NULL,
   `linked_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__author_assoc` (
   `subtable` varchar(50) NOT NULL DEFAULT '',
@@ -232,14 +232,14 @@ CREATE TABLE `#__author_assoc` (
   `name` varchar(255) DEFAULT NULL,
   `organization` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`subtable`,`subid`,`authorid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__author_role_types` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL DEFAULT '0',
   `type_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__author_roles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -251,7 +251,7 @@ CREATE TABLE `#__author_roles` (
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__author_stats` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -262,13 +262,13 @@ CREATE TABLE `#__author_stats` (
   `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `period` tinyint(4) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__billboard_collection` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__billboards` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -289,7 +289,7 @@ CREATE TABLE `#__billboards` (
   `checked_out` int(11) DEFAULT '0',
   `checked_out_time` datetime DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__blog_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -301,7 +301,7 @@ CREATE TABLE `#__blog_comments` (
   `parent` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_entry_id` (`entry_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__blog_entries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -322,7 +322,7 @@ CREATE TABLE `#__blog_entries` (
   FULLTEXT KEY `ftidx_title` (`title`),
   FULLTEXT KEY `ftidx_content` (`content`),
   FULLTEXT KEY `ftidx_title_content` (`title`,`content`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__cart` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -333,7 +333,7 @@ CREATE TABLE `#__cart` (
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `selections` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__cart_cart_items` (
   `crtId` int(16) NOT NULL,
@@ -345,7 +345,7 @@ CREATE TABLE `#__cart_cart_items` (
   `crtiName` varchar(255) DEFAULT NULL,
   `crtiAvailable` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`crtId`,`sId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `#__cart_carts` (
   `crtId` int(16) NOT NULL AUTO_INCREMENT,
@@ -354,14 +354,14 @@ CREATE TABLE `#__cart_carts` (
   `uidNumber` int(16) DEFAULT NULL,
   PRIMARY KEY (`crtId`),
   UNIQUE KEY `uidx_uidNumber` (`uidNumber`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__cart_coupons` (
   `crtId` int(16) NOT NULL,
   `cnId` int(16) NOT NULL,
   `crtCnAdded` datetime DEFAULT NULL,
   `crtCnStatus` char(15) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `#__cart_memberships` (
   `crtmId` int(16) NOT NULL AUTO_INCREMENT,
@@ -370,7 +370,7 @@ CREATE TABLE `#__cart_memberships` (
   `crtmExpires` datetime DEFAULT NULL,
   PRIMARY KEY (`crtmId`),
   UNIQUE KEY `uidx_pId_crtId` (`pId`,`crtId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__cart_saved_addresses` (
   `saId` int(16) NOT NULL AUTO_INCREMENT,
@@ -383,7 +383,7 @@ CREATE TABLE `#__cart_saved_addresses` (
   `saZip` char(10) NOT NULL,
   PRIMARY KEY (`saId`),
   UNIQUE KEY `uidx_uidNumber_saToFirst_saToLast_saAddress_saZip` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__cart_transaction_info` (
   `tId` int(16) NOT NULL,
@@ -404,7 +404,7 @@ CREATE TABLE `#__cart_transaction_info` (
   `tiMeta` text,
   `tiCustomerStatus` char(15) DEFAULT 'unconfirmed',
   PRIMARY KEY (`tId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `#__cart_transaction_items` (
   `tId` int(16) NOT NULL,
@@ -412,7 +412,7 @@ CREATE TABLE `#__cart_transaction_items` (
   `tiQty` int(5) DEFAULT NULL,
   `tiPrice` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`tId`,`sId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `#__cart_transaction_steps` (
   `tsId` int(16) NOT NULL AUTO_INCREMENT,
@@ -421,7 +421,7 @@ CREATE TABLE `#__cart_transaction_steps` (
   `tsStatus` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`tsId`),
   UNIQUE KEY `uidx_tId_tsStep` (`tId`,`tsStep`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `#__cart_transactions` (
   `tId` int(16) NOT NULL AUTO_INCREMENT,
@@ -430,7 +430,7 @@ CREATE TABLE `#__cart_transactions` (
   `tLastUpdated` datetime DEFAULT NULL,
   `tStatus` char(32) DEFAULT NULL,
   PRIMARY KEY (`tId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -489,7 +489,7 @@ CREATE TABLE `#__citations` (
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_title_isbn_doi_abstract` (`title`,`isbn`,`doi`,`abstract`),
   FULLTEXT KEY `ftidx_title_isbn_doi_abstract_author_publisher` (`title`,`isbn`,`doi`,`abstract`, `author`, `publisher`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_assoc` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -498,7 +498,7 @@ CREATE TABLE `#__citations_assoc` (
   `type` varchar(50) DEFAULT NULL,
   `tbl` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_authors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -528,7 +528,7 @@ CREATE TABLE `#__citations_authors` (
   UNIQUE KEY `uidx_cid_author_authorid_uidNumber` (`cid`,`author`,`authorid`,`uidNumber`),
   KEY `idx_authorid` (`authorid`),
   KEY `idx_uidNumber` (`uidNumber`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_format` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -536,7 +536,7 @@ CREATE TABLE `#__citations_format` (
   `style` varchar(50) DEFAULT NULL,
   `format` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_secondary` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -544,7 +544,7 @@ CREATE TABLE `#__citations_secondary` (
   `sec_cits_cnt` int(11) DEFAULT NULL,
   `search_string` tinytext,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_sponsors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -552,14 +552,14 @@ CREATE TABLE `#__citations_sponsors` (
   `link` varchar(200) DEFAULT NULL,
   `image` varchar(200),
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_sponsors_assoc` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `cid` int(11) DEFAULT NULL,
   `sid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__citations_types` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -569,7 +569,7 @@ CREATE TABLE `#__citations_types` (
   `type_export` varchar(255) DEFAULT NULL,
   `fields` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__collections` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -590,7 +590,7 @@ CREATE TABLE `#__collections` (
   KEY `idx_state` (`state`),
   KEY `idx_access` (`access`),
   KEY `idx_created_by` (`created_by`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__collections_assets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -606,7 +606,7 @@ CREATE TABLE `#__collections_assets` (
   KEY `idx_item_id` (`item_id`),
   KEY `idx_created_by` (`created_by`),
   KEY `idx_state` (`state`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__collections_following` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -616,7 +616,7 @@ CREATE TABLE `#__collections_following` (
   `following_type` varchar(150) NOT NULL DEFAULT '',
   `following_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__collections_items` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -636,7 +636,7 @@ CREATE TABLE `#__collections_items` (
   PRIMARY KEY (`id`),
   KEY `idx_state` (`state`),
   KEY `idx_created_by` (`created_by`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__collections_posts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -650,7 +650,7 @@ CREATE TABLE `#__collections_posts` (
   KEY `idx_collection_id` (`collection_id`),
   KEY `idx_item_id` (`item_id`),
   KEY `idx_original` (`original`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__collections_votes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -659,7 +659,7 @@ CREATE TABLE `#__collections_votes` (
   `voted` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `idx_item_id_user_id` (`item_id`,`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -674,7 +674,7 @@ CREATE TABLE `#__comments` (
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_comment` (`comment`),
   FULLTEXT KEY `ftidx_referenceid` (`referenceid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 CREATE TABLE `#__courses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `alias` varchar(255) NOT NULL DEFAULT '',
@@ -691,7 +691,7 @@ CREATE TABLE `#__courses` (
   `params` text NOT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_alias_title_blurb` (`alias`,`title`,`blurb`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_announcements` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -711,7 +711,7 @@ CREATE TABLE `#__courses_announcements` (
   KEY `idx_created_by` (`created_by`),
   KEY `idx_state` (`state`),
   KEY `idx_priority` (`priority`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_asset_associations` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -723,14 +723,14 @@ CREATE TABLE `#__courses_asset_associations` (
   KEY `idx_asset_id` (`asset_id`),
   KEY `idx_scope_id` (`scope_id`),
   KEY `idx_scope` (`scope`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_asset_group_types` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `alias` varchar(200) NOT NULL DEFAULT '',
   `type` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_asset_groups` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -746,7 +746,7 @@ CREATE TABLE `#__courses_asset_groups` (
   PRIMARY KEY (`id`),
   KEY `idx_unit_id` (`unit_id`),
   KEY `idx_created_by` (`created_by`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_asset_views` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -760,7 +760,7 @@ CREATE TABLE `#__courses_asset_views` (
   `user_agent_string` VARCHAR(255) NULL  DEFAULT NULL,
   `session_id` VARCHAR(200) NULL  DEFAULT NULL, 
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_assets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -776,7 +776,7 @@ CREATE TABLE `#__courses_assets` (
   PRIMARY KEY (`id`),
   KEY `idx_course_id` (`course_id`),
   KEY `idx_created_by` (`created_by`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_form_answers` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -785,7 +785,7 @@ CREATE TABLE `#__courses_form_answers` (
   `top_dist` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_form_deployments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -799,7 +799,7 @@ CREATE TABLE `#__courses_form_deployments` (
   `user_id` int(11) NOT NULL,
   `allowed_attempts` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_form_questions` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -812,7 +812,7 @@ CREATE TABLE `#__courses_form_questions` (
   `width` int(11) NOT NULL,
   `form_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_form_respondent_progress` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -822,7 +822,7 @@ CREATE TABLE `#__courses_form_respondent_progress` (
   `submitted` DATETIME NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_respondent_id_question_id` (`respondent_id`,`question_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_form_respondents` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -832,7 +832,7 @@ CREATE TABLE `#__courses_form_respondents` (
   `finished` timestamp NULL DEFAULT NULL,
   `attempts` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_form_responses` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -841,7 +841,7 @@ CREATE TABLE `#__courses_form_responses` (
   `answer_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_respondent_id` (`respondent_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_forms` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -850,7 +850,7 @@ CREATE TABLE `#__courses_forms` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `asset_id` INT(11)  NULL  DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_grade_book` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -861,7 +861,7 @@ CREATE TABLE `#__courses_grade_book` (
   `override` DECIMAL(5,2)  NULL  DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_user_id_scope_scope_id` (`user_id`, `scope`, `scope_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_grade_policies` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -871,7 +871,7 @@ CREATE TABLE `#__courses_grade_policies` (
   `quiz_weight` decimal(3,2) DEFAULT NULL,
   `homework_weight` decimal(3,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -883,7 +883,7 @@ CREATE TABLE `#__courses_log` (
   `comments` text NOT NULL,
   `actor_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_members` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -901,7 +901,7 @@ CREATE TABLE `#__courses_members` (
   KEY `idx_user_id` (`user_id`),
   KEY `idx_role_id` (`role_id`),
   KEY `idx_section_id` (`section_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_member_badges` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -913,7 +913,7 @@ CREATE TABLE `#__courses_member_badges` (
   `action_on` DATETIME NULL  DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_member_id` (`member_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_member_notes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -933,7 +933,7 @@ CREATE TABLE `#__courses_member_notes` (
   PRIMARY KEY (`id`),
   KEY `idx_scoped` (`scope`, `scope_id`),
   KEY `idx_createdby` (`created_by`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_offering_badges` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -941,7 +941,7 @@ CREATE TABLE `#__courses_offering_badges` (
   `badge_id` int(11) NOT NULL,
   `img_url` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_offering_section_dates` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -953,7 +953,7 @@ CREATE TABLE `#__courses_offering_section_dates` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_offering_sections` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -974,7 +974,7 @@ CREATE TABLE `#__courses_offering_sections` (
   KEY `idx_offering_id` (`offering_id`),
   KEY `idx_created_by` (`created_by`),
   KEY `idx_state` (`state`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_offerings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -993,7 +993,7 @@ CREATE TABLE `#__courses_offerings` (
   KEY `idx_course_id` (`course_id`),
   KEY `idx_state` (`state`),
   KEY `idx_created_by` (`created_by`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_page_hits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1006,7 +1006,7 @@ CREATE TABLE `#__courses_page_hits` (
   KEY `idx_offering_id` (`offering_id`),
   KEY `idx_page_id` (`page_id`),
   KEY `idx_user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1021,7 +1021,7 @@ CREATE TABLE `#__courses_pages` (
   `privacy` varchar(10) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `idx_offering_id` (`offering_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_reviews` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1040,7 +1040,7 @@ CREATE TABLE `#__courses_reviews` (
   `positive` int(11) NOT NULL DEFAULT '0',
   `negative` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1050,7 +1050,7 @@ CREATE TABLE `#__courses_roles` (
   `permissions` mediumtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_offering_id` (`offering_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_units` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1064,7 +1064,7 @@ CREATE TABLE `#__courses_units` (
   `state` tinyint(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_offering_id` (`offering_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__courses_offering_section_codes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1076,7 +1076,7 @@ CREATE TABLE `#__courses_offering_section_codes` (
   `redeemed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `redeemed_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__cron_jobs` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1095,7 +1095,7 @@ CREATE TABLE `#__cron_jobs` (
   `ordering` int(11) NOT NULL DEFAULT '0',
   `params` TEXT  NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__document_resource_rel` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -1104,7 +1104,7 @@ CREATE TABLE `#__document_resource_rel` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_id` (`id`),
   UNIQUE KEY `uidx_document_id_resource_id` (`document_id`,`resource_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__document_text_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1113,7 +1113,7 @@ CREATE TABLE `#__document_text_data` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_hash` (`hash`),
   FULLTEXT KEY `ftidx_body` (`body`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__doi_mapping` (
   `local_revision` int(11) NOT NULL,
@@ -1122,7 +1122,7 @@ CREATE TABLE `#__doi_mapping` (
   `alias` varchar(30) DEFAULT NULL,
   `versionid` int(11) DEFAULT '0',
   `doi` varchar(50) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__email_bounces` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1134,7 +1134,7 @@ CREATE TABLE `#__email_bounces` (
   `date` datetime DEFAULT NULL,
   `resolved` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__event_registration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1151,7 +1151,7 @@ CREATE TABLE `#__event_registration` (
   `submitted` datetime DEFAULT NULL,
   `active` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__events` (
   `id` int(12) NOT NULL AUTO_INCREMENT,
@@ -1199,7 +1199,7 @@ CREATE TABLE `#__events` (
   FULLTEXT KEY `ftidx_title` (`title`),
   FULLTEXT KEY `ftidx_content` (`content`),
   FULLTEXT KEY `ftidx_title_content` (`title`,`content`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__events_calendars` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1214,18 +1214,18 @@ CREATE TABLE `#__events_calendars` (
   `last_fetched_attempt` DATETIME,
   `failed_attempts` INT(11) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__events_categories` (
   `id` int(12) NOT NULL DEFAULT '0',
   `color` varchar(8) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__events_config` (
   `param` varchar(100) DEFAULT NULL,
   `value` tinytext
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__events_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1240,13 +1240,13 @@ CREATE TABLE `#__events_pages` (
   `ordering` int(2) DEFAULT '0',
   `params` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__events_respondent_race_rel` (
   `respondent_id` int(11) DEFAULT NULL,
   `race` varchar(255) DEFAULT NULL,
   `tribal_affiliation` varchar(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__events_respondents` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1275,7 +1275,7 @@ CREATE TABLE `#__events_respondents` (
   `arrival` varchar(50) DEFAULT NULL,
   `departure` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__faq` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1302,7 +1302,7 @@ CREATE TABLE `#__faq` (
   FULLTEXT KEY `ftidx_title_params_fulltxt` (`title`,`params`,`fulltxt`),
   FULLTEXT KEY `ftidx_params` (`params`),
   FULLTEXT KEY `ftidx_fulltxt` (`fulltxt`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__faq_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1314,7 +1314,7 @@ CREATE TABLE `#__faq_categories` (
   `access` tinyint(3) NOT NULL DEFAULT '0',
   `asset_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__faq_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1328,7 +1328,7 @@ CREATE TABLE `#__faq_comments` (
   `helpful` int(11) NOT NULL DEFAULT '0',
   `nothelpful` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__faq_helpful_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1338,7 +1338,7 @@ CREATE TABLE `#__faq_helpful_log` (
   `user_id` int(11) DEFAULT '0',
   `type` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__feature_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1347,7 +1347,7 @@ CREATE TABLE `#__feature_history` (
   `tbl` varchar(255) DEFAULT NULL,
   `note` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__feedback` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1362,14 +1362,14 @@ CREATE TABLE `#__feedback` (
   `notes` text,
   `short_quote` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__focus_area_resource_type_rel` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `focus_area_id` int(11) NOT NULL,
   `resource_type_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__focus_areas` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -1377,7 +1377,7 @@ CREATE TABLE `#__focus_areas` (
   `mandatory_depth` int(11) DEFAULT NULL,
   `multiple_depth` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__forum_attachments` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1388,7 +1388,7 @@ CREATE TABLE `#__forum_attachments` (
   PRIMARY KEY (`id`),
   KEY `idx_filename_post_id` (`filename`, `post_id`),
   KEY `idx_parent` (`parent`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__forum_categories` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1416,7 +1416,7 @@ CREATE TABLE `#__forum_categories` (
   KEY `idx_access` (`access`),
   KEY `idx_section_id` (`section_id`),
   KEY `idx_closed` (`closed`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__forum_posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1454,7 +1454,7 @@ CREATE TABLE `#__forum_posts` (
   KEY `idx_parent` (`parent`),
   FULLTEXT KEY `ftidx_comment` (`comment`),
   FULLTEXT KEY `ftidx_comment_title` (`comment`, `title`) 
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__forum_sections` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1474,39 +1474,39 @@ CREATE TABLE `#__forum_sections` (
   KEY `idx_asset_id` (`asset_id`),
   KEY `idx_object_id` (`object_id`),
   KEY `idx_access` (`access`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_group_label_rel` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `group_id` int(11) NOT NULL,
   `label_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_groups` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `hours` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_labels` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `field` varchar(50) NOT NULL,
   `label` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_options` (
   `added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `popover_text` text NOT NULL,
   `award_per` int(11) NOT NULL,
   `test_group` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__incremental_registration_popover_recurrence` (
   `idx` int(11) NOT NULL,
   `hours` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__item_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1526,14 +1526,14 @@ CREATE TABLE `#__item_comments` (
   `negative` int(11) NOT NULL DEFAULT '0',
   `rating` int(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__item_comment_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `comment_id` int(11) NOT NULL DEFAULT '0',
   `filename` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__item_votes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1544,14 +1544,14 @@ CREATE TABLE `#__item_votes` (
   `created_by` int(11) NOT NULL DEFAULT '0',
   `vote` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_admins` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `jid` int(11) NOT NULL DEFAULT '0',
   `uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_applications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1564,7 +1564,7 @@ CREATE TABLE `#__jobs_applications` (
   `status` int(11) DEFAULT '1',
   `reason` varchar(255) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1572,7 +1572,7 @@ CREATE TABLE `#__jobs_categories` (
   `ordernum` int(11) NOT NULL DEFAULT '0',
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_employers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1583,7 +1583,7 @@ CREATE TABLE `#__jobs_employers` (
   `companyLocation` varchar(250) DEFAULT '',
   `companyWebsite` varchar(250) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_openings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1611,7 +1611,7 @@ CREATE TABLE `#__jobs_openings` (
   `contactEmail` varchar(100) DEFAULT '',
   `contactPhone` varchar(100) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_prefs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1619,7 +1619,7 @@ CREATE TABLE `#__jobs_prefs` (
   `category` varchar(20) NOT NULL DEFAULT 'resume',
   `filters` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_resumes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1629,7 +1629,7 @@ CREATE TABLE `#__jobs_resumes` (
   `filename` varchar(100) DEFAULT NULL,
   `main` tinyint(2) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_seekers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1643,7 +1643,7 @@ CREATE TABLE `#__jobs_seekers` (
   `sought_cid` int(11) DEFAULT '0',
   `sought_type` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_shortlist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1653,7 +1653,7 @@ CREATE TABLE `#__jobs_shortlist` (
   `jobid` int(11) DEFAULT '0',
   `added` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_stats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1664,13 +1664,13 @@ CREATE TABLE `#__jobs_stats` (
   `viewed_today` int(11) DEFAULT '0',
   `lastviewed` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__jobs_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `category` varchar(150) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__licenses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1679,20 +1679,20 @@ CREATE TABLE `#__licenses` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__licenses_tools` (
   `license_id` int(11) DEFAULT '0',
   `tool_id` int(11) DEFAULT '0',
   `created` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__licenses_users` (
   `license_id` int(11) NOT NULL DEFAULT '0',
   `user_id` int(11) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL,
   PRIMARY KEY (`license_id`,`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__market_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1703,7 +1703,7 @@ CREATE TABLE `#__market_history` (
   `log` text,
   `market_value` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__media_tracking` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1721,7 +1721,7 @@ CREATE TABLE `#__media_tracking` (
   `total_views` int(11) DEFAULT NULL,
   `total_viewing_time` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__media_tracking_detailed` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1737,7 +1737,7 @@ CREATE TABLE `#__media_tracking_detailed` (
   `farthest_position_timestamp` datetime DEFAULT NULL,
   `completed` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__metrics_author_cluster` (
   `authorid` varchar(60) NOT NULL DEFAULT '0',
@@ -1745,7 +1745,7 @@ CREATE TABLE `#__metrics_author_cluster` (
   `users` int(11) DEFAULT '0',
   `schools` int(11) DEFAULT '0',
   PRIMARY KEY (`authorid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__metrics_ipgeo_cache` (
   `ip` int(10) NOT NULL DEFAULT '0000000000',
@@ -1758,19 +1758,19 @@ CREATE TABLE `#__metrics_ipgeo_cache` (
   `lookup_datetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ip`),
   KEY `idx_lookup_datetime` (`lookup_datetime`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__myhub` (
   `uid` int(11) NOT NULL,
   `prefs` varchar(200) DEFAULT NULL,
   `modified` datetime DEFAULT '0000-00-00 00:00:00'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__myhub_params` (
   `uid` int(11) NOT NULL,
   `mid` int(11) NOT NULL,
   `params` text
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__newsletters` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1790,7 +1790,7 @@ CREATE TABLE `#__newsletters` (
   `deleted` int(11) DEFAULT '0',
   `params` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_templates` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1803,7 +1803,7 @@ CREATE TABLE `#__newsletter_templates` (
   `secondary_text_color` varchar(100) DEFAULT NULL,
   `deleted` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_primary_story` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1815,7 +1815,7 @@ CREATE TABLE `#__newsletter_primary_story` (
   `order` int(11) DEFAULT NULL,
   `deleted` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_secondary_story` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1827,7 +1827,7 @@ CREATE TABLE `#__newsletter_secondary_story` (
   `order` int(11) DEFAULT NULL,
   `deleted` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_mailings` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1841,7 +1841,7 @@ CREATE TABLE `#__newsletter_mailings` (
   `date` datetime DEFAULT NULL,
   `deleted` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_mailinglists` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1850,7 +1850,7 @@ CREATE TABLE `#__newsletter_mailinglists` (
   `private` int(11) DEFAULT NULL,
   `deleted` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_mailinglist_unsubscribes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1858,7 +1858,7 @@ CREATE TABLE `#__newsletter_mailinglist_unsubscribes` (
   `email` varchar(150) DEFAULT NULL,
   `reason` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_mailinglist_emails` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1869,7 +1869,7 @@ CREATE TABLE `#__newsletter_mailinglist_emails` (
   `date_added` datetime DEFAULT NULL,
   `date_confirmed` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_mailing_recipients` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1879,7 +1879,7 @@ CREATE TABLE `#__newsletter_mailing_recipients` (
   `date_added` datetime DEFAULT NULL,
   `date_sent` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 					
 CREATE TABLE `#__newsletter_mailing_recipient_actions` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -1897,7 +1897,7 @@ CREATE TABLE `#__newsletter_mailing_recipient_actions` (
   `ipLATITUDE` double DEFAULT NULL,
   `ipLONGITUDE` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__oaipmh_dcspecs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1905,7 +1905,7 @@ CREATE TABLE `#__oaipmh_dcspecs` (
   `query` text NOT NULL,
   `display` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__oauthp_consumers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1916,7 +1916,7 @@ CREATE TABLE `#__oauthp_consumers` (
   `xauth` tinyint(4) NOT NULL,
   `xauth_grant` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__oauthp_nonces` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1925,7 +1925,7 @@ CREATE TABLE `#__oauthp_nonces` (
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_nonce_stamp` (`nonce`,`stamp`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__oauthp_tokens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1938,7 +1938,7 @@ CREATE TABLE `#__oauthp_tokens` (
   `verifier` varchar(250) NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__order_items` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -1949,7 +1949,7 @@ CREATE TABLE `#__order_items` (
   `quantity` int(11) NOT NULL DEFAULT '0',
   `selections` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__orders` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -1963,13 +1963,13 @@ CREATE TABLE `#__orders` (
   `status_changed` datetime DEFAULT '0000-00-00 00:00:00',
   `notes` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__password_blacklist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `word` char(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__password_character_class` (
   `flag` int(11) NOT NULL,
@@ -1977,7 +1977,7 @@ CREATE TABLE `#__password_character_class` (
   `name` char(32) NOT NULL,
   `regex` char(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__password_rule` (
   `class` char(255) DEFAULT NULL,
@@ -1990,7 +1990,7 @@ CREATE TABLE `#__password_rule` (
   `rule` char(255) DEFAULT NULL,
   `value` char(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__plugin_params` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1999,7 +1999,7 @@ CREATE TABLE `#__plugin_params` (
   `element` varchar(100) DEFAULT NULL,
   `params` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__poll_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2008,7 +2008,7 @@ CREATE TABLE `#__poll_data` (
   `hits` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_pollid_text` (`pollid`,`text`(1))
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__poll_date` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -2018,13 +2018,13 @@ CREATE TABLE `#__poll_date` (
   `voter_ip` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_poll_id` (`poll_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__poll_menu` (
   `pollid` int(11) NOT NULL DEFAULT '0',
   `menuid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`pollid`,`menuid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__polls` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -2040,7 +2040,7 @@ CREATE TABLE `#__polls` (
   `opened` date DEFAULT NULL,
   `closed` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__profile_completion_awards` (
   `user_id` int(11) NOT NULL,
@@ -2063,7 +2063,7 @@ CREATE TABLE `#__profile_completion_awards` (
   `edited_profile` tinyint(4) NOT NULL DEFAULT '0',
   mailPreferenceOption int not null default 0,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_activity` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2080,7 +2080,7 @@ CREATE TABLE `#__project_activity` (
   `url` varchar(255) DEFAULT NULL,
   `class` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2095,7 +2095,7 @@ CREATE TABLE `#__project_comments` (
   `admin` tinyint(2) DEFAULT '0',
   `tbl` varchar(50) NOT NULL DEFAULT 'blog',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_databases` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2113,7 +2113,7 @@ CREATE TABLE `#__project_databases` (
   `updated` datetime DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_database_versions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2121,7 +2121,7 @@ CREATE TABLE `#__project_database_versions` (
   `version` int(11) NOT NULL DEFAULT '1',
   `data_definition` text,
   PRIMARY KEY (`id`,`database_name`,`version`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_logs` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -2137,7 +2137,7 @@ CREATE TABLE `#__project_logs` (
   `request_uri` tinytext,
   PRIMARY KEY (`id`),
   KEY `idx_projectid` (`projectid`)
-) ENGINE=MyISAM DEFAULT CHARSET=UTF8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_microblog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2151,7 +2151,7 @@ CREATE TABLE `#__project_microblog` (
   `managers_only` tinyint(2) DEFAULT '0',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_blogentry` (`blogentry`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_owners` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2170,7 +2170,7 @@ CREATE TABLE `#__project_owners` (
   `native` int(11) NOT NULL DEFAULT '0',
   `params` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_public_stamps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2184,7 +2184,7 @@ CREATE TABLE `#__project_public_stamps` (
   `created_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_stamp` (`stamp`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE `#__project_remote_files` (
@@ -2214,7 +2214,7 @@ CREATE TABLE `#__project_remote_files` (
   `remote_author` varchar(100) DEFAULT NULL,
   `remote_modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_stats` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -2224,7 +2224,7 @@ CREATE TABLE `#__project_stats` (
   `processed` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `stats` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_todo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2245,7 +2245,7 @@ CREATE TABLE `#__project_todo` (
   `content` varchar(255) NOT NULL,
   `color` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__project_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2253,7 +2253,7 @@ CREATE TABLE `#__project_types` (
   `description` varchar(255) NOT NULL DEFAULT '',
   `params` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__projects` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2276,7 +2276,7 @@ CREATE TABLE `#__projects` (
   `admin_notes` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_alias` (`alias`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publications` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2293,14 +2293,14 @@ CREATE TABLE `#__publications` (
   `alias` varchar(100) NOT NULL DEFAULT '',
   `ranking` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_access` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `publication_version_id` int(11) NOT NULL DEFAULT '0',
   `group_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2325,7 +2325,7 @@ CREATE TABLE `#__publication_attachments` (
   `ordering` int(11) DEFAULT '0',
   `content_hash` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_audience` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2341,7 +2341,7 @@ CREATE TABLE `#__publication_audience` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_audience_levels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2349,7 +2349,7 @@ CREATE TABLE `#__publication_audience_levels` (
   `title` varchar(100) DEFAULT '',
   `description` varchar(255) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_authors` (
   `publication_version_id` int(11) NOT NULL DEFAULT '0',
@@ -2369,7 +2369,7 @@ CREATE TABLE `#__publication_authors` (
   `modified_by` int(11) DEFAULT '0',
   `status` tinyint(2) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2386,7 +2386,7 @@ CREATE TABLE `#__publication_categories` (
   UNIQUE KEY `uidx_name` (`name`),
   UNIQUE KEY `uidx_alias` (`alias`),
   UNIQUE KEY `uidx_url_alias` (`url_alias`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_master_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2399,7 +2399,7 @@ CREATE TABLE `#__publication_master_types` (
   `params` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_alias` (`alias`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_ratings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2411,7 +2411,7 @@ CREATE TABLE `#__publication_ratings` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `anonymous` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_screenshots` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -2426,7 +2426,7 @@ CREATE TABLE `#__publication_screenshots` (
   `created_by` varchar(127) DEFAULT NULL,
   `modified_by` varchar(127) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_stats` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -2439,7 +2439,7 @@ CREATE TABLE `#__publication_stats` (
   `processed_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_publication_id_datetime_period` (`publication_id`,`datetime`,`period`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_versions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2472,7 +2472,7 @@ CREATE TABLE `#__publication_versions` (
   `times_rated` int(11) NOT NULL DEFAULT '0',
   `ranking` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__publication_licenses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2489,7 +2489,7 @@ CREATE TABLE `#__publication_licenses` (
   `customizable` int(11) DEFAULT '0',
   `icon` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__recent_tools` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2497,7 +2497,7 @@ CREATE TABLE `#__recent_tools` (
   `tool` varchar(200) DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__recommendation` (
   `fromID` int(11) NOT NULL,
@@ -2507,7 +2507,7 @@ CREATE TABLE `#__recommendation` (
   `titleScore` float unsigned zerofill DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`fromID`,`toID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__redirection` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2517,14 +2517,14 @@ CREATE TABLE `#__redirection` (
   `dateadd` date NOT NULL DEFAULT '0000-00-00',
   PRIMARY KEY (`id`),
   KEY `idx_newurl` (`newurl`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_assoc` (
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `child_id` int(11) NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL DEFAULT '0',
   `grouping` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_licenses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2539,7 +2539,7 @@ CREATE TABLE `#__resource_licenses` (
   `agreement` tinyint(2) NOT NULL DEFAULT '0',
   `info` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_ratings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2550,7 +2550,7 @@ CREATE TABLE `#__resource_ratings` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `anonymous` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_sponsors` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -2563,7 +2563,7 @@ CREATE TABLE `#__resource_sponsors` (
   `modified_by` int(11) NOT NULL DEFAULT '0',
   `description` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_stats` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -2580,7 +2580,7 @@ CREATE TABLE `#__resource_stats` (
   `processed_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_resid_restype_datetime_period` (`resid`,`restype`,`datetime`,`period`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_stats_clusters` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -2604,7 +2604,7 @@ CREATE TABLE `#__resource_stats_clusters` (
   KEY `idx_cluster_start` (`cluster_start`),
   KEY `idx_cluster_end` (`cluster_end`),
   KEY `idx_institution` (`institution`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_stats_tools` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -2628,7 +2628,7 @@ CREATE TABLE `#__resource_stats_tools` (
   `period` tinyint(4) NOT NULL DEFAULT '-1',
   `processed_on` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_stats_tools_tops` (
   `top` tinyint(4) NOT NULL DEFAULT '0',
@@ -2636,7 +2636,7 @@ CREATE TABLE `#__resource_stats_tools_tops` (
   `valfmt` tinyint(4) NOT NULL DEFAULT '0',
   `size` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`top`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_stats_tools_topvals` (
   `id` bigint(20) NOT NULL,
@@ -2644,7 +2644,7 @@ CREATE TABLE `#__resource_stats_tools_topvals` (
   `rank` tinyint(4) NOT NULL DEFAULT '0',
   `name` varchar(255) DEFAULT NULL,
   `value` bigint(20) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_stats_tools_users` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -2660,7 +2660,7 @@ CREATE TABLE `#__resource_stats_tools_users` (
   `datetime` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `period` tinyint(4) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_taxonomy_audience` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2676,7 +2676,7 @@ CREATE TABLE `#__resource_taxonomy_audience` (
   `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `addedBy` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_taxonomy_audience_levels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2684,7 +2684,7 @@ CREATE TABLE `#__resource_taxonomy_audience_levels` (
   `title` varchar(100) DEFAULT '',
   `description` varchar(255) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resource_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2697,7 +2697,7 @@ CREATE TABLE `#__resource_types` (
   `params` text,
   PRIMARY KEY (`id`),
   KEY `idx_category` (`category`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__resources` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2732,7 +2732,7 @@ CREATE TABLE `#__resources` (
   FULLTEXT KEY `ftidx_title` (`title`),
   FULLTEXT KEY `ftidx_introtext_fulltxt` (`introtext`,`fulltxt`),
   FULLTEXT KEY `ftidx_title_introtext_fulltxt` (`title`,`introtext`,`fulltxt`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__screenshots` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -2742,7 +2742,7 @@ CREATE TABLE `#__screenshots` (
   `filename` varchar(100) NOT NULL,
   `resourceid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__selected_quotes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2758,7 +2758,7 @@ CREATE TABLE `#__selected_quotes` (
   `notable_quotes` tinyint(1) DEFAULT '1',
   `notes` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__session_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2773,7 +2773,7 @@ CREATE TABLE `#__session_log` (
   `ip` char(64) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__session_geo` (
   `session_id` varchar(200) NOT NULL default '0',
@@ -2796,7 +2796,7 @@ CREATE TABLE `#__session_geo` (
   KEY `idx_userid` (`userid`),
   KEY `idx_time` (`time`),
   KEY `idx_ip` (`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__sites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2813,7 +2813,7 @@ CREATE TABLE `#__sites` (
   `published_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `state` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__stats_tops` (
   `id` tinyint(4) NOT NULL DEFAULT '0',
@@ -2821,7 +2821,7 @@ CREATE TABLE `#__stats_tops` (
   `valfmt` tinyint(4) NOT NULL DEFAULT '0',
   `size` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__stats_topvals` (
   `top` tinyint(4) NOT NULL DEFAULT '0',
@@ -2835,7 +2835,7 @@ CREATE TABLE `#__stats_topvals` (
   KEY `idx_top_datetime` (`top`,`datetime`),
   KEY `idx_top_datetime_rank` (`top`,`datetime`,`rank`),
   KEY `idx_top_datetime_period` (`top`,`datetime`,`period`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__store` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -2851,7 +2851,7 @@ CREATE TABLE `#__store` (
   `type` int(11) DEFAULT '1',
   `category` varchar(127) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_collections` (
   `cId` char(50) NOT NULL,
@@ -2862,27 +2862,27 @@ CREATE TABLE `#__storefront_collections` (
   PRIMARY KEY (`cId`),
   KEY `idx_cActive` (`cActive`),
   KEY `idx_cParent` (`cParent`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_coupon_actions` (
   `cnId` int(16) NOT NULL,
   `cnaAction` char(25) DEFAULT NULL,
   `cnaVal` char(255) DEFAULT NULL,
   UNIQUE KEY `uidx_cnId_cnaAction` (`cnId`,`cnaAction`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `#__storefront_coupon_conditions` (
   `cnId` int(16) NOT NULL,
   `cncRule` char(100) DEFAULT NULL,
   `cncVal` char(255) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_coupon_objects` (
   `cnId` int(16) NOT NULL,
   `cnoObjectId` int(16) DEFAULT NULL,
   `cnoObjectsLimit` int(5) DEFAULT '0' COMMENT 'How many objects can be applied to. 0 - unlimited',
   UNIQUE KEY `uidx_cnId_cnoObjectId` (`cnId`,`cnoObjectId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_coupons` (
   `cnId` int(16) NOT NULL AUTO_INCREMENT,
@@ -2894,13 +2894,13 @@ CREATE TABLE `#__storefront_coupons` (
   `cnActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`cnId`),
   UNIQUE KEY `uidx_cnCode` (`cnCode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_option_groups` (
   `ogId` int(16) NOT NULL AUTO_INCREMENT,
   `ogName` char(16) DEFAULT NULL,
   PRIMARY KEY (`ogId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `#__storefront_options` (
   `oId` int(16) NOT NULL AUTO_INCREMENT,
@@ -2908,7 +2908,7 @@ CREATE TABLE `#__storefront_options` (
   `oName` char(255) DEFAULT NULL,
   PRIMARY KEY (`oId`),
   UNIQUE KEY `uidx_ogId_oName` (`ogId`,`oName`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_product_collections` (
   `cllId` int(16) NOT NULL AUTO_INCREMENT,
@@ -2916,20 +2916,20 @@ CREATE TABLE `#__storefront_product_collections` (
   `cId` char(50) NOT NULL,
   PRIMARY KEY (`cllId`,`pId`,`cId`),
   UNIQUE KEY `uidx_pId_cId` (`pId`,`cId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 		
 CREATE TABLE `#__storefront_product_option_groups` (
   `pId` int(16) NOT NULL,
   `ogId` int(16) NOT NULL,
   PRIMARY KEY (`pId`,`ogId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 	
 CREATE TABLE `#__storefront_product_types` (
   `ptId` int(16) NOT NULL AUTO_INCREMENT,
   `ptName` char(128) DEFAULT NULL,
   `ptModel` char(25) DEFAULT 'normal',
   PRIMARY KEY (`ptId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_products` (
   `pId` int(16) NOT NULL AUTO_INCREMENT,
@@ -2941,7 +2941,7 @@ CREATE TABLE `#__storefront_products` (
   `pActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`pId`),
   KEY `idx_pActive` (`pActive`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_sku_meta` (
   `smId` int(16) NOT NULL AUTO_INCREMENT,
@@ -2950,13 +2950,13 @@ CREATE TABLE `#__storefront_sku_meta` (
   `smValue` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`smId`),
   UNIQUE KEY `uidx_sId_smKey` (`sId`,`smKey`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_sku_options` (
   `sId` int(16) NOT NULL,
   `oId` int(16) NOT NULL,
   PRIMARY KEY (`sId`,`oId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__storefront_skus` (
   `sId` int(16) NOT NULL AUTO_INCREMENT,
@@ -2972,14 +2972,14 @@ CREATE TABLE `#__storefront_skus` (
   `sAllowMultiple` tinyint(1) DEFAULT '1',
   `sActive` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`sId`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_acl_acos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `model` varchar(100) DEFAULT NULL,
   `foreign_key` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_acl_aros` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2987,7 +2987,7 @@ CREATE TABLE `#__support_acl_aros` (
   `foreign_key` int(11) DEFAULT '0',
   `alias` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_acl_aros_acos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -2998,7 +2998,7 @@ CREATE TABLE `#__support_acl_aros_acos` (
   `action_update` int(3) DEFAULT '0',
   `action_delete` int(3) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3006,14 +3006,14 @@ CREATE TABLE `#__support_attachments` (
   `filename` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `section` int(11) DEFAULT '0',
   `category` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3024,14 +3024,14 @@ CREATE TABLE `#__support_comments` (
   `changelog` text,
   `access` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(250) DEFAULT NULL,
   `message` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_queries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3044,20 +3044,20 @@ CREATE TABLE `#__support_queries` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `iscore` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_resolutions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) DEFAULT NULL,
   `alias` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_sections` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `section` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_tickets` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3086,7 +3086,7 @@ CREATE TABLE `#__support_tickets` (
   `group` varchar(250) DEFAULT NULL,
   `open` tinyint(3) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__support_watching` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -3095,7 +3095,7 @@ CREATE TABLE `#__support_watching` (
   PRIMARY KEY (`id`),
   KEY `idx_ticket_id` (`ticket_id`),
   KEY `idx_user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3106,7 +3106,7 @@ CREATE TABLE `#__tags` (
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_description` (`description`),
   FULLTEXT KEY `ftidx_raw_tag_description` (`raw_tag`,`description`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3114,7 +3114,7 @@ CREATE TABLE `#__tags_group` (
   `tagid` int(11) DEFAULT '0',
   `priority` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3125,7 +3125,7 @@ CREATE TABLE `#__tags_log` (
   `comments` text,
   `actorid` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_object` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3141,7 +3141,7 @@ CREATE TABLE `#__tags_object` (
   KEY `idx_label_tagid` (`label`,`tagid`),
   KEY `idx_tbl_objectid_label_tagid` (`tbl`,`objectid`,`label`,`tagid`),
   KEY `idx_tagid` (`tagid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tags_substitute` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -3152,7 +3152,7 @@ CREATE TABLE `#__tags_substitute` (
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `idx_tag_id` (`tag_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -3178,7 +3178,7 @@ CREATE TABLE `#__tool` (
   `revision` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_toolname` (`toolname`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_authors` (
   `toolname` varchar(50) NOT NULL DEFAULT '',
@@ -3189,14 +3189,14 @@ CREATE TABLE `#__tool_authors` (
   `name` varchar(255) DEFAULT NULL,
   `organization` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`toolname`,`revision`,`uid`,`version_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_groups` (
   `cn` varchar(255) NOT NULL DEFAULT '',
   `toolid` int(11) NOT NULL DEFAULT '0',
   `role` tinyint(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`cn`,`toolid`,`role`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_licenses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3205,7 +3205,7 @@ CREATE TABLE `#__tool_licenses` (
   `title` varchar(100) DEFAULT NULL,
   `ordering` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_statusviews` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -3214,7 +3214,7 @@ CREATE TABLE `#__tool_statusviews` (
   `viewed` datetime DEFAULT '0000-00-00 00:00:00',
   `elapsed` int(11) DEFAULT '500000',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_version` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -3245,30 +3245,30 @@ CREATE TABLE `#__tool_version` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_toolname_instance` (`toolname`,`instance`),
   KEY `idx_instance` (`instance`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_version_alias` (
   `tool_version_id` int(11) NOT NULL,
   `alias` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_version_hostreq` (
   `tool_version_id` int(11) NOT NULL,
   `hostreq` varchar(255) NOT NULL,
   UNIQUE KEY `idx_tool_version_id_hostreq` (`tool_version_id`,`hostreq`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_version_middleware` (
   `tool_version_id` int(11) NOT NULL,
   `middleware` varchar(255) NOT NULL,
   UNIQUE KEY `uidx_tool_version_id_middleware` (`tool_version_id`,`middleware`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__tool_version_tracperm` (
   `tool_version_id` int(11) NOT NULL,
   `tracperm` varchar(64) NOT NULL,
   UNIQUE KEY `uidx_tool_version_id_tracperm` (`tool_version_id`,`tracperm`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__trac_group_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3277,19 +3277,19 @@ CREATE TABLE `#__trac_group_permission` (
   `trac_project_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_group_id_action_trac_project_id` (`group_id`,`action`,`trac_project_id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__trac_project` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__trac_projects` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `type` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__trac_user_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3298,7 +3298,7 @@ CREATE TABLE `#__trac_user_permission` (
   `trac_project_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_user_id_action_trac_project_id` (`user_id`,`action`,`trac_project_id`) USING BTREE
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__user_roles` (
   `user_id` int(11) NOT NULL,
@@ -3307,7 +3307,7 @@ CREATE TABLE `#__user_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_role_user_id_group_id` (`role`,`user_id`,`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_password` (
   `user_id` int(11) NOT NULL,
@@ -3320,7 +3320,7 @@ CREATE TABLE `#__users_password` (
   `shadowMin` int(11) DEFAULT NULL,
   `shadowWarning` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_password_history` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3332,7 +3332,7 @@ CREATE TABLE `#__users_password_history` (
   `invalidated` datetime DEFAULT NULL,
   `invalidated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_points` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3341,7 +3341,7 @@ CREATE TABLE `#__users_points` (
   `earnings` int(11) NOT NULL DEFAULT '0',
   `credit` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_points_config` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3349,7 +3349,7 @@ CREATE TABLE `#__users_points_config` (
   `description` varchar(255) DEFAULT NULL,
   `alias` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_points_services` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3371,7 +3371,7 @@ CREATE TABLE `#__users_points_services` (
   `changed` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_alias` (`alias`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_points_subscriptions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3391,14 +3391,14 @@ CREATE TABLE `#__users_points_subscriptions` (
   `updated` datetime DEFAULT NULL,
   `expires` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_tracperms` (
   `user_id` int(11) NOT NULL,
   `action` varchar(255) NOT NULL,
   `project_id` int(11) NOT NULL,
   PRIMARY KEY (`user_id`,`action`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__users_transactions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3412,7 +3412,7 @@ CREATE TABLE `#__users_transactions` (
   `balance` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_referenceid_categroy_type` (`referenceid`,`category`,`type`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `venue` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3425,14 +3425,14 @@ CREATE TABLE `venue` (
   `longitude` double DEFAULT NULL,
   `master` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `venue_countries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `venue_id` int(11) NOT NULL,
   `countrySHORT` char(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__vote_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3444,7 +3444,7 @@ CREATE TABLE `#__vote_log` (
   `category` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_referenceid` (`referenceid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3454,7 +3454,7 @@ CREATE TABLE `#__wiki_attachments` (
   `created` datetime DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3469,7 +3469,7 @@ CREATE TABLE `#__wiki_comments` (
   `parent` int(11) NOT NULL DEFAULT '0',
   `status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3480,7 +3480,7 @@ CREATE TABLE `#__wiki_log` (
   `comments` text,
   `actorid` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_math` (
   `inputhash` varchar(32) NOT NULL DEFAULT '',
@@ -3491,7 +3491,7 @@ CREATE TABLE `#__wiki_math` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uidx_inputhash` (`inputhash`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_page` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3512,14 +3512,14 @@ CREATE TABLE `#__wiki_page` (
   `version_id` INT(11)  NOT NULL  DEFAULT '0',
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_title` (`title`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_page_author` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT '0',
   `page_id` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_page_links` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -3532,7 +3532,7 @@ CREATE TABLE `#__wiki_page_links` (
   PRIMARY KEY (`id`),
   KEY `idx_page_id` (`page_id`),
   KEY `idx_scope_scope_id` (`scope`,`scope_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_page_metrics` (
   `pageid` int(11) NOT NULL DEFAULT '0',
@@ -3541,7 +3541,7 @@ CREATE TABLE `#__wiki_page_metrics` (
   `visitors` int(11) NOT NULL DEFAULT '0',
   `visits` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`pageid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wiki_version` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3558,7 +3558,7 @@ CREATE TABLE `#__wiki_version` (
   PRIMARY KEY (`id`),
   KEY `idx_pageid` (`pageid`),
   FULLTEXT KEY `ftidx_pagetext` (`pagetext`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wish_attachments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3566,7 +3566,7 @@ CREATE TABLE `#__wish_attachments` (
   `filename` varchar(255) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wishlist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3579,7 +3579,7 @@ CREATE TABLE `#__wishlist` (
   `public` int(3) NOT NULL DEFAULT '1',
   `description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wishlist_implementation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3594,7 +3594,7 @@ CREATE TABLE `#__wishlist_implementation` (
   `summary` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_pagetext` (`pagetext`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wishlist_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3617,14 +3617,14 @@ CREATE TABLE `#__wishlist_item` (
   PRIMARY KEY (`id`),
   KEY `idx_wishlist` (`wishlist`),
   FULLTEXT KEY `ftidx_subject_about` (`subject`,`about`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wishlist_ownergroups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `wishlist` int(11) DEFAULT '0',
   `groupid` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wishlist_owners` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3632,7 +3632,7 @@ CREATE TABLE `#__wishlist_owners` (
   `userid` int(11) NOT NULL DEFAULT '0',
   `type` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__wishlist_vote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3644,20 +3644,20 @@ CREATE TABLE `#__wishlist_vote` (
   `due` datetime DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`),
   KEY `idx_wishid` (`wishid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xdomain_users` (
   `domain_id` int(11) NOT NULL,
   `domain_username` varchar(150) NOT NULL DEFAULT '',
   `uidNumber` int(11) DEFAULT NULL,
   PRIMARY KEY (`domain_id`,`domain_username`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xdomains` (
   `domain_id` int(11) NOT NULL AUTO_INCREMENT,
   `domain` varchar(150) NOT NULL DEFAULT '',
   PRIMARY KEY (`domain_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xfavorites` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3666,7 +3666,7 @@ CREATE TABLE `#__xfavorites` (
   `tbl` varchar(250) DEFAULT NULL,
   `faved` datetime DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups` (
   `gidNumber` int(11) NOT NULL AUTO_INCREMENT,
@@ -3690,13 +3690,13 @@ CREATE TABLE `#__xgroups` (
   `params` text,
   PRIMARY KEY (`gidNumber`),
   FULLTEXT KEY `ftidx_cn_description_public_desc` (`cn`,`description`,`public_desc`)
-) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000;
 
 CREATE TABLE `#__xgroups_applicants` (
   `gidNumber` int(11) NOT NULL,
   `uidNumber` int(11) NOT NULL,
   PRIMARY KEY (`gidNumber`,`uidNumber`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_inviteemails` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3704,13 +3704,13 @@ CREATE TABLE `#__xgroups_inviteemails` (
   `gidNumber` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_invitees` (
   `gidNumber` int(11) NOT NULL,
   `uidNumber` int(11) NOT NULL,
   PRIMARY KEY (`gidNumber`,`uidNumber`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3721,18 +3721,18 @@ CREATE TABLE `#__xgroups_log` (
   `comments` text,
   `actorid` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_managers` (
   `gidNumber` int(11) NOT NULL,
   `uidNumber` int(11) NOT NULL,
   PRIMARY KEY (`gidNumber`,`uidNumber`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_member_roles` (
   `role` int(11) DEFAULT NULL,
   `uidNumber` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_memberoption` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3741,13 +3741,13 @@ CREATE TABLE `#__xgroups_memberoption` (
   `optionname` varchar(100) DEFAULT NULL,
   `optionvalue` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_members` (
   `gidNumber` int(11) NOT NULL,
   `uidNumber` int(11) NOT NULL,
   PRIMARY KEY (`gidNumber`,`uidNumber`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3759,7 +3759,7 @@ CREATE TABLE `#__xgroups_pages` (
   `active` int(11) DEFAULT NULL,
   `privacy` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_pages_hits` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3769,7 +3769,7 @@ CREATE TABLE `#__xgroups_pages_hits` (
   `datetime` datetime DEFAULT NULL,
   `ip` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_reasons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3778,21 +3778,21 @@ CREATE TABLE `#__xgroups_reasons` (
   `reason` text,
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `gidNumber` int(11) DEFAULT NULL,
   `role` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xgroups_tracperm` (
   `group_id` int(11) NOT NULL,
   `action` varchar(255) NOT NULL,
   `project_id` int(11) NOT NULL,
   PRIMARY KEY (`group_id`,`action`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xmessage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3804,7 +3804,7 @@ CREATE TABLE `#__xmessage` (
   `type` varchar(100) DEFAULT NULL,
   `group_id` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xmessage_action` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3814,7 +3814,7 @@ CREATE TABLE `#__xmessage_action` (
   PRIMARY KEY (`id`),
   KEY `idx_class` (`class`),
   KEY `idx_element` (`element`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xmessage_component` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3822,7 +3822,7 @@ CREATE TABLE `#__xmessage_component` (
   `action` varchar(100) NOT NULL DEFAULT '',
   `title` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xmessage_notify` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3831,7 +3831,7 @@ CREATE TABLE `#__xmessage_notify` (
   `type` varchar(250) DEFAULT NULL,
   `priority` int(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xmessage_recipient` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3844,7 +3844,7 @@ CREATE TABLE `#__xmessage_recipient` (
   PRIMARY KEY (`id`),
   KEY `idx_mid` (`mid`),
   KEY `idx_uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xmessage_seen` (
   `mid` int(11) unsigned NOT NULL DEFAULT '0',
@@ -3852,20 +3852,20 @@ CREATE TABLE `#__xmessage_seen` (
   `whenseen` datetime DEFAULT '0000-00-00 00:00:00',
   KEY `idx_mid` (`mid`),
   KEY `idx_uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xorganization_types` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `type` varchar(150) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xorganizations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `organization` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles` (
   `uidNumber` int(11) NOT NULL,
@@ -3911,7 +3911,7 @@ CREATE TABLE `#__xprofiles` (
   KEY `idx_username` (`username`),
   FULLTEXT KEY `ftidx_givenName_surname` (`givenName`,`surname`),
   FULLTEXT KEY `ftidx_name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_address` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -3926,62 +3926,62 @@ CREATE TABLE `#__xprofiles_address` (
   `addressLatitude` float DEFAULT NULL,
   `addressLongitude` float DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_admin` (
   `uidNumber` int(11) NOT NULL,
   `admin` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`uidNumber`,`admin`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_bio` (
   `uidNumber` int(11) NOT NULL,
   `bio` text,
   PRIMARY KEY (`uidNumber`),
   FULLTEXT KEY `ftidx_bio` (`bio`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_disability` (
   `uidNumber` int(11) NOT NULL,
   `disability` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`uidNumber`,`disability`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_edulevel` (
   `uidNumber` int(11) NOT NULL,
   `edulevel` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`uidNumber`,`edulevel`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_hispanic` (
   `uidNumber` int(11) NOT NULL,
   `hispanic` varchar(255) NOT NULL,
   PRIMARY KEY (`uidNumber`,`hispanic`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_host` (
   `uidNumber` int(11) NOT NULL,
   `host` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`uidNumber`,`host`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_manager` (
   `uidNumber` int(11) NOT NULL,
   `manager` varchar(255) NOT NULL,
   PRIMARY KEY (`uidNumber`,`manager`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_race` (
   `uidNumber` int(11) NOT NULL,
   `race` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`uidNumber`,`race`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_role` (
   `uidNumber` int(11) NOT NULL,
   `role` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`uidNumber`,`role`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xprofiles_tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -3990,7 +3990,7 @@ CREATE TABLE `#__xprofiles_tags` (
   `taggerid` int(11) DEFAULT '0',
   `taggedon` datetime DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xsession` (
   `session_id` varchar(200) NOT NULL DEFAULT '0',
@@ -4007,13 +4007,13 @@ CREATE TABLE `#__xsession` (
   `bot` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`session_id`),
   KEY `idx_ip` (`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__ysearch_plugin_weights` (
   `plugin` varchar(20) NOT NULL,
   `weight` float NOT NULL,
   PRIMARY KEY (`plugin`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__ysearch_site_map` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -4022,7 +4022,7 @@ CREATE TABLE `#__ysearch_site_map` (
   `link` varchar(200) NOT NULL,
   PRIMARY KEY (`id`),
   FULLTEXT KEY `ftidx_title_description` (`title`,`description`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `session` (
   `sessnum` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -4037,7 +4037,7 @@ CREATE TABLE `session` (
   `sessname` varchar(100) NOT NULL DEFAULT '',
   `sesstoken` varchar(32) NOT NULL DEFAULT '',
   PRIMARY KEY (`sessnum`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessionlog` (
   `sessnum` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -4053,7 +4053,7 @@ CREATE TABLE `sessionlog` (
   `cputime` double unsigned DEFAULT '0',
   `status` smallint(5) unsigned DEFAULT '0',
   PRIMARY KEY (`sessnum`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sessionpriv` (
   `privid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -4061,7 +4061,7 @@ CREATE TABLE `sessionpriv` (
   `privilege` varchar(40) NOT NULL DEFAULT '',
   `start` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`privid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `view` (
   `viewid` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -4071,7 +4071,7 @@ CREATE TABLE `view` (
   `start` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `heartbeat` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`viewid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `viewlog` (
   `sessnum` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -4080,7 +4080,7 @@ CREATE TABLE `viewlog` (
   `remotehost` varchar(40) NOT NULL DEFAULT '',
   `time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `duration` float unsigned DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `viewperm` (
   `sessnum` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -4092,7 +4092,7 @@ CREATE TABLE `viewperm` (
   `vncpass` varchar(16) NOT NULL DEFAULT '',
   `readonly` varchar(4) NOT NULL DEFAULT 'Yes',
   PRIMARY KEY (`sessnum`,`viewuser`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE ALGORITHM = UNDEFINED DEFINER = CURRENT_USER SQL SECURITY INVOKER VIEW `#__resource_contributors_view` AS
     select `m`.`uidNumber` AS `uidNumber`, count(`AA`.`authorid`) AS `count`
