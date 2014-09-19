@@ -120,7 +120,7 @@
 .primary .upper.google:before { content: "Google"; }
 .primary .upper.linkedin:before { content: "LinkedIn"; }
 .primary .upper.twitter:before { content: "Twitter"; }
-.primary .upper.pucas:before { content: "Purdue Career Account"; }
+/*.primary .upper.pucas:before { content: "Purdue Career Account"; }*/
 
 .primary .facebook { color: #FFFFFF; }
 .primary .google:before { content: ""; }
@@ -128,7 +128,7 @@
 .primary .linkedin:before { content: ""; }
 .primary .linkedin { color: #4875B4; }
 .primary .pucas:before { content: ""; }
-.primary .pucas { color: #A3792C; }
+.primary .pucas { background: #D1D3D4 url('/plugins/authentication/pucas/assets/img/logo.png') no-repeat 75px 7px; }
 .primary .twitter:before { content: ""; }
 .primary .twitter { color: #55ACEE; }
 .primary .hubzero:before { content: ""; }
