@@ -947,4 +947,28 @@ class JDatabaseMySQL extends JDatabase
 
 		return (in_array($key, array_keys($keys))) ? true : false;
 	}
+
+	/**
+	 * Get the primary key of a table
+	 *
+	 * @return (string) $Key
+	 **/
+	public function getPrimaryKey($table)
+	{
+		$keys = $this->getTableKeys($table);
+		$key  = false;
+
+		if ($keys && count($keys) > 0)
+		{
+			foreach ($keys as $k)
+			{
+				if ($k->Key_name == 'PRIMARY')
+				{
+					$key = $k->Column_name;
+				}
+			}
+		}
+
+		return $key;
+	}
 }
