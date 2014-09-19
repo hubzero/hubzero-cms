@@ -339,11 +339,11 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 		$config = JComponentHelper::getParams('com_resources');
 
 		$rparams = new JRegistry($row->params);
-		$params = $config;
-		$params->merge($rparams);
+		//$params = $config;
+		//$params->merge($rparams);
 
 		// Set the display date
-		switch ($params->get('show_date'))
+		switch ($rparams->get('show_date', $config->get('show_date')))
 		{
 			case 0: $thedate = ''; break;
 			case 1: $thedate = JHTML::_('date', $row->created, 'd M Y');    break;
