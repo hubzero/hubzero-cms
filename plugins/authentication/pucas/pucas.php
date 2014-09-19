@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.plugin.plugin');
 
-require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.0' . DS . 'CAS.php');
+require_once(JPATH_SITE . DS . 'libraries' . DS . 'CAS-1.3.3' . DS . 'CAS.php');
 
 /**
  * Authentication Plugin class for PUCAS
