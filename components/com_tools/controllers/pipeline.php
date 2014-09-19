@@ -2233,7 +2233,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			$rowc->comment = str_replace('<br>', '<br />', $rowc->comment);
 		}
 		$rowc->created    = JFactory::getDate()->toSql();
-		$rowc->created_by = $this->juser->get('username');
+		$rowc->created_by = $this->juser->get('id');
 		$rowc->changelog  = json_encode($log);
 		$rowc->access     = $access;
 
