@@ -66,20 +66,20 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php
-	if(count($this->files) > 0 && (!isset($this->db_id)))
+	if (count($this->files) > 0 && (!isset($this->db_id)))
 	{
 ?>
 	<h3>Step 1: Select a file</h3>
 	<form id="prj-db-select-form" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=preview_data' . a . 'raw_op=1')?>">
 		<select id="prj-db-select-src" title="Select a CSV file to convert in to a database">
-		<?php foreach($this->files as $dir => $files): ?>
+		<?php foreach ($this->files as $dir => $files): ?>
 			<?php
-			if($dir == '.') {
+			if ($dir == '.') {
 				$dir = '';
 			}
 			?>
 				<optgroup label="/<?php echo $dir?>">
-			<?php foreach($files as $file): ?>
+			<?php foreach ($files as $file): ?>
 				<option data-dir="<?php echo $dir?>" data-hash="<?php echo $file['hash']?>" data-date="<?php echo $file['date']?>" value="<?php echo $file['name']?>" class="preview"><?php echo $file['name']?></option>
 			<?php endforeach; ?>
 		<?php endforeach; ?>
