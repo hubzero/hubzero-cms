@@ -109,7 +109,9 @@ $document = JFactory::getDocument();
 					<a href="/projects/<?php echo $this->project->alias; ?>/databases/delete/?db_id=<?php echo $r['id']; ?>" class="delete-db">Delete</a>
 				</td>
 			</tr>
-		<? } ?>
+		<?php
+		}
+		?>
 		</tbody>
 	</table>
 
@@ -148,9 +150,11 @@ $document = JFactory::getDocument();
 
 	<?php
 	}
-	else {
+	else
+	{
 		echo ('<p class="noresults">'.JText::_('PLG_PROJECTS_DATA_NO_DATA_FOUND').' <span class="addnew"><a href="'.JRoute::_('index.php?option='.$this->option.a.'active=databases'.a. 'alias=' . $this->project->alias . a . 'action=create#content').'" >'.JText::_('PLG_PROJECTS_DATA_START').'</a></span></p>');
-	} ?>
+	}
+	?>
 </div>
 <div id="prj-db-update-dialog" title="Update Title &amp; Description" style="display: none;">
 	<form id="prj-db-update-form" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=update'); ?>">

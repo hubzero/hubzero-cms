@@ -72,17 +72,17 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	<h3>Step 1: Select a file</h3>
 	<form id="prj-db-select-form" method="post" action="<?=JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=preview_data' . a . 'raw_op=1')?>">
 		<select id="prj-db-select-src" title="Select a CSV file to convert in to a database">
-		<?foreach($this->files as $dir => $files):?>
-			<?
+		<?php foreach($this->files as $dir => $files): ?>
+			<?php
 			if($dir == '.') {
 				$dir = '';
 			}
 			?>
 				<optgroup label="/<?=$dir?>">
-			<?foreach($files as $file):?>
+			<?php foreach($files as $file): ?>
 				<option data-dir="<?=$dir?>" data-hash="<?=$file['hash']?>" data-date="<?=$file['date']?>" value="<?=$file['name']?>" class="preview"><?=$file['name']?></option>
-			<?endforeach;?>
-		<?endforeach;?>
+			<?php endforeach; ?>
+		<?php endforeach; ?>
 		</select>
 		<br />
 		<input type="submit" value="Next >>" id="prj-db-preview-file" style="color: #000000;" />
