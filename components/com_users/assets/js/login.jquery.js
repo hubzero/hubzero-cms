@@ -29,7 +29,7 @@ HUB.User = {
 			password     = $('.passwd'),
 			error        = $('.auth .input-error'),
 			inputs       = $('.input-wrap'),
-			loading      = $('.loading'),
+			loading      = $('.spinner'),
 			attempts     = 0;
 
 		$('input:checkbox').uniform();

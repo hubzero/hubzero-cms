@@ -122,7 +122,11 @@ endforeach;
 					<div class="label-input-pair">
 						<label for="password"><?php echo JText::_('Password'); ?>:</label>
 						<input tabindex="2" type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo JText::_('password'); ?>" />
-						<div class="loading"></div>
+						<div class="spinner">
+							<div class="bounce1"></div>
+							<div class="bounce2"></div>
+							<div class="bounce3"></div>
+						</div>
 					</div>
 					<div class="input-error"></div>
 				</div>
