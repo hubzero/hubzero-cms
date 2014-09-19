@@ -558,7 +558,7 @@ class Migration20120101000004Core extends Base
 				$this->db->query();
 			}
 
-			if ($this->db->tableHasKey('#__users_password_history', 'PRIMARY'))
+			if ($this->db->tableHasKey('#__users_password_history', 'PRIMARY') && $this->db->getPrimaryKey('#__users_password_history') == 'user_id')
 			{
 				$query = "ALTER TABLE `#__users_password_history` DROP PRIMARY KEY";
 				$this->db->setQuery($query);
