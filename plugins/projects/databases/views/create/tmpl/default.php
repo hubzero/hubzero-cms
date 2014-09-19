@@ -33,7 +33,7 @@ if ($this->error) {
 	<dt class="error">Error</dt>
 	<dd class="error message">
 		<ul>
-			<li><?=$this->error?></li>
+			<li><?php echo $this->error?></li>
 		</ul>
 	</dd>
 </dl>
@@ -62,7 +62,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	}
 </style>
 <div id="plg-header">
-<h3 class="databases c-header"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=databases'.a. 'alias=' . $this->project->alias); ?>">Databases</a> &raquo; <span class="indlist"><?= isset($this->db_id) ? 'Update Database' : JText::_('PLG_PROJECTS_DATA_START'); ?></span></h3>
+<h3 class="databases c-header"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'active=databases'.a. 'alias=' . $this->project->alias); ?>">Databases</a> &raquo; <span class="indlist"><?php echo  isset($this->db_id) ? 'Update Database' : JText::_('PLG_PROJECTS_DATA_START'); ?></span></h3>
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php
@@ -70,7 +70,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	{
 ?>
 	<h3>Step 1: Select a file</h3>
-	<form id="prj-db-select-form" method="post" action="<?=JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=preview_data' . a . 'raw_op=1')?>">
+	<form id="prj-db-select-form" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=preview_data' . a . 'raw_op=1')?>">
 		<select id="prj-db-select-src" title="Select a CSV file to convert in to a database">
 		<?php foreach($this->files as $dir => $files): ?>
 			<?php
@@ -78,9 +78,9 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 				$dir = '';
 			}
 			?>
-				<optgroup label="/<?=$dir?>">
+				<optgroup label="/<?php echo $dir?>">
 			<?php foreach($files as $file): ?>
-				<option data-dir="<?=$dir?>" data-hash="<?=$file['hash']?>" data-date="<?=$file['date']?>" value="<?=$file['name']?>" class="preview"><?=$file['name']?></option>
+				<option data-dir="<?php echo $dir?>" data-hash="<?php echo $file['hash']?>" data-date="<?php echo $file['date']?>" value="<?php echo $file['name']?>" class="preview"><?php echo $file['name']?></option>
 			<?php endforeach; ?>
 		<?php endforeach; ?>
 		</select>
@@ -92,16 +92,16 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	elseif (isset($this->db_id) && $this->db_id)
 	{
 ?>
-	<h3>Loading database : <em><?=$this->title?></em>...</h3>
-	<form style="display: none;" id="prj-db-select-form" method="POST" action="<?=JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=preview_data' . a . 'raw_op=1')?>">
+	<h3>Loading database : <em><?php echo $this->title?></em>...</h3>
+	<form style="display: none;" id="prj-db-select-form" method="POST" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=preview_data' . a . 'raw_op=1')?>">
 		<select id="prj-db-select-src">
-			<option selected data-dir="<?=$this->dir?>" value="<?=$this->file?>" class="preview"><?=$this->file?></option>
+			<option selected data-dir="<?php echo $this->dir?>" value="<?php echo $this->file?>" class="preview"><?php echo $this->file?></option>
 		</select>
-		<input type="hidden" name="dir" value="<?=$this->dir?>">
-		<input type="hidden" name="file" value="<?=$this->file?>">
-		<input type="hidden" name="title" value="<?=$this->title?>">
-		<input type="hidden" name="desc" value="<?=$this->desc?>">
-		<input type="hidden" name="db_id" value="<?=$this->db_id?>">
+		<input type="hidden" name="dir" value="<?php echo $this->dir?>">
+		<input type="hidden" name="file" value="<?php echo $this->file?>">
+		<input type="hidden" name="title" value="<?php echo $this->title?>">
+		<input type="hidden" name="desc" value="<?php echo $this->desc?>">
+		<input type="hidden" name="db_id" value="<?php echo $this->db_id?>">
 		<input type="button" value="Next >>" id="prj-db-preview-file" />
 	</form>
 <?php
@@ -110,9 +110,9 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 	{
 ?>
 	<h3>Sorry, you need to have CSV formatted spreadsheet files to create databases.</h3>
-	<p>Maybe the file has already been used for a database. Please <a href="/projects/<?=$this->project->alias?>/databases">go back</a> and remove the database that's using the file</p>
+	<p>Maybe the file has already been used for a database. Please <a href="/projects/<?php echo $this->project->alias?>/databases">go back</a> and remove the database that's using the file</p>
 	<p>or</p>
-	<p><a href="/projects/<?=$this->project->alias?>/files">Click here</a> to upload a new CSV file.</p>
+	<p><a href="/projects/<?php echo $this->project->alias?>/files">Click here</a> to upload a new CSV file.</p>
 <?php
 	}
 ?>
@@ -128,7 +128,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 <div id="prj-db-step-3" class="prj-db-step" style="display: none;">
 	<input type="submit" value="<< Back" class="prj-db-back" data-step='3' style="float: right;" />
 	<h3>Step 3: Title & Description, Finish</h3>
-	<form id="prj-db-finish-form" method="post" action="<?=JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=create_database' . a . 'raw_op=1')?>">
+	<form id="prj-db-finish-form" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=create_database' . a . 'raw_op=1')?>">
 		<label for="prj-db-title" >Title:</label><br /><input type="text" name="prj-db-title" id="prj-db-title" style="width: 450px;" /><br /><br />
 		<label for="prj-db-desc" >Description:</label><br /><textarea type="text" name="prj-db-desc" id="prj-db-desc" style="width: 450px; height: 150px;"></textarea><br /><br />
 		<input type="submit" value="Finish" id="prj-db-finish-btn" />
