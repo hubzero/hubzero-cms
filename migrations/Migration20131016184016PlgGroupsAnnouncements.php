@@ -15,10 +15,12 @@ class Migration20131016184016PlgGroupsAnnouncements extends Base
 	 **/
 	public function up()
 	{
+		$query = "";
+
 		// add email column
 		if (!$this->db->tableHasField('#__announcements', 'email'))
 		{
-			$query = "ALTER TABLE `#__announcements` ADD COLUMN `email` TINYINT(4) DEFAULT 0;";
+			$query .= "ALTER TABLE `#__announcements` ADD COLUMN `email` TINYINT(4) DEFAULT 0;";
 		}
 
 		// add sent column
@@ -43,10 +45,12 @@ class Migration20131016184016PlgGroupsAnnouncements extends Base
 	 **/
 	public function down()
 	{
+		$query = "";
+
 		// add email column
 		if ($this->db->tableHasField('#__announcements', 'email'))
 		{
-			$query = "ALTER TABLE `#__announcements` DROP COLUMN `email`;";
+			$query .= "ALTER TABLE `#__announcements` DROP COLUMN `email`;";
 		}
 
 		// add sent column

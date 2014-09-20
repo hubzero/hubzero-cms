@@ -37,7 +37,7 @@ UPDATE `#__extensions` SET params='{"allowUserRegistration":"1","new_usertype":"
 
 UPDATE `#__modules` SET position='user3' WHERE title='Main Menu';
 UPDATE `#__modules` SET showtitle='0' WHERE title='Main Menu';
-UPDATE `#__modules` SET params= '{"menutype":"mainmenu","menu_style":"list","startLevel":"0","endLevel":"0","showAllChildren":"1","window_open":"","show_whitespace":"0","cache":"1","tag_id":"","class_sfx":"","moduleclass_sfx":"_menu","maxdepth":"10","menu_images":"0","menu_images_align":"0","menu_images_link":"0","expand_menu":"0","activate_parent":"0","full_active_id":"0","indent_image":"0","indent_image1":"","indent_image2":"","indent_image3":"","indent_image4":"","indent_image5":"","indent_image6":"","spacer":"","end_spacer":""}';
+UPDATE `#__modules` SET params= '{"menutype":"mainmenu","menu_style":"list","startLevel":"0","endLevel":"0","showAllChildren":"1","window_open":"","show_whitespace":"0","cache":"1","tag_id":"","class_sfx":"","moduleclass_sfx":"_menu","maxdepth":"10","menu_images":"0","menu_images_align":"0","menu_images_link":"0","expand_menu":"0","activate_parent":"0","full_active_id":"0","indent_image":"0","indent_image1":"","indent_image2":"","indent_image3":"","indent_image4":"","indent_image5":"","indent_image6":"","spacer":"","end_spacer":""}' WHERE title='Main Menu';
 UPDATE `#__modules` SET published='0' WHERE title IN ('Quick Icons','Popular Articles','Recently Added Articles','Logged-in Users');
 UPDATE `#__modules` SET module='mod_hubmenu' WHERE title='Admin Menu';
 
