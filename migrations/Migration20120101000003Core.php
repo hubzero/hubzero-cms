@@ -75,28 +75,28 @@ class Migration20120101000003Core extends Base
 			$this->db->query();
 		}
 
-		if ($this->db->tableExists('#__polls'))
+		if ($this->db->tableExists('#__polls') && $this->db->tableExists('#__xpolls'))
 		{
 			$query = "DROP TABLE `#__polls`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
-		if ($this->db->tableExists('#__poll_menu'))
+		if ($this->db->tableExists('#__poll_menu') && $this->db->tableExists('#__xpoll_menu'))
 		{
 			$query = "DROP TABLE `#__poll_menu`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
-		if ($this->db->tableExists('#__poll_date'))
+		if ($this->db->tableExists('#__poll_date') && $this->db->tableExists('#__xpoll_date'))
 		{
 			$query = "DROP TABLE `#__poll_date`";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 
-		if ($this->db->tableExists('#__poll_data'))
+		if ($this->db->tableExists('#__poll_data') && $this->db->tableExists('#__xpoll_data'))
 		{
 			$query = "DROP TABLE `#__poll_data`";
 			$this->db->setQuery($query);

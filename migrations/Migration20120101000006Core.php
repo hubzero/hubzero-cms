@@ -61,12 +61,19 @@ class Migration20120101000006Core extends Base
 		$this->addPluginEntry('authentication', 'linkedin');
 		$this->addPluginEntry('user', 'ldap');
 
-		// Modules
-		$this->installModule('search', 'search', array(
-			'label' => 'Search',
-			'width' => '20',
-			'text'  => 'Search'
-		));
+		$query = "SELECT id FROM `#__modules` WHERE `module` = 'mod_search';";
+		$this->db->setQuery($query);
+		$id = $this->db->loadResult();
+
+		if (empty($id))
+		{
+			// Modules
+			$this->installModule('search', 'search', array(
+				'label' => 'Search',
+				'width' => '20',
+				'text'  => 'Search'
+			));
+		}
 
 		// Deletes
 		$this->deleteComponentEntry('userpoints');
