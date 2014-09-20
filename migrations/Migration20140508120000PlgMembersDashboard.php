@@ -17,7 +17,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 	{
 		if (!$this->db->tableExists('#__xprofiles_dashboard_preferences') && $this->db->tableExists('#__myhub'))
 		{
-			$this->db->setQuery("SELECT extension_id, params FROM `#__extensions` WHERE `name`='plg_members_dashboard' LIMIT 1");
+			$this->db->setQuery("SELECT extension_id, params FROM `#__extensions` WHERE `folder` = 'members' AND `element` = 'dashboard' LIMIT 1");
 			$dashboardPlugin = $this->db->loadObject();
 			$params = json_decode($dashboardPlugin->params);
 
