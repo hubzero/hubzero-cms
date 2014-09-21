@@ -29,12 +29,22 @@ class Migration20131016184016PlgGroupsAnnouncements extends Base
 			$query .= "ALTER TABLE `#__announcements` ADD COLUMN `sent` TINYINT(4) DEFAULT 0;";
 		}
 
-		// add group announcements cron
-		$query .= "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `recurrence`)
-				   VALUES ('Group Announcements', 1, 'groups', 'sendGroupAnnouncements', '*/5 * * * *');";
-
 		if (!empty($query))
 		{
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
+
+		$query = "SELECT title FROM `#__cron_jobs` WHERE title='Group Announcements';";
+
+		$this->db->setQuery($query);
+
+		if ($this->db->loadResult() != "Group Announcements")
+		{
+			// add group announcements cron
+			$query = "INSERT INTO `#__cron_jobs` (`title`, `state`, `plugin`, `event`, `recurrence`)
+				   VALUES ('Group Announcements', 1, 'groups', 'sendGroupAnnouncements', '*/5 * * * *');";
+
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

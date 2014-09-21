@@ -629,7 +629,7 @@ class Migration20120101000001Core extends Base
 				  `group_id` INT(11) NULL DEFAULT NULL ,
 				  `id` INT(11) NOT NULL AUTO_INCREMENT ,
 				  PRIMARY KEY (`id`) ,
-				  UNIQUE INDEX `jos_user_roles_role_user_id_group_id_uidx` (`role` ASC, `user_id` ASC, `group_id` ASC) )
+				  UNIQUE INDEX `uidx_role_user_id_group_id` (`role` ASC, `user_id` ASC, `group_id` ASC) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";
 			$this->db->setQuery($query);

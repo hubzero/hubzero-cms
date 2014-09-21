@@ -13,11 +13,11 @@ class Migration20120101000004Core extends Base
 	public function up()
 	{
 		if ($this->db->tableExists('#__blog_entries')
-			&& !$this->db->tableHasKey('#__blog_entries', 'jos_blog_entries_title_content_ftidx')
+			&& !$this->db->tableHasKey('#__blog_entries', 'ftidx_title_content')
 			&& $this->db->tableHasField('#__blog_entries', 'title')
 			&& $this->db->tableHasField('#__blog_entries', 'content'))
 		{
-			$query = "ALTER TABLE `#__blog_entries` ADD FULLTEXT INDEX `jos_blog_entries_title_content_ftidx` (`title` ASC, `content` ASC)";
+			$query = "ALTER TABLE `#__blog_entries` ADD FULLTEXT INDEX `ftidx_title_content` (`title` ASC, `content` ASC)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -396,9 +396,9 @@ class Migration20120101000004Core extends Base
 
 			if ($this->db->tableHasField('#__resources', 'introtext')
 				&& $this->db->tableHasField('#__resources', 'fulltxt')
-				&& !$this->db->tableHasKey('#__resources', 'ftidx_introtext'))
+				&& !$this->db->tableHasKey('#__resources', 'ftidx_introtext_fulltxt'))
 			{
-				$query = "ALTER TABLE `#__resources` ADD FULLTEXT INDEX `ftidx_introtext` (`introtext` ASC, `fulltxt` ASC)";
+				$query = "ALTER TABLE `#__resources` ADD FULLTEXT INDEX `ftidx_introtext_fulltxt` (`introtext` ASC, `fulltxt` ASC)";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -638,9 +638,9 @@ class Migration20120101000004Core extends Base
 
 		if ($this->db->tableExists('#__wiki_version')
 			&& $this->db->tableHasField('#__wiki_version', 'pageid')
-			&& !$this->db->tableHasKey('#__wiki_version', 'jos_wiki_version_pageid_idx'))
+			&& !$this->db->tableHasKey('#__wiki_version', 'idx_pageid'))
 		{
-			$query = "ALTER TABLE `#__wiki_version` ADD INDEX `jos_wiki_version_pageid_idx` (`pageid` ASC)";
+			$query = "ALTER TABLE `#__wiki_version` ADD INDEX `idx_pageid` (`pageid` ASC)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -656,9 +656,9 @@ class Migration20120101000004Core extends Base
 
 		if ($this->db->tableExists('#__wishlist_vote')
 			&& $this->db->tableHasField('#__wishlist_vote', 'wishid')
-			&& !$this->db->tableHasKey('#__wishlist_vote', 'jos_wishlist_vote_wishid_idx'))
+			&& !$this->db->tableHasKey('#__wishlist_vote', 'idx_wishid'))
 		{
-			$query = "ALTER TABLE `#__wishlist_vote` ADD INDEX `jos_wishlist_vote_wishid_idx` (`wishid` ASC)";
+			$query = "ALTER TABLE `#__wishlist_vote` ADD INDEX `idx_wishid` (`wishid` ASC)";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

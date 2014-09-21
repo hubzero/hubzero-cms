@@ -103,7 +103,7 @@ class Migration20130924000009ComMenus extends Base
 		}
 		if ($this->db->tableHasField('#__menu', 'checked_out'))
 		{
-			$query = "ALTER TABLE `#__menu` MODIFY COLUMN `checked_out` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to jos_users.id';";
+			$query = "ALTER TABLE `#__menu` MODIFY COLUMN `checked_out` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to #__users.id';";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

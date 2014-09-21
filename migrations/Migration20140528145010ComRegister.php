@@ -17,22 +17,26 @@ class Migration20140528145010ComRegister extends Base
 	public function up()
 	{
 		$rparams = $this->getParams('com_register');
-		$values = $rparams->toArray();
 
-		$this->db->setQuery("SELECT * FROM `#__extensions` WHERE `type`='component' AND `element`='com_members' LIMIT 1");
-		if ($data = $this->db->loadAssoc())
+		if (!empty($rparams))
 		{
-			$component = new \JTableExtension($this->db);
-			$component->bind($data);
+			$values = $rparams->toArray();
 
-			$mparams = new \JRegistry($component->params);
-			foreach ($values as $key => $value)
+			$this->db->setQuery("SELECT * FROM `#__extensions` WHERE `type`='component' AND `element`='com_members' LIMIT 1");
+			if ($data = $this->db->loadAssoc())
 			{
-				$mparams->set($key, $value);
-			}
+				$component = new \JTableExtension($this->db);
+				$component->bind($data);
 
-			$component->params = $mparams->__toString();
-			$component->store();
+				$mparams = new \JRegistry($component->params);
+				foreach ($values as $key => $value)
+				{
+					$mparams->set($key, $value);
+				}
+
+				$component->params = $mparams->__toString();
+				$component->store();
+			}
 		}
 
 		// Get the default menu identifier

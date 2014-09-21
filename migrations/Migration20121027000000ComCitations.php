@@ -54,9 +54,9 @@ class Migration20121027000000ComCitations extends Base
 		{
 			$query .= "ALTER TABLE `#__citations` ADD `params` text;\n";
 		}
-		if (!$this->db->tableHasKey('#__citations', 'jos_citations_search_ftidx'))
+		if (!$this->db->tableHasKey('#__citations', 'ftidx_title_isbn_doi_abstract_author_publisher'))
 		{
-			$query .= "CREATE FULLTEXT INDEX jos_citations_search_ftidx ON `#__citations` (title,isbn,doi,abstract,author,publisher);\n";
+			$query .= "CREATE FULLTEXT INDEX ftidx_title_isbn_doi_abstract_author_publisher ON `#__citations` (title,isbn,doi,abstract,author,publisher);\n";
 		}
 
 		if (!empty($query))
