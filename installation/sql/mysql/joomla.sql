@@ -1,3 +1,6 @@
+SET NAMES 'utf8';
+SET @@SESSION.sql_mode = '';
+
 #
 # Table structure for table `#__assets`
 #

@@ -25,8 +25,11 @@
 #
 
 #
-# Last Migration Applied: Migration20140829142600ComCollections.php
+# Last Migration Applied: Migration20140904174546ComKb.php
 #
+
+SET NAMES 'utf8';
+SET @@SESSION.sql_mode = '';
 
 CREATE TABLE `app` (
   `appname` varchar(80) NOT NULL DEFAULT '',
@@ -3623,6 +3626,15 @@ CREATE TABLE `#__trac_user_permission` (
   UNIQUE KEY `uidx_user_id_action_trac_project_id` (`user_id`,`action`,`trac_project_id`) USING BTREE
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
+CREATE TABLE `#__user_roles` (
+  `user_id` int(11) NOT NULL,
+  `role` varchar(20) NOT NULL,
+  `group_id` int(11) DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uidx_role_user_id_group_id` (`role`,`user_id`,`group_id`)
+) ENGINE=MYISAM DEFAULT CHARSET=utf8;
+
 CREATE TABLE `#__users_merge_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `source` varchar(150) NOT NULL DEFAULT '',
@@ -3772,7 +3784,7 @@ CREATE TABLE `#__users_transactions` (
   `amount` int(11) DEFAULT '0',
   `balance` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `idx_referenceid_categroy_type` (`referenceid`,`category`,`type`)
+  KEY `idx_referenceid_category_type` (`referenceid`,`category`,`type`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__vote_log` (
@@ -4593,21 +4605,19 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1004,'com_courses','component','com_courses','',1,1,1,0,'','{\"uploadpath\":\"\\/site\\/courses\",\"tmpl\":\"\",\"default_asset_groups\":\"Lectures, Activities, Exam\",\"auto_approve\":\"1\",\"email_comment_processing\":\"0\",\"email_member_coursesidcussionemail_autosignup\":\"0\",\"intro_mycourses\":\"1\",\"intro_interestingcourses\":\"1\",\"intro_popularcourses\":\"1\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1005,'com_cron','component','com_cron','',1,1,1,0,'',' ','','',0,'0000-00-00 00:00:00',0,0),
 (1006,'com_events','component','com_events','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
-(1007,'com_features','component','com_features','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1008,'com_feedback','component','com_feedback','',1,1,1,0,'','{\"defaultpic\":\"\\/components\\/com_feedback\\/assets\\/img\\/contributor.gif\",\"uploadpath\":\"\\/site\\/quotes\",\"maxAllowed\":\"40000000\",\"file_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif\",\"blacklist\":\"\",\"badwords\":\"viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1009,'com_forum','component','com_forum','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1010,'com_groups','component','com_groups','',1,1,1,0,'','{\"ldapGroupMirror\":\"1\",\"ldapGroupLegacy\":\"1\",\"uploadpath\":\"\\/site\\/groups\",\"iconpath\":\"\\/components\\/com_groups\\/assets\\/img\\/icons\",\"join_policy\":\"0\",\"privacy\":\"0\",\"auto_approve\":\"1\",\"display_system_users\":\"no\",\"email_comment_processing\":\"1\",\"email_member_groupsidcussionemail_autosignup\":\"0\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1011,'com_help','component','com_help','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1012,'com_jobs','component','com_jobs','',1,1,1,0,'','{\"component_enabled\":\"1\",\"industry\":\"\",\"admingroup\":\"\",\"specialgroup\":\"jobsadmin\",\"autoapprove\":\"1\",\"defaultsort\":\"category\",\"jobslimit\":\"25\",\"maxads\":\"3\",\"allowsubscriptions\":\"1\",\"usonly\":\"0\",\"usegoogle\":\"0\",\"banking\":\"0\",\"promoline\":\"For a limited time: FREE Employer Services Basic subscription\",\"infolink\":\"kb\\/jobs\",\"premium_infolink\":\"\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1013,'com_kb','component','com_kb','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
-(1014,'com_members','component','com_members','',1,1,1,0,'','{\"privacy\":\"1\",\"bankAccounts\":\"0\",\"defaultpic\":\"\\/components\\/com_members\\/assets\\/img\\/profile.gif\",\"webpath\":\"\\/site\\/members\",\"homedir\":\"\",\"maxAllowed\":\"40000000\",\"file_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif\",\"user_messaging\":\"1\",\"employeraccess\":\"0\",\"gidNumber\":\"3000\",\"gid\":\"public\",\"shadowMax\":\"120\",\"shadowMin\":\"0\",\"shadowWarning\":\"7\"}','','',0,'0000-00-00 00:00:00',0,0),
+(1014,'com_members','component','com_members','',1,1,1,0,'','{\"privacy\":\"1\",\"bankAccounts\":\"0\",\"defaultpic\":\"\\/components\\/com_members\\/assets\\/img\\/profile.gif\",\"webpath\":\"\\/site\\/members\",\"homedir\":\"\",\"maxAllowed\":\"40000000\",\"file_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif\",\"user_messaging\":\"1\",\"employeraccess\":\"0\",\"gidNumber\":\"3000\",\"gid\":\"public\",\"shadowMax\":\"120\",\"shadowMin\":\"0\",\"shadowWarning\":\"7\"i,\"LoginReturn\":\"\\/members\\/myaccount\",\"ConfirmationReturn\":\"\\/members\\/myaccount\",\"passwordMeter\":\"0\",\"registrationUsername\":\"RRUU\",\"registrationPassword\":\"RRUU\",\"registrationConfirmPassword\":\"RRUU\",\"registrationFullname\":\"RRUU\",\"registrationEmail\":\"RRUU\",\"registrationConfirmEmail\":\"RRUU\",\"registrationURL\":\"HOHO\",\"registrationPhone\":\"HOHO\",\"registrationEmployment\":\"HOHO\",\"registrationOrganization\":\"HOHO\",\"registrationCitizenship\":\"HHHR\",\"registrationResidency\":\"HHHR\",\"registrationSex\":\"HHHH\",\"registrationDisability\":\"HHHH\",\"registrationHispanic\":\"HHHH\",\"registrationRace\":\"HHHR\",\"registrationInterests\":\"HOHO\",\"registrationReason\":\"HOHO\",\"registrationOptIn\":\"HOHO\",\"registrationCAPTCHA\":\"RHHH\",\"registrationTOU\":\"RHRH\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1015,'com_newsletter','component','com_newsletter','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1016,'com_oaipmh','component','com_oaipmh','',1,1,1,1,'{}','{}','','',0,'0000-00-00 00:00:00',0,0),
 (1017,'com_poll','component','com_poll','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1018,'com_dataviewer', 'component', 'com_dataviewer', '', '1', '1', '1', '0', '{\"legacy\":true,\"name\":\"Dataviewer\",\"type\":\"component\",\"creationDate\":\"2013-08-07\",\"author\":\"Sudheera R. Fernando\",\"copyright\":\"Copyright 2010-2012,2013 by Purdue University, West Lafayette, IN 47906\",\"authorEmail\":\"srf@xconsole.org\",\"authorUrl\":\"\",\"version\":\"2.0.2\",\"description\":\"Dataviewer for HUB Databases\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1019,'com_projects','component','com_projects','',1,1,1,1,'{}','component_on=1\ngrantinfo=0\nconfirm_step=0\nedit_settings=1\nrestricted_data=0\nrestricted_upfront=0\napprove_restricted=0\nprivacylink=/legal/privacy\nHIPAAlink=/legal/privacy\nFERPAlink=/legal/privacy\ncreatorgroup=\nadmingroup=projectsadmin\nsdata_group=hipaa_reviewers\nginfo_group=sps_reviewers\nmin_name_length=6\nmax_name_length=25\nreserved_names=clone, temp, test\nwebpath=/srv/projects\noffroot=1\ngitpath=/usr/bin/git\ngitclone=/site/projects/clone/.git\nmaxUpload=104857600\ndefaultQuota=1\npremiumQuota=1\napproachingQuota=90\npubQuota=1\npremiumPubQuota=1\nimagepath=/site/projects\ndefaultpic=/components/com_projects/assets/img/project.png\nimg_maxAllowed=5242880\nimg_file_ext=jpg,jpeg,jpe,bmp,tif,tiff,png,gif\nlogging=0\nmessaging=1\nprivacy=1\nlimit=25\nsidebox_limit=3\ngroup_prefix=pr-\nuse_alias=1\ndocumentation=/projects/features\ndbcheck=1','','',0,'0000-00-00 00:00:00',0,0),
 (1020,'com_publications','component','com_publications','',1,1,1,1,'{}','enabled=1\nautoapprove=1\nautoapproved_users=\nemail=0\ndefault_category=dataset\ndefaultpic=/components/com_publications/assets/img/resource_thumb.gif\ntoolpic=/components/com_publications/assets/img/tool_thumb.gif\nvideo_thumb=/components/com_publications/images/video_thumb.gif\ngallery_thumb=/components/com_publications/images/gallery_thumb.gif\nwebpath=/site/publications\naboutdoi=\ndoi_shoulder=\ndoi_prefix=\ndoi_service=\ndoi_userpw=\ndoi_xmlschema=\ndoi_publisher=\ndoi_resolve=http://dx.doi.org/\ndoi_verify=http://n2t.net/ezid/id/\nsupportedtag=\nsupportedlink=\ngoogle_id=\nshow_authors=1\nshow_ranking=1\nshow_rating=1\nshow_date=3\nshow_citation=1\npanels=content, description, authors, audience, gallery, tags, access, license, notes\nsuggest_licence=0\nshow_tags=1\nshow_metadata=1\nshow_notes=1\nshow_license=1\nshow_access=0\nshow_gallery=1\nshow_audience=0\naudiencelink=\ndocumentation=/kb/publications\ndeposit_terms=/legal/termsofdeposit\ndbcheck=0\nrepository=0\naip_path=/srv/AIP','','',0,'0000-00-00 00:00:00',0,0),
-(1021,'com_register','component','com_register','',1,1,1,0,'','{\"LoginReturn\":\"\\/members\\/myaccount\",\"ConfirmationReturn\":\"\\/members\\/myaccount\",\"passwordMeter\":\"0\",\"registrationUsername\":\"RRUU\",\"registrationPassword\":\"RRUU\",\"registrationConfirmPassword\":\"RRUU\",\"registrationFullname\":\"RRUU\",\"registrationEmail\":\"RRUU\",\"registrationConfirmEmail\":\"RRUU\",\"registrationURL\":\"HOHO\",\"registrationPhone\":\"HOHO\",\"registrationEmployment\":\"HOHO\",\"registrationOrganization\":\"HOHO\",\"registrationCitizenship\":\"HHHR\",\"registrationResidency\":\"HHHR\",\"registrationSex\":\"HHHH\",\"registrationDisability\":\"HHHH\",\"registrationHispanic\":\"HHHH\",\"registrationRace\":\"HHHR\",\"registrationInterests\":\"HOHO\",\"registrationReason\":\"HOHO\",\"registrationOptIn\":\"HOHO\",\"registrationCAPTCHA\":\"RHHH\",\"registrationTOU\":\"RHRH\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1022,'com_resources','component','com_resources','',1,1,1,0,'','{\"autoapprove\":\"0\",\"autoapproved_users\":\"\",\"cc_license\":\"1\",\"email_when_approved\":\"0\",\"defaultpic\":\"\\/components\\/com_resources\\/images\\/resource_thumb.gif\",\"tagstool\":\"screenshots,poweredby,bio,credits,citations,sponsoredby,references,publications\",\"tagsothr\":\"bio,credits,citations,sponsoredby,references,publications\",\"accesses\":\"Public,Registered,Special,Protected,Private\",\"webpath\":\"\\/site\\/resources\",\"toolpath\":\"\\/site\\/resources\\/tools\",\"uploadpath\":\"\\/site\\/resources\",\"maxAllowed\":\"40000000\",\"file_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz\",\"doi\":\"\",\"aboutdoi\":\"\",\"supportedtag\":\"\",\"supportedlink\":\"\",\"browsetags\":\"on\",\"google_id\":\"\",\"show_authors\":\"1\",\"show_assocs\":\"1\",\"show_ranking\":\"0\",\"show_rating\":\"1\",\"show_date\":\"3\",\"show_metadata\":\"1\",\"show_citation\":\"1\",\"show_audience\":\"0\",\"audiencelink\":\"\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1023,'com_services','component','com_services','',1,1,1,0,'','{\"autoapprove\":\"1\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1024,'com_store','component','com_store','',1,1,1,0,'','{\"store_enabled\":\"1\",\"webpath\":\"\\/site\\/store\",\"hubaddress_ln1\":\"\",\"hubaddress_ln2\":\"\",\"hubaddress_ln3\":\"\",\"hubaddress_ln4\":\"\",\"hubaddress_ln5\":\"\",\"hubemail\":\"\",\"hubphone\":\"\",\"headertext_ln1\":\"\",\"headertext_ln2\":\"\",\"footertext\":\"\",\"receipt_title\":\"Your Order at HUB Store\",\"receipt_note\":\"Thank You for contributing to our HUB!\"}','','',0,'0000-00-00 00:00:00',0,0),
@@ -4615,7 +4625,6 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1026,'com_system','component','com_system','',1,1,1,0,'','{\"geodb_driver\":\"mysql\",\"geodb_host\":\"\",\"geodb_port\":\"\",\"geodb_user\":\"\",\"geodb_password\":\"\",\"geodb_database\":\"\",\"geodb_prefix\":\"\",\"ldap_primary\":\"ldap:\\/\\/127.0.0.1\",\"ldap_secondary\":\"\",\"ldap_basedn\":\"\",\"ldap_searchdn\":\"\",\"ldap_searchpw\":\"\",\"ldap_managerdn\":\"\",\"ldap_managerpw\":\"\",\"ldap_tls\":\"0\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1027,'com_tags','component','com_tags','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1028,'com_tools','component','com_tools','',1,1,1,0,'','{\"mw_on\":\"1\",\"mw_redirect\":\"\\/home\",\"stopRedirect\":\"index.php?option=com_members&task=myaccount\",\"mwDBDriver\":\"\",\"mwDBHost\":\"\",\"mwDBPort\":\"\",\"mwDBUsername\":\"\",\"mwDBPassword\":\"\",\"mwDBDatabase\":\"\",\"mwDBPrefix\":\"\",\"shareable\":\"1\",\"warn_multiples\":\"0\",\"storagehost\":\"tcp:\\/\\/localhost:300\",\"show_storage\":\"1\",\"params_whitelist\":\"\",\"contribtool_on\":\"1\",\"contribtool_redirect\":\"\\/home\",\"launch_ipad\":\"0\",\"admingroup\":\"apps\",\"default_mw\":\"narwhal\",\"default_vnc\":\"780x600\",\"developer_site\":\"Forge\",\"project_path\":\"\\/tools\\/\",\"invokescript_dir\":\"\\/apps\",\"dev_suffix\":\"_dev\",\"group_prefix\":\"app-\",\"sourcecodePath\":\"site\\/protected\\/source\",\"learn_url\":\"http:\\/\\/rappture.org\\/wiki\\/FAQ_UpDownloadSrc\",\"rappture_url\":\"http:\\/\\/rappture.org\",\"demo_url\":\"\",\"new_doi\":\"0\",\"doi_newservice\":\"\",\"doi_shoulder\":\"\",\"doi_newprefix\":\"\",\"doi_publisher\":\"\",\"doi_resolve\":\"http:\\/\\/dx.doi.org\\/\",\"doi_verify\":\"http:\\/\\/n2t.net\\/ezid\\/id\\/\",\"exec_pu\":\"1\",\"screenshot_edit\":\"0\",\"downloadable_on\":\"0\"}','','',0,'0000-00-00 00:00:00',0,0),
-(1029,'com_topics','component','com_topics','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1030,'com_usage','component','com_usage','',1,1,1,0,'','{\"statsDBDriver\":\"mysql\",\"statsDBHost\":\"localhost\",\"statsDBPort\":\"\",\"statsDBUsername\":\"\",\"statsDBPassword\":\"\",\"statsDBDatabase\":\"\",\"statsDBPrefix\":\"\",\"mapsApiKey\":\"\",\"stats_path\":\"\\/site\\/stats\",\"maps_path\":\"\\/site\\/stats\\/maps\",\"plots_path\":\"\\/site\\/stats\\/plots\",\"charts_path\":\"\\/site\\/stats\\/plots\"}','','',0,'0000-00-00 00:00:00',0,0),
 (1031,'com_whatsnew','component','com_whatsnew','',1,1,1,0,'','','','',0,'0000-00-00 00:00:00',0,0),
 (1032,'com_wiki','component','com_wiki','',1,1,1,0,'','{\"subpage_separator\":\"\\/\",\"homepage\":\"MainPage\",\"max_pagename_length\":\"100\",\"filepath\":\"\\/site\\/wiki\",\"mathpath\":\"\\/site\\/wiki\\/math\",\"tmppath\":\"\\/site\\/wiki\\/tmp\",\"maxAllowed\":\"40000000\",\"img_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif\",\"file_ext\":\"jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz\",\"cache\":\"0\",\"cache_time\":\"15\"}','','',0,'0000-00-00 00:00:00',0,0),
@@ -4631,7 +4640,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 (1400,'Authentication - Facebook','plugin','facebook','authentication',0,0,1,0,'','app_id=\napp_secret=\n','','',0,'0000-00-00 00:00:00',2,0),
 (1401,'Authentication - Google','plugin','google','authentication',0,0,1,0,'','app_id=\napp_secret=\n','','',0,'0000-00-00 00:00:00',3,0),
-(1402,'Authentication - HUBzero','plugin','hubzero','authentication',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
+(1402,'Authentication - HUBzero','plugin','hubzero','authentication',0,1,1,0,'','{\"admin_login\":\"1\"}','','',0,'0000-00-00 00:00:00',1,0),
 (1403,'Authentication - Linkedin','plugin','linkedin','authentication',0,0,1,0,'','api_key=\napp_secret=\n','','',0,'0000-00-00 00:00:00',4,0),
 (1404,'Authentication - PUCAS','plugin','pucas','authentication',0,0,1,0,'','domain=Purdue Career Account (CAS)\ndisplay_name=Purdue Career\n\n','','',0,'0000-00-00 00:00:00',6,0),
 (1405,'Authentication - Twitter','plugin','twitter','authentication',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
@@ -4671,9 +4680,9 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1441,'Groups - Wishlist', 'plugin', 'wishlist', 'groups', 0, 1, 1, 0, '', 'limit=50', '', '', 0, '0000-00-00 00:00:00', 14, 0),
 (1442,'HUBzero - Autocompleter','plugin','autocompleter','hubzero',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
 (1443,'HUBzero - Comments','plugin','comments','hubzero',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',7,0),
-(1444,'HUBzero - Wiki Parser','plugin','wikiparser','hubzero',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',3,0),
-(1445,'HUBzero - Wiki Editor Toolbar','plugin','wikieditortoolbar','hubzero',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
-(1446,'HUBzero - Wiki Editor WYSIWYG','plugin','wikieditorwykiwyg','hubzero',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',8,0),
+(1444,'plg_wiki_parserdefault','plugin','parserdefault','wiki',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',3,0),
+(1445,'plg_wiki_editortoolbar','plugin','editortoolbar','wiki',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
+(1446,'plg_wiki_editorwykiwyg','plugin','editorwykiwyg','wiki',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',8,0),
 (1447,'HUBzero - Image CAPTCHA','plugin','imagecaptcha','hubzero',0,1,1,0,'','bgColor=#2c8007\ntextColor=#ffffff\nimageFunction=Adv\n','','',0,'0000-00-00 00:00:00',4,0),
 (1448,'HUBzero - Math CAPTCHA','plugin','mathcaptcha','hubzero',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
 (1449,'HUBzero - ReCAPTCHA','plugin','recaptcha','hubzero',0,0,1,0,'','','','',0,'0000-00-00 00:00:00',6,0),
@@ -4708,7 +4717,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1480,'Resources - Share','plugin','share','resources',0,1,1,0,'','icons_limit=3\nshare_facebook=1\nshare_twitter=1\nshare_google=1\nshare_digg=1\nshare_technorati=1\nshare_delicious=1\nshare_reddit=0\nshare_email=0\nshare_print=0\n\n','','',0,'0000-00-00 00:00:00',8,0),
 (1481,'Resources - Sponsors','plugin','sponsors','resources',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',12,0),
 (1482,'Resources - Supporting Documents','plugin','supportingdocs','resources',0,1,1,0,'','display_limit=50','','',0,'0000-00-00 00:00:00',13,0),
-(1483,'Resources - Usage','plugin','usage','resources',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
+(1483,'Resources - Usage','plugin','usage','resources',0,1,1,0,'','{\"period\":\"14\",\"chart_path\":\"\\/site\\/stats\\/chart_resources\\/\",\"map_path\":\"\\/site\\/stats\\/resource_maps\\/\"}','','',0,'0000-00-00 00:00:00',5,0),
 (1484,'Resources - Versions','plugin','versions','resources',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',6,0),
 (1485,'Resources - Wishlist','plugin','wishlist','resources',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',14,0),
 (1486,'Support - Answers','plugin','answers','support',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
@@ -4719,7 +4728,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1491,'Support - Resources','plugin','resources','support',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',3,0),
 (1492,'Support - Transfer','plugin','transfer','support',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',5,0),
 (1493,'Support - Wishlist','plugin','wishlist','support',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',4,0),
-(1494,'System - HUBzero','plugin','hubzero','system',0,1,1,0,'','search=ysearch\n\n','','',0,'0000-00-00 00:00:00',9,0),
+(1494,'System - HUBzero','plugin','hubzero','system',0,1,1,0,'','search=search\n\n','','',0,'0000-00-00 00:00:00',9,0),
 (1495,'System - xFeed','plugin','xfeed','system',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',10,0),
 (1496,'System - Disable Cache','plugin','disablecache','system',0,1,1,0,'','definitions=/about/contact\nreenable_afterdispatch=0\n\n','','',0,'0000-00-00 00:00:00',11,0),
 (1497,'System - JQuery','plugin','jquery','system','0','1','1','1','','{\"jquery\":\"1\",\"jqueryVersion\":\"1.7.2\",\"jquerycdnpath\":\"\\/\\/ajax.googleapis.com\\/ajax\\/libs\\/jquery\\/1.7.2\\/jquery.min.js\",\"jqueryui\":\"1\",\"jqueryuiVersion\":\"1.8.6\",\"jqueryuicdnpath\":\"\\/\\/ajax.googleapis.com\\/ajax\\/libs\\/jqueryui\\/1.8.6\\/jquery-ui.min.js\",\"jqueryuicss\":\"0\",\"jqueryuicsspath\":\"\\/plugins\\/system\\/jquery\\/css\\/jquery-ui-1.8.6.custom.css\",\"jquerytools\":\"1\",\"jquerytoolsVersion\":\"1.2.5\",\"jquerytoolscdnpath\":\"http:\\/\\/cdn.jquerytools.org\\/1.2.5\\/all\\/jquery.tools.min.js\",\"jqueryfb\":\"1\",\"jqueryfbVersion\":\"2.0.4\",\"jqueryfbcdnpath\":\"\\/\\/fancyapps.com\\/fancybox\\/\",\"jqueryfbcss\":\"1\",\"jqueryfbcsspath\":\"\\/media\\/system\\/css\\/jquery.fancybox.css\",\"activateSite\":\"1\",\"noconflictSite\":\"0\",\"activateAdmin\":\"0\",\"noconflictAdmin\":\"0\"}', '', '', '1000', '2013-09-01 14:26:58', '12', '0'),
@@ -4797,14 +4806,7 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1573,'groups', 'plugin', 'groups', 'resources', '0', '1', '1', '0', '{\"legacy\":false,\"name\":\"Resource - Group\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Display group ownership for a resource\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1574,'indent', 'plugin', 'indent', 'system', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"System - Indent\",\"type\":\"plugin\",\"creationDate\":\"March 2012\",\"author\":\"Shawn Rice\",\"copyright\":\"Copyright (C) 2005 - 2008 Open Source Matters. All rights reserved.\",\"authorEmail\":\"zooley@purdue.edu\",\"authorUrl\":\"\",\"version\":\"1.5\",\"description\":\"Indent HTML correctly\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1575,'mobile', 'plugin', 'mobile', 'system', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"System - Mobile\",\"type\":\"plugin\",\"creationDate\":\"December 2012\",\"author\":\"HUBzero\",\"copyright\":\"Copyright (c) Purdue University, 2013. All rights reserved\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"1\",\"description\":\"PLG_SYSTEM_MOBILE_DESC\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1576,'ajax', 'plugin', 'ajax', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Ajax\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Perform ajax requests for the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1577,'hubs', 'plugin', 'hubs', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Hubs\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Manage hubs in the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1578,'overview', 'plugin', 'overview', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Overview\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Overview tab for time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1579,'records', 'plugin', 'records', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Records\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Manage records in the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1580,'reports', 'plugin', 'reports', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Reports\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Manage reports in the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
-(1581,'tasks', 'plugin', 'tasks', 'time', '0', '1', '1', '0', '{\"legacy\":true,\"name\":\"Time - Tasks\",\"type\":\"plugin\",\"creationDate\":\"Unknown\",\"author\":\"Sam Wilson\",\"copyright\":\"Copyright 2005-2011 Purdue University. All rights reserved.\",\"authorEmail\":\"\",\"authorUrl\":\"\",\"version\":\"\",\"description\":\"Manage hubs in the time tracking component\",\"group\":\"\"}', '', '', '', '0', '0000-00-00 00:00:00', '0', '0'),
 (1582,'plg_courses_syllabus', 'plugin', 'syllabus', 'courses', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 16, 0),
-(1583,'plg_courses_forum', 'plugin', 'discussions', 'courses', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 17, 0),
 (1584,'plg_courses_faq', 'plugin', 'faq', 'courses', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 18, 0),
 (1585,'plg_search_courses', 'plugin', 'courses', 'search', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 (1586,'plg_search_collections', 'plugin', 'collections', 'search', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 2, 0),
@@ -4864,7 +4866,11 @@ INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`
 (1640,'plg_time_summary', 'plugin', 'summary', 'time', 0, 0, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 (1641,'plg_tools_java', 'plugin', 'java', 'tools', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 1, 0),
 (1642,'plg_tools_novnc', 'plugin', 'novnc', 'tools', 0, 0, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 2, 0),
-(1643,'plg_whatsnew_publications', 'plugin', 'publications', 'whatsnew', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 6, 0);
+(1643,'plg_whatsnew_publications', 'plugin', 'publications', 'whatsnew', 0, 1, 1, 0, '', '', '', '', 0, '0000-00-00 00:00:00', 6, 0),
+(1644,'plg_ysearch_courses','plugin','courses','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',1,0),
+(1646,'plg_ysearch_collections','plugin','collections','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',2,0),
+(1647,'plg_ysearch_projects','plugin','projects','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',3,0),
+(1648,'plg_ysearch_publications','plugin','publications','ysearch',0,1,1,0,'','','','',0,'0000-00-00 00:00:00',4,0);
 
 INSERT INTO `#__extensions` (`extension_id`, `name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`) VALUES
 (1700, 'hubbasic', 'template', 'hubbasic', '', 0, 1, 1, 0, '{}', '{}', '', '', 0, '0000-00-00 00:00:00', 0, 0),
