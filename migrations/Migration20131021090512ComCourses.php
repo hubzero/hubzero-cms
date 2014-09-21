@@ -123,7 +123,7 @@ class Migration20131021090512ComCourses extends Base
 					  `hubaccount` varchar(100) NOT NULL DEFAULT '',
 					  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
 					  PRIMARY KEY (`id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=latin1;";
+					) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
 			$this->db->query();

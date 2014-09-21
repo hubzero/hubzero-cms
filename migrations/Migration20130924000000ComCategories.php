@@ -15,7 +15,7 @@ class Migration20130924000000ComCategories extends Base
 	 **/
 	public function up()
 	{
-		$query = "ALTER TABLE `#__categories` ENGINE = InnoDB;";
+		$query = "ALTER TABLE `#__categories` ENGINE = MYISAM;";
 		$this->db->setQuery($query);
 		$this->db->query();
 
@@ -151,9 +151,9 @@ class Migration20130924000000ComCategories extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
-		if (!$this->db->tableHasKey('#__categories', 'cat_idx'))
+		if (!$this->db->tableHasKey('#__categories', 'idx_extension_published_access'))
 		{
-			$query = "ALTER TABLE `#__categories` ADD INDEX `cat_idx` (`extension` ASC, `published` ASC, `access` ASC);";
+			$query = "ALTER TABLE `#__categories` ADD INDEX `idx_extension_published_access` (`extension` ASC, `published` ASC, `access` ASC);";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

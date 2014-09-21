@@ -262,7 +262,7 @@ class Migration20140110135511ComFinder extends Base
 					  `data` text NOT NULL,
 					  `params` mediumtext,
 					  PRIMARY KEY (`filter_id`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -296,7 +296,7 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `idx_url` (`url`(75)),
 					  KEY `idx_published_list` (`published`,`state`,`access`,`publish_start_date`,`publish_end_date`,`list_price`),
 					  KEY `idx_published_sale` (`published`,`state`,`access`,`publish_start_date`,`publish_end_date`,`sale_price`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -312,7 +312,7 @@ class Migration20140110135511ComFinder extends Base
 						  PRIMARY KEY (`link_id`,`term_id`),
 						  KEY `idx_term_weight` (`term_id`,`weight`),
 						  KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+						) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
@@ -331,7 +331,7 @@ class Migration20140110135511ComFinder extends Base
 						  PRIMARY KEY (`link_id`,`term_id`),
 						  KEY `idx_term_weight` (`term_id`,`weight`),
 						  KEY `idx_link_term_weight` (`link_id`,`term_id`,`weight`)
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+						) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 					$this->db->setQuery($query);
 					$this->db->query();
 				}
@@ -352,7 +352,7 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `ordering` (`ordering`),
 					  KEY `access` (`access`),
 					  KEY `idx_parent_published` (`parent_id`,`state`,`access`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -365,7 +365,7 @@ class Migration20140110135511ComFinder extends Base
 					  PRIMARY KEY (`link_id`,`node_id`),
 					  KEY `link_id` (`link_id`),
 					  KEY `node_id` (`node_id`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -386,7 +386,7 @@ class Migration20140110135511ComFinder extends Base
 					  KEY `idx_term_phrase` (`term`,`phrase`),
 					  KEY `idx_stem_phrase` (`stem`,`phrase`),
 					  KEY `idx_soundex_phrase` (`soundex`,`phrase`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -398,7 +398,7 @@ class Migration20140110135511ComFinder extends Base
 					  `language` varchar(3) NOT NULL,
 					  KEY `idx_word_lang` (`term`,`language`),
 					  KEY `idx_lang` (`language`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -447,7 +447,7 @@ class Migration20140110135511ComFinder extends Base
 					  `mime` varchar(100) NOT NULL,
 					  PRIMARY KEY (`id`),
 					  UNIQUE KEY `title` (`title`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}

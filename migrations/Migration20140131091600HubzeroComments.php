@@ -108,7 +108,7 @@ class Migration20140131091600HubzeroComments extends Base
 				  `data` text NOT NULL,
 				  `params` mediumtext,
 				  PRIMARY KEY (`filter_id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+				) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

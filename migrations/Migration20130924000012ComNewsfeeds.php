@@ -15,7 +15,7 @@ class Migration20130924000012ComNewsfeeds extends Base
 	 **/
 	public function up()
 	{
-		$query = "ALTER TABLE `#__newsfeeds` ENGINE = InnoDB;";
+		$query = "ALTER TABLE `#__newsfeeds` ENGINE = MYISAM;";
 		$this->db->setQuery($query);
 		$this->db->query();
 

@@ -15,8 +15,8 @@ class Migration20130924000010ComMessages extends Base
 	 **/
 	public function up()
 	{
-		$query = "ALTER TABLE `#__messages` ENGINE = InnoDB ;\n";
-		$query .= "ALTER TABLE `#__messages_cfg` ENGINE = InnoDB ;";
+		$query = "ALTER TABLE `#__messages` ENGINE = MYISAM  ;\n";
+		$query .= "ALTER TABLE `#__messages_cfg` ENGINE = MYISAM ;";
 		$this->db->setQuery($query);
 		$this->db->query();
 

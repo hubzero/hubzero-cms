@@ -21,7 +21,7 @@ class Migration20130924000013Core extends Base
 		$configuration = preg_replace('/(var \$offset[\s]*=[\s]*[\'"]*)([\-0-9]+)([\'"]*)/', '$1UTC$3', $configuration);
 		file_put_contents(JPATH_ROOT . DS . 'configuration.php', $configuration);
 
-		$query = "ALTER TABLE `#__core_log_searches` ENGINE = InnoDB;\n";
+		$query = "ALTER TABLE `#__core_log_searches` ENGINE = MYISAM;\n";
 		$this->db->setQuery($query);
 		$this->db->query();
 
@@ -64,7 +64,7 @@ class Migration20130924000013Core extends Base
 							PRIMARY KEY  (`id`),
 							UNIQUE KEY `idx_link_old` (`old_url`),
 							KEY `idx_link_modifed` (`modified_date`)
-						)  DEFAULT CHARSET=utf8;\n";
+						)  ENGINE=MYISAM DEFAULT CHARSET=utf8;\n";
 		}
 
 		if (!$this->db->tableExists('#__user_notes'))
@@ -88,7 +88,7 @@ class Migration20130924000013Core extends Base
 							PRIMARY KEY (`id`) ,
 							INDEX `idx_user_id` (`user_id` ASC) ,
 							INDEX `idx_category_id` (`catid` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -112,7 +112,7 @@ class Migration20130924000013Core extends Base
 							`string` TEXT NOT NULL ,
 							`file` VARCHAR(255) NOT NULL ,
 							PRIMARY KEY (`id`) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;";
 		}
@@ -144,7 +144,7 @@ class Migration20130924000013Core extends Base
 							`extension_id` INT(11) NOT NULL,
 							`version_id` VARCHAR(20) NOT NULL,
 							PRIMARY KEY (`extension_id`, `version_id`)
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+						) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
 			$this->db->query();
@@ -154,7 +154,7 @@ class Migration20130924000013Core extends Base
 			$this->db->query();
 		}
 
-		$query = "ALTER TABLE `#__session` ENGINE = InnoDB;";
+		$query = "ALTER TABLE `#__session` ENGINE = MYISAM;";
 		$this->db->setQuery($query);
 		$this->db->query();
 
@@ -208,7 +208,7 @@ class Migration20130924000013Core extends Base
 							PRIMARY KEY (`id`),
 							KEY `idx_template` (`template`),
 							KEY `idx_home` (`home`)
-						) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+						) ENGINE=MYISAM  DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
 			$this->db->query();
@@ -295,7 +295,7 @@ class Migration20130924000013Core extends Base
 							`detailsurl` TEXT NOT NULL,
 							`infourl` TEXT NOT NULL,
 							PRIMARY KEY  (`update_id`)
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Available Updates';\n";
+						) ENGINE=MYISAM DEFAULT CHARSET=utf8 COMMENT='Available Updates';\n";
 		}
 		if (!$this->db->tableExists('#__update_sites'))
 		{
@@ -307,7 +307,7 @@ class Migration20130924000013Core extends Base
 							`enabled` int(11) default '0',
 							`last_check_timestamp` BIGINT(20) NULL DEFAULT '0',
 							PRIMARY KEY  (`update_site_id`)
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Update Sites';\n";
+						) ENGINE=MYISAM DEFAULT CHARSET=utf8 COMMENT='Update Sites';\n";
 
 			$query .= "INSERT INTO `#__update_sites` VALUES ";
 			$query .= "(1, 'Joomla Core', 'collection', 'http://update.joomla.org/core/list.xml', 1, 0),";
@@ -320,7 +320,7 @@ class Migration20130924000013Core extends Base
 							`update_site_id` INT(11) NOT NULL DEFAULT '0',
 							`extension_id` INT(11) NOT NULL DEFAULT '0',
 							PRIMARY KEY (`update_site_id`, `extension_id`)
-						) ENGINE = InnoDB CHARACTER SET utf8 COMMENT = 'Links extensions to update sites';\n";
+						) ENGINE = MYISAM CHARACTER SET utf8 COMMENT = 'Links extensions to update sites';\n";
 
 			$query .= "INSERT INTO `#__update_sites_extensions` VALUES (1, 700), (2, 700), (3, 600);";
 		}
@@ -333,7 +333,7 @@ class Migration20130924000013Core extends Base
 							`parent` int(11) default '0',
 							`updatesite` int(11) default '0',
 							PRIMARY KEY  (`categoryid`)
-						) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Update Categories';\n";
+						) ENGINE=MYISAM DEFAULT CHARSET=utf8 COMMENT='Update Categories';\n";
 		}
 
 		if (!empty($query))

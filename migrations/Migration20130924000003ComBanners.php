@@ -18,7 +18,7 @@ class Migration20130924000003ComBanners extends Base
 		if ($this->db->tableExists('#__banner') && !$this->db->tableExists('#__banners'))
 		{
 			$query = "ALTER TABLE `#__banner` RENAME TO `#__banners`;";
-			$query .= "ALTER TABLE `#__banners` ENGINE = InnoDB;";
+			$query .= "ALTER TABLE `#__banners` ENGINE = MYISAM;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -204,7 +204,7 @@ class Migration20130924000003ComBanners extends Base
 		if ($this->db->tableExists('#__bannerclient') && !$this->db->tableExists('#__banner_clients'))
 		{
 			$query = "ALTER TABLE `#__bannerclient` RENAME TO `#__banner_clients`;";
-			$query .= "ALTER TABLE `#__banner_clients` ENGINE = InnoDB;";
+			$query .= "ALTER TABLE `#__banner_clients` ENGINE = MYISAM;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -300,7 +300,7 @@ class Migration20130924000003ComBanners extends Base
 		if ($this->db->tableExists('#__bannertrack') && !$this->db->tableExists('#__banner_tracks'))
 		{
 			$query = "ALTER TABLE `#__bannertrack` RENAME TO `#__banner_tracks`;";
-			$query .= "ALTER TABLE `#__banner_tracks` ENGINE = InnoDB;";
+			$query .= "ALTER TABLE `#__banner_tracks` ENGINE = MYISAM;";
 
 			$this->db->setQuery($query);
 			$this->db->query();

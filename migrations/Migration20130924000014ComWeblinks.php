@@ -17,7 +17,7 @@ class Migration20130924000014ComWeblinks extends Base
 	{
 		if ($this->db->tableExists('#__weblinks'))
 		{
-			$query = "ALTER TABLE `#__weblinks` ENGINE = InnoDB;";
+			$query = "ALTER TABLE `#__weblinks` ENGINE = MYISAM;";
 			$this->db->setQuery($query);
 			$this->db->query();
 

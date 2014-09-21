@@ -16,10 +16,8 @@ class Migration20130924000001ComContent extends Base
 	public function up()
 	{
 		$query  = "";
-		// @FIXME: relying on a fulltext index here...so we can't change to InnoDB
-		//$query .= "ALTER TABLE `#__content` ENGINE = InnoDB;\n";
-		$query .= "ALTER TABLE `#__content_frontpage` ENGINE = InnoDB ;\n";
-		$query .= "ALTER TABLE `#__content_rating` ENGINE = InnoDB;";
+		$query .= "ALTER TABLE `#__content_frontpage` ENGINE = MYISAM ;\n";
+		$query .= "ALTER TABLE `#__content_rating` ENGINE = MYISAM;";
 		$this->db->setQuery($query);
 		$this->db->query();
 
@@ -85,7 +83,7 @@ class Migration20130924000001ComContent extends Base
 		}
 		if ($this->db->tableHasField('#__content', 'title_alias'))
 		{
-			$query = "ALTER TABLE `#__content` CHANGE COLUMN `title_alias` `title_alias` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL DEFAULT '';";
+			$query = "ALTER TABLE `#__content` CHANGE COLUMN `title_alias` `title_alias` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_bin' NOT NULL DEFAULT '' COMMENT 'Deprecated in Joomla! 3.0';";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

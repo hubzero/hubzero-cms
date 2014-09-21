@@ -41,7 +41,7 @@ class Migration20140416082740ComFeatures extends Base
 				  `tbl` varchar(255) DEFAULT NULL,
 				  `note` varchar(255) DEFAULT NULL,
 				  PRIMARY KEY (`id`)
-				) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+				) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

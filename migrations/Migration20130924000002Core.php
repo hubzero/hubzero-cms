@@ -31,7 +31,7 @@ class Migration20130924000002Core extends Base
 				UNIQUE INDEX `idx_asset_name` (`name` ASC) ,
 				INDEX `idx_lft_rgt` (`lft` ASC, `rgt` ASC) ,
 				INDEX `idx_parent_id` (`parent_id` ASC) )
-			ENGINE = InnoDB
+			ENGINE = MYISAM
 			DEFAULT CHARACTER SET = utf8
 			COLLATE = utf8_general_ci;";
 

@@ -17,8 +17,8 @@ class Migration20130924000011ComModules extends Base
 	{
 		$first = false;
 
-		$query = "ALTER TABLE `#__modules` ENGINE = InnoDB;\n";
-		$query .= "ALTER TABLE `#__modules_menu` ENGINE = InnoDB;";
+		$query = "ALTER TABLE `#__modules` ENGINE = MYISAM;\n";
+		$query .= "ALTER TABLE `#__modules_menu` ENGINE = MYISAM;";
 		$this->db->setQuery($query);
 		$this->db->query();
 

@@ -15,7 +15,7 @@ class Migration20130924000009ComMenus extends Base
 	 **/
 	public function up()
 	{
-		$query = "ALTER TABLE `#__menu` ENGINE = InnoDB;";
+		$query = "ALTER TABLE `#__menu` ENGINE = MYISAM;";
 		$this->db->setQuery($query);
 		$this->db->query();
 
@@ -221,7 +221,7 @@ class Migration20130924000009ComMenus extends Base
 		}
 		if (!$this->db->tableHasKey('#__menu', 'idx_path') && $this->db->tableHasField('#__menu', 'path'))
 		{
-			$query = "ALTER TABLE `#__menu` ADD INDEX `idx_path` (`path`(255) ASC);";
+			$query = "ALTER TABLE `#__menu` ADD INDEX `idx_path` (`path`(333) ASC);";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -238,7 +238,7 @@ class Migration20130924000009ComMenus extends Base
 			$this->db->query();
 		}
 
-		$query = "ALTER TABLE `#__menu_types` ENGINE = InnoDB;";
+		$query = "ALTER TABLE `#__menu_types` ENGINE = MYISAM;";
 		$this->db->setQuery($query);
 		$this->db->query();
 		if ($this->db->tableHasField('#__menu_types', 'menutype'))

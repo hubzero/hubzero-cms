@@ -17,7 +17,7 @@ class Migration20130924000004ComContacts extends Base
 	{
 		if ($this->db->tableExists('#__contact_details'))
 		{
-			$query = "ALTER TABLE `#__contact_details` ENGINE = InnoDB;";
+			$query = "ALTER TABLE `#__contact_details` ENGINE = MYISAM;";
 			$this->db->setQuery($query);
 			$this->db->query();
 

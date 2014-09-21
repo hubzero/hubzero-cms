@@ -35,7 +35,7 @@ class Migration20130924000006ComFinder extends Base
 							`data` TEXT NOT NULL ,
 							`params` MEDIUMTEXT NULL DEFAULT NULL ,
 							PRIMARY KEY (`filter_id`) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -69,7 +69,7 @@ class Migration20130924000006ComFinder extends Base
 							INDEX `idx_url` (`url`(75) ASC) ,
 							INDEX `idx_published_list` (`published` ASC, `state` ASC, `access` ASC, `publish_start_date` ASC, `publish_end_date` ASC, `list_price` ASC) ,
 							INDEX `idx_published_sale` (`published` ASC, `state` ASC, `access` ASC, `publish_start_date` ASC, `publish_end_date` ASC, `sale_price` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -83,7 +83,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -97,7 +97,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -111,7 +111,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -125,7 +125,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -139,7 +139,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -153,7 +153,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -167,7 +167,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -181,7 +181,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -195,7 +195,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -209,7 +209,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -223,7 +223,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -237,7 +237,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -251,7 +251,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -265,7 +265,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -279,7 +279,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -293,7 +293,7 @@ class Migration20130924000006ComFinder extends Base
 							PRIMARY KEY (`link_id`, `term_id`) ,
 							INDEX `idx_term_weight` (`term_id` ASC, `weight` ASC) ,
 							INDEX `idx_link_term_weight` (`link_id` ASC, `term_id` ASC, `weight` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -313,7 +313,7 @@ class Migration20130924000006ComFinder extends Base
 						INDEX `ordering` (`ordering` ASC) ,
 						INDEX `access` (`access` ASC) ,
 						INDEX `idx_parent_published` (`parent_id` ASC, `state` ASC, `access` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 
@@ -330,7 +330,7 @@ class Migration20130924000006ComFinder extends Base
 						PRIMARY KEY (`link_id`, `node_id`) ,
 						INDEX `link_id` (`link_id` ASC) ,
 						INDEX `node_id` (`node_id` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -351,7 +351,7 @@ class Migration20130924000006ComFinder extends Base
 						INDEX `idx_term_phrase` (`term` ASC, `phrase` ASC) ,
 						INDEX `idx_stem_phrase` (`stem` ASC, `phrase` ASC) ,
 						INDEX `idx_soundex_phrase` (`soundex` ASC, `phrase` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}
@@ -363,7 +363,7 @@ class Migration20130924000006ComFinder extends Base
 						`language` VARCHAR(3) NOT NULL ,
 						INDEX `idx_word_lang` (`term` ASC, `language` ASC) ,
 						INDEX `idx_lang` (`language` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 
@@ -529,7 +529,7 @@ class Migration20130924000006ComFinder extends Base
 						`mime` VARCHAR(100) NOT NULL ,
 						PRIMARY KEY (`id`) ,
 						UNIQUE INDEX `title` (`title` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 		}

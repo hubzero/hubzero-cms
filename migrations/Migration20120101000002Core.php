@@ -18,9 +18,9 @@ class Migration20120101000002Core extends Base
 			return false;
 		}
 
-		if ($mwdb->tableExists('display') && $mwdb->tableHasField('display', 'hostname') && !$mwdb->tableHasKey('display', 'hostname'))
+		if ($mwdb->tableExists('display') && $mwdb->tableHasField('display', 'hostname') && !$mwdb->tableHasKey('display', 'idx_hostname'))
 		{
-			$query = "ALTER TABLE `display` ADD INDEX `hostname` (`hostname` ASC)";
+			$query = "ALTER TABLE `display` ADD INDEX `idx_hostname` (`hostname` ASC)";
 			$mwdb->setQuery($query);
 			$mwdb->query();
 		}
@@ -41,16 +41,16 @@ class Migration20120101000002Core extends Base
 
 		if ($mwdb->tableExists('job'))
 		{
-			if ($mwdb->tableHasField('job', 'start') && !$mwdb->tableHasKey('job', 'start_2'))
+			if ($mwdb->tableHasField('job', 'start') && !$mwdb->tableHasKey('job', 'idx_start'))
 			{
-				$query = "ALTER TABLE `job` ADD INDEX `start_2` (`start` ASC)";
+				$query = "ALTER TABLE `job` ADD INDEX `idx_start` (`start` ASC)";
 				$mwdb->setQuery($query);
 				$mwdb->query();
 			}
 
-			if ($mwdb->tableHasField('job', 'heartbeat') && !$mwdb->tableHasKey('job', 'heartbeat_2'))
+			if ($mwdb->tableHasField('job', 'heartbeat') && !$mwdb->tableHasKey('job', 'idx_heartbeat'))
 			{
-				$query = "ALTER TABLE `job` ADD INDEX `heartbeat_2` (`heartbeat` ASC)";
+				$query = "ALTER TABLE `job` ADD INDEX `idx_heartbeat` (`heartbeat` ASC)";
 				$mwdb->setQuery($query);
 				$mwdb->query();
 			}

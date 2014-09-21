@@ -106,7 +106,7 @@ CREATE TABLE `#__categories` (
   `hits` int(10) unsigned NOT NULL default '0',
   `language` char(7) NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `cat_idx` (`extension`,`published`,`access`),
+  KEY `idx_extension_published_access` (`extension`,`published`,`access`),
   KEY `idx_access` (`access`),
   KEY `idx_checkout` (`checked_out`),
   KEY `idx_path` (`path`),

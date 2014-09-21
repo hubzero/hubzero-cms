@@ -4206,7 +4206,7 @@ CREATE TABLE `#__xgroups_tracperm` (
   `group_id` int(11) NOT NULL,
   `action` varchar(255) NOT NULL,
   `project_id` int(11) NOT NULL,
-  PRIMARY KEY (`group_id`,`action`)
+  UNIQUE KEY `id` (`group_id`,`action`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `#__xmessage` (

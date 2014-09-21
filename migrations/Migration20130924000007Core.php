@@ -21,7 +21,7 @@ class Migration20130924000007Core extends Base
 						`user_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Foreign Key to #__users.id' ,
 						`group_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Foreign Key to #__usergroups.id' ,
 						PRIMARY KEY (`user_id`, `group_id`) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 			$this->db->setQuery($query);
@@ -40,7 +40,7 @@ class Migration20130924000007Core extends Base
 						INDEX `idx_usergroup_title_lookup` (`title` ASC) ,
 						INDEX `idx_usergroup_adjacency_lookup` (`parent_id` ASC) ,
 						INDEX `idx_usergroup_nested_set_lookup` USING BTREE (`lft` ASC, `rgt` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;\n";
 			$this->db->setQuery($query);
@@ -187,7 +187,7 @@ class Migration20130924000007Core extends Base
 						`profile_value` VARCHAR(255) NOT NULL ,
 						`ordering` INT(11) NOT NULL DEFAULT '0' ,
 						UNIQUE INDEX `idx_user_id_profile_key` (`user_id` ASC, `profile_key` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci
 						COMMENT = 'Simple user profile storage table';\n";
@@ -195,7 +195,7 @@ class Migration20130924000007Core extends Base
 			$this->db->query();
 		}
 
-		$query = "ALTER TABLE `#__users` ENGINE = InnoDB;";
+		$query = "ALTER TABLE `#__users` ENGINE = MYISAM;";
 		$this->db->setQuery($query);
 		$this->db->query();
 

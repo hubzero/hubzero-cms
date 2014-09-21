@@ -47,7 +47,7 @@ class Migration20120101000001Core extends Base
 		{
 			$query = "CREATE TABLE IF NOT EXISTS `#__billboard_collection` (
 				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT ,
-				  `name` VARCHAR(255) CHARACTER SET 'latin1' NULL DEFAULT NULL ,
+				  `name` VARCHAR(255) NULL DEFAULT NULL ,
 				  PRIMARY KEY (`id`) )
 				ENGINE = MyISAM
 				DEFAULT CHARACTER SET = utf8";

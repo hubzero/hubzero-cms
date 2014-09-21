@@ -39,7 +39,7 @@ class Migration20130924000005Core extends Base
 							INDEX `element_clientid` (`element` ASC, `client_id` ASC) ,
 							INDEX `element_folder_clientid` (`element` ASC, `folder` ASC, `client_id` ASC) ,
 							INDEX `extension` (`type` ASC, `element` ASC, `folder` ASC, `client_id` ASC) )
-						ENGINE = InnoDB
+						ENGINE = MYISAM
 						DEFAULT CHARACTER SET = utf8
 						COLLATE = utf8_general_ci;";
 

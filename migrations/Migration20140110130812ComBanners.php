@@ -85,7 +85,7 @@ class Migration20140110130812ComBanners extends Base
 					  PRIMARY KEY (`id`),
 					  KEY `idx_own_prefix` (`own_prefix`),
 					  KEY `idx_metakey_prefix` (`metakey_prefix`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -101,7 +101,7 @@ class Migration20140110130812ComBanners extends Base
 					  KEY `idx_track_date` (`track_date`),
 					  KEY `idx_track_type` (`track_type`),
 					  KEY `idx_banner_id` (`banner_id`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
@@ -144,7 +144,7 @@ class Migration20140110130812ComBanners extends Base
 					  KEY `idx_metakey_prefix` (`metakey_prefix`),
 					  KEY `idx_language` (`language`),
 					  KEY `idx_state` (`state`)
-					) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+					) ENGINE=MYISAM DEFAULT CHARSET=utf8;";
 				$this->db->setQuery($query);
 				$this->db->query();
 			}
