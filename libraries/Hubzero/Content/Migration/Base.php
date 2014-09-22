@@ -689,12 +689,13 @@ class Base
 	 *
 	 * @param $module   - (string)     module name
 	 * @param $position - (string)     module position
+	 * @param $always   - (bool)       if true - always install, false - only install if another module of that type isn't present
 	 * @param $params   - (array)      params (if already known)
 	 * @param $client   - (int)        client (site=0, admin=1)
 	 * @param $menus    - (int, array) menus to install to (0=all)
 	 * @return void
 	 **/
-	public function installModule($module, $position, $params='', $client=0, $menus=0)
+	public function installModule($module, $position, $always=true, $params='', $client=0, $menus=0)
 	{
 		$title    = $this->baseDb->quote(ucfirst($module));
 		$position = $this->baseDb->quote($position);
@@ -716,6 +717,17 @@ class Base
 		else
 		{
 			$params = $this->baseDb->quote(json_encode($params));
+		}
+
+		if (!$always)
+		{
+			$query = "SELECT `id` FROM `#__modules` WHERE `module` = {$module}";
+			$this->db->setQuery($query);
+
+			if ($this->db->loadResult())
+			{
+				return true;
+			}
 		}
 
 		$query = "SELECT MAX(ordering) FROM `#__modules` WHERE `position` = {$position}";
