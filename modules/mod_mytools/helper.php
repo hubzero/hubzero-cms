@@ -186,7 +186,7 @@ class modToolList extends \Hubzero\Module\Module
 					}
 					else
 					{
-						$url = 'index.php?option=com_tools&task=invoke&app='.$tool->toolname.'&version='.$tool->revision;
+						$url = JRoute::_('index.php?option=com_tools&controller=sessions&task=invoke&app='.$tool->toolname.'&version='.$tool->revision);
 					}
 
 					$cls = '';
@@ -212,12 +212,12 @@ class modToolList extends \Hubzero\Module\Module
 					$html .= '>' . "\n";
 
 					// Tool info link
-					$html .= "\t\t\t" . ' <a href="/tools/'.$tool->toolname.'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>' . "\n";
+					$html .= "\t\t\t" . ' <a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname).'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>' . "\n";
 
 					// Only add the "favorites" button to the all tools list
 					if ($type == 'all')
 					{
-						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="Add '.$tool->caption.' to your favorites">'.$tool->caption.'</a>' . "\n";
+						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="'.JText::sprintf('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption).'">'.$tool->caption.'</a>' . "\n";
 					}
 
 					// Launch tool link
@@ -225,7 +225,7 @@ class modToolList extends \Hubzero\Module\Module
 					{
 
 
-						$html .= "\t\t\t" . ' <a href="'.$url.'" class="launchtool" title="Launch '.$tool->caption.'">Launch '.$tool->caption.'</a>' . "\n";
+						$html .= "\t\t\t" . ' <a href="'.$url.'" class="launchtool" title="'.JText::sprintf('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption).'">'.JText::sprintf('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption).'</a>' . "\n";
 					}
 					$html .= "\t\t" . ' </li>' . "\n";
 				}
