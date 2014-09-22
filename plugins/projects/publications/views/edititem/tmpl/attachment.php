@@ -96,7 +96,7 @@ $placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this-
 					<?php if ($this->row->type == 'file') { ?>
 						<?php if ($gone || !$allowRename) { ?>
 						<p class="c-wrapper">
-							<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>*:</span>
+							<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>:</span>
 							<span class="content-filepath"><?php echo $this->row->path; ?></span>
 						</p>
 						<?php } else { ?>
