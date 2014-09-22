@@ -175,9 +175,9 @@
 		padding: 0;
 	}
 	#page_menu li .meta .count {
-		background: #e1e1e1;
+		background: #d1d1d1;
 		background: rgba(0, 0, 0, 0.1);
-		color: #bbb; 
+		color: #888;
 		text-shadow: 0 1px 1px #fff;
 		font-size: 0.9em;
 		line-height: 1.2;
