@@ -107,6 +107,13 @@ class Migration
 	private $tbl_name = '#__migrations';
 
 	/**
+	 * Keep track of query scope (just so we don't have to compute multiple times)
+	 *
+	 * @var string
+	 **/
+	private $queryScope = '';
+
+	/**
 	 * Whether or not to ignore callbacks
 	 *
 	 * @var bool
@@ -146,11 +153,25 @@ class Migration
 		// Try to figure out the date of the last file run
 		try
 		{
-			$scope = ($this->db->tableHasField($this->get('tbl_name'), 'scope')) ? ' AND (`scope` = '.$this->db->quote($this->docroot . DS . 'migrations') . ' OR `scope` = '.$this->db->quote('migrations').')' : '';
-			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'up\'' . $scope . ' ORDER BY `file` DESC LIMIT 1');
+			$scope = '';
+
+			if ($this->db->tableHasField($this->get('tbl_name'), 'scope'))
+			{
+				// Scope could potentially be with or without document root
+				$scopes = array(
+					$this->db->quote($this->docroot . DS . 'migrations'),
+					$this->db->quote(str_replace(JPATH_ROOT . DS, '', $this->docroot . DS . 'migrations'))
+				);
+
+				$scope = ' AND (`scope` = ' . implode(' OR `scope` = ', $scopes) . ')';
+			}
+
+			$this->queryScope = $scope;
+
+			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'up\'' . $this->queryScope . ' ORDER BY `file` DESC LIMIT 1');
 			$rowup = $this->db->loadAssoc();
 
-			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'down\'' . $scope . ' ORDER BY `file` DESC LIMIT 1');
+			$this->db->setQuery('SELECT `file` FROM `'.$this->get('tbl_name').'` WHERE `direction` = \'down\'' . $this->queryScope . ' ORDER BY `file` DESC LIMIT 1');
 			$rowdown = $this->db->loadAssoc();
 
 			if (count($rowup) > 0)
@@ -367,8 +388,7 @@ class Migration
 					if (is_numeric($this->last_run[$direction]) && $date <= $this->last_run[$direction] && !$force)
 					{
 						// This migration is older than the current, but let's see if we should inform that it should still be run
-						$scope = ($this->db->tableHasField($this->get('tbl_name'), 'scope')) ? ' AND (`scope` = '.$this->db->quote($this->docroot . DS . 'migrations') . ' OR `scope` = '.$this->db->quote('migrations').')' : '';
-						$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . "{$scope} ORDER BY `date` DESC LIMIT 1");
+						$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . "{$this->queryScope} ORDER BY `date` DESC LIMIT 1");
 						$row = $this->db->loadResult();
 
 						// Check if last run was either not in the current direction we're going,
@@ -396,8 +416,7 @@ class Migration
 			try
 			{
 				// Look to the database log to see the last run on this file
-				$scope = ($this->db->tableHasField($this->get('tbl_name'), 'scope')) ? ' AND (`scope` = '.$this->db->quote($this->docroot . DS . 'migrations') . ' OR `scope` = '.$this->db->quote('migrations').')' : '';
-				$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . "{$scope} ORDER BY `date` DESC LIMIT 1");
+				$this->db->setQuery("SELECT `direction` FROM `{$this->get('tbl_name')}` WHERE `file` = " . $this->db->Quote($file) . "{$this->queryScope} ORDER BY `date` DESC LIMIT 1");
 				$row = $this->db->loadResult();
 
 				// If the last migration for this file doesn't exist, or, it was the opposite of $direction, we can go ahead and run it.
@@ -474,7 +493,7 @@ class Migration
 				}
 				elseif ($logOnly)
 				{
-					$this->recordMigration($file, 'migrations', $hash, $direction);
+					$this->recordMigration($file, str_replace(JPATH_ROOT . DS, '', $this->docroot . DS . 'migrations'), $hash, $direction);
 					$this->log("Marking as run: {$direction}() in {$file}", 'success');
 				}
 			}
@@ -543,7 +562,7 @@ class Migration
 							}
 						}
 
-						$this->recordMigration($file, 'migrations', $hash, $direction);
+						$this->recordMigration($file, str_replace(JPATH_ROOT . DS, '', $this->docroot . DS . 'migrations'), $hash, $direction);
 						$this->log("Completed {$direction}() in {$file}", 'success');
 					}
 					catch (\PDOException $e)
