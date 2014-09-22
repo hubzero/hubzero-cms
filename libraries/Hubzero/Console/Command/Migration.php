@@ -103,6 +103,12 @@ class Migration extends Base implements CommandInterface
 
 				// Get group database
 				$alternativeDatabase = \Hubzero\User\Group\Helper::getDBO(array(), $group->get('cn'));
+
+				// make sure we have a group db
+				if ($alternativeDatabase->getErrorNum() > 0)
+				{
+					$this->output->error('Error: Could not connect to Group Database.');
+				}
 			}
 			else
 			{
