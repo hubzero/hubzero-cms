@@ -40,7 +40,7 @@ class Migration20120101000000Core extends Base
 					// therefore, we want to mark our old migrations as already having been run
 					foreach ($files as $file)
 					{
-						$base = $this->callback('migration', 'get', array('docroot')) . DS . 'migrations';
+						$base = 'migrations';
 						$path = $base . DS . $file;
 						$hash = hash('md5', $file);
 
