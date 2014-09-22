@@ -6,6 +6,10 @@ cd $1
 # init git repo
 git init
 
+# tell repo to always pull from master
+git config --add branch.master.remote origin
+git config --add branch.master.merge refs/heads/master
+
 # add items for git to ignore
 echo '.DS_Store' >> .git/info/exclude
 echo 'uploads/*' >> .git/info/exclude
