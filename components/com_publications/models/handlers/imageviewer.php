@@ -168,6 +168,18 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 
 		$path = $this->getFilePath($row->path, $row->id, $configs, $row->params);
 
+		// No file found
+		if (!is_file($path))
+		{
+			return false;
+		}
+
+		// Check if image
+		if (!getimagesize($path))
+		{
+			return false;
+		}
+
 		$copyToThumb  = $configs->pubBase . DS . $defaultThumbName;
 		$copyToMaster = $configs->pubBase . DS . $defaultMasterName;
 
@@ -474,6 +486,12 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		if (!is_file($fpath))
 		{
 			return;
+		}
+
+		// Check if image
+		if (!getimagesize($fpath))
+		{
+			return false;
 		}
 
 		$md5 = hash_file('sha256', $fpath);
