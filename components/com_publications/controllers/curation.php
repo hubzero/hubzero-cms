@@ -88,7 +88,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$authorized   = $this->_authorize($mt->getCuratorGroups());
 
 		// Get all authorized types
-		$authtypes = $mt->getAuthTypes($usergroups, $this->config->get('curation', ''), $authorized);
+		$authtypes = $mt->getAuthTypes($usergroups, $this->config->get('curatorgroup', ''), $authorized);
 
 		if (!$authorized || ($authorized == 'curator' && (!$authtypes || empty($authtypes))))
 		{
@@ -846,6 +846,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		{
 			$curatorgroups[] = $curatorgroup;
 		}
+
 		if (!empty($curatorgroups) && $this->config->get('curation', 0))
 		{
 			foreach ($curatorgroups as $curatorgroup)
