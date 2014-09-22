@@ -378,7 +378,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			$admin = false;
 		}
 
-		$this->view->filters['authorized'] = $this->view->authorized;
+		$this->view->filters['authorized']     = $this->view->authorized;
+		$this->view->filters['emailConfirmed'] = true;
 
 		// Initiate a contributor object
 		$c = new MembersProfile($this->database);
@@ -562,6 +563,13 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 			JError::raiseError(403, JText::_('MEMBERS_NOT_PUBLIC'));
+			return;
+		}
+
+		// check if unconfirmed
+		if ($profile->get('emailConfirmed') != 1 && !$this->view->authorized) 
+		{
+			JError::raiseError(403, JText::_('MEMBERS_NOT_CONFIRMED'));
 			return;
 		}
 

@@ -464,6 +464,11 @@ class MembersProfile extends JTable
 			}
 		}
 
+		if (isset($filters['emailConfirmed']) && $filters['emailConfirmed'] == 1)
+		{
+			$query .= " AND m.emailConfirmed >= " . $this->_db->Quote($filters['emailConfirmed']);
+		}
+
 		return $query;
 	}
 
@@ -556,11 +561,11 @@ class MembersProfile extends JTable
 				break;
 			}
 		}
+
 		if (isset($filters['limit']) && $filters['limit'] && strtolower($filters['limit']) != 'all') 
 		{
 			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
 		}
-
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
