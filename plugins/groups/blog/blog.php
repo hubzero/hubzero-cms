@@ -558,6 +558,13 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
+		// make sure the group owns this
+		if ($view->row->get('group_id') != $this->group->get('gidNumber'))
+		{
+			JError::raiseError(403, JText::_('PLG_GROUPS_BLOG_NOT_AUTH'));
+			return;
+		}
+
 		// Filters for returning results
 		$view->filters = array(
 			'limit'      => 10,

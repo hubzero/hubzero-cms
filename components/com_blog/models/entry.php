@@ -110,7 +110,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		$this->_tbl = new BlogTableEntry($this->_db);
 
-		if (is_numeric($oid))
+		if (is_numeric($oid) && $group_id == null)
 		{
 			$this->_tbl->load($oid);
 		}
