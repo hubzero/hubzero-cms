@@ -1277,7 +1277,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if ($this->_logging && $publication->state == 1)
 		{
 			$pubLog = new PublicationLog($this->database);
-			$aType  = $primary->role == 1 && $render != 'archive' ? 'primary' : 'support';
+			$aType  = $primary->role == 1 ? 'primary' : 'support';
 			$pubLog->logAccess($publication, $aType, $logPath);
 		}
 
