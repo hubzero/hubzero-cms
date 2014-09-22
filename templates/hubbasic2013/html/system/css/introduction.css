@@ -196,8 +196,30 @@
 	}
 	#introduction li a {
 		display: block;
-		padding: 0.4em 0;
+		padding: 0.4em 0 0.4em 1em;
 		border: none;
+		color: #747474;
+	}
+	#introduction li a:before {
+		content: "";
+		border-color: transparent transparent transparent #747474;
+		border-style: dashed dashed dashed solid;
+		border-width: 4px 0 4px 4px;
+		height: 0;
+		width: 0;
+		display: block;
+		overflow: hidden;
+		position: absolute;
+		top: 1.3em;
+		left: 0;
+		margin-top: -4px;
+	}
+	#introduction li a:hover {
+		color: #fff;
+		background: #747474;
+	}
+	#introduction li a:hover:before {
+		border-color: transparent transparent transparent #e6e6e6;
 	}
 	#introduction .clear:before,
 	#introduction .clear:after,
