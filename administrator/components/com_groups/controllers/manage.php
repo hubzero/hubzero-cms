@@ -711,7 +711,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			{
 				// only do stage setup on stage
 				$environment = strtolower(JFactory::getConfig()->get('application_env', 'development'));
-				if ($environment != 'stage')
+				if ($environment != 'staging')
 				{
 					$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_NOT_MANAGED_BY_GIT'));
 					continue;
