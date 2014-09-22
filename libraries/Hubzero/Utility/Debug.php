@@ -159,8 +159,9 @@ class Debug
 	 */
 	public function addVar($var)
 	{
+		$varc = (is_object($var) ? clone $var : $var);
 		$this->_messages[] = array(
-			'var'  => clone $var,
+			'var'  => $varc,
 			'time' => microtime(true)
 		);
 
