@@ -333,7 +333,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		// Get tags on this item
 		$tagsHelper = new PublicationTags( $this->database );
-		$this->view->lists['tags'] = $tagsHelper->get_tag_string($id, 0, 0, NULL, 0, 1);
+		$tags_men = $tagsHelper->get_tags_on_object($this->view->pub->id, 0, 0, 0, 0);
+
+		$mytagarray = array();
+		foreach ($tags_men as $tag_men)
+		{
+			$mytagarray[] = $tag_men['raw_tag'];
+		}
+		$this->view->tags = implode(', ', $mytagarray);
 
 		// Get selected license
 		$objL = new PublicationLicense( $this->database );

@@ -222,11 +222,11 @@ function popratings()
 		<fieldset>
 		<div class="input-wrap">
 			<?php
-			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')) );
+			$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->tags)) );
 			if (count($tf) > 0) {
 				echo $tf[0];
 			} else { ?>
-				<input type="text" name="tags" id="actags" value="" />
+				<input type="text" name="tags" id="actags" value="<?php echo $this->tags; ?>" />
 			<?php } ?>
 		</div>
 		</fieldset>
