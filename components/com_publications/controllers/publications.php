@@ -2107,6 +2107,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->publication 	= $publication;
 		$this->view->title 			= $title;
 
+		// Get license info
+		$pLicense = new PublicationLicense($this->database);
+		$this->view->license = $pLicense->getLicense($publication->license_type);
+
 		// Output HTML
 		if ($this->getError())
 		{
