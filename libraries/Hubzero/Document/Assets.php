@@ -151,9 +151,19 @@ class Assets
 		// Build a list of possible paths
 		$paths = array();
 
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
-		$paths[] = DS . 'components' . DS . $component . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $stylesheet;
-		$paths[] = DS . 'components' . DS . $component . DS . $stylesheet;
+		if (defined('JPATH_GROUPCOMPONENT'))
+		{
+			$base = substr(JPATH_GROUPCOMPONENT, strlen(JPATH_ROOT));
+
+			$paths[] = $base . DS . 'assets' . DS . 'css' . DS . $stylesheet;
+			$paths[] = $base . DS . $stylesheet;
+		}
+		else
+		{
+			$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
+			$paths[] = DS . 'components' . DS . $component . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $stylesheet;
+			$paths[] = DS . 'components' . DS . $component . DS . $stylesheet;
+		}
 
 		// Run through each path until we find one that works
 		foreach ($paths as $path)
@@ -190,6 +200,10 @@ class Assets
 		}
 
 		$base = DS . 'components' . DS . $component;
+		if (defined('JPATH_GROUPCOMPONENT'))
+		{
+			$base = substr(JPATH_GROUPCOMPONENT, strlen(JPATH_ROOT));
+		}
 
 		// Build a list of possible paths
 		$paths = array();
