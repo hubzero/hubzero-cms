@@ -961,6 +961,7 @@ class Base
 			}
 		}
 	}
+
 	/**
 	 * Enable plugin
 	 *
@@ -1004,6 +1005,51 @@ class Base
 		else
 		{
 			$query = "UPDATE `#__extensions` SET `enabled` = '{$enabled}' WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
+			$this->baseDb->setQuery($query);
+			$this->baseDb->query();
+		}
+	}
+
+	/**
+	 * Enable component
+	 *
+	 * @param  $element - (string) element
+	 * @return void
+	 **/
+	public function enableComponent($element)
+	{
+		$this->setComponentStatus($element);
+	}
+
+	/**
+	 * Disable component
+	 *
+	 * @param  $element - (string) element
+	 * @return void
+	 **/
+	public function disableComponent($element)
+	{
+		$this->setComponentStatus($element, 0);
+	}
+
+	/**
+	 * Enable/disable component
+	 *
+	 * @param  $element - (string) element
+	 * @param  $enabled - (int)    whether or not the component should be enabled
+	 * @return void
+	 **/
+	private function setComponentStatus($element, $enabled=1)
+	{
+		if ($this->baseDb->tableExists('#__components'))
+		{
+			$query = "UPDATE `#__components` SET `enabled` = '{$enabled}' WHERE `option` = '{$element}'";
+			$this->baseDb->setQuery($query);
+			$this->baseDb->query();
+		}
+		else
+		{
+			$query = "UPDATE `#__extensions` SET `enabled` = '{$enabled}' WHERE `element` = '{$element}'";
 			$this->baseDb->setQuery($query);
 			$this->baseDb->query();
 		}
