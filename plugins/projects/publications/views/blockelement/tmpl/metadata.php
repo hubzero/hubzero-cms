@@ -89,7 +89,7 @@ if ($this->pub->_project->provisioned == 1 && isset($this->manifest->aboutProv))
 // Wrap text in a paragraph
 if (strlen($aboutText) == strlen(strip_tags($aboutText)))
 {
-    $aboutText = '<p>' . $aboutText . '</p>';
+	$aboutText = '<p>' . $aboutText . '</p>';
 }
 ?>
 
