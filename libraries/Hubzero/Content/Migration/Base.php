@@ -1054,4 +1054,47 @@ class Base
 			$this->baseDb->query();
 		}
 	}
+
+	/**
+	 * Enable module
+	 *
+	 * @param  $element - (string) element
+	 * @return void
+	 **/
+	public function enableModule($element)
+	{
+		$this->setModuleStatus($element);
+	}
+
+	/**
+	 * Disable module
+	 *
+	 * @param  $element - (string) element
+	 * @return void
+	 **/
+	public function disableModule($element)
+	{
+		$this->setModuleStatus($element, 0);
+	}
+
+	/**
+	 * Enable/disable module
+	 *
+	 * @param  $element - (string) element
+	 * @param  $enabled - (int)    whether or not the module should be enabled
+	 * @return void
+	 **/
+	private function setModuleStatus($element, $enabled=1)
+	{
+		if ($this->baseDb->tableExists('#__extensions'))
+		{
+			$query = "UPDATE `#__extensions` SET `enabled` = '{$enabled}' WHERE `element` = '{$element}'";
+			$this->baseDb->setQuery($query);
+			$this->baseDb->query();
+
+			$query = "UPDATE `#__modules` SET `published` = '{$enabled}' WHERE `module` = '{$element}'";
+			$this->baseDb->setQuery($query);
+			$this->baseDb->query();
+		}
+	}
 }
