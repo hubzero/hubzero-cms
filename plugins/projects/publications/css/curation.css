@@ -38,19 +38,19 @@
 	.block-subject {
 		margin: 0;
 		padding: 0;
-		margin-right: 270px;
+		margin-right: 240px;
 		padding-left: 40px;
 	}
 	.block-aside {
 		float: right;
-		width: 200px;
+		width: 190px;
 		padding: 0;
 		margin-top: 3em;
 		padding-left: 1em;
 	}
 	.freeze .block-aside {
 		margin-top: 1em;
-		width: 240px;
+		width: 220px;
 	}
 	.block-info {
 		border-left: 4px solid #E2E2E2;
@@ -125,6 +125,10 @@
 		margin-top: 2em;
 		margin-top: 1em;
 		margin-left: -1.5em;
+	}
+	.field-wrap input,
+	.field-wrap textarea {
+		padding: 0.5em;
 	}
 	.el-incomplete .field-wrap input,
 	.el-incomplete .field-wrap textarea {
@@ -836,6 +840,9 @@
 	}
 	ul#status-bar li a.c_incomplete {
 		color: #999;
+	}
+	a.more-content {
+		font-size: 85%;
 	}
 
 /* License
