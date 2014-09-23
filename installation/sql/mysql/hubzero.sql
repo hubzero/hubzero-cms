@@ -25,7 +25,7 @@
 #
 
 #
-# Last Migration Applied: Migration20140904174546ComKb.php
+# Last Migration Applied: Migration20140922135214Core.php
 #
 
 SET NAMES 'utf8';
