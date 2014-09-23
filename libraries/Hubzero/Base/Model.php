@@ -100,7 +100,7 @@ abstract class Model extends Object
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = \JFactory::getDBO();
+		$this->_db = $this->initDbo();
 
 		if ($this->_tbl_name)
 		{
@@ -166,6 +166,28 @@ abstract class Model extends Object
 		}
 		$this->_tbl->$property = $value;
 		return $this;
+	}
+
+	/**
+	 * Method to get the database connection.
+	 * 
+	 * If detected that the code is being run in a super group
+	 * component, it will return the super group DB connection
+	 * instead of the site connection.
+	 *
+	 * @return  object  JDatabase
+	 */
+	public function initDbo()
+	{
+		if (defined('JPATH_GROUPCOMPONENT'))
+		{
+			$r = new \ReflectionClass($this);
+			if (substr($r->getFileName(), 0, strlen(JPATH_GROUPCOMPONENT)) == JPATH_GROUPCOMPONENT)
+			{
+				return \Hubzero\User\Group\Helper::getDbo();
+			}
+		}
+		return \JFactory::getDBO();
 	}
 
 	/**
