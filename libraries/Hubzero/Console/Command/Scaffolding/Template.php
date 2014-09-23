@@ -37,6 +37,8 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Scaffolding class for templates
+ *
+ * @museIgnoreHelp
  **/
 class Template extends Scaffolding
 {

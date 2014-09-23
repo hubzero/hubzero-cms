@@ -37,6 +37,8 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Scaffolding class for components
+ *
+ * @museIgnoreHelp
  **/
 class Component extends Scaffolding
 {

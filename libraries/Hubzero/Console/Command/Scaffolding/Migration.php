@@ -37,6 +37,8 @@ defined('_JEXEC') or die('Restricted access');
 
 /**
  * Scaffolding class for migrations
+ *
+ * @museIgnoreHelp
  **/
 class Migration extends Scaffolding
 {
