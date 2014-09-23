@@ -148,7 +148,23 @@ class Arguments
 		{
 			// Take the first argument as command to be run - defaults to help
 			$command = (isset($this->raw[1])) ? $this->raw[1] : 'Help';
-			$class   = __NAMESPACE__ . '\\Command\\' . ucfirst($command);
+
+			// Check if we're targeting a namespaced command
+			if (strpos($command, ':'))
+			{
+				$bits    = explode(':', $command);
+				$command = '';
+				foreach ($bits as $bit)
+				{
+					$command .= '\\' . ucfirst($bit);
+				}
+			}
+			else
+			{
+				$command = '\\' . ucfirst($command);
+			}
+
+			$class = __NAMESPACE__ . '\\Command' . $command;
 
 			// Make sure class exists
 			if (class_exists($class))
