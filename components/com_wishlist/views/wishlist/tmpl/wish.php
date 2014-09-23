@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css()
      ->css('vote.css', 'com_answers')
-     ->css('calendar.css', 'com_events')
+     ->css('jquery.ui.css', 'system')
      ->js();
 
 	$error = $this->getError();
@@ -47,7 +47,8 @@ $this->css()
 		$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->wish->get('proposed_by')) . '">' . $this->wish->proposer('name') . '</a>';
 	}
 
-	$assigned = ($this->wish->get('assigned') && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.$this->wish->get('assignedto').'</a>' : '';
+	// && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)
+	$assigned = ($this->wish->get('assigned')) ? JText::_('assigned to').' <a href="'.JRoute::_('index.php?option='.$this->option.'&task=wish&category='.$this->wishlist->get('category').'&rid='.$this->wishlist->get('referenceid') . '&wishid='.$this->wish->get('id')).'?filterby='.$this->filters['filterby'].'&sortby='.$this->filters['sortby'].'&tags='.$this->filters['tag'].'&action=editplan#plan">'.$this->wish->owner('name').'</a>' : '';
 
 	if (!$assigned && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1) && $this->wish->get('status')==0)
 	{

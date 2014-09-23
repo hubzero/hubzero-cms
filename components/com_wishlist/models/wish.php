@@ -137,6 +137,13 @@ class WishlistModelWish extends WishlistModelAbstract
 	private $_proposer = null;
 
 	/**
+	 * Hubzero\User\Profile
+	 *
+	 * @var object
+	 */
+	private $_owner = null;
+
+	/**
 	 * Cached data
 	 *
 	 * @var array
@@ -243,6 +250,39 @@ class WishlistModelWish extends WishlistModelAbstract
 			return $this->_proposer->get($property, $default);
 		}
 		return $this->_proposer;
+	}
+
+	/**
+	 * Get the owner of this entry
+	 *
+	 * Accepts an optional property name. If provided
+	 * it will return that property value. Otherwise,
+	 * it returns the entire object
+	 *
+	 * @param   string $property What data to return
+	 * @param   mixed  $default  Default value
+	 * @return  mixed
+	 */
+	public function owner($property=null, $default=null)
+	{
+		if (!($this->_owner instanceof \Hubzero\User\Profile))
+		{
+			$this->_owner = \Hubzero\User\Profile::getInstance($this->get('assigned'));
+			if (!$this->_owner)
+			{
+				$this->_owner = new \Hubzero\User\Profile();
+			}
+		}
+		if ($property)
+		{
+			$property = ($property == 'id') ? 'uidNumber' : $property;
+			if ($property == 'picture')
+			{
+				return $this->_owner->getPicture();
+			}
+			return $this->_owner->get($property, $default);
+		}
+		return $this->_owner;
 	}
 
 	/**
