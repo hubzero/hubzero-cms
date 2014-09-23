@@ -2184,6 +2184,27 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					// Sync with system group
 					$objO->sysGroup($obj->alias, $this->config->get('group_prefix', 'pr-'));
 
+					// Initialize Git repo
+					$path = ProjectsHelper::getProjectPath($obj->alias,
+									$this->config->get('webpath'), $this->config->get('offroot', 0));
+					if (!is_dir( $path ))
+					{
+						// Create path
+						jimport('joomla.filesystem.folder');
+						if (!JFolder::create( $path ))
+						{
+							$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH') );
+						}
+					}
+					include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects'
+						. DS . 'helpers' . DS . 'githelper.php' );
+					$this->_git = new ProjectsGitHelper(
+						$this->config->get('gitpath', '/opt/local/bin/git'),
+						0,
+						$this->config->get('offroot', 0) ? '' : JPATH_ROOT
+					);
+					$this->_git->iniGit($path);
+
 					// Activate project
 					if (!$active)
 					{
