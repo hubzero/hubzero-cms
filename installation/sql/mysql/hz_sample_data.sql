@@ -112,7 +112,7 @@ INSERT INTO `#__assets` VALUES (63, 1, 43, 44, 1, 'com_user', 'com_user', '{\"co
 INSERT INTO `#__assets` VALUES (64, 1, 41, 42, 1, 'com_whatsnew', 'com_whatsnew', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}');
 INSERT INTO `#__assets` VALUES (65, 1, 39, 40, 1, 'com_wiki', 'com_wiki', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}');
 INSERT INTO `#__assets` VALUES (66, 1, 37, 38, 1, 'com_wishlist', 'com_wishlist', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}');
-INSERT INTO `#__assets` VALUES (67, 1, 1, 2, 1, 'com_ysearch', 'com_ysearch', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}');
+INSERT INTO `#__assets` VALUES (67, 1, 1, 2, 1, 'com_search', 'com_search', '{\"core.admin\":{\"7\":1},\"core.manage\":{\"6\":1},\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}');
 INSERT INTO `#__assets` VALUES (68, 8, 78, 93, 2, 'com_content.category.8', 'com_content', '{\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}');
 INSERT INTO `#__assets` VALUES (69, 8, 94, 111, 2, 'com_content.category.9', 'com_content', '{\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}');
 INSERT INTO `#__assets` VALUES (70, 8, 112, 113, 2, 'com_content.category.10', 'com_content', '{\"core.create\":[],\"core.delete\":[],\"core.edit\":[],\"core.edit.state\":[]}');
@@ -446,10 +446,9 @@ VALUES
 	(130, 'main', 'com_dataviewer', 'dataviewer', '', 'dataviewer', 'index.php?option=com_dataviewer', 'component', 1, 1, 1, 1018, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 37, 38, 0, '*', 1),
 	(131, 'main', 'com_oaipmh', 'oaipmh', '', 'oaipmh', 'index.php?option=com_oaipmh', 'component', 1, 1, 1, 1016, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 49, 50, 0, '*', 1),
 	(132, 'main', 'com_publications', 'publications', '', 'publications', 'index.php?option=com_publications', 'component', 1, 1, 1, 1020, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 47, 48, 0, '*', 1),
-	(133, 'main', 'com_help', 'help', '', 'help', 'index.php?option=com_help', 'component', 1, 1, 1, 1011, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 7, 8, 0, '*', 1),
-	(134, 'main', 'com_collections', 'collections', '', 'collections', 'index.php?option=com_collections', 'component', 1, 1, 1, 10004, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 5, 6, 0, '*', 1),
+	(134, 'main', 'com_collections', 'collections', '', 'collections', 'index.php?option=com_collections', 'component', 1, 1, 1, 1037, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 5, 6, 0, '*', 1),
 	(135, 'main', 'com_storefront', 'storefront', '', 'storefront', 'index.php?option=com_storefront', 'component', 1, 1, 1, 1036, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 3, 4, 0, '*', 1),
-	(137, 'main', 'com_time', 'time', '', 'time', 'index.php?option=com_time', 'component', 0, 1, 1, 10065, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 1, 2, 0, '*', 1),
+	(137, 'main', 'com_time', 'time', '', 'time', 'index.php?option=com_time', 'component', 0, 1, 1, 1040, 0, 0, '0000-00-00 00:00:00', 0, 0, '', 0, '', 1, 2, 0, '*', 1),
 	(139, 'default', 'Register', 'register', '', 'register', 'index.php?option=com_members&view=register&layout=create', 'component', 1, 1, 1, 1014, 23, 0, '0000-00-00 00:00:00', 0, 1, '', 0, '', 203, 204, 0, '*', 0);
 
 --
