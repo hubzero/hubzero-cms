@@ -42,8 +42,8 @@
 					name="shownew"
 					type="list"
 					default="1"
-					label="MOD_MENU_FIELD_SHOWNEW"
-					description="MOD_MENU_FIELD_SHOWNEW_DESC">
+					label="MOD_HUBMENU_FIELD_SHOWNEW"
+					description="MOD_HUBMENU_FIELD_SHOWNEW_DESC">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
@@ -52,8 +52,8 @@
 					name="showhelp"
 					type="list"
 					default="1"
-					label="MOD_MENU_FIELD_SHOWHELP"
-					description="MOD_MENU_FIELD_SHOWHELP_DESC">
+					label="MOD_HUBMENU_FIELD_SHOWHELP"
+					description="MOD_HUBMENU_FIELD_SHOWHELP_DESC">
 					<option value="0">JHIDE</option>
 					<option value="1">JSHOW</option>
 				</field>
@@ -64,8 +64,8 @@
 					class="inputbox"
 					size="30"
 					default=""
-					label="MOD_MENU_FIELD_FORUMURL_LABEL"
-					description="MOD_MENU_FIELD_FORUMURL_DESC"
+					label="MOD_HUBMENU_FIELD_FORUMURL_LABEL"
+					description="MOD_HUBMENU_FIELD_FORUMURL_DESC"
 				/>
 
 				<field
