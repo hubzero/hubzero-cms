@@ -48,6 +48,22 @@ class Help extends Output
 	private $hasArgumentsSection = false;
 
 	/**
+	 * Set variable to forcibly not include arguments section header
+	 *
+	 * Most likely useful when adding a section to help output, but
+	 * never needing an arguments section header to be automatically
+	 * generated for you
+	 *
+	 * @return (object) $this - for method chaining
+	 **/
+	public function noArgsSection()
+	{
+		$this->hasArgumentsSection = true;
+
+		return $this;
+	}
+
+	/**
 	 * Add help output overview section
 	 *
 	 * @return (object) $this - for method chaining
