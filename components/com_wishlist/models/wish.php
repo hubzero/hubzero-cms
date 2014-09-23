@@ -482,8 +482,9 @@ class WishlistModelWish extends WishlistModelAbstract
 					case static::WISH_STATE_REJECTED:  $state = JText::_('COM_WISHLIST_WISH_STATUS_REJECTED_INFO');  break;
 					case static::WISH_STATE_DELETED:   $state = JText::_('COM_WISHLIST_WISH_STATUS_DELETED_INFO');   break;
 					case static::WISH_STATE_GRANTED:
+						$user = JUser::getInstance($this->get('granted_by'));
 						$state = $this->granted() != '0000-00-00 00:00:00'
-								? JText::sprintf('on %s by %s', $this->granted('date'), $this->get('grantedby'))
+								? JText::sprintf('on %s by %s', $this->granted('date'), $user->get('name'))
 								: '';
 					break;
 					case static::WISH_STATE_OPEN:
