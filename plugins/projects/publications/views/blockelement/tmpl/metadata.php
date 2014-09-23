@@ -38,7 +38,8 @@ if (count($matches) > 0)
 	}
 }
 
-$required 		= (isset($this->manifest->params->required) && $this->manifest->params->required) ? true : false;
+$required 		= (isset($this->manifest->params->required)
+				&& $this->manifest->params->required) ? true : false;
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
@@ -50,6 +51,14 @@ $size  			= isset($this->manifest->params->maxlength)
 $placeholder 	= isset($this->manifest->params->placeholder)
 				? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
 $editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
+$cols 			= isset($this->manifest->params->cols) ? $this->manifest->params->cols : 50;
+$rows 			= isset($this->manifest->params->rows) ? $this->manifest->params->rows : 6;
+$editorMacros 	= isset($this->manifest->params->editorMacros)
+				? $this->manifest->params->editorMacros : 0;
+$editorMinimal 	= isset($this->manifest->params->editorMinimal)
+				? $this->manifest->params->editorMinimal : 1;
+$editorImages 	= isset($this->manifest->params->editorImages)
+				? $this->manifest->params->editorImages : 0;
 
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
 
@@ -75,6 +84,12 @@ $aboutText = $this->manifest->about ? $this->manifest->about : NULL;
 if ($this->pub->_project->provisioned == 1 && isset($this->manifest->aboutProv))
 {
 	$aboutText = $this->manifest->aboutProv;
+}
+
+// Wrap text in a paragraph
+if (strlen($aboutText) == strlen(strip_tags($aboutText)))
+{
+    $aboutText = '<p>' . $aboutText . '</p>';
 }
 ?>
 
@@ -104,7 +119,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 	<!-- Active editing -->
 	<div class="element_editing<?php if (!$active) { echo ' hidden'; } ?>">
 		<div class="block-aside">
-			<div class="block-info">	
+			<div class="block-info">
 			<?php
 				$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
 
@@ -112,7 +127,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 				{
 					$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
 					$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-								. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
+								. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . ' &raquo;</a>';
 					$about.= ' <div class="hidden">';
 					$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
 					$about.= ' </div>';
@@ -136,17 +151,20 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 				{
 					case 'editor':
 
-						$cols = isset($this->manifest->params->cols) ? $this->manifest->params->cols : 50;
-						$rows = isset($this->manifest->params->rows) ? $this->manifest->params->rows : 6;
+						$classes  = $editorMinimal == 1 ? 'minimal ' : '';
+						$classes .= ' no-footer ';
+						$classes .= $editorImages == 1 ? 'images ' : '';
+						$classes .= $editorMacros == 1 ? 'macros ' : '';
 						$output .= JFactory::getEditor()->display($field, $value
 							, '', '', $cols, $rows, false
-							, 'pub-' . $elName, null, null, array('class' => 'minimal no-footer'));
+							, 'pub-' . $elName, null, null, array('class' => $classes));
 
 					break;
 
 					case 'textarea':
+						$value = preg_replace("/\r\n/", "\r", trim($value));
 						$output .= '<textarea name="' . $field . '" id="pub-' . $elName
-							. '" ' . $size.' ' . $placeholder . '>' . $value . '</textarea>';
+							. '" ' . $size.' ' . $placeholder . ' cols="' . $cols . '" rows="' . $rows . '">' . $value . '</textarea>';
 					break;
 
 					case 'text':
