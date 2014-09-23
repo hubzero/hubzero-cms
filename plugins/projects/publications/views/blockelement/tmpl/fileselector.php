@@ -65,10 +65,14 @@ $git = new ProjectsGitHelper( $config->get('gitpath', '/opt/local/bin/git'), 0, 
 );
 
 $aboutText = $this->manifest->about ? $this->manifest->about : NULL;
-
 if ($prov == 1 && isset($this->manifest->aboutProv))
 {
 	$aboutText = $this->manifest->aboutProv;
+}
+// Wrap text in a paragraph
+if (strlen($aboutText) == strlen(strip_tags($aboutText))) 
+{
+    $aboutText = '<p>' . $aboutText . '</p>';
 }
 
 $section  = $this->master->block;
