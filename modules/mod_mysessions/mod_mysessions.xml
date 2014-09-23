@@ -60,7 +60,7 @@ HUBzero is a registered trademark of Purdue University.
 				</field>
 				<field type="spacer" />
 
-				<field name="quick_launch" member_dashboard="1" type="list" default="0" label="Quick Launch" description="Have quick launch link in title bar for each session?">
+				<field name="quick_launch" member_dashboard="1" type="list" default="1" label="Quick Launch" description="Have quick launch link in title bar for each session?">
 					<option value="1">Yes</option>
 					<option value="0">No</option>
 				</field>
