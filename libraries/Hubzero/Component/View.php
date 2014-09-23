@@ -111,7 +111,7 @@ class View extends AbstractView
 	{
 		if (!$component)
 		{
-			$component = \JRequest::getCmd('option');
+			$component = $this->get('option', \JRequest::getCmd('option'));
 		}
 
 		if ($component === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
@@ -159,7 +159,7 @@ class View extends AbstractView
 	{
 		if (!$component)
 		{
-			$component = \JRequest::getCmd('option');
+			$component = $this->get('option', \JRequest::getCmd('option'));
 		}
 
 		if ($component === true || strstr($script, '(') || strstr($script, ';'))
@@ -202,7 +202,7 @@ class View extends AbstractView
 	{
 		if (!$component)
 		{
-			$component = \JRequest::getCmd('option');
+			$component = $this->get('option', \JRequest::getCmd('option'));
 		}
 
 		$dir = $this->_assetDir($image, 'img');
