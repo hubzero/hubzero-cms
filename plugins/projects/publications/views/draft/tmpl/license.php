@@ -63,7 +63,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step
 
 $defaultText = $this->license ? $this->license->text : NULL;
 $text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
-$text = preg_replace("/\n/", "\r", $text);
+$text = preg_replace("/\n/", "\r", trim($text));
 ?>
 
 <!-- Load content selection browser //-->

@@ -486,6 +486,7 @@ class PublicationsHtml
 		}
 		$cls = strtolower($license->name);
 		$custom = $publication->license_text ? $publication->license_text : '';
+		$custom = !$custom && $license->text ? $license->text : $custom;
 		$lnk = $license->url ? $license->url : '';
 		$title = strtolower($license->title) != 'custom' ? $license->title : '';
 		$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&task=license').'?v='.$version;
@@ -497,12 +498,10 @@ class PublicationsHtml
 			{
 				$html .= '<a href="'.$lnk.'" rel="external">'.$title.'</a>';
 			}
-			elseif ($custom)
+			else
 			{
 				$html .= $title.' '.JText::_('COM_PUBLICATIONS_LICENSED_ACCORDING_TO').' ';
-				$html .= $custom
-					   ? '<a href="'.$url.'" class="'.$class.'">'.JText::_('COM_PUBLICATIONS_LICENSED_THESE_TERMS').'</a>'
-					   : '<a rel="external" href="'.$lnk.'">'.JText::_('COM_PUBLICATIONS_LICENSED_THIS_DEED').'</a>';
+				$html .= '<a href="'.$url.'" class="'.$class.'">'.JText::_('COM_PUBLICATIONS_LICENSED_THESE_TERMS').'</a>';
 			}
 		}
 		else

@@ -39,6 +39,8 @@ if ($this->row->id)
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
+$text = preg_replace("/\r\n/", "\r", trim($this->row->text));
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -74,7 +76,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap">
 				<label for="field-text"><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_CONTENT'); ?>:</label></td>
-				<textarea name="fields[text]" id="field-text" cols="40" rows="10"><?php echo $this->row->text; ?></textarea>
+				<textarea name="fields[text]" id="field-text" cols="40" rows="10"><?php echo $text; ?></textarea>
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_PUBLICATIONS_FIELD_ICON_HINT'); ?>">
 				<label for="field-icon"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ICON'); ?>:</label>
