@@ -348,7 +348,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 	{
 		// Incoming
 		$id 		= JRequest::getInt('id', 0);
-		$curation 	= JRequest::getVar('curation', '', 'post');
+		$curation 	= JRequest::getVar('curation', '', 'post', 'none', 2);
 
 		$row 		= new PublicationMasterType($this->database);
 
@@ -485,7 +485,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		$manifest = $objC->_manifest;
 
 		// Get curation configs
-		$curation = JRequest::getVar('curation', array(), 'post');
+		$curation = JRequest::getVar('curation', array(), 'post', 'none', 2);
 
 		// Collect modifications
 		if (is_array($curation) && isset($curation['blocks'][$sequence]))
@@ -765,7 +765,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Use new curation flow?
 		$useBlocks  = $this->config->get('curation', 0);
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
 		$fields = array_map('trim', $fields);
 
 		// Initiate extended database class
