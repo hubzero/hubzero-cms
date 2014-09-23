@@ -245,5 +245,7 @@ function submitbutton(pressbutton)
 	</div>
 <?php } ?>
 	<?php echo JHTML::_('form.token'); ?>
+	<?php if ($this->row->id) { ?>
 	<p class="sublink"><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=advanced&amp;id=<?php echo $this->row->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING'); ?></a></p>
+	<?php } ?>
 </form>
