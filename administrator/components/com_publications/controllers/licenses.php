@@ -165,11 +165,21 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Save a publication and fall through to edit view
+	 *
+	 * @return void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(true);
+	}
+
+	/**
 	 * Save a type
 	 *
 	 * @return     void
 	 */
-	public function saveTask()
+	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -177,14 +187,15 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
+		$url = 'index.php?option=' . $this->_option . '&controller='
+			. $this->_controller . '&task=edit&id[]=' . $fields['id'];
+
 		// Initiate extended database class
 		$row = new PublicationLicense($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			);
+			$this->setRedirect($url);
 			return;
 		}
 
@@ -217,11 +228,22 @@ class PublicationsControllerLicenses extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
-		);
+		// Redirect to edit view?
+		if ($redirect)
+		{
+			$this->setRedirect(
+				$url,
+				JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
+			);
+		}
+		else
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED')
+			);
+		}
+		return;
 	}
 
 	public function orderupTask()

@@ -173,11 +173,21 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 	}
 
 	/**
+	 * Save a publication and fall through to edit view
+	 *
+	 * @return void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(true);
+	}
+
+	/**
 	 * Save a type
 	 *
 	 * @return     void
 	 */
-	public function saveTask()
+	public function saveTask($redirect = false)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -270,8 +280,22 @@ class PublicationsControllerCategories extends \Hubzero\Component\AdminControlle
 			return;
 		}
 
-		// Redirect
-		$this->setRedirect($url, JText::_('COM_PUBLICATIONS_CATEGORY_SAVED'));
+		// Redirect to edit view?
+		if ($redirect)
+		{
+			$this->setRedirect(
+				$url,
+				JText::_('COM_PUBLICATIONS_CATEGORY_SAVED')
+			);
+		}
+		else
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_PUBLICATIONS_CATEGORY_SAVED')
+			);
+		}
+		return;
 	}
 
 	/**

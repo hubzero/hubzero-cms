@@ -32,6 +32,10 @@ defined('_JEXEC') or die('Restricted access');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATION_CATEGORY') . ': [ ' . $text . ' ]', 'addedit.png');
+if ($this->row->id)
+{
+	JToolBarHelper::apply();
+}
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 
@@ -90,7 +94,7 @@ function submitbutton(pressbutton)
 				<span class="hint"><?php echo JText::_('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?></span>
 			</div>
 			<div class="input-wrap">
-				<label for="field-description"><?php echo JText::_('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
+				<label for="field-description"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ABOUT'); ?>:</label>
 				<input type="text" name="prop[description]" id="field-description" size="55" maxlength="255" value="<?php echo $this->escape($this->row->description); ?>" />
 			</div>
 
