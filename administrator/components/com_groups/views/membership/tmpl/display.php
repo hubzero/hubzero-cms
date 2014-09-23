@@ -69,7 +69,7 @@ switch ($this->filters['status'])
 		}
 		if ($canDo->get('core.delete'))
 		{
-			JToolBarHelper::deleteList();
+			JToolBarHelper::deleteList('COM_GROUPS_MEMBER_DELETE', 'delete');
 		}
 	break;
 }
