@@ -892,7 +892,7 @@ class CoursesModelCourse extends CoursesModelAbstract
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				//$content = html_entity_decode($content);
 				//$content = str_replace("\xC2\xA0", ' ', $content);
-				$content = str_replace(array('&lt;', '&gt;'), array('<', '>'), $content);
+				$content = str_replace(array('&lt;', '&gt;', '&amp;'), array('<', '>', '&'), $content);
 			break;
 		}
 
