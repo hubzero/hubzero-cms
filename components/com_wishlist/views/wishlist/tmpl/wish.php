@@ -401,7 +401,7 @@ $this->css()
 					<h4><?php echo JText::_('COM_WISHLIST_ARE_YOU_SURE_DELETE_WISH'); ?></h4>
 					<p>
 						<span class="say_yes">
-							<a class="btn btn-danger" href="<?php echo JRoute::_($this->wish->link('withdraw')); ?>">
+							<a class="btn btn-danger" href="<?php echo JRoute::_($this->wish->link('delete')); ?>">
 								<?php echo JText::_('COM_WISHLIST_YES'); ?>
 							</a>
 						</span>
