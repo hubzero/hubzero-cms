@@ -100,7 +100,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 							<?php echo $this->license->text ? JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE') : JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE_AND_CUSTOMIZE'); ?>
 							<textarea name="license_text" id="license-text" cols="50" rows="10" class="pubinput"><?php echo $text; ?></textarea>
 						</label>
-						<p class="hidden" id="license-template"><?php echo preg_replace("/\n/", "\r", $this->license->text); ?></p>
+						<p class="hidden" id="license-template"><?php echo preg_replace("/\r\n/", "\r", $this->license->text); ?></p>
 						<p class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_REMOVE_DEFAULTS'); ?></p>
 						<span class="mini pub-edit" id="reload"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_RELOAD_TEMPLATE_TEXT'); ?></span>
 					</div>
