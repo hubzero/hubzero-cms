@@ -46,7 +46,7 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 			<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_CATEGORY'); ?></td>
 			<td><?php echo $item['category']; ?></td>
 		</tr>
-		<?php foreach($item['version'] as $key => $value) {
+		<?php foreach ($item['version'] as $key => $value) {
 			if (!$value || in_array($key, $skipFields)) {
 				continue;
 			}
@@ -109,7 +109,7 @@ $skipFields = array('license_type', 'state', 'main', 'secret', 'access');
 						</thead>
 						<tbody>
 		<?php if (!empty($item['files'])) {
-			foreach($item['files'] as $filerecord) {
+			foreach ($item['files'] as $filerecord) {
 			?>
 						<tr<?php if ($filerecord['error']) { echo ' class="missing"'; } ?>>
 							<td><?php echo $filerecord['type']; ?></td>

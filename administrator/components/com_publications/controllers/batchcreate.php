@@ -684,7 +684,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 			// Check if names is already used
 			$suffix = $fileAttach->checkForDuplicate(
 				$configs->path . DS . $attachment->path,
-			 	$attachment,
+				$attachment,
 				$configs
 			);
 			// Save params if applicable
@@ -930,7 +930,7 @@ class PublicationsControllerBatchcreate extends \Hubzero\Component\AdminControll
 		if ($error->line || $error->column)
 		{
 			$return .= "\n  Line: $error->line" .
-               "\n  Column: $error->column";
+			"\n  Column: $error->column";
 		}
 
 	    return "$return\n\n--------------------------------------------\n\n";
