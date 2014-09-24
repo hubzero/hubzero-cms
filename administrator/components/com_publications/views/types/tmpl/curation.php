@@ -166,7 +166,6 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_BLOCKS'); ?></span> <a class="editthis" href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=addblock&amp;id=<?php echo $this->row->id; ?>">[<?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATION_ADD_BLOCK'); ?>]</a></legend>
 			<?php foreach ($blocks as $sequence => $block) {
-				$blockSelection['active'][] = $block->name;
 				$blockMaster = $masterBlocks[$block->name];
 				?>
 			<fieldset class="adminform">
@@ -175,7 +174,7 @@ function submitbutton(pressbutton)
 					<div class="col width-20 fltlft">
 						<div class="input-wrap">
 							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="1" <?php if (!isset($block->active) || $block->active == 1 ) { echo 'checked="checked"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_STATUS_ACTIVE'); ?></label>
-							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
+							<label class="block"><input type="radio" name="curation[blocks][<?php echo $sequence; ?>][active]" value="0" <?php if (isset($block->active) && $block->active == 0 ) { echo 'checked="checked"'; } ?> <?php if ($blockMaster->minimum > 0 && !in_array($block->name, $blockSelection['active'])) { echo ' disabled="disabled"'; } ?> /> <?php echo JText::_('COM_PUBLICATIONS_STATUS_INACTIVE'); ?></label>
 						</div>
 						<div class="input-wrap tweakblock">
 							<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_ORDER'); ?>: <?php echo $i; ?> <a href="index.php?option=<?php echo $this->option; ?>&amp;controller=types&amp;task=editblockorder&amp;id=<?php echo $this->row->id; ?>">[<?php echo JText::_('COM_PUBLICATIONS_EDIT'); ?>]</a></label>
@@ -240,7 +239,7 @@ function submitbutton(pressbutton)
 					</div>
 				</div>
 			</fieldset>
-			<?php $i++; } ?>
+			<?php $blockSelection['active'][] = $block->name; $i++; } ?>
 		</fieldset>
 	</div>
 <?php } ?>
