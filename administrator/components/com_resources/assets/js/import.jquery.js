@@ -168,7 +168,7 @@ jQuery(document).ready(function(jq){
 
 			// make sure progress says 100
 			$('.progress').progressbar("value", 100);
-			console.log(data);
+
 			if (data.import == 'success')
 			{
 				$('.results-stats').html(data.records.length + ' records - ' + data.time + ' seconds');
@@ -195,12 +195,11 @@ jQuery(document).ready(function(jq){
 		this.resultHelpers = function() {
 			// print formatted data
 			Handlebars.registerHelper('print_json_data', function(data) {
-				var json = data;
-				if (typeof(json) != 'object')
+				if (typeof(data) == 'object')
 				{
-					json = jQuery.parseJSON(data)
+					return JSON.stringify(data, null, 4);
 				}
-  				return JSON.stringify(json, null, 4);
+				return data;
 			});
 
 			// Capitalize first char
