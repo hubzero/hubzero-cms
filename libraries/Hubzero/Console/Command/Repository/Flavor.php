@@ -150,6 +150,15 @@ class Flavor extends Base implements CommandInterface
 				$migration->savePluginParams('members', 'dashboard', $params);
 				$this->output->addLine('Updating default members dashboard configuration');
 
+				// Update kb articles
+				$query = "UPDATE `#__faq_categories` SET `state` = 2 WHERE `alias` = 'tools'";
+				$database->setQuery($query);
+				$database->query();
+				$query = "UPDATE `#__faq` SET `state` = 2 WHERE `alias` = 'webdav'";
+				$database->setQuery($query);
+				$database->query();
+				$this->output->addLine('Deleting tool and webdav related KB articles');
+
 				break;
 
 			case 'default':
@@ -246,6 +255,15 @@ class Flavor extends Base implements CommandInterface
 
 				$migration->savePluginParams('members', 'dashboard', $params);
 				$this->output->addLine('Restoring default members dashboard configuration');
+
+				// Update kb articles
+				$query = "UPDATE `#__faq_categories` SET `state` = 1 WHERE `alias` = 'tools'";
+				$database->setQuery($query);
+				$database->query();
+				$query = "UPDATE `#__faq` SET `state` = 1 WHERE `alias` = 'webdav'";
+				$database->setQuery($query);
+				$database->query();
+				$this->output->addLine('Restoring tool and webdav related KB articles');
 
 				break;
 
