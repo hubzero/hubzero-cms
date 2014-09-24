@@ -237,13 +237,6 @@ class Flavor extends Base implements CommandInterface
 							"size_y" => 2
 						),
 						array(
-							"module" => 37,
-							"col"    => 3,
-							"row"    => 5,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
 							"module" => 41,
 							"col"    => 3,
 							"row"    => 1,
@@ -254,6 +247,13 @@ class Flavor extends Base implements CommandInterface
 							"module" => 36,
 							"col"    => 3,
 							"row"    => 3,
+							"size_x" => 1,
+							"size_y" => 2
+						),
+						array(
+							"module" => 37,
+							"col"    => 3,
+							"row"    => 5,
 							"size_x" => 1,
 							"size_y" => 2
 						)
