@@ -10,8 +10,6 @@
 
 defined('_JEXEC') or die;
 
-mb_internal_encoding('UTF-8');
-
 jimport('joomla.application.component.helper');
 
 require_once(JPATH_COMPONENT . DS . 'controller.php');

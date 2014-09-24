@@ -19,7 +19,6 @@ if (JFactory::getConfig()->getValue('config.debug')) {
 	ini_set('display_errors', '0');
 }
 
-mb_internal_encoding('UTF-8');
 
 // Session Timeout
 $config = JFactory::getConfig();
