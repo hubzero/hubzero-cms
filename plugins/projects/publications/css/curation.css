@@ -806,6 +806,9 @@
 		position: absolute;
 		margin: 30px 0 0 -80px;
 	}
+	.handler-controls:before {
+		margin-left: -60px;
+	}
 	.output-content ul {
 		min-height: 40px;
 	}
@@ -1016,9 +1019,12 @@
 	}
 	.handler-controls .handler-imageviewer {
 		padding: 1em;
+		background: #e0ebee;
+	}
+	.handler-controls .handler-imageviewer h3 {
 		padding-left: 50px;
 	}
-	.handler-controls .handler-imageviewer:before,
+	.handler-controls .handler-imageviewer h3:before,
 	.multizip p:before {
 		width: 55px;
 		height: 55px;
@@ -1039,11 +1045,10 @@
 	}
 	.handler-aside {
 		float: right;
-		width: 200px;
+		width: 190px;
 		padding: 0 0 0 30px;
 		margin-top: 3em;
 		padding-left: 1em;
-		background: #e0ebee;
 	}
 	*[class^="handler-"] h3,
 	*[class*=" handler-"] h3 {
