@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
+ All rights reserved.
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU General Public License,
+ Version 2 as published by the Free Software Foundation.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+
+<extension type="template" version="2.5">
+	<name>Welcome</name>
+	<creationDate>2014</creationDate>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GPLv2</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>http://hubzero.org/</authorUrl>
+	<version>1.0</version>
+	<description>TPL_WELCOME_XML_DESCRIPTION</description>
+	<files>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.tpl_welcome.ini</language>
+	</languages>
+	<positions>
+	</positions>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="flavor" type="list" default="" label="TPL_WELCOME_FIELD_FLAVOR_LABEL" description="TPL_WELCOME_FIELD_FLAVOR_LABEL">
+					<option value="">TPL_WELCOME_FIELD_FLAVOR_NONE</option>
+					<option value="amazon">Amazon</option>
+				</field>
+				<field name="template" type="text" default="hubbasic2013" label="TPL_WELCOME_FIELD_TEMPLATE_LABEL" description="TPL_WELCOME_FIELD_TEMPLATE_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
