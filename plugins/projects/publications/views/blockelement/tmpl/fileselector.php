@@ -130,7 +130,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement fileselector<?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?> ">
+echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming && $this->collapse) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?> ">
 	<!-- Showing status only -->
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
 		<div class="block-aside"></div>
