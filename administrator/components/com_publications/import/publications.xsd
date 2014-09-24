@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="file">
+		<xs:complexType>
+	        <xs:sequence>
+	              <xs:element name="path" type="xs:string"></xs:element>
+	              <xs:element name="title" type="xs:string"></xs:element>
+	        </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	<xs:element name="author">
+	      <xs:complexType>
+	            <xs:sequence>
+	                  <xs:element name="firstname" type="xs:string"></xs:element>
+	                  <xs:element name="lastname" type="xs:string"></xs:element>
+	                  <xs:element name="organization" type="xs:string"></xs:element>
+	            </xs:sequence>
+	            <xs:attribute name="uid" type="xs:int"></xs:attribute>
+	      </xs:complexType>
+	</xs:element>
+	<xs:element name="publications">
+		<xs:complexType>
+                  <xs:sequence>
+                        <xs:element name="publication" maxOccurs="unbounded">
+                              <xs:complexType>
+                                    <xs:sequence>
+                                          <xs:element name="title" type="xs:string"></xs:element>
+                                          <xs:element name="synopsis" type="xs:string"></xs:element>
+                                          <xs:element name="abstract" type="xs:string"></xs:element>
+                                          <xs:element name="version" type="xs:string" minOccurs="0"></xs:element>
+										  <xs:element name="category" type="xs:string" minOccurs="0"></xs:element>
+                                          <xs:element name="notes" minOccurs="0" type="xs:string"></xs:element>
+                                          <xs:element name="content">
+                                                <xs:complexType>
+                                                      <xs:sequence>
+                                                             <xs:element ref="file" maxOccurs="unbounded"/>
+                                                      </xs:sequence>
+                                                </xs:complexType>
+                                          </xs:element>
+                                          <xs:element name="supportingmaterials" minOccurs="0">
+                                                <xs:complexType>
+                                                      <xs:sequence>
+                                                            <xs:element ref="file" maxOccurs="unbounded"/>
+                                                      </xs:sequence>
+                                                </xs:complexType>
+                                          </xs:element>
+                                          <xs:element name="gallery" minOccurs="0">
+                                                <xs:complexType>
+                                                      <xs:sequence>
+                                                            <xs:element ref="file" maxOccurs="unbounded"/>
+                                                      </xs:sequence>
+                                                </xs:complexType>
+                                          </xs:element>
+                                          <xs:element name="authors">
+                                                <xs:complexType>
+                                                      <xs:sequence>
+                                                         <xs:element ref="author" maxOccurs="unbounded"/>   
+                                                      </xs:sequence>
+                                                </xs:complexType>
+                                          </xs:element>
+                                          <xs:element name="tags" minOccurs="0">
+                                                <xs:complexType>
+                                                      <xs:sequence>
+                                                            <xs:element name="tag" type="xs:string" maxOccurs="unbounded"></xs:element>
+                                                      </xs:sequence>
+                                                </xs:complexType>
+                                          </xs:element>
+                                          <xs:element name="license" type="xs:string"></xs:element>
+                                          <xs:element name="citations" minOccurs="0">
+                                                <xs:complexType>
+                                                      <xs:sequence>
+                                                            <xs:element name="citation" maxOccurs="unbounded"></xs:element>
+                                                      </xs:sequence>
+                                                </xs:complexType>
+                                          </xs:element>
+                                    </xs:sequence>
+                              </xs:complexType>
+                        </xs:element>
+                  </xs:sequence>
+				</xs:complexType>
+		</xs:element>
+</xs:schema>

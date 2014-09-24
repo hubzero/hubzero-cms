@@ -95,6 +95,11 @@ JSubMenuHelper::addEntry(
 	'index.php?option=' .  $option . '&controller=types',
 	$controllerName == 'types'
 );
+JSubMenuHelper::addEntry(
+	JText::_('COM_PUBLICATIONS_BATCH_CREATE'),
+	'index.php?option=' .  $option . '&controller=batchcreate',
+	$controllerName == 'batchcreate'
+);
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'PublicationsController' . ucfirst($controllerName);

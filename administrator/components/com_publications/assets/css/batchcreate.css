@@ -1,0 +1,98 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/components/com_publicatons/assets/css/batchcreate.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+	
+.batchupload {
+	margin-top: 2em;
+}
+.input-wrap.fltrt {
+	border: 5px solid #edeced;
+	width: 20%;
+	margin-top: 2em;
+}
+.input-wrap.file-submit {
+	padding-top: 2em;
+}
+.output-wrap {
+	padding: 2em;
+	margin: 0 3em 2em 3em;
+	border: 10px solid #deeae1;
+}
+.output-wrap.witherror {
+	border: 10px solid #f7cfce;
+}
+.output-wrap.witherror .general-error {
+	color: red;
+}
+.pubitems li {
+	border: 2px solid #E2E2E2;	
+	margin: 1em 0;
+}
+.pubitems li table {
+	background: #FFFFFF;
+}
+.pubitems li table.records {
+	border-top: 2px solid #CCC;
+}
+.pubitems li table tr:last-child,
+.pubitems li table tr:last-child td {
+	border-bottom: none;
+}
+.pubitems li.problem {
+	border: 1px solid #e99ba1;
+	background: #f9f7f7;
+}
+.pubitems h5 {
+	padding: 0.5em 1em;
+}
+.pubitems td.key {
+	background: #ebf1f5;
+}
+.pubitems li {
+	background: #f8f8f8;
+}
+.pubitems .missing td {
+	background: #f9f7f7;
+	color: red;
+}
+.block {
+	display: block;
+}
+.prominent {
+	font-weight: bold;
+}
+.pubitems .tags {
+	list-style: none;
+	margin-top: 1em;
+	margin-bottom: 0;
+	font-size: 85%;
+}
+.pubitems .tags li {
+	display: inline;
+	margin: 0 9px 0 0;
+	background: #EFEFEF;
+}
+.pubitems .tags li a {
+	font-size: bold;
+}
+.pubitems .tags li:before {
+	font-family: 'Fontcons';
+	content: "\f02c";
+	font-weight: normal;
+	padding-right: 0.2em;
+}
+.controlarea {
+	text-align: right;
+}
+.controlarea .btn {
+	background: #000000;
+	color: #FFFFFF;
+}
+.success {
+	background: #ecfeea;
+	color: green;
+	padding: 0.5em 1em;
+}
