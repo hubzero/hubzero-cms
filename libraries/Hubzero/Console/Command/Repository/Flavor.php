@@ -316,7 +316,7 @@ class Flavor extends Base implements CommandInterface
 		     ->addSection('Flavors')
 		     ->addArgument(
 		         'amazon',
-		         'This flavor customizes the hub uniquely for use in the Amazon EC3
+		         'This flavor customizes the hub uniquely for use in the Amazon EC2
 		         environement. This primarily includes disabling tools and tool related
 		         functions and content.'
 		     )
