@@ -190,35 +190,20 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		);
 		$thumbPath = dirname($path) . DS . $thumbName;
 
-		// Create/update thumb if doesn't exist or file changed
-		if (!is_file($thumbPath))
-		{
-			JFile::copy($path, $thumbPath);
-			$this->_imgHelper->set('image', basename($thumbName));
-			$this->_imgHelper->set('overwrite', true);
-			$this->_imgHelper->set('path', $configs->pubPath . DS);
-			$this->_imgHelper->set('maxWidth', $this->_config->params->thumbWidth);
-			$this->_imgHelper->set('maxHeight', $this->_config->params->thumbHeight);
-			if (!$this->_imgHelper->process())
-			{
-				return false;
-			}
-		}
-
-		// Copy to thumb
-		if (is_file($thumbPath))
-		{
-			JFile::copy($thumbPath, $copyToThumb);
-		}
-		else
-		{
-			return false;
-		}
-
 		// Copy to master
 		if (is_file($path))
 		{
 			JFile::copy($path, $copyToMaster);
+
+			// Create/update thumb
+			JFile::copy($path, $copyToThumb);
+			$this->_imgHelper->set('image', basename($copyToThumb));
+			$this->_imgHelper->set('overwrite', true);
+			$this->_imgHelper->set('path', $configs->pubBase . DS );
+			$this->_imgHelper->set('maxWidth', 100);
+			$this->_imgHelper->set('maxHeight', 100);
+			$this->_imgHelper->set('cropratio', '1:1');
+			$this->_imgHelper->process();
 		}
 		else
 		{
