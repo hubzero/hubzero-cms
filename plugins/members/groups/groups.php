@@ -118,7 +118,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 				$groups[$mem->description] = $mem;
 			}
 		}
-		ksort($groups);
+		ksort($groups, SORT_NATURAL|SORT_FLAG_CASE);
 
 		// Build the final HTML
 		if ($returnhtml)
