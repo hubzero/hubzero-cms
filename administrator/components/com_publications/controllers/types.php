@@ -349,6 +349,7 @@ class PublicationsControllerTypes extends \Hubzero\Component\AdminController
 		// Incoming
 		$id 		= JRequest::getInt('id', 0);
 		$curation 	= JRequest::getVar('curation', '', 'post', 'none', 2);
+		$curation = preg_replace('/\s{2,}/u', ' ', preg_replace('/[\n\r\t]+/', '', $curation));
 
 		$row 		= new PublicationMasterType($this->database);
 

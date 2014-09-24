@@ -61,7 +61,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING'); ?></span></legend>
 			<p class="hint"><?php echo JText::_('COM_PUBLICATIONS_MTYPE_ADVANCED_CURATION_EDITING_HINT'); ?></p>
 			<div class="input-wrap">
-				<textarea cols="50" rows="10" name="curation"><?php echo json_encode($this->curation->_manifest); ?></textarea>
+				<textarea cols="50" rows="10" name="curation"><?php echo json_encode($manifest); ?></textarea>
 			</div>
 		</fieldset>
 	<?php echo JHTML::_('form.token'); ?>
