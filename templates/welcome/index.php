@@ -51,6 +51,9 @@ if (JRequest::getInt('getstarted', 0))
 		JFactory::getApplication()->redirect(JRoute::_('index.php'));
 	}
 }
+
+// Get template flavor (ex: amazon)
+$flavor = $this->params->get('flavor', false);
 ?>
 <!DOCTYPE html>
 <!--[if IE]><html class="no-js"><head><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><![endif]-->
@@ -123,38 +126,40 @@ if (JRequest::getInt('getstarted', 0))
 						<p><?php echo JText::_('TPL_WELCOME_ABOUT_BODY'); ?></p>
 					</div>
 
-					<h2><span><?php echo JText::_('TPL_WELCOME_FIRST_THING'); ?></span></h2>
+					<?php if ($flavor) : ?>
+						<h2><span><?php echo JText::_('TPL_WELCOME_FIRST_THING'); ?></span></h2>
 
-					<div class="section">
-						<div class="cols clearfix">
-							<div class="col icon">
-								<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/admin.svg" alt="" />
-							</div>
-							<div class="col spacer">&nbsp;</div>
-							<div class="col txt">
-								<h3><?php echo JText::_('TPL_WELCOME_ADMIN_PASS_HEADER'); ?></h3>
+						<div class="section">
+							<div class="cols clearfix">
+								<div class="col icon">
+									<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/admin.svg" alt="" />
+								</div>
+								<div class="col spacer">&nbsp;</div>
+								<div class="col txt">
+									<h3><?php echo JText::_('TPL_WELCOME_ADMIN_PASS_HEADER_' . strtoupper($flavor)); ?></h3>
 
-								<p><?php echo JText::_('TPL_WELCOME_ADMIN_PASS_BODY'); ?></p>
+									<p><?php echo JText::_('TPL_WELCOME_ADMIN_PASS_BODY_' . strtoupper($flavor)); ?></p>
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<div class="section inverted">
-						<div class="cols clearfix">
-							<div class="mobile col icon">
-								<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/ssh.svg" alt="" />
-							</div>
-							<div class="col txt">
-								<h3><?php echo JText::_('TPL_WELCOME_SSH_HEADER'); ?></h3>
+						<div class="section inverted">
+							<div class="cols clearfix">
+								<div class="mobile col icon">
+									<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/ssh.svg" alt="" />
+								</div>
+								<div class="col txt">
+									<h3><?php echo JText::_('TPL_WELCOME_SSH_HEADER_' . strtoupper($flavor)); ?></h3>
 
-								<p><?php echo JText::_('TPL_WELCOME_SSH_BODY'); ?></p>
-							</div>
-							<div class="spacer col">&nbsp;</div>
-							<div class="nomobile col icon">
-								<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/ssh.svg" alt="" />
+									<p><?php echo JText::sprintf('TPL_WELCOME_SSH_BODY_' . strtoupper($flavor), $_SERVER['SERVER_NAME']); ?></p>
+								</div>
+								<div class="spacer col">&nbsp;</div>
+								<div class="nomobile col icon">
+									<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/ssh.svg" alt="" />
+								</div>
 							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 
 					<h2 class="info"><span><?php echo JText::_('TPL_WELCOME_GETTING_TO_KNOW'); ?></span></h2>
 
