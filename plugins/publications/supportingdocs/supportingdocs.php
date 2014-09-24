@@ -134,7 +134,7 @@ class plgPublicationsSupportingDocs extends JPlugin
 
 		// Get docs
 		$pContent = new PublicationAttachment( $database );
-		$view->docs = $pContent->getAttachments( $publication->version_id, $filters = array('role' => '0'));
+		$view->docs = $pContent->getAttachments( $publication->version_id, $filters = array('role' => 4));
 
 		// Get projects html helper
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
