@@ -2376,7 +2376,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		// continue output
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=pipeline'),
 			JText::_('COM_TOOLS_NOTICE_TOOL_CANCELLED')
 		);
 	}

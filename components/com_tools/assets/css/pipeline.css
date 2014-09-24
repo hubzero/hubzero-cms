@@ -115,6 +115,7 @@
 	#ctCancel { 
 		display: none;
 		padding: 1em 1.5em 0.5em 1.5em;
+		white-space: normal !important;
 	}
 	#ctComment { 
 		display: none;
@@ -621,6 +622,12 @@
 		border: 1px solid #b1a997;
 		color: #59554c;
 		background: #f9f7f1;
+		padding: 0.5em;
+		position: relative;
+	}
+	.toolinfo table th, .toolinfo table td {
+		border: none;
+		width: auto;
 	}
 	.toolinfo_abandoned {
 		border: 1px solid #ccc;
@@ -642,6 +649,7 @@
 	}
 	.toolinfo table ul { 
 		list-style: none;
+		position: relative;
 	}
 	#toolstatus th { 
 		color: #999;

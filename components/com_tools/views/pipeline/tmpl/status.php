@@ -109,7 +109,7 @@ $this->css('pipeline.css')
 	</div><!-- / .toolinfo_note -->
 
 	<div class="grid">
-		<div class="col span-half">
+		<div class="col span7">
 			<div class="toolinfo<?php echo $this->statusClass; ?>">
 				<table id="toolstatus">
 					<tbody>
@@ -293,7 +293,7 @@ $this->css('pipeline.css')
 				</table>
 			</div>
 		</div><!-- / .col span-half -->
-		<div class="col span-half omega">
+		<div class="col span5 omega">
 			<div id="whatsnext">
 				<h2 class="nextaction"><?php echo JText::_('COM_TOOLS_WHAT_NEXT');?></h2>
 				<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>" method="post" id="statusForm">
