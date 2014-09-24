@@ -147,10 +147,10 @@ function toolsParseRoute($segments)
 			break;
 
 			case 'reorder':
-			case 'delete':
+			case 'remove':
 			case 'save':
 				$vars['option'] = 'com_tools';
-				$vars['controller'] = 'attachments';
+				$vars['controller'] = JRequest::getVar('controller', 'authors');
 				$vars['task'] = $segments[0];
 			break;
 
