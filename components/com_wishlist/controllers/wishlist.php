@@ -198,6 +198,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$model = WishlistModelWishlist::getInstance($refid, $cat);
 			if (!$model->exists())
 			{
+				$model->set('referenceid', $refid);
 				$model->setup();
 			}
 		}
