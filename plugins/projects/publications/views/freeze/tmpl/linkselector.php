@@ -60,7 +60,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
 
 					// Draw attachment
 					echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams);
- 				}
+				}
 			?>
 			</ul>
 			</div>

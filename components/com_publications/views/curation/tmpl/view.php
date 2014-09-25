@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Get blocks		
+// Get blocks
 $blocks = $this->pub->_curationModel->_blocks;
 
 $pubHelper 		= $this->pub->_helpers->pubHelper;
@@ -55,7 +55,7 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 </div><!-- / #content-header -->
 <div id="content-header-extra">
     <ul id="useroptions">
-    	<li><a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'controller=curation'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LIST'); ?></a></li>	
+    	<li><a class="btn icon-browse" href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'controller=curation'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LIST'); ?></a></li>
 	</ul>
 </div><!-- / #content-header-extra -->
 <form action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'controller=curation'); ?>" method="post" id="curation-form" name="curation-form">
@@ -66,7 +66,7 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 	</fieldset>
 <div class="curation-wrap">
 	<div class="pubtitle">
-		<h3><span class="restype indlist"><?php echo $typetitle; ?></span> <?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo JText::_('COM_PUBLICATIONS_CURATION_VERSION') 
+		<h3><span class="restype indlist"><?php echo $typetitle; ?></span> <?php echo \Hubzero\Utility\String::truncate($this->pub->title, 65); ?> | <?php echo JText::_('COM_PUBLICATIONS_CURATION_VERSION')
 		. ' ' . $this->pub->version_label; ?>
 		</h3>
 	</div>
@@ -84,20 +84,20 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 	<div class="clear"></div>
 	<div class="submit-curation">
 		<p>
-			<span class="button-wrapper icon-kickback">	
-				<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_CURATION_LOOKS_BAD'); ?>" class="btn btn-primary active icon-kickback btn-curate curate-kickback" />	
+			<span class="button-wrapper icon-kickback">
+				<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_CURATION_LOOKS_BAD'); ?>" class="btn btn-primary active icon-kickback btn-curate curate-kickback" />
 			</span>
-			<span class="button-wrapper icon-apply">	
-				<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_CURATION_LOOKS_GOOD'); ?>" class="btn btn-success active icon-apply btn-curate curate-save" />	
-			</span>		
-		</p>					
-	</div>	
+			<span class="button-wrapper icon-apply">
+				<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_CURATION_LOOKS_GOOD'); ?>" class="btn btn-success active icon-apply btn-curate curate-save" />
+			</span>
+		</p>
+	</div>
 	 	 <fieldset>
 			<input type="hidden" name="id" id="pid" value="<?php echo $this->pub->id; ?>" />
 			<input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->version_id; ?>" />
 		 </fieldset>
 		<div class="curation-blocks">
-<?php foreach ($blocks as $sequence => $block) { 
+<?php foreach ($blocks as $sequence => $block) {
 
 	// Skip inactive blocks
 	if (isset($block->active) && $block->active == 0)
@@ -105,11 +105,11 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 		continue;
 	}
 	$this->pub->_curationModel->setBlock( $block->name, $sequence );
-	
-	// Get block content		
+
+	// Get block content
 	echo $block->name == 'review' ? NULL : $this->pub->_curationModel->parseBlock( 'curator' );
 	?>
-	
+
 <?php } ?>
 		</div>
 </div>
