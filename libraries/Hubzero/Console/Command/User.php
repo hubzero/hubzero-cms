@@ -404,67 +404,6 @@ class User extends Base implements CommandInterface
 	}
 
 	/**
-	 * Clear all Users Terms of Use agreements
-	 * 
-	 * @return void
-	 */
-	public function clearTermsOfUse()
-	{
-		// Initialize confirm
-		$confirm = 'no';
-
-		if (!$this->output->isInteractive() && !$this->arguments->getOpt('f'))
-		{
-			$this->output->addLine('To forcibly clear all terms of use agreements for all users, please provide the -f flag. This action is irreversable.', 'warning');
-			return;
-		}
-		else if (!$this->output->isInteractive() && $this->arguments->getOpt('f'))
-		{
-			$confirm = 'yes';
-		}
-		else if ($this->output->isInteractive())
-		{
-			// Confirm clearing
-			$confirm = $this->output->getResponse('Are you sure you want to clear Terms of Use for all users? This will also require users to agree to new terms with next login? (yes/no)');
-		}
-
-		// Did we get a yes?
-		if (strtolower($confirm) == 'yes' || strtolower($confirm) == 'y')
-		{
-			// Get db object
-			$dbo = \JFactory::getDbo();
-
-			// Update registration config value to require re-agreeing upon next login
-			$params = \JComponentHelper::getParams('com_members');
-			$currentTOU = $params->get('registrationTOU','RHRH');
-			$newTOU     = substr_replace($currentTOU, 'R', 3);
-			$params->set('registrationTOU', $newTOU);
-
-			// Update registration param in db
-			$query = "UPDATE `#__extensions` SET `params`=" . $dbo->quote($params->toString()) . " WHERE `name`='com_members'";
-			$dbo->setQuery($query);
-			if (!$dbo->query())
-			{
-				$this->output->error('Unable to set registration field TOU to required on next update.');
-			}
-
-			// Clear all old TOU states
-			$dbo->setQuery("UPDATE `#__xprofiles` SET `usageAgreement`=0;");
-			if (!$dbo->query())
-			{
-				$this->output->error('Unable to clear xprofiles terms of use.');
-			}
-
-			// Output message to let admin know everything went well
-			$this->output->addLine('Terms of Use successfully cleared & registration param updated!', 'success');
-		}
-		else
-		{
-			$this->output->addLine('Operation aborted.');
-		}
-	}
-
-	/**
 	 * Get PDO database connection (probably to catch db errors)
 	 *
 	 * @return (object) pdo database connection
