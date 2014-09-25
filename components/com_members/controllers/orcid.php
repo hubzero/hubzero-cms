@@ -36,6 +36,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class MembersControllerOrcid extends \Hubzero\Component\SiteController
 {
+	/**
+	 * A list of ORCID services that can be used
+	 *
+	 * @var  array
+	 */
 	protected $_services = array(
 		'public'  => 'pub.orcid.org',
 		'members' => 'api.orcid.org',
@@ -45,8 +50,8 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	/**
 	 * Recursively parse XML
 	 *
-	 * @param   object $root
-	 * @param   array  $fields
+	 * @param   object  $root
+	 * @param   array   $fields
 	 * @return  void
 	 */
 	private function _parseXml($root, &$fields)
@@ -67,7 +72,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	/**
 	 * Parse an XML tree and pull results
 	 *
-	 * @param   object $root
+	 * @param   object  $root
 	 * @return  array
 	 */
 	private function _parseTree($root)
@@ -95,10 +100,11 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Search ORCID by name
+	 * Search ORCID by name or email
 	 *
-	 * @param   string $fname
-	 * @param   string $lname
+	 * @param   string  $fname  First name
+	 * @param   string  $lname  Last name
+	 * @param   string  $email  Email address
 	 * @return  string
 	 */
 	private function _fetchXml($fname, $lname, $email)
@@ -161,8 +167,8 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	/**
 	 * Format ORCID search results
 	 *
-	 * @param   array  $records
-	 * @param   string $callbackPrefix
+	 * @param   array   $records
+	 * @param   string  $callbackPrefix
 	 * @return  string
 	 */
 	private function _format($records, $callbackPrefix)
@@ -180,7 +186,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	/**
 	 * Parse response headers
 	 *
-	 * @param   string $header
+	 * @param   string  $header
 	 * @return  string
 	 */
 	private function _http_parse_headers($header)
@@ -209,7 +215,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	/**
 	 * Save an ORCID to a profile
 	 *
-	 * @param   string $orcid
+	 * @param   string   $orcid
 	 * @return  boolean
 	 */
 	private function _save($orcid)
@@ -231,7 +237,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	/**
 	 * Fetch...
 	 *
-	 * @param   boolean $is_return
+	 * @param   boolean  $is_return
 	 * @return  void
 	 */
 	public function fetchTask($is_return = false)
@@ -278,7 +284,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Show a form for uploading a file
+	 * Show a form for searching/creating an ID
 	 *
 	 * @return  void
 	 */

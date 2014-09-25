@@ -74,75 +74,79 @@ else
 }
 
 $this->css('orcid.css');
+
+$srv = $this->config->get('orcid_service', 'members');
+$tkn = $this->config->get('orcid_' . $srv . '_token');
 ?>
 <section class="main section">
 	<form name="orcid-search-form">
-		<h3>Associate your <b>ORCID</b> (Open Researcher and Contributor ID)</h3>
-		<!-- <p>To include your ORCID in your profile:</p> -->
-		<fieldset>
-			<legend>Profile Info</legend>
+		<?php if ($tkn) { ?>
+			<h3><?php echo JText::_('Associate your <b>ORCID</b> (Open Researcher and Contributor ID)'); ?></h3>
+			<fieldset>
+				<legend><?php echo JText::_('Profile Info'); ?></legend>
 
-			<!-- <p>Please fill in any of the following fields:</p> -->
-
-			<div class="grid nobreak">
-				<div class="col span4">
-					<label for="first-name">
-						First name:
-						<input type="text" id="first-name" name="first-name" value="<?php echo $this->escape($fname); ?>" />
-					</label>
-				</div>
-				<div class="col span4">
-					<label for="last-name">
-						Last name:
-						<input type="text" id="last-name" name="last-name" value="<?php echo $this->escape($lname); ?>" />
-					</label>
-				</div>
-				<div class="col span4 omega">
-					<label for="email">
-						Email:
-						<input type="text" id="email" name="email" value="<?php echo $this->escape($email); ?>" />
-					</label>
-				</div>
-			</div>
-
-			<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(JURI::base(true), '/'); ?>" />
-		</fieldset>
-
-		<div class="orcid-section orcid-search">
-			<h4>Search for an existing ORCID</h4>
-			<div class="grid nobreak">
-				<div class="col span8">
-					<p>If you have created an ORCID or your institution has generated one for you, fill in the fields above and search for your ID from the list.</p>
-				</div>
-				<div class="col span4 omega">
-					<p>
-						<a id="get-orcid-results" class="btn" href="javascript:;"> <?php echo JText::_('Search ORCID'); ?></a>
-					</p>
-				</div>
-			</div>
-
-			<div id="section-orcid-results">
-				<?php
-				if (isset($this->orcid_records_html))
-				{
-					echo $this->orcid_records_html;
-				}
-				?>
-			</div>
-		</div>
-
-		<?php if ($this->config->get('orcid_service', 'members') != 'public') { ?>
-			<div class="orcid-section orcid-create">
-				<h4>Create a new ORCID</h4>
 				<div class="grid nobreak">
-					<div class="col span8">
-						<p>If you can't find your ID or would like to create one, click the "Create new ORCID" button to generate a new ID based on the info above. You will receive an email from ORCID to claim the new ID.</p>
+					<div class="col span4">
+						<label for="first-name">
+							<?php echo JText::_('First name:'); ?>
+							<input type="text" id="first-name" name="first-name" value="<?php echo $this->escape($fname); ?>" />
+						</label>
+					</div>
+					<div class="col span4">
+						<label for="last-name">
+							<?php echo JText::_('Last name:'); ?>
+							<input type="text" id="last-name" name="last-name" value="<?php echo $this->escape($lname); ?>" />
+						</label>
 					</div>
 					<div class="col span4 omega">
-						<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
+						<label for="email">
+							<?php echo JText::_('Email:'); ?>
+							<input type="text" id="email" name="email" value="<?php echo $this->escape($email); ?>" />
+						</label>
 					</div>
 				</div>
+
+				<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(JURI::base(true), '/'); ?>" />
+			</fieldset>
+
+			<div class="orcid-section orcid-search">
+				<h4><?php echo JText::_('Search for an existing ORCID'); ?></h4>
+				<div class="grid nobreak">
+					<div class="col span8">
+						<p><?php echo JText::_('If you have created an ORCID or your institution has generated one for you, fill in the fields above and search for your ID from the list.'); ?></p>
+					</div>
+					<div class="col span4 omega">
+						<p>
+							<a id="get-orcid-results" class="btn" href="javascript:;"><?php echo JText::_('Search ORCID'); ?></a>
+						</p>
+					</div>
+				</div>
+
+				<div id="section-orcid-results">
+					<?php
+					if (isset($this->orcid_records_html))
+					{
+						echo $this->orcid_records_html;
+					}
+					?>
+				</div>
 			</div>
+
+			<?php if ($this->config->get('orcid_service', 'members') != 'public') { ?>
+				<div class="orcid-section orcid-create">
+					<h4><?php echo JText::_('Create a new ORCID'); ?></h4>
+					<div class="grid nobreak">
+						<div class="col span8">
+							<p><?php echo JText::_('If you can\'t find your ID or would like to create one, click the "Create new ORCID" button to generate a new ID based on the info above. You will receive an email from ORCID to claim the new ID.'); ?></p>
+						</div>
+						<div class="col span4 omega">
+							<p><a id="create-orcid" class="btn" onclick="<?php echo $callbackPrefix . "createOrcid(document.getElementById('first-name').value, document.getElementById('last-name').value, document.getElementById('email').value)"; ?>"><?php echo JText::_('Create new ORCID'); ?></a></p>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+		<?php } else { ?>
+			<p class="warning"><?php echo JText::sprintf('This service is currently unavailable and/or not configured correctly. Please contact <a href="%s">support</a> for further assitance.', JRoute::_('index.php?option=com_support')); ?></p>
 		<?php } ?>
 	</form>
 </section>
