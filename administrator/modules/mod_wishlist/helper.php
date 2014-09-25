@@ -52,7 +52,7 @@ class Helper extends Module
 			$model = \WishlistModelWishlist::getInstance(1, 'general');
 			if (!$model->exists())
 			{
-				$model->setup();
+				return false;
 			}
 			$wishlist = $model->get('id');
 		}

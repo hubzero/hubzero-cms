@@ -37,6 +37,11 @@ $this->css();
 JHTML::_('behavior.chart', 'pie');
 
 $total = $this->granted + $this->accepted + $this->pending + $this->removed + $this->withdrawn + $this->removed + $this->rejected;
+if ($total == 0)
+{
+	// Show nothing if no wishes (otherwise get division by zero error) - snowwitje
+	return false;
+}
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div class="overview-container">
