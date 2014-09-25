@@ -51,7 +51,7 @@ class Extension extends Base implements CommandInterface
 	{
 		if ($this->output->isInteractive())
 		{
-			$actions = array('add', 'delete', 'enable', 'disable');
+			$actions = array('add', 'delete', 'install', 'enable', 'disable');
 			$action  = $this->output->getResponse('What do you want to do? ['.implode("|", $actions).']');
 
 			if (in_array($action, $actions))
@@ -93,6 +93,36 @@ class Extension extends Base implements CommandInterface
 	}
 
 	/**
+	 * Install an extension
+	 *
+	 * @return void
+	 **/
+	public function install()
+	{
+		$this->alter('install');
+	}
+
+	/**
+	 * Enable an extension
+	 *
+	 * @return void
+	 **/
+	public function enable()
+	{
+		$this->alter('enable');
+	}
+
+	/**
+	 * Disable an extension
+	 *
+	 * @return void
+	 **/
+	public function disable()
+	{
+		$this->alter('disable');
+	}
+
+	/**
 	 * Alter extension
 	 *
 	 * @param  string - method name
@@ -129,14 +159,84 @@ class Extension extends Base implements CommandInterface
 		switch ($extensionType)
 		{
 			case 'com':
-				$extensionName = ucfirst(substr($name, 4));
-				$mthd          = $method . 'ComponentEntry';
+				if ($method == 'add' || $method == 'delete')
+				{
+					$extensionName = ucfirst(substr($name, 4));
+					$mthd          = $method . 'ComponentEntry';
+				}
+				else
+				{
+					$extensionName = $name;
+					$mthd          = $method . 'Component';
+				}
+
+				if (!method_exists($migration, $mthd))
+				{
+					$this->output->error('Sorry, components do not currently support the ' . $mthd . ' method');
+				}
+
 				$migration->$mthd($extensionName);
 				break;
 
 			case 'mod':
-				$mthd = $method . 'ModuleEntry';
-				$migration->$mthd($name);
+				if ($method == 'install')
+				{
+					$mthd     = $method . 'Module';
+					$position = $this->arguments->getOpt('position', null);
+
+					if (!isset($position))
+					{
+						if ($this->output->isInteractive())
+						{
+							$position = $this->output->getResponse("Where should the module be positioned?");
+						}
+						else
+						{
+							$this->output->addLine('Please provide a position for the module', 'warning');
+							return;
+						}
+					}
+
+					if (!method_exists($migration, $mthd))
+					{
+						$this->output->error('Sorry, modules do not currently support the ' . $mthd . ' method');
+					}
+
+					$migration->$mthd($name, $position);
+				}
+				else
+				{
+					$mthd = $method . 'Module' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
+
+					if (!method_exists($migration, $mthd))
+					{
+						$this->output->error('Sorry, modules do not currently support the ' . $mthd . ' method');
+					}
+
+					$migration->$mthd($name);
+				}
+				break;
+
+			case 'tpl':
+				$mthd = $method . 'Template' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
+
+				if (!method_exists($migration, $mthd))
+				{
+					$this->output->error('Sorry, templates do not currently support the ' . $mthd . ' method');
+				}
+
+				$element = $name = substr($name, 4);
+				$name    = ucwords($name);
+				$client  = $this->arguments->getOpt('client', 'site');
+
+				if ($method == 'delete')
+				{
+					$migration->$mthd($element, (($client == 'admin') ? 1 : 0));
+				}
+				else
+				{
+					$migration->$mthd($element, $name, (($client == 'admin') ? 1 : 0));
+				}
 				break;
 
 			case 'plg':
@@ -149,7 +249,13 @@ class Extension extends Base implements CommandInterface
 
 				$folder  = $matches[1];
 				$element = $matches[2];
-				$mthd    = $method . 'PluginEntry';
+				$mthd    = $method . 'Plugin' . (($method == 'add' || $method == 'delete') ? 'Entry' : '');
+
+				if (!method_exists($migration, $mthd))
+				{
+					$this->output->error('Sorry, plugins do not currently support the ' . $mthd . ' method');
+				}
+
 				$migration->$mthd($folder, $element);
 				break;
 
@@ -158,27 +264,7 @@ class Extension extends Base implements CommandInterface
 			break;
 		}
 
-		$this->output->addLine("Successfully {$method}ed {$name}!", 'success');
-	}
-
-	/**
-	 * Enable an extension
-	 *
-	 * @return void
-	 **/
-	public function enable()
-	{
-		$this->output->addLine('Not implemented', 'warning');
-	}
-
-	/**
-	 * Disable an extension
-	 *
-	 * @return void
-	 **/
-	public function disable()
-	{
-		$this->output->addLine('Not implemented', 'warning');
+		$this->output->addLine("Successfully {$method}" . ((substr($method, -1) == 'e') ? 'd' : 'ed') . " {$name}!", 'success');
 	}
 
 	/**
