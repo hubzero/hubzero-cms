@@ -25,7 +25,7 @@
 #
 
 #
-# Last Migration Applied: Migration20140922135214Core.php
+# Last Migration Applied: Migration20140925213032ComTools.php
 #
 
 SET NAMES 'utf8';
@@ -108,9 +108,11 @@ CREATE TABLE `job` (
   `start` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `heartbeat` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `active` smallint(2) NOT NULL DEFAULT '1',
+  `jobtoken` varchar(32) DEFAULT NULL,
   UNIQUE KEY `uidx_jobid` (`jobid`),
   KEY `idx_start` (`start`),
   KEY `idx_heartbeat` (`heartbeat`)
+  KEY `idx_username_jobtoken` (`username`,`jobtoken`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `joblog` (

@@ -784,7 +784,8 @@ VALUES
 	(310, 'Migration20140829132200ComWiki.php', 'migrations', 'd76e6cd1dcee33d4313bc6ed13f8b382', 'up', '2014-09-03 19:14:23', 'root'),
 	(311, 'Migration20140829142600ComCollections.php', 'migrations', 'e016899c6034e9663e9fbb6c15f20de5', 'up', '2014-09-03 19:14:23', 'root'),
 	(312, 'Migration20140904174546ComKb.php', 'migrations', 'fad15f5c5ceda64f022ef1bc75ada55f', 'up', '2014-09-20 17:22:57', 'root'),
-	(313, 'Migration20140922135214Core.php', 'migrations', 'e506b37f04680b0540937b984991a0e6', 'up', '2014-09-22 13:55:41', 'root');
+	(313, 'Migration20140922135214Core.php', 'migrations', 'e506b37f04680b0540937b984991a0e6', 'up', '2014-09-22 13:55:41', 'root'),
+	(314, 'Migration20140925213032ComTools.php', 'migrations', '82a01d29182bff4ebaf08f0ad246dc07', 'up', '2014-09-25 21:37:26', 'root');
 
 --
 -- HUBzero sample data for table `#__modules`
