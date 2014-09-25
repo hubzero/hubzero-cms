@@ -290,7 +290,6 @@ class PublicationsCuration extends JObject
 		}
 
 		$customFields = array();
-		//'{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}'
 
 		// Get blocks model
 		$blocksModel = new PublicationsModelBlocks($this->_db);
