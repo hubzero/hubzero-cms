@@ -28,8 +28,10 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\Console\Command;
+namespace Hubzero\Console\Command\Cache;
 
+use Hubzero\Console\Command\Base;
+use Hubzero\Console\Command\CommandInterface;
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
 
@@ -39,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Cache command class
  **/
-class Cache extends Base implements CommandInterface
+class Css extends Base implements CommandInterface
 {
 	/**
 	 * Default (required) command - just executes run
@@ -65,47 +67,35 @@ class Cache extends Base implements CommandInterface
 	}
 
 	/**
-	 * Clear all Cache
-	 *
+	 * Clear Site.css & Site.less.cache files
+	 * 
 	 * @return void
 	 */
 	public function clear()
 	{
-		// Path to cache folder
-		$cacheDir = JPATH_ROOT . DS . 'cache' . DS . '*';
+		$cacheDir = JPATH_ROOT . DS . 'cache';
+		$files = array('site.css', 'site.less.cache');
 
-		// Remove recursively
-		foreach (glob($cacheDir) as $cacheFileOrDir)
+		// Remove each file
+		foreach ($files as $file)
 		{
-			$readable = str_replace(JPATH_ROOT . DS, '', $cacheFileOrDir);
-			if (is_dir($cacheFileOrDir))
+			if (!is_file($cacheDir . DS . $file))
 			{
-				if (!\JFolder::delete($cacheFileOrDir))
-				{
-					$this->output->addLine('Unable to delete cache directory: ' . $readable, 'error');
-				}
-				else
-				{
-					$this->output->addLine($readable . ' deleted', 'success');
-				}
+				$this->output->addLine($file . ' does not exist', 'warning');
+				continue;
+			}
+
+			if (!unlink($cacheDir . DS . $file))
+			{
+				$this->output->addLine('Unable to delete cache file: ' . $file, 'error');
 			}
 			else
 			{
-				// Don't delete index.html
-				if ($cacheFileOrDir != JPATH_ROOT . DS . 'cache' . DS . 'index.html')
-				{
-					if (!@unlink($cacheFileOrDir))
-					{
-						$this->output->addLine('Unable to delete cache file: ' . $readable, 'error');
-					}
-					else
-					{
-						$this->output->addLine($readable . ' deleted', 'success');
-					}
-				}
+				$this->output->addLine($file . ' deleted', 'success');
 			}
 		}
 
-		$this->output->addLine('Clear cache complete', 'success');
+		// success!
+		$this->output->addLine('All CSS cache files removed!', 'success');
 	}
 }
