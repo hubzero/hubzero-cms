@@ -1212,8 +1212,18 @@ class PublicationsHtml
 	 */
 	public static function title( $option, $publication )
 	{
-		$txt = '';
-		$txt .= stripslashes($publication->title);
+		$txt   = stripslashes($publication->title);
+
+		// Include version label?
+		if (isset($publication->_curationModel))
+		{
+			$params = $publication->_curationModel->_manifest->params;
+			if (isset($params->appendVersionLabel) && $params->appendVersionLabel == 1)
+			{
+				$txt .= ' ' . $publication->version_label;
+			}
+		}
+
 		$html  = '<h2>' . $txt . '</h2>' . "\n";
 		$html  = '<header id="content-header">' . $html . '</header>';
 
