@@ -685,7 +685,7 @@
 	}
 	#account li ul li a:hover,
 	#account li ul li a:focus {
-		background-color: #178bc1;
+		background-color: #856362;
 		color: #fff;
 		margin: 0 -2px;
 	}
@@ -870,7 +870,6 @@
 	#nav ul.menu ul li a:focus,
 	#nav ul.menu li.parent>ul li a:hover,
 	#nav ul.menu li.parent>ul li a:focus { 
-		background-color: #6db537;
 		background-color: #856362;
 		color: #fff;
 		margin: 0 -0.2em;
