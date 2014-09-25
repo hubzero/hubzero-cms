@@ -137,7 +137,8 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, '', 'logs', 0);
 
 		// Get default title
-		$configs->title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Get bundle name
 		$versionParams 		  = new JParameter( $pub->params );

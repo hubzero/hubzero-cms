@@ -29,8 +29,14 @@ $required 		= (isset($this->manifest->params->required) && $this->manifest->para
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
 $max 	  		= $this->manifest->params->max;
+
+// Customize title
 $defaultTitle	= $this->manifest->params->title
-				? str_replace('{pubtitle}', $this->pub->title, $this->manifest->params->title) : NULL;
+				? str_replace('{pubtitle}', $this->pub->title,
+				$this->manifest->params->title) : NULL;
+$defaultTitle	= $this->manifest->params->title
+				? str_replace('{pubversion}', $this->pub->version_label,
+				$defaultTitle) : NULL;
 
 $error 			= $this->status->getError();
 

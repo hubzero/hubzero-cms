@@ -94,8 +94,13 @@ function submitbutton(pressbutton)
 			$element		= $this->element->element;
 			$block			= $this->element->block;
 			$elName   		= 'element' . $this->elementId;
+			// Customize title
 			$defaultTitle	= $element->params->title
-							? str_replace('{pubtitle}', $this->pub->title, $element->params->title) : NULL;
+							? str_replace('{pubtitle}', $this->pub->title,
+							$element->params->title) : NULL;
+			$defaultTitle	= $element->params->title
+							? str_replace('{pubversion}', $this->pub->version_label,
+							$defaultTitle) : NULL;
 
 			$attachments = $this->pub->_attachments;
 			$attachments = isset($attachments['elements'][$this->elementId])

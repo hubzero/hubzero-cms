@@ -71,7 +71,8 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
 
 		// Get default title
-		$configs->title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
+		$configs->title = str_replace('{pubversion}', $pub->version_label, $title);
 
 		// Fancy launcher?
 		$configs->fancyLauncher = isset($typeParams->fancyLauncher)

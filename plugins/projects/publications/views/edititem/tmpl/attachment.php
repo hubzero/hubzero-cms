@@ -48,8 +48,13 @@ $block	   = $this->pub->_curationModel->_progress->blocks->$step;
 $manifest  = $block->manifest;
 $element   = $manifest->elements->$elementId;
 
+// Customize title
 $defaultTitle	= $element->params->title
-				? str_replace('{pubtitle}', $this->pub->title, $element->params->title) : NULL;
+				? str_replace('{pubtitle}', $this->pub->title,
+				$element->params->title) : NULL;
+$defaultTitle	= $element->params->title
+				? str_replace('{pubversion}', $this->pub->version_label,
+				$defaultTitle) : NULL;
 
 if ($this->row->type == 'file')
 {
@@ -85,7 +90,7 @@ $placeholder 	= $this->row->title && $this->row->title != $defaultTitle ? $this-
 
 					<label for="title">
 						<span class="leftshift faded"><?php echo $this->row->type == 'link' ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
-						<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : ''; ?>" placeholder="<?php echo $placeholder; ?>"  />
+						<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : $defaultTitle; ?>" placeholder="<?php echo $placeholder; ?>"  />
 					</label>
 					<?php if ($this->row->type == 'link') { ?>
 					<p class="c-wrapper">
