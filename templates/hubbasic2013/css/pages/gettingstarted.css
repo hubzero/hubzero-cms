@@ -33,16 +33,6 @@
 		margin-top: -1px\9;
 	}
 
-/* Splash area */
-	#splash .inner-wrap .inner .wrap {
-		padding: 30px;
-	}
-	#splash .inner-wrap .inner .wrap:before,
-	#splash .inner-wrap .inner .wrap:after {
-		display: none;
-		*display: none;
-	}
-
 /* Freatured items */
 	#features {
 		background: #ececec url("../../images/layout/noise-lite.png");
@@ -480,18 +470,7 @@
 		content: "\26A0";
 	}
 
-/* [!] Ie 7 */
-	html.ie7 #congrats {
-		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="congrats-before"></small>' + this.innerHTML + '<small class="congrats-after">&#xf002;&nbsp;</small>');
-	}
-	html.ie7 small.congrats-before {
-		*background: #b1c1ca;
-	}
-	html.ie7 small.congrats-after {
-		*color: #b1c1ca;
-		*line-height: 1;
-		*top: 0.1em;
-	}
+/* [!] IE 7 */
 	html.ie7 #features h3 {
 		*padding-top: 30px;
 	}
