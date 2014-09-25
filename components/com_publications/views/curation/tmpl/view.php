@@ -98,7 +98,12 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 		 </fieldset>
 		<div class="curation-blocks">
 <?php foreach ($blocks as $sequence => $block) { 
-	
+
+	// Skip inactive blocks
+	if (isset($block->active) && $block->active == 0)
+	{
+		continue;
+	}
 	$this->pub->_curationModel->setBlock( $block->name, $sequence );
 	
 	// Get block content		
