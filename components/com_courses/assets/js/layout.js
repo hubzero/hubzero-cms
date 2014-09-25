@@ -228,7 +228,7 @@ jQuery(function($) {
 					return;
 				}
 				var off = $(group).offset();
-				var bor = $(this).css('border-top-width').match(/(\d+)px/)[1];
+				var bor = $(this).css('border-top-width').match(/([\d\.]+)px/)[1];
 				off.top -= basePos.top;
 				off.left -= basePos.left;
 				off.top = Math.round(off.top);
