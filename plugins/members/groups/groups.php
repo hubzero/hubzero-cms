@@ -118,7 +118,15 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 				$groups[$mem->description] = $mem;
 			}
 		}
-		ksort($groups, SORT_NATURAL|SORT_FLAG_CASE);
+		/* SORT_NATURAL is PHP 5.4+ */
+		if (PHP_VERSION_ID > 50400)
+		{
+			ksort($groups, SORT_NATURAL|SORT_FLAG_CASE);
+		}
+		else
+		{
+			ksort($groups);
+		}
 
 		// Build the final HTML
 		if ($returnhtml)
