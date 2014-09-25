@@ -763,21 +763,31 @@ class Base
 	 * @param $styles  - (array)  template styles
 	 * @return bool
 	 **/
-	public function addTemplateEntry($element, $name=null, $client=1, $enabled=1, $home=0, $styles='')
+	public function addTemplateEntry($element, $name=null, $client=1, $enabled=1, $home=0, $styles=NULL)
 	{
 		if ($this->baseDb->tableExists('#__extensions'))
 		{
-			// First, see if it already exists
-			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type` = 'template' AND `element` = '{$element}' AND `client_id` = '{$client}'";
-			$this->baseDb->setQuery($query);
-
-			if (!$this->baseDb->loadResult())
+			if (!isset($name))
 			{
-				if (!isset($name))
+				if (substr($element, 0, 4) == 'tpl_')
+				{
+					$name    = substr($element, 4);
+					$element = $name;
+				}
+				else
 				{
 					$name = $element;
 				}
 
+				$name = ucwords($name);
+			}
+
+			// First, see if it already exists
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `type` = 'template' AND (`element` = '{$element}' OR `element` LIKE '{$name}') AND `client_id` = '{$client}'";
+			$this->baseDb->setQuery($query);
+
+			if (!$this->baseDb->loadResult())
+			{
 				$query  = "INSERT INTO `#__extensions` (`name`, `type`, `element`, `folder`, `client_id`, `enabled`, `access`, `protected`, `manifest_cache`, `params`, `custom_data`, `system_data`, `checked_out`, `checked_out_time`, `ordering`, `state`)";
 				$query .= " VALUES ('{$name}', 'template', '{$element}', '', '{$client}', '{$enabled}', '1', '0', '{}', '{}', '', '', '0', '0000-00-00 00:00:00', '0', '0')";
 				$this->baseDb->setQuery($query);
@@ -792,11 +802,25 @@ class Base
 				}
 
 				$query  = "INSERT INTO `#__template_styles` (`template`, `client_id`, `home`, `title`, `params`)";
-				$query .= " VALUES ('{$element}', '{$client}', '{$home}', '{$name}', '".json_encode($styles)."')";
+				$query .= " VALUES ('{$element}', '{$client}', '{$home}', '{$name}', " . ((isset($styles)) ? $this->baseDb->quote(json_encode($styles)) : "'{}'") . ")";
 				$this->baseDb->setQuery($query);
 				$this->baseDb->query();
 			}
 		}
+	}
+
+	/**
+	 * Install a template, adding it if needed
+	 *
+	 * @param $element - (string) template element
+	 * @param $name    - (string) template name
+	 * @param $client  - (int)    admin or site client
+	 * @param $styles  - (array)  template styles
+	 * @return void
+	 **/
+	public function installTemplate($element, $name=null, $client=1, $styles=NULL)
+	{
+		$this->addTemplateEntry($element, $name, $client, 1, 1, $styles);
 	}
 
 	/**
@@ -955,9 +979,14 @@ class Base
 			$this->baseDb->setQuery($query);
 			if (!$this->baseDb->loadResult())
 			{
-				$query = "UPDATE `#__template_styles` SET `home` = 1 WHERE `client_id` = '{$client}' LIMIT 1";
+				$query = "SELECT `id` FROM `#__template_styles` WHERE `client_id` = '{$client}' ORDER BY `id` DESC LIMIT 1";
 				$this->baseDb->setQuery($query);
-				$this->baseDb->query();
+				if ($id = $this->baseDb->loadResult())
+				{
+					$query = "UPDATE `#__template_styles` SET `home` = 1 WHERE `id` = '{$id}'";
+					$this->baseDb->setQuery($query);
+					$this->baseDb->query();
+				}
 			}
 		}
 	}
