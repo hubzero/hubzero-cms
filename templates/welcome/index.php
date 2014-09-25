@@ -48,7 +48,7 @@ if (JRequest::getInt('getstarted', 0))
 		$database->setQuery("UPDATE `#__template_styles` SET `home`=1 WHERE `client_id`=0 AND `template`=" . $database->quote($tpl));
 		$database->query();
 
-		JFactory::getApplication()->redirect(JRoute::_('index.php'));
+		JFactory::getApplication()->redirect(JRoute::_('/gettingstarted'));
 	}
 }
 
@@ -269,15 +269,13 @@ $flavor = $this->params->get('flavor', false);
 							</div>
 							<div class="spacer col">&nbsp;</div>
 							<div class="col txt">
-								<h3><?php echo JText::_('TPL_WELCOME_CHANGE_PAGE_HEADER'); ?></h3>
-
 								<p><?php echo JText::sprintf('TPL_WELCOME_CHANGE_PAGE_BODY', rtrim(JURI::base(), '/') . '/gettingstarted'); ?></p>
 
-								<a href="<?php echo $this->baseurl; ?>/?getstarted=1" class="b"><?php echo JText::_('TPL_WELCOME_CHANGE_PAGE_LINK'); ?></a>
+								<a href="<?php echo $this->baseurl; ?>/?getstarted=1" class="b"><?php echo JText::_('TPL_WELCOME_READY'); ?></a>
 							</div>
 						</div>
 					</div>
-					<div class="section inverted">
+					<!--div class="section inverted">
 						<div class="cols clearfix">
 							<div class="mobile col icon">
 								<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/administration.svg" alt="" />
@@ -294,10 +292,10 @@ $flavor = $this->params->get('flavor', false);
 								<img src="<?php echo $this->baseurl . '/templates/' . $this->template; ?>/images/administration.svg" alt="" />
 							</div>
 						</div>
-					</div>
+					</div-->
 				</div>
 
-				<div class="bam babam">
+				<!--div class="bam babam">
 					<div class="inner">	
 						<h2 class="info"><span><?php echo JText::_('TPL_WELCOME_HELP'); ?></span></h2>
 						<p class="intro"><?php echo JText::_('TPL_WELCOME_HELP_BODY'); ?></p>
@@ -319,7 +317,7 @@ $flavor = $this->params->get('flavor', false);
 							</div>
 						</div>
 					</div>
-				</div>
+				</div-->
 
 				<div class="inner">
 					<div class="fun">
