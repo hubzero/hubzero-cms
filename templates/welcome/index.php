@@ -30,15 +30,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-if (JRequest::getInt('getstarted', 0))
+if (JRequest::getInt('getstarted', 0) && ($tpl = $this->params->get('template', '')))
 {
-	$tpl = $this->params->get('template', 'hubbasic2013');
+	$fallback = 'hubbasic2013';
 
 	$database = JFactory::getDBO();
 
 	// Make the desired template exists
 	$database->setQuery("SELECT id FROM `#__template_styles` WHERE `client_id`=0 AND `template`=" . $database->quote($tpl));
-	if ($database->loadResult())
+	if (!($found = $database->loadResult()) && $tpl != $fallback)
+	{
+		$tpl = $fallback;
+		$database->setQuery("SELECT id FROM `#__template_styles` WHERE `client_id`=0 AND `template`=" . $database->quote($tpl));
+		$found = $database->loadResult();
+	}
+	if ($found)
 	{
 		// Unset this template
 		$database->setQuery("UPDATE `#__template_styles` SET `home`=0 WHERE `client_id`=0 AND `home`=1;");
