@@ -411,7 +411,7 @@ class Record extends \Hubzero\Base\Object
 				$rconfig = \JComponentHelper::getParams('com_resources');
 				$base = JPATH_ROOT . DS . trim($rconfig->get('uploadpath', '/site/resources'), DS);
 				$file = $base . DS . $child->path;
-
+				
 				//get file info
 				$info = pathinfo($file);
 				$directory = $info['dirname'];
@@ -421,14 +421,17 @@ class Record extends \Hubzero\Base\Object
 					shell_exec('rm ' . $file);
 				}
 
-				// get iterator on direcotry
-				$iterator = new \FilesystemIterator($directory);
-				$isDirEmpty = !$iterator->valid();
-
-				// remove directory if empty
-				if ($isDirEmpty)
+				if (is_dir($directory))
 				{
-					shell_exec('rmdir ' . $directory);
+					// get iterator on direcotry
+					$iterator = new \FilesystemIterator($directory);
+					$isDirEmpty = !$iterator->valid();
+
+					// remove directory if empty
+					if ($isDirEmpty)
+					{
+						shell_exec('rmdir ' . $directory);
+					}
 				}
 			}
 
