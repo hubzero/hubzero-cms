@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
  * @file        templates/hubbasic2013/css/offline.css
- * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,11 +36,11 @@
 	}
 	@font-face {
 		font-family: 'Share-Regular';
-		src: url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.eot');
-		src: url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.eot?#iefix') format('embedded-opentype'),
-			 url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.woff') format('woff'),
-			 url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.ttf') format('truetype'),
-			 url('/templates/hubbasic2013/css/fonts/Share-Regular-webfont.svg#Share-Regular') format('svg');
+		src: url('fonts/Share-Regular-webfont.eot');
+		src: url('fonts/Share-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+			 url('fonts/Share-Regular-webfont.woff') format('woff'),
+			 url('fonts/Share-Regular-webfont.ttf') format('truetype'),
+			 url('fonts/Share-Regular-webfont.svg#Share-Regular') format('svg');
 		font-weight: normal;
 		font-style: normal;
 	}
@@ -59,7 +59,7 @@
 		font-size: 0.8em;
 		line-height: 1.6em;
 		color: #666;
-		background: #ececec url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #ececec url("../images/layout/noise-lite.png");
 		text-rendering: optimizeLegibility;
 		min-width: 100px;
 		height: 100%;
@@ -69,9 +69,8 @@
 	a:active, 
 	a:visited {
 		text-decoration: none;
-		color: #178bc1; /* 62a0b2 #0fa1ca;*/
-		border-bottom: 1px dotted #344e54;
-		border-bottom: 1px dotted rgba(52, 78, 85, 0.4);
+		color: #66a3a8;
+		border-bottom: 1px dotted #98cab1;
 	}
 	a:hover {
 		color: #222;
@@ -153,7 +152,7 @@
 	#container {
 		width: 500px;
 		margin: 100px auto 100px auto;
-		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
 		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
 		   -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
 		    -ms-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(255, 255, 255, 0.4);
@@ -163,16 +162,16 @@
 
 /* Shortcuts */
 	#top {
-		border-top: 3px solid #178bc1;
-		background: #4b677c;
-		background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#62a0b2), color-stop(50%,#4b677c), color-stop(100%,#250b23));
-		background: -webkit-linear-gradient(-75deg, #62a0b2 0%,#4b677c 50%,#250b23 100%);
-		background: -moz-linear-gradient(-75deg, #62a0b2 0%, #4b677c 50%, #250b23 100%);
-		background: -ms-linear-gradient(-75deg, #62a0b2 0%,#4b677c 50%,#250b23 100%);
-		background: -o-linear-gradient(-75deg, #62a0b2 0%,#4b677c 50%,#250b23 100%);
-		background: linear-gradient(135deg, #62a0b2 0%,#4b677c 50%,#250b23 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#62a0b2', endColorstr='#250b23',GradientType=1 );
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#62a0b2, endColorstr=#250b23)";
+		border-top: 3px solid #66a3a8;
+		background: #6b8993;
+		background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#abc8c3), color-stop(100%,#4f6c7c));
+		background: -webkit-linear-gradient(-75deg, #9fccb7 0%,#3e5a6f 100%);
+		background: -moz-linear-gradient(-75deg, #9fccb7 0%, #3e5a6f 100%);
+		background: -ms-linear-gradient(-75deg, #9fccb7 0%,#3e5a6f 100%);
+		background: -o-linear-gradient(-75deg, #9fccb7 0%,#3e5a6f 100%);
+		background: linear-gradient(135deg, #9fccb7 0%,#3e5a6f 100%);80625c
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9fccb7', endColorstr='#3e5a6f',GradientType=1 );
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#9fccb7, endColorstr=#3e5a6f)";
 	}
 
 /* Splash */
@@ -183,16 +182,15 @@
 		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
-		background: #4b677c;
-		/* blue -> purple gradient */
-		background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#62a0b2), color-stop(50%,#4b677c), color-stop(100%,#250b23));
-		background: -webkit-linear-gradient(-75deg, #62a0b2 0%,#4b677c 50%,#250b23 100%);
-		background: -moz-linear-gradient(-75deg, #62a0b2 0%, #4b677c 50%, #250b23 100%);
-		background: -ms-linear-gradient(-75deg, #62a0b2 0%,#4b677c 50%,#250b23 100%);
-		background: -o-linear-gradient(-75deg, #62a0b2 0%,#4b677c 50%,#250b23 100%);
-		background: linear-gradient(135deg, #62a0b2 0%,#4b677c 50%,#250b23 100%);
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#62a0b2', endColorstr='#250b23',GradientType=1 );
-		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#62a0b2, endColorstr=#250b23)";
+		background: #809fa4;
+		background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#abc8c3), color-stop(100%,#4f6c7c));
+		background: -webkit-linear-gradient(-75deg, #9fccb7 0%,#3e5a6f 100%);
+		background: -moz-linear-gradient(-75deg, #cae6da 0%, #5c7987 100%);
+		background: -ms-linear-gradient(-75deg, #cae6da 0%,#5c7987 100%);
+		background: -o-linear-gradient(-75deg, #cae6da 0%,#5c7987 100%);
+		background: linear-gradient(135deg, #9fccb7 0%,#3e5a6f 100%);80625c
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cae6da', endColorstr='#5c7987',GradientType=1 );
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#cae6da, endColorstr=#5c7987)";
 	}
 	#splash .inner-wrap {
 		/* Vertical stripes */
@@ -235,7 +233,7 @@
 	}
 	#splash .inner-wrap .inner .wrap {
 		min-height: 90px;
-		background: transparent url("/templates/hubbasic2013/images/layout/noise-white.png") 0 0;
+		background: transparent url("../images/layout/noise-white.png") 0 0;
 		position: relative;
 	}
 
@@ -243,7 +241,7 @@
 	#masthead {
 		padding: 30px 30px 0 30px;
 		position: relative;
-		background: #e1e1e1 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #e1e1e1 url("../images/layout/noise-lite.png");
 		-webkit-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
 		   -moz-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
 		    -ms-box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
@@ -307,13 +305,13 @@
 		margin: 0;
 		padding: 0 30px;
 		vertical-align: baseline;
-		background: #3e3e3e url("/templates/hubbasic2013/images/layout/noise.png");
+		background: #3e3e3e url("../images/layout/noise.png");
 		display: block;
 		font-size: 0.85em;
 	}
 	#sub-masthead .inner {
 		padding: 0 30px;
-		background: #494949 url("/templates/hubbasic2013/images/layout/noise.png");
+		background: #494949 url("../images/layout/noise.png");
 		-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		   -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
 		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
@@ -389,7 +387,7 @@
 		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
 		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
-		background: #f9f9f9 url("/templates/hubbasic2013/images/layout/noise-lite.png");
+		background: #f9f9f9 url("../images/layout/noise-lite.png");
 	}
 	#footer ul#legalese li {
 		padding: 0.4em 0;
@@ -550,12 +548,12 @@
 		*border-right: 1px solid #40586a;
 	}
 	html.ie7 #splash .inner-wrap {
-		*background: transparent url("/templates/hubbasic2013/images/layout/glass-stripes.png");
+		*background: transparent url("../images/layout/glass-stripes.png");
 	}
 	html.ie7 #splash .inner-wrap .inner {
 		*border-left: 1px solid #4b677c;
 		*border-right: 1px solid #4b677c;
-		*background: transparent url("/templates/hubbasic2013/images/layout/glass.png");
+		*background: transparent url("../images/layout/glass.png");
 	}
 	html.ie7 #masthead .inner {
 		*border: 1px solid #ccc;
@@ -595,12 +593,12 @@
 		border: 1px solid #ccc\9;
 	}
 	html.ie8 #splash .inner-wrap {
-		background: transparent url("/templates/hubbasic2013/images/layout/glass-stripes.png")\9;
+		background: transparent url("../images/layout/glass-stripes.png")\9;
 	}
 	html.ie8 #splash .inner-wrap .inner {
 		border-left: 1px solid #4b677c\9;
 		border-right: 1px solid #4b677c\9;
-		background: transparent url("/templates/hubbasic2013/images/layout/glass.png")\9;
+		background: transparent url("../images/layout/glass.png")\9;
 	}
 	html.ie8 #masthead .inner {
 		border: 1px solid #ccc\9;
@@ -626,8 +624,8 @@
 
 /* [!] IE 9 */
 	html.ie9 #splash .inner-wrap {
-		background-image: url("/templates/hubbasic2013/images/layout/glass-stripes.png");
+		background-image: url("../images/layout/glass-stripes.png");
 	}
 	html.ie9 #splash .inner-wrap .inner {
-		background-image: url("/templates/hubbasic2013/images/layout/glass.png");
+		background-image: url("../images/layout/glass.png");
 	}
