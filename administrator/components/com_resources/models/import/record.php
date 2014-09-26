@@ -383,7 +383,7 @@ class Record extends \Hubzero\Base\Object
 		if (isset($this->raw->children) && is_array($this->raw->children))
 		{
 			// loop through each child resource and bind as a resource object
-			foreach($this->raw->children as $child)
+			foreach ($this->raw->children as $child)
 			{
 				$childResource = new \ResourcesResource($this->_database);
 				$childResource->bind($child);
@@ -406,7 +406,7 @@ class Record extends \Hubzero\Base\Object
 		{
 			// remove any existing files
 			$children = $this->record->resource->getItemChildren(array('parent_id' => $this->record->resource->id));
-			foreach($children as $child)
+			foreach ($children as $child)
 			{
 				$rconfig = \JComponentHelper::getParams('com_resources');
 				$base = JPATH_ROOT . DS . trim($rconfig->get('uploadpath', '/site/resources'), DS);
@@ -421,14 +421,17 @@ class Record extends \Hubzero\Base\Object
 					shell_exec('rm ' . $file);
 				}
 
-				// get iterator on direcotry
-				$iterator = new \FilesystemIterator($directory);
-				$isDirEmpty = !$iterator->valid();
-
-				// remove directory if empty
-				if ($isDirEmpty)
+				if (is_dir($directory))
 				{
-					shell_exec('rmdir ' . $directory);
+					// get iterator on direcotry
+					$iterator = new \FilesystemIterator($directory);
+					$isDirEmpty = !$iterator->valid();
+
+					// remove directory if empty
+					if ($isDirEmpty)
+					{
+						shell_exec('rmdir ' . $directory);
+					}
 				}
 			}
 
