@@ -111,7 +111,7 @@ CREATE TABLE `job` (
   `jobtoken` varchar(32) DEFAULT NULL,
   UNIQUE KEY `uidx_jobid` (`jobid`),
   KEY `idx_start` (`start`),
-  KEY `idx_heartbeat` (`heartbeat`)
+  KEY `idx_heartbeat` (`heartbeat`),
   KEY `idx_username_jobtoken` (`username`,`jobtoken`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
