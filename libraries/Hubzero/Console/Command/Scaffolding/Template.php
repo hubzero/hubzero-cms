@@ -91,6 +91,7 @@ class Template extends Scaffolding
 
 		// Make component
 		$this->addTemplateFile(JPATH_ROOT . DS . 'templates' . DS . $from, JPATH_ROOT . DS . 'templates' . DS . $to, true)
+			 ->addTemplateFile(JPATH_ROOT . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $from . '.ini', JPATH_ROOT . DS . 'language' . DS . 'en-GB' . DS . 'en-GB.tpl_' . $to . '.ini', true)
 			 ->addReplacement(strtoupper($from), strtoupper($to))
 			 ->addReplacement(ucfirst($from), ucfirst($to))
 			 ->addReplacement($from, $to)
