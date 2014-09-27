@@ -194,12 +194,13 @@ class Base
 		$secrets   = DS . 'etc'  . DS . 'hubzero.secrets';
 		$conf_file = DS . 'root' . DS . '.my.cnf';
 		$hub_maint = DS . 'etc'  . DS . 'mysql' . DS . 'hubmaint.cnf';
+		$deb_maint = DS . 'etc'  . DS . 'mysql' . DS . 'debian.cnf';
 
 		if (is_file($secrets) && is_readable($secrets))
 		{
 			$conf = Ini::parse($secrets);
 			$user = 'root';
-			$pw   = (isset($conf['MYSQL-ROOT'])) ? $conf['MYSQL-ROOT'] : false;
+			$pw   = (isset($conf['DEFAULT']['MYSQL-ROOT'])) ? $conf['DEFAULT']['MYSQL-ROOT'] : false;
 
 			if ($user && $pw)
 			{
@@ -222,6 +223,18 @@ class Base
 		if (is_file($hub_maint) && is_readable($hub_maint))
 		{
 			$conf = Ini::parse($hub_maint, true);
+			$user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
+			$pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
+
+			if ($user && $pw)
+			{
+				return array('user' => $user, 'password' => $pw);
+			}
+		}
+
+		if (is_file($deb_maint) && is_readable($deb_maint))
+		{
+			$conf = Ini::parse($deb_maint, true);
 			$user = (isset($conf['client']['user'])) ? $conf['client']['user'] : false;
 			$pw   = (isset($conf['client']['password'])) ? $conf['client']['password'] : false;
 
