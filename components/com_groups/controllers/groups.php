@@ -662,7 +662,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		// return template
-		return $view->loadTemplate();
+		return '<!-- {FORMAT:HTML} -->' . $view->loadTemplate();
 	}
 
 	/**

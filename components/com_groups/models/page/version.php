@@ -94,6 +94,12 @@ class GroupsModelPageVersion extends \Hubzero\Base\Model
 	 */
 	public function store($check = true, $trustedContent = false)
 	{
+		// we must have a page id to save the page
+		if ($this->get('pageid') < 1)
+		{
+			return true;
+		}
+
 		//get content
 		$content = $this->get('content');
 
