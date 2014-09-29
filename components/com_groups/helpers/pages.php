@@ -457,7 +457,7 @@ class GroupsHelperPages
 		$content = self::parse($group, $page, $content);
 
 		// set content
-		$version->set('content', $content);
+		$version->set('content', trim($content));
 
 		// set vars to view
 		$view->juser      = $juser;
