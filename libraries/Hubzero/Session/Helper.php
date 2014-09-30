@@ -46,9 +46,9 @@ class Helper
 
 		// create storage class
 		$storageClass = 'Hubzero\\Session\\Storage\\' . ucfirst($storageHandler);
-			
+
 		// return new instance of storage class
-		return new $storageClass(); 
+		return new $storageClass();
 	}
 
 	/**
@@ -72,7 +72,7 @@ class Helper
 	{
 		return self::storage()->sessionWithUserid($userid);
 	}
-	
+
 	/**
 	 * Get list of all sessions
 	 * 

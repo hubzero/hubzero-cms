@@ -2068,7 +2068,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			jimport('joomla.utilities.simplecrypt');
 			$crypter = new JSimpleCrypt();
 			$session_id = $crypter->decrypt($token);
-			
+
 			$session = Hubzero\Session\Helper::getSession($session_id);
 
 			$juser = JFactory::getUser($session->userid);

@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script for ...
+ * Migration script for remove old mod_logged module
  **/
 class Migration20140806131000ModLogged extends Base
 {

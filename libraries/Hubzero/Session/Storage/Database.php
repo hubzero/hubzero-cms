@@ -68,7 +68,12 @@ class Database implements StorageInterface
 		return $database->loadObject();
 	}
 
-	
+	/**
+	 * Get Session with User Id
+	 * 
+	 * @param  [type] $userid [description]
+	 * @return [type]         [description]
+	 */
 	public static function sessionWithUserid($userid)
 	{
 		// get database
@@ -134,11 +139,11 @@ class Database implements StorageInterface
 		}
 
 		// add group by
-		$query .= " " . $groupBy;	
-			
+		$query .= " " . $groupBy;
+
 		// order by time
 		$query .= " ORDER BY time DESC";
-		
+
 		// return sessions
 		$database->setQuery($query);
 		return $database->loadObjectList();

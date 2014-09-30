@@ -65,7 +65,7 @@ class Database
 		$config        = \JFactory::getConfig();
 		$this->servers = (array) $config->get('redis_server', array());
 		$this->options = (array) $config->get('redis_server_options', array());
-		
+
 		if (isset($this->options['cluster']) && $this->options['cluster'])
 		{
 			$this->clients = $this->createAggregateClient();

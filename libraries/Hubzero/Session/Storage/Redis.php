@@ -124,7 +124,7 @@ class Redis implements StorageInterface
 
 		// var to hold distinct sessions
 		$distinct = array();
-		
+
 		// loop through all session keys and get data
 		foreach ($sessions as $k => $v)
 		{
@@ -172,7 +172,7 @@ class Redis implements StorageInterface
 					{
 						$key = $k;
 					}
-					
+
 					unset($sessions[$key]);
 					continue;
 				}

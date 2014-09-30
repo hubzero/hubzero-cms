@@ -42,7 +42,7 @@ class modWhosonlineHelper extends \Hubzero\Module\Module
 			'distinct' => 1,
 			'client'   => 0
 		));
-		
+
 		// vars to hold guests & logged in members
 		$this->guestCount   = 0;
 		$this->loggedInCount = 0;
@@ -65,7 +65,7 @@ class modWhosonlineHelper extends \Hubzero\Module\Module
 				}
 			}
 		}
-		
+
 		// render view
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

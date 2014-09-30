@@ -70,7 +70,7 @@ $this->css()
 					$cls = (($cls == 'even') ? 'odd' : 'even');
 
 					$html .= "\t\t".'<tr class="'.$cls.'">'."\n";
-					
+
 					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['name'])) .'</td>'."\n";
 					$html .= "\t\t\t".'<td class="textual-data"><a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$users[$userkey]['uidNumber']).'">'.$this->escape($userkey).'</td>'."\n";
 					$html .= "\t\t\t".'<td class="textual-data">';
@@ -101,7 +101,7 @@ $this->css()
 					$html .= '</td>'."\n";
 					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape(stripslashes($users[$userkey]['org'])) .'</td>'."\n";
 					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey]['countryresident']) .'</td>'."\n";
-					
+
 					$html .= "\t\t\t".'<td class="textual-data">'. $this->escape($users[$userkey][0]['ip']) .'</td>'."\n";
 					$html .= "\t\t\t".'<td class="textual-data">'. MembersHtml::valformat($users[$userkey][0]['idle'], 3) .'</td>'."\n";
 					$html .= "\t\t".'</tr>'."\n";
