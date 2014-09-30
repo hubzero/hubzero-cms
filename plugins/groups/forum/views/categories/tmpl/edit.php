@@ -60,12 +60,6 @@ $this->css()
 				<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>
 				<textarea name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description'))); ?></textarea>
 			</label>
-
-			<div class="sidenote">
-				<p>
-					<?php echo JText::_('PLG_GROUPS_FORUM_CATEGORY_WIKI_HINT'); ?>
-				</p>
-			</div>
 		</fieldset>
 
 		<p class="submit">
