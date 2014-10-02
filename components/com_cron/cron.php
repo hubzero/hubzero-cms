@@ -31,14 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'jobs.php');
+// Include model
+require_once(__DIR__ . DS . 'models' . DS . 'jobs.php');
 
+// Include controller
 $controllerName = JRequest::getCmd('controller', 'jobs');
-if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'collections';
+	throw new JException(JText::sprintf('Controller "%s" not found.', $controllerName), 404);
 }
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CronController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
