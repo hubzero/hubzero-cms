@@ -318,7 +318,7 @@ class ProjectsHtml
 	 */
 	public static function getDirSize ($directory = '')
 	{
-		if(!$directory)
+		if (!$directory)
 		{
 			return 0;
 		}
@@ -331,7 +331,7 @@ class ProjectsHtml
 
 		while ($file = readdir($dh))
 		{
-			if($file == "." || $file == "..")
+			if ($file == "." || $file == "..")
 			{
 				continue;
 			}
@@ -395,7 +395,7 @@ class ProjectsHtml
 	{
 		$file_size = str_replace(' ', '', $file_size);
 
-		if($from == 'b')
+		if ($from == 'b')
 		{
 			if ($to == 'GB')
 			{
@@ -841,7 +841,7 @@ class ProjectsHtml
 		if (count($assetTabs) > 1)
 		{
 			array_splice( $view->tabs, 3, 0, array(0 => array('name' => 'assets', 'title' => 'Assets')) );
-		}		
+		}
 ?>
 		<div id="project-header" class="project-header">
 			<div class="grid">
@@ -882,7 +882,7 @@ class ProjectsHtml
 		<?php if ($publicView == false) { ?>
 			<ul>
 			<?php foreach ($view->tabs as $tab)
-			{ 
+			{
 				if (in_array($tab['name'], $assets))
 				{
 					continue;
@@ -910,7 +910,7 @@ class ProjectsHtml
 								<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $view->project->counts[$aTab['name']]; ?></span></span>
 							<?php } ?>
 								</a>
-							</p>	
+							</p>
 						<?php } ?>
 					</div>
 					<?php } ?>
@@ -924,7 +924,7 @@ class ProjectsHtml
 		<?php } ?>
 		</div>
 	<?php }
-	
+
 	/**
 	 * Write project left-hand side (traditional layout)
 	 *
@@ -936,10 +936,10 @@ class ProjectsHtml
 		?>
 		<div class="main-menu">
 			<?php echo ProjectsHtml::embedProjectImage($view); ?>
-			<?php echo ProjectsHtml::drawProjectMenu($view); ?>			
+			<?php echo ProjectsHtml::drawProjectMenu($view); ?>
 		</div><!-- / .main-menu -->
 <?php	}
-	
+
 	/**
 	 * Write project menu
 	 *
@@ -961,7 +961,7 @@ class ProjectsHtml
 			}
 		}
 		$a = 0;
-		
+
 		?>
 		<ul class="projecttools">
 			<li<?php if ($view->active == 'feed') { echo ' class="active"'; }?>>
@@ -1041,7 +1041,7 @@ foreach ($view->tabs as $tab)
 		$goto  = 'alias=' . $view->project->alias;
 		$privacy_txt = $view->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');
 
-		if($view->project->private)
+		if ($view->project->private)
 		{
 			$privacy = '<span class="private">' . ucfirst($privacy_txt) . '</span>';
 		}
@@ -1056,20 +1056,20 @@ foreach ($view->tabs as $tab)
 				? '<span class="h-privacy">' .$privacy . '</span> ' . strtolower(JText::_('COM_PROJECTS_PROJECT'))
 				: ucfirst(JText::_('COM_PROJECTS_PROJECT'));
 	?>
-	<div id="content-header" <?php if(!$show_pic) { echo 'class="nopic"'; } ?>>
-		<?php if($show_pic) { ?>
+	<div id="content-header" <?php if (!$show_pic) { echo 'class="nopic"'; } ?>>
+		<?php if ($show_pic) { ?>
 		<div class="pthumb"><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo ProjectsHtml::getThumbSrc($view->project->id, $view->project->alias, $view->project->picture, $view->config); ?>" alt="<?php echo $view->project->title; ?>" /></a></div>
 		<?php } ?>
 		<div class="ptitle">
 			<h2><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo \Hubzero\Utility\String::truncate($view->project->title, 50); ?> <span>(<?php echo $view->project->alias; ?>)</span></a></h2>
-			<?php if($back)  { ?>
+			<?php if ($back)  { ?>
 			<h3 class="returnln"><?php echo JText::_('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_PAGE'); ?></a></h3>
 			<?php } else { ?>
-			<h3 <?php if($underline) { echo 'class="returnln"'; } ?>><?php echo $start .' '.JText::_('COM_PROJECTS_BY').' ';
-			if($view->project->owned_by_group)
+			<h3 <?php if ($underline) { echo 'class="returnln"'; } ?>><?php echo $start .' '.JText::_('COM_PROJECTS_BY').' ';
+			if ($view->project->owned_by_group)
 			{
 				$group = \Hubzero\User\Group::getInstance( $view->project->owned_by_group );
-				if($group)
+				if ($group)
 				{
 					echo ' '.JText::_('COM_PROJECTS_GROUP').' <a href="/groups/'.$group->get('cn').'">'.$group->get('cn').'</a>';
 				}
@@ -1084,8 +1084,8 @@ foreach ($view->tabs as $tab)
 			//	echo '<span class="prominent">'.$view->project->fullname.'</span>';
 			}
 			?>
-			<?php if($show_privacy == 1) { ?>
-				<span class="privacy <?php if($view->project->private) { echo 'private'; } ?>"><?php if(!$view->project->private) {  ?><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto).'/?preview=1'; ?>"><?php } ?><?php echo $privacy_txt; ?><?php if(!$view->project->private) {  ?></a><?php } ?> <?php echo strtolower(JText::_('COM_PROJECTS_PROJECT')); ?>
+			<?php if ($show_privacy == 1) { ?>
+				<span class="privacy <?php if ($view->project->private) { echo 'private'; } ?>"><?php if (!$view->project->private) {  ?><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto).'/?preview=1'; ?>"><?php } ?><?php echo $privacy_txt; ?><?php if (!$view->project->private) {  ?></a><?php } ?> <?php echo strtolower(JText::_('COM_PROJECTS_PROJECT')); ?>
 				</span>
 			<?php } ?>
 			</h3>
@@ -1252,27 +1252,27 @@ foreach ($view->tabs as $tab)
 	{
 	    if (empty($needle) || empty($haystack))
 		{
-            return false;
-        }
+			return false;
+		}
 
-        foreach ($haystack as $key => $value)
+		foreach ($haystack as $key => $value)
 		{
-            $exists = 0;
-            foreach ($needle as $nkey => $nvalue)
+			$exists = 0;
+			foreach ($needle as $nkey => $nvalue)
 			{
-                if (!empty($value->$nkey) && $value->$nkey == $nvalue)
+				if (!empty($value->$nkey) && $value->$nkey == $nvalue)
 				{
-                    $exists = 1;
-                }
+					$exists = 1;
+				}
 				else
 				{
-                    $exists = 0;
-                }
-            }
-            if ($exists) return $key;
-        }
+					$exists = 0;
+				}
+			}
+			if ($exists) return $key;
+		}
 
-        return false;
+		return false;
 	}
 
 	/**
@@ -1580,7 +1580,7 @@ foreach ($view->tabs as $tab)
 			if (count($notes) > 0)
 			{
 				krsort($notes);
-				foreach($notes as $match)
+				foreach ($notes as $match)
 				{
 					$ntext .= ProjectsHtml::parseAdminNote($match, $reviewer);
 				}
@@ -1631,11 +1631,11 @@ foreach ($view->tabs as $tab)
 			$meta = $matches[0];
 			$note   = preg_replace( '#<meta>(.*?)</meta>#s', '', $note );
 
-			if($shorten)
+			if ($shorten)
 			{
 				$note   = \Hubzero\Utility\String::truncate($note, $shorten);
 			}
-			if($showmeta)
+			if ($showmeta)
 			{
 				$meta = str_replace('<meta>','' , $meta);
 				$meta = str_replace('</meta>','', $meta);
@@ -1663,7 +1663,7 @@ foreach ($view->tabs as $tab)
 		if (count($matches) > 0)
 		{
 			$notes = $matches[0];
-			if(count($notes) > 0)
+			if (count($notes) > 0)
 			{
 				$match = ProjectsHtml::parseAdminNote(end($notes), $reviewer, 1, 100);
 			}

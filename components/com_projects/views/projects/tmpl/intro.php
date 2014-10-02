@@ -47,7 +47,7 @@ $this->css('introduction.css', 'system')
 	if ($this->getError()) {
 		echo ('<p class="witherror">' . $this->getError().'</p>');
 	}
-	else if($this->msg) {
+	else if ($this->msg) {
 		echo ('<p>' . $this->msg . '</p>');
 	} ?>
 </div>
@@ -86,17 +86,17 @@ $this->css('introduction.css', 'system')
 	</div><!-- / .four columns first -->
 	<div class="four columns second third fourth">
 		<?php
-		if(count($this->rows) > 0) { 	?>
+		if (count($this->rows) > 0) { 	?>
 			<ul class="flow">
-				<?php foreach($this->rows as $row) {
+				<?php foreach ($this->rows as $row) {
 				$goto  = 'alias=' . $row->alias;
 				$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 				$setup = ($row->setup_stage < $setup_complete) ? JText::_('COM_PROJECTS_COMPLETE_SETUP') : '';
 				?>
-				<li <?php if($setup) { echo 'class="s-dev"'; } else if($row->state == 0) { echo 'class="s-inactive"'; } else if($row->state == 5) { echo 'class="s-pending"'; } ?>>
-					<?php  if(!$setup && $row->private) { ?><span class="s-private">&nbsp;</span><?php }  ?>
-					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto); ?>"><img src="<?php echo $thumb; ?>" alt="" /><span class="block"><?php echo \Hubzero\Utility\String::truncate(ProjectsHtml::cleanText($row->title), 30); ?></span></a><?php if($setup) { ?><span class="s-complete"><?php echo JText::_('COM_PROJECTS_COMPLETE_SETUP'); ?></span><?php } else if($row->state == 0) { ?><span class="s-suspended"><?php echo JText::_('COM_PROJECTS_STATUS_INACTIVE'); ?></span> <?php } else if($row->state == 5) { ?><span class="s-suspended"><?php echo JText::_('COM_PROJECTS_STATUS_PENDING'); ?></span> <?php } ?>
-				<?php if($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?>
+				<li <?php if ($setup) { echo 'class="s-dev"'; } else if ($row->state == 0) { echo 'class="s-inactive"'; } else if ($row->state == 5) { echo 'class="s-pending"'; } ?>>
+					<?php  if (!$setup && $row->private) { ?><span class="s-private">&nbsp;</span><?php }  ?>
+					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto); ?>"><img src="<?php echo $thumb; ?>" alt="" /><span class="block"><?php echo \Hubzero\Utility\String::truncate(ProjectsHtml::cleanText($row->title), 30); ?></span></a><?php if ($setup) { ?><span class="s-complete"><?php echo JText::_('COM_PROJECTS_COMPLETE_SETUP'); ?></span><?php } else if ($row->state == 0) { ?><span class="s-suspended"><?php echo JText::_('COM_PROJECTS_STATUS_INACTIVE'); ?></span> <?php } else if ($row->state == 5) { ?><span class="s-suspended"><?php echo JText::_('COM_PROJECTS_STATUS_PENDING'); ?></span> <?php } ?>
+				<?php if ($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?>
 				</li>
 				<?php }	?>
 			</ul>

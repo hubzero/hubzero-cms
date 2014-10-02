@@ -44,7 +44,7 @@ $this->project->title = ProjectsHtml::cleanText($this->project->title);
 $params = new JParameter( $this->project->params );
 
 // Get layout from project params or component
-$layout = $params->get('layout', $this->config->get('layout', 'standard')); 
+$layout = $params->get('layout', $this->config->get('layout', 'standard'));
 $theme = $params->get('theme', $this->config->get('theme', 'light'));
 
 if ($layout == 'extended')
@@ -62,7 +62,7 @@ else
 
 ?>
 <div id="project-wrap" class="theme">
-	<?php if ($layout == 'extended') { 
+	<?php if ($layout == 'extended') {
 		echo ProjectsHtml::drawProjectHeader($this); ?>
 	<div class="project-inner-wrap">
 	<?php
@@ -71,9 +71,9 @@ else
 		<?php echo ProjectsHtml::drawLeftPanel($this); ?>
 		<div class="main-content">
 	<?php
-		echo ProjectsHtml::writeProjectHeader($this, 0, 1, 2, 0); 
+		echo ProjectsHtml::writeProjectHeader($this, 0, 1, 2, 0);
 		echo ProjectsHtml::writeMemberOptions($this);
-	} ?>			
+	} ?>
 			<div class="status-msg" id="status-msg">
 				<?php
 				// Display error or success message
@@ -110,7 +110,7 @@ else
 				<div class="clear"></div>
 			</div><!-- / plg-content -->
 		<?php if ($layout != 'extended') { ?>
-		</div><!-- / .main-content -->	
+		</div><!-- / .main-content -->
 		<?php } ?>
 	</div>
 </div>

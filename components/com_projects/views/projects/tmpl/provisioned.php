@@ -47,7 +47,7 @@ $this->css()
 			if ($this->getError()) {
 				echo ('<p class="witherror">' . $this->getError().'</p>');
 			}
-			else if($this->msg) {
+			else if ($this->msg) {
 				echo ('<p>' . $this->msg . '</p>');
 			} ?>
 		</div>

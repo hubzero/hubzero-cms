@@ -47,7 +47,7 @@ function ProjectsBuildRoute(&$query)
 		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
-    if (!empty($query['alias']))
+	if (!empty($query['alias']))
 	{
 		$segments[] = $query['alias'];
 		unset($query['alias']);
@@ -102,22 +102,22 @@ function ProjectsBuildRoute(&$query)
 		$segments = array();
 		$scope = 1;
 		$parts = explode ( '/', $query['scope'] );
-		if(count($parts) >= 3)
+		if (count($parts) >= 3)
 		{
 			$segments[] = $parts[1]; // alias
 			$segments[] = 'notes'; // active
 
-			for( $i = 3; $i < count($parts); $i++ )
+			for ( $i = 3; $i < count($parts); $i++ )
 			{
 				$segments[] = $parts[$i]; // inlcude parent page names
 			}
 		}
-        unset($query['scope']);
-    }
+		unset($query['scope']);
+	}
 	if (!empty($query['pagename']))
 	{
 		$segments[] = $query['pagename'];
-        unset($query['pagename']);
+		unset($query['pagename']);
     }
 	if (!empty($query['action']))
 	{
@@ -127,7 +127,7 @@ function ProjectsBuildRoute(&$query)
 	elseif ($scope == 1)
 	{
 		$segments[] = !empty($query['task']) ? $query['task'] : 'view'; // wiki action
-		if(!empty($query['task']))
+		if (!empty($query['task']))
 		{
 			unset($query['task']);
 		}

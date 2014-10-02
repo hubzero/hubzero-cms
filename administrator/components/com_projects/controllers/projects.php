@@ -337,7 +337,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 			{
 				case 'delete':
 					$obj->state = 2;
-				 	$what = JText::_('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
+					$what = JText::_('COM_PROJECTS_ACTIVITY_PROJECT_DELETED');
 					$subject .= JText::_('COM_PROJECTS_MSG_ADMIN_DELETED');
 					$this->_message = JText::_('COM_PROJECTS_SUCCESS_DELETED');
 				break;

@@ -77,7 +77,7 @@ tooltip: true,
 		if ($this->getError()) {
 			echo ('<p class="witherror">' . $this->getError().'</p>');
 		}
-		else if($this->msg) {
+		else if ($this->msg) {
 			echo ('<p>' . $this->msg . '</p>');
 		} ?>
 	</div>
@@ -209,11 +209,11 @@ tooltip: true,
 						<?php echo JText::_('new projects this month'); ?></li>
 					<li><span class="stats-num-small"><?php echo $this->stats['general']['public']; ?></span>
 						<?php echo JText::_('public projects'); ?></li>
-					<?php if($this->config->get('grantinfo', 0)) { ?>
+					<?php if ($this->config->get('grantinfo', 0)) { ?>
 					<li><span class="stats-num-small"><?php echo $this->stats['general']['sponsored']; ?></span>
 					<?php echo JText::_('grant-sponsored projects'); ?></li>
 					<?php } ?>
-					<?php if($this->config->get('restricted_data', 0)) { ?>
+					<?php if ($this->config->get('restricted_data', 0)) { ?>
 					<li><span class="stats-num-small"><?php echo $this->stats['general']['sensitive']; ?></span>
 						<?php echo JText::_('projects with sensitive data'); ?></li>
 					<?php } ?>
