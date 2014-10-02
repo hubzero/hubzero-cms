@@ -121,11 +121,12 @@
 	}
 	.infofeed ul li {
 		border-bottom: 1px solid #f2f2f2;
-		padding-top: 0.3em;
-		padding-bottom: 0.7em;
-		padding-right: 0;
+		padding: 0;
 		margin: 0;
 		color: #999;
+		background: #f7f3ed;
+		border-right: 5px solid #FFFFFF;
+		border-left: 5px solid #FFFFFF;
 	}
 	.infofeed ul li div {
 		padding-right: 1em;
@@ -150,9 +151,6 @@
 	.infofeed span.newline {
 		display: block;
 	}
-	.infofeed li {
-		/*background-position: 0 0.8em;*/
-	}
 	.infofeed span.comment {
 		margin: 0;
 		padding: 0;
@@ -167,10 +165,12 @@
 		color: #666;
 	}
 	.infofeed .mline {
-		border-right: 5px solid #FFFFFF;
+		background: #FFFFFF;
+		padding-top: 2em !important;
+		display: block;
+		padding-bottom: 1em !important;
 	}
 	.infofeed .mline:hover {
-		background: none !important;
 	}
 	.infofeed .confirmaction {
 		font-size: 85%;
@@ -320,12 +320,11 @@
 --------------------------------------------- */
 	#plg-content .addcomment fieldset {
 		border: none;
-		float: none !important;
-		width: auto;
 		margin: 0;
 		color: #777;
 		background: #f7f3ed;
 		padding: 0.5em;
+		position: relative;
 	}
 	#plg-content .addcomment textarea {
 		margin: 0;
@@ -342,10 +341,11 @@
 	#plg-content .comments {
 		list-style: none;
 		padding: 0;
-		margin: 0 0 0 0;
+		margin: 1em 0 0 0;
 		border: none;
-		width: 90%;
+		width: 100%;
 		display: block;
+		background: #f7f3ed;
 	}
 	#plg-content .comments li {		
 		margin: 0;
@@ -357,6 +357,7 @@
 		margin-right: 0;
 		clear: none;
 		border-right: 5px solid #f7f3ed;
+		padding-left: 4em !important;
 	}
 	#plg-content .comments .body {
 		font-size: 90%;
@@ -365,9 +366,8 @@
 		float: right;
 		margin-right: -5px;
 	}
-	#plg-content .comments, #plg-content .addcomment {
-		margin-left: 4em;
-		width: 90%;
+	#plg-content .addcomment {
+		padding-left: 2em;
 	}
 	#plg-content .comments li:before,
 	#plg-content .addcomment fieldset:before

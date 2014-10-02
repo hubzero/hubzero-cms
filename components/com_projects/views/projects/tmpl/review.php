@@ -25,7 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if($this->reviewer == 'sponsored')
+if ($this->reviewer == 'sponsored')
 {
 	$title = JText::_('COM_PROJECTS_REVIEW_PROJECT_SPS');
 	$approved = $this->params->get('grant_approval') || $this->params->get('grant_status') == 1 ? 1 : 0;
@@ -47,13 +47,13 @@ $profile = \Hubzero\User\Profile::getInstance($this->project->created_by_user);
 $notes = ProjectsHtml::getAdminNotes($this->project->admin_notes, $this->reviewer);
 
 ?>
-<?php if(!$this->ajax) { ?>
+<?php if (!$this->ajax) { ?>
 	<div id="content-header">
 		<h2><?php echo $title ?></h2>
 	</div>
 <?php } ?>
 <div id="abox-content" class="reviewer">
-<?php if($this->ajax) { ?>
+<?php if ($this->ajax) { ?>
 <h3><?php echo $title ?></h3>
 <?php } ?>
 <?php
@@ -62,7 +62,7 @@ if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } ?>
 
-<?php if($this->project->id) { ?>
+<?php if ($this->project->id) { ?>
 
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&task=process') . '?reviewer=' . $this->reviewer; ?>" method="post" id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" >
 
@@ -85,7 +85,7 @@ if ($this->getError()) {
 		</div>
 	</div>
 
-	<?php if($this->reviewer == 'sponsored')
+	<?php if ($this->reviewer == 'sponsored')
 	{
 	?>
 	<div id="spsinfo" class="faded mini">
@@ -118,20 +118,20 @@ if ($this->getError()) {
 			</tr>
 			<tr>
 				<td>
-					<label class="<?php if($approved) { echo ' spsapproved'; } else { echo 'spsapproval'; } ?>"><?php echo $approved
+					<label for "grant_approval" class="<?php if ($approved) { echo ' spsapproved'; } else { echo 'spsapproval'; } ?>"><?php echo $approved
 						? ucfirst(JText::_('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
 						: JText::_('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
 					 <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->params->get('grant_approval'); ?>"  />
-					<?php if(!$approved) { ?>
+					<?php if (!$approved) { ?>
 					 <p class="hint mini"><?php echo JText::_('COM_PROJECTS_SPS_APPROVAL_HINT'); ?></p>
 					<?php } ?>
 					</label>
 				</td>
-				<td class="tdmini"><?php if(!$approved) { echo '<span class="or">' . JText::_('COM_PROJECTS_OR') . '</span>';  } ?></td>
+				<td class="tdmini"><?php if (!$approved) { echo '<span class="or">' . JText::_('COM_PROJECTS_OR') . '</span>';  } ?></td>
 				<td>
-					<?php if(!$approved) { ?>
-					<label class="dark">
-						 <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?php if($this->params->get('grant_status') == 2) { echo 'checked="checked"'; } ?> />
+					<?php if (!$approved) { ?>
+					<label for="rejected" class="dark">
+						 <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?php if ($this->params->get('grant_status') == 2) { echo 'checked="checked"'; } ?> />
 						<?php echo $this->params->get('grant_status') == 2 ? JText::_('COM_PROJECTS_SPS_REJECTED_KEEP') : JText::_('COM_PROJECTS_SPS_REJECT'); ?>
 					</label>
 					<?php } ?>
@@ -140,7 +140,7 @@ if ($this->getError()) {
 		</table>
 	</div>
 	<?php } ?>
-	<?php if($this->project->state == 5 && $this->reviewer == 'sensitive') { ?>
+	<?php if ($this->project->state == 5 && $this->reviewer == 'sensitive') { ?>
 	 <div>
 		<label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(JText::_('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>
 	 </div>
@@ -151,17 +151,17 @@ if ($this->getError()) {
 		<label>
 			<textarea name="comment" rows="4" cols="40"></textarea>
 		</label>
-		<?php if($this->reviewer == 'sponsored' && !$approved) { ?>
+		<?php if ($this->reviewer == 'sponsored' && !$approved) { ?>
 		 <label><input class="option" name="notify" type="checkbox" value="1" /> <?php echo ucfirst(JText::_('COM_PROJECTS_REVIEWERS_ADD_ACTIVITY')); ?></label>
 		<?php } ?>
 	</div>
 	<p class="submitarea">
 		<input type="submit" value="<?php echo $b_action; ?>" class="btn" />
-		<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+		<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 	</p>
 	<div id="admincommentbox">
 	<h4><?php echo ucfirst(JText::_('COM_PROJECTS_REVIEWER_COMMENTS')); ?> <span class="hint"> <?php echo ucfirst(JText::_('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST')); ?></span></h4>
-	<?php if($notes)  { ?>
+	<?php if ($notes)  { ?>
 		<?php echo $notes; ?>
 	<?php } else {  ?>
 		<p class="noresults">No comments found</p>

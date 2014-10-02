@@ -43,10 +43,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 	 */
 	public function execute()
 	{
-		// Load the component config
-		$config = JComponentHelper::getParams( $this->_option );
-		$this->_config = $config;
-
 		// Publishing enabled?
 		$this->_publishing =
 			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
@@ -94,15 +90,11 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$this->view->config = $this->_config;
+		$this->view->config = $this->config;
 
 		// Get configuration
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
-
-		// Push some styles to the template
-		$document = JFactory::getDocument();
-		$document->addStyleSheet(DS .'components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'projects.css');
 
 		// Get filters
 		$this->view->filters = array();
@@ -142,9 +134,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Check that master path is there
-		if ($this->_config->get('offroot') && !is_dir($this->_config->get('webpath')))
+		if ($this->config->get('offroot') && !is_dir($this->config->get('webpath')))
 		{
-			$this->view->setError( JText::_('Master directory does not exist. Administrator must fix this! ') . $this->_config->get('webpath') );
+			$this->view->setError( JText::_('Master directory does not exist. Administrator must fix this! ') . $this->config->get('webpath') );
 		}
 
 		// Output the HTML
@@ -185,7 +177,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		$this->view = $this->view;
-		$this->view->config = $this->_config;
+		$this->view->config = $this->config;
 
 		$obj = new Project( $this->database );
 		$objAC = new ProjectActivity( $this->database );
@@ -225,7 +217,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$objO = new ProjectOwner( $this->database );
 
 		// Sync with system group
-		$objO->sysGroup($obj->alias, $this->_config->get('group_prefix', 'pr-'));
+		$objO->sysGroup($obj->alias, $this->config->get('group_prefix', 'pr-'));
 
 		// Get members and managers
 		$this->view->managers = $objO->getOwnerNames($id, 0, '1', 1);
@@ -239,7 +231,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		// Was project suspended?
 		$this->view->suspended = false;
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		if ($obj->state == 0 && $obj->setup_stage >= $setup_complete)
 		{
 			$this->view->suspended = $objAC->checkActivity( $id, JText::_('COM_PROJECTS_ACTIVITY_PROJECT_SUSPENDED'));
@@ -252,7 +244,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		JPluginHelper::importPlugin( 'projects', 'files' );
 		$dispatcher = JDispatcher::getInstance();
 		$project = $obj->getProject($id, $this->juser->get('id'));
-		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', '', $this->_config, NULL));
+		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', '', $this->config, NULL));
 		$this->view->diskusage = isset($content[0])  ? $content[0]: '';
 
 		// Set any errors
@@ -293,7 +285,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit( 'Invalid Token' );
 
 		// Config
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 
 		// Get some needed classes
 		$objAA = new ProjectActivity ( $this->database );
@@ -417,7 +409,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$this->_saveMember();
 
 		// Send message
-		if ($this->_config->get('messaging', 0) && $sendmail && count($managers) > 0)
+		if ($this->config->get('messaging', 0) && $sendmail && count($managers) > 0)
 		{
 			// Email config
 			$jconfig 		= JFactory::getConfig();
@@ -530,7 +522,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Get project group
-		$group_prefix = $this->_config->get('group_prefix', 'pr-');
+		$group_prefix = $this->config->get('group_prefix', 'pr-');
 		$prgroup = $group_prefix.$obj->alias;
 
 		// Store project info
@@ -608,8 +600,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 
 		// Delete base dir for .git repos
 		$dir 		= $alias;
-		$prefix 	= $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
-		$repodir 	= DS . trim($this->_config->get('webpath'), DS);
+		$prefix 	= $this->config->get('offroot', 0) ? '' : JPATH_ROOT ;
+		$repodir 	= DS . trim($this->config->get('webpath'), DS);
 		$path 		= $prefix . $repodir . DS . $dir;
 
 		if (is_dir($path))
@@ -618,7 +610,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Delete images/preview directories
-		$webdir = DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
+		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
 		$webpath = JPATH_ROOT . $webdir . DS . $dir;
 
 		if (is_dir($webpath))
@@ -674,8 +666,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Delete base dir for .git repos
-		$prefix  = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
-		$repodir = trim($this->_config->get('webpath'), DS);
+		$prefix  = $this->config->get('offroot', 0) ? '' : JPATH_ROOT ;
+		$repodir = trim($this->config->get('webpath'), DS);
 		$path    = $prefix . DS . $repodir . DS . $obj->alias . DS . 'files';
 
 		if (!is_file($path . DS . $file))
@@ -689,9 +681,9 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		// Git helper
 		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
 		$gitHelper = new ProjectsGitHelper(
-			$this->_config->get('gitpath', '/opt/local/bin/git'),
+			$this->config->get('gitpath', '/opt/local/bin/git'),
 			$obj->owned_by_user,
-			$this->_config->get('offroot', 0) ? '' : JPATH_ROOT
+			$this->config->get('offroot', 0) ? '' : JPATH_ROOT
 		);
 
 		$commitMsg = '';
@@ -731,7 +723,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$dispatcher = JDispatcher::getInstance();
 		$project = $obj->getProject($id, $this->juser->get('id'));
 
-		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', 'advoptimize', $this->_config, NULL));
+		$content = $dispatcher->trigger( 'diskspace', array( $this->_option, $project, 'files', 'admin', 'advoptimize', $this->config, NULL));
 
 		// Redirect
 		$this->setRedirect(
@@ -764,8 +756,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$obj->saveParam($id, $service . '_sync_lock', '');
 
 		// Get log file
-		$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
-		$repodir = trim($this->_config->get('webpath'), DS);
+		$prefix = $this->config->get('offroot', 0) ? '' : JPATH_ROOT ;
+		$repodir = trim($this->config->get('webpath'), DS);
 		$sfile 	 = $prefix . DS . $repodir . DS . $obj->alias . DS . 'logs' . DS . 'sync.' . JFactory::getDate()->format('Y-m') . '.log';
 
 		if (file_exists($sfile))

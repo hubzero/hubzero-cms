@@ -56,9 +56,6 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 		// Get all test projects
 		$testProjects = $obj->getTestProjects();
 
-		// Add the CSS to the template
-		$this->_getStyles();
-
 		// Set the pathway
 		$this->_buildPathway();
 
@@ -71,10 +68,6 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 		{
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
-
-			// Add stylesheet
-			$document = JFactory::getDocument();
-			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS . 'css' . DS . 'impact.css');
 
 			$objStats = new ProjectStats($this->database);
 
@@ -239,18 +232,6 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 
 		// Get all test projects
 		$testProjects = $obj->getTestProjects();
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Add stylesheet
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . 'com_projects' . DS
-			. 'assets' . DS . 'css' . DS . 'reports.css');
-		$document->addScript('components' . DS . 'com_projects' . DS
-			. 'assets' . DS . 'js' . DS . 'reports.js');
-		$document->addStylesheet('components' . DS . 'com_projects' . DS
-			. 'assets' . DS . 'css' . DS . 'calendar.css');
 
 		// Set the pathway
 		$this->_buildPathway();

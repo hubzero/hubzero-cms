@@ -45,7 +45,7 @@ $this->project->title = ProjectsHtml::cleanText($this->project->title);
 			<label><input class="option" name="keep" type="radio" value="1" checked="checked" /> <?php echo JText::_('COM_PROJECTS_OWNER_KEEP_PROJECT'); ?></label>
 			<label><input class="option" name="keep" type="radio" value="0" /> <?php echo JText::_('COM_PROJECTS_OWNER_DELETE_PROJECT'); ?></label>
 			<p class="submitarea">
-				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_MY_CHOICE'); ?>"  />
+				<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE_MY_CHOICE'); ?>"  />
 			</p>
 			</fieldset>
 		</form>

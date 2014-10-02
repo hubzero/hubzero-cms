@@ -1,0 +1,35 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+ Dark theme
+--------------------------------------------- */
+	.theme .project-header {
+		background: #b5bdc8; /* Old browsers */
+		background: -moz-linear-gradient(45deg,  #b5bdc8 0%, #828c95 36%, #28343b 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#b5bdc8), color-stop(36%,#828c95), color-stop(100%,#28343b)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(45deg,  #b5bdc8 0%,#828c95 36%,#28343b 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(45deg,  #b5bdc8 0%,#828c95 36%,#28343b 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(45deg,  #b5bdc8 0%,#828c95 36%,#28343b 100%); /* IE10+ */
+		background: linear-gradient(45deg,  #b5bdc8 0%,#828c95 36%,#28343b 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+	}
+	.theme h2 a {
+		color: white;
+	}
+	.theme .project-header .ptitle-container p {
+		color: #cdcdcd;
+	}
+	.theme .project-header .ptitle-container p a {
+		color: #f3e4bc;
+	}
+	.theme .h-privacy {
+		color: #cdcdcd;
+	}

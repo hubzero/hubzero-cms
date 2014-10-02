@@ -1,0 +1,152 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+ Features page CSS
+--------------------------------------------- */
+.feature {
+	margin: -1px 0 2em 0;
+	padding: 0;
+	background: #fbf8ea;
+	border-top: 2px solid #e7dac4;
+	border-bottom: 2px solid #e7dac4;
+	*margin-right: 30px;
+}
+#feature-section .feature:nth-child(2n-2) {
+	background: #faeefe;
+}
+.feature .first h3 {
+	margin: 0;
+	margin-left: 1.5em;
+	margin-top: 1em;
+	color: #bcaf99;
+	font-size: 150%;
+	line-height: 1.5em;
+}
+#feature-section .feature:nth-child(2n-2) .first h3 {
+	color: #b3acb6;
+}
+.feature .second p {
+	padding: 1em 3em 1em 1em;
+}
+.feature .second p.f-about {
+	margin: 0 0 1em 0;
+}
+.feature #feature-blog .second p.f-about {
+	margin-bottom: -2em;
+}
+.feature .second, .feature .thrid {
+	background: #fffef9;
+}
+.feature .second {
+	border-right: 4px solid #FFF;
+	border-left: 4px solid #FFF;
+}
+.feature .columns .second {
+	border: none;
+}
+.feature .columns .first, .feature .columns .second, .feature .columns .first p, .feature .columns .second p {
+	padding-top: 0;
+	margin-top: 0;
+}
+.feature .columns p.sub {
+	margin: 0;
+	font-weight: bold;
+	color: #000;
+}
+.feature .columns .columns {
+	margin: 2em 0 0 0;
+}
+.feature .columns ul {
+	margin: -1em 2em 2em 2em;
+	padding: 0;
+}
+.feature .columns ul.f-updates {
+	list-style: none;
+	margin-left: 1em;
+}
+.feature .columns ul.f-updates li {
+	background-position: 0 2px;
+	margin-left: 0;
+}
+.feature .suggest {
+	margin-top: 0.5em;
+	display: block;
+	width: auto;	
+}
+.feature .suggest a {
+	border: 3px solid #ede1cf;
+	padding: 0.2em 1em 0.3em 1em;
+	background: #FFF;
+	color: #e28c0c;
+}
+.feature .suggest a:hover {
+	color: #FFF;
+	background: #e28c0c;
+}
+.feature .ima {
+	border: 3px solid #ede1cf;
+	padding: 1em 1em 1em 1em;
+	margin-left: 3em;
+	width: 32px;
+	height: 32px;	
+	text-align: center;
+	background: #FFFFFF;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	-ms-border-radius: 10px;
+	-o-border-radius: 10px;
+	border-radius: 10px;
+}
+.feature .wip {
+	margin: 0;
+	margin-left: 2em;
+	font-size: 110%;
+	font-weight: bold;
+}
+.feature .ima:before {
+	content: "";
+	width: 40px;
+	height: 40px;
+	font-size: 40px;
+	font-family: 'Fontcons';
+	color: #CCC;
+	position: absolute;
+	margin: 0;
+	margin-left: -0.5em;
+	margin-top: 0.1em;
+}	
+.feature #feature-todo {
+	background: url("../img/screenshots/todo.jpg") right top no-repeat;
+}
+.feature #feature-blog {
+	background: url("../img/screenshots/blog.jpg") right top no-repeat;
+}
+.feature #feature-notes {
+	background: url("../img/screenshots/notes.jpg") right top no-repeat;
+}
+.feature #feature-team {
+	background: url("../img/screenshots/team.jpg") right top no-repeat;
+}
+.feature #feature-files {
+	background: url("../img/screenshots/files.jpg") right top no-repeat;
+}
+.feature #feature-app, .feature #feature-tool {
+	background: url("../img/screenshots/apps.jpg") right top no-repeat;
+}
+.feature #feature-publications {
+	background: url("../img/screenshots/publications.jpg") right top no-repeat;
+}
+.feature #feature-activity {
+	background: url("../img/screenshots/activity.jpg") right top no-repeat;
+}
+.feature #feature-more {
+	background: url("../img/screenshots/other.jpg") right top no-repeat;
+}

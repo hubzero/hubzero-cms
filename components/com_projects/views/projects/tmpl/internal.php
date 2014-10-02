@@ -26,6 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $html  = '';
 
+$this->css()
+     ->js();
+
 // Add new activity count to page title
 $document = JFactory::getDocument();
 $title = $this->project->counts['newactivity'] > 0
@@ -37,90 +40,40 @@ $document->setTitle( $title );
 // Do some text cleanup
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 
-// Use id or alias in urls?
-$goto  = 'alias=' . $this->project->alias;
+// Get project params
+$params = new JParameter( $this->project->params );
 
-$assets = array('files', 'databases', 'tools');
-$assetTabs = array();
+// Get layout from project params or component
+$layout = $params->get('layout', $this->config->get('layout', 'standard')); 
+$theme = $params->get('theme', $this->config->get('theme', 'light'));
 
-// Sort tabs so that asset tabs are together
-foreach ($this->tabs as $tab)
+if ($layout == 'extended')
 {
-	if (in_array($tab['name'], $assets))
-	{
-		$assetTabs[] = $tab;
-	}
+	// Include extended CSS
+	$this->css('extended.css');
+
+	// Include theme CSS
+	$this->css('theme' . $theme . '.css');
 }
-$a = 0;
+else
+{
+	$this->css('standard.css');
+}
+
 ?>
-<div id="project-wrap">
+<div id="project-wrap" class="theme">
+	<?php if ($layout == 'extended') { 
+		echo ProjectsHtml::drawProjectHeader($this); ?>
+	<div class="project-inner-wrap">
+	<?php
+	} else { ?>
 	<div id="project-innerwrap">
-		<div class="main-menu">
-			<?php echo ProjectsHtml::embedProjectImage($this); ?>
-			<ul class="projecttools">
-				<li<?php if ($this->active == 'feed') { echo ' class="active"'; }?>>
-					<a class="newsupdate" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=feed'); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><span><?php echo JText::_('COM_PROJECTS_TAB_FEED'); ?></span>
-					<span id="c-new" class="mini highlight <?php if ($this->project->counts['newactivity'] == 0) { echo 'hidden'; } ?>"><span id="c-new-num"><?php echo $this->project->counts['newactivity'];?></span></span></a>
-				</li>
-				<li<?php if ($this->active == 'info') { echo ' class="active"'; }?>><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=info'); ?>" class="inform" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower(JText::_('COM_PROJECTS_TAB_INFO')); ?>">
-					<span><?php echo JText::_('COM_PROJECTS_TAB_INFO'); ?></span></a>
-				</li>
-<?php if ($this->tabs) {
-	foreach ($this->tabs as $tab)
-	{
-		if ($tab['name'] == 'blog')
-		{
-			continue;
-		}
-
-		if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
-		{
-			$a++; // counter for asset tabs
-
-			// Header tab
-			if ($a == 1)
-			{
-				?>
-				<li class="assets">
-					<span><?php echo JText::_('COM_PROJECTS_TAB_ASSETS'); ?></span>
-				</li>
-			</ul>
-			<ul class="projecttools assetlist">
-			<?php
-			foreach ($assetTabs as $aTab)
-			{
-				?>
-				<li<?php if ($aTab['name'] == $this->active) { echo ' class="active"'; } ?>>
-					<a class="<?php echo $aTab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=' . $aTab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($aTab['title']); ?>">
-						<span><?php echo $aTab['title']; ?></span>
-					<?php if (isset($this->project->counts[$aTab['name']]) && $this->project->counts[$aTab['name']] != 0) { ?>
-						<span class="mini" id="c-<?php echo $aTab['name']; ?>"><span id="c-<?php echo $aTab['name']; ?>-num"><?php echo $this->project->counts[$aTab['name']]; ?></span></span>
-					<?php } ?>
-					</a>
-				</li>
-			<?php } ?>
-			</ul>
-			<ul class="projecttools">
-		<?php
-		}
-		continue;
-	}
-?>
-				<li<?php if ($tab['name'] == $this->active) { echo ' class="active"'; } ?>>
-					<a class="<?php echo $tab['name']; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&' . $goto . '&active=' . $tab['name']); ?>/" title="<?php echo JText::_('COM_PROJECTS_VIEW') . ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT')) . ' ' . strtolower($tab['title']); ?>">
-						<span><?php echo $tab['title']; ?></span>
-					<?php if (isset($this->project->counts[$tab['name']]) && $this->project->counts[$tab['name']] != 0) { ?>
-						<span class="mini" id="c-<?php echo $tab['name']; ?>"><span id="c-<?php echo $tab['name']; ?>-num"><?php echo $this->project->counts[$tab['name']]; ?></span></span>
-					<?php } ?>
-					</a>
-				</li>
-<?php }
-} ?>
-			</ul>
-		</div><!-- / .main-menu -->
+		<?php echo ProjectsHtml::drawLeftPanel($this); ?>
 		<div class="main-content">
-			<?php echo ProjectsHtml::writeProjectHeader($this, 0, 1, 2, 0); ?>
-			<?php echo ProjectsHtml::writeMemberOptions($this); ?>
+	<?php
+		echo ProjectsHtml::writeProjectHeader($this, 0, 1, 2, 0); 
+		echo ProjectsHtml::writeMemberOptions($this);
+	} ?>			
 			<div class="status-msg" id="status-msg">
 				<?php
 				// Display error or success message
@@ -148,7 +101,7 @@ $a = 0;
 						)
 					);
 					$view->info = $this;
-					$view->goto = $goto;
+					$view->goto = 'alias=' . $this->project->alias;
 					echo $view->loadTemplate();
 			 } ?>
 			<?php if ($this->side_modules) { ?>
@@ -156,6 +109,8 @@ $a = 0;
 			<?php } ?>
 				<div class="clear"></div>
 			</div><!-- / plg-content -->
-		</div><!-- / .main-content -->
+		<?php if ($layout != 'extended') { ?>
+		</div><!-- / .main-content -->	
+		<?php } ?>
 	</div>
 </div>

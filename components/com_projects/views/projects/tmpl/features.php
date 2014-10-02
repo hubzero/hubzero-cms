@@ -24,6 +24,10 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css()
+	->css('features');
+
 $html  = '';
 ?>
 <div id="content-header">
@@ -188,10 +192,10 @@ $html  = '';
 
 	<div class="feature">
 		<a name="feature-publications"></a>
-		<div id="feature-publications" <?php if(!$this->publishing) { echo 'class="in-the-works"'; } ?> >
+		<div id="feature-publications" <?php if (!$this->publishing) { echo 'class="in-the-works"'; } ?> >
 			<div class="four columns first">
-				<h3><?php echo JText::_('COM_PROJECTS_FEATURES_PUBLICATIONS'); ?><?php if(!$this->publishing) { echo '*'; } ?></h3>
-				<?php if(!$this->publishing) { ?>
+				<h3><?php echo JText::_('COM_PROJECTS_FEATURES_PUBLICATIONS'); ?><?php if (!$this->publishing) { echo '*'; } ?></h3>
+				<?php if (!$this->publishing) { ?>
 				<p class="wip"><?php echo JText::_('COM_PROJECTS_FEATURES_IN_THE_WORKS'); ?></p>
 				<?php } ?>
 				<p class="ima">&nbsp;</p>

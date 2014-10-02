@@ -25,6 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('reports')
+	->css('impact.css', 'plugins/projects/publications/css');
+
 // Common options for js charts
 $options = "
 xaxis: { ticks: xticks },

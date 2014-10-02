@@ -25,6 +25,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('reports')
+	->css('calendar')
+	->js('reports');
+
 // Incoming
 $data   = JRequest::getVar( 'data', array(), 'post', 'array' );
 $from   = JRequest::getVar( 'fromdate', JHTML::_('date', JFactory::getDate('-1 month')->toSql(), 'Y-m') );

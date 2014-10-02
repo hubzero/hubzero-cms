@@ -30,6 +30,8 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css();
+
 JToolBarHelper::title( JText::_( 'Projects' ), 'user.png' );
 JToolBarHelper::preferences('com_projects', '550');
 JToolBarHelper::editList();

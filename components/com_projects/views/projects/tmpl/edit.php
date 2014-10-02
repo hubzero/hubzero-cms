@@ -24,7 +24,11 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$html  = '';
+
+
+$this->css()
+	->js()
+	->js('setup');
 
 // Do some text cleanup
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
@@ -41,7 +45,7 @@ $goto  = 'alias=' . $this->project->alias;
 		if ($this->getError()) {
 			echo ('<p class="witherror">' . $this->getError().'</p>');
 		}
-		else if($this->msg) {
+		elseif ($this->msg) {
 			echo ('<p>' . $this->msg . '</p>');
 		}
 		?>
@@ -53,14 +57,14 @@ $goto  = 'alias=' . $this->project->alias;
 		<section class="main section withleft">
 			<div class="aside">
 				<ul id="panelist">
-					<?php foreach($this->sections as $section) { ?>
-					<li <?php if($section == $this->active) { echo 'class="activepane"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=edit'.a.$goto).'/?edit='.strtolower($section); ?>"><?php echo JText::_('COM_PROJECTS_EDIT_PROJECT_PANE_'.strtoupper($section)); ?></a></li>
+					<?php foreach ($this->sections as $section) { ?>
+					<li <?php if ($section == $this->active) { echo 'class="activepane"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=edit'.a.$goto).'/?edit='.strtolower($section); ?>"><?php echo JText::_('COM_PROJECTS_EDIT_PROJECT_PANE_'.strtoupper($section)); ?></a></li>
 					<?php } ?>
 				</ul>
-				<?php if($this->active != 'info') { ?>
+				<?php if ($this->active != 'info') { ?>
 				<div class="tips">
 					<h3><?php echo JText::_('COM_PROJECTS_TIPS'); ?></h3>
-				<?php if($this->active == 'team') { ?>
+				<?php if ($this->active == 'team') { ?>
 						<h4><?php echo JText::_('COM_PROJECTS_HOWTO_ROLES_TIPS'); ?></h4>
 						<p><span class="italic prominent"><?php echo ucfirst(JText::_('COM_PROJECTS_LABEL_COLLABORATORS')); ?> </span><?php echo JText::_('COM_PROJECTS_CAN'); ?>:</p>
 						<ul>
@@ -78,7 +82,7 @@ $goto  = 'alias=' . $this->project->alias;
 				 else if ($this->active == 'settings') { ?>
 						<h4><?php echo JText::_('COM_PROJECTS_HOWTO_PUBLIC_PAGE'); ?></h4>
 						<p><?php echo JText::_('COM_PROJECTS_HOWTO_PUBLIC_PAGE_EXPLAIN'); ?></p>
-					<?php if($this->config->get('grantinfo', 0)) { ?>
+					<?php if ($this->config->get('grantinfo', 0)) { ?>
 						<h5><?php echo JText::_('COM_PROJECTS_HOWTO_GRANTINFO_WHY'); ?></h5>
 						<p><?php echo JText::_('COM_PROJECTS_HOWTO_GRANTINFO_BECAUSE'); ?></p>
 					<?php } ?>
@@ -122,7 +126,7 @@ $goto  = 'alias=' . $this->project->alias;
 													$project = new ProjectsModelProject($this->project);
 													echo \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null, array('class' => 'minimal no-footer'));
 												?>
-												<?php if(!JPluginHelper::isEnabled('projects', 'apps') && !$this->publishing) { ?>
+												<?php if (!JPluginHelper::isEnabled('projects', 'apps') && !$this->publishing) { ?>
 													<input type="hidden"  name="type" value="<?php echo $this->project->type; ?>" />
 												<?php } ?>
 											</td>
@@ -149,7 +153,7 @@ $goto  = 'alias=' . $this->project->alias;
 							<?php echo $this->content; ?>
 						</div>
 						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_PROJECT') . ' ' . JText::_('COM_PROJECTS_OWNER'); ?>:</h5>
-						<?php 	if($this->project->owned_by_group) {
+						<?php 	if ($this->project->owned_by_group) {
 								$group = \Hubzero\User\Group::getInstance( $this->project->owned_by_group );
 								$ownedby = '<a href="'.JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn')).'">'.JText::_('COM_PROJECTS_GROUP').' '.$group->get('cn').'</a>';
 							}
@@ -162,9 +166,9 @@ $goto  = 'alias=' . $this->project->alias;
 						?>
 						<h4><?php echo ucwords(JText::_('COM_PROJECTS_EDIT_SETTINGS')); ?></h4>
 						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_ACCESS'); ?></h5>
-						<label><input class="option" name="private" type="radio" value="1" <?php if($this->project->private == 1) { echo 'checked="checked"'; }?> /> <?php echo JText::_('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?></label>
-						<label><input class="option" name="private" type="radio" value="0" <?php if($this->project->private == 0) { echo 'checked="checked"'; }?> /> <?php echo JText::_('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?></label>
-						<?php if($this->project->private == 0) { ?>
+						<label><input class="option" name="private" type="radio" value="1" <?php if ($this->project->private == 1) { echo 'checked="checked"'; }?> /> <?php echo JText::_('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?></label>
+						<label><input class="option" name="private" type="radio" value="0" <?php if ($this->project->private == 0) { echo 'checked="checked"'; }?> /> <?php echo JText::_('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?></label>
+						<?php if ($this->project->private == 0) { ?>
 						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_OPTIONS_FOR_PUBLIC'); ?></h5>
 						<p class="hint"><?php echo JText::_('COM_PROJECTS_YOUR_PROJECT_IS'); ?> <span class="prominent urgency"><?php echo $privacy; ?></span></p>
 						<label>
@@ -200,38 +204,38 @@ $goto  = 'alias=' . $this->project->alias;
 						<?php } ?>
 
 						<?php } ?>
-						<?php if($this->config->get('grantinfo', 0)) { ?>
+						<?php if ($this->config->get('grantinfo', 0)) { ?>
 						<h5 class="terms-question"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_INFO'); ?></h5>
 						<?php
 							$approved = ($this->params->get( 'grant_status') == 1) ? 1 : 0;
-							if($approved)
+							if ($approved)
 							{ ?>
 							<p class="notice notice_passed"><?php echo JText::_('COM_PROJECTS_GRANT_APPROVED_WITH_CODE'); ?> <span class="prominent"><?php echo htmlentities(html_entity_decode($this->params->get( 'grant_approval', 'N/A'))); ?></span></p>
 						<?php } else { ?>
 							<p><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_INFO_WHY'); ?></p>
 						<?php } ?>
 						<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-						<?php if($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_title', 'N/A'))) . '</span>'; } else {  ?>
+						<?php if ($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_title', 'N/A'))) . '</span>'; } else {  ?>
 						 <input name="params[grant_title]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->params->get( 'grant_title'))); ?>" class="long" />
 						<?php } ?>
 						</label>
 						<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-						<?php if($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_PI', 'N/A'))) . '</span>'; } else {  ?>
+						<?php if ($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_PI', 'N/A'))) . '</span>'; } else {  ?>
 						 <input name="params[grant_PI]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->params->get( 'grant_PI'))); ?>" class="long"  />
 						<?php } ?>
 						</label>
 						<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-						<?php if($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_agency', 'N/A'))) . '</span>'; } else {  ?>
+						<?php if ($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_agency', 'N/A'))) . '</span>'; } else {  ?>
 						 <input name="params[grant_agency]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->params->get( 'grant_agency'))); ?>" class="long"  />
 						<?php } ?>
 						</label>
 						<label class="terms-label"><?php echo JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-						<?php if($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_budget', 'N/A'))) . '</span>'; } else {  ?>
+						<?php if ($approved) { echo '<span class="prominent">' . htmlentities(html_entity_decode($this->params->get( 'grant_budget', 'N/A'))) . '</span>'; } else {  ?>
 						 <input name="params[grant_budget]" maxlength="250" type="text" value="<?php echo htmlentities(html_entity_decode($this->params->get( 'grant_budget'))); ?>" class="long"  />
 						<?php } ?>
 						</label>
-						<?php if(!$approved) { ?>
-							<label><input class="option" name="params[grant_status]" type="checkbox" value="0" <?php if($this->params->get( 'grant_status') == 2) { echo 'checked="checked"'; } ?> /> <?php echo $this->params->get( 'grant_status') == 2
+						<?php if (!$approved) { ?>
+							<label><input class="option" name="params[grant_status]" type="checkbox" value="0" <?php if ($this->params->get( 'grant_status') == 2) { echo 'checked="checked"'; } ?> /> <?php echo $this->params->get( 'grant_status') == 2
 							? JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL')
 							: JText::_('COM_PROJECTS_SETUP_TERMS_GRANT_NOTIFY_ADMIN') ; ?></label>
 						<?php } ?>
@@ -248,10 +252,10 @@ $goto  = 'alias=' . $this->project->alias;
 				</form>
 			</div><!-- / .subject -->
 		</section><!-- / .main section -->
-		<?php if ($this->active == 'info') { ?>
-			<div id="cancel-project">
-				<p class="right_align"><?php echo JText::_('Need to cancel project? You have an option to permanently '); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=delete'); ?>" id="delproject"><?php echo strtolower(JText::_('delete')); ?></a> <?php echo JText::_('your project.'); ?></p>
-			</div>
-		<?php } ?>
 	</div><!-- / #edit-project-content -->
 </div>
+<?php if ($this->active == 'info') { ?>
+	<div id="cancel-project">
+		<p class="right_align"><?php echo JText::_('Need to cancel project? You have an option to permanently '); ?> <a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=delete'); ?>" id="delproject"><?php echo strtolower(JText::_('delete')); ?></a> <?php echo JText::_('your project.'); ?></p>
+	</div>
+<?php } ?>

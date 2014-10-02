@@ -1,0 +1,158 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+ Standard project layout
+--------------------------------------------- */
+.main-menu {
+	width: 200px;
+	float: left;
+	margin: 0;
+	padding: 0 0 0 0;	
+	background: #fff9ef;
+}
+.main-content {
+	margin-left: 200px;
+	padding: 2em;
+	padding-bottom: 4em;
+	margin-top: 0;
+	background: #FFF;
+	border-left: 1px solid #e8e8e8;
+	min-height: 400px;
+}
+.main-menu ul.projecttools {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 90%;
+	margin-bottom: 2em;
+	margin-top: 0;
+	padding-top: 0;
+	padding-bottom: 2em;
+	background: #fff9ef;
+	border-right: 1px solid #e8e8e8;
+	margin-right: -1px;	
+}
+.main-menu ul.assetlist {
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-bottom: -1px;
+	margin-top: -4em;
+}
+.main-menu ul.projecttools li {
+	padding: 0.5em 0.5em 0.5em 1.5em;
+	padding-right: 0;
+	margin: 0;
+	background: #fff9ef;
+	border-bottom: 1px solid #e8e8e8;
+	border-top: 1px solid #e8e8e8;
+	border-right: 1px solid #e8e8e8;		
+	height: 20px;
+	margin-right: -1px;
+	margin-top: -1px;
+}
+.main-menu ul.projecttools li.assets {
+	padding-top: 0.5em;
+	background: #fff9ef;
+}
+.main-menu ul.projecttools li.assets:hover {
+	background: #fff9ef;
+}
+.main-menu ul.projecttools li,
+.main-menu ul.projecttools li.assets,
+.main-menu ul.projecttools li.assets:hover {
+	background: #fff9ef;
+}
+.main-menu ul.projecttools li a:before {
+	color: #c9c4bc;
+}
+.main-menu ul.projecttools li a:hover:before,
+.main-menu ul.projecttools li a:hover {
+	color: #666;
+}
+.main-menu ul.projecttools li.active a:before,
+#plg-header h3:before {
+	color: black;
+}
+.main-menu ul.assetlist li {
+	background: #f7f3ed;
+	padding-left: 40px;
+}
+.main-menu ul.projecttools li.assets span {
+	padding-left: 20px;
+}
+.main-menu ul.projecttools li a {
+	padding: 0.1em;
+	padding-left: 20px;
+	width: 80%;	
+	height: 15px;
+	outline: none;
+	display: block;
+}
+.main-menu ul.projecttools li.active {
+	background: #FFFFFF;
+	border-right: 1px solid #FFF;
+}	
+.main-menu ul.projecttools li.active:last-child {
+	border-bottom: 1px solid #e8e8e8;
+}
+.main-menu ul.projecttools li.active:first-child {
+	border-top: 1px solid #e8e8e8;
+}
+.main-menu ul.projecttools li.active a {
+	color: #000000;
+}
+.main-menu ul.projecttools li.active a span {
+	font-weight: bold;
+}
+.main-menu ul.projecttools li.editing {
+	background: #FFFFFF;
+	padding-right: 0;
+}
+.main-menu ul.assetlist {
+	border-bottom: 1px solid #CCC;	
+}
+.main-menu ul.projecttools li:hover {
+	background: #ffffff;
+}
+.main-menu ul.projecttools li.pt_title, ul.projecttools li.pt_title:hover {
+	font-weight: bold;
+	font-size: 110%;
+	background: #e6dac6;
+	color: #000000;
+	border: none;
+}
+.main-menu ul.projecttools a:hover, ul.projecttools a:focus {
+	border: none;
+	outline: none; 
+}
+/* Counts (left-hand menu)
+--------------------------------------------- */
+.main-menu ul.projecttools li a span.mini {
+	margin: 0 2px 0 0;
+	text-align: center;
+	font-size: 75% !important;
+	color: #000;
+	font-weight: bold;
+	float: right;
+	background: none;
+	display: inline;
+}
+.main-menu ul.assetlist li a span.mini {
+	margin-right: 6px;
+}
+.main-menu ul.projecttools li a span.mini span {
+	background: #e9e1d5;
+	padding: 1px 4px;
+}
+.main-menu ul.projecttools li a span.highlight span {
+	background: red;
+	color: white;
+}

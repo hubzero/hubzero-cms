@@ -1,0 +1,39 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	com_projects CSS
+	-- -- -- -- -- -- --
+
+*/
+	.project-tags .tags {
+		list-style: none;
+		margin-top: 1em;
+		margin-bottom: 0;
+		font-size: 85%;
+	}
+	.project-tags .tags li {
+		display: inline;
+		margin: 0 9px 0 0;
+		background: #EFEFEF;
+	}
+	.project-tags .tags li a {
+		font-size: bold;
+	}
+	.project-tags .tags li:before {
+		font-family: 'Fontcons';
+		content: "\f02c";
+		font-weight: normal;
+		padding-right: 0.2em;
+	}
+	.maxitd {
+		width: 50%;
+	}

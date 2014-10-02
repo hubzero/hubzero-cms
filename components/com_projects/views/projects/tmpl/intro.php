@@ -26,6 +26,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
+
+$this->css('introduction.css', 'system')
+     ->css()
+     ->js();
 ?>
 <div id="content-header">
 	<h2><?php echo $this->title; ?></h2>

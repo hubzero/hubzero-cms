@@ -1,0 +1,26 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+ Light theme
+--------------------------------------------- */
+	.theme .project-header {
+		background: #bfbfbf; /* Old browsers */
+		background: -moz-linear-gradient(left,  #bfbfbf 0%, #cccccc 11%, #f9f9f9 24%, #e2e2e2 100%); /* FF3.6+ */
+		background: -webkit-gradient(linear, left top, right top, color-stop(0%,#bfbfbf), color-stop(11%,#cccccc), color-stop(24%,#f9f9f9), color-stop(100%,#e2e2e2)); /* Chrome,Safari4+ */
+		background: -webkit-linear-gradient(left,  #bfbfbf 0%,#cccccc 11%,#f9f9f9 24%,#e2e2e2 100%); /* Chrome10+,Safari5.1+ */
+		background: -o-linear-gradient(left,  #bfbfbf 0%,#cccccc 11%,#f9f9f9 24%,#e2e2e2 100%); /* Opera 11.10+ */
+		background: -ms-linear-gradient(left,  #bfbfbf 0%,#cccccc 11%,#f9f9f9 24%,#e2e2e2 100%); /* IE10+ */
+		background: linear-gradient(to right,  #bfbfbf 0%,#cccccc 11%,#f9f9f9 24%,#e2e2e2 100%); /* W3C */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bfbfbf', endColorstr='#e2e2e2',GradientType=1 ); /* IE6-9 */
+	}
+	.theme h2 a {
+		color: black;
+	}

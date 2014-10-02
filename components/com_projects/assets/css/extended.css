@@ -1,0 +1,284 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+ New project layout
+--------------------------------------------- */
+	.project-header {
+		background: #f7f7f7;
+		height: 150px;
+		padding: 0;
+		margin: 0;
+		overflow: visible;
+	}
+	.project-inner-wrap {
+		padding: 1em 2em 4em 2em;
+	}
+	.project-inner-wrap plg-content {
+		min-width: 800px;
+	}
+	.project-inner-wrap #plg-content .subject {
+		width: 70%;
+	}
+	.project-inner-wrap #plg-content .aside {
+		width: 25%;
+	}
+	.project-header #member_options {
+		margin: 100px 2em 0 0;
+		width: 140px;
+		position: relative;
+	}
+	.project-header #member_options #options-dock {
+		margin-top: 2em;
+	}
+	.project-header .pimage-container {
+		position: absolute;
+		margin-left: 2em;
+		margin-top: 2em;
+		overflow: visible;
+	}
+	.project-header #pimage {
+		display: inline-block;
+		width: 150px;
+		height: 150px;
+		border-radius: 20%;
+		overflow: hidden;
+		padding: 0;
+		margin: 0;
+		border: 4px solid #FFFFFF;
+		background: white;
+		text-align: center;
+		-webkit-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
+		-moz-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
+		box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
+	}
+	.project-header #pimage img {
+		max-width: 150%;
+		max-height: auto;
+		min-width: 100%;
+		min-height: 160px;
+		padding: 0;
+	}
+	.project-header #pimage .defaultimage:before {
+		margin-left: -0.8em;
+	}
+	.ptitle-container {
+		margin-top: 2em;
+		margin-left: 220px;
+		position: absolute;
+	}
+	.ptitle-container h2 {
+		margin-bottom: 0em;
+	}
+	.ptitle-container p {
+		margin: 0;
+	}
+	.ptitle-container h2 a span {
+		font-size: 70%;
+	}
+
+/*
+	Menu
+--------------------------------------------- */
+
+	.menu-wrapper {
+		background: #fafafa;
+		border-top: 1px solid #dfdfdf;
+		border-bottom: 1px solid #dfdfdf;
+		padding-left: 220px;
+	}
+	.menu-wrapper ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		height: 35px;
+	}
+	.menu-wrapper ul li {
+		margin: 0;
+		padding: 0.4em;
+		display: inline-block;
+		height: 25px;
+	}
+	.menu-wrapper ul li a:before {
+		color: #CCC;
+		margin: 0;
+		padding: 0;
+		display: none;
+	}
+	.menu-wrapper ul li .mini {
+		color: #CCC;
+	}
+	.menu-wrapper ul li.active a {
+		color: black;
+		margin: 0;
+	}
+	.menu-wrapper ul li.active {
+		background: #FFFFFF;
+		border-right: 1px solid #CCC;
+		border-left: 1px solid #CCC;
+		border-bottom: 4px solid #666;
+		margin-left: -4px;
+		padding: 0.4em 1em;
+		color: #666;
+	}
+	.menu-wrapper ul li.active a:before {
+		color: #000;
+	}
+	.menu-wrapper ul a.assets:after {
+		width: 12px;
+		height: 12px;
+		font-size: 12px;
+		font-family: 'Fontcons';
+		content: "\f0d7";
+		color: #CCC;
+	}
+	.menu-wrapper ul li.active a.assets:after {
+		color: #666;
+	}
+	.highlight {
+		background: transparent;
+	}
+	.menu-wrapper li a span.highlight span {
+		background: red;
+		color: white;
+		padding: 0 0.3em;
+		font-size: 85%;
+		border-radius: 20%;
+	}
+	.submenu-wrap {
+		position: absolute;
+		padding: 0.3em 1em;
+		border: 1px solid #CCC;
+		background: #FFF;
+		z-index: 2000;
+		margin-left: -1em;
+		margin-top: 0.3em;
+		-webkit-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
+		-moz-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
+		box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
+		display: none;
+	}
+	.submenu-wrap p {
+		line-height: 0.8em;
+	}
+	.menu-wrapper ul li#tab-assets:hover .submenu-wrap {
+		display: block;
+	}
+	.assets:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #aaa;
+		margin-right: 0.3em;
+		vertical-align: middle;
+	}
+	.assets:before {
+		content: "\f0c5"; 
+		color: #6897a4;
+	}
+
+/*
+	Public view
+--------------------------------------------- */
+
+	.publicview .menu-wrapper {
+		height: 30px;
+	}
+	.publicview .menu-wrapper p {
+		text-align: right;
+		padding: 0.5em 1em;
+		font-size: 85%;
+		margin: 0;
+	}
+	.publicview .project-header {
+		border-top: 1px solid #e2e2e2;
+	}
+	.publicview #content-header-extra {
+		position: relative;
+		width: 100%;
+		padding-top: 1em;
+		margin-bottom: 1em;
+		max-width: 100%;
+	}
+	.publicview #content-header-extra ul {
+		margin: 0;
+		padding: 0;
+	}
+	.publicview #content-header-extra ul li {
+		display: inline-block;
+		margin-left: 1em;
+		list-style: none;
+	}
+	.pub-image img {
+		width: 50px;
+	}
+	.pub-image {
+		width: 50px;
+	}
+
+/*
+	Adjustment for smaller screens
+--------------------------------------------- */
+@media all and (max-width: 900px) {
+	.menu-wrapper ul li {
+		width: 30px;
+		margin: 0;
+		padding: 0.4em 0.8em;
+		text-align: center;
+		display: block;
+		float: left;
+		position: relative;
+	}
+	.menu-wrapper ul a.assets:after {
+		position: absolute;
+	}
+	.menu-wrapper ul li a:before {
+		display: inline;
+		position: relative;
+		width: 25px;
+		height: 25px;
+		font-size: 25px;
+		margin-top: 0.5em;
+	}
+	.menu-wrapper ul li.active a:before {
+		margin-top: 0;
+	}
+	.menu-wrapper ul li .label, .menu-wrapper ul li .mini {
+		display: none;
+	}
+	.menu-wrapper ul li .submenu-wrap .label {
+		display: inline;
+	}
+	.menu-wrapper ul li .submenu-wrap a:before {
+		display: none;
+	}
+	.menu-wrapper ul li .mini {
+		position: absolute;
+		display: inline;
+		margin-left: 0.5em;
+	}
+	.menu-wrapper ul li a:hover:before {
+		color: black;
+	}
+	.menu-wrapper ul li .submenu-wrap {
+		text-align: left;
+	}
+	.project-inner-wrap #plg-content .aside {
+		display: none;
+	}
+	.project-inner-wrap #plg-content .subject {
+		margin-right: 0;
+		min-width: 400px;
+		width: 100%;
+		margin-right: 0;
+	}
+}

@@ -28,6 +28,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 $route = 'index.php?option=com_publications&task=submit';
 $url = JRoute::_($route . '&pid=' . $this->pub->id);
 
+$this->css()
+	->js()
+	->js('setup');
+
 ?>
 <div id="project-wrap">
 	<section class="main section">

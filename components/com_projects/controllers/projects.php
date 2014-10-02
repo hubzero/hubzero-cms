@@ -37,29 +37,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 {
 	/**
-	 * Method to set a property of the class
-	 *
-	 * @param     string $property Name of property
-	 * @param     mixed  $value    Value of the property
-	 * @return    void
-	 */
-	public function setVar($property, $value)
-	{
-		$this->$property = $value;
-	}
-
-	/**
-	 * Method to get a property of the class
-	 *
-	 * @param      string $property Name of property
-	 * @return     mixed
-	 */
-	public function getVar($property)
-	{
-		return $this->$property;
-	}
-
-	/**
 	 * Determines task being called and attempts to execute it
 	 *
 	 * @return	void
@@ -67,11 +44,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	public function execute()
 	{
 		// Publishing enabled?
-		$this->_publishing =
-			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
-				. 'com_publications' . DS . 'tables' . DS . 'publication.php')
-			&& JPluginHelper::isEnabled('projects', 'publications')
-			? 1 : 0;
+		$this->_publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
 
 		// Include scripts
 		$this->_inlcudeScripts();
@@ -102,74 +75,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->registerTask('reinstate', 'changestate');
 		$this->registerTask('fixownership', 'changestate');
 		$this->registerTask('delete', 'changestate');
-		$this->registerTask('get', 'pubview');
 
 		parent::execute();
-	}
-
-	/**
-	 * Pub view for project files, notes etc.
-	 *
-	 * @return     void
-	 */
-	public function pubviewTask()
-	{
-		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php'))
-		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
-		}
-		else
-		{
-			return false;
-		}
-
-		// Incoming
-		$stamp = JRequest::getVar( 's', '' );
-
-		// Clean up stamp value (only numbers and letters)
-		$regex  = array('/[^a-zA-Z0-9]/');
-		$stamp  = preg_replace($regex, '', $stamp);
-
-		// Load item reference
-		$objSt = new ProjectPubStamp( $this->database );
-		if (!$stamp || !$objSt->loadItem($stamp))
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
-			);
-			return;
-		}
-
-		// Can only serve files or notes at the moment
-		if (!in_array($objSt->type, array('files', 'notes', 'publications')))
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option)
-			);
-			return;
-		}
-
-		// Get plugin
-		JPluginHelper::importPlugin( 'projects', $objSt->type );
-		$dispatcher = JDispatcher::getInstance();
-
-		// Serve requested item
-		$content = $dispatcher->trigger('serve', array($objSt->projectid, $objSt->reference));
-
-		// Return content
-		if ($content[0])
-		{
-			return $content[0];
-		}
-
-		// Redirect if nothing fetched
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option)
-		);
-
-		return;
 	}
 
 	/**
@@ -213,16 +120,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		{
 			return false;
 		}
-	}
-
-	/**
-	 * Push scripts to document head
-	 *
-	 * @return     void
-	 */
-	protected function _getProjectScripts()
-	{
-		$this->_getScripts('assets/js/' . $this->_name);
 	}
 
 	/**
@@ -314,7 +211,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	 */
 	public function introTask()
 	{
-		$this->view->setLayout('intro');
 		$this->_task = 'intro';
 
 		// Incoming
@@ -356,10 +252,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$setup_complete
 		);
 
-		// Add the CSS to the template
-		$this->_getStyles('', 'introduction.css', true);
-		$this->_getStyles();
-
 		// Set the pathway
 		$this->_buildPathway(null);
 
@@ -386,7 +278,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$this->view->setError( $this->getError() );
 		}
 
-		$this->view->display();
+		$this->view->setLayout('intro')
+					->display();
 	}
 
 	/**
@@ -399,12 +292,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Get language file
 		$lang = JFactory::getLanguage();
 		$lang->load('com_projects_features');
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getProjectScripts();
 
 		// Set the pathway
 		$this->_buildPathway(null);
@@ -440,12 +327,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$reviewer 	= JRequest::getVar( 'reviewer', '' );
 		$action  	= JRequest::getVar( 'action', '' );
 		$layout	 	= 'browse';
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getProjectScripts();
 
 		// Set the pathway
 		$this->_task = 'browse';
@@ -918,13 +799,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway($this->view->project, $group);
 
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getProjectScripts();
-		$this->_getScripts('assets/js/setup');
-
 		// Output HTML
 		$this->view->title  		= $this->title;
 		$this->view->option 		= $this->_option;
@@ -1000,12 +874,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$pid 	= $project->id;
 			$alias  = $project->alias;
 		}
-
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getProjectScripts();
 
 		// Is this a group project?
 		$group = NULL;
@@ -1191,9 +1059,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				if ($this->juser->get('id') == $project->created_by_user && $project->setup_stage >= $setup_complete)
 				{
 					$layout = 'provisioned';
-
-					// Add JS
-					$this->_getScripts('assets/js/setup');
 				}
 				elseif ($this->juser->get('guest'))
 				{
@@ -1682,12 +1547,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->view->setLayout( 'edit' );
 		$this->view->project = $project;
 
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getProjectScripts();
-
 		// Get section-specific extra bits of information
 		switch ($this->active)
 		{
@@ -1821,9 +1680,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	 */
 	public function saveTask($pid = 0, $what = 'info', $setup = 1, $tempid = 0)
 	{
-		$dateFormat = 'M d, Y';
-		$tz = false;
-
 		// Incoming
 		$name 		= trim(JRequest::getVar( 'name', '', 'post' ));
 		$title 		= trim(JRequest::getVar( 'title', '', 'post' ));
@@ -2008,7 +1864,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 							&& $old_params != $project->params)
 						{
 							// Meta data for comment
-							$meta = '<meta>' . JHTML::_('date', JFactory::getDate(), $dateFormat, $tz)
+							$meta = '<meta>' . JHTML::_('date', JFactory::getDate(), 'M d, Y')
 							. ' - ' . $this->juser->get('name') . '</meta>';
 
 							$cbase   = $obj->admin_notes;
@@ -2350,12 +2206,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Set the page title
 		$this->_buildTitle($project);
 
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getProjectScripts();
-
 		// Return to page in case of error
 		if ($this->getError())
 		{
@@ -2666,9 +2516,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	 */
 	public function processTask()
 	{
-		$dateFormat = 'M d, Y';
-		$tz = false;
-
 		// Incoming
 		$reviewer 	= JRequest::getVar( 'reviewer', '' );
 		$action  	= JRequest::getVar( 'action', '' );
@@ -2707,12 +2554,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Set the page title
 		$this->_buildTitle(null);
 
-		// Add the CSS to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getProjectScripts();
-
 		// Get project params
 		$params = new JParameter( $obj->params );
 
@@ -2726,7 +2567,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			// Meta data for comment
 			$now = JFactory::getDate()->toSql();
 			$actor = $this->juser->get('name');
-			$meta = '<meta>' . JHTML::_('date', $now, $dateFormat, $tz) . ' - ' . $actor . '</meta>';
+			$meta = '<meta>' . JHTML::_('date', $now, 'M d, Y') . ' - ' . $actor . '</meta>';
 
 			// Save approval
 			if ($reviewer == 'sensitive')
@@ -2811,7 +2652,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 						$cbase  .= (trim($comment) != '') ? ' ' . $comment : '';
 						$cbase  .= $meta . '</nb:' . $reviewer . '>';
 					}
-					$notify = 1;
 				}
 			}
 
@@ -3056,7 +2896,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			'suspend', 'reinstate', 'fixownership',
 			'delete', 'intro', 'activate', 'process',
 			'upload', 'img', 'verify', 'autocomplete',
-			'showcount', 'wikipreview', 'auth', 'public');
+			'showcount', 'wikipreview', 'auth', 'public', 'get');
 
 		if ($names)
 		{

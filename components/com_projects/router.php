@@ -150,7 +150,7 @@ function ProjectsParseRoute($segments)
 	$tasks = array(	'start', 'setup', 'edit',
 		'browse', 'intro', 'features', 'auth',
 		'deleteimg', 'img', 'wikipreview', 'fixownership',
-		'stats', 'reports', 'get'
+		'stats'
 	);
 
 	// Valid tasks
@@ -204,6 +204,11 @@ function ProjectsParseRoute($segments)
 	// Alias?
 	if (!is_numeric($segments[0]))
 	{
+		if ($segments[0] == 'get')
+		{
+			$vars['controller'] = 'get';
+			return $vars;
+		}
 		if ($segments[0] == 'reports')
 		{
 			$vars['controller'] = 'reports';

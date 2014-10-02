@@ -201,14 +201,14 @@ HUB.Projects = {
 						wrapCSS: css,
 						closeBtn: cBtn,
 						afterShow: function() {
-							if ($('#cancel-action')) {
+							if ($('#cancel-action').length) {
 								$('#cancel-action').on('click', function(e) {
 									$.fancybox.close();
 								});
 							}
 							
 							// Publication process
-							if ($('#ajax-selections') && $('#section')) {
+							if ($('#ajax-selections').length && $('#section').length) {
 								if (HUB.ProjectPublications) {
 									var replacement = '';
 									if ($('#section').val() == 'gallery' || $('#section').val() == 'content') {
@@ -236,10 +236,15 @@ HUB.Projects = {
 	resetApproval: function() 
 	{
 		var $ = this.jQuery;
-		if ($('#grant_approval') && $('#rejected')) {
+
+		if ($('#grant_approval').length && $('#rejected').length) {
 			$('#grant_approval').on('keyup', function(e) {
-				if ($('#grant_approval').val() != '') {
-					$('#rejected').attr('checked', 'checked');
+				if ($('#grant_approval').val() == '') {
+					$('#rejected').attr('checked', true);
+				}
+				else
+				{
+					$('#rejected').attr('checked', false);
 				}
 			});
 			$('#rejected').on('click', function(e) {

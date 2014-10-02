@@ -25,6 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+     ->js();
+
 // Do some text cleanup
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 ?>

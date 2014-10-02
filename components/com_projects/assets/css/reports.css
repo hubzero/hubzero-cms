@@ -61,3 +61,146 @@
 		content: "\f019";
 		color: #FFF;
 	}
+	.stats-wrap {
+		margin: 1em 0;
+		width: 100%;
+		height: 100px;
+		text-align: left;
+		font-size: 1em;
+		border-collapse: collapse;
+		border-bottom: 2px solid #eee !important;
+	}
+	.stats-wrap th {
+		font-size: 85%;
+		color: #aaa;
+		font-weight: normal;
+		border-top: 2px solid #eee;
+		border-left: 1px solid #eee;
+		border-right: 1px solid #eee;
+		border-bottom: none;
+		padding: 5px 10px;
+		padding-bottom: 0;
+		width: 15%;
+	}
+	.stats-wrap  td {
+		padding: 5px 10px;
+		padding-top: 0;
+		padding-bottom: 2em;
+		border-left: 1px solid #eee;
+		border-right: 1px solid #eee;
+		color: #777;
+		text-align: center;
+	}
+	.stats-wrap td span.stats-num, .stats-num  {
+		font-size: 2.5em;
+		font-weight: bold;
+		display: block;
+	}
+	.stats-wrap td span.stats-num-small,
+	.stats-wrap td span.stats-ima-small,
+	.stats-wrap td span.stats-num-small-unfloat {
+		font-size: 1.5em;
+		font-weight: bold;
+		margin-right: 0.3em;
+		margin-left: 0.3em;
+		float: left;
+		width: 30px;
+	}
+	.stats-wrap td span.stats-num-small {
+		text-align: right;
+	}
+	.stats-wrap td span.stats-num-small-unfloat {
+		float: none;
+		width: auto;
+	}
+	.stats-wrap td span.stats-ima-small img {
+		width: 20px;
+		height: 20px;
+	}
+	.stats-label {
+		font-weight: normal;
+		display: block;
+		margin-top: 1em;
+		font-size: 85%;
+		color: #aaa;
+		line-height: 1em;
+	}
+	.stats-wrap th.stats-h:before
+	{
+		width: 52px;
+		height: 52px;
+		font-size: 52px;
+		font-family: 'Fontcons';
+		color: #CCC;	
+		display: block;
+		position: absolute;
+		padding: 0.8em 0 0.5em 0.2em;
+	}
+	.stats-wrap th span {
+		max-width: 150px;
+	}
+	.stats-wrap th.stats-h span {
+		text-transform: uppercase;
+		color: #333;
+		font-weight: bold;
+		width: 80px !important;
+		display: block;
+	}
+	.stats-general th.stats-h:before
+	{
+		content: "\f085";
+	}
+	.stats-activity th.stats-h:before
+	{
+		content: "\f012";
+	}
+	.stats-team th.stats-h:before
+	{
+		content: "\f042";
+	}
+	.stats-files th.stats-h:before
+	{
+		content: "\f016";
+	}
+	.stats-publications th.stats-h:before
+	{
+		content: "\f058";
+	}
+	.stats-wrap ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		text-align: left;
+		font-size: 85%;
+	}
+	.stats-wrap ul li {
+		margin: 0.2em 0;
+		background: #F7F7F7;
+		clear: both;
+	}
+	.stats-wrap th.stats-h
+	{
+		width: 70px !important;
+		background: #F7F7F7;
+		border-bottom: 1px solid #eee;
+	}
+	#project-stats {
+		margin-bottom: 2em;
+	}
+	.stats-wrap td.stats-graph {
+		width: 200px;
+		height: 50px;
+	}
+	.stats-wrap th.stats-graph {
+		width: 200px !important;
+	}
+	.stats-wrap  td.stats-more,
+	.stats-wrap  th.stats-more {
+		width: 300px !important;
+	}
+	.stats-graph .ph {
+		margin-top: 2em;
+	}
+	.block {
+		display: block;
+	}

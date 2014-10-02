@@ -26,6 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 $html  = '';
 
+$this->css()
+     ->js();
+
 // Do some text cleanup
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 $this->project->about = ProjectsHtml::cleanText($this->project->about);
