@@ -150,7 +150,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			{
 				case 'page':
 				default:
-					$arr['html'] = $this->view();
+					$arr['html'] = $this->page();
 					break;
 				case 'delete':
 					$arr['html'] = $this->_delete();
@@ -186,7 +186,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function view()
+	public function page()
 	{
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
