@@ -787,7 +787,7 @@ class ResourcesResource extends JTable
 
 		if (isset($filters['author']))
 		{
-			$query .= "AND (aa.authorid=" . $this->_db->Quote(intval($filters['author'])) . ") "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in jos_author_assoc, making his profile page look wildly incorrect
+			$query .= "AND (aa.authorid=" . $this->_db->Quote(intval($filters['author'])) . ") "; // "' OR r.created_by=". $filters['author'] .") "; - SS - globalHub #622 - Mourad was the creator of a bunch of resources he was not listed as a contributor to in #__author_assoc, making his profile page look wildly incorrect
 		}
 
 		if (isset($filters['tag'])) {

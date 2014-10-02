@@ -38,7 +38,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class BillboardsCollection extends JTable
 {
-
 	/**
 	 * Collection ID, primary key
 	 *
@@ -53,13 +52,11 @@ class BillboardsCollection extends JTable
 	 */
 	var $name = NULL;
 
-	//-----------
-
 	/**
 	 * Constructor method
 	 *
-	 * @param  &$db database
-	 * @return void
+	 * @param   object  &$db  database
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -69,8 +66,8 @@ class BillboardsCollection extends JTable
 	/**
 	 * Build query method, currently just adding "FROM..."
 	 *
-	 * @param  $filters not needed yet
-	 * @return $query
+	 * @param   array   $filters  Not needed yet
+	 * @return  string
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -82,8 +79,8 @@ class BillboardsCollection extends JTable
 	/**
 	 * Get count of collection rows, mainly used for pagination
 	 *
-	 * @param  $filters not needed yet
-	 * @return query result: number of collections
+	 * @param   array    $filters  Not needed yet
+	 * @return  integer  Query result: number of collections
 	 */
 	public function getCount($filters)
 	{
@@ -97,8 +94,8 @@ class BillboardsCollection extends JTable
 	/**
 	 * Get the billboard collections
 	 *
-	 * @param  $filters start and limit, mainly used for pagination in Joomla
-	 * @return object list of collections
+	 * @param   array  $filters  Start and limit, mainly used for pagination in Joomla
+	 * @return  array  List of collections
 	 */
 	public function getRecords($filters)
 	{
@@ -111,26 +108,31 @@ class BillboardsCollection extends JTable
 		return $this->_db->loadObjectList();
 	}
 
-
-	public function getBillboards( $filters )
+	/**
+	 * Get billboards
+	 *
+	 * @param   array  $filters  Start and limit, mainly used for pagination in Joomla
+	 * @return  array  List of collections
+	 */
+	public function getBillboards($filters)
 	{
-		$query 	= "SELECT b.name, b.learn_more_target, b.background_img FROM jos_billboards as b, jos_billboard_collection as c WHERE c.id=b.collection_id";
-		$query .= " AND published=" . $filters['published'];
-		$query .= " AND b.collection_id=" . $filters['collection'];
+		$query 	= "SELECT b.name, b.learn_more_target, b.background_img FROM `#__billboards` as b, `#__billboard_collection` as c WHERE c.id=b.collection_id";
+		$query .= " AND published=" . $this->_db->quote($filters['published']);
+		$query .= " AND b.collection_id=" . $this->_db->quote($filters['collection']);
 		$query .= " ORDER BY `ordering` ASC";
 
 		$this->_db->setQuery($query);
 		$result = $this->_db->loadAssocList();
 
-		if(isset($filters['include_retina']) && $filters['include_retina'])
+		if (isset($filters['include_retina']) && $filters['include_retina'])
 		{
-			for($i=0,$n=count($result); $i<$n; $i++)
+			for ($i=0,$n=count($result); $i<$n; $i++)
 			{
 				$image = $result[$i]['background_img'];
 				$image_info = pathinfo($image);
 
 				$retina_image = $image_info['dirname'] . DS . $image_info['filename'] . "@2x." . $image_info['extension'];
-				if(file_exists( JPATH_ROOT . DS . $retina_image ))
+				if (file_exists(JPATH_ROOT . DS . $retina_image))
 				{
 					$result[$i]['retina_background_img'] = $retina_image;
 				}

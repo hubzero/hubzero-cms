@@ -41,217 +41,217 @@ class ToolsModelVersion
 	 *
 	 * @var unknown
 	 */
-	private $id = null;				 //						jos_tool_version
+	private $id = null;				 //						#__tool_version
 
 	/**
 	 * Description for 'toolname'
 	 *
 	 * @var unknown
 	 */
-	private $toolname = null;		   //						jos_tool_version
+	private $toolname = null;		   //						#__tool_version
 
 	/**
 	 * Description for 'instance'
 	 *
 	 * @var string
 	 */
-	private $instance = null;		   // tool					jos_tool_version
+	private $instance = null;		   // tool					#__tool_version
 
 	/**
 	 * Description for 'title'
 	 *
 	 * @var unknown
 	 */
-	private $title = null;			  // cn					jos_tool_version
+	private $title = null;			  // cn					#__tool_version
 
 	/**
 	 * Description for 'description'
 	 *
 	 * @var unknown
 	 */
-	private $description = null;		// description			jos_tool_version
+	private $description = null;		// description			#__tool_version
 
 	/**
 	 * Description for 'fulltxt'
 	 *
 	 * @var unknown
 	 */
-	private $fulltxt = null;		   //						jos_tool_version
+	private $fulltxt = null;		   //						#__tool_version
 
 	/**
 	 * Description for 'version'
 	 *
 	 * @var unknown
 	 */
-	private $version = null;			// version				jos_tool_version
+	private $version = null;			// version				#__tool_version
 
 	/**
 	 * Description for 'revision'
 	 *
 	 * @var unknown
 	 */
-	private $revision = null;		   // revision				jos_tool_version
+	private $revision = null;		   // revision				#__tool_version
 
 	/**
 	 * Description for 'toolaccess'
 	 *
 	 * @var unknown
 	 */
-	private $toolaccess = null;		 // public				jos_tool_version
+	private $toolaccess = null;		 // public				#__tool_version
 
 	/**
 	 * Description for 'codeaccess'
 	 *
 	 * @var unknown
 	 */
-	private $codeaccess = null;		 // sourcePublic			jos_tool_version
+	private $codeaccess = null;		 // sourcePublic			#__tool_version
 
 	/**
 	 * Description for 'wikiaccess'
 	 *
 	 * @var unknown
 	 */
-	private $wikiaccess = null;		 // projectPublic		jos_tool_version
+	private $wikiaccess = null;		 // projectPublic		#__tool_version
 
 	/**
 	 * Description for 'state'
 	 *
 	 * @var integer
 	 */
-	private $state = null;			  // state				jos_tool_version
+	private $state = null;			  // state				#__tool_version
 
 	/**
 	 * Description for 'released_by'
 	 *
 	 * @var unknown
 	 */
-	private $released_by = null;		//						jos_tool_version
+	private $released_by = null;		//						#__tool_version
 
 	/**
 	 * Description for 'released'
 	 *
 	 * @var unknown
 	 */
-	private $released = null;		   // publishDate			jos_tool_version
+	private $released = null;		   // publishDate			#__tool_version
 
 	/**
 	 * Description for 'unpublished'
 	 *
 	 * @var unknown
 	 */
-	private $unpublished = null;		// unpublishDate		jos_tool_version
+	private $unpublished = null;		// unpublishDate		#__tool_version
 
 	/**
 	 * Description for 'exportControl'
 	 *
 	 * @var unknown
 	 */
-	private $exportControl = null;	  // exportControl		jos_tool_version
+	private $exportControl = null;	  // exportControl		#__tool_version
 
 	/**
 	 * Description for 'license'
 	 *
 	 * @var unknown
 	 */
-	private $license = null;			// usageAgreementText   jos_tool_version
+	private $license = null;			// usageAgreementText   #__tool_version
 
 	/**
 	 * Description for 'vnc_geometry'
 	 *
 	 * @var unknown
 	 */
-	private $vnc_geometry = null;	   // vncGeometry			jos_tool_version
+	private $vnc_geometry = null;	   // vncGeometry			#__tool_version
 
 	/**
 	 * Description for 'vnc_depth'
 	 *
 	 * @var unknown
 	 */
-	private $vnc_depth = null;		  // vncDepth				jos_tool_version
+	private $vnc_depth = null;		  // vncDepth				#__tool_version
 
 	/**
 	 * Description for 'vnc_timeout'
 	 *
 	 * @var unknown
 	 */
-	private $vnc_timeout = null;		// vncTimeout			jos_tool_version
+	private $vnc_timeout = null;		// vncTimeout			#__tool_version
 
 	/**
 	 * Description for 'vnc_command'
 	 *
 	 * @var unknown
 	 */
-	private $vnc_command = null;		// vncCommand			jos_tool_version
+	private $vnc_command = null;		// vncCommand			#__tool_version
 
 	/**
 	 * Description for 'mw'
 	 *
 	 * @var unknown
 	 */
-	private $mw = null;				 // defaultMiddleware	jos_tool_version
+	private $mw = null;				 // defaultMiddleware	#__tool_version
 
 	/**
 	 * Description for 'priority'
 	 *
 	 * @var unknown
 	 */
-	private $priority = null;		   // priority				jos_tool_version
+	private $priority = null;		   // priority				#__tool_version
 
 	/**
 	 * Description for 'toolid'
 	 *
 	 * @var unknown
 	 */
-	private $toolid = null;			 //						jos_tool_version
+	private $toolid = null;			 //						#__tool_version
 
 	/**
 	 * Description for 'toolid'
 	 *
 	 * @var unknown
 	 */
-	private $params = null;			 //						jos_tool_version
+	private $params = null;			 //						#__tool_version
 
 	/**
 	 * Description for 'alias'
 	 *
 	 * @var array
 	 */
-	private $alias = array();		   // alias [array]		jos_tool_aliases
+	private $alias = array();		   // alias [array]		#__tool_aliases
 
 	/**
 	 * Description for 'middleware'
 	 *
 	 * @var array
 	 */
-	private $middleware = array();	  // middleware [array]	jos_tool_middleware
+	private $middleware = array();	  // middleware [array]	#__tool_middleware
 
 	/**
 	 * Description for 'hostreq'
 	 *
 	 * @var array
 	 */
-	private $hostreq = array();		 // vncHostReq [array]	jos_tool_hostreq
+	private $hostreq = array();		 // vncHostReq [array]	#__tool_hostreq
 
 	/**
 	 * Description for 'author'
 	 *
 	 * @var array
 	 */
-	private $author = array();		  // author [array]		jos_tool_authors
+	private $author = array();		  // author [array]		#__tool_authors
 
 	/**
 	 * Description for 'member'
 	 *
 	 * @var array
 	 */
-	private $member = array();		  // member [array]		jos_tool_groups
+	private $member = array();		  // member [array]		#__tool_groups
 
 	/**
 	 * Description for 'owner'
 	 *
 	 * @var array
 	 */
-	private $owner = array();		   // owner [array]		jos_tool_groups
+	private $owner = array();		   // owner [array]		#__tool_groups
 
 	/**
 	 * Description for '_list_keys'

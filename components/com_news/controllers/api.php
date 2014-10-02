@@ -42,7 +42,7 @@ class NewsControllerApi extends \Hubzero\Component\ApiController
 		$database = JFactory::getDBO();
 
 		$query = "SELECT c.*
-					FROM jos_content as c, jos_categories as cat
+					FROM `#__content` as c, `#__categories` as cat
 					WHERE cat.alias='{$category}'
 					AND c.catid=cat.id
 					AND state=1

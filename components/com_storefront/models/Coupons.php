@@ -198,7 +198,8 @@ class StorefrontModelCoupons
 		$row = $this->_db->loadObject();
 
 		// check if expired
-		if($row->cnValid != 'valid') {
+		if ($row->cnValid != 'valid')
+		{
 			throw new Exception(JText::_('COM_STOREFRONT_EXPIRED_COUPON_CODE'));
 		}
 
@@ -218,7 +219,7 @@ class StorefrontModelCoupons
 	 */
 	public function apply($cnId)
 	{
-		$sql = 	"UPDATE `jos_storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` - 1)) WHERE `cnId` = " . $this->_db->quote($cnId);
+		$sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` - 1)) WHERE `cnId` = " . $this->_db->quote($cnId);
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
 		$this->_db->query();
@@ -234,7 +235,7 @@ class StorefrontModelCoupons
 	 */
 	public function recycle($cnId)
 	{
-		$sql = 	"UPDATE `jos_storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` + 1)) WHERE `cnId` = " . $this->_db->quote($cnId);
+		$sql = "UPDATE `#__storefront_coupons` SET `cnUseLimit` = (IF(`cnUseLimit` IS NULL, NULL, `cnUseLimit` + 1)) WHERE `cnId` = " . $this->_db->quote($cnId);
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
 		$this->_db->query();

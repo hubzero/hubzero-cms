@@ -41,7 +41,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 	private function error( $code, $message )
 	{
-		if($code != '' && $message != '')
+		if ($code != '' && $message != '')
 		{
 			$response = $this->getResponse();
 			$response->setErrorMessage( $code, $message );
@@ -103,7 +103,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$groups = \Hubzero\User\Helper::getGroups( $result->get('uidNumber'), 'members', 0);
 
 		$g = array();
-		foreach($groups as $k => $group)
+		foreach ($groups as $k => $group)
 		{
 			$g[$k]['gidNumber'] 	= $group->gidNumber;
 			$g[$k]['cn'] 			= $group->cn;
@@ -144,7 +144,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$mconfig = JComponentHelper::getParams( 'com_tools' );
 
 		//check to make sure we have a connection to the middleware and its on
-		if(!$mwdb || !$mconfig->get('mw_on') || $mconfig->get('mw_on') > 1)
+		if (!$mwdb || !$mconfig->get('mw_on') || $mconfig->get('mw_on') > 1)
 		{
 			return $this->error( 503, 'Middleware Service Unavailable' );
 		}
@@ -163,7 +163,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 		//
 		$results = array();
-		foreach($sessions as $session)
+		foreach ($sessions as $session)
 		{
 			$r = array(
 				'id' => $session->sessnum,
@@ -179,9 +179,9 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 		//make sure we have an acceptable ordering
 		$accepted_ordering = array('id_asc', 'id_desc', 'started_asc', 'started_desc', 'accessed_asc', 'accessed_desc');
-		if(in_array($order, $accepted_ordering))
+		if (in_array($order, $accepted_ordering))
 		{
-			switch( $order )
+			switch ($order)
 			{
 				case 'id_asc':
 					break;
@@ -270,7 +270,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$recent_tools = $database->loadObjectList();
 
 		$r = array();
-		foreach($recent_tools as $k => $recent)
+		foreach ($recent_tools as $k => $recent)
 		{
 			$r[$k]['alias'] = $recent->alias;
 			$r[$k]['title'] = $recent->title;
@@ -301,7 +301,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$pw_rules = array();
 
 		// Get the password rule descriptions
-		foreach($password_rules as $rule)
+		foreach ($password_rules as $rule)
 		{
 			if (!empty($rule['description']))
 			{
@@ -325,24 +325,30 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		$html = '';
 
 		// Iterate through the rules and add the appropriate classes (passed/error)
-		if (count($pw_rules) > 0) {
+		if (count($pw_rules) > 0)
+		{
 			foreach ($pw_rules as $rule)
 			{
 				if (!empty($rule))
 				{
-					if (!empty($msg) && is_array($msg)) {
+					if (!empty($msg) && is_array($msg))
+					{
 						$err = in_array($rule, $msg);
-					} else {
+					}
+					else
+					{
 						$err = '';
 					}
 					$mclass = ($err)  ? ' class="error"' : 'class="passed"';
 					$html .= "<li $mclass>".$rule."</li>";
 				}
 			}
-			if (!empty($msg) && is_array($msg)) {
+			if (!empty($msg) && is_array($msg))
+			{
 				foreach ($msg as $message)
 				{
-					if (!in_array($message, $pw_rules)) {
+					if (!in_array($message, $pw_rules))
+					{
 						$html .= '<li class="error">'.$message."</li>";
 					}
 				}
@@ -395,7 +401,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 	private function getResourceFromAppname( $appname, $database )
 	{
-		$sql = "SELECT r.*, tv.id as revisionid FROM jos_resources as r, jos_tool_version as tv WHERE tv.toolname=r.alias and tv.instance='".$appname."'";
+		$sql = "SELECT r.*, tv.id as revisionid FROM `#__resources` as r, `#__tool_version` as tv WHERE tv.toolname=r.alias and tv.instance=" . $database->quote($appname);
 
 		$database->setQuery($sql);
 

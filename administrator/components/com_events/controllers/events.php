@@ -126,7 +126,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 		// Get list of categories
 		$categories[] = JHTML::_('select.option', '0', '- ' . JText::_('COM_EVENTS_CAL_LANG_EVENT_ALLCAT'), 'value', 'text');
-		$this->database->setQuery("SELECT id AS value, title AS text FROM #__categories WHERE extension='$this->_option'");
+		$this->database->setQuery("SELECT id AS value, title AS text FROM `#__categories` WHERE extension='$this->_option'");
 
 		$categories = array_merge($categories, $this->database->loadObjectList());
 		$this->view->clist = JHTML::_('select.genericlist', $categories, 'catid', 'class="inputbox"','value', 'text', $this->view->filters['catid'], false, false);
@@ -134,7 +134,7 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		//get list of groups
 		$groups[] = JHTML::_('select.option', '0', '- ' . JText::_('COM_EVENTS_ALL_GROUPS'), 'value', 'text');
 		$sql = "SELECT DISTINCT(g.gidNumber) AS value, g.description AS text
-				FROM jos_events AS e, jos_xgroups AS g
+				FROM `#__events` AS e, `#__xgroups` AS g
 				WHERE e.scope='group'
 				AND e.scope_id=g.gidNumber";
 		$this->database->setQuery($sql);

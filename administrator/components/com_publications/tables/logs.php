@@ -198,11 +198,11 @@ class PublicationLog extends JTable
 		$field = 'users_' . $type;
 
 		// Add user count columns to publication log table
-		$fields = $this->_db->getTableFields('jos_publication_logs');
-		if (!array_key_exists($field, $fields['jos_publication_logs'] ))
+		$prfx = JFactory::getConfig()->get('dbprefix');
+		$fields = $this->_db->getTableFields($prfx . 'publication_logs');
+		if (!array_key_exists($field, $fields[$prfx . 'publication_logs']))
 		{
-			$this->_db->setQuery( "ALTER TABLE `jos_publication_logs`
-				ADD `$field` int(11) NOT NULL DEFAULT '0'" );
+			$this->_db->setQuery("ALTER TABLE `#__publication_logs` ADD `$field` int(11) NOT NULL DEFAULT '0'");
 			if (!$this->_db->query())
 			{
 				echo $this->_db->getErrorMsg();
@@ -474,7 +474,7 @@ class PublicationLog extends JTable
 		// Get date when logs table was created (= date of first log)
 		/*
 		$query = "SELECT CREATE_TIME FROM information_schema.tables
-				WHERE table_name = 'jos_publication_logs' LIMIT 1";
+				WHERE table_name = '#__publication_logs' LIMIT 1";
 		$this->_db->setQuery( $query );
 		return $this->_db->loadResult();
 		*/

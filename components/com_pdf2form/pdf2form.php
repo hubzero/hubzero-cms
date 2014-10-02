@@ -786,7 +786,7 @@ class PdfForm
 			return $this->id;
 		}
 		$dbh = self::getDbh();
-		$dbh->execute('INSERT INTO jos_pdf_forms() VALUES ()');
+		$dbh->execute('INSERT INTO #__pdf_forms() VALUES ()');
 		return ($this->id = $dbh->insertid());
 	}
 

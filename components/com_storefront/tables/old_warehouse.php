@@ -269,8 +269,8 @@ class StorefrontWarehouse extends JTable
 			$skuOptionsSql .= ')';
 		}
 
-		$sql = "SELECT s.`sId`, COUNT(so.`oId`) AS matches FROM `jos_storefront_skus` s
-				LEFT JOIN `jos_storefront_sku_options` so ON s.`sId` = so.`sId`
+		$sql = "SELECT s.`sId`, COUNT(so.`oId`) AS matches FROM `#__storefront_skus` s
+				LEFT JOIN `#__storefront_sku_options` so ON s.`sId` = so.`sId`
 				WHERE s.`pId` = '{$pId}'";
 		if (!empty($options))
 		{

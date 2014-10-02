@@ -241,7 +241,7 @@ class GroupsGroup extends JTable
 	private function _groupTable($role='member', $tbl='m', $filters=array())
 	{
 		$query = "SELECT u.name, u.username, u.email, {$tbl}.uidNumber, '{$role}' AS role
-					FROM #__xgroups_{$role}s AS {$tbl} JOIN jos_users AS u ON {$tbl}.uidNumber=u.id";
+					FROM #__xgroups_{$role}s AS {$tbl} JOIN #__users AS u ON {$tbl}.uidNumber=u.id";
 
 		if (isset($filters['gidNumber']))
 		{

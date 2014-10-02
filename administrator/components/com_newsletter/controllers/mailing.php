@@ -101,7 +101,7 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 		}
 
 		//get bounces
-		$sql = "SELECT * FROM jos_email_bounces
+		$sql = "SELECT * FROM `#__email_bounces`
 				WHERE component='com_newsletter'
 				AND object=" . $this->database->quote('Campaign Mailing') . "
 				AND object_id=" . $this->database->quote( $id );

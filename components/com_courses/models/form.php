@@ -303,7 +303,7 @@ class PdfForm
 		}
 
 		$dbh = self::getDbh();
-		$dbh->setQuery('INSERT INTO jos_courses_forms() VALUES ()');
+		$dbh->setQuery('INSERT INTO #__courses_forms() VALUES ()');
 		$dbh->query();
 
 		return ($this->id = $dbh->insertid());

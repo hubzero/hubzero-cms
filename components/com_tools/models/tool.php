@@ -1754,11 +1754,11 @@ class ToolsModelTool
 	/**
 	 * Returns the list of groups to which the launching of a tool is restricted
 	 *
-	 * @FIXME: This should really be a part of the above function, getToolGroups.  The problem seems to be related to the jos_tool_groups table.
-	 *		 If there is a tool that was at one point restricted to a group, but it isn't anymore, there remains a jos_tool_groups entry.
+	 * @FIXME: This should really be a part of the above function, getToolGroups.  The problem seems to be related to the #__tool_groups table.
+	 *		 If there is a tool that was at one point restricted to a group, but it isn't anymore, there remains a #__tool_groups entry.
 	 *		 The above function will grab that restriction and undoly say that the tool is restricted to a group.  The solution seems to be
-	 *		 removing the jos_tool_groups entry if the tool is changed to no longer be restricted to a group.  At the moment, this function also
-	 *		 checks to ensure that toolaccess='@GROUP' from the jos_tool_version table
+	 *		 removing the #__tool_groups entry if the tool is changed to no longer be restricted to a group.  At the moment, this function also
+	 *		 checks to ensure that toolaccess='@GROUP' from the #__tool_version table
 	 *
 	 * @param	  string $toolid is the tool id
 	 * @param	  string $instance is the tool version instance

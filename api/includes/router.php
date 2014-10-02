@@ -47,7 +47,7 @@ class JRouterApi extends JRouter
 			// Get the application
 		$app = JFactory::getApplication();
 
-		if($app->getCfg('force_ssl') == 2 && strtolower($uri->getScheme()) != 'https') {
+		if ($app->getCfg('force_ssl') == 2 && strtolower($uri->getScheme()) != 'https') {
 			//forward to https
 			$uri->setScheme('https');
 			$app->redirect($uri->toString());
@@ -57,14 +57,14 @@ class JRouterApi extends JRouter
 		$path = $uri->getPath();
 
 		//Remove the suffix
-		if($this->_mode == JROUTER_MODE_SEF)
+		if ($this->_mode == JROUTER_MODE_SEF)
 		{
 			// Get the application
 			$app = JFactory::getApplication();
 
-			if($app->getCfg('sef_suffix') && !(substr($path, -9) == 'index.php' || substr($path, -1) == '/'))
+			if ($app->getCfg('sef_suffix') && !(substr($path, -9) == 'index.php' || substr($path, -1) == '/'))
 			{
-				if($suffix = pathinfo($path, PATHINFO_EXTENSION))
+				if ($suffix = pathinfo($path, PATHINFO_EXTENSION))
 				{
 					$path = str_replace('.'.$suffix, '', $path);
 					$vars['format'] = $suffix;
@@ -180,20 +180,20 @@ class JRouterApi extends JRouter
 		$route = $uri->getPath();
 
 		//Add the suffix to the uri
-		if($this->_mode == JROUTER_MODE_SEF && $route)
+		if ($this->_mode == JROUTER_MODE_SEF && $route)
 		{
 			$app = JFactory::getApplication();
 
-			if($app->getCfg('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/'))
+			if ($app->getCfg('sef_suffix') && !(substr($route, -9) == 'index.php' || substr($route, -1) == '/'))
 			{
-				if($format = $uri->getVar('format', 'html'))
+				if ($format = $uri->getVar('format', 'html'))
 				{
 					$route .= '.'.$format;
 					$uri->delVar('format');
 				}
 			}
 
-			if($app->getCfg('sef_rewrite'))
+			if ($app->getCfg('sef_rewrite'))
 			{
 				//Transform the route
 				$route = str_replace('index.php/', '', $route);
@@ -232,10 +232,10 @@ class JRouterApi extends JRouter
 		$menu = JFactory::getApplication()->getMenu(true);
 
 		//Handle an empty URL (special case)
-		if(!$uri->getVar('Itemid') && !$uri->getVar('option'))
+		if (!$uri->getVar('Itemid') && !$uri->getVar('option'))
 		{
 			$item = $menu->getDefault();
-			if(!is_object($item)) return $vars; // No default item set
+			if (!is_object($item)) return $vars; // No default item set
 
 			//Set the information in the request
 			$vars = $item->query;
@@ -256,10 +256,10 @@ class JRouterApi extends JRouter
 		$this->setVar('Itemid', JRequest::getInt('Itemid', null));
 
 		//Only an Itemid ? Get the full information from the itemid
-		if(count($this->getVars()) == 1)
+		if (count($this->getVars()) == 1)
 		{
 			$item = $menu->getItem($this->getVar('Itemid'));
-			if($item !== NULL && is_array($item->query)) {
+			if ($item !== NULL && is_array($item->query)) {
 				$vars = $vars + $item->query;
 			}
 		}
@@ -331,11 +331,11 @@ class JRouterApi extends JRouter
 		$vars = $uri->getQuery(true);
 
 		//Handle an empty URL (special case)
-		if(empty($route))
+		if (empty($route))
 		{
 
 			//If route is empty AND option is set in the query, assume it's non-sef url, and parse apropriately
-			if(isset($vars['option']) || isset($vars['Itemid'])) {
+			if (isset($vars['option']) || isset($vars['Itemid'])) {
 				return $this->_parseRawRoute($uri);
 			}
 
@@ -357,7 +357,7 @@ class JRouterApi extends JRouter
 		 * Parse the application route
 		 */
 
-		if(substr($route, 0, 9) == 'component')
+		if (substr($route, 0, 9) == 'component')
 		{
 			$segments	= explode('/', $route);
 			$route      = str_replace('component/'.$segments[1], '', $route);
@@ -374,7 +374,7 @@ class JRouterApi extends JRouter
 			{
 				$lenght = strlen($item->route); //get the lenght of the route
 
-				if($lenght > 0 && strpos($route.'/', $item->route.'/') === 0 && $item->type != 'menulink')
+				if ($lenght > 0 && strpos($route.'/', $item->route.'/') === 0 && $item->type != 'menulink')
 				{
 					// HUBzero Extension to pass local URLs through menu unchanged
 
@@ -454,7 +454,7 @@ class JRouterApi extends JRouter
 		/*
 		 * Parse the component route
 		 */
-		if(!empty($route) && isset($this->_vars['option']) )
+		if (!empty($route) && isset($this->_vars['option']) )
 		{
 			$segments = explode('/', $route);
 			array_shift($segments);
@@ -513,7 +513,7 @@ class JRouterApi extends JRouter
 			// End HUBzero Extension to check redirection table if otherwise unable to match URL to content
 
 			//Set active menu item
-			if($item =& $menu->getActive()) {
+			if ($item =& $menu->getActive()) {
 				$vars = $item->query;
 			}
 
@@ -565,7 +565,7 @@ class JRouterApi extends JRouter
 		// Get the query data
 		$query = $uri->getQuery(true);
 
-		if(!isset($query['option'])) {
+		if (!isset($query['option'])) {
 			// HUBzero Extension to handle section, category, alias routing of com_content pages
 
 			$parts = $this->_buildContentRoute($query);
@@ -642,7 +642,7 @@ class JRouterApi extends JRouter
 			}
 		}
 
-		if(!$built) {
+		if (!$built) {
 			//$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
 			$tmp = substr($query['option'], 4).'/'.$tmp; /* HUBZERO: strip 'component' from url */
 		}
@@ -672,11 +672,11 @@ class JRouterApi extends JRouter
 		$vars = parent::_processParseRules($uri);
 
 		// Process the pagination support
-		if($this->_mode == JROUTER_MODE_SEF)
+		if ($this->_mode == JROUTER_MODE_SEF)
 		{
 			$app = JFactory::getApplication();
 
-			if($start = $uri->getVar('start'))
+			if ($start = $uri->getVar('start'))
 			{
 				$uri->delVar('start');
 				$vars['limitstart'] = $start;
@@ -697,7 +697,7 @@ class JRouterApi extends JRouter
 	function _processBuildRules(&$uri)
 	{
 		// Make sure any menu vars are used if no others are specified
-		if(($this->_mode != JROUTER_MODE_SEF) && $uri->getVar('Itemid') && count($uri->getQuery(true)) == 2)
+		if (($this->_mode != JROUTER_MODE_SEF) && $uri->getVar('Itemid') && count($uri->getQuery(true)) == 2)
 		{
 			$menu = JFactory::getApplication()->getMenu();
 
@@ -715,7 +715,7 @@ class JRouterApi extends JRouter
 		// Get the path data
 		$route = $uri->getPath();
 
-		if($this->_mode == JROUTER_MODE_SEF && $route)
+		if ($this->_mode == JROUTER_MODE_SEF && $route)
 		{
 			$app = JFactory::getApplication();
 
@@ -748,29 +748,29 @@ class JRouterApi extends JRouter
 		// Get the itemid form the URI
 		$itemid = $uri->getVar('Itemid');
 
-		if(is_null($itemid))
+		if (is_null($itemid))
 		{
-			if($option	= $uri->getVar('option'))
+			if ($option	= $uri->getVar('option'))
 			{
-				$item	= $menu->getItem($this->getVar('Itemid'));
-				if(isset($item) && $item->component == $option) {
+				$item = $menu->getItem($this->getVar('Itemid'));
+				if (isset($item) && $item->component == $option) {
 					$uri->setVar('Itemid', $item->id);
 				}
 			}
 			else
 			{
-				if($option = $this->getVar('option')) {
+				if ($option = $this->getVar('option')) {
 					$uri->setVar('option', $option);
 				}
 
-				if($itemid = $this->getVar('Itemid')) {
+				if ($itemid = $this->getVar('Itemid')) {
 					$uri->setVar('Itemid', $itemid);
 				}
 			}
 		}
 		else
 		{
-			if(!$uri->getVar('option'))
+			if (!$uri->getVar('option'))
 			{
 				$item = $menu->getItem($itemid);
 				$uri->setVar('option', $item->component);
@@ -815,7 +815,7 @@ class JRouterApi extends JRouter
 		$db = JFactory::getDBO();
 		$id = intval($query['id']);
 
-		$sql = "SELECT #__sections.alias AS section, #__categories.alias AS category, #__content.alias AS alias FROM jos_sections, jos_categories, jos_content WHERE #__content.id='" . $id . "' AND #__content.sectionid=#__sections.id AND #__content.catid=#__categories.id LIMIT 1;";
+		$sql = "SELECT `#__sections`.alias AS section, `#__categories`.alias AS category, `#__content`.alias AS alias FROM `#__sections`, `#__categories`, `#__content` WHERE `#__content`.id='" . $id . "' AND `#__content`.sectionid=`#__sections`.id AND `#__content`.catid=`#__categories`.id LIMIT 1;";
 		$db->setQuery($sql);
 		$row =& $db->loadObject();
 
@@ -836,7 +836,7 @@ class JRouterApi extends JRouter
 			return $segments;
 		}
 		else {
-			$sql = "SELECT #__content.alias AS alias FROM jos_content WHERE #__content.id='" . $id . "' AND #__content.sectionid=0 AND #__content.catid=0 LIMIT 1;";
+			$sql = "SELECT `#__content`.alias AS alias FROM `#__content` WHERE `#__content`.id='" . $id . "' AND `#__content`.sectionid=0 AND `#__content`.catid=0 LIMIT 1;";
 			$db->setQuery($sql);
 			$row =& $db->loadObject();
 

@@ -72,7 +72,7 @@ class plgSearchWishlists extends SearchPlugin
 				concat(wl.title) AS section,
 				CASE
 				WHEN wli.anonymous THEN NULL
-				ELSE (SELECT name FROM jos_users ju WHERE ju.id = wli.proposed_by)
+				ELSE (SELECT name FROM #__users ju WHERE ju.id = wli.proposed_by)
 				END AS contributors,
 				CASE
 				WHEN wli.anonymous THEN NULL

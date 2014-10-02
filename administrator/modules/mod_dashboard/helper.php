@@ -83,7 +83,7 @@ class Helper extends Module
 		$this->pending = $database->loadResult();
 
 		// get contribtool entries requiring admin attention
-		$sql = "SELECT count(*) FROM `#__tool` AS t JOIN jos_tool_version as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=3  WHERE t.state=1 OR t.state=3 OR t.state=5 OR t.state=6";
+		$sql = "SELECT count(*) FROM `#__tool` AS t JOIN `#__tool_version` as v ON v.toolid=t.id AND v.mw='narwhal' AND v.state=3  WHERE t.state=1 OR t.state=3 OR t.state=5 OR t.state=6";
 		$database->setQuery($sql);
 		$this->contribtool = $database->loadResult();
 

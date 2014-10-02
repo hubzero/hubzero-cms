@@ -38,16 +38,15 @@ defined('_JEXEC') or die('Restricted access');
  */
 class BillboardsBillboard extends JTable
 {
-
 	/**
-	 * ID, primary key for jos_billboards
+	 * ID, primary key for #__billboards
 	 *
 	 * @var int(11)
 	 */
 	var $id = NULL;
 
 	/**
-	 * ID of collection, referencing jos_billboard_collection
+	 * ID of collection, referencing #__billboard_collection
 	 *
 	 * @var int(11)
 	 */
@@ -159,13 +158,11 @@ class BillboardsBillboard extends JTable
 	 */
 	var $checked_out_time = NULL;
 
-	//-----------
-
 	/**
 	 * Contructor method for JTable class
 	 *
-	 * @param  database object
-	 * @return void
+	 * @param   object  &$db
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -181,7 +178,7 @@ class BillboardsBillboard extends JTable
 	{
 		// Do some cleanup, trying to make to keep people from making mistakes
 		// Strip <p> tags from billboard text and convert closing </p> tags to break tags
-		$this->text = str_replace("</p>","<br />",str_replace("<p>", "", $this->text));
+		$this->text = str_replace("</p>", "<br />", str_replace("<p>", "", $this->text));
 
 		// Give an arbitrary billboard alias/CSS ID name when one isn't provided
 		if (!$this->alias)
@@ -200,8 +197,8 @@ class BillboardsBillboard extends JTable
 	/**
 	 * Build query method (basically just used to specify the FROM portion)
 	 *
-	 * @param  array $filters not needed right now
-	 * @return $query database query
+	 * @param   array   $filters  Not needed right now
+	 * @return  string  Database query
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -213,8 +210,8 @@ class BillboardsBillboard extends JTable
 	/**
 	 * Get a count of the number of billboard (used mainly for pagination)
 	 *
-	 * @param  unknown $filters not needed right now
-	 * @return object Return count of rows
+	 * @param   array   $filters  Not needed right now
+	 * @return  object  Return count of rows
 	 */
 	public function getCount($filters)
 	{
@@ -228,8 +225,8 @@ class BillboardsBillboard extends JTable
 	/**
 	 * Get the an object list of the billboards in the database
 	 *
-	 * @param  array $filters start and limit, needed for pagination
-	 * @return object Return billboard records
+	 * @param   array   $filters  Start and limit, needed for pagination
+	 * @return  object  Return billboard records
 	 */
 	public function getRecords($filters)
 	{
@@ -246,8 +243,8 @@ class BillboardsBillboard extends JTable
 	/**
 	 * Build the ordering query
 	 *
-	 * @param  $collection_id is the collection in which to order the billboards
-	 * @return $query
+	 * @param   integer  $collection_id  Is the collection in which to order the billboards
+	 * @return  string   $query
 	 */
 	public function buildOrderingQuery($collection_id)
 	{
@@ -262,8 +259,8 @@ class BillboardsBillboard extends JTable
 	/**
 	 * Get the next ordering number based on the collection selected
 	 *
-	 * @param  $collection_id is the collection in which to find the max order number
-	 * @return the current highest order number + 1
+	 * @param   integer  $collection_id  Is the collection in which to find the max order number
+	 * @return  integer  The current highest order number + 1
 	 */
 	public function getNextOrdering($collection_id)
 	{
@@ -274,7 +271,7 @@ class BillboardsBillboard extends JTable
 		$this->_db->setQuery($query);
 
 		$order = $this->_db->loadResult();
-		if(!$order)
+		if (!$order)
 		{
 			$order = 1;
 		}

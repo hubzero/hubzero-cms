@@ -63,7 +63,7 @@ class StorefrontModelMemberships
 	 */
 	public function getMembershipTypes()
 	{
-		$sql = "SELECT `ptId` FROM `jos_storefront_product_types` WHERE `ptModel` = 'membership'";
+		$sql = "SELECT `ptId` FROM `#__storefront_product_types` WHERE `ptModel` = 'membership'";
 		$this->_db->setQuery($sql);
 		//echo $this->_db->_sql;
 		$membershipTypes = $this->_db->loadResultArray();
@@ -98,7 +98,7 @@ class StorefrontModelMemberships
 	 */
 	public function setMembershipExpiration($crtId, $pId, $expires)
 	{
-		$sql = "INSERT INTO `jos_cart_memberships` SET
+		$sql = "INSERT INTO `#__cart_memberships` SET
 				`crtmExpires` = FROM_UNIXTIME(" . $this->_db->quote($expires) . "),
 				`pId` = " . $this->_db->quote($pId) . ",
 				`crtId` = " . $this->_db->quote($crtId) . "
