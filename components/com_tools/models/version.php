@@ -1183,7 +1183,7 @@ class ToolsModelVersion
 				$value[0] = $val;
 			}
 
-			foreach($value as $nvalue)
+			foreach ($value as $nvalue)
 			{
 				unset($val);
 
@@ -1198,7 +1198,7 @@ class ToolsModelVersion
 				{
 					$found = false;
 
-					foreach($this->$property as $prop)
+					foreach ($this->$property as $prop)
 					{
 						if ($prop['uid'] == $val['uid'])
 						{

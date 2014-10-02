@@ -3,12 +3,12 @@ JLoader::import('Hubzero.Api.Controller');
 
 class MembersControllerApi extends \Hubzero\Component\ApiController
 {
-	function execute()
+	public function execute()
 	{
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 
-		switch($this->segments[0])
+		switch ($this->segments[0])
 		{
 			case 'myprofile':		$this->myprofile();					break;
 			case 'mygroups':		$this->mygroups();					break;

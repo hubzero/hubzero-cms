@@ -28,7 +28,8 @@ class JRouterApi extends JRouter
 	 *
 	 * @access public
 	 */
-	function __construct($options = array()) {
+	public function __construct($options = array())
+	{
 		parent::__construct($options);
 	}
 
@@ -47,7 +48,8 @@ class JRouterApi extends JRouter
 			// Get the application
 		$app = JFactory::getApplication();
 
-		if ($app->getCfg('force_ssl') == 2 && strtolower($uri->getScheme()) != 'https') {
+		if ($app->getCfg('force_ssl') == 2 && strtolower($uri->getScheme()) != 'https')
+		{
 			//forward to https
 			$uri->setScheme('https');
 			$app->redirect($uri->toString());
@@ -475,7 +477,8 @@ class JRouterApi extends JRouter
 				}
 				else { // fix up search for URL
 					$total = count($segments);
-					for($i=0; $i<$total; $i++) {
+					for ($i=0; $i<$total; $i++)
+					{
 						// urldecode twice because it is encoded twice
 						$segments[$i] = urldecode(urldecode(stripcslashes($segments[$i])));
 					}
@@ -492,12 +495,13 @@ class JRouterApi extends JRouter
 		{
 			// HUBzero Extension to check redirection table if otherwise unable to match URL to content
 
-			if (!isset($vars['option'])) {
+			if (!isset($vars['option']))
+			{
 				jimport('joomla.juri');
 				$db = JFactory::getDBO();
 				$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
-	        	$db->setQuery($sql);
-		        $row = $db->loadObject();
+				$db->setQuery($sql);
+				$row = $db->loadObject();
 
 				if (!empty($row))
 				{
@@ -618,7 +622,8 @@ class JRouterApi extends JRouter
 			}
 			else { // fix up search for URL
 				$total = count($parts);
-				for($i=0; $i<$total; $i++) {
+				for ($i=0; $i<$total; $i++)
+				{
 					// urlencode twice because it is decoded once after redirect
 					$parts[$i] = urlencode(urlencode(stripcslashes($parts[$i])));
 				}
@@ -636,13 +641,15 @@ class JRouterApi extends JRouter
 		{
 			$item = $menu->getItem($query['Itemid']);
 
-			if (is_object($item) && $query['option'] == $item->component) {
+			if (is_object($item) && $query['option'] == $item->component)
+			{
 				$tmp = $item->route.$tmp;
 				$built = true;
 			}
 		}
 
-		if (!$built) {
+		if (!$built)
+		{
 			//$tmp = 'component/'.substr($query['option'], 4).'/'.$tmp;
 			$tmp = substr($query['option'], 4).'/'.$tmp; /* HUBZERO: strip 'component' from url */
 		}

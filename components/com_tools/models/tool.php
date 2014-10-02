@@ -1809,9 +1809,9 @@ class ToolsModelTool
 	 * @param	  string $toolid Parameter description (if any) ...
 	 * @return	 mixed Return description (if any) ...
 	 */
- 	public static function getTicketId($toolid=NULL)
+	public static function getTicketId($toolid=NULL)
 	{
-		$db =  JFactory::getDBO();
+		$db = JFactory::getDBO();
 		if ($toolid=== NULL)
 		{
 			return false;
