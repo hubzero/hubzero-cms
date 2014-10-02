@@ -508,6 +508,10 @@ class WikiModelPage extends \Hubzero\Base\Model
 		{
 			$filters['pageid'] = $this->get('id');
 		}
+		if (!isset($filters['parent']))
+		{
+			$filters['parent'] = '0';
+		}
 		if (!isset($filters['status']))
 		{
 			$filters['status'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);

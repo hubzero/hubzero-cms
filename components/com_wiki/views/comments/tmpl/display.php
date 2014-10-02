@@ -96,7 +96,7 @@ if (!$this->sub)
 			$filters = array('version' => '');
 			if ($this->v)
 			{
-				$filters['version'] = 'AND version=' . $this->v;
+				$filters['version'] = $this->v;
 			}
 
 			if ($this->page->comments('list', $filters)->total())
@@ -209,7 +209,7 @@ if (!$this->sub)
 			<?php } ?>
 
 				<label id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="anonymous" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
+					<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('COM_WIKI_FIELD_ANONYMOUS'); ?>
 				</label>
 

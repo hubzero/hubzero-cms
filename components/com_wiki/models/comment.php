@@ -175,7 +175,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('chtml', null);
+				$content = $this->get('phtml', null);
 
 				if ($content === null)
 				{
@@ -190,7 +190,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 						'domain'   => JRequest::getVar('group', '')
 					);
 
-					$this->set('chtml', $p->parse(stripslashes($this->get('ctext')), $wikiconfig));
+					$this->set('phtml', (string) $p->parse(stripslashes($this->get('ctext', '')), $wikiconfig));
 
 					return $this->content($as, $shorten);
 				}
@@ -237,7 +237,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 		switch (strtolower($type))
 		{
 			case 'edit':
-				$link .= '&' . $task . '=editcomment&comment=' . $this->get('id');
+				$link .= '&' . $task . '=editcomment&id=' . $this->get('id');
 			break;
 
 			case 'delete':

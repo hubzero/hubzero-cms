@@ -81,8 +81,8 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 
 			<p class="comment-options">
-			<?php if ($this->page->access('delete', 'comment')) { // || $juser->get('id') == $this->comment->get('created_by') ?>
-				<?php if ($this->config->get('access-delete-thread')) { ?>
+
+				<?php if ($this->page->access('delete', 'comment')) { ?>
 					<a class="icon-delete delete" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
 						--><?php echo JText::_('COM_WIKI_DELETE'); ?><!--
 					--></a>
@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access');
 						--><?php echo JText::_('COM_WIKI_EDIT'); ?><!--
 					--></a>
 				<?php } ?>
-			<?php } ?>
+
 			<?php if (!$this->comment->isReported()) { ?>
 				<?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
 					<?php if (JRequest::getInt('reply', 0) == $this->comment->get('id')) { ?>
@@ -129,18 +129,18 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="comment[created]" value="" />
 						<input type="hidden" name="comment[created_by]" value="<?php echo $juser->get('id'); ?>" />
 						<input type="hidden" name="comment[version]" value="<?php echo $this->page->revision()->get('version'); ?>" />
-						<input type="hidden" name="comment[state]" value="1" />
+						<input type="hidden" name="comment[status]" value="1" />
 
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 						<input type="hidden" name="controller" value="comments" />
 						<input type="hidden" name="scope" value="<?php echo $this->page->get('scope'); ?>" />
 						<input type="hidden" name="pagename" value="<?php echo $this->page->get('pagename'); ?>" />
-						<input type="hidden" name="<?php echo $this->page->get('group_cn') ? 'action' : 'task'; ?>" value="savereply" />
+						<input type="hidden" name="<?php echo $this->page->get('group_cn') ? 'action' : 'task'; ?>" value="savecomment" />
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 							<span class="label-text"><?php echo JText::_('COM_WIKI_ENTER_COMMENTS'); ?></span>
 							<?php
-							echo WikiHelperEditor::getInstance()->display('comment[comment]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
+							echo WikiHelperEditor::getInstance()->display('comment[ctext]', 'comment_' . $this->comment->get('id') . '_content', '', 'minimal no-footer', '35', '4');
 							?>
 						</label>
 

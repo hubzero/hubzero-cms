@@ -102,6 +102,7 @@ function WikiParseRoute($segments)
 			$vars['controller'] = 'history';
 		break;
 
+		case 'editcomment':
 		case 'addcomment':
 		case 'savecomment':
 		case 'reportcomment':

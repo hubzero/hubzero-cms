@@ -183,6 +183,7 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 					$controllerName = 'history';
 				break;
 
+				case 'editcomment':
 				case 'addcomment':
 				case 'savecomment':
 				case 'reportcomment':
@@ -238,7 +239,8 @@ class plgGroupsWiki extends \Hubzero\Plugin\Plugin
 			$content = ob_get_contents();
 			ob_end_clean();
 
-			\Hubzero\Document\Assets::addPluginStylesheet('groups', 'wiki');
+			$this->css()
+			     ->js();
 
 			// Return the content
 			$arr['html'] = $content;

@@ -86,7 +86,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 				$this->setError($result);
 			}
 
-			JPROFILE ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
+			JDEBUG ? JProfiler::getInstance('Application')->mark('afterWikiSetup') : null;
 		}
 
 		$this->page = $this->book->page();
@@ -312,7 +312,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 
 		// Redirect to Comments page
 		$this->setRedirect(
-			$this->page->link('comments'),
+			JRoute::_($this->page->link('comments')),
 			$msg,
 			$cls
 		);
