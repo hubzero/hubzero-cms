@@ -263,10 +263,11 @@ class plgProjectsNotes extends JPlugin
 				case 'savecomment':
 				case 'reportcomment':
 				case 'removecomment':
+				case 'editcomment':
 				case 'comments':
 					$controllerName = 'comments';
 
-					$cid = JRequest::getVar('cid', 0);
+					$cid = JRequest::getVar('comment', 0);
 					if ($cid)
 					{
 						JRequest::setVar('id', $cid);

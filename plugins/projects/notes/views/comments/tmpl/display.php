@@ -56,18 +56,14 @@ defined('_JEXEC') or die( 'Restricted access' );
 <?php } ?>
 
 <?php
-	$view = new JView(array(
-		'base_path' => $this->base_path,
-		'name'      => 'page',
-		'layout'    => 'submenu'
-	));
-	$view->option     = $this->option;
-	$view->controller = $this->controller;
-	$view->page       = $this->page;
-	$view->task       = $this->task;
-	$view->config     = $this->config;
-	$view->sub        = $this->sub;
-	$view->display();
+	$this->view('submenu', 'page')
+	     ->setBasePath($this->base_path)
+	     ->set('option', $this->option)
+	     ->set('controller', $this->controller)
+	     ->set('page', $this->page)
+	     ->set('task', $this->task)
+	     ->set('sub', $this->sub)
+	     ->display();
 ?>
 
 <?php if (!$this->sub) { ?>
@@ -99,20 +95,17 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 		if ($this->page->comments('list', $filters)->total())
 		{
-			$view = new JView(array(
-				'base_path' => JPATH_ROOT . '/components/com_wiki',
-				'name'      => 'comments',
-				'layout'    => '_list'
-			));
-			$view->parent     = 0;
-			$view->page       = $this->page;
-			$view->option     = $this->option;
-			$view->comments   = $this->page->comments();
-			$view->config     = $this->config;
-			$view->depth      = 0;
-			$view->version    = $this->v;
-			$view->cls        = 'odd';
-			$view->display();
+			$this->view('_list', 'comments')
+			     ->setBasePath(JPATH_ROOT . '/components/com_wiki')
+			     ->set('parent', 0)
+			     ->set('page', $this->page)
+			     ->set('option', $this->option)
+			     ->set('comments', $this->page->comments())
+			     ->set('config', $this->config)
+			     ->set('depth', 0)
+			     ->set('version', $this->v)
+			     ->set('cls', 'odd')
+			     ->display();
 		}
 		else
 		{
@@ -127,31 +120,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 		}
 		?>
 	</div><!-- / .subject -->
-	<div class="aside">
-		<form action="<?php echo JRoute::_($this->page->link('comments')); ?>" method="get">
-			<fieldset class="controls">
-				<label for="filter-version">
-					<?php echo JText::_('COM_WIKI_COMMENT_REVISION'); ?>:
-					<select name="version" id="filter-version">
-						<option value=""><?php echo JText::_('ALL'); ?></option>
-						<?php
-						foreach ($this->page->revisions('list') as $ver)
-						{
-						?>
-						<option value="<?php echo $ver->get('version'); ?>"<?php echo ($this->v == $ver->get('version')) ? ' selected="selected"' : ''; ?>>Version <?php echo $ver->get('version'); ?></option>
-						<?php
-						}
-						?>
-					</select>
-				</label>
-				<input type="hidden" name="task" value="comments" />
-				<p class="submit"><input type="submit" value="<?php echo JText::_('GO'); ?>" /></p>
-			<?php if ($this->sub) { ?>
-				<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
-			<?php } ?>
-			</fieldset>
-		</form>
-	</div><!-- / .aside -->
 </section><!-- / .main section -->
 
 <?php if (isset($this->mycomment) && is_a($this->mycomment, 'WikiModelComment')) { ?>
@@ -191,7 +159,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<input type="hidden" name="comment[created]" value="<?php echo $this->escape($this->mycomment->get('created')); ?>" />
 				<input type="hidden" name="comment[id]" value="<?php echo $this->escape($this->mycomment->get('id')); ?>" />
 				<input type="hidden" name="comment[created_by]" value="<?php echo $this->escape($this->mycomment->get('created_by')); ?>" />
-				<input type="hidden" name="comment[status]" value="<?php echo $this->escape($this->mycomment->get('status')); ?>" />
+				<input type="hidden" name="comment[status]" value="<?php echo $this->escape($this->mycomment->get('status', 1)); ?>" />
 				<input type="hidden" name="comment[version]" value="<?php echo $this->escape($this->mycomment->get('version')); ?>" />
 				<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->mycomment->get('parent')); ?>" />
 				<input type="hidden" name="comment[pageid]" value="<?php echo $this->escape($this->mycomment->get('pageid')); ?>" />
@@ -209,7 +177,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php } ?>
 
 				<label id="comment-anonymous-label">
-					<input class="option" type="checkbox" name="anonymous" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
+					<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) { echo ' checked="checked"'; } ?> />
 					<?php echo JText::_('COM_WIKI_FIELD_ANONYMOUS'); ?>
 				</label>
 
