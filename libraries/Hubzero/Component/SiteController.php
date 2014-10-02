@@ -536,24 +536,16 @@ class SiteController extends Object implements ControllerInterface
 	 * @param   string  $option Component name to load stylesheet from
 	 * @param   string  $script Name of the stylesheet to load
 	 * @param   boolean $system Pull contents from shared /media/system folder
-	 * @return  void
+	 * @return  object
 	 */
 	protected function _getStyles($option='', $stylesheet='', $system=false)
 	{
-		$option = ($option) ? $option : $this->_option;
-		if (substr($option, 0, strlen('com_')) !== 'com_')
-		{
-			$option = 'com_' . $option;
-		}
-
 		if ($system)
 		{
-			Assets::addSystemStylesheet($stylesheet);
+			$option = 'system';
 		}
-		else
-		{
-			Assets::addComponentStylesheet($option, $stylesheet);
-		}
+
+		return $this->css($stylesheet, $option);
 	}
 
 	/**
@@ -563,25 +555,133 @@ class SiteController extends Object implements ControllerInterface
 	 * @param   string  $script Name of the script to load
 	 * @param   string  $option Component name to load script from
 	 * @param   boolean $system Pull contents from shared /media/system folder
-	 * @return  void
+	 * @return  object
 	 */
 	protected function _getScripts($script='', $option='', $system=false)
 	{
-		$option = ($option) ? $option : $this->_option;
-		if (substr($option, 0, strlen('com_')) !== 'com_')
-		{
-			$option = 'com_' . $option;
-		}
-		$script = ($script) ? $script : $this->_name;
-
 		if ($system)
 		{
-			Assets::addSystemScript($script);
+			$option = 'system';
 		}
-		else
+
+		return $this->js($script, $option);
+	}
+
+	/**
+	 * Determine the asset directory
+	 *
+	 * @param   string  $path     File path
+	 * @param   string  $default  Default directory
+	 * @return  string
+	 */
+	private function _assetDir(&$path, $default='')
+	{
+		if (substr($path, 0, 2) == './')
 		{
-			Assets::addComponentScript($option, $script);
+			$path = substr($path, 2);
+
+			return '';
 		}
+
+		if (substr($path, 0, 1) == '/')
+		{
+			$path = substr($path, 1);
+
+			return '/';
+		}
+
+		return $default;
+	}
+
+	/**
+	 * Push CSS to the document
+	 *
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $component   Component name
+	 * @return  object
+	 */
+	public function css($stylesheet = '', $component = null)
+	{
+		$component = $component ?: $this->get('option', \JRequest::getCmd('option'));
+
+		// Adding style declarations
+		if ($component === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
+		{
+			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			return $this;
+		}
+
+		if ($stylesheet && substr($stylesheet, -4) != '.css')
+		{
+			$stylesheet .= '.css';
+		}
+
+		// Adding from an absolute path
+		$dir = $this->_assetDir($stylesheet, 'css');
+		if ($dir == '/')
+		{
+			Assets::addStylesheet($dir . $stylesheet);
+			return $this;
+		}
+
+		// Adding a system stylesheet
+		if ($component == 'system')
+		{
+			Assets::addSystemStylesheet($stylesheet, $dir);
+			return $this;
+		}
+
+		if (substr($component, 0, strlen('com_')) !== 'com_')
+		{
+			$component = 'com_' . $component;
+		}
+
+		// Adding a component stylesheet
+		Assets::addComponentStylesheet($component, $stylesheet, $dir);
+		return $this;
+	}
+
+	/**
+	 * Push javascript to the document
+	 *
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $component   Component name
+	 * @return  object
+	 */
+	public function js($script = '', $component = null)
+	{
+		$component = $component ?: $this->get('option', \JRequest::getCmd('option'));
+
+		// Adding script declaration
+		if ($component === true || strstr($script, '(') || strstr($script, ';'))
+		{
+			\JFactory::getDocument()->addScriptDeclaration($script);
+			return $this;
+		}
+
+		// Adding from an absolute path
+		$dir = $this->_assetDir($script, 'js');
+		if ($dir == '/')
+		{
+			Assets::addScript($dir . $script);
+			return $this;
+		}
+
+		// Adding a system script
+		if ($component == 'system')
+		{
+			Assets::addSystemScript($script, $dir);
+			return $this;
+		}
+
+		if (substr($component, 0, strlen('com_')) !== 'com_')
+		{
+			$component = 'com_' . $component;
+		}
+
+		// Adding a component script
+		Assets::addComponentScript($component, $script, $dir);
+		return $this;
 	}
 
 	/**

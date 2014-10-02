@@ -280,8 +280,8 @@ class View extends AbstractView
 	/**
 	 * Determine the asset directory
 	 *
-	 * @param   string $path    File path
-	 * @param   string $default Default directory
+	 * @param   string  $path     File path
+	 * @param   string  $default  Default directory
 	 * @return  string
 	 */
 	private function _assetDir(&$path, $default='')
@@ -306,22 +306,17 @@ class View extends AbstractView
 	/**
 	 * Push CSS to the document
 	 *
-	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
-	 * @param   string  $folder     Plugin type
-	 * @param   string  $element    Plugin name
-	 * @return  void
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $folder      Plugin type
+	 * @param   string  $element     Plugin name
+	 * @return  object
 	 */
 	public function css($stylesheet = '', $folder = null, $element = null)
 	{
-		if (!$folder)
-		{
-			$folder = $this->_folder;
-		}
-		if (!$element)
-		{
-			$element = $this->_element;
-		}
+		$folder  = $folder  ?: $this->_folder;
+		$element = $element ?: $this->_element;
 
+		// Adding style declarations
 		if ($folder === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{
 			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
@@ -333,6 +328,7 @@ class View extends AbstractView
 			$stylesheet .= '.css';
 		}
 
+		// Adding from an absolute path
 		$dir = $this->_assetDir($stylesheet, 'css');
 		if ($dir == '/')
 		{
@@ -340,17 +336,20 @@ class View extends AbstractView
 			return $this;
 		}
 
+		// Adding a system stylesheet
 		if ($folder == 'system')
 		{
 			Assets::addSystemStylesheet($stylesheet, $dir);
 			return $this;
 		}
 
+		// Adding a component stylesheet
 		if (substr($folder, 0, strlen('com_')) == 'com_')
 		{
 			Assets::addComponentStylesheet($folder, $stylesheet, $dir);
 		}
 
+		// Adding a plugin stylesheet
 		Assets::addPluginStylesheet($folder, $element, $stylesheet, $dir);
 		return $this;
 	}
@@ -358,28 +357,24 @@ class View extends AbstractView
 	/**
 	 * Push javascript to the document
 	 *
-	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
-	 * @param   string  $folder     Plugin type
-	 * @param   string  $element    Plugin name
-	 * @return  void
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $folder      Plugin type
+	 * @param   string  $element     Plugin name
+	 * @return  object
 	 */
 	public function js($script = '', $folder = null, $element = null)
 	{
-		if (!$folder)
-		{
-			$folder = $this->_folder;
-		}
-		if (!$element)
-		{
-			$element = $this->_element;
-		}
+		$folder  = $folder  ?: $this->_folder;
+		$element = $element ?: $this->_element;
 
+		// Adding script declaration
 		if ($folder === true || strstr($script, '(') || strstr($script, ';'))
 		{
 			\JFactory::getDocument()->addScriptDeclaration($script);
 			return $this;
 		}
 
+		// Adding from an absolute path
 		$dir = $this->_assetDir($script, 'js');
 		if ($dir == '/')
 		{
@@ -387,17 +382,20 @@ class View extends AbstractView
 			return $this;
 		}
 
+		// Adding a system script
 		if ($folder == 'system')
 		{
 			Assets::addSystemScript($script, $dir);
 			return $this;
 		}
 
+		// Adding a component script
 		if (substr($folder, 0, strlen('com_')) == 'com_')
 		{
 			Assets::addComponentScript($folder, $script, $dir);
 		}
 
+		// Adding a plugin script
 		Assets::addPluginScript($folder, $element, $script, $dir);
 		return $this;
 	}
@@ -405,21 +403,15 @@ class View extends AbstractView
 	/**
 	 * Get the path to an image
 	 *
-	 * @param   string  $image      Image name
-	 * @param   string  $folder     Plugin type
-	 * @param   string  $element    Plugin name
+	 * @param   string  $image    Image name
+	 * @param   string  $folder   Plugin type
+	 * @param   string  $element  Plugin name
 	 * @return  string
 	 */
 	public function img($image, $folder = null, $element = null)
 	{
-		if (!$folder)
-		{
-			$folder = $this->_folder;
-		}
-		if (!$element)
-		{
-			$element = $this->_element;
-		}
+		$folder  = $folder  ?: $this->_folder;
+		$element = $element ?: $this->_element;
 
 		$dir = $this->_assetDir($image, 'img');
 		if ($dir == '/')

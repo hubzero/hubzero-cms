@@ -77,8 +77,8 @@ class View extends AbstractView
 	/**
 	 * Determine the asset directory
 	 *
-	 * @param   string $path    File path
-	 * @param   string $default Default directory
+	 * @param   string  $path     File path
+	 * @param   string  $default  Default directory
 	 * @return  string
 	 */
 	private function _assetDir(&$path, $default='')
@@ -103,17 +103,15 @@ class View extends AbstractView
 	/**
 	 * Push CSS to the document
 	 *
-	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
-	 * @param   string  $component  Component name
-	 * @return  void
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $component   Component name
+	 * @return  object
 	 */
 	public function css($stylesheet = '', $component = null)
 	{
-		if (!$component)
-		{
-			$component = $this->get('option', \JRequest::getCmd('option'));
-		}
+		$component = $component ?: $this->get('option', \JRequest::getCmd('option'));
 
+		// Adding style declarations
 		if ($component === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
 		{
 			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
@@ -125,6 +123,7 @@ class View extends AbstractView
 			$stylesheet .= '.css';
 		}
 
+		// Adding from an absolute path
 		$dir = $this->_assetDir($stylesheet, 'css');
 		if ($dir == '/')
 		{
@@ -132,6 +131,7 @@ class View extends AbstractView
 			return $this;
 		}
 
+		// Adding a system stylesheet
 		if ($component == 'system')
 		{
 			Assets::addSystemStylesheet($stylesheet, $dir);
@@ -143,31 +143,30 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
+		// Adding a component stylesheet
 		Assets::addComponentStylesheet($component, $stylesheet, $dir);
-
 		return $this;
 	}
 
 	/**
 	 * Push javascript to the document
 	 *
-	 * @param   string  $stylesheet Stylesheet name (optional, uses component name if left blank)
-	 * @param   string  $component  Component name
-	 * @return  void
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $component   Component name
+	 * @return  object
 	 */
 	public function js($script = '', $component = null)
 	{
-		if (!$component)
-		{
-			$component = $this->get('option', \JRequest::getCmd('option'));
-		}
+		$component = $component ?: $this->get('option', \JRequest::getCmd('option'));
 
+		// Adding script declaration
 		if ($component === true || strstr($script, '(') || strstr($script, ';'))
 		{
 			\JFactory::getDocument()->addScriptDeclaration($script);
 			return $this;
 		}
 
+		// Adding from an absolute path
 		$dir = $this->_assetDir($script, 'js');
 		if ($dir == '/')
 		{
@@ -175,6 +174,7 @@ class View extends AbstractView
 			return $this;
 		}
 
+		// Adding a system script
 		if ($component == 'system')
 		{
 			Assets::addSystemScript($script, $dir);
@@ -186,8 +186,8 @@ class View extends AbstractView
 			$component = 'com_' . $component;
 		}
 
+		// Adding a component script
 		Assets::addComponentScript($component, $script, $dir);
-
 		return $this;
 	}
 

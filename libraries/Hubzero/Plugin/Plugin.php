@@ -30,6 +30,8 @@
 
 namespace Hubzero\Plugin;
 
+use Hubzero\Document\Assets;
+
 jimport('joomla.plugin.plugin');
 
 /**
@@ -179,23 +181,176 @@ class Plugin extends \JPlugin
 	}
 
 	/**
+	 * Determine the asset directory
+	 *
+	 * @param   string  $path     File path
+	 * @param   string  $default  Default directory
+	 * @return  string
+	 */
+	private function _assetDir(&$path, $default='')
+	{
+		if (substr($path, 0, 2) == './')
+		{
+			$path = substr($path, 2);
+
+			return '';
+		}
+
+		if (substr($path, 0, 1) == '/')
+		{
+			$path = substr($path, 1);
+
+			return '/';
+		}
+
+		return $default;
+	}
+
+	/**
+	 * Push CSS to the document
+	 *
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $folder      Plugin type
+	 * @param   string  $element     Plugin name
+	 * @return  object
+	 */
+	public function css($stylesheet = '', $folder = null, $element = null)
+	{
+		$folder  = $folder  ?: $this->_type;
+		$element = $element ?: $this->_name;
+
+		// Adding style declarations
+		if ($folder === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
+		{
+			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
+			return $this;
+		}
+
+		if ($stylesheet && substr($stylesheet, -4) != '.css')
+		{
+			$stylesheet .= '.css';
+		}
+
+		// Adding from an absolute path
+		$dir = $this->_assetDir($stylesheet, 'css');
+		if ($dir == '/')
+		{
+			Assets::addStylesheet($dir . $stylesheet);
+			return $this;
+		}
+
+		// Adding a system stylesheet
+		if ($folder == 'system')
+		{
+			Assets::addSystemStylesheet($stylesheet, $dir);
+			return $this;
+		}
+
+		// Adding a component stylesheet
+		if (substr($folder, 0, strlen('com_')) == 'com_')
+		{
+			Assets::addComponentStylesheet($folder, $stylesheet, $dir);
+		}
+
+		// Adding a plugin stylesheet
+		Assets::addPluginStylesheet($folder, $element, $stylesheet, $dir);
+		return $this;
+	}
+
+	/**
+	 * Push javascript to the document
+	 *
+	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
+	 * @param   string  $folder      Plugin type
+	 * @param   string  $element     Plugin name
+	 * @return  object
+	 */
+	public function js($script = '', $folder = null, $element = null)
+	{
+		$folder  = $folder  ?: $this->_type;
+		$element = $element ?: $this->_name;
+
+		// Adding script declaration
+		if ($folder === true || strstr($script, '(') || strstr($script, ';'))
+		{
+			\JFactory::getDocument()->addScriptDeclaration($script);
+			return $this;
+		}
+
+		// Adding from an absolute path
+		$dir = $this->_assetDir($script, 'js');
+		if ($dir == '/')
+		{
+			Assets::addScript($dir . $script);
+			return $this;
+		}
+
+		// Adding a system script
+		if ($folder == 'system')
+		{
+			Assets::addSystemScript($script, $dir);
+			return $this;
+		}
+
+		// Adding a component script
+		if (substr($folder, 0, strlen('com_')) == 'com_')
+		{
+			Assets::addComponentScript($folder, $script, $dir);
+		}
+
+		// Adding a plugin script
+		Assets::addPluginScript($folder, $element, $script, $dir);
+		return $this;
+	}
+
+	/**
+	 * Get the path to an image
+	 *
+	 * @param   string  $image    Image name
+	 * @param   string  $folder   Plugin type
+	 * @param   string  $element  Plugin name
+	 * @return  string
+	 */
+	public function img($image, $folder = null, $element = null)
+	{
+		$folder  = $folder  ?: $this->_type;
+		$element = $element ?: $this->_name;
+
+		$dir = $this->_assetDir($image, 'img');
+		if ($dir == '/')
+		{
+			return rtrim(\JURI::base(true), '/') . $dir . $image;
+		}
+
+		if ($folder == 'system')
+		{
+			return Assets::getSystemImage($image);
+		}
+
+		if (substr($folder, 0, strlen('com_')) == 'com_')
+		{
+			return Assets::getComponentImage($folder, $image, $dir);
+		}
+
+		return Assets::getPluginImage($folder, $element, $image, $dir);
+	}
+
+	/**
 	 * Create a plugin view and return it
 	 *
-	 * @param   string $layout View layout
-	 * @param   string $name   View name
-	 * @return	object
+	 * @param   string  $layout  View layout
+	 * @param   string  $name    View name
+	 * @return  object
 	 */
-	/*public function view($layout, $name='')
+	public function view($layout='default', $name='')
 	{
-		$view = new View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => ($name ?: $this->_name),
-				'layout'  => ($layout ?: 'default')
-			)
-		);
+		$view = new View(array(
+			'folder'  => $this->_type,
+			'element' => $this->_name,
+			'name'    => ($name   ?: $this->_name),
+			'layout'  => ($layout ?: 'default')
+		));
 		return $view;
-	}*/
+	}
 }
 
