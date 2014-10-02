@@ -118,7 +118,7 @@ function ProjectsBuildRoute(&$query)
 	{
 		$segments[] = $query['pagename'];
 		unset($query['pagename']);
-    }
+	}
 	if (!empty($query['action']))
 	{
 		$segments[] = $query['action'];

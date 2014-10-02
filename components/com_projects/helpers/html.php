@@ -527,7 +527,7 @@ class ProjectsHtml
 	{
 		$name = '';
 
-		switch($int)
+		switch ($int)
 		{
 			case 1:
 				$name = 'one';
@@ -723,7 +723,7 @@ class ProjectsHtml
 		?>
 			<img src="<?php echo $image;  ?>" alt="<?php echo $view->project->title; ?>" />
 	<?php
- 		}
+		}
 		else
 		{ ?>
 			<span class="defaultimage">&nbsp;</span>
