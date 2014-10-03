@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,8 +41,20 @@ class AnswersModelTags extends TagsModelCloud
 	/**
 	 * Object type, used for linking objects (such as resources) to tags
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_scope = 'answers';
+
+	/**
+	 * Turn a comma-separated string of tags into an array of normalized tags
+	 *
+	 * @param   string   $tag_string  Comma-separated string of tags
+	 * @param   integer  $keep        Use normalized tag as array key
+	 * @return  array
+	 */
+	public function parse($tag_string, $keep=0)
+	{
+		return $this->_parse($tag_string, $keep);
+	}
 }
 

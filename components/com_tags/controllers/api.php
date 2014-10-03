@@ -354,9 +354,9 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 	}
 
 	/**
-	 * Create a new ticket
+	 * Create a new entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function newTask()
 	{
@@ -372,75 +372,30 @@ class TagsControllerApi extends \Hubzero\Component\ApiController
 			return $this->not_found();
 		}
 
-		/*// Create an object for returning messages
+		// Create an object for returning messages
 		$msg = new stdClass;
 
-		// Initiate class and bind data to database fields
-		$ticket = new SupportTicket($this->database);
-
-		// Set the created date
-		$ticket->created   = $msg->submitted = JFactory::getDate()->toSql();
-
-		// Incoming
-		$ticket->report   = JRequest::getVar('report', '', 'post', 'none', 2);
-		if (!$ticket->report)
-		{
-			$this->errorMessage(500, JText::_('Error: Report contains no text.'));
-			return;
-		}
-		$ticket->os        = JRequest::getVar('os', 'unknown', 'post');
-		$ticket->browser   = JRequest::getVar('browser', 'unknown', 'post');
-		$ticket->severity  = JRequest::getVar('severity', 'normal', 'post');
-
-		// Cut suggestion at 70 characters
-		$ticket->summary   = substr($ticket->report, 0, 70);
-		if (strlen($ticket->summary) >= 70)
-		{
-			$ticket->summary .= '...';
-		}
-
-		// Get user data
-		//$juser = JFactory::getUser();
-		$ticket->name      = $result->get('name');
-		$ticket->email     = $result->get('email');
-		$ticket->login     = $result->get('username');
-
-		// Set some helpful info
-		$ticket->instances = 1;
-		$ticket->section   = 1;
-		$ticket->open      = 1;
-		$ticket->status    = 0;
-
-		$ticket->ip        = JRequest::ip();
-		$ticket->hostname  = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
-
-		// Check the data
-		if (!$ticket->check())
-		{
-			$this->errorMessage(500, $ticket->getErrors());
-			return;
-		}
-
-		// Save the data
-		if (!$ticket->store())
-		{
-			$this->errorMessage(500, $ticket->getErrors());
-			return;
-		}
-
 		// Any tags?
-		$tags = trim(JRequest::getVar('tags', '', 'post'));
-		if ($tags)
+		$tag = new TagsModelTag(JRequest::getVar('tag', '', 'post'));
+		if (!$tag->exists())
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
+			if (!$tag->store(true))
+			{
+				$msg->success = false;
 
-			$st = new SupportTags($this->database);
-			$st->tag_object($result->get('uidNumber'), $ticket->id, $tags, 0, true);
+				$this->errorMessage(
+					500,
+					$tag->getError()
+				);
+				return;
+			}
 		}
 
 		// Set the response
 		$msg->success = true;
-		$msg->ticket  = $ticket->id;*/
+		$msg->tag     = $tag->get('tag');
+		$msg->label   = $tag->get('raw_tag');
+		$msg->id      = $tag->get('id');
 
 		$this->setMessage($msg);
 	}

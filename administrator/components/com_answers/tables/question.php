@@ -156,9 +156,6 @@ class AnswersTableQuestion extends JTable
 		$query  = "";
 		if ($filters['tag'])
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'tags.php');
-			$tagging = new AnswersTags($this->_db);
-
 			$query .= "FROM $this->_tbl AS C";
 			if (isset($filters['count']))
 			{
@@ -168,7 +165,7 @@ class AnswersTableQuestion extends JTable
 			{
 				$query .= ", #__tags_object AS RTA ";
 			}
-			$query .= "INNER JOIN $tagging->_tag_tbl AS TA ON TA.id=RTA.tagid ";
+			$query .= "INNER JOIN #__tags AS TA ON TA.id=RTA.tagid ";
 		}
 		else
 		{
@@ -211,7 +208,9 @@ class AnswersTableQuestion extends JTable
 		}
 		if ($filters['tag'])
 		{
-			$tags = $tagging->_parse_tags($filters['tag']);
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'tags.php');
+			$cloud = new AnswersModelTags();
+			$tags = $cloud->parse($filters['tag']);
 
 			$query .= "AND (
 							RTA.objectid=C.id

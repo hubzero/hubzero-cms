@@ -80,23 +80,9 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		$anonymous = 0;
 
 		// get needed scripts
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'tags.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'comment.php');
-
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'log.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
-
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.plan.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.group.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.rank.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 
 		$wconfig = JComponentHelper::getParams('com_wishlist');
 		$admingroup = $wconfig->get('group') ? $wconfig->get('group') : 'hubadmin';
@@ -106,25 +92,23 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		{
 			// Transfer from a Support Ticket
 			case 'ticket':
-				$row = new SupportTicket($database);
-				$row->load($from_id);
+				$row = new SupportModelTicket($from_id);
 
-				if ($row->id)
+				if ($row->exists())
 				{
-					$author  = $row->login;
-					$subject = \Hubzero\Utility\String::truncate($row->summary, 200); // max 200 characters
-					$body    = $row->summary;
-					$owner   = $row->group;
+					$author  = $row->get('login');
+					$subject = $row->content('raw', 200); // max 200 characters
+					$body    = $row->get('summary');
+					$owner   = $row->get('group');
 
 					// If we are de-activating original item
 					if ($deactivate)
 					{
-						$row->status = 2;
-						$row->resolved = 'transfered';
+						$row->set('status', 2);
+						$row->set('resolved', 'transfered');
 					}
 
-					$st = new SupportTags($database);
-					$tags = $st->get_tag_string($from_id, 0, 0, NULL, 0, 1);
+					$tags = $row->tags('string');
 				}
 				else
 				{
@@ -135,26 +119,23 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 
 			// Transfer from a Question
 			case 'question':
-				$row = new AnswersTableQuestion($database);
-				$row->load($from_id);
+				$row = new AnswersModelQuestion($from_id);
 
-				if ($row->id)
+				if ($row->exists())
 				{
-					$author     = $row->created_by;
-					$subject    = \Hubzero\Utility\String::truncate($row->subject, 200); // max 200 characters
-					$body       = $row->question;
-					$anonymous  = $row->anonymous;
+					$author     = $row->get('created_by');
+					$subject    = $row->subject('raw', 200); // max 200 characters
+					$body       = $row->get('question');
+					$anonymous  = $row->get('anonymous');
 
 					// If we are de-activating original item
 					if ($deactivate)
 					{
-						$row->state = 2;
-						$row->reward = 0;
+						$row->set('state', 2);
+						$row->set('reward', 0);
 					}
 
-					$tagging = new AnswersTags($database);
-					$tags = $tagging->get_tag_string($from_id, 0, 0, NULL, 0, 1);
-
+					$tags = $row->tags('string');
 				}
 				else
 				{
@@ -222,41 +203,42 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		{
 			// Transfer to a Support Ticket
 			case 'ticket':
-				$newrow = new SupportTicket($database);
-				$newrow->status    = 0;
-				$newrow->created   = $today;
-				$newrow->login     = $author->get('username');
-				$newrow->severity  = 'normal';
-				$newrow->summary   = $subject;
-				$newrow->report    = ($body) ? $body : $subject;
-				$newrow->section   = 1;
-				$newrow->type      = 0;
-				$newrow->instances = 1;
-				$newrow->email     = $author->get('email');
-				$newrow->name      = $author->get('name');
+				$newrow = new SupportModelTicket();
+				$newrow->set('open', 1);
+				$newrow->set('status', 0);
+				$newrow->set('created', $today);
+				$newrow->set('login', $author->get('username'));
+				$newrow->set('severity', 'normal');
+				$newrow->set('summary', $subject);
+				$newrow->set('report', ($body ? $body : $subject));
+				$newrow->set('section', 1);
+				$newrow->set('type', 0);
+				$newrow->set('instances', 1);
+				$newrow->set('email', $author->get('email'));
+				$newrow->set('name', $author->get('name'));
 
 				// do we have an owner group?
-				$newrow->group = $owner ? $owner : '' ;
+				$newrow->set('group', ($owner ? $owner : ''));
 			break;
 
 			case 'question':
-				$newrow = new AnswersTableQuestion($database);
-				$newrow->subject    = $subject;
-				$newrow->question   = $body;
-				$newrow->created    = $today;
-				$newrow->created_by = $author->get('username');
-				$newrow->state      = 0;
-				$newrow->anonymous  = $anonymous;
+				$newrow = new AnswersModelQuestion();
+				$newrow->set('subject', $subject);
+				$newrow->set('question', $body);
+				$newrow->set('created', $today);
+				$newrow->set('created_by', $author->get('id'));
+				$newrow->set('state', 0);
+				$newrow->set('anonymous', $anonymous);
 			break;
 
 			case 'wish':
-				$newrow = new Wish($database);
-				$newrow->subject     = $subject;
-				$newrow->about       = $body;
-				$newrow->proposed    = $today;
-				$newrow->proposed_by = $author->get('id');
-				$newrow->status      = 0;
-				$newrow->anonymous   = $anonymous;
+				$newrow = new WishlistModelWish();
+				$newrow->set('subject', $subject);
+				$newrow->set('about', $body);
+				$newrow->set('proposed', $today);
+				$newrow->set('proposed_by', $author->get('id'));
+				$newrow->set('status', 0);
+				$newrow->set('anonymous', $anonymous);
 
 				// which wishlist?
 				$objWishlist = new Wishlist($database);
@@ -271,7 +253,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 				{
 					$listid = $objWishlist->get_wishlistID($rid);
 				}
-				$newrow->wishlist = ($listid) ? $listid : $mainlist;
+				$newrow->set('wishlist', ($listid ? $listid : $mainlist));
 			break;
 		}
 
@@ -284,10 +266,10 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 		else
 		{
 			// Checkin ticket
-			$newrow->checkin();
+			//$newrow->checkin();
 
 			// Extras
-			if ($newrow->id)
+			if ($newrow->exists())
 			{
 				switch ($to_type)
 				{
@@ -295,8 +277,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 						// Tag new ticket
 						if ($tags)
 						{
-							$st = new SupportTags($database);
-							$st->tag_object($juser->get('id'), $newrow->id, $tags, 0, 0);
+							$newrow->tag($tags, $juser->get('id'), 0);
 						}
 					break;
 
@@ -304,8 +285,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 						// Tag new question
 						if ($tags)
 						{
-							$tagging = new AnswersTags($database);
-							$tagging->tag_object($juser->get('id'), $newrow->id, $tags, 0, 0);
+							$newrow->tag($tags, $juser->get('id'), 0);
 						}
 					break;
 				}
@@ -357,7 +337,7 @@ class plgSupportTransfer extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		return $newrow->id;
+		return $newrow->get('id');
 	}
 
 	/**
