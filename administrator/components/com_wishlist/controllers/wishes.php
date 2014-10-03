@@ -265,9 +265,9 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		$this->view->plan = $plan ? $plan[0] : $objPlan;
 
 		// Get tags on this wish
-		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
-		$tagging = new WishTags($this->database);
-		$this->view->tags = $tagging->get_tag_string($this->view->row->id);
+		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'models' . DS . 'tags.php');
+		$tagging = new WishlistModelTags($this->view->row->id);
+		$this->view->tags = $tagging->render('string');
 
 		// Set any errors
 		if ($this->getError())
@@ -336,6 +336,10 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 			$this->editTask($row);
 			return;
 		}
+
+		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'models' . DS . 'tags.php');
+		$tagging = new WishlistModelTags($row->id);
+		$tagging->setTags($fields['tags'], $this->juser->get('id'));
 
 		$plan = JRequest::getVar('plan', array(), 'post', 'none', 2);
 		$plan['create_revision'] = isset($plan['create_revision']) ? $plan['create_revision'] : 0;
