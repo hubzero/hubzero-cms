@@ -106,9 +106,9 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		if (is_object($profile))
 		{
 			//get users tags
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
-			$mt = new MembersTags($this->database);
-			$mytags = $mt->get_tag_string($profile->get("uidNumber"));
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+			$mt = new MembersModelTags($profile->get("uidNumber"));
+			$mytags = $mt->render('string');
 
 			//get users groups
 			$this->view->mygroups['members'] = \Hubzero\User\Helper::getGroups($profile->get("uidNumber"), 'members', 1);

@@ -295,8 +295,8 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 		//add tags to the registration object
 		$database = JFactory::getDBO();
-		$mt = new MembersTags($database);
-		$registration->_registration['tags'] = $mt->get_tag_string($profile->get('uidNumber'));
+		$mt = new MembersModelTags($profile->get('uidNumber'));
+		$registration->_registration['tags'] = $mt->render('string');
 
 		//add bio to the registration object
 		$fields->Bio = REG_OPTIONAL;

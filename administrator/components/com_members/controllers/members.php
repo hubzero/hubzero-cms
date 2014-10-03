@@ -300,10 +300,10 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$this->view->validated = (isset($this->validated)) ? $this->validated : false;
 
 		// Get the user's interests (tags)
-		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'models' . DS . 'tags.php');
 
-		$mt = new MembersTags($this->database);
-		$this->view->tags = $mt->get_tag_string($id);
+		$mt = new MembersModelTags($id);
+		$this->view->tags = $mt->render('string');
 
 		// Set any errors
 		if ($this->getError())
@@ -553,10 +553,10 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$tags = trim(JRequest::getVar('tags', ''));
 
 		// Process tags
-		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'tags.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'models' . DS . 'tags.php');
 
-		$mt = new MembersTags($this->database);
-		$mt->tag_object($id, $id, $tags, 1, 1);
+		$mt = new MembersModelTags($id);
+		$mt->setTags($tags, $id);
 
 		// Make sure certain changes make it back to the Joomla user table
 		$juser = JUser::getInstance($id);

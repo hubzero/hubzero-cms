@@ -480,11 +480,11 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		// Get questions of interest
 		if ($this->view->filters['area'] == 'interest')
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 			// Get tags of interest
-			$mt = new MembersTags($this->database);
-			$mytags  = $mt->get_tag_string($this->juser->get('id'));
+			$mt = new MembersModelTags($this->juser->get('id'));
+			$mytags  = $mt->render('string');
 
 			$this->view->filters['tag']  = ($this->view->filters['tag']) ? $this->view->filters['tag'] : $mytags;
 			$this->view->filters['mine'] = 0;

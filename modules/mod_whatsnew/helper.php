@@ -88,9 +88,9 @@ class modWhatsNew extends \Hubzero\Module\Module
 			$out .= '<span class="taggi">' . "\n";
 			$counter = 0;
 
-			for ($i=0; $i< count($tags); $i++)
+			foreach ($tags as $i => $tag)
 			{
-				$counter = $counter + strlen(stripslashes($tags[$i]['raw_tag']));
+				$counter = $counter + strlen(stripslashes($tag->get('raw_tag')));
 				if ($counter > $max)
 				{
 					$num = $num - 1;
@@ -98,7 +98,7 @@ class modWhatsNew extends \Hubzero\Module\Module
 				if ($i < $num)
 				{
 					// display tag
-					$out .= "\t" . '<a href="'.JRoute::_('index.php?option=com_tags&tag=' . $tags[$i]['tag']) . '">' . $this->escape(stripslashes($tags[$i]['raw_tag'])) . '</a> ' . "\n";
+					$out .= "\t" . '<a href="'.JRoute::_($tag->link()) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a> ' . "\n";
 				}
 			}
 			if ($i > $num)
@@ -233,9 +233,9 @@ class modWhatsNew extends \Hubzero\Module\Module
 		{
 			$juser = JFactory::getUser();
 
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
-			$mt = new MembersTags($database);
-			$tags = $mt->get_tags_on_object($juser->get('id'), 0, 0, NULL, 0, 0);
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
+			$mt = new MembersModelTags($juser->get('id'));
+			$tags = $mt->tags();
 
 			$this->tags = $tags;
 
@@ -244,7 +244,7 @@ class modWhatsNew extends \Hubzero\Module\Module
 				$tagids = array();
 				foreach ($tags as $tag)
 				{
-					$tagids[] = $tag['id'];
+					$tagids[] = $tag->get('id');
 				}
 
 				// Get the search results

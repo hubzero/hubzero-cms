@@ -746,9 +746,9 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				<?php
 					$cls = '';
 					$database = JFactory::getDBO();
-					$mt = new MembersTags( $database);
-					$tags = $mt->get_tag_cloud(0,0,$this->profile->get('uidNumber'));
-					$tag_string = $mt->get_tag_string( $this->profile->get('uidNumber'));
+					$mt = new MembersModelTags($this->profile->get('uidNumber'));
+					$tags = $mt->render();
+					$tag_string = $mt->render('string');
 
 					if ($this->params->get('access_tags') == 2)
 					{

@@ -450,10 +450,10 @@ class MembersModelRegistration
 		}
 
 		//get user tags
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php' );
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php' );
 		$database = JFactory::getDBO();
-		$mt = new MembersTags($database);
-		$tag_string = $mt->get_tag_string( $xprofile->get('uidNumber') );
+		$mt = new MembersModelTags($xprofile->get('uidNumber'));
+		$tag_string = $mt->render('string');
 
 		//get member addresses
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'address.php');

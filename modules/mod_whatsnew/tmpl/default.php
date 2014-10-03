@@ -38,9 +38,9 @@ $html .= '>' . "\n";
 
 if ($this->feed)
 {
-	$html .= "\t" . '<h3>' . $this->escape($this->module->title);
-	$html .= ' <a class="newsfeed" href="' . $this->feedlink . '" title="' . JText::_('MOD_WHATSNEW_SUBSCRIBE') . '">' . JText::_('MOD_WHATSNEW_NEWS_FEED') . '</a>';
-	$html .= '</h3>' . "\n";
+	$html .= "\t" . '<ul class="module-nav">'; // . $this->escape($this->module->title);
+	$html .= '<li><a class="newsfeed" href="' . $this->feedlink . '" title="' . JText::_('MOD_WHATSNEW_SUBSCRIBE') . '">' . JText::_('MOD_WHATSNEW_NEWS_FEED') . '</a></li>';
+	$html .= '</ul>' . "\n";
 }
 
 if (!$this->tagged)

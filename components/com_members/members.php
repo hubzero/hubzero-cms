@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'profile.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'association.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'imghandler.php');
-include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tags.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'profiles'));

@@ -92,17 +92,17 @@ class modMyQuestions extends \Hubzero\Module\Module
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'helpers' . DS . 'tags.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 		// Get tags of interest
-		$mt = new MembersTags($database);
+		$mt = new MembersModelTags($juser->get('id'));
 		if ($cloud)
 		{
-			$tags = $mt->get_tag_cloud(0,0,$juser->get('id'));
+			$tags = $mt->render();
 		}
 		else
 		{
-			$tags = $mt->get_tag_string($juser->get('id'));
+			$tags = $mt->render('string');
 		}
 
 		return $tags;

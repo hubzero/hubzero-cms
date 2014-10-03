@@ -759,10 +759,10 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 					// add member interests
 					$interests = $xregistration->get('interests');
-					$mt = new MembersTags($this->database);
+					$mt = new MembersModelTags($xprofile->get('uidNumber'));
 					if (!empty($interests))
 					{
-						$mt->tag_object($xprofile->get('uidNumber'), $xprofile->get('uidNumber'), $interests, 1, 1);
+						$mt->setTags($interests, $xprofile->get('uidNumber'));
 					}
 
 					if ($result)

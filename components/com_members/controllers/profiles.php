@@ -1196,8 +1196,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// Get the user's interests (tags)
-		$mt = new MembersTags($this->database);
-		$this->view->tags = $mt->get_tag_string($id);
+		$mt = new MembersModelTags($id);
+		$this->view->tags = $mt->render('string');
 
 		// Add to the pathway
 		$pathway->addItem(
@@ -1515,8 +1515,8 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Process tags
 		if (isset($tags) && in_array('interests', $field_to_check))
 		{
-			$mt = new MembersTags($this->database);
-			$mt->tag_object($id, $id, $tags, 1, 1);
+			$mt = new MembersModelTags($id);
+			$mt->setTags($tags, $id);
 		}
 
 		$email = $profile->get('email');
