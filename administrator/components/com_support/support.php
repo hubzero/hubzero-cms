@@ -49,7 +49,6 @@ include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php'
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'acl.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 
 $controllerName = JRequest::getCmd('controller', 'tickets');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

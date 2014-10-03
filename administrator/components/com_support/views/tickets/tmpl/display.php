@@ -206,7 +206,7 @@ $this->css();
 					$k = 0;
 					$database = JFactory::getDBO();
 					$sc = new SupportComment($database);
-					$st = new SupportTags($database);
+					$st = new SupportModelTags();
 
 					// Collect all the IDs
 					$ids = array();
@@ -253,7 +253,7 @@ $this->css();
 						$tags = '';
 						if (isset($alltags[$row->get('id')]))
 						{
-							$tags = $st->get_tag_cloud(3, 1, $row->get('id'));
+							$tags = $row->tags('linkedlist');
 						}
 						?>
 						<tr class="<?php echo (!$row->isOpen() ? 'closed' : ''); ?>">

@@ -39,9 +39,7 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'html.php');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
-include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'comment.php');
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'resource.php');
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'doi.php');
@@ -2262,13 +2260,6 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	private function _createTicket($toolid, $tool)
 	{
-		// include support scripts
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'comment.php');
-
-		$st = new SupportTags($this->database);
-
 		$row = new SupportTicket($this->database);
 		$row->status   = 0;
 		$row->created  = JFactory::getDate()->toSql();
@@ -2297,7 +2288,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			if ($row->id)
 			{
 				// save tag
-				$st->tag_object($this->juser->get('id'), $row->id, 'tool:' . $tool['toolname'], 0, 0);
+				$st = new SupportModelTags($row->id);
+				$st->setTags('tool:' . $tool['toolname'], $this->juser->get('id'));
 
 				// store ticket id
 				$obj = new Tool($this->database);

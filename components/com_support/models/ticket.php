@@ -847,7 +847,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 	 * @param      integer $admin Include amdin tags? (defaults to no)
 	 * @return     mixed
 	 */
-	public function tags($as='cloud', $admin=0)
+	public function tags($as='cloud', $admin=null)
 	{
 		if (!$this->exists())
 		{

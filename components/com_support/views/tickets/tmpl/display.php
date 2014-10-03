@@ -231,7 +231,7 @@ $this->css()
 			<?php
 			$k = 0;
 			$sc = new SupportComment($this->database);
-			$st = new SupportTags($this->database);
+			$st = new SupportModelTags();
 
 			// Collect all the IDs
 			$ids = array();
@@ -279,7 +279,7 @@ $this->css()
 					$tags = '';
 					if (isset($alltags[$row->get('id')]))
 					{
-						$tags = $st->get_tag_cloud(3, 1, $row->get('id'));
+						$tags = $row->tags('linkedlist');
 					}
 					?>
 					<tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">

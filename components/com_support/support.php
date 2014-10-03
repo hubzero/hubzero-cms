@@ -37,7 +37,6 @@ include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reportabuse.p
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'category.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'utilities.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'ticket.php');
-include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'html.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'index'));

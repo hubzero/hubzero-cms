@@ -34,8 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
-//$st = new SupportTags(JFactory::getDBO());
-
 $bdcolor = array(
 	'critical' => '#e9bcbc',
 	'major'    => '#e9e1bc',
@@ -289,8 +287,6 @@ Content-type: text/html;charset=utf-8";
 
 										$sef = JRoute::_($base . $ticket->id);
 										$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
-
-										//$tags = $st->get_tag_string($ticket->id, 0, 0, NULL, 0, 1);
 								?>
 												<tr style="background: <?php echo $bgcolor[$ticket->severity]; ?>; border: 1px solid <?php echo $bdcolor[$ticket->severity]; ?>">
 													<td style="text-align: left; padding: 0.7em;" valign="top" align="left"><a href="<?php echo $link; ?>">#<?php echo $ticket->id; ?></a></td>

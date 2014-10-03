@@ -34,8 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
-$st = new SupportTags(JFactory::getDBO());
-
 $bdcolor = array(
 	'critical' => '#e9bcbc',
 	'major'    => '#e9e1bc',
@@ -357,7 +355,8 @@ Content-type: text/html;charset=utf-8";
 										$sef = JRoute::_($base . $ticket->id);
 										$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 
-										$tags = $st->get_tag_string($ticket->id, 0, 0, NULL, 0, 1);
+										$st = new SupportModelTags($ticket->id);
+										$tags = $st->render('string');
 								?>
 										<table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['critical']; ?>; background: <?php echo $bgcolor['critical']; ?>; font-size: 0.9em; line-height: 1.6em;
 											background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
@@ -445,7 +444,8 @@ Content-type: text/html;charset=utf-8";
 										$sef = JRoute::_($base . $ticket->id);
 										$link = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 
-										$tags = $st->get_tag_string($ticket->id, 0, 0, NULL, 0, 1);
+										$st = new SupportModelTags($ticket->id);
+										$tags = $st->render('string');
 								?>
 										<table id="ticket-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['major']; ?>; background: <?php echo $bgcolor['major']; ?>; font-size: 0.9em; line-height: 1.6em;
 											background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));

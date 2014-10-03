@@ -757,8 +757,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$id = intval($id);
 
 			// Delete tags
-			$tags = new SupportTags($this->database);
-			$tags->remove_all_tags($id);
+			$tags = new SupportModelTags($id);
+			$tags->removeAll();
 
 			// Delete comments
 			$comment = new SupportComment($this->database);

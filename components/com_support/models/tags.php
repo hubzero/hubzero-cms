@@ -60,7 +60,7 @@ class SupportModelTags extends TagsModelCloud
 			$bits = array();
 			foreach ($this->tags('list', $filters, $clear) as $tag)
 			{
-				$bits[] = '<a' . ($tag->admin ?  ' class="admin"' : '') . ' href="'.JRoute::_('index.php?option=com_support&task=tickets&find=tag:' . $tag->tag) . '">' . stripslashes($tag->raw_tag) . '</a>';
+				$bits[] = '<a' . ($tag->get('admin') ?  ' class="admin"' : '') . ' href="' . JRoute::_('index.php?option=com_support&task=tickets&find=tag:' . $tag->get('tag')) . '">' . stripslashes($tag->get('raw_tag')) . '</a>';
 			}
 			return implode(', ', $bits);
 		}
@@ -70,11 +70,11 @@ class SupportModelTags extends TagsModelCloud
 	/**
 	 * Check tag existence for tickets
 	 *
-	 * @param      integer $id        Resource ID
-	 * @param      integer $tagger_id Tagger ID
-	 * @param      integer $strength  Tag strength
-	 * @param      integer $admin     Admin flag
-	 * @return     array
+	 * @param   integer  $id         Resource ID
+	 * @param   integer  $tagger_id  Tagger ID
+	 * @param   integer  $strength   Tag strength
+	 * @param   integer  $admin      Admin flag
+	 * @return  array
 	 */
 	public function checkTags($id, $tagger_id=0, $strength=0, $admin=0)
 	{
@@ -102,14 +102,14 @@ class SupportModelTags extends TagsModelCloud
 		$sql .= implode(" AND ", $where) . " GROUP BY rt.objectid";
 
 		$this->_db->setQuery($sql);
-		return $this->_db->loadObjectList();
+		return $this->_db->loadAssocList('objectid');
 	}
 
 	/**
 	 * Append a tag to the existing tag list
 	 *
-	 * @param      string $tag
-	 * @return     void
+	 * @param   mixed  $tag
+	 * @return  void
 	 */
 	public function append($tag)
 	{
@@ -123,9 +123,9 @@ class SupportModelTags extends TagsModelCloud
 			return;
 		}
 
-		if (!is_object($tag))
+		if (!($tag instanceof TagsModelTag))
 		{
-			$tg = new TagsTableTag($this->_db);
+			$tg = new TagsModelTag($tag);
 			$tg->set('raw_tag', $tag);
 
 			$tag = $tg;

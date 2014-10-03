@@ -31,7 +31,7 @@
  */
 
 JLoader::import('Hubzero.Api.Controller');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'ticket.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 /**
  * API controller class for support tickets
@@ -454,10 +454,8 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$tags = trim(JRequest::getVar('tags', '', 'post'));
 		if ($tags)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
-
-			$st = new SupportTags($this->database);
-			$st->tag_object($result->get('uidNumber'), $ticket->id, $tags, 0, true);
+			$st = new SupportModelTags($ticket->id);
+			$st->setTags($tags, $result->get('uidNumber'));
 		}
 
 		// Set the response
