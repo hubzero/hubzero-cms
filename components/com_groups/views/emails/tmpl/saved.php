@@ -287,8 +287,8 @@ $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
 																<tr>
 																	<td style="text-align:left; padding: 1em; line-height:18px;" align="left">
 																		<?php
-																			$gt = new GroupsTags( JFactory::getDBO() );
-																			$tags = $gt->get_tag_string($this->group->get('gidNumber'));
+																			$gt = new GroupsModelTags($this->group->get('gidNumber'));
+																			$tags = $gt->render('string');
 																		?>
 																		<?php if ($tags) : ?>
 																			<?php echo $tags; ?>

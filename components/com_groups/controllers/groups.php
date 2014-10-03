@@ -734,8 +734,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 			}
 
 			// Get the group's interests (tags)
-			$gt = new GroupsTags( $this->database );
-			$this->view->tags = $gt->get_tag_string( $this->view->group->get('gidNumber') );
+			$gt = new GroupsModelTags($this->view->group->get('gidNumber'));
+			$this->view->tags = $gt->render('string');
 
 			//set title
 			$this->view->title = JText::sprintf('COM_GROUPS_EDIT_TITLE', $this->view->group->get('description'));
@@ -954,8 +954,8 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$group->update();
 
 		// Process tags
-		$gt = new GroupsTags($this->database);
-		$gt->tag_object($this->juser->get('id'), $group->get('gidNumber'), $tags, 1, 1);
+		$gt = new GroupsModelTags($group->get('gidNumber'));
+		$gt->setTags($tags, $this->juser->get('id'));
 
 		// Rename the temporary upload directory if it exist
 		$log_comments = '';

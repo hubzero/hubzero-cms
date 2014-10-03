@@ -43,10 +43,10 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'group.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'group.php');
 
 // Include tables
-require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php';
 require_once JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'reason.php';
 
 // include models
+require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tags.php';
 require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'log' . DS . 'archive.php';
 require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'page' . DS . 'archive.php';
 require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'module' . DS . 'archive.php';

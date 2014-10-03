@@ -123,7 +123,6 @@ class Helper
 		}
 	}
 
-
 	/**
 	 * Gets groups matching tag string
 	 *
@@ -133,8 +132,6 @@ class Helper
 	{
 		//database object
 		$database = \JFactory::getDBO();
-
-		$gt = new \GroupsTags($database);
 
 		//turn users tag string into array
 		$mytags = ($usertags != '') ? array_map('trim', explode(',', $usertags)) : array();
@@ -151,7 +148,7 @@ class Helper
 
 		//query the databse for all published, type "HUB" groups
 		$sql = "SELECT g.gidNumber, g.cn, g.description, g.public_desc
-				FROM #__xgroups AS g
+				FROM `#__xgroups` AS g
 				WHERE g.type=1
 				AND g.published=1
 				AND g.discoverability=0";
@@ -164,7 +161,9 @@ class Helper
 		foreach ($groups as $k => $group)
 		{
 			//get the groups tags
-			$group->tags = $gt->get_tag_string($group->gidNumber);
+			$gt = new \GroupsModelTags($group->gidNumber);
+
+			$group->tags = $gt->render('string');
 			$group->tags = array_map('trim', explode(',', $group->tags));
 
 			//get common tags
@@ -183,7 +182,6 @@ class Helper
 
 		return $groups;
 	}
-
 
 	/**
 	 * List groups in common format
@@ -217,7 +215,7 @@ class Helper
 			//get the Hubzero Group Object
 			$hg = Group::getInstance($group->gidNumber);
 
-			$gt = new \GroupsTags($database);
+			$gt = new \GroupsModelTags();
 
 			//var to hold group description
 			$description = "";
@@ -320,7 +318,7 @@ class Helper
 							$html .= "<ol class=\"tags\">";
 								foreach ($group->matches as $t)
 								{
-									$html .= "<li><a href=\"/tags/".$gt->normalize_tag($t)."\">{$t}</a></li>";
+									$html .= '<li><a href="' . JRoute::_($gt->tag($t)->link()) . '">' . $t . '</a></li>';
 								}
 							$html .= "</ol>";
 						}

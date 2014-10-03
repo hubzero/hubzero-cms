@@ -120,8 +120,8 @@ $no_html = JRequest::getInt( 'no_html', 0 );
 
 					<?php
 						if ($this->tab == 'overview') :
-							$gt = new GroupsTags($database);
-							echo $gt->get_tag_cloud(0, 0, $this->group->get('gidNumber'));
+							$gt = new GroupsModelTags($this->group->get('gidNumber'));
+							echo $gt->render();
 						endif;
 					?>
 				</div><!-- /#page_header -->
