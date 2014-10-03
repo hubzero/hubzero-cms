@@ -426,6 +426,36 @@ class Ldap
 		}
 
 		$dn = "uid=" . $ldapinfo['uid'] . ",ou=users," . $hubLDAPBaseDN;
+
+		// See if we're changing uid...if so, we need to do a rename
+		if (array_key_exists('uid', $entry))
+		{
+			$result = ldap_rename($conn, $dn, 'uid='.$entry['uid'][0], 'ou=users,'.$hubLDAPBaseDN, true);
+
+			// Set aside new uid and unset from attributes needing to be changed
+			$newUid = $entry['uid'][0];
+			unset($entry['uid']);
+
+			// See if we have any items left
+			if (empty($entry))
+			{
+				if ($result !== true)
+				{
+					self::$errors['warning'][] = ldap_error($conn);
+					return false;
+				}
+				else
+				{
+					++self::$success['modified'];
+					return true;
+				}
+			}
+
+			// Build new dn
+			$dn = "uid=" . $newUid . ",ou=users," . $hubLDAPBaseDN;
+		}
+
+		// Now do the modify
 		$result = ldap_modify($conn, $dn, $entry);
 
 		if ($result !== true)
