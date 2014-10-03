@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,37 +23,31 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
- * Answers Tagging class
+ * Collections Tagging class
  */
-class CollectionsTags extends TagsHandler
+class CollectionsModelTags extends TagsModelCloud
 {
 	/**
-	 * Constructor
+	 * Object type, used for linking objects (such as resources) to tags
 	 *
-	 * @param      object $db     JDatabase
-	 * @param      array  $config Optional configurations
-	 * @return     void
+	 * @var  string
 	 */
-	public function __construct($db, $config=array())
-	{
-		$this->_db  = $db;
-		$this->_tbl = 'bulletinboard';
-	}
+	protected $_scope = 'bulletinboard';
 
 	/**
 	 * Get tags for a list of IDs
-	 *
+	 * 
 	 * @param      array   $ids       Bulletin ids
 	 * @param      integer $admin     Admin flag
 	 * @return     array
@@ -70,16 +64,13 @@ class CollectionsTags extends TagsHandler
 
 		$ids = array_map('intval', $ids);
 
-		$sql  = "SELECT t.tag, t.raw_tag, t.admin, rt.objectid
-				FROM " . $tt->getTableName() . " AS t
-				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='$this->_tbl'
+		$sql = "SELECT t.tag, t.raw_tag, t.admin, rt.objectid
+				FROM " . $tt->getTableName() . " AS t 
+				INNER JOIN " . $tj->getTableName() . " AS rt ON (rt.tagid = t.id) AND rt.tbl='" . $this->_scope . "' 
 				WHERE rt.objectid IN (" . implode(',', $ids) . ") ";
 
 		switch ($admin)
 		{
-			/*case 0:
-				$sql .= (isset($objectid) && $objectid) ? "AND (t.state=1 OR t.state=0) " : "WHERE (t.state=1 OR t.state=0) ";
-			break;*/
 			case 1:
 				$sql .= "";
 			break;
@@ -90,10 +81,9 @@ class CollectionsTags extends TagsHandler
 		}
 		$sql .= "ORDER BY raw_tag ASC";
 		$this->_db->setQuery($sql);
-		$items = $this->_db->loadObjectList();
 
 		$tags = array();
-		if ($items)
+		if ($items = $this->_db->loadObjectList())
 		{
 			foreach ($items as $item)
 			{
@@ -105,6 +95,44 @@ class CollectionsTags extends TagsHandler
 			}
 		}
 		return $tags;
+	}
+
+	/**
+	 * Append a tag to the internal cloud
+	 * 
+	 * @param   mixed   $tag
+	 * @return  object
+	 */
+	public function append($tag)
+	{
+		if (!($this->_cache['tags.list'] instanceof \Hubzero\Base\ItemList))
+		{
+			$this->_cache['tags.list'] = new \Hubzero\Base\ItemList(array());
+		}
+
+		if (!$tag)
+		{
+			return $this;
+		}
+
+		if (!($tag instanceof TagsModelTag))
+		{
+			if (is_array($tag))
+			{
+				foreach ($tag as $t)
+				{
+					$this->_cache['tags.list']->add(new TagsModelTag($t));
+				}
+				return $this;
+			}
+			else
+			{
+				$tag = new TagsModelTag($tag);
+			}
+		}
+		$this->_cache['tags.list']->add($tag);
+
+		return $this;
 	}
 }
 

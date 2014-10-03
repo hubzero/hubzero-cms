@@ -362,7 +362,7 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 				$assets = $ba->getRecords(array('item_id' => $ids));
 
 				// Get all the tags for this list of items
-				$bt = new CollectionsTags($this->_db);
+				$bt = new CollectionsModelTags();
 				$tags = $bt->getTagsForIds($ids);
 
 				// Loop through all the items and push assets and tags

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'tables' . DS . 'item.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'asset.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'tags.php');
 
 /**
  * Collections model for an item
@@ -169,19 +169,19 @@ class CollectionsModelItem extends CollectionsModelAbstract
 			case 'reposts':
 				if (!isset($this->_tbl->{'__' . $property}))
 				{
-					$this->set($property, $this->_tbl->getReposts());
+					$this->set($property, intval($this->_tbl->getReposts()));
 				}
 			break;
 			case 'voted':
 				if (!isset($this->_tbl->{'__' . $property}))
 				{
-					$this->set($property, $this->_tbl->getVote());
+					$this->set($property, intval($this->_tbl->getVote()));
 				}
 			break;
 			case 'comments':
 				if (!isset($this->_tbl->{'__' . $property}))
 				{
-					$this->set($property, $this->comments('count'));
+					$this->set($property, intval($this->comments('count')));
 				}
 			break;
 			default:
@@ -392,47 +392,47 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 * @param   string $as How to return data
 	 * @return  mixed Returns an array of tags by default
 	 */
-	public function tags($as='array')
+	public function tags($as='array', $admin=0)
 	{
-		if (!isset($this->_tags) || !is_array($this->_tags))
+		if (!$this->exists())
 		{
-			$ids = array(
-				$this->get('id')
-			);
+			switch (strtolower($as))
+			{
+				case 'array':
+					return array();
+				break;
 
-			$bt = new CollectionsTags($this->_db);
-			if (($tags = $bt->getTagsForIds($ids)))
-			{
-				$results = isset($tags[$this->get('id')]) ? $tags[$this->get('id')] : array();
+				case 'string':
+				case 'cloud':
+				case 'html':
+				default:
+					return '';
+				break;
 			}
-			else
-			{
-				$results = array();
-			}
-			$this->_tags = $results;
 		}
-		switch (strtolower(trim($as)))
+
+		if (!isset($this->_tags))
 		{
-			case 'string':
-				$tags = array();
-				foreach ($this->_tags as $tag)
-				{
-					$tags[] = $tag->raw_tag;
-				}
-				return implode(', ', $tags);
-			break;
-
-			case 'html':
-			case 'render':
-				$bt = new CollectionsTags($this->_db);
-				return $bt->buildCloud($this->_tags);
-			break;
-
-			case 'array':
-			default:
-				return $this->_tags;
-			break;
+			$this->_tags = new CollectionsModelTags($this->get('id'));
 		}
+
+		return $this->_tags->render($as, array('admin' => $admin));
+	}
+
+		/**
+	 * Tag the entry
+	 *
+	 * @return  boolean
+	 */
+	public function tag($tags=null, $user_id=0, $admin=0)
+	{
+		if (!isset($this->_tags))
+		{
+			$this->_tags = new CollectionsModelTags($this->get('id'));
+		}
+		$user_id = $user_id ?: JFactory::getUser()->get('id');
+
+		return $this->_tags->setTags($tags, $user_id, $admin);
 	}
 
 	/**
@@ -441,23 +441,16 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	 * @param   object $tag
 	 * @return  void
 	 */
-	public function addTag($tag=null)
+	public function addTag($tag=null, $user_id=0, $admin=0)
 	{
-		if (!isset($this->_tags) || !is_array($this->_tags))
+		if (!isset($this->_tags))
 		{
-			$this->_tags = array();
+			$this->_tags = new CollectionsModelTags($this->get('id'));
 		}
-		if (is_array($tag))
-		{
-			foreach ($tag as $t)
-			{
-				$this->_tags[] = $t;
-			}
-		}
-		else if ($tag !== null)
-		{
-			$this->_tags[] = $tag;
-		}
+		//$user_id = $user_id ?: JFactory::getUser()->get('id');
+
+		//return $this->_tags->add($tag, $user_id, $admin);
+		return $this->_tags->append($tag);
 	}
 
 	/**
@@ -641,10 +634,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 		}
 
 		// Process tags
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
-
-		$bt = new CollectionsTags($this->_db);
-		$bt->tag_object($this->get('created_by'), $this->get('id'), $this->get('_tags', ''), 1, 1);
+		$this->tag($this->get('_tags', ''), $this->get('created_by'));
 
 		return true;
 	}

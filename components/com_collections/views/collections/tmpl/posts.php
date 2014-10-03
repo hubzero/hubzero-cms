@@ -100,9 +100,9 @@ $this->css()
 								     ->set('row', $row)
 								     ->display();
 							?>
-							<?php if (count($item->tags()) > 0) { ?>
+							<?php if ($tags = $item->tags('cloud')) { ?>
 								<div class="tags-wrap">
-									<?php echo $item->tags('render'); ?>
+									<?php echo $tags; ?>
 								</div>
 							<?php } ?>
 							<div class="meta">
