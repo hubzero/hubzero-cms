@@ -342,8 +342,7 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$tagger = new CoursesTags($this->database);
-		$tagger->tag_object($this->juser->get('id'), $course->get('id'), $tags, 1);
+		$course->tag($tags, $this->juser->get('id'));
 
 		// Rename the temporary upload directory if it exist
 		if ($isNew)

@@ -257,7 +257,16 @@ $juser = JFactory::getUser();
 			<div class="container">
 				<h3><?php echo JText::_('COM_COURSES_POPULAR_CATEGORIES'); ?></h3>
 				<?php
-				$tags = $this->model->tags('cloud', 20, $this->filters['tag']);
+				$tags = $this->model->tags('cloud', array(
+					'limit'    => 20,
+					'start'    => 0,
+					'sort'     => 'total',
+					'sort_Dir' => '',
+					'scope'    => 'courses',
+					'scope_id' => 0,
+					'base'     => 'index.php?option=' . $this->option . '&task=browse',
+					'filters'  => $this->filters
+				));
 				if ($tags) {
 					echo $tags;
 				} else {

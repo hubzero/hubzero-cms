@@ -31,183 +31,109 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Helper class for handling course tags
  */
-class CoursesTags extends TagsHandler
+class CoursesModelTags extends TagsModelCloud
 {
 	/**
-	 * Constructor
+	 * Object type, used for linking objects (such as resources) to tags
 	 *
-	 * @param   object $db     JDatabase
-	 * @param   array  $config Array of optional configurations
-	 * @return  void
+	 * @var  string
 	 */
-	public function __construct($db, $config=array())
-	{
-		$this->_db  = $db;
-		$this->_tbl = 'courses';
-	}
+	protected $_scope = 'courses';
 
 	/**
-	 * Get a tag cloud for an object
+	 * Turn a string of tags to an array
 	 *
-	 * @param   integer $showsizes Show tag size based on use?
-	 * @param   integer $admin     Show admin tags?
-	 * @param   integer $objectid  Object ID
+	 * @param   string $tag Tag string
 	 * @return  mixed
 	 */
-	public function getTagCloud($limit, $tagstring='')
+	public function parseTags($tag, $remove='')
 	{
-		$t = new TagsTableTag($this->_db);
-		$tags = $t->getTopTags($limit, 'courses', 'tcount DESC', 0);
-
-		return $this->buildCloud($tags, 'alpha', 0, $tagstring);
-	}
-
-	/**
-	 * Get a tag cloud for an object
-	 *
-	 * @param   integer $showsizes Show tag size based on use?
-	 * @param   integer $admin     Show admin tags?
-	 * @param   integer $objectid  Object ID
-	 * @return  array
-	 */
-	public function getTags($limit)
-	{
-		$t = new TagsTableTag($this->_db);
-		return $t->getTopTags($limit, 'courses', 'tcount DESC', 0);
-	}
-
-	/**
-	 * Get a tag cloud for an object as a comma-separated string
-	 *
-	 * @param   integer $limit Number of records to return
-	 * @return  string
-	 */
-	public function getTagString($limit)
-	{
-		$t = new TagsTableTag($this->_db);
-		$tags = $t->getTopTags($limit, 'courses', 'tcount DESC', 0);
-
-		if ($tags && count($tags) > 0)
+		if (is_array($tag))
 		{
-			$tagarray = array();
-			foreach ($tags as $tag)
-			{
-				$tagarray[] = $tag->raw_tag;
-			}
-			$tags = implode(', ', $tagarray);
+			$bunch = $tag;
 		}
 		else
 		{
-			$tags = (is_array($tags)) ? implode('', $tags) : '';
+			$bunch = $this->_parse($tag);
 		}
+
+		$tags = array();
+		if ($remove)
+		{
+			foreach ($bunch as $t)
+			{
+				if ($remove == $t)
+				{
+					continue;
+				}
+				$tags[] = $t;
+			}
+		}
+		else
+		{
+			return $bunch;
+		}
+
 		return $tags;
 	}
 
 	/**
-	 * Build a tag cloud
+	 * Render a tag cloud
 	 *
-	 * @param   array   $tags      List of tags
-	 * @param   string  $sort      How to sort tags?
-	 * @param   integer $showsizes Show tag size based on use?
-	 * @param   string  $tagstring String to append to URL
-	 * @return  string HTML
+	 * @param   string  $rtrn    Format to render
+	 * @param   array   $filters Filters to apply
+	 * @param   boolean $clear   Clear cached data?
+	 * @return  string
 	 */
-	public function buildCloud($tags, $sort='alpha', $showsizes=0, $tagstring='')
+	public function render($rtrn='html', $filters=array(), $clear=false)
 	{
-		$html = '';
-
-		if ($tags && count($tags) > 0)
+		switch (strtolower($rtrn))
 		{
-			$lst = array();
-			if (is_string($tagstring))
-			{
-				$lst = $this->_parse_tags($tagstring);
-			}
-			else
-			{
-				$lst = $tagstring;
-			}
-
-			$min_font_size = 1;
-			$max_font_size = 1.8;
-
-			if ($showsizes)
-			{
-				$retarr = array();
-				foreach ($tags as $tag)
+			case 'string':
+				if (!isset($this->_cache['tags_string']) || $clear)
 				{
-					$retarr[$tag->raw_tag] = $tag->count;
-				}
-				ksort($retarr);
-
-				$max_qty = max(array_values($retarr));  // Get the max qty of tagged objects in the set
-				$min_qty = min(array_values($retarr));  // Get the min qty of tagged objects in the set
-
-				// For ever additional tagged object from min to max, we add $step to the font size.
-				$spread = $max_qty - $min_qty;
-				if (0 == $spread)
-				{
-					// Divide by zero
-					$spread = 1;
-				}
-				$step = ($max_font_size - $min_font_size)/($spread);
-			}
-
-			// build HTML
-			$html .= '<ol class="tags">' . "\n";
-			$tll = array();
-			foreach ($tags as $tag)
-			{
-				$class = '';
-				switch ($tag->admin)
-				{
-					/*case 0:
-						$class = ' class="restricted"';
-					break;*/
-					case 1:
-						$class = ' class="admin"';
-					break;
-				}
-
-				if ($tagstring)
-				{
-					if (!in_array($tag->tag, $lst))
+					$tags = array();
+					foreach ($this->tags('list', $filters, $clear) as $tag)
 					{
-						$lst[] = $tag->tag;
+						$tags[] = $tag->get('raw_tag');
 					}
+					$this->_cache['tags_string'] = implode(', ', $tags);
 				}
-				else
-				{
-					$lst = array($tag->tag);
-				}
+				return $this->_cache['tags_string'];
+			break;
 
-				$tag->raw_tag = stripslashes($tag->raw_tag);
-				$tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
-				$tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
-				if ($showsizes == 1)
+			case 'array':
+				return $this->tags('list', $filters, $clear);
+			break;
+
+			case 'cloud':
+			case 'html':
+			default:
+				if (!isset($this->_cache['tags_cloud']) || $clear)
 				{
-					$size = $min_font_size + ($tag->count - $min_qty) * $step;
-					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_courses&task=browse&tag=' . implode(',', $lst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+					$view = new \Hubzero\Component\View(array(
+						'base_path' => JPATH_ROOT . '/components/com_courses',
+						'name'      => 'courses',
+						'layout'    => '_tags'
+					));
+					if (isset($filters['filters']))
+					{
+						$view->base    = $filters['base'];
+						$view->filters = $filters['filters'];
+					}
+					$view->config = $this->_config;
+					$view->tags   = $this->tags('list', $filters, $clear);
+
+					$this->_cache['tags_cloud'] = $view->loadTemplate();
 				}
-				else
-				{
-					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_courses&task=browse&tag=' . implode(',', $lst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
-				}
-			}
-			if ($sort == 'alpha')
-			{
-				ksort($tll);
-				$html .= implode('', $tll);
-			}
-			$html .= '</ol>' . "\n";
+				return $this->_cache['tags_cloud'];
+			break;
 		}
-
-		return $html;
 	}
 }
 

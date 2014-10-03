@@ -207,29 +207,11 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	 * @param      array $filters Filters to build query from
 	 * @return     mixed
 	 */
-	public function tags($what='cloud', $limit=null, $tagstring='')
+	public function tags($what='cloud', $filters=array(), $clear=false)
 	{
-		$ct = new CoursesTags($this->_db);
+		$ct = new CoursesModelTags();
 
-		$tags = null;
-
-		$what = strtolower(trim($what));
-		switch ($what)
-		{
-			case 'array':
-				$tags = $ct->getTags($limit);
-			break;
-
-			case 'string':
-				$tags = $ct->getTagString($limit);
-			break;
-
-			case 'cloud':
-				$tags = $ct->getTagCloud($limit, $tagstring);
-			break;
-		}
-
-		return $tags;
+		return $ct->render($what, $filters, $clear);
 	}
 
 	/**
@@ -240,34 +222,8 @@ class CoursesModelCourses extends \Hubzero\Base\Object
 	 */
 	public function parseTags($tag, $remove='')
 	{
-		if (is_array($tag))
-		{
-			$bunch = $tag;
-		}
-		else
-		{
-			$ct = new CoursesTags($this->_db);
-			$bunch = $ct->_parse_tags($tag);
-		}
-
-		$tags = array();
-		if ($remove)
-		{
-			foreach ($bunch as $t)
-			{
-				if ($remove == $t)
-				{
-					continue;
-				}
-				$tags[] = $t;
-			}
-		}
-		else
-		{
-			return $bunch;
-		}
-
-		return $tags;
+		$ct = new CoursesModelTags();
+		return $ct->parseTags($tag, $remove);
 	}
 }
 

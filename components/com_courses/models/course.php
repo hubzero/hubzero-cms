@@ -738,29 +738,40 @@ class CoursesModelCourse extends CoursesModelAbstract
 	 *
 	 * @return     boolean
 	 */
-	public function tags($what='cloud')
+	public function tags($as='cloud', $admin=0)
 	{
-		$ct = new CoursesTags($this->_db);
-
-		$tags = null;
-
-		$what = strtolower(trim($what));
-		switch ($what)
+		if (!$this->exists())
 		{
-			case 'array':
-				$tags = $ct->get_tags_on_object($this->get('id'), 0, 0, null, 0, (JFactory::getApplication()->isAdmin() ? 1 : 0));
-			break;
+			switch (strtolower($as))
+			{
+				case 'array':
+					return array();
+				break;
 
-			case 'string':
-				$tags = $ct->get_tag_string($this->get('id'), 0, 0, null, 0, (JFactory::getApplication()->isAdmin() ? 1 : 0));
-			break;
-
-			case 'cloud':
-				$tags = $ct->get_tag_cloud(0, (JFactory::getApplication()->isAdmin() ? 1 : 0), $this->get('id'));
-			break;
+				case 'string':
+				case 'cloud':
+				case 'html':
+				default:
+					return '';
+				break;
+			}
 		}
 
-		return $tags;
+		$cloud = new CoursesModelTags($this->get('id'));
+
+		return $cloud->render($as, array('admin' => $admin));
+	}
+
+	/**
+	 * Tag the entry
+	 *
+	 * @return  boolean
+	 */
+	public function tag($tags=null, $user_id=0, $admin=0)
+	{
+		$cloud = new CoursesModelTags($this->get('id'));
+
+		return $cloud->setTags($tags, $user_id, $admin);
 	}
 
 	/**
@@ -985,8 +996,8 @@ class CoursesModelCourse extends CoursesModelAbstract
 			}
 
 			// Copy tags
-			$tagger = new CoursesTags($this->_db);
-			$tagger->tag_object(JFactory::getUser()->get('id'), $this->get('id'), $tagger->get_tag_string($c_id), 1);
+			$tagger = new CoursesModelTags($c_id);
+			$this->tag($tagger->render('string', array('admin' => 1)), JFactory::getUser()->get('id'), 1);
 		}
 
 		return true;

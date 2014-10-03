@@ -214,8 +214,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		}
 
 		$tags = JRequest::getVar('tags', '', 'post');
-		$tagger = new CoursesTags($this->database);
-		$tagger->tag_object($this->juser->get('id'), $row->get('id'), $tags, 1);
+		$row->tag($tags, $this->juser->get('id'));
 
 		if ($redirect)
 		{
