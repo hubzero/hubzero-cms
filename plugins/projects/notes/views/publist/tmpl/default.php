@@ -36,15 +36,7 @@ else
 	return false;
 }
 
-/*
-$plugin = JPluginHelper::getPlugin( 'projects', 'notes' );
-$params = new JParameter( $plugin->params );
-
-if (!$params->get('enable_publinks'))
-{
-	return false;
-}
-*/
+include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'models' . DS . 'book.php');
 
 $database 	= JFactory::getDBO();
 $objSt 		= new ProjectPubStamp( $database );
