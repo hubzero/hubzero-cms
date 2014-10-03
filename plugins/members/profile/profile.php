@@ -101,7 +101,7 @@ class plgMembersProfile extends \Hubzero\Plugin\Plugin
 
 			//get task
 			$this->task = JRequest::getVar('action', 'view');
-			switch( $this->task )
+			switch ($this->task)
 			{
 				case 'addaddress':    $arr['html'] = $this->addAddress();    break;
 				case 'editaddress':   $arr['html'] = $this->editAddress();   break;
