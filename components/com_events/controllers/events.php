@@ -822,8 +822,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$categories = $this->_getCategories();
 
 		// Get tags on this event
-		$rt = new EventsTags($this->database);
-		$tags = $rt->get_tag_cloud(0, 0, $row->id);
+		$rt = new EventsModelTags($row->id);
+		$tags = $rt->render();
 
 		// Set the page title
 		$document = JFactory::getDocument();
@@ -1599,8 +1599,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$times['registerby_pm'] = $registerby_pm;
 
 		// Get tags on this event
-		$rt = new EventsTags($this->database);
-		$lists['tags'] = $rt->get_tag_string($row->id, 0, 0, NULL, 0, 1);
+		$rt = new EventsModelTags($row->id);
+		$lists['tags'] = $rt->render('string');
 
 		// get tags passed from failed save
 		if (isset($this->tags))
@@ -1708,8 +1708,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$er->deleteRespondents($id);
 
 		// Delete tags on this event
-		$rt = new EventsTags($this->database);
-		$rt->remove_all_tags($id);
+		$rt = new EventsModelTags($id);
+		$rt->removeAll();
 
 		// Load the event's category and update the count
 		$category = new EventsCategory($this->database);
@@ -1975,8 +1975,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$row->checkin();
 
 		// Save the tags
-		$rt = new EventsTags($this->database);
-		$rt->tag_object($this->juser->get('id'), $row->id, $tags, 1, 0);
+		$rt = new EventsModelTags($row->id);
+		$rt->setTags($tags, $this->juser->get('id'));
 
 		$jconfig = JFactory::getConfig();
 

@@ -312,8 +312,8 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$this->view->times['end_pm'] = $end_pm;
 
 		// Get tags on this event
-		$rt = new EventsTags($this->database);
-		$this->view->tags = $rt->get_tag_string($this->view->row->id, 0, 0, NULL, 0, 1);
+		$rt = new EventsModelTags($this->view->row->id);
+		$this->view->tags = $rt->render('string');
 
 		// Set any errors
 		if ($this->getError())
@@ -554,8 +554,8 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		$tags = JRequest::getVar('tags', '', 'post');
 
 		// Save the tags
-		$rt = new EventsTags($this->database);
-		$rt->tag_object($juser->get('id'), $row->id, $tags, 1, 0);
+		$rt = new EventsModelTags($row->id);
+		$rt->setTags($tags, $juser->get('id'));
 
 		// Redirect
 		$this->setRedirect(
@@ -773,9 +773,6 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		// Instantiate an event object
 		$event = new EventsEvent($this->database);
 
-		// Instantiate an event tags object
-		$rt = new EventsTags($this->database);
-
 		// Instantiate a page object
 		$ep = new EventsPage($this->database);
 
@@ -785,8 +782,10 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 		// Loop through the IDs and unpublish the event
 		foreach ($ids as $id)
 		{
+			// Instantiate an event tags object
+			$rt = new EventsModelTags($id);
 			// Delete tags on this event
-			$rt->remove_all_tags($id);
+			$rt->removeAll();
 
 			// Delete the event
 			$event->delete($id);

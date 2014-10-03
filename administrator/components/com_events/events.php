@@ -38,7 +38,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tags.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'date.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'category.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'tables' . DS . 'event.php');
