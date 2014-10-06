@@ -928,8 +928,8 @@ class ProjectsHtml
 					<?php } ?>
 				</li>
 			<?php  } ?>
-			<li class="sideli <?php if ($view->active == 'info') { echo ' active'; } ?>" id="tab-<?php echo $tab['name']; ?>"><a href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . 'alias=' . $view->project->alias . '&active=info'); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_ABOUT')); ?>">
-				<span class="label"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></span></li>
+			<li class="sideli <?php if ($view->active == 'info') { echo ' active'; } ?>" id="tab-info"><a href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . 'alias=' . $view->project->alias . '&active=info'); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_ABOUT')); ?>">
+				<span class="label"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></span></a></li>
 			</ul>
 		<?php } else {  ?>
 			<?php if (isset($view->guest) && $view->guest) { ?>
