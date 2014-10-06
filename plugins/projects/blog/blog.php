@@ -150,7 +150,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			{
 				case 'page':
 				default:
-					$arr['html'] = $this->page();
+					$arr['html'] = $this->view();
 					break;
 				case 'delete':
 					$arr['html'] = $this->_delete();
@@ -177,6 +177,125 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		return $arr;
 	}
 
+	/**
+	 * Event call to get side content
+	 *
+	 * @return  
+	 */
+	public function onProjectExtras( $project, $uid = 0, $area, $option, $side = 'righthand')
+	{
+		// Check if our area is the one we want to return results for
+		if ($area != 'feed')
+		{
+			return;
+		}
+		
+		$html = '';
+		$database = JFactory::getDBO();
+		
+		// Get user ID
+		if (!$uid)
+		{
+			$juser 	= JFactory::getUser();
+			$uid 	= $juser->get('id');
+		}
+		
+		// Load component configs
+		$this->_config = JComponentHelper::getParams('com_projects');
+		$limit = $this->_config->get('sidebox_limit', 3);
+		
+		// Get project params
+		$params = new JParameter( $project->params );
+		
+		// Show welcome screen?
+		$owner_params = new JParameter( $project->owner_params );
+		$show_welcome = ((!$project->lastvisit or $project->num_visits < 3)
+						&& ($owner_params->get('hide_welcome', 0) == 0))  ? 1 : 0;
+		
+		if (!$show_welcome)
+		{
+			// Get suggestions
+			$suggestions = ProjectsHelper::getSuggestions(
+				$project,
+				$option,
+				$uid,
+				$this->_config,
+				$params
+			);
+
+			// Show side module with suggestions
+			if (count($suggestions) > 1 && $project->num_visits < 20)
+			{
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'  => 'projects',
+						'element' => 'blog',
+						'name'    => 'modules',
+						'layout'  => 'suggestions'
+					)
+				);
+				$view->option 		= $option;
+				$view->suggestions 	= $suggestions;
+				$view->project 		= $project;
+				$html 		   .= $view->loadTemplate();
+			}
+		}
+		
+		// Get todo's
+		$objTD = new ProjectTodo( $database );
+		$todos = $objTD->getTodos ($project->id, $filters = array(
+			'sortby' => 'due DESC, p.duedate ASC', 'limit' => $limit
+		  )
+		);
+
+		// To-do side module
+		if ($todos)
+		{
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  => 'projects',
+					'element' => 'blog',
+					'name'    => 'modules',
+					'layout'  => 'todo'
+				)
+			);
+			$view->option 	= $option;
+			$view->items 	= $todos;
+			$view->project 	= $project;
+			$html 	   		.= $view->loadTemplate();
+		}
+		
+		// Get Publications
+		$objP = new Publication( $database );
+		$pubs = $objP->getRecords($filters = array(
+			'sortby' => 'random', 'limit' => $limit, 'project' => $project->id,
+			'ignore_access' => 1, 'dev' => 1
+		));
+
+		if ($pubs && count($pubs) > 0)
+		{
+			// Get language file
+			$lang = JFactory::getLanguage();
+			$lang->load('plg_projects_publications');
+			
+			// Publications side module
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  => 'projects',
+					'element' => 'blog',
+					'name'    => 'modules',
+					'layout'  => 'publications'
+				)
+			);
+			$view->option 	= $option;
+			$view->items 	= $pubs;
+			$view->project 	= $project;
+			$html 	   		.= $view->loadTemplate();
+		}
+				
+		return $html;
+	}
+
 	//----------------------------------------
 	// Views
 	//----------------------------------------
@@ -186,7 +305,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function page()
+	public function view()
 	{
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
