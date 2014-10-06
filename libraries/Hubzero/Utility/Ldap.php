@@ -232,7 +232,7 @@ class Ldap
 			return false;
 		}
 
-		$query = "SELECT p.uidNumber AS uidNumber, u.username AS uid, p.name AS cn, " .
+		$query = "SELECT p.uidNumber AS uidNumber, p.username AS uid, p.name AS cn, " .
 				" p.gidNumber, p.homeDirectory, p.loginShell, " .
 				" pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, " .
 				" pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag " .
