@@ -1590,7 +1590,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					if (isset($content[0]['msg']) && !empty($content[0]['msg']))
 					{
 						$this->setNotification($content[0]['msg']['message'],
-						 	$content[0]['msg']['type']);
+							$content[0]['msg']['type']);
 					}
 					if ($content[0]['html'])
 					{
