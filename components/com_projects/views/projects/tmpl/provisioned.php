@@ -30,6 +30,7 @@ $url = JRoute::_($route . '&pid=' . $this->pub->id);
 
 $this->css()
 	->js()
+	->css('provisioned')
 	->js('setup');
 
 ?>

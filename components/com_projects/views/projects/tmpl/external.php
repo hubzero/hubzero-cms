@@ -26,7 +26,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-     ->js();
+     ->js()
+	 ->css('external');
 
 $html  = '';
 

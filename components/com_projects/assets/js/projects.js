@@ -85,69 +85,32 @@ HUB.Projects = {
 	addConfirms: function()
 	{
 		var $ = this.jQuery;
-		// Confirm delete
-		$('#suspend').on('click', function(e) 
-		{
-			e.preventDefault();			
-			HUB.Projects.addConfirm($('#suspend'), 
-			'Are you sure you want to suspend this project?', 
-			'Yes, suspend', 'No, do not suspend');
-		});
-		
-		// Confirm delete
-		$('#delproject').on('click', function(e) 
-		{
-			e.preventDefault();			
-			HUB.Projects.addConfirm($('#delproject'), 
-			'Are you sure you want to delete this project? <br />This is a permanent action and cannot be undone.', 
-			'Yes, delete', 'No, do not delete');
-		});
 
-		// Confirm revert
-		$('#confirm-revert').on('click', function(e) 
+		// Confirm project delete delete
+		if ($('#delproject').length)
+		{
+			$('#delproject').on('click', function(e) 
 			{
 				e.preventDefault();			
-				HUB.Projects.addConfirm($('#confirm-revert'), 
-				'Are you sure you want to revert this project to draft mode?', 
-				'Yes, revert', 'No, keep as pending');
-		});		
-	},
-	
-	// Refresh counts of project activities and resources
-	refreshCount: function(what) 
-	{	
-		var $ = this.jQuery;
-		if ($('#projectid')) {
-			var url = 'index.php?option=com_projects&task=showcount&no_html=1&pid=' + $('#projectid').val();
-			
-			if (what=='publications' && $('#c-publications') && $('#c-publications-num')) {
-				$.get(url + '&what=publication', {}, function(data) {
-					$('#c-publications-num').html(data);
-				});
-			}
-			if (what=='files' && $('#c-files') && $('#c-files-num')) {
-				$.get(url + '&what=files', {}, function(data) {
-					$('#c-files-num').html(data);
-				});
-			}
-			if (what=='team' && $('#c-team') && $('#c-team-num')) {
-				$.get(url + '&what=team', {}, function(data) {
-					$('#c-team-num').html(data);
-				});
-			}
-			if (what=='todo' && $('#c-todo') && $('#c-todo-num')) {
-				$.get(url + '&what=todo', {}, function(data) {
-					$('#c-todo-num').html(data);
-				});
-			}
-			if (what=='newactivity' && $('#c-new') && $('#c-new-num')) {
-				$.get(url + '&what=newactivity', {}, function(data) {
-					$('#c-new-num').html(data);
-				});
-			}
+				HUB.Projects.addConfirm($('#delproject'), 
+				'Are you sure you want to delete this project? <br />This is a permanent action and cannot be undone.', 
+				'Yes, delete', 'No, do not delete');
+			});
 		}
+
+		// Confirm revert
+		if ($('#confirm-revert').length)
+		{
+			$('#confirm-revert').on('click', function(e) 
+				{
+					e.preventDefault();			
+					HUB.Projects.addConfirm($('#confirm-revert'), 
+					'Are you sure you want to revert this publication to draft mode?', 
+					'Yes, revert', 'No, keep as pending');
+			});
+		}	
 	},
-	
+
 	// Launch SqueezeBox with Ajax actions	
 	launchBox: function() 
 	{

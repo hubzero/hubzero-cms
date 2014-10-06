@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Project Blog Side Module Files Layout">
+	<layout title="Standard Project Info Layout">
 		<message>
-			<![CDATA[STANDARD PROJECT BLOG SIDE MODULE FILES LAYOUT DESC]]>
+			<![CDATA[STANDARD PROJECT INFO LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Project Blog Side Module Files Layout</name>
-		<description>STANDARD PROJECT BLOG SIDE MODULE FILES LAYOUT DESC</description>
+		<name>Standard Project Info Layout</name>
+		<description>STANDARD PROJECT INFO LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

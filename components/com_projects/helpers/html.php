@@ -824,14 +824,22 @@ class ProjectsHtml
 
 		$assets = array('files', 'databases', 'tools');
 		$assetTabs = array();
-		if ($publicView)
+		if ($publicView || !isset($view->tabs))
 		{
 			$view->tabs = array();
+		}
+		if ($view->active == 'edit')
+		{
+			$view->tabs[] = array('name' => 'edit', 'title' => 'Edit');
 		}
 
 		// Sort tabs so that asset tabs are together
 		foreach ($view->tabs as $tab)
 		{
+			if (!isset($tab['name']))
+			{
+				continue;
+			}
 			if (in_array($tab['name'], $assets))
 			{
 				$assetTabs[] = $tab;
@@ -879,10 +887,14 @@ class ProjectsHtml
 			</div>
 		</div>
 		<div class="menu-wrapper">
-		<?php if ($publicView == false) { ?>
+		<?php if ($publicView == false && isset($view->tabs) && $view->tabs) { ?>
 			<ul>
 			<?php foreach ($view->tabs as $tab)
 			{
+				if (!isset($tab['name']))
+				{
+					continue;
+				}
 				if (in_array($tab['name'], $assets))
 				{
 					continue;
@@ -916,9 +928,11 @@ class ProjectsHtml
 					<?php } ?>
 				</li>
 			<?php  } ?>
+			<li class="sideli <?php if ($view->active == 'info') { echo ' active'; } ?>" id="tab-<?php echo $tab['name']; ?>"><a href="<?php echo JRoute::_('index.php?option=' . $view->option . '&' . 'alias=' . $view->project->alias . '&active=info'); ?>/" title="<?php echo ucfirst(JText::_('COM_PROJECTS_ABOUT')); ?>">
+				<span class="label"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?></span></li>
 			</ul>
 		<?php } else {  ?>
-			<?php if ($view->guest) { ?>
+			<?php if (isset($view->guest) && $view->guest) { ?>
 			<p><?php echo JText::_('COM_PROJECTS_ARE_YOU_MEMBER'); ?> <a href="<?php echo JRoute::_('index.php?option=' . $view->option . '&alias=' . $view->project->alias . '&task=view') . '?action=login'; ?>"><?php echo ucfirst(JText::_('COM_PROJECTS_LOGIN')).'</a> '.JText::_('COM_PROJECTS_LOGIN_TO_PRIVATE_AREA'); ?></p>
 			<?php } ?>
 		<?php } ?>

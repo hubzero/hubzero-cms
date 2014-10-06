@@ -26,7 +26,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-	->js();
+	->js()
+	->css('reviewers')
+	->css('jquery.fancybox.css', 'system');
 
 $html  = '';
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;

@@ -156,3 +156,56 @@
 	background: red;
 	color: white;
 }
+/* Right-hand side blocks
+--------------------------------------------- */
+.sidebox {
+	background: #fbfbfb;
+	border-right: 1px solid #cccccc;
+	border-left: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
+	border-bottom-left-radius: 10px;
+	-moz-border-radius-bottomleft: 10px;
+	border-bottom-right-radius: 10px;
+	-moz-border-radius-bottomright: 10px;
+	margin-bottom: 3em;
+	margin-top: 0;
+	padding-bottom: 1em;
+}
+.sidebox h4 {
+	padding: 0.2em 0.5em 1em 0.5em;
+	color: #333;
+	background-color: #ededed;
+	border-top: 1px solid #cccccc;
+	background-position: 3px 3px;
+}
+.sidebox ul {
+	list-style: none;
+	padding: 0 1em 0 1em;
+	margin: 0;
+	font-size: 85%;
+}
+.sidebox ul li {
+	border-bottom: 1px solid #e2e2e2;
+	padding: 0.3em 0;
+}
+.sidebox ul li:last-child {
+	border: none;
+}
+.sidebox .restype {
+	font-size: 100%;
+}
+.sidebox .published, .sidebox .draft {
+	padding: 0;
+	background: none;
+}
+.sidebox ul.tdlists {
+	padding: 0 0.5em;
+}
+.sidebox ul.tdlists li.newcolor {
+	padding-right: 0;
+}
+.sidebox .noitems p {
+	margin: 0;
+	padding: 0.5em 1em;
+	font-size: 85%;
+}

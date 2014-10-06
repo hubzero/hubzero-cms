@@ -454,6 +454,73 @@ class ProjectsHelper extends JObject {
 	}
 
 	/**
+	 * Get tabs
+	 *
+	 * @return    array
+	 */
+	public static function getTabs( &$plugins )
+	{
+		// Make sure we have name and title
+		$tabs = array();
+		for ($i = 0, $n = count($plugins); $i <= $n; $i++)
+		{
+			if (empty($plugins[$i]) || !isset($plugins[$i]['name']))
+			{
+				unset($plugins[$i]);
+			}
+			else
+			{
+				$tabs[] = $plugins[$i]['name'];
+			}
+		}
+
+		return $tabs;
+	}
+
+	/**
+	 * Get group members
+	 *
+	 * @param  string $groupname
+	 * @return void
+	 */
+	public static function getGroupMembers($groupname)
+	{
+		$team = array();
+		if ($groupname)
+		{
+			$group = \Hubzero\User\Group::getInstance($groupname);
+			if ($group && $group->get('gidNumber'))
+			{
+				$members 	= $group->get('members');
+				$managers 	= $group->get('managers');
+				$team 		= array_merge($members, $managers);
+				$team 		= array_unique($team);
+			}
+		}
+
+		return $team;
+	}
+
+	/**
+	 * Suggest alias name from title
+	 *
+	 * @param  string $title
+	 * @return     void
+	 */
+	public static function suggestAlias ($title = '')
+	{
+		if ($title)
+		{
+			$name = preg_replace('/ /', '', $title);
+			$name = strtolower($name);
+			$name = preg_replace('/[^a-z0-9]/', '', $name);
+			$name = substr($name, 0, 30);
+			return $name;
+		}
+		return false;
+	}
+
+	/**
 	 * Send hub message
 	 *
 	 * @param      string 	$option

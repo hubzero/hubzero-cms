@@ -1,0 +1,170 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+ Reviewers controls CSS
+--------------------------------------------- */
+
+/* Reviewers
+--------------------------------------------- */
+	.admin-note {
+		max-width: 95%;
+	}
+	table .admin-note {
+		max-width: 200px;
+	}
+	#newadmincomment {
+		margin-top: 0.5em;
+		padding: 0.5em;
+	}
+	#newadmincomment textarea {
+		width: 100%;
+		height: 50px;
+	}
+	#newadmincomment h4 {
+		margin: 0;
+	}
+	#newadmincomment label {
+		display: block;
+		margin: 0 0 0.5em 0;
+		padding: 0 !important;
+	}
+	#newadmincomment input.btn {
+		display: block;
+		margin-top: 1em;
+	}
+	#newadmincomment input#comment {
+		width: 100%;
+		display: block;
+		height: 30px;
+	}
+	#newadmincomment textarea {
+		width: 95%;
+	}
+	#abox-content .info_blurb .pthumb {
+		float: left;
+		position: relative;
+		width: 40px;
+		height: 40px;
+	}
+	#abox-content .info_blurb .pthumb img {
+		width: 30px;
+		height: 30px;
+	}
+	#abox-content .info_blurb {
+		padding: 0.5em;
+		margin: 0;
+	}
+	#abox-content .info_blurb p {
+		margin: 0;
+		padding: 0;
+	}
+	#abox-content .pinfo {
+		margin: 0;
+		padding: 0;
+	}
+	#admincommentbox {
+		margin-top: 2em;
+		border-top: 1px dotted #000000;
+	}
+	#admincommentbox p {
+		background-color: #f4f4f4;
+		margin-right: 0;
+	}
+	#abox-content.reviewer .submitarea {
+		border: none;
+		margin: 0;
+	}
+	#spsinfo {
+		display: block;
+		margin-top: 1.5em;
+	}
+	form#hubForm-ajax #spsinfo input {
+		display: block;
+		width: 100% !important;
+	}
+	form#hubForm-ajax #spsinfo input#rejected {
+		display: inline;
+		width: auto !important;
+	}
+	form#hubForm-ajax #spsinfo label {
+		display: block;
+		margin: 0.5em 0;
+		padding: 0;
+		width: 95% !important;
+	}
+	form#hubForm-ajax #spsinfo table {
+		border: none;
+	}
+	form#hubForm-ajax label#sdata-approve {
+		display: block;
+	}
+	form#hubForm-ajax #spsinfo div label, form#hubForm-ajax #spsinfo div input {
+		display: inline;
+	}
+	form#hubForm-ajax #spsinfo label.spsapproval {
+		color: red;
+	}
+	form#hubForm-ajax #spsinfo label.spsapproval input {
+		border: 2px solid red;
+		padding: 0.2em;
+	}
+	form#hubForm-ajax #spsinfo label.spsapproved {
+		color: #549d5c;
+	}
+	form#hubForm-ajax #spsinfo label.spsapproved input {
+		border: 2px solid #549d5c;
+		padding: 0.2em;
+		color: green;
+	}
+	form#hubForm-ajax #spsinfo .or {
+		margin-top: 2em;
+		display: block;
+		color: #666;
+	}
+	.skipentry {
+		float: right;
+		margin-left: 6em;
+	}
+	.skipentry a {
+		border: none;
+		padding: 0.2em 0.8em;
+	}
+	td.actions {
+		min-width: 80px;
+	}
+	#spsinfo td {
+		width: 50%;
+	}	
+	#reviewer-list {
+		margin-bottom: 3em;
+	}
+	#reviewer-list table.listing {
+		border: 4px solid #f9f9f9;
+		border-top: none;
+	}
+	#reviewer-list table.listing th {
+		border-bottom: 4px solid #f9f9f9;
+		background: #fafafa;
+	}
+	#reviewer-list table.listing td {
+		border-bottom: 1px solid #f9f9f9;
+		padding-bottom: 1em;
+		padding-top: 1em;
+	}
+	#reviewer-list table.listing tr:nth-child(2n-2) td {
+		background: #fafafa;
+	}
+	#reviewer-list table.listing tr.mline:hover:nth-child(2n-2) td {
+		background: #f4fcff;
+	}
+	#browseForm {
+		margin-top: 1em;
+	}

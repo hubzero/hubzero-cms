@@ -1,0 +1,118 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+ Provisioned projects CSS
+--------------------------------------------- */
+/* Activate provisioned project
+--------------------------------------------- */
+	#activate-intro {
+		background: #fdfdfb;
+	} 
+	#activate-intro .grid {
+		min-height: 300px;
+		-moz-border-radius: 20px 20px 0 0;
+		border-radius: 20px 20px 0 0;
+		border: 2px solid #e7dac4;
+		border-bottom: none;
+	}
+	#activate-intro .col {
+		padding-bottom: 300em;
+	    margin-bottom: -300em;
+		-moz-border-radius: 20px 20px 0 0;
+		border-radius: 20px 20px 0 0;
+	}
+	#activate-intro .first h3 {
+		margin-left: 2em;
+	}
+	#activate-intro {
+		border-bottom: 1px solid #e7dac4;
+		overflow: hidden;
+		width: 100%;
+		margin-top: 3em;
+	}
+	#activate-intro .first {
+		background: #fbf8ea;
+	}
+	#activate-form label {
+		margin: 1em 0;
+		display: block;
+	}
+	#activate-intro #activate-body {
+		padding: 0 2em;
+	}
+	#activate-intro ul {
+		list-style: none;
+		margin-top: -1em;
+	}
+	#activate-intro ul li {
+		margin: 3.5em 0;
+	}
+	#activate-intro ul li#andmore {
+		margin-top: 5em;
+	}
+	#activate-intro ul li span.desc {
+		padding-right: 5em;
+	}
+	#activate-intro ul li span.ima {
+		border: 3px solid #ede1cf;
+		padding: 1.5em;
+		width: 20px;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		float: left;
+		margin-right: 1em;
+		background: #FFFFFF;
+	}
+	#activate-intro ul li span.ima:before {
+		width: 32px;
+		height: 32px;
+		font-size: 32px;
+		font-family: 'Fontcons';
+		content: "";
+	}
+	#activate-intro #feature-files span.ima:before {
+		content: "\f016"; 
+		color: #6897a4;
+	}
+	#activate-intro #feature-wiki span.ima:before {
+		content: "\f0c1";
+		color: #8f8faa;
+	}
+	#activate-intro #feature-todo span.ima:before {
+		content: "\f08d";
+		color: #c6a68d;
+	}
+	#activate-summary {
+		background: #f8ffff;
+		border: 1px solid #c8e6e4;
+		padding: 0.5em 1em;
+		margin: 1em 0;
+	}
+	#activate-summary p {
+		margin: 0;
+		padding: 0;
+		font-size: 85%;
+	}
+	#activate-summary .activate-label {
+		color: #999;
+	}
+	h3.prov-header, #mypub h3, #abox-content h3.prov-header {
+		background: #f9f6ec;
+		padding: 0.2em;
+		margin: 0;
+		width: 100%;
+		border: none;
+		font-size: 100%;
+	}
+	h3.prov-header a {
+		color: #000;
+		border-bottom: 1px dotted #000 !important;
+	}

@@ -1,0 +1,155 @@
+/**
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation. 
+ */
+
+/*
+
+ Edit Project pages CSS
+--------------------------------------------- */
+
+/* Edit project - tips
+--------------------------------------------- */
+	.tips {
+		padding: 1em;
+		border: 1px solid #CCC;
+		margin: 3em 2em 1em 1em;
+		background: #f4fdfd;
+		width: 70%;
+		font-size: 85%;
+	}
+	.tips h3 {
+		color: #CCC;
+		margin: 0 0 0.5em 0;
+		padding: 0;
+		font-size: 150%;
+	}
+	.tips h4 {
+		padding: 0;
+		margin: 0;
+		color: #666;
+		border-bottom: 2px solid #CCC;
+		margin-bottom: 1em;
+	}	
+	.withleft .tips p {
+		margin-top: 0;
+	}
+	.tips table {
+		background: #FFFFFF;
+		color: #333;
+	}
+	.tips ul {
+		color: #666;
+		margin: 0 0 1em 0;
+		padding: 0;
+		border: none;
+		background: transparent;
+	}
+	.tips ul li {
+		border: none;
+		list-style: circle !important;
+		margin-left: 1.5em;
+	}
+
+/* Edit project 
+--------------------------------------------- */
+	#edit-project-content .omega {
+		background: #f4f4f4;
+		border: 1px solid #CCCCCC;
+		padding-bottom: 1.5em;
+	}
+	.edit-title {
+		border-bottom: 4px solid #ccc;
+		margin-top: 1em;
+		padding: 0.3em;
+	}
+	ul#panelist {
+		margin: 0;
+		padding: 0;
+		border: none;
+		list-style: none;
+	}
+	ul#panelist li {
+		padding: 0.5em;
+		font-size: 85%;
+		padding-left: 50px;
+		margin: 0;
+		border-bottom: 1px solid #f1e5c9;
+		background: #fdfcf7;
+	}
+	ul#panelist li a {
+		border: none;
+		background: none;
+		padding: 0;
+		margin: 0;
+		text-transform: none;
+		font-size: 1em;
+		display: inline;
+		height: 20px;
+		cursor: pointer;
+	}
+	ul#panelist li a:hover {
+		color: #000000;
+	}
+	ul#panelist li.activepane {
+		background: white;
+	}
+	ul#panelist li.activepane a, ul#panelist li.activeln a, ul#panelist li.activeln {
+		color: #000000;
+		font-weight: bold;
+	}
+	ul#panelist li span {
+		border: none;
+		margin: 0;
+		padding: 0;
+		display: inline;
+		left: 50px;
+		margin-left: -10px;
+		padding-left: 20px;
+		background-position: 5px center !important;
+	}
+	#edit-project {
+		padding: 1.5em 2em;
+		margin: 0;
+	}
+	#edit-project h4 {
+		margin: 0;
+		padding: 0;
+	}
+	#edit-project h5 {
+		display: block;
+		margin: 1em 0 0 0;
+		padding: 0;
+		color: #666;
+	}
+	#edit-project table#infotbl {
+		margin-top: 1em;
+	}
+	#edit-project #basic_info td {
+		padding: 0.5em 0;
+	}
+	#basic_info td p {
+		margin-bottom: 1em;
+	}
+	#edit-project label {
+		padding: 0.5em 0 !important;
+	}
+	#edit-project table#infotbl td.htd {
+		text-align: left;
+	}
+	#cbody {
+		min-width: 500px;
+	}
+
+/* Cancel project 
+--------------------------------------------- */
+	#cancel-project  {
+		background: #e0e8ef;
+		padding: 0 2em;
+		font-size: 85%;
+		margin-bottom: 2em;
+	}

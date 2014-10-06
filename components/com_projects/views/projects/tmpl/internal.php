@@ -27,7 +27,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 $html  = '';
 
 $this->css()
-     ->js();
+    ->js()
+	->css('jquery.fancybox.css', 'system');
 
 // Add new activity count to page title
 $document = JFactory::getDocument();
@@ -85,27 +86,27 @@ else
 				} ?>
 			</div>
 			<div id="plg-content" class="content-<?php echo $this->active; ?>">
-			<?php if ($this->notification) { echo $this->notification; } ?>
-			<?php if ($this->side_modules) { ?>
-				<div class="aside">
-					<?php echo $this->side_modules; ?>
+			<?php if (isset($this->notification)) { echo $this->notification; } ?>
+			<?php if ($this->sideContent) { ?>
+			<div class="grid">
+				<div class="col span9">
+					<?php } ?>
+					<?php if ($this->content) { echo $this->content; } ?>
+					<?php if ($this->active == 'info') {
+							// Display project info
+							$this->view('info')
+							     ->set('info', $this)
+							     ->set('goto', 'alias=' . $this->project->alias)
+							     ->display();
+					 } ?>
+					<?php if ($this->sideContent) { ?>
 				</div>
-				<div class="subject">
-			<?php } ?>
-			<?php if ($this->content) { echo $this->content; } ?>
-			<?php if ($this->active == 'info') {
-					// Display project info
-					$view = new JView(
-						array(
-							'name' => 'info'
-						)
-					);
-					$view->info = $this;
-					$view->goto = 'alias=' . $this->project->alias;
-					echo $view->loadTemplate();
-			 } ?>
-			<?php if ($this->side_modules) { ?>
-				</div> <!-- / .subject -->
+				<div class="col span3 omega">
+					<div class="side-content">
+					<?php echo $this->sideContent; ?>
+					</div>
+				</div>
+			</div> <!-- / .grid -->
 			<?php } ?>
 				<div class="clear"></div>
 			</div><!-- / plg-content -->
