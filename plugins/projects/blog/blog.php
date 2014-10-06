@@ -180,7 +180,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 	/**
 	 * Event call to get side content
 	 *
-	 * @return  
+	 * @return
 	 */
 	public function onProjectExtras( $project, $uid = 0, $area, $option, $side = 'righthand')
 	{
@@ -189,29 +189,29 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		{
 			return;
 		}
-		
+
 		$html = '';
 		$database = JFactory::getDBO();
-		
+
 		// Get user ID
 		if (!$uid)
 		{
 			$juser 	= JFactory::getUser();
 			$uid 	= $juser->get('id');
 		}
-		
+
 		// Load component configs
 		$this->_config = JComponentHelper::getParams('com_projects');
 		$limit = $this->_config->get('sidebox_limit', 3);
-		
+
 		// Get project params
 		$params = new JParameter( $project->params );
-		
+
 		// Show welcome screen?
 		$owner_params = new JParameter( $project->owner_params );
 		$show_welcome = ((!$project->lastvisit or $project->num_visits < 3)
 						&& ($owner_params->get('hide_welcome', 0) == 0))  ? 1 : 0;
-		
+
 		if (!$show_welcome)
 		{
 			// Get suggestions
@@ -240,7 +240,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				$html 		   .= $view->loadTemplate();
 			}
 		}
-		
+
 		// Get todo's
 		$objTD = new ProjectTodo( $database );
 		$todos = $objTD->getTodos ($project->id, $filters = array(
@@ -264,7 +264,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$view->project 	= $project;
 			$html 	   		.= $view->loadTemplate();
 		}
-		
+
 		// Get Publications
 		$objP = new Publication( $database );
 		$pubs = $objP->getRecords($filters = array(
@@ -277,7 +277,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			// Get language file
 			$lang = JFactory::getLanguage();
 			$lang->load('plg_projects_publications');
-			
+
 			// Publications side module
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -292,7 +292,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$view->project 	= $project;
 			$html 	   		.= $view->loadTemplate();
 		}
-				
+
 		return $html;
 	}
 

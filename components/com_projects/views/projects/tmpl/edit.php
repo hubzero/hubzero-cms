@@ -61,7 +61,7 @@ else
 		echo ProjectsHtml::drawProjectHeader($this); ?>
 		<div class="project-inner-wrap">
 	<?php
-	} else { 
+	} else {
 		echo ProjectsHtml::writeProjectHeader($this, 1); ?>
 	<?php } ?>
 	<div class="status-msg">

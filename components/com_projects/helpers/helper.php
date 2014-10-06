@@ -591,7 +591,7 @@ class ProjectsHelper extends JObject {
 			array(
 				$component,
 				$subject,
-			 	$body,
+				$body,
 				$from,
 				$addressees,
 				$option

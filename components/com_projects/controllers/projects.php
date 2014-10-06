@@ -1196,7 +1196,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		{
 			$jsession->set('projects-nolog', 0);
 		}
-		
+
 		// Get plugin
 		JPluginHelper::importPlugin( 'projects');
 		$dispatcher = JDispatcher::getInstance();
@@ -1649,14 +1649,14 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$this->_redirect = $url;
 			return;
 		}
-		
+
 		// Get plugin
 		JPluginHelper::importPlugin( 'projects');
 		$dispatcher = JDispatcher::getInstance();
 
 		// Get plugins with side tabs
 		$this->view->tabs 	= $dispatcher->trigger( 'onProjectAreas', array( ) );
-		
+
 		// Get item counts
 		$dispatcher->trigger( 'onProjectCount', array( $project, &$counts) );
 		$counts['newactivity'] = 0;

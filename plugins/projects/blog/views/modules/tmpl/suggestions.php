@@ -29,7 +29,7 @@ $i= 0;
 ?>
 <div class="sidebox suggestions">
 	<h4><?php echo JText::_('COM_PROJECTS_SUGGESTIONS'); ?>:</h4>
-	<?php foreach($this->suggestions as $suggestion)
+	<?php foreach ($this->suggestions as $suggestion)
 		{ $i++;
 		  if ($i <= 3)
 			{ ?>
