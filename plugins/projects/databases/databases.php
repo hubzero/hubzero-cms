@@ -149,7 +149,7 @@ class plgProjectsDatabases extends JPlugin
 	 */
 	public function onProject ($project, $option, $authorized, 
 		$uid, $msg = '', $error = '', 
-		$action = 'view', $areas = null, $case)
+		$action = 'view', $areas = null)
 	{
 
 		// Check if the plugin parameters the two mysql accounts are properly set
