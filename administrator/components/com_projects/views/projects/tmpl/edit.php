@@ -137,7 +137,7 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<?php echo JText::_('COM_PROJECTS_TYPE'); ?>
 					<select name="type">
-						<?php foreach($this->types as $type) {
+						<?php foreach ($this->types as $type) {
 							if (($type->id == 3 && !$this->publishing) ||
 							($type->id == 2 && !JPluginHelper::isEnabled('projects', 'apps'))) {
 								continue;

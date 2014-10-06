@@ -86,7 +86,7 @@ else
 				} ?>
 			</div>
 			<div id="plg-content" class="content-<?php echo $this->active; ?>">
-			<?php 			
+			<?php
 			// Show welcome screen?
 			$owner_params = new JParameter( $this->project->owner_params );
 			$show_welcome = ((!$this->project->lastvisit or $this->project->num_visits < 5)
@@ -103,7 +103,7 @@ else
 					$this->params
 				);
 				$creator = $this->project->created_by_user == $this->uid ? 1 : 0;
-				
+
 				// Display project info
 				$this->view('_welcome')
 				     ->set('option', $this->option)

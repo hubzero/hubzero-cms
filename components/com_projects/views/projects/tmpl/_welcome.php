@@ -36,7 +36,7 @@ switch ($actual_s)
 	case 4:	$numcols = 'four'; break;
 }
 ?>
-<?php if($actual_s > 1) { ?>
+<?php if ($actual_s > 1) { ?>
 	<div class="welcome">
 		<p class="closethis"><a href="<?php echo JRoute::_('index.php?option=' . $this->option
 		. a . 'alias=' . $this->project->alias . a . 'active=feed') . '?c=1'; ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_CLOSE_THIS'); ?></a></p>
@@ -49,12 +49,12 @@ switch ($actual_s)
 			<div class="columns <?php echo $numcols; ?> second">
 				<p class="<?php echo $suggestions[1]['class']; ?>"><a href="<?php echo $suggestions[1]['url']; ?>"><?php echo $suggestions[1]['text']; ?></a></p>
 			</div>
-			<?php if($actual_s > 2) { ?>
+			<?php if ($actual_s > 2) { ?>
 			<div class="columns <?php echo $numcols; ?> third">
 				<p class="<?php echo $suggestions[2]['class']; ?>"><a href="<?php echo $suggestions[2]['url']; ?>"><?php echo $suggestions[2]['text']; ?></a></p>
 			</div>
 			<?php } ?>
-			<?php if($actual_s > 3) { ?>
+			<?php if ($actual_s > 3) { ?>
 			<div class="columns <?php echo $numcols; ?> forth">
 				<p class="<?php echo $suggestions[3]['class']; ?>"><a href="<?php echo $suggestions[3]['url']; ?>"><?php echo $suggestions[3]['text']; ?></a></p>
 			</div>
