@@ -1378,34 +1378,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 						. a . 'task=view' . a . 'alias=' . $project->alias);
 					return;
 				}
-
-				// Show welcome screen?
-				$owner_params = new JParameter( $project->owner_params );
-				$show_welcome = ((!$project->lastvisit or $project->num_visits < 3)
-								&& ($owner_params->get('hide_welcome', 0) == 0))  ? 1 : 0;
-
-				// Show welcome banner with suggestions
-				if ($show_welcome)
-				{
-					$suggestions = ProjectsHelper::getSuggestions(
-						$project,
-						$this->_option,
-						$this->juser->get('id'),
-						$this->config,
-						$this->view->params
-					);
-
-					$wview = new JView(
-						array(
-							'name'=>'welcome'
-						)
-					);
-					$wview->option 		= $this->_option;
-					$wview->project 	= $project;
-					$wview->suggestions = $suggestions;
-					$wview->creator 	= $project->created_by_user == $this->juser->get('id') ? 1 : 0;
-					$this->view->notification = $wview->loadTemplate();
-				}
 			}
 
 			// Get side content

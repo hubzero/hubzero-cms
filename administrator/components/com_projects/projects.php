@@ -49,6 +49,7 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.type.
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'tags.php');
+include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
 
 // Database development on?
 if (is_file(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.database.php'))

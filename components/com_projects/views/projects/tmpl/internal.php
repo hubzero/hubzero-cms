@@ -86,22 +86,48 @@ else
 				} ?>
 			</div>
 			<div id="plg-content" class="content-<?php echo $this->active; ?>">
-			<?php if (isset($this->notification)) { echo $this->notification; } ?>
+			<?php 			
+			// Show welcome screen?
+			$owner_params = new JParameter( $this->project->owner_params );
+			$show_welcome = ((!$this->project->lastvisit or $this->project->num_visits < 5)
+							&& ($owner_params->get('hide_welcome', 0) == 0))  ? 1 : 0;
+
+			// Show welcome banner with suggestions
+			if ($show_welcome)
+			{
+				$suggestions = ProjectsHelper::getSuggestions(
+					$this->project,
+					$this->option,
+					$this->uid,
+					$this->config,
+					$this->params
+				);
+				$creator = $this->project->created_by_user == $this->uid ? 1 : 0;
+				
+				// Display project info
+				$this->view('_welcome')
+				     ->set('option', $this->option)
+					 ->set('project', $this->project)
+				     ->set('suggestions', $suggestions)
+					 ->set('creator', $creator)
+				     ->display();
+			}
+			 ?>
 			<?php if ($this->sideContent) { ?>
 			<div class="grid">
-				<div class="col span9">
+				<div class="col span9 main-col">
 					<?php } ?>
 					<?php if ($this->content) { echo $this->content; } ?>
 					<?php if ($this->active == 'info') {
 							// Display project info
-							$this->view('info')
+							$this->view('_info')
 							     ->set('info', $this)
 							     ->set('goto', 'alias=' . $this->project->alias)
 							     ->display();
 					 } ?>
 					<?php if ($this->sideContent) { ?>
 				</div>
-				<div class="col span3 omega">
+				<div class="col span3 omega side-col">
 					<div class="side-content">
 					<?php echo $this->sideContent; ?>
 					</div>

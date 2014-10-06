@@ -2,15 +2,6 @@
 // No direct access
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%d %b. %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'd M. Y';
-	$tz = false;
-}
-
 // Connections enabled?
 $plugin = JPluginHelper::getPlugin( 'projects', 'files' );
 $p_params = new JParameter($plugin->params);
@@ -35,7 +26,7 @@ $status = '';
 $row = $this->obj;
 if ($row->state == 1 && $row->setup_stage >= $setup_complete)
 {
-	$status   = '<span class="active">'.JText::_('COM_PROJECTS_ACTIVE').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, $dateFormat, $tz);
+	$status   = '<span class="active">'.JText::_('COM_PROJECTS_ACTIVE').'</span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, JText::_('DATE_FORMAT_LC2'));
 }
 elseif ($row->state == 2)
 {
@@ -81,19 +72,19 @@ function submitbutton(pressbutton)
 		return;
 	}
 
-	if(pressbutton == 'delete') {
+	if (pressbutton == 'delete') {
 		form.admin_action.value = 'delete';
 		submitform( 'save' );
 		return;
 	}
 
-	if(pressbutton == 'suspend') {
+	if (pressbutton == 'suspend') {
 		form.admin_action.value = 'suspend';
 		submitform( 'save' );
 		return;
 	}
 
-	if(pressbutton == 'reinstate') {
+	if (pressbutton == 'reinstate') {
 		form.admin_action.value = 'reinstate';
 		submitform( 'save' );
 		return;
@@ -124,7 +115,10 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="about"><?php echo JText::_('COM_PROJECTS_ABOUT'); ?>:</label>
-				<textarea name="about" id="about" rows="10" cols="50"><?php echo $this->obj->about; ?></textarea>
+				<?php 
+					$project = new ProjectsModelProject($this->obj);
+					echo \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null);
+				?>
 			</div>
 
 			<div class="input-wrap">
@@ -139,12 +133,12 @@ function submitbutton(pressbutton)
 				<?php } ?>
 			</div>
 
-			<?php if(JPluginHelper::isEnabled('projects', 'apps') or $this->publishing) { ?>
+			<?php if (JPluginHelper::isEnabled('projects', 'apps') or $this->publishing) { ?>
 				<div class="input-wrap">
 					<?php echo JText::_('COM_PROJECTS_TYPE'); ?>
 					<select name="type">
 						<?php foreach($this->types as $type) {
-							if(($type->id == 3 && !$this->publishing) ||
+							if (($type->id == 3 && !$this->publishing) ||
 							($type->id == 2 && !JPluginHelper::isEnabled('projects', 'apps'))) {
 								continue;
 							}
@@ -185,10 +179,6 @@ function submitbutton(pressbutton)
 				<label><?php echo JText::_('COM_PROJECTS_SYS_GROUP'); ?>:</label>
 				<?php echo $sysgroup; ?>
 			</div>
-
-			<!-- <div class="input-wrap">
-				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_EDITS'); ?>" />
-			</div> -->
 		</fieldset>
 
 		<fieldset class="adminform">
@@ -197,8 +187,8 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_PROJECTS_PRIVACY'); ?>:</label>
 				<select name="private">
-					<option value="0" <?php if($this->obj->private == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_PROJECTS_PUBLIC'); ?></option>
-					<option value="1" <?php if($this->obj->private == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_PROJECTS_PRIVATE'); ?></option>
+					<option value="0" <?php if ($this->obj->private == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_PROJECTS_PUBLIC'); ?></option>
+					<option value="1" <?php if ($this->obj->private == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_PROJECTS_PRIVATE'); ?></option>
 				</select>
 			</div>
 
@@ -207,16 +197,28 @@ function submitbutton(pressbutton)
 				<input type="checkbox" class="option" name="params[team_public]" value="1" <?php if ($this->params->get( 'team_public')) { echo ' checked="checked"'; } ?> />
 				<label><?php echo JText::_('COM_PROJECTS_TEAM_PUBLIC'); ?></label>
 			</div>
+			<div class="input-wrap">
+				<input type="hidden"  name="params[publications_public]" value="0" />
+				<input type="checkbox" class="option" name="params[publications_public]" value="1" <?php if ($this->params->get( 'publications_public')) { echo ' checked="checked"'; } ?> />
+				<label><?php echo JText::_('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?></label>
+			</div>
+			<div class="input-wrap">
+				<label><?php echo JText::_('COM_PROJECTS_LAYOUT'); ?>:</label>
+				<select name="params[layout]">
+					<option value="standard" <?php if ($this->params->get( 'layout', 'standard') == 'standard') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_PROJECTS_LAYOUT_STANDARD'); ?></option>
+					<option value="extended" <?php if ($this->params->get( 'layout') == 'extended') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_PROJECTS_LAYOUT_EXTENDED'); ?></option>
+				</select>
+			</div>
 
-			<?php if($this->config->get('restricted_data', 0)) { ?>
+			<?php if ($this->config->get('restricted_data', 0)) { ?>
 				<div class="input-wrap">
-					<label><?php echo JText::_('COM_PROJECTS_SENSITIVE_DATA'); ?></label>
+					<label><?php echo JText::_('COM_PROJECTS_SENSITIVE_DATA'); ?>:</label>
 					<?php echo strtoupper($this->params->get( 'restricted_data', 'no')); ?>
-					<?php if($this->params->get( 'restricted_data') == 'yes') { ?> (
-						<?php if($this->params->get( 'hipaa_data')  == 'yes') { echo 'HIPAA'; } ?>
-						<?php if($this->params->get( 'ferpa_data')  == 'yes') { echo 'FERPA'; } ?>
-						<?php if($this->params->get( 'export_data') == 'yes') { echo 'Export Controlled'; } ?>
-						<?php if($this->params->get( 'irb_data') == 'yes') { echo 'IRB'; } ?>
+					<?php if ($this->params->get( 'restricted_data') == 'yes') { ?> (
+						<?php if ($this->params->get( 'hipaa_data')  == 'yes') { echo 'HIPAA'; } ?>
+						<?php if ($this->params->get( 'ferpa_data')  == 'yes') { echo 'FERPA'; } ?>
+						<?php if ($this->params->get( 'export_data') == 'yes') { echo 'Export Controlled'; } ?>
+						<?php if ($this->params->get( 'irb_data') == 'yes') { echo 'IRB'; } ?>
 						)
 					<?php } ?>
 				</div>
@@ -240,13 +242,9 @@ function submitbutton(pressbutton)
 				</div>
 				<div class="input-wrap">
 					<label><?php echo JText::_('COM_PROJECTS_TERMS_GRANT_APPROVAL_CODE'); ?>:</label>
-					<?php echo $this->escape(html_entity_decode($this->params->get( 'grant_approval'))); ?>
+					<?php $approval = $this->escape(html_entity_decode($this->params->get( 'grant_approval'))); echo $approval ? $approval : JText::_('COM_PROJECTS_NA'); ?>
 				</div>
 			<?php } ?>
-
-			<!-- <div class="input-wrap">
-				<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_EDITS'); ?>" />
-			</div> -->
 		</fieldset>
 
 		<?php if ($row->setup_stage >= $setup_complete) { ?>
@@ -263,22 +261,18 @@ function submitbutton(pressbutton)
 					<input name="params[pubQuota]" maxlength="100" type="text" value="<?php echo ProjectsHtml::convertSize($pubQuota, 'b', 'GB', 2); ?>" class="short" />
 				</div>
 
-				<?php if($this->diskusage) { ?>
+				<?php if ($this->diskusage) { ?>
 					<div class="input-wrap">
 						<?php echo $this->diskusage; ?>
 					</div>
 				<?php } ?>
-					<!-- <tr class="division">
-						<td colspan="3" class="centeralign"><input type="submit" value="<?php echo JText::_('COM_PROJECTS_CHANGE_QUOTA'); ?>" class="btn"  />
-					</td>
-					</tr> -->
 				<div class="input-wrap">
 					<?php echo JText::_('Maintenance options:'); ?> &nbsp; <a href="index.php?option=com_projects&amp;task=gitgc&amp;id=<?php echo $this->obj->id; ?>"><?php echo JText::_('git gc --aggressive'); ?></a> [<?php echo JText::_('Takes minutes to run'); ?>]
 				</div>
 
 				<?php if ($cEnabled) { ?>
 					<div class="input-wrap">
-						<?php echo JText::_('Connections'); ?>: <strong><?php echo $connected ? $service : 'not connected'; ?></strong> &nbsp;
+						<?php echo JText::_('COM_PROJECTS_CONNECTIONS'); ?>: <strong><?php echo $connected ? $service : 'not connected'; ?></strong> &nbsp;
 						<?php if ($connected) { ?>
 							<a href="index.php?option=com_projects&amp;task=fixsync&amp;id=<?php echo $this->obj->id; ?>"><?php echo JText::_('download sync log'); ?></a> &nbsp; [<?php echo JText::_('Also fixes stalled sync'); ?>]
 						<?php } ?>
@@ -302,13 +296,13 @@ function submitbutton(pressbutton)
 					<th><?php echo JText::_('COM_PROJECTS_FILES'); ?>:</th>
 					<td><?php echo $this->counts['files']; ?></td>
 				</tr>
-				<?php if(JPluginHelper::isEnabled('projects', 'apps') && isset($this->counts['apps'])) { ?>
+				<?php if (JPluginHelper::isEnabled('projects', 'apps') && isset($this->counts['apps'])) { ?>
 				<tr>
 					<th><?php echo JText::_('COM_PROJECTS_APPS'); ?>:</th>
 					<td><?php echo $this->counts['apps']; ?></td>
 				</tr>
 				<?php } ?>
-				<?php if($this->publishing) { ?>
+				<?php if ($this->publishing) { ?>
 				<tr>
 					<th><?php echo JText::_('COM_PROJECTS_PUBLICATIONS'); ?>:</th>
 					<td><?php echo $this->counts['publications']; ?></td>
@@ -316,7 +310,7 @@ function submitbutton(pressbutton)
 				<?php } ?>
 				<tr>
 					<th><?php echo JText::_('COM_PROJECTS_TODOS'); ?>:</th>
-					<td><?php echo $this->counts['todo']; ?> <?php if($this->counts['todos_completed'] > 0) { ?>( +<?php echo $this->counts['todos_completed']; ?> <?php echo JText::_('COM_PROJECTS_TODOS_COMPLETED'); ?>)<?php } ?></td>
+					<td><?php echo $this->counts['todo']; ?> <?php if ($this->counts['todos_completed'] > 0) { ?>( +<?php echo $this->counts['todos_completed']; ?> <?php echo JText::_('COM_PROJECTS_TODOS_COMPLETED'); ?>)<?php } ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('COM_PROJECTS_NOTES'); ?>:</th>
@@ -328,7 +322,7 @@ function submitbutton(pressbutton)
 				</tr>
 				<tr>
 					<th><?php echo JText::_('COM_PROJECTS_LAST_ACTIVITY'); ?>:</th>
-					<td><?php if($this->last_activity) {
+					<td><?php if ($this->last_activity) {
 						$activity = preg_replace('/said/', "posted an update", $this->last_activity->activity);
 						$activity = preg_replace('/&#58;/', "", $activity);
 						?>
@@ -352,12 +346,12 @@ function submitbutton(pressbutton)
 
 					<input type="hidden" name="admin_action" value="" />
 					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_OPTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" /> <span class="breaker"> | </span>
-				<?php if($row->state == 1 && $row->setup_stage >= $setup_complete) { ?>
+				<?php if ($row->state == 1 && $row->setup_stage >= $setup_complete) { ?>
 					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_OPTION_SUSPEND'); ?>" class="btn" id="do-suspend" onclick="javascript: submitbutton('suspend')" />
-				<?php } else if($row->state == 2 || ($row->state == 0 && $row->setup_stage >= $setup_complete)) { ?>
+				<?php } else if ($row->state == 2 || ($row->state == 0 && $row->setup_stage >= $setup_complete)) { ?>
 					<input type="submit" value="<?php echo $this->suspended ? JText::_('COM_PROJECTS_OPTION_REINSTATE') : JText::_('COM_PROJECTS_OPTION_ACTIVATE'); ?>" class="btn" id="do-reisnate" onclick="javascript: submitbutton('reinstate')" />
 				<?php } ?>
-				<?php if($row->state != 2) { ?>
+				<?php if ($row->state != 2) { ?>
 					<input type="submit" value="<?php echo JText::_('COM_PROJECTS_OPTION_DELETE'); ?>" class="btn" id="do-delete" onclick="javascript: submitbutton('delete')" />
 				<?php } ?>
 			</div>
@@ -365,7 +359,6 @@ function submitbutton(pressbutton)
 
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_PROJECTS_TEAM').' ('.$this->counts['team'].')'; ?></legend>
-
 			<table>
 				<tbody>
 					<tr>

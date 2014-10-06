@@ -1858,18 +1858,16 @@
 		}
 	}
 	
-	@media all and (max-width: 800px) {
-		#plg-content .aside {
-			display: block;
-			margin: 0;
-			float: none;
-			min-height: 0;
+	@media all and (max-width: 900px) {
+		#plg-content .aside,
+		#plg-content .side-col {
 			display: none;
 		}
-		#plg-content .subject {
+		#plg-content .subject,
+		#plg-content .main-col {
 			margin-right: 0;
 			min-width: 400px;
-			width: 90%;
+			width: 100%;
 			margin-right: 0;
 		}
 		.dragbox {
@@ -2167,6 +2165,9 @@
 	}
 	.pub-image {
 		width: 30px;
+	}
+	.content-feed .side-content {
+		margin-top: 5em;
 	}
 
 /* Overwrites to system styles 
