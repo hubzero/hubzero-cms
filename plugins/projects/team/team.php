@@ -187,11 +187,6 @@ class plgProjectsTeam extends JPlugin
 					$arr['html'] = $this->view( 1 );
 					break;
 
-				case 'invite':
-				case 'sendinvite':
-					$arr['html'] = $this->invite();
-					break;
-
 				case 'delete':
 				case 'removeowner':
 					$arr['html'] = $this->delete();
