@@ -1856,3 +1856,16 @@
 	.hidden {
 		display: none;
 	}
+/* Contribute */
+h3.prov-header, #mypub h3, #abox-content h3.prov-header {
+	background: #f9f6ec;
+	padding: 0.2em;
+	margin: 0;
+	width: 100%;
+	border: none;
+	font-size: 100%;
+}
+h3.prov-header a {
+	color: #000;
+	border-bottom: 1px dotted #000 !important;
+}
