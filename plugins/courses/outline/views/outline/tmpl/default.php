@@ -350,6 +350,10 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 																	}
 																}
 															}
+															else if ($a->get('type') == 'text' && $a->get('subtype') == 'note')
+															{
+																$link = '<span class="info">' . $this->escape(stripslashes($a->get('title'))) . '</span>';
+															}
 
 
 															$found[] = '<li>' . $link . '</li>';
@@ -357,7 +361,14 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															//if ($a->get('type') == 'video')
 															if ($k == 0)
 															{
-																$play = '<a class="asset-primary ' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($ag->get('title'))) . '</a>';
+																if ($a->get('type') == 'text' && $a->get('subtype') == 'note')
+																{
+																	$play = '<div class="asset-primary"><p class="info">' . $this->escape(stripslashes($a->get('title'))) . '</p></div>';
+																}
+																else
+																{
+																	$play = '<a class="asset-primary ' . $cls . '" href="' . $href . '"' . $target . '>' . $this->escape(stripslashes($ag->get('title'))) . '</a>';
+																}
 															}
 															$k++;
 														}
