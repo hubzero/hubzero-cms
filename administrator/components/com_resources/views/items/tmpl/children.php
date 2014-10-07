@@ -41,7 +41,7 @@ if ($this->filters['parent_id'] > 0)
 	}
 	if ($canDo->get('core.delete'))
 	{
-		JToolBarHelper::deleteList('', 'removechild', 'COM_RESOURCES_REMOVE_CHILD');
+		JToolBarHelper::deleteList('COM_RESOURCES_REMOVE_CHILD_CONFIRM', 'removechild', 'COM_RESOURCES_REMOVE_CHILD');
 	}
 	JToolBarHelper::spacer();
 }
