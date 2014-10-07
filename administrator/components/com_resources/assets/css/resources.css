@@ -48,6 +48,16 @@
 		overflow: hidden;
 	}
 
+	.toolbar-box #toolbar-delete .icon-32-delete:before {
+		content: "\f03a";
+	}
+	.toolbar-box #toolbar-delete .icon-32-delete:after {
+		content: "\f094";
+		top: auto;
+		bottom: -0.2em;
+		right: 0;
+	}
+
 	#author-list { 
 		list-style: none;
 		margin: 0.5em;
