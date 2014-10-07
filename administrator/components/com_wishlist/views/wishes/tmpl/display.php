@@ -77,7 +77,7 @@ function submitbutton(pressbutton)
 		</div>
 		<div class="col width-50 fltrt">
 			<label for="filter-by"><?php echo JText::_('COM_WISHLIST_FILTERBY'); ?>:</label>
-			<select name="filterby" id="filter-by">
+			<select name="filterby" id="filter-by" onchange="this.form.submit()">
 				<option value="all"<?php echo ($this->filters['filterby'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_NONE'); ?></option>
 				<option value="granted"<?php echo ($this->filters['filterby'] == 'granted') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_GRANTED'); ?></option>
 				<option value="open"<?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_STATE_OPEN'); ?></option>
