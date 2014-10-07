@@ -82,7 +82,7 @@ JToolBarHelper::help('lists');
 		</div>
 		<div class="col width-50 fltrt">
 			<label for="filter-category"><?php echo JText::_('COM_WISHLIST_CATEGORY'); ?>:</label>
-			<select name="category" id="filter-category">
+			<select name="category" id="filter-category" onchange="this.form.submit()">
 				<option value=""<?php echo ($this->filters['category'] == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_SELECT_CATEGORY'); ?></option>
 				<option value="general"<?php echo ($this->filters['category'] == 'general') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_CATEGORY_GENERAL'); ?></option>
 				<option value="group"<?php echo ($this->filters['category'] == 'group') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_WISHLIST_CATEGORY_GROUP'); ?></option>
