@@ -283,6 +283,14 @@ class SupportTicket extends JTable
 			$this->open = 1;
 			$this->status = 1;
 		}*/
+		if ($this->owner && is_string($this->owner))
+		{
+			$owner = JUser::getInstance($this->owner);
+			if ($owner && $owner->get('id'))
+			{
+				$this->owner = (int) $owner->get('id');
+			}
+		}
 
 		// All new tickets default to "new"
 		if (!$this->id)
