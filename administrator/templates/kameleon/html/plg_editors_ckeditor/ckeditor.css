@@ -3,6 +3,19 @@
 	display: inline-block !important;
 }
 
+table.cke_dialog tbody tr td,
+table.cke_dialog tbody tr td:first-child,
+table.cke_dialog tbody tr td:last-child {
+	padding: 0;
+}
+table.cke_dialog .cke_dialog_ui_text,
+table.cke_dialog .cke_dialog_ui_textarea,
+table.cke_dialog .cke_dialog_ui_select,
+table.cke_dialog .cke_dialog_ui_checkbox,
+table.cke_dialog .cke_dialog_ui_radio {
+	padding: 0.7em;
+}
+
 body .cke_chrome {
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
