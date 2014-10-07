@@ -121,6 +121,16 @@ class SupportComment extends JTable
 		{
 			$this->created_by = JFactory::getUser()->get('id');
 		}
+
+		if ($this->created_by && is_string($this->created_by))
+		{
+			$owner = JUser::getInstance($this->created_by);
+			if ($owner && $owner->get('id'))
+			{
+				$this->created_by = (int) $owner->get('id');
+			}
+		}
+
 		if (!$this->created)
 		{
 			$this->created = JFactory::getDate()->toSql();
