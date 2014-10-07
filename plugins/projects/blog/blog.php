@@ -343,7 +343,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$view->option 		= $option;
 			$view->suggestions 	= $suggestions;
 			$view->project 		= $project;
-			$view->creator 		= $project->created_by_user == $this->uid ? 1 : 0;
+			$view->creator 		= $project->created_by_user == $uid ? 1 : 0;
 			$html 		   .= $view->loadTemplate();
 		}
 
