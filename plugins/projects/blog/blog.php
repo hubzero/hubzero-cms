@@ -209,10 +209,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 		// Show welcome screen?
 		$owner_params = new JParameter( $project->owner_params );
-		$show_welcome = ((!$project->lastvisit or $project->num_visits < 3)
-						&& ($owner_params->get('hide_welcome', 0) == 0))  ? 1 : 0;
-
-		if (!$show_welcome)
+		if ($owner_params->get('hide_welcome', 0) == 1)
 		{
 			// Get suggestions
 			$suggestions = ProjectsHelper::getSuggestions(
@@ -291,6 +288,63 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$view->items 	= $pubs;
 			$view->project 	= $project;
 			$html 	   		.= $view->loadTemplate();
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Event call to get plugin notification
+	 *
+	 * @return
+	 */
+	public function onProjectNotification( $project, $uid = 0, $area, $option)
+	{
+		// Check if our area is the one we want to return results for
+		if ($area != 'feed')
+		{
+			return;
+		}
+
+		$html = '';
+
+		// Load component configs
+		$this->_config = JComponentHelper::getParams('com_projects');
+
+		// Get project params
+		$params = new JParameter( $project->params );
+
+		// Show welcome screen?
+		$owner_params = new JParameter( $project->owner_params );
+		$show_welcome = ((!$project->lastvisit or $project->num_visits < 5)
+						&& ($owner_params->get('hide_welcome', 0) == 0))  ? 1 : 0;
+
+		// Show welcome banner with suggestions
+		if ($show_welcome)
+		{
+			// Get suggestions
+			$suggestions = ProjectsHelper::getSuggestions(
+				$project,
+				$option,
+				$uid,
+				$this->_config,
+				$params
+			);
+
+			// Display welcome message
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  => 'projects',
+					'element' => 'blog',
+					'name'    => 'modules',
+					'layout'  => '_welcome'
+				)
+			);
+			$view->option 		= $option;
+			$view->suggestions 	= $suggestions;
+			$view->project 		= $project;
+			$view->creator 		= $project->created_by_user == $this->uid ? 1 : 0;
+			$html 		   .= $view->loadTemplate();
 		}
 
 		return $html;

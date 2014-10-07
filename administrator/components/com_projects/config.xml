@@ -47,8 +47,8 @@
 			<option value="1">Private - hidden</option>
 		</field>
 		<field name="internal_layout" type="list" default="standard" label="Default project page layout" description="Set the default project page layout for team members">
-			<option value="standard">Standard layout</option>
-			<option value="extended">New extended layout</option>
+			<option value="standard">Standard (left side menu)</option>
+			<option value="extended">New (top menu)</option>
 		</field>
 		<field name="limit" type="text" menu="hide" default="25" label="Browse paging limit" description="Number of projects per page on Browse." />
 		<field name="sidebox_limit" type="text" menu="hide" default="3" label="Side module item limit" description="Number of items per box in project page side modules" />

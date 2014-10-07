@@ -24,41 +24,34 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-$suggestions = $this->suggestions;
 
-$max_s = 4;
-$actual_s = count($suggestions) >= $max_s ? $max_s : count($suggestions);
-switch ($actual_s)
+$max_s = 3;
+$actual_s = count($this->suggestions) >= $max_s ? $max_s : count($this->suggestions);
+
+if ($actual_s <= 1) 
 {
-	case 2:
-	default: $numcols = 'two'; break;
-	case 3:	$numcols = 'three'; break;
-	case 4:	$numcols = 'four'; break;
+	return;
 }
+$i = 0;
 ?>
 <?php if ($actual_s > 1) { ?>
 	<div class="welcome">
 		<p class="closethis"><a href="<?php echo JRoute::_('index.php?option=' . $this->option
 		. a . 'alias=' . $this->project->alias . a . 'active=feed') . '?c=1'; ?>"><?php echo JText::_('COM_PROJECTS_PROJECT_CLOSE_THIS'); ?></a></p>
+
 		<h3><?php echo $this->creator ? JText::_('COM_PROJECTS_WELCOME_TO_PROJECT_CREATOR') : JText::_('COM_PROJECTS_WELCOME_TO').' '.stripslashes($this->project->title).' '.JText::_('COM_PROJECTS_PROJECT').'!'; ?> </h3>
 		<p><?php echo $this->creator ? JText::_('COM_PROJECTS_WELCOME_SUGGESTIONS_CREATOR') : JText::_('COM_PROJECTS_WELCOME_SUGGESTIONS'); ?></p>
-		<div id="suggestions">
-			<div class="columns <?php echo $numcols; ?> first">
-				<p class="<?php echo $suggestions[0]['class']; ?>"><a href="<?php echo $suggestions[0]['url']; ?>"><?php echo $suggestions[0]['text']; ?></a></p>
-			</div>
-			<div class="columns <?php echo $numcols; ?> second">
-				<p class="<?php echo $suggestions[1]['class']; ?>"><a href="<?php echo $suggestions[1]['url']; ?>"><?php echo $suggestions[1]['text']; ?></a></p>
-			</div>
-			<?php if ($actual_s > 2) { ?>
-			<div class="columns <?php echo $numcols; ?> third">
-				<p class="<?php echo $suggestions[2]['class']; ?>"><a href="<?php echo $suggestions[2]['url']; ?>"><?php echo $suggestions[2]['text']; ?></a></p>
-			</div>
-			<?php } ?>
-			<?php if ($actual_s > 3) { ?>
-			<div class="columns <?php echo $numcols; ?> forth">
-				<p class="<?php echo $suggestions[3]['class']; ?>"><a href="<?php echo $suggestions[3]['url']; ?>"><?php echo $suggestions[3]['text']; ?></a></p>
-			</div>
-			<?php } ?>
+		<div id="suggestions" class="suggestions">
+			<?php foreach ($this->suggestions as $suggestion)
+				{ $i++;
+				  if ($i <= $max_s)
+					{ ?>
+				<div class="<?php echo $suggestion['class']; ?>">
+					<p><a href="<?php echo $suggestion['url']; ?>"><?php echo $suggestion['text']; ?></a></p>
+				</div>
+			<?php }
+			} ?>
+			<div class="clear"></div>
 		</div>
 	</div>
 <?php  } ?>

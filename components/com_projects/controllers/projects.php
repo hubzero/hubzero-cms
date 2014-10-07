@@ -1380,6 +1380,13 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				}
 			}
 
+			// Get notification
+			$notification       		= $dispatcher->trigger('onProjectNotification',
+				array( $project, $this->juser->get('id'), $this->active, $this->_option )
+			);
+			$this->view->notification 	= $notification && !empty($notification)
+				? $notification[0] : NULL;
+
 			// Get side content
 			$sideContent       			= $dispatcher->trigger('onProjectExtras',
 				array( $project, $this->juser->get('id'), $this->active, $this->_option )

@@ -884,6 +884,7 @@ class ProjectsHtml
 				<div class="col span2 omega">
 					<?php echo $publicView == false ? ProjectsHtml::writeMemberOptions($view) : ''; ?>
 				</div>
+				<div class="clear"></div>
 			</div>
 		</div>
 		<div class="menu-wrapper">

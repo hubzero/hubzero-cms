@@ -11,6 +11,7 @@
 
  New project layout
 --------------------------------------------- */
+
 	.project-header {
 		background: #f7f7f7;
 		height: 150px;
@@ -20,9 +21,6 @@
 	}
 	.project-inner-wrap {
 		padding: 1em 2em 4em 2em;
-	}
-	.project-inner-wrap plg-content {
-		min-width: 800px;
 	}
 	.project-inner-wrap #plg-content .subject {
 		width: 70%;
@@ -70,12 +68,12 @@
 		margin-left: -0.8em;
 	}
 	.ptitle-container {
-		margin-top: 2em;
 		margin-left: 220px;
 		position: absolute;
+		max-width: 60%;
 	}
 	.ptitle-container h2 {
-		margin-bottom: 0em;
+		margin-bottom: 0;
 	}
 	.ptitle-container p {
 		margin: 0;
@@ -318,13 +316,37 @@
 	.menu-wrapper ul li .submenu-wrap {
 		text-align: left;
 	}
-	.project-inner-wrap #plg-content .aside {
-		display: none;
+	.project-inner-wrap {
+		background: #FFFFFF;
+		border: 1px solid #CCC;
 	}
-	.project-inner-wrap #plg-content .subject {
-		margin-right: 0;
-		min-width: 400px;
-		width: 100%;
-		margin-right: 0;
+}
+@media all and (max-width: 750px) {
+	.project-header {
+		min-height: 200px;
 	}
+	.menu-wrapper { 
+		padding-left: 2em;
+	}
+	.suggestions div {
+		max-width: 45%;
+	}
+	.com_projects .project-header #member_options {
+		margin-top: 150px;
+		width: 200px;
+		position: absolute;
+		left: 220px;
+	}
+}
+@media all and (max-width: 650px) {
+	.suggestions div {
+		max-width: 100%;
+		min-width: 100%;
+	}
+}
+/*
+	Remove fixed width
+--------------------------------------------- */
+.project-inner-wrap .content-files  {
+	min-width: initial;
 }
