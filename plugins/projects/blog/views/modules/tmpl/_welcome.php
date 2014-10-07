@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $max_s = 3;
 $actual_s = count($this->suggestions) >= $max_s ? $max_s : count($this->suggestions);
 
-if ($actual_s <= 1) 
+if ($actual_s <= 1)
 {
 	return;
 }
