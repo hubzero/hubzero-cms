@@ -74,9 +74,13 @@ HUB.Time = {
 		});
 
 		if (!!$.prototype.HUBfancyselect) {
-			$('select').HUBfancyselect({
+			$('select').not('.no-search').HUBfancyselect({
 				'showSearch'         : true,
-				'searchPlaceholder'  : 'seach...'
+				'searchPlaceholder'  : 'search...'
+			});
+
+			$('select.no-search').HUBfancyselect({
+				'showSearch' : false
 			});
 		}
 	}
