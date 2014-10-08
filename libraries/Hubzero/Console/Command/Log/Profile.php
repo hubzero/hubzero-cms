@@ -77,7 +77,7 @@ class Profile extends Base
 			$dir = '/var/log/hubzero-cms';
 		}
 
-		$path = $dir . '/profile.log';
+		$path = $dir . '/cmsprofile.log';
 
 		return $path;
 	}
