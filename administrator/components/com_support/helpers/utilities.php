@@ -87,7 +87,9 @@ class SupportUtilities
 						if (preg_match("/\.(bmp|gif|jpg|jpe|jpeg|png)$/i", $path))
 						{
 							$file = basename($path);
-							$contents['multipart'] = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img src="' . $message->getEmbed($path) . '" alt="" />', $contents['multipart']);
+							$size = getimagesize($path);
+							$width = ($size[0] > 650 ? 650 : $size[0]);
+							$contents['multipart'] = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img width="" src="' . $message->getEmbed($path) . '" alt="" />', $contents['multipart']);
 						}
 						else
 						{
