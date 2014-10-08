@@ -25,14 +25,7 @@ class When extends \DateTime
 
     public function __construct($time = "now", $timezone = NULL)
     {
-        if ($timezone == null && version_compare(PHP_VERSION, '5.4.0', '<'))
-        {
-            $this->startDate = parent::__construct($time);
-        }
-        else
-        {
-            $this->startDate = parent::__construct($time, $timezone);
-        }
+        $this->startDate = parent::__construct($time, $timezone);
     }
 
     public function startDate($startDate)
@@ -752,14 +745,6 @@ class When extends \DateTime
                 $dayOfWeek = $this->startDate->format('l');
                 $dayOfWeekAbr = strtolower(substr($dayOfWeek, 0, 2));
                 $this->bydays = array("0" . $dayOfWeekAbr);
-            }
-        }
-
-        if ($this->freq === "yearly")
-        {
-            if (!isset($this->bydays))
-            {
-                $this->bydays = array('SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA');
             }
         }
     }

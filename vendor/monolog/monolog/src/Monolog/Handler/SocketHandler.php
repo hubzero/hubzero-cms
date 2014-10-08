@@ -49,10 +49,11 @@ class SocketHandler extends AbstractProcessingHandler
      * @throws \UnexpectedValueException
      * @throws \RuntimeException
      */
-    public function write(array $record)
+    protected function write(array $record)
     {
         $this->connectIfNotConnected();
-        $this->writeToSocket((string) $record['formatted']);
+        $data = $this->generateDataStream($record);
+        $this->writeToSocket($data);
     }
 
     /**
@@ -190,7 +191,7 @@ class SocketHandler extends AbstractProcessingHandler
     {
         $seconds = floor($this->timeout);
         $microseconds = round(($this->timeout - $seconds)*1e6);
-        
+
         return stream_set_timeout($this->resource, $seconds, $microseconds);
     }
 
@@ -224,6 +225,11 @@ class SocketHandler extends AbstractProcessingHandler
             return;
         }
         $this->connect();
+    }
+
+    protected function generateDataStream($record)
+    {
+        return (string) $record['formatted'];
     }
 
     private function connect()
