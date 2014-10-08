@@ -267,7 +267,8 @@ class SupportModelComment extends \Hubzero\Base\Model
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('parsed'));
+				$content = html_entity_decode(strip_tags($this->content('parsed')));
+				$content = str_replace('&nbsp;', ' ', $content);
 			break;
 
 			case 'raw':
