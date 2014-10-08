@@ -1480,3 +1480,34 @@
 			margin: 0 1em 0 1em;
 		}
 	}
+
+/* Embedded Media */
+.embedded-hubpresenter {
+	width: 100%;
+	height: 100px;
+	position: relative;
+	background: #444;
+}
+.embedded-hubpresenter:after {
+	content: 'Loading Media...';
+	position: absolute;
+	top: 40%;
+	left: 0;
+	right: 0;
+	text-align: center;
+	font-size: 30px;
+	font-weight: 200;
+	color: #fff;
+}
+.embedded-hubpresenter iframe {
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	-webkit-transition: opacity 0.3s;
+}
+.embedded-hubpresenter.loaded iframe {
+	opacity: 1;
+}
+.embedded-hubpresenter.loaded:after {
+	content: '';
+}

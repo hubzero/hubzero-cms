@@ -1427,7 +1427,13 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 			//if we have no errors
 			if (count($errors) > 0)
 			{
-				$body = HUBpresenterHelper::errorMessage($errors);
+				// Instantiate a new view
+				$this->view = new \Hubzero\Component\View(array(
+					'name'   => 'view',
+					'layout' => 'watch_error'
+				));
+				$this->view->errors = $errors;
+				$body = $this->view->loadTemplate();
 			}
 			else
 			{

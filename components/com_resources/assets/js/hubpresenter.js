@@ -17,6 +17,7 @@ HUB.Presenter = {
 		seeking = false;
 		mouseover = false;
 		track = null;
+		subtitles = null;
 		transcriptLineActive = 0;
 		transcriptBoxScrolling = false;
 		canSendTracking = true;
@@ -65,9 +66,9 @@ HUB.Presenter = {
 		if(!flash) {
 			jQ('#player').get(0).play();
 		}
-		
-		//hide the control bar after 3 seconds
-		jQ("#control-box").delay(3000).fadeOut("slow");
+	
+		// video preview
+		HUB.Presenter.previews();
 	},
 	
 	//-----
@@ -80,14 +81,8 @@ HUB.Presenter = {
 		//go to the first slide 
 		HUB.Presenter.showSlide( HUB.Presenter.activeSlide );
 		
-		//keyboard access
-		HUB.Presenter.keyboard();
-		
 		//slide list
 		HUB.Presenter.slideList();
-		
-		//shortcuts popup
-		HUB.Presenter.shortcuts();
 		
 		//mobile 
 		HUB.Presenter.mobile();
@@ -120,6 +115,9 @@ HUB.Presenter = {
 		
 		//handle subtitles
 		HUB.Presenter.subtitles();
+
+		// handle popout
+		HUB.Presenter.popout();
 	},
 	
 	//-----
@@ -238,7 +236,7 @@ HUB.Presenter = {
 			if(diff < 100)
 			{
 				margin = diff / 2;
-				jQ("#slides ul").css('margin-top', margin);
+				//jQ("#slides ul").css('margin-top', margin);
 			}
 		}
 		
@@ -273,8 +271,9 @@ HUB.Presenter = {
 		HUB.Presenter.slideListProgressBar( list_item.substr(6) );
 		
 		//if we are not scrolling in the list box scroll to the list position
+		//call stop incase user keeps clicking prev/next
 		if(!mouseover) {
-			jQ('#list_items').scrollTo( list_item , 1000, 'easeInOutQuad' );
+			jQ('#list_items').stop().scrollTo( list_item , 1000, 'easeInOutQuad' );
 		}
 		
 		//add active class to the current slide list item
@@ -365,8 +364,9 @@ HUB.Presenter = {
 			this.innerHTML = HUB.Presenter.formatTime(this.innerHTML);
 		});
 		
-		//define height of list   
-		jQ('#list_items').height( (jQ('#slides').height() - jQ('#media').height() - 1) );  //238
+		//define height of list
+		var height = jQ('#slides').height() - jQ('#media').height() - 1; //+ jQ('#control-box').height()
+		jQ('#list_items').height( height );
 		
 		//bind click events to scene selector
 		jQ('#list_items li').bind('click', function(e) {
@@ -513,56 +513,134 @@ HUB.Presenter = {
 			e.preventDefault();
 		});
 		
-		jQ("#link").bind('click', function(e) {
-			HUB.Presenter.linkVideo();
+		// link video
+		jQ('#link').bind('hover', function(e) {
 			e.preventDefault();
+			HUB.Presenter.linkVideo();
 		});
 		
+		// change speed
+		jQ('#speed').on('change', function(e){
+			var player = HUB.Presenter.getPlayer(),
+				rate   = jQ(this).val();
+			player.playbackRate = rate;
+		});
+
+		// theme changer
+		jQ('#theme').on('change', function(e) {
+			jQ('#control-box').attr('data-theme', jQ(this).val());
+			if (localStorage)
+			{
+				localStorage.setItem('resources.hubpresenter.theme', jQ(this).val());
+			}
+		});
+
+		// do we have a saved theme
+		if (localStorage && localStorage.getItem('resources.hubpresenter.theme'))
+		{
+			var theme = localStorage.getItem('resources.hubpresenter.theme');
+			jQ('#theme').val(theme)
+			jQ('#control-box').attr('data-theme', theme);
+		}
+
+		// do we want to display captions automatically
+		if (localStorage && localStorage.getItem('resources.' + jQ('#presenter-container').attr('data-id') + '.captions'))
+		{
+			var track = localStorage.getItem('resources.' + jQ('#presenter-container').attr('data-id') + '.captions');
+			if (track != '')
+			{
+				// wait a second before selecting value
+				// gives time for subtitles to be setup
+				setTimeout(function() {
+					jQ('#subtitle-selector option[value='+lang+']').attr('selected', 'selected');
+					jQ('#subtitle-selector').trigger('change');
+				}, 1000);
+			}
+		}
+		
+		// do we want to display transcript automatcially
+		if (localStorage && localStorage.getItem('resources.' + jQ('#presenter-container').attr('data-id') + '.transcript'))
+		{
+			var lang = localStorage.getItem('resources.' + jQ('#presenter-container').attr('data-id') + '.transcript');
+			if (lang != '')
+			{
+				// wait a second before selecting value
+				// gives time for transcripts to be setup
+				setTimeout(function() {
+					jQ('.transcript-selector option[value='+lang+']').attr('selected', 'selected');
+					jQ('.transcript-selector').trigger('change');
+				}, 1000);
+			}
+		}
+
 		//progress bar functionality
-		HUB.Presenter.progressBar();       
+		HUB.Presenter.progressBar();
 		
 		//volume bar functionality
 		HUB.Presenter.volumeBar();
-		
-		//show control bar when hovering over slide area
-		jQ("#presenter-container").bind({
-			mouseenter: function(e) {     
-				if(!jQ('#control-box').is(":visible") ) {
-					jQ('#control-box').fadeIn('slow');
+	},
+
+	//-----
+	
+	previews: function()
+	{
+		var p = HUB.Presenter.getPlayer();
+
+		// only append once
+		if (!jQ('#control-box .preview').length)
+		{
+			jQ('#control-box').append('<div class="preview"><video src="' + p.currentSrc + '"></video><div class="tip"></div></div>');
+		}
+
+		// get scale based on progress bar width and video length
+		var scale = jQ('#progress-bar').width() / HUB.Presenter.getDuration();
+
+		// show preview on mousemove
+		jQ('#progress-bar')
+			.on('mousemove', function(e) {
+				var origPos = e.pageX - jQ('#progress-bar').offset().left,
+					pos     = origPos,
+					min     = jQ('.preview').outerWidth() / 2,
+					max     = jQ('#progress-bar').width() - min,
+					tipPos  = pos,
+					tipMin  = jQ('.preview .tip').outerWidth() / 2,
+					tipMax  = jQ('#progress-bar').width();
+
+				// set the current time
+				jQ('.preview video').get(0).currentTime = pos / scale;
+				
+				// position thumb
+				if (pos < min)
+				{
+					pos = min;
 				}
-			},
-			mouseleave: function(e) {
-				jQ('#control-box').stop(true).fadeOut('slow', function() {
-			   		jQ(this).css('opacity', '');
-				});
-			},
-			mousemove: function(e) {
-			   	if(!jQ('#control-box').is(":visible") ) {
-					jQ('#control-box').fadeIn('slow');
-				} 
-			},
-			touchstart: function(e) {
-				clearTimeout(hideControlBarMobile);
-					
-				if(!jQ('#control-box').is(":visible") ) {
-					jQ('#control-box').fadeIn('slow');
+				else if (pos > max)
+				{
+					pos = max;
 				}
-			},
-			touchend: function(e) {
-				if(seeking === false) {
-					hideControlBarMobile = setTimeout('jQ("#control-box").stop(true).fadeOut("slow", function() { jQ(this).css("opacity", ""); });', 5000);
-				} else {
-					timeout = setTimeout('jQ("#presenter-container").trigger("touchend");' ,200);
+
+				// position tip
+				if (origPos > 0 && origPos < min)
+				{
+					tipPos = origPos - 6;
 				}
-			}
-		});
-		
-		//make the control bar draggable
-		jQ("#control-box").draggable({
-			cursor:'move', 
-			containment: '#presenter-content',
-			opacity:'0.8'
-		});
+				else if (origPos > max && origPos < tipMax)
+				{
+					p = origPos - 6;
+					tipPos = p - pos + min;
+				}
+				else
+				{
+					tipPos = min - 6;
+				}
+
+				// set position
+				jQ('.preview').css('left', pos);
+				jQ('.preview .tip').css('left', tipPos);
+			})
+			.on('hover', function(e) {
+				jQ('.preview').toggleClass('visible');
+			});
 	},
 	      
 	//-----
@@ -573,11 +651,13 @@ HUB.Presenter = {
 			player = HUB.Presenter.getPlayer();         
 	            	
 		if( paused ) {
-			jQ("#play-pause").css('background','url(/components/com_resources/assets/img/hubpresenter/play.png)');
+			jQ("#play-pause").removeClass('playing').addClass('paused');
+			jQ('#presenter-content').addClass('paused');
 			if( click ) 
 				player.play();
 		} else {
-			jQ("#play-pause").css('background','url(/components/com_resources/assets/img/hubpresenter/pause.png)'); 
+			jQ("#play-pause").removeClass('paused').addClass('playing');
+			jQ('#presenter-content').removeClass('paused');
 			if( click )
 				player.pause();
 		}  
@@ -644,7 +724,7 @@ HUB.Presenter = {
 	
 	//-----
 	
-	linkVideo: function()
+	linkVideo: function(input)
 	{
 		var time_hash,
 			url = window.location.href,
@@ -666,9 +746,46 @@ HUB.Presenter = {
 		//remove current time form media tracking
 		url = url.replace(/%3A/g, ':');
 		url = url.replace(/&time=\d{2}:\d{2}:\d{2}/, '');
-		
-		//promt user with link to this spot in video
-		prompt("Link to Current Position in Presentation", url + time_hash);
+		url = url + time_hash;
+
+		// set val and select
+		jQ('.link-controls input')
+			.val(url)
+			.on('click', function(event){
+				jQ(this).select();
+			});
+	},
+
+	//-----
+	
+	popout: function()
+	{
+		if (parent.HUB.Resources)
+		{
+			jQ('.embed-popout').css('display', 'inline-block').on('click', function() {
+				var current = HUB.Presenter.formatTime(HUB.Presenter.getCurrent());
+				parent.HUB.Resources.popoutInlineHubpresnter(current);
+			});
+
+			jQ('.embed-fullscreen').css('display', 'inline-block').on('click', function() {
+				if (jQ(this).text() == 'Fullscreen')
+				{
+					jQ(this)
+						.removeClass('icon-fullscreen')
+						.addClass('icon-exit-fullscreen')
+						.text('Exit Fullscreen');
+					parent.HUB.Resources.fullscreenHubpresenter();
+				}
+				else
+				{
+					jQ(this)
+						.removeClass('icon-exit-fullscreen')
+						.addClass('icon-fullscreen')
+						.text('Fullscreen');
+					parent.HUB.Resources.exitFullscreenHubpresenter();
+				}
+			});
+		}
 	},
 	
 	//-----
@@ -701,6 +818,7 @@ HUB.Presenter = {
 			step: 0.1,
 			min:0,
 			max:1,
+			orientation: 'vertical',
 			slide: function( event, ui ) {
 				HUB.Presenter.volumeIcon(ui.value * 100);
 				HUB.Presenter.setVolume( ui.value );
@@ -711,73 +829,6 @@ HUB.Presenter = {
 		if(!flash)
 			HUB.Presenter.syncVolume();
 	},
-	
-	
-	//----------------------------------------
-	//	Keyboard Shortcuts
-	//----------------------------------------
-	
-	keyboard: function()
-	{
-		//Pause/Play
-		jQ(document.body).bind('keydown','p', function() { HUB.Presenter.playPause(true); return false; });
-		jQ(document.body).bind('keydown','space', function() { HUB.Presenter.playPause(true); return false; });
-		
-		//next slide
-		jQ(document.body).bind('keydown','down', function() { HUB.Presenter.nextSlide(); return false; });
-		jQ(document.body).bind('keydown','right', function() { HUB.Presenter.nextSlide(); return false; });
-		
-		//previous slide
-		jQ(document.body).bind('keydown','up', function() { HUB.Presenter.previousSlide(); return false; });
-		jQ(document.body).bind('keydown','left', function() { HUB.Presenter.previousSlide(); return false; });
-
-		//mute player
-		jQ(document.body).bind('keydown','m', function() { HUB.Presenter.setVolume(0); return false; });
-	
-		//increase volume
-		jQ(document.body).bind('keydown','»', function() { 
-			var volume = HUB.Presenter.getVolume();
-			volume = (volume <= 0.90) ? volume += 0.1 : volume = 1.0;
-			HUB.Presenter.setVolume(volume);
-			return false;
-		});
-		
-		//decrease volume
-		jQ(document.body).bind('keydown','½', function() {
-			var volume = HUB.Presenter.getVolume();
-			volume = (volume >= 0.1) ? volume -= 0.1 : volume = 0.0;
-			HUB.Presenter.setVolume(volume);
-			return false;
-		});
-		
-		//hide the shortcuts box
-		jQ(document.body).bind('keydown','esc', function() { 
-			if( jQ("#presenter-shortcuts-box").is(":visible") ) {
-				jQ("#presenter-shortcuts-box").fadeOut("slow");
-			}
-			return false;
-		});
-	},
-	
-	//-----
-	
-	shortcuts: function()
-	{
-		jQ('#shortcuts').bind("click", function(e) {
-			if( jQ("#presenter-shortcuts-box").is(":visible") ) {
-				jQ("#presenter-shortcuts-box").fadeOut("slow");
-			} else {
-				jQ("#presenter-shortcuts-box").hide().fadeIn("slow");
-			}
-			e.preventDefault();
-		});
-		
-		jQ("#shortcuts-close").bind("click", function(e) {
-			jQ("#presenter-shortcuts-box").fadeOut("slow");
-			e.preventDefault();
-		});
-	},
-	
 	
 	//----------------------------------------
 	//	Mobile
@@ -842,8 +893,8 @@ HUB.Presenter = {
 								<a target='_blank' href=\"http://twitter.com/home?status=Currently Watching: " + window.location +"\" id=\"twitter\" title=\"Share on Twitter\">Twitter</a> \
 							</div> \
 						</div> \
-						<a id=\"replay-back\" href=\"#\">&laquo; Close Presentation</a> \
-						<a id=\"replay-now\" href=\"#\">Replay Presentation</a> \
+						<a class=\"btn icon-close\" id=\"replay-back\" href=\"#\">Close Presentation</a> \
+						<a class=\"btn btn-info icon-replay\" id=\"replay-now\" href=\"#\">Replay Presentation</a> \
 					  </div>";
 		
 		jQ( replay ).hide().appendTo("#presenter-container").fadeIn("slow");
@@ -934,7 +985,8 @@ HUB.Presenter = {
 	
 	//----- 
 	       
-	noFlash: function() {  
+	noFlash: function()
+	{  
 		//remove the overlay
 		jQ("#overlayer").remove();  
 		 
@@ -982,7 +1034,7 @@ HUB.Presenter = {
 			duration = HUB.Presenter.getDuration();
 		
 		//calculate the progress
-		progress = HUB.Presenter.formatTime( current ) + "/" + HUB.Presenter.formatTime( duration )
+		progress = HUB.Presenter.formatTime( current ) + " / " + HUB.Presenter.formatTime( duration )
 				
 		//set media progress
 		jQ('#media-progress').html(progress);
@@ -1008,8 +1060,10 @@ HUB.Presenter = {
 	{
 		if(!flash) {
 			jQ('#player').get(0).currentTime = time;
+			HUB.Presenter.syncSlides();
 		} else {
 			flowplayer("flowplayer").seek(time);
+			HUB.Presenter.flashSyncSlides();
 		}
 	},
 	
@@ -1054,25 +1108,6 @@ HUB.Presenter = {
 		
 		return ( jQ(item).length ) ? item : HUB.Presenter.getListItem(slide, direction);
 	},
-
-	//-----
-	
-	hideControlBar: function()
-	{
-		var box = {
-			'top': jQ("#presenter-left").position().top,
-			'bottom': (jQ("#presenter-left").position().top + jQ("#presenter-left").height()),
-			'left': jQ("#presenter-left").position().left,
-			'right': (jQ("#presenter-left").position().left + jQ("#presenter-left").width())
-		};
-		
-		jQ(document).mousemove(function(e) {
-			if(e.pageX < box.left || e.pageX > box.right || e.pageY < box.top || e.pageY > box.bottom) {
-				jQ("#control-box").fadeOut("slow");
-				clearInterval(hideControls);
-			}
-		});
-	},
 	
 	//-----
 	
@@ -1110,19 +1145,23 @@ HUB.Presenter = {
 	
 	volumeIcon: function( volume )
 	{
-		var icon = jQ('#volume-icon');
-		
+		var icon = jQ('#volume');
+
 		if(volume == 0)
-			icon.css('background-position','0 0');
+			icon.removeClass('low medium high')
+				.addClass('none');
 			
 		if( volume > 0 && volume < 33) 
-			icon.css('background-position','-24px 0');
+			icon.removeClass('zero medium high')
+				.addClass('low');
 			
 		if( volume > 33 && volume < 66) 
-			icon.css('background-position','-48px 0');
+			icon.removeClass('zero low high')
+				.addClass('medium');
 			
 		if( volume > 66) 
-			icon.css('background-position','-72px 0');
+			icon.removeClass('zero low medium')
+				.addClass('high');
 	},
 	
 	locationHash: function()
@@ -1179,6 +1218,18 @@ HUB.Presenter = {
 	
 	resume: function( time )
 	{
+		// auto resume
+		var queryString = window.location.search;
+		if (queryString.match(/auto-resume=true/g))
+		{
+			// use timeout to allow media to load
+			setTimeout(function()
+			{
+				HUB.Presenter.playPause(true);
+			}, 250);
+			return;
+		}
+
 		if (!jQ("#presenter-container #resume").length)
 		{
 			//video container must be position relatively 
@@ -1191,8 +1242,8 @@ HUB.Presenter = {
 								<p>Would you like to resume video playback where you left off last time?</p> \
 								<div id=\"time\">" + time + "</div> \
 							</div> \
-							<a id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
-							<a id=\"resume-video\" href=\"#\">Resume Video</a> \
+							<a class=\"btn icon-restart\" id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
+							<a class=\"btn btn-info icon-play\" id=\"resume-video\" href=\"#\">Resume Video</a> \
 						  </div>";
 			
 			//add replay to video container
@@ -1336,8 +1387,8 @@ HUB.Presenter = {
 		var sub_titles = HUB.Presenter.getSubtitles();
 		
 		//create elements on page to hold subtitles
-		if(sub_titles.length > 0) {
-			
+		if(sub_titles.length > 0)
+		{	
 			//setup subtitle picker
 			HUB.Presenter.setupSubtitlePicker( sub_titles );
 			
@@ -1348,7 +1399,7 @@ HUB.Presenter = {
 			var syncInterval = setInterval( 
 				function() {
 					HUB.Presenter.syncSubtitles( sub_titles );
-				}, 100);
+				}, 300);
 		}
 	},
 	
@@ -1356,55 +1407,175 @@ HUB.Presenter = {
 	
 	setupSubtitlePicker: function( sub_titles )
 	{
-		var auto = false
+		var auto = false;
 		
-		jQ("#control-box").after("<div id=\"video-subtitles\"></div>");
-		jQ("#switch").after("<ul id=\"subtitle-picker\"><li><a href=\"javascript:void(0);\">CC</a><ul id=\"cc\"><li><a class=\"active\" rel=\"\" href=\"#\">None</a></ul></li></ul>");
+		// show subtitle button
+		jQ('#subtitle').show();
 
-		for(n=0; n<sub_titles.length; n++) {
-			var sub = sub_titles[n],
+		// add each subtitle to caption divs & selector
+		for(n=0; n<sub_titles.length; n++)
+		{
+			var sel = '',
+				sub = sub_titles[n],
 				sub_lang = sub.lang.toLowerCase(),
 				sub_lang_text = sub.lang;
 			
 			//do we auto play
-			if(parseInt(sub.auto))
+			if (parseInt(sub.auto))
 			{
 				auto = true;
 				track = sub_lang;
+				sel = 'selected="selected"';
 			}
 			
 			jQ("#video-subtitles").append("<div id=\"" + sub_lang + "\"></div>");
-			jQ("#cc").append("<li><a rel=\"" + sub_lang + "\" class=\"" + sub_lang + "\" href=\"javascript:void(0);\">" + sub_lang_text + "</a></li>");
+			jQ('#subtitle-selector').append('<option ' + sel + ' value="' + sub_lang + '">' + sub_lang_text + '</option>');
 		}
 		
 		//if we are auto showing subs make sure picker reflects that
-		if(auto) {
-			jQ("#subtitle-picker a").addClass("active");
-			jQ("#cc a").removeClass("active");
-			jQ("#cc a." + track).addClass("active");
+		if (auto)
+		{
+			jQ('#subtitle').addClass('on');
 		}
-		
-		
-		jQ("#subtitle-picker ul a").live("click", function(e) {
-			track = this.rel;
-			
-			if(track != "") {
-				jQ("#subtitle-picker a").addClass("active");
-			} else {
-				jQ("#subtitle-picker a").removeClass("active");
+
+		// handle subtitle changes
+		jQ("#subtitle-selector").on("change", function(e) {
+			track = jQ(this).val();
+			if (track == '')
+			{
+				jQ('#subtitle').removeClass('on');
 			}
-			
-			jQ("#cc a").removeClass("active");
-			jQ(this).addClass("active");
-			
-			e.preventDefault();
+			else
+			{
+				jQ('#subtitle').addClass('on');
+			}
+
+			// set transcript lang
+			if (localStorage)
+			{
+				localStorage.setItem('resources.' + jQ('#presenter-container').attr('data-id') + '.captions', track);
+			}
 		});
+
+		// show options
+		jQ('.subtitle-controls .options-toggle').on('click', function(event) {
+			var title = (jQ(this).html() == 'Options') ? 'Hide Options' : 'Options';
+			jQ(this).html(title);
+			jQ('.subtitle-settings').slideToggle();
+			jQ('.subtitle-controls').toggleClass('fixed');
+		});
+
+		// font selector
+		jQ('#font-selector').on('change', function() {
+			jQ('.subtitle-settings-preview .test').css('font-family', jQ(this).val());
+		});
+
+		// font size selector
+		jQ('#font-size-selector').on('change', function() {
+			jQ('.subtitle-settings-preview .test').css('font-size', jQ(this).val() + 'px');
+		});
+
+		// font color picker
+		jQ('#font-color').colpick({
+			layout: 'hex',
+			submit: 1,
+			onChange: function(hsb,hex,rgb,fromSetColor) 
+			{
+				if(!fromSetColor)
+					jQ('.subtitle-settings-preview .test').css('color', '#' + hex);
+			},
+			onSubmit: function(hsb,hex,rgb,fromSetColor)
+			{
+				// color chooser & hide colpick
+				jQ('#font-color')
+					.attr('data-color', '#' + hex)
+					.css('background-color', '#' + hex)
+					.colpickHide();
+			}
+		});
+		
+		// background color picker
+		jQ('#background-color').colpick({
+			layout: 'hex',
+			submit: 1,
+			onChange: function(hsb,hex,rgb,fromSetColor)
+			{
+				if(!fromSetColor)
+					jQ('.subtitle-settings-preview .test').css('background-color', '#' + hex);
+			},
+			onSubmit: function(hsb,hex,rgb,fromSetColor)
+			{
+				// set chooser color & close colpic
+				jQ('#background-color')
+					.attr('data-color', '#' + hex)
+					.css('background-color', '#' + hex)
+					.colpickHide();
+			}
+		});
+
+		// save settings
+		jQ('#subtitle-settings-save').on('click', function(event) {
+			event.preventDefault();
+			var font            = jQ('#font-selector').val(),
+				fontSize        = jQ('#font-size-selector').val() + 'px',
+				fontColor       = jQ('#font-color').attr('data-color'),
+				backgroundColor = jQ('#background-color').attr('data-color');
+
+			// style the subtitles
+			jQ('#video-subtitles div').css({
+				'font-family'     : font,
+				'font-size'       : fontSize,
+				'color'           : fontColor,
+				'background-color': backgroundColor
+			});
+
+			// store in localstorage or cookie
+			if (localStorage)
+			{
+				localStorage.setItem('resources.hubpresenter.font-family', font);
+				localStorage.setItem('resources.hubpresenter.font-size', fontSize);
+				localStorage.setItem('resources.hubpresenter.font-color', fontColor);
+				localStorage.setItem('resources.hubpresenter.background-color', backgroundColor);
+			}
+
+			// reset options toggle text
+			jQ('.subtitle-controls .options-toggle').html('Options');
+
+			// remove fixed class on control box and hide options
+			jQ('.subtitle-controls').toggleClass('fixed');
+			jQ('.subtitle-settings').slideToggle();
+		});
+
+		// retrieve saved values
+		// check for any key to be saved
+		if (localStorage && localStorage.getItem('resources.hubpresenter.font-family'))
+		{
+			var font            = localStorage.getItem('resources.hubpresenter.font-family'),
+				fontSize        = localStorage.getItem('resources.hubpresenter.font-size'),
+				fontColor       = localStorage.getItem('resources.hubpresenter.font-color'),
+				backgroundColor = localStorage.getItem('resources.hubpresenter.background-color');
+
+			// prefill options
+			jQ('#font-selector').val(font);
+			jQ('#font-size-selector').val(fontSize.replace('px', ''));
+			jQ('#font-color').attr('data-color', fontColor).css('background-color', fontColor);
+			jQ('#background-color').attr('data-color', backgroundColor).css('background-color', backgroundColor);
+
+			// style the preview & actual subtitles
+			jQ('#video-subtitles div, .subtitle-settings-preview .test').css({
+				'font-family'     : font,
+				'font-size'       : fontSize,
+				'color'           : fontColor,
+				'background-color': backgroundColor
+			});
+		}
 	},
 	
 	//-----
 	
 	syncSubtitles: function( sub_titles )
 	{
+		// get current time
 		current = HUB.Presenter.getCurrent();
 
 		// get the subs for the track we have selected
@@ -1414,14 +1585,15 @@ HUB.Presenter = {
 			}
 		}
 		
-		// clear the subtitle tracks between 
-		jQ("#video-subtitles div").hide().html("");
+		// clear the subtitle tracks between
+		jQ("#video-subtitles div").removeClass('showing').hide().html("");
 		
 		for(i in subs) {
 			start = subs[i].start;
 			end = subs[i].end;
 			text = subs[i].text;
 			if(current >= start && current <= end) {
+				jQ("#video-subtitles #" + track).addClass('showing');
 				jQ("#video-subtitles #" + track).show().html( text.replace( "\n","<br />") );
 			}
 		}
@@ -1531,10 +1703,8 @@ HUB.Presenter = {
 		{
 			return;
 		}
-		
-		//add transcript toggle and add container
-		jQ('#presenter-container')
-			.append('<a href="javascript:void(0);" id="transcript-toggle">Show Transcript</a>');
+
+		subtitles = sub_titles;
 		
 		//add subtitles
 		for (var i = 0, n = sub_titles.length; i < n; i++)
@@ -1543,7 +1713,7 @@ HUB.Presenter = {
 				subs     = sub_titles[i].subs;
 			
 			//add language to subtitle language picker
-			jQ('#transcript-selector').append('<option value="' + language.toLowerCase() + '">' + language + '</option>');
+			jQ('.transcript-selector').append('<option value="' + language.toLowerCase() + '">' + language + '</option>');
 			
 			//add container for each language transcript
 			jQ('#transcript-container #transcripts').append('<div class="transcript transcript-' + language.toLowerCase() + '"></div>')
@@ -1568,51 +1738,47 @@ HUB.Presenter = {
 		
 		//sync transcript
 		setInterval(function() {
-			HUB.Presenter.transcriptSync( sub_titles );
-		}, 500);
+			HUB.Presenter.transcriptSync();
+		}, 300);
 	},
 	
 	//-----
 	
 	transcriptToggle: function()
-	{
-		//add click event to transcript toggle
-		jQ('#presenter-container').on('click', '#transcript-toggle', function(event) {
-			event.preventDefault();
-			
-			//if we opened via popup, must resize window
-			if (window.opener)
+	{	
+		//handle switching languages
+		jQ('.transcript-selector').on('change', function(event) {
+			var language = jQ(this).val();
+
+			if (language)
 			{
-				var transcriptContainerHeight = jQ('#transcript-container').outerHeight(true);
-				if (jQ('#transcript-container').is(':visible'))
-				{
-					window.resizeBy(0, -transcriptContainerHeight);
-				}
-				else
-				{
-					window.resizeBy(0, transcriptContainerHeight);
-				}
-			}
-			
-			//change title
-			if (jQ(this).text() == 'Show Transcript')
-			{
-				jQ(this).text('Hide Transcript');
+				jQ('#transcript-container').slideDown(function() {
+					// resize parent
+					if (parent.HUB.Resources)
+					{
+						parent.HUB.Resources.resizeInlineHubpresenter(jQ('body').outerHeight() + 20);
+					}
+				});
 			}
 			else
 			{
-				jQ(this).text('Show Transcript');
+				jQ('#transcript-container').slideUp(function(){
+					// resize parent
+					if (parent.HUB.Resources)
+					{
+						parent.HUB.Resources.resizeInlineHubpresenter(jQ('body').outerHeight() + 20);
+					}
+				});
 			}
-			
-			//slide toggle the transcript pane
-			jQ('#transcript-container').slideToggle();
-		});
-		
-		//handle switching languages
-		jQ('#transcript-selector').on('change', function(event) {
-			var language = jQ(this).val();
+			jQ('#transcript-select').html(jQ('.transcript-selector option:selected').text());
 			jQ('#transcripts').find('.transcript').hide();
 			jQ('#transcripts').find('.transcript-' + language).show();
+
+			// set transcript lang
+			if (localStorage)
+			{
+				localStorage.setItem('resources.' + jQ('#presenter-container').attr('data-id') + '.transcript', jQ(this).val());
+			}
 		});
 	},
 	
@@ -1669,6 +1835,9 @@ HUB.Presenter = {
 			
 			jQ('#font-smaller').removeClass('inactive');
 		});
+
+		// resync
+		HUB.Presenter.transcriptSync();
 	},
 	
 	//-----
@@ -1688,22 +1857,21 @@ HUB.Presenter = {
 		jQ('.transcript-line').on('click', function(event) {
 			event.preventDefault();
 			var time = jQ(this).data('time');
-			
 			HUB.Presenter.seek( time );
 		});
 	},
 	
 	//-----
 	
-	transcriptSync: function( sub_titles )
+	transcriptSync: function()
 	{
 		var currentTime = HUB.Presenter.getCurrent(),
-			currentTranscript = jQ('#transcript-selector').val();
+			currentTranscript = jQ('.transcript-selector').val();
 		
 		//get the subs for the track we have selected
-		for(i in sub_titles) {
-			if(sub_titles[i].lang.toLowerCase() == currentTranscript) {
-				var subs = sub_titles[i].subs;
+		for(i in subtitles) {
+			if(subtitles[i].lang.toLowerCase() == currentTranscript) {
+				var subs = subtitles[i].subs;
 			}
 		}
 		
@@ -1810,102 +1978,14 @@ if(mobile) {
 	});
 }
 
-//---------------------------------------------------------
-//	Preload Images Used in HUBpresenter App
-//--------------------------------------------------------- 
-
-function preload( images )
-{                       
-	var base = "/components/com_resources/assets/img/hubpresenter/",
-		image = new Image();     
-		
-	for(i=0; i<images.length; i++) {
-		image.src = base + images[i];
-	}
-}
-
-//-----
-
-var app_images = [
-	'ajax-loader-1.gif',
-	'bg.png',
-	'close.png',
-	'facebook.png',
-	'handle.png',
-	'keyboard.png',
-	'link.png',
-	'nanohub.png', 
-	'next.png',
-	'pause.png', 
-	'play-button.png',
-	'play.png',  
-	'previous.png',
-	'replay.png',
-	'slide-handle-hover.png',
-	'slide-handle.png',
-	'speaker.png',
-	'switch.png',
-	'twitter.png',
-	'twofingers.png',
-	'volume.png'
-	];
-
-//-----
-
-preload( app_images );
-
-//-----
 
 /*
-
 highlight v4
-
 Highlights arbitrary terms.
-
 <http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html>
-
 MIT license.
-
 Johann Burkard
 <http://johannburkard.de>
 <mailto:jb@eaio.com>
-
 */
-
-jQuery.fn.highlight = function(pat) {
- function innerHighlight(node, pat) {
-  var skip = 0;
-  if (node.nodeType == 3) {
-   var pos = node.data.toUpperCase().indexOf(pat);
-   if (pos >= 0) {
-    var spannode = document.createElement('span');
-    spannode.className = 'highlight';
-    var middlebit = node.splitText(pos);
-    var endbit = middlebit.splitText(pat.length);
-    var middleclone = middlebit.cloneNode(true);
-    spannode.appendChild(middleclone);
-    middlebit.parentNode.replaceChild(spannode, middlebit);
-    skip = 1;
-   }
-  }
-  else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
-   for (var i = 0; i < node.childNodes.length; ++i) {
-    i += innerHighlight(node.childNodes[i], pat);
-   }
-  }
-  return skip;
- }
- return this.length && pat && pat.length ? this.each(function() {
-  innerHighlight(this, pat.toUpperCase());
- }) : this;
-};
-
-jQuery.fn.removeHighlight = function() {
- return this.find("span.highlight").each(function() {
-  this.parentNode.firstChild.nodeName;
-  with (this.parentNode) {
-   replaceChild(this.firstChild, this);
-   normalize();
-  }
- }).end();
-};
+jQuery.fn.highlight=function(e){function t(e,n){var r=0;if(e.nodeType==3){var i=e.data.toUpperCase().indexOf(n);if(i>=0){var s=document.createElement("span");s.className="highlight";var o=e.splitText(i);var u=o.splitText(n.length);var a=o.cloneNode(true);s.appendChild(a);o.parentNode.replaceChild(s,o);r=1}}else if(e.nodeType==1&&e.childNodes&&!/(script|style)/i.test(e.tagName)){for(var f=0;f<e.childNodes.length;++f){f+=t(e.childNodes[f],n)}}return r}return this.length&&e&&e.length?this.each(function(){t(this,e.toUpperCase())}):this};jQuery.fn.removeHighlight=function(){return this.find("span.highlight").each(function(){this.parentNode.firstChild.nodeName;with(this.parentNode){replaceChild(this.firstChild,this);normalize()}}).end()}

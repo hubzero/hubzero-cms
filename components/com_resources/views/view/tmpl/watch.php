@@ -33,7 +33,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('hubpresenter.css')
      ->js('hubpresenter.js')
-     ->js('hubpresenter.plugins.js');
+     ->js('hubpresenter.plugins.js')
+     ->css('jquery.colpick.css', 'system')
+     ->js('jquery.colpick', 'system');
 
 //get the manifest for the presentation
 $contents = file_get_contents(JPATH_ROOT.$this->manifest);
@@ -208,21 +210,8 @@ $presentation->subtitles = array_values($presentation->subtitles);
 	<?php endif; ?>
 </div>
 
-<div id="presenter-shortcuts-box"> 
-	<h2>Keyboard Shortcuts</h2>
-	<a href="#" id="shortcuts-close">Close</a>
-	<ul id="shortcuts-content">
-		<li><kbd>Space</kbd> or <kbd>P</kbd><span>Pauses/Plays Presentation</li>
-		<li><kbd>&darr;</kbd> or <kbd>&rarr;</kbd><span>Next Slide</span></li>
-		<li><kbd>&uarr;</kbd> or <kbd>&larr;</kbd><span>Previous Slide</span></li>
-		<li><kbd>+</kbd><span>Increase Volume</span></li>
-		<li><kbd>-</kbd><span>Decrease Volume</span></li>
-		<li><kbd>M</kbd><span>Mute Presentation</span></li>
-	</ul>
-</div>
-
 <?php $presenationFormat = (isset($presentation->format) && strtoupper($presentation->format) == 'HD') ? 'presentation-hd' : ''; ?>
-<div id="presenter-container" class="<?php echo $presenationFormat; ?>">
+<div id="presenter-container" class="<?php echo $presenationFormat; ?>" data-id="<?php echo $this->resid; ?>">
 	<div id="presenter-header">
 		<div id="title"><?php echo $rr->title; ?></div>
 		<div id="author"><?php if ($a) { echo "by: " . implode(", ", $a); } ?></div>
@@ -252,21 +241,150 @@ $presentation->subtitles = array_values($presentation->subtitles);
 					<?php endforeach; ?>
 				</ul>
 			</div><!-- /#slides -->
-			<div id="control-box" class="no-controls">
+			<div id="control-box" class="no-controls" data-theme="dark">
+				<div id="progress-bar"></div>
 				<div id="control-buttons">
-					<div id="volume-icon"></div>
-					<div id="volume-bar"></div>
-					<a id="previous" href="#" title="Previous Slide">Previous</a>
-					<a id="play-pause" href="#" title="Play Presentation">Pause</a>
-					<a id="next" href="#" title="Next Slide">Next</a>
-					<a id="shortcuts" href="#" title="Keyboard Shortcuts">Shortcuts</a>
-					<a id="link" href="#" title="Link to this Spot in Presentation">Link</a>
-					<a id="switch" href="#" title="Switch Placement of Video and Slides">Switch</a>
-				</div>
-				<div id="control-progress">
-					<div id="progress-bar"></div>
-					<div id="slide-markers"></div>
-					<div id="media-progress"></div>
+					<div id="control-buttons-left" class="cf">
+						<a id="previous" class="tooltips control" href="javascript:void(0);" title="Previous Slide">Previous</a>
+						<a id="play-pause" class="tooltips control" href="javascript:void(0);" title="Play Presentation">Pause</a>
+						<a id="next" class="tooltips control" href="javascript:void(0);" title="Next Slide">Next</a>
+						<div id="media-progress"></div>
+					</div>
+					<div id="control-buttons-right" class="cf">
+						<a id="subtitle" class="tooltips control" href="javascript:void(0);">
+							Subtitles/Captions
+							<div class="control-container subtitle-controls">
+								<h3>Captions/Transcript</h3>
+								<div class="grid">
+									<div class="col span4 label">
+										<label for="subtitle-selector">Captions:</label>
+									</div>
+									<div class="col span8 omega input">
+										<select id="subtitle-selector">
+											<option value="">None/Off</option>
+										</select>
+									</div>
+								</div>
+								<div class="grid">
+									<div class="col span4 label">
+										<label for="transcript-selector">Transcript:</label>
+									</div>
+									<div class="col span8 omega input">
+										<select class="transcript-selector">
+											<option value="">None/Off</option>
+										</select>
+									</div>
+								</div>
+
+								<span class="options-toggle">Options</span>
+								<div class="subtitle-settings hide">
+									<div class="grid">
+										<div class="col span6 label">
+											<label for="font-selector">Font:</label>
+										</div>
+										<div class="col span6 omega input">
+											<select id="font-selector">
+												<option value="Arial" selected>Arial</option>
+												<option value="Times New Roman">Times New Roman</option>
+												<option value="Tahoma">Tahoma</option>
+												<option value="Trebuchet MS">Trebuchet MS</option>
+												<option value="Verdana">Verdana</option>
+												<option value="Courier New">Courier New</option>
+											</select>
+										</div>
+									</div>
+									<div class="grid">
+										<div class="col span6 label">
+											<label for="font-size-selector">Font Size:</label>
+										</div>
+										<div class="col span6 omega input">
+											<select id="font-size-selector">
+												<option value="12">Small</option>
+												<option value="18" selected>Medium</option>
+												<option value="24">Large</option>
+											</select>
+										</div>
+									</div>
+									<div class="grid">
+										<div class="col span6 label">
+											<label for="font-color">Font Color:</label>
+										</div>
+										<div class="col span6 omega input">
+											<div id="font-color" data-color="FFF" style="background-color: #FFF;"></div>
+										</div>
+									</div>
+									<div class="grid">
+										<div class="col span6 label">
+											<label for="background-color">Background:</label>
+										</div>
+										<div class="col span6 omega input">
+											<div id="background-color" data-color="000" style="background-color: #000;"></div>
+										</div>
+									</div>
+									<div class="grid">
+										<div class="col span12 omega subtitle-settings-preview-container">
+											<div class="subtitle-settings-preview">
+												<div class="test" style="font-family:arial; background-color: #000; color: #FFF; font-size:18px;">This is an Example</div>
+											</div>
+										</div>
+									</div>
+									<div class="actions">
+										<button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save">Save</button>
+									</div>
+								</div>
+							</div>
+						</a>
+						<a id="volume" class="tooltips control " href="javascript:void(0);">
+							Volume
+							<div class="control-container volume-controls">
+								<div id="volume-bar"></div>
+							</div>
+						</a>
+						<a id="settings" class="tooltips control" href="javascript:void(0);" title="Adjust Settings for Playback">
+							Settings
+							<div class="control-container settings-controls">
+								<h3>Settings</h3>
+								<div class="grid">
+									<div class="col span6 label">
+										<label for="speed">Playback Rate:</label>
+									</div>
+									<div class="col span6 omega input">
+										<select id="speed">
+											<option value=".25">.25</option>
+											<option value=".5">.5</option>
+											<option selected value="1">Normal</option>
+											<option value="1.25">1.25</option>
+											<option value="1.5">1.5</option>
+											<option value="2">2</option>
+										</select>
+									</div>
+								</div>
+								<!-- <div class="grid">
+									<div class="col span6 label">
+										<label for="theme">Player Theme:</label>
+									</div>
+									<div class="col span6 omega input">
+										<select id="theme">
+											<option value="dark">Dark (default)</option>
+										</select>
+									</div>
+								</div> -->
+							</div>
+						</a>
+						<a id="link" class="tooltips control" href="javascript:void(0);" title="Link to this Spot in Presentation">
+							Link
+							<div class="control-container link-controls">
+								<h3>Link to Video <span>- at current position</span></h3>
+								<div class="grid">
+									<div class="col span12 omega">
+										<input type="text" value="ss" />
+										<span class="hint">(Command/Ctrl + C to Copy)</span>
+									</div>
+								</div>
+							</div>
+						</a>
+						<a id="switch" class="tooltips control" href="javascript:void(0);" title="Switch Placement of Video and Slides">Switch</a>
+					</div>
 				</div>
 			</div><!-- /#control-box -->
 		</div><!-- /#left -->
@@ -357,6 +475,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 						<img src="<?php echo $content_folder.DS.$presentation->placeholder; ?>" title="" id="placeholder" />
 					<?php endif; ?>
 				<?php endif; ?>
+				<div id="video-subtitles"></div>
 			</div>
 			<div id="list">
 				<ul id="list_items">
@@ -402,18 +521,17 @@ $presentation->subtitles = array_values($presentation->subtitles);
 	
 	<div id="transcript-container">
 		<div id="transcript-toolbar">
-			<select id="transcript-selector"></select>
+			<div id="transcript-select"></div>
 			<input type="text" id="transcript-search" placeholder="Search Transcript..." />
 			<a href="javascript:void(0);" id="font-bigger"></a>
 			<a href="javascript:void(0);" id="font-smaller"></a>
 		</div>
 		<div id="transcripts"></div>
 	</div>
-	
+	<div class="bottom-controls">
+		<a href="javascript:void(0);" class="btn btn-secondardy icon-fullscreen embed-fullscreen">Fullscreen</a>
+		<a href="javascript:void(0);" class="btn btn-secondardy icon-popout embed-popout">Pop Out</a>
+	</div>
 </div>
-<div id="twofinger">Use two Fingers to Scroll</div>
 
-
-<?php
-$this->doc->setTitle(stripslashes($rr->title));
-?>
+<?php $this->doc->setTitle(stripslashes($rr->title)); ?>
