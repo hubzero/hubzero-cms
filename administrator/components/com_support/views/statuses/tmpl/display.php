@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_RESOLUTIONS'), 'support.png');
+JToolBarHelper::title(JText::_('COM_SUPPORT_TICKETS') . ': ' . JText::_('COM_SUPPORT_STATUSES'), 'support.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
@@ -66,6 +66,7 @@ JToolBarHelper::deleteList();
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_SUPPORT_COL_FOR', 'open', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_SUPPORT_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_SUPPORT_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_SUPPORT_COL_COLOR', 'color', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -96,6 +97,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td><?php echo ($row->open ? JText::_('COM_SUPPORT_FOR_OPEN') : JText::_('COM_SUPPORT_FOR_CLOSED')); ?></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
 				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->alias)); ?></a></td>
+				<td><span style="display:block;width:1em;height:1em;overflow:hidden;text-indent:5em;border:1px solid #999;background-color:<?php echo ($row->color ? '#' . $row->color : 'transparent'); ?>"><?php echo $row->color; ?></span></td>
 			</tr>
 <?php
 	$k = 1 - $k;
