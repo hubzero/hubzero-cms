@@ -352,7 +352,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															}
 															else if ($a->get('type') == 'text' && $a->get('subtype') == 'note')
 															{
-																$link = '<span class="info">' . $this->escape(stripslashes($a->get('title'))) . '</span>';
+																$link = '<span class="info">' . $this->escape(stripslashes(($a->get('content')) ? $a->get('content') : $a->get('title'))) . '</span>';
 															}
 
 
@@ -363,7 +363,7 @@ if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0)) 
 															{
 																if ($a->get('type') == 'text' && $a->get('subtype') == 'note')
 																{
-																	$play = '<div class="asset-primary"><p class="info">' . $this->escape(stripslashes($a->get('title'))) . '</p></div>';
+																	$play = '<div class="asset-primary"><p class="info">' . $this->escape(stripslashes(($a->get('content')) ? $a->get('content') : $a->get('title'))) . '</p></div>';
 																}
 																else
 																{
