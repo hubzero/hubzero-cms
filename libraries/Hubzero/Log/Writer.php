@@ -82,11 +82,11 @@ class Writer
 	 * @param  string  $format
 	 * @return void
 	 */
-	public function useFiles($path, $level = 'debug', $format='', $dateFormat = 'Y-m-d H:i:s')
+	public function useFiles($path, $level = 'debug', $format='', $dateFormat = 'Y-m-d H:i:s', $permissions=null)
 	{
 		$level = $this->parseLevel($level);
 
-		$handler = new StreamHandler($path, $level);
+		$handler = new StreamHandler($path, $level, true, $permissions);
 		if ($format)
 		{
 			$handler->setFormatter(new LineFormatter($format, $dateFormat));
@@ -104,14 +104,14 @@ class Writer
 	 * @param  string  $format
 	 * @return void
 	 */
-	public function useDailyFiles($path, $days = 0, $level = 'debug', $format='')
+	public function useDailyFiles($path, $days = 0, $level = 'debug', $format='', $dateFormat = 'Y-m-d H:i:s', $permissions=null)
 	{
 		$level = $this->parseLevel($level);
 
-		$handler = new RotatingFileHandler($path, $days, $level);
+		$handler = new RotatingFileHandler($path, $days, $level, true, $permissions);
 		if ($format)
 		{
-			$handler->setFormatter(new LineFormatter($format, 'Y-m-d H:i:s'));
+			$handler->setFormatter(new LineFormatter($format, $dateFormat));
 		}
 
 		$this->monolog->pushHandler($handler);
