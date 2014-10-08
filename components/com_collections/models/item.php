@@ -634,7 +634,10 @@ class CollectionsModelItem extends CollectionsModelAbstract
 		}
 
 		// Process tags
-		$this->tag($this->get('_tags', ''), $this->get('created_by'));
+		if ($this->get('_tags', null) !== null)
+		{
+			$this->tag($this->get('_tags', ''), $this->get('created_by'));
+		}
 
 		return true;
 	}
