@@ -641,10 +641,13 @@ class CollectionsModelItem extends CollectionsModelAbstract
 		}
 
 		// Process tags
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
+		if ($this->get('_tags', null) !== null)
+		{
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'helpers' . DS . 'tags.php');
 
-		$bt = new CollectionsTags($this->_db);
-		$bt->tag_object($this->get('created_by'), $this->get('id'), $this->get('_tags', ''), 1, 1);
+			$bt = new CollectionsTags($this->_db);
+			$bt->tag_object($this->get('created_by'), $this->get('id'), $this->get('_tags', ''), 1, 1);
+		}
 
 		return true;
 	}
