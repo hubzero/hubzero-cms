@@ -41,11 +41,23 @@ HUB.Resources = {
 			height: height
 		}, 300);
 	},
+	resizeInlineVideo: function(height)
+	{
+		$('.embedded-video').animate({
+			height: height
+		}, 300);
+	},
 	popoutInlineHubpresnter: function(time)
 	{
 		var source = $('.embedded-hubpresenter iframe').attr('src');
 		HUBpresenter_window = window.open(source+'&time='+time+'&auto-resume=true','name','height=800,width=1100');
 		$('.hubpresenter').trigger('click');
+	},
+	popoutInlineVideo: function(time)
+	{
+		var source = $('.embedded-video iframe').attr('src');
+		HUBpresenter_window = window.open(source+'&time='+time+'&auto-resume=true','name','height=800,width=1100');
+		$('.video').trigger('click');
 	},
 	fullscreenHubpresenter: function()
 	{
@@ -210,39 +222,47 @@ jQuery(document).ready(function($){
 	
 	//html5 video open
 	$(".com_resources").on('click', '.video', function(event) {
-		var href = $(this).attr('href');
-		if ($(this).attr('href').indexOf('?') == -1) 
+		event.preventDefault();
+
+		if ($('.embedded-video').length)
 		{
-			href += '?tmpl=component';
-		} 
-		else 
-		{
-			href += '&tmpl=component';
+			// remove embedded content
+			$('.embedded-video').animate({
+				height: 0
+			}, 400, function(){
+				$('.embedded-video').remove();
+			});
+
+			// change bbb text
+			$(this).text('View Presentation');
 		}
+		else
+		{
+			var source = $(this).attr('href').tmplComponent();
+			var content = '<section class="embedded-video"><iframe src="' + source + '"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></section>';
+			$('section.upperpane').after(content);
+			$('.embedded-video iframe').load(function(event){
+				var iframe = $(this);
+				setTimeout(function() {
+					var height = iframe.contents().outerHeight(true);
+					
+					// make embed area height of iframe
+					$('.embedded-video').animate({
+						height: height
+					}, 800, function() {
+						$(this).addClass('loaded');
+					});
 
-		mobile = navigator.userAgent.match(/iPad|iPhone|iPod|Android/i) != null;
-		if (!mobile) {
-			event.preventDefault();
-			var w = 0,
-				h = 0,
-				dw = 900,
-				dh = 600;
+					// scroll to embedded media
+					$('body').animate({
+						scrollTop: $('.embedded-video').offset().top
+					}, 1000);
+				}, 100);
+				
+			});
 
-			//get the dimensions from classs name
-			dim = $(this).attr('class').split(" ").pop();
-
-			//if we have dimensions then parse them
-			if (dim.match(/[0-9]{2,}x[0-9]{2,}/g)) {
-				dim = dim.split("x");
-				w = dim[0];
-				h = dim[1];
-			} else {
-				w = dw;
-				h = dh;
-			}
-
-			//open poup
-			video_window = window.open( href,'videowindow','height=' + h + ', width=' + w + ', menubar=no, toolbar=no, titlebar=no, resizable=yes');
+			// change bbb text
+			$(this).text('Hide Presentation');
 		}
 	});
 

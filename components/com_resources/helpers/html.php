@@ -963,7 +963,7 @@ class ResourcesHtml
 
 					if ($rt->alias == 'video')
 					{
-						$class = 'video' . $class;
+						$class = 'video';
 					}
 
 					$pt = ResourcesType::getRecordInstance($resource->type);

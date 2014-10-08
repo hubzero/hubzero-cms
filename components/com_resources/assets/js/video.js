@@ -32,9 +32,6 @@ HUB.Video = {
 		//show loading graphic
 		$jQ('<div id="overlayer"></div>').appendTo(document.body);
 		
-		//add the control bar
-		$jQ("#video-container").append( HUB.Video.controls() );
-		
 		//can we play HTML5 video
 		flash = (!!document.createElement('video').canPlayType) ? false : true;
 		
@@ -80,8 +77,8 @@ HUB.Video = {
 			
 			if(isPopup) {
 				window.resizeTo(resize_width + padding, resize_height + toolbar);
+				//$jQ("#video-player").addClass('sized');
 			}
-			$jQ("#video-player").addClass('sized');
 		}
 		
 		//remove the overlay
@@ -109,6 +106,12 @@ HUB.Video = {
 			var player = HUB.Video.getPlayer();
 			$jQ("#video-flowplayer").height( player.getClip().metaData.height );
 		}
+
+		// video preview
+		HUB.Video.previews();
+
+		// handle popout
+		HUB.Video.popout();
 	},
 	
 	//-----
@@ -174,35 +177,8 @@ HUB.Video = {
 	
 	//-----
 	
-	controls: function()
-	{
-		
-		return "<div id=\"video-toolbar\"> \
-					<div id=\"volume-icon\"></div> \
-					<div id=\"volume-bar\"></div> \
-					<a id=\"play-pause\" href=\"#\" title=\"Play Video\">Pause</a> \
-					<a id=\"link\" href=\"#\" title=\"Link to this Spot in Presentation\">Link</a> \
-					<a id=\"full-screen\" href=\"#\" title=\"Full Screen\">Full Screen</a> \
-					<div id=\"progress-bar\"></div> \
-					<div id=\"media-progress\">00:00</div> \
-					<div id=\"media-remainder\">00:00</div> \
-				</div>";
-	},
-	
-	//-----
-	
 	controlBar: function()
 	{
-		//fade out toolbar
-		$jQ("#video-toolbar").delay(3000).fadeOut("slow");   
-		
-		//make the control bar draggable
-		$jQ("#video-toolbar").draggable({
-			cursor:'move', 
-			containment: '#video-container',
-			opacity:'0.8'
-		});
-		
 		//play pause functionality
 		$jQ('#play-pause').bind('click', function(e) {
 			HUB.Video.playPause(true);
@@ -220,15 +196,19 @@ HUB.Video = {
 			HUB.Video.fullScreen();
 			e.preventDefault();
 		});
+
+		// change speed
+		$jQ('#speed').on('change', function(e){
+			var player = HUB.Video.getPlayer(),
+				rate   = $jQ(this).val();
+			player.playbackRate = rate;
+		});
 		
 		//progress bar
 		HUB.Video.progressBar();
 		
 		//volume bar functionality
 		HUB.Video.volumeBar();
-		
-		//hide or show controls based on mousemovement
-		HUB.Video.toggleControls();
 	},
 	
 	//-----
@@ -238,12 +218,15 @@ HUB.Video = {
 		var paused = HUB.Video.isPaused(),
 			player = HUB.Video.getPlayer();
 	            	
-		if( paused ) {
-			$jQ("#play-pause").css('background','url(/components/com_resources/assets/img/video/pause.png)'); 
+		if (paused) {
+			$jQ("#play-pause").removeClass('paused').addClass('playing');
+			$jQ('#video-container').removeClass('paused');
+			
 			if( click ) 
 				player.play();
 		} else {
-			$jQ("#play-pause").css('background','url(/components/com_resources/assets/img/video/play.png)');
+			$jQ("#play-pause").removeClass('playing').addClass('paused');
+			$jQ('#video-container').addClass('paused');
 			if( click )
 				player.pause();
 		}  
@@ -272,31 +255,6 @@ HUB.Video = {
 		} else if(browser.match(/Firefox/g)) {
 			$jQ("#video-player").get(0).mozRequestFullScreen();
 		}
-	},
-	
-	//-----
-	
-	toggleControls: function()
-	{
-		$jQ("#video-container").live({
-			mouseenter: function(e) {
-				if(!$jQ('#video-toolbar').is(":visible") ) {
-					$jQ('#video-toolbar').fadeIn('slow');
-				}
-			},
-			mouseleave: function(e)
-			{
-				$jQ("#video-toolbar").stop(true).fadeOut("slow", function() {
-					$jQ(this).css('opacity', '');
-				});
-			},
-			mousemove: function(e) 
-			{
-				if(!$jQ('#video-toolbar').is(":visible") ) {
-					$jQ('#video-toolbar').fadeIn('slow');
-				}
-			}
-		});
 	},
 	
 	//-----
@@ -356,15 +314,14 @@ HUB.Video = {
 		
 		//format the progress and whats left
 		progress = HUB.Video.formatTime( current );
-		remainder = HUB.Video.formatTime( (duration-current) );
+		remainder = HUB.Video.formatTime( duration );
 		
 		//if we can remvoe the first two 00's lets do so
 		progress = (progress.substring(0,2) == 00) ? progress.substring(3) : progress;
 		remainder = (remainder.substring(0,2) == 00) ? remainder.substring(3) : remainder;
 		
 		//insert times into sections in toolbar
-		$jQ("#media-progress").html( progress );
-		$jQ("#media-remainder").html( "-" + remainder );
+		$jQ("#media-progress").html( progress + " / " + remainder );
 		$jQ("#progress-bar").slider('value', ((current / duration) * 100));
 	},
 	
@@ -418,6 +375,7 @@ HUB.Video = {
 			step: 0.1,
 			min:0,
 			max:1,
+			orientation: 'vertical',
 			slide: function( event, ui ) {
 				HUB.Video.volumeIcon( ui.value * 100 );
 				HUB.Video.setVolume( ui.value );
@@ -461,19 +419,23 @@ HUB.Video = {
 	
 	volumeIcon: function( volume )
 	{
-		var icon = $jQ('#volume-icon');
+		var icon = $jQ('#volume');
 		
 		if(volume == 0)
-			icon.css('background-position','0 0');
+			icon.removeClass('low medium high')
+				.addClass('none');
 			
 		if( volume > 0 && volume < 33) 
-			icon.css('background-position','-16px 0');
+			icon.removeClass('zero medium high')
+				.addClass('low');
 			
 		if( volume > 33 && volume < 66) 
-			icon.css('background-position','-32px 0');
+			icon.removeClass('zero low high')
+				.addClass('medium');
 			
 		if( volume > 66) 
-			icon.css('background-position','-48px 0');
+			icon.removeClass('zero low medium')
+				.addClass('high');
 	},
 	
 	//-----
@@ -501,9 +463,15 @@ HUB.Video = {
 		url = url.replace(/%3A/g, ':');
 		url = url.replace(/&time=\d{2}:\d{2}:\d{2}/, '');
 		
-		//promt user with link to this spot in video
-		prompt("Link to Current Position in Presentation", url + time_hash);
+		// set val and select
+		$jQ('.link-controls input')
+			.val(url)
+			.on('click', function(event){
+				$jQ(this).select();
+			});
 	},
+
+	//-----
 	
 	locationHash: function()
 	{
@@ -563,8 +531,83 @@ HUB.Video = {
 	
 	//-----
 	
+	previews: function()
+	{
+		var p = HUB.Video.getPlayer();
+
+		// only append once
+		if (!$jQ('#control-box .preview').length)
+		{
+			$jQ('#control-box').append('<div class="preview"><video src="' + p.currentSrc + '"></video><div class="tip"></div></div>');
+		}
+
+		// get scale based on progress bar width and video length
+		var scale = $jQ('#progress-bar').width() / HUB.Video.getDuration();
+
+		// show preview on mousemove
+		$jQ('#progress-bar')
+			.on('mousemove', function(e) {
+				var origPos = e.pageX - $jQ('#progress-bar').offset().left,
+					pos     = origPos,
+					min     = $jQ('.preview').outerWidth() / 2,
+					max     = $jQ('#progress-bar').width() - min,
+					tipPos  = pos,
+					tipMin  = $jQ('.preview .tip').outerWidth() / 2,
+					tipMax  = $jQ('#progress-bar').width();
+
+				// set the current time
+				$jQ('.preview video').get(0).currentTime = pos / scale;
+				
+				// position thumb
+				if (pos < min)
+				{
+					pos = min;
+				}
+				else if (pos > max)
+				{
+					pos = max;
+				}
+
+				// position tip
+				if (origPos > 0 && origPos < min)
+				{
+					tipPos = origPos - 6;
+				}
+				else if (origPos > max && origPos < tipMax)
+				{
+					p = origPos - 6;
+					tipPos = p - pos + min;
+				}
+				else
+				{
+					tipPos = min - 6;
+				}
+
+				// set position
+				$jQ('.preview').css('left', pos);
+				$jQ('.preview .tip').css('left', tipPos);
+			})
+			.on('hover', function(e) {
+				$jQ('.preview').toggleClass('visible');
+			});
+	},
+
+	//-----
+	
 	resume: function( time )
 	{
+		// auto resume
+		var queryString = window.location.search;
+		if (queryString.match(/auto-resume=true/g))
+		{
+			// use timeout to allow media to load
+			setTimeout(function()
+			{
+				HUB.Video.playPause(true);
+			}, 250);
+			return;
+		}
+
 		if (!$jQ("#video-container #resume").length)
 		{
 			//video container must be position relatively 
@@ -577,8 +620,8 @@ HUB.Video = {
 								<p>Would you like to resume video playback where you left off last time?</p> \
 								<div id=\"time\">" + time + "</div> \
 							</div> \
-							<a id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
-							<a id=\"resume-video\" href=\"#\">Resume Video</a> \
+							<a class=\"btn icon-restart\" id=\"restart-video\" href=\"#\">Play from the Beginning</a> \
+							<a class=\"btn btn-info icon-play\" id=\"resume-video\" href=\"#\">Resume Video</a> \
 						  </div>";
 					
 			//add replay to video container
@@ -806,8 +849,8 @@ HUB.Video = {
 			sub_titles = HUB.Video.getSubtitles();
 		
 		//create elements on page to hold subtitles
-		if(sub_titles.length > 0) {
-			
+		if(sub_titles.length > 0)
+		{
 			//setup subtitle picker
 			HUB.Video.setupSubtitlePicker( sub_titles );
 			
@@ -825,72 +868,194 @@ HUB.Video = {
 	//-----
 	
 	setupSubtitlePicker: function( sub_titles )
-	{
-		$jQ("#video-toolbar").after("<div id=\"video-subtitles\"></div>");
-		$jQ("#full-screen").after("<ul id=\"subtitle-picker\"><li><a href=\"javascript:void(0);\">CC</a><ul id=\"cc\"><li><a class=\"active\" rel=\"\" href=\"#\">None</a></ul></li></ul>");
-		
+	{	
 		var auto = false;
+
+		// show subtitle button
+		$jQ('#subtitle').show();
 		
-		for(n=0; n<sub_titles.length; n++) {
-			var sub = sub_titles[n],
+		// add each subtitle to caption divs & selector
+		for(n=0; n<sub_titles.length; n++)
+		{
+			var sel = '',
+				sub = sub_titles[n],
 				sub_lang = sub.lang.toLowerCase(),
 				sub_lang_text = sub.lang;
 			
 			//do we auto play
-			if(parseInt(sub.auto))
+			if (parseInt(sub.auto))
 			{
 				auto = true;
 				track = sub_lang;
+				sel = 'selected="selected"';
 			}
 			
 			$jQ("#video-subtitles").append("<div id=\"" + sub_lang + "\"></div>");
-			$jQ("#cc").append("<li><a rel=\"" + sub_lang + "\" class=\"" + sub_lang + "\" href=\"javascript:void(0);\">" + sub_lang_text + "</a></li>");
+			$jQ('#subtitle-selector').append('<option ' + sel + ' value="' + sub_lang + '">' + sub_lang_text + '</option>');
 		}
 		
 		//if we are auto showing subs make sure picker reflects that
-		if(auto) {
-			$jQ("#subtitle-picker a").addClass("active");
-			$jQ("#cc a").removeClass("active");
-			$jQ("#cc a." + track).addClass("active");
+		if (auto)
+		{
+			$jQ('#subtitle').addClass('on');
 		}
-		
-		$jQ("#subtitle-picker ul a").live("click", function(e) {
-			track = this.rel;
-			
-			if(track != "") {
-				$jQ("#subtitle-picker a").addClass("active");
-			} else {
-				$jQ("#subtitle-picker a").removeClass("active");
+
+		// handle subtitle changes
+		$jQ("#subtitle-selector").on("change", function(e) {
+			track = $jQ(this).val();
+			if (track == '')
+			{
+				$jQ('#subtitle').removeClass('on');
 			}
-			
-			$jQ("#cc a").removeClass("active");
-			$jQ(this).addClass("active");
-			
-			e.preventDefault();
+			else
+			{
+				$jQ('#subtitle').addClass('on');
+			}
+
+			// set transcript lang
+			if (localStorage)
+			{
+				localStorage.setItem('resources.' + $jQ('#video-player').attr('data-id') + '.captions', track);
+			}
 		});
+
+		// show options
+		$jQ('.subtitle-controls .options-toggle').on('click', function(event) {
+			var title = ($jQ(this).html() == 'Options') ? 'Hide Options' : 'Options';
+			$jQ(this).html(title);
+			$jQ('.subtitle-settings').slideToggle();
+			$jQ('.subtitle-controls').toggleClass('fixed');
+		});
+
+		// font selector
+		$jQ('#font-selector').on('change', function() {
+			$jQ('.subtitle-settings-preview .test').css('font-family', $jQ(this).val());
+		});
+
+		// font size selector
+		$jQ('#font-size-selector').on('change', function() {
+			$jQ('.subtitle-settings-preview .test').css('font-size', $jQ(this).val() + 'px');
+		});
+
+		// font color picker
+		$jQ('#font-color').colpick({
+			layout: 'hex',
+			submit: 1,
+			onChange: function(hsb,hex,rgb,fromSetColor) 
+			{
+				if(!fromSetColor)
+					$jQ('.subtitle-settings-preview .test').css('color', '#' + hex);
+			},
+			onSubmit: function(hsb,hex,rgb,fromSetColor)
+			{
+				// color chooser & hide colpick
+				$jQ('#font-color')
+					.attr('data-color', '#' + hex)
+					.css('background-color', '#' + hex)
+					.colpickHide();
+			}
+		});
+		
+		// background color picker
+		$jQ('#background-color').colpick({
+			layout: 'hex',
+			submit: 1,
+			onChange: function(hsb,hex,rgb,fromSetColor)
+			{
+				if(!fromSetColor)
+					$jQ('.subtitle-settings-preview .test').css('background-color', '#' + hex);
+			},
+			onSubmit: function(hsb,hex,rgb,fromSetColor)
+			{
+				// set chooser color & close colpic
+				$jQ('#background-color')
+					.attr('data-color', '#' + hex)
+					.css('background-color', '#' + hex)
+					.colpickHide();
+			}
+		});
+
+		// save settings
+		$jQ('#subtitle-settings-save').on('click', function(event) {
+			event.preventDefault();
+			var font            = $jQ('#font-selector').val(),
+				fontSize        = $jQ('#font-size-selector').val() + 'px',
+				fontColor       = $jQ('#font-color').attr('data-color'),
+				backgroundColor = $jQ('#background-color').attr('data-color');
+
+			// style the subtitles
+			$jQ('#video-subtitles div').css({
+				'font-family'     : font,
+				'font-size'       : fontSize,
+				'color'           : fontColor,
+				'background-color': backgroundColor
+			});
+
+			// store in localstorage or cookie
+			if (localStorage)
+			{
+				localStorage.setItem('resources.html5video.font-family', font);
+				localStorage.setItem('resources.html5video.font-size', fontSize);
+				localStorage.setItem('resources.html5video.font-color', fontColor);
+				localStorage.setItem('resources.html5video.background-color', backgroundColor);
+			}
+
+			// reset options toggle text
+			$jQ('.subtitle-controls .options-toggle').html('Options');
+
+			// remove fixed class on control box and hide options
+			$jQ('.subtitle-controls').toggleClass('fixed');
+			$jQ('.subtitle-settings').slideToggle();
+		});
+
+		// retrieve saved values
+		// check for any key to be saved
+		if (localStorage && localStorage.getItem('resources.html5video.font-family'))
+		{
+			var font            = localStorage.getItem('resources.html5video.font-family'),
+				fontSize        = localStorage.getItem('resources.html5video.font-size'),
+				fontColor       = localStorage.getItem('resources.html5video.font-color'),
+				backgroundColor = localStorage.getItem('resources.html5video.background-color');
+
+			// prefill options
+			$jQ('#font-selector').val(font);
+			$jQ('#font-size-selector').val(fontSize.replace('px', ''));
+			$jQ('#font-color').attr('data-color', fontColor).css('background-color', fontColor);
+			$jQ('#background-color').attr('data-color', backgroundColor).css('background-color', backgroundColor);
+
+			// style the preview & actual subtitles
+			$jQ('#video-subtitles div, .subtitle-settings-preview .test').css({
+				'font-family'     : font,
+				'font-size'       : fontSize,
+				'color'           : fontColor,
+				'background-color': backgroundColor
+			});
+		}
 	},
 	
 	//-----
 	
 	syncSubtitles: function( sub_titles )
 	{
+		// get current time
 		current = HUB.Video.getCurrent();
-		
-		//get the subs for the track we have selected
-		for(i in sub_titles) {
+
+		// get the subs for the track we have selected
+		for (i = 0; i < sub_titles.length; i++) { 
 			if(sub_titles[i].lang.toLowerCase() == track) {
 				var subs = sub_titles[i].subs;
 			}
 		}
 		
-		//clear the subtitle tracks between 
-		$jQ("#video-subtitles div").hide().html("");
+		// clear the subtitle tracks between
+		$jQ("#video-subtitles div").removeClass('showing').hide().html("");
 		
 		for(i in subs) {
 			start = subs[i].start;
 			end = subs[i].end;
 			text = subs[i].text;
 			if(current >= start && current <= end) {
+				$jQ("#video-subtitles #" + track).addClass('showing');
 				$jQ("#video-subtitles #" + track).show().html( text.replace( "\n","<br />") );
 			}
 		}
@@ -1000,10 +1165,8 @@ HUB.Video = {
 		{
 			return;
 		}
-		
-		//add transcript toggle and add container
-		$jQ('#video-container')
-			.append('<a href="javascript:void(0);" id="transcript-toggle">Show Transcript</a>');
+
+		subtitles = sub_titles;
 		
 		//add subtitles
 		for (var i = 0, n = sub_titles.length; i < n; i++)
@@ -1012,7 +1175,7 @@ HUB.Video = {
 				subs     = sub_titles[i].subs;
 			
 			//add language to subtitle language picker
-			$jQ('#transcript-selector').append('<option value="' + language.toLowerCase() + '">' + language + '</option>');
+			$jQ('.transcript-selector').append('<option value="' + language.toLowerCase() + '">' + language + '</option>');
 			
 			//add container for each language transcript
 			$jQ('#transcript-container #transcripts').append('<div class="transcript transcript-' + language.toLowerCase() + '"></div>')
@@ -1045,36 +1208,52 @@ HUB.Video = {
 	
 	transcriptToggle: function()
 	{
-		//add click event to transcript toggle
-		$jQ('#video-container').on('click', '#transcript-toggle', function(event) {
-			event.preventDefault();
-			
-			//if we opened via popup, must resize window
-			if (window.opener)
+		//handle switching languages
+		$jQ('.transcript-selector').on('change', function(event) {
+			var language = $jQ(this).val();
+
+			if (language)
 			{
-				var transcriptContainerHeight = $jQ('#transcript-container').outerHeight(true);
-				if ($jQ('#transcript-container').is(':visible'))
-				{
-					window.resizeBy(0, -transcriptContainerHeight);
-				}
-				else
-				{
-					window.resizeBy(0, transcriptContainerHeight);
-				}
-			}
-			
-			//change title
-			if ($jQ(this).text() == 'Show Transcript')
-			{
-				$jQ(this).text('Hide Transcript');
+				$jQ('#transcript-container').slideDown(function() {
+					// resize parent
+					if (parent.HUB.Resources)
+					{
+						parent.HUB.Resources.resizeInlineVideo($jQ('body').outerHeight() + 20);
+					}
+					else if (window.opener)
+					{
+						var transcriptContainerHeight = $jQ('#transcript-container').outerHeight(true);
+						if ($jQ('#transcript-container').is(':visible'))
+						{
+							window.resizeBy(0, -transcriptContainerHeight);
+						}
+						else
+						{
+							window.resizeBy(0, transcriptContainerHeight);
+						}
+
+					}
+				});
 			}
 			else
 			{
-				$jQ(this).text('Show Transcript');
+				$jQ('#transcript-container').slideUp(function(){
+					// resize parent
+					if (parent.HUB.Resources)
+					{
+						parent.HUB.Resources.resizeInlineVideo($jQ('body').outerHeight() + 20);
+					}
+				});
 			}
-			
-			//slide toggle the transcript pane
-			$jQ('#transcript-container').slideToggle();
+			$jQ('#transcript-select').html($jQ('.transcript-selector option:selected').text());
+			$jQ('#transcripts').find('.transcript').hide();
+			$jQ('#transcripts').find('.transcript-' + language).show();
+
+			// set transcript lang
+			if (localStorage)
+			{
+				localStorage.setItem('resources.' + $jQ('#video-player').attr('data-id') + '.transcript', $jQ(this).val());
+			}
 		});
 		
 		//handle switching languages
@@ -1167,7 +1346,7 @@ HUB.Video = {
 	transcriptSync: function( sub_titles )
 	{
 		var currentTime = HUB.Video.getCurrent(),
-			currentTranscript = $jQ('#transcript-selector').val();
+			currentTranscript = $jQ('.transcript-selector').val();
 		
 		//get the subs for the track we have selected
 		for(i in sub_titles) {
@@ -1221,6 +1400,38 @@ HUB.Video = {
 			}
 		}
 	},
+
+	//-----
+
+	popout: function()
+	{
+		if (parent.HUB.Resources)
+		{
+			$jQ('.embed-popout').css('display', 'inline-block').on('click', function() {
+				var current = HUB.Video.formatTime(HUB.Video.getCurrent());
+				parent.HUB.Resources.popoutInlineVideo(current);
+			});
+
+			$jQ('.embed-fullscreen').css('display', 'inline-block').on('click', function() {
+				if ($jQ(this).text() == 'Fullscreen')
+				{
+					$jQ(this)
+						.removeClass('icon-fullscreen')
+						.addClass('icon-exit-fullscreen')
+						.text('Exit Fullscreen');
+					parent.HUB.Resources.fullscreenVideo();
+				}
+				else
+				{
+					$jQ(this)
+						.removeClass('icon-exit-fullscreen')
+						.addClass('icon-fullscreen')
+						.text('Fullscreen');
+					parent.HUB.Resources.exitFullscreen();
+				}
+			});
+		}
+	},
 	
 	//-----
 	
@@ -1265,57 +1476,13 @@ $jQ(document).ready(function() {
 });
 
 
-
 /*
-
 highlight v4
-
 Highlights arbitrary terms.
-
 <http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html>
-
 MIT license.
-
 Johann Burkard
 <http://johannburkard.de>
 <mailto:jb@eaio.com>
-
 */
-
-jQuery.fn.highlight = function(pat) {
- function innerHighlight(node, pat) {
-  var skip = 0;
-  if (node.nodeType == 3) {
-   var pos = node.data.toUpperCase().indexOf(pat);
-   if (pos >= 0) {
-    var spannode = document.createElement('span');
-    spannode.className = 'highlight';
-    var middlebit = node.splitText(pos);
-    var endbit = middlebit.splitText(pat.length);
-    var middleclone = middlebit.cloneNode(true);
-    spannode.appendChild(middleclone);
-    middlebit.parentNode.replaceChild(spannode, middlebit);
-    skip = 1;
-   }
-  }
-  else if (node.nodeType == 1 && node.childNodes && !/(script|style)/i.test(node.tagName)) {
-   for (var i = 0; i < node.childNodes.length; ++i) {
-    i += innerHighlight(node.childNodes[i], pat);
-   }
-  }
-  return skip;
- }
- return this.length && pat && pat.length ? this.each(function() {
-  innerHighlight(this, pat.toUpperCase());
- }) : this;
-};
-
-jQuery.fn.removeHighlight = function() {
- return this.find("span.highlight").each(function() {
-  this.parentNode.firstChild.nodeName;
-  with (this.parentNode) {
-   replaceChild(this.firstChild, this);
-   normalize();
-  }
- }).end();
-};
+jQuery.fn.highlight=function(e){function t(e,n){var r=0;if(e.nodeType==3){var i=e.data.toUpperCase().indexOf(n);if(i>=0){var s=document.createElement("span");s.className="highlight";var o=e.splitText(i);var u=o.splitText(n.length);var a=o.cloneNode(true);s.appendChild(a);o.parentNode.replaceChild(s,o);r=1}}else if(e.nodeType==1&&e.childNodes&&!/(script|style)/i.test(e.tagName)){for(var f=0;f<e.childNodes.length;++f){f+=t(e.childNodes[f],n)}}return r}return this.length&&e&&e.length?this.each(function(){t(this,e.toUpperCase())}):this};jQuery.fn.removeHighlight=function(){return this.find("span.highlight").each(function(){this.parentNode.firstChild.nodeName;with(this.parentNode){replaceChild(this.firstChild,this);normalize()}}).end()}

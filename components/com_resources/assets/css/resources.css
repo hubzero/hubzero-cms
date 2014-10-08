@@ -1482,13 +1482,15 @@
 	}
 
 /* Embedded Media */
-.embedded-hubpresenter {
+.embedded-hubpresenter,
+.embedded-video {
 	width: 100%;
 	height: 100px;
 	position: relative;
 	background: #444;
 }
-.embedded-hubpresenter:after {
+.embedded-hubpresenter:after,
+.embedded-video:after {
 	content: 'Loading Media...';
 	position: absolute;
 	top: 40%;
@@ -1499,15 +1501,18 @@
 	font-weight: 200;
 	color: #fff;
 }
-.embedded-hubpresenter iframe {
+.embedded-hubpresenter iframe,
+.embedded-video iframe {
 	opacity: 0;
 	width: 100%;
 	height: 100%;
 	-webkit-transition: opacity 0.3s;
 }
-.embedded-hubpresenter.loaded iframe {
+.embedded-hubpresenter.loaded iframe,
+.embedded-video.loaded iframe {
 	opacity: 1;
 }
-.embedded-hubpresenter.loaded:after {
+.embedded-hubpresenter.loaded:after,
+.embedded-video.loaded:after {
 	content: '';
 }

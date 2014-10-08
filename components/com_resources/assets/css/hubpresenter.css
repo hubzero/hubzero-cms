@@ -338,6 +338,8 @@ video {
 #progress-bar .ui-slider-handle {
 	opacity: 0;
 	-webkit-transition: opacity 0.5s;
+	-moz-transition: opacity 0.5s;
+	transition: opacity 0.5s;
 }
 #control-box {
 	position: absolute;
@@ -348,6 +350,8 @@ video {
 	background: #222;
 	z-index: 9997;
 	-webkit-transition: bottom 0.4s;
+	-moz-transition: bottom 0.4s;
+	transition: bottom 0.4s;
 }
 #presenter-content.paused #control-box,
 #presenter-content:hover #control-box {
