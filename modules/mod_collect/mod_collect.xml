@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           modules/mod_collect/mod_collect.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2014 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension type="module" version="2.5" client="site">
+	<name>Collect</name>
+	<author>HUBzero</author>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>This module will display a button to collect an item.</description>
+	<files>
+		<filename module="mod_collect">mod_collect.php</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
+		<filename>tmpl/collect.php</filename>
+		<filename>assets/css/mod_collect.css</filename>
+		<filename>assets/js/mod_collect.js</filename>
+	</files>
+	<config>
+	</config>
+	<languages>
+		<language tag="en-GB">en-GB.mod_collect.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="id" type="text" default="" label="MOD_COLLECT_PARAM_ID_LABEL" description="MOD_COLLECT_PARAM_ID_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
