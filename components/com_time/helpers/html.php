@@ -177,7 +177,7 @@ class TimeHtml
 		$options[] = JHTML::_('select.option', 8, "8", 'value', 'text');
 
 		// @FIXME: generalize by removing "record[time]" and replacing with variable for active tab
-		$tlist = JHTML::_('select.genericlist', $options, 'records[htime]', '', 'value', 'text', $time, 'htime', false, false);
+		$tlist = JHTML::_('select.genericlist', $options, 'records[htime]', array('class'=>'no-search'), 'value', 'text', $time, 'htime', false, false);
 
 		return $tlist;
 	}
@@ -196,7 +196,7 @@ class TimeHtml
 		$options[] = JHTML::_('select.option', 75, ":45", 'value', 'text');
 
 		// @FIXME: generalize by removing "record[time]" and replacing with variable for active tab
-		$tlist = JHTML::_('select.genericlist', $options, 'records[mtime]', '', 'value', 'text', $time, 'mtime', false, false);
+		$tlist = JHTML::_('select.genericlist', $options, 'records[mtime]', array('class'=>'no-search'), 'value', 'text', $time, 'mtime', false, false);
 
 		return $tlist;
 	}
