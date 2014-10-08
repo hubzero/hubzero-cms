@@ -70,8 +70,9 @@ HUB.Plugins.TimeRecords = {
 					if (!!$.prototype.HUBfancyselect) {
 						$('#task').prev('.fs-dropdown').remove();
 						$('#task').HUBfancyselect({
-							'showSearch'         : true,
-							'searchPlaceholder'  : 'search...'
+							'showSearch'          : true,
+							'searchPlaceholder'   : 'search...',
+							'maxHeightWithSearch' : 200
 						});
 					}
 				}

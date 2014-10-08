@@ -75,8 +75,9 @@ HUB.Time = {
 
 		if (!!$.prototype.HUBfancyselect) {
 			$('select').not('.no-search').HUBfancyselect({
-				'showSearch'         : true,
-				'searchPlaceholder'  : 'search...'
+				'showSearch'          : true,
+				'searchPlaceholder'   : 'search...',
+				'maxHeightWithSearch' : 250
 			});
 
 			$('select.no-search').HUBfancyselect({

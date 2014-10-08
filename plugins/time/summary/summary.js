@@ -13,8 +13,9 @@ jQuery(document).ready(function( $ ) {
 	// Fancy select boxes
 	if (!!$.prototype.HUBfancyselect) {
 		$('.plg_time_summary select').HUBfancyselect({
-			'showSearch'         : true,
-			'searchPlaceholder'  : 'seach...'
+			'showSearch'          : true,
+			'searchPlaceholder'   : 'seach...',
+			'maxHeightWithSearch' : 300
 		});
 	}
 
