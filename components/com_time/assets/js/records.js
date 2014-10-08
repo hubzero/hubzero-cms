@@ -37,6 +37,9 @@ HUB.Plugins.TimeRecords = {
 
 		// Add change event to hub select box (filter tasks list by selected hub) - ('edit' view)
 		hub.change(function(event) {
+			// First, grab the currently select task
+			var task = $('#task').val();
+
 			// Create a ajax call to get the tasks
 			$.ajax({
 				url: "/api/time/indexTasks",
@@ -49,7 +52,15 @@ HUB.Plugins.TimeRecords = {
 
 					if(json.tasks.length > 0) {
 						for (var i = 0; i < json.tasks.length; i++) {
-							options += '<option value="' + json.tasks[i].id + '">' + json.tasks[i].name + '</option>';
+							options += '<option value="';
+							options += json.tasks[i].id;
+							options += '"';
+							if (json.tasks[i].id == task) {
+								options += ' selected="selected"';
+							}
+							options += '>';
+							options += json.tasks[i].name;
+							options += '</option>';
 						}
 					} else {
 						options = '<option value="">No tasks for this hub</option>';
@@ -60,7 +71,7 @@ HUB.Plugins.TimeRecords = {
 						$('#task').prev('.fs-dropdown').remove();
 						$('#task').HUBfancyselect({
 							'showSearch'         : true,
-							'searchPlaceholder'  : 'seach...'
+							'searchPlaceholder'  : 'search...'
 						});
 					}
 				}
