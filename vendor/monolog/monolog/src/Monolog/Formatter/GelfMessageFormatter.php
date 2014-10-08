@@ -41,14 +41,14 @@ class GelfMessageFormatter extends NormalizerFormatter
      * Translates Monolog log levels to Graylog2 log priorities.
      */
     private $logLevels = array(
-        Logger::DEBUG     => LOG_DEBUG,
-        Logger::INFO      => LOG_INFO,
-        Logger::NOTICE    => LOG_NOTICE,
-        Logger::WARNING   => LOG_WARNING,
-        Logger::ERROR     => LOG_ERR,
-        Logger::CRITICAL  => LOG_CRIT,
-        Logger::ALERT     => LOG_ALERT,
-        Logger::EMERGENCY => LOG_EMERG,
+        Logger::DEBUG     => 7,
+        Logger::INFO      => 6,
+        Logger::NOTICE    => 5,
+        Logger::WARNING   => 4,
+        Logger::ERROR     => 3,
+        Logger::CRITICAL  => 2,
+        Logger::ALERT     => 1,
+        Logger::EMERGENCY => 0,
     );
 
     public function __construct($systemName = null, $extraPrefix = null, $contextPrefix = 'ctxt_')
@@ -87,6 +87,13 @@ class GelfMessageFormatter extends NormalizerFormatter
 
         foreach ($record['context'] as $key => $val) {
             $message->setAdditional($this->contextPrefix . $key, is_scalar($val) ? $val : $this->toJson($val));
+        }
+
+        if (null === $message->getFile() && isset($record['context']['exception'])) {
+            if (preg_match("/^(.+):([0-9]+)$/", $record['context']['exception']['file'], $matches)) {
+                $message->setFile($matches[1]);
+                $message->setLine($matches[2]);
+            }
         }
 
         return $message;

@@ -8,11 +8,11 @@ $baseDir = dirname($vendorDir);
 return array(
     'When' => array($vendorDir . '/tplaner/when/src'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
+    'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Predis' => array($vendorDir . '/predis/predis/lib'),
-    'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Hubzero' => array($baseDir . '/libraries'),
     'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
-    'Guzzle\\Tests' => array($vendorDir . '/guzzle/guzzle/tests'),
-    'Guzzle' => array($vendorDir . '/guzzle/guzzle/src'),
+    'Guzzle\\Tests' => array($vendorDir . '/facebook/php-sdk-v4/tests', $vendorDir . '/guzzle/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/facebook/php-sdk-v4/src', $vendorDir . '/guzzle/guzzle/src'),
     'Geocoder' => array($vendorDir . '/willdurand/geocoder/src'),
 );

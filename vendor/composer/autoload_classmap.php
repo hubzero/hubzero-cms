@@ -325,6 +325,7 @@ return array(
     'JSessionStorageMemcache' => $baseDir . '/libraries/joomla/session/storage/memcache.php',
     'JSessionStorageMemcached' => $baseDir . '/libraries/joomla/session/storage/memcached.php',
     'JSessionStorageNone' => $baseDir . '/libraries/joomla/session/storage/none.php',
+    'JSessionStorageRedis' => $baseDir . '/libraries/joomla/session/storage/redis.php',
     'JSessionStorageWincache' => $baseDir . '/libraries/joomla/session/storage/wincache.php',
     'JSessionStorageXcache' => $baseDir . '/libraries/joomla/session/storage/xcache.php',
     'JSimpleCrypt' => $baseDir . '/libraries/joomla/utilities/simplecrypt.php',

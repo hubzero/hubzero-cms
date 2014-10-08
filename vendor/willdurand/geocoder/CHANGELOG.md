@@ -1,6 +1,21 @@
 CHANGELOG
 =========
 
+### 2.8.0 (2014-10-03)
+
+* Added: Allow for greater flexibility in setting curl parameters by passing in
+  an array.
+* Removed: GeoIP2 Omni support
+* Removed: Cloudmade provider. They discontinued their service Apr/2014
+
+### 2.7.0 (2014-09-14) ###
+
+* Added: **new** provider: `OpenCageProvider`
+  [geocoder.opencagedata.com](http://geocoder.opencagedata.com/)
+* Fixed: `MapQuestProvider` when no relevant data are fetched
+* Fixed: Ensure mb `formatString` is congruent to standard `ucwords()`
+  functionality
+
 ### 2.6.0 (2014-09-02) ###
 
 * Added: `region` and `regionCode` to GeoIP2Provider

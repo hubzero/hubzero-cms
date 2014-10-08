@@ -26,6 +26,23 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Monolog\Logger::getLevelName
+     */
+    public function testGetLevelName()
+    {
+        $this->assertEquals('ERROR', Logger::getLevelName(Logger::ERROR));
+    }
+
+    /**
+     * @covers Monolog\Logger::getLevelName
+     * @expectedException InvalidArgumentException
+     */
+    public function testGetLevelNameThrows()
+    {
+        Logger::getLevelName(5);
+    }
+
+    /**
      * @covers Monolog\Logger::__construct
      */
     public function testChannel()
@@ -66,6 +83,26 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $logger->pushHandler($handler);
 
         $this->assertFalse($logger->addWarning('test'));
+    }
+
+    public function testHandlersInCtor()
+    {
+        $handler1 = new TestHandler;
+        $handler2 = new TestHandler;
+        $logger = new Logger(__METHOD__, array($handler1, $handler2));
+
+        $this->assertEquals($handler1, $logger->popHandler());
+        $this->assertEquals($handler2, $logger->popHandler());
+    }
+
+    public function testProcessorsInCtor()
+    {
+        $processor1 = new WebProcessor;
+        $processor2 = new WebProcessor;
+        $logger = new Logger(__METHOD__, array(), array($processor1, $processor2));
+
+        $this->assertEquals($processor1, $logger->popProcessor());
+        $this->assertEquals($processor2, $logger->popProcessor());
     }
 
     /**
@@ -125,7 +162,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         $logger = new Logger(__METHOD__);
         $handler = new TestHandler;
         $logger->pushHandler($handler);
-        $logger->pushProcessor(function($record) {
+        $logger->pushProcessor(function ($record) {
             $record['extra']['win'] = true;
 
             return $record;
@@ -179,7 +216,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
         ;
         $logger->pushHandler($handler);
         $that = $this;
-        $logger->pushProcessor(function($record) use ($that){
+        $logger->pushProcessor(function ($record) use ($that) {
             $that->fail('The processor should not be called');
         });
         $logger->addAlert('test');
