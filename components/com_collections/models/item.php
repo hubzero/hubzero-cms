@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -40,6 +40,13 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'mod
  */
 class CollectionsModelItem extends CollectionsModelAbstract
 {
+	/**
+	 * Item type
+	 *
+	 * @var  string
+	 */
+	protected $_type = 'file';
+
 	/**
 	 * Table class name
 	 *
@@ -779,6 +786,63 @@ class CollectionsModelItem extends CollectionsModelAbstract
 				return $this->_cache['collections.list'];
 			break;
 		}
+	}
+
+	/**
+	 * Chck if we're on a URL where an item can be collected
+	 *
+	 * @return  boolean
+	 */
+	public function canCollect()
+	{
+		if (JRequest::getCmd('option') != 'com_collections')
+		{
+			return false;
+		}
+
+		if (!JRequest::getInt('post', 0))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Create an item entry
+	 *
+	 * @param   integer  $id  Optional ID to use
+	 * @return  boolean
+	 */
+	public function make($id=null)
+	{
+		if ($this->exists())
+		{
+			return true;
+		}
+
+		$id = ($id ?: JRequest::getInt('post', 0));
+
+		if (!$this->_tbl->loadType($id, $this->_type))
+		{
+			$this->setError($this->_tbl->getError());
+			return false;
+		}
+
+		if ($this->exists())
+		{
+			return true;
+		}
+
+		$this->set('type', $this->_type)
+		     ->set('object_id', 0);
+
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
 
