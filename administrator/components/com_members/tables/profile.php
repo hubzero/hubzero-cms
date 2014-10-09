@@ -466,7 +466,8 @@ class MembersProfile extends JTable
 
 		if (isset($filters['emailConfirmed']) && $filters['emailConfirmed'] == 1)
 		{
-			$query .= " AND m.emailConfirmed >= " . $this->_db->Quote($filters['emailConfirmed']);
+			$query .= (strpos($query, 'WHERE') === false) ? " WHERE" : " AND";
+			$query .= " m.emailConfirmed >= " . $this->_db->Quote($filters['emailConfirmed']);
 		}
 
 		return $query;
