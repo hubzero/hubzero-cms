@@ -32,7 +32,7 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module will display a button to collect an item.</description>
+	<description>MOD_COLLECT_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_collect">mod_collect.php</filename>
 		<filename>index.html</filename>

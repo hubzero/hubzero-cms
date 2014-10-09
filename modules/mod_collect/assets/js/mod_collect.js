@@ -29,10 +29,10 @@ jQuery(document).ready(function(jq){
 			tpl: {
 				wrap:'<div class="fancybox-wrap"><div class="fancybox-skin"><div class="fancybox-outer"><div id="sbox-content" class="fancybox-inner"></div></div></div></div>'
 			},
-			beforeLoad: function() {
-				//var href = $(this).attr('href').nohtml();
-				//$(this).attr('href', href);
-			},
+			/*beforeLoad: function() {
+				var href = $(this).attr('href').nohtml();
+				$(this).attr('href', href);
+			},*/
 			afterLoad: function(current, previous) {
 				scrp = current.content.match(/<script type=\"text\/javascript\">(.*)<\/script>/ig);
 				current.content = current.content.replace(/<script(.*)<\/script>/ig, '');
@@ -51,7 +51,7 @@ jQuery(document).ready(function(jq){
 
 						$.post($(this).attr('action'), $(this).serialize(), function(data) {
 							var response = jQuery.parseJSON(data);
-							if (!data.success) {
+							if (!response.success) {
 								$('#sbox-content').html('<p class="error" style="margin-left: 1em; margin-right: 1em;">' + response.message + '</p>')
 							} else {
 								$('#sbox-content').html('<p class="passed" style="margin-left: 1em; margin-right: 1em;">' + response.message + '</p>');
