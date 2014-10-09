@@ -36,7 +36,7 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
 
 /**
- * Courses model class for a forum
+ * Model class for a blog entry
  */
 class BlogModelEntry extends \Hubzero\Base\Model
 {
@@ -99,10 +99,10 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Constructor
 	 *
-	 * @param      mixed   $oid      ID (int) or alias (string)
-	 * @param      string  $scope    site|member|group
-	 * @param      integer $group_id Group ID if scope is 'group'
-	 * @return     void
+	 * @param   mixed    $oid       ID (int) or alias (string)
+	 * @param   string   $scope     site|member|group
+	 * @param   integer  $group_id  Group ID if scope is 'group'
+	 * @return  void
 	 */
 	public function __construct($oid, $scope=null, $group_id=null)
 	{
@@ -110,39 +110,39 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		$this->_tbl = new BlogTableEntry($this->_db);
 
-		if (is_numeric($oid) && $group_id == null)
+		if ($oid)
 		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_string($oid))
-		{
-			if ($scope == 'member')
+			if (is_numeric($oid) && $group_id == null)
 			{
-				$this->_tbl->loadAlias($oid, $scope, $group_id, null);
+				$this->_tbl->load($oid);
 			}
-			else
+			else if (is_string($oid))
 			{
-				$this->_tbl->loadAlias($oid, $scope, null, $group_id);
+				if ($scope == 'member')
+				{
+					$this->_tbl->loadAlias($oid, $scope, $group_id, null);
+				}
+				else
+				{
+					$this->_tbl->loadAlias($oid, $scope, null, $group_id);
+				}
 			}
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
+			else if (is_object($oid) || is_array($oid))
+			{
+				$this->bind($oid);
+			}
 
-		$this->params = new JRegistry($this->_tbl->get('params'));
+			$this->params = new JRegistry($this->_tbl->get('params'));
+		}
 	}
 
 	/**
 	 * Returns a reference to a blog entry model
 	 *
-	 * This method must be invoked as:
-	 *     $offering = BlogModelentry::getInstance($alias, $scope, $group_id);
-	 *
-	 * @param      mixed   $oid      ID (int) or alias (string)
-	 * @param      string  $scope    site|member|group
-	 * @param      integer $group_id Group ID if scope is 'group'
-	 * @return     object BlogModelentry
+	 * @param   mixed    $oid       ID (int) or alias (string)
+	 * @param   string   $scope     site|member|group
+	 * @param   integer  $group_id  Group ID if scope is 'group'
+	 * @return  object   BlogModelentry
 	 */
 	static function &getInstance($oid=null, $scope=null, $group_id=null)
 	{
@@ -155,7 +155,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new self($oid, $scope, $group_id);
+			$instances[$oid] = new static($oid, $scope, $group_id);
 		}
 
 		return $instances[$oid];
@@ -164,7 +164,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Has the publish window started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function started()
 	{
@@ -189,7 +189,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Has the publish window ended?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function ended()
 	{
@@ -214,7 +214,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Check if the entry is available
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isAvailable()
 	{
@@ -238,11 +238,13 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 *
 	 * Accepts an optional property name. If provided
 	 * it will return that property value. Otherwise,
-	 * it returns the entire JUser object
+	 * it returns the entire user object
 	 *
-	 * @return     mixed
+	 * @param   string  $property
+	 * @param   mixed   $default
+	 * @return  mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
@@ -259,7 +261,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			{
 				return $this->_creator->getPicture();
 			}
-			return $this->_creator->get($property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}
@@ -267,8 +269,8 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Set and get a specific comment
 	 *
-	 * @param      integer $id ID of specific comment to fetch
-	 * @return     object BlogModelComment
+	 * @param   integer  $id  ID of specific comment to fetch
+	 * @return  object   BlogModelComment
 	 */
 	public function comment($id=null)
 	{
@@ -298,10 +300,10 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear = false)
 	{
@@ -376,9 +378,9 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Get tags on an entry
 	 *
-	 * @param      string  $what  Data format to return (string, array, cloud)
-	 * @param      integer $admin Get admin tags? 0=no, 1=yes
-	 * @return     mixed
+	 * @param   string   $what   Data format to return (string, array, cloud)
+	 * @param   integer  $admin  Get admin tags? 0=no, 1=yes
+	 * @return  mixed
 	 */
 	public function tags($what='cloud', $admin=0)
 	{
@@ -407,10 +409,10 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Tag the entry
 	 *
-	 * @param      string  $tags    Tags to apply
-	 * @param      integer $user_id ID of tagger
-	 * @param      integer $admin   Tag as admin? 0=no, 1=yes
-	 * @return     boolean
+	 * @param   string   $tags     Tags to apply
+	 * @param   integer  $user_id  ID of tagger
+	 * @param   integer  $admin    Tag as admin? 0=no, 1=yes
+	 * @return  boolean
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
@@ -422,8 +424,8 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Get the state of the entry as either text or numerical value
 	 *
-	 * @param      string $as Format to return state in [text, number]
-	 * @return     mixed String or Integer
+	 * @param   string  $as  Format to return state in [text, number]
+	 * @return  mixed   String or Integer
 	 */
 	public function state($as='text')
 	{
@@ -455,9 +457,9 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 * Generate and return various links to the entry
 	 * Link will vary depending upon action desired, such as edit, delete, etc.
 	 *
-	 * @param      string $type   The type of link to return
-	 * @param      mixed  $params String or array of extra params to append
-	 * @return     string
+	 * @param   string  $type    The type of link to return
+	 * @param   mixed   $params  String or array of extra params to append
+	 * @return  string
 	 */
 	public function link($type='', $params=null)
 	{
@@ -467,8 +469,8 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Gets a property of the adapter's object (e.g., a group, a member)
 	 *
-	 * @param      string $property Property to get
-	 * @return     string
+	 * @param   string  $property  Property to get
+	 * @return  string
 	 */
 	public function item($property=null)
 	{
@@ -479,7 +481,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 * Return the adapter for this entry's scope,
 	 * instantiating it if it doesn't already exist
 	 *
-	 * @return    object
+	 * @return  object
 	 */
 	private function _adapter()
 	{
@@ -518,8 +520,8 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     string
+	 * @param   string  $as  What format to return
+	 * @return  string
 	 */
 	public function published($as='')
 	{
@@ -542,9 +544,9 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function content($as='parsed', $shorten=0)
 	{
@@ -607,8 +609,8 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string   $action  Action to check
+	 * @return  boolean  True if authorized, false if not
 	 */
 	public function access($action='view')
 	{
