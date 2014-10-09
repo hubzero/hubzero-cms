@@ -85,7 +85,6 @@ CREATE TABLE `host` (
   `status` varchar(20) NOT NULL DEFAULT '',
   `uses` int(11) NOT NULL DEFAULT '0',
   `portbase` int(11) NOT NULL DEFAULT '0',
-  `venue_id` int(11) DEFAULT NULL,
   `zone_id` int(11) DEFAULT NULL,
   `max_uses` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`hostname`)
@@ -4561,12 +4560,12 @@ CREATE TABLE `zone_locations` (
 CREATE TABLE `zones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `zone` varchar(40) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
   `state` varchar(15) DEFAULT NULL,
   `type` varchar(10) DEFAULT NULL,
   `master` varchar(255) DEFAULT NULL,
   `mw_version` varchar(3) DEFAULT NULL,
   `ssh_key_path` varchar(200) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM DEFAULT CHARSET=utf8;
 
