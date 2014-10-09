@@ -41,9 +41,6 @@ if (!isset($this->permissions))
 <div class="com_time_navigation">
 	<ul class="com_time_menu">
 		<?php
-			// Get primary controllers
-			$controllers = scandir(JPATH_COMPONENT . DS . 'controllers');
-
 			foreach (array('overview', 'records', 'tasks', 'hubs', 'reports') as $tab)
 			{
 				if (!$this->permissions->can('view.' . $tab))
@@ -53,7 +50,7 @@ if (!isset($this->permissions))
 				$cls  = ($this->controller == $tab) ? ' active' : '';
 				$link = JRoute::_('index.php?option=' . $this->option . '&controller=' . $tab);
 
-				echo "<li class=\"{$tab}{$cls}\"><a href=\"{$link}\">" . ucfirst($tab) . "</a></li>";
+				echo "<li class=\"{$tab}{$cls}\"><a data-title=\"" . ucfirst($tab) . "\" href=\"{$link}\">" . ucfirst($tab) . "</a></li>";
 			}
 		?>
 	</ul>
