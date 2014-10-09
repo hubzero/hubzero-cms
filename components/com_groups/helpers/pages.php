@@ -169,14 +169,15 @@ class GroupsHelperPages
 
 		// vars to hold page objs
 		$page = null;
-		$prevPage = $homePage = $pages->filter(function($page)
+		$temp = $pages->filter(function($page)
 		{
 			if ($page->get('alias') == 'overview'
 				&& $page->get('depth') == 0)
 			{
 				return $page;
 			}
-		})[0];
+		});
+		$prevPage = $homePage = $temp[0];
 
 		// if we dont have segments that means were on the 
 		// overview page
