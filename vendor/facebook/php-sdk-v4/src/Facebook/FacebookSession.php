@@ -58,7 +58,7 @@ class FacebookSession
   /**
    * @var bool
    */
-  private static $useAppSecretProof = true;
+  protected static $useAppSecretProof = true;
 
   /**
    * When creating a Session from an access_token, use:
@@ -166,7 +166,7 @@ class FacebookSession
   public function getLongLivedSession($appId = null, $appSecret = null)
   {
     $longLivedAccessToken = $this->accessToken->extend($appId, $appSecret);
-    return new static($longLivedAccessToken);
+    return new static($longLivedAccessToken, $this->signedRequest);
   }
 
   // @TODO Remove getExchangeToken() in 4.1: can be accessed from AccessToken directly
