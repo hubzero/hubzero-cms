@@ -65,6 +65,10 @@ class plgResourcesCollect extends \Hubzero\Plugin\Plugin
 	 */
 	public function onResources($model, $option, $areas, $rtrn='all')
 	{
+		if (JRequest::getInt('no_html'))
+		{
+			return;
+		}
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas))
 		{
