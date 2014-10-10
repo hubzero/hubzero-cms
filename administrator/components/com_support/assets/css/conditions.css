@@ -14,12 +14,17 @@
 		width: auto;
 	}
 
+	#component-form 
+
 	.fields,
 	.query {
 		padding: 0.5em 1em 1em 1em;
 	}
 	.fields.sort {
 		padding-top: 1.5em;
+	}
+	.fields.sort>p {
+		padding: 0;
 	}
 	.query {
 	}

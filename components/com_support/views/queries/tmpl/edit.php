@@ -199,6 +199,28 @@ if (!$tmpl && !$no_html) {
 
 		<fieldset class="fields sort">
 			<p>
+				<label for="field-sort"><?php echo JText::_('In folder'); ?></label>
+				<select name="fields[folder_id]" id="field-folder_id">
+					<?php
+					$database = JFactory::getDBO();
+					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
+
+					$sr = new SupportTableQueryFolder($database);
+					$folders = $sr->find('list', array(
+						'user_id'  => JFactory::getUser()->get('id'),
+						'sort'     => 'ordering',
+						'sort_Dir' => 'ASC'
+					));
+					if ($folders)
+					{
+						foreach ($folders as $folder) 
+						{
+							?><option value="<?php echo $folder->id; ?>"<?php if ($this->row->folder_id == $folder->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($folder->title)); ?></option><?php
+						}
+					}
+					?>
+				</select>
+
 				<label for="field-sort"><?php echo JText::_('COM_SUPPORT_QUERY_SORT_BY'); ?></label>
 				<select name="fields[sort]" id="field-sort">
 					<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>

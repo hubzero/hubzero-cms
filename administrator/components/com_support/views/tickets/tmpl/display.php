@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_SUPPORT').': '.JText::_('COM_SUPPORT_TICKETS'), 'support.png');
+JToolBarHelper::title(JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TICKETS'), 'support.png');
 JToolBarHelper::preferences('com_support', '550');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
@@ -43,120 +43,85 @@ JHTML::_('behavior.tooltip');
 $this->css();
 ?>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="ticketForm">
-	<div class="collft">
-		<div class="colrt">
-			<div class="col width-30 fltlft">
-				<p>
-					<a class="modal" id="new-query" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=add&amp;tmpl=component" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
-						<?php echo JText::_('COM_SUPPORT_ADD_CUSTOM_QUERY'); ?>
-					</a>
-				</p>
-				<h3 data-views="common-views"><span><?php echo JText::_('COM_SUPPORT_QUERIES_COMMON'); ?></span></h3>
-				<ul id="common-views" class="views">
-			<?php if (count($this->queries['common']) > 0) { ?>
-				<?php 
-				$i = 0;
-				foreach ($this->queries['common'] as $query)
-				{
-					?>
-					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
-							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
-						</a>
-						<a class="modal copy" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;tmpl=component&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('COM_SUPPORT_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
-							<?php echo JText::_('COM_SUPPORT_EDIT'); ?>
-						</a>
-					<?php if ($i == 0) { ?>
-						<ul class="views">
-					<?php } ?>
-					<?php if ($i == 2) { ?>
-							</li>
-						</ul>
-					</li>
-					<?php } else if ($i > 2) { ?>
-					</li>
-					<?php } ?>
-					<?php 
-					$i++;
-				}
-				?>
-			<?php } else { ?>
-					<li>
-						<span class="none"><?php echo JText::_('COM_SUPPORT_NONE'); ?></span>
-					</li>
-			<?php } ?>
-				</ul>
-				<h3 data-views="my-views"><span><?php echo JText::_('COM_SUPPORT_QUERIES_MINE'); ?></span></h3>
-				<ul id="my-views" class="views">
+<div class="panel" id="panes">
+	<div class="panel-row">
+
+		<div class="pane pane-queries" id="queries" data-update="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=saveordering&' . JUtility::getToken() . '=1'); ?>">
+			<div class="pane-inner">
+
+				<ul id="watch-list">
 					<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
-						<a class="my-watchlist" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=-1&amp;limitstart=0<?php echo  (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
+						<a class="icon-watch query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
 							<?php echo $this->escape(JText::_('COM_SUPPORT_QUERIES_WATCHING')); ?> <span><?php echo $this->watchcount; ?></span>
 						</a>
 					</li>
-		<?php if (count($this->queries['mine']) > 0) { ?>
-			<?php foreach ($this->queries['mine'] as $query) { ?>
-					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
-							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
-						</a>
-						<a class="modal copy" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;tmpl=component&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('COM_SUPPORT_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
-							<?php echo JText::_('COM_SUPPORT_EDIT'); ?>
-						</a>
-					</li>
-			<?php } ?>
-		<?php } else { ?>
-					<li>
-						<span class="none"><?php echo JText::_('COM_SUPPORT_NONE'); ?></span>
-					</li>
-		<?php } ?>
 				</ul>
-				<h3 data-views="custom-views"><span><?php echo JText::_('COM_SUPPORT_QUERIES_CUSTOM'); ?></span></h3>
-				<ul id="custom-views" class="views">
-		<?php if (count($this->queries['custom']) > 0) { ?>
-			<?php foreach ($this->queries['custom'] as $query) { ?>
-					<li<?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;show=<?php echo $query->id . (intval($this->filters['show']) != $query->id ? '&amp;search=' : ''); ?>">
-							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
-						</a>
-						<a class="delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=remove&amp;id[]=<?php echo $query->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('COM_SUPPORT_DELETE'); ?>">
-							<?php echo JText::_('COM_SUPPORT_DELETE'); ?>
-						</a>
-						<a class="modal edit" href="index.php?option=<?php echo $this->option; ?>&amp;controller=queries&amp;task=edit&amp;tmpl=component&amp;id[]=<?php echo $query->id; ?>" title="<?php echo JText::_('COM_SUPPORT_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
-							<?php echo JText::_('COM_SUPPORT_EDIT'); ?>
-						</a>
-					</li>
-			<?php } ?>
-		<?php } else { ?>
-					<li>
-						<span class="none"><?php echo JText::_('COM_SUPPORT_NONE'); ?></span>
-					</li>
-		<?php } ?>
+
+				<ul id="query-list">
+					<?php if (count($this->folders) > 0) { ?>
+						<?php foreach ($this->folders as $folder) { ?>
+							<li id="folder_<?php echo $this->escape($folder->id); ?>" class="open">
+								<span class="icon-folder folder" id="<?php echo $this->escape($folder->id); ?>-title" data-id="<?php echo $this->escape($folder->id); ?>"><?php echo $this->escape($folder->title); ?></span>
+								<span class="folder-options">
+									<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+										<?php echo JText::_('JACTION_DELETE'); ?>
+									</a>
+									<a class="edit editfolder" data-id="<?php echo $this->escape($folder->id); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" data-href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . JUtility::getToken() . '=1&fields[id]=' . $folder->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
+										<?php echo JText::_('JACTION_EDIT'); ?>
+									</a>
+								</span>
+								<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
+									<?php foreach ($folder->queries as $query) { ?>
+										<li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
+											<a class="query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=' : '')); ?>">
+												<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
+											</a>
+											<span class="query-options">
+												<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+													<?php echo JText::_('JACTION_DELETE'); ?>
+												</a>
+												<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+													<?php echo JText::_('JACTION_EDIT'); ?>
+												</a>
+											</span>
+										</li>
+									<?php } ?>
+								</ul>
+							</li>
+						<?php } ?>
+					<?php } ?>
 				</ul>
-			</div><!-- / .col width-30 fltlft -->
-			<div class="col width-70 fltrt">
 
-				<table id="tktlist">
-					<thead>
-						<tr>
-							<td colspan="2">
-								<fieldset id="filter-bar">
-									<label for="filter_search"><?php echo JText::_('COM_SUPPORT_FIND'); ?>:</label> 
-									<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER'); ?>" />
+				<ul class="controls">
+					<li>
+						<a class="icon-list modal" id="new-query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=add&tmpl=component&' . JUtility::getToken() . '=1'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}" title="<?php echo JText::_('COM_SUPPORT_ADD_CUSTOM_QUERY'); ?>">
+							<?php echo JText::_('COM_SUPPORT_ADD_CUSTOM_QUERY'); ?>
+						</a>
+					</li>
+					<li>
+						<a class="icon-folder" id="new-folder" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . JUtility::getToken() . '=1'); ?>" data-href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('COM_SUPPORT_ADD_FOLDER'); ?>">
+							<?php echo JText::_('COM_SUPPORT_ADD_FOLDER'); ?>
+						</a>
+					</li>
+					<?php /* <li>
+						<a class="icon-batch" id="new-batch" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tickets&task=batch&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('COM_SUPPORT_BATCH_PROCESS'); ?>">
+							<?php echo JText::_('COM_SUPPORT_BATCH_PROCESS'); ?>
+						</a>
+					</li> */ ?>
+				</ul>
 
-									<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
-									<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
-									<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
+			</div>
+		</div><!-- / .pane -->
+		<div class="pane pane-list">
+			<div class="pane-inner" id="tickets">
 
-									<button onclick="this.form.submit();"><?php echo JText::_('COM_SUPPORT_GO'); ?></button>
-								</fieldset>
-							</td>
-							<th>
-								<?php $direction = (strtolower($this->filters['sortdir']) == 'desc') ? 'asc' : 'desc'; //echo JHTML::_('grid.sort', JText::_('SUPPORT_COL_AGE'), 'created', $this->filters['sortdir'], $this->filters['sort']); ?>
-								<ul class="sort-options">
-									<li>
-										<span class="sort-header"><?php echo JText::_('COM_SUPPORT_SORT_RESULTS'); ?></span>
-										<ul>
+				<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="ticketForm">
+					<div class="list-options">
+						<?php $direction = (strtolower($this->filters['sortdir']) == 'desc') ? 'asc' : 'desc'; ?>
+						<ul class="sort-options">
+							<li>
+								<span class="sort-header"><?php echo JText::_('COM_SUPPORT_SORT_RESULTS'); ?></span>
+								<ul>
 									<li>
 										<a<?php if ($this->filters['sort'] == 'created') { echo ' class="active ' . strtolower($this->filters['sortdir']) . '"'; } ?> href="javascript:tableOrdering('created','<?php echo $direction; ?>','');" title="<?php echo JText::_('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
 											<?php echo JText::_('COM_SUPPORT_COL_AGE'); ?>
@@ -188,20 +153,21 @@ $this->css();
 										</a>
 									</li>
 								</ul>
-								</li>
-								</ul>
-							</th>
-							<th class="tkt-severity"> </th>
-						</tr>
-					</thead>
-					<tfoot>
-						<tr>
-							<td colspan="3">
-								<?php echo $this->pageNav->getListFooter(); ?>
-							</td>
-						</tr>
-					</tfoot>
-					<tbody>
+							</li>
+						</ul>
+						<fieldset id="filter-bar">
+							<label for="filter_search"><?php echo JText::_('COM_SUPPORT_FIND'); ?>:</label> 
+							<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER'); ?>" />
+
+							<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
+							<input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sortdir']); ?>" />
+							<input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
+
+							<button onclick="this.form.submit();"><?php echo JText::_('COM_SUPPORT_GO'); ?></button>
+						</fieldset>
+					</div>
+
+					<ul id="tktlist">
 					<?php
 					$k = 0;
 					$database = JFactory::getDBO();
@@ -226,6 +192,8 @@ $this->css();
 						$alltags = $st->checkTags($ids);
 					}
 
+					$tid = JRequest::getInt('ticket', 0);
+
 					$tsformat = JFactory::getDBO()->getDateFormat();
 
 					for ($i=0, $n=count($this->rows); $i < $n; $i++)
@@ -237,7 +205,12 @@ $this->css();
 							$row = new SupportModelTicket($row);
 						}
 
-						$comments = 0;
+						if ($tid && $row->get('id') != $tid)
+						{
+							continue;
+						}
+
+						//$comments = 0;
 
 						$lastcomment = '0000-00-00 00:00:00';
 						if (isset($lastactivities[$row->get('id')]))
@@ -245,10 +218,10 @@ $this->css();
 							$lastcomment = $lastactivities[$row->get('id')]['lastactivity'];
 						}
 						// Was there any activity on this item?
-						if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
+						/*if ($lastcomment && $lastcomment != '0000-00-00 00:00:00')
 						{
 							$comments = 1;
-						}
+						}*/
 
 						$tags = '';
 						if (isset($alltags[$row->get('id')]))
@@ -256,87 +229,112 @@ $this->css();
 							$tags = $row->tags('linkedlist');
 						}
 						?>
-						<tr class="<?php echo (!$row->isOpen() ? 'closed' : ''); ?>">
-							<th<?php if ($row->get('status')) { echo ($row->status('color') ? ' style="border-left-color: #' . $row->status('color') . ';"' : ''); } ?>>
-								<span class="ticket-id">
-									<?php echo $row->get('id'); ?>
-								</span>
-								<span class="<?php echo $row->status('class'); ?> status hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . JText::_('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status('text'); echo (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''); ?>">
-									<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
-								</span>
-							</th>
-							<td>
+						<li class="<?php echo (!$row->isOpen() ? 'closed' : 'open'); ?>" data-id="<?php echo $row->get('id'); ?>" id="ticket-<?php echo $row->get('id'); ?>">
+							<div class="ticket-wrap"<?php if ($row->get('status')) { echo ($row->status('color') ? ' style="border-left-color: #' . $row->status('color') . ';"' : ''); } ?>>
 								<p>
-									<span class="ticket-author">
-										<?php echo $row->get('name'); echo ($row->get('login')) ? ' (<a href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $this->escape($row->get('login')) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
+									<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+									<span class="ticket-id">
+										# <?php echo $row->get('id'); ?>
 									</span>
-									<span class="ticket-datetime">
-										@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('local'); ?></time>
+									<span class="<?php echo $row->status('class'); ?> status hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_DETAILS'); ?> :: <?php echo '<strong>' . JText::_('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status('text'); echo (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''); ?>">
+										<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 									</span>
-								<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
-									<span class="ticket-activity">
-										<time datetime="<?php echo $lastcomment; ?>"><?php echo JHTML::_('date.relative', $lastcomment); ?></time>
-									</span>
-								<?php } ?>
+									<?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
+										<span class="ticket-activity">
+											<time datetime="<?php echo $lastcomment; ?>"><?php echo JHTML::_('date.relative', $lastcomment); ?></time>
+										</span>
+									<?php } ?>
 								</p>
 								<p>
-									<a class="ticket-content" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+									<span class="ticket-author">
+										<?php echo $row->get('name'); echo ($row->get('login')) ? ' (<a href="' . JRoute::_('index.php?option=com_members&task=edit&id=' . $this->escape($row->get('login'))) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
+									</span>
+									<span class="ticket-datetime">
+										@ <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created(); ?></time>
+									</span>
+								</p>
+								<p>
+									<a class="ticket-content" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 										<?php echo $this->escape($row->get('summary', JText::_('COM_SUPPORT_TICKET_NO_CONTENT'))); ?>
 									</a>
 								</p>
-							<?php if ($tags || $row->isOwned()) { ?>
-								<p class="ticket-details">
-								<?php if ($tags) { ?>
-									<span class="ticket-tags">
-										<?php echo $tags; ?>
-									</span>
+								<?php if ($tags || $row->isOwned()) { ?>
+									<p class="ticket-details">
+										<?php if ($tags) { ?>
+											<span class="ticket-tags">
+												<?php echo $tags; ?>
+											</span>
+										<?php } ?>
+										<?php if ($row->get('group')) { ?>
+											<span class="ticket-group">
+												<?php echo $this->escape(stripslashes($row->get('group'))); ?>
+											</span>
+										<?php } ?>
+										<?php if ($row->isOwned()) { ?>
+											<span class="ticket-owner hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->owner()->getPicture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->owner('username'))); ?><br /><?php echo $this->escape(stripslashes($row->owner('organization', JText::_('COM_SUPPORT_USER_ORG_UNKNOWN')))); ?>">
+												<?php echo $this->escape(stripslashes($row->owner('name'))); ?>
+											</span>
+										<?php } ?>
+									</p>
 								<?php } ?>
-								<?php if ($row->get('group')) { ?>
-									<span class="ticket-group">
-										<?php echo $this->escape(stripslashes($row->get('group'))); ?>
+								<p class="tkt-severity">
+									<span class="ticket-severity <?php echo $this->escape($row->get('severity', 'normal')); ?> hasTip" title="<?php echo '<strong>' . JText::_('COM_SUPPORT_TICKET_PRIORITY') . ':</strong>&nbsp;' . $this->escape($row->get('severity', 'normal')); ?>">
+										<span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
 									</span>
-								<?php } ?>
-								<?php if ($row->isOwned()) { ?>
-									<span class="ticket-owner hasTip" title="<?php echo JText::_('COM_SUPPORT_TICKET_ASSIGNED_TO'); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $row->owner()->getPicture(); ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?php echo $this->escape(stripslashes($row->owner('username'))); ?><br /><?php echo $this->escape(stripslashes($row->owner('organization', JText::_('COM_SUPPORT_USER_ORG_UNKNOWN')))); ?>">
-										<?php echo $this->escape(stripslashes($row->owner('name'))); ?>
-									</span>
-								<?php } ?>
 								</p>
-							<?php } ?>
-							</td>
-							<td class="tkt-severity">
-								<span class="ticket-severity <?php echo $this->escape($row->get('severity', 'normal')); ?> hasTip" title="<?php echo '<strong>' . JText::_('COM_SUPPORT_TICKET_PRIORITY') . ':</strong>&nbsp;' . $this->escape($row->get('severity', 'normal')); ?>">
-									<span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
-								</span>
-								<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
-							</td>
-						</tr>
+							</div>
+						</li>
 						<?php
 						$k = 1 - $k;
 					}
 					?>
-					</tbody>
-				</table>
+					</ul>
 
-				<input type="hidden" name="option" value="<?php echo $this->option ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
-				<input type="hidden" name="task" value="" />
-				<input type="hidden" name="boxchecked" value="0" />
+					<?php echo $this->pageNav->getListFooter(); ?>
 
-				<?php echo JHTML::_('form.token'); ?>
-			</div><!-- / .col width-70 fltrt -->
-		</div><!-- / .colrt -->
-	</div><!-- / .collft -->
-	<div class="clr"></div>
-</form>
+					<input type="hidden" name="option" value="<?php echo $this->option ?>" />
+					<input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
+					<input type="hidden" name="task" value="" />
+					<input type="hidden" name="boxchecked" value="0" />
+
+					<?php echo JHTML::_('form.token'); ?>
+				</form>
+
+			</div><!-- / .pane-inner -->
+		</div><!-- / .pane -->
+
+	</div><!-- / .panel-row -->
+</div><!-- / .panel -->
 
 <script type="text/javascript">
-	jQuery(document).ready(function($){
-		addDeleteQueryEvent();
-	});
-	function addDeleteQueryEvent()
-	{
-		$('.views').on('click', '.delete', function (e){
+String.prototype.tmpl = function (tmpl) {
+	if (typeof(tmpl) == 'undefined' || !tmpl) {
+		tmpl = 'component';
+	}
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'tmpl=' + tmpl;
+};
+String.prototype.nohtml = function () {
+	return this + (this.indexOf('?') == -1 ? '?' : '&') + 'no_html=1';
+};
+
+var _DEBUG = 0;
+
+jQuery(document).ready(function($){
+	var panes = $('#panes');
+
+	_DEBUG = $('#system-debug').length;
+
+	$('#queries')
+		.on('click', 'span.folder', function(e) {
+			var parent = $(this).parent();
+
+			if (parent.hasClass('open')) {
+				parent.removeClass('open');
+			} else {
+				parent.addClass('open');
+			}
+		})
+		.on('click', 'a.delete', function (e){
 			e.preventDefault();
 
 			var res = confirm('<?php echo JText::_('COM_SUPPORT_QUERIES_CONFIRM_DELETE'); ?>');
@@ -344,58 +342,169 @@ $this->css();
 				return false;
 			}
 
-			var href = $(this).href;
-			if (href.indexOf('?') == -1) {
-				href += '?no_html=1';
-			} else {
-				href += '&no_html=1';
+			if (_DEBUG) {
+				window.console && console.log('Calling: ' + $(this).attr('href').nohtml());
 			}
 
-			$.get(href, {}, function(response){
-				$('#custom-views').html(response);
+			$.get($(this).attr('href').nohtml(), {}, function(response){
+				if (_DEBUG) {
+					window.console && console.log(response);
+				}
+
+				$('#query-list').html(response);
 			});
-			
+
 			return false;
-		});
-		$('.fltlft h3').on('click', function (e){
+		})
+		.on('click', 'a.editfolder', function(e) {
 			e.preventDefault();
 
-			if (!$(this).hasClass('closed')) {
-				$(this).addClass('closed');
-				$($(this).attr('data-views')).addClass('closed');
-			} else {
-				$(this).removeClass('closed');
-				$($(this).attr('data-views')).removeClass('closed');
+			var folder = $('#' + $(this).attr('data-id') + '-title');
+
+			var title = prompt('<?php echo JText::_('COM_SUPPORT_FOLDER_NAME'); ?>', folder.text());
+			if (title) {
+				$.get($(this).attr('data-href').nohtml() + '&fields[title]=' + title, function(response){
+					folder.text(title);
+				});
 			}
 		});
 
-		var clear = $('#clear-search');
-		// Create the clear button if it doesn't already exist
-		if (!clear.length) {
-			var close = $('<span>')
-							.attr('id', 'clear-search')
-							.css('display', 'none')
-							.on('click', function(event) {
-								$('#filter_search').value = '';
-								$('#ticketForm').submit();
-							})
-							.appendTo($('#filter-bar'));
-		}
+	if (jQuery.ui && jQuery.ui.sortable) {
+		$('#query-list').sortable({
+			update: function (e, ui) {
+				var col = $("#query-list").sortable("serialize");
 
-		if ($('#filter_search').val() != '') {
-			$('#clear-search').css('display', 'block');
-		}
-
-		$('#filter_search').on('keyup', function (e) {
-			var clear = $('#clear-search');
-			// Show the button
-			if ($(this).val() != '') {
-				if (clear.css('display') != 'block') {
-					clear.css('display', 'block');
+				if (_DEBUG) {
+					window.console && console.log('Calling: ' + $('#queries').attr('data-update').nohtml() + '&' + col);
 				}
-			} else {
-				clear.css('display', 'none');
+
+				$.getJSON($('#queries').attr('data-update').nohtml() + '&' + col, function(response) {
+					if (_DEBUG) {
+						window.console && console.log(response);
+					}
+				});
+			}
+		});
+
+		applySortable();
+	}
+
+	$('#new-folder').on('click', function(e) {
+		e.preventDefault();
+
+		var title = prompt('<?php echo JText::_('Folder name'); ?>');
+		if (title) {
+			if (_DEBUG) {
+				window.console && console.log('Calling: ' + $(this).attr('data-href').nohtml() + '&fields[title]=' + title);
+			}
+
+			$.get($(this).attr('data-href').nohtml() + '&fields[title]=' + title, function(response){
+				if (_DEBUG) {
+					window.console && console.log(response);
+				}
+
+				$('#query-list').html(response);
+
+				//var template = Handlebars.compile($("#folder-template").html());
+				//$('#queries').append(template(response));
+			});
+		}
+	});
+
+	$('#tktlist').find('input').on('change', function(e) {
+		var el = $(this),
+			parent = el.closest('li');
+
+		if (el.prop('checked')) {
+			if (!parent.hasClass('ui-selected')) {
+				parent.addClass('ui-selected');
+			}
+		} else {
+			if (parent.hasClass('ui-selected')) {
+				parent.removeClass('ui-selected');
+			}
+		}
+	});
+
+	/*$('#new-batch').on('click', function(e) {
+		e.preventDefault();
+
+		var ids = new Array();
+
+		$(".ui-selected").each(function() {
+			ids.push($(this).attr('data-id'));
+		});
+
+		if (ids.length > 1) {
+			var url = '<?php echo JRoute::_('index.php?option=' . $this->option); ?>';
+			$.fancybox.open($(this).attr('href').tmpl() + '&id[]=' + ids.join('&id[]='), {
+				arrows: false,
+				type: 'iframe',
+				autoSize: false,
+				fitToView: false
+			});
+		} else {
+			alert('<?php echo JText::_('Please select two or more items to batch process.'); ?>'); 
+		}
+	});*/
+
+	var clear = $('#clear-search'),
+		sinput = $('#filter_search');
+
+	if (!clear.length) {
+		clear = $('<span>')
+			.attr('id', 'clear-search')
+			.css('display', 'none')
+			.on('click', function(event) {
+				sinput.val('');
+				$('#ticketForm').submit();
+			})
+			.appendTo($('#filter-bar'));
+	}
+
+	if (sinput.val() != '') {
+		clear.show();
+	}
+
+	sinput.on('keyup', function (e) {
+		if ($(this).val() != '') {
+			if (clear.css('display') != 'block') {
+				clear.show();
+			}
+		} else {
+			clear.hide();
+		}
+	});
+});
+
+function applySortable()
+{
+	if (jQuery.ui && jQuery.ui.sortable) {
+		$('ul.queries').sortable({
+			connectWith: 'ul.queries',
+			update: function (e, ui) {
+				var col = [];
+
+				$('ul.queries').each(function(i, el) {
+					var ul = $(el),
+						folder = parseInt(ul.attr('id').split('_')[1]);
+
+					ul.find('li').each(function(k, elm) {
+						col.push(folder + '_' + $(elm).attr('id').split('_')[1]);
+					});
+				});
+
+				if (_DEBUG) {
+					window.console && console.log('Calling: ' + $('#queries').attr('data-update').nohtml() + '&queries[]=' + col.join('&queries[]='));
+				}
+
+				$.getJSON($('#queries').attr('data-update').nohtml() + '&queries[]=' + col.join('&queries[]='), function(response) {
+					if (_DEBUG) {
+						window.console && console.log(response);
+					}
+				});
 			}
 		});
 	}
+}
 </script>

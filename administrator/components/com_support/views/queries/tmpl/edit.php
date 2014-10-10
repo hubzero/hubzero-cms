@@ -169,7 +169,7 @@ $juser = JFactory::getUser();
 		$this->row->title .= ' ' . JText::_('COM_SUPPORT_COPY');
 	}
 ?>
-	<form action="index.php" method="post" name="adminForm" id="queryForm">
+	<form action="index.php" method="post" name="adminForm" id="component-form">
 		<fieldset>
 			<div class="configuration">
 				<div class="configuration-options">
@@ -180,55 +180,78 @@ $juser = JFactory::getUser();
 				<?php echo JText::_('COM_SUPPORT_QUERY_BUILDER'); ?>
 			</div>
 		</fieldset>
+		<div class="col width-100">
+			<fieldset class="fields title">
+				<label for="field-title"><?php echo JText::_('COM_SUPPORT_FIELD_TITLE'); ?></label>
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			</fieldset>
 
-		<fieldset class="fields title">
-			<label for="field-title"><?php echo JText::_('COM_SUPPORT_FIELD_TITLE'); ?></label>
-			<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-		</fieldset>
+			<fieldset class="query">
+				<?php
+					if ($this->row->conditions)
+					{
+						$condition = json_decode($this->row->conditions);
+						//foreach ($conditions as $condition)
+						//{
+							$this->view('condition')
+							     ->set('option', $this->option)
+							     ->set('controller', $this->controller)
+							     ->set('condition', $condition)
+							     ->set('conditions', $this->conditions)
+							     ->set('row', $this->row)
+							     ->display();
+						//}
+					}
+				?>
+			</fieldset>
 
-		<fieldset class="query">
-			<?php
-				if ($this->row->conditions)
-				{
-					$condition = json_decode($this->row->conditions);
-					//foreach ($conditions as $condition)
-					//{
-						$this->view('condition')
-						     ->set('option', $this->option)
-						     ->set('controller', $this->controller)
-						     ->set('condition', $condition)
-						     ->set('conditions', $this->conditions)
-						     ->set('row', $this->row)
-						     ->display();
-					//}
-				}
-			?>
-		</fieldset>
+			<fieldset class="fields sort">
+				<p>
+					<label for="field-sort"><?php echo JText::_('In folder'); ?></label>
+					<select name="fields[folder_id]" id="field-folder_id">
+						<?php
+						$database = JFactory::getDBO();
+						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
-		<fieldset class="fields sort">
-			<p>
-				<label for="field-sort"><?php echo JText::_('COM_SUPPORT_QUERY_SORT_BY'); ?></label>
-				<select name="fields[sort]" id="field-sort">
-					<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
-					<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
-					<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
-					<option value="owner"<?php if ($this->row->sort == 'owner') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
-					<option value="group"<?php if ($this->row->sort == 'group') { echo ' selected="selected"'; }; ?>><?php echo JText::_('Group'); ?></option>
-					<option value="id"<?php if ($this->row->sort == 'id') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
-					<option value="report"<?php if ($this->row->sort == 'report') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
-					<?php /*<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
-					<option value="severity"<?php if ($this->row->sort == 'severity') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
-					<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
-					<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
-					<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
-					<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
-				</select>
-				<select name="fields[sort_dir]" id="field-sort_dir">
-					<option value="DESC"<?php if (strtolower($this->row->sort_dir) == 'desc') { echo ' selected="selected"'; }; ?>>desc</option>
-					<option value="ASC"<?php if (strtolower($this->row->sort_dir) == 'asc') { echo ' selected="selected"'; }; ?>>asc</option>
-				</select>
-			</p>
-		</fieldset>
+						$sr = new SupportTableQueryFolder($database);
+						$folders = $sr->find('list', array(
+							'user_id'  => JFactory::getUser()->get('id'),
+							'sort'     => 'ordering',
+							'sort_Dir' => 'ASC'
+						));
+						if ($folders)
+						{
+							foreach ($folders as $folder) 
+							{
+								?><option value="<?php echo $folder->id; ?>"<?php if ($this->row->folder_id == $folder->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($folder->title)); ?></option><?php
+							}
+						}
+						?>
+					</select>
+
+					<label for="field-sort"><?php echo JText::_('COM_SUPPORT_QUERY_SORT_BY'); ?></label>
+					<select name="fields[sort]" id="field-sort">
+						<option value="open"<?php if ($this->row->sort == 'open') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
+						<option value="status"<?php if ($this->row->sort == 'status') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
+						<option value="login"<?php if ($this->row->sort == 'login') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
+						<option value="owner"<?php if ($this->row->sort == 'owner') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
+						<option value="group"<?php if ($this->row->sort == 'group') { echo ' selected="selected"'; }; ?>><?php echo JText::_('Group'); ?></option>
+						<option value="id"<?php if ($this->row->sort == 'id') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
+						<option value="report"<?php if ($this->row->sort == 'report') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
+						<?php /*<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
+						<option value="severity"<?php if ($this->row->sort == 'severity') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
+						<option value="tag"<?php if ($this->row->sort == 'tag') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
+						<option value="type"<?php if ($this->row->sort == 'type') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
+						<option value="created"<?php if ($this->row->sort == 'created') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+						<option value="category"<?php if ($this->row->sort == 'category') { echo ' selected="selected"'; }; ?>><?php echo JText::_('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
+					</select>
+					<select name="fields[sort_dir]" id="field-sort_dir">
+						<option value="DESC"<?php if (strtolower($this->row->sort_dir) == 'desc') { echo ' selected="selected"'; }; ?>>desc</option>
+						<option value="ASC"<?php if (strtolower($this->row->sort_dir) == 'asc') { echo ' selected="selected"'; }; ?>>asc</option>
+					</select>
+				</p>
+			</fieldset>
+		</div>
 
 		<input type="hidden" name="fields[id]" value="<?php echo ($this->row->iscore == 0) ? $this->row->id : 0; ?>" />
 		<input type="hidden" name="fields[conditions]" id="field-conditions" value="<?php echo $this->escape(stripslashes($this->row->conditions)); ?>" />
@@ -271,8 +294,9 @@ $juser = JFactory::getUser();
 			query = Conditions.getCondition('.query > fieldset');
 			$('#field-conditions').val(JSON.stringify(query));
 
-			$.post('index.php', $("#queryForm").serialize(), function(data){
-				window.parent.document.getElementById('custom-views').innerHTML = data;
+			$.post('index.php', $("#component-form").serialize(), function(data){
+				window.parent.document.getElementById('query-list').innerHTML = data;
+				window.parent.applySortable();
 				window.top.setTimeout('window.parent.$.fancybox.close()', 700);
 			});
 		}

@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
 /**
  * Manage support tickets
@@ -573,85 +574,140 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			''
 		));
 
+		// Get query list
+		$sf = new SupportTableQueryFolder($this->database);
 		$sq = new SupportQuery($this->database);
-		$this->view->queries = array();
-		if ($this->acl->check('read', 'tickets'))
+
+		if (!$this->acl->check('read', 'tickets'))
 		{
-			$this->view->queries['common'] = $sq->getCommon();
-			if (!$this->view->queries['common'] || count($this->view->queries['common']) <= 0)
-			{
-				$this->view->queries['common'] = $sq->populateDefaults('common');
-			}
+			$this->view->folders = $sf->find('list', array(
+				'user_id'  => 0,
+				'sort'     => 'ordering',
+				'sort_Dir' => 'asc',
+				'iscore'   => 2
+			));
+
+			$queries = $sq->find('list', array(
+				'user_id'  => 0,
+				'sort'     => 'ordering',
+				'sort_Dir' => 'asc',
+				'iscore'   => 4
+			));
 		}
 		else
 		{
-			$this->view->queries['common'] = $sq->getCommonNotInACL();
-			if (!$this->view->queries['common'] || count($this->view->queries['common']) <= 0)
+			$this->view->folders = $sf->find('list', array(
+				'user_id'  => $this->juser->get('id'),
+				'sort'     => 'ordering',
+				'sort_Dir' => 'asc'
+			));
+
+			// Does the user have any folders?
+			if (!count($this->view->folders))
 			{
-				$this->view->queries['common'] = $sq->populateDefaults('commonnotacl');
+				// Get all the default folders
+				$this->view->folders = $sf->cloneCore($this->juser->get('id'));
+			}
+
+			$queries = $sq->find('list', array(
+				'user_id'  => $this->juser->get('id'),
+				'sort'     => 'ordering',
+				'sort_Dir' => 'asc'
+			));
+		}
+
+		foreach ($queries as $query)
+		{
+			$filters = $this->view->filters;
+			if ($query->id != $this->view->filters['show'])
+			{
+				$filters['search'] = '';
+			}
+
+			$query->query = $sq->getQuery($query->conditions);
+
+			// Get a record count
+			$query->count = $obj->getCount($query->query, $filters);
+
+			foreach ($this->view->folders as $k => $v)
+			{
+				if (!isset($this->view->folders[$k]->queries))
+				{
+					$this->view->folders[$k]->queries = array();
+				}
+				if ($query->folder_id == $v->id)
+				{
+					$this->view->folders[$k]->queries[] = $query;
+				}
+			}
+
+			if ($query->id == $this->view->filters['show'])
+			{
+				// Search
+				$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+					$this->_option . '.' . $this->_controller . '.search',
+					'search',
+					''
+				));
+				// Set the total for the pagination
+				$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
+
+				// Incoming sort
+				$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+					$this->_option . '.' . $this->_controller . '.sort',
+					'sort',
+					$query->sort
+				));
+
+				$this->view->filters['sortdir']     = trim($app->getUserStateFromRequest(
+					$this->_option . '.' . $this->_controller . '.sortdir',
+					'sortdir',
+					$query->sort_dir
+				));
+				// Get the records
+				$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
 			}
 		}
-		$this->view->queries['mine']   = $sq->getMine();
-		$this->view->queries['custom'] = $sq->getCustom($this->juser->get('id'));
 
-		if (!$this->view->queries['mine'] || count($this->view->queries['mine']) <= 0)
-		{
-			$this->view->queries['mine'] = $sq->populateDefaults('mine');
-		}
-		// If no query is set, default to the first one in the list
 		if (!$this->view->filters['show'])
 		{
-			$this->view->filters['show'] = $this->view->queries['common'][0]->id;
-			/*if ($this->acl->check('read', 'tickets'))
+			// Jump back to the beginning of the folders list
+			// and try to find the first query available
+			// to make it the current "active" query
+			reset($this->view->folders);
+			foreach ($this->view->folders as $folder)
 			{
-				$this->view->filters['show'] = $this->view->queries['common'][0]->id;
-			}
-			else
-			{
-				$this->view->filters['show'] = $this->view->queries['mine'][0]->id;
-			}*/
-		}
-
-		// Loop through each grouping
-		foreach ($this->view->queries as $key => $queries)
-		{
-			// Loop through each query in a group
-			foreach ($queries as $k => $query)
-			{
-				$filters = $this->view->filters;
-
-				// Build the query from the condition set
-				//if (!$query->query)
-				//{
-					$query->query = $sq->getQuery($query->conditions);
-				//}
-				if ($query->id != $this->view->filters['show'])
+				if (!empty($folder->queries))
 				{
-					$filters['search'] = '';
-				}
-				// Get a record count
-				$this->view->queries[$key][$k]->count = $obj->getCount($query->query, $filters);
-				// The query is the current active query
-				// get records
-				if ($query->id == $this->view->filters['show'])
-				{
-					// Set the total for the pagination
-					$this->view->total = $this->view->queries[$key][$k]->count;
-					// Incoming sort
-					$this->view->filters['sort']    = trim($app->getUserStateFromRequest(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'sort',
-						$query->sort
-					));
-					$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'sortdir',
-						$query->sort_dir
-					));
-					// Get the records
-					$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
+					$query = $folder->queries[0];
+					$this->view->filters['show'] = $query->id;
+					break;
 				}
 			}
+			//$folder = reset($this->view->folders);
+			//$query = $folder->queries[0];
+			// Search
+			$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			));
+			// Set the total for the pagination
+			$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
+
+			// Incoming sort
+			$this->view->filters['sort']   = trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				$query->sort
+			));
+			$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				$query->sort_dir
+			));
+			// Get the records
+			$this->view->rows = $obj->getRecords($query->query, $this->view->filters);
 		}
 
 		$watching = new SupportTableWatching($this->database);

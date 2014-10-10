@@ -31,25 +31,36 @@ defined('_JEXEC') or die('Restricted access');
 
 if ($this->getError()) { ?>
 	<li class="error">Error: <?php echo $this->getError(); ?></li>
-<?php } ?>
-<?php
-	if ($this->queries)
-	{
-		foreach ($this->queries as $query)
-		{
-?>
-	<li<?php if (intval($this->show) == $query->id) { echo ' class="active"'; }?>>
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tickets&task=display&show=' . $query->id); ?>">
-			<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
-		</a>
-		<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
-			<?php echo JText::_('JACTION_DELETE'); ?>
-		</a>
-		<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
-			<?php echo JText::_('JACTION_EDIT'); ?>
-		</a>
-	</li>
-<?php
-		}
-	}
-?>
+<?php }
+if (count($this->folders) > 0) { ?>
+	<?php foreach ($this->folders as $folder) { ?>
+		<li id="folder_<?php echo $this->escape($folder->id); ?>" class="open">
+			<span class="icon-folder folder" id="<?php echo $this->escape($folder->id); ?>-title" data-id="<?php echo $this->escape($folder->id); ?>"><?php echo $this->escape($folder->title); ?></span>
+			<span class="folder-options">
+				<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+					<?php echo JText::_('JACTION_DELETE'); ?>
+				</a>
+				<a class="edit editfolder" data-id="<?php echo $this->escape($folder->id); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" data-href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . JUtility::getToken() . '=1&fields[id]=' . $folder->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
+					<?php echo JText::_('JACTION_EDIT'); ?>
+				</a>
+			</span>
+			<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
+				<?php foreach ($folder->queries as $query) { ?>
+					<li id="query_<?php echo $this->escape($query->id); ?>" <?php if ($this->show == $query->id) { echo ' class="active"'; }?>>
+						<a class="aquery" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=' . $query->id . (intval($this->show) != $query->id ? '&search=' : '')); ?>">
+							<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
+						</a>
+						<span class="query-options">
+							<a class="delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_DELETE'); ?>">
+								<?php echo JText::_('JACTION_DELETE'); ?>
+							</a>
+							<a class="modal edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+								<?php echo JText::_('JACTION_EDIT'); ?>
+							</a>
+						</span>
+					</li>
+				<?php } ?>
+			</ul>
+		</li>
+	<?php } ?>
+<?php }

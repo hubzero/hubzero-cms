@@ -30,6 +30,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'query.php');
+include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'queryfolder.php');
 
 /**
  * Support controller class for ticket queries
@@ -174,24 +175,41 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->view->setLayout('list');
-
 			$obj = new SupportTicket($this->database);
 
-			$queries = $row->getCustom($this->juser->get('id'));
-			if ($queries)
+			// Get query list
+			$sf = new SupportTableQueryFolder($this->database);
+			$this->view->folders = $sf->find('list', array(
+				'user_id'  => $this->juser->get('id'),
+				'sort'     => 'ordering',
+				'sort_Dir' => 'asc'
+			));
+
+			$sq = new SupportQuery($this->database);
+			$queries = $sq->find('list', array(
+				'user_id'  => $this->juser->get('id'),
+				'sort'     => 'ordering',
+				'sort_Dir' => 'asc'
+			));
+
+			foreach ($queries as $query)
 			{
-				foreach ($queries as $k => $query)
+				$query->query = $sq->getQuery($query->conditions);
+				$query->count = $obj->getCount($query->query);
+
+				foreach ($this->view->folders as $k => $v)
 				{
-					if (!$query->query)
+					if (!isset($this->view->folders[$k]->queries))
 					{
-						$query->query = $row->getQuery($query->conditions);
+						$this->view->folders[$k]->queries = array();
 					}
-					$queries[$k]->count = $obj->getCount($query->query);
+					if ($query->folder_id == $v->id)
+					{
+						$this->view->folders[$k]->queries[] = $query;
+					}
 				}
 			}
 
-			$this->view->queries = $queries;
 			$this->view->show = 0;
 			// Set any errors
 			if ($this->getError())
@@ -203,7 +221,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 			}
 
 			// Output the HTML
-			$this->view->display();
+			$this->view->setLayout('list')->display();
 		}
 	}
 
@@ -246,24 +264,41 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$this->view->setLayout('list');
-
 			$obj = new SupportTicket($this->database);
 
-			$queries = $row->getCustom($this->juser->get('id'));
-			if ($queries)
+			// Get query list
+			$sf = new SupportTableQueryFolder($this->database);
+			$this->view->folders = $sf->find('list', array(
+				'user_id'  => $this->juser->get('id'),
+				'sort'     => 'ordering',
+				'sort_Dir' => 'asc'
+			));
+
+			$sq = new SupportQuery($this->database);
+			$queries = $sq->find('list', array(
+				'user_id'  => $this->juser->get('id'),
+				'sort'     => 'ordering',
+				'sort_Dir' => 'asc'
+			));
+
+			foreach ($queries as $query)
 			{
-				foreach ($queries as $k => $query)
+				$query->query = $sq->getQuery($query->conditions);
+				$query->count = $obj->getCount($query->query);
+
+				foreach ($this->view->folders as $k => $v)
 				{
-					if (!$query->query)
+					if (!isset($this->view->folders[$k]->queries))
 					{
-						$query->query = $row->getQuery($query->conditions);
+						$this->view->folders[$k]->queries = array();
 					}
-					$queries[$k]->count = $obj->getCount($query->query);
+					if ($query->folder_id == $v->id)
+					{
+						$this->view->folders[$k]->queries[] = $query;
+					}
 				}
 			}
 
-			$this->view->queries = $queries;
 			$this->view->show = 0;
 			// Set any errors
 			if ($this->getError())
@@ -275,7 +310,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 			}
 
 			// Output the HTML
-			$this->view->display();
+			$this->view->setLayout('list')->display();
 		}
 	}
 
@@ -289,5 +324,266 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=tickets&task=display'
 		);
+	}
+
+	/**
+	 * Create a new folder
+	 *
+	 * @return	void
+	 */
+	public function addfolderTask()
+	{
+		$this->editfolderTask();
+	}
+
+	/**
+	 * Display a form for adding/editing a folder
+	 *
+	 * @return	void
+	 */
+	public function editfolderTask($row=null)
+	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else
+		{
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? intval($id[0]) : 0);
+			}
+
+			$this->view->row = new SupportTableQueryFolder($this->database);
+			$this->view->row->load($id);
+		}
+
+		// Set any errors
+		if ($this->getError())
+		{
+			foreach ($this->getError() as $error)
+			{
+				$this->view->setError($error);
+			}
+		}
+
+		// Output the HTML
+		$this->view->setLayout('editfolder')->display();
+	}
+
+	/**
+	 * Save a folder
+	 *
+	 * @return  void
+	 */
+	public function applyfolderTask()
+	{
+		$this->savefolderTask(false);
+	}
+
+	/**
+	 * Save a folder
+	 *
+	 * @return  void
+	 */
+	public function savefolderTask($redirect=true)
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$fields  = JRequest::getVar('fields', array());
+		$no_html = JRequest::getInt('no_html', 0);
+		$tmpl    = JRequest::getVar('component', '');
+
+		$response = new stdClass;
+		$response->success = 1;
+		$response->message = '';
+
+		$row = new SupportTableQueryFolder($this->database);
+		if (!$row->bind($fields))
+		{
+			if (!$no_html && $tmpl != 'component')
+			{
+				$this->addComponentMessage($row->getError(), 'error');
+				$this->editfolderTask($row);
+			}
+			else
+			{
+				$response->success = 0;
+				$response->message = $row->getError();
+				echo json_encode($response);
+			}
+			return;
+		}
+
+		// Check content
+		if (!$row->check())
+		{
+			if (!$no_html && $tmpl != 'component')
+			{
+				$this->addComponentMessage($row->getError(), 'error');
+				$this->editfolderTask($row);
+			}
+			else
+			{
+				$response->success = 0;
+				$response->message = $row->getError();
+				echo json_encode($response);
+			}
+			return;
+		}
+
+		// Store new content
+		if (!$row->store())
+		{
+			if (!$no_html && $tmpl != 'component')
+			{
+				$this->addComponentMessage($row->getError(), 'error');
+				$this->editfolderTask($row);
+			}
+			else
+			{
+				$response->success = 0;
+				$response->message = $row->getError();
+				echo json_encode($response);
+			}
+			return;
+		}
+
+		if ($redirect)
+		{
+			if (!$no_html && $tmpl != 'component')
+			{
+				// Output messsage and redirect
+				$this->setRedirect(
+					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
+				);
+			}
+
+			$response->id       = $row->id;
+			$response->title    = $row->title;
+			$response->ordering = $row->ordering;
+			$response->message  = JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED');
+
+			echo json_encode($response);
+			return;
+		}
+
+		$this->editfolderTask($row);
+	}
+
+	/**
+	 * Remove a folder
+	 *
+	 * @return  void
+	 */
+	public function removefolderTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+		$ids = (is_array($ids) ?: array($ids));
+
+		$no_html = JRequest::getInt('no_html', 0);
+
+		foreach ($ids as $id)
+		{
+			$row = new SupportQuery($this->database);
+			$row->deleteByFolder(intval($id));
+
+			$row = new SupportTableQueryFolder($this->database);
+			$row->delete(intval($id));
+		}
+
+		if (!$no_html)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
+			);
+		}
+
+		$response = new stdClass;
+		$response->success = 1;
+		$response->message = JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED');
+
+		echo json_encode($response);
+	}
+
+	/**
+	 * Remove a folder
+	 *
+	 * @return  void
+	 */
+	public function saveorderingTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$folders = JRequest::getVar('folder', array());
+		$queries = JRequest::getVar('queries', array());
+
+		if (is_array($folders))
+		{
+			foreach ($folders as $key => $folder)
+			{
+				$row = new SupportTableQueryFolder($this->database);
+				$row->load(intval($folder));
+				$row->ordering = $key + 1;
+				$row->store();
+			}
+		}
+
+		if (is_array($queries))
+		{
+			$folder = null;
+			$i = 0;
+
+			foreach ($queries as $query)
+			{
+				$bits = explode('_', $query);
+
+				$fd = intval($bits[0]);
+				$id = intval($bits[1]);
+
+				if ($fd != $folder)
+				{
+					$folder = $fd;
+					$i = 0;
+				}
+
+				$row = new SupportQuery($this->database);
+				$row->load($id);
+				$row->folder_id = $fd;
+				$row->ordering  = $i + 1;
+				$row->store();
+
+				$i++;
+			}
+		}
+
+		if (!$no_html)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
+			);
+		}
+
+		$response = new stdClass;
+		$response->success = 1;
+		$response->message = JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED');
+
+		echo json_encode($response);
 	}
 }

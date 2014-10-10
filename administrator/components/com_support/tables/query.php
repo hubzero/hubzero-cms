@@ -1,11 +1,11 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package     HUBzero CMS
+ * @author      Shawn Rice <zooley@purdue.edu>
+ * @copyright   Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * Copyright 2005-2014 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -31,66 +31,10 @@ defined('_JEXEC') or die('Restricted access');
 class SupportQuery extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $title      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $conditions = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $user_id    = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $sort       = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $sort_dir    = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $iscore    = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct($db)
 	{
@@ -100,7 +44,7 @@ class SupportQuery extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -117,7 +61,7 @@ class SupportQuery extends JTable
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
 		}
-		$this->query = $this->getQuery($this->conditions);
+		//$this->query = $this->getQuery($this->conditions);
 
 		$this->sort = trim($this->sort);
 		if (!$this->sort)
@@ -133,9 +77,8 @@ class SupportQuery extends JTable
 
 		if (!$this->id)
 		{
-			//$juser = JFactory::getUser();
 			$this->created = JFactory::getDate()->toSql();
-			//$this->created_by = $juser->get('id');
+			//$this->created_by = JFactory::getUser()->get('id');
 		}
 		if ($this->iscore === null)
 		{
@@ -148,8 +91,8 @@ class SupportQuery extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -158,7 +101,11 @@ class SupportQuery extends JTable
 		$where = array();
 		if (isset($filters['user_id']))
 		{
-			$where[] = "q.user_id='" . $filters['user_id'] . "'";
+			$where[] = "q.user_id=" . $this->_db->quote($filters['user_id']);
+		}
+		if (isset($filters['folder_id']))
+		{
+			$where[] = "q.folder_id=" . $this->_db->quote($filters['folder_id']);
 		}
 		if (isset($filters['iscore']))
 		{
@@ -169,7 +116,7 @@ class SupportQuery extends JTable
 			}
 			else
 			{
-				$where[] = "q.iscore='" . $filters['iscore'] . "'";
+				$where[] = "q.iscore=" . $this->_db->quote($filters['iscore']);
 			}
 		}
 
@@ -178,59 +125,103 @@ class SupportQuery extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (!isset($filters['count']) || !$filters['count'])
-		{
-			if (!isset($filters['sort']) || !$filters['sort'])
-			{
-				$filters['sort'] = 'created';
-			}
-			if (!isset($filters['sort_Dir']) || !$filters['sort_Dir'])
-			{
-				$filters['sort_Dir'] = 'desc';
-			}
-			$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
-		}
-		if (isset($filters['limit']) && $filters['limit'] != 0)
-		{
-			$query .= " LIMIT " . intval($filters['start']) . "," . intval($filters['limit']);
-		}
-
 		return $query;
+	}
+
+	/**
+	 * Get a count or list of records
+	 *
+	 * @param   string  $what     Data to return
+	 * @param   array   $filters  Filters to build query from
+	 * @return  mixed
+	 */
+	public function find($what='', $filters=array())
+	{
+		$what = strtolower(trim($what));
+
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'one':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+				$result = $this->find('list', $filters);
+				return $result[0];
+			break;
+
+			case 'all':
+				$filters['start'] = 0;
+				$filters['limit'] = 0;
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			case 'records':
+			default:
+				$query = "SELECT q.* " . $this->_buildQuery($filters);
+
+				if (isset($filters['sort']) && $filters['sort'] != '') 
+				{
+					if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')) || !isset($filters['sort_Dir']))
+					{
+						$filters['sort_Dir'] = 'ASC';
+					}
+					$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+				} 
+
+				if (isset($filters['limit']) && $filters['limit'] != 0) 
+				{
+					$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
-		$filters['count'] = true;
+		/*$filters['count'] = true;
 		$filters['limit'] = 0;
 
 		$query = "SELECT COUNT(q.id) " . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		return $this->_db->loadResult();*/
+
+		return $this->find('count', $filters);
 	}
 
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
-		$query = "SELECT q.* " . $this->_buildQuery($filters); //, u.name
+		/*$query = "SELECT q.* " . $this->_buildQuery($filters); //, u.name
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->_db->loadObjectList();*/
+
+		return $this->find('list', $filters);
 	}
 
 	/**
 	 * Get common queries
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getCommonNotInACL()
 	{
@@ -240,15 +231,17 @@ class SupportQuery extends JTable
 			'sort_Dir' => 'asc'
 		);
 
-		$query = "SELECT *" . $this->_buildQuery($filters);
+		/*$query = "SELECT *" . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->_db->loadObjectList();*/
+
+		return $this->find('list', $filters);
 	}
 
 	/**
 	 * Get common queries
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getCommon()
 	{
@@ -258,15 +251,17 @@ class SupportQuery extends JTable
 			'sort_Dir' => 'asc'
 		);
 
-		$query = "SELECT *" . $this->_buildQuery($filters);
+		/*$query = "SELECT *" . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->_db->loadObjectList();*/
+
+		return $this->find('list', $filters);
 	}
 
 	/**
 	 * Get my queries
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getMine()
 	{
@@ -276,15 +271,17 @@ class SupportQuery extends JTable
 			'sort_Dir' => 'asc'
 		);
 
-		$query = "SELECT *" . $this->_buildQuery($filters);
+		/*$query = "SELECT *" . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->_db->loadObjectList();*/
+
+		return $this->find('list', $filters);
 	}
 
 	/**
 	 * Get my queries
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getCustom($user_id=null)
 	{
@@ -304,16 +301,18 @@ class SupportQuery extends JTable
 			'sort_Dir' => 'asc'
 		);
 
-		$query = "SELECT *" . $this->_buildQuery($filters);
+		/*$query = "SELECT *" . $this->_buildQuery($filters);
 		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->_db->loadObjectList();*/
+
+		return $this->find('list', $filters);
 	}
 
 	/**
-	 * Recursive method to parse the condition and generate the query. Takes the selector for the root condition
+	 * Turn an array or object into a JSON string
 	 *
-	 * @param      mixed $condition Accepts either a JSON string or object
-	 * @return     string
+	 * @param   mixed   $data  An array or object
+	 * @return  string
 	 */
 	public function getCondition($data)
 	{
@@ -323,8 +322,8 @@ class SupportQuery extends JTable
 	/**
 	 * Recursive method to iterate over the condition tree and generate the query
 	 *
-	 * @param      mixed $condition Accepts either a JSON string or object
-	 * @return     string
+	 * @param   mixed $condition Accepts either a JSON string or object
+	 * @return  string
 	 */
 	public function getQuery($condition)
 	{
@@ -513,8 +512,8 @@ class SupportQuery extends JTable
 	/**
 	 * Recursive method to iterate over the condition tree and generate the query
 	 *
-	 * @param      mixed $condition Accepts either a JSON string or object
-	 * @return     string
+	 * @param   mixed   $condition  Accepts either a JSON string or object
+	 * @return  string
 	 */
 	public function getFilters($condition)
 	{
@@ -566,8 +565,8 @@ class SupportQuery extends JTable
 	/**
 	 * Populate the database with default values
 	 *
-	 * @param      string  $type Type of query to populate [common, mine]
-	 * @return     boolean False if errors, True on success
+	 * @param   string   $type  Type of query to populate [common, mine]
+	 * @return  boolean  False if errors, True on success
 	 */
 	public function populateDefaults($type='common')
 	{
@@ -619,5 +618,23 @@ class SupportQuery extends JTable
 			return false;
 		}
 		return $this->$method();
+	}
+
+	/**
+	 * Remove queries by fodler ID
+	 *
+	 * @param   itneger  $id  Folder ID
+	 * @return  boolean  False if errors, True on success
+	 */
+	public function deleteByFolder($id)
+	{
+		$sql = "DELETE FROM $this->_tbl WHERE `folder_id`=" . $this->_db->quote(intval($id));
+		$this->_db->setQuery($sql);
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+		return true;
 	}
 }

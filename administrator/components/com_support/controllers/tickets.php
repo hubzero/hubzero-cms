@@ -26,14 +26,13 @@
  * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * /administrator/components/com_support/controllers/tickets.php
- *
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'query.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'queryfolder.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'ticket.php');
 
 /**
@@ -55,35 +54,150 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$obj = new SupportTicket($this->database);
 
 		// Get filters
-		//$this->view->filters = SupportUtilities::getFilters();
 		$this->view->total = 0;
 		$this->view->rows = array();
 
-		$this->view->filters = array();
-		// Paging
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			// Paging
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			// Query to filter by
+			'show' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.show',
+				'show',
+				0,
+				'int'
+			),
+			'search' => ''
 		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		// Query to filter by
-		$this->view->filters['show'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.show',
-			'show',
-			0,
-			'int'
-		);
-		$this->view->filters['search'] = '';
 
 		// Get query list
+		$sf = new SupportTableQueryFolder($this->database);
+		$this->view->folders = $sf->find('list', array(
+			'user_id'  => $this->juser->get('id'),
+			'sort'     => 'ordering',
+			'sort_Dir' => 'asc'
+		));
+
+		// Does the user have any folders?
+		if (!count($this->view->folders))
+		{
+			// Get all the default folders
+			$this->view->folders = $sf->cloneCore($this->juser->get('id'));
+		}
+
 		$sq = new SupportQuery($this->database);
+		$queries = $sq->getRecords(array(
+			'user_id'  => $this->juser->get('id'),
+			'sort'     => 'ordering',
+			'sort_Dir' => 'asc'
+		));
+
+		foreach ($queries as $query)
+		{
+			$filters = $this->view->filters;
+			if ($query->id != $this->view->filters['show'])
+			{
+				$filters['search'] = '';
+			}
+
+			$query->query = $sq->getQuery($query->conditions);
+
+			// Get a record count
+			$query->count = $obj->getCount($query->query, $filters);
+
+			foreach ($this->view->folders as $k => $v)
+			{
+				if (!isset($this->view->folders[$k]->queries))
+				{
+					$this->view->folders[$k]->queries = array();
+				}
+				if ($query->folder_id == $v->id)
+				{
+					$this->view->folders[$k]->queries[] = $query;
+				}
+			}
+
+			if ($query->id == $this->view->filters['show'])
+			{
+				// Search
+				$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+					$this->_option . '.' . $this->_controller . '.search',
+					'search',
+					''
+				));
+				// Set the total for the pagination
+				$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
+
+				// Incoming sort
+				$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+					$this->_option . '.' . $this->_controller . '.sort',
+					'filter_order',
+					$query->sort
+				));
+				$this->view->filters['sortdir']     = trim($app->getUserStateFromRequest(
+					$this->_option . '.' . $this->_controller . '.sortdir',
+					'filter_order_Dir',
+					$query->sort_dir
+				));
+				// Get the records
+				$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
+			}
+		}
+
+		if (!$this->view->filters['show'])
+		{
+			// Jump back to the beginning of the folders list
+			// and try to find the first query available
+			// to make it the current "active" query
+			reset($this->view->folders);
+			foreach ($this->view->folders as $folder)
+			{
+				if (!empty($folder->queries))
+				{
+					$query = $folder->queries[0];
+					$this->view->filters['show'] = $query->id;
+					break;
+				}
+			}
+			//$folder = reset($this->view->folders);
+			//$query = $folder->queries[0];
+			// Search
+			$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			));
+			// Set the total for the pagination
+			$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $query->count;
+
+			// Incoming sort
+			$this->view->filters['sort']   = trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				$query->sort
+			));
+			$this->view->filters['sortdir'] = trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				$query->sort_dir
+			));
+			// Get the records
+			$this->view->rows = $obj->getRecords($query->query, $this->view->filters);
+		}
+
+		// Get query list
+		/*$sq = new SupportQuery($this->database);
 		$this->view->queries = array(
 			'common' => $sq->getCommon(),
 			'mine'   => $sq->getMine(),
@@ -150,7 +264,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
 				}
 			}
-		}
+		}*/
 
 		$watching = new SupportTableWatching($this->database);
 		$this->view->watchcount = $watching->count(array(
@@ -186,10 +300,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				}
 				$this->view->rows = $obj->getRecords("(f.id IN ('" . implode("','", $ids) . "'))", $this->view->filters);
 			}
-			else
+			/*else
 			{
 				$this->view->rows = array();
-			}
+			}*/
 		}
 
 		// Initiate paging
@@ -726,6 +840,301 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$this->view->setLayout('edit');
 			$this->editTask();
 		}
+	}
+
+	/**
+	 * Display a form for processing tickets in a batch
+	 *
+	 * @return  void
+	 */
+	public function batchTask()
+	{
+		JRequest::setVar('hidemainmenu', 1);
+
+		// Incoming
+		$this->view->ids = JRequest::getVar('id', array());
+		$this->view->tmpl = JRequest::getVar('tmpl', '');
+
+		$this->view->filters = SupportUtilities::getFilters();
+		$this->view->lists = array();
+
+		// Get resolutions
+		$sr = new SupportResolution($this->database);
+		$this->view->lists['resolutions'] = $sr->getResolutions();
+
+		// Get categories
+		$sa = new SupportCategory($this->database);
+		$this->view->lists['categories'] = $sa->find('list');
+
+		// Get severities
+		$this->view->lists['severities'] = SupportUtilities::getSeverities($this->config->get('severities'));
+
+		$this->view->lists['owner'] = $this->_userSelect('owner', '', 1);
+
+		// Output the HTML
+		$this->view->display();
+	}
+
+	/**
+	 * Process a batch change
+	 *
+	 * @return  void
+	 */
+	public function processTask()
+	{
+		// Incoming
+		$tmpl    = JRequest::getVar('tmpl');
+
+		$ids     = JRequest::getVar('id', array());
+		$fields  = JRequest::getVar('fields', array());
+		$tags    = JRequest::getVar('tags', '');
+		$access  = 1;
+
+		$fields['owner'] = JRequest::getVar('owner', '');
+		/*$comment = nl2br(JRequest::getVar('comment', '', 'post', 'none', 2));
+		$cc      = JRequest::getVar('cc', '');
+		$access  = JRequest::getInt('access', 0);
+		$email_submitter = JRequest::getInt('email_submitter', 0);
+		$email_owner = JRequest::getInt('email_owner', 0);
+
+		$juri    = JURI::getInstance();
+		$jconfig = JFactory::getConfig();
+
+		$base = $juri->base();
+		if (substr($base, -14) == 'administrator/')
+		{
+			$base = substr($base, 0, strlen($base)-14);
+		}
+
+		$webpath = trim($this->config->get('webpath'), '/');
+
+		$allowEmailResponses = $this->config->get('email_processing');
+		if ($allowEmailResponses)
+		{
+			$encryptor = new \Hubzero\Mail\Token();
+		}*/
+
+		// Only take the fields that have had a value set
+		foreach ($fields as $key => $value)
+		{
+			if ($value === '')
+			{
+				unset($fields[$key]);
+			}
+		}
+
+		$processed = array();
+
+		foreach ($ids as $id)
+		{
+			if (!$id)
+			{
+				continue;
+			}
+
+			// Initiate class and bind posted items to database fields
+			$row = new SupportModelTicket($id);
+			if (!$row->exists())
+			{
+				continue;
+			}
+
+			$old = new SupportModelTicket($id);
+			$old->set('tags', $old->tags('string'));
+
+			if (!$row->bind($fields))
+			{
+				$this->setError($row->getError());
+				continue;
+			}
+
+			// Store new content
+			if (!$row->store(true))
+			{
+				$this->setError($row->getError());
+			}
+
+			// Only set the tags if any tags have been provided
+			if ($tags)
+			{
+				$row->set('tags', $tags);
+				$row->tag($row->get('tags'), $this->juser->get('id'), 1);
+			}
+			else
+			{
+				$row->set('tags', $row->tags('string'));
+			}
+
+			// Create a new support comment object and populate it
+			$rowc = new SupportModelComment();
+			$rowc->set('ticket', $id);
+			$rowc->set('comment', $comment);
+			$rowc->set('created', JFactory::getDate()->toSql());
+			$rowc->set('created_by', $this->juser->get('id'));
+			//$rowc->set('access', $access);
+
+			// Compare fields to find out what has changed for this ticket and build a changelog
+			$rowc->changelog()->diff($old, $row);
+			$rowc->changelog()->cced($cc);
+
+			// Save the data
+			if (!$rowc->store())
+			{
+				$this->setError(500, $rowc->getError());
+				continue;
+			}
+
+			// Only do the following if a comment was posted or ticket was reassigned
+			// otherwise, we're only recording a changelog
+			/*if ($rowc->get('comment') || $row->get('owner') != $old->get('owner'))
+			{
+				// Send e-mail to ticket submitter?
+				if ($email_submitter == 1 && !$rowc->isPrivate())
+				{
+					$rowc->addTo(array(
+						'role'  => JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'),
+						'name'  => $row->submitter('name'),
+						'email' => $row->submitter('email'),
+						'id'    => $row->submitter('id')
+					));
+				}
+
+				// Send e-mail to ticket owner?
+				if ($email_owner == 1 && $row->get('owner'))
+				{
+					$rowc->addTo(array(
+						'role'  => JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
+						'name'  => $row->owner('name'),
+						'email' => $row->owner('email'),
+						'id'    => $row->owner('id')
+					));
+				}
+
+				// Add any CCs to the e-mail list
+				foreach ($rowc->changelog()->get('cc') as $cc)
+				{
+					$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
+				}
+
+				// Message people watching this ticket, 
+				// but ONLY if the comment was NOT marked private
+				if (!$rowc->isPrivate())
+				{
+					foreach ($row->watchers() as $watcher)
+					{
+						$rowc->addTo($watcher->user_id, 'watcher');
+					}
+				}
+
+				if (count($rowc->to()))
+				{
+					// Build e-mail components
+					$subject = JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
+
+					$from = array(
+						'name'      => JText::sprintf('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
+						'email'     => $jconfig->getValue('config.mailfrom'),
+						'multipart' => md5(date('U'))  // Html email
+					);
+
+					// Plain text email
+					$eview = new \Hubzero\Component\View(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
+						'name'      => 'emails',
+						'layout'    => 'comment_plain'
+					));
+					$eview->option     = $this->_option;
+					$eview->controller = $this->_controller;
+					$eview->comment    = $rowc;
+					$eview->ticket     = $row;
+					$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
+
+					$message['plaintext'] = $eview->loadTemplate();
+					$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+					// HTML email
+					$eview->setLayout('comment_html');
+
+					$message['multipart'] = $eview->loadTemplate();
+					$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
+					// Send e-mail to admin?
+					JPluginHelper::importPlugin('xmessage');
+
+					foreach ($rowc->to('ids') as $to)
+					{
+						if ($allowEmailResponses)
+						{
+							// The reply-to address contains the token
+							$token = $encryptor->buildEmailToken(1, 1, $to['id'], $id);
+							$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+						}
+
+						// Get the user's email address
+						if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), $this->_option)))
+						{
+							$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
+						}
+						$rowc->changelog()->notified(
+							$to['role'],
+							$to['name'],
+							$to['email']
+						);
+					}
+
+					foreach ($rowc->to('emails') as $to)
+					{
+						$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
+
+						$email = array(
+							$to['email'],
+							'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+						);
+
+						if ($allowEmailResponses)
+						{
+							// In this case each item in email in an array, 1- To, 2:reply to address
+							SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
+						}
+						else
+						{
+							// email is just a plain 'ol string
+							SupportUtilities::sendEmail($to['email'], $subject, $message, $from);
+						}
+
+						$rowc->changelog()->notified(
+							$to['role'],
+							$to['name'],
+							$to['email']
+						);
+					}
+
+					// Were there any changes?
+					if (count($rowc->changelog()->get('notifications')) > 0)
+					{
+						// Save the data
+						if (!$rowc->store())
+						{
+							$this->setError($rowc->getError());
+						}
+					}
+				}
+			}*/
+
+			$processed[] = $id;
+		}
+
+		if ($tmpl)
+		{
+			echo JText::sprintf('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($processed));
+			return;
+		}
+
+		// Output messsage and redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . (JRequest::getInt('no_html', 0) ? '&no_html=1' : ''),
+			JText::sprintf('COM_SUPPORT_TICKETS_SUCCESSFULLY_SAVED', count($ids))
+		);
 	}
 
 	/**
