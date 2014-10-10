@@ -31,13 +31,24 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Menu
-JToolBarHelper::title(JText::_('MEMBERS_PASSWORD_RULES'), 'user.png');
-JToolBarHelper::custom('restore_default_content', 'refresh', 'refresh', 'Restore Defaults', false, false);
+JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_PASSWORD_RULES'), 'user.png');
+JToolBarHelper::custom('restore_default_content', 'refresh', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', false, false);
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 ?>
+
+<nav role="navigation" class="sub sub-navigation">
+	<ul>
+		<li>
+			<a<?php if ($this->controller == 'passwordrules') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=passwordrules'); ?>"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES'); ?></a>
+		</li>
+		<li>
+			<a<?php if ($this->controller == 'passwordblacklist') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=passwordblacklist'); ?>"><?php echo JText::_('COM_MEMBERS_PASSWORD_BLACKLIST'); ?></a>
+		</li>
+	</ul>
+</nav>
 
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -50,7 +61,7 @@ function submitbutton(pressbutton)
 	}
 
 	if (pressbutton == 'restore_default_content') {
-		var mes = confirm('Are you sure?  This will remove all existing password rules!');
+		var mes = confirm('<?php echo JText::_('COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS_CONFIRM'); ?>');
 		if(!mes) {
 			return false;
 		}
@@ -64,16 +75,16 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
-		 	<tr>
+			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('PASSWORD_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('PASSWORD_RULE'); ?></th>
-				<th scope="col"><?php echo JText::_('PASSWORD_DESCRIPTION'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_MEMBERS_PASSWORD_ID'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULE'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_MEMBERS_PASSWORD_DESCRIPTION'); ?></th>
 				<th scope="col">
-					<?php echo JText::_('PASSWORD_ORDERING'); ?>
+					<?php echo JText::_('COM_MEMBERS_PASSWORD_ORDERING'); ?>
 					<?php echo JHTML::_('grid.order',  $this->rows); ?>
 				</th>
-				<th scope="col"><?php echo JText::_('PASSWORD_ENABLED'); ?></th>
+				<th scope="col"><?php echo JText::_('COM_MEMBERS_PASSWORD_ENABLED'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -101,7 +112,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->rule)); ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->description); ?>
 					</a>
 				</td>
@@ -112,8 +123,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 				</td>
 				<td>
-					<a class="state <?php echo ($row->enabled) ? 'yes': 'no'; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=toggle_enabled&amp;id=<?php echo $row->id; ?>">
-						<span><?php echo ($row->enabled) ? 'yes': 'no'; ?></span>
+					<a class="state <?php echo ($row->enabled) ? 'yes': 'no'; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle_enabled&id=' . $row->id); ?>">
+						<span><?php echo JText::_(($row->enabled ? 'JYES': 'JNO')); ?></span>
 					</a>
 				</td>
 			</tr>
@@ -128,5 +139,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

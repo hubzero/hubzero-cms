@@ -54,6 +54,8 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 	$controllerName = 'members';
 }
 
+$canDo = MembersHelper::getActions('component');
+
 JSubMenuHelper::addEntry(
 	JText::_('Members'),
 	'index.php?option=com_members',
@@ -76,30 +78,38 @@ JSubMenuHelper::addEntry(
 );
 JSubMenuHelper::addEntry(
 	JText::_('Plugins'),
-	'index.php?option=' . $option . '&controller=plugins', //'index.php?option=com_plugins&view=plugins&filter_folder=members&filter_type=members'
+	'index.php?option=' . $option . '&controller=plugins',
 	$controllerName == 'plugins'
 );
-JSubMenuHelper::addEntry(
-	JText::_('Password Rules'),
-	'index.php?option=com_members&controller=passwordrules',
-	$controllerName == 'passwordrules'
-);
-JSubMenuHelper::addEntry(
-	JText::_('Password Blacklist'),
-	'index.php?option=com_members&controller=passwordblacklist',
-	$controllerName == 'passwordblacklist'
-);
+
+if ($canDo->get('core.admin'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('COM_MEMBERS_PASSWORDS'),
+		'index.php?option=com_members&controller=passwordrules',
+		($controllerName == 'passwordrules' || $controllerName == 'passwordblacklist')
+	);
+}
+
 JSubMenuHelper::addEntry(
 	JText::_('Quotas'),
 	'index.php?option=com_members&controller=quotas',
 	$controllerName == 'quotas'
 );
-
 JSubMenuHelper::addEntry(
 	JText::_('Registration'),
 	'index.php?option=' .  $option . '&controller=registration',
 	(in_array($controllerName, array('registration', 'organizations', 'employers', 'incremental', 'premis')))
 );
+
+if ($canDo->get('core.admin'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('Import'),
+		'index.php?option=com_members&controller=import',
+		($controllerName == 'import' || $controllerName == 'importhooks')
+	);
+}
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'MembersController' . ucfirst($controllerName);

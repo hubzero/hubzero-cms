@@ -31,19 +31,30 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Menu
-JToolBarHelper::title(JText::_('MEMBERS_PASSWORD_BLACKLIST'), 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_PASSWORD_BLACKLIST'), 'user.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
 ?>
 
+<nav role="navigation" class="sub sub-navigation">
+	<ul>
+		<li>
+			<a<?php if ($this->controller == 'passwordrules') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=passwordrules'); ?>"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES'); ?></a>
+		</li>
+		<li>
+			<a<?php if ($this->controller == 'passwordblacklist') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=passwordblacklist'); ?>"><?php echo JText::_('COM_MEMBERS_PASSWORD_BLACKLIST'); ?></a>
+		</li>
+	</ul>
+</nav>
+
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
-		 	<tr>
+			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JText::_('PASSWORD_ID'); ?></th>
-				<th><?php echo JText::_('PASSWORD_WORD'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_PASSWORD_ID'); ?></th>
+				<th><?php echo JText::_('COM_MEMBERS_PASSWORD_WORD'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -68,7 +79,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->word); ?>
 					</a>
 				</td>
@@ -84,5 +95,6 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

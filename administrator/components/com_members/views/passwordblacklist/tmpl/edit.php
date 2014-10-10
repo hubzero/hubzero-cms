@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('MEMBERS_PASSWORD_BLACKLIST') . ': ' . $text, 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_PASSWORD_BLACKLIST') . ': ' . $text, 'user.png');
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -55,7 +55,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('MEMBERS_PASSWORD_BLACKLIST'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_MEMBERS_PASSWORD_BLACKLIST'); ?></span></legend>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -63,7 +63,7 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="task" value="save" />
 
 			<div class="input-wrap">
-				<label for="field-word"><?php echo JText::_('PASSWORD_BLACKLIST_WORD'); ?>:</label>
+				<label for="field-word"><?php echo JText::_('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>:</label>
 				<input type="text" name="fields[word]" id="field-word" value="<?php echo $this->escape(stripslashes($this->row->word)); ?>" />
 			</div>
 		</fieldset>
@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('PASSWORD_BLACKLIST_ID'); ?></th>
+					<th><?php echo JText::_('COM_MEMBERS_PASSWORD_BLACKLIST_ID'); ?></th>
 					<td><?php echo $this->row->id; ?></td>
 				</tr>
 			</tbody>

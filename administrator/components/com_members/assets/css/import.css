@@ -1,0 +1,283 @@
+/*
+|--------------------------------------------------------------------------
+| Countdown Clock and Buttons
+|--------------------------------------------------------------------------
+*/
+hr {
+	border-top: 1px solid #efefef !important;
+	border-bottom: none !important;
+	margin: 30px 0 !important;
+}
+.dryrun-message {
+	margin-top: 10px;
+	margin-bottom: 40px;
+	padding: 30px;
+	background: #faf3d7;
+	border-radius: 4px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.dryrun-message strong {
+	display: inline-block;
+	font-size: 16px;
+	color: #bfb78d;
+	margin-bottom: 5px;
+}
+.dryrun-message p {
+	margin-bottom: 0;
+	color: #726e55;
+	text-shadow: 0 1px 0 #FFF;
+}
+.countdown {
+	font-size: 36px;
+	margin: 20px 0;
+	text-align: center;
+}
+.countdown span {
+	display: inline-block;
+	position: relative;
+	background: #444;
+	box-shadow: inset 0 0 10px #000;
+	border-radius: 3px;
+	padding: 15px 0;
+	color: #FFF;
+	width: 50px;
+	text-align: center;
+}
+.countdown span:after {
+	content: '';
+	position: absolute;
+	top: 48%;
+	left: 5px;
+	right: 5px;
+	height: 2px;
+	background: transparent;
+}
+.countdown-actions {
+	text-align: center;
+}
+.countdown-actions button {
+	display: inline-block;
+	padding: 10px 20px;
+	text-align: center;
+	background: #efefef;
+	margin-left: 10px;
+	border: none;
+}
+.countdown-actions button.start {
+	background: #3149a5;
+	color: #FFF;
+}
+.countdown-actions button.start-over,
+.countdown-actions button.start-real {
+	display: none;
+}
+.countdown-actions button.start-real {
+	background: #a53131;
+	color: #FFF;
+}
+.countdown-actions button:hover {
+	box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+.countdown-actions button:active {
+	box-shadow: inset 0 1px 2px rgba(0,0,0,.3);
+}
+.countdown-actions button:disabled {
+	opacity: 0.8;
+	cursor: not-allowed;
+}
+.countdown-actions button:first-child {
+	margin-left: 0;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Progress Meter
+|--------------------------------------------------------------------------
+*/
+.progress {
+	margin: 10px 0 0 0;
+	height: 30px;
+	border-radius: 4px;
+	background-image: -webkit-linear-gradient(top, #EFEFEF, #F0F0F0); 
+	border: 1px solid #efefef;
+}
+.progress .ui-progressbar-value {
+	height: 30px;
+	border-radius: 3px;
+	background: #3149a5; 
+	-webkit-transition: all 0.5s ease-in-out;
+}
+.progress-percentage {
+	color: #3149a5;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Results
+|--------------------------------------------------------------------------
+*/
+.results {
+	margin: 10px 0 20px 0;
+	counter-reset: results-counter;
+	font-size: 1em;
+	font-family: 'Cabin', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.results-stats {
+	color: #3149a5;
+}
+.results .resource-title {
+	padding: 0;
+	font-size: 14px;
+	counter-increment: results-counter; 
+	padding: 10px 20px;
+	border: 1px solid #efefef;
+	border-top: none;
+	border-radius: 0;
+	margin: 0;
+	background: none;
+	font-weight: normal;
+	line-height: 1.7142em;
+}
+.results .resource-title span {
+	display: none;
+}
+.results .resource-title .has-errors {
+	display: inline-block;
+	font-weigh: bold;
+	color: #F00;
+}
+.results .resource-title .has-notices {
+	display: inline-block;
+	font-weigh: bold;
+	color: #3149A5;
+}
+.results .resource-title:hover {
+	cursor: pointer;
+	background: #f0f0f0;
+}
+.results .resource-title:hover:after {
+	content: 'view details';
+	margin-left: 15px;
+	font-weight: bold;
+	text-transform: lowercase;
+	color: #999;
+}
+.results .resource-title:first-child {
+	border-top: 1px solid #efefef;
+}
+.results .ui-accordion-header-active {
+	background: #f0f0f0;
+}
+.results .ui-accordion-header-active:hover:after {
+	content: 'hide details';
+}
+.results .resource-title:before {
+	color: #888;
+	content: counter(results-counter) ". ";
+}
+.results .resource-data {
+	border: 1px solid #efefef;
+	border-top: none;
+	background: #FFF;
+	padding: 20px;
+	color: #7C7C7C;
+}
+.results .resource-data .errors,
+.results .resource-data .notices {
+	background: #fdeded;
+	padding: 15px;
+	margin-bottom: 20px;
+	border-radius: 4px;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.results .resource-data .notices {
+	background: #d7e7fa;
+}
+.results .resource-data .errors ol,
+.results .resource-data .notices ol {
+	margin: 10px 0 0 20px !important;
+}
+.results .resource-data .errors ol li,
+.results .resource-data .notices ol li {
+	list-style: decimal !important;
+}
+.results .resource-data .col:first-child {
+	border-right: 1px solid #efefef;
+}
+.results .resource-data .col:first-child table {
+	padding-right: 50px;
+}
+.results .resource-data th,
+.results .resource-data td {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	border-bottom: 1px solid #efefef !important;
+}
+.results .resource-data th+td,
+.results .contributor-role  {
+	padding-left:  10px !important;
+}
+.results .resource-data tr:last-child th,
+.results .resource-data tr:last-child td {
+	border-bottom: none !important;
+}
+.results .resource-data pre {
+	margin: 0;
+	white-space: pre
+}
+.results .unused-data {
+	padding: 20px;
+	background: #faf3d7;
+	border-radius: 4px;
+}
+.results .unused-data pre {
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: -o-pre-wrap;
+	word-wrap: break-word; 
+}
+.results h4 {
+	display: inline-block;
+	padding: 0;
+	margin: 0 0 10px 0;
+}
+.results .contributor-org {
+	display: block;
+	color: #aaa;
+}
+.results .child-link {
+	width: 80%;
+}
+.results .child-link span {
+	-ms-word-break: break-all;
+	word-break: break-all;
+	word-break: break-word;
+}
+
+
+table.field-map tr.field-unknown {
+	/*background: rgba(255, 50, 50, 0.05);*/
+	background: #ffe;
+}
+
+.toolbar-box .icon-32-runtest:before {
+	content: "\f07d";
+}
+.toolbar-box .icon-32-runtest:after {
+	content: "\26A0";
+	top: auto;
+	bottom: 0;
+	right: 0;
+	font-size: 12px;
+}
+
+/*
+|--------------------------------------------------------------------------
+| Edit
+|--------------------------------------------------------------------------
+*/
+.import-group {
+	max-width: inherit !important;
+}

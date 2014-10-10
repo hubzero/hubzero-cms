@@ -30,9 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('MEMBERS_PASSWORD_RULES').': <small><small>[ '. $text.' ]</small></small>', 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_PASSWORD_RULES') . ': '. $text, 'user.png');
 JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -55,7 +55,7 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('MEMBERS_PASSWORD_RULES'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES'); ?></span></legend>
 
 			<input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -63,27 +63,27 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="task" value="save" />
 
 			<div class="input-wrap">
-				<label for="field-rule"><?php echo JText::_('PASSWORD_RULES_RULE'); ?>:</label>
+				<label for="field-rule"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES_RULE'); ?>:</label>
 				<?php echo $this->rules_list; ?>
 			</div>
 			<div class="input-wrap">
-				<label for="field-description"><?php echo JText::_('PASSWORD_RULES_DESCRIPTION'); ?>:</label>
+				<label for="field-description"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES_DESCRIPTION'); ?>:</label>
 				<input type="text" name="fields[description]" id="field-description" value="<?php echo $this->escape(stripslashes($this->row->description)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-failuremsg"><?php echo JText::_('PASSWORD_RULES_FAILURE_MESSAGE'); ?>:</label>
+				<label for="field-failuremsg"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES_FAILURE_MESSAGE'); ?>:</label>
 				<input type="text" name="fields[failuremsg]" id="field-failuremsg" value="<?php echo $this->escape(stripslashes($this->row->failuremsg)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-value"><?php echo JText::_('PASSWORD_RULES_VALUE'); ?>:</label>
+				<label for="field-value"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES_VALUE'); ?>:</label>
 				<input type="text" name="fields[value]" id="field-value" value="<?php echo $this->escape(stripslashes($this->row->value)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-group"><?php echo JText::_('PASSWORD_RULES_GROUP'); ?>:</label>
+				<label for="field-group"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES_GROUP'); ?>:</label>
 				<input type="text" name="fields[group]" id="field-group" value="<?php echo $this->escape(stripslashes($this->row->grp)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-class"><?php echo JText::_('PASSWORD_RULES_CLASS'); ?>:</label>
+				<label for="field-class"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULES_CLASS'); ?>:</label>
 				<input type="text" name="fields[class]" id="field-class" value="<?php echo $this->escape(stripslashes($this->row->class)); ?>" />
 			</div>
 		</fieldset>
@@ -92,7 +92,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('PASSWORD_ID'); ?></th>
+					<th><?php echo JText::_('COM_MEMBERS_PASSWORD_ID'); ?></th>
 					<td><?php echo $this->row->id; ?></td>
 				</tr>
 			</tbody>
