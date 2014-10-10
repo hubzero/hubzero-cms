@@ -72,7 +72,7 @@ $this->css('create.css')
 
 			<div class="field-wrap">
 				<div class="asset-uploader">
-			<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
+
 					<div class="grid">
 						<div class="col span-half">
 							<div id="ajax-uploader" data-action="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;task=save&amp;pid=<?php echo $this->id; ?>" data-list="index.php?option=com_resources&amp;no_html=1&amp;controller=attachments&amp;pid=<?php echo $this->id; ?>">
@@ -85,7 +85,7 @@ $this->css('create.css')
 							</div>
 						</div><!-- / .col span-half omega -->
 					</div>
-				<?php } ?>
+
 					<iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
 				</div><!-- / .asset-uploader -->
 			</div><!-- / .field-wrap -->

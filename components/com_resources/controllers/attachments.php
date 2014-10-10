@@ -175,6 +175,8 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 		$asset->access       = 0;
 		$asset->path         = urldecode(JRequest::getVar('url', 'http://'));
 		$asset->type         = 11;
+
+		$asset->path = str_replace(array('|', '\\', '{', '}', '^'), array('%7C', '%5C', '%7B', '%7D', '%5E'), $asset->path);
 		if (!\Hubzero\Utility\Validate::url($asset->path))
 		{
 			echo json_encode(array(
