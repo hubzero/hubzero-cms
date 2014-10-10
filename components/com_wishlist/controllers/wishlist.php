@@ -1884,17 +1884,17 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 
 			// Perform some text cleaning, etc.
 			$row->set(
-				'comment',
+				'content',
 				(
-					$row->get('comment') == JText::_('COM_WISHLIST_ENTER_COMMENTS')
+					$row->get('content') == JText::_('COM_WISHLIST_ENTER_COMMENTS')
 						? ''
-						: $row->get('comment')
+						: $row->get('content')
 				)
 			);
 
 			if ($attachment = $this->uploadTask($wishid))
 			{
-				$row->set('comment', $row->get('comment') . "\n" . $attachment);
+				$row->set('content', $row->get('content') . "\n" . $attachment);
 			}
 
 			$row->set('anonymous', ($row->get('anonymous') ? $row->get('anonymous') : 0));
@@ -2380,7 +2380,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				$this->setError($attachment->getError());
 			}
 
-			return '{attachment#' . $row->id . '}';
+			return '{attachment#' . $attachment->get('id') . '}';
 		}
 	}
 
