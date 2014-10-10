@@ -68,22 +68,9 @@ foreach ($this->rows as $row)
 <table class="adminlist whosonline-list">
 	<thead>
 		<tr>
-<<<<<<< HEAD
-			<th><?php echo JText::_( 'User' ); ?></th>
-			<th><?php echo JText::_( 'User Type' ); ?></th>
-			<th><?php echo JText::_( 'Location' ); ?></th>
-			<th><?php echo JText::_( 'Last Activity' ); ?></th>
-=======
-			<td class="title">
-				<strong><?php echo JText::_( 'User' ); ?></strong>
-			</td>
-			<td class="title">
-				<strong><?php echo JText::_( 'Location' ); ?></strong>
-			</td>
-			<td class="title">
-				<strong><?php echo JText::_( 'Last Activity' ); ?></strong>
-			</td>
->>>>>>> [COM_*][MOD_*] Audting code to use new session helper class for accessing session data which might not be stored in db.
+			<th><?php echo JText::_('User'); ?></th>
+			<th><?php echo JText::_('Location'); ?></th>
+			<th><?php echo JText::_('Last Activity'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -93,16 +80,16 @@ foreach ($this->rows as $row)
 					<td>
 						<?php
 							//are we authorized to edit users
-							$editAuthorized = $this->juser->authorize( 'com_users', 'manage' );
+							$editAuthorized = $this->juser->authorize('com_users', 'manage');
 
 							//get user object
-							$juser = JUser::getInstance( $row->username );
+							$juser = JUser::getInstance($row->username);
 
 							//display link if we are authorized
 							if ($editAuthorized)
 							{
-								$editLink = 'index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id='. $row->userid;
-								echo '<a href="' . $editLink . '" title="' . JText::_( 'Edit User' ) . '">' . $juser->get('name') . ' [' . $juser->get('username') . ']' . '</a>';
+								$editLink = JRoute::_('index.php?option=com_members&controller=members&task=edit&id='. $row->userid);
+								echo '<a href="' . $editLink . '" title="' . JText::_('Edit User') . '">' . $juser->get('name') . ' [' . $juser->get('username') . ']' . '</a>';
 							}
 							else
 							{
@@ -110,10 +97,6 @@ foreach ($this->rows as $row)
 							}
 						?>
 					</td>
-<<<<<<< HEAD
-					<td><?php echo $row->usertype; ?></td>
-=======
->>>>>>> [COM_*][MOD_*] Audting code to use new session helper class for accessing session data which might not be stored in db.
 					<td>
 						<?php
 							$clientInfo = JApplicationHelper::getClientInfo($row->client_id);
@@ -127,7 +110,7 @@ foreach ($this->rows as $row)
 			<?php endforeach; ?>
 		<?php else : ?>
 			<tr>
-				<td colspan="4">
+				<td colspan="3">
 					<?php echo JText::_('Currently there are no users online.'); ?>
 				</td>
 			</tr>
