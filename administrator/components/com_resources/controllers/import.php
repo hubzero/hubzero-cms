@@ -301,16 +301,6 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		// create import model object
 		$this->view->import = new \Resources\Model\Import($id);
 
-		//get jquery plugin & parse params
-		$jqueryPlugin = JPluginHelper::getPlugin('system', 'jquery');
-		$jqueryPluginParams = new JParameter( $jqueryPlugin->params );
-
-		//add jquery if we dont have the jquery plugin enabled or not active on admin
-		if (!JPluginHelper::isEnabled('system', 'jquery') || !$jqueryPluginParams->get('activateAdmin'))
-		{
-			JError::raiseError('500', JText::_('COM_RESOURCES_IMPORT_WARNING_ADMIN_REQUIREMENTS'));
-		}
-
 		// Set any errors
 		if ($this->getErrors())
 		{
