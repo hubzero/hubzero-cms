@@ -165,16 +165,16 @@ class SupportQuery extends JTable
 			default:
 				$query = "SELECT q.* " . $this->_buildQuery($filters);
 
-				if (isset($filters['sort']) && $filters['sort'] != '') 
+				if (isset($filters['sort']) && $filters['sort'] != '')
 				{
 					if (!in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')) || !isset($filters['sort_Dir']))
 					{
 						$filters['sort_Dir'] = 'ASC';
 					}
 					$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
-				} 
+				}
 
-				if (isset($filters['limit']) && $filters['limit'] != 0) 
+				if (isset($filters['limit']) && $filters['limit'] != 0)
 				{
 					$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 				}
@@ -193,13 +193,6 @@ class SupportQuery extends JTable
 	 */
 	public function getCount($filters=array())
 	{
-		/*$filters['count'] = true;
-		$filters['limit'] = 0;
-
-		$query = "SELECT COUNT(q.id) " . $this->_buildQuery($filters);
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();*/
-
 		return $this->find('count', $filters);
 	}
 
@@ -211,10 +204,6 @@ class SupportQuery extends JTable
 	 */
 	public function getRecords($filters=array())
 	{
-		/*$query = "SELECT q.* " . $this->_buildQuery($filters); //, u.name
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();*/
-
 		return $this->find('list', $filters);
 	}
 
@@ -230,10 +219,6 @@ class SupportQuery extends JTable
 			'sort'     => 'id',
 			'sort_Dir' => 'asc'
 		);
-
-		/*$query = "SELECT *" . $this->_buildQuery($filters);
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();*/
 
 		return $this->find('list', $filters);
 	}
@@ -251,10 +236,6 @@ class SupportQuery extends JTable
 			'sort_Dir' => 'asc'
 		);
 
-		/*$query = "SELECT *" . $this->_buildQuery($filters);
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();*/
-
 		return $this->find('list', $filters);
 	}
 
@@ -270,10 +251,6 @@ class SupportQuery extends JTable
 			'sort'     => 'id',
 			'sort_Dir' => 'asc'
 		);
-
-		/*$query = "SELECT *" . $this->_buildQuery($filters);
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();*/
 
 		return $this->find('list', $filters);
 	}
@@ -300,10 +277,6 @@ class SupportQuery extends JTable
 			'sort'     => 'created',
 			'sort_Dir' => 'asc'
 		);
-
-		/*$query = "SELECT *" . $this->_buildQuery($filters);
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();*/
 
 		return $this->find('list', $filters);
 	}

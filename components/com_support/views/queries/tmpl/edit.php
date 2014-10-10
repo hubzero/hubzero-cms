@@ -213,7 +213,7 @@ if (!$tmpl && !$no_html) {
 					));
 					if ($folders)
 					{
-						foreach ($folders as $folder) 
+						foreach ($folders as $folder)
 						{
 							?><option value="<?php echo $folder->id; ?>"<?php if ($this->row->folder_id == $folder->id) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($folder->title)); ?></option><?php
 						}
