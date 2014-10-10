@@ -63,18 +63,58 @@ class Run extends \JTable
 	}
 
 	/**
-	 * Retrieve a list of records
+	 * Get a count or list of records
 	 *
-	 * @param   array  $filters Filters to build query from
-	 * @return  array
+	 * @param   string  $what     Data to return
+	 * @param   array   $filters  Filters to build query from
+	 * @return  mixed
 	 */
-	public function find($filters = array())
+	public function find($what='list', $filters=array())
 	{
-		$sql  = "SELECT * FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery($filters);
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
 
-		$this->_db->setQuery($sql);
-		return $this->_db->loadObjectList();
+			case 'one':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+				$result = $this->find('list', $filters);
+				return $result[0];
+			break;
+
+			case 'all':
+				$filters['start'] = 0;
+				$filters['limit'] = 0;
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+				$query = "SELECT * " . $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']) || !$filters['sort'])
+				{
+					$filters['sort'] = 'ran_at';
+				}
+
+				if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+				{
+					$filters['sort_Dir'] = 'DESC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] != 0)
+				{
+					$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 
 	/**
@@ -85,35 +125,36 @@ class Run extends \JTable
 	 */
 	private function _buildQuery($filters = array())
 	{
-		// var to hold conditions
 		$where = array();
-		$sql   = '';
+		$sql   = "FROM {$this->_tbl}";
 
-		// which import?
-		if (isset($filters['import']))
+		// Which import?
+		if (isset($filters['import']) || isset($filters['import_id']))
 		{
+			if (!isset($filters['import']) && isset($filters['import_id']))
+			{
+				$filters['import'] = $filters['import_id'];
+			}
+
 			$where[] = "import_id=" . $this->_db->quote($filters['import']);
 		}
 
-		// dry runs?
+		// Dry runs?
 		if (isset($filters['dry_run']))
 		{
 			$where[] = "dry_run=" . $this->_db->quote($filters['dry_run']);
 		}
 
-		// if we have and conditions
-		if (count($where) > 0)
+		// Run by?
+		if (isset($filters['ran_by']))
 		{
-			$sql = " WHERE " . implode(" AND ", $where);
+			$where[] = "ran_by=" . $this->_db->quote($filters['ran_by']);
 		}
 
-		if (isset($filters['orderby']))
+		// If we have any conditions
+		if (count($where) > 0)
 		{
-			$sql .= " ORDER BY " . $filters['orderby'];
-		}
-		else
-		{
-			$sql .= " ORDER BY ran_at DESC";
+			$sql .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $sql;

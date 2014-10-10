@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,7 +35,7 @@ use Hubzero\Base\Model;
 /**
  * Import Hook Model
  */
-class Hook extends \Hubzero\Base\Model
+class Hook extends Model
 {
 	/**
 	 * Table name
@@ -45,41 +45,14 @@ class Hook extends \Hubzero\Base\Model
 	protected $_tbl_name = '\Hubzero\Content\Import\Table\Hook';
 
 	/**
-	 * Constructor
-	 *
-	 * @param   mixed  $oid
-	 * @return  void
-	 */
-	public function __construct($oid = null)
-	{
-		// Get database connection
-		$this->_db = \JFactory::getDBO();
-
-		// Instantiate table class
-		$this->_tbl = new $this->_tbl_name($this->_db);
-
-		// Load record
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
-	}
-
-	/**
 	 * Return imports filespace path
 	 *
-	 * @access public
-	 * @return string
+	 * @return  string
 	 */
 	public function fileSpacePath()
 	{
 		// build upload path
-		$uploadPath = '/site/import/hooks';
-		$uploadPath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $this->get('id');
+		$uploadPath = JPATH_ROOT . DS . 'site' . DS . 'import' . DS . 'hooks' . DS . $this->get('id');
 
 		// return path
 		return $uploadPath;

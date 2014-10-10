@@ -43,20 +43,28 @@ class Archive extends Object
 	/**
 	 * JDatabase
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_db = NULL;
 
 	/**
-	 * Import list
-	 * @var Hubzero\ItemList
+	 * Record list
+	 *
+	 * @var  object
 	 */
 	private $_hooks = NULL;
 
 	/**
+	 * Record total
+	 *
+	 * @var  integer
+	 */
+	private $_hooks_total = NULL;
+
+	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -64,9 +72,10 @@ class Archive extends Object
 	}
 
 	/**
-	 * Get Instance of Page Archive
+	 * Get Instance of Archive
 	 *
-	 * @param   $key   Instance Key
+	 * @param   string  $key  Instance Key
+	 * @return  object
 	 */
 	static function &getInstance($key=null)
 	{
@@ -86,23 +95,33 @@ class Archive extends Object
 	}
 
 	/**
-	 * Get a list of imports
+	 * Get a count or list of import hooks
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   boolean  $boolean  Clear cached data?
+	 * @return  mixed
 	 */
 	public function hooks($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		switch (strtolower($rtrn))
 		{
+			case 'count':
+				if (is_null($this->_hooks_total) || $clear)
+				{
+					$tbl = new Table\Hook($this->_db);
+
+					$this->_hooks_total = $tbl->find('count', $filters);
+				}
+				return $this->_hooks_total;
+			break;
+
 			case 'list':
 			default:
 				if (!($this->_hooks instanceof ItemList) || $clear)
 				{
 					$tbl = new Table\Hook($this->_db);
-					if ($results = $tbl->find( $filters ))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{

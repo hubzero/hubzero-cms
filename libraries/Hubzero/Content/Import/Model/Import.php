@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -36,7 +36,7 @@ use Hubzero\Base\ItemList;
 use Exception;
 
 /**
- * Member Import Model
+ * Content Import Model
  */
 class Import extends Model
 {
@@ -55,29 +55,11 @@ class Import extends Model
 	protected $_runs;
 
 	/**
-	 * Constructor
+	 * Count  of import runs
 	 *
-	 * @param   mixed  $oid
-	 * @return  void
+	 * @var  integer
 	 */
-	public function __construct($oid = null)
-	{
-		// Get database connection
-		$this->_db = \JFactory::getDBO();
-
-		// Instantiate table class
-		$this->_tbl = new $this->_tbl_name($this->_db);
-
-		// Load record
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
-	}
+	protected $_runs_total;
 
 	/**
 	 * Return raw import data
@@ -128,8 +110,7 @@ class Import extends Model
 	public function fileSpacePath()
 	{
 		// build upload path
-		$uploadPath = '/site/import';
-		$uploadPath = JPATH_ROOT . DS . trim($uploadPath, DS) . DS . $this->get('id');
+		$uploadPath = JPATH_ROOT . DS . 'site' . DS . 'import' . DS . $this->get('id');
 
 		// return path
 		return $uploadPath;
@@ -144,6 +125,16 @@ class Import extends Model
 	{
 		switch (strtolower($rtrn))
 		{
+			case 'count':
+				if (is_null($this->_runs_total) || $clear)
+				{
+					$tbl = new Table\Run($this->_db);
+
+					$this->_runs_total = $tbl->find('count', $filters);
+				}
+				return $this->_runs_total;
+			break;
+
 			case 'current':
 				if (!($this->_runs instanceof ItemList) || $clear)
 				{
@@ -157,7 +148,7 @@ class Import extends Model
 				if (!($this->_runs instanceof ItemList) || $clear)
 				{
 					$tbl = new Table\Run($this->_db);
-					if ($results = $tbl->find( $filters ))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{

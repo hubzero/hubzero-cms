@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -46,34 +46,10 @@ class Run extends Model
 	protected $_tbl_name = '\Hubzero\Content\Import\Table\Run';
 
 	/**
-	 * Constructor
-	 *
-	 * @param   mixed  $oid
-	 * @return  void
-	 */
-	public function __construct($oid = null)
-	{
-		// Get database connection
-		$this->_db = \JFactory::getDBO();
-
-		// Instantiate table class
-		$this->_tbl = new $this->_tbl_name($this->_db);
-
-		// Load record
-		if (is_numeric($oid))
-		{
-			$this->_tbl->load($oid);
-		}
-		else if (is_object($oid) || is_array($oid))
-		{
-			$this->bind($oid);
-		}
-	}
-
-	/**
 	 * Add to the processed number on this run
-	 * @param  integer $number Number to increpemnt by
-	 * @return void
+	 *
+	 * @param   integer  $number  Number to increpemnt by
+	 * @return  void
 	 */
 	public function processed($number = 1)
 	{

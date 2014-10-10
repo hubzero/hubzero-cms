@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -48,14 +48,22 @@ class Archive extends Object
 
 	/**
 	 * Import list
-	 * @var Hubzero\ItemList
+	 *
+	 * @var  object
 	 */
 	private $_imports = NULL;
 
 	/**
+	 * Import count
+	 *
+	 * @var  integer
+	 */
+	private $_imports_total = NULL;
+
+	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
@@ -65,7 +73,8 @@ class Archive extends Object
 	/**
 	 * Get Instance of Page Archive
 	 *
-	 * @param   $key   Instance Key
+	 * @param   string  $key  Instance Key
+	 * @return  object
 	 */
 	static function &getInstance($key=null)
 	{
@@ -85,23 +94,33 @@ class Archive extends Object
 	}
 
 	/**
-	 * Get a list of imports
+	 * Get a list or count of imports
 	 *
-	 * @param      string  $rtrn    What data to return
-	 * @param      array   $filters Filters to apply to data retrieval
-	 * @param      boolean $boolean Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   boolean  $boolean  Clear cached data?
+	 * @return  mixed
 	 */
 	public function imports($rtrn = 'list', $filters = array(), $clear = false)
 	{
 		switch (strtolower($rtrn))
 		{
+			case 'count':
+				if (is_null($this->_imports_total) || $clear)
+				{
+					$tbl = new Table\Import($this->_db);
+
+					$this->_imports_total = $tbl->find('count', $filters);
+				}
+				return $this->_imports_total;
+			break;
+
 			case 'list':
 			default:
 				if (!($this->_imports instanceof ItemList) || $clear)
 				{
 					$tbl = new Table\Import($this->_db);
-					if ($results = $tbl->find($filters))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{

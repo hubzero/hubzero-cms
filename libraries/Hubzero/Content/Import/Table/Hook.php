@@ -53,22 +53,82 @@ class Hook extends \JTable
 	 */
 	public function check()
 	{
+		$this->name = trim($this->name);
+		if ($this->name == '')
+		{
+			$this->setError(\JText::_('Name field is required for import hook.'));
+			return false;
+		}
+
+		$this->type = trim($this->type);
+		if ($this->type == '')
+		{
+			$this->setError(\JText::_('Type field is required for import hook.'));
+			return false;
+		}
+
+		if (!$this->id)
+		{
+			$this->created    = ($this->created    ?: \JFactory::getDate()->toSql());
+			$this->created_by = ($this->created_by ?: \JFactory::getUser()->get('id'));
+		}
+
 		return true;
 	}
 
 	/**
-	 * Retrieve a list of records
+	 * Get a count or list of records
 	 *
-	 * @param   array  $filters Filters to build query from
-	 * @return  array
+	 * @param   string  $what     Data to return
+	 * @param   array   $filters  Filters to build query from
+	 * @return  mixed
 	 */
-	public function find($filters = array())
+	public function find($what='list', $filters=array())
 	{
-		$sql  = "SELECT * FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery($filters);
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
 
-		$this->_db->setQuery($sql);
-		return $this->_db->loadObjectList();
+			case 'one':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+				$result = $this->find('list', $filters);
+				return $result[0];
+			break;
+
+			case 'all':
+				$filters['start'] = 0;
+				$filters['limit'] = 0;
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+				$query = "SELECT * " . $this->_buildQuery($filters);
+
+				if (!isset($filters['sort']) || !$filters['sort'])
+				{
+					$filters['sort'] = 'name';
+				}
+
+				if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+				{
+					$filters['sort_Dir'] = 'ASC';
+				}
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] != 0)
+				{
+					$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 
 	/**
@@ -79,20 +139,32 @@ class Hook extends \JTable
 	 */
 	private function _buildQuery($filters = array())
 	{
-		// var to hold conditions
 		$where = array();
-		$sql   = '';
+		$sql   = "FROM {$this->_tbl}";
 
-		// published
-		if (isset($filters['state']) && is_array($filters['state']))
+		if (isset($filters['state']) && $filters['state'])
 		{
+			if (!is_array($filters['state']))
+			{
+				$filters['state'] = array($filters['state']);
+			}
+			$filters['state'] = array_map('intval', $filters['state']);
+
 			$where[] = "state IN (" . implode(',', $filters['state']) . ")";
 		}
+		if (isset($filters['type']) && $filters['type'])
+		{
+			$where[] = "type=" . $this->_db->quote($filters['type']);
+		}
+		if (isset($filters['created_by']) && $filters['created_by'] >= 0)
+		{
+			$where[] = "created_by=" . $this->_db->quote($filters['created_by']);
+		}
 
-		// if we have and conditions
+		// If we have any conditions
 		if (count($where) > 0)
 		{
-			$sql = " WHERE " . implode(" AND ", $where);
+			$sql .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $sql;

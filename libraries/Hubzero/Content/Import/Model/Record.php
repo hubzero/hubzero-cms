@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -39,41 +39,82 @@ use stdClass;
  */
 class Record extends Object
 {
+	/**
+	 * Title match
+	 *
+	 * @var  integer
+	 */
 	const TITLE_MATCH = 10;
 
+	/**
+	 * Raw record data
+	 *
+	 * @var  object
+	 */
 	public $raw;
+
+	/**
+	 * Record data
+	 *
+	 * @var  object
+	 */
 	public $record;
+
+	/**
+	 * Operation mode (update|patch)
+	 *
+	 * @var  string
+	 */
 	private $_mode;
+
+	/**
+	 * List of options to be applied to record
+	 *
+	 * @var  array
+	 */
 	private $_options;
+
+	/**
+	 * JDatabase
+	 *
+	 * @var  object
+	 */
 	private $_database;
+
+	/**
+	 * JUser
+	 *
+	 * @var  object
+	 */
 	private $_user;
 
 	/**
 	 *  Constructor
 	 *
-	 * @param   mixes  $raw      Raw data
-	 * @param   array  $options  Import options
+	 * @param   mixes   $raw      Raw data
+	 * @param   array   $options  Import options
+	 * @param   string  $mode     Operation mode (update|patch)
 	 * @return  void
 	 */
 	public function __construct($raw, $options = array(), $mode = 'UPDATE')
 	{
-		// store our incoming data
+		// Store our incoming data
 		$this->raw      = $raw;
 		$this->_options = $options;
-		$this->_mode    = $mode;
+		$this->_mode    = strtoupper($mode);
 
-		// create core objects
+		// Create core objects
 		$this->_database = \JFactory::getDBO();
 		$this->_user     = \JFactory::getUser();
 
-		// create resource objects
+		// Create objects
 		$this->record = new stdClass;
 
-		// message bags for user
+		// Message bags for user
 		$this->record->errors       = array();
 		$this->record->notices      = array();
 
-		// bind data
+		// Bind data
 		$this->bind();
 	}
 
@@ -84,7 +125,6 @@ class Record extends Object
 	 */
 	public function bind()
 	{
-		// chainability
 		return $this;
 	}
 
@@ -95,7 +135,6 @@ class Record extends Object
 	 */
 	public function check()
 	{
-		// chainability
 		return $this;
 	}
 
@@ -107,13 +146,12 @@ class Record extends Object
 	 */
 	public function store($dryRun = 1)
 	{
-		// are we running in dry run mode?
+		// Are we running in dry run mode?
 		if ($dryRun || count($this->record->errors) > 0)
 		{
 			return $this;
 		}
 
-		// chainability
 		return $this;
 	}
 
@@ -136,17 +174,17 @@ class Record extends Object
 	 */
 	public function toString()
 	{
-		// reflect on class to get private or protected props
+		// Reflect on class to get private or protected props
 		$privateProperties = with(new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PRIVATE);
 
-		// remove each private or protected prop
+		// Remove each private or protected prop
 		foreach ($privateProperties as $prop)
 		{
 			$name = (string) $prop->name;
 			unset($this->$name);
 		}
 
-		// output as json
+		// Output as json
 		return json_encode($this);
 	}
 }
