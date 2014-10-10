@@ -62,17 +62,17 @@ function submitbutton(pressbutton)
 			<legend><?php echo JText::_('COM_MEMBERS_IMPORTHOOK_EDIT_FIELDSET_DETAILS'); ?></legend>
 
 			<div class="input-wrap">
-				<label for="field-type">
+				<label for="field-event">
 					<?php echo JText::_('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE'); ?>
 				</label>
-				<select name="hook[type]" id="field-type">
+				<select name="hook[event]" id="field-event">
 					<option value="postparse">
 						<?php echo JText::_('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTPARSE'); ?>
 					</option>
-					<option <?php if ($this->hook->get('type') == 'postmap') { echo 'selected="selected"'; } ?> value="postmap">
+					<option <?php if ($this->hook->get('event') == 'postmap') { echo 'selected="selected"'; } ?> value="postmap">
 						<?php echo JText::_('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTMAP'); ?>
 					</option>
-					<option <?php if ($this->hook->get('type') == 'postconvert') { echo 'selected="selected"'; } ?> value="postconvert">
+					<option <?php if ($this->hook->get('event') == 'postconvert') { echo 'selected="selected"'; } ?> value="postconvert">
 						<?php echo JText::_('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTCONVERT'); ?>
 					</option>
 				</select>
@@ -146,6 +146,7 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="save" />
 	<input type="hidden" name="hook[id]" value="<?php echo $this->hook->get('id'); ?>" />
+	<input type="hidden" name="hook[type]" value="<?php echo $this->hook->get('type'); ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

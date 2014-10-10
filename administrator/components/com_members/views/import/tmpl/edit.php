@@ -110,7 +110,7 @@ function submitbutton(pressbutton)
 						<?php endif; ?>
 
 						<?php foreach ($this->hooks as $hook): ?>
-							<?php if ($hook->get('type') != 'postparse' || in_array($hook->get('id'), $hooks->postparse)) { continue; } ?>
+							<?php if ($hook->get('event') != 'postparse' || in_array($hook->get('id'), $hooks->postparse)) { continue; } ?>
 							<option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
 						<?php endforeach; ?>
 					</select>
@@ -135,7 +135,7 @@ function submitbutton(pressbutton)
 						<?php endforeach; ?>
 
 						<?php foreach ($this->hooks as $hook): ?>
-							<?php if ($hook->get('type') != 'postmap' || in_array($hook->get('id'), $hooks->postmap)) { continue; } ?>
+							<?php if ($hook->get('event') != 'postmap' || in_array($hook->get('id'), $hooks->postmap)) { continue; } ?>
 							<option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
 						<?php endforeach; ?>
 					</select>
@@ -159,7 +159,7 @@ function submitbutton(pressbutton)
 							<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
 						<?php endforeach; ?>
 						<?php foreach ($this->hooks as $hook): ?>
-							<?php if ($hook->get('type') != 'postconvert' || in_array($hook->get('id'), $hooks->postconvert)) { continue; } ?>
+							<?php if ($hook->get('event') != 'postconvert' || in_array($hook->get('id'), $hooks->postconvert)) { continue; } ?>
 							<option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
 						<?php endforeach; ?>
 					</select>

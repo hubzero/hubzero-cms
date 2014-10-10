@@ -156,6 +156,10 @@ class Hook extends \JTable
 		{
 			$where[] = "type=" . $this->_db->quote($filters['type']);
 		}
+		if (isset($filters['event']) && $filters['event'])
+		{
+			$where[] = "event=" . $this->_db->quote($filters['event']);
+		}
 		if (isset($filters['created_by']) && $filters['created_by'] >= 0)
 		{
 			$where[] = "created_by=" . $this->_db->quote($filters['created_by']);

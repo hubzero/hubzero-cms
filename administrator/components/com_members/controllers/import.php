@@ -415,16 +415,16 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function doRunTask()
 	{
 		// check token
-		//JSession::checkToken() or die('Invalid Token');
+		JSession::checkToken() or die('Invalid Token');
 
 		// start of import
 		$start = microtime(true);
 
 		// get request vars
-		$id = 2; //JRequest::getInt('id', 0);
+		$id = JRequest::getInt('id', 0);
 
 		// test mode
-		$dryRun = 1; //JRequest::getBool('dryrun', 0);
+		$dryRun = JRequest::getBool('dryrun', 0);
 
 		// create import model object
 		$import = new \Members\Models\Import($id);
@@ -494,52 +494,53 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Return Hook for Post Parsing or Post Convert
 	 *
-	 * @param   string  $type    Hook we want
+	 * @param   string  $event   Hook we want
 	 * @param   object  $import  Import Model
 	 * @return  object  Closure
 	 */
-	private function _hooks($type, $import)
+	private function _hooks($event, $import)
 	{
-		// array to hold callbacks
+		// Array to hold callbacks
 		$callbacks = array();
 
-		// get hooks on import
+		// Get hooks on import
 		$hooks = json_decode($import->get('hooks'));
 
-		// make sure we have this type of hook
-		if (!isset($hooks->$type))
+		// Make sure we have this type of hook
+		if (!isset($hooks->$event))
 		{
 			return $callbacks;
 		}
 
-		// loop through each hook
-		foreach ($hooks->$type as $hook)
+		// Loop through each hook
+		foreach ($hooks->$event as $hook)
 		{
-			// load hook object
+			// Load hook object
 			$importHook = new \Hubzero\Content\Import\Model\Hook($hook);
 
-			// make sure we have an object
+			// Make sure we have an object
 			if (!$importHook)
 			{
 				continue;
 			}
 
-			// build path to script
+			// Build path to script
 			$hookFile = $importHook->fileSpacePath() . DS . $importHook->get('file');
 
-			// make sure we have a file
+			// Make sure we have a file
 			if (!is_file($hookFile))
 			{
 				continue;
 			}
 
-			// add callback
-			$callbacks[] = function($data, $dryRun) use ($hookFile) {
+			// Add callback
+			$callbacks[] = function($data, $dryRun) use ($hookFile)
+			{
 				return include $hookFile;
 			};
 		}
 
-		// return closures as callbacks
+		// Return closures as callbacks
 		return $callbacks;
 	}
 

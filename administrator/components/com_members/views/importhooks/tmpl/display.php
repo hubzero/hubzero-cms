@@ -104,7 +104,7 @@ function submitbutton(pressbutton)
 							</td>
 							<td>
 								<?php
-									switch ($hook->get('type'))
+									switch ($hook->get('event'))
 									{
 										case 'postconvert':    echo JText::_('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTCONVERT');    break;
 										case 'postmap':        echo JText::_('COM_MEMBERS_IMPORTHOOK_DISPLAY_TYPE_POSTMAP');        break;

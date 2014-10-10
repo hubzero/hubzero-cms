@@ -61,7 +61,8 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 			),
 			'state'    => array(1),
 			'sort'     => 'name',
-			'sort_Dir' => 'ASC'
+			'sort_Dir' => 'ASC',
+			'type'     => 'members'
 		);
 
 		// get all imports from archive
@@ -179,6 +180,8 @@ class MembersControllerImportHooks extends \Hubzero\Component\AdminController
 			$this->setError($this->hook->getError());
 			return $this->editTask();
 		}
+
+		$this->hook->set('type', 'members');
 
 		// Is this a new import?
 		$isNew = false;

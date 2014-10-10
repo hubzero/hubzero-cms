@@ -55,7 +55,6 @@ class Importer
 	/**
 	 * Constructor
 	 *
-	 * @access public
 	 * @return void
 	 */
 	public function __construct()
@@ -134,9 +133,8 @@ class Importer
 	/**
 	 * Method auto detect adapter based on mime type
 	 *
-	 * @access private
-	 * @param  ResourcesImportInterface Object
-	 * @return void
+	 * @param   object  $import
+	 * @return  void
 	 */
 	private function autoDetectAdapter(Import $import)
 	{
