@@ -193,7 +193,7 @@ if ($this->config->get('supportedtag'))
 			$content = $this->line->fulltxt;
 		}
 
-		echo \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content)), 300);
+		echo \Hubzero\Utility\String::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))), 300);
 		?>
 	</p>
 </li>
