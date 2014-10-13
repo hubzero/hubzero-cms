@@ -1586,7 +1586,7 @@ HUB.Plugins.CoursesProgress = {
 			return units.length;
 		});
 		Handlebars.registerHelper('getGrade', function ( grades, member_id, asset_id ) {
-			if ($.type(grades) !== 'object' || $.type(grades[member_id]) === 'undefined' || $.type(grades[member_id]['assets'][asset_id]) === 'undefined') {
+			if ($.type(grades) !== 'object' || $.type(grades[member_id]) === 'undefined' || $.type(grades[member_id]['assets']) === 'undefined' || $.type(grades[member_id]['assets'][asset_id]) === 'undefined') {
 				return '';
 			} else {
 				return grades[member_id]['assets'][asset_id]['score'];
@@ -1608,7 +1608,7 @@ HUB.Plugins.CoursesProgress = {
 			return (title.length < length) ? title : title.substring(0, length)+'...';
 		});
 		Handlebars.registerHelper('ifIsOverride', function ( grades, member_id, asset_id ) {
-			if ($.type(grades) !== 'object' || $.type(grades[member_id]) === 'undefined' || $.type(grades[member_id]['assets'][asset_id]) === 'undefined') {
+			if ($.type(grades) !== 'object' || $.type(grades[member_id]) === 'undefined' || $.type(grades[member_id]['assets']) === 'undefined' || $.type(grades[member_id]['assets'][asset_id]) === 'undefined') {
 				return '';
 			} else if (grades[member_id]['assets'][asset_id]['override']) {
 				return ' active';
