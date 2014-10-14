@@ -85,7 +85,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 		<?php endforeach; ?>
 		</select>
 		<br />
-		<input type="submit" value="Next >>" id="prj-db-preview-file" style="color: #000000;" />
+		<input type="submit" value="Next &raquo;" id="prj-db-preview-file" class="btn" />
 	</form>
 <?php
 	}
@@ -102,7 +102,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 		<input type="hidden" name="title" value="<?php echo $this->title?>">
 		<input type="hidden" name="desc" value="<?php echo $this->desc?>">
 		<input type="hidden" name="db_id" value="<?php echo $this->db_id?>">
-		<input type="button" value="Next >>" id="prj-db-preview-file" />
+		<input type="button" value="Next &raquo;" id="prj-db-preview-file" class="btn" />
 	</form>
 <?php
 	}
@@ -119,19 +119,19 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 </div>
 
 <div id="prj-db-step-2" class="prj-db-step" style="display: none;">
-	<input type="submit" value="Next >>" class="prj-db-next" data-step='2' style="float: right;" />
-	<input type="submit" value="<< Back" class="prj-db-back" data-warning="true" data-step='2' style="float: right;" />
+	<input type="submit" value="Next &raquo;" class="prj-db-next btn" data-step='2' style="float: right;" />
+	<input type="submit" value="&laquo; Back" class="prj-db-back btn" data-warning="true" data-step='2' style="float: right;" />
 	<h3>Step 2: Verify Data [<span id="prj-db-rec-limit"></span>]</h3>
 	<div id="prj-db-preview-table-wrapper" style="height: 400px; overflow: auto; padding: 5px;"></div>
 </div>
 
 <div id="prj-db-step-3" class="prj-db-step" style="display: none;">
-	<input type="submit" value="<< Back" class="prj-db-back" data-step='3' style="float: right;" />
-	<h3>Step 3: Title & Description, Finish</h3>
+	<input type="submit" value="&laquo; Back" class="prj-db-back btn" data-step='3' style="float: right;" />
+	<h3>Step 3: Title &amp; Description, Finish</h3>
 	<form id="prj-db-finish-form" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=create_database' . a . 'raw_op=1')?>">
 		<label for="prj-db-title" >Title:</label><br /><input type="text" name="prj-db-title" id="prj-db-title" style="width: 450px;" /><br /><br />
 		<label for="prj-db-desc" >Description:</label><br /><textarea type="text" name="prj-db-desc" id="prj-db-desc" style="width: 450px; height: 150px;"></textarea><br /><br />
-		<input type="submit" value="Finish" id="prj-db-finish-btn" />
+		<input type="submit" value="Finish" id="prj-db-finish-btn" class="btn" />
 	</form>
 </div>
 
@@ -167,7 +167,7 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 				<option value="float">Floating Point</option>
 				<option value="numeric">Numeric [4 decimal places]</option>
 				<option value="date">Date [yyyy-mm-dd]</option>
-				<option value="datetime">Date & Time [yyyy-mm-dd HH:MM:SS]</option>
+				<option value="datetime">Date &amp; Time [yyyy-mm-dd HH:MM:SS]</option>
 			</select><br /><br />
 			<div class="col-type-props" id="prj-db-col-type-text">
 				<label for="prj-db-col-truncate" title="Hide the overflow text, full text will be visible by hover-over or by clicking on the visible text">
