@@ -1061,7 +1061,26 @@ HUB.Plugins.Autocomplete = {
 					}
 					return "<li>" + item[this.propertyToSearch]+ "</li>";
 				},
-				onAdd: function(){
+				onAdd: function(item){
+					// pasting in comma separated items
+					if (item.name.indexOf(',') > -1)
+					{
+						// remove original item
+						$('#'+id).tokenInput('remove', {id:item.id});
+
+						// split by comma
+						var items = item.name.split(',');
+						for (var i = 0, n = items.length; i < n; i++)
+						{
+							// add each individual item
+							var item = items[i].trim();
+							$('#'+id).tokenInput('add', {
+								id: item,
+								name: item
+							});
+						}
+					}
+
 					if (wsel) {
 						$.getJSON('/index.php?option=com_groups&no_html=1&task=memberslist&group=' + $('#'+id).val(), function(data) {
 							HUB.Plugins.Autocomplete.writeSelectList(data.members, wsel);
