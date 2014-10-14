@@ -55,7 +55,7 @@ class ProjectsGoogleHelper extends JObject
 		try
 		{
 			// Patch remote file
-		 	$resource = $apiService->files->get($id);
+			$resource = $apiService->files->get($id);
 			return $resource;
 		}
 		catch (Exception $e)
@@ -77,20 +77,20 @@ class ProjectsGoogleHelper extends JObject
 	 */
 	public static function insertPermission($apiService, $fileId, $value, $type, $role)
 	{
-	  	$newPermission = new Google_Permission();
-	  	$newPermission->setValue($value);
-	  	$newPermission->setType($type);
-	  	$newPermission->setRole($role);
+		$newPermission = new Google_Permission();
+		$newPermission->setValue($value);
+		$newPermission->setType($type);
+		$newPermission->setRole($role);
 
 		try
 		{
-	    	return $apiService->permissions->insert($fileId, $newPermission);
-	  	}
+			return $apiService->permissions->insert($fileId, $newPermission);
+		}
 		catch (Exception $e)
 		{
-	    	print "An error occurred: " . $e->getMessage();
-	  	}
-	  	return NULL;
+			print "An error occurred: " . $e->getMessage();
+		}
+		return NULL;
 	}
 
 	/**
@@ -176,7 +176,7 @@ class ProjectsGoogleHelper extends JObject
 		try
 		{
 			// Patch remote file
-		 	$updatedFile = $apiService->files->patch($id, $file);
+			$updatedFile = $apiService->files->patch($id, $file);
 			$metadata = $updatedFile;
 			return $updatedFile['id'];
 		}
@@ -248,7 +248,7 @@ class ProjectsGoogleHelper extends JObject
 			try
 			{
 				// Create remote file
-			 	$createdFile = $apiService->files->insert($file, $fparams);
+				$createdFile = $apiService->files->insert($file, $fparams);
 				$metadata = $createdFile;
 				return $createdFile['id'];
 			}
@@ -344,7 +344,7 @@ class ProjectsGoogleHelper extends JObject
 			try
 			{
 				// Update remote file
-			 	$createdFile = $apiService->files->update($id, $file, $fparams);
+				$createdFile = $apiService->files->update($id, $file, $fparams);
 				$metadata = $createdFile;
 				return $createdFile['id'];
 			}
@@ -403,8 +403,8 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-	    	return false;
-	  	}
+			return false;
+		}
 	}
 
 	/**
@@ -425,12 +425,12 @@ class ProjectsGoogleHelper extends JObject
 		// Removing parent ID from file so that the file gets removed from project folder
 		try
 		{
-		    $apiService->parents->delete($id, $folderId);
+			$apiService->parents->delete($id, $folderId);
 			return true;
 		}
 		catch (Exception $e)
 		{
-		    return false;
+			return false;
 		}
 	}
 
@@ -457,11 +457,11 @@ class ProjectsGoogleHelper extends JObject
 			{
 				foreach ($parents['items'] as $parent)
 				{
-			      	$folderId = $parent['id'];
+					$folderId = $parent['id'];
 
 					try
 					{
-					    $apiService->parents->delete($id, $folderId);
+						$apiService->parents->delete($id, $folderId);
 						return true;
 					}
 					catch (Exception $e)
@@ -508,8 +508,8 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-	    	return false;
-	  	}
+			return false;
+		}
 	}
 
 	/**
