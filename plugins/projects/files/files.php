@@ -353,6 +353,9 @@ class plgProjectsFiles extends JPlugin
 				case 'sync_status':
 					$arr['html'] 	= $this->syncStatus();
 					break;
+				case 'sync_error':
+					$arr['html'] 	= $this->syncError();
+					break;
 
 				case 'newdir':
 					$ajax 			= JRequest::getInt('ajax', 0);
@@ -6597,6 +6600,21 @@ class plgProjectsFiles extends JPlugin
 
 		$this->_rSync['status'] = 'success';
 		return true;
+	}
+
+	/**
+	 * Sync error
+	 *
+	 * @return     string
+	 */
+	public function syncError()
+	{
+		$service 	= JRequest::getVar('service', 'google');
+
+		$this->_writeToFile( '' );
+		$this->_rSync['error'] = 'There was a problem syncing one or more files';
+		$this->lockSync($service, true);
+		return;
 	}
 
 	/**
