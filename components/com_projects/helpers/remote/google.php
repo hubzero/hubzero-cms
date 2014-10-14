@@ -199,10 +199,10 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   string (id) or false
 	 */
-	public static function insertFile ($apiService, $title = '', $data = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
+	public static function insertFile ($apiService, $title = '', $localPath = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
 	{
 		// Check for what we need
-		if (!$apiService || !$title || !$parentId || !$data || !$mimeType)
+		if (!$apiService || !$title || !$parentId || !file_exists($localPath) || !$mimeType)
 		{
 			return false;
 		}
@@ -216,9 +216,11 @@ class ProjectsGoogleHelper extends JObject
 		$parent->setId($parentId);
 		$file->setParents(array($parent));
 
+		// Determine file size
+		$size = filesize($localPath);
+
 		$fparams = array();
 		$fparams['mimeType'] = $mimeType;
-		$fparams['data'] = $data;
 
 		// Are we converting to Google format?
 		if ($convert == true)
@@ -233,12 +235,49 @@ class ProjectsGoogleHelper extends JObject
 			}
 		}
 
+		// For files below 5MB use standard upload method
+		if ($size < 5000000 || $convert == true)
+		{
+			$fparams['data'] = file_get_contents($localPath);
+
+			if (!$fparams['data'])
+			{
+				return false;
+			}
+
+			try
+			{
+				// Create remote file
+			 	$createdFile = $apiService->files->insert($file, $fparams);
+				$metadata = $createdFile;
+				return $createdFile['id'];
+			}
+			catch (Exception $e)
+			{
+				return false;
+			}
+		}
+
+		// Use chunked upload for larger files
 		try
 		{
-			// Create remote file
-		 	$createdFile = $apiService->files->insert($file, $fparams);
-			$metadata = $createdFile;
-			return $createdFile['id'];
+			$chunkSizeBytes = 1 * 1024 * 1024;
+			$media = new Google_MediaFileUpload('text/plain', null, true, $chunkSizeBytes);
+			$media->setFileSize($size);
+
+			$result = $apiService->files->insert($file, array('mediaUpload' => $media));
+
+			$status = false;
+			$handle = fopen($localPath, "rb");
+			while (!$status && !feof($handle))
+			{
+				$chunk = fread($handle, $chunkSizeBytes);
+				$status = $media->nextChunk($result, $chunk);
+			}
+
+			fclose($handle);
+			$metadata = $status;
+			return isset($status['id']) ? $status['id'] : NULL;
 		}
 		catch (Exception $e)
 		{
@@ -260,7 +299,7 @@ class ProjectsGoogleHelper extends JObject
 	 *
 	 * @return   string (id) or false
 	 */
-	public static function updateFile ($apiService, $id = 0, $title = '', $data = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
+	public static function updateFile ($apiService, $id = 0, $title = '', $localPath = NULL, $mimeType = NULL, $parentId = 0, &$metadata, $convert = false)
 	{
 		// Check for what we need
 		if (!$apiService || !$id)
@@ -280,9 +319,11 @@ class ProjectsGoogleHelper extends JObject
 			$file->setParents(array($parent));
 		}
 
+		// Determine file size
+		$size = filesize($localPath);
+
 		$fparams = array();
 		$fparams['mimeType'] = $mimeType;
-		$fparams['data'] = $data;
 
 		// Are we converting to Google format?
 		if ($convert == true)
@@ -290,12 +331,49 @@ class ProjectsGoogleHelper extends JObject
 			$fparams['convert'] = true;
 		}
 
+		// For files below 5MB use standard upload method
+		if ($size < 5000000 || $convert == true)
+		{
+			$fparams['data'] = file_get_contents($localPath);
+
+			if (!$fparams['data'])
+			{
+				return false;
+			}
+
+			try
+			{
+				// Update remote file
+			 	$createdFile = $apiService->files->update($id, $file, $fparams);
+				$metadata = $createdFile;
+				return $createdFile['id'];
+			}
+			catch (Exception $e)
+			{
+				return false;
+			}
+		}
+
+		// Use chunked upload for larger files
 		try
 		{
-			// Update remote file
-		 	$createdFile = $apiService->files->update($id, $file, $fparams);
-			$metadata = $createdFile;
-			return $createdFile['id'];
+			$chunkSizeBytes = 1 * 1024 * 1024;
+			$media = new Google_MediaFileUpload('text/plain', null, true, $chunkSizeBytes);
+			$media->setFileSize($size);
+
+			$result = $apiService->files->update($id, $file, array('mediaUpload' => $media));
+
+			$status = false;
+			$handle = fopen($localPath, "rb");
+			while (!$status && !feof($handle))
+			{
+				$chunk = fread($handle, $chunkSizeBytes);
+				$status = $media->nextChunk($result, $chunk);
+			}
+
+			fclose($handle);
+			$metadata = $status;
+			return isset($status['id']) ? $status['id'] : NULL;
 		}
 		catch (Exception $e)
 		{
@@ -526,7 +604,7 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			self::setError('Failed to retrieve remote content');
+			return NULL;
 		}
 
 		return $newChangeID;
@@ -823,7 +901,6 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			self::setError('Failed to retrieve remote content');
 			return false;
 		}
 
@@ -1009,7 +1086,6 @@ class ProjectsGoogleHelper extends JObject
 		}
 		catch (Exception $e)
 		{
-			self::setError('Failed to retrieve remote content');
 			return $remotes;
 		}
 

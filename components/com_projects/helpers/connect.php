@@ -878,23 +878,7 @@ class ProjectsConnectHelper extends JObject {
 		$title 		= $local['title'];
 		$localPath 	= $local['fullPath'];
 		$fpath		= $local['local_path'];
-
-		if (file_exists($localPath))
-		{
-			$data = file_get_contents($localPath);
-		}
-		else
-		{
-			return false;
-		}
-
 		$mimeType 	= $local['mimeType'];
-
-		// File must have data
-		if (!$data)
-		{
-			return false;
-		}
 
 		// Collector for created item metadata
 		$metadata = array();
@@ -902,7 +886,7 @@ class ProjectsConnectHelper extends JObject {
 		// Perform request
 		if ($service == 'google')
 		{
-			$newItemId = ProjectsGoogleHelper::insertFile ($apiService, $title, $data, $mimeType, $parentId, $metadata, $convert);
+			$newItemId = ProjectsGoogleHelper::insertFile ($apiService, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
 		}
 
 		// Error!
@@ -989,23 +973,7 @@ class ProjectsConnectHelper extends JObject {
 		// Parse incoming
 		$title 		= basename($local['local_path']);
 		$localPath 	= $local['fullPath'];
-
-		if (file_exists($localPath))
-		{
-			$data = file_get_contents($localPath);
-		}
-		else
-		{
-			return false;
-		}
-
 		$mimeType 	= $local['mimeType'];
-
-		// File must have data
-		if (!$data)
-		{
-			return false;
-		}
 
 		// Collector for created item metadata
 		$metadata = array();
@@ -1036,7 +1004,7 @@ class ProjectsConnectHelper extends JObject {
 			// There was a change in content, update
 			if (!$success)
 			{
-				$success = ProjectsGoogleHelper::updateFile ($apiService, $remoteid, $title, $data, $mimeType, $parentId, $metadata, $convert);
+				$success = ProjectsGoogleHelper::updateFile ($apiService, $remoteid, $title, $localPath, $mimeType, $parentId, $metadata, $convert);
 			}
 		}
 
