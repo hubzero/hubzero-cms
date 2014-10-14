@@ -186,6 +186,23 @@ class GroupsControllerMembership extends GroupsControllerAbstract
 			$la = array($logins);
 		}
 
+		// turn usernames into proper uidNumbers
+		foreach ($la as $k => $l)
+		{
+			// ignore uids & email addresses
+			if (!is_numeric($l) && strpos($l, '@') === false)
+			{
+				// load by username
+				$profile = Hubzero\User\Profile::getInstance($l);
+				if ($profile && $profile->get('uidNumber'))
+				{
+					unset($la[$k]);
+					$la[] = $profile->get('uidNumber');
+				}
+			}
+		}
+
+		// handle each entered
 		foreach ($la as $l)
 		{
 			// Trim up content
