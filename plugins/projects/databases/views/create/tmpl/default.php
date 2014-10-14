@@ -127,11 +127,11 @@ $document->addScript('/plugins/projects/databases/res/spectrum/spectrum.js');
 
 <div id="prj-db-step-3" class="prj-db-step" style="display: none;">
 	<input type="submit" value="&laquo; Back" class="prj-db-back btn" data-step='3' style="float: right;" />
-	<h3>Step 3: Title & Description, Finish</h3>
+	<h3>Step 3: Title &amp; Description, Finish</h3>
 	<form id="prj-db-finish-form" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'id=' . $this->project->id . a . 'active=databases' . a . 'action=create_database' . a . 'raw_op=1')?>">
 		<label for="prj-db-title" >Title:</label><br /><input type="text" name="prj-db-title" id="prj-db-title" style="width: 450px;" /><br /><br />
 		<label for="prj-db-desc" >Description:</label><br /><textarea type="text" name="prj-db-desc" id="prj-db-desc" style="width: 450px; height: 150px;"></textarea><br /><br />
-		<input type="submit" value="Finish" id="prj-db-finish-btn btn" />
+		<input type="submit" value="Finish" id="prj-db-finish-btn" class="btn" />
 	</form>
 </div>
 
