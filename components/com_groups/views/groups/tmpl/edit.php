@@ -42,8 +42,8 @@ $tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'acta
 
 //are we using the email gateway for group forum
 $params =  JComponentHelper::getParams('com_groups');
-$allowEmailResponses = $params->get('email_comment_processing');
-$autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignup');
+$allowEmailResponses = $params->get('email_comment_processing', 0);
+$autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignup', 0);
 
 //default logo
 $default_logo = DS.'components'.DS.$this->option.DS.'assets'.DS.'img'.DS.'group_default_logo.png';

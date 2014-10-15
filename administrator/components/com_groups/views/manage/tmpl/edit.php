@@ -45,10 +45,23 @@ JToolBarHelper::help('group');
 
 JHTML::_('behavior.framework');
 
-$gparams = new JRegistry($this->group->params);
+// are we using the email gateway for group forum
+$params =  JComponentHelper::getParams('com_groups');
+$allowEmailResponses = $params->get('email_comment_processing', 0);
+$autoEmailResponses  = $params->get('email_member_groupsidcussionemail_autosignup', 0);
 
+if ($this->group->get('discussion_email_autosubscribe', null) == 1
+	|| ($this->group->get('discussion_email_autosubscribe', null) == null && $autoEmailResponses))
+{
+	$autoEmailResponses = 1;
+}
+
+// get groups params
+$gparams              = new JRegistry($this->group->params);
 $membership_control   = $gparams->get('membership_control', 1);
 $display_system_users = $gparams->get('display_system_users', 'global');
+$comments             = $gparams->get('page_comments', $params->get('page_comments', 0));
+$author               = $gparams->get('page_author', $params->get('page_author', 0));
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -116,6 +129,27 @@ function submitbutton(pressbutton)
 				<label for="field-private_desc"><?php echo JText::_('COM_GROUPS_EDIT_PRIVATE_TEXT'); ?>:</label><br />
 				<span class="hint"><?php echo JText::_('COM_GROUPS_EDIT_PRIVATE_TEXT_HINT'); ?></span>
 				<?php echo JFactory::getEditor()->display('group[private_desc]', $this->escape(stripslashes($this->group->private_desc)), '', '', '40', '10', false, 'field-private_desc'); ?>
+			</div>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('COM_GROUPS_PAGE_SETTINGS'); ?></span></legend>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT'); ?>">
+				<label><?php echo JText::_('COM_GROUPS_PAGES_SETTING_COMMENTS'); ?>:</label>
+				<select name="group[params][page_comments]">
+					<option <?php if ($comments == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
+					<option <?php if ($comments == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
+					<option <?php if ($comments == 2) { echo 'selected="selected"'; } ?> value="2"><?php echo JText::_('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
+				</select>
+			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT'); ?>">
+				<label><?php echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR'); ?>:</label>
+				<select name="group[params][page_author]">
+					<option <?php if ($author == 0) { echo 'selected="selected"'; } ?> value="0"><?php echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR_NO'); ?></option>
+					<option <?php if ($author == 1) { echo 'selected="selected"'; } ?> value="1"><?php echo JText::_('COM_GROUPS_PAGES_SETTING_AUTHOR_YES'); ?></option>
+				</select>
 			</div>
 		</fieldset>
 	</div>
@@ -201,6 +235,22 @@ function submitbutton(pressbutton)
 				</select>
 			</div>
 		</fieldset>
+
+		<?php if ($allowEmailResponses) : ?>
+			<fieldset class="adminform">
+				<legend><span><?php echo JText::_('COM_GROUPS_EMAIL_SETTINGS'); ?></span></legend>
+
+				<fieldset>
+					<legend><?php echo JText::_('COM_GROUPS_DISCUSSION_EMAILS'); ?>:</legend>
+
+					<div class="input-wrap">
+						<input type="hidden" name="group[discussion_email_autosubscribe]" value="0" />
+						<input type="checkbox" name="group[discussion_email_autosubscribe]" id="field-membership_control" value="1" <?php if ($autoEmailResponses == 1) { ?>checked="checked"<?php } ?> />
+						<label for="field-membership_control"><?php echo JText::_('COM_GROUPS_DISCUSSION_EMAIL_AUTOSUBSCRIBE'); ?></label>
+					</div>
+				</fieldset>
+			</fieldset>
+		<?php endif; ?>
 	</div>
 	<div class="clr"></div>
 

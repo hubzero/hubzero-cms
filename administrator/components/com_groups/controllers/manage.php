@@ -345,25 +345,12 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 		// group params
 		$gparams = new JRegistry($group->get('params'));
+		$gparams->merge(new JRegistry($g['params']));
 
 		// set membership control param
 		$membership_control = (isset($g['params']['membership_control'])) ? 1 : 0;
 		$gparams->set('membership_control', $membership_control);
-
-		// make array of params
-		$gparams = $gparams->toArray();
-
-		// array to hold params
-		$params = array();
-
-		// create key=val from each param
-		foreach ($gparams as $key => $val)
-		{
-			$params[] = $key . '=' . $val;
-		}
-
-		//each param must have its own line
-		$params = implode("\n", $params);
+		$params = $gparams->toString();
 
 		// Set the group changes and save
 		$group->set('cn', $g['cn']);
@@ -388,6 +375,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$group->set('restrict_msg', $g['restrict_msg']);
 		$group->set('logo', $g['logo']);
 		$group->set('plugins', $g['plugins']);
+		$group->set('discussion_email_autosubscribe', $g['discussion_email_autosubscribe']);
 		$group->set('params', $params);
 		$group->update();
 
