@@ -170,16 +170,32 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$filters['limit']  = 20;
 		$filters['start']  = 0;
 		$filters['search'] = strtolower(trim(JRequest::getString('value', '')));
-		$filters['search'] = $filters['search'] . '*';
 
-		// match member names on all three name parts		
-		$match = "MATCH(xp.givenName,xp.middleName,xp.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
-		$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public, $match as rel
-				FROM #__xprofiles AS xp
-				INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
-				WHERE $match AND xp.emailConfirmed>0 $restrict
-				ORDER BY rel DESC, xp.name ASC
-				LIMIT " . $filters['start'] . "," . $filters['limit'];
+		// match against orcid id
+		if (preg_match('/\d{4}-\d{4}-\d{4}-\d{4}/', $filters['search']))
+		{
+			$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public 
+					FROM #__xprofiles AS xp 
+					INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0 
+					WHERE orcid= " . $this->database->quote($filters['search']) . " AND xp.emailConfirmed>0 $restrict 
+					ORDER BY xp.name ASC 
+					LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+		else
+		{
+			// add trailing wildcard
+			$filters['search'] = $filters['search'] . '*';
+
+			// match member names on all three name parts
+			$match = "MATCH(xp.givenName,xp.middleName,xp.surname) AGAINST(" . $this->database->quote($filters['search']) . " IN BOOLEAN MODE)";
+			$query = "SELECT xp.uidNumber, xp.name, xp.username, xp.organization, xp.picture, xp.public, $match as rel
+					FROM #__xprofiles AS xp
+					INNER JOIN #__users u ON u.id = xp.uidNumber AND u.block = 0
+					WHERE $match AND xp.emailConfirmed>0 $restrict
+					ORDER BY rel DESC, xp.name ASC
+					LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+
 		$this->database->setQuery($query);
 		$rows = $this->database->loadObjectList();
 
