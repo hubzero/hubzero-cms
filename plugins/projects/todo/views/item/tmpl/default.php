@@ -48,7 +48,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 $listName = $this->model->getListName($this->project->id, $color);
 
 // How long did it take to complete
-if ($this->row->isComplete()) 
+if ($this->row->isComplete())
 {
 	$diff = strtotime($this->row->get('closed')) - strtotime($this->row->get('created'));
 	$diff = ProjectsHtml::timeDifference ($diff);
