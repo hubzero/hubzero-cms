@@ -123,7 +123,9 @@ function get_dd($db_id)
 	/* Dynamically set processing mode */
 	if (isset($dv_conf['proc_mode_switch']) && $dv_conf['proc_mode_switch']) {
 		$link = get_db();
-		$total = mysql_query(query_gen_total($dd), $link);
+		mysql_query(query_gen_total($dd), $link);
+		$total = mysql_query('SELECT FOUND_ROWS() AS total', $link);
+		$total = mysql_fetch_assoc($total);
 		if ($total) {
 			$total = mysql_fetch_assoc($total);
 			$total = isset($total['total']) ? $total['total'] : 0;

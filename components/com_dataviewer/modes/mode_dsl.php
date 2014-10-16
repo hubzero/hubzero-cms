@@ -85,7 +85,9 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	/* Dynamically set processing mode */
 	$link = get_db($dv_conf['db']);
 	$cell_count_threshold = isset($dv_conf['proc_switch_threshold']) ? $dv_conf['proc_switch_threshold'] : 20000;
-	$total = mysql_query(query_gen_total($dd), $link);
+	mysql_query(query_gen_total($dd), $link);
+	$total = mysql_query('SELECT FOUND_ROWS() AS total', $link);
+	$total = mysql_fetch_assoc($total);
 	$total = mysql_fetch_assoc($total);
 	$total = isset($total['total']) ? $total['total'] : 0;
 	$dd['total_records'] = $total;

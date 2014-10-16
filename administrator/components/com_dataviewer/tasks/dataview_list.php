@@ -28,10 +28,10 @@ function dv_dataview_list()
 	JToolBarHelper::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
 
 	if(!$jdb->getErrorMsg()) {
-		JToolBarHelper::custom(false, 'new', 'new', 'New Dataview', false, false);
+		JToolBarHelper::custom('new', 'new', 'new', 'New Dataview', false);
 	}
 
-	JToolBarHelper::custom(false, 'back', 'back', 'Go back', false, false );
+	JToolBarHelper::custom('back', 'back', 'back', 'Go back', false );
 
 	$path = "$base/$db_id/applications/$com_name/datadefinitions/";
 

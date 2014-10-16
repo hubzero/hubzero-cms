@@ -643,16 +643,13 @@ function query_gen(&$dd)
 	return $sql;
 }
 
-function query_gen_total($dd) {
-	$col = '*';
-	if(isset($dd['group_by'])) {
-		$col = 'DISTINCT ' . $dd['group_by'];
-	}
+function query_gen_total($dd)
+{
 
 	if (substr($dd['table'], 0, 1) == '(') {
-		$sql = "SELECT COUNT($col) AS `total` FROM " . $dd['table'] . ' ';
+		$sql = "SELECT SQL_CACHE SQL_CALC_FOUND_ROWS 1 AS `total` FROM " . $dd['table'] . ' ';
 	} else {
-		$sql = "SELECT COUNT($col) AS `total` FROM `";
+		$sql = "SELECT SQL_CACHE SQL_CALC_FOUND_ROWS 1 AS `total` FROM `";
 		$sql .= $dd['table'] . '` ';
 	}
 
@@ -719,6 +716,8 @@ function query_gen_total($dd) {
 	}
 
 	$sql .= $having_str;
+
+	$sql .= ' LIMIT 1';
 
 	return $sql;
 }

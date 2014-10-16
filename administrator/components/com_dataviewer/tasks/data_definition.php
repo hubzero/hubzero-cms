@@ -34,7 +34,7 @@ function dv_data_definition()
 
 
 	JToolBarHelper::title($db_conf['name'] . ' >> <small>' . $dd['title'] . '</small>', 'databases');
-	JToolBarHelper::custom(false, 'back', 'back', 'Go back', false, false );
+	JToolBarHelper::custom('back', 'back', 'back', 'Go back', false );
 
 
 	$dd_file_php = "$base/$db_id/applications/$com_name/datadefinitions-php/$dd_name.php";
