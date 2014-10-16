@@ -50,9 +50,9 @@ function dv_data_definition()
 	</style>
 
 	<script>
-		var com_name = '<?=$com_name?>';
-		var db_rid = '<?=DB_RID?>';
-		var db_back_link = '/administrator/index.php?option=com_<?=$com_name?>&task=dataview_list&db=<?=$db_id?>';
+		var com_name = '<?php echo $com_name; ?>';
+		var db_rid = '<?php echo DB_RID; ?>';
+		var db_back_link = '/administrator/index.php?option=com_<?php echo $com_name; ?>&task=dataview_list&db=<?php echo $db_id; ?>';
 	</script>
 
 	<div id="tabs">
@@ -63,18 +63,18 @@ function dv_data_definition()
 		</ul>
 
 		<div id="tabs-1">
-			<iframe seamless src="<?=$dv_link . '?tmpl=component'?>" id="db-tables-dv-iframe" style="width: 100%; min-width: 1000px;" height="650px;" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto">IFRAMES not supported by the browser</iframe>
+			<iframe seamless src="<?php echo $dv_link . '?tmpl=component'; ?>" id="db-tables-dv-iframe" style="width: 100%; min-width: 1000px;" height="650px;" marginWidth="0" marginHeight="0" frameBorder="0" scrolling="auto">IFRAMES not supported by the browser</iframe>
 		</div>
 
 		<div id="tabs-2">
-			<textarea id="db-dd-source-php" style="display: none;"><?=($dd_php)?></textarea>
-			<div id="db-dd-editor-php" style="height: <?=$full_screen ? 600 : 500;?>px; width: 100%;"></div>
+			<textarea id="db-dd-source-php" style="display: none;"><?php echo $dd_php; ?></textarea>
+			<div id="db-dd-editor-php" style="height: <?php echo $full_screen ? 600 : 500; ?>px; width: 100%;"></div>
 			<input id="db-dd-update" type="button" value="Update Dataview" style="color: blue; position: absolute; top: 60px; right: 60px;" />
 			<br />
 		</div>
 
 		<div id="tabs-3">
-			<div id="db-dd-editor" style="height: <?=$full_screen ? 600 : 500;?>px; width: 100%;"><?=htmlspecialchars($dd_json)?></div>
+			<div id="db-dd-editor" style="height: <?php echo $full_screen ? 600 : 500; ?>px; width: 100%;"><?php echo htmlspecialchars($dd_json); ?></div>
 		</div>
 
 
@@ -84,17 +84,17 @@ function dv_data_definition()
 		if ($full_screen) {
 			$close = $host . "/administrator/index.php?option=com_$com_name&task=data_definition&db=$db_id&dd=$dd_name";
 ?>
-			[<a href="<?=$host . '/administrator/index.php?option=com_' . $com_name . '&task=dataview_list&db=' . $db_id?>" title="Go back to Dataview list">
+			[<a href="<?php echo $host . '/administrator/index.php?option=com_' . $com_name . '&task=dataview_list&db=' . $db_id; ?>" title="Go back to Dataview list">
 				&nbsp;<span class="ui-icon ui-icon-arrowthick-1-w" style="display: inline-block; margin-bottom: -4px;"></span>&nbsp;
 			</a>] &nbsp;
-			[<a href="<?=$close?>" title="Leave Full Screen mode">
+			[<a href="<?php echo $close; ?>" title="Leave Full Screen mode">
 				&nbsp;<span class="ui-icon ui-icon-close" style="display: inline-block; margin-bottom: -4px;"></span>&nbsp;
 			</a>]
 <?php
 		} else {
 			$fs = $host . "/administrator/index.php?option=com_$com_name&task=data_definition&db=$db_id&dd=$dd_name&tmpl=component";
 ?>
-			[<a href="<?=$fs?>" title="Switch to Full Screen mode">
+			[<a href="<?php echo $fs; ?>" title="Switch to Full Screen mode">
 				&nbsp;<span class="ui-icon ui-icon-arrow-4-diag" style="display: inline-block; margin-bottom: -4px;"></span>&nbsp;
 			</a>]
 <?php
@@ -103,10 +103,10 @@ function dv_data_definition()
 		</div>
 	</div>
 
-	<form id="db-dd-update-form" method="post" action="/administrator/index.php?option=com_<?=$com_name?>&task=data_definition_update">
-		<input name="<?=DB_RID?>" type="hidden" value="<?=DB_RID?>" />
-		<input name="db" type="hidden" value="<?=$db_id?>" />
-		<input name="dd" type="hidden" value="<?=$dd_name?>" />
+	<form id="db-dd-update-form" method="post" action="/administrator/index.php?option=com_<?php echo $com_name; ?>&task=data_definition_update">
+		<input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
+		<input name="db" type="hidden" value="<?php echo $db_id; ?>" />
+		<input name="dd" type="hidden" value="<?php echo $dd_name; ?>" />
 		<input name="update" type="hidden" value="true" />
 		<input name="dd_text" type="hidden" value="" />
 	</form>

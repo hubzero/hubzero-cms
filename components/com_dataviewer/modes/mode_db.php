@@ -33,7 +33,7 @@ function get_conf($db_id)
 		$db_dv_conf = json_decode(file_get_contents($dv_conf_file), true);
 		if (!is_array($db_dv_conf)) {
 			$db_dv_conf = array();
-		} if(isset($db_dv_conf['settings'])) {
+		} if (isset($db_dv_conf['settings'])) {
 			$db_dv_conf['settings'] = array_merge($dv_conf['settings'], $db_dv_conf['settings']);
 		}
 	}
@@ -84,16 +84,16 @@ function get_dd($db_id)
 
 		$dd['conf'] = (isset($dd['conf'])) ? $dd['conf'] : array();
 
-		if(isset($dd['conf']['proc_mode_switch'])) {
+		if (isset($dd['conf']['proc_mode_switch'])) {
 			$dv_conf['proc_mode_switch'] = $dd['conf']['proc_mode_switch'];
 		}
 
-		if(isset($dd['conf']['proc_switch_threshold'])) {
+		if (isset($dd['conf']['proc_switch_threshold'])) {
 			$dv_conf['proc_switch_threshold'] = $dd['conf']['proc_switch_threshold'];
 		}
 
 		// Database override form dd
-		if(isset($dd['db']) && is_array($dd['db'])) {
+		if (isset($dd['db']) && is_array($dd['db'])) {
 			$dv_conf['db'] = array_merge($dv_conf['db'], $dd['db']);
 		}
 
@@ -111,7 +111,7 @@ function get_dd($db_id)
 		$dd['total_records'] = $total;
 
 		$vis_col_count = 0;
-		if(isset($dd['cols'])) {
+		if (isset($dd['cols'])) {
 			$vis_col_count = count(array_filter($dd['cols'], function ($col) { return !isset($col['hide']); }));
 		} elseif (isset($db_id['extra']) && $db_id['extra'] == 'table') {
 			$sql = "SELECT COUNT(*) AS cols FROM information_schema.columns WHERE table_name = '{$dd['table']}'";
@@ -168,12 +168,12 @@ function _dd_post($dd)
 		// Ordering
 		$order_cols = $dd['cols'];
 		$dd['cols'] = array();
-		foreach($custom_view as $cv_col) {
+		foreach ($custom_view as $cv_col) {
 			$dd['cols'][$cv_col] = $order_cols[$cv_col];
 		}
 
 		// Hiding
-		foreach($order_cols as $id=>$prop) {
+		foreach ($order_cols as $id=>$prop) {
 			if (!in_array($id, $custom_view)) {
 				$dd['cols'][$id] = $prop;
 
@@ -196,7 +196,7 @@ function pathway($dd)
 	$mainframe = JFactory::getApplication();
 	$pathway = $mainframe->getPathway();
 
-	if(isset($_SERVER['HTTP_REFERER'])) {
+	if (isset($_SERVER['HTTP_REFERER'])) {
 		$ref_title = JRequest::getString('ref_title', $dd['title'] . " Resource");
 		$ref_title = htmlentities($ref_title);
 		$pathway->addItem($ref_title, $_SERVER['HTTP_REFERER']);
