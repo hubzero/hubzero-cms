@@ -11,7 +11,8 @@
 defined('_JEXEC') or die;
 
 
-function get_db($db = false) {
+function get_db($db = false)
+{
 	global $dv_conf;
 
 	if (!$db) {
@@ -37,7 +38,8 @@ function get_db($db = false) {
 	return $link;
 }
 
-function get_results($sql, &$dd) {
+function get_results($sql, &$dd)
+{
 	$link = isset($dd['db'])? get_db($dd['db']): get_db();
 	$res['data'] = array();
 	$res['total'] = 0;
@@ -90,7 +92,7 @@ function query_gen(&$dd)
 	} elseif (isset($dd['col_info']) && $dd['col_info'] == 'override') {
 
 		$tables = array();
-		foreach($dd['cols'] as $id=>$prop) {
+		foreach ($dd['cols'] as $id=>$prop) {
 			$table = explode('.', $id);
 			$table = $table[0];
 
@@ -113,7 +115,7 @@ function query_gen(&$dd)
 			}
 		}
 
-		foreach($dd['cols'] as $id=>$prop) {
+		foreach ($dd['cols'] as $id=>$prop) {
 			if (isset($col_info[$id])) {
 				if (isset($col_info[$id]['label'])) {
 					$dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br /><br/><br><hr /><hr/><hr>'));
@@ -131,7 +133,7 @@ function query_gen(&$dd)
 	} elseif (isset($dd['col_info']) && $dd['col_info'] == 'soft_override') {
 
 		$tables = array();
-		foreach($dd['cols'] as $id=>$prop) {
+		foreach ($dd['cols'] as $id=>$prop) {
 			$table = explode('.', $id);
 			$table = $table[0];
 
@@ -153,7 +155,7 @@ function query_gen(&$dd)
 			}
 		}
 
-		foreach($dd['cols'] as $id=>$prop) {
+		foreach ($dd['cols'] as $id=>$prop) {
 			if (isset($col_info[$id])) {
 				if (isset($col_info[$id]['label']) && !isset($dd['cols'][$id]['label'])) {
 					$dd['cols'][$id]['label'] = nl2br(strip_tags($col_info[$id]['label'], '<br /><br/><br><hr /><hr/><hr>'));
@@ -174,7 +176,7 @@ function query_gen(&$dd)
 	$cols_vis = array();
 	$cols_sql = array();
 
-	foreach($dd['cols'] as $id=>$conf) {
+	foreach ($dd['cols'] as $id=>$conf) {
 
 		if (isset($conf['field_type']) && $conf['field_type'] === 'point') {
 			$conf['raw'] = "CONCAT(X($id), ',', Y($id))";
@@ -265,7 +267,7 @@ function query_gen(&$dd)
 	$filters = JRequest::getVar('filter', false, 'default', null, JREQUEST_ALLOWRAW);
 	if ($filters !== false) {
 		$filters = explode('||', $filters);
-		foreach($filters as $filter) {
+		foreach ($filters as $filter) {
 			$filter = explode('|', $filter);
 			$col_id = $filter[0];
 			$col = $cols[$col_id];
@@ -371,11 +373,11 @@ function query_gen(&$dd)
 				$v_arr = explode(' ', $val['val']);
 				if (count($v_arr) > 1) {
 					$list = array();
-					foreach($v_arr as $v) {
+					foreach ($v_arr as $v) {
 						$list[] = $val['col'] . " LIKE '%" . $v . "%'";
 					}
 					$where_filter_arr[] = '(' . implode(' AND ', $list) . ')';
-				} elseif(trim($v_arr[0]) != '') {
+				} elseif (trim($v_arr[0]) != '') {
 					$where_filter_arr[] = $val['col'] . " LIKE '%" . $v_arr[0] . "%'";
 				}
 			}
@@ -471,11 +473,11 @@ function query_gen(&$dd)
 				$v_arr = explode(' ', $val['val']);
 				if (count($v_arr) > 1) {
 					$list = array();
-					foreach($v_arr as $v) {
+					foreach ($v_arr as $v) {
 						$list[] = $val['col'] . " LIKE '%" . $v . "%'";
 					}
 					$having_filter_arr[] = '(' . implode(' AND ', $list) . ')';
-				} elseif(trim($v_arr[0]) != '') {
+				} elseif (trim($v_arr[0]) != '') {
 					$having_filter_arr[] = $val['col'] . " LIKE '%" . $v_arr[0] . "%'";
 				}
 			}
