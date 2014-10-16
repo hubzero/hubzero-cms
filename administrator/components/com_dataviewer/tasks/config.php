@@ -24,7 +24,7 @@ function dv_config()
 
 
 	JToolBarHelper::title('Dataviewer configuration editor for "' . $db_conf['name'] . '" database' , 'databases');
-	JToolBarHelper::custom(false, 'back', 'back', 'Go back', false, false );
+	JToolBarHelper::custom('back', 'back', 'back', 'Go back', false );
 
 
 	if (isset($_SESSION['dataviewer']['conf_file_updated'])) {
