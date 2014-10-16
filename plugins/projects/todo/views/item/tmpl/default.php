@@ -25,120 +25,94 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = 'M d, Y';
-$team_ids = array('0' => '');
-$class = $this->item->color ? 'pin_'.$this->item->color : 'pin_grey';
+$this->css('jquery.datepicker.css', 'system')
+	 ->css('jquery.timepicker.css', 'system')
+	 ->css()
+	 ->js('jquery.timepicker', 'system')
+     ->js();
 
-// Get Comments
-$objC = new ProjectComment( $this->database );
-$c = $this->item->activityid ? $objC->getComments( $this->item->id, 'todo' ) : array();
+$color = $this->row->get('color');
+$class = $color ? 'pin_' . $color : 'pin_grey';
 
-// Is item overdue?
-$overdue = '';
-if ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' && $this->item->duedate <= date( 'Y-m-d H:i:s') ) {
-	$overdue = ' ('.JText::_('PLG_PROJECTS_TODO_OVERDUE').')';
-}
+$overdue = $this->row->isOverdue();
+$oNote = $overdue ? ' ('.JText::_('PLG_PROJECTS_TODO_OVERDUE').')' : '';
 
 // Can it be deleted?
-$deletable = ($this->project->role == 1 or $this->item->created_by == $this->uid) ? 1 : 0;
+$deletable = ($this->project->role == 1 or $this->row->get('created_by') == $this->uid) ? 1 : 0;
 
-// Get actors' names
-$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
-$closedby = '';
-$author = '';
-$assignedto = '';
+// Due?
+$due = $this->row->due() ? $this->row->due('date') : JText::_('PLG_PROJECTS_TODO_NEVER');
 
-// Get completer name
-if ($this->item->closed_by) {
-	$profile->load( $this->item->closed_by );
-	$closedby = $profile->get('name');
-}
-// Get assignee name
-if ($this->item->assigned_to) {
-	$profile->load( $this->item->assigned_to );
-	$assignedto = $profile->get('name');
-}
-else
-{
-	$assignedto = JText::_('PLG_PROJECTS_TODO_NOONE');
-}
+$url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=todo';
+
+$listName = $this->model->getListName($this->project->id, $color);
 
 // How long did it take to complete
-if ($this->item->state == 1) {
-	$diff = strtotime($this->item->closed) - strtotime($this->item->created);
+if ($this->row->isComplete()) 
+{
+	$diff = strtotime($this->row->get('closed')) - strtotime($this->row->get('created'));
 	$diff = ProjectsHtml::timeDifference ($diff);
 }
 
-// Due?
-$due = ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' ) ? JHTML::_('date', strtotime($this->item->duedate), 'm/d/Y') : JText::_('PLG_PROJECTS_TODO_NEVER');
-
-// Author name
-$profile->load( $this->item->created_by );
-$author = $profile->get('name');
-
-$goto  = 'alias=' . $this->project->alias;
-
 ?>
 <div id="plg-header">
-	<h3 class="todo"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=todo'); ?>"><?php echo $this->title; ?></a>
-	<?php if ($this->item->todolist) { ?> &raquo; <a href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->project->id.'&active=todo').'/?list='.$this->item->color; ?>"><span class="indlist <?php echo 'pin_'.$this->item->color; ?>"><?php echo $this->item->todolist; ?></span></a> <?php } ?>
-	<?php if ($this->item->state == 1) { ?> &raquo; <span class="indlist completedtd"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo').'/?state=1'; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_COMPLETED')); ?></a></span> <?php } ?>
-	&raquo; <span class="itemname"><?php echo \Hubzero\Utility\String::truncate($this->item->content, 60); ?></span>
+	<h3 class="todo"><a href="<?php echo JRoute::_($url); ?>"><?php echo $this->title; ?></a>
+	<?php if ($listName) { ?> &raquo; <a href="<?php echo JRoute::_($url).'/?list=' . $color; ?>"><span class="indlist <?php echo 'pin_' . $color; ?>"><?php echo $listName; ?></span></a> <?php } ?>
+	<?php if ($this->row->isComplete()) { ?> &raquo; <span class="indlist completedtd"><a href="<?php echo JRoute::_($url).'/?state=1'; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_COMPLETED')); ?></a></span> <?php } ?>
+	&raquo; <span class="itemname"><?php echo \Hubzero\Utility\String::truncate($this->row->get('content'), 60); ?></span>
 	</h3>
 </div>
-	<?php
-	$index = $this->item->assigned_to ? array_search($this->item->assigned_to, $team_ids) : 0;
-	?>
-<div class="<?php echo $this->layout; ?>">
+
+<div class="pinboard">
 		<section class="section intropage">
 			<div class="grid">
 				<div class="col span8">
 					<div id="td-item" class="<?php echo $class; ?>">
 						<span class="pin">&nbsp;</span>
 						<div class="todo-content">
-							<?php echo stripslashes($this->item->content); ?>
+							<?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?>
 						</div>
 					</div>
 				</div>
 				<div class="col span4 omega td-details">
-					<p><?php echo JText::_('PLG_PROJECTS_TODO_CREATED').' '.JHTML::_('date', $this->item->created, $dateFormat).' '.JText::_('PLG_PROJECTS_TODO_BY').' '.ProjectsHtml::shortenName($author); ?></p>
-				<?php if ($this->item->state == 0) { ?>
-					<p><?php echo JText::_('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $assignedto . '</strong>'; ?></p>
+					<p><?php echo JText::_('PLG_PROJECTS_TODO_CREATED') . ' ' . $this->row->created('date') .' '.JText::_('PLG_PROJECTS_TODO_BY') . ' ' . $this->row->creator('name'); ?></p>
+				<?php if (!$this->row->isComplete()) { ?>
+					<p><?php echo JText::_('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $this->row->owner('name') . '</strong>'; ?></p>
 					<p><?php echo JText::_('PLG_PROJECTS_TODO_DUE') . ': <strong>' . $due . '</strong>'; ?></p>
-				<?php } else if ($this->item->state == 1) { ?>
-						<p><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECKED_OFF').' '.JHTML::_('date', $this->item->closed, $dateFormat).' '.JText::_('PLG_PROJECTS_TODO_BY').' '.ProjectsHtml::shortenName($closedby); ?></p>
-						<p><?php echo JText::_('PLG_PROJECTS_TODO_TODO_TOOK').' '.$diff.' '.JText::_('PLG_PROJECTS_TODO_TODO_TO_COMPLETE'); ?></p>
+				<?php } else if ($this->row->isComplete()) { ?>
+						<p><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' '.JText::_('PLG_PROJECTS_TODO_BY') . ' ' . ProjectsHtml::shortenName($this->row->closer('name')); ?></p>
+						<p><?php echo JText::_('PLG_PROJECTS_TODO_TODO_TOOK') . ' ' . $diff . ' ' . JText::_('PLG_PROJECTS_TODO_TODO_TO_COMPLETE'); ?></p>
 				<?php } ?>
 				</div>
 			</div>
 		</section>
 	<p class="td-options">
-		<?php if ($this->item->state == 0) { ?>
-		<span class="edit"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'.a.'action=edit').'/?todoid='.$this->item->id; ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_TODO_EDIT'); ?></a></span>
-		<span class="checked"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'.a.'action=changestate').'/?todoid='.$this->item->id.a.'state=1'; ?>"><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
+		<?php if (!$this->row->isComplete()) { ?>
+		<span class="edit"><a href="<?php echo JRoute::_($url . '&action=edit') . '/?todoid=' . $this->row->get('id'); ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_TODO_EDIT'); ?></a></span>
+		<span class="checked"><a href="<?php echo JRoute::_($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1'; ?>"><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
 		<?php } ?>
 		<?php if ($deletable) { ?>
-		<span class="trash"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'.a.'action=delete').'/?todoid='.$this->item->id; ?>" class="confirm-it" id="deltd"><?php echo JText::_('PLG_PROJECTS_TODO_DELETE'); ?></a></span>
+		<span class="trash"><a href="<?php echo JRoute::_($url . '&action=delete') . '/?todoid=' . $this->row->get('id'); ?>" class="confirm-it" id="deltd"><?php echo JText::_('PLG_PROJECTS_TODO_DELETE'); ?></a></span>
 		<?php } ?>
 	</p>
 	<div class="comment-wrap">
-		<h4 class="comment-blurb"><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_COMMENTS')).' ('.count($c).')'; ?>:</h4>
-		<?php if (count($c) > 0) { ?>
+		<h4 class="comment-blurb"><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_COMMENTS')) . ' (' . $this->row->comments('count') . ')'; ?>:</h4>
+		<?php if ($this->row->comments() && $this->row->comments() instanceof \Hubzero\Base\ItemList) { ?>
 			<ul id="td-comments">
-			<?php foreach ($c as $comment) { ?>
+			<?php foreach ($this->row->comments() as $comment) { ?>
 				<li>
-					<p><?php echo $comment->comment; ?></p>
-					<p class="todo-assigned"><?php echo $comment->author; ?> <span class="date"> &middot; <?php echo ProjectsHtml::timeAgo($comment->created).' '.JText::_('PLG_PROJECTS_TODO_AGO'); ?> </span> <?php if ($comment->created_by == $this->uid) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'.a.'action=deletecomment').'/?todoid='.$this->item->id.a.'cid='.$comment->id; ?>" id="delc-<?php echo $comment->id; ?>" class="confirm-it">[<?php echo JText::_('PLG_PROJECTS_TODO_DELETE'); ?>]</a><?php  } ?></p>
+					<p><?php echo $comment->content('parsed'); ?></p>
+					<p class="todo-assigned"><?php echo $comment->creator('name'); ?> <span class="date"> &middot; <?php echo ProjectsHtml::timeAgo($comment->get('created')).' '.JText::_('PLG_PROJECTS_TODO_AGO'); ?> </span> <?php if ($comment->get('created_by') == $this->uid) { ?><a href="<?php echo JRoute::_($url . '&action=deletecomment').'/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id'); ?>" id="delc-<?php echo $comment->get('id'); ?>" class="confirm-it">[<?php echo JText::_('PLG_PROJECTS_TODO_DELETE'); ?>]</a><?php  } ?></p>
 				</li>
 			<?php } ?>
 			</ul>
 		<?php } else { ?>
 			<p class="noresults"><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_TODO_NO_COMMENTS')); ?></p>
 		<?php } ?>
-		<form action="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.'&active=todo'); ?>" method="post" >
+		<form action="<?php echo JRoute::_($url); ?>" method="post" >
 			<div class="addcomment td-comment">
 				<label><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_NEW_COMMENT')); ?>:
-					<textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment" placeholder="Write your comment..."></textarea>
+					<textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment" placeholder="<?php echo JText::_('PLG_PROJECTS_TODO_WRITE_COMMENT'); ?>"></textarea>
 				</label>
 					<span class="hint"><?php echo JText::_('PLG_PROJECTS_TODO_COMMENT_HINT'); ?></span>
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -146,8 +120,8 @@ $goto  = 'alias=' . $this->project->alias;
 					<input type="hidden" name="action" value="savecomment" />
 					<input type="hidden" name="task" value="view" />
 					<input type="hidden" name="active" value="todo" />
-					<input type="hidden" name="itemid" value="<?php echo $this->item->id; ?>" />
-					<input type="hidden" name="parent_activity" value="<?php echo $this->item->activityid; ?>" />
+					<input type="hidden" name="itemid" value="<?php echo $this->row->get('id'); ?>" />
+					<input type="hidden" name="parent_activity" value="<?php echo $this->row->get('activityid'); ?>" />
 					<p class="blog-submit"><input type="submit" class="btn" id="c-submit" value="<?php echo JText::_('PLG_PROJECTS_TODO_ADD_COMMENT'); ?>" /></p>
 			</div>
 		</form>

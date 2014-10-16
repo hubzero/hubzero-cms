@@ -268,7 +268,19 @@
 		font-size: 90%;
 		margin: 0.2em 0;
 	}
-
+	.sidebox ul {
+		list-style: none;
+		padding: 0 1em 0 1em;
+		margin: 0;
+		font-size: 85%;
+	}
+	.sidebox ul li {
+		border-bottom: 1px solid #e2e2e2;
+		padding: 0.3em 0;
+	}
+	.sidebox ul li:last-child {
+		border: none;
+	}
 /*
 	Adjustment for smaller screens
 --------------------------------------------- */

@@ -14,54 +14,53 @@
  *
  * HUBzero is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.	 If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @package	  hubzero-cms
+ * @author	  Alissa Nedossekina <alisa@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
- * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @license	  http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
-
 /**
  * Projects todo's
  */
-class plgProjectsTodo extends JPlugin
+class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var	   boolean
 	 */
-	public function plgProjectsTodo(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
+	protected $_autoloadLanguage = true;
 
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'projects', 'todo' );
-		$this->_params = new JParameter( $this->_plugin->params );
+	/**
+	 * Store redirect URL
+	 *
+	 * @var	   string
+	 */
+	protected $_referer = NULL;
 
-		// Output collectors
-		$this->_referer = '';
-		$this->_message = array();
-	}
+	/**
+	 * Store output message
+	 *
+	 * @var	   array
+	 */
+	protected $_message = NULL;
 
 	/**
 	 * Event call to determine if this plugin should return data
 	 *
-	 * @return     array   Plugin name and title
+	 * @return	   array   Plugin name and title
 	 */
 	public function &onProjectAreas()
 	{
@@ -76,9 +75,9 @@ class plgProjectsTodo extends JPlugin
 	/**
 	 * Event call to return count of items
 	 *
-	 * @param      object  $project 		Project
-	 * @param      integer &$counts
-	 * @return     array   integer
+	 * @param	   object  $project			Project
+	 * @param	   integer &$counts
+	 * @return	   array   integer
 	 */
 	public function &onProjectCount( $project, &$counts, $admin = 0 )
 	{
@@ -87,7 +86,7 @@ class plgProjectsTodo extends JPlugin
 		$objTD = new ProjectTodo( $database );
 		$counts['todo'] = $objTD->getTodos($project->id, $filters = array('count' => 1));
 
-		if ($admin)
+		if ($admin == 1)
 		{
 			$counts['todos_completed'] = $objTD->getTodos($project->id, $filters = array(
 				'count' => 1,
@@ -101,15 +100,15 @@ class plgProjectsTodo extends JPlugin
 	/**
 	 * Event call to return data for a specific project
 	 *
-	 * @param      object  $project 		Project
-	 * @param      string  $option 			Component name
-	 * @param      integer $authorized 		Authorization
-	 * @param      integer $uid 			User ID
-	 * @param      integer $msg 			Message
-	 * @param      integer $error 			Error
-	 * @param      string  $action			Plugin task
-	 * @param      string  $areas  			Plugins to return data
-	 * @return     array   Return array of html
+	 * @param	   object  $project			Project
+	 * @param	   string  $option			Component name
+	 * @param	   integer $authorized		Authorization
+	 * @param	   integer $uid				User ID
+	 * @param	   integer $msg				Message
+	 * @param	   integer $error			Error
+	 * @param	   string  $action			Plugin task
+	 * @param	   string  $areas			Plugins to return data
+	 * @return	   array   Return array of html
 	 */
 	public function onProject ( $project, $option, $authorized,
 		$uid, $msg = '', $error = '', $action = '', $areas = null )
@@ -149,39 +148,22 @@ class plgProjectsTodo extends JPlugin
 			$this->_project = $project;
 		}
 
+		// Include model
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'models' . DS . 'todo.php');
+
+		// Get our model
+		$this->model = new ProjectModelTodo();
+
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			// Load language file
-			$this->loadLanguage();
-
-			$database = JFactory::getDBO();
-
-			// Load component configs
-			$this->_config = JComponentHelper::getParams( 'com_projects' );
-
-			// Get JS and css
-			$document = JFactory::getDocument();
-			$document->addStylesheet('components' . DS . 'com_projects' . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
-
-			\Hubzero\Document\Assets::addPluginScript('projects', 'todo');
-			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'todo');
-
-			$plugin 		= JPluginHelper::getPlugin( 'system', 'jquery' );
-			$p_params 		= $plugin ? new JParameter($plugin->params) : NULL;
-
-			if (!$plugin || $p_params->get('noconflictSite'))
-			{
-				$document->addScript('components' . DS . 'com_projects' . DS . 'assets' . DS . 'js' . DS . 'calendar.js');
-			}
-
 			// Set vars
-			$this->_task 		= $action ? $action : JRequest::getVar('action','');
-			$this->_todoid 		= JRequest::getInt('todoid', 0);
-			$this->_database	= $database;
-			$this->_option 		= $option;
-			$this->_authorized 	= $authorized;
-			$this->_msg 		= $msg;
+			$this->_task		= $action ? $action : JRequest::getVar('action','');
+			$this->_todoid		= JRequest::getInt('todoid', 0);
+			$this->_database	= JFactory::getDBO();
+			$this->_option		= $option;
+			$this->_authorized	= $authorized;
+			$this->_msg			= $msg;
 			if ($error)
 			{
 				$this->setError( $error );
@@ -196,42 +178,18 @@ class plgProjectsTodo extends JPlugin
 			switch ($this->_task)
 			{
 				case 'page':
-					default: $arr['html'] = $this->view();
-					break;
-
-				case 'save':
-					$arr['html'] = $this->save();
-					break;
-
-				case 'reorder':
-				case 'sortitems':
-					$arr['html'] = $this->reorder();
-					break;
-
-				case 'changestate':
-					$arr['html'] = $this->save();
-					break;
-
-				case 'delete':
-					$arr['html'] = $this->delete();
-					break;
-
-				case 'assign':
-					$arr['html'] = $this->save();
-					break;
-
+					default:		$arr['html'] = $this->view();			break;
+				case 'save':		$arr['html'] = $this->save();			break;
+				case 'changestate': $arr['html'] = $this->save();			break;
+				case 'delete':		$arr['html'] = $this->delete();			break;
+				case 'assign':		$arr['html'] = $this->save();			break;
 				case 'view':
-				case 'edit':
-					$arr['html'] = $this->item();
-					break;
-
-				case 'savecomment':
-					$arr['html'] = $this->_saveComment();
-					break;
-
-				case 'deletecomment':
-					$arr['html'] = $this->_deleteComment();
-					break;
+				case 'new':
+				case 'edit':		$arr['html'] = $this->item();			break;
+				case 'savecomment': $arr['html'] = $this->_saveComment();	break;
+				case 'deletecomment':$arr['html'] = $this->_deleteComment();break;
+				case 'reorder':
+				case 'sortitems':	$arr['html'] = $this->reorder();		break;
 			}
 		}
 
@@ -241,101 +199,63 @@ class plgProjectsTodo extends JPlugin
 		return $arr;
 	}
 
-	//----------------------------------------
-	// Views
-	//----------------------------------------
-
 	/**
 	 * View of items
 	 *
-	 * @return     string
+	 * @return	   string
 	 */
 	public function view()
 	{
-		// Build query
-		$filters = array();
-		$filters['limit'] 		= JRequest::getInt('limit', 50);
-		$filters['start'] 		= JRequest::getInt('limitstart', 0);
-		$filters['todolist'] 	= JRequest::getVar('list', ''); // get list color code
-		$filters['state'] 		= isset($this->_state) ? $this->_state : JRequest::getVar('state', 0);
-		$filters['mine'] 		= isset($this->_mine) ? $this->_mine : JRequest::getInt('mine', 0);
-		$filters['assignedto']  = $filters['mine'] ? $this->_uid : 0;
-		$defaultsort 			= $filters['state'] == 1 ? 'p.closed DESC' : 'p.priority ASC';
-		$filters['sortby']		= JRequest::getVar('sortby', $defaultsort);
+		// Get default view from owner params
+		$owner_params = new JParameter( $this->_project->owner_params );
+		$defaultView = $owner_params->get('todo_layout', 'pinboard');
 
-		// Instantiate some needed objects
-		$objTD = new ProjectTodo( $this->_database );
-
-		// Get todos
-		$rows = $objTD->getTodos($this->_project->id, $filters);
-
-		// Total count
-		$cfilters = $filters;
-		$cfilters['count'] = 1;
-		$total = $objTD->getTodos($this->_project->id, $cfilters);
-
-		// Count completed items
-		$cfilters['state'] = 1;
-		$completed = $objTD->getTodos($this->_project->id, $cfilters);
-
-		// Count my items
-		$cfilters['state'] = 0;
-		$cfilters['assignedto'] = $this->_uid;
-		$assignedto = $objTD->getTodos($this->_project->id, $cfilters);
-
-		// Get todo lists
-		$lists = $objTD->getTodoLists($this->_project->id);
-
-		// Find unused colors (for new lists)
-		$colors = array(
-			'orange', 'lightblue', 'green',
-			'purple', 'blue', 'black',
-			'red', 'yellow', 'pink'
-		);
-
-		$used = array();
-		if (!empty($lists))
-		{
-			foreach ($lists as $list)
-			{
-				$used[] = $list->color;
-			}
-		}
-		$unused = array_diff($colors, $used);
-		shuffle($unused);
+		// Incoming
+		$layout = JRequest::getVar('l', $defaultView) == 'pinboard' ? 'pinboard' : 'list';
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
-				'folder'=>'projects',
-				'element'=>'todo',
-				'name'=>'view'
+				'folder'	=> 'projects',
+				'element'	=> 'todo',
+				'name'		=> 'view',
+				'layout'	=> $layout
 			)
 		);
 
-		// Get team members (to assign items to )
-		$objO 				= new ProjectOwner( $this->_database );
-		$view->team 		= $objO->getOwners($this->_project->id, $tfilters = array('status' => 1));
-		$view->params 		= new JParameter($this->_project->params);
-		$view->layout 		= JRequest::getVar('l', 'pinboard');
-		$view->layout 		= $view->layout == 'pinboard' ? 'pinboard' : 'longlist';
-		$view->todos 		= $rows;
-		$view->lists 		= $lists;
-		$view->total 		= $total;
-		$view->completed 	= $completed;
-		$view->mine 		= $assignedto;
-		$view->option 		= $this->_option;
-		$view->database 	= $this->_database;
-		$view->listname 	= $objTD->getListName($this->_project->id, $filters['todolist']);
-		$view->project 		= $this->_project;
-		$view->config 		= $this->_config;
-		$view->authorized 	= $this->_authorized;
-		$view->uid 			= $this->_uid;
-		$view->filters 		= $filters;
-		$view->unused 		= $unused;
-		$view->title		= $this->_area['title'];
+		// Filters for returning results
+		$view->filters = array(
+			'projects'	 => array($this->_project->id),
+			'limit'		 => JRequest::getInt('limit', $this->params->get('limit', 50)),
+			'start'		 => JRequest::getInt('limitstart', 0),
+			'todolist'	 => JRequest::getVar('list', ''),
+			'state'		 => isset($this->_state) ? $this->_state : JRequest::getVar('state', 0),
+			'mine'		 => isset($this->_mine) ? $this->_mine : JRequest::getInt('mine', 0),
+			'assignedto' => isset($this->_mine) && $this->_mine == 1  ? $this->_uid : 0,
+			'sortby'	 => JRequest::getVar('sortby', 'priority'),
+			'sortdir'	 => JRequest::getVar('sortdir', 'ASC'),
+			'layout'	 => $layout
+		);
 
-		// Get messages	and errors
+		$view->option		= $this->_option;
+		$view->database		= $this->_database;
+		$view->project		= $this->_project;
+		$view->uid			= $this->_uid;
+		$view->title		= $this->_area['title'];
+		$view->model		= $this->model;
+
+		// Update view preference if changed
+		if ($layout != $defaultView)
+		{
+			$objO = new ProjectOwner( $this->_database );
+			$objO->saveParam(
+				$this->_project->id,
+				$this->_uid,
+				$param = 'todo_layout', $layout
+			);
+		}
+
+		// Get messages and errors
 		$view->msg = $this->_msg;
 		if ($this->getError())
 		{
@@ -348,73 +268,67 @@ class plgProjectsTodo extends JPlugin
 	/**
 	 * View of item
 	 *
-	 * @return     string
+	 * @return	   string
 	 */
 	public function item()
 	{
 		// Incoming
 		$todoid = $this->_todoid ? $this->_todoid : JRequest::getInt('todoid', 0);
+		$layout = ($this->_task == 'edit' || $this->_task == 'new') ? 'edit' : 'default';
 
-		// Initiate extended database class
-		$objTD = new ProjectTodo( $this->_database );
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'  => $this->_type,
+				'element' => $this->_name,
+				'name'	  => 'item',
+				'layout'  => $layout
+			)
+		);
+		$view->option = $this->option;
+		$view->model  = $this->model;
+		$view->params = new JParameter($this->_project->params);
+		$view->project		= $this->_project;
 
-		if ($todoid && $objTD->loadTodo($this->_project->id, $todoid) && $objTD->state != 2 )
+		// Get team members (to assign items to)
+		$objO = new ProjectOwner( $this->_database );
+		$view->team = $objO->getOwners($this->_project->id, $tfilters = array('status' => 1));
+
+		if (isset($this->entry) && is_object($this->entry))
 		{
-			$layout = ($this->_task == 'edit') ? 'edit' : 'default';
-
-			// Show to-do item with comments
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'	=>'projects',
-					'element'	=>'todo',
-					'name'		=>'item',
-					'layout'	=> $layout
-				)
-			);
-
-			// Append breadcrumbs
-			$app = JFactory::getApplication();
-			$pathway = $app->getPathway();
-			$pathway->addItem(
-					stripslashes($objTD->content),
-					JRoute::_('index.php?option=' . $this->_option . a
-						. 'alias=' . $this->_project->alias . a . 'active=todo'
-						. a . 'action=view') . '/?todoid='.$todoid
-			);
-
-			// Get team members (to assign items to)
-			$objO = new ProjectOwner( $this->_database );
-			$view->team = $objO->getOwners($this->_project->id, $tfilters = array('status' => 1));
-
-			$view->layout = JRequest::getVar('l', 'pinboard');
-			$view->layout = $view->layout == 'pinboard' ? 'pinboard' : 'longlist';
-
-			// Get todo lists
-			$view->lists = $objTD->getTodoLists($this->_project->id);
-
-			$view->params 		= new JParameter($this->_project->params);
-			$view->item 		= $objTD;
-			$view->option 		= $this->_option;
-			$view->database 	= $this->_database;
-			$view->project 		= $this->_project;
-			$view->authorized 	= $this->_authorized;
-			$view->config 		= $this->_config;
-			$view->uid 			= $this->_uid;
-			$view->title		= $this->_area['title'];
-
-			// Get messages	and errors
-			$view->msg = $this->_msg;
-			if ($this->getError())
-			{
-				$view->setError( $this->getError() );
-			}
-			return $view->loadTemplate();
+			$view->row = $this->entry;
 		}
 		else
 		{
-			// Can't find item, go back to todo list
+			$view->row = $this->model->entry($todoid);
+		}
+
+		if (!$view->row->exists() && $this->_task != 'new')
+		{
 			return $this->view();
 		}
+
+		// Append breadcrumbs
+		$app = JFactory::getApplication();
+		$pathway = $app->getPathway();
+		$pathway->addItem(
+				stripslashes($view->row->get('content')),
+				JRoute::_('index.php?option=' . $this->_option . a
+					. 'alias=' . $this->_project->alias . a . 'active=todo'
+					. a . 'action=view') . '/?todoid=' . $todoid
+		);
+
+		$view->uid			= $this->_uid;
+		$view->title		= $this->_area['title'];
+		$view->list			= JRequest::getVar('list', '');
+		$view->ajax			= JRequest::getVar('ajax', 0);
+
+		// Get messages and errors
+		$view->msg = $this->_msg;
+		if ($this->getError())
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();
 	}
 
 	//----------------------------------------
@@ -424,22 +338,22 @@ class plgProjectsTodo extends JPlugin
 	/**
 	 * Save item
 	 *
-	 * @return     string
+	 * @return	   string
 	 */
 	public function save()
 	{
 		// Incoming
-		$listcolor 	= JRequest::getVar('list', '');
-		$content 	= JRequest::getVar('content', '');
-		$todoid 	= JRequest::getInt('todoid', 0);
-		$newlist 	= JRequest::getVar('newlist', '', 'post');
-		$newcolor 	= JRequest::getVar('newcolor', '', 'post');
-		$page 		= JRequest::getVar('page', 'list', 'post');
-		$assigned 	= JRequest::getInt('assigned', 0);
-		$mine 		= JRequest::getInt('mine', 0);
-		$state 		= JRequest::getInt('state', 0);
-		$ajax 		= JRequest::getInt('ajax', 0);
-		$task 		= $this->_task;
+		$listcolor	= JRequest::getVar('list', '');
+		$content	= JRequest::getVar('content', '');
+		$todoid		= JRequest::getInt('todoid', 0);
+		$newlist	= JRequest::getVar('newlist', '', 'post');
+		$newcolor	= JRequest::getVar('newcolor', '', 'post');
+		$page		= JRequest::getVar('page', 'list', 'post');
+		$assigned	= JRequest::getInt('assigned', 0);
+		$mine		= JRequest::getInt('mine', 0);
+		$state		= JRequest::getInt('state', 0);
+		$ajax		= JRequest::getInt('ajax', 0);
+		$task		= $this->_task;
 
 		$new = 0;
 
@@ -460,11 +374,11 @@ class plgProjectsTodo extends JPlugin
 		// Load up todo if exists
 		if (!$objTD->loadTodo($this->_project->id, $todoid))
 		{
-			$objTD->created_by 	= $this->_uid;
-			$objTD->created 	= JFactory::getDate()->toSql();
-			$objTD->projectid 	= $this->_project->id;
-			$assigned 			= $this->_uid; // assign to creator
-			$new 				= 1;
+			$objTD->created_by	= $this->_uid;
+			$objTD->created		= JFactory::getDate()->toSql();
+			$objTD->projectid	= $this->_project->id;
+			$assigned			= $this->_uid; // assign to creator
+			$new				= 1;
 		}
 		else
 		{
@@ -482,13 +396,20 @@ class plgProjectsTodo extends JPlugin
 		// Save if not empty
 		if ($task == 'save' && $content != '')
 		{
-			$content 			= rtrim(stripslashes($content));
-			$objTD->content 	= $content ? $content : $objTD->content;
-			$objTD->content 	= \Hubzero\Utility\Sanitize::stripAll($objTD->content);
-			$objTD->content 	= \Hubzero\Utility\String::truncate($objTD->content, 200);
-			$objTD->color 		= $listcolor == 'none' ? '' : $listcolor ;
+			$content			= rtrim(stripslashes($content));
+			$objTD->content		= $content ? $content : $objTD->content;
+			$objTD->content		= \Hubzero\Utility\Sanitize::stripAll($objTD->content);
+
+			// Save access under details
+			if (strlen($objTD->content) > 255)
+			{
+				$objTD->details = $objTD->content;
+			}
+			$objTD->content		= \Hubzero\Utility\String::truncate($objTD->content, 255);
+
+			$objTD->color		= $listcolor == 'none' ? '' : $listcolor ;
 			$objTD->assigned_to = $assigned;
-			$objTD->state 		= $state;
+			$objTD->state		= $state;
 
 			// Get due date
 			$due = trim(JRequest::getVar('due', ''));
@@ -498,9 +419,9 @@ class plgProjectsTodo extends JPlugin
 				$date = explode('/', $due);
 				if (count($date) == 3)
 				{
-					$month 	= $date[0];
-					$day 	= $date[1];
-					$year 	= $date[2];
+					$month	= $date[0];
+					$day	= $date[1];
+					$year	= $date[2];
 					if (intval($month) && intval($day) && intval($year))
 					{
 						if (strlen($day) == 1)
@@ -614,14 +535,14 @@ class plgProjectsTodo extends JPlugin
 			$newlist = \Hubzero\Utility\Sanitize::stripAll(trim($newlist));
 			if (!$objTD->getListName($this->_project->id, $newcolor))
 			{
-				$objTD 				= new ProjectTodo( $this->_database );
-				$objTD->created_by 	= $this->_uid;
-				$objTD->created 	= JFactory::getDate()->toSql();
-				$objTD->projectid 	= $this->_project->id;
-				$objTD->content 	= 'provisioned';
-				$objTD->state 		= 2; // inactive
-				$objTD->todolist 	= $newlist;
-				$objTD->color 		= $newcolor;
+				$objTD				= new ProjectTodo( $this->_database );
+				$objTD->created_by	= $this->_uid;
+				$objTD->created		= JFactory::getDate()->toSql();
+				$objTD->projectid	= $this->_project->id;
+				$objTD->content		= 'provisioned';
+				$objTD->state		= 2; // inactive
+				$objTD->todolist	= $newlist;
+				$objTD->color		= $newcolor;
 
 				// Store content
 				if (!$objTD->store())
@@ -693,7 +614,7 @@ class plgProjectsTodo extends JPlugin
 	/**
 	 * Delete item
 	 *
-	 * @return     string
+	 * @return	   string
 	 */
 	public function delete()
 	{
@@ -730,7 +651,7 @@ class plgProjectsTodo extends JPlugin
 				{
 					$objAA = new ProjectActivity( $this->_database );
 					$objAA->loadActivity($a, $this->_project->id);
-				    $objAA->deleteActivity();
+					$objAA->deleteActivity();
 				}
 
 				$this->_msg = JText::_('PLG_PROJECTS_TODO_TODO_DELETED');
@@ -767,7 +688,7 @@ class plgProjectsTodo extends JPlugin
 								{
 									$objAA = new ProjectActivity( $this->_database );
 									$objAA->loadActivity( $a, $this->_project->id );
-								    $objAA->deleteActivity();
+									$objAA->deleteActivity();
 								}
 							}
 						}
@@ -792,7 +713,7 @@ class plgProjectsTodo extends JPlugin
 
 		// Redirect back to todo list
 		$url  = JRoute::_('index.php?option=' . $this->_option . a .
-		       'alias=' . $this->_project->alias . a . 'active=todo');
+			   'alias=' . $this->_project->alias . a . 'active=todo');
 		$url .= $gobacklist ? '?list=' . $gobacklist : '';
 		$this->_referer = $url;
 		return;
@@ -801,7 +722,7 @@ class plgProjectsTodo extends JPlugin
 	/**
 	 * Reorder items
 	 *
-	 * @return     string
+	 * @return	   string
 	 */
 	public function reorder()
 	{
@@ -852,12 +773,12 @@ class plgProjectsTodo extends JPlugin
 	/**
 	 * Delete comment
 	 *
-	 * @return     void, redirect
+	 * @return	   void, redirect
 	 */
 	protected function _deleteComment()
 	{
 		// Incoming
-		$cid  	= JRequest::getInt( 'cid', 0 );
+		$cid	= JRequest::getInt( 'cid', 0 );
 		$todoid = $this->_todoid;
 
 		// Instantiate comment
@@ -893,8 +814,8 @@ class plgProjectsTodo extends JPlugin
 
 		// Set redirect path
 		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a .
-		                  'alias=' . $this->_project->alias . a . 'active=todo' . a .
-		                  'action=view') . '/?todoid='.$todoid;
+						  'alias=' . $this->_project->alias . a . 'active=todo' . a .
+						  'action=view') . '/?todoid='.$todoid;
 		return;
 
 	}
@@ -902,7 +823,7 @@ class plgProjectsTodo extends JPlugin
 	/**
 	 * Save comment
 	 *
-	 * @return     void, redirect
+	 * @return	   void, redirect
 	 */
 	protected function _saveComment()
 	{
@@ -966,8 +887,8 @@ class plgProjectsTodo extends JPlugin
 
 		// Set redirect path
 		$this->_referer = JRoute::_('index.php?option=' . $this->_option . a .
-		                 'alias=' . $this->_project->alias . a . 'active=todo' . a .
-		                 'action=view') . '/?todoid=' . $itemid;
+						 'alias=' . $this->_project->alias . a . 'active=todo' . a .
+						 'action=view') . '/?todoid=' . $itemid;
 		return;
 	}
 }

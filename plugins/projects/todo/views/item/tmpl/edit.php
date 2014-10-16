@@ -14,7 +14,7 @@
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
@@ -25,65 +25,39 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = 'M d, Y';
-$team_ids = array('0' => '');
-$class = $this->item->color ? 'pin_'.$this->item->color : 'pin_grey';
-
-// Get Comments
-$objC = new ProjectComment( $this->database );
-$c = $this->item->activityid ? $objC->getComments( $this->item->id, 'todo' ) : array();
-
-// Is item overdue?
-$overdue = '';
-if ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' && $this->item->duedate <= date( 'Y-m-d H:i:s') ) {
-	$overdue = ' ('.JText::_('PLG_PROJECTS_TODO_OVERDUE').')';
-}
-
-// Can it be deleted?
-$deletable = ($this->project->role == 1 or $this->item->created_by == $this->uid) ? 1 : 0;
-
-// Get actors' names
-$profile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
-$closedby = '';
-$author = '';
-$assignedto = '';
-
-// Get completer name
-if ($this->item->closed_by) {
-	$profile->load( $this->item->closed_by );
-	$closedby = $profile->get('name');
-}
-// Get assignee name
-if ($this->item->assigned_to) {
-	$profile->load( $this->item->assigned_to );
-	$assignedto = $profile->get('name');
-}
-else
+if (!$this->ajax)
 {
-	$assignedto = JText::_('PLG_PROJECTS_TODO_NOONE');
+	$this->css('jquery.datepicker.css', 'system')
+		 ->css('jquery.timepicker.css', 'system')
+		 ->css()
+		 ->js('jquery.timepicker', 'system')
+		 ->js();
 }
 
-// How long did it take to complete
-if ($this->item->state == 1) {
-	$diff = strtotime($this->item->closed) - strtotime($this->item->created);
-	$diff = ProjectsHtml::timeDifference ($diff);
+$color = $this->row->get('color');
+$lists = $this->model->getLists($this->project->id);
+
+$used = array();
+if (!empty($lists))
+{
+	foreach ($lists as $list)
+	{
+		$used[] = $list->color;
+	}
 }
 
-// Due?
-$due = ($this->item->duedate && $this->item->duedate != '0000-00-00 00:00:00' ) ? JHTML::_('date', strtotime($this->item->duedate), 'm/d/Y') : '';
-
-// Author name
-$profile->load( $this->item->created_by );
-$author = $profile->get('name');
+if (!$this->row->get('id') && $this->list && in_array(trim($this->list), $used ))
+{
+	$color = trim($this->list);
+}
+$class = $color ? 'pin_' . $color : 'pin_grey';
 
 ?>
-	<?php
-	$index = $this->item->assigned_to ? array_search($this->item->assigned_to, $team_ids) : 0;
-	?>
-<div id="abox-content">
-<h3><?php echo JText::_('PLG_PROJECTS_TODO_EDIT_TODO'); ?></h3>
 
-<div class="<?php echo $this->layout; ?>">
+<div id="abox-content">
+<h3><?php echo $this->row->get('id') ? JText::_('PLG_PROJECTS_TODO_EDIT_TODO') : JText::_('PLG_PROJECTS_TODO_ADD_TODO'); ?></h3>
+
+<div class="pinboard">
 	<form action="<?php echo JRoute::_('index.php?option='.$this->option . '&alias=' . $this->project->alias . '&active=todo'); ?>" method="post" id="plg-form" >
 		<fieldset>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -92,21 +66,21 @@ $author = $profile->get('name');
 			<input type="hidden" name="active" value="todo" />
 			<input type="hidden" name="action" value="save" />
 			<input type="hidden" name="page" id="tdpage" value="item" />
-			<input type="hidden" name="todoid" id="todoid" value="<?php echo $this->item->id; ?>" />
+			<input type="hidden" name="todoid" id="todoid" value="<?php echo $this->row->get('id'); ?>" />
 		</fieldset>
 		<section class="section intropage">
 			<div id="td-item" class="<?php echo $class; ?>">
 				<span class="pin">&nbsp;</span>
 				<div class="todo-content">
-					<textarea name="content" rows="10" cols="25"><?php echo stripslashes($this->item->content); ?></textarea>
+					<textarea name="content" rows="10" cols="25" placeholder="<?php echo JText::_('PLG_PROJECTS_TODO_TYPE_TODO'); ?>"><?php echo $this->row->get('details') ? stripslashes($this->row->get('details')) :  stripslashes($this->row->get('content')); ?></textarea>
 					<div class="todo-edits">
-						<?php if (count($this->lists) > 0 ) { ?>
+						<?php if (count($lists) > 0 ) { ?>
 						<label><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_TODO_CHOOSE_LIST')); ?>:
 							<select name="list">
-								<option value="none" <?php if ($this->item->color == '') echo 'selected="selected"'?>><?php echo JText::_('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
-							<?php foreach ($this->lists as $list) {
+								<option value="none" <?php if ($color == '') echo 'selected="selected"'?>><?php echo JText::_('PLG_PROJECTS_TODO_ADD_TO_NO_LIST'); ?></option>
+							<?php foreach ($lists as $list) {
 							?>
-								<option value="<?php echo $list->color; ?>" <?php if ($list->color == $this->item->color) echo 'selected="selected"'?>><?php echo stripslashes($list->todolist); ?></option>
+								<option value="<?php echo $list->color; ?>" <?php if ($list->color == $color) echo 'selected="selected"'?>><?php echo stripslashes($list->todolist); ?></option>
 							<?php } ?>
 							</select>
 						</label>
@@ -117,12 +91,12 @@ $author = $profile->get('name');
 							<?php foreach ($this->team as $member) {
 								if ($member->userid && $member->userid != 0) {
 									$team_ids[] = $member->userid; ?>
-								<option value="<?php echo $member->userid; ?>" class="nameopt" <?php if ($member->userid == $this->item->assigned_to) { echo 'selected="selected"'; } ?>><?php echo $member->name; ?></option>
+								<option value="<?php echo $member->userid; ?>" class="nameopt" <?php if ($member->userid == $this->row->get('assigned_to') ) { echo 'selected="selected"'; } ?>><?php echo $member->name; ?></option>
 							<?php } } ?>
 							</select>
 						</label>
 						<label><?php echo ucfirst(JText::_('PLG_PROJECTS_TODO_DUE')); ?>
-							<input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="<?php echo $due; ?>" />
+							<input type="text" name="due" id="dued" class="duebox" placeholder="mm/dd/yyyy" value="<?php echo $this->row->due() ? JHTML::_('date', strtotime($this->row->due('date')), 'm/d/Y') : ''; ?>" />
 						</label>
 						<p class="submitarea">
 							<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_TODO_SAVE'); ?>" class="btn" />

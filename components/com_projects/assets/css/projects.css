@@ -4,7 +4,7 @@
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
+ * version 2 as published by the Free Software Foundation.
  */
 
 /*
@@ -25,7 +25,7 @@
 		background: none;
 		padding: 0;
 		margin-left: 0;
-	} 
+	}
 	#project-wrap a {
 		border: none;
 	}
@@ -55,8 +55,8 @@
 	#fav {
 		display: none;
 	}
-			
-/* Forms 
+
+/* Forms
 --------------------------------------------- */
 
 	#hubForm h2 {
@@ -144,8 +144,8 @@
 		background: #FFFFFF;
 		border: 1px solid #CCC !important;
 	}
-	
-/* Browse Projects - project thumbnail 
+
+/* Browse Projects - project thumbnail
 --------------------------------------------- */
 	.th_image {
 		width: 25px;
@@ -154,8 +154,8 @@
 		width: 25px;
 		height: 25px;
 	}
-	.th_image img:hover, 
-	.th_image a:hover, 
+	.th_image img:hover,
+	.th_image a:hover,
 	.th_image a:focus {
 		border: none;
 	}
@@ -200,7 +200,7 @@
 		font-weight: bold;
 	}
 	.listing span.active a:hover,
-	.listing span.active a:focus, 
+	.listing span.active a:focus,
 	.listing span.setup a:hover,
 	.listing span.setup a:focus {
 		border-bottom: #59a94c;
@@ -223,14 +223,26 @@
 		border: none;
 		font-weight: bold;
 	}
-	
+	.ordernum {
+		background: #EFEFEF;
+		color: #666;
+		display: block;
+		font-size: 0.8em;
+		vertical-align: middle;
+		height: 20px;
+		min-width: 20px;
+		text-align: center;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+	}
+
 /* Introduction page
 --------------------------------------------- */
 	#introduction .columns {
 		border: none;
 		padding-top: 2em;
 		padding-bottom: 2em;
-	}		
+	}
 	#introduction .second ul {
 		padding-left: 0;
 		margin-left: 0.5em;
@@ -242,7 +254,7 @@
 	.myprojects {
 		margin-bottom: 3em;
 	}
-	.myprojects .first h2 { 
+	.myprojects .first h2 {
 		font-weight: normal;
 		margin: 0;
 		padding: 0.5em 0 0 0;
@@ -253,7 +265,7 @@
 	#content .browse {
 		position: relative;
 		padding: 0.5em 0.5em;
-	}	
+	}
 
 	/* Icon */
 	body #introduction small.intro-after,
@@ -266,10 +278,10 @@
 		display: inline;
 	}
 
-	
+
 /* Intro projects grid
 --------------------------------------------- */
-	
+
 	#content .four ul.flow li {
 		margin-right: 1em;
 	}
@@ -305,14 +317,14 @@
 	}
 	ul.flow li a img {
 		width: 45px;
-		height: 45px;	
+		height: 45px;
 	}
 	ul.flow li a:hover img, ul.flow li a:focus img {
 		width: 50px;
 		height: 50px;
 	}
 	ul.flow li.s-dev a {
-		background: transparent url("../img/bg_dev.gif") 0 0 repeat;	
+		background: transparent url("../img/bg_dev.gif") 0 0 repeat;
 	}
 	ul.flow li.s-inactive a {
 		background: #f2f2f2;
@@ -358,7 +370,7 @@
 		margin-top: -3px;
 		color: #FFF;
 	}
-	
+
 /* Setup
 --------------------------------------------- */
 	#setup {
@@ -447,7 +459,7 @@
 		height: 100px;
 		padding-top: 25px;
 	}
-	#verificationarea, 
+	#verificationarea,
 	#verificationarea_title {
 		white-space: nowrap;
 	}
@@ -487,7 +499,7 @@
 	.info_blurb p {
 		margin: 0;
 		padding: 0;
-		color: #000000;		
+		color: #000000;
 	}
 	.info_blurb .pinfo {
 		margin-left: 60px;
@@ -515,8 +527,8 @@
 	#restricted-choice {
 		padding: 0 1em 1em 1em;
 	}
-	
-/* Confirm Invite 
+
+/* Confirm Invite
 --------------------------------------------- */
 	#confirm-invite {
 		padding: 1em;
@@ -536,7 +548,7 @@
 		margin-right: 4em;
 		font-size: 85%;
 	}
-	
+
 /* Welcome message / Suggestions
 --------------------------------------------- */
 	.welcome {
@@ -574,7 +586,7 @@
 		color: #c4d2d6;
 		content: "\2716";
 		margin-right: 0.5em;
-	} 
+	}
 	.suggestions div {
 		display: inline-block;
 		font-size: 1.2em;
@@ -617,11 +629,11 @@
 	.sidebox.suggestions p {
 		margin: 0.3em 0.5em;
 	}
-	
+
 /* Prev/next paging
 --------------------------------------------- */
 	.nav_pager {
-	 	text-align: center;	
+	 	text-align: center;
 		margin: 0;
 		padding: 0;
 		font-size: 85%;
@@ -641,7 +653,7 @@
 		margin-top: 2em;
 		color: #afafaf;
 	}
-	
+
 /* Extra options
 --------------------------------------------- */
 	.extras {
@@ -657,7 +669,7 @@
 		color: #666;
 		border-bottom: 1px dotted #999;
 	}
-		
+
 /* Project preview (external)
 --------------------------------------------- */
 	#project-preview p {
@@ -755,7 +767,7 @@
 		margin-bottom: 2em;
 		margin-top: 1em;
 	}
-	
+
 /* Project image
 --------------------------------------------- */
 
@@ -782,9 +794,19 @@
 		margin-left: -0.5em;
 		position: absolute;
 	}
-	
+
+/* Project plugin options
+--------------------------------------------- */
+
+	.pluginOptions {
+		float: right;
+		list-style: none;
+		margin: -4em 0 0 0;
+		padding: 0;
+	}
+
 /* Project member options
---------------------------------------------- */	
+--------------------------------------------- */
 	.com_projects #member_options {
 		float: right;
 		margin: -5em 0 0 0;
@@ -804,14 +826,14 @@
 	}
 	.com_projects #member_options li span {
 		color: #52ad4b;
-		font-weight: bold;	
+		font-weight: bold;
 	}
 	.com_projects #member_options li:active,
 	.com_projects #member_options li:hover {
 		background-color: #FFF;
 	}
 	.com_projects #member_options li #options-dock {
-		*display: none;	
+		*display: none;
 	}
 	.com_projects #member_options #options-dock {
 		position: absolute;
@@ -872,8 +894,8 @@
 		margin: 0;
 		text-align: right;
 	}
-	
-/* External layout 
+
+/* External layout
 --------------------------------------------- */
 	.external ul.statusbox {
 		border: none;
@@ -903,8 +925,8 @@
 	.external ul.statusbox a {
 		color: #000000;
 	}
-	
-/* Project info page 
+
+/* Project info page
 --------------------------------------------- */
 	#basic_info {
 		border-top: 5px solid #e2e2e2;
@@ -963,7 +985,7 @@
 		margin: 0.5em 0;
 		border-bottom: 1px solid #ededed;
 	}
-	
+
 /* Right-float editing links
 --------------------------------------------- */
 	.editing {
@@ -980,21 +1002,21 @@
 
 /* Table listing of items with management options
 --------------------------------------------- */
-	
+
 	.list-editing {
 		margin: 0 !important;
 		padding: 0.3em 0;
 		height: 18px;
 		color: #666;
 		background: #f3f3f3;
-		text-align: right;	
+		text-align: right;
 	}
 	#cbody .list-editing {
 		background: #e3e5e2;
 		padding: 0;
 	}
 	.list-editing p {
-		text-align: left;	
+		text-align: left;
 		font-size: 85%;
 		margin: 0 0 0 0;
 		padding: 0 0.5em;
@@ -1023,7 +1045,7 @@
 		color: #CCC;
 		border: 1px solid #ccc;
 		cursor: default;
-	}	
+	}
 	.list-editing .prominent {
 		color: #000000;
 	}
@@ -1031,8 +1053,66 @@
 		display: inline;
 		width: auto;
 	}
-	
-/* Pop-up actions 
+
+/* Plugin menu (new)
+--------------------------------------------- */
+
+	.list-menu {
+		height: 20px;
+		padding: 0 0.5em 1em 0.5em;
+	}
+	.view-options {
+		float: left;
+	}
+	.view-options li {
+		display: block;
+		width: 16px;
+		height: 16px;
+		padding: 0;
+		background: #f7f7f7;
+		border: 1px solid #CCC;
+		margin: 0;
+		margin-right: 5px;
+	}
+	.view-options li a {
+	}
+	.view-options li a:before {
+		content: "";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #CCC;
+		margin-right: 0.2em;
+		margin-left: -0.5em;
+		font-weight: normal;
+	}
+	.view-options li.active {
+		background: white;
+	}
+	.view-options li.active a:before {
+		color: #949494;
+	}
+	.view-options li.view-pinboard a:before {
+		content: "\f08d";
+	}
+	.view-options li.view-list a:before {
+		content: "\f03a";
+	}
+	.container .entries-menu.view-options a:hover {
+		background-color: transparent;
+		text-shadow: none;
+	}
+	.container .entries-menu.view-options a:hover:before {
+		color: black;
+	}
+	.container .entries-menu.view-options li {
+		float: left;
+		padding: 0 0.2em 0.5em 0.2em;
+		margin: 0 0.2em;
+	}
+
+/* Pop-up actions
 --------------------------------------------- */
 	#abox-content #hubForm-ajax label {
 		margin: 0;
@@ -1056,7 +1136,7 @@
 	#abox-content #hubForm-ajax label.selector {
 		margin: 0;
 		padding: 0;
-		border: none;	
+		border: none;
 	}
 	#abox-content .info_blurb {
 		margin: 0;
@@ -1167,8 +1247,8 @@
 	#abox-content .content-wrap {
 		margin: 2em 1em;
 	}
-	
-/* iFrames 
+
+/* iFrames
 --------------------------------------------- */
 	.filer {
 		border: 0;
@@ -1185,7 +1265,7 @@
 	}
 	.filerForm fieldset {
 		padding: 0.2em;
-		margin: 0.7em 0;		
+		margin: 0.7em 0;
 	}
 	.filerForm table {
 		border: none;
@@ -1197,7 +1277,7 @@
 	 	display: inline;
 		float: left;
 		padding: 0 1em;
-		text-align: center;	
+		text-align: center;
 	}
 	body#project-picture, body#project-team {
 		background: #fff !important;
@@ -1240,7 +1320,7 @@
 		margin-top: 0;
 		padding-top: 0;
 	}
-			
+
 /* Confirmation
 --------------------------------------------- */
 	.confirmaction {
@@ -1275,9 +1355,9 @@
 		margin: 0;
 	}
 	.cancel, a.cancel {
-		padding: 0.1em 0.3em;	
+		padding: 0.1em 0.3em;
 		margin-left: 1.5em;
-		border: 1px solid #999;	
+		border: 1px solid #999;
 		color: #999;
 		background: #ededed;
 	}
@@ -1295,9 +1375,9 @@
 		cursor: pointer;
 	}
 	.confirm:hover {
-		background: #6d8a9b;	
+		background: #6d8a9b;
 	}
-	
+
 /* Status bar - project setup & publications
 --------------------------------------------- */
 	ul#status-bar {
@@ -1306,7 +1386,7 @@
 		list-style: none;
 		float: right;
 		font-size: 85%;
-		color: #ccc;	
+		color: #ccc;
 	}
 	ul#status-bar li {
 		display: inline;
@@ -1323,10 +1403,10 @@
 		margin-left: -2px;
 	}
 	ul#status-bar li a {
-		color: #666;	
+		color: #666;
 	}
 	ul#status-bar li a:hover {
-		color: #000;	
+		color: #000;
 	}
 	ul#status-bar li a, ul#status-bar li a:hover {
 		border: none;
@@ -1397,7 +1477,7 @@
 		padding-left: 18px;
 		background-position: 0 center;
 	}
-	
+
 /* Result message
 --------------------------------------------- */
 
@@ -1435,7 +1515,7 @@
 		text-align: center;
 	}
 
-/* Ajax loading 
+/* Ajax loading
 --------------------------------------------- */
 	.ajax-loading {
 		color: #e08d2b;
@@ -1543,9 +1623,9 @@
 	100% {
 	-ms-transform:scale(0.7);
 	opacity:0.1}
-	}		
-		
-/* Misc. 
+	}
+
+/* Misc.
 --------------------------------------------- */
 	.rightfloat {
 		float: right;
@@ -1642,6 +1722,9 @@
 		width: 10%;
 		line-height: 1em;
 	}
+	.primarycolumn {
+		width: 60%;
+	}
 	.checkbox {
 		width: 5px;
 	}
@@ -1713,7 +1796,7 @@
 	.notice_passed {
 		border: 1px solid #7aab69;
 		background: #f3fdf0;
-		color: #7aab69;	
+		color: #7aab69;
 	}
 	.or {
 		text-transform: uppercase;
@@ -1762,7 +1845,7 @@
 	.add {
 		background: none;
 		padding-left: 0;
-	}	
+	}
 	.leftshift {
 		width: 70px;
 		display: inline;
@@ -1792,7 +1875,7 @@
 		color: #6699ce;
 		cursor: pointer;
 	}
-	
+
 /* Info tips
 --------------------------------------------- */
 	.info-pop, .pub-info-pop {
@@ -1802,22 +1885,22 @@
 		line-height: 1.2em;
 		*font-size: 70%;
 	}
-	.info-pop:before, 
-	.pub-info-pop:before, 
+	.info-pop:before,
+	.pub-info-pop:before,
 	.pub-info:before {
 		content: "\f059";
 		width: 16px;
 		height: 16px;
 		font-size: 16px;
 		font-family: 'Fontcons';
-		color: #000; 
+		color: #000;
 		margin-right: 0.2em;
 		font-weight: normal;
 	}
-	
+
 /* 	Fixes for smaller screens
 --------------------------------------------- */
-	
+
 	@media all and (max-width: 1024px) {
 		#introduction .second {
 			background: none;
@@ -1826,7 +1909,7 @@
 			display: none;
 		}
 	}
-	
+
 	@media all and (max-width: 900px) {
 		#plg-content .aside {
 			display: none;
@@ -1850,7 +1933,7 @@
 			margin: 0;
 		}
 	}
-	
+
 /* Plugin header
 --------------------------------------------- */
 
@@ -1858,10 +1941,10 @@
 		color: #000;
 		border-bottom: 1px dotted #000;
 	}
-	
+
 /* Font-based styles
---------------------------------------------- */		
-	.i_user:before, 
+--------------------------------------------- */
+	.i_user:before,
 	.i_user:after,
 	.i_group:before,
 	.i_group:after,
@@ -1915,7 +1998,7 @@
 		color: #aaa;
 		margin-right: 0.3em;
 		vertical-align: middle;
-	}	
+	}
 	.main-menu ul.projecttools li.assets span:before {
 		color: #dbd2c3;
 	}
@@ -1927,8 +2010,8 @@
 	}
 	.sidebox h4:before {
 		font-weight: normal;
-		color: #b8b8b8;	
-	}	
+		color: #b8b8b8;
+	}
 	.i_user:before {
 		content: "\f007";
 	}
@@ -1938,10 +2021,10 @@
 	}
 	.defaultimage:before {
 		content: "\f03f";
-		color: #aea79a;	
+		color: #aea79a;
 	}
 	.newsupdate:before, .feed:before {
-		content: "\f053"; 
+		content: "\f053";
 		color: #6897a4;
 	}
 	.project:before {
@@ -1980,9 +2063,9 @@
 	.addnew:before, .add:before {
 		content: "\2295";
 		color: #52ad4b;
-	}	
+	}
 	.re_sort:after {
-		content: "\2193"; 
+		content: "\2193";
 		margin-left: 0.2em;
 		width: 8px;
 		height: 8px;
@@ -2014,7 +2097,7 @@
 	#suggestions .s-files a:before, .suggestions .s-files a:before,
 	.feature #feature-files .ima:before,
 	.files:before {
-		content: "\f016"; 
+		content: "\f016";
 		color: #6897a4;
 	}
 	#suggestions .s-databases a:before, .suggestions .s-databases a:before,
@@ -2072,8 +2155,8 @@
 		color: #48704c;
 	}
 
-/* IE7 hacks 
---------------------------------------------- */	
+/* IE7 hacks
+--------------------------------------------- */
 	#introduction .first {
 		/**width: 42%;*/
 	}
@@ -2113,7 +2196,7 @@
 		*margin-top: 3em;
 		*margin-left: 25px;
 		*width: 80%;
-	}	
+	}
 	.s-complete, .s-suspended {
 		*margin-left: -3em;
 	}
@@ -2134,7 +2217,7 @@
 
 /* Misc
 --------------------------------------------- */
-	
+
 	.pub-image img {
 		width: 30px;
 	}
@@ -2145,7 +2228,7 @@
 		margin-top: 5em;
 	}
 
-/* Overwrites to system styles 
+/* Overwrites to system styles
 --------------------------------------------- */
 
 	.aside:before,
