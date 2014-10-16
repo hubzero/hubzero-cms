@@ -66,6 +66,18 @@ HUB.ProjectTodo = {
 				});
 			});
 		}
+		
+		// Confirm check-off
+		if ($('.confirm-checkoff').length) {
+			$('.confirm-checkoff').each(function(i, item) {
+				$(item).on('click', function(e) {
+					e.preventDefault();
+					HUB.Projects.addConfirm($(item),
+					'Mark this item as complete?',
+					'Yes, check off', 'No, leave as is');
+				});
+			});
+		}
 
 		// Calendar (item page)
 		if ($('#td-item') && $('#dued')) {

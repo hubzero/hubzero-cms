@@ -89,7 +89,7 @@ if ($this->row->isComplete())
 	<p class="td-options">
 		<?php if (!$this->row->isComplete()) { ?>
 		<span class="edit"><a href="<?php echo JRoute::_($url . '&action=edit') . '/?todoid=' . $this->row->get('id'); ?>" class="showinbox"><?php echo JText::_('PLG_PROJECTS_TODO_EDIT'); ?></a></span>
-		<span class="checked"><a href="<?php echo JRoute::_($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1'; ?>"><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
+		<span class="checked"><a href="<?php echo JRoute::_($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1'; ?>" class="confirm-checkoff"><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECK_OFF'); ?></a></span>
 		<?php } ?>
 		<?php if ($deletable) { ?>
 		<span class="trash"><a href="<?php echo JRoute::_($url . '&action=delete') . '/?todoid=' . $this->row->get('id'); ?>" class="confirm-it" id="deltd"><?php echo JText::_('PLG_PROJECTS_TODO_DELETE'); ?></a></span>

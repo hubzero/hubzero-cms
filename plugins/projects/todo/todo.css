@@ -604,6 +604,25 @@
 	#newtodo input.todo-submit:hover {
 		cursor: pointer;
 	}
+	
+/* Todo - status icon
+--------------------------------------------- */
+	.unchecked {
+		display: block;
+		padding: 0.2em;
+	}
+	.unchecked:before {
+		width: 16px;
+		height: 16px;
+		font-size: 15px;
+		font-family: 'Fontcons';
+		color: #CCC;
+		content: "\f0a1";
+	}
+	.unchecked:hover:before {
+		content: "\2611";
+		color: #55c64c;	
+	}
 
 /* Todo - sorting & tips
 --------------------------------------------- */
@@ -624,10 +643,6 @@
 		float: left;
 		display: block;
 		margin-top: 0.8em;
-	}
-	.td-mv {
-		color: #999;
-		margin-left: 0.5em;
 	}
 
 /* Todo dragging
@@ -839,7 +854,10 @@
 
 /* Todo - delete list confirmation
 --------------------------------------------- */
-	.confirmaction {
+	table .confirmaction {
+		margin-left: -200px !important;
+	}
+	.container-footer .confirmaction {
 		position: relative !important;
 		margin: 0;
 		width: 50%;

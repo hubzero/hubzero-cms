@@ -91,7 +91,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 				$class = $color ? 'pin_' . $color : 'pin_grey';
 
 				$overdue = $row->isOverdue();
-				$oNote = $overdue ? ' ('.JText::_('PLG_PROJECTS_TODO_OVERDUE').')' : '';
+				$oNote = $overdue ? '<span class="block">(' . JText::_('PLG_PROJECTS_TODO_OVERDUE') . ')</span>' : '';
 			?>
 			<tr class="<?php echo $class; ?>" id="todo-<?php echo $row->get('id'); ?>">
 				<td><span class="ordernum"><?php echo $order; ?></span></td>
@@ -99,7 +99,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->alias .
 				<td class="mini faded"><?php echo $row->isComplete() ? $row->closer('name') : $row->owner('name'); ?></td>
 				<td class="mini nowrap"><?php echo $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote;?></td>
 				<td class="mini"><a href="<?php echo JRoute::_($url . '&action=view').'/?todoid=' . $row->get('id') ; ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?></a></td>
-				<td></td>
+				<td><?php if (!$row->isComplete()) { ?><a href="<?php echo JRoute::_($url . '&action=changestate') . '/?todoid=' . $row->get('id') . '&amp;state=1'; ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_CHECK_OFF'); ?>" class="unchecked confirm-checkoff">&nbsp;</a><?php } ?></td>
 			</tr>
 			<?php $order++; } ?>
 		<?php } else { ?>
