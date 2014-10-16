@@ -27,7 +27,7 @@ function dv_dataview_list()
 
 	JToolBarHelper::title($db_conf['name'] . ' >> <small> The list of Dataviews</small>', 'databases');
 
-	if(!$jdb->getErrorMsg()) {
+	if (!$jdb->getErrorMsg()) {
 		JToolBarHelper::custom('new', 'new', 'new', 'New Dataview', false);
 	}
 
@@ -83,7 +83,7 @@ function dv_dataview_list()
 		<tbody>
 <?php
 
-	if(count($files) < 1) {
+	if (count($files) < 1) {
 		print "<h2>No Dataviews available</h2>";
 	} else {
 
@@ -157,7 +157,7 @@ function dv_dataview_list()
 			<br />
 			<select name="table" id="table">
 			<?php
-				foreach($list as $table) {
+				foreach ($list as $table) {
 					print '<option value="' . $table['TABLE_NAME'] . '">' . $table['TABLE_NAME'] . '</option>';
 				}
 			?>
