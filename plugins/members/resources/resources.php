@@ -377,7 +377,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			}
 		}
 		$html .= '</p>' . "\n";
-		if ($params->get('show_ranking'))
+		if ($rparams->get('show_ranking'))
 		{
 			$helper->getCitationsCount();
 			$helper->getLastCitationDate();
@@ -413,7 +413,7 @@ class plgMembersResources extends \Hubzero\Plugin\Plugin
 			$html .= "\t\t\t" . '</dl>' . "\n";
 			$html .= "\t\t" . '</div>' . "\n";
 		}
-		elseif ($params->get('show_rating'))
+		elseif ($rparams->get('show_rating'))
 		{
 			switch ($row->rating)
 			{
