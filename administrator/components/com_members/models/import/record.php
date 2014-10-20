@@ -30,7 +30,6 @@
 
 namespace Members\Models\Import;
 
-use Hubzero\Base\Object;
 use Exception;
 use stdClass;
 use JText;
@@ -46,7 +45,7 @@ include_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models'
 /**
  * Member Record importer
  */
-class Record extends Object
+class Record extends \Hubzero\Content\Import\Model\Record
 {
 	/**
 	 * Profile
@@ -192,11 +191,11 @@ class Record extends Object
 	private function _mapEntryData()
 	{
 		// do we want to do a title match?
-		if ($this->_options['titlematch'] == 1 && isset($this->record->type->id))
+		/*if ($this->_options['namematch'] == 1 && isset($this->record->type->id))
 		{
-			$sql = 'SELECT id, name, LEVENSHTEIN(name, ' . $this->_database->quote($this->raw->name) . ' ) as titleDiff
+			$sql = 'SELECT id, name, LEVENSHTEIN(name, ' . $this->_database->quote($this->raw->name) . ' ) as nameDiff
 			        FROM `#__users`
-			        HAVING titleDiff < ' . self::TITLE_MATCH;
+			        HAVING nameDiff < ' . self::TITLE_MATCH;
 			$this->_database->setQuery($sql);
 			$results = $this->_database->loadObjectList('id');
 
@@ -204,7 +203,7 @@ class Record extends Object
 			if (count($results) > 1)
 			{
 				$ids = implode(", ", array_keys($results));
-				throw new Exception(JText::sprintf('Unable to determine which resource to overwrite. The following resources have similar titles: %s', $ids));
+				throw new Exception(JText::sprintf('Unable to determine which member to overwrite. The following membera have similar names: %s', $ids));
 			}
 
 			// if we only have one were all good
@@ -217,17 +216,22 @@ class Record extends Object
 				// add a notice with link to resource matched
 				$resourceLink = rtrim(str_replace('administrator', '', JURI::base()), DS) . DS . 'members' . DS . $entry->id;
 				$link = '<a target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
-				array_push($this->record->notices, JText::sprintf('COM_RESOURCES_IMPORT_RECORD_MODEL_MATCHEDBYTITLE', $link));
+				array_push($this->record->notices, JText::sprintf('COM_MEMBERS_IMPORT_RECORD_MODEL_MATCHEDBYNAME', $link));
 			}
-		}
+		}*/
 
 		// Do we have an ID?
 		// Either passed in the raw data or gotten from the title match
-		if (isset($this->raw->id) && $this->raw->id > 1)
+		if (isset($this->raw->uidNumber) && $this->raw->uidNumber > 1)
 		{
-			$this->record->entry->load($this->raw->id);
+			$this->record->entry->load($this->raw->uidNumber);
 		}
-		else
+		else if (isset($this->raw->username) && $this->raw->username)
+		{
+			$this->record->entry->loadByUsername($this->raw->username);
+		}
+
+		if (!$this->record->entry->get('uidNumber'))
 		{
 			$this->raw->registerDate = JFactory::getDate()->toSql();
 		}
@@ -235,7 +239,7 @@ class Record extends Object
 		// set modified date/user
 		$this->raw->modifiedDate = JFactory::getDate()->toSql();
 
-		if (isset($this->_options['emailConfirmed']))
+		/*if (isset($this->_options['emailConfirmed']))
 		{
 			$this->raw->emailConfirmed = (int) $this->_options['emailConfirmed'];
 		}
@@ -248,15 +252,22 @@ class Record extends Object
 		if (isset($this->_options['mailPreferenceOption']))
 		{
 			$this->raw->mailPreferenceOption = (int) $this->_options['mailPreferenceOption'];
-		}
+		}*/
 
 		/*$this->record->entry->bind($this->raw);*/
 
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{
+			// These two need some extra loving and care, so we skip them for now...
+			if ($key == 'username' || $key == 'uidNumber')
+			{
+				continue;
+			}
+
 			$this->record->entry->set($key, $val);
 		}
 
+		// If we have a name but no individual parts...
 		if (!$this->record->entry->get('givenName') && !$this->record->entry->get('surame') && $this->record->entry->get('name'))
 		{
 			$name = explode(' ', $this->record->entry->get('name'));
@@ -265,6 +276,7 @@ class Record extends Object
 			$this->record->entry->set('middleName', implode(' ', $name));
 		}
 
+		// If we have the individual name parts but not the combined whole...
 		if (($this->record->entry->get('givenName') || $this->record->entry->get('surame')) && !$this->record->entry->get('name'))
 		{
 			$name = array(
@@ -273,6 +285,22 @@ class Record extends Object
 				$this->record->entry->get('surname')
 			);
 			$this->record->entry->set('name', implode(' ', $name));
+		}
+
+		// If we're updating an existing record...
+		if ($this->record->entry->get('uidNumber'))
+		{
+			// Check if the username passed if the same for the record we're updating
+			$username = $this->record->entry->get('username');
+			if ($username && $username != $this->raw->username)
+			{
+				// Uh-oh. Notify the user.
+				array_push($this->record->notices, JText::_('Usernames for existing members cannot be changed at this time.'));
+			}
+		}
+		else if (isset($this->raw->username) && $this->raw->username)
+		{
+			$this->record->entry->set('username', $this->raw->username);
 		}
 
 		// Bind to the profile object
@@ -326,7 +354,7 @@ class Record extends Object
 	private function _saveTagsData()
 	{
 		// save tags
-		$tags = new \MembersModelsTags($this->record->resource->id);
+		$tags = new \MembersModelsTags($this->record->entry->uidNumber);
 		$tags->setTags($this->record->tags, $this->_user->get('id'));
 	}
 }

@@ -81,7 +81,7 @@ class Import extends Model
 		// make sure we have file
 		if (!$file = $this->get('file'))
 		{
-			throw new Exception(__CLASS__ . '::' . __METHOD__ . '(); ' . \JText::_('Missing required data file.'));
+			throw new Exception(__METHOD__ . '(); ' . \JText::_('Missing required data file.'));
 		}
 
 		// build path to file
@@ -90,13 +90,13 @@ class Import extends Model
 		// make sure file exists
 		if (!file_exists($filePath))
 		{
-			throw new Exception(__CLASS__ . '::' . __METHOD__ . '(); ' . \JText::sprintf(' Data file does not exist at path: %s.', $filePath));
+			throw new Exception(__METHOD__ . '(); ' . \JText::sprintf('Data file does not exist at path: %s.', $filePath));
 		}
 
 		// make sure we can read the file
 		if (!is_readable($filePath))
 		{
-			throw new Exception(__CLASS__ . '::' . __METHOD__ . '(); ' . \JText::_('Data file not readable.'));
+			throw new Exception(__METHOD__ . '(); ' . \JText::_('Data file not readable.'));
 		}
 
 		return $filePath;

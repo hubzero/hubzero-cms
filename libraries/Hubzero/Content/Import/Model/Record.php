@@ -65,28 +65,28 @@ class Record extends Object
 	 *
 	 * @var  string
 	 */
-	private $_mode;
+	protected $_mode;
 
 	/**
 	 * List of options to be applied to record
 	 *
 	 * @var  array
 	 */
-	private $_options;
+	protected $_options;
 
 	/**
 	 * JDatabase
 	 *
 	 * @var  object
 	 */
-	private $_database;
+	protected $_database;
 
 	/**
 	 * JUser
 	 *
 	 * @var  object
 	 */
-	private $_user;
+	protected $_user;
 
 	/**
 	 *  Constructor
@@ -175,7 +175,7 @@ class Record extends Object
 	public function toString()
 	{
 		// Reflect on class to get private or protected props
-		$privateProperties = with(new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PRIVATE);
+		$privateProperties = with(new \ReflectionClass($this))->getProperties(\ReflectionProperty::IS_PROTECTED);
 
 		// Remove each private or protected prop
 		foreach ($privateProperties as $prop)

@@ -322,6 +322,19 @@ class MembersProfile extends JTable
 	}
 
 	/**
+	 * Load an entry from the database and bind to $this
+	 *
+	 * @param   string   $oid  Username
+	 * @return  boolean  True if data was retrieved and loaded
+	 */
+	public function loadByUsername($oid=NULL)
+	{
+		return parent::load(array(
+			'username' => (string) $oid
+		));
+	}
+
+	/**
 	 * Construct a query from filters
 	 *
 	 * @param      array   $filters Filters to construct query from

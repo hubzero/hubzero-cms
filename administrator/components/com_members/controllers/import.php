@@ -259,11 +259,10 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 			return $this->editTask();
 		}
 
-		// Is this a new import?
-		if ($isNew)
+		// create folder for files
+		if (!$this->_createImportFilespace($this->import))
 		{
-			// create folder for files
-			$this->_createImportFilespace($this->import);
+			return $this->editTask();
 		}
 
 		// If we have a file
@@ -377,14 +376,14 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	 */
 	public function runTask($dryRun = 0)
 	{
-		// get request vars
+		// Get request vars
 		$id = JRequest::getVar('id', array(0));
 		$id = (is_array($id) ? $id[0] : $id);
 
-		// are we test mode
-		$this->view->dryRun = 1; //$dryRun;
+		// Are we test mode
+		$this->view->dryRun = $dryRun;
 
-		// create import model object
+		// Create import model object
 		$this->view->import = new \Members\Models\Import($id);
 
 		if (!$this->view->import->exists())
@@ -414,25 +413,25 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	 */
 	public function doRunTask()
 	{
-		// check token
+		// Check token
 		JSession::checkToken() or die('Invalid Token');
 
-		// start of import
+		// Start of import
 		$start = microtime(true);
 
-		// get request vars
+		// Get request vars
 		$id = JRequest::getInt('id', 0);
 
-		// test mode
+		// Test mode
 		$dryRun = JRequest::getBool('dryrun', 0);
 
-		// create import model object
+		// Create import model object
 		$import = new \Members\Models\Import($id);
 
-		// make import importer
+		// Make import importer
 		$importImporter = \Hubzero\Content\Importer::getInstance();
 
-		// run process task on importer
+		// Run process task on importer
 		// passed the import model, array or callbacks, and test mode flag
 		$resourceData = $importImporter->process($import, array(
 			'postparse'   => $this->_hooks('postparse',   $import),
@@ -440,11 +439,11 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 			'postconvert' => $this->_hooks('postconvert', $import)
 		), $dryRun);
 
-		// calculate execution time
+		// Calculate execution time
 		$end  = microtime(true);
 		$time = round($end - $start, 3);
 
-		// outputted with html entities to allow browser json formatter
+		// Outputted with html entities to allow browser json formatter
 		if (JRequest::getInt('format', 0) == 1)
 		{
 			echo htmlentities(json_encode(array(
@@ -455,7 +454,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 			exit();
 		}
 
-		// return results to user
+		// Return results to user
 		echo json_encode(array(
 			'import'  => 'success',
 			'time'    => $time,
@@ -552,16 +551,19 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	 */
 	private function _createImportFilespace(\Hubzero\Content\Import\Model\Import $import)
 	{
-		// upload path
+		// Upload path
 		$uploadPath = $import->fileSpacePath();
 
-		// if we dont have a filespace, create it
+		// If we dont have a filespace, create it
 		if (!is_dir($uploadPath))
 		{
-			JFolder::create($uploadPath, 0775);
+			if (!JFolder::create($uploadPath))
+			{
+				$this->setError(JText::sprintf('Failed to create target upload path "%s".', $uploadPath));
+				return false;
+			}
 		}
 
-		// all set
 		return true;
 	}
 }
