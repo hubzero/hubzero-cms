@@ -75,10 +75,17 @@ class SupportMessage extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->message) == '')
+		$this->message = trim($this->message);
+		if ($this->message == '')
 		{
 			$this->setError(JText::_('SUPPORT_ERROR_BLANK_FIELD'));
 			return false;
+		}
+
+		$this->title = trim($this->title);
+		if (!$this->title)
+		{
+			$this->title = \Hubzero\Utility\String::truncate($this->message, 250);
 		}
 
 		return true;
