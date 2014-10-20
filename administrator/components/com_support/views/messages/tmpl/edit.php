@@ -53,7 +53,7 @@ function submitbutton(pressbutton)
 	}
 
 	// form field validation
-	if ($('msg[message]').value == '') {
+	if ($('#field-message').val() == '') {
 		alert('<?php echo JText::_('COM_SUPPORT_MESSAGE_ERROR_NO_TEXT'); ?>');
 	} else {
 		submitform(pressbutton);
@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('COM_SUPPORT_MESSAGE_LEGEND'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_SUPPORT_MESSAGE_SUMMARY'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-title"><?php echo JText::_('COM_SUPPORT_MESSAGE_SUMMARY'); ?>:</label><br />
 				<input type="text" name="msg[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 
