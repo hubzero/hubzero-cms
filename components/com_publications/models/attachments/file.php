@@ -401,7 +401,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 		$showArchive = isset($pub->_curationModel->_manifest->params->show_archival)
 				? $pub->_curationModel->_manifest->params->show_archival :  0;
-		$showArchive = ($showArchive && file_exists($configs->archPath)) ? true : false;
+		//$showArchive = ($showArchive && file_exists($configs->archPath)) ? true : false;
 
 		// Sort out attachments for this element
 		$attachments = $this->_parent->getElementAttachments(
