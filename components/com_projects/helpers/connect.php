@@ -520,6 +520,7 @@ class ProjectsConnectHelper extends JObject {
 
 			if (!$refresh_token)
 			{
+				$this->setError('Authentication error');
 				return false;
 			}
 
@@ -536,7 +537,7 @@ class ProjectsConnectHelper extends JObject {
 		// Need access token to proceed
 		if (!$access_token)
 		{
-			$this->setError('Oups! Authentication error. Please try again. If the error persists, contact support');
+			$this->setError('Oups! Authentication error. Token invalid or expired. User needs to re-authenticate');
 			return false;
 		}
 
@@ -1660,7 +1661,10 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			if (!$this->getError())
+			{
+				$this->setError('API service unavailable');
+			}
 			return false;
 		}
 
@@ -1695,7 +1699,10 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			if (!$this->getError())
+			{
+				$this->setError('API service unavailable');
+			}
 			return false;
 		}
 
@@ -1756,7 +1763,10 @@ class ProjectsConnectHelper extends JObject {
 
 		if (!$apiService)
 		{
-			$this->setError('API service unavailable');
+			if (!$this->getError())
+			{
+				$this->setError('API service unavailable');
+			}
 			return false;
 		}
 
