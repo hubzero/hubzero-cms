@@ -93,48 +93,14 @@
 		border-bottom: 4px solid #f7f7fa;
 		border-top: 4px solid #f7f7fa;
 	}
-	#abox-content .quick-upload label {
-		margin: 0;
-		padding: 0;
-		background: none;
-		float: right;
-		max-width: 200px;
-		overflow: hidden;
-	}
-	.quick-upload p {
-		margin: 0;
-		padding: 0 1em;
-		color: #708b94;
-		font-size: 85%;
-	}
-	#abox-content .quick-upload input {
-		background: none;
-		margin: 0;
-		padding: 0;	
-	}
-	#abox-content input.upload-file {
-		float: right;
-		margin: 0 1em;
-		background: white;
-		padding: 0.5em 0.91em 0.5em 0.91em;
-		outline: 0;
-		font-size: 0.8em;
-		line-height: 1;
-		font-weight: normal;
-		white-space: nowrap;
-		word-wrap: normal;
-		border: 1px solid #CCC;
-		border-color: #CCC #CCC #AAA #AAA;
-		color: #555;
-		-webkit-border-radius: 0.25em;
-		   -moz-border-radius: 0.25em;
-		    -ms-border-radius: 0.25em;
-		     -o-border-radius: 0.25em;
-		        border-radius: 0.25em;
-	}
-	.quick-upload {
+	.quick-uploader {
 		background: #eef8fb;
-		min-height: 30px;
+		min-height: 40px;
+		font-size: 90%;
+		padding: 0.5em 1.5em 2em 1.5em;
+	}
+	.quick-uploader select {
+		max-width: 240px;
 	}
 	.save-selection {
 		float: right;
@@ -146,6 +112,10 @@
 	}
 	.abox-controls a {
 		font-size: 55%;
+	}
+	#abox-content h3 {
+		margin-bottom: 1em;
+		padding-bottom: 1em;
 	}
 	#b-filesave.disabled, 
 	#b-filesave.disabled:hover,

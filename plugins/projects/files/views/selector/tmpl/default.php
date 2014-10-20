@@ -168,11 +168,22 @@ if ($this->task == 'filter')
 	return;
 }
 
+// Get folder array
+$subdirOptions = array();
+$subdirOptions[] = array('path' => '', 'label' => 'home directory');
+foreach ($this->items as $item)
+{
+	if ($item->type == 'folder')
+	{
+		$subdirOptions[] = array('path' => $item->localPath , 'label' => $item->localPath);
+	}
+}
+
 ?>
 <script src="/plugins/projects/files/js/fileselector.js"></script>
 <div id="abox-content">
 <h3><?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR'); ?> 	<span class="abox-controls">
-		<a class="btn btn-success active" id="b-filesave"><?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
+		<a class="btn btn-success" id="b-filesave"><?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_SAVE_SELECTION'); ?></a>
 		<?php if ($this->ajax) { ?>
 		<a class="btn btn-cancel" id="cancel-action"><?php echo JText::_('PLG_PROJECTS_FILES_CANCEL'); ?></a>
 		<?php } ?>
@@ -266,13 +277,24 @@ if ($this->task == 'filter')
 			</div>
 		</div>
 	</div>
-	<?php } else { ?>
-	<div id="quick-upload" class="quick-upload">
-		<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
-		<label>
-			<input name="upload[]" type="file" class="option" id="uploader" multiple="multiple" />
-		</label>
+	<?php } else {  ?>
+	<div id="quick-upload" class="quick-uploader">
 		<p><?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_NEED_ADD_FILES'); ?> <?php echo JText::_('PLG_PROJECTS_FILES_SELECTOR_QUICK_UPLOAD'); ?>:</p>
+
+		<label>
+			<input name="upload[]" type="file" id="uploader" multiple="multiple" />
+		</label>
+
+		<?php if (count($subdirOptions) > 1) { ?>
+		<label><?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD_INTO_SUBDIR'); ?>
+			<select name="subdir">
+				<?php foreach ($subdirOptions as $sd) { ?>
+					<option value="<?php echo $sd['path']; ?>"><?php echo $sd['label']; ?></options>
+				<?php } ?>
+			</select>
+		</label>
+		<?php } ?>
+		<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_FILES_UPLOAD'); ?>" class="upload-file" id="upload-file" />
 	</div>
 	<?php } ?>
 	</form>
