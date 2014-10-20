@@ -171,7 +171,7 @@ function ProjectsParseRoute($segments)
 		'rename', 'saverename', 'history',
 		'compare', 'comments', 'editcomment',
 		'addcomment', 'savecomment', 'removecomment',
-		'reportcomment', 'deleterevision'
+		'reportcomment', 'deleterevision', 'pdf'
 	);
 
 	// App actions
