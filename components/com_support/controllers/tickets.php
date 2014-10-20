@@ -1648,8 +1648,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		}
 
 		// Save the tags
-		$row->set('tags', JRequest::getVar('tags', '', 'post'));
-		$row->tag($row->get('tags'), $this->juser->get('id'), 1);
+		$row->tag(JRequest::getVar('tags', '', 'post'), $this->juser->get('id'), 1);
+		$row->set('tags', $row->tags('string'));
 
 		// Create a new support comment object and populate it
 		$access = JRequest::getInt('access', 0);

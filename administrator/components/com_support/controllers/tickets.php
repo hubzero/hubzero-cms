@@ -406,8 +406,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		}
 
 		// Save the tags
-		$row->set('tags', JRequest::getVar('tags', '', 'post'));
-		$row->tag($row->get('tags'), $this->juser->get('id'), 1);
+		$row->tag(JRequest::getVar('tags', '', 'post'), $this->juser->get('id'), 1);
+		$row->set('tags', $row->tags('string'));
 
 		$juri = JURI::getInstance();
 		$jconfig = JFactory::getConfig();
