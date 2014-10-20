@@ -571,7 +571,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->entry = $this->model->entry(JRequest::getInt('entry', 0));
+			$view->entry = new BlogModelEntry(JRequest::getInt('entry', 0));
 		}
 
 		// Does it exist?
@@ -634,7 +634,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 
 		// Instantiate model
-		$row = $this->model->entry($entry['id']);
+		$row = new BlogModelEntry($entry['id']);
 
 		// Bind data
 		if (!$row->bind($entry))
@@ -691,7 +691,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = $this->model->entry($id);
+		$entry = new BlogModelEntry($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel)
