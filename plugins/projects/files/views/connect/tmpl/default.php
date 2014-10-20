@@ -90,9 +90,15 @@ $i = 0;
 
 			<?php if ($connected) { ?>
 			<?php $removeData = $creator ? '&removedata=1' : '';  ?>
-			<span class="disconnect <?php echo $creator ? ' creator' : ''; ?>">
-				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a. 'alias=' . $this->project->alias . a . 'active=files') . '?action=disconnect' . a . 'service=' . $servicename . $removeData; ?>" id="disconnect"><?php echo JText::_('COM_PROJECTS_FILES_CONNECT_DISCONNECT'); ?> &raquo;</a>
+			<p>
+			<span class=" <?php echo $creator ? ' creator' : ''; ?>">
+				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a. 'alias=' . $this->project->alias . a . 'active=files') . '?action=disconnect' . a . 'service=' . $servicename . $removeData; ?>" id="disconnect"><?php echo ucfirst(JText::_('COM_PROJECTS_FILES_CONNECT_DISCONNECT')); ?> &raquo;</a>
 			</span>
+			&nbsp; &nbsp;
+			<span>
+				<a href="<?php echo JRoute::_('index.php?option='.$this->option.a. 'alias=' . $this->project->alias . a . 'active=files') . '?action=connect&reauth=1' . a . 'service=' . $servicename; ?>"><?php echo JText::_('COM_PROJECTS_FILES_CONNECT_REAUTH'); ?> &raquo;</a>
+			</span>
+			</p>
 			<?php } ?>
 			<?php }
 			 else { ?>

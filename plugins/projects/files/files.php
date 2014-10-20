@@ -5972,10 +5972,10 @@ class plgProjectsFiles extends JPlugin
 		// Error!
 		if ($lastSyncId > 1 && !$newSyncId)
 		{
-			$this->_writeToFile( '' );
-			$this->_rSync['error'] = 'Oups! Unknown sync error. Please try again at a later time.';
-			$this->lockSync($service, true);
-			return false;
+		//	$this->_writeToFile( '' );
+		//	$this->_rSync['error'] = 'Oups! Unknown sync error. Please try again at a later time.';
+		//	$this->lockSync($service, true);
+		//	return false;
 		}
 
 		if ($this->_connect->getError())
