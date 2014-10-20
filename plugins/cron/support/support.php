@@ -759,7 +759,7 @@ class plgCronSupport extends JPlugin
 			return true;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'tags.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
 
 		if ($params->get('support_ticketlist_severity', 'all') != 'all')
 		{
