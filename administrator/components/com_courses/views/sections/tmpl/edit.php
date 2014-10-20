@@ -556,7 +556,7 @@ jQuery(document).ready(function($){
 												</td>
 												<td><label for="dates_<?php echo $i; ?>_<?php echo $j; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_up"><?php echo JText::_('COM_COURSES_TO'); ?></label></th>
 												<td>
-													<input type="text" name="dates[<?php echo $i; ?>][<?php echo $z; ?>][<?php echo $j; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_down" class="datetime-field" value="<?php echo (!$ag->get('publish_down') || $ag->get('publish_down') == $agt->get('publish_down') || $ag->get('publish_down') == $nullDate ? '' : JHTML::_('date', $ag->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
+													<input type="text" name="dates[<?php echo $i; ?>][asset_group][<?php echo $z; ?>][asset_group][<?php echo $j; ?>][publish_down]" id="dates_<?php echo $i; ?>_assetgroup_<?php echo $z; ?>_assetgroup_<?php echo $j; ?>_publish_down" class="datetime-field" value="<?php echo (!$ag->get('publish_down') || $ag->get('publish_down') == $agt->get('publish_down') || $ag->get('publish_down') == $nullDate ? '' : JHTML::_('date', $ag->get('publish_down'), 'Y-m-d H:i:s')); ?>" />
 												</td>
 											</tr>
 
