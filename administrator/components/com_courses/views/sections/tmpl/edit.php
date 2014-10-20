@@ -774,10 +774,14 @@ jQuery(document).ready(function($){
 										<option value="passport"<?php if ($this->badge->get('provider_name', 'passport') == 'passport') { echo ' selected="selected"'; } ?>>Passport</option>
 									</select>
 								</td>
+							</tr>
 							<tr class="badge-field-toggle">
 								<th class="key"><label for="badge-criteria"><?php echo JText::_('COM_COURSES_FIELD_BADGE_CRITERIA'); ?>:</label></th>
 								<td>
-									<textarea name="badge[criteria]" id="badge-criteria" rows="6" cols="50"><?php echo $this->escape(stripslashes($this->badge->get('criteria_text'))); ?></textarea>
+									<?php
+										$editor = JFactory::getEditor();
+										echo $editor->display('badge[criteria]', $this->escape(stripslashes($this->badge->get('criteria_text'))), '100%', '200px', '', '', false, 'badge-criteria');
+									?>
 								</td>
 							</tr>
 						</tbody>
@@ -801,10 +805,14 @@ jQuery(document).ready(function($){
 								<td>
 									<?php echo $this->escape(stripslashes($this->badge->get('provider_name'))); ?>
 								</td>
+							</tr>
 							<tr class="badge-field-toggle">
 								<th class="key"><label for="badge-criteria"><?php echo JText::_('COM_COURSES_FIELD_BADGE_CRITERIA'); ?>:</label></th>
 								<td>
-									<textarea name="badge[criteria]" id="badge-criteria" rows="6" cols="50"><?php echo $this->escape(stripslashes($this->badge->get('criteria_text'))); ?></textarea>
+									<?php
+										$editor = JFactory::getEditor();
+										echo $editor->display('badge[criteria]', $this->escape(stripslashes($this->badge->get('criteria_text'))), '100%', '200px', '', '', false, 'badge-criteria');
+									?>
 									<a target="_blank" href="/courses/badge/<?php echo $this->badge->get('id'); ?>/criteria"><?php echo JText::_('COM_COURSES_FIELD_BADGE_CRITERIA'); ?></a>
 								</td>
 							</tr>
