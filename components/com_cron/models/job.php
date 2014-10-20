@@ -57,6 +57,13 @@ class CronModelJob extends \Hubzero\Base\Model
 	protected $_tbl_name = 'CronTableJob';
 
 	/**
+	 * Cron expression
+	 *
+	 * @var object
+	 */
+	private $_expression = NULL;
+
+	/**
 	 * JProfiler
 	 *
 	 * @var object
