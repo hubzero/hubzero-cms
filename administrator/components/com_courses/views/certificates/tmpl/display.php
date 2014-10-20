@@ -40,6 +40,12 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::apply();
 	JToolBarHelper::save();
 }
+if ($canDo->get('core.delete'))
+{
+	JToolBarHelper::spacer();
+	JToolBarHelper::deleteList();
+	JToolBarHelper::spacer();
+}
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('certificates');
@@ -91,6 +97,7 @@ $this->css('certificates.css');
 	<input type="hidden" name="certificate" value="<?php echo $this->certificate->get('id'); ?>" />
 	<input type="hidden" name="course" value="<?php echo $this->certificate->get('course_id'); ?>" />
 
+	<input type="hidden" name="boxchecked" value="1" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="save" />

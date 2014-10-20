@@ -288,6 +288,77 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Removes a course certificate
+	 *
+	 * @return	void
+	 */
+	public function removeTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		$cert_id   = JRequest::getInt('certificate', 0, 'post');
+		$course_id = JRequest::getInt('course', 0, 'post');
+		if (!$course_id)
+		{
+			$this->setError(JText::_('COURSES_NO_LISTDIR'));
+			$this->displayTask();
+			return;
+		}
+
+		$model = CoursesModelCertificate::getInstance($cert_id, $course_id);
+		if ($model->exists())
+		{
+			$model->set('properties', '');
+			$model->store();
+		}
+
+		// Build the path
+		$path = $model->path('system');
+
+		// Make sure the upload path exist
+		if (is_dir($path))
+		{
+			// Delete all the files in the directory
+			jimport('joomla.filesystem.folder');
+			jimport('joomla.filesystem.file');
+
+			$dirIterator = new DirectoryIterator($path);
+			foreach ($dirIterator as $file)
+			{
+				if ($file->isDot())
+				{
+					continue;
+				}
+
+				if ($file->isDir())
+				{
+					$name = $file->getFilename();
+					if (!JFolder::delete($path . DS . $file->getFilename()))
+					{
+						$this->setError(JText::_('COM_COURSES_UNABLE_TO_DELETE_FILE'));
+					}
+					continue;
+				}
+
+				if ($file->isFile())
+				{
+					if (!JFile::delete($path . DS . $file->getFilename()))
+					{
+						$this->setError(JText::_('COM_COURSES_UNABLE_TO_DELETE_FILE'));
+					}
+				}
+			}
+		}
+
+		// Redirect back to the courses page
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=courses',
+			JText::_('COM_COURSES_ITEM_REMOVED')
+		);
+	}
+
+	/**
 	 * Cancel a task (redirects to default task)
 	 *
 	 * @return	void
