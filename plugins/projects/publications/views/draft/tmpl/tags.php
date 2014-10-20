@@ -55,59 +55,63 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step
 
 <!-- Load content selection browser //-->
 <div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?> ">
-	<div class="element_editing">
-		<div class="pane-wrapper">
-			<span class="checker">&nbsp;</span>
-			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><?php } else { ?><span class="optional"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?></span><?php } ?>
-				<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS')); ?>
-				<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
+echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?>">
+			<div class="element_editing grid">
+				<div class="pane-wrapper col span8">
+					<span class="checker">&nbsp;</span>
+					<label id="<?php echo $elName; ?>-lbl">
+						<?php if ($required) { ?><span class="required"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span>
+						<?php } else { ?><span class="optional"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?></span><?php } ?>
+						<?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_TAGS')); ?>
+					</label>
+						<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 
-				<?php
-				JPluginHelper::importPlugin( 'hubzero' );
-				$dispatcher = JDispatcher::getInstance();
+						<?php
+						JPluginHelper::importPlugin( 'hubzero' );
+						$dispatcher = JDispatcher::getInstance();
 
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
+						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
 
-				if (count($tf) > 0) {
-					echo $tf[0];
-				} else {
-					echo '<textarea name="tags" id="tags" rows="6" cols="35">'. $this->tags .'</textarea>'."\n";
-				}
-				?>
-			</label>
-		</div>
-	</div>
+						if (count($tf) > 0) {
+							echo $tf[0];
+						} else {
+							echo '<textarea name="tags" id="tags" rows="6" cols="35">'. $this->tags .'</textarea>'."\n";
+						}
+						?>
+				</div>
+				<div class="col span3 omega block-aside">
+					<div class="block-info"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ABOUT_TAGS'); ?></p></div>
+				</div>
+			</div>
 </div>
-
 <?php if ($this->categories && count($this->categories) > 1) {
 
-	$paramsClass = 'JParameter';
-	if (version_compare(JVERSION, '1.6', 'ge'))
-	{
-		$paramsClass = 'JRegistry';
-	}
-	?>
-<div class="blockelement el-optional el-complete">
-	<div class="element_editing">
-		<div class="pane-wrapper">
-			<span class="checker">&nbsp;</span>
-	<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SEARCH_CATEGORY'); ?></label>
-	<?php foreach ($this->categories as $cat) {
-		$params = new $paramsClass($cat->params);
-		// Skip inaplicable category
-		if (!$params->get('type_' . $this->pub->base, 1))
+		$paramsClass = 'JParameter';
+		if (version_compare(JVERSION, '1.6', 'ge'))
 		{
-			continue;
+			$paramsClass = 'JRegistry';
 		}
 		?>
-		<div class="pubtype-block">
-		 <input type="radio" name="pubtype" value="<?php echo $cat->id; ?>"
-		<?php if ($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> class="radio" />	<?php echo $cat->name; ?>
-			<span><?php echo $cat->description; ?></span>
+<div class="blockelement el-optional el-complete">
+	<div class="element_editing grid">
+		<div class="pane-wrapper col span8">
+				<span class="checker">&nbsp;</span>
+				<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_SEARCH_CATEGORY'); ?></label>
+		<?php foreach ($this->categories as $cat) {
+			$params = new $paramsClass($cat->params);
+			// Skip inaplicable category
+			if (!$params->get('type_' . $this->pub->base, 1))
+			{
+				continue;
+			}
+			?>
+				<div class="pubtype-block">
+			 		<input type="radio" name="pubtype" value="<?php echo $cat->id; ?>"
+				<?php if ($this->pub->category == $cat->id) { echo 'checked="checked"'; } ?> class="radio" />		<?php echo $cat->name; ?>
+					<span><?php echo $cat->description; ?></span>
+				</div>
+		<?php } ?>
 		</div>
-	<?php } ?>
 	</div>
- </div>
 </div>
 <?php } ?>
