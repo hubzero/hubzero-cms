@@ -573,7 +573,7 @@ class plgMembersBlog extends JPlugin
 		}
 		else 
 		{
-			$view->entry = $this->model->entry(JRequest::getInt('entry', 0));
+			$view->entry = new BlogModelEntry(JRequest::getInt('entry', 0));
 		}
 
 		// Does it exist?
@@ -630,7 +630,7 @@ class plgMembersBlog extends JPlugin
 		$entry['allow_comments'] = (isset($entry['allow_comments'])) ? : 0;
 		
 		// Instantiate model
-		$row = $this->model->entry($entry['id']);
+		$row = new BlogModelEntry($entry['id']);
 
 		// Bind data
 		if (!$row->bind($entry)) 
@@ -689,7 +689,7 @@ class plgMembersBlog extends JPlugin
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = $this->model->entry($id);
+		$entry = new BlogModelEntry($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) 
