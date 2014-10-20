@@ -85,7 +85,7 @@ class SupportMessage extends JTable
 		$this->title = trim($this->title);
 		if (!$this->title)
 		{
-			$this->title = \Hubzero\Utility\String::truncate($this->title, 250);
+			$this->title = \Hubzero\Utility\String::truncate($this->message, 250);
 		}
 
 		return true;
