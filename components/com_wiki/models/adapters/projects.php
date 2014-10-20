@@ -58,7 +58,11 @@ class WikiModelAdapterProjects extends WikiModelAdapterAbstract
 	public function link($type='', $params=null)
 	{
 		$segments = $this->_segments;
-
+		$project = JRequest::getVar('project', NULL);
+		if (is_object($project))
+		{
+			$segments['scope'] = 'projects/' . $project->alias . '/notes';
+		}
 		$anchor = '';
 
 		// If it doesn't exist or isn't published
