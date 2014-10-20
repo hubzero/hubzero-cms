@@ -82,7 +82,7 @@ $element =  JRequest::getInt( 'el', $activeEl );
 						<?php
 							if ($tagline && $move)
 							{ ?>
-							<h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$prov && $this->manifest->elements) { ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php } ?></h5>
+							<h5><?php echo $tagline; ?> <?php if ($this->manifest->about && !$prov) { ?><a class="pub-info-pop more-content" href="#info-panel" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CLICK_TO_LEARN_MORE'); ?>">&nbsp;</a> <?php } ?></h5>
 						<?php }
 						?>
 						<?php echo $this->content; ?>
