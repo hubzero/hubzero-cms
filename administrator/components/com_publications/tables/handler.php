@@ -154,9 +154,12 @@ class PublicationHanlder extends JTable
 				if ($field == 'params')
 				{
 					$params = json_decode($value, TRUE);
-					foreach ($params as $paramName => $paramValue)
+					if (is_array ($params))
 					{
-						$output['params'][$paramName] = $paramValue;
+						foreach ($params as $paramName => $paramValue)
+						{
+							$output['params'][$paramName] = $paramValue;
+						}
 					}
 				}
 				else
