@@ -338,11 +338,10 @@ class SupportQuery extends JTable
 
 		$having = '';
 		$e = array();
-		$elen = count($condition->expressions);
 
 		$tags = array();
 		$nottags = array();
-		for ($i = 0; $i < $elen; $i++)
+		for ($i = 0; $i < count($condition->expressions); $i++)
 		{
 			$expr = $condition->expressions[$i];
 			if (strtolower($expr->fldval) == 'tag')
@@ -353,11 +352,21 @@ class SupportQuery extends JTable
 				{
 					$nottags[] = $expr->val;
 				}
+			}
+			if (strtolower($expr->fldval) == 'status' && $expr->val == '-1')
+			{
+				$condition->expressions[$i]->val = '0';
 
+				$exp = new stdClass;
+				$exp->fldval = 'open';
+				$exp->opval  = '=';
+				$exp->opdisp = 'is';
+				$exp->val    = '0';
+				array_push($condition->expressions, $exp);
 			}
 		}
 
-		for ($i = 0; $i < $elen; $i++)
+		for ($i = 0; $i < count($condition->expressions); $i++)
 		{
 			$uid = 'username';
 			if (strtolower($expr->fldval) == 'owner')
