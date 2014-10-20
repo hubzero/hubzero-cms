@@ -1093,6 +1093,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Initiate class and bind data to database fields
 		$row = new SupportModelTicket();
+		$row->set('open', 1);
 		$row->set('status', 0);
 		$row->set('created', JFactory::getDate()->toSql());
 		$row->set('login', $reporter['login']);
@@ -1207,6 +1208,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			// Only do the following if a comment was posted
 			// otherwise, we're only recording a changelog
 			$old = new SupportModelTicket();
+			$old->set('open', 1);
 			$old->set('tags', '');
 
 			$rowc = new SupportModelComment();
