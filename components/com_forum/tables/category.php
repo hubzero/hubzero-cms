@@ -411,6 +411,18 @@ class ForumTableCategory extends JTable
 		{
 			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 		}
+		if (isset($filters['access']))
+		{
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$where[] = "c.access IN (" . implode(',', $filters['access']) . ")";
+			}
+			else if ($filters['access'] >= 0)
+			{
+				$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
+			}
+		}
 		if (isset($filters['closed']))
 		{
 			$where[] = "c.closed=" . $this->_db->Quote(intval($filters['closed']));
@@ -482,6 +494,18 @@ class ForumTableCategory extends JTable
 		if (isset($filters['scope_sub_id']) && (int) $filters['scope_sub_id'] >= 0)
 		{
 			$flt = " AND (r.scope_sub_id=" . $this->_db->Quote(intval($filters['scope_sub_id'])) . " OR r.sticky=1)";
+		}
+		if (isset($filters['access']))
+		{
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$flt .= " AND r.access IN (" . implode(',', $filters['access']) . ")";
+			}
+			else if ($filters['access'] >= 0)
+			{
+				$flt .= " AND r.access=" . $this->_db->Quote(intval($filters['access']));
+			}
 		}
 
 		if (isset($filters['admin']))

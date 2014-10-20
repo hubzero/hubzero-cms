@@ -190,12 +190,27 @@ class ForumModelPost extends ForumModelAbstract
 
 		if (!$new)
 		{
+			$fields = array();
+
+			// If this is a thread (first post), update the access levels
+			// of all posts in this thread.
+			if (!$this->get('parent') && $old->get('access') != $this->get('access'))
+			{
+				$fields['access'] = $this->get('access');
+			}
+
+			// If the category has changed
 			if ($old->get('category_id') != $this->get('category_id'))
 			{
-				$this->_tbl->updateReplies(array(
-					'category_id' => $this->get('category_id'),
+				$fields['category_id'] = $this->get('category_id');
+			}
+
+			if (!empty($fields))
+			{
+				$this->_tbl->updateReplies(
+					$fields,
 					$this->get('id')
-				));
+				);
 			}
 		}
 

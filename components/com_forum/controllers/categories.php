@@ -115,7 +115,9 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
 			'state'      => 1,
-			'parent'     => 0
+			'parent'     => 0,
+			// Show based on if logged in or not
+			'access'     => ($this->juser->get('guest') ? 0 : array(0, 1))
 		);
 
 		$this->view->filters['sortby']   = JRequest::getWord('sortby', 'activity');

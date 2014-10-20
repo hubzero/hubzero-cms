@@ -200,6 +200,7 @@ $this->thread->set('category', $this->category->get('alias'));
 					<input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
 					<input type="hidden" name="fields[parent]" value="<?php echo $this->thread->get('id'); ?>" />
 					<input type="hidden" name="fields[state]" value="1" />
+					<input type="hidden" name="fields[access]" value="<?php echo $this->thread->get('access', 0); ?>" />
 					<input type="hidden" name="fields[id]" value="" />
 					<input type="hidden" name="fields[scope]" value="site" />
 					<input type="hidden" name="fields[scope_id]" value="0" />

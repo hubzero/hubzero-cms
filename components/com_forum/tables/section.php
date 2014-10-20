@@ -350,6 +350,18 @@ class ForumTableSection extends JTable
 		{
 			$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 		}
+		if (isset($filters['access']))
+		{
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$where[] = "c.access IN (" . implode(',', $filters['access']) . ")";
+			}
+			else if ($filters['access'] >= 0)
+			{
+				$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
+			}
+		}
 
 		if (isset($filters['group']) && (int) $filters['group'] >= 0)
 		{

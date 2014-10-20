@@ -425,6 +425,18 @@ class ForumTablePost extends JTable
 					$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
 				}
 			}
+			if (isset($filters['access']))
+			{
+				if (is_array($filters['access']))
+				{
+					$filters['access'] = array_map('intval', $filters['access']);
+					$where[] = "c.access IN (" . implode(',', $filters['access']) . ")";
+				}
+				else if ($filters['access'] >= 0)
+				{
+					$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
+				}
+			}
 			if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
 			{
 				$where[] = "c.sticky=" . $this->_db->Quote(intval($filters['sticky']));
@@ -581,7 +593,7 @@ class ForumTablePost extends JTable
 			$query .= ", (CASE WHEN c.last_activity != '0000-00-00 00:00:00' THEN c.last_activity ELSE c.created END) AS activity";
 		}
 		$query .= ", a.title AS access_level";
-		$query  .= " FROM $this->_tbl AS c";
+		$query .= " FROM $this->_tbl AS c";
 		$query .= " LEFT JOIN #__viewlevels AS a ON c.access=a.id";
 
 		$where = array();
@@ -596,6 +608,18 @@ class ForumTablePost extends JTable
 			else if ($filters['state'] >= 0)
 			{
 				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+			}
+		}
+		if (isset($filters['access']))
+		{
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$where[] = "c.access IN (" . implode(',', $filters['access']) . ")";
+			}
+			else if ($filters['access'] >= 0)
+			{
+				$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
 			}
 		}
 		if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
@@ -714,6 +738,18 @@ class ForumTablePost extends JTable
 			else if ($filters['state'] >= 0)
 			{
 				$where[] = "c.state=" . $this->_db->Quote(intval($filters['state']));
+			}
+		}
+		if (isset($filters['access']))
+		{
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$where[] = "c.access IN (" . implode(',', $filters['access']) . ")";
+			}
+			else if ($filters['access'] >= 0)
+			{
+				$where[] = "c.access=" . $this->_db->Quote(intval($filters['access']));
 			}
 		}
 		if (isset($filters['sticky']) && (int) $filters['sticky'] != 0)
@@ -945,7 +981,16 @@ class ForumTablePost extends JTable
 			return null;
 		}
 
-		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.thread=" . $this->_db->Quote($thread) . " AND r.state=1 ORDER BY id DESC LIMIT 1";
+		$query = "SELECT r.* FROM $this->_tbl AS r WHERE r.thread=" . $this->_db->Quote($thread) . " AND r.state=1";
+		if (JFactory::getUser()->get('guest'))
+		{
+			$query .= " AND r.access=0";
+		}
+		else
+		{
+			$query .= " AND r.access IN (0, 1)";
+		}
+		$query .= " ORDER BY id DESC LIMIT 1";
 
 		$this->_db->setQuery($query);
 		$obj = $this->_db->loadObject();
@@ -973,6 +1018,14 @@ class ForumTablePost extends JTable
 		}
 		$where[] = "r.scope=" . $this->_db->Quote($scope);
 		$where[] = "r.state=" . $this->_db->Quote(1);
+		if (JFactory::getUser()->get('guest'))
+		{
+			$where[] = "r.access=0";
+		}
+		else
+		{
+			$where[] = "r.access IN (0, 1)";
+		}
 		if ($category_id !== null)
 		{
 			$where[] = "r.category_id=" . $this->_db->Quote($category_id);
@@ -1494,6 +1547,18 @@ class ForumTablePost extends JTable
 			else if ($filters['state'] >= 0)
 			{
 				$query .= " AND n.state=" . $this->_db->Quote(intval($filters['state']));
+			}
+		}
+		if (isset($filters['access']))
+		{
+			if (is_array($filters['access']))
+			{
+				$filters['access'] = array_map('intval', $filters['access']);
+				$query .= " AND n.access IN (" . implode(',', $filters['access']) . ")";
+			}
+			else if ($filters['access'] >= 0)
+			{
+				$query .= " AND n.access=" . $this->_db->Quote(intval($filters['access']));
 			}
 		}
 		$query .= " ORDER BY n.created ASC";

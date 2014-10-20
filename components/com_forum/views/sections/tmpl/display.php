@@ -73,7 +73,8 @@ $juser = JFactory::getUser();
 			<?php
 			foreach ($this->sections as $section)
 			{
-				if (!$section->exists() && $section->categories()->total())
+				$t = $section->categories('list', array('access' => ($juser->get('guest') ? 0 : array(0, 1))), true)->total();
+				if (!$section->exists() && $t)
 				{
 					continue;
 				}

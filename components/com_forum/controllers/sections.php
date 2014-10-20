@@ -64,7 +64,9 @@ class ForumControllerSections extends \Hubzero\Component\SiteController
 			'scope_id'   => $this->model->get('scope_id'),
 			'search'     => JRequest::getVar('q', ''),
 			//'section_id' => 0,
-			'state'      => 1
+			'state'      => 1,
+			// Show based on if logged in or not
+			'access'     => ($this->juser->get('guest') ? 0 : array(0, 1))
 		);
 
 		// Flag to indicate if a section is being put into edit mode
