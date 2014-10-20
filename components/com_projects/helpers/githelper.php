@@ -241,6 +241,11 @@ class ProjectsGitHelper extends JObject
 	 */
 	public function gitLogAll ($path = '', $subdir = '')
 	{
+		// Do NOT use - results in memory exhaust on large repos
+		// hotfixed on PURR & NCIP in 1.2.2 - snowwitje
+		$collector = array();
+		return $collector;
+
 		chdir($this->_prefix . $path);
 		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae||%H||%s" --name-only ' . $subdir;
 
