@@ -67,11 +67,11 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 			'filter_order',
 			'toolname'
 		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir']     = strtoupper(trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortdir',
 			'filter_order_Dir',
 			'ASC'
-		));
+		)));
 		$this->view->filters['sortby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// Get paging variables
