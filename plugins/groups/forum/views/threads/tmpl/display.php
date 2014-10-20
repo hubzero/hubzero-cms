@@ -257,6 +257,7 @@ $this->css()
 			<input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
 			<input type="hidden" name="fields[thread]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
 			<input type="hidden" name="fields[state]" value="1" />
+			<input type="hidden" name="fields[access]" value="<?php echo $this->thread->get('access', 0); ?>" />
 			<input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->model->get('scope')); ?>" />
 			<input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->model->get('scope_id')); ?>" />
 			<input type="hidden" name="fields[id]" value="" />

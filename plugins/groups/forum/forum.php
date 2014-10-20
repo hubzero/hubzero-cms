@@ -154,6 +154,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$p = new \Hubzero\Plugin\Params($this->database);
 			$this->params = $p->getParams($this->group->get('gidNumber'), 'groups', $this->_name);
 
+			$this->params->set('access-plugin', $group_plugin_acl);
+
 			//option and paging vars
 			$this->option = $option;
 			//$this->name = substr($option, 4, strlen($option));
@@ -463,8 +465,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope_id'   => $this->model->get('scope_id'),
 			'search'     => JRequest::getVar('q', ''),
 			//'section_id' => 0,
-			'state'      => 1
+			'state'      => 1,
+			'access'     => 0
 		);
+		if (!$this->juser->get('guest'))
+		{
+			$this->view->filters['access'] = array(0, 1, 3);
+		}
+		if (in_array($this->juser->get('id'), $this->members))
+		{
+			$this->view->filters['access'] = array(0, 1, 3, 4);
+		}
 
 		$this->view->edit = JRequest::getVar('section', '');
 
@@ -672,8 +683,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
 			'state'      => 1,
-			'parent'     => 0
+			'parent'     => 0,
+			'access'     => 0
 		);
+		if (!$this->juser->get('guest'))
+		{
+			$this->view->filters['access'] = array(0, 1, 3);
+		}
+		if (in_array($this->juser->get('id'), $this->members))
+		{
+			$this->view->filters['access'] = array(0, 1, 3, 4);
+		}
 
 		$this->view->filters['sortby']   = JRequest::getWord('sortby', 'activity');
 		switch ($this->view->filters['sortby'])
@@ -760,8 +780,17 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'search'     => JRequest::getVar('q', ''),
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
-			'state'      => 1
+			'state'      => 1,
+			'access'     => 0
 		);
+		if (!$this->juser->get('guest'))
+		{
+			$this->view->filters['access'] = array(0, 1, 3);
+		}
+		if (in_array($this->juser->get('id'), $this->members))
+		{
+			$this->view->filters['access'] = array(0, 1, 3, 4);
+		}
 
 		$this->view->section = $this->model->section(0);
 		$this->view->section->set('title', JText::_('Posts'));
@@ -1032,7 +1061,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			'section'  => JRequest::getVar('section', ''),
 			'category' => JRequest::getCmd('category', ''),
 			'parent'   => JRequest::getInt('thread', 0),
-			'state'    => 1
+			'state'    => 1,
 		);
 
 		$this->view->section  = $this->model->section($this->view->filters['section'], $this->model->get('scope'), $this->model->get('scope_id'));
@@ -1057,6 +1086,44 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Get authorization
 		$this->_authorize('category', $this->view->category->get('id'));
 		$this->_authorize('thread', $this->view->thread->get('id'));
+
+		// If the access is anything beyond public, 
+		// make sure they're logged in.
+		if ($this->view->thread->get('access') > 0)
+		{
+			if ($this->juser->get('guest'))
+			{
+				$return = JRoute::_($this->base);
+				$this->setRedirect(
+					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				);
+				return;
+			}
+
+			/*if ($this->view->thread->get('access') == 1)
+			{
+				$this->params->set('access-create-thread', true);
+			}*/
+		}
+
+		// If the access is private,
+		// make sure they're a member
+		//if ($this->view->thread->get('access') == 4 && !in_array($this->juser->get('id'), $this->members))
+		if ($this->view->thread->get('access') == 4 && !$this->params->get('access-view-thread'))
+		{
+			JError::raiseError(403, JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'));
+			return;
+		}
+
+		// If the access is protected,
+		// disable editing and posting capabilities
+		if ($this->view->thread->get('access') == 3 && !$this->params->get('access-view-thread'));
+		{
+			$this->params->get('access-create-thread', false);
+			$this->params->get('access-edit-thread', false);
+			$this->params->get('access-delete-thread', false);
+			$this->params->get('access-manage-thread', false);
+		}
 
 		$this->view->filters['state'] = array(1, 3);
 

@@ -204,7 +204,9 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 			'search'     => JRequest::getVar('q', ''),
 			'scope'      => $this->model->get('scope'),
 			'scope_id'   => $this->model->get('scope_id'),
-			'state'      => 1
+			'state'      => 1,
+			// Show based on if logged in or not
+			'access'     => ($this->juser->get('guest') ? 0 : array(0, 1))
 		);
 
 		$this->view->section = $this->model->section(0);

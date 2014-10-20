@@ -42,6 +42,16 @@ if ($this->config->get('access-manage-section')) {
 		</form>
 
 	<?php
+		$filters = array('access' => 0);
+		if (!JFactory::getUser()->get('guest'))
+		{
+			$filters['access'] = array(0, 1, 3);
+			if ($this->config->get('access-view-section'))
+			{
+				$filters['access'] = array(0, 1, 3, 4);
+			}
+		}
+
 		foreach ($this->sections as $section)
 		{
 			if (!$section->exists())
@@ -95,7 +105,7 @@ if ($this->config->get('access-manage-section')) {
 				</tfoot>
 			<?php } ?>
 				<tbody>
-			<?php if ($section->categories()->total() > 0) { ?>
+			<?php if ($section->categories('list', $filters)->total() > 0) { ?>
 				<?php foreach ($section->categories() as $row) { ?>
 					<tr<?php if ($row->get('closed')) { echo ' class="closed"'; } ?>>
 						<th scope="row">
@@ -182,7 +192,7 @@ if ($this->config->get('access-manage-section')) {
 		</div><!-- /.container -->
 	<?php } ?>
 
-	<?php if (JComponentHelper::getParams('com_groups')->get('email_comment_processing')) { ?>
+	<?php if (JComponentHelper::getParams('com_groups')->get('email_comment_processing') && $this->config->get('access-view-section')) { ?>
 		<form method="post" action="<?php echo JRoute::_($base); ?>" id="forum-options">
 			<fieldset>
 				<legend><?php echo JText::_('PLG_GROUPS_FORUM_EMAIL_SETTINGS'); ?></legend>
@@ -232,7 +242,8 @@ if ($this->config->get('access-manage-section')) {
 				$lname = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 				if (!$post->get('anonymous'))
 				{
-					$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
+					//$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
+					$lname = $this->escape(stripslashes($post->creator('name')));
 				}
 				foreach ($this->sections as $section)
 				{
@@ -242,26 +253,28 @@ if ($this->config->get('access-manage-section')) {
 						{
 							if ($row->get('id') == $post->get('category_id'))
 							{
-								$cat = $row->get('alias');
-								$sec = $section->get('alias');
+								$post->set('category', $row->get('alias'));
+								$post->set('section', $section->get('alias'));
 								break;
 							}
 						}
 					}
 				}
 				?>
-				<a class="entry-date" href="<?php echo JRoute::_($post->link()); ?>">
-					<span class="entry-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span>
-					<span class="time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span>
-					<span class="entry-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span>
-					<span class="date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
+				<a class="entry-comment" href="<?php echo JRoute::_($post->link()); ?>">
+					<?php echo $post->content('clean', 170); ?>
 				</a>
 				<span class="entry-author">
-					<?php echo JText::_('by'); ?>
 					<?php echo $lname; ?>
 				</span>
+				<span class="entry-date">
+					<span class="entry-date-at"><?php echo JText::_('PLG_GROUPS_FORUM_AT'); ?></span>
+					<span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span>
+					<span class="entry-date-on"><?php echo JText::_('PLG_GROUPS_FORUM_ON'); ?></span>
+					<span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
+				</span>
 			<?php } else { ?>
-				<?php echo JText::_('none'); ?>
+				<?php echo JText::_('PLG_GROUPS_FORUM_NONE'); ?>
 			<?php } ?>
 			</p>
 		</div>

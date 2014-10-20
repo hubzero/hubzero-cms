@@ -34,10 +34,14 @@ $juser = JFactory::getUser();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum';
 
-if ($this->post->exists()) {
+if ($this->post->exists())
+{
 	$action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias') . '/' . $this->post->get('thread');
-} else {
+}
+else
+{
 	$action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias');
+	$this->post->set('access', 0);
 }
 
 $this->css()
@@ -52,7 +56,9 @@ $this->css()
 </ul>
 
 <section class="main section">
+	<?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
 	<div class="subject">
+	<?php } ?>
 		<?php foreach ($this->notifications as $notification) { ?>
 			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 		<?php } ?>
@@ -96,19 +102,33 @@ $this->css()
 			<?php } ?>
 
 			<?php if (!$this->post->get('parent')) { ?>
+				<?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
+				<label for="field-access">
+					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS'); ?>
+					<select name="fields[access]" id="field-access">
+						<option value="0"<?php if ($this->post->get('access', 0) == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
+						<option value="1"<?php if ($this->post->get('access', 0) == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+						<?php /*<option value="3"<?php if ($this->post->get('access', 0) == 3) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PROTECTED'); ?></option>*/ ?>
+						<option value="4"<?php if ($this->post->get('access', 0) == 4) { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
+					</select>
+				</label>
+				<?php } else { ?>
+					<input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->post->get('access', 0); ?>" />
+				<?php } ?>
+
 				<label for="field-category_id">
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<select name="fields[category_id]" id="field-category_id">
 						<option value="0"><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
-				<?php foreach ($this->model->sections() as $section) { ?>
-					<?php if ($section->categories('list')->total() > 0) { ?>
-						<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
-						<?php foreach ($section->categories() as $category) { ?>
-							<option value="<?php echo $category->get('id'); ?>"<?php if ($this->category->get('alias') == $category->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+						<?php foreach ($this->model->sections() as $section) { ?>
+							<?php if ($section->categories('list')->total() > 0) { ?>
+								<optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
+								<?php foreach ($section->categories() as $category) { ?>
+									<option value="<?php echo $category->get('id'); ?>"<?php if ($this->category->get('alias') == $category->get('alias')) { echo ' selected="selected"'; } ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+								<?php } ?>
+								</optgroup>
+							<?php } ?>
 						<?php } ?>
-						</optgroup>
-					<?php } ?>
-				<?php } ?>
 					</select>
 				</label>
 
@@ -118,6 +138,7 @@ $this->css()
 				</label>
 			<?php } else { ?>
 				<input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->escape($this->post->get('category_id')); ?>" />
+				<input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->post->get('access', 0); ?>" />
 			<?php } ?>
 
 				<label for="field_comment">
@@ -194,8 +215,10 @@ $this->css()
 
 			<?php echo JHTML::_('form.token'); ?>
 		</form>
+	<?php if ($this->config->get('access-plugin') == 'anyone' || $this->config->get('access-plugin') == 'registered') { ?>
 	</div><!-- / .subject -->
 	<aside class="aside">
 		<p><?php echo JText::_('PLG_GROUPS_FORUM_EDIT_HINT'); ?></p>
 	</aside><!-- /.aside -->
+	<?php } ?>
 </section><!-- / .below section -->
