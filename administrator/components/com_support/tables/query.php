@@ -325,7 +325,7 @@ class SupportQuery extends JTable
 					$nottags[] = $expr->val;
 				}
 			}
-			if (strtolower($expr->fldval) == 'status')
+			if (strtolower($expr->fldval) == 'status' && $expr->val == '-1')
 			{
 				$condition->expressions[$i]->val = '0';
 
