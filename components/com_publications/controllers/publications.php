@@ -1217,7 +1217,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Check if user has access to content
-		$this->_checkRestrictions($publication, $version);
+		if ($this->_checkRestrictions($publication, $version))
+		{
+			return false;
+		}
 
 		// Use new curation flow?
 		$useBlocks  = $this->config->get('curation', 0);
@@ -1550,7 +1553,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$this->publication 	= $objP->getPublication($this->_id, $version, NULL, $this->_alias);
 
 			// Check if user has access to content
-			$this->_checkRestrictions($this->publication, $version);
+			if ($this->_checkRestrictions($this->publication, $version))
+			{
+				return false;
+			}
 
 			// Get primary attachment(s)
 			$objPA = new PublicationAttachment( $this->database );
@@ -2688,7 +2694,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
 			$this->introTask();
-			return;
+			return true;
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
@@ -2696,7 +2702,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
 			$this->introTask();
-			return;
+			return true;
 		}
 
 		// Check authorization
@@ -2709,19 +2715,19 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			{
 				$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
 				$this->introTask();
-				return;
+				return true;
 			}
 		}
 
 		// Dev version/pending/posted/dark archive resource? Must be project owner
-		if (($version == 'dev' || $publication->state == 4
+		if (($version == 'dev' || $publication->state == 4 || $publication->state == 3
 			|| $publication->state == 5 || $publication->state == 6) && !$authorized)
 		{
 			$this->_blockAccess($publication);
-			return false;
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
