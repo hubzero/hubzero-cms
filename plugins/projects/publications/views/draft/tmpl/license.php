@@ -63,7 +63,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step
 
 $defaultText = $this->license ? $this->license->text : NULL;
 $text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
-$text = preg_replace("/\n/", "\r", trim($text));
+
 ?>
 
 <!-- Load content selection browser //-->
@@ -87,7 +87,7 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 							. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_LICENSE_TERMS')
 							. '</a>';
 							$info .= ' <div class="hidden">';
-							$info .= ' 	<div class="full-content" id="more-lic"><pre>' . $this->license->text . '</pre></div>';
+							$info .= ' 	<div class="full-content" id="more-lic"><pre>' . preg_replace("/\r\n/", "\r", $text) . '</pre></div>';
 							$info .= ' </div>';
 						} ?>
 				<div class="chosenitem">
@@ -98,12 +98,28 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 					<div class="agreements">
 						<label><span class="required"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span>
 							<?php echo $this->license->text ? JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE') : JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_WRITE_AND_CUSTOMIZE'); ?>
-							<textarea name="license_text" id="license-text" cols="50" rows="10" class="pubinput"><?php echo $text; ?></textarea>
+							<textarea name="license_text" id="license-text" cols="50" rows="10" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($text)); ?></textarea>
 						</label>
 						<p class="hidden" id="license-template"><?php echo preg_replace("/\r\n/", "\r", $this->license->text); ?></p>
 						<p class="hint"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_REMOVE_DEFAULTS'); ?></p>
 						<span class="mini pub-edit" id="reload"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_RELOAD_TEMPLATE_TEXT'); ?></span>
 					</div>
+					<?php } else {
+						// Word replacements required?
+						preg_match_all('/\[([^\]]*)\]/', $this->license->text, $substitutes);
+						preg_match_all('/\[([^]]+)\]/', $this->pub->license_text, $matches);
+						$i = 0;
+
+						if ($this->license->text && count($substitutes) > 1) { ?>
+						<div class="replacements">
+							<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_REPLACE_DEFAULTS'); ?></p>
+						<?php foreach ($substitutes[1] as $sub)
+							{ ?>
+							<label>[<?php echo $sub; ?>]<span class="required"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><input name="substitute[<?php echo $sub; ?>]" type="text" value="<?php echo $versionParams->get('licensecustom' . strtolower($sub), ''); ?>" class="customfield" /></label>
+						<?php $i++; } ?>
+						</div>
+					<?php } ?>
+
 					<?php } ?>
 					<?php if ($this->license->agreement == 1) {
 							$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_AGREED') . ' ' . $this->license->title.' '.JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE');

@@ -892,6 +892,9 @@
 		background: #E2E2E2;
 		margin-top: 3em;
 	}
+	.replacements {
+		padding: 1em 2em;
+	}
 /*
 --------------------------------------------- */
 	.starred {
@@ -1088,3 +1091,16 @@
 			margin-right: 40px;
 		}
 	}
+	.btn.disabled {
+		color: #a8a8a8;
+	}
+	.button-wrapper:before {
+		color: #333;
+	}
+	.disabled .button-wrapper:before {
+		color: #CCC;
+	}
+	.disabled .button-wrapper.bw-previous:before {
+		color: #333;
+	}
+	
