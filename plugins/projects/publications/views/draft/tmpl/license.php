@@ -109,11 +109,11 @@ echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 &&
 						preg_match_all('/\[([^\]]*)\]/', $this->license->text, $substitutes);
 						preg_match_all('/\[([^]]+)\]/', $this->pub->license_text, $matches);
 						$i = 0;
-						
+
 						if ($this->license->text && count($substitutes) > 1) { ?>
 						<div class="replacements">
 							<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_REPLACE_DEFAULTS'); ?></p>
-						<?php 
+						<?php
 							$subs = array_unique($substitutes[1]);
 							foreach ($subs as $sub)
 							{ ?>
