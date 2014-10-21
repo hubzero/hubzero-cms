@@ -233,7 +233,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		}
 
 		// clean up filters a little
-		/*array_walk($this->view->filters, function($val, $key)
+		array_walk($this->view->filters, function($val, $key)
 		{
 			if (!is_array($val))
 			{
@@ -241,7 +241,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				$val = str_replace('"', '', $val);
 				$this->view->filters[$key] = $val;
 			}
-		});*/
+		});
 
 		// Instantiate a new citations object
 		$obj = new CitationsCitation($this->database);
