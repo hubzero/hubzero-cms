@@ -1124,6 +1124,10 @@ class PublicationsHtml
 					$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_WIP');
 					break;
 			}
+			if ($authorized == 'curator')
+			{
+				$msg .= ' '.JText::_('You are viewing this publication as a curator.');
+			}
 			if ($authorized == 3)
 			{
 				$msg .= ' '.JText::_('COM_PUBLICATIONS_PREVIEW_ACCESS');
@@ -1131,6 +1135,10 @@ class PublicationsHtml
 			if ($editlink && ($authorized == 1 || $authorized == 2 || $authorized == 4)) {
 				$msg .= ' <a href="'.$editlink.'">'.JText::_('COM_PUBLICATIONS_STATUS_MSG_MANAGE_PUBLICATION').'</a>.';
 			}
+		}
+		if ($publication->state == 1 && $authorized == 'curator')
+		{
+			return false;
 		}
 		if ($msg)
 		{

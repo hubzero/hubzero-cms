@@ -193,7 +193,7 @@ if ($experiment == false)
 	// Show status for authorized users
 	if ($this->contributable)
 	{
-		$html .= PublicationsHtml::showAccessMessage( $publication, $option, $authorized, $restricted, $editurl );
+		$html .= PublicationsHtml::showAccessMessage( $publication, $option, $this->authorized, $restricted, $editurl );
 	}
 
 	$html .= '</div><!-- / .subject -->'."\n";
