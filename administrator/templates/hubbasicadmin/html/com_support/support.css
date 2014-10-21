@@ -1,6 +1,40 @@
 @import url("../../../../components/com_support/assets/css/support.css");
 
-	#ticketForm {
-		padding-top: 1px;
-		margin: -2.23606798em;
+	#main.com_support {
+		padding: 1.61803399em 0 0 0;
+	}
+	#main.com_support #item-form,
+	#main.com_support .sub-navigation {
+		margin: 0 2.23606798em
+	}
+	#main.com_support .sub-navigation ul {
+		margin-bottom: 0;
+	}
+	#main.com_support a.modal,
+	#main.com_support a.modal:hover {
+		background: transparent;
+		border: none;
+		text-shadow: none;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		-ms-box-shadow: none;
+		-o-box-shadow: none;
+		box-shadow: none;
+		display: block;
+		padding: 0.2em;
+		font-size: 2em;
+		overflow: hidden;
+		white-space: nowrap;
+		position: relative;
+		color: #bbb;
+		line-height: 1;
+		font-weight: normal;
+		min-height: 1em;
+	}
+	#main.com_support a.modal:hover {
+		color: #fff;
+	}
+	#main.com_support fieldset#filter #filter_search,
+	#main.com_support fieldset#filter-bar #filter_search {
+		background-image: none;
 	}
