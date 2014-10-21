@@ -246,7 +246,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		}
 
 		// Add the tag(s)
-		$row->tag($fields['tags'], $this->juser->get('id'), 1);
+		$row->tag($fields['tags'], $this->juser->get('id'));
 
 		if ($redirect)
 		{
