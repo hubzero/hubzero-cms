@@ -995,12 +995,21 @@ class JDatabaseMySQL extends JDatabase
 	 * Gets the database character set of the given table
 	 *
 	 * @param  string $table the table for which to retrieve the character set
+	 * @param  string $field the field to check (optional)
 	 * @return string
 	 **/
-	public function getCharacterSet($table)
+	public function getCharacterSet($table, $field=null)
 	{
 		$create = $this->getTableCreate($table);
-		preg_match('/CHARSET=([[:alnum:]]*)/', $create[$table], $matches);
+
+		if (isset($field))
+		{
+			preg_match('/' . $this->quoteName($field) . ' [[:alnum:]\(\)]* CHARACTER SET ([[:alnum:]]*)/', $create[$table], $matches);
+		}
+		else
+		{
+			preg_match('/CHARSET=([[:alnum:]]*)/', $create[$table], $matches);
+		}
 
 		return (isset($matches[1])) ? $matches[1] : false;
 	}
