@@ -70,5 +70,14 @@ class Migration20141009175833ComCourses extends Base
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
+
+		if ($this->db->tableExists('#__courses_offering_section_badge_criteria')
+			&& $this->db->tableHasField('#__courses_offering_section_badge_criteria', 'text')
+			&& strtolower($this->db->getCharacterSet('#__courses_offering_section_badge_criteria', 'text')) != 'utf8')
+		{
+			$query = "ALTER TABLE `#__courses_offering_section_badge_criteria` CHANGE `text` `text` TEXT CHARACTER SET utf8 NOT NULL;";
+			$this->db->setQuery($query);
+			$this->db->query();
+		}
 	}
 }
