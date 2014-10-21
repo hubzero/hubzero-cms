@@ -989,6 +989,9 @@
 		width: auto;
 		display: inline;
 	}
+	.replacements {
+		padding: 1em 2em;
+	}
 
 /* Status page
 --------------------------------------------- */

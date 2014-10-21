@@ -871,11 +871,13 @@ HUB.ProjectPublicationsDraft = {
 		var ltext 	= $('#license-text');
 		var agree 	= $('#agreement');
 		var element = $('#licensePick');
+		var custom  = $('.customfield');
 
 		if (!element.length)
 		{
 			return false;
 		}
+		HUB.ProjectPublicationsDraft.checkLicense();
 		if (ltext.length)
 		{
 			ltext.unbind();
@@ -892,10 +894,23 @@ HUB.ProjectPublicationsDraft = {
 				HUB.ProjectPublicationsDraft.checkLicense();
 			});
 		}
+
+		if (custom.length)
+		{
+			custom.each(function(i, item)
+			{
+				$(item).unbind();
+				$(item).on('keyup', function(e)
+				{
+					HUB.ProjectPublicationsDraft.checkLicense();
+				});
+			});
+		}
+
 		// Load template text
 		var reload 	 = $('#reload');
 		var template = $('#license-template');
-		if (reload.length && template.length && ltext.length) 
+		if (reload.length && template.length && ltext.length)
 		{
 			reload.on('click', function(e)
 			{
@@ -915,6 +930,7 @@ HUB.ProjectPublicationsDraft = {
 		var agree 		= $('#agreement');
 		var element 	= $('#licensePick');
 		var required 	= $(element).hasClass('el-required') ? 1 : 0;
+		var custom 		= $('.customfield');
 
 		// Check for default text
 		if (ltext.length && !HUB.ProjectPublicationsDraft.checkLicenseText(ltext.val()))
@@ -924,6 +940,16 @@ HUB.ProjectPublicationsDraft = {
 		if (agree.length && agree.attr('checked') != 'checked')
 		{
 			complete = 0;
+		}
+		if (custom.length)
+		{
+			custom.each(function(i, item)
+			{
+				if ($(item).val() == '')
+				{
+					complete = 0;
+				}
+			});
 		}
 
 		// Enable/disable control buttons

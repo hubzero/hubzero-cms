@@ -194,6 +194,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 		$license = JRequest::getInt( 'license', 0, 'post' );
 		$text 	 = \Hubzero\Utility\Sanitize::clean(JRequest::getVar( 'license_text', '', 'post'));
 		$agree 	 = JRequest::getInt( 'agree', 0, 'post');
+		$custom  = JRequest::getVar( 'substitute', array(), 'request', 'array' );
 
 		if ($license)
 		{
@@ -218,10 +219,40 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 			$text = preg_replace("/\r/", '', $text);
 			$row->license_text = $text;
 
+			// Pre-defined license text
+			if ($objL->text && $objL->customizable == 0)
+			{
+				$row->license_text = $objL->text;
+
+				// Do we have template items to replace?
+				preg_match_all('/\[([^\]]*)\]/', $objL->text, $substitutes);
+				if (count($substitutes) > 1)
+				{
+					foreach ($substitutes[1] as $sub)
+					{
+						if (!isset($custom[$sub]) || !$custom[$sub])
+						{
+							$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_LICENSE_NEED_CUSTOM') );
+							return false;
+						}
+						else
+						{
+							$row->license_text = preg_replace('/\[' . $sub . '\]/', trim($custom[$sub]), $row->license_text);
+						}
+					}
+				}
+			}
+
 			$row->store();
 
 			// Save agreement
 			$row->saveParam($pub->version_id, 'licenseagreement', 1);
+
+			// Save custom fields in version params
+			foreach ($custom as $label => $value)
+			{
+				$row->saveParam($pub->version_id, 'licensecustom' . strtolower($label), trim($value));
+			}
 
 			if ($license != $originalType || $text != $originalText)
 			{
