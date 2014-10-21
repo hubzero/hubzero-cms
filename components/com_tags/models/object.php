@@ -117,7 +117,7 @@ class TagsModelObject extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new TagsModelObject($oid, $scope_id, $tag_id, $tagger_id);
+			$instances[$oid] = new static($oid, $scope_id, $tag_id, $tagger_id);
 		}
 
 		return $instances[$oid];

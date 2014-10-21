@@ -85,7 +85,7 @@ class TagsModelSubstitute extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new TagsModelSubstitute($oid);
+			$instances[$oid] = new static($oid);
 		}
 
 		return $instances[$oid];

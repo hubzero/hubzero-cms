@@ -60,7 +60,14 @@ class TagsModelTag extends \Hubzero\Base\Model
 	 *
 	 * @var array
 	 */
-	protected $_cache = array();
+	protected $_cache = array(
+		'logs.list'     => null,
+		'logs.count'    => null,
+		'subs.list'     => null,
+		'subs.count'    => null,
+		'objects.list'  => null,
+		'objects.count' => null
+	);
 
 	/**
 	 * \Hubzero\User\Profile
@@ -131,7 +138,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new TagsModelTag($oid);
+			$instances[$oid] = new static($oid);
 		}
 
 		return $instances[$oid];
@@ -344,12 +351,12 @@ class TagsModelTag extends \Hubzero\Base\Model
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_cache['sub_count']) || $clear)
+				if (is_null($this->_cache['subs.count']) || $clear)
 				{
 					$tbl = new TagsTableSubstitute($this->_db);
-					$this->_cache['sub_count'] = (int) $tbl->getCount($filters);
+					$this->_cache['subs.count'] = (int) $tbl->getCount($filters);
 				}
-				return $this->_cache['sub_count'];
+				return $this->_cache['subs.count'];
 			break;
 
 			case 'string':
@@ -364,7 +371,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['subs']) || !($this->_cache['subs'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['subs.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$results = array();
 
@@ -377,9 +384,9 @@ class TagsModelTag extends \Hubzero\Base\Model
 						}
 					}
 
-					$this->_cache['subs'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['subs.list'] = new \Hubzero\Base\ItemList($results);
 				}
-				return $this->_cache['subs'];
+				return $this->_cache['subs.list'];
 			break;
 		}
 	}
@@ -410,18 +417,18 @@ class TagsModelTag extends \Hubzero\Base\Model
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_cache['objects_count']) || $clear)
+				if (is_null($this->_cache['objects.count']) || $clear)
 				{
 					$tbl = new TagsTableObject($this->_db);
-					$this->_cache['objects_count'] = (int) $tbl->count($filters);
+					$this->_cache['objects.count'] = (int) $tbl->count($filters);
 				}
-				return $this->_cache['objects_count'];
+				return $this->_cache['objects.count'];
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['objects']) || !($this->_cache['objects'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['objects.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new TagsTableObject($this->_db);
 					if ($results = $tbl->find($filters))
@@ -435,9 +442,9 @@ class TagsModelTag extends \Hubzero\Base\Model
 					{
 						$results = array();
 					}
-					$this->_cache['objects'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['objects.list'] = new \Hubzero\Base\ItemList($results);
 				}
-				return $this->_cache['objects'];
+				return $this->_cache['objects.list'];
 			break;
 		}
 	}
@@ -464,18 +471,18 @@ class TagsModelTag extends \Hubzero\Base\Model
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (!isset($this->_cache['logs_count']) || $clear)
+				if (is_null($this->_cache['logs.count']) || $clear)
 				{
 					$tbl = new TagsTableLog($this->_db);
-					$this->_cache['logs_count'] = (int) $tbl->count($filters);
+					$this->_cache['logs.count'] = (int) $tbl->count($filters);
 				}
-				return $this->_cache['logs_count'];
+				return $this->_cache['logs.count'];
 			break;
 
 			case 'list':
 			case 'results':
 			default:
-				if (!isset($this->_cache['logs']) || !($this->_cache['logs'] instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_cache['logs.list'] instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new TagsTableLog($this->_db);
 					if ($results = $tbl->find($filters))
@@ -489,9 +496,9 @@ class TagsModelTag extends \Hubzero\Base\Model
 					{
 						$results = array();
 					}
-					$this->_cache['logs'] = new \Hubzero\Base\ItemList($results);
+					$this->_cache['logs.list'] = new \Hubzero\Base\ItemList($results);
 				}
-				return $this->_cache['logs'];
+				return $this->_cache['logs.list'];
 			break;
 		}
 	}

@@ -298,8 +298,12 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	/**
 	 * Add tags to an item
 	 *
-	 * @param      string $tag Normalized tag
-	 * @return     mixed False if errors, integer on success
+	 * @param   mixed    $tags      Array or string of tags
+	 * @param   integer  $tagger    ID of user applying the tag
+	 * @param   integer  $admin     Is it an admin tag?
+	 * @param   integer  $strength  Tag strength
+	 * @param   string   $label     Label to apply
+	 * @return  mixed    False if errors, integer on success
 	 */
 	public function add($tags, $tagger=0, $admin=0, $strength=1, $label='')
 	{
@@ -315,21 +319,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			return false;
 		}
 
-		// Is it a comma-separated string?
-		if (strstr($tags, ','))
-		{
-			// Turn into an array
-			$tags = explode(',', $tags);
-			$tags = array_map('trim', $tags);
-		}
-
-		// Force data to an array
-		if (!is_array($tags))
-		{
-			$tags = array($tags);
-		}
-
-		foreach ($tags as $tg)
+		foreach ($this->_parse($tags) as $tg)
 		{
 			$tag = TagsModelTag::getInstance($tg);
 
@@ -356,8 +346,9 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	/**
 	 * Remove tags from an item
 	 *
-	 * @param      string $tag Normalized tag
-	 * @return     mixed False if errors, integer on success
+	 * @param   mixed    $tags    Array or string of tags
+	 * @param   integer  $tagger  ID of user to remove tags for
+	 * @return  mixed    False if errors, integer on success
 	 */
 	public function remove($tags, $tagger=0)
 	{
@@ -373,21 +364,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			return false;
 		}
 
-		// Is it a comma-separated string?
-		if (strstr($tags, ','))
-		{
-			// Turn into an array
-			$tags = explode(',', $tags);
-			$tags = array_map('trim', $tags);
-		}
-
-		// Force data to an array
-		if (!is_array($tags))
-		{
-			$tags = array($tags);
-		}
-
-		foreach ($tags as $tg)
+		foreach ($this->_parse($tags) as $tg)
 		{
 			$tag = TagsModelTag::getInstance($tg);
 
@@ -409,10 +386,11 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Remove tags from an item
+	 * Remove all tags from an item
+	 * Option User ID to remove tags added by just that user.
 	 *
-	 * @param      string $tag Normalized tag
-	 * @return     mixed False if errors, integer on success
+	 * @param   string  $tagger  User ID to remove tags for
+	 * @return  mixed   False if errors, integer on success
 	 */
 	public function removeAll($tagger=0)
 	{
@@ -434,8 +412,8 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	/**
 	 * Get the ID of a normalized tag
 	 *
-	 * @param      string $tag Normalized tag
-	 * @return     mixed False if errors, integer on success
+	 * @param   string  $tag  Normalized tag
+	 * @return  mixed   False if errors, integer on success
 	 */
 	private function _getTagId($tag)
 	{
@@ -446,7 +424,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 		}
 
 		$t = new TagsTableTag($this->_db);
-		$t->loadTag($t->normalize($tag));
+		$t->loadTag($this->normalize($tag));
 
 		return $t->id;
 	}
@@ -506,12 +484,12 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	 * 1) add any new tags not in the old list
 	 * 2) remove any tags in the old list not found in the new list
 	 *
-	 * @param      integer $tagger_id  Tagger ID
-	 * @param      integer $object_id  Object ID
-	 * @param      string  $tag_string String of comma-separated tags
-	 * @param      integer $strength   Tag strength
-	 * @param      boolean $admin      Has admin access?
-	 * @return     boolean True on success, false if errors
+	 * @param   integer  $tagger_id   Tagger ID
+	 * @param   integer  $object_id   Object ID
+	 * @param   string   $tag_string  String of comma-separated tags
+	 * @param   integer  $strength    Tag strength
+	 * @param   boolean  $admin       Has admin access?
+	 * @return  boolean  True on success, false if errors
 	 */
 	public function setTags($tag_string, $tagger_id=0, $admin=0, $strength=1, $label='')
 	{
@@ -520,7 +498,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			$tagger_id = JFactory::getUser()->get('id');
 		}
 
-		$tagArray  = $this->_parse($tag_string);   // array of normalized tags
+		$tagArray  = $this->_parse($tag_string);    // array of normalized tags
 		$tagArray2 = $this->_parse($tag_string, 1); // array of normalized => raw tags
 
 		$filters = array();
@@ -574,41 +552,56 @@ class TagsModelCloud extends \Hubzero\Base\Object
 	}
 
 	/**
+	 * Normalize a raw tag
+	 * Strips all non-alphanumeric characters
+	 *
+	 * @param   string  $tag  Raw tag
+	 * @return  string
+	 */
+	public function normalize($tag)
+	{
+		return $this->_tbl->normalize($tag);
+	}
+
+	/**
 	 * Turn a comma-separated string of tags into an array of normalized tags
 	 *
-	 * @param      string  $tag_string Comma-separated string of tags
-	 * @param      integer $keep       Use normalized tag as array key
-	 * @return     array
+	 * @param   mixed    $tags  Array or Comma-separated string of tags
+	 * @param   integer  $keep  Use normalized tag as array key
+	 * @return  array
 	 */
-	protected function _parse($tag_string, $keep=0)
+	protected function _parse($tags, $keep=0)
 	{
-		$tag_string = trim($tag_string);
-
-		$newwords = array();
-
-		// If the tag string is empty, return the empty set.
-		if ($tag_string == '')
+		if (is_string($tags))
 		{
-			return $newwords;
+			$tags = trim($tags);
+			//$tags = explode(',', $tags);
+			$tags = preg_split("/(,|;)/", $tags);
+		}
+
+		$parsed = array();
+
+		// If the tag list is empty, return the empty set.
+		if (empty($tags))
+		{
+			return $parsed;
 		}
 
 		// Perform tag parsing
-		$raw_tags = explode(',', $tag_string);
-
-		foreach ($raw_tags as $raw_tag)
+		foreach ($tags as $raw_tag)
 		{
 			$raw_tag = trim($raw_tag);
-			$nrm_tag = $this->_tbl->normalize($raw_tag);
+			$nrm_tag = $this->normalize($raw_tag);
 			if ($keep != 0)
 			{
-				$newwords[$nrm_tag] = $raw_tag;
+				$parsed[$nrm_tag] = $raw_tag;
 			}
 			else
 			{
-				$newwords[] = $nrm_tag;
+				$parsed[] = $nrm_tag;
 			}
 		}
-		return $newwords;
+		return $parsed;
 	}
 }
 

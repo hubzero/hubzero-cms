@@ -118,7 +118,7 @@ class TagsModelLog extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new TagsModelLog($oid);
+			$instances[$oid] = new static($oid);
 		}
 
 		return $instances[$oid];
