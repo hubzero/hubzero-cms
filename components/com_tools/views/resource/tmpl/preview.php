@@ -69,7 +69,7 @@ $this->css('resource.css')
 	     ->set('option', $this->option)
 	     ->set('controller', $this->controller)
 	     ->set('version', $this->version)
-	     ->set('row', $this->row)
+	     ->set('row', $this->resource)
 	     ->set('status', $this->status)
 	     ->set('vnum', 0)
 	     ->display();
