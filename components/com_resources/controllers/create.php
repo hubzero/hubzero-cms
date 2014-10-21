@@ -563,13 +563,13 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 
 
 		// Get all the tags on this resource
-		$tagcloud = new ResourcesTags($this->database);
-		$tags_men = $tagcloud->get_tags_on_object($this->view->id, 0, 0, 0, 0);
+		$tagcloud = new ResourcesTags($this->view->id);
+		$tags_men = $tagcloud->tags();
 
 		$mytagarray = array();
 		foreach ($tags_men as $tag_men)
 		{
-			$mytagarray[] = $tag_men['raw_tag'];
+			$mytagarray[] = $tag_men->get('raw_tag');
 		}
 		$tags = implode(', ', $mytagarray);
 
@@ -579,7 +579,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			$tags = $etags;
 		}
 
-		if (($err = JRequest::getInt('err', 0)))
+		if ($err = JRequest::getInt('err', 0))
 		{
 			$this->setError(JText::_('Please select one of the focus areas.'));
 		}
@@ -1135,7 +1135,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 		$tags = implode(', ', $tags);
 
-		$rt = new ResourcesTags($this->database);
+		$rt = new ResourcesTags($id);
 		//$rt->tag_object($this->juser->get('id'), $id, $tags, 1, 1);
 		$this->database->setQuery('DELETE FROM #__tags_object WHERE tbl = \'resources\' AND objectid = ' . $id);
 		$this->database->execute();
@@ -1156,7 +1156,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			}
 			$this->database->execute('INSERT INTO #__tags_object(tbl, objectid, tagid, label) VALUES (\'resource\', ' . $id . ', ' . $tid . ', ' . ($tag[2] ? $this->database->quote($tag[2]) : 'NULL') . ')');*/
 
-			$rt->safe_tag($user->get('id'), $id, $tag[0], 1, ($tag[2] ? $tag[2] : ''));
+			$rt->add($tag[0], $user->get('id'), 0, 1, ($tag[2] ? $tag[2] : ''));
 		}
 	}
 
@@ -1728,17 +1728,15 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	 */
 	public function step_tags_check($id)
 	{
-		$rt = new ResourcesTags($this->database);
-		$tags = $rt->getTags($id);
+		$rt = new ResourcesTags($id);
+		$tags = $rt->tags('count');
 
-		if (count($tags) > 0)
+		if ($tags > 0)
 		{
 			return 1;
 		}
-		else
-		{
-			return 0;
-		}
+
+		return 0;
 	}
 
 	/**

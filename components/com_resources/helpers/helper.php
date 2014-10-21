@@ -608,8 +608,21 @@ class ResourcesHelper extends JObject
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
-		$rt = new ResourcesTags($this->_db);
-		$this->tags = $rt->get_tags_on_object($this->_id, 0, 0, $tagger_id, $strength, $admin);
+		$rt = new ResourcesTags($this->_id);
+		$filters = array();
+		if ($tagger_id)
+		{
+			$filters['tagger_id'] = $tagger_id;
+		}
+		if ($strength)
+		{
+			$filters['strength'] = $strength;
+		}
+		if ($admin)
+		{
+			$filters['admin'] = $admin;
+		}
+		$this->tags = $rt->tags('list', $filters);
 		return $this->tags;
 	}
 
@@ -629,8 +642,17 @@ class ResourcesHelper extends JObject
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
-		$rt = new ResourcesTags($this->_db);
-		$this->tagsForEditing = $rt->get_tag_string($this->_id, 0, 0, $tagger_id, $strength, 0);
+		$rt = new ResourcesTags($this->_id);
+		$filters = array();
+		if ($tagger_id)
+		{
+			$filters['tagger_id'] = $tagger_id;
+		}
+		if ($strength)
+		{
+			$filters['strength'] = $strength;
+		}
+		$this->tagsForEditing = $rt->render('string', $filters);
 		return $this->tagsForEditing;
 	}
 
@@ -649,8 +671,8 @@ class ResourcesHelper extends JObject
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
-		$rt = new ResourcesTags($this->_db);
-		$this->tagCloud = $rt->get_tag_cloud(0, $admin, $this->_id);
+		$rt = new ResourcesTags($this->_id);
+		$this->tagCloud = $rt->render('cloud');
 		return $this->tagCloud;
 	}
 

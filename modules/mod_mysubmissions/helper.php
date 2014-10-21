@@ -112,17 +112,15 @@ class modMySubmissions extends \Hubzero\Module\Module
 	{
 		$database = JFactory::getDBO();
 
-		$rt = new ResourcesTags($database);
-		$tags = $rt->getTags($id);
+		$rt = new ResourcesTags($id);
+		$tags = $rt->tags('count');
 
-		if (count($tags) > 0)
+		if ($tags > 0)
 		{
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**

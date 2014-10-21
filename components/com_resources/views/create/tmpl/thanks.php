@@ -41,7 +41,7 @@ if ($this->resource->id)
 	$database = JFactory::getDBO();
 	$ra = new ResourcesAssoc($database);
 	$rc = new ResourcesContributor($database);
-	$rt = new ResourcesTags($database);
+	$rt = new ResourcesTags($this->resource->id);
 
 	switch ($this->resource->published)
 	{
@@ -56,7 +56,7 @@ if ($this->resource->id)
 
 	$authors = $rc->getCount($this->resource->id, 'resources');
 
-	$tags = $rt->getTags($this->resource->id);
+	$tags = $rt->tags('count');
 }
 
 
@@ -115,7 +115,7 @@ $this->css('create.css');
 					<tr>
 						<th scope="row"><?php echo JText::_('Tags'); ?></th>
 						<td>
-							<?php echo count($tags); ?>
+							<?php echo $tags; ?>
 						</td>
 					</tr>
 					<tr>

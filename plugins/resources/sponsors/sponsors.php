@@ -114,16 +114,16 @@ class plgResourcesSponsors extends \Hubzero\Plugin\Plugin
 		}
 
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$rt = new ResourcesTags($this->database);
-		$tags = $rt->getTags($resource->id, 0, 0, 1);
+		$rt = new ResourcesTags($resource->id);
+		$tags = $rt->tags();
 
 		if ($tags)
 		{
 			foreach ($tags as $tag)
 			{
-				if (isset($this->sponsors[$tag->tag]))
+				if (isset($this->sponsors[$tag->get('tag')]))
 				{
-					$this->view->data = $this->sponsors[$tag->tag]->description;
+					$this->view->data = $this->sponsors[$tag->get('tag')]->description;
 					break;
 				}
 			}

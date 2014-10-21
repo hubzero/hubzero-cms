@@ -799,8 +799,8 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$this->view->lists['authors'] = $authorslist->loadTemplate();
 
 			// Get the tags on this item
-			$rt = new ResourcesTags($this->database);
-			$this->view->lists['tags'] = $rt->get_tag_string($this->view->row->id, 0, 0, NULL, 0, 1);
+			$rt = new ResourcesTags($this->view->row->id);
+			$this->view->lists['tags'] = $rt->render('string');
 		}
 
 		// Set any errors
@@ -1038,8 +1038,8 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$tags = JRequest::getVar('tags', '', 'post');
 
 		// Save the tags
-		$rt = new ResourcesTags($this->database);
-		$rt->tag_object($this->juser->get('id'), $row->id, $tags, 1, 1);
+		$rt = new ResourcesTags($row->id);
+		$rt->setTags($tags, $this->juser->get('id'), 1, 1);
 
 		// Incoming authors
 		if ($row->type != 7)

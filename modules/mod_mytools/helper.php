@@ -284,7 +284,7 @@ class modToolList extends \Hubzero\Module\Module
 		if ($this->supportedtag)
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-			$this->rt = new ResourcesTags($database);
+			$this->rt = new ResourcesTags(0);
 			$this->supportedtagusage = $this->rt->getTagUsage($this->supportedtag, 'alias');
 		}
 

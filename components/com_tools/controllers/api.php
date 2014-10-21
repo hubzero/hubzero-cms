@@ -97,7 +97,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//get supportedtag usage
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$resource_tags = new ResourcesTags($database);
+		$resource_tags = new ResourcesTags(0);
 		$supportedtagusage = $resource_tags->getTagUsage($supportedtag, 'alias');
 
 		//create list of tools
@@ -186,7 +186,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 
 		//get supportedtag usage
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$this->rt = new ResourcesTags($database);
+		$this->rt = new ResourcesTags(0);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 		$tool_info->supported = (in_array($tool_info->alias, $supportedtagusage)) ? 1 : 0;
 

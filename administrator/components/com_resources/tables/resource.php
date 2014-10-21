@@ -574,7 +574,7 @@ class ResourcesResource extends JTable
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 			$tagging = new ResourcesTags($this->_db);
-			$tags = $tagging->_parse_tags($filters['tag']);
+			$tags = $tagging->parseTags($filters['tag']);
 
 			$query .= "AND RTA.objectid=C.id AND TA.tag IN ('" . implode("','", $tags) . "')"; //" OR TA.alias IN ('" . implode("','", $tags) . "'))";
 			$query .= " GROUP BY C.id HAVING uniques=" . count($tags);

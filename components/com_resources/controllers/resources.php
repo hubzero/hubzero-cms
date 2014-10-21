@@ -231,8 +231,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		if (isset($this->view->filters['tag']) && $this->view->filters['tag'] != '')
 		{
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-			$tagging = new ResourcesTags($this->database);
-			$tags = $tagging->_parse_tags($this->view->filters['tag']);
+			$tagging = new ResourcesTags(0);
+			$tags = $tagging->parseTags($this->view->filters['tag']);
 			if (count($tags) > 5)
 			{
 				$keep = array();
@@ -461,7 +461,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$bits['tg']   = JRequest::getVar('input', '');
 				$bits['tg2']  = JRequest::getVar('input2', '');
 
-				$rt = new ResourcesTags($this->database);
+				$rt = new ResourcesTags($bits['id']);
 
 				// Get tags that have been assigned
 				$bits['tags'] = $rt->get_tags_with_objects($bits['id'], $bits['type'], $bits['tg2']);
@@ -476,7 +476,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$bits['sortby'] = JRequest::getVar('sortby', 'title');
 				$bits['filter']  = JRequest::getVar('filter', array('level0','level1','level2','level3','level4'));
 
-				if ($bits['tag'] == $bits['tag2']) {
+				if ($bits['tag'] == $bits['tag2'])
+				{
 					$bits['tag2'] = '';
 				}
 
@@ -493,7 +494,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 					$bits['filters'] = $rL->getLevels();
 				}
 
-				$rt = new ResourcesTags($this->database);
+				$rt = new ResourcesTags($bits['id']);
 				$bits['rt'] = $rt;
 
 				// Get resources assigned to this tag
@@ -527,7 +528,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'models' . DS . 'resource.php');
 				$model = ResourcesModelResource::getInstance($id);
 
-				$rt = new ResourcesTags($this->database);
+				$rt = new ResourcesTags($id);
 				$bits['rt'] = $rt;
 				$bits['config'] = $this->config;
 				$bits['params'] = $model->params;
@@ -1647,8 +1648,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		$doc->category = JText::_('COM_RESOURCES_RSS_CATEGORY');
 		$doc->link = JRoute::_('index.php?option=' . $this->_option . '&id=' . $resource->id);
 
-		$rt = new ResourcesTags($this->database);
-		$rtags = $rt->get_tags_on_object($resource->id, 0, 0, null, 0, 1);
+		$rt = new ResourcesTags($resource->id);
+		$rtags = $rt->tags();
 		$tagarray = array();
 		$categories = array();
 		$subcategories = array();
@@ -1656,26 +1657,26 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 		{
 			foreach ($rtags as $tag)
 			{
-				if (substr($tag['tag'], 0, 6) == 'itunes')
+				if (substr($tag->get('tag'), 0, 6) == 'itunes')
 				{
-					$tbits = explode(':', $tag['raw_tag']);
+					$tbits = explode(':', $tag->get('raw_tag'));
 					if (count($tbits) > 2)
 					{
 						$subcategories[] = end($tbits);
 					}
 					else
 					{
-						$categories[] = str_replace('itunes:', '', $tag['raw_tag']);
+						$categories[] = str_replace('itunes:', '', $tag->get('raw_tag'));
 					}
 				}
 				elseif ($tag['admin'] == 0)
 				{
-					$tagarray[] = $tag['raw_tag'];
+					$tagarray[] = $tag->get('raw_tag');
 				}
 			}
 		}
 		$tags = implode(', ', $tagarray);
-		//$tags = $rt->get_tag_string($resource->id, 0, 0, 0, 0, 0);
+		//$tags = $rt->render('string');
 		$tags = trim(\Hubzero\Utility\String::truncate($tags, 250));
 		$tags = rtrim($tags, ',');
 
@@ -1806,8 +1807,8 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 				$rhelper->getContributors();
 				$author = strip_tags($rhelper->contributors);
 
-				$rtt = new ResourcesTags($this->database);
-				$rtags = $rtt->get_tag_string($row->id, 0, 0, 0, 0, 0);
+				$rtt = new ResourcesTags($row->id);
+				$rtags = $rtt->render('string');
 				if (trim($rtags))
 				{
 					$rtags = trim(\Hubzero\Utility\String::truncate($rtags, 250));

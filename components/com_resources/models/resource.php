@@ -955,8 +955,8 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 
-			$rt = new ResourcesTags($this->_db);
-			if (($results = $rt->getTags($this->resource->id, 0, 0, $this->access('manage')))) // get_tags_on_object
+			$rt = new ResourcesTags($this->resource->id);
+			if ($results = $rt->tags('list')) // get_tags_on_object
 			{
 				$this->tags = $results;
 			}

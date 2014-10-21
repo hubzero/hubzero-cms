@@ -78,7 +78,7 @@ $this->css()
 						$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
 						$url .= ($this->filters['type']   ? '&type=' . $this->escape($this->filters['type'])     : '');
 
-						$rt = new ResourcesTags($database);
+						$rt = new ResourcesTags(0);
 						$tags = $rt->parseTopTags($this->filters['tag']);
 						foreach ($tags as $tag)
 						{
@@ -189,7 +189,7 @@ $this->css()
 			<div class="container">
 				<h3>Popular Tags</h3>
 				<?php
-				$rt = new ResourcesTags($database);
+				$rt = new ResourcesTags(0);
 				echo $rt->getTopTagCloud(20, $this->filters['tag']);
 				?>
 				<p>Click a tag to see only resources with that tag.</p>

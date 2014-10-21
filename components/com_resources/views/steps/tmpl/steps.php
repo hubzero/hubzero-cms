@@ -40,7 +40,7 @@ if ($this->resource->id)
 	$database = JFactory::getDBO();
 	$ra = new ResourcesAssoc($database);
 	$rc = new ResourcesContributor($database);
-	$rt = new ResourcesTags($database);
+	$rt = new ResourcesTags($this->resource->id);
 
 	switch ($this->resource->published)
 	{
@@ -53,7 +53,7 @@ if ($this->resource->id)
 
 	$authors = $rc->getCount($this->resource->id, 'resources');
 
-	$tags = $rt->getTags($this->resource->id);
+	$tags = $rt->tags('count');
 }
 ?>
 <div class="meta-container">
@@ -84,7 +84,7 @@ if ($this->resource->id)
 					<?php echo $authors; ?> author(s)
 				</td>
 				<td>
-					<?php echo count($tags); ?> tag(s)
+					<?php echo $tags; ?> tag(s)
 				</td>
 				<td>
 					<span class="<?php echo $state; ?> status"><?php echo $state; ?></span>

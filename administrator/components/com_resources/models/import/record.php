@@ -101,8 +101,9 @@ class Record extends \Hubzero\Base\Object
 		try
 		{
 			$this->_mapTypeData();
-
-		} catch (Exception $e) {
+		}
+		catch (Exception $e)
+		{
 			array_push($this->record->errors, $e->getMessage());
 		}
 
@@ -120,8 +121,9 @@ class Record extends \Hubzero\Base\Object
 
 			// map tags
 			$this->_mapTagsData();
-
-		} catch (Exception $e) {
+		}
+		catch (Exception $e)
+		{
 			array_push($this->record->errors, $e->getMessage());
 		}
 
@@ -588,8 +590,8 @@ class Record extends \Hubzero\Base\Object
 	private function _saveTagsData()
 	{
 		// save tags
-		$resourcesTags = new \ResourcesTags( $this->_database );
-		$resourcesTags->tag_object($this->_user->get('id'), $this->record->resource->id, $this->record->tags, 1, 1);
+		$resourcesTags = new \ResourcesTags($this->record->resource->id);
+		$resourcesTags->setTags($this->record->tags, $this->_user->get('id'), 1, 1);
 	}
 
 	/**
@@ -613,7 +615,7 @@ class Record extends \Hubzero\Base\Object
 	{
 		// reflect on class to get private or protected props
 		$reflectionClass   = new \ReflectionClass($this);
-		$privateProperties = $reflectionClass->getProperties( \ReflectionProperty::IS_PRIVATE );
+		$privateProperties = $reflectionClass->getProperties(\ReflectionProperty::IS_PRIVATE);
 
 		// remove each private or protected prop
 		foreach ($privateProperties as $prop)

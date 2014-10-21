@@ -104,7 +104,7 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
 
 		if ($this->model->params->get('supportedtag'))
 		{
-			$rt = new ResourcesTags($database);
+			$rt = new ResourcesTags($this->model->resource->id);
 			if ($rt->checkTagUsage($this->model->params->get('supportedtag'), $this->model->resource->id))
 			{
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');

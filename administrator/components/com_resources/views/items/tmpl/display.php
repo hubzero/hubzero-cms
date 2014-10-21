@@ -130,7 +130,6 @@ $k = 0;
 $filterstring  = '';
 
 $database = JFactory::getDBO();
-$rt = new ResourcesTags($database);
 
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
@@ -230,7 +229,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 
 	// Get the tags on this item
-	$tags = count($rt->getTags($row->id, 0, 0, 1));
+	$rt = new ResourcesTags($row->id);
+	$tags = $rt->tags('count');
 
 	// See if it's checked out or not
 	if ($row->checked_out || $row->checked_out_time != '0000-00-00 00:00:00')

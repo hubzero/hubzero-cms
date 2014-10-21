@@ -97,9 +97,8 @@ $this->css('introduction.css', 'system')
 				</thead>
 				<tbody>
 				<?php
-					$ra = new ResourcesAssoc( $database );
-					$rc = new ResourcesContributor( $database );
-					$rt = new ResourcesTags( $database );
+					$ra = new ResourcesAssoc($database);
+					$rc = new ResourcesContributor($database);
 					$cls = 'even';
 					foreach ($submissions as $submission)
 					{
@@ -112,17 +111,18 @@ $this->css('introduction.css', 'system')
 							case 3: $state = 'pending';    break;  // pending
 						}
 
-						$attachments = $ra->getCount( $submission->id );
+						$attachments = $ra->getCount($submission->id);
 
-						$authors = $rc->getCount( $submission->id, 'resources' );
+						$authors = $rc->getCount($submission->id, 'resources');
 
-						$tags = $rt->getTags( $submission->id );
+						$rt = new ResourcesTags($submission->id);
+						$tags = $rt->tags('count');
 					?>
 					<tr class="<?php echo $cls; ?>">
 						<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=1&id='.$submission->id); ?>"><?php } ?><?php echo stripslashes($submission->title); ?><?php if ($submission->published == 2) { ?></a><?php } ?><br /><span class="type"><?php echo stripslashes($submission->typetitle); ?></span></td>
 						<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=2&id='.$submission->id); ?>"><?php } ?><?php echo $attachments; ?> attachment(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
 						<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=3&id='.$submission->id); ?>"><?php } ?><?php echo $authors; ?> author(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
-						<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=4&id='.$submission->id); ?>"><?php } ?><?php echo count($tags); ?> tag(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
+						<td><?php if ($submission->published == 2) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=4&id='.$submission->id); ?>"><?php } ?><?php echo $tags; ?> tag(s)<?php if ($submission->published == 2) { ?></a><?php } ?></td>
 						<td>
 							<span class="<?php echo $state; ?> status"><?php echo $state; ?></span>
 							<?php if ($submission->published == 2) { ?>

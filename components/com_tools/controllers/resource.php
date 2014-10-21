@@ -262,7 +262,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$fa10 = $tconfig->get('focus_area_10');
 
 		// Instantiate our tag object
-		$tagcloud = new ResourcesTags($this->database);
+		$tagcloud = new ResourcesTags($row->id);
 
 		// Normalize the focus areas
 		$tagfa1  = $tagcloud->normalize_tag($fa1);
@@ -288,11 +288,11 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 			{
 				$newtags .= $tags;
 			}
-			$tagcloud->tag_object($this->juser->get('id'), $row->id, $newtags, 1, 0);
+			$tagcloud->setTags($newtags, $this->juser->get('id'));
 		}
 
 		// Get all the tags on this resource
-		$tags_men = $tagcloud->get_tags_on_object($row->id, 0, 0, 0, 0);
+		$tags_men = $tagcloud->tags();
 		$mytagarray = array();
 		$fas = array($tagfa1, $tagfa2, $tagfa3, $tagfa4, $tagfa5, $tagfa6, $tagfa7, $tagfa8, $tagfa9, $tagfa10);
 		$fats = array();
@@ -340,13 +340,13 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		// Loop through all the tags and pull out the focus areas - those will be displayed differently
 		foreach ($tags_men as $tag_men)
 		{
-			if (in_array($tag_men['tag'], $fas))
+			if (in_array($tag_men->get('tag'), $fas))
 			{
-				$tagfa = $tag_men['tag'];
+				$tagfa = $tag_men->get('tag');
 			}
 			else
 			{
-				$mytagarray[] = $tag_men['raw_tag'];
+				$mytagarray[] = $tag_men->get('raw_tag');
 			}
 		}
 		$tags = implode(', ', $mytagarray);
@@ -541,7 +541,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$obj->getToolStatus($this->_toolid, $this->_option, $status, $version);
 
 		// Instantiate our tag object
-		$tagcloud = new ResourcesTags($this->database);
+		$tagcloud = new ResourcesTags($rid);
 		$tags  = JRequest::getVar('tags', '', 'post');
 		$tagfa = JRequest::getVar('tagfa', '', 'post');
 		// Process new tags
@@ -554,7 +554,7 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		{
 			$newtags .= $tags;
 		}
-		$tagcloud->tag_object($this->juser->get('id'), $rid, $newtags, 1, 1);
+		$tagcloud->setTags($newtags, $this->juser->get('id'));
 
 		// Get some needed libraries
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');

@@ -339,7 +339,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 		// Get supportedtag usage
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
-		$this->rt = new ResourcesTags($database);
+		$this->rt = new ResourcesTags(0);
 		$supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 
 		// Load users recent tools

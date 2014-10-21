@@ -239,12 +239,13 @@ $maintext = $this->model->description('parsed');
 		<?php } ?>
 
 		<?php if ($this->model->params->get('show_assocs')) { ?>
-			<?php if ($tags = $this->model->tags()) { ?>
+			<?php
+			$tagger = new ResourcesTags($this->model->resource->id);
+			if ($tags = $tagger->render()) { ?>
 				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
 				<div class="resource-content">
 					<?php
-					$tagger = new ResourcesTags($this->database);
-					echo $tagger->buildCloud($tags);
+					echo $tags;
 					?>
 				</div>
 			<?php } ?>
