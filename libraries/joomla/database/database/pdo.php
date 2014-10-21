@@ -1035,4 +1035,19 @@ class JDatabasePDO extends JDatabase
 
 		return (isset($matches[1])) ? $matches[1] : false;
 	}
+
+	/**
+	 * Gets the auto-increment value for the given table
+	 *
+	 * @param  string $table the table for which to retrieve the character set
+	 * @return int
+	 **/
+	public function getAutoIncrement($table)
+	{
+		$create = $this->getTableCreate($table);
+
+		preg_match('/AUTO_INCREMENT=([0-9]*)/', $create[$table], $matches);
+
+		return (isset($matches[1])) ? $matches[1] : false;
+	}
 }
