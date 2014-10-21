@@ -91,7 +91,7 @@ class Migration20130924000009ComMenus extends Base
 		}
 		if ($this->db->tableHasField('#__menu', 'componentid') && !$this->db->tableHasField('#__menu', 'component_id'))
 		{
-			$query = "ALTER TABLE `#__menu` CHANGE COLUMN `componentid` `component_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to jos_components.id';";
+			$query = "ALTER TABLE `#__menu` CHANGE COLUMN `componentid` `component_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to #__components.id';";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

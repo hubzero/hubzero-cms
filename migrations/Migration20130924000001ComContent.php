@@ -23,7 +23,7 @@ class Migration20130924000001ComContent extends Base
 
 		if (!$this->db->tableHasField('#__content', 'asset_id') && $this->db->tableHasField('#__content', 'id'))
 		{
-			$query = "ALTER TABLE `#__content` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the #_assets table.' AFTER `id`;";
+			$query = "ALTER TABLE `#__content` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.' AFTER `id`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -65,7 +65,7 @@ class Migration20130924000001ComContent extends Base
 		}
 		if ($this->db->tableHasField('#__content', 'attribs'))
 		{
-			$query = "ALTER TABLE `jos_content` CHANGE `attribs` `attribs` VARCHAR( 5120 ) NOT NULL;";
+			$query = "ALTER TABLE `#__content` CHANGE `attribs` `attribs` VARCHAR( 5120 ) NOT NULL;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}

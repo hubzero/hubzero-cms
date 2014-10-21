@@ -63,7 +63,7 @@ class Migration20130924000000ComCategories extends Base
 		}
 		if (!$this->db->tableHasField('#__categories', 'asset_id') && $this->db->tableHasField('#__categories', 'id'))
 		{
-			$query = "ALTER TABLE `#__categories` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the jos_assets table.' AFTER `id`;";
+			$query = "ALTER TABLE `#__categories` ADD COLUMN `asset_id` INTEGER UNSIGNED NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.' AFTER `id`;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
