@@ -470,7 +470,7 @@ class ResourcesTags extends TagsModelCloud
 	{
 		$t = new TagsTableTag($this->_db);
 		//$tags = $t->getCloud($this->_tbl, $admin, null);
-		$tags = $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
+		$tags = $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 
 		return $this->buildTopCloud($tags, 'alpha', 0, $tagstring);
 	}
@@ -486,7 +486,7 @@ class ResourcesTags extends TagsModelCloud
 	public function getTopTags($limit)
 	{
 		$t = new TagsTableTag($this->_db);
-		return $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
+		return $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 	}
 
 	/**
@@ -501,7 +501,7 @@ class ResourcesTags extends TagsModelCloud
 	{
 		$t = new TagsTableTag($this->_db);
 
-		$tags = $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
+		$tags = $t->getTopTags($limit, $this->_scope, 'tcount DESC', 0);
 
 		if ($tags && count($tags) > 0)
 		{
