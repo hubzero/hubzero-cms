@@ -590,8 +590,8 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	{
 		if ($tag_string)
 		{
-			$ct = new CitationTags($this->database);
-			$ct->tag_object($userid, $objectid, $tag_string, 1, false, $label);
+			$ct = new CitationTags($objectid);
+			$ct->setTags($tag_string, $userid, 0, 1, $label);
 		}
 	}
 

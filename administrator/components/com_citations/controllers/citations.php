@@ -365,9 +365,9 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 		}
 
 		//add tags & badges
-		$ct = new CitationTags($this->database);
-		$ct->tag_object($this->juser->get("id"), $row->id, $this->tags, 1, false, "");
-		$ct->tag_object($this->juser->get("id"), $row->id, $this->badges, 1, false, "badge");
+		$ct = new CitationTags($row->id);
+		$ct->setTags($this->tags, $this->juser->get('id'), 0, 1, '');
+		$ct->setTags($this->badges, $this->juser->get('id'), 0, 1, 'badge');
 
 		// Redirect
 		$this->setRedirect(
@@ -449,8 +449,8 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 				$citation->delete($id);
 
 				//citation tags
-				$ct = new CitationTags($this->database);
-				$ct->remove_all_tags($id);
+				$ct = new CitationTags($id);
+				$ct->removeAll();
 			}
 
 			$message = JText::_('CITATION_REMOVED');

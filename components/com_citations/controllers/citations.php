@@ -233,7 +233,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		}
 
 		// clean up filters a little
-		array_walk($this->view->filters, function($val, $key)
+		/*array_walk($this->view->filters, function($val, $key)
 		{
 			if (!is_array($val))
 			{
@@ -241,7 +241,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 				$val = str_replace('"', '', $val);
 				$this->view->filters[$key] = $val;
 			}
-		});
+		});*/
 
 		// Instantiate a new citations object
 		$obj = new CitationsCitation($this->database);
@@ -869,15 +869,15 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		//check if we are allowing tags
 		if ($this->config->get('citation_allow_tags', 'no') == 'yes')
 		{
-			$ct1 = new CitationTags($this->database);
-			$ct1->tag_object($this->juser->get('id'), $row->id, $tags, 1, false, '');
+			$ct1 = new CitationTags($row->id);
+			$ct1->setTags($tags, $this->juser->get('id'), 0, 1, '');
 		}
 
 		//check if we are allowing badges
 		if ($this->config->get('citation_allow_badges', 'no') == 'yes')
 		{
-			$ct2 = new CitationTags($this->database);
-			$ct2->tag_object($this->juser->get('id'), $row->id, $badges, 1, false, 'badge');
+			$ct2 = new CitationTags($row->id);
+			$ct2->setTags($badges, $this->juser->get('id'), 0, 1, 'badge');
 		}
 
 		// Redirect
@@ -1041,8 +1041,8 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			$cc->load($c);
 
 			//get the badges
-			$ct = new CitationTags($this->database);
-			$cc->badges = $ct->get_tag_string($cc->id, 0, 0, NULL, 0, 0, 'badge');
+			$ct = new CitationTags($cc->id);
+			$cc->badges = $ct->render('string', array('label' => 'badge'));
 
 			$cd = new CitationsDownload();
 			$cd->setFormat(strtolower($download));

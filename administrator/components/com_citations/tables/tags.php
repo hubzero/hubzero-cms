@@ -31,24 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//include tag handler
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 /**
  * Citations Tagging Class
  */
-class CitationTags extends TagsHandler
+class CitationTags extends TagsModelCloud
 {
 	/**
-	 * Constructor
+	 * Object type, used for linking objects (such as resources) to tags
 	 *
-	 * @param      object $db     JDatabase
-	 * @param      array  $config Configuration options
-	 * @return     void
+	 * @var string
 	 */
-	public function __construct($db, $config=array())
-	{
-		$this->_db  = $db;
-		$this->_tbl = 'citations';
-	}
+	protected $_scope = 'citations';
 }
