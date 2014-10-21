@@ -1748,14 +1748,14 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 
 		if (empty($country) && in_array($exportcontrol, array('us', 'd1', 'pu')))
 		{
-			$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN');
+			$this->setError(JText::_('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_UNKNOWN'));
 			$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED location export control check");
 			return false;
 		}
 
 		if (\Hubzero\Geocode\Geocode::is_e1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 		{
-			$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1');
+			$this->setError(JText::_('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_E1'));
 			$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED E1 export control check");
 			return false;
 		}
@@ -1765,7 +1765,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			case 'us':
 				if (\Hubzero\Geocode\Geocode::ipcountry($ip) != 'us')
 				{
-					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY');
+					$this->setError(JText::_('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_USA_ONLY'));
 					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED US export control check");
 					return false;
 				}
@@ -1774,7 +1774,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			case 'd1':
 				if (\Hubzero\Geocode\Geocode::is_d1nation(\Hubzero\Geocode\Geocode::ipcountry($ip)))
 				{
-					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE');
+					$this->setError(JText::_('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_LICENSE'));
 					$xlog->debug("mw::_getToolExportControl($exportcontrol) FAILED D1 export control check");
 					return false;
 				}
@@ -1783,7 +1783,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 			case 'pu':
 				if (!\Hubzero\Geocode\Geocode::is_iplocation($ip, $exportcontrol))
 				{
-					$this->setError('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY');
+					$this->setError(JText::_('COM_TOOLS_ERROR_ACCESS_DENIED_EXPORT_PURDUE_ONLY'));
 					$xlog->debug("mw::_getToolExportControl($exportControl) FAILED PURDUE export control check");
 					return false;
 				}
@@ -1811,7 +1811,7 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 		// Ensure we have a tool
 		if (!$tool)
 		{
-			$this->setError('COM_TOOLS_ERROR_TOOL_NOT_FOUND');
+			$this->setError(JText::_('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
 			$xlog->debug("mw::_getToolAccess($tool,$login) FAILED null tool check");
 			return false;
 		}
