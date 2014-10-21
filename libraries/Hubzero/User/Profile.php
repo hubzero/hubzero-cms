@@ -1448,26 +1448,22 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'setParameters'
-	 * Long description (if any) ...
+	 * Set parameters
 	 *
-	 * @param unknown $params Parameter description (if any) ...
-	 * @return void
+	 * @param   unknown $params Parameter description (if any) ...
+	 * @return  void
 	 */
 	public function setParameters($params)
 	{
 		$this->_params = $params;
 	}
 
-	/* Member Roles */
-
 	/**
-	 * Short description for 'getGroupMemberRoles'
-	 * Long description (if any) ...
+	 * Get group roles for a specific member/group pair
 	 *
-	 * @param string $uid Parameter description (if any) ...
-	 * @param string $gid Parameter description (if any) ...
-	 * @return unknown Return description (if any) ...
+	 * @param   string  $uid  User ID
+	 * @param   string  $gid  Group ID
+	 * @return  array
 	 */
 	public static function getGroupMemberRoles($uid, $gid)
 	{
@@ -1485,7 +1481,7 @@ class Profile extends Object
 	 * @param     $action    Group Action to perform
 	 * @return    bool
 	 */
-	public static function userHasPermissionForGroupAction( $group, $action )
+	public static function userHasPermissionForGroupAction($group, $action)
 	{
 		//get user roles
 		$roles = self::getGroupMemberRoles(
@@ -1507,34 +1503,10 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'getCourseMemberRoles'
-	 * Long description (if any) ...
-	 *
-	 * @param string $uid Parameter description (if any) ...
-	 * @param string $gid Parameter description (if any) ...
-	 * @return unknown Return description (if any) ...
-	 */
-	public function getCourseMemberRoles($uid, $gid)
-	{
-		$user_roles = '';
-
-		$db =  \JFactory::getDBO();
-		$sql = "SELECT r.id, r.role FROM #__courses_roles as r, #__courses_member_roles as m WHERE r.id=m.role AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
-		$db->setQuery($sql);
-
-		$roles = $db->loadAssocList();
-
-		if ($roles)
-		{
-			return $roles;
-		}
-	}
-
-	/**
 	 * Get the groups for a user
 	 *
-	 * @param string $role The group set to return. Returns all groups if not set
-	 * @return array Array of groups
+	 * @param   string  $role  The group set to return. Returns all groups if not set
+	 * @return  array   Array of groups
 	 */
 	public function getGroups($role = 'all')
 	{
