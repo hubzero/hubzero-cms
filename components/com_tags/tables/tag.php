@@ -473,6 +473,10 @@ class TagsTableTag extends JTable
 		{
 			$where[] = "tj.`objectid`=" . $this->_db->Quote((int) $filters['scope_id']);
 		}
+		if (isset($filters['label']) && $filters['label'])
+		{
+			$where[] = "tj.`label`=" . $this->_db->Quote((string) $filters['label']);
+		}
 		if (isset($filters['admin']) && $filters['admin'] !== null)
 		{
 			$where[] = "t.`admin`=" . $this->_db->Quote((int) $filters['admin']);

@@ -524,6 +524,10 @@ class TagsModelCloud extends \Hubzero\Base\Object
 		$tagArray2 = $this->_parse($tag_string, 1); // array of normalized => raw tags
 
 		$filters = array();
+		if ($label)
+		{
+			$filters['label'] = $label;
+		}
 		if (!$admin)
 		{
 			$filters['by']        = 'user';
