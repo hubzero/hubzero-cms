@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css();
 
-$sef = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->model->resource->id);
+$sef = JRoute::_('index.php?option=' . $this->option . '&' . ($this->model->resource->alias ? 'alias=' . $this->model->resource->alias : 'id=' . $this->model->resource->id));
 
 // Set the display date
 switch ($this->model->params->get('show_date'))
@@ -42,6 +42,10 @@ switch ($this->model->params->get('show_date'))
 	case 1: $thedate = $this->model->resource->created;    break;
 	case 2: $thedate = $this->model->resource->modified;   break;
 	case 3: $thedate = $this->model->resource->publish_up; break;
+}
+if ($this->model->isTool() && $this->model->curtool)
+{
+	$thedate = $this->model->curtool->released;
 }
 
 $this->model->resource->introtext = stripslashes($this->model->resource->introtext);
@@ -80,6 +84,27 @@ if ($this->model->resource->introtext)
 $maintext = $this->model->description('parsed');
 ?>
 <div class="subject abouttab">
+	<?php if ($this->model->isTool()) { ?>
+		<?php
+		if ($this->model->resource->revision == 'dev' or !$this->model->resource->toolpublished) {
+			//$shots = null;
+		} else {
+			// Screenshots
+			$ss = new ResourcesScreenshot($this->database);
+
+			$this->view('_screenshots')
+			     ->set('id', $this->model->resource->id)
+			     ->set('created', $this->model->resource->created)
+			     ->set('upath', $this->model->params->get('uploadpath'))
+			     ->set('wpath', $this->model->params->get('uploadpath'))
+			     ->set('versionid', $this->model->resource->versionid)
+			     ->set('sinfo', $ss->getScreenshots($this->model->resource->id, $this->model->resource->versionid))
+			     ->set('slidebar', 1)
+			     ->display();
+			?>
+		<?php } ?>
+	<?php } ?>
+
 	<div class="resource">
 		<?php if ($thedate) { ?>
 			<div class="grid">
@@ -123,16 +148,20 @@ $maintext = $this->model->description('parsed');
 			}
 			foreach ($schema->fields as $field)
 			{
-				if (isset($data[$field->name])) {
-					if ($field->name == 'citations') {
+				if (isset($data[$field->name]))
+				{
+					if ($field->name == 'citations')
+					{
 						$citations = $data[$field->name];
-					} else if ($value = $elements->display($field->type, $data[$field->name])) {
-					?>
-					<h4><?php echo $field->label; ?></h4>
-					<div class="resource-content">
-						<?php echo $value; ?>
-					</div>
-					<?php
+					}
+					else if ($value = $elements->display($field->type, $data[$field->name]))
+					{
+						?>
+						<h4><?php echo $field->label; ?></h4>
+						<div class="resource-content">
+							<?php echo $value; ?>
+						</div>
+						<?php
 					}
 				}
 			}
@@ -140,23 +169,22 @@ $maintext = $this->model->description('parsed');
 
 			<?php if ($this->model->params->get('show_citation')) { ?>
 				<?php
+				$revision = 0;
+
 				if ($this->model->params->get('show_citation') == 1 || $this->model->params->get('show_citation') == 2)
 				{
-					// Citation instructions
-					//$this->helper->getUnlinkedContributors();
-
 					// Build our citation object
 					$juri = JURI::getInstance();
 
 					$cite = new stdClass();
-					$cite->title = $this->model->resource->title;
-					$cite->year = JHTML::_('date', $thedate, 'Y');
+					$cite->title    = $this->model->resource->title;
+					$cite->year     = JHTML::_('date', $thedate, 'Y');
 					$cite->location = $juri->base() . ltrim($sef, DS);
-					$cite->date = JFactory::getDate()->toSql();
-					$cite->url = '';
-					$cite->type = '';
+					$cite->date     = JFactory::getDate()->toSql();
+					$cite->url      = '';
+					$cite->type     = '';
 					$authors = array();
-					$contributors = $this->model->contributors('!submitter');
+					$contributors = ($this->model->isTool() ? $this->model->contributors('tool') : $this->model->contributors('!submitter'));
 					if ($contributors)
 					{
 						foreach ($contributors as $contributor)
@@ -164,7 +192,30 @@ $maintext = $this->model->description('parsed');
 							$authors[] = $contributor->name ? $contributor->name : $contributor->xname;
 						}
 					}
-					$cite->author = implode(';', $authors); //$this->helper->ul_contributors;
+					$cite->author = implode(';', $authors);
+
+					if ($this->model->isTool())
+					{
+						// Get contribtool params
+						$tconfig = JComponentHelper::getParams( 'com_tools' );
+						$doi = '';
+
+						if (isset($this->model->resource->doi) && $this->model->resource->doi && $tconfig->get('doi_shoulder'))
+						{
+							$doi = $tconfig->get('doi_shoulder') . DS . strtoupper($this->model->resource->doi);
+						}
+						else if (isset($this->model->resource->doi_label) && $this->model->resource->doi_label)
+						{
+							$doi = '10254/' . $tconfig->get('doi_prefix') . $this->model->resource->id . '.' . $this->model->resource->doi_label;
+						}
+
+						if ($doi)
+						{
+							$cite->doi = $doi;
+						}
+
+						$revision = isset($this->model->resource->revision) ? $this->model->resource->revision : '';
+					}
 
 					if ($this->model->params->get('show_citation') == 2)
 					{
@@ -176,8 +227,8 @@ $maintext = $this->model->description('parsed');
 					$cite = null;
 				}
 
-				$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, 0);
-				$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model); //->resource, $this->model->params, $this->helper);
+				$citeinstruct  = ResourcesHtml::citation($this->option, $cite, $this->model->resource->id, $citations, $this->model->resource->type, $revision);
+				$citeinstruct .= ResourcesHtml::citationCOins($cite, $this->model);
 				?>
 				<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_CITE_THIS'); ?></h4>
 				<div class="resource-content">
@@ -252,4 +303,3 @@ $maintext = $this->model->description('parsed');
 		<?php } ?>
 	</div><!-- / .resource -->
 </div><!-- / .subject -->
-<div class="clear"></div>
