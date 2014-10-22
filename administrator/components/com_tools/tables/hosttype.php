@@ -127,6 +127,7 @@ class MwHosttype extends JTable
 				$ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
 			}
 		}
+
 		if (!$ret)
 		{
 			$this->setError(get_class($this).'::store failed - '.$this->_db->getErrorMsg());
@@ -136,6 +137,73 @@ class MwHosttype extends JTable
 		{
 			return true;
 		}
+	}
+
+	/**
+	 * Updates a row in a table based on an object's properties.
+	 *
+	 * @param   string   $key      The name of the primary key.
+	 * @param   boolean  $nulls    True to update null fields or false to ignore them.
+	 * @return  boolean  True on success.
+	 */
+	public function update($key=null, $nulls = false)
+	{
+		// Initialise variables.
+		$fields = array();
+		$where = '';
+
+		// Create the base update statement.
+		$statement = 'UPDATE ' . $this->_db->quoteName($this->_tbl) . ' SET %s WHERE %s';
+
+		if (!$key)
+		{
+			$key = $this->{$this->_tbl_key};
+		}
+
+		$where = $this->_db->quoteName($this->_tbl_key) . '=' . $this->_db->quote($key);
+
+		// Iterate over the object variables to build the query fields/value pairs.
+		foreach (get_object_vars($this) as $k => $v)
+		{
+			// Only process scalars that are not internal fields.
+			if (is_array($v) or is_object($v) or $k[0] == '_')
+			{
+				continue;
+			}
+
+			// Prepare and sanitize the fields and values for the database query.
+			if ($v === null)
+			{
+				// If the value is null and we want to update nulls then set it.
+				if ($nulls)
+				{
+					$val = 'NULL';
+				}
+				// If the value is null and we do not want to update nulls then ignore this field.
+				else
+				{
+					continue;
+				}
+			}
+			// The field is not null so we prep it for update.
+			else
+			{
+				$val = $this->_db->quote($v);
+			}
+
+			// Add the field to be updated.
+			$fields[] = $this->_db->quoteName($k) . '=' . $val;
+		}
+
+		// We don't have any fields to update.
+		if (empty($fields))
+		{
+			return true;
+		}
+
+		// Set the query and execute the update.
+		$this->_db->setQuery(sprintf($statement, implode(",", $fields), $where));
+		return $this->_db->execute();
 	}
 
 	/**

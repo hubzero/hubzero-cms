@@ -269,7 +269,16 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		}
 
 		// Store new content
-		if (!$row->store($insert))
+		if (!$fields['id'])
+		{
+			$result = $row->store($insert);
+		}
+		else
+		{
+			$result = $row->update($fields['id']);
+		}
+
+		if (!$result)
 		{
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
