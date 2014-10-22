@@ -4650,12 +4650,6 @@ class plgProjectsPublications extends JPlugin
 					$path    =  JPATH_ROOT . DS . trim($this->_pubconfig->get('webpath'), DS)
 							. DS .  \Hubzero\Utility\String::pad( $pid );
 
-					// Delete all files
-					if (is_dir($path))
-					{
-						JFolder::delete($path);
-					}
-
 					// Delete access accosiations
 					$pAccess = new PublicationAccess( $this->_database );
 					$pAccess->deleteGroups($vid);
@@ -4667,6 +4661,12 @@ class plgProjectsPublications extends JPlugin
 					// Delete publication existence
 					if ($pub->versions == 0)
 					{
+						// Delete all files
+						if (is_dir($path))
+						{
+							JFolder::delete($path);
+						}
+
 						$objP->delete($pid);
 						$objP->deleteExistence($pid);
 						$url  = JRoute::_($route);
