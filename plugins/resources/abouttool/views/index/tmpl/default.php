@@ -261,7 +261,7 @@ $maintext = $this->model->description('parsed');
 	if ($this->model->params->get('show_assocs'))
 	{
 		$tagger = new ResourcesTags($this->model->resource->id);
-		if ($tags = $tagger->render())
+		if ($tags = $tagger->render('cloud', ($this->model->access('edit') ? array() : array('admin' => 0))))
 		{
 			?>
 			<h4><?php echo JText::_('PLG_RESOURCES_ABOUT_TAGS'); ?></h4>
