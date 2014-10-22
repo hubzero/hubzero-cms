@@ -1263,7 +1263,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$tags = JRequest::getVar('tags', '', 'post');
 		$tagger = new ForumModelTags($model->id);
-		$tagger->setTags($tags, $this->juser->get('id'), 1);
+		$tagger->setTags($tags, $this->juser->get('id'));
 
 		// Determine post save message
 		// Also, get subject of post for outgoing email, either the title of parent post (for replies), or title of current post (for new threads)
