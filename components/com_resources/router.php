@@ -114,7 +114,7 @@ function ResourcesParseRoute($segments)
 	{
 		$vars['id'] = $segments[0];
 	}
-	elseif ($segments[0] == 'browse')
+	elseif (in_array($segments[0], array('browse', 'license', 'sourcecode')))
 	{
 		$vars['task'] = $segments[0];
 	}
@@ -182,6 +182,11 @@ function ResourcesParseRoute($segments)
 			case 'citation': $vars['task'] = 'citation'; break;
 			case 'feed.rss': $vars['task'] = 'feed';     break;
 			case 'feed':     $vars['task'] = 'feed';     break;
+
+			case 'license':
+			case 'sourcecode':
+				$vars['tool'] = $segments[1];
+			break;
 
 			default:
 				if ($segments[0] == 'browse')
