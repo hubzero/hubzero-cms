@@ -146,7 +146,7 @@ defined('_JEXEC') or die('Restricted access');
 	<div class="session-storage">
 		<span><?php echo JText::_('MOD_MYSESSIONS_STORAGE'); ?> (<a href="<?php echo JRoute::_('index.php?option=com_tools&task=storage'); ?>"><?php echo JText::_('MOD_MYSESSIONS_MANAGE'); ?></a>)</span>
 		<?php
-			$diskUsage = MwUtils::getDiskUsage($this->juser->get('username'));
+			$diskUsage = ToolsHelperUtils::getDiskUsage($this->juser->get('username'));
 			if (!is_array($diskUsage) || !isset($diskUsage['space']))
 			{
 				echo "<p class=\"error\">" . JText::_('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE') . "</p></div>";

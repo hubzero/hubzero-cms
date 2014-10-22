@@ -151,7 +151,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 
 		// Get the middleware database
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$mw = new ToolsModelMiddleware($mwdb);
 

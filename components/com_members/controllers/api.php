@@ -191,14 +191,14 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 
 		// Include middleware utilities
 		JLoader::import("joomla.database.table");
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
 
 		// Get db connection
 		$db = JFactory::getDBO();
 
 		// Get Middleware DB connection
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Get com_tools params
 		$mconfig = JComponentHelper::getParams( 'com_tools' );

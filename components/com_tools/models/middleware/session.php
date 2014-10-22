@@ -67,7 +67,7 @@ class MiddlewareModelSession extends MiddlewareModelBase
 	 */
 	public function __construct($oid=null, $authorized=null)
 	{
-		$this->_db = MwUtils::getMWDBO();
+		$this->_db = \ToolsHelperUtils::getMWDBO();
 
 		if ($this->_tbl_name)
 		{

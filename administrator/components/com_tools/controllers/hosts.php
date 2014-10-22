@@ -94,7 +94,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$model = new MwHost($mwdb);
 
@@ -222,7 +222,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 
 		// Get the middleware database
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		if (is_object($row))
 		{
@@ -295,7 +295,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Get the middleware database
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		// Incoming
 		$fields = JRequest::getVar('fields', array(), 'post');
@@ -393,7 +393,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
 		// Get the middleware database
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$query = "SELECT @value:=value FROM hosttype WHERE name=" . $mwdb->Quote($item) . ";" .
 				" UPDATE host SET provisions = provisions ^ @value WHERE hostname = " . $mwdb->Quote($hostname) . ";";
@@ -426,7 +426,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		if (count($ids) > 0)
 		{

@@ -45,7 +45,7 @@ class modMySessions extends \Hubzero\Module\Module
 	 */
 	private function _setTimeout($sess)
 	{
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$ms = new MwSession($mwdb);
 		$ms->load($sess);
@@ -61,7 +61,7 @@ class modMySessions extends \Hubzero\Module\Module
 	 */
 	private function _getTimeout($sess)
 	{
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$ms = new MwSession($mwdb);
 		$remaining = $ms->getTimeout();
@@ -92,7 +92,7 @@ class modMySessions extends \Hubzero\Module\Module
 	public function display()
 	{
 		//include mw libraries
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
 
 		//get user object
@@ -102,7 +102,7 @@ class modMySessions extends \Hubzero\Module\Module
 		$this->database = JFactory::getDBO();
 
 		//Get a connection to the middleware database
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		//get tool paras
 		$this->toolsConfig = JComponentHelper::getParams('com_tools');

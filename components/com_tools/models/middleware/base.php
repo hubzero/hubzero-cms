@@ -48,7 +48,7 @@ class MiddlewareModelBase extends \Hubzero\Base\Model
 	 */
 	public function __construct($oid=null)
 	{
-		$this->_db = \MwUtils::getMWDBO();
+		$this->_db = \ToolsHelperUtils::getMWDBO();
 
 		if ($this->_tbl_name)
 		{

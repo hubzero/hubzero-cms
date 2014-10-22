@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'utils.php');
 require_once(__DIR__ . '/middleware/zone.php');
 require_once(__DIR__ . '/middleware/session.php');
 
@@ -74,7 +74,7 @@ class ToolsModelMiddleware extends \Hubzero\Base\Object
 		}
 		else
 		{
-			$this->_db = MwUtils::getMWDBO();
+			$this->_db = ToolsHelperUtils::getMWDBO();
 		}
 	}
 

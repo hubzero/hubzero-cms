@@ -750,9 +750,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!JFolder::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
-			$mwUtils = new MwUtils();
-			if (!$mwUtils->createHomeDirectory($this->member->get('username')))
+			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+
+			if (!ToolsHelperUtils::createHomeDirectory($this->member->get('username')))
 			{
 				JError::raiseError(500, JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
 				return;
@@ -820,9 +820,9 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (!JFolder::exists($homeDir))
 		{
 			// Try to create their home directory
-			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
-			$mwUtils = new MwUtils();
-			if (!$mwUtils->createHomeDirectory($this->member->get('username')))
+			require_once(JPATH_ROOT . DS .'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+
+			if (!ToolsHelperUtils::createHomeDirectory($this->member->get('username')))
 			{
 				return $key = false;
 			}

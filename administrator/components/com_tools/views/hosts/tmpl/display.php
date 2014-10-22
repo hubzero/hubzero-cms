@@ -76,6 +76,8 @@ function submitbutton(pressbutton)
 <?php
 if ($this->rows)
 {
+	$db = ToolsHelperUtils::getMWDBO();
+
 	$i = 0;
 	foreach ($this->rows as $row)
 	{
@@ -129,7 +131,6 @@ if ($this->rows)
 				</td>
 				<td>
 					<?php
-						$db = MwUtils::getMWDBO();
 						$db->setQuery("SELECT count(*) FROM `display` WHERE `status`='broken' AND `hostname`=" . $db->quote($row->hostname));
 						echo $db->loadResult();
 					?>

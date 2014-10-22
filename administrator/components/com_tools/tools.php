@@ -39,7 +39,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'mw.utils.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'utils.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'tool.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 

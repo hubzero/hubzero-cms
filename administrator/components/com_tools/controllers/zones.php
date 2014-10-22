@@ -154,7 +154,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		$this->view->setLayout('edit');
 
 		// Get the middleware database
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$mw = new ToolsModelMiddleware($mwdb);
 
@@ -285,7 +285,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		}
 
 		// Get the middleware database
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$row = new MwZones($mwdb);
 		if ($row->load($id))
@@ -320,7 +320,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Incoming
 		$ids = JRequest::getVar('id', array());
 
-		$mwdb = MwUtils::getMWDBO();
+		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		if (count($ids) > 0)
 		{

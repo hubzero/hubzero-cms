@@ -2022,8 +2022,8 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$sessnum = '';
 		if ($sess = JRequest::getVar('sesstoken', ''))
 		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
-			$mwdb = MwUtils::getMWDBO();
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
+			$mwdb = ToolsHelperUtils::getMWDBO();
 
 			// retrieve the username and IP from session with this session token
 			$query = "SELECT * FROM session WHERE session.sesstoken=" . $this->database->quote($sess) . " LIMIT 1";

@@ -254,7 +254,7 @@ class modToolList extends \Hubzero\Module\Module
 	 */
 	public function display()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.utils.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'helpers' . DS . 'utils.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'mw.class.php');
 		include_once(JPATH_ROOT . DS . 'modules' . DS . $this->module->module . DS . 'app.php');
 
