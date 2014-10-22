@@ -594,10 +594,10 @@ class ResourcesHelper extends JObject
 	/**
 	 * Get tags on this resource
 	 *
-	 * @param      integer $tagger_id Tagger ID
-	 * @param      integer $strength  Tag strength
-	 * @param      integer $admin     Include admin tags?
-	 * @return     mixed False if errors, array on success
+	 * @param   integer  $tagger_id  Tagger ID
+	 * @param   integer  $strength   Tag strength
+	 * @param   integer  $admin      Include admin tags?
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function getTags($tagger_id=0, $strength=0, $admin=0)
 	{
@@ -618,7 +618,7 @@ class ResourcesHelper extends JObject
 		{
 			$filters['strength'] = $strength;
 		}
-		if ($admin)
+		if (!$admin)
 		{
 			$filters['admin'] = $admin;
 		}

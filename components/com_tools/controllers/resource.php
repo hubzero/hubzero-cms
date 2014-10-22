@@ -265,16 +265,16 @@ class ToolsControllerResource extends \Hubzero\Component\SiteController
 		$tagcloud = new ResourcesTags($row->id);
 
 		// Normalize the focus areas
-		$tagfa1  = $tagcloud->normalize_tag($fa1);
-		$tagfa2  = $tagcloud->normalize_tag($fa2);
-		$tagfa3  = $tagcloud->normalize_tag($fa3);
-		$tagfa4  = $tagcloud->normalize_tag($fa4);
-		$tagfa5  = $tagcloud->normalize_tag($fa5);
-		$tagfa6  = $tagcloud->normalize_tag($fa6);
-		$tagfa7  = $tagcloud->normalize_tag($fa7);
-		$tagfa8  = $tagcloud->normalize_tag($fa8);
-		$tagfa9  = $tagcloud->normalize_tag($fa9);
-		$tagfa10 = $tagcloud->normalize_tag($fa10);
+		$tagfa1  = $tagcloud->normalize($fa1);
+		$tagfa2  = $tagcloud->normalize($fa2);
+		$tagfa3  = $tagcloud->normalize($fa3);
+		$tagfa4  = $tagcloud->normalize($fa4);
+		$tagfa5  = $tagcloud->normalize($fa5);
+		$tagfa6  = $tagcloud->normalize($fa6);
+		$tagfa7  = $tagcloud->normalize($fa7);
+		$tagfa8  = $tagcloud->normalize($fa8);
+		$tagfa9  = $tagcloud->normalize($fa9);
+		$tagfa10 = $tagcloud->normalize($fa10);
 
 		// process new tags
 		if ($tags or $tagfa)

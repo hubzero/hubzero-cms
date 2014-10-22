@@ -61,14 +61,13 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 
 		// Get tags for this resource
 		$rt = new ResourcesTags($this->view->id);
-		$tagsMen = $rt->getTags($this->view->id, 0, 0, 1);
 
 		$mytagarray    = array();
 		$myrawtagarray = array();
-		foreach ($tagsMen as $tagMen)
+		foreach ($rt->tags() as $tagMen)
 		{
-			$mytagarray[]    = $tagMen->tag;
-			$myrawtagarray[] = $tagMen->raw_tag;
+			$mytagarray[]    = $tagMen->get('tag');
+			$myrawtagarray[] = $tagMen->get('raw_tag');
 		}
 		$this->view->mytagarray = $mytagarray;
 

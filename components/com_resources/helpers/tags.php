@@ -46,41 +46,6 @@ class ResourcesTags extends TagsModelCloud
 	protected $_scope = 'resources';
 
 	/**
-	 * Get tags on a resource
-	 *
-	 * @param      integer $id        Resource ID
-	 * @param      integer $tagger_id Tagger ID
-	 * @param      integer $strength  Tag strength
-	 * @param      integer $admin     Admin flag
-	 * @return     array
-	 */
-	public function getTags($id, $tagger_id=0, $strength=0, $admin=0)
-	{
-		$sql = "SELECT DISTINCT t.*, (SELECT COUNT(rtt.id) FROM `#__tags_object` AS rtt WHERE rtt.tagid=rt.tagid) as `count` FROM `#__tags` AS t INNER JOIN `#__tags_object` AS rt ON rt.tagid=t.id WHERE ";
-
-		$where   = array();
-		$where[] = "rt.objectid=" . $this->_db->quote($id);
-		$where[] = "rt.tbl=" . $this->_db->quote($this->_scope);
-		if ($admin != 1)
-		{
-			$where[] = "t.admin=0";
-		}
-		if ($tagger_id != 0)
-		{
-			$where[] = "rt.taggerid=" . $this->_db->quote($tagger_id);
-		}
-		if ($strength)
-		{
-			$where[] = "rt.strength=" . $this->_db->quote($strength);
-		}
-
-		$sql .= implode(" AND ", $where) . " ORDER BY t.raw_tag";
-
-		$this->_db->setQuery($sql);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
 	 * Get all tags with a resource association
 	 *
 	 * @param      integer $id   Resource ID
@@ -532,17 +497,6 @@ class ResourcesTags extends TagsModelCloud
 	}
 
 	/**
-	 * Strip punctuation
-	 *
-	 * @param      string  $tag
-	 * @return     string
-	 */
-	public function normalize_tag($tag)
-	{
-		return $this->_tbl->normalize($tag);
-	}
-
-	/**
 	 * Turn a string of tags to an array
 	 *
 	 * @param      string $tag Tag string
@@ -550,14 +504,7 @@ class ResourcesTags extends TagsModelCloud
 	 */
 	public function parseTopTags($tag, $remove='')
 	{
-		if (is_array($tag))
-		{
-			$bunch = $tag;
-		}
-		else
-		{
-			$bunch = $this->_parse($tag);
-		}
+		$bunch = $this->_parse($tag);
 
 		$tags = array();
 		if ($remove)

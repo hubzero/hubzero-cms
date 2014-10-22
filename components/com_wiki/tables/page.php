@@ -351,7 +351,7 @@ class WikiTablePage extends JTable
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery("SELECT rating FROM #__wiki_comments WHERE pageid=" . $this->_db->Quote($this->id) . " AND rating!=0");
+		$this->_db->setQuery("SELECT rating FROM `#__wiki_comments` WHERE pageid=" . $this->_db->Quote($this->id) . " AND rating!=0");
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -375,16 +375,17 @@ class WikiTablePage extends JTable
 	}
 
 	/**
-	 * Returns an array of tags associated with this page
+	 * Returns a list of tags associated with this page
 	 *
-	 * @param 	integer 	$admin
-	 * @return 	array
+	 * @param   integer  $admin
+	 * @return  object   Interator object
 	 */
 	public function getTags($admin=0)
 	{
-		$obj = new WikiTags($this->_db);
-		$tags = $obj->get_tags_on_object($this->id, 0, 0, '', 0, $admin);
-		return $tags;
+		include_once(dirname(__DIR__) . DS . 'models' . DS . 'tags.php');
+
+		$obj = new WikiModelTags($this->id);
+		return $obj->tags('list', (!$admin ? array('admin' => 0) : array()));
 	}
 
 	/**
