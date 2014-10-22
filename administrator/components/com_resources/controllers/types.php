@@ -185,8 +185,6 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 			$this->editTask($row);
 			return;
 		}
-		$row->contributable = ($row->contributable) ? $row->contributable : '0';
-		$row->alias = ($row->alias) ? $row->alias : $this->_normalize($row->type, true);
 
 		// Get the custom fields
 		$fields = JRequest::getVar('fields', array(), 'post');
@@ -236,24 +234,20 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		}
 
 		// Get parameters
-		$params = JRequest::getVar('params', '', 'post');
-		if (is_array($params))
-		{
-			$txt = array();
-			foreach ($params as $k => $v)
-			{
-				$txt[] = "$k=$v";
-			}
-			$row->params = implode("\n", $txt);
-		}
+		$p = new JRegistry('');
+		$p->loadArray(JRequest::getVar('params', array(), 'post'));
 
-		// Check content
+		$row->params = $p->toString();
+
+		// Make sure a category is set
 		if (!$row->category)
 		{
 			$this->addComponentMessage(JText::_('COM_RESOURCES_ERROR_SELECT_CATEGORY'), 'error');
 			$this->editTask($row);
 			return;
 		}
+
+		// Check content
 		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');

@@ -122,7 +122,7 @@ function submitbutton(pressbutton)
 				<tbody>
 				<?php
 				$database = JFactory::getDBO();
-				$database->setQuery( "SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='resources'" );
+				$database->setQuery("SELECT * FROM `#__extensions` WHERE `type`='plugin' AND `folder`='resources' AND `enabled`=1");
 				$plugins = $database->loadObjectList();
 
 				$found = array();
@@ -141,8 +141,8 @@ function submitbutton(pressbutton)
 					?>
 					<tr>
 						<th scope="row"><?php echo (strstr($plugin->name, '_') ? JText::_(stripslashes($plugin->name)) : stripslashes($plugin->name)); ?></th>
-						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_'.$plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> <?php echo JText::_('COM_RESOURCES_OFF'); ?></label></td>
-						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_'.$plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> <?php echo JText::_('COM_RESOURCES_ON'); ?></label></td>
+						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="0"<?php echo ($params->get('plg_' . $plugin->element, 0) == 0) ? ' checked="checked"':''; ?> /> <?php echo JText::_('COM_RESOURCES_OFF'); ?></label></td>
+						<td><label><input type="radio" name="params[plg_<?php echo $plugin->element; ?>]" value="1"<?php echo ($params->get('plg_' . $plugin->element, 0) == 1) ? ' checked="checked"':''; ?> /> <?php echo JText::_('COM_RESOURCES_ON'); ?></label></td>
 					</tr>
 					<?php
 				}

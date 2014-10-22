@@ -110,16 +110,21 @@ class ResourcesType extends JTable
 	 */
 	public function check()
 	{
-		if (trim($this->type) == '')
+		$this->type = trim($this->type);
+		if ($this->type == '')
 		{
 			$this->setError(JText::_('Your resource type must contain text.'));
 			return false;
 		}
+
 		if (!$this->alias)
 		{
 			$this->alias = $this->type;
 		}
 		$this->alias = $this->normalize($this->alias);
+
+		$this->contributable = $this->contributable ?: 0;
+
 		return true;
 	}
 
@@ -161,7 +166,7 @@ class ResourcesType extends JTable
 	 */
 	public function normalize($txt)
 	{
-		return preg_replace("/[^a-zA-Z0-9]/", '', strtolower($txt));
+		return preg_replace("/[^a-zA-Z0-9\-_]/", '', strtolower($txt));
 	}
 
 	/**
@@ -280,8 +285,8 @@ class ResourcesType extends JTable
 		$type_id = intval($type_id);
 
 		$query = "SELECT r.id, r.title, r.alias
-					FROM #__author_roles AS r
-					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
+					FROM `#__author_roles` AS r
+					JOIN `#__author_role_types` AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
 					ORDER BY r.title ASC";
 
 		$this->_db->setQuery($query);
