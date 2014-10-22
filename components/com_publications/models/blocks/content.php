@@ -227,7 +227,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		foreach ($manifest->elements as $elementId => $element)
 		{
 			$attModel->transferData($element->params->type, $element,
-				$elementId, $pub, $this->_manifest->params,
+				$elementId, $pub, $manifest->params,
 				$oldVersion, $newVersion
 			);
 		}
