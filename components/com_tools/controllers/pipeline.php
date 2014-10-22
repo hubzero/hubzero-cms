@@ -1876,71 +1876,78 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		$summary = '';
 
-		$log = array(
-			'changes' => array()
-		);
+		// Make sure ticket is tied to the tool group
+		$row = new SupportModelTicket($ticketid);
+		if ($row->exists() && isset($newstuff['toolname']))
+		{
+			$row->set('group', $this->config->get('group_prefix', 'app-') . $newstuff['toolname']);
+			$row->store();
+		}
+
+		$rowc = new SupportModelComment();
+		$rowc->set('ticket', $ticketid);
 
 		// see what changed
 		if ($oldstuff != $newstuff)
 		{
 			if (isset($oldstuff['toolname']) && isset($newstuff['toolname']) && $oldstuff['toolname'] != $newstuff['toolname'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TOOLNAME'),
-					'before' => $oldstuff['toolname'],
-					'after'  => $newstuff['toolname']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TOOLNAME'),
+					$oldstuff['toolname'],
+					$newstuff['toolname']
 				);
 			}
 			if ($oldstuff['title'] != $newstuff['title'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_TITLE')),
-					'before' => $oldstuff['title'],
-					'after'  => $newstuff['title']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_TITLE')),
+					$oldstuff['title'],
+					$newstuff['title']
 				);
 				$summary .= strtolower(JText::_('COM_TOOLS_TITLE'));
 			}
 			if ($oldstuff['version'] != '' && $oldstuff['version'] != $newstuff['version'])
 			{
-				$log['changes'][] = array(
-					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
-					'before' => $oldstuff['version'],
-					'after'  => $newstuff['version']
+				$rowc->changelog()->changed(
+					strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
+					$oldstuff['version'],
+					$newstuff['version']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_VERSION'));
 			}
 			else if ($oldstuff['version'] == '' && $newstuff['version'] != '')
 			{
-				$log['changes'][] = array(
-					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
-					'before' => '',
-					'after'  => $newstuff['version']
+				$rowc->changelog()->changed(
+					strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
+					'',
+					$newstuff['version']
 				);
 			}
 			if ($oldstuff['description'] != $newstuff['description'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_DESCRIPTION')),
-					'before' => $oldstuff['description'],
-					'after'  => $newstuff['description']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_DESCRIPTION')),
+					$oldstuff['description'],
+					$newstuff['description']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_DESCRIPTION'));
 			}
 			if ($oldstuff['toolaccess'] != $newstuff['toolaccess'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TOOL_ACCESS'),
-					'before' => $oldstuff['toolaccess'],
-					'after'  => $newstuff['toolaccess']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TOOL_ACCESS'),
+					$oldstuff['toolaccess'],
+					$newstuff['toolaccess']
 				);
 				if ($newstuff['toolaccess'] == '@GROUP')
 				{
-					$log['changes'][] = array(
-						'field'  => JText::_('COM_TOOLS_ALLOWED_GROUPS'),
-						'before' => implode(',', $oldstuff['membergroups']),
-						'after'  => implode(',', $newstuff['membergroups'])
+					$rowc->changelog()->changed(
+						JText::_('COM_TOOLS_ALLOWED_GROUPS'),
+						implode(',', $oldstuff['membergroups']),
+						implode(',', $newstuff['membergroups'])
 					);
 				}
 				$summary .= $summary == '' ? '' : ', ';
@@ -1948,40 +1955,40 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 			if ($oldstuff['codeaccess'] != $newstuff['codeaccess'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_CODE_ACCESS'),
-					'before' => $oldstuff['codeaccess'],
-					'after'  => $newstuff['codeaccess']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_CODE_ACCESS'),
+					$oldstuff['codeaccess'],
+					$newstuff['codeaccess']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_CODE_ACCESS'));
 			}
 			if ($oldstuff['wikiaccess'] != $newstuff['wikiaccess'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_WIKI_ACCESS'),
-					'before' => $oldstuff['wikiaccess'],
-					'after'  => $newstuff['wikiaccess']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_WIKI_ACCESS'),
+					$oldstuff['wikiaccess'],
+					$newstuff['wikiaccess']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_WIKI_ACCESS'));
 			}
 			if (isset($oldstuff['vncGeometry']) && isset($newstuff['vncGeometry']) && $oldstuff['vncGeometry'] != $newstuff['vncGeometry'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_VNC_GEOMETRY'),
-					'before' => $oldstuff['vncGeometry'],
-					'after'  => $newstuff['vncGeometry']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_VNC_GEOMETRY'),
+					$oldstuff['vncGeometry'],
+					$newstuff['vncGeometry']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_VNC_GEOMETRY'));
 			}
 			if (isset($oldstuff['developers']) && isset($newstuff['developers']) && $oldstuff['developers'] != $newstuff['developers'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_DEVELOPMENT_TEAM'),
-					'before' => ToolsHelperHtml::getDevTeam($oldstuff['developers']),
-					'after'  => ToolsHelperHtml::getDevTeam($newstuff['developers'])
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_DEVELOPMENT_TEAM'),
+					ToolsHelperHtml::getDevTeam($oldstuff['developers']),
+					ToolsHelperHtml::getDevTeam($newstuff['developers'])
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_DEVELOPMENT_TEAM'));
@@ -1997,19 +2004,19 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			// tool status/priority changes
 			if ($oldstuff['priority'] != $newstuff['priority'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_PRIORITY'),
-					'before' => ToolsHelperHtml::getPriority($oldstuff['priority']),
-					'after'  => ToolsHelperHtml::getPriority($newstuff['priority'])
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_PRIORITY'),
+					ToolsHelperHtml::getPriority($oldstuff['priority']),
+					ToolsHelperHtml::getPriority($newstuff['priority'])
 				);
 				$email = 0; // do not send email about priority changes
 			}
 			if ($oldstuff['toolstate'] != $newstuff['toolstate'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_STATUS'),
-					'before' => ToolsHelperHtml::getStatusName($oldstuff['toolstate'], $oldstate),
-					'after'  => ToolsHelperHtml::getStatusName($newstuff['toolstate'], $newstate)
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_STATUS'),
+					ToolsHelperHtml::getStatusName($oldstuff['toolstate'], $oldstate),
+					ToolsHelperHtml::getStatusName($newstuff['toolstate'], $newstate)
 				);
 				$summary = JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . JText::_('COM_TOOLS_TO') . ' ' . $newstate;
 				$email   = 1; // send email about status changes
@@ -2017,32 +2024,20 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 		}
 
-		// Make sure ticket is tied to the tool group
-		$row = new SupportTicket($this->database);
-		if ($row->load($ticketid) && isset($newstuff['toolname']))
-		{
-			//$config = JComponentHelper::getParams($this->_option);
-			$row->group = $this->config->get('group_prefix', 'app-') . $newstuff['toolname'];
-			$row->store();
-		}
-
-		$rowc = new SupportComment($this->database);
-		$rowc->ticket = $ticketid;
-
 		if ($comment)
 		{
 			//$action = $action==2 ? $action : 3;
 			$email = 1;
-			$rowc->comment = nl2br($comment);
-			$rowc->comment = str_replace('<br>', '<br />', $rowc->comment);
+			$rowc->set('comment', nl2br($comment));
 		}
 
+		$log = $rowc->changelog()->lists();
 		if (!empty($log['changes']) || $comment)
 		{
-			$rowc->created    = JFactory::getDate()->toSql();
-			$rowc->created_by = $this->juser->get('username');
-			$rowc->changelog  = json_encode($log);
-			$rowc->access     = $access;
+			$rowc->set('created', JFactory::getDate()->toSql());
+			$rowc->set('created_by', $this->juser->get('id'));
+			$rowc->set('access', $access);
+
 			$xlog->debug(__FUNCTION__ . '() storing ticket');
 			if (!$rowc->store())
 			{
@@ -2079,71 +2074,70 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 
 		$summary = '';
 
-		$log = array(
-			'changes' => array()
-		);
+		$rowc = new SupportModelComment();
+		$rowc->set('ticket', $obj->getTicketId($toolid));
 
 		// see what changed
 		if ($oldstuff != $newstuff)
 		{
 			if ($oldstuff['toolname'] != $newstuff['toolname'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TOOLNAME'),
-					'before' => $oldstuff['toolname'],
-					'after'  => $newstuff['toolname']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TOOLNAME'),
+					$oldstuff['toolname'],
+					$newstuff['toolname']
 				);
 			}
 			if ($oldstuff['title'] != $newstuff['title'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_TITLE')),
-					'before' => $oldstuff['title'],
-					'after'  => $newstuff['title']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_TITLE')),
+					$oldstuff['title'],
+					$newstuff['title']
 				);
 				$summary .= strtolower(JText::_('COM_TOOLS_TITLE'));
 			}
-			if ($oldstuff['version']!='' && $oldstuff['version'] != $newstuff['version'])
+			if ($oldstuff['version'] !='' && $oldstuff['version'] != $newstuff['version'])
 			{
-				$log['changes'][] = array(
-					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
-					'before' => $oldstuff['version'],
-					'after'  => $newstuff['version']
+				$rowc->changelog()->changed(
+					strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
+					$oldstuff['version'],
+					$newstuff['version']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_VERSION'));
 			}
-			else if ($oldstuff['version']=='' && $newstuff['version']!='')
+			else if ($oldstuff['version'] == '' && $newstuff['version']!='')
 			{
-				$log['changes'][] = array(
-					'field'  => strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
-					'before' => '',
-					'after'  => $newstuff['version']
+				$rowc->changelog()->changed(
+					strtolower(JText::_('COM_TOOLS_DEV_VERSION_LABEL')),
+					'',
+					$newstuff['version']
 				);
 			}
 			if ($oldstuff['description'] != $newstuff['description'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_DESCRIPTION')),
-					'before' => $oldstuff['description'],
-					'after'  => $newstuff['description']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TOOL') . ' ' . strtolower(JText::_('COM_TOOLS_DESCRIPTION')),
+					$oldstuff['description'],
+					$newstuff['description']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_DESCRIPTION'));
 			}
 			if ($oldstuff['exec'] != $newstuff['exec'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TOOL_ACCESS'),
-					'before' => $oldstuff['exec'],
-					'after'  => $newstuff['exec']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TOOL_ACCESS'),
+					$oldstuff['exec'],
+					$newstuff['exec']
 				);
-				if ($newstuff['exec']=='@GROUP')
+				if ($newstuff['exec'] == '@GROUP')
 				{
-					$log['changes'][] = array(
-						'field'  => JText::_('COM_TOOLS_ALLOWED_GROUPS'),
-						'before' => '',
-						'after'  => ToolsHelperHtml::getGroups($newstuff['membergroups'])
+					$rowc->changelog()->changed(
+						JText::_('COM_TOOLS_ALLOWED_GROUPS'),
+						'',
+						ToolsHelperHtml::getGroups($newstuff['membergroups'])
 					);
 				}
 				$summary .= $summary == '' ? '' : ', ';
@@ -2151,40 +2145,40 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 			if ($oldstuff['code'] != $newstuff['code'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_CODE_ACCESS'),
-					'before' => $oldstuff['code'],
-					'after'  => $newstuff['code']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_CODE_ACCESS'),
+					$oldstuff['code'],
+					$newstuff['code']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_CODE_ACCESS'));
 			}
 			if ($oldstuff['wiki'] != $newstuff['wiki'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_WIKI_ACCESS'),
-					'before' => $oldstuff['wiki'],
-					'after'  => $newstuff['wiki']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_WIKI_ACCESS'),
+					$oldstuff['wiki'],
+					$newstuff['wiki']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_WIKI_ACCESS'));
 			}
 			if ($oldstuff['vncGeometry'] != $newstuff['vncGeometry'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_VNC_GEOMETRY'),
-					'before' => $oldstuff['vncGeometry'],
-					'after'  => $newstuff['vncGeometry']
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_VNC_GEOMETRY'),
+					$oldstuff['vncGeometry'],
+					$newstuff['vncGeometry']
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_VNC_GEOMETRY'));
 			}
 			if ($oldstuff['developers'] != $newstuff['developers'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_DEVELOPMENT_TEAM'),
-					'before' => ToolsHelperHtml::getDevTeam($oldstuff['developers']),
-					'after'  => ToolsHelperHtml::getDevTeam($newstuff['developers'])
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_DEVELOPMENT_TEAM'),
+					ToolsHelperHtml::getDevTeam($oldstuff['developers']),
+					ToolsHelperHtml::getDevTeam($newstuff['developers'])
 				);
 				$summary .= $summary == '' ? '' : ', ';
 				$summary .= strtolower(JText::_('COM_TOOLS_DEVELOPMENT_TEAM'));
@@ -2200,19 +2194,19 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			// tool status/priority changes
 			if ($oldstuff['priority'] != $newstuff['priority'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_PRIORITY'),
-					'before' => ToolsHelperHtml::getPriority($oldstuff['priority']),
-					'after'  => ToolsHelperHtml::getPriority($newstuff['priority'])
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_PRIORITY'),
+					ToolsHelperHtml::getPriority($oldstuff['priority']),
+					ToolsHelperHtml::getPriority($newstuff['priority'])
 				);
 				$email = 0; // do not send email about priority changes
 			}
 			if ($oldstuff['state'] != $newstuff['state'])
 			{
-				$log['changes'][] = array(
-					'field'  => JText::_('COM_TOOLS_TICKET_CHANGED_FROM'),
-					'before' => ToolsHelperHtml::getStatusName($oldstuff['state'], $oldstate),
-					'after'  => ToolsHelperHtml::getStatusName($newstuff['state'], $newstate)
+				$rowc->changelog()->changed(
+					JText::_('COM_TOOLS_TICKET_CHANGED_FROM'),
+					ToolsHelperHtml::getStatusName($oldstuff['state'], $oldstate),
+					ToolsHelperHtml::getStatusName($newstuff['state'], $newstate)
 				);
 				$summary = JText::_('COM_TOOLS_STATUS') . ' ' . JText::_('COM_TOOLS_TICKET_CHANGED_FROM') . ' ' . $oldstate . ' ' . JText::_('COM_TOOLS_TO') . ' ' . $newstate;
 				$email = 1; // send email about status changes
@@ -2220,20 +2214,15 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 		}
 
-		$rowc = new SupportComment($this->database);
-		$rowc->ticket = $obj->getTicketId($toolid);
-
 		if ($comment)
 		{
 			//$action = $action==2 ? $action : 3;
 			$email = 1;
-			$rowc->comment = nl2br($comment);
-			$rowc->comment = str_replace('<br>', '<br />', $rowc->comment);
+			$rowc->set('comment', nl2br($comment));
 		}
-		$rowc->created    = JFactory::getDate()->toSql();
-		$rowc->created_by = $this->juser->get('id');
-		$rowc->changelog  = json_encode($log);
-		$rowc->access     = $access;
+		$rowc->set('created', JFactory::getDate()->toSql());
+		$rowc->set('created_by', $this->juser->get('id'));
+		$rowc->set('access', $access);
 
 		if (!$rowc->store())
 		{
@@ -2260,20 +2249,21 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 	 */
 	private function _createTicket($toolid, $tool)
 	{
-		$row = new SupportTicket($this->database);
-		$row->status   = 0;
-		$row->created  = JFactory::getDate()->toSql();
-		$row->login    = $this->juser->get('username');
-		$row->severity = 'normal';
-		$row->summary  = JText::_('COM_TOOLS_NEW_TOOL_SUBMISSION') . ': ' . $tool['toolname'];
-		$row->report   = $tool['toolname'];
-		$row->section  = 2;
-		$row->type     = 3;
+		$row = new SupportModelTicket();
+		$row->set('open', 1);
+		$row->set('status', 0);
+		$row->set('created', JFactory::getDate()->toSql());
+		$row->set('login', $this->juser->get('username'));
+		$row->set('severity', 'normal');
+		$row->set('summary', JText::_('COM_TOOLS_NEW_TOOL_SUBMISSION') . ': ' . $tool['toolname']);
+		$row->set('report', $tool['toolname']);
+		$row->set('section', 2);
+		$row->set('type', 3);
 
 		// Attach tool group to a ticket for access
-		$row->group    = $this->config->get('group_prefix', 'app-') . $tool['toolname'];
-		$row->email    = $this->juser->get('email');
-		$row->name     = $this->juser->get('name');
+		$row->set('group', $this->config->get('group_prefix', 'app-') . $tool['toolname']);
+		$row->set('email', $this->juser->get('email'));
+		$row->set('name', $this->juser->get('name'));
 
 		if (!$row->store())
 		{
@@ -2282,18 +2272,14 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			// Checkin ticket
-			$row->checkin();
-
-			if ($row->id)
+			if ($row->exists())
 			{
 				// save tag
-				$st = new SupportModelTags($row->id);
-				$st->setTags('tool:' . $tool['toolname'], $this->juser->get('id'));
+				$row->tag('tool:' . $tool['toolname'], $this->juser->get('id'));
 
 				// store ticket id
 				$obj = new Tool($this->database);
-				$obj->saveTicketId($toolid, $row->id);
+				$obj->saveTicketId($toolid, $row->get('id'));
 
 				// make a record
 				$this->_updateTicket($toolid, '', '', JText::_('COM_TOOLS_NOTICE_TOOL_REGISTERED'), 0, 1, 4, $tool);
