@@ -180,11 +180,12 @@ if ($mode != 'preview')
 					// Open/closed source
 					if (isset($this->model->resource->toolsource) && $this->model->resource->toolsource == 1 && isset($this->model->resource->tool)) { // open source
 						$html .= '<p class="opensource_license">'.JText::_('Open source').': <a class="popup" href="index.php?option='.$this->option.'&task=license&tool='.$this->model->resource->tool.'&no_html=1">license</a> ';
-						$html .= ($this->model->resource->taravailable) ? ' |  <a href="index.php/'.$this->model->resource->tarname.'?option='.$this->option.'&task=sourcecode&tool='.$this->model->resource->tool.'">'.JText::_('download').'</a> '."\n" : ' | <span class="unavail">'.JText::_('code unavaialble').'</span>'."\n";
+						$html .= ($this->model->resource->taravailable) ? ' |  <a href="'.JRoute::_('index.php?option='.$this->option.'&task=sourcecode&tool='.$this->model->resource->tool).'">'.JText::_('download').'</a> '."\n" : ' | <span class="unavail">'.JText::_('code unavaialble').'</span>'."\n";
 						$html .= '</p>'."\n";
 					} elseif (isset($this->model->resource->toolsource) && !$this->model->resource->toolsource) { // closed source, archive page
 						$html .= '<p class="closedsource_license">'.JText::_('COM_RESOURCES_TOOL_IS_CLOSED_SOURCE').'</p>'."\n";
 					}
+
 					// do we have a first-time user guide?
 					$helper->getChildren($this->model->resource->id, 0, 'all');
 					$children = $helper->children;
