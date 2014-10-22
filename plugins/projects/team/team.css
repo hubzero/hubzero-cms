@@ -69,6 +69,7 @@
 		display: block;
 		margin-top: 1em;
 	}
+	/*
 	.userinvited {
 		line-height: 1em;
 		background: url("images/user_invited.gif") 0 4px no-repeat;
@@ -93,6 +94,7 @@
 		line-height: 1em;
 		background: url("images/user_inactive.gif") 0 4px no-repeat;
 	}
+	*/
 	.invited {
 		display: block;
 		color: #9bbc7d;
