@@ -74,7 +74,7 @@ if (count($this->authors) > 0)
 			</fieldset>
 			<p class="requirement"><?php echo JText::_('PLG_PROJECTS_TEAM_SELECTOR_ADD_NEW'); ?></p>
 			<div id="quick-add" class="quick-add">
-				<?php if ($this->project->provisioned) { ?>
+				<?php // if ($this->project->provisioned) { ?>
 					<div class="autoc">
 						<label>
 							<span class="formlabel"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_SELECTOR_LOOK_UP_BY_ID')); ?>:</span>
@@ -128,7 +128,7 @@ if (count($this->authors) > 0)
 								<?php } ?>
 						</label>
 					</div>
-				<?php } ?>
+				<?php // } ?>
 				<div class="block">
 					<div class="inlineblock">
 					<label>
