@@ -13,39 +13,29 @@
 
 */
 
-	#getintouch form {
+	.mod_rapid_contact form {
 		margin: 1em 0;
 	}
-	#getintouch fieldset {}
-	#getintouch fieldset legend {
+	.mod_rapid_contact fieldset {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	.mod_rapid_contact fieldset legend {
 		display: none;
 	}
-	#getintouch fieldset label {
+	.mod_rapid_contact fieldset label {
 		display: block;
-		font-size: 0.85em;
-		font-weight: bold;
-		line-height: 1.5em;
-		color: #999;
-		padding: 4px 3px 0 3px;
+	}
+	.mod_rapid_contact fieldset .input-wrap {
+		margin: 0 0 1.5em 0;
+	}
+	.mod_rapid_contact fieldset label span.required {
 		text-transform: uppercase;
+		font-size: xx-small;
+		color: red;
 	}
-	#getintouch fieldset label span.required {
-		font-size: 0.75em;
-		line-height: 0;
-	}
-	#getintouch fieldset span.input {
-		border: 1px solid #e9e3de;
-		display: block;
-		line-height: 0;
-		padding: 1px 3px 1px 1px;
-		position: relative;
-		/* Rounded corners */
-		-moz-border-radius: 4px;
-		-webkit-border-radius: 4px;
-		-khtml-border-radius: 4px;
-		border-radius: 4px;
-	}
-	#getintouch fieldset span.input span.errorMessage {
+	.mod_rapid_contact fieldset span.input span.errorMessage {
 		display: block;
 		line-height: 12px;
 		padding-left: 12px;
@@ -54,85 +44,49 @@
 		top: 0;
 		width: 25%;
 	}
-	#getintouch fieldset span.input + label {
+	.mod_rapid_contact fieldset span.input + label {
 		margin-top: 4px;
 	}
-	#getintouch fieldset span.input input[type=text] {
-		background-color: #fff; /*#cbc0b9;*/
-		border: 1px solid #e0e0d7;
-		padding: 3px 0;
+	.mod_rapid_contact fieldset span.input input,
+	.mod_rapid_contact fieldset span.input textarea {
+		font-size: 1em;
+		line-height: 1.61803399em;
+		max-width: 100%;
 		width: 100%;
-		/* Rounded corners */
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		-khtml-border-radius: 3px;
-		border-radius: 3px;
+		padding: 0.4045084975em;
+		outline: none;
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		   -moz-background-clip: padding-box;
+		    -ms-background-clip: padding-box;
+		     -o-background-clip: padding-box;
+		        background-clip: padding-box;
+		-webkit-transition: all 0.1s ease-out;
+		   -moz-transition: all 0.1s ease-out;
+		    -ms-transition: all 0.1s ease-out;
+		     -o-transition: all 0.1s ease-out;
+		        transition: all 0.1s ease-out;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+		background: #F0F0F0;
+		background: rgba(0, 0, 0, 0.039);
+		border: 1px solid #D9D9D9;
+		border-color: rgba(0, 0, 0, .19) rgba(0, 0, 0, .13) rgba(0, 0, 0, .07);
 	}
-	#getintouch fieldset span.input input[type=text]:focus {
-		background-color: #ffc;
+	.mod_rapid_contact fieldset span.input input:focus,
+	.mod_rapid_contact fieldset span.input textarea:focus {
+		background: #fff;
+		border-color: #222;
 	}
-	#getintouch fieldset span.input input[type=text].error {
-		background-color: rgb(231,111,0);
+	.mod_rapid_contact fieldset span.input input.error {
+		background: rgb(231,111,0);
 		border: 1px solid rgb(255,255,255);
 		color: rgb(255,255,255);
-	}
-	#getintouch fieldset span.input textarea {
-		background-color: #fff;
-		border: 1px solid #e0e0d7;
-		height: 100px;
-		padding: 3px 0;
-		width: 100%;
-		/* Rounded corners */
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		-khtml-border-radius: 3px;
-		border-radius: 3px;
-	}
-	#getintouch fieldset span.input textarea:focus {
-		background-color: rgb(255,255,255);
-	}
-	#getintouch fieldset span.submit {
-		background-color: #e0e0d7;
-		border: none;
-		color: #fff;
-		display: block;
-		float: left;
-		font-size: 1.2em;
-		font-weight: normal;
-		margin-top: 21px;
-		padding: 4px;
-		text-shadow: 0 0 1px rgb(231,11,0);
-		text-transform: none;
-		/* Rounded corners */
-		-moz-border-radius: 4px;
-		-webkit-border-radius: 4px;
-		-khtml-border-radius: 4px;
-		border-radius: 4px;
-	}
-	#getintouch fieldset span.submit:hover {
-		background-color: rgb(255,255,255);
-	}
-	#getintouch fieldset span.submit input,
-	#getintouch fieldset span.submit input[type="submit"] {
-		background-color: rgb(231,111,0);
-		color: #fff;
-		cursor: pointer;
-		display: block;
-		padding: 5px 12px;
-		border-width: 1px;
-		border-color: rgb(231,111,0);
-		/* Rounded corners */
-		-moz-border-radius: 2px;
-		-webkit-border-radius: 2px;
-		-khtml-border-radius: 2px;
-		border-radius: 2px;
-	}
-	#getintouch fieldset span.submit input[type="submit"].disabled {
-		background-color: rgb(200,200,200);
-	}
-	#getintouch fieldset p.smallabel {
-		font-size: 1.1em;
-		margin: 0 0 4px 0;
-		padding: 0 5px;
-		top: 0;
 	}
