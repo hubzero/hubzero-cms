@@ -287,7 +287,7 @@ $this->css()
 							<span class="ticket-id">
 								<?php echo $row->get('id'); ?>
 							</span>
-							<span class="<?php echo $row->status('class'); ?> status hasTip" title="<?php echo JText::_('COM_SUPPORT_DETAILS'); ?> :: <?php echo JText::_('COM_SUPPORT_COL_STATUS') . ': ' . $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>">
+							<span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status('class'); ?> status hasTip" title="<?php echo JText::_('COM_SUPPORT_DETAILS'); ?> :: <?php echo JText::_('COM_SUPPORT_COL_STATUS') . ': ' . $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>">
 								<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
 							</span>
 						</td>
