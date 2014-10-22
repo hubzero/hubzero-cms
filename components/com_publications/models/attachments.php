@@ -124,11 +124,13 @@ class PublicationsModelAttachments extends JObject
 			// Sort out attachments for this element
 			$attachments = self::getElementAttachments($elementId, $attachments, $name);
 
-			$type->transferData($element->params, $elementId, $pub, $params,
-				$attachments, $oldVersion, $newVersion
-			);
+			if ($attachments)
+			{
+				$type->transferData($element->params, $elementId, $pub, $params,
+					$attachments, $oldVersion, $newVersion
+				);
+			}
 		}
-
 	}
 
 	/**
