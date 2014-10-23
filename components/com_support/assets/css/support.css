@@ -704,8 +704,8 @@
 	}
 	#tktlist tbody tr td.tkt-severity .delete {
 		display: block;
-		width: 16px;
-		height: 16px;
+		width: 1em;
+		height: 1em;
 		border: none;
 		overflow: hidden;
 		padding: 0;
@@ -713,12 +713,12 @@
 		background: transparent;
 		visibility: hidden;
 		color: #ccc;
+		font-size: 1.2em;
 	}
 	#tktlist tbody tr td.tkt-severity .delete:before {
 		font-family: 'Fontcons';
 		content: '\f014';
 		padding-right: 2em;
-		font-size: 16px;
 	}
 	#tktlist tbody tr td.tkt-severity .delete:hover {
 		color: #333;
@@ -745,6 +745,7 @@
 	#tktlist .ticket-content {
 		color: #666;
 		border: none;
+		word-wrap: break-word;
 	}
 	#tktlist td:hover .ticket-content {
 		border-bottom: 1px dotted #666;
@@ -853,7 +854,7 @@
 		display: block;
 		width: 0;
 		height: 0;
-		border: 16px solid #e9e9e9;
+		border: 1.2em solid #e9e9e9;
 		border-color: #e9e9e9 #e9e9e9 transparent transparent;
 		text-align: right;
 		position: relative;
@@ -868,11 +869,11 @@
 	#tktlist .ticket-severity:after {
 		display: block;
 		position: absolute;
-		top: -14px;
-		right: -13px;
-		width: 16px;
-		height: 16px;
-		font-size: 16px;
+		top: -0.85em;
+		right: -0.85em;
+		width: 1em;
+		height: 1em;
+		font-size: 1.2em;
 		line-height: 1;
 		font-family: 'Fontcons';
 		color: #fff;
@@ -898,7 +899,7 @@
 	}
 	#tktlist .minor:after {
 		content: "\f043";
-		right: -11px;
+		right: -0.85em;
 	}
 	#tktlist .trivial {
 		border-color: #6b85ce #6b85ce transparent transparent;
