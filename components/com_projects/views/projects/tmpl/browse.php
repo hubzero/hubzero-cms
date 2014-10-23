@@ -137,7 +137,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= '</td>'.n;
 			$html .= t.t.t.t.'<td class="th_title"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" >'.ProjectsHtml::cleanText($row->title).'</a></td>'.n;
 			$html .= '<td class="mini faded">';
-			$html .= ($row->owned_by_group) ? '<span class="i_group"><a href="/groups/'.$row->groupcn.'">'.$row->groupname.'</a></span>' : '<span class="i_user"><a href="/members/'.$row->created_by_user.'">'.$row->authorname.'</a></span>';
+			$html .= ($row->owned_by_group) ? '<span class="i_group"><a href="/groups/'.$row->groupcn.'">'.$row->groupname.'</a></span>' : '<span class="i_user"><a href="/members/'.$row->owned_by_user.'">'.$row->authorname.'</a></span>';
 			$html .= '</td>'.n;
 			if (!$this->guest)
 			{

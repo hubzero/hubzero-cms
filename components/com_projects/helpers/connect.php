@@ -419,7 +419,7 @@ class ProjectsConnectHelper extends JObject {
 					$this->storeParam($service . '_token_created', time());
 
 					// Store master token for project
-					if ($this->_uid == $this->_project->created_by_user)
+					if ($this->_uid == $this->_project->owned_by_user)
 					{
 						$obj = new Project( $this->_db );
 						$obj->saveParam($this->_project->id, $service . '_token', $token->refresh_token);
@@ -578,7 +578,7 @@ class ProjectsConnectHelper extends JObject {
 
 		// Is user connected?
 		$connected = $this->getStoredParam($service . '_token', $uid);
-		$uid = $connected ? $uid : $this->_project->created_by_user;
+		$uid = $connected ? $uid : $this->_project->owned_by_user;
 
 		if (!in_array($service, $this->_services))
 		{
@@ -646,10 +646,10 @@ class ProjectsConnectHelper extends JObject {
 		$objO = new ProjectOwner( $this->_db );
 
 		// Get email/name pairs of connected project owners
-		$connected = $objO->getConnected($this->_project->id, $service, $exclude = array($this->_project->created_by_user));
+		$connected = $objO->getConnected($this->_project->id, $service, $exclude = array($this->_project->owned_by_user));
 
 		// Setup remote directory & update permissions
-		$dir = $this->getRemoteDirectory($service, $this->_project->created_by_user, $connected);
+		$dir = $this->getRemoteDirectory($service, $this->_project->owned_by_user, $connected);
 
 		return true;
 	}
@@ -680,8 +680,8 @@ class ProjectsConnectHelper extends JObject {
 		// Get ID of user's remote project folder
 		$folderID = $config['remote_dir_id'];
 
-		// Is this project creator?
-		$creator = $uid == $this->_project->created_by_user ? 1 : 0;
+		// Is this project owner?
+		$owner = $uid == $this->_project->owned_by_user ? 1 : 0;
 
 		if ($service == 'google')
 		{
@@ -698,8 +698,8 @@ class ProjectsConnectHelper extends JObject {
 				}
 			}
 
-			// Create remote project folder if not found (project creator)
-			if ($folderID == 1	&& $creator)
+			// Create remote project folder if not found (project owner)
+			if ($folderID == 1	&& $owner)
 			{
 				$file = new Google_DriveFile;
 				$file->setMimeType('application/vnd.google-apps.folder');

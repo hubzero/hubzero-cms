@@ -875,7 +875,7 @@ class ProjectsHtml
 						}
 						else
 						{
-							echo '<a href="/members/'.$view->project->created_by_user.'">'.$view->project->fullname.'</a>';
+							echo '<a href="/members/'.$view->project->owned_by_user.'">'.$view->project->fullname.'</a>';
 						}
 						?>
 						</p>
@@ -1095,7 +1095,7 @@ foreach ($view->tabs as $tab)
 			}
 			else
 			{
-				echo '<a href="/members/'.$view->project->created_by_user.'">'.$view->project->fullname.'</a>';
+				echo '<a href="/members/'.$view->project->owned_by_user.'">'.$view->project->fullname.'</a>';
 			//	echo '<span class="prominent">'.$view->project->fullname.'</span>';
 			}
 			?>

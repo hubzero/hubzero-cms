@@ -231,7 +231,7 @@ class Project extends JTable
 		$query .= " AND o.userid != 0 AND p.state!= 2 ";
 		if ($getowner)
 		{
-			$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.created_by_user ";
+			$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.owned_by_user ";
 			$query .=  " LEFT JOIN #__xgroups as g ON g.gidNumber=p.owned_by_group ";
 		}
 
@@ -268,15 +268,15 @@ class Project extends JTable
 				$query .= $uid
 						? " WHERE (o.userid='$uid' AND o.status!=2
 							AND ((p.state != 2 AND p.setup_stage = " . $setup_complete.")
-							OR (o.role = 1 AND p.created_by_user='$uid' ))) "
+							OR (o.role = 1 AND p.owned_by_user='$uid' ))) "
 						: " WHERE 1=2";
 				if ($which == 'owned' && $uid)
 				{
-					$query .= " AND (p.created_by_user ='$uid' AND p.owned_by_group = 0) ";
+					$query .= " AND (p.owned_by_user ='$uid' AND p.owned_by_group = 0) ";
 				}
 				if ($which == 'other' && $uid)
 				{
-					$query .= " AND (p.created_by_user != '$uid' OR p.owned_by_group != 0) ";
+					$query .= " AND (p.owned_by_user != '$uid' OR p.owned_by_group != 0) ";
 				}
 			}
 			else
@@ -285,7 +285,7 @@ class Project extends JTable
 						? " WHERE (p.state = 1 AND p.private = 0)
 							OR (o.userid='$uid' AND o.status!=2 AND ((p.state = 1
 							AND p.setup_stage = " . $setup_complete . ")
-							OR (o.role = 1 AND p.created_by_user='$uid'))) "
+							OR (o.role = 1 AND p.owned_by_user='$uid'))) "
 						: " WHERE p.state = 1 AND p.private = 0 ";
 			}
 		}
@@ -339,7 +339,7 @@ class Project extends JTable
 					else
 					{
 						$sort .= 'p.owned_by_group ' . $sortdir
-							  . ', p.created_by_user ' . $sortdir . ' ';
+							  . ', p.owned_by_user ' . $sortdir . ' ';
 					}
 					break;
 
@@ -778,7 +778,7 @@ class Project extends JTable
 		$query .= $uid
 				? " AND (p.state = 1 OR  (o.userid='$uid' AND o.status!=2
 					AND ((p.state = 1 AND p.setup_stage = " . $setup_complete . ")
-					OR (o.role = 1 AND p.created_by_user='$uid')))) "
+					OR (o.role = 1 AND p.owned_by_user='$uid')))) "
 				: " AND p.state = 1 ";
 
 		// Sorting
@@ -840,7 +840,7 @@ class Project extends JTable
 			$query .= " FROM $this->_tbl AS p, #__project_owners as o ";
 			$query .= " WHERE p.id=o.projectid ";
 			$query .= $active == 1
-					? "AND (p.state=1 OR (o.role = 1 AND p.created_by_user='$uid' AND p.state !=2)) "
+					? "AND (p.state=1 OR (o.role = 1 AND p.owned_by_user='$uid' AND p.state !=2)) "
 					: "AND p.state !=2 ";
 			$query .= $include_provisioned ? "" : " AND p.provisioned=0";
 			$query .= " AND o.userid=" . $uid;
@@ -878,7 +878,7 @@ class Project extends JTable
 						AND o.userid='$uid' AND o.userid != 0  ";
 			$query .= " WHERE p.id=po.projectid AND po.status=1 AND po.groupid=" . $groupid;
 			$query .= $active == 1
-					? " AND (p.state=1 OR (o.role = 1 AND p.created_by_user='$uid' AND p.state !=2))  "
+					? " AND (p.state=1 OR (o.role = 1 AND p.owned_by_user='$uid' AND p.state !=2))  "
 					: " AND p.state !=2 ";
 			$query .= " AND p.provisioned=0";
 			$this->_db->setQuery( $query );
@@ -990,7 +990,7 @@ class Project extends JTable
 		}
 		$query .= " LEFT JOIN #__project_owners AS o ON o.projectid=p.id ";
 		$query .= " AND o.userid='$uid' AND p.state!= 2 AND o.userid != 0 AND o.status !=2";
-		$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.created_by_user ";
+		$query .=  " JOIN #__xprofiles as x ON x.uidNumber=p.owned_by_user ";
 		$query .= " WHERE ";
 
 		if (intval($pubid) > 0)
