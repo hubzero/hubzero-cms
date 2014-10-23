@@ -89,7 +89,15 @@ class PdfForm
 		$config = JComponentHelper::getParams('com_courses');
 
 		// Build the upload path if it doesn't exist
-		$this->base = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/courses'), DS) . DS . 'forms' . DS;
+		$coursesPath = trim($config->get('uploadpath', '/site/courses'), DS);
+
+		// If the direcotry doesn't exist, create it
+		if (!is_dir(JPATH_ROOT . DS . $coursesPath))
+		{
+			mkdir(JPATH_ROOT . DS . $coursesPath);
+		}
+
+		$this->base = JPATH_ROOT . DS . $coursesPath . DS . 'forms' . DS;
 
 		// If the direcotry doesn't exist, create it
 		if (!is_dir($this->base))
