@@ -45,7 +45,7 @@ if (trim($name)) {
 else {
 	$firstname = htmlspecialchars($author->givenName);
 	$lastname  = htmlspecialchars($author->surname);
-	if(!$author->user_id)
+	if (!$author->user_id)
 	{
 		$name = $author->invited_email;
 	}

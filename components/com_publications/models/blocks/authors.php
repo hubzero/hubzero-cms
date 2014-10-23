@@ -575,7 +575,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 				$objO->store();
 			}
 		}
-		
+
 		// (Re)send email invitation
 		if ($sendInvite && $email)
 		{
