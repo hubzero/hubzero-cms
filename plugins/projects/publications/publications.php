@@ -2466,6 +2466,7 @@ class plgProjectsPublications extends JPlugin
 
 		// Transfer data
 		$pub->_curationModel->transfer($pub, $oldVersion, $newVersion);
+		return 'test';
 
 		// Set response message
 		$this->set('_msg', JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED'));
@@ -2582,6 +2583,7 @@ class plgProjectsPublications extends JPlugin
 				$new->submitted 	= NULL;
 				$new->reviewed 		= NULL;
 				$new->reviewed_by   = 0;
+				$new->curation		= NULL; // Curation manifest needs to reflect any new requirements
 
 				if ($new->store())
 				{
@@ -4650,10 +4652,13 @@ class plgProjectsPublications extends JPlugin
 					$path    =  JPATH_ROOT . DS . trim($this->_pubconfig->get('webpath'), DS)
 							. DS .  \Hubzero\Utility\String::pad( $pid );
 
-					// Delete all files
-					if (is_dir($path))
+					// Build version path
+					$vPath = $path . DS . \Hubzero\Utility\String::pad( $vid );
+
+					// Delete all version files
+					if (is_dir($vPath))
 					{
-						JFolder::delete($path);
+						JFolder::delete($vPath);
 					}
 
 					// Delete access accosiations
@@ -4667,6 +4672,12 @@ class plgProjectsPublications extends JPlugin
 					// Delete publication existence
 					if ($pub->versions == 0)
 					{
+						// Delete all files
+						if (is_dir($path))
+						{
+							JFolder::delete($path);
+						}
+
 						$objP->delete($pid);
 						$objP->deleteExistence($pid);
 						$url  = JRoute::_($route);
