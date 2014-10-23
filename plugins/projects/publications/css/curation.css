@@ -846,6 +846,9 @@
 	a.more-content {
 		font-size: 85%;
 	}
+	.content-publications .confirmaction p {
+		font-size: 85% !important;
+	}
 
 /* License
 --------------------------------------------- */
@@ -894,6 +897,9 @@
 	}
 	.replacements {
 		padding: 1em 2em;
+	}
+	.replacements label {
+		padding: 0.5em 0;
 	}
 /*
 --------------------------------------------- */
