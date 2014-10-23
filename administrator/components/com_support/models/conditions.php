@@ -128,11 +128,12 @@ class SupportModelConditions extends JObject
 			$this->_value('*', JText::_('(any of mine)'), true)
 		);
 		$juser = JFactory::getUser();
-		if (($xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members')))
+		if ($xgroups = \Hubzero\User\Helper::getGroups($juser->get('id'), 'members'))
 		{
 			foreach ($xgroups as $xgroup)
 			{
-				$items[] = $this->_value($xgroup->cn, ' &nbsp; ' . stripslashes($this->escape($xgroup->description)), false);
+				$xgroup->description = trim($xgroup->description) ?: $xgroup->cn;
+				$items[] = $this->_value($xgroup->cn, stripslashes($this->escape($xgroup->description)), false);
 			}
 		}
 		$conditions->group = $this->_expression(
