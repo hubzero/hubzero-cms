@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>Wish Voters</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -40,10 +40,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/default.php</filename>
 		<filename>mod_wishvoters.css</filename>
 	</files>
-	<params>
-		<param name="moduleclass" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
-		<param name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -55,5 +51,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_mywishvoters.ini</language>
 	</languages>
-</install>
-
+</extension>

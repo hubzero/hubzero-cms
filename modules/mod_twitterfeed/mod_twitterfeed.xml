@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>Twitter Feed</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -45,19 +45,6 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_twitterfeed.ini</language>
 	</languages>
-	<params>
-		<param name="moduleTitle" type="text" default="" label="Module Title Text" description="The title of the module block." />
-		<param name="twitterID" type="text" default="" label="Twitter ID" description="The Twitter ID of the Twitter account to be displayed." />
-		<param name="tweetcount" type="text" default="3" label="Tweet Count" description="The number of latest Tweets to display." />
-		<param name="displayHeader" type="list" default="yes" label="Display Header" description="Display Twitter Widget Header.">
-			<option value="yes">Yes</option>
-			<option value="no">No</option>
-		</param>
-		<param name="displayFooter" type="list" default="yes" label="Display Footer" description="Display Twitter Widget Footer.">
-			<option value="yes">Yes</option>
-			<option value="no">No</option>
-		</param>
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -75,4 +62,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>My Messages</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -52,5 +52,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_mymessages.ini</language>
 	</languages>
-</install>
-
+</extension>

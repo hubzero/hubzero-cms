@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>My Points</name>
 	<author>HUBzero</author>
 	<creationDate>October 2009</creationDate>
@@ -54,5 +54,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_mypoints.ini</language>
 	</languages>
-</install>
-
+</extension>

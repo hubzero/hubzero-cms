@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>My Questions</name>
 	<author>snowwitje</author>
 	<creationDate>Jan 2009</creationDate>
@@ -70,5 +70,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
-
+</extension>

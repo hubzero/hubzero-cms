@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>Spotlight</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -40,109 +40,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
-	<params>
-		<param name="spotone" type="radio" default="tools" label="Spot 1 Content" description="Select content type for the first featured item.">
-			<option value="tools">Tools</option>
-			<option value="nontools">Non-tools</option>
-			<option value="members">Members</option>
-			<option value="topics">Topics</option>
-			<option value="itunes">iTunes</option>
-			<option value="answers">Question</option>
-			<option value="blog">Blog</option>
-		</param>
-		<param name="spottwo" type="radio" default="nontools" label="Spot 2 Content" description="Select content type for the second featured item.">
-			<option value="tools">Tools</option>
-			<option value="nontools">Non-tools</option>
-			<option value="members">Members</option>
-			<option value="topics">Topics</option>
-			<option value="itunes">iTunes</option>
-			<option value="answers">Question</option>
-			<option value="blog">Blog</option>
-		</param>
-		<param name="spotthree" type="radio" default="contributors" label="Spot 3 Content" description="Select content type for the third featured item.">
-			<option value="tools">Tools</option>
-			<option value="nontools">Non-tools</option>
-			<option value="members">Members</option>
-			<option value="topics">Topics</option>
-			<option value="itunes">iTunes</option>
-			<option value="answers">Question</option>
-			<option value="blog">Blog</option>
-		</param>
-		<param name="spotfour" type="radio" default="topics" label="Spot 4 Content" description="Select content type for the fourth featured item.">
-			<option value="tools">Tools</option>
-			<option value="nontools">Non-tools</option>
-			<option value="members">Members</option>
-			<option value="topics">Topics</option>
-			<option value="itunes">iTunes</option>
-			<option value="answers">Question</option>
-			<option value="blog">Blog</option>
-		</param>
-		<param name="spotfive" type="radio" default="" label="Spot 5 Content" description="Select content type for the fifth featured item.">
-			<option value="tools">Tools</option>
-			<option value="nontools">Non-tools</option>
-			<option value="members">Members</option>
-			<option value="topics">Topics</option>
-			<option value="itunes">iTunes</option>
-			<option value="answers">Question</option>
-			<option value="blog">Blog</option>
-		</param>
-		<param name="spotsix" type="radio" default="" label="Spot 6 Content" description="Select content type for the sixth featured item.">
-			<option value="tools">Tools</option>
-			<option value="nontools">Non-tools</option>
-			<option value="members">Members</option>
-			<option value="topics">Topics</option>
-			<option value="itunes">iTunes</option>
-			<option value="answers">Question</option>
-			<option value="blog">Blog</option>
-		</param>
-		<param name="spotseven" type="radio" default="" label="Spot 7 Content" description="Select content type for the seventh featured item.">
-			<option value="tools">Tools</option>
-			<option value="nontools">Non-tools</option>
-			<option value="members">Members</option>
-			<option value="topics">Topics</option>
-			<option value="itunes">iTunes</option>
-			<option value="answers">Question</option>
-			<option value="blog">Blog</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="numspots" type="radio" default="3" label="Number of Spots" description="How many features to display">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option value="5">5</option>
-			<option value="6">6</option>
-			<option value="7">7</option>
-		</param>
-		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-		<param name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="minranking" type="text" default="6.0" label="Minimum Ranking" description="A minimum ranking for resources that can be selected" />
-		<param name="tag" type="text" default="" label="Tag" description="A tag to be the pool that resources entries are drawn from" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="show" type="radio" default="contributors" label="Select from" description="Select random entries from either all members or contributors only">
-			<option value="">All members</option>
-			<option value="contributors">Contributors only</option>
-		</param>
-		<param name="min_contributions" type="text" default="0" label="Min. # Contributions" description="The minimum number of contributions a profile must have to be selected" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="itunes_tag" type="text" default="" label="iTunes Tag" description="A tag to be the pool that iTunes content entries are drawn from" />
-		<param name="default_itunespic" type="text" default="" label="Default iTunes Picture" description="URL to default picture for featured iTunes content" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="topics_tag" type="text" default="" label="Topics Tag" description="A tag to be the pool that Topics entries are drawn from" />
-		<param name="default_topicpic" type="text" default="" label="Default Topics Picture" description="URL to default picture for featured topics" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="default_questionpic" type="text" default="" label="Default Question Picture" description="URL to default picture for featured question" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="default_blogpic" type="text" default="" label="Default Blog Picture" description="URL to default picture for featured blog" />
-	</params>
-	<params group="advanced">
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is re-cached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -250,4 +147,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

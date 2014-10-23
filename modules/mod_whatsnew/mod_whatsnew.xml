@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>What's New</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -45,26 +45,6 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_whatsnew.ini</language>
 	</languages>
-	<params>
-		<param name="cssId" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="limit" type="text" default="5" label="Number of entries" description="The number of entries to display." />
-		<param name="feed" type="list" default="1" label="Feed link" description="Select whether to display a feed link">
-			<option value="1">Display link</option>
-			<option value="0">Hide link</option>
-		</param>
-		<param name="period" type="text" default="resources:month" label="category:period" description="Time period and category to pull results for." />
-		<param name="tagged" type="radio" default="0" label="Show My Interests" description="Display whats new by the tags the user has listed as their interests.">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-	</params>
-	<params group="advanced">
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -89,5 +69,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
-
+</extension>

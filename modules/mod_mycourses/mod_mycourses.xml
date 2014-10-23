@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>My Courses</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -36,8 +36,8 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename module="mod_mycourses">mod_mycourses.php</filename>
 		<filename>index.html</filename>
-        <filename>tmpl/index.html</filename>
-        <filename>tmpl/default.php</filename>
+		<filename>tmpl/index.html</filename>
+		<filename>tmpl/default.php</filename>
 		<filename>mod_mycourses.css</filename>
 	</files>
 	<config>
@@ -55,5 +55,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_mycourses.ini</language>
 	</languages>
-</install>
-
+</extension>

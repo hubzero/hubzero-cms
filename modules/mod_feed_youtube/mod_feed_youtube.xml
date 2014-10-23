@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>YouTube Feed Display</name>
 	<author>HUBzero</author>
 	<creationDate>April 2010</creationDate>
@@ -40,52 +40,6 @@ HUBzero is a registered trademark of Purdue University.
 	<files>
 		<filename module="mod_feed_youtube">mod_feed_youtube.php</filename>
 	</files>
-	<params>
-		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="rssurl" type="text" size="50" default="" label="Feed URL" description="Enter the URL of the RSS feed" />
-		<param name="rsstitle" type="radio" default="1" label="Feed Title" description="Display news feed title">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param name="feedtitle" type="text" size="50" default="" label="Alternative Title" description="Title to display instead of the feed title" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="rssdesc" type="radio" default="1" label="Feed Description" description="Show the description text for the whole Feed">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param name="feeddesc" type="text" size="50" default="" label="Alternative Description" description="Description to display instead of the feed description" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="rssimage" type="radio" default="1" label="YouTube Image" description="Show the YouTube image">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param name="imagepath" type="text" size="50" default="" label="Path to YouTube image" description="Enter the path to YouTube image" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="rssitems" type="text" default="3" label="Items" description="Enter number of RSS items to display" />
-		<param name="pick_random" type="radio" default="0" label="Random items" description="Display items in random or feed-defined order">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param name="webpath" type="text" size="50" default="/site/youtube" label="Local Path to Thumbnails" description="Enter the path to store video thumbnails locally" />
-		<param name="layout" type="radio" default="vertical" label="Layout" description="Select whether to display items vertically or horizontally">
-			<option value="vertical">Vertical</option>
-			<option value="horizontal">Horizontal</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="showmorelink" type="radio" default="1" label="Show View More link" description="Show the link to all videos">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-		<param name="moreurl" type="text" default="" size="50" label="View More URL" description="Enter the URL to more videos " />
-	</params>
-	<params group="advanced">
-		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -136,4 +90,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

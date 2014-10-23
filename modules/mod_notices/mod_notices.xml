@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>Notices Module</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -39,19 +39,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/index.html</filename>
 		<filename>index.html</filename>
 	</files>
-	<params>
-		<param name="alertlevel" type="list" default="low" label="Alert level" description="The alert level the notice field will take. Determines color.">
-			<option value="low">Low</option>
-			<option value="medium">Medium</option>
-			<option value="high">High</option>
-		</param>
-		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
-		<param name="allowClose" type="radio" default="0" label="Allow closing" description="Allow the notice to be closed by the user">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -76,4 +63,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_notices.ini</language>
 	</languages>
-</install>
+</extension>

@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>Latest Blog posts</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -40,37 +40,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
-	<params>
-		<param name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
-		<param type="spacer" />
-		<param name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
-		<param type="spacer" />
-		<param name="pullout" type="list" default="yes" label="Highlight first entry" description="Highlight the first entry.">
-			<option value="no">no</option>
-			<option value="yes">Yes</option>
-		</param>
-		<param name="pulloutlimit" type="text" default="500" label="Length of Pullout" description="Number of characters to display in post." />
-		<param name="charlimit" type="text" default="100" label="Length of Post Preview" description="Number of characters to display in post." />
-		<param name="blog" type="list" default="site" label="Included Posts From" description="Where the discussions are pulled from.">
-			<option value="site">Site Blog</option>
-			<option value="member">Member Blog</option>
-			<option value="group">Group Blog</option>
-			<option value="both">Site, Member, and Group Blogs</option>
-		</param>
-		<param type="spacer" />
-		<param name="morelink" type="text" default="" label="More Link" description="More link address."  size="100" />
-		<param name="feedlink" type="list" default="yes" label="Feed Link" description="Include Feed Link">
-			<option value="no">no</option>
-			<option value="yes">Yes</option>
-		</param>
-	</params>
-	<params group="advanced">
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -109,4 +78,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_latestblog.ini</language>
 	</languages>
-</install>
+</extension>

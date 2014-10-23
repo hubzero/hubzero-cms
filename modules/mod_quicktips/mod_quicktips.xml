@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>Quick Tips</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -40,16 +40,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
-	<params>
-		<param name="catid" type="text" default="" label="Category" description="The category to pull entries from." />
-		<param name="secid" type="text" default="" label="Section" description="The section to pull entries from." />
-		<param name="moduleclass_sfx" type="text" default="" label="Module class" description="A class to be applied for styling." />
-		<param name="method" type="list" default="newest" label="Order" description="The method by which entries are to be displayed.">
-			<option value="newest">Newest</option>
-			<option value="ordering">Ordered</option>
-			<option value="random">Random</option>
-		</param>
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -71,5 +61,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
-
+</extension>

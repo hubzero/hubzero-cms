@@ -18,7 +18,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>Newsletter</name>
 	<author>HUBzero</author>
 	<creationDate>August 2012</creationDate>
@@ -37,9 +37,6 @@
 		<filename>tmpl/default.xml</filename>
 		<filename>tmpl/index.html</filename>
 	</files>
-	<params>
-		<param name="mailinglist" label="Mailing List" description="Mailing list you would like users to sign up for!" type="sql" query="SELECT * FROM jos_newsletter_mailinglists WHERE deleted=0 AND private=0" key_field="id" value_field="name" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -49,4 +46,4 @@
 	</config>
 	<languages>
 	</languages>
-</install>
+</extension>

@@ -18,7 +18,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>Hubzilla</name>
 	<author>HUBzero</author>
 	<creationDate>August 2012</creationDate>
@@ -38,12 +38,6 @@
 		<filename>sounds/roar.ogg</filename>
 		<filename>sounds/roar.wav</filename>
 	</files>
-	<params>
-		<param name="posLeft" type="text" default="auto" label="Left" description="Left position" />
-		<param name="posRight" type="text" default="5px" label="Right" description="Right position" />
-		<param name="posTop" type="text" default="auto" label="Top" description="Top position" />
-		<param name="posBottom" type="text" default="5px" label="Bottom" description="Bottom position" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -64,4 +58,4 @@
 	<languages>
 		<language tag="en-GB">en-GB.mod_hubzilla.ini</language>
 	</languages>
-</install>
+</extension>

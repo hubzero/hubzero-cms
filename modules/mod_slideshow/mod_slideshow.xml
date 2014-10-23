@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>Slideshow</name>
 	<author>HUBzero</author>
 	<creationDate>June 2009</creationDate>
@@ -44,38 +44,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
-	<params>
-		<param name="height" type="radio" default="230" label="Height of banner" description="Height of banner">
-			<option value="100">100</option>
-			<option value="180">180</option>
-			<option value="230">230</option>
-			<option value="350">350</option>
-		</param>
-		<param name="width" type="radio" default="600" label="Width of banner" description="Width of banner">
-			<option value="600">600</option>
-			<option value="650">650</option>
-		</param>
-		<param name="stype" type="radio" default="0" label="Slideshow Type" description="Determines whether to display flash rotation or random image on each page load">
-			<option value="0">Rotating Slideshow</option>
-			<option value="1">Random Image on Page Load</option>
-		</param>
-		<param name="transitiontype" type="radio" default="fade" label="Trasition type" description="Slide transition effect">
-			<option value="fade">fade</option>
-			<option value="flyin">fly from left</option>
-		</param>
-		<param name="random" type="radio" default="0" label="Random order" description="Determines order of slides.">
-			<option value="1">yes</option>
-			<option value="0">no</option>
-		</param>
-		<param name="timerdelay" type="radio" default="fade" label="Time for each slide (seconds)" description="Slide time in seconds">
-			<option value="8000">8</option>
-			<option value="10000">10</option>
-			<option value="12000">12</option>
-		</param>
-		<param name="image_dir" type="text" default="/site/slideshow" label="Images directory" description="Directory where images for banner are stored" />
-		<param name="alias" type="text" default="" label="Alias of banner instance" description="If multiple banners are used on this hub, specify a unique name for this banner. E.g. 'homepage'" />
-		<param name="noflash_link" type="text" default="" label="URL for image link" description="Determines URL when clicking on random image" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -112,4 +80,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

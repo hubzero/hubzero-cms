@@ -18,7 +18,7 @@
  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>Application Environment</name>
 	<author>HUBzero</author>
 	<creationDate>April 2012</creationDate>
@@ -34,10 +34,6 @@
 		<filename>index.html</filename>
 		<filename>mod_application_env.css</filename>
 	</files>
-	<params>
-		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -49,4 +45,4 @@
 	<languages>
 		<language tag="en-GB">en-GB.mod_application_env.ini</language>
 	</languages>
-</install>
+</extension>

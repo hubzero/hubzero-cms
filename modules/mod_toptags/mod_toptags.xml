@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>Top Tags</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -40,26 +40,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>mod_toptags.xml</filename>
 		<filename>index.html</filename>
 	</files>
-	<params>
-		<param name="numtags" type="text" default="25" label="Number of tags" description="The number of tags to display." />
-		<param name="exclude" type="textarea" rows="3" cols="40" default="" label="Excluded Tags" description="List of tags to exclude from popular tags list." />
-		<param name="message" type="textarea" rows="3" cols="40" default="" label="Message" description="The message to be displayed if no tags are found" />
-		<param name="sortby" type="list" default="alphabeta" label="Sort by" description="The sort order for tags found">
-			<option value="alphabeta">Alphabetically</option>
-			<option value="popularity">By Popularity</option>
-		</param>
-		<param name="morelnk" type="radio" default="0" label="More links" description="Display a link to more tags">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-	</params>
-	<params group="advanced">
-		<param name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-			<option value="1">Use global</option>
-			<option value="0">No caching</option>
-		</param>
-		<param name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -84,5 +64,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
-
+</extension>

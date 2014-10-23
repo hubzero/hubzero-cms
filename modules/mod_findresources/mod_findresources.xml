@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>Find Resources</name>
 	<author>HUBzero</author>
 	<creationDate>Sep 2009</creationDate>
@@ -45,15 +45,6 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_findresources.ini</language>
 	</languages>
-	<params>
-		<param name="cssId" type="text" default="findresources" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="limit" type="text" default="25" label="Number of Tags" description="The number of tags to display." />
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -69,5 +60,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
-
+</extension>

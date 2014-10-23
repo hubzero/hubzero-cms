@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>Random Quote</name>
 	<author>HUBzero</author>
 	<creationDate>Mar 2010</creationDate>
@@ -45,34 +45,6 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_randomquote.ini</language>
 	</languages>
-	<params>
-		<param name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="quotepool" type="radio" default="flash_rotation" label="Quotes Pool" description="Select which quotes to pull from">
-			<option value="flash_rotation">Selected for Rotation</option>
-			<option value="notable_quotes">Selected for NQ Page</option>
-			<option value="">All</option>
-		</param>
-		<param name="show_author" type="radio" default="1" label="Show author name" description="Select whether to show author name">
-			<option value="1">Show</option>
-			<option value="0">Hide</option>
-		</param>
-		<param name="show_all_link" type="radio" default="1" label="Show link to all quotes" description="Select whether to show link to all quotes">
-			<option value="1">Show</option>
-			<option value="0">Hide</option>
-		</param>
-		<param name="quotesrc" type="radio" default="miniquote" label="Quote source" description="Select whether to show data from miniquote or short quote column">
-			<option value="miniquote">Mini-quote</option>
-			<option value="short_quote">Short quote</option>
-		</param>
-		<param name="charlimit" type="text" default="150" label="Character limit" description="Limit of quote characters" />
-	</params>
-	<params group="advanced">
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -105,4 +77,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

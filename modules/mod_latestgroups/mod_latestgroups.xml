@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.0">
+<extension version="1.5.0" client="site" type="module">
 	<name>Latest Groups</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2013 Purdue University. All rights reserved.</copyright>
@@ -40,10 +40,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
-	<params>
-		<param name="moduleclass_sfx" type="text" default="" label="Module class suffix" description="A CSS class to be applied to the module container, this allows individual module styling" />
-		<param name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -62,4 +58,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_latestgroups.ini</language>
 	</languages>
-</install>
+</extension>

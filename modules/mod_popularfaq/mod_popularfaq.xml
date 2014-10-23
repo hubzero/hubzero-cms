@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5">
+<extension version="1.5.0" client="site" type="module">
 	<name>Popular FAQs</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
@@ -39,18 +39,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 	</files>
-	<params>
-		<param name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
-		<param name="cssId" type="text" default="" label="CSS ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-		<param name="cssClass" type="text" default="" label="CSS Class" description="A CSS class to be applied to the module container, this allows individual module styling" />
-	</params>
-	<params group="advanced">
-		<param name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
-	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
@@ -70,4 +58,4 @@ HUBzero is a registered trademark of Purdue University.
 	<languages>
 		<language tag="en-GB">en-GB.mod_popularfaq.ini</language>
 	</languages>
-</install>
+</extension>
