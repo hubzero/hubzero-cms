@@ -271,6 +271,9 @@ table.field-map tr.field-unknown {
 	background: #ffe;
 }
 
+.toolbar-box .icon-32-sample:before {
+	content: "\f07d";
+}
 .toolbar-box .icon-32-runtest:before {
 	content: "\f07d";
 }

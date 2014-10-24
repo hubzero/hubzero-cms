@@ -566,4 +566,84 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 
 		return true;
 	}
+
+	/**
+	 * Quote a value for a CSV file
+	 *
+	 * @param   string $val
+	 * @return  string
+	 */
+	public static function quoteCsv($val)
+	{
+		if (!isset($val))
+		{
+			return '';
+		}
+
+		if (strpos($val, "\n") !== false || strpos($val, ',') !== false)
+		{
+			return '"' . str_replace(array('\\', '"'), array('\\\\', '""'), $val) . '"';
+		}
+
+		return $val;
+	}
+
+	/**
+	 * Quote a CSV row
+	 *
+	 * @param   array  $vals 
+	 * @return  string
+	 */
+	public function quoteCsvRow($vals)
+	{
+		return implode(',', array_map(array($this, 'quoteCsv'), $vals)) . "\n";
+	}
+
+	/**
+	 * Serve up an example CSV file
+	 *
+	 * @return  void
+	 */
+	public function sampleTask()
+	{
+		$profile = new MembersProfile($this->database);
+
+		$skip = array('gid', 'proxyPassword', 'loginShell', 'ftpShell', 'shadowExpire', 'params', 'proxyUidnumber');
+
+		$fields = array();
+		$row    = array();
+
+		foreach ($profile->getProperties() as $key => $val)
+		{
+			if (in_array($key, $skip))
+			{
+				continue;
+			}
+			array_push($fields, $key);
+			array_push($row, 'Example');
+		}
+
+		$multi = array('interests', 'race', 'disability');
+
+		foreach ($multi as $key)
+		{
+			array_push($fields, $key);
+			array_push($row, 'example;example;example');
+		}
+
+		// Output header
+		@ob_end_clean();
+
+		header("Pragma: public");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Expires: 0");
+
+		header("Content-Transfer-Encoding: binary");
+		header('Content-type: text/comma-separated-values');
+		header('Content-disposition: attachment; filename="members.csv"');
+
+		echo $this->quoteCsvRow($fields); //array_map('ucfirst', $fields));
+		echo $this->quoteCsvRow($row);
+		exit;
+	}
 }

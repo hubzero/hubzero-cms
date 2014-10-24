@@ -37,6 +37,8 @@ JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_IMP
 
 if ($canDo->get('core.admin'))
 {
+	JToolBarHelper::custom('sample', 'sample', 'sample', 'COM_MEMBERS_IMPORT_SAMPLE', false);
+	JToolBarHelper::spacer();
 	JToolBarHelper::custom('run', 'script', 'script', 'COM_MEMBERS_RUN');
 	JToolBarHelper::custom('runtest', 'runtest', 'script', 'COM_MEMBERS_TEST_RUN');
 	JToolBarHelper::spacer();
