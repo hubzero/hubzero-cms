@@ -200,7 +200,7 @@ function popratings()
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_METADATA'); ?></span></legend>
 			<div class="input-wrap">
-				<?php echo $fields; ?>
+				<?php echo $fields ? $fields : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_METADATA_FIELDS') . '</p>'; ?>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
