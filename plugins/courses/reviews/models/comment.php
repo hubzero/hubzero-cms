@@ -131,13 +131,19 @@ class CoursesModelComment extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
+	 * @param      string $property What data to return
+	 * @param      mixed  $default  Default value
 	 * @return     mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
 			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			if (!$this->_creator)
+			{
+				$this->_creator = new \Hubzero\User\Profile();
+			}
 		}
 		if ($property)
 		{
@@ -146,7 +152,7 @@ class CoursesModelComment extends \Hubzero\Base\Model
 			{
 				return $this->_creator->getPicture($this->get('anonymous'));
 			}
-			return $this->_creator->get($property);
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}
@@ -158,33 +164,9 @@ class CoursesModelComment extends \Hubzero\Base\Model
 	 */
 	public function isReported()
 	{
-		if ($this->get('state') == 3)
+		if ($this->get('state') == self::APP_STATE_FLAGGED)
 		{
 			return true;
-		}
-
-		if ($this->get('reports', -1) > 0)
-		{
-			return true;
-		}
-		// Reports hasn't been set
-		if ($this->get('reports', -1) == -1)
-		{
-			if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php'))
-			{
-				include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'reportabuse.php');
-				$ra = new ReportAbuse($this->_db);
-				$val = $ra->getCount(array(
-					'id'       => $this->get('id'),
-					'category' => 'review',
-					'state'    => 0
-				));
-				$this->set('reports', $val);
-				if ($this->get('reports') > 0)
-				{
-					return true;
-				}
-			}
 		}
 		return false;
 	}
@@ -210,6 +192,10 @@ class CoursesModelComment extends \Hubzero\Base\Model
 		if (!isset($filters['item_id']))
 		{
 			$filters['item_id'] = $this->get('item_id');
+		}
+		if (!isset($filters['state']))
+		{
+			$filters['state'] = array(self::APP_STATE_PUBLISHED, self::APP_STATE_FLAGGED);
 		}
 
 		switch (strtolower($rtrn))
@@ -302,7 +288,7 @@ class CoursesModelComment extends \Hubzero\Base\Model
 						'domain'   => ''
 					);
 
-					$content = (string) stripslashes($this->get('content', ''));
+					$content = str_replace(array('\"', "\'"), array('"', "'"), (string) $this->get('content', ''));
 					$this->importPlugin('content')->trigger('onContentPrepare', array(
 						$this->_context,
 						&$this,
@@ -319,12 +305,12 @@ class CoursesModelComment extends \Hubzero\Base\Model
 			break;
 
 			case 'clean':
-				$content = strip_tags($this->content('parsed'));
+				$content = html_entity_decode(strip_tags($this->content('parsed')), ENT_COMPAT, 'UTF-8');
 			break;
 
 			case 'raw':
 			default:
-				$content = $this->get('content');
+				$content = str_replace(array('\"', "\'"), array('"', "'"), $this->get('content'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 			break;
 		}

@@ -31,11 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'reviews' . DS . 'tables' . DS . 'review.php');
 include_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'reviews' . DS . 'models' . DS . 'comment.php');
 
 /**
- * Resources Plugin class for review
+ * Courses Plugin class for review
  */
 class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 {
@@ -45,27 +44,6 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
-
-	/**
-	 * Push scripts to the document?
-	 *
-	 * @var    boolean
-	 */
-	private $_pushscripts = true;
-
-	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @param      object $resource Current resource
-	 * @return     array
-	 */
-	public function &onCourseViewAreas($course)
-	{
-		$areas = array(
-			'reviews' => JText::_('PLG_COURSES_REVIEWS')
-		);
-		return $areas;
-	}
 
 	/**
 	 * Return data on a resource view (this will be some form of HTML)
@@ -78,45 +56,30 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public function onCourseView($course, $active=null)
 	{
-		$arr = array(
-			'name'     => 'reviews',
-			'html'     => '',
-			'metadata' => ''
-		);
-		$rtrn = 'html';
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($active))
-		{
-			if (!in_array($arr['name'], $active))
-			{
-				$rtrn = 'metadata';
-			}
-		}
-		else if ($active != $arr['name'])
-		{
-			$rtrn = 'metadata';
-		}
-
-		// Get reviews for this resource
-		$database = JFactory::getDBO();
-
-		$tbl = new \Hubzero\Item\Comment($database);
+		// Prepare the response
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)));
 
 		$this->option     = JRequest::getCmd('option', 'com_courses');
 		$this->controller = JRequest::getWord('controller', 'course');
 
-		// Are we returning any HTML?
-		if ($rtrn == 'all' || $rtrn == 'html')
+		$database = JFactory::getDBO();
+		$tbl = new \Hubzero\Item\Comment($database);
+
+		// Build the HTML meant for the tab's metadata overview
+		$view = $this->view('default', 'metadata');
+		$view->set('option', $this->option)
+		     ->set('controller', $this->controller)
+		     ->set('course', $course)
+		     ->set('tbl', $tbl);
+
+		$response->set('metadata', $view->loadTemplate());
+
+		// Check if our area is in the array of areas we want to return results for
+		if ($response->get('name') == $active)
 		{
-			$this->view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'courses',
-					'element' => $this->_name,
-					'name'    => 'view',
-					'layout'  => 'default'
-				)
-			);
+			$this->view = $this->view('default', 'view');
 			$this->view->database = $this->database = $database;
 			$this->view->juser    = $this->juser    = JFactory::getUser();
 			$this->view->option   = $this->option; //   = JRequest::getCmd('option', 'com_courses');
@@ -155,28 +118,10 @@ class plgCoursesReviews extends \Hubzero\Plugin\Plugin
 			}
 
 			// Return the output
-			$arr['html'] = $this->view->loadTemplate();
+			$response->set('html', $this->view->loadTemplate());
 		}
 
-		// Build the HTML meant for the "about" tab's metadata overview
-		if ($rtrn == 'html' || $rtrn == 'metadata')
-		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'courses',
-					'element' => $this->_name,
-					'name'    => 'metadata'
-				)
-			);
-			$view->option     = $this->option;
-			$view->controller = $this->controller;
-			$view->course     = $course;
-			$view->tbl        = $tbl;
-
-			$arr['metadata'] = $view->loadTemplate();
-		}
-
-		return $arr;
+		return $response;
 	}
 
 	/**

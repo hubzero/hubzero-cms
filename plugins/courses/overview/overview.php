@@ -44,62 +44,31 @@ class plgCoursesOverview extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseViewAreas($course)
-	{
-		$area = array(
-			'overview' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-		);
-		return $area;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
-	 *
+	 * 
 	 * @param      object  $course Current course
 	 * @param      string  $active Current active area
 	 * @return     array
 	 */
 	public function onCourseView($course, $active=null)
 	{
-		// The output array we're returning
-		$arr = array(
-			'name'     => 'overview',
-			'html'     => '',
-			'metadata' => ''
-		);
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)));
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($active))
+		if ($response->get('name') == $active)
 		{
-			if (!in_array($arr['name'], $active))
-			{
-				return $arr;
-			}
-		}
-		else if ($active != $arr['name'])
-		{
-			return $arr;
-		}
+			$view = $this->view('default', 'overview');
+			$view->set('option', JRequest::getCmd('option', 'com_courses'))
+			     ->set('controller', JRequest::getWord('controller', 'course'))
+			     ->set('course', $course);
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'courses',
-				'element' => $this->_name,
-				'name'    => 'overview'
-			)
-		);
-		$view->option     = JRequest::getCmd('option', 'com_courses');
-		$view->controller = JRequest::getWord('controller', 'course');
-		$view->course     = $course;
-
-		$arr['html'] = $view->loadTemplate();
+			$response->set('html', $view->loadTemplate());
+		}
 
 		// Return the output
-		return $arr;
+		return $response;
 	}
 }
 

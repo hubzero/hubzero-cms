@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -39,107 +39,89 @@ class plgCoursesOfferings extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseViewAreas($course)
-	{
-		$area = array();
-		if ($course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true)->total() > 0)
-		{
-			switch ($this->params->get('plugin_access', 'anyone'))
-			{
-				case 'managers':
-					$memberships = $course->offering()->membership();
-
-					if (count($memberships) > 0)
-					{
-						foreach ($memberships as $membership)
-						{
-							if ($membership->get('student') == 0)
-							{
-								$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
-								break;
-							}
-						}
-					}
-				break;
-
-				case 'members':
-					if (count($course->offering()->membership()) > 0)
-					{
-						$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
-					}
-				break;
-
-				case 'registered':
-					if (!JFactory::getUser()->get('guest'))
-					{
-						$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
-					}
-				break;
-
-				case 'anyone':
-				default:
-					$area['offerings'] = JText::_('PLG_COURSES_' . strtoupper($this->_name));
-				break;
-			}
-			return $area;
-		}
-		return $area;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course Current course
-	 * @param      string  $active Current active area
-	 * @return     array
+	 * @param   object  $course  Current course
+	 * @param   string  $active  Current active area
+	 * @return  array
 	 */
 	public function onCourseView($course, $active=null)
 	{
-		// The output array we're returning
-		$arr = array(
-			'name'     => $this->_name,
-			'html'     => '',
-			'metadata' => ''
-		);
+		// Check that there are any offerings to show
+		if ($course->offerings(array('state' => 1, 'sort_Dir' => 'ASC'), true)->total() <= 0)
+		{
+			return;
+		}
+
+		// Can this plugin respond, based on the current access settings?
+		$respond = false;
+		switch ($this->params->get('plugin_access', 'anyone'))
+		{
+			case 'managers':
+				$memberships = $course->offering()->membership();
+
+				if (count($memberships) > 0)
+				{
+					foreach ($memberships as $membership)
+					{
+						if (!$membership->get('student'))
+						{
+							$respond = true;
+							break;
+						}
+					}
+				}
+			break;
+
+			case 'members':
+				if (count($course->offering()->membership()) > 0)
+				{
+					$respond = true;
+				}
+			break;
+
+			case 'registered':
+				if (!JFactory::getUser()->get('guest'))
+				{
+					$respond = true;
+				}
+			break;
+
+			case 'anyone':
+			default:
+				$respond = true;
+			break;
+		}
+
+		if (!$respond)
+		{
+			return;
+		}
+
+		// Prepare response
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)));
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($active))
+		if ($response->get('name') == $active)
 		{
-			if (!in_array($arr['name'], $active))
-			{
-				return $arr;
-			}
-		}
-		else if ($active != $arr['name'])
-		{
-			return $arr;
-		}
+			$view = $this->view('default', 'overview');
+			$view->set('option', JRequest::getCmd('option', 'com_courses'))
+			     ->set('controller', JRequest::getWord('controller', 'course'))
+			     ->set('course', $course)
+			     ->set('name', $this->_name);
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'overview'
-			)
-		);
-		$view->option     = JRequest::getCmd('option', 'com_courses');
-		$view->controller = JRequest::getWord('controller', 'course');
-		$view->course     = $course;
-		$view->name       = $this->_name;
-
-		$arr['html'] = $view->loadTemplate();
+			$response->set('html', $view->loadTemplate());
+		}
 
 		// Return the output
-		return $arr;
+		return $response;
 	}
 }
 

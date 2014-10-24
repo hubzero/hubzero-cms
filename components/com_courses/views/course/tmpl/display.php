@@ -192,50 +192,41 @@ $this->css('course.css')
 			{
 				$this->active = '';
 			}
-			if ($this->cats)
+
+			if ($this->plugins)
 			{
-				$i = 1;
-				foreach ($this->cats as $cat)
+				foreach ($this->plugins as $i => $plugin)
 				{
-					$name = key($cat);
-					if ($name != '')
+					$url = JRoute::_($this->course->link() . '&active=' . $plugin->get('name'));
+
+					if ($plugin->get('name') == $this->active)
 					{
-						$url = JRoute::_('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&active=' . $name);
+						$pathway = JFactory::getApplication()->getPathway();
+						$pathway->addItem($plugin->get('title'), $url);
 
-						if (strtolower($name) == $this->active)
+						if ($this->active != 'overview')
 						{
-							$pathway = JFactory::getApplication()->getPathway();
-							$pathway->addItem($cat[$name], $url);
-
-							if ($this->active != 'overview')
-							{
-								$document = JFactory::getDocument();
-								$document->setTitle($document->getTitle() . ': ' . $cat[$name]);
-							}
-							if ($this->isPage)
-							{
-								$this->isPage = $name;
-							}
+							$document = JFactory::getDocument();
+							$document->setTitle($document->getTitle() . ': ' . $plugin->get('title'));
 						}
-						?>
-						<li id="sm-<?php echo $i; ?>"<?php echo (strtolower($name) == $this->active) ? ' class="active"' : ''; ?>>
-							<a class="tab" data-rel="<?php echo $name; ?>" href="<?php echo $url; ?>">
-								<span><?php echo $this->escape($cat[$name]); ?></span>
-							</a>
-						</li>
-						<?php
-						$i++;
 					}
+					?>
+					<li id="sm-<?php echo $i; ?>"<?php echo ($plugin->get('name') == $this->active) ? ' class="active"' : ''; ?>>
+						<a class="tab" data-rel="<?php echo $plugin->get('name'); ?>" href="<?php echo $url; ?>">
+							<span><?php echo $this->escape($plugin->get('title')); ?></span>
+						</a>
+					</li>
+					<?php
 				}
 			}
 			?>
-		<?php if ($this->course->access('edit', 'course')) { ?>
-			<li class="add-page">
-				<a class="icon-add tab" href="<?php echo JRoute::_($this->course->link() . '&action=addpage'); ?>">
-					<?php echo JText::_('PLG_COURSES_PAGES_ADD_PAGE'); ?>
-				</a>
-			</li>
-		<?php } ?>
+			<?php if ($this->course->access('edit', 'course')) { ?>
+				<li class="add-page">
+					<a class="icon-add tab" href="<?php echo JRoute::_($this->course->link() . '&action=addpage'); ?>">
+						<?php echo JText::_('PLG_COURSES_PAGES_ADD_PAGE'); ?>
+					</a>
+				</li>
+			<?php } ?>
 		</ul>
 
 		<?php
@@ -298,31 +289,29 @@ $this->css('course.css')
 			</div>
 			<?php
 		}
-		elseif ($this->sections)
+		elseif ($this->plugins)
 		{
-			$k = 0;
-			foreach ($this->sections as $section)
+			foreach ($this->plugins as $plugin)
 			{
-				if ($section['html'] != '')
+				if ($html = $plugin->get('html'))
 				{
 					?>
-					<div class="inner-section" id="<?php echo $section['name']; ?>-section">
-						<?php if ($this->course->access('edit', 'course') && $this->isPage) { ?>
+					<div class="inner-section" id="<?php echo $plugin->get('name'); ?>-section">
+						<?php if ($this->course->access('edit', 'course') && $plugin->get('isPage')) { ?>
 							<div class="manager-options">
-								<a class="icon-error btn btn-secondary btn-danger" href="<?php echo JRoute::_($this->course->link() . '&active=' . $this->isPage . '&task=deletepage'); ?>">
+								<a class="icon-error btn btn-secondary btn-danger" href="<?php echo JRoute::_($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage'); ?>">
 									<?php echo JText::_('COM_COURSES_DELETE'); ?>
 								</a>
-								<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&active=' . $this->isPage . '&action=editpage'); ?>">
+								<a class="icon-edit btn btn-secondary" href="<?php echo JRoute::_($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage'); ?>">
 									<?php echo JText::_('COM_COURSES_EDIT'); ?>
 								</a>
 								<span><strong><?php echo JText::_('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>
 							</div>
 						<?php } ?>
-						<?php echo $section['html']; ?>
+						<?php echo $html; ?>
 					</div><!-- / .inner-section -->
 					<?php
 				}
-				$k++;
 			}
 		}
 		?>
@@ -617,13 +606,13 @@ $this->css('course.css')
 		}
 		?>
 		<?php
-		if ($this->sections)
+		if ($this->plugins)
 		{
-			foreach ($this->sections as $section)
+			foreach ($this->plugins as $plugin)
 			{
-				if ($section['metadata'] != '')
+				if ($meta = $plugin->get('metadata'))
 				{
-					echo $section['metadata'];
+					echo $meta;
 				}
 			}
 		}
