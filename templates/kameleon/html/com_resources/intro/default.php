@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,17 +34,15 @@ $this->css('introduction.css', 'system')
      ->css()
      ->js();
 ?>
-<header id="content-header">
+<header id="content-header" class="intro-page">
 	<h2><?php echo $this->title; ?></h2>
 
 	<nav id="content-header-extra">
-		<ul>
-			<li>
-				<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
-					<?php echo JText::_('Submit a resource'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="btn icon-add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
+				<?php echo JText::_('Submit a resource'); ?>
+			</a>
+		</p>
 	</nav>
 </header><!-- / #content-header -->
 
@@ -95,6 +93,11 @@ $this->css('introduction.css', 'system')
 
 				foreach ($this->categories as $category)
 				{
+					if ($category->id == 7 && !JComponentHelper::isEnabled('com_tools', true))
+					{
+						continue;
+					}
+
 					$i++;
 					switch ($i)
 					{
@@ -104,9 +107,12 @@ $this->css('introduction.css', 'system')
 						default: $clm = ''; break;
 					}
 
-					if (substr($category->alias, -3) == 'ies') {
+					if (substr($category->alias, -3) == 'ies')
+					{
 						$cls = $category->alias;
-					} else {
+					}
+					else
+					{
 						$cls = rtrim($category->alias, 's');
 					}
 					?>
@@ -114,11 +120,11 @@ $this->css('introduction.css', 'system')
 						<div class="<?php echo $cls; ?>">
 							<h3>
 								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
-									<?php echo $this->escape(stripslashes($category->type)); ?>
+									<?php echo $this->escape(strip_tags(stripslashes($category->type))); ?>
 								</a>
 							</h3>
 							<p>
-								<?php echo $this->escape(stripslashes($category->description)); ?>
+								<?php echo $this->escape(strip_tags(stripslashes($category->description))); ?>
 							</p>
 							<p>
 								<a class="read-more" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>" title="<?php echo JText::sprintf('Browse %s', $this->escape(stripslashes($category->type))); ?>">
@@ -128,20 +134,23 @@ $this->css('introduction.css', 'system')
 						</div>
 					</div><!-- / .col span-third <?php echo $clm; ?> -->
 					<?php
-					if ($clm == 'omega') {
+					if ($clm == 'omega')
+					{
 						echo '</div><div class="grid">';
 						$clm = '';
 						$i = 0;
 					}
 				}
-				if ($i == 1) {
+				if ($i == 1)
+				{
 					?>
 					<div class="col span-third">
 						<p> </p>
 					</div><!-- / .col span-third -->
 					<?php
 				}
-				if ($i == 1 || $i == 2) {
+				if ($i == 1 || $i == 2)
+				{
 					?>
 					<div class="col span-third omega">
 						<p> </p>

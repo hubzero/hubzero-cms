@@ -1,5 +1,14 @@
 @import url("../../../../components/com_resources/assets/css/resources.css");
 
+/* Introduction */
+	.com_resources #introduction .omega {
+		text-align: right;
+	}
+	.com_resources #introduction + .section h3 {
+		margin-top: 1.5em;
+	}
+
+/* Browse */
 	.com_resources .container .container-block,
 	.com_resources .container .results {
 		background: transparent;
@@ -33,30 +42,57 @@
 	.com_resources .container .results .details span {
 		color: transparent;
 	}
-	.results .metadata {
+	.com_resources .results .metadata {
 		margin-top: -2.5em;
 	}
-	.results .metadata p {
+	.com_resources .results .metadata p {
 		text-align: right;
 	}
+	.com_resources .filter-options select {
+		margin-top: 0;
+	}
+	.com_resources .citations li {
+		padding: 1em 0 1em 1em;
+	}
 
+	.com_resources #content-header .metadata .share,
+	.com_resources #content-header .metadata p,
 	.com_resources #content-header {
 		color: #f1f1f1;
 		color: rgba(255, 255, 255, 0.75);
+	}
+	.com_resources #content-header .metadata .shareinfo p,
+	.com_resources #content-header .metadata .shareinfo a {
+		color: #666;
 	}
 	.com_resources #content-header .span8 a,
 	.com_resources #content-header .aside a {
 		color: #fff;
 	}
+
+/* Resource page */
 	.com_resources #content-header .metadata {
 		border: 1px solid #fff;
 		border: 1px solid rgba(255, 255, 255, 0.5);
 		background: rgba(255, 255, 255, 0.1);
 		margin: 0 0 30px 0;
 	}
-	.com_resources #content-header h2 {
+	.com_resources #content-header .upperpane h2 {
 		padding: 0 0 0.5em 0;
 	}
+	.com_resources .license {
+		line-height: 1.3;
+		color: #f1f1f1;
+		color: rgba(255, 255, 255, 0.75);
+	}
+	.com_resources .license a {
+		color: #fff;
+	}
+	.metadata p:before {
+		color: #444;
+	}
+
+	/* Tabs */
 	.com_resources section.section .tabbed {
 		padding: 0;
 	}
