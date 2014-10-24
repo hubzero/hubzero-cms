@@ -30,6 +30,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->css();
+$this->js();
+
 $htmlHelper	  = new PublicationsAdminHtml();
 
 // Get hub config
@@ -72,7 +75,6 @@ if ($this->useBlocks)
 {
 	$customFields = $this->pub->_curationModel->getMetaSchema();
 }
-
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
@@ -121,6 +123,11 @@ function submitbutton(pressbutton)
 
 	if (pressbutton == 'cancel') {
 		submitform( pressbutton );
+		return;
+	}
+
+	if (pressbutton == 'saveorder') {
+		submitform( 'saveauthororder' );
 		return;
 	}
 
@@ -187,13 +194,12 @@ function popratings()
 			</div>
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_SYNOPSIS'); ?>:</label>
-				<textarea name="abstract" id="pub-abstract" cols="40" rows="3" class="pubinput"><?php echo $this->row->abstract; ?></textarea>
+				<textarea name="abstract" id="pub-abstract" cols="40" rows="3" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($this->row->abstract)); ?></textarea>
 			</div>
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
 				<?php
-					$editor = JFactory::getEditor();
-					echo $editor->display('description', $this->escape(stripslashes($this->row->description)), '', '', '40', '10', false, 'pub_description');
+					echo JFactory::getEditor()->display('description', $this->escape(stripslashes($this->row->description)), '', '', '40', '10', false, 'pub_description');
 				?>
 			</div>
 		</fieldset>
@@ -206,9 +212,13 @@ function popratings()
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
 			<div class="input-wrap">
-				<textarea name="release_notes" id="release_notes" cols="40" rows="5" class="pubinput"><?php echo $this->row->release_notes; ?></textarea>
+				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
+				<?php
+					echo JFactory::getEditor()->display('release_notes', $this->escape(stripslashes($this->row->release_notes))
+						, '', '', '20', '10', false
+						, 'notes', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
-	</fieldset>
+		</fieldset>
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span> <span class="sidenote add"><a href="index.php?option=com_publications&amp;task=addauthor&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>"><?php echo JText::_('COM_PUBLICATIONS_ADD_AUTHOR'); ?></a></span></legend>
 		<fieldset>
@@ -240,7 +250,7 @@ function popratings()
 		</div>
 		<div class="input-wrap">
 			<label for="license_text"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
-			<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo $this->row->license_text; ?></textarea>
+			<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($this->row->license_text)); ?></textarea>
 		</div>
 		</fieldset>
 	</fieldset>

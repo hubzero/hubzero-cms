@@ -38,9 +38,7 @@ HUB.PublicationsCuration = {
 		var $ = this.jQuery;
 		
 		// Enable reordering
-		HUB.PublicationsCuration.reorder($('#blockorder'));
-		
-		
+		HUB.PublicationsCuration.reorder($('#blockorder'));		
 	},
 	
 	reorder: function(list)

@@ -56,8 +56,8 @@ function submitbutton(pressbutton)
 }
 </script>
 <?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
-<?php } ?>
+	<p class="error"><?php echo $this->getError(); ?></p>
+<?php return; } ?>
 <p class="crumbs"><a href="<?php echo 'index.php?option=' . $this->option . '&amp;controller='
 . $this->controller; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo 'index.php?option='
 . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id[]='. $this->pub->id . '&version=' . $this->pub->version_number; ?>"><?php echo JText::_('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo JText::_('COM_PUBLICATIONS_EDIT_CONTENT_INFO'); ?></p>
