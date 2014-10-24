@@ -57,7 +57,7 @@ if ($this->import->exists()) { ?>
 							<option value=""><?php echo JText::_('COM_MEMBERS_UNKNOWN'); ?></option>
 							<option value="uidNumber" <?php if ($mapping['field'] == 'uidNumber') { echo 'selected="selected"'; } ?>>uidNumber</option>
 							<option value="username" <?php if ($mapping['field'] == 'username') { echo 'selected="selected"'; } ?>>username</option>
-							<option value="userPassword" <?php if ($mapping['field'] == 'userPassword') { echo 'selected="selected"'; } ?>>userPassword</option>
+							<option value="password" <?php if ($mapping['field'] == 'password') { echo 'selected="selected"'; } ?>>password</option>
 							<option value="name" <?php if ($mapping['field'] == 'name') { echo 'selected="selected"'; } ?>>name</option>
 							<option value="givenName" <?php if ($mapping['field'] == 'givenName') { echo 'selected="selected"'; } ?>>givenName</option>
 							<option value="middleName" <?php if ($mapping['field'] == 'middleName') { echo 'selected="selected"'; } ?>>middleName</option>
@@ -80,6 +80,7 @@ if ($this->import->exists()) { ?>
 							<option value="public" <?php if ($mapping['field'] == 'public') { echo 'selected="selected"'; } ?>>public</option>
 							<option value="race" <?php if ($mapping['field'] == 'race') { echo 'selected="selected"'; } ?>>race</option>
 							<option value="url" <?php if ($mapping['field'] == 'url') { echo 'selected="selected"'; } ?>>url</option>
+							<option value="homeDirectory" <?php if ($mapping['field'] == 'homeDirectory') { echo 'selected="selected"'; } ?>>homeDirectory</option>
 						</select>
 					</td>
 				</tr>

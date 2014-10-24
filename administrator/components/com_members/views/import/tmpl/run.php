@@ -58,127 +58,134 @@ function submitbutton(pressbutton)
 
 <form action="<?php echo JRoute::_('index.php?option=com_members&controller=import&task=dorun'); ?>" method="post" name="adminForm" id="adminForm">
 
-	<fieldset class="adminform">
-		<table class="admintable">
-			<tbody>
-				<tr>
-					<td>
-						<?php if ($this->dryRun) : ?>
-							<div class="dryrun-message">
-								<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_NOTICE'); ?></strong>
-								<p><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_NOTICE_DESC'); ?></p>
+	<fieldset class="adminform import-results">
+
+		<?php if ($this->dryRun) : ?>
+			<div class="dryrun-message">
+				<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_NOTICE'); ?></strong>
+				<p><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_NOTICE_DESC'); ?></p>
+			</div>
+		<?php endif; ?>
+
+		<div class="countdown" data-timeout="5">
+			<?php echo JText::sprintf('COM_MEMBERS_IMPORT_RUN_START', '<span>5</span>'); ?>
+		</div>
+		<div class="countdown-actions" data-progress="<?php echo JRoute::_('index.php?option=com_members&controller=import&task=progress&id=' . $this->import->get('id')); ?>">
+			<button type="button" class="start"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_BUTTON_START'); ?></button>
+			<button type="button" class="stop"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_BUTTON_STOP'); ?></button>
+
+			<button type="button" class="start-over"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_BUTTON_RERUN'); ?></button>
+			<?php if ($this->dryRun) : ?>
+				<button type="button" class="start-real"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_BUTTON_REAL'); ?></button>
+			<?php endif; ?>
+		</div>
+
+		<hr />
+
+		<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_PROGRESS'); ?><span class="progress-percentage">0%</span></strong>
+		<div class="progress"></div>
+
+		<hr />
+
+		<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULTS'); ?><span class="results-stats"></span></strong>
+		<div class="results">
+			<span class="hint"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULTS_WAITING'); ?></span>
+		</div>
+		<script id="entry-template" type="text/x-handlebars-template">
+			<h3 class="resource-title">
+				{{#if record.errors}}<span class="has-errors"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSERRORS'); ?></span>{{/if}}
+				{{#if record.notices}}<span class="has-notices"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSNOTICES'); ?></span>{{/if}}
+				{{{ record.entry.name }}}
+			</h3>
+
+			<div class="resource-data">
+				<div class="grid">
+					{{#if record.errors}}
+						<div class="col width-100">
+							<div class="errors">
+								<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_ERRORMESSAGE'); ?></strong>
+								<ol>
+									{{#each record.errors}}
+										<li>{{this}}</li>
+									{{/each}}
+								</ol>
 							</div>
-						<?php endif; ?>
-
-						<div class="countdown" data-timeout="5">
-							<?php echo JText::sprintf('COM_MEMBERS_IMPORT_RUN_START', '<span>5</span>'); ?>
 						</div>
-						<div class="countdown-actions">
-							<button type="button" class="start"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_BUTTON_START'); ?></button>
-							<button type="button" class="stop"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_BUTTON_STOP'); ?></button>
+					{{/if}}
 
-							<button type="button" class="start-over"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_BUTTON_RERUN'); ?></button>
-							<?php if ($this->dryRun) : ?>
-								<button type="button" class="start-real"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_BUTTON_REAL'); ?></button>
-							<?php endif; ?>
+					{{#if record.notices}}
+						<div class="col width-100">
+							<div class="notices">
+								<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_NOTICEMESSAGE'); ?></strong>
+								<ol>
+									{{#each record.notices}}
+										<li>{{{this}}}</li>
+									{{/each}}
+								</ol>
+							</div>
 						</div>
+					{{/if}}
+
+					<div class="col width-60 fltlft">
+						{{{entry_data record}}}
+					</div>
+					<div class="col width-40 fltrt">
+
+						<h4><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_DISABILITY'); ?></h4>
+						<table>
+							<tr>
+								<td>
+									{{#each record.disability}}
+										{{{ this }}}<br />
+									{{else}}
+										<span class="hint"><?php echo JText::_('COM_MEMBERS_NONE'); ?></span>
+									{{/each}}
+								</td>
+							</tr>
+						</table>
 
 						<hr />
 
-						<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_PROGRESS'); ?><span class="progress-percentage">0%</span></strong>
-						<div class="progress"></div>
+						<h4><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_RACE'); ?></h4>
+						<table>
+							<tr>
+								<td>
+									{{#each record.race}}
+										{{{ this }}}<br />
+									{{else}}
+										<span class="hint"><?php echo JText::_('COM_MEMBERS_NONE'); ?></span>
+									{{/each}}
+								</td>
+							</tr>
+						</table>
 
 						<hr />
 
-						<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULTS'); ?><span class="results-stats"></span></strong>
-						<div class="results">
-							<span class="hint"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULTS_WAITING'); ?></span>
-						</div>
-						<script id="entry-template" type="text/x-handlebars-template">
-							<h3 class="resource-title">
-								{{#if record.errors}}<span class="has-errors"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSERRORS'); ?></span>{{/if}}
-								{{#if record.notices}}<span class="has-notices"><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSNOTICES'); ?></span>{{/if}}
-								{{{ record.resource.title }}}
-							</h3>
+						<h4><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_TAGS'); ?></h4>
+						<table>
+							<tr>
+								<td>
+									{{#each record.tags}}
+										{{{ this }}}<br />
+									{{else}}
+										<span class="hint"><?php echo JText::_('COM_MEMBERS_NONE'); ?></span>
+									{{/each}}
+								</td>
+							</tr>
+						</table>
 
-							<div class="resource-data">
-								<div class="grid">
-									{{#if record.errors}}
-										<div class="col width-100">
-											<div class="errors">
-												<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_ERRORMESSAGE'); ?></strong>
-												<ol>
-													{{#each record.errors}}
-														<li>{{this}}</li>
-													{{/each}}
-												</ol>
-											</div>
-										</div>
-									{{/if}}
+					</div>
+					<br class="clr" />
+					<hr />
 
-									{{#if record.notices}}
-										<div class="col width-100">
-											<div class="notices">
-												<strong><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_NOTICEMESSAGE'); ?></strong>
-												<ol>
-													{{#each record.notices}}
-														<li>{{{this}}}</li>
-													{{/each}}
-												</ol>
-											</div>
-										</div>
-									{{/if}}
+					<div class="unused-data">
+						<h4><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_UNUSED'); ?></h4>
+						<pre>{{print_json_data raw._unused}}</pre>
+					</div>
+				</div>
+			</div>
+		</script>
 
-									<div class="col width-60 fltlft">
-										{{{resource_data record}}}
-									</div>
-									<div class="col width-40 fltrt">
-										/*<h4><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_CHILDREN'); ?></h4>
-										{{{group_data record.children}}}
-										<hr />*/
-
-										<h4><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_CONTRIBUTORS'); ?></h4>
-										<table>
-											{{#each record.groups}}
-												<tr>
-													<td>
-														<span class="group-name">{{{ name }}}</span>
-														<span class="group-desc">{{{ description }}}</span>
-													</td>
-												</tr>
-											{{/each}}
-										</table>
-
-										<hr />
-
-										<h4><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_TAGS'); ?></h4>
-										<table>
-											<tr>
-												<td>
-													{{#each record.tags}}
-														{{{ this }}}<br />
-													{{else}}
-														<span class="hint">No Tags</span>
-													{{/each}}
-												</td>
-											</tr>
-										</table>
-
-									</div>
-									<br class="clr" />
-									<hr />
-
-									<div class="unused-data">
-										<h4><?php echo JText::_('COM_MEMBERS_IMPORT_RUN_RESULT_UNUSED'); ?></h4>
-										<pre>{{print_json_data raw._unused}}</pre>
-									</div>
-								</div>
-							</div>
-						</script>
-					</td>
-				</tr>
-			</tbody>
-		</table>
 	</fieldset>
 
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />

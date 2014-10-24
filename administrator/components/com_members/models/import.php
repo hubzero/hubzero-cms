@@ -54,95 +54,160 @@ class Import extends \Hubzero\Content\Import\Model\Import
 	 * @var  array
 	 */
 	private $_fieldMap = array(
-		// Last Name
-		'lname'      => 'surname',
-		'lastname'   => 'surname',
-		'surname'    => 'surname',
-		// First name
-		'fname'      => 'givenName',
-		'firstname'  => 'givenName',
-		'givenname'  => 'givenName',
-		// First name
-		'mname'      => 'middleName',
-		'middlename' => 'middleName',
-		'midname'    => 'middleName',
-		// Name
-		'name'       => 'name',
-		'fullname'   => 'name',
-		// User ID
-		'id'         => 'uidNumber',
-		'uid'        => 'uidNumber',
-		'userid'     => 'uidNumber',
-		'uidnumber'  => 'uidNumber',
-		'mid'        => 'uidNumber',
-		'midnumber'  => 'uidNumber',
-		'memberid'   => 'uidNumber',
-		'profileid'  => 'uidNumber',
-		// Email
-		'mail'       => 'email',
-		'email'      => 'email',
-		'electronicmail' => 'email',
-		'emailaddress' => 'email',
-		// Username
-		'username'   => 'username',
-		'uname'      => 'username',
-		'login'      => 'username',
-		'userlogin'  => 'username',
-		// Phone
-		'phone'      => 'phone',
-		'cell'       => 'phone',
-		'cellphone'  => 'phone',
-		'telephone'  => 'phone',
-		'workphone'  => 'phone',
-		// Gender
-		'gender'     => 'gender',
-		'sex'        => 'gender',
-		// ORCID
-		'orcid'      => 'orcid',
-		// ORCID
-		'public'        => 'public',
-		'publicprofile' => 'public',
-		'access'        => 'public',
-		'visibility'    => 'public',
-		// Organization
-		'org'          => 'organization',
-		'organization' => 'organization',
-		'organisation' => 'organization',
-		'company'      => 'organization',
-		// Org type
-		'orgtype'          => 'orgtype',
-		'organizationtype' => 'orgtype',
-		'organisationtype' => 'orgtype',
-		'companytype'      => 'orgtype',
-		'employertype'     => 'orgtype',
-		'employmenttype'   => 'orgtype',
-		// URL
-		'url'        => 'url',
-		'website'    => 'url',
-		'webpage'    => 'url',
-		'site'       => 'url',
-		'homepage'   => 'url',
-		// Tags
-		'tags'      => 'interests',
-		'interests' => 'interests',
-		'tag'       => 'interests',
-		'interest'  => 'interests',
-		'likes'     => 'interests',
-		'keyword'   => 'interests',
-		'keywords'  => 'interests',
-		// Bio
-		'bio'        => 'bio',
-		'biography'  => 'bio',
-		'about'      => 'bio',
-		// Race
-		'race'       => 'race',
-		'racial'     => 'race',
-		'ethnicity'  => 'race',
-		'ethnic'     => 'race',
-		// Disability
-		'disability' => 'disability',
-		'disabled'   => 'disability',
-		'handicap'   => 'disability',
+		'surname' => array(
+			'lname',
+			'lastname',
+			'surname',
+		),
+		'givenName' => array(
+			'fname',
+			'firstname',
+			'givenname',
+		),
+		'middleName' => array(
+			'mname',
+			'middlename',
+			'midname',
+		),
+		'name' => array(
+			'name',
+			'fullname',
+		),
+		'uidNumber' => array(
+			'id',
+			'uid',
+			'userid',
+			'uidnumber',
+			'mid',
+			'midnumber',
+			'memberid',
+			'profileid',
+		),
+		'email' => array(
+			'mail',
+			'email',
+			'electronicmail',
+			'emailaddress',
+		),
+		'username' => array(
+			'username',
+			'uname',
+			'login',
+			'userlogin',
+		),
+		'phone' => array(
+			'phone',
+			'cell',
+			'cellphone',
+			'telephone',
+			'workphone',
+		),
+		'gender' => array(
+			'gender',
+			'sex',
+		),
+		'orcid' => array(
+			'orcid',
+		),
+		'public' => array(
+			'public',
+			'publicprofile',
+			'access',
+			'visibility',
+		),
+		'organization' => array(
+			'org',
+			'organization',
+			'organisation',
+			'company',
+		),
+		'orgtype' => array(
+			'orgtype',
+			'organizationtype',
+			'organisationtype',
+			'companytype',
+			'employertype',
+			'employmenttype',
+		),
+		'url' => array(
+			'url',
+			'website',
+			'webpage',
+			'site',
+			'homepage',
+		),
+		'interests' => array(
+			'tags',
+			'interests',
+			'tag',
+			'interest',
+			'likes',
+			'keyword',
+			'keywords',
+		),
+		'bio' => array(
+			'bio',
+			'biography',
+			'about',
+		),
+		'race' => array(
+			'race',
+			'racial',
+			'ethnicity',
+			'ethnic',
+		),
+		'disability' => array(
+			'disability',
+			'disabled',
+			'handicap',
+		),
+		'note' => array(
+			'note',
+			'notes',
+			'adminnote',
+			'adminnotes',
+			'accountnote',
+			'accountnotes',
+			'administratornote',
+			'administratornotes',
+			'comment',
+			'comments',
+			'admincomment',
+			'admincomments',
+			'accountcomment',
+			'accountcomments',
+			'administratorcomment',
+			'administratorcomment',
+		),
+		'jobsAllowed' => array(
+			'jobsallowed',
+			'jobquota',
+			'joballowance',
+			'jobs',
+			'quota',
+		),
+		'homeDirectory' => array(
+			'home',
+			'homedirectory',
+			'homepath',
+			'homefolder',
+			'homedir',
+		),
+		'usageAgreement' => array(
+			'usageagreement',
+			'termsofservice',
+			'tos',
+			'agreement',
+		),
+		'password' => array(
+			'userpassword',
+			'password',
+			'pass',
+			'passcode',
+			'passwd',
+			'passwrd',
+			'memberpassword',
+		),
 	);
 
 	/**
@@ -190,12 +255,17 @@ class Import extends \Hubzero\Content\Import\Model\Import
 	public function getRecord($raw, $options = array(), $mode = 'UPDATE')
 	{
 		$record = new stdClass;
+		$record->_unused = array();
 
 		if (is_array($raw))
 		{
 			foreach ($raw as $key => $val)
 			{
-				$field = $this->fields($key);
+				if (!$field = $this->fields($key))
+				{
+					$record->_unused[$key] = $val;
+					continue;
+				}
 
 				$record->$field = $val;
 			}
@@ -206,6 +276,7 @@ class Import extends \Hubzero\Content\Import\Model\Import
 			{
 				if (!$field = $this->fields($key))
 				{
+					$record->_unused[$key] = $val;
 					continue;
 				}
 
@@ -245,6 +316,15 @@ class Import extends \Hubzero\Content\Import\Model\Import
 				$field = $this->_fields[$name]['field'];
 			}
 
+			foreach ($this->_fieldMap as $column => $aliases)
+			{
+				if (in_array($name, $aliases))
+				{
+					$field = $column;
+					break;
+				}
+			}
+
 			return $field;
 		}
 
@@ -282,9 +362,13 @@ class Import extends \Hubzero\Content\Import\Model\Import
 				'field' => ''
 			);
 
-			if (isset($this->_fieldMap[$norm]))
+			foreach ($this->_fieldMap as $column => $aliases)
 			{
-				$map['field'] = $this->_fieldMap[$norm];
+				if (in_array($norm, $aliases))
+				{
+					$map['field'] = $column;
+					break;
+				}
 			}
 
 			$mapping[$norm] = $map;

@@ -3,6 +3,13 @@
 | Countdown Clock and Buttons
 |--------------------------------------------------------------------------
 */
+
+.com_members fieldset.import-results {
+	padding: 2.236em;
+	border: none;
+	background: transparent;
+	margin: 0;
+}
 hr {
 	border-top: 1px solid #efefef !important;
 	border-bottom: none !important;
@@ -57,10 +64,10 @@ hr {
 }
 .countdown-actions button {
 	display: inline-block;
-	padding: 10px 20px;
+	padding: 0.8em 1.6em;
 	text-align: center;
 	background: #efefef;
-	margin-left: 10px;
+	margin-left: 1em;
 	border: none;
 }
 .countdown-actions button.start {
@@ -77,9 +84,11 @@ hr {
 }
 .countdown-actions button:hover {
 	box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+	border: none;
 }
 .countdown-actions button:active {
 	box-shadow: inset 0 1px 2px rgba(0,0,0,.3);
+	border: none;
 }
 .countdown-actions button:disabled {
 	opacity: 0.8;

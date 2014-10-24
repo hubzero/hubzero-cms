@@ -259,12 +259,38 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{
 			// These two need some extra loving and care, so we skip them for now...
-			if ($key == 'username' || $key == 'uidNumber')
+			if (substr($key, 0, 1) == '_' || $key == 'username' || $key == 'uidNumber')
 			{
 				continue;
 			}
 
 			$this->record->entry->set($key, $val);
+		}
+
+		if (isset($this->raw->disability))
+		{
+			$disability = $this->raw->disability;
+
+			if (is_string($disability))
+			{
+				$disability = array_map('trim', preg_split("/(,|;)/", $disability));
+				$disability = array_values(array_filter($disability));
+			}
+
+			$this->record->entry->set('disability', $disability);
+		}
+
+		if (isset($this->raw->race))
+		{
+			$race = $this->raw->race;
+
+			if (is_string($race))
+			{
+				$race = array_map('trim', preg_split("/(,|;)/", $race));
+				$race = array_values(array_filter($race));
+			}
+
+			$this->record->entry->set('race', $race);
 		}
 
 		// If we have a name but no individual parts...
@@ -304,7 +330,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		}
 
 		// Bind to the profile object
-		//$this->record->entry->bind($this->raw);
 		foreach ($this->record->entry->getProperties() as $key => $val)
 		{
 			$this->_profile->set($key, $val);
@@ -322,6 +347,11 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		{
 			throw new Exception(JText::_('Unable to save the entry data.'));
 		}
+
+		if ($password = $this->raw->password)
+		{
+			\Hubzero\User\Password::changePassword($this->_profile->get('username'), $password);
+		}
 	}
 
 	/**
@@ -335,10 +365,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 		{
 			$tags = $this->raw->tags;
 
-			// handle tags as string (comma separated)
 			if (is_string($tags))
 			{
-				$tags = array_map("trim", explode(',', $tags));
+				$tags = array_map('trim', preg_split("/(,|;)/", $tags));
 				$tags = array_values(array_filter($tags));
 			}
 

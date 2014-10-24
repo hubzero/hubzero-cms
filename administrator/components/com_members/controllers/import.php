@@ -414,7 +414,7 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 	public function doRunTask()
 	{
 		// Check token
-		JSession::checkToken() or die('Invalid Token');
+		//JSession::checkToken() or die('Invalid Token');
 
 		// Start of import
 		$start = microtime(true);
