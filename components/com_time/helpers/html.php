@@ -76,7 +76,7 @@ class TimeHtml
 				$selected = $hub->id;
 			}
 		}
-		$hlist = JHTML::_('select.genericlist', $options, $tab . '[hub_id]', '', 'value', 'text', $selected, 'hub_id', false, false);
+		$hlist = JHTML::_('select.genericlist', $options, $tab . '[hub_id]', array('tabindex' => 4), 'value', 'text', $selected, 'hub_id', false, false);
 
 		return $hlist;
 	}
@@ -132,7 +132,7 @@ class TimeHtml
 			$options[] = JHTML::_('select.option', '', JText::_('COM_TIME_'.strtoupper($tab).'_NO_TASKS_AVAILABLE'), 'value', 'text');
 		}
 
-		$tlist = JHTML::_('select.genericlist', $options, $tab . '[task_id]', '', 'value', 'text', $selected, 'task', false, false);
+		$tlist = JHTML::_('select.genericlist', $options, $tab . '[task_id]', array('tabindex' => 5), 'value', 'text', $selected, 'task', false, false);
 
 		return $tlist;
 	}
@@ -177,7 +177,7 @@ class TimeHtml
 		$options[] = JHTML::_('select.option', 8, "8", 'value', 'text');
 
 		// @FIXME: generalize by removing "record[time]" and replacing with variable for active tab
-		$tlist = JHTML::_('select.genericlist', $options, 'records[htime]', array('class'=>'no-search'), 'value', 'text', $time, 'htime', false, false);
+		$tlist = JHTML::_('select.genericlist', $options, 'records[htime]', array('class'=>'no-search', 'tabindex' => 1), 'value', 'text', $time, 'htime', false, false);
 
 		return $tlist;
 	}
@@ -196,7 +196,7 @@ class TimeHtml
 		$options[] = JHTML::_('select.option', 75, ":45", 'value', 'text');
 
 		// @FIXME: generalize by removing "record[time]" and replacing with variable for active tab
-		$tlist = JHTML::_('select.genericlist', $options, 'records[mtime]', array('class'=>'no-search'), 'value', 'text', $time, 'mtime', false, false);
+		$tlist = JHTML::_('select.genericlist', $options, 'records[mtime]', array('class'=>'no-search', 'tabindex' => 2), 'value', 'text', $time, 'mtime', false, false);
 
 		return $tlist;
 	}
