@@ -85,7 +85,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 				<div class="grouping clearfix" id="date-group">
 					<label for="date"><?php echo JText::_('COM_TIME_RECORDS_DATE'); ?>:</label>
-					<input type="text" name="records[date]" id="datepicker" class="hadDatepicker" value="<?php echo htmlentities(stripslashes($this->row->date), ENT_QUOTES); ?>" size="10" />
+					<input type="text" name="records[date]" id="datepicker" class="hadDatepicker" value="<?php echo htmlentities(stripslashes($this->row->date), ENT_QUOTES); ?>" size="10" /tabIndex="3">
 				</div>
 
 				<div class="grouping" id="hub-group">
@@ -100,13 +100,13 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 				<div class="grouping" id="description-group">
 					<label for="description"><?php echo JText::_('COM_TIME_RECORDS_DESCRIPTION'); ?>:</label>
-					<textarea name="records[description]" id="description" rows="6" cols="50"><?php echo htmlentities(stripslashes($this->row->description), ENT_QUOTES); ?></textarea>
+					<textarea name="records[description]" id="description" rows="6" cols="50" tabIndex="6"><?php echo htmlentities(stripslashes($this->row->description), ENT_QUOTES); ?></textarea>
 				</div>
 
 				<input type="hidden" name="records[id]" value="<?php echo $this->row->id; ?>" />
 
 				<p class="submit">
-					<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_TIME_RECORDS_SUBMIT'); ?>" />
+					<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_TIME_RECORDS_SUBMIT'); ?>" tabIndex="7" />
 					<a href="<?php echo JRoute::_($base . $this->start); ?>">
 						<button type="button" class="btn btn-secondary">
 							<?php echo JText::_('COM_TIME_RECORDS_CANCEL'); ?>

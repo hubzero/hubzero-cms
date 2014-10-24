@@ -45,9 +45,22 @@
 				id: idNumber,
 				settings: settings
 			});
+
+			// get readonly prop
+			var cls = $this.attr('readonly');
+
+			// get the elements tab index & set it to the negative version
+			// so we can append it to the 
+			var tabIndex = $this.attr('tabIndex');
+			var tabIndexAttributeText = '';
+			if (tabIndex)
+			{
+				$this.attr('tabIndex', -tabIndex);
+				tabIndexAttributeText = 'tabIndex="'+ tabIndex +'"';
+			}
 			
 			// create dropdown
-			dropdown = $('<div class="fs-dropdown" id="fs-dropdown-' + $this.data('fancyselect').id + '"></div>')
+			dropdown = $('<div ' + tabIndexAttributeText + ' class="fs-dropdown ' + cls + '" id="fs-dropdown-' + $this.data('fancyselect').id + '"></div>')
 				.append($('<ul></ul>')
 					.append($('<li class="fs-dropdown-selected"></li>')
 						.append($('<a href="" class="fs-dropdown-selected-item"><span>&nbsp;</span></a>'))
@@ -210,7 +223,8 @@
 	
 	function addEventHooks( object )
 	{
-		var data = $(object).data('fancyselect'),
+		var keyValueEntered = '',
+			data = $(object).data('fancyselect'),
 			dropdown = $('#fs-dropdown-' + data.id);
 		
 		//open/close dropdown
@@ -238,7 +252,7 @@
 					img = selected.attr('data-img');
 			
 				$(this).parents('.fs-dropdown-options').find('li').removeClass('fs-dropdown-option-selected');
-				$(this).parent('li').addClass('fs-dropdown-option-selected');
+				$(this).parent('li').addClass('fs-dropdown-option-selected fs-dropdown-option-highlighted');
 			
 				//set the text of selected item
 				dropdown.find('.fs-dropdown-selected-item span').text(text);
@@ -270,29 +284,83 @@
 				methods.filterOptions.call(object, searchTerm);
 			})
 			.on('keydown', function(event) {
-				
+
+				var key = event.keyCode;
+
 				// only do the following if we have an open fancy select
 				if ($('.fs-dropdown-open').length)
 				{
-					var key     = event.keyCode,
-						focused = $('.fs-dropdown-open').find('a:focus').parent('li.fs-dropdown-option');
-					
-					// stop browser default for up & down
+					var focused = $('.fs-dropdown-open li').find('.fs-dropdown-option-highlighted');
+
+					// focus the next or prev entry
 					if (key == 38 || key == 40)
 					{
 						event.preventDefault();
+						$('.fs-dropdown-open li').removeClass('fs-dropdown-option-highlighted');
+
+						if (key == 38)
+						{
+							var prev = focused.prev('li');
+							if (!prev.length)
+							{
+								prev = $('.fs-dropdown-open .fs-dropdown-options li').first();
+							}
+							prev.addClass('fs-dropdown-option-highlighted');
+						}
+						else
+						{
+							var next = focused.next('li');
+							if (!next.length)
+							{
+								next = $('.fs-dropdown-open li').last();
+							}
+							next.addClass('fs-dropdown-option-highlighted');
+						}	
 					}
-					
-					// focus the next or prev entry
-					if (key == 38)
+					else if (key == 13)
 					{
-						focused.prev('li').find('a').focus();
-					}
-					else if (key == 40)
-					{
-						focused.next('li').find('a').focus();
+						event.preventDefault();
+
+						var highlightedOption = $('.fs-dropdown-open').find('li.fs-dropdown-option-highlighted');
+						if (highlightedOption.length)
+						{
+							// select selected option
+							var highlightedOptionValue = highlightedOption.find('a').attr('data-value');
+							methods.selectValue.call(object, highlightedOptionValue, true);
+						}
 					}
 				}
+
+				// if not open
+				// listen for down arrow key
+				else if (key == 40)
+				{	
+					openDowndown( object );
+				}
+
+				// otherwise find first match
+				else
+				{
+					var options = $(this).find('.fs-dropdown-options li');
+					keyValueEntered += String.fromCharCode(event.keyCode);
+					options.each(function(index) {
+						var text = $(this).find('a span').text();
+						if (keyValueEntered == text)
+						{
+							// select selected option
+							methods.selectValue.call(object, keyValueEntered, true);
+						}
+					});
+
+					// reset the value after 2 seconds
+					setTimeout(function() {
+						keyValueEntered = '';
+					}, 2000);
+				}
+			})
+			
+			.on('blur', function(event) {
+				closeDropdown( object );
 			});
 		
 		//click to close but make sure were not searching
@@ -325,7 +393,7 @@
 		});
 		
 		//focus on selected option
-		dropdown.find('.fs-dropdown-options li.fs-dropdown-option-selected a').focus();
+		//dropdown.find('.fs-dropdown-options li.fs-dropdown-option-selected a').focus();
 	}
 	
 	function closeDropdown( object )

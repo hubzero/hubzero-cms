@@ -120,8 +120,9 @@ a.fs-dropdown-selected-item:after {
 	background: #555 !important;
 	color: #fff !important;
 }
-.fs-dropdown-options .fs-dropdown-option a:focus {
+.fs-dropdown-options .fs-dropdown-option-highlighted {
 	background: #efefef;
+	border: 1px solid #aaa;
 }
 
 .fs-dropdown-label {
