@@ -707,7 +707,8 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 				// build group & project names
 				$host        = explode('.', $_SERVER['HTTP_HOST']);
-				$groupName   = strtolower($host[0]);
+				$tld         = array_pop($host);
+				$groupName   = strtolower(end($host));
 				$projectName = $group->get('cn');
 
 				// get gitlab config
