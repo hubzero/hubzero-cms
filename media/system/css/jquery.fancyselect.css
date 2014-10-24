@@ -114,7 +114,8 @@ a.fs-dropdown-selected-item:after {
 .fs-dropdown-options .fs-dropdown-option:last-child a {
 	border-bottom: none;
 }
-.fs-dropdown-options .fs-dropdown-option a:hover {
+.fs-dropdown-options .fs-dropdown-option a:hover,
+.fs-dropdown-options .fs-dropdown-option-highlighted {
 	cursor: pointer;
 	background: #efefef;
 }
@@ -123,10 +124,6 @@ a.fs-dropdown-selected-item:after {
 .fs-dropdown-options .fs-dropdown-option-selected a:focus  {
 	background: #555 !important;
 	color: #fff !important;
-}
-.fs-dropdown-options .fs-dropdown-option-highlighted {
-	background: #efefef;
-	border: 1px solid #aaa;
 }
 
 .fs-dropdown-label {

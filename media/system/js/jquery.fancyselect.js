@@ -265,7 +265,7 @@
 					text = selected.attr('data-text'),
 					img = selected.attr('data-img');
 			
-				$(this).parents('.fs-dropdown-options').find('li').removeClass('fs-dropdown-option-selected');
+				$(this).parents('.fs-dropdown-options').find('li').removeClass('fs-dropdown-option-selected fs-dropdown-option-highlighted');
 				$(this).parent('li').addClass('fs-dropdown-option-selected fs-dropdown-option-highlighted');
 			
 				//set the text of selected item
@@ -343,6 +343,10 @@
 							methods.selectValue.call(object, highlightedOptionValue, true);
 						}
 					}
+					else if (key == 9)
+					{
+						closeDropdown( object );
+					}
 				}
 
 				// if not open
@@ -371,10 +375,6 @@
 						keyValueEntered = '';
 					}, 2000);
 				}
-			})
-			
-			.on('blur', function(event) {
-				closeDropdown( object );
 			});
 		
 		//click to close but make sure were not searching
