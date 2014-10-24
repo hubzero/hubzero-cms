@@ -410,13 +410,15 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		foreach ($attachments as $attach)
 		{
 			$fpath = $this->getFilePath($attach->path, $attach->id, $attConfigs, $attach->params);
-
+			$fpath = str_replace(JPATH_ROOT, '', $fpath);
+			
 			$thumbName = $this->_imgHelper->createThumbName(
 				basename($fpath),
 				$this->_config->params->thumbSuffix,
 				$this->_config->params->thumbFormat
 			);
 			$thumbPath = dirname($fpath) . DS . $thumbName;
+			$thumbPath = str_replace(JPATH_ROOT, '', $thumbPath);
 
 			$title 		= $attach->title ? $attach->title : $attConfigs->title;
 			$title 		= $title ? $title : basename($attach->path);
