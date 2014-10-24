@@ -206,6 +206,9 @@
 	background-position: 7px 9px;
 	width: 100%;
 	outline: none;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 .auth input[type="submit"] {
 	width: 100%;
