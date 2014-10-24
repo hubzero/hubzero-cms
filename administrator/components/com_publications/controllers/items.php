@@ -694,7 +694,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		);
 		return;
 	}
-	
+
 	/**
 	 * Save author order
 	 *
@@ -713,7 +713,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Set redirect URL
 		$url = 'index.php?option=' . $this->_option . '&controller='
 			. $this->_controller . '&task=edit' . '&id[]=' . $id . '&version=' . $version;
-			
+
 		if (!$neworder)
 		{
 			// Nothing to save
@@ -748,7 +748,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		// Save via block
 		$blocksModel = new PublicationsModelBlocks($this->database);
 		$block = $blocksModel->loadBlock('authors');
-		
+
 		$block->reorder(NULL, 0, $pub, $this->juser->get('id'));
 		if ($block->getError())
 		{
@@ -847,7 +847,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 		{
 			$block->addItem(NULL, 0, $pub, $this->juser->get('id'));
 		}
-		
+
 		if ($block->getError())
 		{
 			$this->setRedirect(
