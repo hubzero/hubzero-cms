@@ -411,7 +411,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		{
 			$fpath = $this->getFilePath($attach->path, $attach->id, $attConfigs, $attach->params);
 			$fpath = str_replace(JPATH_ROOT, '', $fpath);
-			
+
 			$thumbName = $this->_imgHelper->createThumbName(
 				basename($fpath),
 				$this->_config->params->thumbSuffix,
