@@ -62,7 +62,7 @@ if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
-		$data[$match[1]] = $htmlHelper->_txtUnpee($match[2]);
+		$data[$match[1]] = $match[2];
 	}
 }
 
@@ -72,7 +72,6 @@ if ($this->useBlocks)
 {
 	$customFields = $this->pub->_curationModel->getMetaSchema();
 }
-
 
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'elements.php');
 
@@ -200,7 +199,7 @@ function popratings()
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_METADATA'); ?></span></legend>
 			<div class="input-wrap">
-				<?php echo $fields; ?>
+				<?php echo $fields ? $fields : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_METADATA_FIELDS') . '</p>'; ?>
 			</div>
 		</fieldset>
 		<fieldset class="adminform">
