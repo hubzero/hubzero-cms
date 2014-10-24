@@ -2042,7 +2042,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 		if (!empty($log['changes']) || $comment)
 		{
 			$rowc->created    = JFactory::getDate()->toSql();
-			$rowc->created_by = $this->juser->get('username');
+			$rowc->created_by = $this->juser->get('id');
 			$rowc->changelog  = json_encode($log);
 			$rowc->access     = $access;
 			$xlog->debug(__FUNCTION__ . '() storing ticket');
