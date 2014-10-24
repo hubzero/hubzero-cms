@@ -68,6 +68,8 @@ class Excel implements Adapter
 	{
 		return in_array($mime, array(
 			'xls',
+			'xlsx',
+			'application/zip', // WTF?
 			'application/vnd.ms-excel',
 			'application/vnd.ms-excel.addin.macroEnabled.12',
 			'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
@@ -100,18 +102,8 @@ class Excel implements Adapter
 	{
 		// create iterator
 		$iterator = new Reader($import->getDataPath(), $this->key);
-		$iterator->rewind();
 
-		$headers = array();
-
-		$row = $iterator->current();
-		foreach ($row as $key => $val)
-		{
-			$headers[] = $key;
-		}
-
-		// return count
-		return $headers;
+		return $iterator->headers();
 	}
 
 	/**

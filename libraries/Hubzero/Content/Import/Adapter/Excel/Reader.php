@@ -32,28 +32,69 @@ namespace Hubzero\Content\Import\Adapter\Excel;
 use Iterator;
 use stdClass;
 
+if (file_exists(JPATH_LIBRARIES . DS . 'phpexcel' . DS . 'PHPExcel.php'))
+{
+	include_once(JPATH_LIBRARIES . DS . 'phpexcel' . DS . 'PHPExcel.php');
+}
+
 /**
  *  Excel Reader Iterator Class implemeting interator
  */
 class Reader implements Iterator
 {
+	/**
+	 * File path
+	 *
+	 * @var  string
+	 */
 	private $file;
 
+	/**
+	 * Number of rows
+	 *
+	 * @var  integer
+	 */
 	private $rows;
 
+	/**
+	 * Number of columns
+	 *
+	 * Excel uses alpha chars for column names, so this
+	 * will be the name od the last column. e.g., "F"
+	 *
+	 * @var  string
+	 */
 	private $cols;
 
+	/**
+	 * Current row position
+	 * Starts at 1 as row 0
+	 *
+	 * @var  array
+	 */
 	private $sheet;
 
+	/**
+	 * Current row position
+	 * Starts at 1 as row 0
+	 *
+	 * @var  array
+	 */
 	private $position;
 
+	/**
+	 * Container for column headers
+	 *
+	 * @var  array
+	 */
 	private $headers;
 
 	/**
-	 * XML Reader Iterator Constructor
+	 * Constructor
 	 *
-	 * @param string $file XML file we want to use
-	 * @param string $key  XML node we are looking to iterate over
+	 * @param   string  $file File we want to use
+	 * @param   string  $key  Not currently used
+	 * @return  void
 	 */
 	public function __construct($file, $key='')
 	{
@@ -68,19 +109,8 @@ class Reader implements Iterator
 
 			$this->sheet = $objPHPExcel->getSheet(0);
 
-			$this->rows = $sheet->getHighestRow();
-			$this->cols = $sheet->getHighestColumn();
-
-			/*$records = array();
-			for ($this->position <= $this->rows; ++$this->position)
-			{
-				$result = new stdClass;
-				for ($col = 0; $col <= $this->cols; ++$col)
-				{
-					$result->$column = $this->sheet->getCellByColumnAndRow($col, $this->position)->getValue();
-				}
-				$records[] = $result;
-			}*/
+			$this->rows = $this->sheet->getHighestRow();
+			$this->cols = $this->sheet->getHighestColumn();
 		}
 		catch (\Exception $e)
 		{
@@ -99,18 +129,20 @@ class Reader implements Iterator
 	}
 
 	/**
-	 * Get the current XML node
+	 * Get the list of headers
 	 *
-	 * @return  object  XML node as a stdClass
+	 * @return  array
 	 */
 	public function headers()
 	{
 		if (!$this->headers)
 		{
 			$this->headers = array();
-			for ($col = 0; $col <= $this->cols; ++$col)
+
+			// Excel documents have alphanumeric columns
+			for ($col = 'A'; $col <= $this->cols; $col++)
 			{
-				$this->headers[] = $this->sheet->getCellByColumnAndRow($col, 1)->getValue();
+				$this->headers[$col] = $this->sheet->getCell($col . '1')->getValue();
 			}
 		}
 
@@ -118,17 +150,27 @@ class Reader implements Iterator
 	}
 
 	/**
-	 * Get the current XML node
+	 * Get the current row
 	 *
-	 * @return object XML node as a stdClass
+	 * @return  object  Row node as a stdClass
 	 */
 	public function current()
 	{
-		$result = new stdClass;
-		for ($col = 0; $col <= $this->cols; ++$col)
+		// We don't want to count the headings row
+		if ($this->position == 1)
 		{
-			$column = $this->columns[$col];
-			$result->$column = $this->sheet->getCellByColumnAndRow($col, $this->position)->getValue();
+			return null;
+		}
+
+		$headers = $this->headers();
+
+		$result = new stdClass;
+
+		// Excel documents have alphanumeric columns
+		for ($col = 'A'; $col <= $this->cols; $col++)
+		{
+			$column = $headers[$col];
+			$result->$column = $this->sheet->getCell($col . $this->position)->getValue();
 		}
 
 		return $result;
@@ -137,7 +179,7 @@ class Reader implements Iterator
 	/**
 	 * Get our current position while iterating
 	 *
-	 * @return int Current position
+	 * @return  integer  Current position
 	 */
 	public function key()
 	{
@@ -147,7 +189,7 @@ class Reader implements Iterator
 	/**
 	 * Go to the next Node that matches our key
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function next()
 	{
@@ -156,17 +198,18 @@ class Reader implements Iterator
 
 	/**
 	 * Move to the first node that matches our key
-	 * @return void
+	 * 
+	 * @return  void
 	 */
 	public function rewind()
 	{
-		$this->position = 0;
+		$this->position = 1;
 	}
 
 	/**
 	 * Is our current node valid
 	 *
-	 * @return bool Is valid?
+	 * @return  boolean  Is valid?
 	 */
 	public function valid()
 	{

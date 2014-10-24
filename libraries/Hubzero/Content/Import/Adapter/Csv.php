@@ -109,14 +109,6 @@ class Csv implements Adapter
 		// create iterator
 		$iterator = new Reader($import->getDatapath(), $this->delimiter);
 
-		/*$headers = new stdClass;
-		$cols = $iterator->headers();
-		foreach ($cols as $col)
-		{
-			$headers->
-		}*/
-
-		// return count
 		return $iterator->headers();
 	}
 
