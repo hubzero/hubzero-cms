@@ -1498,7 +1498,7 @@ class Profile extends Object
 		foreach ($roles as $role)
 		{
 			$permissions = json_decode($role['permissions']);
-			$permissions = (is_object($permissions)) ? $permissions : new stdClass;
+			$permissions = (is_object($permissions)) ? $permissions : new \stdClass;
 			if (property_exists($permissions, $action) && $permissions->$action == 1)
 			{
 				return true;
