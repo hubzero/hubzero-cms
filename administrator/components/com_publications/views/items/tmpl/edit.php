@@ -62,7 +62,7 @@ if (count($matches) > 0)
 {
 	foreach ($matches as $match)
 	{
-		$data[$match[1]] = $htmlHelper->_txtUnpee($match[2]);
+		$data[$match[1]] = $match[2];
 	}
 }
 

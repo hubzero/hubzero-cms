@@ -50,10 +50,18 @@ class PublicationsElementEditor extends PublicationsElement
 	{
 		$rows = isset($element->rows) ? $element->rows : 6;
 		$cols = isset($element->cols) ? $element->cols : 50;
-		$class = isset($element->class) ? 'class="'.$element->class.'"' : 'class="text_area"';
-		// convert <br /> tags so they are not visible when editing
-		$value = str_replace('<br />', "\n", $value);
+		$editorMacros 	= isset($element->editorMacros)
+						? $element->editorMacros : 0;
+		$editorMinimal 	= isset($element->editorMinimal)
+						? $element->editorMinimal : 1;
+		$editorImages 	= isset($element->editorImages)
+						? $element->editorImages : 0;
 
-		return '<span class="field-wrap">' . JFactory::getEditor()->display($control_name.'['.$name.']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => 'minimal no-footer')) . '</span>';
+		$classes  = $editorMinimal == 1 ? 'minimal ' : '';
+		$classes .= ' no-footer ';
+		$classes .= $editorImages == 1 ? 'images ' : '';
+		$classes .= $editorMacros == 1 ? 'macros ' : '';
+
+		return '<span class="field-wrap">' . JFactory::getEditor()->display($control_name.'['.$name.']', $value, '', '', $cols, $rows, false, $control_name.'-'.$name, null, null, array('class' => $classes)) . '</span>';
 	}
 }
