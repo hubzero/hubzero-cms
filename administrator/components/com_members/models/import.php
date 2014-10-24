@@ -134,6 +134,15 @@ class Import extends \Hubzero\Content\Import\Model\Import
 		'bio'        => 'bio',
 		'biography'  => 'bio',
 		'about'      => 'bio',
+		// Race
+		'race'       => 'race',
+		'racial'     => 'race',
+		'ethnicity'  => 'race',
+		'ethnic'     => 'race',
+		// Disability
+		'disability' => 'disability',
+		'disabled'   => 'disability',
+		'handicap'   => 'disability',
 	);
 
 	/**

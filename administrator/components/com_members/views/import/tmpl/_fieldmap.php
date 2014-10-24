@@ -62,23 +62,24 @@ if ($this->import->exists()) { ?>
 							<option value="givenName" <?php if ($mapping['field'] == 'givenName') { echo 'selected="selected"'; } ?>>givenName</option>
 							<option value="middleName" <?php if ($mapping['field'] == 'middleName') { echo 'selected="selected"'; } ?>>middleName</option>
 							<option value="surname" <?php if ($mapping['field'] == 'surname') { echo 'selected="selected"'; } ?>>surname</option>
-							<option value="email" <?php if ($mapping['field'] == 'email') { echo 'selected="selected"'; } ?>>email</option>
-							<option value="organization" <?php if ($mapping['field'] == 'organization') { echo 'selected="selected"'; } ?>>organization</option>
-							<option value="orgtype" <?php if ($mapping['field'] == 'orgtype') { echo 'selected="selected"'; } ?>>orgtype</option>
+							<option value="bio" <?php if ($mapping['field'] == 'bio') { echo 'selected="selected"'; } ?>>bio</option>
 							<option value="countryresident" <?php if ($mapping['field'] == 'countryresident') { echo 'selected="selected"'; } ?>>countryresident</option>
 							<option value="countryorigin" <?php if ($mapping['field'] == 'countryorigin') { echo 'selected="selected"'; } ?>>countryorigin</option>
+							<option value="disability" <?php if ($mapping['field'] == 'disability') { echo 'selected="selected"'; } ?>>disability</option>
+							<option value="email" <?php if ($mapping['field'] == 'email') { echo 'selected="selected"'; } ?>>email</option>
+							<option value="emailConfirmed" <?php if ($mapping['field'] == 'emailConfirmed') { echo 'selected="selected"'; } ?>>emailConfirmed</option>
 							<option value="gender" <?php if ($mapping['field'] == 'gender') { echo 'selected="selected"'; } ?>>gender</option>
-							<option value="url" <?php if ($mapping['field'] == 'url') { echo 'selected="selected"'; } ?>>url</option>
-							<option value="bio" <?php if ($mapping['field'] == 'bio') { echo 'selected="selected"'; } ?>>bio</option>
-							<option value="public" <?php if ($mapping['field'] == 'public') { echo 'selected="selected"'; } ?>>public</option>
 							<option value="mailPreferenceOption" <?php if ($mapping['field'] == 'mailPreferenceOption') { echo 'selected="selected"'; } ?>>mailPreferenceOption</option>
 							<option value="usageAgreement" <?php if ($mapping['field'] == 'usageAgreement') { echo 'selected="selected"'; } ?>>usageAgreement</option>
-							<option value="emailConfirmed" <?php if ($mapping['field'] == 'emailConfirmed') { echo 'selected="selected"'; } ?>>emailConfirmed</option>
-							<option value="phone" <?php if ($mapping['field'] == 'phone') { echo 'selected="selected"'; } ?>>phone</option>
 							<option value="nativeTribe" <?php if ($mapping['field'] == 'nativeTribe') { echo 'selected="selected"'; } ?>>nativeTribe</option>
 							<option value="note" <?php if ($mapping['field'] == 'note') { echo 'selected="selected"'; } ?>>note</option>
-							<option value="locked" <?php if ($mapping['field'] == 'locked') { echo 'selected="selected"'; } ?>>locked</option>
 							<option value="orcid" <?php if ($mapping['field'] == 'orcid') { echo 'selected="selected"'; } ?>>orcid</option>
+							<option value="organization" <?php if ($mapping['field'] == 'organization') { echo 'selected="selected"'; } ?>>organization</option>
+							<option value="orgtype" <?php if ($mapping['field'] == 'orgtype') { echo 'selected="selected"'; } ?>>orgtype</option>
+							<option value="phone" <?php if ($mapping['field'] == 'phone') { echo 'selected="selected"'; } ?>>phone</option>
+							<option value="public" <?php if ($mapping['field'] == 'public') { echo 'selected="selected"'; } ?>>public</option>
+							<option value="race" <?php if ($mapping['field'] == 'race') { echo 'selected="selected"'; } ?>>race</option>
+							<option value="url" <?php if ($mapping['field'] == 'url') { echo 'selected="selected"'; } ?>>url</option>
 						</select>
 					</td>
 				</tr>
