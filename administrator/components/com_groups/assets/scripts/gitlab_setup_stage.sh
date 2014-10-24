@@ -23,3 +23,6 @@ git remote add origin $3
 
 # pull in latest code
 git pull --rebase origin master
+
+# set tracking branch
+git branch --set-upstream master origin/master
