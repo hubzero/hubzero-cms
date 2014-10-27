@@ -83,28 +83,30 @@ class cli
 	/**
 	 * Get repository log
 	 *
-	 * @param  (int)    - number of messages to include in log
-	 * @param  (int)    - commit number to start at
-	 * @param  (string) - search query
-	 * @param  (bool)   - include upcoming commits
-	 * @param  (bool)   - include installed commits
-	 * @param  (bool)   - return count of entries
-	 * @return (string) - mechanism log
+	 * @param  int    $length the number of messages to include in log
+	 * @param  int    $start the commit number to start at
+	 * @param  string $search the search query
+	 * @param  bool   $upcoming whether or not to include upcoming commits
+	 * @param  bool   $installed whether or not to include installed commits
+	 * @param  bool   $count whether to return count of entries
+	 * @param  string $source the repo source to get logs from
+	 * @return string
 	 **/
-	public static function log($length=null, $start=null, $search=null, $upcoming=false, $installed=true, $count=false)
+	public static function log($length=null, $start=null, $search=null, $upcoming=false, $installed=true, $count=false, $source=null)
 	{
 		$args = array();
+
 		if (isset($length))
 		{
-			$args[] = '--length='.$length;
+			$args[] = '--length=' . $length;
 		}
 		if (isset($start))
 		{
-			$args[] = '--start='.$start;
+			$args[] = '--start=' . $start;
 		}
 		if (isset($search))
 		{
-			$args[] = '--search="'.$search.'"';
+			$args[] = '--search="' . $search . '"';
 		}
 		if (isset($upcoming) && $upcoming)
 		{
@@ -118,6 +120,10 @@ class cli
 		{
 			$args[] = '--count';
 		}
+		if (isset($source))
+		{
+			$args[] = '--source=' . $source;
+		}
 
 		return self::call('log', 'repository', $args);
 	}
@@ -127,11 +133,12 @@ class cli
 	 *
 	 * In dry run mode, only list changes that would come in
 	 *
-	 * @param  (bool)   - dry run
-	 * @param  (bool)   = allow non fast forward pulls
-	 * @return (string) - upcoming changes
+	 * @param  bool   $dryRun whether or not to do a dry run
+	 * @param  bool   $allowNonFf whether or not to allow non fast forward pulls
+	 * @param  string $source the repo source to update from
+	 * @return string
 	 **/
-	public static function update($dryRun=true, $allowNonFf=false)
+	public static function update($dryRun=true, $allowNonFf=false, $source=null)
 	{
 		$args = array();
 		if (!$dryRun)
@@ -142,6 +149,11 @@ class cli
 		if ($allowNonFf)
 		{
 			$args[] = '--allow-non-ff';
+		}
+
+		if (isset($source))
+		{
+			$args[] = '--source=' . $source;
 		}
 
 		return self::call('update', 'repository', $args);
