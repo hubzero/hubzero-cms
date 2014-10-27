@@ -151,7 +151,7 @@ class Git
 			foreach ($lines as $line)
 			{
 				$line  = trim($line);
-				preg_match('/([A|D|M|?]{1,2})[ ]{1,2}([[:alnum:]_\.\/]*)/', $line, $parts);
+				preg_match('/([A|D|M|?]{1,2})[ ]{1,2}([[:alnum:]_\-\.\/]*)/', $line, $parts);
 
 				if (strlen($parts[1]) == 2 && $parts[1] != '??')
 				{
