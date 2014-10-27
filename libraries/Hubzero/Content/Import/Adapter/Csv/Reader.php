@@ -53,7 +53,13 @@ class Reader implements Iterator
 	 */
 	public function __construct($file, $delimiter)
 	{
+		// Line endings can vary depending on what App/OS outputted the CSV
+		ini_set('auto_detect_line_endings', true);
+
 		$this->file      = fopen($file, 'r');
+
+		ini_set('auto_detect_line_endings', false);
+
 		$this->delimiter = $delimiter;
 	}
 
@@ -69,6 +75,7 @@ class Reader implements Iterator
 			$this->rewind();
 
 			$row = fgetcsv($this->file, self::ROW_LENGTH, $this->delimiter);
+
 			$this->position++;
 
 			// store headers for later
