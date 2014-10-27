@@ -58,14 +58,14 @@ if ($this->getError()) {
 				<?php } ?>
 			</fieldset>
 			<div class="content-edit">
-				<p><span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ITEM')); ?>:</span>
-					<?php echo '<span class="prominent">' . $name. '</span>' . $inDir;  ?>
-				</p>
 				<label for="title">
-					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_DESCRIPTION')); ?>:</span>
-					<input type="text" name="title" maxlength="100" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : ''; ?>"  />
-					<span class="optional"><?php echo JText::_('OPTIONAL'); ?></span>
+					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
+					<input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->row && $this->row->title ? $this->row->title : ''; ?>"  />
 				</label>
+				<p class="c-wrapper">
+					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_ITEM')); ?>:</span>
+					<span class="content-filepath"><?php echo '<span class="prominent">' . $name. '</span>' . $inDir; ?></span>
+				</p>
 				<p class="submitarea">
 					<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
 					<?php if($this->ajax) { ?>
