@@ -122,7 +122,7 @@ class cli
 		}
 		if (isset($source))
 		{
-			$args[] = '--source=' . $source;
+			$args[] = '--source=' . escapeshellarg($source);
 		}
 
 		return self::call('log', 'repository', $args);
@@ -153,7 +153,7 @@ class cli
 
 		if (isset($source))
 		{
-			$args[] = '--source=' . $source;
+			$args[] = '--source=' . escapeshellarg($source);
 		}
 
 		return self::call('update', 'repository', $args);
