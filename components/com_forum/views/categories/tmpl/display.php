@@ -170,11 +170,11 @@ $this->category->set('section_alias', $this->filters['section']);
 													$lastpost = $row->lastActivity();
 													if ($lastpost->exists())
 													{
-															$lname = JText::_('COM_FORUM_ANONYMOUS');
-															if (!$lastpost->get('anonymous'))
-															{
-																$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastpost->creator('id')) . '">' . $this->escape(stripslashes($lastpost->creator('name'))) . '</a>';
-															}
+														$lname = JText::_('COM_FORUM_ANONYMOUS');
+														if (!$lastpost->get('anonymous'))
+														{
+															$lname = ($lastpost->creator('public') ? '<a href="' . JRoute::_($lastpost->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($lastpost->creator('name'))) . ($lastpost->creator('public') ? '</a>' : '');
+														}
 														?>
 														<span class="entry-date">
 															<time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>

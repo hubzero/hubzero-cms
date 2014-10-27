@@ -98,7 +98,7 @@ if (!$no_html)
 			?>
 
 			<?php if ($this->tab == 'profile') : ?>
-				<a id="profile-privacy" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber')); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+				<a id="profile-privacy" href="<?php echo JRoute::_($this->profile->getLink()); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
 					<?php echo $title; ?>
 				</a>
 			<?php else: ?>
@@ -108,7 +108,7 @@ if (!$no_html)
 			<?php endif; ?>
 		<?php endif; ?>
 		<h2>
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber')); ?>">
+			<a href="<?php echo JRoute::_($this->profile->getLink()); ?>">
 				<?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>
 			</a>
 		</h2>
@@ -122,7 +122,7 @@ if (!$no_html)
 		<div id="page_sidebar">
 			<?php
 				$src = \Hubzero\User\Profile\Helper::getMemberPhoto($this->profile, 0, false);
-				$link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber'));
+				$link = JRoute::_($this->profile->getLink());
 			?>
 			<div id="page_identity">
 				<?php $title = ($this->profile->get('uidNumber') == $juser->get("id")) ? "Go to my Dashboard" : "Go to " . $this->profile->get('name') . "'s Profile"; ?>
@@ -148,7 +148,7 @@ if (!$no_html)
 							continue;
 						}
 						$name = $c[$key];
-						$url = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber') . '&active=' . $key);
+						$url = JRoute::_($this->profile->getLink() . '&active=' . $key);
 						$cls = ($this->tab == $key) ? 'active' : '';
 						$tab_name = ($this->tab == $key) ? $name : $tab_name;
 
@@ -199,14 +199,14 @@ if (!$no_html)
 			<ul id="page_options">
 				<?php if ($edit) : ?>
 					<li>
-						<a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&task=edit'); ?>">
+						<a class="edit tooltips" id="edit-profile" title="Edit Profile :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo JRoute::_($this->profile->getLink() . '&task=edit'); ?>">
 							<?php echo JText::_('Edit profile'); ?>
 						</a>
 					</li>
 				<?php endif; ?>
 				<?php if ($password) : ?>
 					<li>
-						<a class="password tooltips" id="change-password" title="Change Password :: Change your password" href="<?php echo JRoute::_('index.php?option=com_members&task=changepassword&id=' . $this->profile->get('uidNumber')); ?>">
+						<a class="password tooltips" id="change-password" title="Change Password :: Change your password" href="<?php echo JRoute::_($this->profile->getLink() . '&task=changepassword'); ?>">
 							<?php echo JText::_('Change Password'); ?>
 						</a>
 					</li>

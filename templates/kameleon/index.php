@@ -99,21 +99,21 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 								<ul class="menu <?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 									<li>
 										<div id="account-info">
-											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" width="30" height="30" />
-											<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
-												<?php echo stripslashes($juser->get('name')); ?> 
-												<span class="account-email"><?php echo $juser->get('email'); ?></span>
+											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $profile->get('name'); ?>" width="30" height="30" />
+											<a class="account-details" href="<?php echo JRoute::_($profile->getLink()); ?>">
+												<?php echo stripslashes($profile->get('name')); ?> 
+												<span class="account-email"><?php echo $profile->get('email'); ?></span>
 											</a>
 										</div>
 										<ul>
 											<li id="account-dashboard">
-												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=dashboard'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_DASHBOARD'); ?></span></a>
+												<a href="<?php echo JRoute::_($profile->getLink() . '&active=dashboard'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_DASHBOARD'); ?></span></a>
 											</li>
 											<li id="account-profile">
-												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_PROFILE'); ?></span></a>
+												<a href="<?php echo JRoute::_($profile->getLink() . '&active=profile'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_PROFILE'); ?></span></a>
 											</li>
 											<li id="account-messages">
-												<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=messages'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_MESSAGES'); ?></span></a>
+												<a href="<?php echo JRoute::_($profile->getLink() . '&active=messages'); ?>"><span><?php echo JText::_('TPL_KAMELEON_ACCOUNT_MESSAGES'); ?></span></a>
 											</li>
 											<li id="account-logout">
 												<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('TPL_KAMELEON_LOGOUT'); ?></span></a>

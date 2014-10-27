@@ -88,7 +88,7 @@ $juser = JFactory::getUser();
 									$name = JText::_('COM_FORUM_ANONYMOUS');
 									if (!$row->get('anonymous'))
 									{
-										$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
+										$name = ($row->creator('public') ? '<a href="' . JRoute::_($row->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($row->creator('name'))) . ($row->creator('public') ? '</a>' : '');
 									}
 									$cls = array();
 									if ($row->get('closed'))
