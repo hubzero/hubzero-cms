@@ -1621,4 +1621,36 @@ class Profile extends Object
 	{
 		return ProfileHelper::getMemberPhoto($this, $anonymous, $thumbit);
 	}
+
+	/**
+	 * Generate and return various links to the entry
+	 * Link will vary depending upon action desired such as edit, delete, etc.
+	 *
+	 * @param   string  $type  The type of link to return
+	 * @return  string
+	 */
+	public function getLink($type='')
+	{
+		if (!$id = $this->get('uidNumber'))
+		{
+			return '';
+		}
+
+		$link = 'index.php?option=com_members&id=' . $id;
+
+		// If it doesn't exist or isn't published
+		$type = strtolower($type);
+		switch ($type)
+		{
+			case 'edit':
+			case 'changepassword':
+				$link .= '&task=' . $type;
+			break;
+
+			default:
+			break;
+		}
+
+		return $link;
+	}
 }
