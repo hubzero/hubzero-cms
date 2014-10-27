@@ -39,16 +39,26 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Help class for rendering utility-wide help documentation
  **/
-class Configure extends Base implements CommandInterface
+class Configuration extends Base implements CommandInterface
 {
 	/**
 	 * Default (required) command
+	 *
+	 * @return void
+	 **/
+	public function execute()
+	{
+		$this->set();
+	}
+
+	/**
+	 * Sets a configuration option
 	 *
 	 * Sets/updates config vars, creating .muse config file as needed
 	 *
 	 * @return void
 	 **/
-	public function execute()
+	public function set()
 	{
 		$options = $this->arguments->getOpts();
 

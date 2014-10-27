@@ -488,7 +488,7 @@ class Repository extends Base implements CommandInterface
 				     ->addSpacer()
 				     ->addLine('You must specify your standards directory first via:')
 				     ->addLine(
-						'muse configure --repository_standards_dir=/path/to/standards',
+						'muse configuration set --repository_standards_dir=/path/to/standards',
 						array(
 							'indentation' => '2',
 							'color'       => 'blue'
