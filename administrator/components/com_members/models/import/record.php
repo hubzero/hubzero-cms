@@ -145,7 +145,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
 					array_push($this->record->errors, $invalid);
 				}
 			}
-			//array_push($this->record->errors, $this->record->entry->getError());
 		}
 
 		return $this;
@@ -190,36 +189,6 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	 */
 	private function _mapEntryData()
 	{
-		// do we want to do a title match?
-		/*if ($this->_options['namematch'] == 1 && isset($this->record->type->id))
-		{
-			$sql = 'SELECT id, name, LEVENSHTEIN(name, ' . $this->_database->quote($this->raw->name) . ' ) as nameDiff
-			        FROM `#__users`
-			        HAVING nameDiff < ' . self::TITLE_MATCH;
-			$this->_database->setQuery($sql);
-			$results = $this->_database->loadObjectList('id');
-
-			// did we get more then one result?
-			if (count($results) > 1)
-			{
-				$ids = implode(", ", array_keys($results));
-				throw new Exception(JText::sprintf('Unable to determine which member to overwrite. The following membera have similar names: %s', $ids));
-			}
-
-			// if we only have one were all good
-			if (count($results) == 1)
-			{
-				// set our id to the matched resource
-				$entry = reset($results);
-				$this->raw->id = $entry->id;
-
-				// add a notice with link to resource matched
-				$resourceLink = rtrim(str_replace('administrator', '', JURI::base()), DS) . DS . 'members' . DS . $entry->id;
-				$link = '<a target="_blank" href="' . $resourceLink . '">' . $resourceLink . '</a>';
-				array_push($this->record->notices, JText::sprintf('COM_MEMBERS_IMPORT_RECORD_MODEL_MATCHEDBYNAME', $link));
-			}
-		}*/
-
 		// Do we have an ID?
 		// Either passed in the raw data or gotten from the title match
 		if (isset($this->raw->uidNumber) && $this->raw->uidNumber > 1)
@@ -236,25 +205,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->raw->registerDate = JFactory::getDate()->toSql();
 		}
 
-		// set modified date/user
+		// Set modified date/user
 		$this->raw->modifiedDate = JFactory::getDate()->toSql();
-
-		/*if (isset($this->_options['emailConfirmed']))
-		{
-			$this->raw->emailConfirmed = (int) $this->_options['emailConfirmed'];
-		}
-
-		if (isset($this->_options['public']))
-		{
-			$this->raw->public = (int) $this->_options['public'];
-		}
-
-		if (isset($this->_options['mailPreferenceOption']))
-		{
-			$this->raw->mailPreferenceOption = (int) $this->_options['mailPreferenceOption'];
-		}*/
-
-		/*$this->record->entry->bind($this->raw);*/
 
 		foreach (get_object_vars($this->raw) as $key => $val)
 		{
@@ -267,30 +219,17 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->record->entry->set($key, $val);
 		}
 
-		if (isset($this->raw->disability))
+		// Set multi-value fields
+		//
+		// This will split a string based on delimiter(s) and turn the 
+		// values into an array.
+		foreach (array('disability', 'race', 'hispanic') as $key)
 		{
-			$disability = $this->raw->disability;
-
-			if (is_string($disability))
+			if (isset($this->raw->$key))
 			{
-				$disability = array_map('trim', preg_split("/(,|;)/", $disability));
-				$disability = array_values(array_filter($disability));
+				$this->record->$key = $this->_multiValueField($this->raw->$key);
+				$this->record->entry->set($key, $this->record->$key);
 			}
-
-			$this->record->entry->set('disability', $disability);
-		}
-
-		if (isset($this->raw->race))
-		{
-			$race = $this->raw->race;
-
-			if (is_string($race))
-			{
-				$race = array_map('trim', preg_split("/(,|;)/", $race));
-				$race = array_values(array_filter($race));
-			}
-
-			$this->record->entry->set('race', $race);
 		}
 
 		// If we have a name but no individual parts...
@@ -337,15 +276,41 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	}
 
 	/**
+	 * Split a string into multiple values based on delimiter(s)
+	 *
+	 * @param   mixed   $data   String or array of field values
+	 * @param   string  $delim  List of delimiters, separated by a pipe "|"
+	 * @return  array
+	 */
+	private function _multiValueField($data, $delim=',|;')
+	{
+		if (is_string($data))
+		{
+			$data = array_map('trim', preg_split("/($delim)/", $data));
+			$data = array_values(array_filter($data));
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Save profile
 	 *
 	 * @return  void
 	 */
 	private function _saveEntryData()
 	{
+		$isNew = (!$this->_profile->get('uidNumber'));
+
 		if (!$this->_profile->store())
 		{
 			throw new Exception(JText::_('Unable to save the entry data.'));
+		}
+
+		if ($isNew && !$this->raw->password)
+		{
+			//\Hubzero\User\Helper::random_password();
+			$this->raw->password = $this->_profile->get('username');
 		}
 
 		if ($password = $this->raw->password)
@@ -361,17 +326,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	 */
 	private function _mapTagsData()
 	{
-		if (isset($this->raw->tags))
+		if (isset($this->raw->interests))
 		{
-			$tags = $this->raw->tags;
-
-			if (is_string($tags))
-			{
-				$tags = array_map('trim', preg_split("/(,|;)/", $tags));
-				$tags = array_values(array_filter($tags));
-			}
-
-			$this->record->tags = $tags;
+			$this->record->tags = $this->_multiValueField($this->raw->interests);
 		}
 	}
 

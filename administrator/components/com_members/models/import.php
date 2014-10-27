@@ -156,6 +156,17 @@ class Import extends \Hubzero\Content\Import\Model\Import
 			'ethnicity',
 			'ethnic',
 		),
+		'hispanic' => array(
+			'hispanic',
+			'latin',
+			'latino',
+		),
+		'nativeTribe' => array(
+			'nativetribe',
+			'tribe',
+			'nativeamericantribe',
+			'indiantribe',
+		),
 		'disability' => array(
 			'disability',
 			'disabled',
@@ -207,6 +218,45 @@ class Import extends \Hubzero\Content\Import\Model\Import
 			'passwd',
 			'passwrd',
 			'memberpassword',
+		),
+		'countryresident' => array(
+			'countryresident',
+			'resident',
+			'residence',
+			'residency',
+			'country',
+		),
+		'countryorigin' => array(
+			'countryorigin',
+			'origin',
+			'birthplace',
+			'birthcountry',
+			'citizenship',
+			'citizen',
+		),
+		'mailPreferenceOption' => array(
+			'mailpreferenceoption',
+			'mailpreference',
+			'recievemail',
+			'recieveemail',
+			'getmail',
+			'getemail',
+			'mailupdates',
+			'emailupdates',
+		),
+		'emailConfirmed' => array(
+			'emailconfirmed',
+			'confirmedemail',
+			'validemail',
+			'emailconfirm',
+		),
+		'reason' => array(
+			'reason',
+			'reasonforaccount',
+			'reasonforjoining',
+			'reasonformembership',
+			'whyjoin',
+			'whybecomeamember',
 		),
 	);
 

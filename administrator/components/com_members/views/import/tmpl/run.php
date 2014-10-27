@@ -135,7 +135,7 @@ function submitbutton(pressbutton)
 						<table>
 							<tr>
 								<td>
-									{{#each record.disability}}
+									{{#each record.entry.disability}}
 										{{{ this }}}<br />
 									{{else}}
 										<span class="hint"><?php echo JText::_('COM_MEMBERS_NONE'); ?></span>
@@ -150,7 +150,7 @@ function submitbutton(pressbutton)
 						<table>
 							<tr>
 								<td>
-									{{#each record.race}}
+									{{#each record.entry.race}}
 										{{{ this }}}<br />
 									{{else}}
 										<span class="hint"><?php echo JText::_('COM_MEMBERS_NONE'); ?></span>
