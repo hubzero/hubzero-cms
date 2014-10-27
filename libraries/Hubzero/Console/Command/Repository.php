@@ -78,7 +78,11 @@ class Repository extends Base implements CommandInterface
 		// Try to figure out the mechanism
 		if (is_dir($directory . DS . '.git'))
 		{
-			$this->mechanism = new Git($directory);
+			// Set update source
+			$source = Config::get('repository_source_name', null);
+			$source = $this->arguments->getOpt('source', $source);
+
+			$this->mechanism = new Git($directory, $source);
 		}
 		else
 		{
