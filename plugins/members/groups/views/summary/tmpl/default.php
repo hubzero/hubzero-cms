@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = 'index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=groups';
+$base = $this->member->getLink() . '&active=groups';
 
 $this->css();
 ?>

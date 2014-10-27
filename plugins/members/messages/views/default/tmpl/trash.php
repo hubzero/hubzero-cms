@@ -35,7 +35,7 @@ $database = JFactory::getDBO();
 $this->css()
      ->js();
 ?>
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=trash'); ?>" method="post">
+<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages&task=trash'); ?>" method="post">
 
 	<div id="filters">
 		<input type="hidden" name="inaction" value="trash" />
@@ -101,7 +101,7 @@ $this->css()
 						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
 
 						//url to view message
-						$url = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&msg='.$row->id);
+						$url = JRoute::_($this->member->getLink() . '&active=messages&msg=' . $row->id);
 
 						//get the message subject
 						$subject = $row->subject;
@@ -125,10 +125,13 @@ $this->css()
 						$subject .= "</a>";
 
 						//get who the message is from
-						if (substr($row->type, -8) == '_message') {
+						if (substr($row->type, -8) == '_message')
+						{
 							$u = JUser::getInstance($row->created_by);
 							$from = "<a href=\"" . JRoute::_('index.php?option='.$this->option.'&id='.$u->get('id')) . "\">" . $u->get("name") . "</a>";
-						} else {
+						}
+						else
+						{
 							$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $component);
 						}
 

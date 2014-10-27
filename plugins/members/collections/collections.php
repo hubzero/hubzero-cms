@@ -665,7 +665,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (JRequest::getInt('no_html', 0))
 		{
 			$response = new stdClass;
-			$response->href = JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=collections' . $sfx);
+			$response->href = JRoute::_($this->member->getLink() . '&active=collections' . $sfx);
 			$response->success = true;
 			if ($this->getError())
 			{
@@ -732,7 +732,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		if (JRequest::getInt('no_html', 0))
 		{
 			$response = new stdClass;
-			$response->href = JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=collections' . $sfx);
+			$response->href = JRoute::_($this->member->getLink() . '&active=collections' . $sfx);
 			$response->success = true;
 			if ($this->getError())
 			{
@@ -1000,7 +1000,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		{
 			$app = JFactory::getApplication();
 			$app->enqueueMessage(JText::_('You are not authorized to perform this action.'), 'error');
-			$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
+			$app->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name));
 			return;
 		}
 
@@ -1169,7 +1169,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $this->model->collection($p['collection_id'])->get('alias')));
+		$app->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=' . $this->model->collection($p['collection_id'])->get('alias')));
 	}
 
 	/**
@@ -1326,7 +1326,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$type = 'error';
 		}
 
-		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+		$route = JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
 		if (($no_html = JRequest::getInt('no_html', 0)))
 		{
@@ -1366,7 +1366,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			$this->setError($post->getError());
 		}
 
-		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+		$route = JRoute::_($this->member->getLink() . '&active=' . $this->_name);
 
 		if (($no_html = JRequest::getInt('no_html', 0)))
 		{
@@ -1466,7 +1466,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to collection
-		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+		$route = JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
 
 		if ($no_html)
 		{
@@ -1586,7 +1586,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Display the main listing
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
+		$app->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=' . $collection->get('alias')));
 	}
 
 	/**
@@ -1608,7 +1608,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 	{
 		$app = JFactory::getApplication();
 
-		$collection = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+		$collection = JRoute::_($this->member->getLink() . '&active=' . $this->_name);
 
 		// Login check
 		if ($this->juser->get('guest'))
@@ -1711,7 +1711,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		// Redirect to collection
 		$app = JFactory::getApplication();
-		$app->redirect(JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=all')); // . $row->get('alias')
+		$app->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=all')); // . $row->get('alias')
 	}
 
 	/**
@@ -1793,7 +1793,7 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 		}
 
 		// Redirect to main view
-		$route = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=all');
+		$route = JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=all');
 
 		if ($no_html)
 		{

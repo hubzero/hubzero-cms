@@ -41,7 +41,7 @@ if ($item->get('title')) { ?>
 
 $path = DS . trim($this->params->get('filepath', '/site/collections'), DS) . DS . $item->get('id');
 $href = 'index.php?option=com_collections&controller=media&task=download&post=';
-$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+$base = $this->member->getLink() . '&active=' . $this->name;
 
 $assets = $item->assets();
 

@@ -35,7 +35,7 @@ $database = JFactory::getDBO();
 $this->css()
      ->js();
 ?>
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent'); ?>" method="post">
+<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages&task=sent'); ?>" method="post">
 	<table class="data">
 		<thead>
 			<tr>
@@ -60,7 +60,7 @@ $this->css()
 						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
 
 						//url to view message
-						$url = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&msg='.$row->id);
+						$url = JRoute::_($this->member->getLink() . '&active=messages&msg=' . $row->id);
 
 						//get the message subject
 						$subject = $row->subject;

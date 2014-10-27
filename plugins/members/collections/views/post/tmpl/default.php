@@ -36,7 +36,7 @@ $item = $this->post->item();
 $database = JFactory::getDBO();
 $this->juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+$base = $this->member->getLink() . '&active=' . $this->name;
 
 $this->css()
      ->js();
@@ -45,11 +45,11 @@ $this->css()
 <div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&task=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
 	<div class="content">
 		<div class="creator attribution clearfix">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator('name'))); ?>" class="img-link">
+			<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>" title="<?php echo $this->escape(stripslashes($item->creator('name'))); ?>" class="img-link">
 				<img src="<?php echo $item->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator('name'))); ?>" />
 			</a>
 			<p>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
+				<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>">
 					<?php echo $this->escape(stripslashes($item->creator('name'))); ?>
 				</a> created this post
 				<br />
@@ -90,11 +90,11 @@ $this->css()
 			</p>
 		</div><!-- / .meta -->
 		<div class="convo attribution clearfix">
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
+			<a href="<?php echo JRoute::_($this->post->creator()->getLink()); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" class="img-link">
 				<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->post->creator(), 0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($this->post->creator()->get('name'))); ?>" />
 			</a>
 			<p>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
+				<a href="<?php echo JRoute::_($this->post->creator()->getLink()); ?>">
 					<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>
 				</a>
 				onto

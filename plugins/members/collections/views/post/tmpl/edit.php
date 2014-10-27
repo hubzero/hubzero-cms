@@ -54,7 +54,7 @@ if ($type && !in_array($type, array('file', 'image', 'text', 'link')))
 	$type = 'link';
 }
 
-$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+$base = $this->member->getLink() . '&active=' . $this->name;
 
 $dir = $item->get('id');
 if (!$dir)

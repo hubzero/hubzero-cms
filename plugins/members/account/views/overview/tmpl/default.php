@@ -64,12 +64,9 @@ $this->css()
 					$display_name = $pparams->get('display_name', ucfirst($hzala['auth_domain_name']));
 					?>
 					<div class="account active <?php echo $hzala['auth_domain_name']; ?>">
-						<div class="x"><a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php
-							echo JRoute::_('index.php?option=' .
-								$this->option . '&id=' .
-								$this->member->get('uidNumber') .
-								'&active=account&action=unlink&hzal_id=' .
-								$hzala['id']); ?>">x</a></div>
+						<div class="x">
+							<a title="<?php echo JText::_('PLG_MEMBERS_ACCOUNT_REMOVE_ACCOUNT'); ?>" href="<?php echo JRoute::_($this->member->getLink() . '&active=account&action=unlink&hzal_id=' . $hzala['id']); ?>">x</a>
+						</div>
 						<div class="account-info">
 							<div class="account-type"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_ACCOUNT_TYPE'); ?>: <?php echo $display_name; ?></div>
 						</div>
@@ -191,10 +188,7 @@ $this->css()
 			</form>
 		<?php } else { ?>
 			<p><?php echo JText::_('PLG_MEMBERS_ACCOUNT_LOCAL_PASS_EXPLANATION'); ?></p>
-			<a href="<?php echo JRoute::_('index.php?option=' . $this->option .
-												'&id=' . $this->member->get('uidNumber') .
-												'&active=account' .
-												'&task=sendtoken'); ?>">
+			<a href="<?php echo JRoute::_($this->member->getLink() . '&active=account&task=sendtoken'); ?>">
 				<div id="token-button"><?php echo JText::_('PLG_MEMBERS_ACCOUNT_REQUEST_TOKEN'); ?></div>
 			</a>
 		<?php } ?>
@@ -213,10 +207,7 @@ $this->css()
 			</p>
 			<h5><?php echo JText::_('PLG_MEMBERS_MANAGE_KEYS'); ?></h5>
 			<?php if ($this->key !== false) : ?>
-				<form action=<?php echo JRoute::_('index.php?option=' . $this->option .
-													'&id=' . $this->member->get('uidNumber') .
-													'&active=account' .
-													'&task=uploadkey', true, true); ?> method="post">
+				<form action="<?php echo JRoute::_($this->member->getLink() . '&active=account&task=uploadkey', true, true); ?>" method="post">
 					<p><?php echo JText::_('PLG_MEMGERS_ACCOUNT_KEY_HINT'); ?>:</p>
 					<textarea name="keytext" cols="50" rows="6"><?php echo $this->key; ?></textarea>
 					<div class="clear"></div>

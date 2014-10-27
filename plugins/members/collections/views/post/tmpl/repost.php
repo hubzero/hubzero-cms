@@ -44,7 +44,7 @@ $this->css();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name . '&task=' . $task); ?>" method="post" id="hubForm" class="full">
+<form action="<?php echo JRoute::_($this->member->getLink() . '&active=' . $this->name . '&task=' . $task); ?>" method="post" id="hubForm" class="full">
 	<fieldset>
 		<legend><?php echo JText::_('Collect'); ?></legend>
 

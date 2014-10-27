@@ -151,14 +151,14 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 					if ($passinfo['diff'] <= $passinfo['warning'] && $passinfo['diff'] > 0)
 					{
 						$title = 'Your password expires in ' . $passinfo['diff'] . ' days!';
-						$link  = JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=account#password');
+						$link  = JRoute::_($member->getLink() . '&active=account#password');
 
 						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
 					}
 					else if ($passinfo['diff'] < 0)
 					{
 						$title = 'Your password has expired!';
-						$link  = JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=account#password');
+						$link  = JRoute::_($member->getLink() . '&active=account#password');
 
 						$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>Password Expiration</h5>' . $title . '</span></a>';
 					}
@@ -349,7 +349,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Redirect user to confirm token view page
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account&task=confirmtoken'),
+			JRoute::_($this->member->getLink() . '&active=account&task=confirmtoken'),
 			JText::_('Please check the email associated with this account (' . $this->member->get('email') . ') for your confirmation token!'),
 			'warning'
 		);
@@ -452,7 +452,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Redirect user to set local password view
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account&task=setlocalpass'),
+			JRoute::_($this->member->getLink() . '&active=account&task=setlocalpass'),
 			JText::_('Please provide a new password'),
 			'warning'
 		);
@@ -621,7 +621,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 			echo json_encode(
 				array(
 					"success" => true,
-					"redirect" => JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account'))
+					"redirect" => JRoute::_($this->member->getLink() . '&active=account'))
 				);
 			exit();
 		}
@@ -629,7 +629,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		{
 			// Redirect user to confirm view page
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account'),
+				JRoute::_($this->member->getLink() . '&active=account'),
 				JText::_('Password reset successful'),
 				'passed'
 			);
@@ -660,7 +660,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 		if (empty($hzup->passhash) && count(\Hubzero\Auth\Link::find_by_user_id($this->member->get('uidNumber'))) <= 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account'),
+				JRoute::_($this->member->getLink() . '&active=account'),
 				JText::_('PLG_MEMBERS_ACCOUNT_CANT_REMOVE_ONLY_ACCESS'),
 				'warning'
 			);
@@ -675,7 +675,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account'),
+			JRoute::_($this->member->getLink() . '&active=account'),
 			JText::_('PLG_MEMBERS_ACCOUNT_UNLINKED'),
 			'passed'
 		);
@@ -783,7 +783,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=account'),
+			JRoute::_($this->member->getLink() . '&active=account'),
 			JText::_('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_SUCCESSFUL'),
 			'passed'
 		);
@@ -925,7 +925,7 @@ class plgMembersAccount extends \Hubzero\Plugin\Plugin
 
 		// Create the email with the new token
 		$url      = rtrim(JURI::base(),'/');
-		$return   = $url . JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&acitve=account&task=confirmtoken');
+		$return   = $url . JRoute::_($this->member->getLink() . '&acitve=account&task=confirmtoken');
 		$subject  = 'Set local password, confirmation token for ' . $url;
 		$message  = 'You have requested to set your local password at ' . $url . "\n\n";
 		$message .= 'Your reset token is: ' . $token;

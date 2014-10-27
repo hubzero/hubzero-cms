@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->juser = JFactory::getUser();
 
-$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+$base = $this->member->getLink() . '&active=' . $this->name;
 
 $this->css()
      ->js('jquery.masonry', 'com_collections')

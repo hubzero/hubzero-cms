@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
+$base = $this->member->getLink() . '&active=' . $this->name;
 
 $identifier = $this->post->item()->get('title');
 if (!$identifier)

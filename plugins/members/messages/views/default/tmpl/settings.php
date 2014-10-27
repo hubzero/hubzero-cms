@@ -35,7 +35,7 @@ $this->css()
 <?php if (!$this->components) { ?>
 	<p class="error"><?php echo JText::_('PLG_MEMBERS_MESSAGES_NO_COMPONENTS_FOUND'); ?></p>
 <?php } else { ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=messages'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages'); ?>" method="post" id="hubForm" class="full">
 		<input type="hidden" name="action" value="savesettings" />
 		<table class="settings">
 			<caption>
@@ -45,7 +45,7 @@ $this->css()
 				<tr>
 					<th scope="col"><?php echo JText::_('PLG_MEMBERS_MESSAGES_SENT_WHEN'); ?></th>
 				<?php foreach ($this->notimethods as $notimethod) { ?>
-					<th scope="col"><input type="checkbox" name="override[<?php echo $notimethod; ?>]" value="all" onclick="HUB.MembersMsg.checkAll(this, 'opt-<?php echo $notimethod; ?>');" /> <?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_'.strtoupper($notimethod)); ?></th>
+					<th scope="col"><input type="checkbox" name="override[<?php echo $notimethod; ?>]" value="all" onclick="HUB.MembersMsg.checkAll(this, 'opt-<?php echo $notimethod; ?>');" /> <?php echo JText::_('PLG_MEMBERS_MESSAGES_MSG_' . strtoupper($notimethod)); ?></th>
 				<?php } ?>
 				</tr>
 			</thead>

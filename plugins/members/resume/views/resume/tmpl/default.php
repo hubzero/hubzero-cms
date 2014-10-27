@@ -53,7 +53,7 @@ $this->css('jobs', 'com_jobs');
 
 		<?php if (!$this->editpref) { ?>
 				<span class="includeme">
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=activate') . '&on=' . ($this->js->active && $this->file ? 0 : 1); ?>">
+					<a href="<?php echo JRoute::_($this->member->getLink() . '&active=resume&action=activate') . '&on=' . ($this->js->active && $this->file ? 0 : 1); ?>">
 				<?php if ($this->js->active && $this->file) { ?>
 					[-] <?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_HIDE'); ?>
 				<?php } else if ($this->file) { ?>
@@ -64,7 +64,7 @@ $this->css('jobs', 'com_jobs');
 		<?php } else { ?>
 			</p>
 
-			<form id="prefsForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume'); ?>">
+			<form id="prefsForm" method="post" action="<?php echo JRoute::_($this->member->getLink() . '&active=resume'); ?>">
 				<fieldset>
 					<legend>
 						<?php echo $this->editpref==1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_INCLUDE_WITH_INFO') :  JText::_('PLG_MEMBERS_RESUME_ACTION_EDIT_PREFS'); ?>
@@ -144,7 +144,7 @@ $this->css('jobs', 'com_jobs');
 						<span class="selectgroup">
 							<input type="submit" value="<?php echo $this->editpref == 1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 							<span class="cancelaction">
-								<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume'); ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
+								<a href="<?php echo JRoute::_($this->member->getLink() . '&active=resume'); ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
 							</span>
 						</span>
 					</div>
@@ -200,7 +200,7 @@ $this->css('jobs', 'com_jobs');
 									: $this->member->get('name').' '.JText::_('PLG_MEMBERS_RESUME');
 						?>
 						<?php if ($this->edittitle && $this->self) { ?>
-							<form id="editTitleForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=savetitle'); ?>">
+							<form id="editTitleForm" method="post" action="<?php echo JRoute::_($this->member->getLink() . '&active=resume&action=savetitle'); ?>">
 								<fieldset>
 									<label class="resume">
 										<input type="text" name="title" value="<?php echo $this->escape($title); ?>" class="gettitle" maxlength="40" />
@@ -210,7 +210,7 @@ $this->css('jobs', 'com_jobs');
 								</fieldset>
 							</form>
 						<?php } else { ?>
-							<a class="resume" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=download'); ?>">
+							<a class="resume" href="<?php echo JRoute::_($this->member->getLink() . '&active=resume&action=download'); ?>">
 								<?php echo $this->escape($title); ?>
 							</a>
 						<?php } ?>
@@ -219,7 +219,7 @@ $this->css('jobs', 'com_jobs');
 							<time datetime="<?php echo $this->resume->created; ?>"><?php echo JHTML::_('date', $this->resume->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a class="trash" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME'); ?>">
+							<a class="trash" href="<?php echo JRoute::_($this->member->getLink() . '&active=resume&action=deleteresume'); ?>" title="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME'); ?>">
 								<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_DELETE'); ?>
 							</a>
 						</td>
@@ -233,7 +233,7 @@ $this->css('jobs', 'com_jobs');
 		<?php } ?>
 
 		<?php if ($this->self) { ?>
-			<form class="addResumeForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=resume'); ?>" enctype="multipart/form-data">
+			<form class="addResumeForm" method="post" action="<?php echo JRoute::_($this->member->getLink() . '&active=resume'); ?>" enctype="multipart/form-data">
 				<fieldset>
 					<legend>
 						<?php echo ($this->resume->id && $this->file)

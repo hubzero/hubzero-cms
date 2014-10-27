@@ -59,7 +59,7 @@ foreach ($this->cats as $cat)
 		$blob = ($cat['category']) ? $cat['category'] : '';
 
 		// Build the HTML
-		$l = "\t" . '<li' . $a . '><a href="'.JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($blob)) . '&sort=' . $this->sort) . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $this->escape($cat['total']) . '</span></a>';
+		$l = "\t" . '<li' . $a . '><a href="'.JRoute::_($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($blob)) . '&sort=' . $this->sort) . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $this->escape($cat['total']) . '</span></a>';
 
 		// Are there sub-categories?
 		if (isset($cat['_sub']) && is_array($cat['_sub']))
@@ -79,7 +79,7 @@ foreach ($this->cats as $cat)
 					$blob = ($subcat['category']) ? $subcat['category'] : '';
 
 					// Build the HTML
-					$k[] = "\t\t\t" . '<li' . $a . '><a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($blob)) . '&sort=' . $this->sort) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $this->escape($subcat['total']) . '</span></a></li>';
+					$k[] = "\t\t\t" . '<li' . $a . '><a href="' . JRoute::_($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($blob)) . '&sort=' . $this->sort) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $this->escape($subcat['total']) . '</span></a></li>';
 				}
 			}
 			// Do we actually have any links?
@@ -101,7 +101,7 @@ foreach ($this->cats as $cat)
 	<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS'); ?>
 </h3>
 
-<form method="get" action="<?php JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions'); ?>">
+<form method="get" action="<?php JRoute::_($this->member->getLink() . '&active=contributions'); ?>">
 	<input type="hidden" name="area" value="<?php echo $this->escape($this->active) ?>" />
 
 	<div class="container">
@@ -109,7 +109,7 @@ foreach ($this->cats as $cat)
 		<?php if (count($links) > 0) { ?>
 			<ul class="entries-menu filter-options">
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&sort=date'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'); ?></a>
+					<a href="<?php echo JRoute::_($this->member->getLink() . '&active=contributions&sort=date'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_CATEGORIES'); ?></a>
 					<ul>
 						<?php echo implode("\n", $links); ?>
 					</ul>
@@ -118,9 +118,9 @@ foreach ($this->cats as $cat)
 		<?php } ?>
 
 		<ul class="entries-menu">
-			<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'); ?></a></li>
-			<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'); ?></a></li>
-			<li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'); ?></a></li>
+			<li><a<?php echo ($this->sort == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=date'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_DATE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_DATE'); ?></a></li>
+			<li><a<?php echo ($this->sort == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=title'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_TITLE'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_TITLE'); ?></a></li>
+			<li><a<?php echo ($this->sort == 'usage') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->member->getLink() . '&active=contributions&area=' . urlencode(stripslashes($this->active)) . '&sort=usage'); ?>" title="<?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_BY_POPULARITY'); ?>"><?php echo JText::_('PLG_MEMBERS_CONTRIBUTIONS_SORT_POPULARITY'); ?></a></li>
 		</ul>
 
 		<div class="clearfix"></div>
@@ -211,7 +211,7 @@ foreach ($this->results as $category)
 		$html .= '<h4 class="category-header opened" id="rel-'.$divid.'">';
 		if (!$dopaging)
 		{
-			$html .= '<a href="'.JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area='. urlencode(stripslashes($this->cats[$k]['category']))).'">';
+			$html .= '<a href="' . JRoute::_($this->member->getLink() . '&active=contributions&area='. urlencode(stripslashes($this->cats[$k]['category']))) . '">';
 		}
 		$html .= $name.' <span>('.$num.$total.')</span>';
 		if (!$dopaging && $total > 5)
@@ -273,7 +273,7 @@ foreach ($this->results as $category)
 			//if ($totals[$k] > 5) {
 			if ($this->cats[$k]['total'] > 5)
 			{
-				$html .= ' | <a href="' . JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=contributions&area='.urlencode(strToLower($this->cats[$k]['category']))) . '">'.JText::_('PLG_MEMBERS_CONTRIBUTIONS_MORE').'</a>';
+				$html .= ' | <a href="' . JRoute::_($this->member->getLink() . '&active=contributions&area='.urlencode(strToLower($this->cats[$k]['category']))) . '">'.JText::_('PLG_MEMBERS_CONTRIBUTIONS_MORE').'</a>';
 			}
 			$html .= '</p>'."\n\n";
 		}

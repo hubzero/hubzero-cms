@@ -215,7 +215,7 @@ class plgMembersGroups extends \Hubzero\Plugin\Plugin
 				if (count($invitees))
 				{
 					$title = JText::sprintf('PLG_MEMBERS_GROUPS_NEW_INVITATIONS', count($invitees));
-					$link = JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=groups&filter=invitees');
+					$link = JRoute::_($member->getLink() . '&active=groups&filter=invitees');
 					$arr['metadata']['alert'] = '<a class="alrt" href="' . $link . '"><span><h5>' . JText::_('PLG_MEMBERS_GROUPS_ALERT') . '</h5>' . $title . '</span></a>';
 				}
 			}

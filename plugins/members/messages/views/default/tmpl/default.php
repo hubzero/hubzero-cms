@@ -34,36 +34,36 @@ $sections = array(
 	array(
 		'name' => 'inbox',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_INBOX'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=inbox&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=inbox&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'sent',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_SENT'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=sent&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=sent&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'archive',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_ARCHIVE'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=archive&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'trash',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_TRASH'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=trash&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=trash&limit=' . $this->filters['limit'] . '&limitstart=0')
 	),
 	array(
 		'name' => 'new',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_COMPOSE'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=new&limit=' . $this->filters['limit'] . '&limitstart=0')
+		'link' => JRoute::_($this->member->getLink() . '&active=messages&task=new&limit=' . $this->filters['limit'] . '&limitstart=0')
 	)
 );
 
 //option links
 $options = array(
 	array(
-		'name' => 'settings',
+		'name'  => 'settings',
 		'title' => JText::_('PLG_MEMBERS_MESSAGES_SETTINGS'),
-		'link' => JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=settings')
+		'link'  => JRoute::_($this->member->getLink() . '&active=messages&task=settings')
 	)
 );
 
@@ -78,22 +78,23 @@ $no_html = JRequest::getVar("no_html", 0);
 <div class="section">
 	<ul id="message-toolbar">
 		<?php foreach($sections as $s) : ?>
-			<?php $sel = ($this->task == $s['name']) ? "active": ""; ?>
-			<li><a class="<?php echo $s['name'] . " " . $sel; ?>" title="<?php echo $s['title']; ?>" href="<?php echo $s['link']; ?>"><?php echo $s['title']; ?></a></li>
+			<?php $sel = ($this->task == $s['name']) ? 'active': ''; ?>
+			<li><a class="<?php echo $s['name'] . ' ' . $sel; ?>" title="<?php echo $s['title']; ?>" href="<?php echo $s['link']; ?>"><?php echo $s['title']; ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 	<ul id="message-options">
 		<?php foreach($options as $o) : ?>
-			<?php $sel = ($this->task == $o['name']) ? "active": ""; ?>
-			<li><a class="<?php echo $o['name'] . " " . $sel; ?>" title="<?php echo $o['title']; ?>" href="<?php echo $o['link']; ?>"><?php echo $o['title']; ?></a></li>
+			<?php $sel = ($this->task == $o['name']) ? 'active': ''; ?>
+			<li><a class="<?php echo $o['name'] . ' ' . $sel; ?>" title="<?php echo $o['title']; ?>" href="<?php echo $o['link']; ?>"><?php echo $o['title']; ?></a></li>
 		<?php endforeach; ?>
 	</ul>
 	<br class="clear" />
 
 	<div id="messages-container">
 		<?php
-			foreach($this->notifications as $n) {
-				echo "<p class=\"{$n['type']}\">{$n['message']}</p>";
+			foreach ($this->notifications as $n)
+			{
+				echo '<p class="' . $n['type'] . '">' . $n['message'] . '</p>';
 			}
 		?>
 <?php endif; ?>

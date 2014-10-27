@@ -194,7 +194,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (count($unreadMessages) > 0)
 		{
 			$title = count($unreadMessages) . ' unread message(s).';
-			$link = JRoute::_('index.php?option=com_members&id='.$member->get("uidNumber").'&active=messages');
+			$link = JRoute::_($member->getLink() . '&active=messages');
 			$arr['metadata']['alert'] = "<a class=\"alrt\" href=\"{$link}\"><span><strong>Messages Alert</strong>{$title}</span></a>";
 		}
 
@@ -730,7 +730,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_($member->getLink() . '&active=messages&task=' . JRequest::getWord('activetab', 'archive') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -768,7 +768,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_($member->getLink() . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -818,7 +818,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_($member->getLink() . '&active=messages&task=' . JRequest::getWord('activetab', 'trash') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -875,7 +875,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_($member->getLink() . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -913,7 +913,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_($member->getLink() . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -944,7 +944,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			$this->addPluginMessage("No messages selected.", "warning");
 		}
 
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
+		return $this->redirect(JRoute::_($member->getLink() . '&active=messages&task=' . JRequest::getWord('activetab', 'inbox') . '&start=' . $start . '&limit=' . $limit));
 	}
 
 	/**
@@ -1042,7 +1042,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 
 		// Push through to the settings view
 		$this->addPluginMessage(JText::_('You have successfully saved your message settings.'), 'passed');
-		return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&action=settings'));
+		return $this->redirect(JRoute::_($member->getLink() . '&active=messages&action=settings'));
 	}
 
 	/**
@@ -1089,7 +1089,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 			if (!$no_html)
 			{
 				$this->addPluginMessage(JText::_('You must select a message recipient and enter a message.'), 'error');
-				return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&action=new'));
+				return $this->redirect(JRoute::_($member->getLink() . '&active=messages&action=new'));
 			}
 			return JError::raiseError(500, JText::_('You must select a message recipient and enter a message.'));
 		}
@@ -1112,7 +1112,7 @@ class plgMembersMessages extends \Hubzero\Plugin\Plugin
 		if (!$no_html)
 		{
 			$this->addPluginMessage(JText::_('You have successfully sent a message.'), 'passed');
-			return $this->redirect(JRoute::_('index.php?option=com_members&id=' . $member->get('uidNumber') . '&active=messages&task=inbox'));
+			return $this->redirect(JRoute::_($member->getLink() . '&active=messages&task=inbox'));
 		}
 	}
 

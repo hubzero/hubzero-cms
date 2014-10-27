@@ -36,8 +36,7 @@ $this->css()
      ->js();
 ?>
 
-
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&task=archive'); ?>" method="post">
+<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages&task=archive'); ?>" method="post">
 
 	<div id="filters">
 		<input type="hidden" name="inaction" value="archive" />
@@ -96,22 +95,23 @@ $this->css()
 						$check = "<input class=\"chkbox\" type=\"checkbox\" id=\"msg{$row->id}\" value=\"{$row->id}\" name=\"mid[]\" />";
 
 						//get the message status
-						$status = ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? "<span class=\"read\">read</span>" : "<span class=\"unread\">unread</span>";
+						$status = ($row->whenseen != '' && $row->whenseen != '0000-00-00 00:00:00') ? '<span class="read">read</span>' : '<span class="unread">unread</span>';
 
 						//get the component that created message
-						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component,4) : $row->component;
+						$component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) : $row->component;
 
 						//url to view message
-						$url = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&msg='.$row->id);
+						$url = JRoute::_($this->member->getLink() . '&active=messages&msg=' . $row->id);
 
 						//get the message subject
 						$subject = $row->subject;
 
 						//support - special
-						if ($component == 'support') {
-							$fg = explode(' ',$row->subject);
+						if ($component == 'support')
+						{
+							$fg = explode(' ', $row->subject);
 							$fh = array_pop($fg);
-							$subject = implode(' ',$fg);
+							$subject = implode(' ', $fg);
 						}
 
 						//get the message
@@ -126,10 +126,13 @@ $this->css()
 						$subject .= "</a>";
 
 						//get who the message is from
-						if (substr($row->type, -8) == '_message') {
+						if (substr($row->type, -8) == '_message')
+						{
 							$u = JUser::getInstance($row->created_by);
-							$from = "<a href=\"" . JRoute::_('index.php?option='.$this->option.'&id='.$u->get('id')) . "\">" . $u->get("name") . "</a>";
-						} else {
+							$from = '<a href="' . JRoute::_('index.php?option='.$this->option.'&id='.$u->get('id')) . '">' . $u->get('name') . '</a>';
+						}
+						else
+						{
 							$from = JText::sprintf('PLG_MEMBERS_MESSAGES_SYSTEM', $component);
 						}
 
@@ -137,18 +140,21 @@ $this->css()
 						$date = JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
 
 						//delete link
-						$del_link = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash&activetab=archive');
+						$del_link = JRoute::_($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive');
 						$delete = '<a title="' . JText::_('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . JText::_('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
 
 						//special action
-						/*if ($row->actionid) {
+						/*if ($row->actionid)
+						{
 							$xma = new \Hubzero\Message\Action( $database );
 							$xma->load( $row->actionid );
-							if ($xma) {
+							if ($xma)
+							{
 								$url = JRoute::_(stripslashes($xma->description));
 							}
 
-							if($row->whenseen == '' || $row->whenseen == '0000-00-00 00:00:00') {
+							if ($row->whenseen == '' || $row->whenseen == '0000-00-00 00:00:00')
+							{
 								//we dont want them to be able to move
 								$check = "";
 

@@ -230,21 +230,21 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 			switch ($task)
 			{
-				case 'uploadresume': 	$arr['html'] = $this->_upload($database, $option, $member); 		break;
-				case 'deleteresume':   	$arr['html'] = $this->_deleteresume($database, $option, $member, $emp);   break;
-				case 'edittitle':   	$arr['html'] = $this->_view($database, $option, $member, $emp, 1);   break;
-				case 'savetitle':   	$arr['html'] = $this->_save($database, $option, $member, $task, $emp);   break;
-				case 'saveprefs':   	$arr['html'] = $this->_save($database, $option, $member, $task, $emp);   break;
-				case 'editprefs':   	$arr['html'] = $this->_view($database, $option, $member, $emp, 0, $editpref = 2); break;
-				case 'activate':   		$arr['html'] = $this->_activate($database, $option, $member, $emp); break;
-				case 'download':   		$arr['html'] = $this->_download($member); break;
+				case 'uploadresume': $arr['html'] = $this->_upload($database, $option, $member); break;
+				case 'deleteresume': $arr['html'] = $this->_deleteresume($database, $option, $member, $emp);   break;
+				case 'edittitle':    $arr['html'] = $this->_view($database, $option, $member, $emp, 1);   break;
+				case 'savetitle':    $arr['html'] = $this->_save($database, $option, $member, $task, $emp);   break;
+				case 'saveprefs':    $arr['html'] = $this->_save($database, $option, $member, $task, $emp);   break;
+				case 'editprefs':    $arr['html'] = $this->_view($database, $option, $member, $emp, 0, $editpref = 2); break;
+				case 'activate':     $arr['html'] = $this->_activate($database, $option, $member, $emp); break;
+				case 'download':     $arr['html'] = $this->_download($member); break;
 				case 'view':
 				default: $arr['html'] = $this->_view($database, $option, $member, $emp, $edittitle = 0); break;
 			}
 		}
 		else if ($emp)
 		{
-			//$arr['metadata'] = '<p class="resume"><a href="'.JRoute::_('index.php?option='.$option . '&id='.$member->get('uidNumber') . '&active=resume').'">'.ucfirst(JText::_('Resume')).'</a></p>' . "\n";
+			//$arr['metadata'] = '<p class="resume"><a href="'.JRoute::_($member->getLink() . '&active=resume').'">'.ucfirst(JText::_('Resume')).'</a></p>' . "\n";
 			$arr['metadata'] = '';
 		}
 

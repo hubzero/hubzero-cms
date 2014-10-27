@@ -36,7 +36,7 @@ $this->css()
      ->js();
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages'); ?>" method="post">
+<form action="<?php echo JRoute::_($this->member->getLink() . '&active=messages'); ?>" method="post">
 	<div id="filters">
 		<input type="hidden" name="inaction" value="inbox" />
 		<?php echo JText::_('PLG_MEMBERS_MESSAGES_FROM'); ?>
@@ -101,7 +101,7 @@ $this->css()
 						$component = (substr($row->component,0,4) == 'com_') ? substr($row->component, 4) : $row->component;
 
 						//url to view message
-						//$url = JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&msg='.$row->id);
+						//$url = JRoute::_($this->member->getLink() . '&active=messages&msg=' . $row->id);
 
 						//get the message subject
 						$subject = $row->subject;
@@ -133,7 +133,7 @@ $this->css()
 							<?php echo $status; ?>
 						</td>
 						<td>
-							<a class="<?php echo $subject_cls; ?>" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&msg='.$row->id); ?>">
+							<a class="<?php echo $subject_cls; ?>" href="<?php echo JRoute::_($this->member->getLink() . '&active=messages&msg=' . $row->id); ?>">
 								<?php echo $subject; ?>
 							</a>
 						</td>
@@ -154,7 +154,7 @@ $this->css()
 							<time datetime="<?php echo $row->created; ?>"><?php echo JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1')); ?></time>
 						</td>
 						<td>
-							<a title="<?php echo JText::_('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&id='.$this->member->get('uidNumber').'&active=messages&mid[]='.$row->id.'&action=sendtotrash&activetab=inbox'); ?>">
+							<a title="<?php echo JText::_('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo JRoute::_($this->member->getLink() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox'); ?>">
 								<?php echo JText::_('PLG_MEMBERS_MESSAGES_TRASH'); ?>
 							</a>
 						</td>
