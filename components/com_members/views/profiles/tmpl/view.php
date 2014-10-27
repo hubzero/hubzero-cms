@@ -85,14 +85,10 @@ if (!$no_html)
 <div class="innerwrap">
 	<div id="page_container">
 		<div id="page_sidebar">
-			<?php
-				$src = \Hubzero\User\Profile\Helper::getMemberPhoto($this->profile, 0, false);
-				$link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber'));
-			?>
 			<div id="page_identity">
-				<?php $title = ($this->profile->get('uidNumber') == $juser->get("id")) ? JText::_('COM_MEMBERS_GO_TO_MY_DASHBOARD') : JText::sprintf('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->profile->get('name')); ?>
-				<a href="<?php echo $link; ?>" id="page_identity_link" title="<?php echo $title; ?>">
-					<img src="<?php echo $src; ?>" alt="<?php echo JText::sprintf('COM_MEMBERS_PROFILE_PICTURE_FOR', $this->escape(stripslashes($this->profile->get('name')))); ?>" />
+				<?php $title = ($this->profile->get('uidNumber') == $juser->get('id')) ? JText::_('COM_MEMBERS_GO_TO_MY_DASHBOARD') : JText::sprintf('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->profile->get('name')); ?>
+				<a href="<?php echo JRoute::_($this->profile->getLink()); ?>" id="page_identity_link" title="<?php echo $title; ?>">
+					<img src="<?php echo $this->profile->getPicture(0, false); ?>" alt="<?php echo JText::sprintf('COM_MEMBERS_PROFILE_PICTURE_FOR', $this->escape(stripslashes($this->profile->get('name')))); ?>" />
 				</a>
 			</div><!-- /#page_identity -->
 			<?php if ($messaging): ?>
@@ -113,7 +109,7 @@ if (!$no_html)
 							continue;
 						}
 						$name = $c[$key];
-						$url = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->profile->get('uidNumber') . '&active=' . $key);
+						$url = JRoute::_($this->profile->getLink() . '&active=' . $key);
 						$cls = ($this->tab == $key) ? 'active' : '';
 						$tab_name = ($this->tab == $key) ? $name : $tab_name;
 
@@ -153,7 +149,7 @@ if (!$no_html)
 				$full = '/site/stats/contributor_impact/impact_' . $this->profile->get('uidNumber') . '.gif';
 			?>
 			<?php if (file_exists(JPATH_ROOT . $thumb)) : ?>
-				<a id="member-stats-graph" rel="lightbox" title="<?php echo JText::sprintf('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get("name"); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
+				<a id="member-stats-graph" rel="lightbox" title="<?php echo JText::sprintf('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" data-name="<?php echo $this->profile->get('name'); ?>" data-type="Impact Graph" href="<?php echo $full; ?>">
 					<img src="<?php echo $thumb; ?>" alt="<?php echo JText::sprintf('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')); ?>" />
 				</a>
 			<?php endif; ?>
@@ -171,7 +167,7 @@ if (!$no_html)
 				<?php endif; ?>
 				<?php if ($password) : ?>
 					<li>
-						<a class="password tooltips" id="change-password" title="<?php echo JText::_('COM_MEMBERS_CHANGE_PASSWORD'); ?> :: Change your password" href="<?php echo JRoute::_('index.php?option=com_members&task=changepassword&id=' . $this->profile->get('uidNumber')); ?>">
+						<a class="password tooltips" id="change-password" title="<?php echo JText::_('COM_MEMBERS_CHANGE_PASSWORD'); ?> :: Change your password" href="<?php echo JRoute::_($this->profile->getLink('changepassword')); ?>">
 							<?php echo JText::_('COM_MEMBERS_CHANGE_PASSWORD'); ?>
 						</a>
 					</li>
@@ -193,7 +189,7 @@ if (!$no_html)
 					?>
 
 					<?php if ($this->tab == 'profile') : ?>
-						<a id="profile-privacy" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber')); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
+						<a id="profile-privacy" href="<?php echo JRoute::_($this->profile->getLink()); ?>" data-uidnumber="<?php echo $this->profile->get('uidNumber'); ?>" class="<?php echo $cls; ?> tooltips" title="<?php echo $title; ?>">
 							<?php echo $title; ?>
 						</a>
 					<?php else: ?>
@@ -204,7 +200,7 @@ if (!$no_html)
 				<?php endif; ?>
 
 				<h2>
-					<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber')); ?>">
+					<a href="<?php echo JRoute::_($this->profile->getLink()); ?>">
 						<?php echo $this->escape(stripslashes($this->profile->get('name'))); ?>
 					</a>
 				</h2>
