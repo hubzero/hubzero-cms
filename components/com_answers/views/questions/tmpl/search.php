@@ -167,7 +167,11 @@ $sortdir = $this->filters['sort_Dir'] == 'DESC' ? 'ASC' : 'DESC';
 						$name = JText::_('COM_ANSWERS_ANONYMOUS');
 						if (!$row->get('anonymous'))
 						{
-							$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->get('name'))) . '</a>';
+							$name = $this->escape(stripslashes($row->creator('name', $name)));
+							if ($row->creator('public'))
+							{
+								$name = '<a href="' . JRoute::_($row->creator()->getLink()) . '">' . $name . '</a>';
+							}
 						}
 						$cls  = ($row->isclosed())   ? 'answered' : '';
 						$cls  = ($row->isReported()) ? 'flagged'  : $cls;

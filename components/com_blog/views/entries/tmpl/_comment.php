@@ -8,10 +8,10 @@ defined('_JEXEC') or die('Restricted access');
 	$name = JText::_('COM_BLOG_ANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
-		$huser = $this->comment->creator();
-		if (is_object($huser) && $huser->get('name'))
+		$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
+		if ($this->comment->creator()->get('public'))
 		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
 	}
 

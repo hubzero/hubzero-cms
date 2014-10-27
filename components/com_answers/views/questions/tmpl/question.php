@@ -39,15 +39,7 @@ $this->css()
 $name = JText::_('COM_ANSWERS_ANONYMOUS');
 if (!$this->question->get('anonymous'))
 {
-	$user = $this->question->creator();
-	if (is_object($user))
-	{
-		$name = $user->get('name');
-	}
-	else
-	{
-		$name = JText::_('COM_ANSWERS_UNKNOWN');
-	}
+	$name = $this->escape(stripslashes($this->question->creator('name', JText::_('COM_ANSWERS_UNKNOWN'))));
 }
 
 ?>

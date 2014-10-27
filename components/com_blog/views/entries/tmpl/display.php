@@ -149,9 +149,13 @@ $first = $this->model->entries('first', $filters);
 								</dd>
 							<?php if ($this->config->get('show_authors')) { ?>
 								<dd class="author">
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
+									<?php if ($row->creator()->get('public')) { ?>
+										<a href="<?php echo JRoute::_($row->creator()->getLink()); ?>">
+											<?php echo $this->escape(stripslashes($row->get('name'))); ?>
+										</a>
+									<?php } else { ?>
 										<?php echo $this->escape(stripslashes($row->get('name'))); ?>
-									</a>
+									<?php } ?>
 								</dd>
 							<?php } ?>
 							<?php if ($row->get('allow_comments') == 1) { ?>
