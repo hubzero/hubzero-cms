@@ -52,16 +52,17 @@ class UpdateControllerDashboard extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$config = JFactory::getConfig();
+		$config = \JFactory::getConfig();
+		$source = \JComponentHelper::getParams('com_update')->get('git_repository_source', null);
 
 		$this->view->repositoryVersion   = json_decode(cli::version());
 		$this->view->repositoryVersion   = $this->view->repositoryVersion[0];
 		$this->view->repositoryMechanism = json_decode(cli::mechanism());
 		$this->view->repositoryMechanism = $this->view->repositoryMechanism[0];
 		$this->view->databaseMechanism   = $config->get('dbtype');
-		$this->view->databaseVersion     = JFactory::getDbo()->getVersion();
+		$this->view->databaseVersion     = \JFactory::getDbo()->getVersion();
 		$this->view->status    = json_decode(cli::status());
-		$this->view->upcoming  = json_decode(cli::update(true));
+		$this->view->upcoming  = json_decode(cli::update(true, false, $source));
 		$this->view->migration = json_decode(cli::migration());
 
 		if (!isset($this->view->repositoryMechanism))
