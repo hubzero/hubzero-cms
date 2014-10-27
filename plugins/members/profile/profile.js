@@ -760,7 +760,7 @@ HUB.Members.Profile = {
 				//do we have a country
 				if (jQuery.inArray('country', result[i].types) > -1)
 				{
-					address_parts['country'] = result[i].long_name.toUpperCase();
+					address_parts['country'] = result[i].long_name;
 				}
 			}
 			
