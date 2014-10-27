@@ -6,13 +6,12 @@ defined('_JEXEC') or die('Restricted access');
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
 	$name = JText::_('PLG_MEMBERS_BLOG_ANONYMOUS');
-	$huser = new \Hubzero\User\Profile;
 	if (!$this->comment->get('anonymous'))
 	{
-		$huser = \Hubzero\User\Profile::getInstance($this->comment->get('created_by'));
-		if (is_object($huser) && $huser->get('name'))
+		$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
+		if ($this->comment->creator()->get('public'))
 		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
 	}
 
@@ -28,16 +27,16 @@ defined('_JEXEC') or die('Restricted access');
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
 			<a class="comment-anchor" name="c<?php echo $this->comment->get('id'); ?>"></a>
-			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_PERMALINK'); ?>">
 					<span class="comment-date-at"><?php echo JText::_('PLG_MEMBERS_BLOG_AT'); ?></span>
-					<span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
 					<span class="comment-date-on"><?php echo JText::_('PLG_MEMBERS_BLOG_ON'); ?></span>
-					<span class="date"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 					<?php if ($this->comment->wasModified()) { ?>
 						&mdash; <?php echo JText::_('PLG_MEMBERS_BLOG_EDITED'); ?>
 						<span class="comment-date-at"><?php echo JText::_('PLG_MEMBERS_BLOG_AT'); ?></span> 

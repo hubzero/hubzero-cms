@@ -29,7 +29,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog';
+$base = $this->member->getLink() . '&active=blog';
 
 $this->css()
      ->js();

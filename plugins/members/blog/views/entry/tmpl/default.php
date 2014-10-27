@@ -34,7 +34,7 @@ $juser = JFactory::getUser();
 $entry_year  = substr($this->row->get('publish_up'), 0, 4);
 $entry_month = substr($this->row->get('publish_up'), 5, 2);
 
-$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog';
+$base = $this->member->getLink() . '&active=blog';
 
 $this->css()
      ->js();
@@ -226,7 +226,7 @@ $this->css()
 								$xuser = \Hubzero\User\Profile::getInstance($replyto->get('created_by'));
 								if (is_object($xuser) && $xuser->get('name'))
 								{
-									$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $replyto->get('created_by')) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
+									$name = '<a href="' . JRoute::_($xuser->getLink()) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
 								}
 							}
 					?>
@@ -244,7 +244,7 @@ $this->css()
 						}
 					?>
 					<label>
-						Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('PLG_MEMBERS_BLOG_REQUIRED'); ?></span>
+						<?php echo JText::_(($replyto->exists() ? 'Your reply' : 'Your comments')); ?>: <span class="required"><?php echo JText::_('PLG_MEMBERS_BLOG_REQUIRED'); ?></span>
 						<?php
 						if (!$juser->get('guest')) {
 							echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));

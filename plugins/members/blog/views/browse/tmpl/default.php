@@ -34,7 +34,7 @@ $live_site = rtrim(JURI::base(),'/');
 
 $first = $this->model->entries('first');
 
-$base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog';
+$base = $this->member->getLink() . '&active=blog';
 
 $this->css()
      ->js();
@@ -161,28 +161,32 @@ $this->css()
 							</time>
 						</dd>
 						<dd class="author">
-							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
+							<?php if ($row->creator('public')) { ?>
+								<a href="<?php echo JRoute::_($row->creator()->getLink()); ?>">
+									<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
+								</a>
+							<?php } else { ?>
 								<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
-							</a>
+							<?php } ?>
 						</dd>
-					<?php if ($row->get('allow_comments') == 1) { ?>
-						<dd class="comments">
-							<a href="<?php echo JRoute::_($row->link('comments')); ?>">
-								<?php echo JText::sprintf('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
-							</a>
-						</dd>
-					<?php } else { ?>
-						<dd class="comments">
-							<span>
-								<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
-							</span>
-						</dd>
-					<?php } ?>
-					<?php if ($juser->get('id') == $row->get('created_by')) { ?>
-						<dd class="state <?php echo $row->state('text'); ?>">
-							<?php echo JText::_('PLG_MEMBERS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
-						</dd>
-					<?php } ?>
+						<?php if ($row->get('allow_comments') == 1) { ?>
+							<dd class="comments">
+								<a href="<?php echo JRoute::_($row->link('comments')); ?>">
+									<?php echo JText::sprintf('PLG_MEMBERS_BLOG_NUM_COMMENTS', $row->get('comments', 0)); ?>
+								</a>
+							</dd>
+						<?php } else { ?>
+							<dd class="comments">
+								<span>
+									<?php echo JText::_('PLG_MEMBERS_BLOG_COMMENTS_OFF'); ?>
+								</span>
+							</dd>
+						<?php } ?>
+						<?php if ($juser->get('id') == $row->get('created_by')) { ?>
+							<dd class="state <?php echo $row->state('text'); ?>">
+								<?php echo JText::_('PLG_MEMBERS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+							</dd>
+						<?php } ?>
 						<dd class="entry-options">
 						<?php if ($juser->get('id') == $row->get('created_by')) { ?>
 							<a class="edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_MEMBERS_BLOG_EDIT'); ?>">
@@ -195,13 +199,13 @@ $this->css()
 						</dd>
 					</dl>
 					<div class="entry-content">
-				<?php if ($this->config->get('cleanintro', 1)) { ?>
-						<p>
-							<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
-						</p>
-				<?php } else { ?>
-						<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
-				<?php } ?>
+						<?php if ($this->config->get('cleanintro', 1)) { ?>
+							<p>
+								<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
+							</p>
+						<?php } else { ?>
+							<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
+						<?php } ?>
 					</div>
 				</li>
 			<?php } ?>
@@ -259,7 +263,7 @@ $this->css()
 					?>
 					<?php for ($i=$now, $n=$start; $i >= $n; $i--) : ?>
 						<li>
-							<a href="<?php echo JRoute::_($base . '&task='.$i); ?>">
+							<a href="<?php echo JRoute::_($base . '&task=' . $i); ?>">
 								<?php echo $i; ?>
 							</a>
 							<?php if (($this->year && $i == $this->year) || (!$this->year && $i == $now)) : ?>
@@ -267,7 +271,7 @@ $this->css()
 									<?php $months = ($i == $now) ? date("m") : 12; ?>
 									<?php for ($k=0, $z=$months; $k < $z; $k++) : ?>
 										<li>
-											<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=com_members&id='.$this->member->get('uidNumber').'&active=blog&task='.$i.'/'.sprintf( "%02d",($k+1),1)); ?>">
+											<a<?php if ($this->month && $this->month == ($k+1)) { echo ' class="active"'; } ?> href="<?php echo JRoute::_($base . '&task=' . $i . '/' . sprintf("%02d", ($k+1), 1)); ?>">
 												<?php echo JText::_($m[$k]); ?>
 											</a>
 										</li>

@@ -34,7 +34,7 @@ $this->css()
 ?>
 <ul id="page_options">
 	<li>
-		<a class="archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
+		<a class="icon-archive btn" href="<?php echo JRoute::_($this->member->getLink() . '&active=blog'); ?>">
 			<?php echo JText::_('PLG_MEMBERS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
@@ -46,7 +46,7 @@ $this->css()
 <?php if ($this->message) { ?>
 	<p class="passed"><?php echo $this->message; ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo JRoute::_($this->member->getLink() . '&active=blog&task=savesettings'); ?>" method="post" id="hubForm" class="full">
 		<fieldset class="settings">
 			<legend><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_POSTS'); ?></legend>
 			<p><?php echo JText::_('PLG_MEMBERS_BLOG_SETTINGS_POSTS_EXPLANATION'); ?></p>
@@ -90,7 +90,7 @@ $this->css()
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_MEMBERS_BLOG_SAVE'); ?>" />
 
-			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
+			<a class="btn btn-secondary" href="<?php echo JRoute::_($this->member->getLink() . '&active=blog'); ?>">
 				<?php echo JText::_('PLG_MEMBERS_BLOG_CANCEL'); ?>
 			</a>
 		</p>

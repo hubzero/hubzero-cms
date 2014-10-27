@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 JPluginHelper::importPlugin( 'hubzero' );
 $dispatcher = JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->entry->tags('string'))) );
+$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','',$this->entry->tags('string'))));
 
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00')
 {
@@ -46,7 +46,7 @@ $this->css('jquery.datepicker.css', 'system')
 ?>
 <ul id="page_options">
 	<li>
-		<a class="icon-archive archive btn" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=blog'); ?>">
+		<a class="icon-archive archive btn" href="<?php echo JRoute::_($this->member->getLink() . '&active=blog'); ?>">
 			<?php echo JText::_('PLG_MEMBERS_BLOG_ARCHIVE'); ?>
 		</a>
 	</li>
@@ -56,7 +56,7 @@ $this->css('jquery.datepicker.css', 'system')
 	<p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
+	<form action="<?php echo JRoute::_($this->member->getLink() . '&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
 			<legend><?php echo JText::_('PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
 
@@ -125,7 +125,7 @@ $this->css('jquery.datepicker.css', 'system')
 				<div class="col span6 omega">
 					<label for="field-publish_down">
 						<?php echo JText::_('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
-						<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo ($this->entry->get('publish_down') ?$this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')) : ''); ?>" />
+						<input type="text" name="entry[publish_down]" id="field-publish_down" size="35" value="<?php echo ($this->entry->get('publish_down') ? $this->escape(JHTML::_('date', $this->entry->get('publish_down'), 'Y-m-d H:i:s')) : ''); ?>" />
 						<span class="hint"><?php echo JText::_('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
 					</label>
 				</div>

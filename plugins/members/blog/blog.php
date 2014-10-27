@@ -360,7 +360,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Start a new feed object
 		$doc = new JDocumentFeed;
-		$doc->link = JRoute::_('index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name);
+		$doc->link = JRoute::_($this->member->getLink() . '&active=' . $this->_name);
 
 		// Get configuration
 		$jconfig = JFactory::getConfig();
@@ -734,7 +734,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Return the topics list
-		$this->redirect(JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name));
+		$this->redirect(JRoute::_($this->member->getLink() . '&active=' . $this->_name));
 	}
 
 	/**
@@ -938,7 +938,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		$this->redirect(
-			JRoute::_('index.php?option=com_members&id=' . $this->member->get('uidNumber') . '&active=' . $this->_name . '&task=settings'),
+			JRoute::_($this->member->getLink() . '&active=' . $this->_name . '&task=settings'),
 			JText::_('PLG_MEMBERS_BLOG_SETTINGS_SAVED')
 		);
 	}
