@@ -142,13 +142,26 @@ $this->css()
 								</div><!-- / .actions -->
 							</div><!-- / .meta -->
 							<div class="convo attribution">
-								<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator('id') . '&active=collections'); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-									<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo JText::sprintf('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($row->creator()->get('name')))); ?>" />
-								</a>
-								<p>
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->creator('id') . '&active=collections'); ?>">
-										<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
+								<?php
+								$name = $this->escape(stripslashes($row->creator('name')));
+
+								if ($row->creator('public')) { ?>
+									<a href="<?php echo JRoute::_($row->creator()->getLink() . '&active=collections'); ?>" title="<?php echo $name; ?>" class="img-link">
+										<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo JText::sprintf('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 									</a>
+								<?php } else { ?>
+									<span class="img-link">
+										<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo JText::sprintf('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+									</span>
+								<?php } ?>
+								<p>
+									<?php if ($row->creator('public')) { ?>
+										<a href="<?php echo JRoute::_($row->creator()->getLink() . '&active=collections'); ?>">
+											<?php echo $name; ?>
+										</a>
+									<?php } else { ?>
+										<?php echo $name; ?>
+									<?php } ?>
 									<br />
 									<span class="entry-date">
 										<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>

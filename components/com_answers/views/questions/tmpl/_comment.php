@@ -18,10 +18,10 @@ defined('_JEXEC') or die('Restricted access');
 	$name = JText::_('COM_ANSWERS_ANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
-		$name = $this->comment->creator('name', $name);
+		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
 		if ($this->comment->creator('public'))
 		{
-			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $this->escape(stripslashes($name)) . '</a>';
+			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
 	}
 

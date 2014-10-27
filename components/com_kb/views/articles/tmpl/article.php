@@ -62,7 +62,7 @@ $this->css()
 						<?php echo $tags; ?>
 					</div><!-- / .entry-tags -->
 				<?php } ?>
-	
+
 					<p class="entry-voting voting">
 						<?php
 							$this->view('_vote')
@@ -74,7 +74,7 @@ $this->css()
 								 ->display();
 						?>
 					</p>
-	
+
 					<p class="entry-details">
 						<?php echo JText::_('COM_KB_LAST_MODIFIED'); ?>
 						<span class="entry-date-at"><?php echo JText::_('COM_KB_DATETIME_AT'); ?></span>
@@ -82,7 +82,7 @@ $this->css()
 						<span class="entry-date-on"><?php echo JText::_('COM_KB_DATETIME_ON'); ?></span>
 						<span class="entry-date"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('date'); ?></time></span>
 					</p>
-	
+
 					<div class="clearfix"></div>
 				</div><!-- / .container-block -->
 			</article><!-- / .container -->
@@ -133,7 +133,7 @@ $this->css()
 					</a>
 				<?php } ?>
 			</h3>
-	
+
 			<?php
 			if ($this->article->comments('count') > 0)
 			{
@@ -154,7 +154,7 @@ $this->css()
 				<?php echo JText::_('COM_KB_NO_COMMENTS'); ?>
 			</p>
 			<?php } ?>
-	
+
 			<h3 class="post-comment-title">
 				<?php echo JText::_('COM_KB_POST_COMMENT'); ?>
 			</h3>
@@ -170,12 +170,12 @@ $this->css()
 					if ($this->replyto->get('id'))
 					{
 						$name = JText::_('COM_KB_ANONYMOUS');
-						$xuser = \Hubzero\User\Profile::getInstance($this->replyto->get('created_by'));
 						if (!$this->replyto->get('anonymous'))
 						{
+							$xuser = \Hubzero\User\Profile::getInstance($this->replyto->get('created_by'));
 							if (is_object($xuser) && $xuser->get('name'))
 							{
-								$name = '<a href="'.JRoute::_('index.php?option=com_members&id='.$this->replyto->get('created_by')).'">'.$this->escape(stripslashes($xuser->get('name'))).'</a>';
+								$name = ($xuser->get('public') ? '<a href="' . JRoute::_($xuser->getLink()) . '">' : '') . $this->escape(stripslashes($xuser->get('name'))) . ($xuser->get('public') ? '</a>' : '');
 							}
 						}
 					?>
@@ -195,7 +195,7 @@ $this->css()
 					}
 				}
 				?>
-	
+
 				<?php if ($this->article->commentsOpen()) { ?>
 					<label for="commentcontent">
 						<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
@@ -212,13 +212,13 @@ $this->css()
 					}
 					?>
 					</label>
-	
+
 					<?php if (!$this->juser->get('guest')) { ?>
 					<label id="comment-anonymous-label" for="comment-anonymous">
 						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
 						<?php echo JText::_('COM_KB_FIELD_ANONYMOUS'); ?>
 					</label>
-	
+
 					<p class="submit">
 						<input type="submit" name="submit" value="<?php echo JText::_('COM_KB_SUBMIT'); ?>" />
 					</p>
@@ -236,9 +236,9 @@ $this->css()
 					<input type="hidden" name="comment[state]" value="1" />
 					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					<input type="hidden" name="task" value="savecomment" />
-	
+
 					<?php echo JHTML::_('form.token'); ?>
-	
+
 					<div class="sidenote">
 						<p>
 							<strong><?php echo JText::_('COM_KB_COMMENT_KEEP_RELEVANT'); ?></strong>
@@ -248,7 +248,7 @@ $this->css()
 			</form>
 		</div><!-- / .subject -->
 		<aside class="aside">
-	
+
 		</aside>
 	</div><!-- / .section-inner -->
 </section><!-- / .below -->

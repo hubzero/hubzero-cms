@@ -88,10 +88,11 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @param      string $rpoperty PRoperty to retrieve
+	 * @param      string $property What data to return
+	 * @param      mixed  $default  Default value
 	 * @return     mixed
 	 */
-	public function creator($property=null)
+	public function creator($property=null, $default=null)
 	{
 		if (!($this->_creator instanceof \Hubzero\User\Profile))
 		{
@@ -104,7 +105,11 @@ class ForumModelAbstract extends \Hubzero\Base\Model
 		if ($property)
 		{
 			$property = ($property == 'id' ? 'uidNumber' : $property);
-			return $this->_creator->get($property);
+			if ($property == 'picture')
+			{
+				return $this->_creator->getPicture($this->get('anonymous'));
+			}
+			return $this->_creator->get($property, $default);
 		}
 		return $this->_creator;
 	}

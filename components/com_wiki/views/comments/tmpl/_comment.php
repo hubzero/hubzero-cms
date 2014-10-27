@@ -16,13 +16,12 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$name = JText::_('COM_WIKI_ANONYMOUS');
-	$huser = new \Hubzero\User\Profile;
 	if (!$this->comment->get('anonymous'))
 	{
-		$huser = $this->comment->creator(); //\Hubzero\User\Profile::getInstance($this->comment->get('created_by'));
-		if (is_object($huser) && $huser->get('name'))
+		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
+		if ($this->comment->creator('public'))
 		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
 	}
 
@@ -39,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
 		<p class="comment-member-photo">
-			<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($huser, $this->comment->get('anonymous')); ?>" alt="" />
+			<img src="<?php echo $this->comment->creator()->getPicture($this->comment->get('anonymous')); ?>" alt="" />
 		</p>
 		<div class="comment-content">
 			<?php

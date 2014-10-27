@@ -123,7 +123,11 @@ $this->category->set('section_alias', $this->filters['section']);
 									$name = JText::_('COM_FORUM_ANONYMOUS');
 									if (!$row->get('anonymous'))
 									{
-										$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
+										$name = $this->escape(stripslashes($row->creator('name', $name)));
+										if ($row->creator('public'))
+										{
+											$name = '<a href="' . JRoute::_($row->creator()->getLink()) . '">' . $name . '</a>';
+										}
 									}
 									$cls = array();
 									if ($row->isClosed())
@@ -232,19 +236,26 @@ $this->category->set('section_alias', $this->filters['section']);
 						$lname = JText::_('COM_FORUM_ANONYMOUS');
 						if (!$last->get('anonymous'))
 						{
-							$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $last->creator('id')) . '">' . $this->escape(stripslashes($last->creator('name'))) . '</a>';
+							$lname = $this->escape(stripslashes($last->creator('name', $lname)));
+							if ($last->creator('public'))
+							{
+								$lname = '<a href="' . JRoute::_($last->creator()->getLink()) . '">' . $lname . '</a>';
+							}
 						}
 						$last->set('category', $this->filters['category']);
 						$last->set('section', $this->filters['section']);
 					?>
-						<a href="<?php echo JRoute::_($last->link()); ?>" class="entry-date">
+						<a class="entry-comment" href="<?php echo JRoute::_($last->link()); ?>">
+							<?php echo $last->content('clean', 170); ?>
+						</a>
+						<span class="entry-author">
+							<?php echo $lname; ?>
+						</span>
+						<span class="entry-date">
 							<span class="entry-date-at"><?php echo JText::_('COM_FORUM_AT'); ?></span>
 							<span class="icon-time time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span>
 							<span class="entry-date-on"><?php echo JText::_('COM_FORUM_ON'); ?></span>
 							<span class="icon-date date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
-						</a>
-						<span class="entry-author">
-							<?php echo JText::sprintf('COM_FORUM_BY_USER', $lname); ?>
 						</span>
 					<?php } else { ?>
 						<?php echo JText::_('COM_FORUM_NONE'); ?>
