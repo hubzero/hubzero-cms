@@ -1836,7 +1836,12 @@
 		padding: 0.3em 0;
 		border-bottom: 1px dotted #CCC;
 	}
-
+/* Footer */
+	.pub-footer {
+		margin: 2em 1em;
+		font-size: 85%;
+		border-top: 1px dotted #CCC;
+	}
 /* Mod what's new */
 	.newpublication p {
 		padding-left: 3em;
