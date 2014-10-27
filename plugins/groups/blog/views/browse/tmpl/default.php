@@ -42,30 +42,30 @@ $this->css()
 ?>
 
 <?php if ($this->canpost || ($this->authorized == 'manager' || $this->authorized == 'admin')) { ?>
-<ul id="page_options">
-	<?php if ($this->canpost) { ?>
-	<li>
-		<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
-			<?php echo JText::_('PLG_GROUPS_BLOG_NEW_ENTRY'); ?>
-		</a>
-	</li>
-	<?php } ?>
-	<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-	<li>
-		<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>">
-			<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS'); ?>
-		</a>
-	</li>
-	<?php } ?>
-</ul>
+	<ul id="page_options">
+		<?php if ($this->canpost) { ?>
+			<li>
+				<a class="icon-add add btn" href="<?php echo JRoute::_($base . '&action=new'); ?>">
+					<?php echo JText::_('PLG_GROUPS_BLOG_NEW_ENTRY'); ?>
+				</a>
+			</li>
+		<?php } ?>
+		<?php if ($this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+			<li>
+				<a class="icon-config config btn" href="<?php echo JRoute::_($base . '&action=settings'); ?>">
+					<?php echo JText::_('PLG_GROUPS_BLOG_SETTINGS'); ?>
+				</a>
+			</li>
+		<?php } ?>
+	</ul>
 <?php } ?>
 
 <form method="get" action="<?php echo JRoute::_($base . '&action=browse'); ?>" id="blogentries">
 	<section class="section">
 		<div class="subject">
-		<?php if ($this->getError()) : ?>
-			<p class="error"><?php echo $this->getError(); ?></p>
-		<?php endif; ?>
+			<?php if ($this->getError()) : ?>
+				<p class="error"><?php echo $this->getError(); ?></p>
+			<?php endif; ?>
 
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SEARCH'); ?>" />
@@ -78,25 +78,25 @@ $this->css()
 
 			<div class="container">
 				<h3>
-				<?php if (isset($this->search) && $this->search) { ?>
-					<?php echo JText::sprintf('PLG_GROUPS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
-				<?php } else if (!isset($this->year) || !$this->year) { ?>
-					<?php echo JText::_('PLG_GROUPS_BLOG_LATEST_ENTRIES'); ?>
-				<?php } elseif (isset($this->year) && isset($this->month) && $this->month == 0) { ?>
-					<?php echo JText::sprintf('PLG_GROUPS_BLOG_YEAR_ENTRIES_FOR', $this->year); ?>
-				<?php } else {
-					$archiveDate  = $this->year;
-					$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
-					$archiveDate .= '-01 00:00:00';
-					if ($this->month)
-					{
-						echo JFactory::getDate($archiveDate)->format('M Y');
-					}
-					else
-					{
-						echo JFactory::getDate($archiveDate)->format('Y');
-					}
-				} ?>
+					<?php if (isset($this->search) && $this->search) { ?>
+						<?php echo JText::sprintf('PLG_GROUPS_BLOG_SEARCH_FOR', $this->escape($this->search)); ?>
+					<?php } else if (!isset($this->year) || !$this->year) { ?>
+						<?php echo JText::_('PLG_GROUPS_BLOG_LATEST_ENTRIES'); ?>
+					<?php } elseif (isset($this->year) && isset($this->month) && $this->month == 0) { ?>
+						<?php echo JText::sprintf('PLG_GROUPS_BLOG_YEAR_ENTRIES_FOR', $this->year); ?>
+					<?php } else {
+						$archiveDate  = $this->year;
+						$archiveDate .= ($this->month) ? '-' . $this->month : '-01';
+						$archiveDate .= '-01 00:00:00';
+						if ($this->month)
+						{
+							echo JFactory::getDate($archiveDate)->format('M Y');
+						}
+						else
+						{
+							echo JFactory::getDate($archiveDate)->format('Y');
+						}
+					} ?>
 					<?php
 						if ($this->config->get('feeds_enabled', 1)) :
 							$path  = $base . '&scope=feed.rss';
@@ -166,46 +166,50 @@ $this->css()
 									</time>
 								</dd>
 								<dd class="author">
-									<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
+									<?php if ($row->creator('public')) { ?>
+										<a href="<?php echo JRoute::_($row->creator()->getLink()); ?>">
+											<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
+										</a>
+									<?php } else { ?>
 										<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
-									</a>
+									<?php } ?>
 								</dd>
-							<?php if ($row->get('allow_comments') == 1) { ?>
-								<dd class="comments">
-									<a href="<?php echo JRoute::_($row->link('comments')); ?>">
-										<?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS',  $row->get('comments', 0)); ?>
-									</a>
-								</dd>
-							<?php } else { ?>
-								<dd class="comments">
-									<span>
-										<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?>
-									</span>
-								</dd>
-							<?php } ?>
-							<?php if ($this->juser->get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-								<dd class="state <?php echo $row->state('text'); ?>">
-									<?php echo JText::_('PLG_GROUPS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
-								</dd>
-							<?php } ?>
-								<dd class="entry-options">
-								<?php if ($this->juser->get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
-									<a class="icon-edit edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>">
-										<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>
-									</a>
-									<a class="icon-delete delete" data-confirm="<?php echo JText::_('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
-										<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>
-									</a>
+								<?php if ($row->get('allow_comments') == 1) { ?>
+									<dd class="comments">
+										<a href="<?php echo JRoute::_($row->link('comments')); ?>">
+											<?php echo JText::sprintf('PLG_GROUPS_BLOG_NUM_COMMENTS',  $row->get('comments', 0)); ?>
+										</a>
+									</dd>
+								<?php } else { ?>
+									<dd class="comments">
+										<span>
+											<?php echo JText::_('PLG_GROUPS_BLOG_COMMENTS_OFF'); ?>
+										</span>
+									</dd>
 								<?php } ?>
+								<?php if ($this->juser->get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+									<dd class="state <?php echo $row->state('text'); ?>">
+										<?php echo JText::_('PLG_GROUPS_BLOG_STATE_' . strtoupper($row->state('text'))); ?>
+									</dd>
+								<?php } ?>
+								<dd class="entry-options">
+									<?php if ($this->juser->get('id') == $row->get('created_by') || $this->authorized == 'manager' || $this->authorized == 'admin') { ?>
+										<a class="icon-edit edit" href="<?php echo JRoute::_($row->link('edit')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>">
+											<?php echo JText::_('PLG_GROUPS_BLOG_EDIT'); ?>
+										</a>
+										<a class="icon-delete delete" data-confirm="<?php echo JText::_('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_($row->link('delete')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>">
+											<?php echo JText::_('PLG_GROUPS_BLOG_DELETE'); ?>
+										</a>
+									<?php } ?>
 								</dd>
 							</dl>
 							<div class="entry-content">
 								<?php if ($this->config->get('cleanintro', 1)) { ?>
-										<p>
-											<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
-										</p>
+									<p>
+										<?php echo $row->content('clean', $this->config->get('introlength', 300)); ?>
+									</p>
 								<?php } else { ?>
-										<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
+									<?php echo $row->content('parsed', $this->config->get('introlength', 300)); ?>
 								<?php } ?>
 							</div>
 						</article>
@@ -292,58 +296,58 @@ $this->css()
 				</ol>
 			</div>
 
-		<?php
-		$limit = $this->filters['limit'];
-		$this->filters['limit'] = 5;
-		?>
+			<?php
+			$limit = $this->filters['limit'];
+			$this->filters['limit'] = 5;
+			?>
 			<div class="container blog-popular-entries">
 				<h4><?php echo JText::_('PLG_GROUPS_BLOG_POPULAR_ENTRIES'); ?></h4>
-			<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
-				<ol>
-				<?php foreach ($popular as $row) { ?>
-					<?php
-						if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
-						{
-							continue;
-						}
-					?>
-					<li>
-						<a href="<?php echo JRoute::_($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-						</a>
-					</li>
+				<?php if ($popular = $this->model->entries('popular', $this->filters)) { ?>
+					<ol>
+					<?php foreach ($popular as $row) { ?>
+						<?php
+							if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+							{
+								continue;
+							}
+						?>
+						<li>
+							<a href="<?php echo JRoute::_($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							</a>
+						</li>
+					<?php } ?>
+					</ol>
+				<?php } else { ?>
+					<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
-				</ol>
-			<?php } else { ?>
-				<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-			<?php } ?>
 			</div><!-- / .blog-popular-entries -->
 
 			<div class="container blog-recent-entries">
 				<h4><?php echo JText::_('PLG_GROUPS_BLOG_RECENT_ENTRIES'); ?></h4>
-			<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
-				<ol>
-				<?php foreach ($recent as $row) { ?>
-					<?php
-						if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
-						{
-							continue;
-						}
-					?>
-					<li>
-						<a href="<?php echo JRoute::_($row->link()); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-						</a>
-					</li>
+				<?php if ($recent = $this->model->entries('recent', $this->filters)) { ?>
+					<ol>
+					<?php foreach ($recent as $row) { ?>
+						<?php
+							if (!$row->isAvailable() && $row->get('created_by') != JFactory::getUser()->get('id'))
+							{
+								continue;
+							}
+						?>
+						<li>
+							<a href="<?php echo JRoute::_($row->link()); ?>">
+								<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							</a>
+						</li>
+					<?php } ?>
+					</ol>
+				<?php } else { ?>
+					<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
 				<?php } ?>
-				</ol>
-			<?php } else { ?>
-				<p><?php echo JText::_('PLG_GROUPS_BLOG_NO_ENTRIES_FOUND'); ?></p>
-			<?php } ?>
 			</div><!-- / .blog-recent-entries -->
-		<?php
-		$this->filters['limit'] = $limit;
-		?>
+			<?php
+			$this->filters['limit'] = $limit;
+			?>
 		</aside><!-- / .aside -->
 	</section>
 </form><!-- /.main -->

@@ -179,13 +179,25 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 							</div><!-- / .actions -->
 						</div><!-- / .meta -->
 						<div class="convo attribution reposted">
-							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator('name'))); ?>" class="img-link">
-								<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($row->creator('name')))); ?>" />
-							</a>
-							<p>
-								<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
-									<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
+							<?php
+							$name = $this->escape(stripslashes($row->creator('name')));
+							if ($row->creator('public')) { ?>
+								<a href="<?php echo JRoute::_($row->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
+									<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 								</a>
+							<?php } else { ?>
+								<span class="img-link">
+									<img src="<?php echo $row->creator()->getPicture(); ?>" alt="<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+								</span>
+							<?php } ?>
+							<p>
+								<?php if ($row->creator('public')) { ?>
+									<a href="<?php echo JRoute::_($row->creator()->getLink()); ?>">
+										<?php echo $name; ?>
+									</a>
+								<?php } else { ?>
+									<?php echo $name; ?>
+								<?php } ?>
 								onto
 								<a href="<?php echo JRoute::_($row->link()); ?>">
 									<?php echo $this->escape(stripslashes($row->get('title'))); ?>

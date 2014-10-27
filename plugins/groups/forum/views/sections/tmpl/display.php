@@ -242,8 +242,11 @@ if ($this->config->get('access-manage-section')) {
 				$lname = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 				if (!$post->get('anonymous'))
 				{
-					//$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $post->creator('id')) . '">' . $this->escape(stripslashes($post->creator('name'))) . '</a>';
-					$lname = $this->escape(stripslashes($post->creator('name')));
+					$lname = $this->escape(stripslashes($post->creator('name', $lname)));
+					if ($post->creator('public'))
+					{
+						$lname = '<a href="' . JRoute::_($post->creator()->getLink()) . '">' . $lname . '</a>';
+					}
 				}
 				foreach ($this->sections as $section)
 				{

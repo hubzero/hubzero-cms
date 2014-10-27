@@ -6,10 +6,13 @@ defined('_JEXEC') or die('Restricted access');
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
 	$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
-
 	if (!$this->comment->get('anonymous'))
 	{
-		$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $this->escape(stripslashes($this->comment->creator('name'))) . '</a>';
+		$name = $this->escape(stripslashes($this->comment->creator()->get('name', $name)));
+		if ($this->comment->creator()->get('public'))
+		{
+			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
+		}
 	}
 
 	if ($this->comment->isReported())
@@ -31,9 +34,9 @@ defined('_JEXEC') or die('Restricted access');
 				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_GROUPS_BLOG_PERMALINK'); ?>">
 					<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span>
-					<span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></time></span>
+					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
 					<span class="comment-date-on"><?php echo JText::_('PLG_GROUPS_BLOG_ON'); ?></span>
-					<span class="date"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo JHTML::_('date', $this->comment->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time></span>
+					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
 					<?php if ($this->comment->wasModified()) { ?>
 						&mdash; <?php echo JText::_('PLG_GROUPS_BLOG_EDITED'); ?>
 						<span class="comment-date-at"><?php echo JText::_('PLG_GROUPS_BLOG_AT'); ?></span> 

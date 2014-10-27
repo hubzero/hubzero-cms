@@ -130,24 +130,30 @@ $this->css()
 			</div>
 
 			<?php
-			$author = \Hubzero\User\Profile::getInstance($this->row->get('created_by'));
-			if (is_object($author) && $author->get('name'))
+			if ($name = $this->row->creator()->get('name'))
 			{
+				$name = $this->escape(stripslashes($name));
 			?>
 			<div class="entry-author">
 				<h3><?php echo JText::_('PLG_GROUPS_BLOG_ABOUT_AUTHOR'); ?></h3>
-				<p class="entry-author-photo"><img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($author, 0); ?>" alt="" /></p>
+				<p class="entry-author-photo">
+					<img src="<?php echo $this->row->creator('picture'); ?>" alt="" />
+				</p>
 				<div class="entry-author-content">
 					<h4>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->row->get('created_by')); ?>">
-							<?php echo $this->escape(stripslashes($author->get('name'))); ?>
-						</a>
+						<?php if ($this->row->creator()->get('public')) { ?>
+							<a href="<?php echo JRoute::_($this->row->creator()->getLink()); ?>">
+								<?php echo $name; ?>
+							</a>
+						<?php } else { ?>
+							<?php echo $name; ?>
+						<?php } ?>
 					</h4>
 					<p class="entry-author-bio">
-						<?php if ($author->get('bio')) { ?>
-							<?php echo $author->getBio('parsed', 300); ?>
+						<?php if ($this->row->creator('bio')) { ?>
+							<?php echo $this->row->creator()->getBio('parsed', 300); ?>
 						<?php } else { ?>
-							<?php echo JText::_('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?>
+							<em><?php echo JText::_('PLG_GROUPS_BLOG_AUTHOR_BIO_BLANK'); ?></em>
 						<?php } ?>
 					</p>
 				</div>
@@ -262,10 +268,10 @@ $this->css()
 							$name = JText::_('PLG_GROUPS_BLOG_ANONYMOUS');
 							if (!$replyto->get('anonymous'))
 							{
-								$xuser = \Hubzero\User\Profile::getInstance($replyto->get('created_by'));
-								if (is_object($xuser) && $xuser->get('name'))
+								$name = $this->escape(stripslashes($replyto->creator('name', $name)));
+								if ($replyto->creator('public'))
 								{
-									$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $replyto->get('created_by')) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
+									$name = '<a href="' . JRoute::_($replyto->creator()->getLink()) . '">' . $name . '</a>';
 								}
 							}
 					?>

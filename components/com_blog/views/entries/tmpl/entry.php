@@ -331,10 +331,10 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 						$name = JText::_('COM_BLOG_ANONYMOUS');
 						if (!$replyto->get('anonymous'))
 						{
-							$xuser = \Hubzero\User\Profile::getInstance($replyto->get('created_by'));
-							if (is_object($xuser) && $xuser->get('name'))
+							$name = $this->escape(stripslashes($replyto->creator('name', $name)));
+							if ($replyto->creator('public'))
 							{
-								$name = '<a href="'.JRoute::_('index.php?option=com_members&id=' . $replyto->get('created_by')) . '">' . stripslashes($xuser->get('name')) . '</a>';
+								$name = '<a href="' . JRoute::_($replyto->creator()->getLink()) . '">' . $name . '</a>';
 							}
 						}
 					?>

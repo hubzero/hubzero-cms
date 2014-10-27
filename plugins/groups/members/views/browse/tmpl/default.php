@@ -259,7 +259,8 @@ $option = 'com_groups';
 									break;
 								}
 
-								if (is_object($u) && $juser->get('id') == $u->get('uidNumber')) {
+								if (is_object($u) && $juser->get('id') == $u->get('uidNumber'))
+								{
 									$cls .= ' me';
 								}
 						?>
@@ -277,7 +278,7 @@ $option = 'com_groups';
 									<span class="status"><?php echo JText::_('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
 								<?php } else { ?>
 									<span class="name">
-										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $u->get('uidNumber')); ?>">
+										<a href="<?php echo JRoute::_($u->getLink()); ?>">
 											<?php echo $this->escape(stripslashes($u->get('surname')) . ', ' . stripslashes($u->get('givenName'))); ?>
 										</a>
 									</span>
@@ -297,11 +298,11 @@ $option = 'com_groups';
 									if ($roles) {
 										$html .= '<strong>' . JText::_('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
 										foreach ($roles as $role) {
-											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['name'].'</a>';
+											$all_roles .= ', <span><a href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&filter='.$this->filter.'&role_filter='.$role['id']).'">'.$role['name'].'</a>';
 
 											if ($this->authorized == 'manager') {
 												if ($this->membership_control == 1) {
-													$all_roles .= '<span class="delete-role"><a href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&action=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
+													$all_roles .= '<span class="delete-role"><a href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=deleterole&uid='.$u->get('uidNumber').'&role='.$role['id']).'">x</a></span></span>';
 												}
 											} else {
 												$all_roles .= '</span>';
@@ -312,7 +313,7 @@ $option = 'com_groups';
 
 										if ($this->authorized == 'manager') {
 											if ($this->membership_control == 1) {
-												$html .= ', <a class="assign-role" href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
+												$html .= ', <a class="assign-role" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
 											}
 										}
 
@@ -322,7 +323,7 @@ $option = 'com_groups';
 										if (($this->authorized == 'manager' || $this->authorized == 'admin') && !$roles) {
 											$html .= '<strong>' . JText::_('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
 											$html .= '<span class="roles-list" id="roles-list-'.$u->get('uidNumber').'"></span>';
-											$html .= ' <a class="assign-role" href="'.JRoute::_('index.php?option=com_groups&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
+											$html .= ' <a class="assign-role" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=members&action=assignrole&uid='.$u->get('uidNumber')).'">' . JText::_('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
 										}
 									}
 									$html .= '</span>';
