@@ -39,69 +39,68 @@ use Hubzero\Utility\String;
  */
 class Profile extends Object
 {
-	// properties
-
+	// Properties
 
 	/**
-	 * Description for 'uidNumber'
+	 * ID (primary key)
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $uidNumber = null;
 
 	/**
-	 * Description for 'name'
+	 * Name
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $name = null;
 
 	/**
-	 * Description for 'username'
+	 * Username
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $username = null;
 
 	/**
-	 * Description for 'email'
+	 * Email address
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $email = null;
 
 	/**
-	 * Description for 'registerDate'
+	 * Timestamp for registration date
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $registerDate = null;
 
 	/**
 	 * Description for 'gidNumber'
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $gidNumber = null;
 
 	/**
-	 * Description for 'homeDirectory'
+	 * System home directory for the user
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $homeDirectory = null;
 
 	/**
 	 * Description for 'loginShell'
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $loginShell = null;
 
 	/**
 	 * Description for 'ftpShell'
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $ftpShell = null;
 
@@ -115,231 +114,232 @@ class Profile extends Object
 	/**
 	 * Description for 'shadowExpire'
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $shadowExpire = null;
 
 	/**
 	 * Description for 'gid'
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $gid = null;
 
 	/**
-	 * Description for 'orgtype'
+	 * Organization type
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $orgtype = null;
 
 	/**
-	 * Description for 'organization'
+	 * Organization
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $organization = null;
 
 	/**
-	 * Description for 'countryresident'
+	 * Two-letter code for 'Country of residence'
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $countryresident = null;
 
 	/**
-	 * Description for 'countryorigin'
+	 * Two-letter code for 'Country of origin'
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $countryorigin = null;
 
 	/**
-	 * Description for 'gender'
+	 * Gender
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $gender = null;
 
 	/**
-	 * Description for 'url'
+	 * URL
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $url = null;
 
 	/**
-	 * Description for 'reason'
+	 * Reason (for getting an account)
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $reason = null;
 
 	/**
-	 * Description for 'mailPreferenceOption'
+	 * Receive email updates form the site?
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $mailPreferenceOption = -1;
 
 	/**
-	 * Description for 'usageAgreement'
+	 * Agreed to Terms of Service?
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $usageAgreement = null;
 
 	/**
-	 * Description for 'jobsAllowed'
+	 * Number of tool jobs allowed
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $jobsAllowed = null;
 
 	/**
-	 * Description for 'modifiedDate'
+	 * Timestamp for last time profile was modified
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $modifiedDate = null;
 
 	/**
-	 * Description for 'emailConfirmed'
+	 * Email address confirmed?
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $emailConfirmed = null;
 
 	/**
-	 * Description for 'regIP'
+	 * Registration IP
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $regIP = null;
 
 	/**
-	 * Description for 'regHost'
+	 * Registration host
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $regHost = null;
 
 	/**
-	 * Description for 'nativeTribe'
+	 * Native tribe
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $nativeTribe = null;
 
 	/**
-	 * Description for 'phone'
+	 * Phone number
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $phone = null;
 
 	/**
-	 * Description for 'proxyPassword'
+	 * Password from proxy creation
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $proxyPassword = null;
 
 	/**
-	 * Description for 'proxyUidNumber'
+	 * User ID from proxy creation
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $proxyUidNumber = null;
 
 	/**
-	 * Description for 'givenName'
+	 * Given name (first name)
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $givenName = null;
 
 	/**
-	 * Description for 'middleName'
+	 * Middle name
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $middleName = null;
 
 	/**
-	 * Description for 'surname'
+	 * Surname (last/family name)
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $surname = null;
 
 	/**
-	 * Description for 'picture'
+	 * Picture
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $picture = null;
 
 	/**
-	 * Description for 'vip'
+	 * VIP status?
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $vip = null;
 
 	/**
-	 * Description for 'public'
+	 * Public profile?
 	 *
-	 * @var unknown
+	 * @var integer
 	 */
 	private $public = null;
 
 	/**
-	 * Description for 'params'
+	 * Parameters
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $params = null;
 
 	/**
-	 * Description for 'note'
+	 * Notes
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $note = null;
 
 	/**
-	 * Description for 'orcid'
+	 * ORCID
+	 * http://orcid.org
 	 *
-	 * @var object
+	 * @var string
 	 */
 	private $orcid = null;
 
-	// multi-value properties stored in auxilliary tables
+	// Multi-value properties stored in auxilliary tables
 
 	/**
-	 * Description for '_auxs_bio'
+	 * Profile bio
 	 *
-	 * @var unknown
+	 * @var string
 	 */
 	private $_auxs_bio = null;
 
 	/**
-	 * Description for '_auxv_disability'
+	 * List of diabilities
 	 *
 	 * @var array
 	 */
 	private $_auxv_disability = array();
 
 	/**
-	 * Description for '_auxv_hispanic'
+	 * List of hispanic options
 	 *
 	 * @var array
 	 */
 	private $_auxv_hispanic = array();
 
 	/**
-	 * Description for '_auxv_race'
+	 * List of races
 	 *
 	 * @var array
 	 */
@@ -360,14 +360,14 @@ class Profile extends Object
 	private $_auxv_host = array();
 
 	/**
-	 * Description for '_auxv_edulevel'
+	 * List of Edu levels
 	 *
 	 * @var array
 	 */
 	private $_auxv_edulevel = array();
 
 	/**
-	 * Description for '_auxv_role'
+	 * List of roles
 	 *
 	 * @var array
 	 */
@@ -381,41 +381,40 @@ class Profile extends Object
 	private $_password = null;
 
 	/**
-	 * Description for '_params'
+	 * JRegistry
 	 *
 	 * @var object
 	 */
 	private $_params = null;
 
 	/**
-	 * Short description for 'setError'
-	 * Long description (if any) ...
+	 * Add an error message.
 	 *
-	 * @param string $msg Parameter description (if any) ...
-	 * @return void
+	 * @param   string  $error  Error message.
+	 * @param   string  $key    Specific key to set the value to
+	 * @return  object
 	 */
 	public function setError($error, $key = null)
 	{
 		$bt = debug_backtrace();
 
-		$error = __CLASS__ . "::" . $bt[1]['function'] . "():" . $error;
+		$error = __CLASS__ . '::' . $bt[1]['function'] . '():' . $error;
 
-		array_push($this->_errors, $error);
+		return parent::setError($error, $key);
 	}
 
 	/**
-	 * Short description for 'clear'
-	 * Long description (if any) ...
+	 * Reset all properties, making an empty profile object
 	 *
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean  True
 	 */
 	public function clear()
 	{
 		$classvars = get_class_vars(__CLASS__);
 
-		foreach ($classvars as $property=>$value)
+		foreach ($classvars as $property => $value)
 		{
-			if ('_s_' == substr($property, 0, 3)) // don't touch static variables
+			if ('_s_' == substr($property, 0, 3)) // Don't touch static variables
 			{
 				continue;
 			}
@@ -426,7 +425,7 @@ class Profile extends Object
 
 		$objvars = get_object_vars($this);
 
-		foreach ($objvars as $property=>$value)
+		foreach ($objvars as $property => $value)
 		{
 			if (!array_key_exists($property, $classvars))
 			{
@@ -438,11 +437,10 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for '_mysql_load'
-	 * Long description (if any) ...
+	 * Load a record from the MySQL database
 	 *
-	 * @param mixed $user Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   mixed    $user  Integer (ID) or string (username)
+	 * @return  boolean  True on success, False on error
 	 */
 	private function _mysql_load($user)
 	{
@@ -458,11 +456,11 @@ class Profile extends Object
 		//if (is_numeric($user) && $user >= 0)
 		if (is_numeric($user))
 		{
-			$query = "SELECT * FROM #__xprofiles WHERE uidNumber = " . $db->Quote(intval($user)) . ";";
+			$query = "SELECT * FROM `#__xprofiles` WHERE uidNumber = " . $db->Quote(intval($user)) . ";";
 		}
 		else
 		{
-			$query = "SELECT * FROM #__xprofiles WHERE username = " . $db->Quote($user) . " AND uidNumber>0;";
+			$query = "SELECT * FROM `#__xprofiles` WHERE username = " . $db->Quote($user) . " AND uidNumber>0;";
 		}
 
 		$db->setQuery($query);
@@ -496,7 +494,7 @@ class Profile extends Object
 		{
 			if ('_auxv_' == substr($property, 0, 6) || '_auxs_' == substr($property, 0, 6))
 			{
-				$this->$property = false; // this property is loaded on demand
+				$this->$property = false; // This property is loaded on demand
 			}
 		}
 
@@ -506,15 +504,24 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for '_mysql_author_load'
-	 * Long description (if any) ...
+	 * Load an author record into this profile
 	 *
-	 * @param string $authorid Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   integer  $authorid  Author ID
+	 * @return  boolean  True on success, False on error
 	 */
 	private function _mysql_author_load($authorid)
 	{
-		static $_propertyauthormap = array('uidNumber'=>'id', 'givenName'=>'firstname', 'middleName'=>'middlename', 'surname'=>'lastname', 'organization'=>'org', 'bio'=>'bio', 'url'=>'url', 'picture'=>'picture', 'vip'=>'principal_investigator');
+		static $_propertyauthormap = array(
+			'uidNumber'    => 'id',
+			'givenName'    => 'firstname',
+			'middleName'   => 'middlename',
+			'surname'      => 'lastname',
+			'organization' => 'org',
+			'bio'          => 'bio',
+			'url'          => 'url',
+			'picture'      => 'picture',
+			'vip'          => 'principal_investigator'
+		);
 
 		$db =  \JFactory::getDBO();
 
@@ -653,12 +660,11 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'load'
-	 * Long description (if any) ...
+	 * Load a record
 	 *
-	 * @param unknown $user Parameter description (if any) ...
-	 * @param string $storage Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   mixed    $user     User data
+	 * @param   string   $storage  Storage type
+	 * @return  boolean  True on success, False on error
 	 */
 	public function load($user, $storage = 'mysql')
 	{
@@ -687,11 +693,10 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for '__construct'
-	 * Long description (if any) ...
+	 * Constructor
 	 *
-	 * @param unknown $user Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   mixed    $user  User data
+	 * @return  boolean  True on success, False on error
 	 */
 	public function __construct($user = null)
 	{
@@ -706,8 +711,8 @@ class Profile extends Object
 	/**
 	 * Returns a reference to the global User object, only creating it if it doesn't already exist.
 	 *
-	 * @param mixed $user The user to load - Can be an integer or string
-	 * @return mixed Returns object if valid record found, false if not
+	 * @param   mixed  $id  The user to load - Can be an integer or string
+	 * @return  mixed  Returns object if valid record found, false if not
 	 */
 	public static function getInstance($id = null)
 	{
@@ -758,20 +763,19 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'create'
-	 * Long description (if any) ...
+	 * Create a new entry in the profiles table
 	 *
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean  True on success, False on error
 	 */
 	public function create()
 	{
-		$db =  \JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		$modifiedDate = gmdate('Y-m-d H:i:s');
 
 		if (is_numeric($this->get('uidNumber')))
 		{
-			$query = "INSERT INTO #__xprofiles (uidNumber,username,modifiedDate) VALUE (" . $db->Quote($this->get('uidNumber')) . ',' . $db->Quote($this->get('username')) . ',' . $db->Quote($modifiedDate) . ");";
+			$query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) VALUE (" . $db->Quote($this->get('uidNumber')) . ',' . $db->Quote($this->get('username')) . ',' . $db->Quote($modifiedDate) . ");";
 
 			$db->setQuery($query);
 
@@ -795,7 +799,7 @@ class Profile extends Object
 		{
 			$token = uniqid();
 
-			$query = "INSERT INTO #__xprofiles (uidNumber,username,modifiedDate) SELECT " . "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1)," . $db->Quote($token) . ',' . $db->Quote($modifiedDate) . " FROM #__xprofiles;";
+			$query = "INSERT INTO `#__xprofiles` (uidNumber,username,modifiedDate) SELECT " . "IF(MIN(uidNumber)>0,-1,MIN(uidNumber)-1)," . $db->Quote($token) . ',' . $db->Quote($modifiedDate) . " FROM #__xprofiles;";
 
 			$db->setQuery($query);
 
@@ -806,7 +810,7 @@ class Profile extends Object
 				return false;
 			}
 
-			$query = "SELECT uidNumber from #__xprofiles WHERE username=" . $db->Quote($token) . " AND modifiedDate=" . $db->Quote($modifiedDate);
+			$query = "SELECT uidNumber FROM `#__xprofiles` WHERE username=" . $db->Quote($token) . " AND modifiedDate=" . $db->Quote($modifiedDate);
 
 			$db->setQuery($query);
 
@@ -840,11 +844,10 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'read'
-	 * Long description (if any) ...
+	 * Alias for the load() method
 	 *
-	 * @param boolean $mysqlonly Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   boolean  $instance  The user to load - Can be an integer or string
+	 * @return  boolean  True on success, False on error
 	 */
 	public function read($instance = null)
 	{
@@ -852,11 +855,10 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'update'
-	 * Long description (if any) ...
+	 * Store data to the database record.
+	 * Creates a record if doesn't exist, otherwise updates record.
 	 *
-	 * @param boolean $mysqlonly Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean  True on success, False on error
 	 */
 	public function store()
 	{
@@ -868,11 +870,9 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'update'
-	 * Long description (if any) ...
+	 * Update an existing record
 	 *
-	 * @param boolean $mysqlonly Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean  True on success, False on error
 	 */
 	public function update()
 	{
@@ -887,7 +887,7 @@ class Profile extends Object
 
 		$this->set('modifiedDate', $modifiedDate);
 
-		$query = "UPDATE #__xprofiles SET ";
+		$query = "UPDATE `#__xprofiles` SET ";
 
 		$classvars = get_class_vars(__CLASS__);
 
@@ -1030,14 +1030,13 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'delete'
-	 * Long description (if any) ...
+	 * Delete a record
 	 *
-	 * @return boolean Return description (if any) ...
+	 * @return  boolean  True on success, False on error
 	 */
 	public function delete()
 	{
-		$db =  \JFactory::getDBO();
+		$db = \JFactory::getDBO();
 
 		if (!is_numeric($this->get('uidNumber')))
 		{
@@ -1058,7 +1057,7 @@ class Profile extends Object
 
 			$property = substr($property, 6);
 
-			$query = "DELETE FROM #__xprofiles_$property WHERE uidNumber = '" . $this->get('uidNumber') . "'";
+			$query = "DELETE FROM `#__xprofiles_$property` WHERE uidNumber = " . $db->Quote($this->get('uidNumber'));
 			$db->setQuery($query);
 
 			if (!$db->query())
@@ -1071,7 +1070,7 @@ class Profile extends Object
 			}
 		}
 
-		$query = "DELETE FROM #__xprofiles WHERE uidNumber = '" . $this->get('uidNumber') . "'";
+		$query = "DELETE FROM `#__xprofiles` WHERE uidNumber = " . $db->Quote($this->get('uidNumber'));
 		$db->setQuery($query);
 
 		if (!$db->query())
@@ -1097,9 +1096,9 @@ class Profile extends Object
 	/**
 	 * Get a property's value
 	 *
-	 * @param  string $property Name of the property to retrieve
-	 * @param  mixed  $value    Default value
-	 * @return mixed
+	 * @param   string  $property  Name of the property to retrieve
+	 * @param   mixed   $value     Default value
+	 * @return  mixed
 	 */
 	public function get($property, $default = null)
 	{
@@ -1137,7 +1136,7 @@ class Profile extends Object
 
 			$property_name = substr($property, 6);
 
-			$query = "SELECT $property_name FROM #__xprofiles AS x,#__xprofiles_$property_name AS xp WHERE " . "x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->Quote($this->get('uidNumber')) . " ORDER BY $property_name ASC;";
+			$query = "SELECT $property_name FROM `#__xprofiles` AS x, `#__xprofiles_$property_name` AS xp WHERE x.uidNumber=xp.uidNumber AND xp.uidNumber=" . $db->Quote($this->get('uidNumber')) . " ORDER BY $property_name ASC;";
 
 			$db->setQuery($query);
 
@@ -1175,12 +1174,11 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'set'
-	 * Long description (if any) ...
+	 * Set a property's value
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @param mixed $value Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   string   $property  Property name
+	 * @param   mixed    $value     Property value
+	 * @return  boolean  True on success, False on error
 	 */
 	public function set($property, $value = null)
 	{
@@ -1260,12 +1258,11 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'add'
-	 * Long description (if any) ...
+	 * Add to a list of values for multi-value properties
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @param array $value Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   string   $property  Property name
+	 * @param   array    $value     Property values
+	 * @return  boolean  True on success, False on error
 	 */
 	public function add($property, $value)
 	{
@@ -1315,12 +1312,11 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'remove'
-	 * Long description (if any) ...
+	 * Remove from a list of values for multi-value properties
 	 *
-	 * @param string $property Parameter description (if any) ...
-	 * @param array $value Parameter description (if any) ...
-	 * @return boolean Return description (if any) ...
+	 * @param   string   $property  Property name
+	 * @param   array    $value     Property values
+	 * @return  boolean  True on success, False on error
 	 */
 	public function remove($property, $value)
 	{
@@ -1368,12 +1364,12 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'getParam'
-	 * Long description (if any) ...
+	 * Returns a property of the Params object or 
+	 * the default value if the property is not set.
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param unknown $default Parameter description (if any) ...
-	 * @return object Return description (if any) ...
+	 * @param   string   $key      The name of the property.
+	 * @param   mixed    $default  The default value.
+	 * @return  boolean
 	 */
 	public function getParam($key, $default = null)
 	{
@@ -1381,12 +1377,11 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'setParam'
-	 * Long description (if any) ...
+	 * Modifies a property of the Params object.
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param unknown $value Parameter description (if any) ...
-	 * @return object Return description (if any) ...
+	 * @param   string   $key    The name of the property.
+	 * @param   mixed    $value  The value of the property to set.
+	 * @return  boolean
 	 */
 	public function setParam($key, $value)
 	{
@@ -1394,12 +1389,12 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'defParam'
-	 * Long description (if any) ...
+	 * Sets a default value on the Params object
+	 * if not alreay assigned.
 	 *
-	 * @param unknown $key Parameter description (if any) ...
-	 * @param unknown $value Parameter description (if any) ...
-	 * @return object Return description (if any) ...
+	 * @param   string   $key    The name of the property.
+	 * @param   mixed    $value  The default value.
+	 * @return  boolean
 	 */
 	public function defParam($key, $value)
 	{
@@ -1407,41 +1402,41 @@ class Profile extends Object
 	}
 
 	/**
-	 * Short description for 'getParameters'
-	 * Long description (if any) ...
+	 * Get parameters object
 	 *
-	 * @param boolean $loadsetupfile Parameter description (if any) ...
-	 * @param unknown $path Parameter description (if any) ...
-	 * @return object Return description (if any) ...
+	 * @param   boolean  $loadsetupfile  Load the XML set up file?
+	 * @param   string   $path           Path to parameters XML file
+	 * @return  object   JRegistry
 	 */
 	public function &getParameters($loadsetupfile = false, $path = null)
 	{
 		static $parampath;
 
 		/*
+		// Set a custom parampath if defined
+		if (isset($path))
+		{
+			$parampath = $path;
+		}
 
-                // Set a custom parampath if defined
-                if( isset($path) ) {
-                        $parampath = $path;
-                }
+		// Set the default parampath if not set already
+		if (!isset($parampath))
+		{
+			$parampath = JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_members' . DS . 'models';
+		}
 
-                // Set the default parampath if not set already
-                if( !isset($parampath) ) {
-                        $parampath = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_members'.DS.'models';
-                }
+		if ($loadsetupfile)
+		{
+			$type = str_replace(' ', '_', strtolower($this->usertype));
 
-                if($loadsetupfile)
-                {
-                        $type = str_replace(' ', '_', strtolower($this->usertype));
+			$file = $parampath . DS . $type . '.xml';
+			if (!file_exists($file))
+			{
+				$file = $parampath . DS . 'user.xml';
+			}
 
-                        $file = $parampath.DS.$type.'.xml';
-                        if(!file_exists($file)) {
-                                $file = $parampath.DS.'user.xml';
-                        }
-
-                        $this->_params->loadSetupFile($file);
-                }
-
+			$this->_params->loadSetupFile($file);
+		}
 		*/
 
 		return $this->_params;
@@ -1450,7 +1445,7 @@ class Profile extends Object
 	/**
 	 * Set parameters
 	 *
-	 * @param   unknown $params Parameter description (if any) ...
+	 * @param   object  $params  Parameters object to set
 	 * @return  void
 	 */
 	public function setParameters($params)
@@ -1468,7 +1463,7 @@ class Profile extends Object
 	public static function getGroupMemberRoles($uid, $gid)
 	{
 		$db = \JFactory::getDBO();
-		$sql = "SELECT r.id, r.name, r.permissions FROM #__xgroups_roles as r, #__xgroups_member_roles as m WHERE r.id=m.roleid AND m.uidNumber='" . $uid . "' AND r.gidNumber='" . $gid . "'";
+		$sql = "SELECT r.id, r.name, r.permissions FROM `#__xgroups_roles` as r, `#__xgroups_member_roles` as m WHERE r.id=m.roleid AND m.uidNumber=" . $db->Quote($uid) . " AND r.gidNumber=" . $db->Quote($gid);
 		$db->setQuery($sql);
 
 		return $db->loadAssocList();
@@ -1477,19 +1472,19 @@ class Profile extends Object
 	/**
 	 * Check to see if user has permission to perform task
 	 *
-	 * @param     $group     \Hubzero\User\Group Object
-	 * @param     $action    Group Action to perform
-	 * @return    bool
+	 * @param   object   $group   \Hubzero\User\Group
+	 * @param   string   $action  Group Action to perform
+	 * @return  boolean
 	 */
 	public static function userHasPermissionForGroupAction($group, $action)
 	{
-		//get user roles
+		// Get user roles
 		$roles = self::getGroupMemberRoles(
 			\JFactory::getUser()->get('id'),
 			$group->get('gidNumber')
 		);
 
-		// check to see if any of our roles for user has permission for action
+		// Check to see if any of our roles for user has permission for action
 		foreach ($roles as $role)
 		{
 			$permissions = json_decode($role['permissions']);
@@ -1514,7 +1509,13 @@ class Profile extends Object
 
 		if (!isset($groups))
 		{
-			$groups = array('applicants'=>array(), 'invitees'=>array(), 'members'=>array(), 'managers'=>array(), 'all'=>array());
+			$groups = array(
+				'applicants' => array(),
+				'invitees'   => array(),
+				'members'    => array(),
+				'managers'   => array(),
+				'all'        => array()
+			);
 			$groups['all'] = Helper::getGroups($this->get('uidNumber'), 'all', 1);
 
 			if ($groups['all'])
@@ -1558,9 +1559,9 @@ class Profile extends Object
 	/**
 	 * Get the content of the entry
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @param   string   $as       Format to return state in [text, number]
+	 * @param   integer  $shorten  Number of characters to shorten text to
+	 * @return  string
 	 */
 	public function getBio($as='parsed', $shorten=0)
 	{
@@ -1612,9 +1613,9 @@ class Profile extends Object
 	/**
 	 * Get a user's picture
 	 *
-	 * @param    integer $anonymous Is user anonymous?
-	 * @param    boolean $thumbit   Show thumbnail or full picture?
-	 * @return   string
+	 * @param   integer  $anonymous  Is user anonymous?
+	 * @param   boolean  $thumbit    Show thumbnail or full picture?
+	 * @return  string
 	 */
 	public function getPicture($anonymous=0, $thumbit=true)
 	{
