@@ -158,14 +158,14 @@ class Scaffolding extends Base implements CommandInterface
 			     ->addSpacer()
 			     ->addLine('You can specify your name and email via:')
 			     ->addLine(
-					'muse configure --name="John Doe"',
+					'muse configuration set --user_name="John Doe"',
 					array(
 						'indentation' => '2',
 						'color'       => 'blue'
 					)
 				)
 				->addLine(
-					'muse configure --email=john.doe@gmail.com',
+					'muse configuration set --user_email=john.doe@gmail.com',
 					array(
 						'indentation' => '2',
 						'color'       => 'blue'
