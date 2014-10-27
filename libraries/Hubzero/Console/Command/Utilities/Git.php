@@ -69,18 +69,26 @@ class Git
 	/**
 	 * Constructor
 	 *
-	 * @param  (string) $root - git root directory (not including .git suffix)
+	 * @param  string $root the git root directory (not including .git suffix)
+	 * @param  string $source the upstream repository
 	 * @return void
 	 **/
-	public function __construct($root)
+	public function __construct($root, $source=null)
 	{
 		$this->dir      = $root . DS . '.git';
 		$this->workTree = $root;
 		$this->baseCmd  = "git --git-dir={$this->dir} --work-tree={$this->workTree}";
 
 		// Save upstream branch name
-		$this->upstream = $this->call('rev-parse', array('--abbrev-ref', '--symbolic-full-name', '@{u}'));
-		$this->upstream = trim($this->upstream);
+		if (!isset($source))
+		{
+			$this->upstream = $this->call('rev-parse', array('--abbrev-ref', '--symbolic-full-name', '@{u}'));
+			$this->upstream = trim($this->upstream);
+		}
+		else
+		{
+			$this->upstream = trim($source);
+		}
 	}
 
 	/**
@@ -309,17 +317,26 @@ class Git
 	 *
 	 * @param  (bool)   $dryRun     - whether or not to do the run, or just check what's incoming
 	 * @param  (bool)   $allowNonFf - whether or not to allow non fast forward pulls (i.e. merges)
+	 * @param  (string) $source     - where this repository should pull from (this should be a valid git remote/branch)
 	 * @return (string) $return     - response text to return
 	 **/
-	public function update($dryRun=true, $allowNonFf=false)
+	public function update($dryRun=true, $allowNonFf=false, $source=null)
 	{
 		if (!$dryRun)
 		{
 			// Move to the working tree dir (git 1.8.5 has a built in option for this...but we're still generally running 1.7.x)
 			chdir($this->workTree);
 
-			// Add base arguments...shhh, quiet hours
-			$arguments = array('-q');
+			$arguments = array();
+
+			if (isset($source))
+			{
+				$arguments[] = $source;
+			}
+			else
+			{
+				$arguments[] = $this->upstream;
+			}
 
 			// Add fast forward only arg if applicable
 			if (!$allowNonFf)
@@ -339,7 +356,7 @@ class Git
 			putenv("GIT_MERGE_AUTOEDIT=no");
 
 			// Now do the actual pull
-			$response = $this->call('pull', $arguments);
+			$response = $this->call('merge', $arguments);
 
 			// Now clear the var or reset it if it had been previously set
 			if ($autoedit)
@@ -380,6 +397,7 @@ class Git
 		{
 			// Be sure to fetch so we known we're up-to-date
 			$this->call('fetch');
+			$this->call('remote update');
 
 			// Build arguments
 			$arguments = array(
