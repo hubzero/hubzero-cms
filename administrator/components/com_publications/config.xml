@@ -74,6 +74,10 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
+		<field name="format_authors" type="list" default="0" label="Format author display" description="Format list of authors on publication page">
+			<option value="0">Unformatted</option>
+			<option value="1">APA format</option>
+		</field>
 		<field name="show_ranking" type="list" default="0" label="Ranking" description="Show/Hide the ranking">
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
