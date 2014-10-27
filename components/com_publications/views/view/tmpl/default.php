@@ -111,7 +111,7 @@ if ($experiment == false)
 	if ($params->get('show_authors')) {
 		if ($authors) {
 			$html .= '<div id="authorslist">'."\n";
-			$html .= $helper->showContributors( $authors, true, false )."\n";
+			$html .= $helper->showContributors( $authors, true, false, false, $params->get('format_authors', 0) )."\n";
 			$html .= '</div>'."\n";
 		}
 	}

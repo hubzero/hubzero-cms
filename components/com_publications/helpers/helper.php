@@ -299,7 +299,7 @@ class PublicationHelper extends JObject
 	 *
 	 * @return     string
 	 */
-	public function showContributors( $contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false)
+	public function showContributors( $contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false, $format = false)
 	{
 		if (!$contributors)
 		{
@@ -333,6 +333,14 @@ class PublicationHelper extends JObject
 				{
 					$name = $contributor->p_name;
 				}
+				if ($format)
+				{
+					$nameParts    = explode(" ", $name);
+					$name = end($nameParts);
+					$name.= count($nameParts) > 1 ? ', ' . strtoupper(substr($nameParts[0], 0, 1)) . '.' : '';
+					$name.= count($nameParts) > 2 ? ' ' . strtoupper(substr($nameParts[1], 0, 1)) . '.' : '';
+				}
+
 				if (!$contributor->organization)
 				{
 					$contributor->org = $contributor->p_organization;
