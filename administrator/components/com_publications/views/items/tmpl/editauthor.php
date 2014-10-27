@@ -114,7 +114,7 @@ function submitbutton(pressbutton)
 					<tr>
 						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_USER_ID'); ?>:</label></td>
 						<td>
-							<?php if (!$this->author->id) { ?>
+							<?php if (!$this->author->id || !$this->author->user_id) { ?>
 							<input type="text" name="uid" value="<?php echo $this->author->user_id; ?>" size="25" />
 							<?php } else { ?>
 								<input type="hidden" name="uid" value="<?php echo $this->author->user_id; ?>" />
@@ -138,6 +138,12 @@ function submitbutton(pressbutton)
 						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION'); ?>:  <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label></td>
 						<td>
 							<input type="text" name="organization" value="<?php echo $this->author->organization; ?>" size="25" />
+						</td>
+					</tr>
+					<tr>
+						<td class="key"><label><?php echo JText::_('COM_PUBLICATIONS_FIELD_AUTHOR_CREDIT'); ?>:</label></td>
+						<td>
+							<input type="text" name="credit" value="<?php echo $this->author->credit; ?>" size="25" />
 						</td>
 					</tr>
 				</tbody>

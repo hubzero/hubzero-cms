@@ -337,6 +337,11 @@
 	.narrow {
 		width: 5%;
 	}
+	.tip {
+		font-size: 85%;
+		color: #999;
+		margin: 0.5em 0;
+	}
 
 /* Publication editing
 --------------------------------------------- */

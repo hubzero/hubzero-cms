@@ -32,6 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $htmlHelper	  = new PublicationsAdminHtml();
 
+$this->css();
+$this->js();
+
 // Get hub config
 $juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
@@ -123,6 +126,11 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	if (pressbutton == 'saveorder') {
+		submitform( 'saveauthororder' );
+		return;
+	}
+
 	if (pressbutton == 'publish') {
 		form.admin_action.value = 'publish';
 		submitform( 'save' );
@@ -191,8 +199,7 @@ function popratings()
 			<div class="input-wrap">
 				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
 				<?php
-					$editor = JFactory::getEditor();
-					echo $editor->display('description', $this->escape(stripslashes($this->row->description)), '', '', '40', '10', false, 'pub_description');
+					echo JFactory::getEditor()->display('description', $this->escape(stripslashes($this->row->description)), '', '', '40', '10', false, 'pub_description');
 				?>
 			</div>
 		</fieldset>
@@ -205,7 +212,11 @@ function popratings()
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
 			<div class="input-wrap">
-				<textarea name="release_notes" id="release_notes" cols="40" rows="5" class="pubinput"><?php echo $this->row->release_notes; ?></textarea>
+				<label><?php echo JText::_('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
+				<?php
+					echo JFactory::getEditor()->display('release_notes', $this->escape(stripslashes($this->row->release_notes))
+						, '', '', '20', '10', false
+						, 'notes', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
 	</fieldset>
 	<fieldset class="adminform">
@@ -239,7 +250,7 @@ function popratings()
 		</div>
 		<div class="input-wrap">
 			<label for="license_text"><?php echo JText::_('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
-			<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo $this->row->license_text; ?></textarea>
+			<textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo preg_replace("/\r\n/", "\r", trim($this->row->license_text)); ?></textarea>
 		</div>
 		</fieldset>
 	</fieldset>

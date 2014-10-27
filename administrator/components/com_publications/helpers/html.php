@@ -383,15 +383,13 @@ class PublicationsAdminHtml
 	}
 
 	/**
-	 * Short description for 'selectAuthorsNoEdit'
-	 *
-	 * Long description (if any) ...
+	 * Authors list
 	 *
 	 * @param      array $authnames Parameter description (if any) ...
 	 * @param      string $option Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public static function selectAuthorsNoEdit($authnames, $option)
+	public static function selectAuthors($authnames, $option)
 	{
 		$authIDs = array();
 		$html = '';
@@ -410,8 +408,8 @@ class PublicationsAdminHtml
 					? htmlentities($authname->credit,ENT_COMPAT,'UTF-8') : '';
 				$userid = $authname->user_id ? $authname->user_id : 'unregistered';
 
-				$html .= "\t".'<li id="author_'.$authname->id.'">'
-					. $i . '. ' . $name . ' (' . $userid . ')';
+				$html .= "\t".'<li id="author_'.$authname->id.'" class="pick reorder">'
+					. '<span class="ordernum">' . $i . '</span>. ' . $name . ' (' . $userid . ')';
 				$html .= $org ? ' - <span class="org">' . $org . '</span>' : '';
 				$html .= ' <a class="editauthor" href="index.php?option=' . $option . '&controller=items&task=editauthor&author=' . $authname->id .'" >' . JText::_('COM_PUBLICATIONS_EDIT') . '</a> ';
 				$html .= ' <a class="editauthor" href="index.php?option=' . $option . '&controller=items&task=deleteauthor&aid=' . $authname->id .'"  > ' . JText::_('COM_PUBLICATIONS_DELETE') . '</a> ';
@@ -427,6 +425,11 @@ class PublicationsAdminHtml
 		else
 		{
 			$html.= '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_AUTHORS') . '</p>';
+		}
+		if (count($authnames) > 1) {
+			$html.= '<input type="hidden" value="" name="list" id="neworder" />';
+			$html.= '<p class="tip">' . JText::_('COM_PUBLICATIONS_AUTHORS_REORDER_TIP') . '</p>';
+			$html.= '<input type="button" onclick="submitbutton(\'saveorder\');" class="btn" value="Save Order" id="saveorder" />';
 		}
 		return $html;
 	}

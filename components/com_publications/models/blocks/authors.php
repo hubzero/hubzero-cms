@@ -517,6 +517,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$org 		= JRequest::getVar( 'organization', '', 'post' );
 		$credit 	= JRequest::getVar( 'credit', '', 'post' );
 		$sendInvite = 0;
+		$code 		= ProjectsHtml::generateCode();
 
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email = preg_match($regex, $email) ? $email : '';
@@ -542,6 +543,11 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
 		}
+		else
+		{
+			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ERROR_SAVING_AUTHOR_INFO'));
+			return false;
+		}
 
 		// Update project owner (invited)
 		if ($email && !$row->user_id && $objO->load($row->project_owner_id))
@@ -553,18 +559,43 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 
 			if ($invitee && $invitee != $row->project_owner_id)
 			{
-				// Stop
+				// Stop, must have owner record
 			}
 			elseif (in_array($user, $owners))
 			{
-				// Stop
+				// Stop, already in team
 			}
 			elseif ($email != $objO->invited_email)
 			{
 				$objO->invited_email = $email;
-				$objO->userid 		 = $objO->userid ? $objO->userid : $user;
+				$objO->invited_name  = $row->name;
+				$objO->userid 		 = $row->user_id;
 				$sendInvite 		 = 1;
+				$objO->invited_code = $code;
+				$objO->store();
 			}
+		}
+
+		// (Re)send email invitation
+		if ($sendInvite && $email)
+		{
+			// Get team plugin
+			JPluginHelper::importPlugin( 'projects', 'team' );
+			$dispatcher = JDispatcher::getInstance();
+
+			// Plugin params
+			$plugin_params = array(
+				0,
+				$email,
+				$code,
+				2,
+				$pub->_project,
+				'com_projects'
+			);
+
+			// Send invite
+			$output = $dispatcher->trigger( 'sendInviteEmail', $plugin_params);
+			$result = json_decode($output[0]);
 		}
 
 		return true;
