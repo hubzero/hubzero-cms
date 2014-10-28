@@ -29,6 +29,10 @@ HUB.Publications = {
 	initialize: function() {
 		var $ = this.jQuery;
 
+		$('#filter-type').on('change', function(e){
+			$('#resourcesform').submit();
+		});
+
 		$('a.play').fancybox({
 			type: 'ajax',
 			width: 800,

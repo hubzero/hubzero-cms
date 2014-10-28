@@ -39,19 +39,19 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 function PublicationsBuildRoute(&$query)
 {
-    $segments = array();
+	$segments = array();
 
 	if (!empty($query['controller']))
 	{
 		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
-    if (!empty($query['id']))
+	if (!empty($query['id']))
 	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-    if (!empty($query['alias']))
+	if (!empty($query['alias']))
 	{
 		$segments[] = $query['alias'];
 		unset($query['alias']);
@@ -92,7 +92,7 @@ function PublicationsBuildRoute(&$query)
 		unset($query['file']);
 	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
@@ -161,7 +161,7 @@ function PublicationsParseRoute($segments)
 		$t = new PublicationCategory( $database );
 		$cats = $t->getCategories();
 
-		foreach($cats as $cat)
+		foreach ($cats as $cat)
 		{
 			if (trim($segments[0]) == $cat->url_alias)
 			{
@@ -213,7 +213,16 @@ function PublicationsParseRoute($segments)
 			case 'feed':     $vars['task'] = 'feed';     break;
 			case 'license':  $vars['task'] = 'license';  break;
 
-			default: $vars['active'] = $segments[1]; 	 break;
+			default:
+				if ($segments[0] == 'browse')
+				{
+					$vars['category'] = $segments[1];
+				}
+				else
+				{
+					$vars['active'] = $segments[1];
+				}
+			break;
 		}
 	}
 

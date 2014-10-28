@@ -30,6 +30,40 @@
 	.com_publications .aside li a:hover {
 		color: #000;
 	}
+	
+/* Item listing */
+	.com_publications .container .container-block {
+		margin: 0;
+		padding: 0;
+		border: 2px solid #e9e9e9;
+		background: #fff;
+	}
+	.com_publications .container .category-wrap {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	.com_publications .container .results {
+		border: none;
+		background: #fff;
+		margin: 0;
+		padding: 0;
+		clear: left;
+	}
+	.com_publications .container .results li {
+		padding: 1.5em 1em;
+		border-top: 1px solid #efefef;
+		border-bottom: none;
+	}
+	.com_publications .container .results p {
+		margin-left: 1em;
+	}
+	.com_publications .container .results p.title {
+		margin-left: 0;
+	}
+	.com_publications .filter-options {
+		width: 60%;
+	}
 
 /* Publication category icons */
 	.com_publications div.extracontent li a:before {
@@ -886,21 +920,22 @@
 ---------------------------------------------------------------*/
 	#publications {
 		margin: 0;
-		padding: 0;
+		padding: 0 1em;
 		border: none;
 		border-bottom: 1px solid #fff;
 		}
 	#publications img {
 		float: left;
-		margin: 0 1em 1em 0;
-		}
+		margin: 1em 1em 1em 0;
+		max-width: 50px;
+	}
 	#publications li p {
 		text-indent: 0;
 		}
 	#publications li {
 		clear: left;
-		padding: 1em 0;
-		border-top: 1px solid #fff;
+		padding: 1.5em 0;
+		border-top: 1px solid #EFEFEF;
 		}
 	#publications li .details {
 		font-size: 90%;
@@ -1860,4 +1895,17 @@
 /* Misc */
 	.hidden {
 		display: none;
+	}
+/* Contribute */
+	h3.prov-header, #mypub h3, #abox-content h3.prov-header {
+		background: #f9f6ec;
+		padding: 0.2em;
+		margin: 0;
+		width: 100%;
+		border: none;
+		font-size: 100%;
+	}
+	h3.prov-header a {
+		color: #000;
+		border-bottom: 1px dotted #000 !important;
 	}

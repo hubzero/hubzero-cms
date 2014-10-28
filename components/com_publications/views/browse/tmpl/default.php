@@ -27,25 +27,106 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $database = JFactory::getDBO();
 
-$sortbys = array();
-if ($this->config->get('show_ranking')) {
-	$sortbys['ranking'] = JText::_('COM_PUBLICATIONS_RANKING');
-}
-$sortbys['date'] = JText::_('Recent');
-$sortbys['date_oldest'] = JText::_('Oldest');
-$sortbys['title'] = JText::_('COM_PUBLICATIONS_TITLE');
-
+$this->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="post">
+<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="get">
 	<section class="main section">
 		<div class="subject">
+			<div class="container data-entry">
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<fieldset class="entry-search">
+					<legend></legend>
+					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+					<input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
+				</fieldset>
+				<?php if ($this->filters['tag']) { ?>
+					<fieldset class="applied-tags">
+						<ol class="tags">
+						<?php
+						$url  = 'index.php?option=' . $this->option . '&task=browse';
+						$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+						$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
+						$url .= ($this->filters['category']   ? '&category=' . $this->escape($this->filters['category'])     : '');
+
+						$rt = new PublicationTags($database);
+						$tags = $rt->parseTopTags($this->filters['tag']);
+						foreach ($tags as $tag)
+						{
+							?>
+							<li>
+								<a href="<?php echo JRoute::_($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
+									<?php echo $this->escape(stripslashes($tag)); ?>
+									<span class="remove">x</a>
+								</a>
+							</li>
+							<?php
+						}
+						?>
+						</ol>
+					</fieldset>
+				<?php } ?>
+			</div><!-- / .container -->
+			<?php if (isset($this->filters['tag_ignored']) && count($this->filters['tag_ignored']) > 0) { ?>
+				<div class="warning">
+					<p><?php echo JText::_('Searching only allows up to 5 tags. The following tags were ignored:'); ?></p>
+					<ol class="tags">
+					<?php
+					$url  = 'index.php?option=' . $this->option . '&task=browse';
+					$url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+					$url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
+					$url .= ($this->filters['type']   ? '&category=' . $this->escape($this->filters['category'])     : '');
+
+					foreach ($this->filters['tag_ignored'] as $tag)
+					{
+						?>
+						<li>
+							<a href="<?php echo JRoute::_($url . '&tag=' . $tag); ?>">
+								<?php echo $this->escape(stripslashes($tag)); ?>
+							</a>
+						</li>
+						<?php
+					}
+					?>
+					</ol>
+				</div>
+			<?php } ?>
+			<div class="container">
+				<?php
+				$qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
+				$qs .= ($this->filters['category']   ? '&category=' . $this->escape($this->filters['category'])     : '');
+				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
+				?>
+				<ul class="entries-menu order-options">
+					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="Sort by title">&darr; Title</a></li>
+					<li><a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=date' . $qs); ?>" title="Sort by date published">&darr; Published</a></li>
+					<?php if ($this->config->get('show_ranking')) { ?>
+					<li><a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=ranking' . $qs); ?>" title="Sort by date published">&darr; Ranking</a></li>
+					<?php } ?>
+				</ul>
+				<?php if (count($this->categories) > 0) { ?>
+					<ul class="entries-menu filter-options">
+						<li>
+							<select name="category" id="filter-type">
+								<option value="" <?php echo (!$this->filters['category']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('All Categories'); ?></a>
+								<?php foreach ($this->categories as $item) { ?>
+									<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['category'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->name)); ?></option>
+								<?php } ?>
+							</select>
+						</li>
+					</ul>
+				<?php } ?>
+			<div class="clearfix"></div>
+			<div class="container-block">
 			<?php
 			if ($this->results) {
-				switch ($this->filters['sortby']) 
+				switch ($this->filters['sortby'])
 				{
 					case 'date_created': $show_date = 1; break;
 					case 'date_modified': $show_date = 2; break;
@@ -56,53 +137,28 @@ $sortbys['title'] = JText::_('COM_PUBLICATIONS_TITLE');
 				echo '<div class="clear"></div>';
 			} else { ?>
 				<p class="warning"><?php echo JText::_('COM_PUBLICATIONS_NO_RESULTS'); ?></p>
-			<?php }
+			<?php } ?>
+			</div>
+			<?php
 
-			$pn = $this->pageNav->getListFooter();
-			$pn = str_replace('/?/&amp;','/?',$pn);
-			$f = 'task=browse';
-			foreach ($this->filters as $k=>$v) 
-			{
-				$f .= ($v && ($k == 'tag' || $k == 'category')) ? '&amp;'.$k.'='.$v : '';
-			}
-			$pn = str_replace('?','?'.$f.'&amp;',$pn);
-			echo $pn;
+			$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
+			$this->pageNav->setAdditionalUrlParam('category', $this->filters['category']);
+			$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+
+			echo $this->pageNav->getListFooter();
 			?>
+			<div class="clearfix"></div>
+			</div><!-- / .container -->
 		</div><!-- / .subject -->
 		<div class="aside">
-			<fieldset>
-				<label>
-					<?php echo JText::_('COM_PUBLICATIONS_TYPE'); ?>: 
-					<select name="category" id="category">
-						<option value=""><?php echo JText::_('COM_PUBLICATIONS_ALL'); ?></option>
-						<?php
-						if (count($this->categories) > 0)
-						{
-							foreach ($this->categories as $cat)
-							{
-							?>
-									<option value="<?php echo $cat->id; ?>"<?php echo ($this->filters['category'] == $cat->id) ? ' selected="selected"' : ''; ?>><?php echo $cat->name; ?></option>
-							<?php
-							}
-						}
-						?>
-					</select>
-				</label>
-				<label>
-					<?php echo JText::_('COM_PUBLICATIONS_SORT_BY'); ?>:
-					<select name="sortby" id="sortby">
-					<?php
-						foreach ($sortbys as $avalue => $alabel) 
-						{
-						?>
-						<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->filters['sortby'] || $alabel == $this->filters['sortby']) ? ' selected="selected"' : ''; ?>><?php echo $alabel; ?></option>
-						<?php
-						}
-					?>
-					</select>
-				</label>
-				<input type="submit" value="<?php echo JText::_('COM_PUBLICATIONS_GO'); ?>" />
-			</fieldset>
+			<div class="container">
+				<h3>Popular Tags</h3>
+				<?php
+				$rt = new PublicationTags($database);
+				echo $rt->getTopTagCloud(12, $this->filters['tag']);
+				?>
+				<p>Click a tag to see only publications with that tag.</p>
+			</div>
 		</div><!-- / .aside -->
 	</section><!-- / .main section -->
 </form>

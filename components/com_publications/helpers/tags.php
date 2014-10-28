@@ -194,7 +194,7 @@ class PublicationTags extends TagsHandler
 	}
 
 	/**
-	 * Get all resources associated with a tag
+	 * Get all publications associated with a tag
 	 *
 	 * @param      string  $tag      Tag to find data for
 	 * @param      integer $id       Resource ID
@@ -423,7 +423,7 @@ class PublicationTags extends TagsHandler
 		$k = 1;
 		if (!empty($attached_tags))
 		{
-			foreach($attached_tags as $att)
+			foreach ($attached_tags as $att)
 			{
 				$picked  .= $att->id;
 				$picked .= $k == count($attached_tags) ? '' : ',';
@@ -469,5 +469,173 @@ class PublicationTags extends TagsHandler
 		$this->_db->setQuery( $sql );
 		return $this->_db->loadObjectList();
 	}
-}
 
+/**
+	 * Get a tag cloud for an object
+	 *
+	 * @param      integer $showsizes Show tag size based on use?
+	 * @param      integer $admin     Show admin tags?
+	 * @param      integer $objectid  Object ID
+	 * @return     mixed Return description (if any) ...
+	 */
+	public function getTopTagCloud($limit, $tagstring='')
+	{
+		$t = new TagsTableTag($this->_db);
+		$tags = $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
+
+		return $this->buildTopCloud($tags, 'alpha', 0, $tagstring);
+	}
+
+	/**
+	 * Get a tag cloud for an object
+	 *
+	 * @param      integer $showsizes Show tag size based on use?
+	 * @param      integer $admin     Show admin tags?
+	 * @param      integer $objectid  Object ID
+	 * @return     mixed Return description (if any) ...
+	 */
+	public function getTopTags($limit)
+	{
+		$t = new TagsTableTag($this->_db);
+		return $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
+	}
+
+	/**
+	 * Turn a string of tags to an array
+	 *
+	 * @param      string $tag Tag string
+	 * @return     mixed
+	 */
+	public function parseTopTags($tag, $remove='')
+	{
+		if (is_array($tag))
+		{
+			$bunch = $tag;
+		}
+		else
+		{
+			$bunch = $this->_parse_tags($tag);
+		}
+
+		$tags = array();
+		if ($remove)
+		{
+			foreach ($bunch as $t)
+			{
+				if ($remove == $t)
+				{
+					continue;
+				}
+				$tags[] = $t;
+			}
+		}
+		else
+		{
+			return $bunch;
+		}
+
+		return $tags;
+	}
+
+	/**
+	 * Build a tag cloud
+	 *
+	 * @param      array   $tags      List of tags
+	 * @param      string  $sort      How to sort tags?
+	 * @param      integer $showsizes Show tag size based on use?
+	 * @return     string HTML
+	 */
+	public function buildTopCloud($tags, $sort='alpha', $showsizes=0, $tagstring='')
+	{
+		$html = '';
+
+		if ($tags && count($tags) > 0)
+		{
+			$lst = array();
+			if (is_string($tagstring))
+			{
+				$lst = $this->_parse_tags($tagstring);
+			}
+			else
+			{
+				$lst = $tagstring;
+			}
+
+			$min_font_size = 1;
+			$max_font_size = 1.8;
+
+			if ($showsizes)
+			{
+				$retarr = array();
+				foreach ($tags as $tag)
+				{
+					$retarr[$tag->raw_tag] = $tag->count;
+				}
+				ksort($retarr);
+
+				$max_qty = max(array_values($retarr));  // Get the max qty of tagged objects in the set
+				$min_qty = min(array_values($retarr));  // Get the min qty of tagged objects in the set
+
+				// For ever additional tagged object from min to max, we add $step to the font size.
+				$spread = $max_qty - $min_qty;
+				if (0 == $spread)
+				{ // Divide by zero
+					$spread = 1;
+				}
+				$step = ($max_font_size - $min_font_size)/($spread);
+			}
+
+			// build HTML
+			$html .= '<ol class="tags">' . "\n";
+			$tll = array();
+			foreach ($tags as $tag)
+			{
+				$class = '';
+				switch ($tag->admin)
+				{
+					/*case 0:
+						$class = ' class="restricted"';
+					break;*/
+					case 1:
+						$class = ' class="admin"';
+					break;
+				}
+
+				$lsst = $lst;
+
+				if ($tagstring)
+				{
+					if (!in_array($tag->tag, $lst))
+					{
+						$lsst[] = $tag->tag;
+					}
+				}
+				else
+				{
+					$lsst = array($tag->tag);
+				}
+
+				$tag->raw_tag = stripslashes($tag->raw_tag);
+				$tag->raw_tag = str_replace('&amp;', '&', $tag->raw_tag);
+				$tag->raw_tag = str_replace('&', '&amp;', $tag->raw_tag);
+				if ($showsizes == 1)
+				{
+					$size = $min_font_size + ($tag->count - $min_qty) * $step;
+					$tll[$tag->tag] = "\t".'<li' . $class . '><span style="font-size: ' . round($size, 1) . 'em"><a href="' . JRoute::_('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst)) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></span></li>' . "\n";
+				}
+				else
+				{
+					$tll[$tag->tag] = "\t".'<li' . $class . '><a href="' . urldecode(JRoute::_('index.php?option=com_publications&task=browse&tag=' . implode(',', $lsst))) . '">' . stripslashes($tag->raw_tag) . '</a></li>' . "\n"; //' <span>' . $tag->count . '</span></a></li>' . "\n";
+				}
+			}
+			if ($sort == 'alpha')
+			{
+				ksort($tll);
+				$html .= implode('', $tll);
+			}
+			$html .= '</ol>' . "\n";
+		}
+
+		return $html;
+	}
+}

@@ -1460,7 +1460,7 @@ class PublicationsHtml
 
 		$config = JComponentHelper::getParams( 'com_publications' );
 
-		$html  = '<ol class="resources results">'."\n";
+		$html  = '<ol class="results" id="publications">'."\n";
 		foreach ($lines as $line)
 		{
 			// Get version authors
