@@ -33,6 +33,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $item = $this->row->item();
 
+$content = $this->row->description('parsed');
+$content = ($content ?: $item->description('parsed'));
+
 if ($item->get('title')) { ?>
 		<h4>
 			<?php echo $this->escape(stripslashes($item->get('title'))); ?>
@@ -142,7 +145,7 @@ if ($assets->total() > 0)
 	}
 }
 ?>
-<?php if ($content = $item->description('parsed')) { ?>
+<?php if ($content) { ?>
 		<div class="description">
 			<?php echo $content; ?>
 		</div>
