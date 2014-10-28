@@ -645,7 +645,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		}
 		else
 		{
-			$view->entry = $this->model->entry(JRequest::getInt('entry', 0));
+			$view->entry = new BlogModelEntry(JRequest::getInt('entry', 0));
 		}
 
 		// Does it exist?
@@ -797,7 +797,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$confirmdel = JRequest::getVar('confirmdel', '');
 
 		// Initiate a blog entry object
-		$entry = $this->model->entry($id);
+		$entry = new BlogModelEntry($id);
 
 		// Did they confirm delete?
 		if (!$process || !$confirmdel) 
