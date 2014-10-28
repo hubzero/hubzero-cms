@@ -92,7 +92,7 @@ class Configuration extends Base implements CommandInterface
 			}
 		}
 
-		if ($this->save($options))
+		if (Config::save($options))
 		{
 			$this->output->addLine('Saved new configuration!', 'success');
 		}
@@ -126,34 +126,5 @@ class Configuration extends Base implements CommandInterface
 				'Set your preferred email address.',
 				'Example: --name=john.doe@gmail.com'
 			);
-	}
-
-	/**
-	 * Saves config vars
-	 *
-	 * @param  array $config the array of vars to save
-	 * @return void
-	 **/
-	private function save($config)
-	{
-		// If config is empty, do nothing
-		if (count($config) == 0)
-		{
-			return true;
-		}
-
-		// Get the current config
-		$currentConfig = new Config();
-
-		// Merge current with incoming
-		// NOTE: array_unique only works on the first dimension.
-		//       the incoming config should be sanitized for non-unique values
-		//       by the caller.
-		$config = array_unique(array_merge_recursive($currentConfig->all(), $config));
-
-		// Save the new config
-		$currentConfig->save($config);
-
-		return true;
 	}
 }
