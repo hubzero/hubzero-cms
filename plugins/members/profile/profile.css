@@ -579,7 +579,7 @@
 		margin: 0 !important;
 		padding: 1em !important;
 	}
-	.locate:before {
+	.icon-locate:before {
 		content: "\f041";
 	}
 	.section .address-links {
