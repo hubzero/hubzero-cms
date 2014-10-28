@@ -1046,9 +1046,28 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				$this->_acl->setAccess('read',   'comments', 1);
 				$this->_acl->setAccess('create', 'private_comments', 1);
 				$this->_acl->setAccess('read',   'private_comments', 1);
+
+				$this->set('_cc-check-done', true);
 			}
 
 			$this->set('_access-check-done', true);
+		}
+
+		if ($action == 'read' && $item == 'tickets' && !$this->_acl->check('read', 'tickets') && !$this->get('_cc-check-done'))
+		{
+			$user = JFactory::getUser();
+			if (!$user->get('guest') && $this->comments()->total() > 0)
+			{
+				$last = $this->comments('list')->last();
+				$cc = $last->changelog()->get('cc');
+				if (in_array($user->get('username'), $cc) || in_array($user->get('email'), $cc))
+				{
+					$this->_acl->setAccess('read', 'tickets', 1);
+					$this->_acl->setAccess('create', 'comments', -1);
+					$this->_acl->setAccess('read', 'comments', 1);
+				}
+			}
+			$this->set('_cc-check-done', true);
 		}
 
 		return $this->_acl->check($action, $item);
