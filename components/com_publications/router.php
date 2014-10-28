@@ -161,7 +161,7 @@ function PublicationsParseRoute($segments)
 		$t = new PublicationCategory( $database );
 		$cats = $t->getCategories();
 
-		foreach($cats as $cat)
+		foreach ($cats as $cat)
 		{
 			if (trim($segments[0]) == $cat->url_alias)
 			{

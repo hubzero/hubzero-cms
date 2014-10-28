@@ -423,7 +423,7 @@ class PublicationTags extends TagsHandler
 		$k = 1;
 		if (!empty($attached_tags))
 		{
-			foreach($attached_tags as $att)
+			foreach ($attached_tags as $att)
 			{
 				$picked  .= $att->id;
 				$picked .= $k == count($attached_tags) ? '' : ',';
@@ -499,7 +499,7 @@ class PublicationTags extends TagsHandler
 		$t = new TagsTableTag($this->_db);
 		return $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
 	}
-	
+
 	/**
 	 * Turn a string of tags to an array
 	 *
