@@ -30,6 +30,7 @@
 
 namespace Hubzero\Console;
 
+use Hubzero\Console\Config;
 use Hubzero\Console\Exception\UnsupportedCommandException;
 use Hubzero\Console\Exception\UnsupportedTaskException;
 use Hubzero\Console\Exception\InvalidPropertyException;
@@ -158,7 +159,25 @@ class Arguments
 		if (isset($this->raw) && count($this->raw) > 0)
 		{
 			// Take the first argument as command to be run - defaults to help
-			$command = (isset($this->raw[1])) ? $this->raw[1] : 'Help';
+			$command = (isset($this->raw[1])) ? $this->raw[1] : 'help';
+
+			// Aliases take precedence, so parse for them first
+			if ($aliases = Config::get('aliases'))
+			{
+				if (array_key_exists($command, $aliases))
+				{
+					if (strpos($aliases[$command], '::') !== false)
+					{
+						$bits      = explode('::', $aliases[$command]);
+						$command   = $bits[0];
+						$aliasTask = $bits[1];
+					}
+					else
+					{
+						$command = $aliases[$command];
+					}
+				}
+			}
 
 			// Check if we're targeting a namespaced command
 			if (strpos($command, ':'))
@@ -189,6 +208,12 @@ class Arguments
 
 			// Take the second argument and use that as the task to be run - defaults to execute
 			$task = (isset($this->raw[2]) && substr($this->raw[2], 0, 1) != "-") ? $this->raw[2] : 'execute';
+
+			// If we have an alias task, set it now
+			if (isset($aliasTask))
+			{
+				$task = $aliasTask;
+			}
 
 			// Make sure task exists
 			if (method_exists($class, $task))
