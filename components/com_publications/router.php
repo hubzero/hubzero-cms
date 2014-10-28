@@ -39,19 +39,19 @@ defined('_JEXEC') or die( 'Restricted access' );
  */
 function PublicationsBuildRoute(&$query)
 {
-    $segments = array();
+	$segments = array();
 
 	if (!empty($query['controller']))
 	{
 		$segments[] = $query['controller'];
 		unset($query['controller']);
 	}
-    if (!empty($query['id']))
+	if (!empty($query['id']))
 	{
 		$segments[] = $query['id'];
 		unset($query['id']);
 	}
-    if (!empty($query['alias']))
+	if (!empty($query['alias']))
 	{
 		$segments[] = $query['alias'];
 		unset($query['alias']);
@@ -92,7 +92,7 @@ function PublicationsBuildRoute(&$query)
 		unset($query['file']);
 	}
 
-    return $segments;
+	return $segments;
 }
 
 /**
