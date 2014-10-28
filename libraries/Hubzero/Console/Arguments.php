@@ -138,6 +138,17 @@ class Arguments
 	}
 
 	/**
+	 * Delete option
+	 *
+	 * @param  string $key
+	 * @return void
+	 **/
+	public function deleteOpt($key)
+	{
+		unset($this->opts[$key]);
+	}
+
+	/**
 	 * Parse the raw arguments into command, task, and additional options
 	 *
 	 * @return void
