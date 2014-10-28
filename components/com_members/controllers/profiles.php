@@ -1782,7 +1782,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				array_push($guests, array('ip' => $row->ip, 'idle' => $row->idle));
 			}
 		}
-		
+
 		// Output View
 		$this->view->title = JText::_('Active Users and Guests');
 		$this->view->users = $users;
