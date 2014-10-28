@@ -203,11 +203,22 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Save a revision and go back to the edit form
+	 *
+	 * @return  void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Save a revision
 	 *
-	 * @return     void
+	 * @param   boolean  $redirect
+	 * @return  void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -284,10 +295,15 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		}*/
 
 		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->get('pageid'),
-			JText::_('COM_WIKI_REVISION_SAVED')
-		);
+		if ($redirect)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->get('pageid'),
+				JText::_('COM_WIKI_REVISION_SAVED')
+			);
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
