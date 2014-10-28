@@ -32,13 +32,16 @@
 defined('_JEXEC') or die('Restricted access');
 
 $item = $this->row->item();
+
+$content = $this->row->description('parsed');
+$content = ($content ?: $item->description('parsed'));
 ?>
 		<p class="link">
 			<a href="<?php echo stripslashes($item->get('url')); ?>" rel="external">
 				<?php echo $this->escape(stripslashes($item->get('title', $item->get('url')))); ?>
 			</a>
 		</p>
-<?php if ($content = $item->description('parsed')) { ?>
+<?php if ($content) { ?>
 		<div class="description">
 			<?php echo $content; ?>
 		</div>

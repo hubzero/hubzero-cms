@@ -186,10 +186,10 @@ class CollectionsModelPost extends CollectionsModelAbstract
 			}
 
 			$this->_data = new CollectionsModelItem($oid);
-			if ($d = $this->description('raw'))
+			/*if ($d = $this->description('raw'))
 			{
 				$this->_data->set('description', $this->get('description'));
-			}
+			}*/
 		}
 
 		return $this->_data;

@@ -72,7 +72,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 <?php } ?>
 <form action="<?php echo JRoute::_($base . '&scope=post/save' . ($this->no_html ? '&no_html=' . $this->no_html : '')); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
 	<fieldset>
-		<legend><?php echo $item->get('id') ? JText::_('Edit post') : JText::_('New post'); ?></legend>
+		<legend><?php echo $item->get('id') ? ($this->entry->get('original') ? JText::_('Edit post') : JText::_('Edit repost')) : JText::_('New post'); ?></legend>
 
 		<?php if ($this->entry->get('original')) { ?>
 			<div class="field-wrap">
@@ -148,22 +148,28 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 					</div><!-- / .field-wrap -->
 
 					<label for="field-title">
-						<?php echo JText::_('Title'); ?> <!-- <span class="optional">optional</span> -->
+						<?php echo JText::_('Title'); ?>
 						<input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
 					</label>
-				<?php } ?>
-					<label for="field_description">
-						<?php echo JText::_('Description'); ?> <!-- <span class="optional">optional</span> -->
-						<?php if ($this->entry->get('original')) { ?>
-							<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($item->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
-						<?php } else { ?>
-							<?php echo \JFactory::getEditor()->display('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
-						<?php } ?>
+					<input type="hidden" name="fields[type]" value="file" />
+				<?php } else { ?>
+					<label for="field-title">
+						<?php echo JText::_('Title'); ?>
+						<input type="text" name="fieldstitle" id="field-title" class="disabled" disabled="disabled" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
 					</label>
+				<?php } ?>
+
+				<label for="field_description">
+					<?php echo JText::_('Description'); ?>
+					<?php if ($this->entry->get('original')) { ?>
+						<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($item->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+					<?php } else { ?>
+						<?php echo \JFactory::getEditor()->display('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+					<?php } ?>
+				</label>
 				<?php if ($this->task == 'save' && !$item->get('description')) { ?>
 					<p class="error"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
 				<?php } ?>
-				<input type="hidden" name="fields[type]" value="file" />
 
 			</div><!-- / #post-file -->
 		</div><!-- / #post-type-form -->
@@ -206,6 +212,8 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 				</label>
 			</div>
 		</div>
+	<?php } else { ?>
+		<input type="hidden" name="tags" value="<?php echo $this->escape($item->tags('string')); ?>" />
 	<?php } ?>
 	</fieldset>
 
@@ -213,7 +221,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 	<input type="hidden" name="fields[created]" value="<?php echo $item->get('created'); ?>" />
 	<input type="hidden" name="fields[created_by]" value="<?php echo $item->get('created_by'); ?>" />
 	<input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $dir; ?>" />
-	<input type="hidden" name="fields[access]" id="field-dir" value="<?php echo $item->get('access', 0); ?>" />
+	<input type="hidden" name="fields[access]" id="field-access" value="<?php echo $item->get('access', 0); ?>" />
 
 	<input type="hidden" name="post[id]" value="<?php echo $this->entry->get('id'); ?>" />
 	<input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->entry->get('item_id'); ?>" />
