@@ -1239,6 +1239,26 @@ class PublicationsHtml
 	}
 
 	/**
+	 * Show pre-defined publication footer (curated)
+	 *
+	 * @param      object  $publication   	Publication object
+	 * @return     string HTML
+	 */
+	public static function footer( $publication, $html = '' )
+	{
+		if (isset($publication->_curationModel))
+		{
+			$params = $publication->_curationModel->_manifest->params;
+			if (isset($params->footer) && $params->footer)
+			{
+				$html = '<div class="pub-footer">' . $params->footer . '</div>';
+			}
+		}
+
+		return $html;
+	}
+
+	/**
 	 * Draw black button
 	 *
 	 * @param      string  $option 			Component name
@@ -1440,7 +1460,7 @@ class PublicationsHtml
 
 		$config = JComponentHelper::getParams( 'com_publications' );
 
-		$html  = '<ol class="resources results">'."\n";
+		$html  = '<ol class="results" id="publications">'."\n";
 		foreach ($lines as $line)
 		{
 			// Get version authors

@@ -213,7 +213,16 @@ function PublicationsParseRoute($segments)
 			case 'feed':     $vars['task'] = 'feed';     break;
 			case 'license':  $vars['task'] = 'license';  break;
 
-			default: $vars['active'] = $segments[1]; 	 break;
+			default:
+				if ($segments[0] == 'browse')
+				{
+					$vars['category'] = $segments[1];
+				}
+				else
+				{
+					$vars['active'] = $segments[1];
+				}
+			break;
 		}
 	}
 

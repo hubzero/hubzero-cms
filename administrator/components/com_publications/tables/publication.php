@@ -324,6 +324,25 @@ class Publication extends JTable
 		{
 			$query .= "AND V.published_up < " . $this->_db->Quote($filters['enddate']) . " ";
 		}
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+				$words = array();
+				$ws = explode(' ', $filters['search']);
+				foreach ($ws as $w)
+				{
+					$w = trim($w);
+					if (strlen($w) > 2)
+					{
+						$words[] = $w;
+					}
+				}
+				$text = implode(' +', $words);
+				$text = addslashes($text);
+				$text2 = str_replace('+', '', $text);
+
+				$query .= " AND ((MATCH(V.title) AGAINST ('+$text -\"$text2\"') > 0) OR"
+						 . " (MATCH(V.abstract,V.description) AGAINST ('+$text -\"$text2\"') > 0)) ";
+		}
 
 		// Do not show deleted
 		if ($admin == false || (isset($filters['status']) && $filters['status'] != 2))
@@ -341,15 +360,7 @@ class Publication extends JTable
 			$tagging = new PublicationTags( $this->_db );
 			$tags = $tagging->_parse_tags($filters['tag']);
 
-			$query .= "AND RTA.objectid=C.id AND (TA.tag IN (";
-			$tquery = '';
-			foreach ($tags as $tagg)
-			{
-				$tquery .= "'".$tagg."',";
-			}
-			$tquery = substr($tquery,0,strlen($tquery) - 1);
-			$query .= $tquery.") OR TA.alias IN (".$tquery;
-			$query .= "))";
+			$query .= "AND RTA.objectid=C.id AND TA.tag IN ('" . implode("','", $tags) . "')";
 			$groupby = " GROUP BY C.id HAVING uniques=".count($tags);
 		}
 

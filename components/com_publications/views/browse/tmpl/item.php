@@ -46,11 +46,6 @@ $html .= '>'."\n";
 $html .= "\t". "\t". '<div class="pub-thumb"><img src="' . $pubthumb . '" alt=""/></div>' . "\n";
 $html .= "\t" . "\t" . '<div class="pub-details">' . "\n";
 $html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. $this->escape($this->line->title) . '</a>'."\n";
-/*
-if ($this->show_edit != 0) {
-		$link = JRoute::_('index.php?option=com_projects&id='.$this->line->project_id.'&active=publications&pid='. $this->line->id);
-		$html .= ' <a class="edit button" href="'. $link .'" title="'. JText::_('COM_PUBLICATIONS_EDIT') .'">'. JText::_('COM_PUBLICATIONS_EDIT') .'</a>';
-}*/
 $html .= '</p>'."\n";
 	
 if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
@@ -59,14 +54,6 @@ if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 	// Get statistics info
 	$this->helper->getCitationsCount();
 	$this->helper->getLastCitationDate();
-	
-	/*
-	if ($this->line->category == 7) {
-		$stats = new ToolStats($database, $this->line->id, $this->line->category, $this->line->rating, $this->helper->citationsCount, $this->helper->lastCitationDate);
-	} else {
-		$stats = new AndmoreStats($database, $this->line->id, $this->line->category, $this->line->rating, $this->helper->citationsCount, $this->helper->lastCitationDate);
-	}
-	*/
 
 	$this->line->ranking = round($this->line->ranking, 1);
 
@@ -81,7 +68,6 @@ if ($this->params->get('show_ranking') && $this->config->get('show_ranking')) {
 	$html .= "\t\t\t\t".'<dd>'."\n";
 	$html .= "\t\t\t\t\t".'<p>'.JText::_('COM_PUBLICATIONS_RANKING_EXPLANATION').'</p>'."\n";
 	$html .= "\t\t\t\t\t".'<div>'."\n";
-//	$html .= $stats->display();
 	$html .= "\t\t\t\t\t".'</div>'."\n";
 	$html .= "\t\t\t\t".'</dd>'."\n";
 	$html .= "\t\t\t".'</dl>'."\n";
@@ -117,23 +103,16 @@ $info = array();
 if ($this->thedate) {
 	$info[] = $this->thedate;
 }
-/*
-if(isset($this->filters['projects'])) {
-	if(in_array($this->line->project_id, $this->filters['projects'])) {
-		// can edit
-		$state = PublicationsHtml::getState($this->line->state);
-		$edit = '<span class="state_'.$state.'">'.$state;
-		$edit.= ' <a href="'.JRoute::_('index.php?option=com_projects&alias='.$this->line->project_alias.'&active=publications&pid='. $this->line->id).'">['.strtolower(JText::_('COM_PUBLICATIONS_EDIT')).']</a>';
-		$edit.= '</span>';
-		$info[] = $edit;
-	}
-}
-*/
+
 if (($this->line->category && !intval($this->filters['category']))) {
 	$info[] = $this->line->cat_name;
 }
 if ($this->authors && $this->params->get('show_authors')) {
 	$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $this->authors, false, true );
+}
+if ($this->line->doi)
+{
+	$info[] = 'doi:'. $this->line->doi;
 }
 
 $html .= "\t\t".'<p class="details">'.implode(' <span>|</span> ',$info).'</p>'."\n";
