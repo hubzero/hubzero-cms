@@ -1,7 +1,7 @@
 <?php if ($this->isUser) : ?>
 	<div class="section-edit-container">
 		<?php if ($this->registration == REG_READONLY) : ?>
-			<p class="notice warning">The "<?php echo $this->title; ?>" profile field has been marked as <u>readonly</u> by a HUB administrator.</p>
+			<p class="notice warning"><?php echo JText::sprintf('PLG_MEMBERS_PROFILE_READONLY', $this->title); ?></p>
 		<?php else : ?>
 			<div class="section-edit-content">
 				<form action="index.php" method="post" data-section-registation="<?php echo $this->registration_field; ?>" data-section-profile="<?php echo $this->profile_field; ?>">
