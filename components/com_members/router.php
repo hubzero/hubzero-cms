@@ -198,8 +198,8 @@ function membersParseRoute($segments)
 	$parts = explode('/', $_SERVER['REQUEST_URI']);
 	$file = array_pop($parts);
 
-	if (substr(strtolower($file), 0, 5) == 'image'
-	 || substr(strtolower($file), 0, 4) == 'file')
+	if (substr(strtolower($file), 0, 6) == 'image:'
+	 || substr(strtolower($file), 0, 5) == 'file:')
 	{
 		$vars['task'] = 'download';
 		$vars['controller'] = 'media';
