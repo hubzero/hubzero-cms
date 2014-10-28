@@ -136,15 +136,22 @@ class Configuration extends Base implements CommandInterface
 	 **/
 	private function save($config)
 	{
+		// If config is empty, do nothing
 		if (count($config) == 0)
 		{
 			return true;
 		}
 
+		// Get the current config
 		$currentConfig = new Config();
-		$config = array_merge($currentConfig->all(), $config);
 
-		// Bulid ini format file contents
+		// Merge current with incoming
+		// NOTE: array_unique only works on the first dimension.
+		//       the incoming config should be sanitized for non-unique values
+		//       by the caller.
+		$config = array_unique(array_merge_recursive($currentConfig->all(), $config));
+
+		// Save the new config
 		$currentConfig->save($config);
 
 		return true;
