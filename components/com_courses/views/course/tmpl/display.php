@@ -150,7 +150,7 @@ $this->css('course.css')
 			<?php } ?>
 		</div><!-- / .subject -->
 		<aside class="aside">
-			<p class="course-identity">
+			<p class="course-identity<?php echo ($this->course->config('show_stats') ? ' with-enrollment' : ''); ?>">
 				<?php if ($logo = $this->course->logo()) { ?>
 					<img src="<?php 
 						$size = $this->course->logo('size');
@@ -160,6 +160,12 @@ $this->css('course.css')
 					<span></span>
 				<?php } ?>
 			</p>
+
+			<?php if ($this->course->config('show_stats')) { ?>
+				<p class="course-enrollment">
+					<?php echo JText::sprintf('COM_COURSES_NUMBER_ENROLLED', '<strong>' . number_format((int) $this->course->students(array('count' => true))) . '</strong>'); ?>
+				</p>
+			<?php } ?>
 		</aside><!-- / .aside -->
 	</div>
 </section><!-- / .course section intro -->

@@ -53,33 +53,12 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-	</fieldset>
-	<!--
-	<fieldset name="intro">
-		<field name="intro_mycourses" type="list" default="1" label="COM_COURSES_SHOWMINE_LABEL" description="COM_COURSES_SHOWMINE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="intro_interestingcourses" type="list" default="1" label="COM_COURSES_SHOWINTERESTING_LABEL" description="COM_COURSES_SHOWINTERESTING_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="intro_popularcourses" type="list" default="1" label="COM_COURSES_SHOWPOPULAR_LABEL" description="COM_COURSES_SHOWPOPULAR_DESC">
+		<field type="spacer" />
+		<field name="show_stats" type="list" default="0" label="COM_COURSES_SHOWSTATS_LABEL" description="COM_COURSES_SHOWSTATS_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
-	<fieldset name="email">
-		<field name="email_comment_processing" type="list" default="0" label="COM_COURSES_EMAIL_PROCESSING_LABEL" description="COM_COURSES_EMAIL_PROCESSING_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="email_member_coursesidcussionemail_autosignup" type="list" default="0" label="COM_COURSES_EMAIL_AUTOSIGNUP_LABEL" description="COM_COURSES_EMAIL_AUTOSIGNUP_DESC">
-			<option value="0">No</option>
-			<option value="1">JYES</option>
-		</field>
-	</fieldset>
-	-->
 	<fieldset name="badges">
 		<field name="passport_consumer_key" type="text" menu="hide" default="" label="COM_COURSES_PASSPORTKEY_LABEL" description="COM_COURSES_PASSPORTKEY_DESC" size="50" />
 		<field name="passport_consumer_secret" type="text" menu="hide" default="" label="COM_COURSES_PASSPORTSECRET_LABEL" description="COM_COURSES_PASSPORTSECRET_DESC" size="50" />
