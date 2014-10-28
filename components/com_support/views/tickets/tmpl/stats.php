@@ -614,6 +614,7 @@ function getMonthName($month)
 				$profile = \Hubzero\User\Profile::getInstance($user->id);
 				if (!$profile) 
 				{
+					$profile = new \Hubzero\User\Profile();
 					$anon = 1;
 				}
 	?>
