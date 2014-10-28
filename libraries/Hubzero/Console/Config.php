@@ -30,6 +30,10 @@
 
 namespace Hubzero\Console;
 
+use Hubzero\Config\Processor\Yaml;
+use Hubzero\Config\Processor\Ini;
+use Hubzero\Error\Exception\RuntimeException;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -46,7 +50,14 @@ class Config
 	private $config = array();
 
 	/**
-	 * Constructor
+	 * Config file path
+	 *
+	 * @var string
+	 **/
+	private $path = null;
+
+	/**
+	 * Constructs new config instance
 	 *
 	 * Parse for muse configuration file
 	 *
@@ -56,19 +67,33 @@ class Config
 	{
 		$home = getenv('HOME');
 		$path = $home . DS . '.muse';
+		$this->path = $path;
 
 		if (is_file($path))
 		{
-			$this->config = parse_ini_file($path);
+			// Try to parse as Yaml and fall back to Ini if failed
+			try
+			{
+				// Parse the path
+				$this->config = Yaml::parse($path);
+			}
+			catch (RuntimeException $e)
+			{
+				// Parse the file as Ini
+				$this->config = Ini::parse($path);
+
+				// Now write it back out as Yaml for future use
+				Yaml::write($this->config, $path);
+			}
 		}
 	}
 
 	/**
-	 * Function to return config var
+	 * Gets the specified config var
 	 *
-	 * @param  (string) $key
-	 * @param  (mixed) $default
-	 * @return (string) $value
+	 * @param  string $key the key to fetch
+	 * @param  mixed  $default the default to return, should the key not exist
+	 * @return mixed
 	 **/
 	public static function get($key, $default=false)
 	{
@@ -80,5 +105,25 @@ class Config
 		}
 
 		return (isset($instance->config[$key])) ? $instance->config[$key] : $default;
+	}
+
+	/**
+	 * Gets all config options
+	 *
+	 * @return array
+	 **/
+	public function all()
+	{
+		return $this->config;
+	}
+
+	/**
+	 * Saves the data to the config file
+	 *
+	 * @return void
+	 **/
+	public function save($data)
+	{
+		Yaml::write($data, $this->path);
 	}
 }

@@ -32,6 +32,7 @@ namespace Hubzero\Console\Command;
 
 use Hubzero\Console\Output;
 use Hubzero\Console\Arguments;
+use Hubzero\Console\Config;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -102,7 +103,7 @@ class Configuration extends Base implements CommandInterface
 	}
 
 	/**
-	 * Show help text for configure command
+	 * Shows help text for configure command
 	 *
 	 * @return void
 	 **/
@@ -128,9 +129,9 @@ class Configuration extends Base implements CommandInterface
 	}
 
 	/**
-	 * Save config vars
+	 * Saves config vars
 	 *
-	 * @param  (array) $config - array of vars to save
+	 * @param  array $config the array of vars to save
 	 * @return void
 	 **/
 	private function save($config)
@@ -140,31 +141,12 @@ class Configuration extends Base implements CommandInterface
 			return true;
 		}
 
-		$home = getenv('HOME');
-		$path = $home . DS . '.muse';
-
-		// If configuration file already exists, combine incoming with current
-		if (is_file($path))
-		{
-			$currentConfig = parse_ini_file($path);
-			$config = array_merge($currentConfig, $config);
-		}
+		$currentConfig = new Config();
+		$config = array_merge($currentConfig->all(), $config);
 
 		// Bulid ini format file contents
-		$contents = '';
-		foreach ($config as $k => $v)
-		{
-			$contents .= "{$k} = $v\n";
-		}
+		$currentConfig->save($config);
 
-		// Put contents
-		if (file_put_contents($path, $contents) !== false)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return true;
 	}
 }
