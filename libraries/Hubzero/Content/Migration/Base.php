@@ -585,6 +585,72 @@ class Base
 	}
 
 	/**
+	 * Standardize a plugin entry name
+	 *
+	 * @param $folder  - (string) plugin folder
+	 * @param $element - (string) plugin element
+	 * @return bool
+	 **/
+	public function normalizePluginEntry($folder, $element)
+	{
+		if ($this->baseDb->tableExists('#__plugins'))
+		{
+			$folder  = strtolower($folder);
+			$element = strtolower($element);
+			$name    = ucfirst($folder) . ' - ' . ucfirst($element);
+
+			return $this->renamePluginEntry($folder, $element, $name);
+		}
+		else if ($this->baseDb->tableExists('#__extensions'))
+		{
+			$folder  = strtolower($folder);
+			$element = strtolower($element);
+			$name    = 'plg_' . $folder . '_' . $element;
+
+			return $this->renamePluginEntry($folder, $element, $name);
+		}
+	}
+
+	/**
+	 * Rename a plugin entry in the appropriate table, depending on the Joomla version
+	 *
+	 * @param $folder  - (string) plugin folder
+	 * @param $element - (string) plugin element
+	 * @param $name    - (string) the new plugin name
+	 * @return bool
+	 **/
+	public function renamePluginEntry($folder, $element, $name)
+	{
+		if ($this->baseDb->tableExists('#__plugins'))
+		{
+			$table = '#__plugins';
+			$pk    = 'id';
+		}
+		else if ($this->baseDb->tableExists('#__extensions'))
+		{
+			$table = '#__extensions';
+			$pk    = 'extension_id';
+		}
+		else
+		{
+			return false;
+		}
+
+		$folder  = strtolower($folder);
+		$element = strtolower($element);
+
+		// First, make sure the plugin exists
+		$query = "SELECT `{$pk}` FROM `{$table}` WHERE `folder` = '{$folder}' AND `element` = '{$element}'";
+		$this->baseDb->setQuery($query);
+		if ($id = $this->baseDb->loadResult())
+		{
+			$query = "UPDATE `{$table}` SET `name` = " . $this->baseDb->quote($name) . " WHERE `{$pk}` = " . $this->baseDb->quote($id);
+			$this->baseDb->setQuery($query);
+			$this->baseDb->query();
+		}
+	}
+
+	/**
 	 * Save plugin params
 	 *
 	 * @param $folder  - (string) plugin folder
