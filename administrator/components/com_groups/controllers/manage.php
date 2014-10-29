@@ -643,11 +643,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		));
 	}
 
-	/**
-	 * Pull from Gitlab
-	 * @return void
-	 */
-	public function pullTask()
+	public function updateTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -690,8 +686,11 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// make sure we have an upload path
 			if (!is_dir($uploadPath))
 			{
-				$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'));
-				continue;
+				if (!JFolder::create($uploadPath))
+				{
+					$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'));
+					continue;
+				}
 			}
 
 			// make sure we have a git repo
@@ -729,22 +728,106 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 
 				// setup stage environment
 				$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_setup_stage.sh ';
-				$cmd .= str_replace('/' . $group->get('gidNumber'), '', $uploadPath) . ' ' . $group->get('gidNumber') . ' ' . $gitlabProject['ssh_url_to_repo'] . ' 2>&1';
+				$cmd .= str_replace('/' . $group->get('gidNumber'), '', $uploadPath) . ' ' . $group->get('gidNumber') . ' ' . $group->get('cn') . ' ' . $gitlabProject['ssh_url_to_repo'] . ' 2>&1';
 
 				// execute command
 				$output = shell_exec($cmd);
 			}
 
 			// build command to run via shell
+			$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_fetch.sh ';
+			$cmd .= $uploadPath . ' ' . JPATH_ROOT . ' 2>&1';
+
+			// execute command
+			$output = shell_exec($cmd);
+			$output = json_decode($output);
+
+			// did we succeed
+			if (json_last_error() == JSON_ERROR_NONE)
+			{
+				// add success message
+				$success[] = array('group' => $group->get('cn'), 'message' => $output);
+			}
+			else
+			{
+				// add failed message
+				$failed[] = array('group' => $group->get('cn'), 'message' => $output);
+			}
+		}
+
+		// display view
+		$this->view->setLayout('log');
+		$this->view->success = $success;
+		$this->view->failed  = $failed;
+		$this->view->config  = $this->config;
+		$this->view->display();
+	}
+
+	/**
+	 * Pull from Gitlab
+	 * 
+	 * @return void
+	 */
+	public function doUpdateTask()
+	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+
+		// Get the single ID we're working with
+		if (!is_array($ids))
+		{
+			$ids = array($ids);
+		}
+
+		// vars to hold results of pull
+		$success = array();
+		$failed  = array();
+
+		// loop through each group and pull code from repos
+		foreach ($ids as $id)
+		{
+			// Load the group page
+			$group = \Hubzero\User\Group::getInstance($id);
+
+			// Ensure we found the group info
+			if (!$group)
+			{
+				continue;
+			}
+
+			// make sure its a super group
+			if (!$group->isSuperGroup())
+			{
+				$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_NOT_SUPER_GROUP'));
+				continue;
+			}
+
+			// path to group folder
+			$uploadPath = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/groups'), DS) . DS . $group->get('gidNumber');
+
+			// make sure we have an upload path
+			if (!is_dir($uploadPath))
+			{
+				if (!JFolder::create($uploadPath))
+				{
+					$failed[] = array('group' => $group->get('cn'), 'message' => JText::_('COM_GROUPS_GITLAB_UPLOAD_PATH_DOESNT_EXIST'));
+					continue;
+				}
+			}
+
+			// build command to run via shell
 			// this will run a "git pull --rebase origin master"
-			$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_pull_and_migrate.sh ';
+			$cmd  = 'sh ' . JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'assets' . DS . 'scripts' . DS . 'gitlab_merge_and_migrate.sh ';
 			$cmd .= $uploadPath . ' ' . JPATH_ROOT . ' 2>&1';
 
 			// execute command
 			$output = shell_exec($cmd);
 
 			// did we succeed
-			if (preg_match("/Updating the repository...complete/uis", $output))
+			if (preg_match("/Updating the repository.../uis", $output))
 			{
 				// add success message
 				$success[] = array('group' => $group->get('cn'), 'message' => $output);

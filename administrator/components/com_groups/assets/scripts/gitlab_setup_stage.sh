@@ -15,14 +15,13 @@ cd $2
 # remove contents of folder
 rm -R -- *
 
-# init git repo
-git init
+# clone git repo
+git clone $4;
 
-# set remote host
-git remote add origin $3
+# move files
+mv $3/* $3/.git* .; rmdir $3;
 
-# pull in latest code
-git pull --rebase origin master
-
-# set tracking branch
-git branch --set-upstream master origin/master
+# add items for git to ignore
+echo '.DS_Store' >> .git/info/exclude
+echo 'uploads/*' >> .git/info/exclude
+echo 'config/db.php' >> .git/info/exclude

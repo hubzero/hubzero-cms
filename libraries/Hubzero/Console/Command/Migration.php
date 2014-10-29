@@ -101,6 +101,12 @@ class Migration extends Base implements CommandInterface
 				$directory  = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
 				$directory .= DS . $group->get('gidNumber');
 
+				// make sure we have migrations dir
+				if (!is_dir($directory . DS . 'migrations') || !is_readable($directory . DS . 'migrations'))
+				{
+					$this->output->error('Error: Migrations directory does not exist.');
+				}
+
 				// Get group database
 				$alternativeDatabase = \Hubzero\User\Group\Helper::getDBO(array(), $group->get('cn'));
 

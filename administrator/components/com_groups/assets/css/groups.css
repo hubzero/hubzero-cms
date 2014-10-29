@@ -132,3 +132,18 @@
 		font-size: 12px;
 		line-height: 16px;
 	}
+
+
+	.merge-success {
+		position: relative;
+	}
+
+	label.merge {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		outline: 3px solid #efefef;
+		border: 1px solid #ccc;
+		border-radius: 2px;
+		padding: 5px 10px;
+	}
