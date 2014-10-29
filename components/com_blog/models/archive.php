@@ -154,14 +154,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 		switch (strtolower($rtrn))
 		{
 			case 'count':
-				if (JFactory::getApplication()->getName() == 'administrator')
-				{
-					return (int) $this->_tbl->getEntriesCount($filters);
-				}
-				else
-				{
-					return (int) $this->_tbl->getCount($filters);
-				}
+				return (int) $this->_tbl->find('count', $filters);
 			break;
 
 			case 'first':
@@ -169,11 +162,9 @@ class BlogModelArchive extends \Hubzero\Base\Object
 				$filters['start']    = 0;
 				$filters['sort']     = 'publish_up';
 				$filters['sort_Dir'] = 'ASC';
-				$filters['order']    = $filters['sort'] . ' ' . $filters['sort_Dir'];
 
-				$results = $this->_tbl->getRecords($filters);
-				$res = isset($results[0]) ? $results[0] : null;
-				return new BlogModelEntry($res);
+				$result = $this->_tbl->find('first', $filters);
+				return new BlogModelEntry($result);
 			break;
 
 			case 'popular':
@@ -203,16 +194,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 			case 'list':
 			case 'results':
 			default:
-				if (JFactory::getApplication()->getName() == 'administrator')
-				{
-					$results = $this->_tbl->getEntries($filters);
-				}
-				else
-				{
-					$results = $this->_tbl->getRecords($filters);
-				}
-
-				if ($results)
+				if ($results = $this->_tbl->find('list', $filters))
 				{
 					foreach ($results as $key => $result)
 					{

@@ -477,5 +477,29 @@ class BlogTableComment extends JTable
 		}*/
 		return $query;
 	}
+
+	/**
+	 * Delete comments associated with an entry
+	 *
+	 * @param   integer  $entry_id  Blog entry
+	 * @return  boolean  True on success, False on error
+	 */
+	public function deleteByEntry($entry_id=null)
+	{
+		if (!$entry_id)
+		{
+			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
+			return false;
+		}
+
+		$this->_db->setQuery("DELETE FROM `$this->_tbl` WHERE `entry_id`=" . $this->_db->Quote($entry_id));
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
+			return false;
+		}
+
+		return true;
+	}
 }
 

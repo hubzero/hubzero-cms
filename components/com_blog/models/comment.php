@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
 
 /**
- * Courses model class for a forum
+ * Blog model class for a comment
  */
 class BlogModelComment extends \Hubzero\Base\Model
 {
@@ -53,7 +53,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 	protected $_context = 'com_blog.comment.content';
 
 	/**
-	 * JUser
+	 * \Hubzero\User\Profile
 	 *
 	 * @var object
 	 */
@@ -76,11 +76,8 @@ class BlogModelComment extends \Hubzero\Base\Model
 	/**
 	 * Returns a reference to a blog comment model
 	 *
-	 * This method must be invoked as:
-	 *     $comment = BlogModelComment::getInstance($id);
-	 *
-	 * @param      mixed $oid ID (int) or alias (string)
-	 * @return     object BlogModelComment
+	 * @param   mixed   $oid  ID (int) or alias (string)
+	 * @return  object  BlogModelComment
 	 */
 	static function &getInstance($oid=0)
 	{
@@ -93,7 +90,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new BlogModelComment($oid);
+			$instances[$oid] = new static($oid);
 		}
 
 		return $instances[$oid];
@@ -102,7 +99,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 	/**
 	 * Has this comment been reported
 	 *
-	 * @return     boolean True if reported, False if not
+	 * @return  boolean  True if reported, False if not
 	 */
 	public function isReported()
 	{
@@ -116,8 +113,8 @@ class BlogModelComment extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 *
-	 * @param      string $as What format to return
-	 * @return     boolean
+	 * @param   string   $as  What format to return
+	 * @return  boolean
 	 */
 	public function created($as='')
 	{
@@ -144,9 +141,9 @@ class BlogModelComment extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire JUser object
 	 *
-	 * @param      string $property What data to return
-	 * @param      mixed  $default  Default value
-	 * @return     mixed
+	 * @param   string  $property  What data to return
+	 * @param   mixed   $default   Default value
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
@@ -173,12 +170,12 @@ class BlogModelComment extends \Hubzero\Base\Model
 	/**
 	 * Return a formatted timestamp
 	 * 
-	 * @param      string $as What data to return
-	 * @return     boolean
+	 * @param   string   $as  What format to return
+	 * @return  boolean
 	 */
-	public function modified($rtrn='')
+	public function modified($as='')
 	{
-		switch (strtolower($rtrn))
+		switch (strtolower($as))
 		{
 			case 'date':
 				return JHTML::_('date', $this->get('modified'), JText::_('DATE_FORMAT_HZ1'));
@@ -197,7 +194,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 	/**
 	 * Determine if record was modified
 	 * 
-	 * @return     boolean True if modified, false if not
+	 * @return  boolean  True if modified, false if not
 	 */
 	public function wasModified()
 	{
@@ -211,10 +208,10 @@ class BlogModelComment extends \Hubzero\Base\Model
 	/**
 	 * Get a list or count of comments
 	 *
-	 * @param      string  $rtrn    Data format to return
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     Data format to return
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function replies($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -282,10 +279,7 @@ class BlogModelComment extends \Hubzero\Base\Model
 							$results[$key]->set('path', $this->get('path'));
 						}
 					}
-					else
-					{
-						$results = array();
-					}
+
 					$this->_comments = new \Hubzero\Base\ItemList($results);
 				}
 				return $this->_comments;
@@ -353,6 +347,32 @@ class BlogModelComment extends \Hubzero\Base\Model
 			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
 		}
 		return $content;
+	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function delete()
+	{
+		// Can't delete what doesn't exist
+		if (!$this->exists()) 
+		{
+			return true;
+		}
+
+		// Remove comments
+		foreach ($this->replies('list') as $comment)
+		{
+			if (!$comment->delete())
+			{
+				$this->setError($comment->getError());
+				return false;
+			}
+		}
+
+		return parent::delete();
 	}
 }
 

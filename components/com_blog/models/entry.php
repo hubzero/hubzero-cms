@@ -673,5 +673,36 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		}
 		return $this->params->get('access-' . strtolower($action) . '-entry');
 	}
+
+	/**
+	 * Delete the record and all associated data
+	 *
+	 * @return  boolean  False if error, True on success
+	 */
+	public function delete()
+	{
+		// Can't delete what doesn't exist
+		if (!$this->exists()) 
+		{
+			return true;
+		}
+
+		// Remove comments
+		$comment = new BlogTableComment($this->_db);
+		if (!$comment->deleteByEntry($this->get('id')))
+		{
+			$this->setError($comment->getError());
+			return false;
+		}
+
+		$cloud = new BlogModelTags($this->get('id'));
+		if (!$cloud->removeAll())
+		{
+			$this->setError(JText::_('COM_BLOG_ERROR_UNABLE_TO_DELETE_TAGS'));
+			return false;
+		}
+
+		return parent::delete();
+	}
 }
 

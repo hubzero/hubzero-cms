@@ -39,7 +39,7 @@ class BlogTableEntry extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   object &$db JDatabase
+	 * @param   object  &$db  JDatabase
 	 * @return  void
 	 */
 	public function __construct(&$db)
@@ -57,19 +57,17 @@ class BlogTableEntry extends JTable
 	 */
 	public function loadAlias($oid=NULL, $scope=NULL, $scope_id=NULL)
 	{
-		$fields = array(
+		return parent::load(array(
 			'alias'    => (string) $oid,
 			'scope'    => (string) $scope,
 			'scope_id' => (int) $scope_id
-		);
-
-		return parent::load($fields);
+		));
 	}
 
 	/**
 	 * Validate data
 	 *
-	 * @return  boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -125,7 +123,7 @@ class BlogTableEntry extends JTable
 	 * @param   integer  $chars  Length to shorten to
 	 * @return  string
 	 */
-	public function _shorten($text, $chars=100)
+	private function _shorten($text, $chars=100)
 	{
 		$text = strip_tags($text);
 		$text = trim($text);
@@ -139,396 +137,281 @@ class BlogTableEntry extends JTable
 	}
 
 	/**
-	 * Return a count of entries based off of filters passed
-	 * Used for admin interface
-	 *
-	 * @param   array $filters Filters to build query from
-	 * @return  integer
+	 * Get a count of, single entry, or list of entries
+	 * 
+	 * @param   string   $rtrn     Data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   array    $select   List of fields to select
+	 * @return  mixed
 	 */
-	public function getEntriesCount($filters=array())
+	public function find($what='', $filters=array(), $select=array())
 	{
-		$filters['limit'] = 0;
-		$query = "SELECT COUNT(*) " . $this->_buildAdminQuery($filters);
+		$what = strtolower($what);
+		$select = (array) $select;
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-	/**
-	 * Get entries based off of filters passed
-	 * Used for admin interface
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
-	 */
-	public function getEntries($filters=array())
-	{
-		$bc = new BlogTableComment($this->_db);
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
 
-		$query = "SELECT m.*, (SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildAdminQuery($filters);
+			case 'one':
+				$filters['limit'] = 1;
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				if (!isset($filters['sort']))
+				{
+					$filters['sort'] = 'publish_up';
+				}
+				if (!isset($filters['sort_Dir']))
+				{
+					$filters['sort_Dir'] = 'DESC';
+				}
+				$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+				if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+				{
+					$filters['sort_Dir'] = 'DESC';
+				}
+
+				if (empty($select))
+				{
+					$select = array(
+						'm.*', 
+						'(SELECT COUNT(*) FROM `#__blog_comments` AS c WHERE c.entry_id=m.id) AS comments',
+						'u.name'
+					);
+				}
+
+				$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 
 	/**
 	 * Build a query from filters passed
-	 * Used for admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
-	private function _buildAdminQuery($filters)
+	private function _buildQuery($filters=array())
 	{
 		$nullDate = $this->_db->getNullDate();
 		$now = JFactory::getDate()->toSql();
 
-		$query  = "FROM $this->_tbl AS m,
-					#__xprofiles AS u
-					WHERE m.scope=" . $this->_db->Quote($filters['scope']) . " AND m.created_by=u.uidNumber ";
+		$query = "FROM `$this->_tbl` AS m LEFT JOIN `#__xprofiles` AS u ON u.uidNumber=m.created_by";
+
+		$where = array();
+
 		if (isset($filters['created_by']) && $filters['created_by'] != 0)
 		{
-			$query .= " AND m.created_by=" . $this->_db->Quote($filters['created_by']);
+			$where[] = "m.created_by=" . $this->_db->Quote($filters['created_by']);
 		}
 		if (isset($filters['scope_id']) && $filters['scope_id'] != 0)
 		{
-			$query .= " AND m.scope_id=" . $this->_db->Quote($filters['scope_id']);
+			$where[] = "m.scope_id=" . $this->_db->Quote($filters['scope_id']);
 		}
 		if (isset($filters['scope']) && $filters['scope'] != '')
 		{
-			$query .= " AND m.scope=" . $this->_db->Quote($filters['scope']);
+			$where[] = "m.scope=" . $this->_db->Quote($filters['scope']);
 		}
 		if (isset($filters['state']) && $filters['state'] != '')
 		{
 			switch ($filters['state'])
 			{
 				case 'public':
-					$query .= " AND m.state=1";
+					$where[] = "m.state=1";
 				break;
 				case 'registered':
-					$query .= " AND m.state>0";
+					$where[] = "m.state>0";
 				break;
 				case 'private':
-					$query .= " AND m.state=0";
+					$where[] = "m.state=0";
 				break;
 				case 'all':
-					$query .= " AND m.state>=0";
+					$where[] = "m.state>=0";
 				break;
 				case 'trashed':
-					$query .= " AND m.state<0";
+					$where[] = "m.state<0";
 				break;
 			}
 		}
-		if (isset($filters['search']) && $filters['search'] != '')
+		if (isset($filters['year']) && $filters['year'] != 0)
 		{
-			$filters['search'] = strtolower(stripslashes($filters['search']));
-			$query .= " AND (LOWER(m.title) LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . " OR LOWER(m.content) LIKE " . $this->_db->quote('%' . $filters['search'] . '%') . ")";
-		}
-		if (isset($filters['order']) && $filters['order'] != '')
-		{
-			$query .= " ORDER BY " . $filters['order'];
+			if (isset($filters['month']) && $filters['month'] != 0)
+			{
+				$startdate = $filters['year'] . '-' . $filters['month'] . '-01 00:00:00';
+
+				if ($filters['month']+1 == 13)
+				{
+					$year  = $filters['year'] + 1;
+					$month = 1;
+				}
+				else
+				{
+					$month = ($filters['month']+1);
+					$year  = $filters['year'];
+				}
+				$enddate = sprintf("%4d-%02d-%02d 00:00:00", $year, $month, 1);
+			}
+			else
+			{
+				$startdate = $filters['year'] . '-01-01 00:00:00';
+				$enddate   = ($filters['year']+1) . '-01-01 00:00:00';
+			}
+
+			$where[] = "m.publish_up >= " . $this->_db->Quote($startdate);
+			$where[] = "m.publish_up < " . $this->_db->Quote($enddate);
 		}
 		else
 		{
-			$query .= " ORDER BY publish_up DESC";
+			if (!JFactory::getApplication()->isAdmin())
+			{
+				$created_by = " OR m.created_by=" .  $this->_db->quote(JFactory::getUser()->get('id'));
+				$where[] = "(m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . "{$created_by})";
+			}
 		}
-		if (isset($filters['limit']) && $filters['limit'] != 0)
+
+		if (!JFactory::getApplication()->isAdmin())
 		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+			if ((isset($filters['state']) && $filters['state'] != 'all') || !isset($filters['state']))
+			{
+				if (!isset($filters['authorized']) || !$filters['authorized'])
+				{
+					$where[] = "(m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
+				}
+				else if (isset($filters['authorized']) && $filters['authorized'] && is_numeric($filters['authorized']))
+				{
+					$where[] = "((m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ") OR m.created_by=" . $this->_db->Quote($filters['authorized']) . ")";
+				}
+			}
 		}
+
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			$filters['search'] = $this->_db->quote('%' . strtolower(stripslashes($filters['search'])) . '%');
+			$where[] = "(LOWER(m.title) LIKE " . $filters['search'] . " OR LOWER(m.content) LIKE " . $filters['search'] . ")";
+		}
+
+		if (count($where))
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
 		return $query;
 	}
 
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
-		$filters['limit'] = 0;
-		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		return $this->find('count', $filters);
 	}
 
-	/**
+		/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
-		$bc = new BlogTableComment($this->_db);
-
-		$query = "SELECT m.*, (SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Build a query from filters passed
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
-	 */
-	private function _buildQuery($filters)
-	{
-		$nullDate = $this->_db->getNullDate();
-		$date = JFactory::getDate();
-		$now = $date->toSql();
-
-		$query  = "FROM $this->_tbl AS m,
-					#__xprofiles AS u
-					WHERE m.created_by=u.uidNumber ";
-
-		if (isset($filters['scope']) && $filters['scope'] != '')
-		{
-			$query .= " AND m.scope=" . $this->_db->Quote($filters['scope']);
-		}
-		if (isset($filters['year']) && $filters['year'] != 0)
-		{
-			if (isset($filters['month']) && $filters['month'] != 0)
-			{
-				$startmonth = $filters['year'] . '-' . $filters['month'] . '-01 00:00:00';
-
-				if ($filters['month']+1 == 13)
-				{
-					$year = $filters['year'] + 1;
-					$month = 1;
-				}
-				else
-				{
-					$month = ($filters['month']+1);
-					$year = $filters['year'];
-				}
-				$endmonth = sprintf("%4d-%02d-%02d 00:00:00", $year, $month,1);
-
-				$query .= " AND m.publish_up >= " . $this->_db->Quote($startmonth) . " AND m.publish_up < " . $this->_db->Quote($endmonth) . " ";
-			}
-			else
-			{
-				$startyear = $filters['year'] . '-01-01 00:00:00';
-				$endyear = ($filters['year']+1) . '-01-01 00:00:00';
-
-				$query .= " AND m.publish_up >= " . $this->_db->Quote($startyear) . " AND m.publish_up < " . $this->_db->Quote($endyear) . " ";
-			}
-		}
-		else
-		{
-			$created_by = " OR m.created_by=" .  $this->_db->quote(JFactory::getUser()->get('id'));
-			$query .= "AND (m.publish_up = " . $this->_db->Quote($nullDate) . " OR m.publish_up <= " . $this->_db->Quote($now) . "{$created_by})";
-
-					//AND (m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
-		}
-		if ((isset($filters['state']) && $filters['state'] != 'all') || !isset($filters['state']))
-		{
-			if (!isset($filters['authorized']) || !$filters['authorized'])
-			{
-				$query .= "AND (m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ")";
-			}
-			else if (isset($filters['authorized']) && $filters['authorized'] && is_numeric($filters['authorized']))
-			{
-				$query .= "AND ((m.publish_down = " . $this->_db->Quote($nullDate) . " OR m.publish_down >= " . $this->_db->Quote($now) . ") OR m.created_by=" . $this->_db->Quote($filters['authorized']) . ")";
-			}
-		}
-
-		if (isset($filters['created_by']) && (int) $filters['created_by'] != 0)
-		{
-			$query .= " AND m.created_by=" . $this->_db->Quote(intval($filters['created_by']));
-		}
-		if (isset($filters['scope_id']) && (int) $filters['scope_id'] != 0)
-		{
-			$query .= " AND m.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
-		}
-		if (isset($filters['state']) && $filters['state'] != '')
-		{
-			switch ($filters['state'])
-			{
-				case 'all':
-					$query .= " AND m.state>=0";
-				break;
-				case 'registered':
-					$query .= " AND m.state>0";
-				break;
-				case 'private':
-					$query .= " AND m.state=0";
-				break;
-				case 'public':
-				default:
-					$query .= " AND m.state=1 "; // AND u.public=1 ";
-				break;
-			}
-		}
-		if (isset($filters['search']) && $filters['search'] != '')
-		{
-			$filters['search'] = $this->_db->quote('%' . strtolower(stripslashes($filters['search'])) . '%');
-			$query .= " AND (LOWER(m.title) LIKE " . $filters['search'] . " OR LOWER(m.content) LIKE " . $filters['search'] . ")";
-		}
-		if (isset($filters['order']) && $filters['order'] != '')
-		{
-			$query .= " ORDER BY " . $filters['order'];
-		}
-		else
-		{
-			$query .= " ORDER BY publish_up DESC";
-		}
-		if (isset($filters['limit']) && $filters['limit'] != 0)
-		{
-			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
-		}
-		return $query;
-	}
-
-	/**
-	 * Delete comments associated with an entry
-	 *
-	 * @param      integer $id Blog entry
-	 * @return     boolean True if comments deleted
-	 */
-	public function deleteComments($id=null)
-	{
-		if (!$id)
-		{
-			$id = $this->id;
-		}
-		if (!$id)
-		{
-			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
-			return false;
-		}
-
-		$bc = new BlogTableComment($this->_db);
-
-		$this->_db->setQuery("DELETE FROM " . $bc->getTableName() . " WHERE entry_id=" . $this->_db->Quote($id));
-		if (!$this->_db->query())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-
-	/**
-	 * Delete files associated with an entry
-	 *
-	 * @param      integer $id Blog entry
-	 * @return     boolean True if files deleted
-	 */
-	public function deleteFiles($id=null)
-	{
-		// Build the file path
-		/*$path = JPATH_ROOT;
-		$config = $this->config;
-		if (substr($config->get('uploadpath'), 0, 1) != DS)
-		{
-			$path .= DS;
-		}
-		$path .= $config->get('uploadpath') . DS . $member->get('uidNumber');
-
-		if (is_dir($path))
-		{
-			// Attempt to delete the file
-			jimport('joomla.filesystem.file');
-			if (!JFolder::delete($path))
-			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_DIRECTORY'));
-				return false;
-			}
-		}*/
-		return true;
-	}
-
-	/**
-	 * Delete tags associated with an entry
-	 *
-	 * @param      integer $id Blog entry
-	 * @return     boolean True if files deleted
-	 */
-	public function deleteTags($id=null)
-	{
-		if (!$id)
-		{
-			$id = $this->id;
-		}
-		if (!$id)
-		{
-			$this->setError(JText::_('COM_BLOG_ERROR_MISSING_ENTRY_ID'));
-			return false;
-		}
-
-		$bt = new BlogModelTags($id);
-		if (!$bt->removeAll())
-		{
-			$this->setError(JText::_('COM_BLOG_ERROR_UNABLE_TO_DELETE_TAGS'));
-			return false;
-		}
-		return true;
+		return $this->find('list', $filters);
 	}
 
 	/**
 	 * Get a list of entries based on comment count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getPopularEntries($filters=array())
 	{
-		$filters['order'] = 'hits DESC';
+		$filters['sort'] = 'hits';
+		$filters['sort_Dir'] = 'DESC';
 
-		$bc = new BlogTableComment($this->_db);
-
-		$query = "SELECT m.*,
-				(SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->find('list', $filters);
 	}
 
 	/**
 	 * Get a list of entries based on date published
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecentEntries($filters=array())
 	{
-		$filters['order'] = 'publish_up DESC';
+		$filters['sort'] = 'publish_up';
+		$filters['sort_Dir'] = 'DESC';
 
-		$bc = new BlogTableComment($this->_db);
-
-		$query = "SELECT m.*,
-				(SELECT COUNT(*) FROM " . $bc->getTableName() . " AS c WHERE c.entry_id=m.id) AS comments, u.name " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		return $this->find('list', $filters);
 	}
 
 	/**
 	 * Get the date of the first entry
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string
 	 */
 	public function getDateOfFirstEntry($filters=array())
 	{
-		$filters['order'] = 'publish_up ASC';
+		$filters['sort'] = 'publish_up';
+		$filters['sort_Dir'] = 'ASC';
 		$filters['limit'] = 1;
 		$filters['start'] = 0;
 		$filters['year']  = 0;
 		$filters['month'] = 0;
+		$filters['select'] = 'm.publish_up';
 
-		$query = "SELECT publish_up " . $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
+		return $this->find('list', $filters);
 	}
 }
 
