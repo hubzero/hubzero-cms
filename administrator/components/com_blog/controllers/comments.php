@@ -87,7 +87,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 		$this->view->entry = new BlogModelEntry($this->view->filters['entry_id']);
 
-		// Instantiate our HelloEntry object
+		// Instantiate our table object
 		$obj = new BlogTableComment($this->database);
 
 		// Get records
@@ -102,7 +102,6 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 			// First pass - collect children
 			foreach ($rows as $v)
 			{
-				//$v->name = '';
 				$k = new BlogModelComment($v);
 
 				$pt = $k->get('parent');

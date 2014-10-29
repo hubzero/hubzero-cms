@@ -83,10 +83,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'metadata' => ''
 		);
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'blog.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		// Get our model
-		$this->model = new BlogModel('member', $member->get('uidNumber'));
+		$this->model = new BlogModelArchive('member', $member->get('uidNumber'));
 
 		if ($returnhtml)
 		{

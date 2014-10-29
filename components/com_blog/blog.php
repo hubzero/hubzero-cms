@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'blog.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'entries'));
 if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))

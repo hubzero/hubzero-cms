@@ -39,17 +39,16 @@ jimport('joomla.filesystem.file');
 	function updateDir()
 	{
 		var allPaths = window.top.document.forms[0].dirPath.options;
-		for (i=0; i<allPaths.length; i++)
-		{
+		for (i=0; i<allPaths.length; i++) {
 			allPaths.item(i).selected = false;
-			if ((allPaths.item(i).value)== '<?php if (strlen($this->id)>0) { echo $this->id ;} else { echo '/';}  ?>') {
+			if (allPaths.item(i).value == '<?php echo $this->archive->get('scope_id'); ?>') {
 				allPaths.item(i).selected = true;
 			}
 		}
 	}
 	function deleteFile(file)
 	{
-		if (confirm("Delete file \""+file+"\"?")) {
+		if (confirm('Delete file "' + file + '"?')) {
 			return true;
 		}
 		return false;
@@ -57,74 +56,75 @@ jimport('joomla.filesystem.file');
 	function deleteFolder(folder, numFiles)
 	{
 		if (numFiles > 0) {
-			alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
+			alert('There are ' + numFiles + ' files/folders in "' + folder + '". Please delete all files/folder in "' + folder + '" first.');
 			return false;
 		}
-		if (confirm('Delete folder "'+folder+'"?')) {
+		if (confirm('Delete folder "' + folder + '"?')) {
 			return true;
 		}
 		return false;
 	}
 </script>
 <div id="attachments">
-	<form action="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" id="filelist">
-	<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
-		<p><?php echo JText::_('COM_BLOG_NO_FILES_FOUND'); ?></p>
-	<?php } else { ?>
-		<table>
-			<tbody>
-			<?php
-			$base = rtrim(JURI::base(true), '/');
-			foreach ($this->folders as $k => $folder)
-			{
-				$num_files = 0;
-
-				if (is_dir(JPATH_ROOT . DS . $folder))
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="filelist">
+		<?php if (count($this->folders) == 0 && count($this->docs) == 0) { ?>
+			<p><?php echo JText::_('COM_BLOG_NO_FILES_FOUND'); ?></p>
+		<?php } else { ?>
+			<table>
+				<tbody>
+				<?php
+				$base = rtrim(JURI::base(true), '/');
+				foreach ($this->folders as $k => $folder)
 				{
-					$d = @dir(JPATH_ROOT . DS . $folder);
+					$num_files = 0;
 
-					while (false !== ($entry = $d->read()))
+					if (is_dir(JPATH_ROOT . DS . $folder))
 					{
-						if (substr($entry,0,1) != '.')
+						$d = @dir(JPATH_ROOT . DS . $folder);
+
+						while (false !== ($entry = $d->read()))
 						{
-							$num_files++;
+							if (substr($entry, 0, 1) != '.')
+							{
+								$num_files++;
+							}
 						}
+						$d->close();
 					}
-					$d->close();
-				}
-			?>
-				<tr>
-					<td width="100%">
-						<span class="icon-folder folder">
-							<?php echo $k; ?>
-						</span>
-					</td>
-					<td>
-						<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;folder=<?php echo DS . $folder; ?>&amp;scope=<?php echo urlencode($this->scope); ?>&amp;id=<?php echo $this->id; ?>&amp;tmpl=component" target="filer" onclick="return deleteFolder('<?php echo $folder; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
-							<span><?php echo JText::_('COM_BLOG_DELETE'); ?></span>
-						</a>
-					</td>
-				</tr>
-			<?php } ?>
-			<?php foreach ($this->docs as $name => $doc) { ?>
-				<tr>
-					<td width="100%">
-						<span class="icon-file file <?php echo JFile::getExt($doc); ?>">
-							<?php echo $this->escape($doc); ?>
-						</span>
-					</td>
-					<td>
-						<a class="icon-delete delete" href="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo $doc; ?>&amp;scope=<?php echo urlencode($this->scope); ?>&amp;id=<?php echo $this->id; ?>&amp;tmpl=component" target="filer" onclick="return deleteFile('<?php echo $doc; ?>');" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
-							<span><?php echo JText::_('COM_BLOG_DELETE'); ?></span>
-						</a>
-					</td>
-				</tr>
-			<?php } ?>
-			</tbody>
-		</table>
-	<?php } ?>
+				?>
+					<tr>
+						<td width="100%">
+							<span class="icon-folder folder">
+								<?php echo $k; ?>
+							</span>
+						</td>
+						<td>
+							<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefolder&folder=' . $folder . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFolder('<?php echo $folder; ?>', '<?php echo $num_files; ?>');" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
+								<span><?php echo JText::_('COM_BLOG_DELETE'); ?></span>
+							</a>
+						</td>
+					</tr>
+				<?php } ?>
+				<?php foreach ($this->docs as $name => $doc) { ?>
+					<tr>
+						<td width="100%">
+							<span class="icon-file file <?php echo JFile::getExt($doc); ?>">
+								<?php echo $this->escape($doc); ?>
+							</span>
+						</td>
+						<td>
+							<a class="icon-delete delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deletefile&file=' . $doc . '&scope=' . urlencode($this->archive->get('scope')) . '&id=' . $this->archive->get('scope_id') . '&tmpl=component&' . JUtility::getToken() . '=1'); ?>" target="filer" onclick="return deleteFile('<?php echo $doc; ?>');" title="<?php echo JText::_('COM_BLOG_DELETE'); ?>">
+								<span><?php echo JText::_('COM_BLOG_DELETE'); ?></span>
+							</a>
+						</td>
+					</tr>
+				<?php } ?>
+				</tbody>
+			</table>
+		<?php } ?>
 	</form>
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
-<?php } ?>
+
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<?php } ?>
 </div>

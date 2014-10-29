@@ -31,54 +31,61 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(__DIR__ . '/entry.php');
+require_once(__DIR__ . DS . 'entry.php');
 
 /**
- * Blog model class
+ * Blog archive model class
  */
-class BlogModel extends \Hubzero\Base\Object
+class BlogModelArchive extends \Hubzero\Base\Object
 {
 	/**
 	 * BlogTableEntry
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_tbl = null;
 
 	/**
 	 * BlogModelEntry
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_entry = null;
 
 	/**
 	 * \Hubzero\Base\ItemList
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_entries = null;
 
 	/**
 	 * JDatabase
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_db = NULL;
 
 	/**
 	 * JRegistry
 	 *
-	 * @var array
+	 * @var  object
 	 */
 	private $_config;
 
 	/**
+	 * File space path
+	 *
+	 * @var  string
+	 */
+	private $_path;
+
+	/**
 	 * Constructor
 	 *
-	 * @param      string  $scope    Blog scope [site, group, member]
-	 * @param      integer $scope_id Scope ID if scope is member or group
-	 * @return     void
+	 * @param   string   $scope     Blog scope [site, group, member]
+	 * @param   integer  $scope_id  Scope ID if scope is member or group
+	 * @return  void
 	 */
 	public function __construct($scope='site', $scope_id=0)
 	{
@@ -87,6 +94,7 @@ class BlogModel extends \Hubzero\Base\Object
 		$this->_tbl = new BlogTableEntry($this->_db);
 
 		$this->set('scope', $scope);
+		$this->set('scope_id', $scope_id);
 		switch ($scope)
 		{
 			case 'group':
@@ -101,16 +109,14 @@ class BlogModel extends \Hubzero\Base\Object
 				$this->set('group_id', 0);
 			break;
 		}
-
-		$this->_config = JComponentHelper::getParams('com_blog');
 	}
 
 	/**
-	 * Returns a reference to a blog model
+	 * Returns a reference to a blog archive model
 	 *
-	 * @param      string  $scope    Blog scope [site, group, member]
-	 * @param      integer $scope_id Scope ID if scope is member or group
-	 * @return     object BlogModel
+	 * @param   string   $scope     Blog scope [site, group, member]
+	 * @param   integer  $scope_id  Scope ID if scope is member or group
+	 * @return  object   BlogModelArchive
 	 */
 	static function &getInstance($scope='site', $scope_id=0)
 	{
@@ -125,82 +131,37 @@ class BlogModel extends \Hubzero\Base\Object
 
 		if (!isset($instances[$key]))
 		{
-			$instances[$key] = new self($scope, $scope_id);
+			$instances[$key] = new static($scope, $scope_id);
 		}
 
 		return $instances[$key];
 	}
 
 	/**
-	 * Returns a property of the object or the default value if the property is not set.
+	 * Get a specific entry
 	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $default The default value
-	 * @return	mixed The value of the property
- 	 */
-	public function get($property, $default=null)
-	{
-		if (isset($this->_tbl->$property))
-		{
-			return $this->_tbl->$property;
-		}
-		return $default;
-	}
-
-	/**
-	 * Modifies a property of the object, creating it if it does not already exist.
-	 *
-	 * @param	string $property The name of the property
-	 * @param	mixed  $value The value of the property to set
-	 * @return	mixed Previous value of the property
-	 */
-	public function set($property, $value = null)
-	{
-		$previous = isset($this->_tbl->$property) ? $this->_tbl->$property : null;
-		$this->_tbl->$property = $value;
-		return $previous;
-	}
-
-	/**
-	 * Set and get a specific offering
-	 *
-	 * @return     void
+	 * @param   mixed   $id  String (alias) or integer (ID) of an entry
+	 * @return  object
 	 */
 	public function entry($id=null)
 	{
 		if (!isset($this->_entry)
 		 || ($id !== null && (int) $this->_entry->get('id') != $id && (string) $this->_entry->get('alias') != $id))
 		{
-			/*$this->_entry = null;
-			if (isset($this->_entries) && ($this->_entries instanceof \Hubzero\Base\ItemList))
-			{
-				foreach ($this->_entries as $key => $entry)
-				{
-					if ((int) $entry->get('id') == $id || (string) $entry->get('alias') == $id)
-					{
-						$this->_entry = $entry;
-						break;
-					}
-				}
-			}
-			else
-			{*/
-				$this->_entry = BlogModelEntry::getInstance($id, $this->get('scope'), ($this->get('scope') == 'member' ? $this->get('created_by') : $this->get('group_id')));
-			//}
+			$this->_entry = BlogModelEntry::getInstance($id, $this->get('scope'), $this->get('scope_id'));
 		}
 		return $this->_entry;
 	}
 
 	/**
-	 * Get a list of categories for a forum
-	 *   Accepts either a numeric array index or a string [id, name]
-	 *   If index, it'll return the entry matching that index in the list
-	 *   If string, it'll return either a list of IDs or names
+	 * Get a count of, model for, or list of entries
 	 *
-	 * @param      mixed $idx Index value
-	 * @return     array
+	 * @param   string   $rtrn     Data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   boolean  $reset    Clear cached data?
+	 * @return  mixed
 	 */
-	public function entries($rtrn='list', $filters=array())
+	public function entries($rtrn='list', $filters=array(), $reset=false)
 	{
 		if (!isset($filters['scope']))
 		{
@@ -211,7 +172,6 @@ class BlogModel extends \Hubzero\Base\Object
 			$filters['group_id'] = (int) $this->get('group_id');
 		}
 
-		//$this->_filters = serialize($filters);
 		switch (strtolower($rtrn))
 		{
 			case 'count':
@@ -226,11 +186,12 @@ class BlogModel extends \Hubzero\Base\Object
 			break;
 
 			case 'first':
-				$filters['limit'] = 1;
-				$filters['start'] = 0;
-				$filters['sort'] = 'publish_up';
+				$filters['limit']    = 1;
+				$filters['start']    = 0;
+				$filters['sort']     = 'publish_up';
 				$filters['sort_Dir'] = 'ASC';
-				$filters['order'] = $filters['sort'] . ' ' . $filters['sort_Dir'];
+				$filters['order']    = $filters['sort'] . ' ' . $filters['sort_Dir'];
+
 				$results = $this->_tbl->getRecords($filters);
 				$res = isset($results[0]) ? $results[0] : null;
 				return new BlogModelEntry($res);
@@ -244,10 +205,7 @@ class BlogModel extends \Hubzero\Base\Object
 						$results[$key] = new BlogModelEntry($result);
 					}
 				}
-				else
-				{
-					$results = array();
-				}
+
 				return new \Hubzero\Base\ItemList($results);
 			break;
 
@@ -259,10 +217,7 @@ class BlogModel extends \Hubzero\Base\Object
 						$results[$key] = new BlogModelEntry($result);
 					}
 				}
-				else
-				{
-					$results = array();
-				}
+
 				return new \Hubzero\Base\ItemList($results);
 			break;
 
@@ -285,10 +240,7 @@ class BlogModel extends \Hubzero\Base\Object
 						$results[$key] = new BlogModelEntry($result);
 					}
 				}
-				else
-				{
-					$results = array();
-				}
+
 				return new \Hubzero\Base\ItemList($results);
 			break;
 		}
@@ -296,32 +248,89 @@ class BlogModel extends \Hubzero\Base\Object
 	}
 
 	/**
+	 * Get file upload upload path
+	 *
+	 * @return  string
+	 */
+	public function filespace()
+	{
+		if (!isset($this->_path))
+		{
+			$this->_path = JPATH_ROOT;
+
+			switch ($this->get('scope'))
+			{
+				case 'member':
+					jimport('joomla.plugin.plugin');
+					$plugin = JPluginHelper::getPlugin('members', 'blog');
+					$params = new JRegistry($plugin->params);
+					$p = $params->get('uploadpath');
+					$p = str_replace('{{uid}}', \Hubzero\Utility\String::pad($this->get('scope_id')), $p);
+				break;
+
+				case 'group':
+					$uploadpath = JComponentHelper::getParams('com_groups')->get('uploadpath', '/site/groups');
+					$p = rtrim($uploadpath, DS) . DS . $this->get('scope_id') . DS . 'uploads' . DS  . 'blog';
+				break;
+
+				case 'site':
+					$p = $this->config('uploadpath', '/site/blog');
+				break;
+			}
+			$this->_path .= DS . trim($p, DS);
+		}
+
+		return $this->_path;
+	}
+
+	/**
+	 * Get a parameter from the component config
+	 *
+	 * @param   string  $property  Param to return
+	 * @param   mixed   $default   Value to return if property not found
+	 * @return  object  JRegistry
+	 */
+	public function config($property=null, $default=null)
+	{
+		if (!isset($this->_config))
+		{
+			$this->_config = JComponentHelper::getParams('com_blog');
+		}
+		if ($property)
+		{
+			return $this->_config->get($property, $default);
+		}
+		return $this->_config;
+	}
+
+	/**
 	 * Check a user's authorization
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string   $action  Action to check
+	 * @param   string   $item    Item type to check action against
+	 * @return  boolean  True if authorized, false if not
 	 */
-	public function access($action='view')
+	public function access($action='view', $item='entry')
 	{
-		if (!$this->params->get('access-check-done', false))
+		if (!$this->config()->get('access-check-done', false))
 		{
 			$juser = JFactory::getUser();
 			if ($juser->get('guest'))
 			{
-				$this->params->set('access-check-done', true);
+				$this->config()->set('access-check-done', true);
 			}
 			else
 			{
-				$this->params->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
-				$this->params->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->params->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->params->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->params->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
-				$this->params->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->config()->set('access-admin-entry', $juser->authorise('core.admin', $this->get('id')));
+				$this->config()->set('access-manage-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->config()->set('access-delete-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->config()->set('access-edit-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->config()->set('access-edit-state-entry', $juser->authorise('core.manage', $this->get('id')));
+				$this->config()->set('access-edit-own-entry', $juser->authorise('core.manage', $this->get('id')));
 
-				$this->params->set('access-check-done', true);
+				$this->config()->set('access-check-done', true);
 			}
 		}
-		return $this->params->get('access-' . strtolower($action) . '-entry');
+		return $this->config()->get('access-' . strtolower($action) . '-entry');
 	}
 }

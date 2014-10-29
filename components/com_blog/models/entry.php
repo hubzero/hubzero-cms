@@ -212,6 +212,20 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	}
 
 	/**
+	 * Has the offering started?
+	 *
+	 * @return     boolean
+	 */
+	public function isDeleted()
+	{
+		if ($this->get('state') == -1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Check if the entry is available
 	 *
 	 * @return  boolean
@@ -628,6 +642,12 @@ class BlogModelEntry extends \Hubzero\Base\Model
 			$juser = JFactory::getUser();
 			if ($juser->get('guest'))
 			{
+				// Do not allow logged-out users to see private, 
+				// or 'registered' entries.
+				if ($this->get('state') != 1)
+				{
+					$this->params->set('access-view-entry', false);
+				}
 				$this->params->set('access-check-done', true);
 			}
 			else
@@ -644,6 +664,12 @@ class BlogModelEntry extends \Hubzero\Base\Model
 				if (!$this->params->get('access-admin-entry')
 				 && !$this->params->get('access-manage-entry'))
 				{
+					// Disallow access if the entry is private
+					if ($this->get('state') == 0)
+					{
+						$this->params->set('access-view-entry', false);
+					}
+
 					// Was the entry created by the current user?
 					if ($this->get('created_by') == $juser->get('id'))
 					{
@@ -655,6 +681,10 @@ class BlogModelEntry extends \Hubzero\Base\Model
 						$this->params->set('access-edit-state-entry', true);
 						$this->params->set('access-edit-own-entry', true);
 					}
+				}
+				else
+				{
+					$this->params->set('access-view-entry', true);
 				}
 
 				$this->params->set('access-check-done', true);

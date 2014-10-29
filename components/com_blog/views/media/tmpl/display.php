@@ -35,26 +35,27 @@ $base = rtrim(JURI::base(true), '/');
 
 $this->css();
 ?>
-	<div id="attachments">
-		<form action="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=upload" id="adminForm" method="post" enctype="multipart/form-data">
-			<fieldset>
-				<div id="themanager" class="manager">
-					<iframe src="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;scope=<?php echo urlencode($this->scope); ?>&amp;id=<?php echo $this->id; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
-				</div>
-			</fieldset>
-			<fieldset>
-				<p><input type="file" name="upload" id="upload" /></p>
-				<p><input type="submit" value="<?php echo JText::_('COM_BLOG_UPLOAD'); ?>" /></p>
+<div id="attachments">
+	<form action="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=upload" id="adminForm" method="post" enctype="multipart/form-data">
+		<fieldset>
+			<div id="themanager" class="manager">
+				<iframe src="<?php echo $base; ?>/index.php?option=<?php echo $this->option; ?>&amp;tmpl=component&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;scope=<?php echo urlencode($this->archive->get('scope')); ?>&amp;id=<?php echo $this->archive->get('scope_id'); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+			</div>
+		</fieldset>
+		<fieldset>
+			<p><input type="file" name="upload" id="upload" /></p>
+			<p><input type="submit" value="<?php echo JText::_('COM_BLOG_UPLOAD'); ?>" /></p>
 
-				<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
-				<input type="hidden" name="task" value="upload" />
-				<input type="hidden" name="scope" value="<?php echo $this->escape($this->scope); ?>" />
-				<input type="hidden" name="id" value="<?php echo $this->escape($this->id); ?>" />
-				<input type="hidden" name="tmpl" value="component" />
-			</fieldset>
-		</form>
-<?php if ($this->getError()) { ?>
+			<input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+			<input type="hidden" name="controller" value="<?php echo $this->escape($this->controller); ?>" />
+			<input type="hidden" name="task" value="upload" />
+			<input type="hidden" name="scope" value="<?php echo $this->escape($this->archive->get('scope')); ?>" />
+			<input type="hidden" name="id" value="<?php echo $this->escape($this->archive->get('scope_id')); ?>" />
+			<input type="hidden" name="tmpl" value="component" />
+		</fieldset>
+	</form>
+
+	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo $this->getError(); ?></p>
-<?php } ?>
-	</div>
+	<?php } ?>
+</div>

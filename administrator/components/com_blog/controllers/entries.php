@@ -96,7 +96,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		$this->view->filters['state'] = 'all';
 
 		// Instantiate our HelloEntry object
-		$obj = new BlogModel();
+		$obj = new BlogModelArchive();
 
 		// Get record count
 		$this->view->total = $obj->entries('count', $this->view->filters);

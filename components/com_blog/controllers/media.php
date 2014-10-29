@@ -37,31 +37,15 @@ defined('_JEXEC') or die('Restricted access');
 class BlogControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
-	 * Execute task
-	 *
-	 * @return     void
-	 */
-	public function execute()
-	{
-		/*if (JFactory::getUser()->get('guest'))
-		{
-			JError::raiseError(403, JText::_('Access denied.'));
-			return;
-		}*/
-
-		parent::execute();
-	}
-
-	/**
 	 * Download a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function downloadTask()
 	{
-		$model = new BlogModel('site', 0);
+		$archive = new BlogModelArchive('site', 0);
 
-		$entry = $model->entry(JRequest::getVar('alias', ''));
+		$entry = $archive->entry(JRequest::getVar('alias', ''));
 		if (!$entry->exists() || !$entry->access('view'))
 		{
 			JError::raiseError(403, JText::_('Access denied.'));
@@ -72,7 +56,7 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 		{
 			$filename = array_pop(explode('/', $_SERVER['REQUEST_URI']));
 
-			//get the file name
+			// Get the file name
 			if (substr(strtolower($filename), 0, strlen('image:')) == 'image:')
 			{
 				$file = substr($filename, strlen('image:'));
@@ -83,17 +67,16 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 			}
 		}
 
-		// decode file name
+		// Decode file name
 		$file = urldecode($file);
 
-		// build file path
-		$file_path = $this->_getUploadPath('site', 0) . DS . $file;
+		// Build file path
+		$file_path = $archive->filespace() . DS . $file;
 
 		// Ensure the file exist
 		if (!file_exists($file_path))
 		{
-			JError::raiseError(404, JText::_('The requested file could not be found: %s', $file));
-			return;
+			throw new InvalidArgumentException(JText::_('The requested file could not be found: %s', $file), 404);
 		}
 
 		// Serve up the image
@@ -102,11 +85,11 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 		$xserver->disposition('inline');
 		$xserver->acceptranges(false); // @TODO fix byte range support
 
-		//serve up file
+		// Serve up file
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('An error occurred while trying to output the file'));
+			throw new RuntimeException(JText::_('An error occurred while trying to output the file'), 500);
 		}
 		else
 		{
@@ -117,7 +100,7 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Upload a file or create a new folder
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -138,18 +121,13 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$scope = JRequest::getVar('scope', 'site');
-		$id = JRequest::getInt('id', 0);
+		$archive = new BlogModelArchive(
+			JRequest::getWord('scope', 'site'),
+			JRequest::getInt('id', 0)
+		);
 
 		// Build the file path
-		$path = $this->_getUploadPath($scope, $id);
-
-		if ($this->getError())
-		{
-			// Push through to the media view
-			$this->displayTask();
-			return;
-		}
+		$path = $archive->filespace();
 
 		if (!is_dir($path))
 		{
@@ -165,6 +143,7 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$file['name'] = JFile::makeSafe($file['name']);
+
 		// Ensure file names fit.
 		$ext = JFile::getExt($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
@@ -187,10 +166,13 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Deletes a folder
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefolderTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit('Invalid Token');
+
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
@@ -208,20 +190,13 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$scope = JRequest::getVar('scope', 'site');
-		$id = JRequest::getInt('id', 0);
+		$archive = new BlogModelArchive(
+			JRequest::getWord('scope', 'site'),
+			JRequest::getInt('id', 0)
+		);
 
 		// Build the file path
-		$path = $this->_getUploadPath($scope, $id);
-
-		if ($this->getError())
-		{
-			// Push through to the media view
-			$this->displayTask();
-			return;
-		}
-
-		$folder = $path . DS . $file;
+		$folder = $path . DS . $archive->filespace();
 
 		// Delete the folder
 		if (is_dir($folder))
@@ -241,10 +216,13 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Deletes a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefileTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or jexit('Invalid Token');
+
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
@@ -262,18 +240,13 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$scope = JRequest::getVar('scope', 'site');
-		$id = JRequest::getInt('id', 0);
+		$archive = new BlogModelArchive(
+			JRequest::getWord('scope', 'site'),
+			JRequest::getInt('id', 0)
+		);
 
 		// Build the file path
-		$path = $this->_getUploadPath($scope, $id);
-
-		if ($this->getError())
-		{
-			// Push through to the media view
-			$this->displayTask();
-			return;
-		}
+		$path = $archive->filespace();
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
@@ -296,87 +269,48 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 	/**
 	 * Display an upload form and file listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		// Output HTML
-		$this->view->config = $this->config;
-		$this->view->id = JRequest::getInt('id', 0);
-		$this->view->scope = JRequest::getVar('scope', 'site');
+		$this->view->archive = new BlogModelArchive(
+			JRequest::getWord('scope', 'site'),
+			JRequest::getInt('id', 0)
+		);
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
-		$this->view->display();
-	}
-
-	/**
-	 * Build an upload path
-	 *
-	 * @param      string  $scope
-	 * @param      integer $id
-	 * @return     string
-	 */
-	protected function _getUploadPath($scope, $id)
-	{
-		$path = JPATH_ROOT;
-		switch ($scope)
-		{
-			case 'member':
-				jimport('joomla.plugin.plugin');
-				$plugin = JPluginHelper::getPlugin('members', 'blog');
-				$params = new JRegistry($plugin->params);
-				$p = $params->get('uploadpath');
-				$p = str_replace('{{uid}}', \Hubzero\Utility\String::pad($id), $p);
-			break;
-
-			case 'group':
-				$groupParams = JComponentHelper::getParams('com_groups');
-				$uploadpath = $groupParams->get('uploadpath', '/site/groups');
-				$p = rtrim($uploadpath, DS) . DS . $id . DS . 'uploads' . DS  . 'blog';
-			break;
-
-			case 'site':
-				$p = $this->config->get('uploadpath', '/site/blog');
-			break;
-
-			default:
-				$this->setError(JText::_('Invalid scope'));
-				$p = '';
-			break;
-		}
-		$path .= DS . trim($p, DS);
-
-		return $path;
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Lists all files and folders for a given directory
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function listTask()
 	{
 		// Incoming
-		$scope = JRequest::getWord('scope', 'site');
-		$id = JRequest::getInt('id', 0);
+		$this->view->archive = new BlogModelArchive(
+			JRequest::getWord('scope', 'site'),
+			JRequest::getInt('id', 0)
+		);
 
-		$path = $this->_getUploadPath($scope, $id);
+		// Build the file path
+		$path = $this->view->archive->filespace();
 
 		$folders = array();
-		$docs    = array();
+		$files   = array();
 
 		if (!$this->getError() && is_dir($path))
 		{
-			// Loop through all files and separate them into arrays of images, folders, and other
+			// Loop through all files and separate them into arrays of files and folders
 			$dirIterator = new DirectoryIterator($path);
 			foreach ($dirIterator as $file)
 			{
@@ -385,43 +319,36 @@ class BlogControllerMedia extends \Hubzero\Component\SiteController
 					continue;
 				}
 
+				$name = $file->getFilename();
+
 				if ($file->isDir())
 				{
-					$name = $file->getFilename();
 					$folders[$path . DS . $name] = $name;
 					continue;
 				}
 
 				if ($file->isFile())
 				{
-					$name = $file->getFilename();
 					if (('cvs' == strtolower($name))
 					 || ('.svn' == strtolower($name)))
 					{
 						continue;
 					}
 
-					$docs[$path . DS . $name] = $name;
+					$files[$path . DS . $name] = $name;
 				}
 			}
 
 			ksort($folders);
-			ksort($docs);
+			ksort($files);
 		}
 
-		$this->view->docs    = $docs;
+		$this->view->docs    = $files;
 		$this->view->folders = $folders;
 
-		$this->view->config  = $this->config;
-		$this->view->id      = $id;
-		$this->view->scope   = $scope;
-
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();

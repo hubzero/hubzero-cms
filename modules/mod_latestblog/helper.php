@@ -42,7 +42,7 @@ class modLatestBlog extends \Hubzero\Module\Module
 	 */
 	public function run()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'blog.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 		$juser = JFactory::getUser();
 
@@ -66,7 +66,7 @@ class modLatestBlog extends \Hubzero\Module\Module
 			$filters['scope'] = '';
 		}
 
-		$archive = new BlogModel('site', 0);
+		$archive = new BlogModelArchive('site', 0);
 		$rows = $archive->entries('list', $filters);
 
 		if ($this->params->get('blog', 'site') == 'group' || $this->params->get('blog', 'site') == 'both')

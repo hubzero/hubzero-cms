@@ -34,7 +34,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 JLoader::import('Hubzero.Api.Controller');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'blog.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
 /**
  * API controller class for support tickets
@@ -148,7 +148,7 @@ class BlogControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 
-		$model = new BlogModel('site');
+		$model = new BlogModelArchive('site');
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),

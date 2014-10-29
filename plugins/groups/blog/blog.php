@@ -96,9 +96,9 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'blog.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
 
-		$this->model = new BlogModel('group', $group->get('gidNumber'));
+		$this->model = new BlogModelArchive('group', $group->get('gidNumber'));
 
 		//are we returning html
 		if ($return == 'html')

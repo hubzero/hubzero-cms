@@ -43,7 +43,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		$this->model = new BlogModel('site', 0);
+		$this->model = new BlogModelArchive('site', 0);
 
 		$this->_authorize();
 		$this->_authorize('entry');
@@ -159,109 +159,50 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$jconfig = JFactory::getConfig();
 
 		// Filters for returning results
-		$this->view->filters = array();
-		$this->view->filters['limit']    = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
-		$this->view->filters['start']    = JRequest::getInt('limitstart', 0);
-		$this->view->filters['year']     = JRequest::getInt('year', 0);
-		$this->view->filters['month']    = JRequest::getInt('month', 0);
-		$this->view->filters['scope']    = $this->config->get('show_from', 'site');
+		$this->view->filters = array(
+			'limit'      => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'year'       => JRequest::getInt('year', 0),
+			'month'      => JRequest::getInt('month', 0),
+			'scope'      => $this->config->get('show_from', 'site'),
+			'group_id'   => 0,
+			'search'     => JRequest::getVar('search', ''),
+			'authorized' => false,
+			'state'      => 'public'
+		);
 		if ($this->view->filters['scope'] == 'both')
 		{
 			$this->view->filters['scope'] = '';
 		}
-		$this->view->filters['group_id'] = 0;
-		$this->view->filters['search']   = JRequest::getVar('search', '');
-		$this->view->filters['authorized'] = false;
 
-		$this->view->filters['state'] = 'public';
 		if (!$this->juser->get('guest'))
 		{
 			$this->view->filters['state'] = 'registered';
 
 			if ($this->view->config->get('access-manage-component'))
 			{
-				$this->view->filters['state'] = 'all';
+				$this->view->filters['state']      = 'all';
 				$this->view->filters['authorized'] = true;
 			}
 		}
 
 		$this->view->model = $this->model;
-
 		$this->view->year  = $this->view->filters['year'];
 		$this->view->month = $this->view->filters['month'];
 
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = ($this->config->get('title')) ? $this->config->get('title') : JText::_(strtoupper($this->_option));
+		$this->view->title = $this->config->get('title', JText::_(strtoupper($this->_option)));
 
 		// Get any errors for display
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
 		$this->view->display();
-	}
-
-	/**
-	 * Highlight a string in a body of text
-	 *
-	 * @param      string $searchquery String to highlight
-	 * @param      array  $results     Content o highlight string in
-	 * @return     array
-	 */
-	private function _highlight($searchquery, $results)
-	{
-		$toks = array($searchquery);
-
-		$resultback = 60;
-		$resultlen  = 300;
-
-		// Loop through all results
-		for ($i = 0, $n = count($results); $i < $n; $i++)
-		{
-			$row =& $results[$i];
-
-			// Clean the text up a bit first
-			$lowerrow = strtolower($row->content);
-
-			// Find first occurrence of a search word
-			$pos = 0;
-			foreach ($toks as $tok)
-			{
-				$pos = strpos($lowerrow, $tok);
-				if ($pos !== false) break;
-			}
-
-			if ($pos > $resultback)
-			{
-				$row->content = substr($row->content, ($pos - $resultback), $resultlen);
-			}
-			else
-			{
-				$row->content = substr($row->content, 0, $resultlen);
-			}
-
-			// Highlight each word/phrase found
-			foreach ($toks as $tok)
-			{
-				if (($tok == 'class') || ($tok == 'span') || ($tok == 'highlight'))
-				{
-					continue;
-				}
-				$row->content = preg_replace('#' . $tok . '#i', "<span class=\"highlight\">\\0</span>", $row->content);
-				$row->title = preg_replace('#' . $tok . '#i', "<span class=\"highlight\">\\0</span>", $row->title);
-			}
-
-			$row->content = trim($row->content) . ' &#8230;';
-		}
-
-		return $results;
 	}
 
 	/**
@@ -271,8 +212,6 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 	 */
 	public function entryTask()
 	{
-		$this->view->setLayout('entry');
-
 		$this->view->config = $this->config;
 		$this->view->model  = $this->model;
 
@@ -290,16 +229,13 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		if (!$this->view->row->exists())
 		{
-			JError::raiseError(404, JText::_('COM_BLOG_NOT_FOUND'));
-			return;
+			throw new JException(JText::_('COM_BLOG_NOT_FOUND'), 404);
 		}
 
 		// Check authorization
-		if (($this->view->row->get('state') == 2 && $this->juser->get('guest'))
-		 || ($this->view->row->get('state') == 0 && !$this->view->config->get('access-manage-component')))
+		if (!$this->view->row->access('view'))
 		{
-			JError::raiseError(403, JText::_('COM_BLOG_NOT_AUTH'));
-			return;
+			throw new JException(JText::_('COM_BLOG_NOT_AUTH'), 403);
 		}
 
 		// Filters for returning results
@@ -326,18 +262,16 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = ($this->config->get('title'))
-							? $this->config->get('title')
-							: JText::_(strtoupper($this->_option));
+		$this->view->title = $this->config->get('title', JText::_(strtoupper($this->_option)));
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
+
+		$this->view
+			->setLayout('entry')
+			->display();
 	}
 
 	/**
@@ -368,8 +302,6 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$this->view->setLayout('edit');
-
 		if (is_object($row))
 		{
 			$this->view->entry = $row;
@@ -391,19 +323,16 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 		$this->_buildPathway();
 
-		$this->view->title = ($this->config->get('title'))
-							? $this->config->get('title')
-							: JText::_(strtoupper($this->_option));
+		$this->view->title = $this->config->get('title', JText::_(strtoupper($this->_option)));
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -689,38 +618,42 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 		}
 
 		/*
-		if ($row->get('created_by') != $this->member->get('uidNumber))
-		{
-			$this->entry = new BlogTableEntry($this->database);
-			$this->entry->load($row->entry_id);
+		$entry = new BlogModelEntry($row->get('entry_id'));
 
+		if ($row->get('created_by') != $entry->get('created_by'))
+		{
 			// Get the site configuration
 			$jconfig = JFactory::getConfig();
 
 			// Build the "from" data for the e-mail
-			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename').' '.JText::_('PLG_MEMBERS_BLOG');
-			$from['email'] = $jconfig->getValue('config.mailfrom');
+			$from = array(
+				'name'  => $jconfig->get('sitename').' '.JText::_('PLG_MEMBERS_BLOG'),
+				'email' => $jconfig->get('mailfrom')
+			);
 
 			$subject = JText::_('PLG_MEMBERS_BLOG_SUBJECT_COMMENT_POSTED');
 
 			// Build the SEF referenced in the message
-			$juri = JURI::getInstance();
-			$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->member->get('uidNumber').'&active=blog&task='.JHTML::_('date',$this->entry->publish_up, $yearFormat, $tz).'/'.JHTML::_('date',$this->entry->publish_up, $monthFormat, $tz).'/'.$this->entry->alias.'#comments);
-			if (substr($sef,0,1) == '/') {
-				$sef = substr($sef,1,strlen($sef));
-			}
+			$sef = JRoute::_($entry->link() . '#comments);
 
 			// Message
 			$message  = "The following comment has been posted to your blog entry:\r\n\r\n";
 			$message .= stripslashes($row->content)."\r\n\r\n";
 			$message .= "To view all comments on the blog entry, go to:\r\n";
-			$message .= $juri->base().$sef . "\r\n";
+			$message .= JURI::base() . '/' . ltrim($sef, '/') . "\r\n";
 
 			// Send the message
+			$activity = array(
+				'blog_comment',
+				$subject,
+				$message,
+				$from,
+				array($entry->get('created_by')), $this->option)
+			);
+
 			JPluginHelper::importPlugin('xmessage');
-			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('blog_comment', $subject, $message, $from, array($this->member->get('uidNumber')), $this->option))) {
+			if (!JDispatcher::getInstance()->trigger('onSendMessage', $activity)
+			{
 				$this->setError(JText::_('PLG_MEMBERS_BLOG_ERROR_MSG_MEMBER_FAILED'));
 			}
 		}
@@ -771,12 +704,6 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 
 		// Mark all comments as deleted
 		$comment->setState($id, 2);
-
-		// Delete the entry itself
-		/*if (!$comment->store())
-		{
-			$this->setError($comment->getError());
-		}*/
 
 		// Return the topics list
 		$this->setRedirect(
