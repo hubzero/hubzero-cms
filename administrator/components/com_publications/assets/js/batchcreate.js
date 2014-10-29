@@ -99,7 +99,7 @@ jQuery(document).ready(function(jq){
 			return html;
 		};
 		
-		this.sendData = function(dryrun = 1) {
+		this.sendData = function(dryrun) {
 			var self = this;
 			$('form').unbind(); 
 			$('#dryrun').val(dryrun);
