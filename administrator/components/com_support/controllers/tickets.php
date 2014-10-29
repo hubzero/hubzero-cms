@@ -420,7 +420,11 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		$webpath = trim($this->config->get('webpath'), '/');
 
-		$allowEmailResponses = $this->config->get('email_processing');
+		$allowEmailResponses = false;
+		if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
+		{
+			$allowEmailResponses = true;
+		}
 		if ($allowEmailResponses)
 		{
 			$encryptor = new \Hubzero\Mail\Token();
@@ -663,15 +667,15 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 				foreach ($rowc->to('emails') as $to)
 				{
-					$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-
-					$email = array(
-						$to['email'],
-						'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
-					);
-
 					if ($allowEmailResponses)
 					{
+						$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
+
+						$email = array(
+							$to['email'],
+							'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+						);
+
 						// In this case each item in email in an array, 1- To, 2:reply to address
 						SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
 					}

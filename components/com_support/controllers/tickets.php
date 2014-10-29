@@ -1193,12 +1193,15 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			// Check if the notify list has eny entries
 			if (count($rowc->to()))
 			{
-				$encryptor = new \Hubzero\Mail\Token();
-
-				$allowEmailResponses = false;
-				if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
+				$allowEmailResponses = $this->config->get('email_processing');
+				if (!file_exists("/etc/hubmail_gw.conf"))
 				{
-					$allowEmailResponses = true;
+					$allowEmailResponses = false;
+				}
+
+				if ($allowEmailResponses)
+				{
+					$encryptor = new \Hubzero\Mail\Token();
 				}
 
 				$subject = JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
@@ -1258,15 +1261,15 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 				foreach ($rowc->to('emails') as $to)
 				{
-					$token = $encryptor->buildEmailToken(1, 1, -9999, $row->get('id'));
-
-					$emails[] = array(
-						$to['email'],
-						'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
-					);
-
 					if ($allowEmailResponses)
 					{
+						$token = $encryptor->buildEmailToken(1, 1, -9999, $row->get('id'));
+
+						$emails[] = array(
+							$to['email'],
+							'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+						);
+
 						// In this case each item in email in an array, 1- To, 2:reply to address
 						SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
 					}
@@ -1814,15 +1817,15 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 				foreach ($rowc->to('emails') as $to)
 				{
-					$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
-
-					$email = array(
-						$to['email'],
-						'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
-					);
-
 					if ($allowEmailResponses)
 					{
+						$token = $encryptor->buildEmailToken(1, 1, -9999, $id);
+
+						$email = array(
+							$to['email'],
+							'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+						);
+
 						// In this case each item in email in an array, 1- To, 2:reply to address
 						SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
 					}
