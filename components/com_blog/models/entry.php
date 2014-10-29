@@ -682,7 +682,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	public function delete()
 	{
 		// Can't delete what doesn't exist
-		if (!$this->exists()) 
+		if (!$this->exists())
 		{
 			return true;
 		}

@@ -210,7 +210,7 @@ class BlogTableEntry extends JTable
 				if (empty($select))
 				{
 					$select = array(
-						'm.*', 
+						'm.*',
 						'(SELECT COUNT(*) FROM `#__blog_comments` AS c WHERE c.entry_id=m.id) AS comments',
 						'u.name'
 					);
@@ -219,7 +219,7 @@ class BlogTableEntry extends JTable
 				$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
 				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
-				if (isset($filters['limit']) && $filters['limit'] > 0) 
+				if (isset($filters['limit']) && $filters['limit'] > 0)
 				{
 					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
 
