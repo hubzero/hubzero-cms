@@ -53,13 +53,6 @@ class BlogModelArchive extends \Hubzero\Base\Object
 	private $_entry = null;
 
 	/**
-	 * \Hubzero\Base\ItemList
-	 *
-	 * @var  object
-	 */
-	private $_entries = null;
-
-	/**
 	 * JDatabase
 	 *
 	 * @var  object
@@ -78,7 +71,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 	 *
 	 * @var  string
 	 */
-	private $_path;
+	private $_adapter;
 
 	/**
 	 * Constructor
@@ -248,39 +241,53 @@ class BlogModelArchive extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Get file upload upload path
+	 * The magic call method is used to call object methods using the adapter.
 	 *
-	 * @return  string
+	 * @param   string  $method     The name of the method called.
+	 * @param   array   $arguments  The arguments of the method called.
+	 * @return  array   An array of values returned by the methods called on the objects in the data set.
+	 * @since   1.3.1
 	 */
-	public function filespace()
+	public function __call($method, $arguments = array())
 	{
-		if (!isset($this->_path))
+		$callback = array($this->_adapter(), $method);
+
+		if (is_callable($callback))
 		{
-			$this->_path = JPATH_ROOT;
-
-			switch ($this->get('scope'))
-			{
-				case 'member':
-					jimport('joomla.plugin.plugin');
-					$plugin = JPluginHelper::getPlugin('members', 'blog');
-					$params = new JRegistry($plugin->params);
-					$p = $params->get('uploadpath');
-					$p = str_replace('{{uid}}', \Hubzero\Utility\String::pad($this->get('scope_id')), $p);
-				break;
-
-				case 'group':
-					$uploadpath = JComponentHelper::getParams('com_groups')->get('uploadpath', '/site/groups');
-					$p = rtrim($uploadpath, DS) . DS . $this->get('scope_id') . DS . 'uploads' . DS  . 'blog';
-				break;
-
-				case 'site':
-					$p = $this->config('uploadpath', '/site/blog');
-				break;
-			}
-			$this->_path .= DS . trim($p, DS);
+			return call_user_func_array($callback, $arguments);
 		}
 
-		return $this->_path;
+		throw new \BadMethodCallException(JText::sprintf('Method "%s" does not exist.', $method));
+	}
+
+	/**
+	 * Return the adapter for this entry's scope,
+	 * instantiating it if it doesn't already exist
+	 *
+	 * @return  object
+	 * @since   1.3.1
+	 */
+	private function _adapter()
+	{
+		if (!$this->_adapter)
+		{
+			$scope = strtolower($this->get('scope'));
+
+			$cls = 'BlogModelAdapter' . ucfirst($scope);
+
+			if (!class_exists($cls))
+			{
+				$path = __DIR__ . '/adapters/' . $scope . '.php';
+				if (!is_file($path))
+				{
+					throw new \InvalidArgumentException(JText::sprintf('Invalid scope of "%s"', $scope));
+				}
+				include_once($path);
+			}
+
+			$this->_adapter = new $cls($this->get('scope_id'));
+		}
+		return $this->_adapter;
 	}
 
 	/**
@@ -289,6 +296,7 @@ class BlogModelArchive extends \Hubzero\Base\Object
 	 * @param   string  $property  Param to return
 	 * @param   mixed   $default   Value to return if property not found
 	 * @return  object  JRegistry
+	 * @since   1.3.1
 	 */
 	public function config($property=null, $default=null)
 	{

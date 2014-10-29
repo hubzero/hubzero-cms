@@ -468,27 +468,23 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	}
 
 	/**
-	 * Generate and return various links to the entry
-	 * Link will vary depending upon action desired, such as edit, delete, etc.
+	 * The magic call method is used to call object methods using the adapter.
 	 *
-	 * @param   string  $type    The type of link to return
-	 * @param   mixed   $params  String or array of extra params to append
-	 * @return  string
+	 * @param   string  $method     The name of the method called.
+	 * @param   array   $arguments  The arguments of the method called.
+	 * @return  array   An array of values returned by the methods called on the objects in the data set.
+	 * @since   1.3.1
 	 */
-	public function link($type='', $params=null)
+	public function __call($method, $arguments = array())
 	{
-		return $this->_adapter()->build($type, $params);
-	}
+		$callback = array($this->_adapter(), $method);
 
-	/**
-	 * Gets a property of the adapter's object (e.g., a group, a member)
-	 *
-	 * @param   string  $property  Property to get
-	 * @return  string
-	 */
-	public function item($property=null)
-	{
-		return $this->_adapter()->item($property);
+		if (is_callable($callback))
+		{
+			return call_user_func_array($callback, $arguments);
+		}
+
+		throw new \BadMethodCallException(JText::sprintf('Method "%s" does not exist.', $method));
 	}
 
 	/**

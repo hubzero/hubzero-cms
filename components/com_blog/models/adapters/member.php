@@ -110,7 +110,7 @@ class BlogModelAdapterMember extends BlogModelAdapterAbstract
 	 * @param      mixed  $params Optional string or associative array of params to append
 	 * @return     string
 	 */
-	public function build($type='', $params=null)
+	public function link($type='', $params=null)
 	{
 		$segments = $this->_segments;
 
