@@ -118,9 +118,36 @@ class Application
 			$this->output = $this->output->getOutputFormatter($this->arguments->getOpt('format'));
 		}
 
-		$command = new $class($this->output, $this->arguments);
+		// Register any user specific events
+		if ($hooks = Config::get('hooks'))
+		{
+			$output = $this->output;
+			foreach ($hooks as $trigger => $scripts)
+			{
+				foreach ($scripts as $script)
+				{
+					Event::register($trigger, function() use ($script, $output)
+					{
+						if ($output->getMode() != 'minimal')
+						{
+							$output->addLine("Running '{$script}'");
+						}
+						shell_exec(escapeshellcmd($script));
+					});
+				}
+			}
+		}
+
+		$command   = new $class($this->output, $this->arguments);
+		$shortName = strtolower(with(new \ReflectionClass($command))->getShortName());
+
+		// Fire default before event
+		Event::fire($shortName . '.' . 'before' . ucfirst($task), $this->output);
 
 		$command->{$task}();
+
+		// Fire default after event
+		Event::fire($shortName . '.' . 'after' . ucfirst($task), $this->output);
 
 		$this->output->render();
 	}
