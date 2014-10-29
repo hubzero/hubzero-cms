@@ -139,6 +139,8 @@ $this->css('jquery.datepicker.css', 'system')
 		<input type="hidden" name="entry[created]" value="<?php echo $this->escape($this->entry->get('created')); ?>" />
 		<input type="hidden" name="entry[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
 		<input type="hidden" name="entry[scope]" value="member" />
+		<input type="hidden" name="entry[scope_id]" value="<?php echo $this->entry->get('scope_id'); ?>" />
+		<input type="hidden" name="entry[access]" value="0" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="active" value="blog" />
 		<input type="hidden" name="task" value="view" />

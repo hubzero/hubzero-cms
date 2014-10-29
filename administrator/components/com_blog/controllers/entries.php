@@ -55,9 +55,9 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		));
 		if ($this->view->filters['scope'] == 'group')
 		{
-			$this->view->filters['group_id']  = urldecode(trim($app->getUserStateFromRequest(
-				$this->_option . '.' . $this->_controller . '.group_id',
-				'group_id',
+			$this->view->filters['scope_id']  = urldecode(trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.scope_id',
+				'scope_id',
 				0,
 				'int'
 			)));

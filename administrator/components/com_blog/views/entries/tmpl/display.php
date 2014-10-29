@@ -89,10 +89,10 @@ function submitbutton(pressbutton)
 				$filters['sortby'] = 'description';
 				$groups = \Hubzero\User\Group::find($filters);
 
-				$html  = '<label for="filter_group_id">' . JText::_('COM_BLOG_SCOPE_GROUP') . ':</label> '."\n";
-				$html .= '<select name="group_id" id="filter_group_id">'."\n";
+				$html  = '<label for="filter_scope_id">' . JText::_('COM_BLOG_SCOPE_GROUP') . ':</label> '."\n";
+				$html .= '<select name="scope_id" id="filter_scope_id">'."\n";
 				$html .= '<option value="0"';
-				if ($this->filters['group_id'] == 0)
+				if ($this->filters['scope_id'] == 0)
 				{
 					$html .= ' selected="selected"';
 				}
@@ -102,7 +102,7 @@ function submitbutton(pressbutton)
 					foreach ($groups as $group)
 					{
 						$html .= ' <option value="'.$group->gidNumber.'"';
-						if ($this->filters['group_id'] == $group->gidNumber)
+						if ($this->filters['scope_id'] == $group->gidNumber)
 						{
 							$html .= ' selected="selected"';
 						}
@@ -129,7 +129,7 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<?php if ($this->filters['scope'] == 'group') { ?>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_GROUP', 'group_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_GROUP', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			<?php } ?>
 			</tr>
 		</thead>
@@ -202,11 +202,11 @@ foreach ($this->rows as $row)
 	{
 		if ($row->get('publish_down') == $nullDate)
 		{
-			$times .= '<br />' . JText::_('COM_BLOG_FINiSH') . ': ' . JText::_('COM_BLOG_NO_EXPIRY');
+			$times .= '<br />' . JText::_('COM_BLOG_FINISH') . ': ' . JText::_('COM_BLOG_NO_EXPIRY');
 		}
 		else
 		{
-			$times .= '<br />' . JText::_('COM_BLOG_FINiSH') . ': ' . $publish_down->toSql();
+			$times .= '<br />' . JText::_('COM_BLOG_FINISH') . ': ' . $publish_down->toSql();
 		}
 	}
 
@@ -281,7 +281,7 @@ foreach ($this->rows as $row)
 			<?php if ($this->filters['scope'] == 'group') { ?>
 				<td>
 					<span>
-						<?php echo $this->escape($row->get('group_id')); ?>
+						<?php echo $this->escape($row->get('scope_id')); ?>
 					</span>
 				</td>
 			<?php } ?>

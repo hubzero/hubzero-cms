@@ -173,7 +173,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 		// Build filters
 		$filters = array(
 			'scope'      => 'member',
-			'group_id'   => 0,
+			'scope_id'   => $member->get('uidNumber'),
 			'created_by' => $member->get('uidNumber')
 		);
 
@@ -288,7 +288,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'year'       => JRequest::getInt('year', 0),
 			'month'      => JRequest::getInt('month', 0),
 			'scope'      => 'member',
-			'group_id'   => 0,
+			'scope_id'   => $this->member->get('uidNumber'),
 			'search'     => JRequest::getVar('search',''),
 			'authorized' => false
 		);
@@ -372,7 +372,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			'year'       => JRequest::getInt('year', 0),
 			'month'      => JRequest::getInt('month', 0),
 			'scope'      => 'member',
-			'group_id'   => 0,
+			'scope_id'   => $this->member->get('uidNumber'),
 			'search'     => JRequest::getVar('search',''),
 			'created_by' => $this->member->get('uidNumber')
 		);
@@ -481,10 +481,10 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 
 		// Filters for returning results
 		$view->filters = array(
-			'limit'    => 10,
-			'start'    => 0,
-			'scope'    => 'member',
-			'group_id' => 0,
+			'limit'      => 10,
+			'start'      => 0,
+			'scope'      => 'member',
+			'scope_id'   => $this->member->get('uidNumber'),
 			'created_by' => $this->member->get('uidNumber')
 		);
 
@@ -581,6 +581,7 @@ class plgMembersBlog extends \Hubzero\Plugin\Plugin
 			$view->entry->set('allow_comments', 1);
 			$view->entry->set('state', 1);
 			$view->entry->set('scope', 'member');
+			$view->entry->set('scope_id', $this->member->get('uidNumber'));
 			$view->entry->set('created_by', $this->member->get('uidNumber'));
 		}
 

@@ -165,7 +165,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			'year'       => JRequest::getInt('year', 0),
 			'month'      => JRequest::getInt('month', 0),
 			'scope'      => $this->config->get('show_from', 'site'),
-			'group_id'   => 0,
+			'scope_id'   => 0,
 			'search'     => JRequest::getVar('search', ''),
 			'authorized' => false,
 			'state'      => 'public'
@@ -243,7 +243,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			'limit'    => 10,
 			'start'    => 0,
 			'scope'    => 'site',
-			'group_id' => 0
+			'scope_id' => 0
 		);
 
 		if ($this->juser->get('guest'))
@@ -517,7 +517,7 @@ class BlogControllerEntries extends \Hubzero\Component\SiteController
 			'year'     => JRequest::getInt('year', 0),
 			'month'    => JRequest::getInt('month', 0),
 			'scope'    => 'site',
-			'group_id' => 0,
+			'scope_id' => 0,
 			'search'   => JRequest::getVar('search','')
 		);
 

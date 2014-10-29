@@ -38,7 +38,7 @@ $juser = JFactory::getUser();
 
 $filters = array(
 	'scope'      => $this->filters['scope'],
-	'group_id'   => $this->filters['group_id'],
+	'scope_id'   => $this->filters['scope_id'],
 	'state'      => $this->filters['state'],
 	'authorized' => $this->filters['authorized']
 );

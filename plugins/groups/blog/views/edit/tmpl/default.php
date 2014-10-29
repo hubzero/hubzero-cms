@@ -147,7 +147,8 @@ $this->css()
 	<input type="hidden" name="entry[created]" value="<?php echo $this->escape($this->entry->get('created')); ?>" />
 	<input type="hidden" name="entry[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
 	<input type="hidden" name="entry[scope]" value="group" />
-	<input type="hidden" name="entry[group_id]" value="<?php echo $this->escape($this->group->get('gidNumber')); ?>" />
+	<input type="hidden" name="entry[scope_id]" value="<?php echo $this->escape($this->group->get('gidNumber')); ?>" />
+	<input type="hidden" name="entry[access]" value="0" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="active" value="blog" />
 	<input type="hidden" name="action" value="save" />

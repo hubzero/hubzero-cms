@@ -88,20 +88,6 @@ class BlogModelArchive extends \Hubzero\Base\Object
 
 		$this->set('scope', $scope);
 		$this->set('scope_id', $scope_id);
-		switch ($scope)
-		{
-			case 'group':
-				$this->set('group_id', $scope_id);
-			break;
-			case 'member':
-				$this->set('group_id', 0);
-				$this->set('created_by', $scope_id);
-			break;
-			case 'site':
-			default:
-				$this->set('group_id', 0);
-			break;
-		}
 	}
 
 	/**
@@ -160,9 +146,9 @@ class BlogModelArchive extends \Hubzero\Base\Object
 		{
 			$filters['scope'] = (string) $this->get('scope');
 		}
-		if (!isset($filters['group_id']))
+		if (!isset($filters['scope_id']))
 		{
-			$filters['group_id'] = (int) $this->get('group_id');
+			$filters['scope_id'] = (int) $this->get('scope_id');
 		}
 
 		switch (strtolower($rtrn))

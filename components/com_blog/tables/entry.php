@@ -36,110 +36,11 @@ defined('_JEXEC') or die('Restricted access');
  */
 class BlogTableEntry extends JTable
 {
-
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id           = NULL;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $title        = NULL;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $alias        = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $content      = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by   = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $state        = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_up   = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_down = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $group_id     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $hits         = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $allow_comments = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $scope        = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object &$db JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -149,34 +50,18 @@ class BlogTableEntry extends JTable
 	/**
 	 * Load an entry from the database and bind to $this
 	 *
-	 * @param      string  $oid        Entry alias
-	 * @param      string  $scope      Entry scope [site, group, member]
-	 * @param      integer $created_by Entry author..
-	 * @param      integer $group_id   Group the entry belongs to (if any)
-	 * @return     boolean True if data was retrieved and loaded
+	 * @param   string   $oid       Entry alias
+	 * @param   string   $scope     Entry scope [site, group, member]
+	 * @param   integer  $scope_id  ID of scope object
+	 * @return  boolean  True if data was retrieved and loaded
 	 */
-	public function loadAlias($oid=NULL, $scope=NULL, $created_by=NULL, $group_id=NULL)
+	public function loadAlias($oid=NULL, $scope=NULL, $scope_id=NULL)
 	{
 		$fields = array(
-			'alias' => (string) $oid
+			'alias'    => (string) $oid,
+			'scope'    => (string) $scope,
+			'scope_id' => (int) $scope_id
 		);
-
-		switch ($scope)
-		{
-			case 'member':
-				$fields['created_by'] = (int) $created_by;
-				$fields['scope']      = (string) $scope;
-			break;
-
-			case 'group':
-				$fields['group_id']   = (int) $group_id;
-				$fields['scope']      = (string) $scope;
-			break;
-
-			default:
-				$fields['scope']      = (string) $scope;
-			break;
-		}
 
 		return parent::load($fields);
 	}
@@ -184,7 +69,7 @@ class BlogTableEntry extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean True if data is valid
 	 */
 	public function check()
 	{
@@ -217,7 +102,7 @@ class BlogTableEntry extends JTable
 
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
+			$this->created = JFactory::getDate()->toSql();
 		}
 
 		if (!$this->publish_up || $this->publish_up == $this->_db->getNullDate())
@@ -236,9 +121,9 @@ class BlogTableEntry extends JTable
 	/**
 	 * Shorten a string
 	 *
-	 * @param      string  $text  String to shorten
-	 * @param      integer $chars Length to shorten to
-	 * @return     string
+	 * @param   string   $text   String to shorten
+	 * @param   integer  $chars  Length to shorten to
+	 * @return  string
 	 */
 	public function _shorten($text, $chars=100)
 	{
@@ -257,8 +142,8 @@ class BlogTableEntry extends JTable
 	 * Return a count of entries based off of filters passed
 	 * Used for admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array $filters Filters to build query from
+	 * @return  integer
 	 */
 	public function getEntriesCount($filters=array())
 	{
@@ -305,9 +190,9 @@ class BlogTableEntry extends JTable
 		{
 			$query .= " AND m.created_by=" . $this->_db->Quote($filters['created_by']);
 		}
-		if (isset($filters['group_id']) && $filters['group_id'] != 0)
+		if (isset($filters['scope_id']) && $filters['scope_id'] != 0)
 		{
-			$query .= " AND m.group_id=" . $this->_db->Quote($filters['group_id']);
+			$query .= " AND m.scope_id=" . $this->_db->Quote($filters['scope_id']);
 		}
 		if (isset($filters['scope']) && $filters['scope'] != '')
 		{
@@ -456,9 +341,9 @@ class BlogTableEntry extends JTable
 		{
 			$query .= " AND m.created_by=" . $this->_db->Quote(intval($filters['created_by']));
 		}
-		if (isset($filters['group_id']) && (int) $filters['group_id'] != 0)
+		if (isset($filters['scope_id']) && (int) $filters['scope_id'] != 0)
 		{
-			$query .= " AND m.group_id=" . $this->_db->Quote(intval($filters['group_id']));
+			$query .= " AND m.scope_id=" . $this->_db->Quote(intval($filters['scope_id']));
 		}
 		if (isset($filters['state']) && $filters['state'] != '')
 		{

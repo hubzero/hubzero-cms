@@ -101,10 +101,10 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 *
 	 * @param   mixed    $oid       ID (int) or alias (string)
 	 * @param   string   $scope     site|member|group
-	 * @param   integer  $group_id  Group ID if scope is 'group'
+	 * @param   integer  $scope_id  ID of the scope object
 	 * @return  void
 	 */
-	public function __construct($oid, $scope=null, $group_id=null)
+	public function __construct($oid, $scope=null, $scope_id=null)
 	{
 		$this->_db = JFactory::getDBO();
 
@@ -112,20 +112,13 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		if ($oid)
 		{
-			if (is_numeric($oid) && $group_id == null)
+			if (is_numeric($oid) && $scope_id == null)
 			{
 				$this->_tbl->load($oid);
 			}
 			else if (is_string($oid))
 			{
-				if ($scope == 'member')
-				{
-					$this->_tbl->loadAlias($oid, $scope, $group_id, null);
-				}
-				else
-				{
-					$this->_tbl->loadAlias($oid, $scope, null, $group_id);
-				}
+				$this->_tbl->loadAlias($oid, $scope, $scope_id);
 			}
 			else if (is_object($oid) || is_array($oid))
 			{
@@ -141,10 +134,10 @@ class BlogModelEntry extends \Hubzero\Base\Model
 	 *
 	 * @param   mixed    $oid       ID (int) or alias (string)
 	 * @param   string   $scope     site|member|group
-	 * @param   integer  $group_id  Group ID if scope is 'group'
+	 * @param   integer  $scope_id  ID of the scope object
 	 * @return  object   BlogModelentry
 	 */
-	static function &getInstance($oid=null, $scope=null, $group_id=null)
+	static function &getInstance($oid=null, $scope=null, $scope_id=null)
 	{
 		static $instances;
 
@@ -155,7 +148,7 @@ class BlogModelEntry extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new static($oid, $scope, $group_id);
+			$instances[$oid] = new static($oid, $scope, $scope_id);
 		}
 
 		return $instances[$oid];
@@ -498,14 +491,6 @@ class BlogModelEntry extends \Hubzero\Base\Model
 		if (!$this->_adapter)
 		{
 			$scope = strtolower($this->get('scope'));
-			if ($scope == 'group')
-			{
-				$this->set('scope_id', $this->get('group_id'));
-			}
-			else if ($scope == 'member')
-			{
-				$this->set('scope_id', $this->get('created_by'));
-			}
 
 			$cls = 'BlogModelAdapter' . ucfirst($scope);
 

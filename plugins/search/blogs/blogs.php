@@ -86,7 +86,7 @@ class plgSearchBlogs extends SearchPlugin
 				be.id,
 				be.title,
 				be.content AS description,
-				(CASE WHEN be.group_id > 0 AND be.scope='group' THEN
+				(CASE WHEN be.scope_id > 0 AND be.scope='group' THEN
 					concat('index.php?option=com_groups&cn=', g.cn, '&active=blog&scope=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
 				WHEN be.scope='member' THEN
 					concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias)
@@ -98,9 +98,9 @@ class plgSearchBlogs extends SearchPlugin
 				be.created AS date,
 				u.name AS contributors,
 				be.created_by AS contributor_ids
-			FROM #__blog_entries be
-			INNER JOIN #__users u ON u.id = be.created_by
-			LEFT JOIN #__xgroups AS g ON g.gidNumber=be.group_id AND be.scope='group'
+			FROM `#__blog_entries` be
+			INNER JOIN `#__users` u ON u.id = be.created_by
+			LEFT JOIN `#__xgroups` AS g ON g.gidNumber=be.scope_id AND be.scope='group'
 			WHERE
 				$authorization AND
 				$weight > 0" .
@@ -126,10 +126,10 @@ class plgSearchBlogs extends SearchPlugin
 			bc.created AS date,
 			'Comments' AS section,
 			bc.entry_id
-			FROM #__blog_comments bc
-			INNER JOIN #__blog_entries be
+			FROM `#__blog_comments` bc
+			INNER JOIN `#__blog_entries` be
 				ON be.id = bc.entry_id
-			INNER JOIN #__users u
+			INNER JOIN `#__users` u
 				ON u.id = bc.created_by
 			WHERE bc.entry_id IN (" . implode(',', array_keys($id_map)) . ")
 			ORDER BY bc.created"

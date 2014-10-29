@@ -54,7 +54,7 @@ class modLatestBlog extends \Hubzero\Module\Module
 			'limit'    => $this->params->get('limit', 5),
 			'start'    => 0,
 			'scope'    => $this->params->get('blog', 'site'),
-			'group_id' => 0,
+			'scope_id' => 0,
 			'state'    => (!$juser->get('guest') ? 'registered' : 'public')
 		);
 		if ($filters['scope'] == 'both' || $filters['scope'] == 'group')
@@ -74,7 +74,7 @@ class modLatestBlog extends \Hubzero\Module\Module
 			//make sure that the group for each blog post has the right privacy setting
 			foreach ($rows as $k => $gf)
 			{
-				if (!$gf->get('group_id'))
+				if (!$gf->get('scope_id'))
 				{
 					continue;
 				}

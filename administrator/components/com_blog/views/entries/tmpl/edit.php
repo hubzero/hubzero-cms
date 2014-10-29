@@ -83,18 +83,18 @@ Joomla.submitbutton = function(pressbutton) {
 			</div>
 			<div class="col width-50 fltrt">
 				<div class="input-wrap">
-					<label for="field-group_id"><?php echo JText::_('COM_BLOG_FIELD_GROUP'); ?>:</label><br />
+					<label for="field-scope_id"><?php echo JText::_('COM_BLOG_FIELD_SCOPE_ID'); ?>:</label><br />
 					<?php
-					$filters = array();
+					/*$filters = array();
 					$filters['authorized'] = 'admin';
 					$filters['fields']     = array('cn','description','published','gidNumber','type');
 					$filters['type']       = array(1, 3);
 					$filters['sortby']     = 'description';
 					$groups = \Hubzero\User\Group::find($filters);
 
-					$html  = '<select name="fields[group_id]" id="field-group_id">'."\n";
+					$html  = '<select name="fields[scope_id]" id="field-group_id">'."\n";
 					$html .= '<option value="0"';
-					if ($this->row->get('group_id') == 0)
+					if ($this->row->get('scope_id') == 0)
 					{
 						$html .= ' selected="selected"';
 					}
@@ -104,7 +104,7 @@ Joomla.submitbutton = function(pressbutton) {
 						foreach ($groups as $group)
 						{
 							$html .= ' <option value="'.$group->gidNumber.'"';
-							if ($this->row->get('group_id') == $group->gidNumber)
+							if ($this->row->get('scope_id') == $group->gidNumber)
 							{
 								$html .= ' selected="selected"';
 							}
@@ -112,8 +112,9 @@ Joomla.submitbutton = function(pressbutton) {
 						}
 					}
 					$html .= '</select>'."\n";
-					echo $html;
+					echo $html;*/
 					?>
+					<input type="text" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
 				</div>
 			</div>
 			<div class="clr"></div>
@@ -203,6 +204,7 @@ Joomla.submitbutton = function(pressbutton) {
 	<div class="clr"></div>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+	<input type="hidden" name="fields[access]" value="<?php echo $this->row->get('access', 0); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
