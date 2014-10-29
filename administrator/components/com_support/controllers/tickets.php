@@ -534,14 +534,17 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 
 		$webpath = trim($this->config->get('webpath'), '/');
 
-		$allowEmailResponses = false;
-		if ($this->config->get('email_processing') and file_exists("/etc/hubmail_gw.conf"))
-		{
-			$allowEmailResponses = true;
-		}
+		$allowEmailResponses = $this->config->get('email_processing');
 		if ($allowEmailResponses)
 		{
-			$encryptor = new \Hubzero\Mail\Token();
+			try
+			{
+				$encryptor = new \Hubzero\Mail\Token();
+			}
+			catch (Exception $e)
+			{
+				$allowEmailResponses = false;
+			}
 		}
 
 		// If a new ticket...
@@ -915,7 +918,14 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$allowEmailResponses = $this->config->get('email_processing');
 		if ($allowEmailResponses)
 		{
-			$encryptor = new \Hubzero\Mail\Token();
+			try
+			{
+				$encryptor = new \Hubzero\Mail\Token();
+			}
+			catch (Exception $e)
+			{
+				$allowEmailResponses = false;
+			}
 		}*/
 
 		// Only take the fields that have had a value set

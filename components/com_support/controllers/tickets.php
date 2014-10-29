@@ -1250,14 +1250,16 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			if (count($rowc->to()))
 			{
 				$allowEmailResponses = $this->config->get('email_processing');
-				if (!file_exists("/etc/hubmail_gw.conf"))
-				{
-					$allowEmailResponses = false;
-				}
-
 				if ($allowEmailResponses)
 				{
-					$encryptor = new \Hubzero\Mail\Token();
+					try
+					{
+						$encryptor = new \Hubzero\Mail\Token();
+					}
+					catch (Exception $e)
+					{
+						$allowEmailResponses = false;
+					}
 				}
 
 				$subject = JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $row->get('id'));
@@ -1797,13 +1799,16 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			if (count($rowc->to()))
 			{
 				$allowEmailResponses = $this->config->get('email_processing');
-				if (!file_exists("/etc/hubmail_gw.conf"))
-				{
-					$allowEmailResponses = false;
-				}
 				if ($allowEmailResponses)
 				{
-					$encryptor = new \Hubzero\Mail\Token();
+					try
+					{
+						$encryptor = new \Hubzero\Mail\Token();
+					}
+					catch (Exception $e)
+					{
+						$allowEmailResponses = false;
+					}
 				}
 
 				$jconfig = JFactory::getConfig();
