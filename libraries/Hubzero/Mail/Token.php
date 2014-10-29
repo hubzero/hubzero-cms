@@ -91,28 +91,22 @@ class Token
 			throw new RuntimeException(__CLASS__ . '::__construct(); failed JFactory::getConfig() call');
 		}
 
+		// HubmailConfig is defined here
 		$file = '/etc/hubmail_gw.conf';
 
-		if (file_exists($file))
-		{
-			include_once($file);
-		}
-		else
+		if (!file_exists($file))
 		{
 			throw new RuntimeException(sprintf('File "%s" does not exist', $file));
 		}
 
-		// HubmailConfig is defined here
-		include_once('/etc/hubmail_gw.conf');
+		include_once($file);
 
 		if (!class_exists('HubmailConfig'))
 		{
 			throw new RuntimeException('Class HubmailConfig not loaded');
 		}
-		else
-		{
-			$HubmailConfig1 = new HubmailConfig();
-		}
+
+		$HubmailConfig1 = new HubmailConfig();
 
 		// Get current token version
 		$this->_currentVersion = $HubmailConfig1->email_token_current_version;
