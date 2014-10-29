@@ -150,7 +150,7 @@ jQuery(document).ready(function(jq){
 		this.startImportProgressChecker = function() {
 			var self = this;
 			this.checker = setInterval(function(){
-				$.getJSON('index.php?option=com_resources&controller=import&task=progress&id=17', function(data) {
+				$.getJSON('index.php?option=com_resources&controller=import&task=progress&id=' + $('input[name="id"]').val(), function(data) {
 					var percent = (data.processed / data.total) * 100;
 					self.setProgress( percent );
 				});
