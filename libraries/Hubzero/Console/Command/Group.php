@@ -164,9 +164,8 @@ class Group extends Base implements CommandInterface
 		// Get task, defaults to update
 		$task = ($this->arguments->getOpt(3)) ? $this->arguments->getOpt(3) : 'update';
 
-		// Set our group directory & force mode & call update
+		// Set our group directory & call update
 		$this->arguments->setOpt('r', $directory);
-		$this->arguments->setOpt('f', 1);
 		Application::call('repository', $task, $this->arguments, $this->output);
 	}
 

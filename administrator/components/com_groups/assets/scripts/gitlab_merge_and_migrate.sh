@@ -4,10 +4,10 @@
 cd $1
 
 # echo header
-echo "Pulling Code\n------------------------------\n"
+echo "Merging Code\n------------------------------\n"
 
 # pull from the remote
-UPDATE=$(php $2/cli/muse.php group update --no-colors 2>&1)
+UPDATE=$(php $2/cli/muse.php group update -f --no-colors 2>&1)
 echo ${UPDATE}
 
 # check to see if the update failed
