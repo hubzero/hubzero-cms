@@ -125,23 +125,23 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		{
 			case 'title':
 				$this->view->filters['sort'] = 'c.sticky DESC, c.title';
-				$this->view->filters['sort_Dir'] = 'ASC';
+				$this->view->filters['sort_Dir'] = strtoupper(JRequest::getVar('sortdir', 'ASC'));
 			break;
 
 			case 'replies':
 				$this->view->filters['sort'] = 'c.sticky DESC, replies';
-				$this->view->filters['sort_Dir'] = 'DESC';
+				$this->view->filters['sort_Dir'] = strtoupper(JRequest::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'created':
 				$this->view->filters['sort'] = 'c.sticky DESC, c.created';
-				$this->view->filters['sort_Dir'] = 'DESC';
+				$this->view->filters['sort_Dir'] = strtoupper(JRequest::getVar('sortdir', 'DESC'));
 			break;
 
 			case 'activity':
 			default:
 				$this->view->filters['sort'] = 'c.sticky DESC, activity';
-				$this->view->filters['sort_Dir'] = 'DESC';
+				$this->view->filters['sort_Dir'] = strtoupper(JRequest::getVar('sortdir', 'DESC'));
 			break;
 		}
 

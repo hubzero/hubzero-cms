@@ -118,6 +118,15 @@
 		content: "\f023";
 	}
 
+	.group_forum .container .order-options a:before {
+		content: "\2193";
+		font-family: "Fontcons";
+	}
+	.group_forum .container .order-options a.asc:before {
+		content: "\2191";
+		font-family: "Fontcons";
+	}
+
 	.group_forum .entry-details a {
 		color: #666;
 		border-bottom: 1px dotted #999;

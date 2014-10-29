@@ -35,6 +35,18 @@ $this->css()
 
 $juser = JFactory::getUser();
 
+if (!function_exists('sortDir'))
+{
+	function sortDir($filters, $current, $dir='DESC')
+	{
+		if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir)
+		{
+			$dir = ($dir == 'ASC' ? 'DESC' : 'ASC');
+		}
+		return strtolower($dir);
+	}
+}
+
 $this->category->set('section_alias', $this->filters['section']);
 ?>
 
@@ -75,22 +87,22 @@ $this->category->set('section_alias', $this->filters['section']);
 				<div class="container">
 					<ul class="entries-menu order-options">
 						<li>
-							<a<?php echo ($this->filters['sortby'] == 'created') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link('here', '&sortby=created')); ?>" title="<?php echo JText::_('COM_FORUM_SORT_BY_CREATED'); ?>">
+							<a class="<?php echo ($this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'created')); ?>" href="<?php echo JRoute::_($this->category->link('here', '&sortby=created&sortdir=' . sortDir($this->filters, 'created'))); ?>" title="<?php echo JText::_('COM_FORUM_SORT_BY_CREATED'); ?>">
 								<?php echo JText::_('COM_FORUM_SORT_CREATED'); ?>
 							</a>
 						</li>
 						<li>
-							<a<?php echo ($this->filters['sortby'] == 'activity') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link('here', '&sortby=activity')); ?>" title="<?php echo JText::_('COM_FORUM_SORT_BY_ACTIVITY'); ?>">
+							<a class="<?php echo ($this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'activity')); ?>" href="<?php echo JRoute::_($this->category->link('here', '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity'))); ?>" title="<?php echo JText::_('COM_FORUM_SORT_BY_ACTIVITY'); ?>">
 								<?php echo JText::_('COM_FORUM_SORT_ACTIVITY'); ?>
 							</a>
 						</li>
 						<li>
-							<a<?php echo ($this->filters['sortby'] == 'replies') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link('here', '&sortby=replies')); ?>" title="<?php echo JText::_('COM_FORUM_SORT_BY_NUM_POSTS'); ?>">
+							<a class="<?php echo ($this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'replies')); ?>" href="<?php echo JRoute::_($this->category->link('here', '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies'))); ?>" title="<?php echo JText::_('COM_FORUM_SORT_BY_NUM_POSTS'); ?>">
 								<?php echo JText::_('COM_FORUM_SORT_NUM_POSTS'); ?>
 							</a>
 						</li>
 						<li>
-							<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_($this->category->link('here', '&sortby=title')); ?>" title="<?php echo JText::_('COM_FORUM_SORT_BY_TITLE'); ?>">
+							<a class="<?php echo ($this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'title', 'ASC')); ?>" href="<?php echo JRoute::_($this->category->link('here', '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC'))); ?>" title="<?php echo JText::_('COM_FORUM_SORT_BY_TITLE'); ?>">
 								<?php echo JText::_('COM_FORUM_SORT_TITLE'); ?>
 							</a>
 						</li>

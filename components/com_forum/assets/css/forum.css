@@ -188,6 +188,15 @@
 		margin-top: 2em;
 	}
 
+	.com_forum .container .order-options a:before {
+		content: "\2193";
+		font-family: "Fontcons";
+	}
+	.com_forum .container .order-options a.asc:before {
+		content: "\2191";
+		font-family: "Fontcons";
+	}
+
 	.aside .entry-comment {
 		display: block;
 		background: #f1f1f1;
