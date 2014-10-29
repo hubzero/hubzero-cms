@@ -741,6 +741,10 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// execute command
 			$output = shell_exec($cmd);
 			$output = json_decode($output);
+			if ($output == '')
+			{
+				$output = JText::_('COM_GROUPS_FETCH_CODE_UP_TO_DATE');
+			}
 
 			// did we succeed
 			if (json_last_error() == JSON_ERROR_NONE)
