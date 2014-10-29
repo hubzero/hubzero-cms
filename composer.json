@@ -65,7 +65,8 @@
         "willdurand/geocoder": "@stable",
         "guzzle/guzzle": "3.8.*@dev",
         "tplaner/when": "dev-develop",
-        "predis/predis": "0.8.6"
+        "predis/predis": "0.8.6",
+	"symfony/yaml": "2.5.*"
     },
     "repositories": [
         {
