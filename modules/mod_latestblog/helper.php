@@ -80,18 +80,18 @@ class modLatestBlog extends \Hubzero\Module\Module
 				}
 
 				$group = $gf->item();
-				if (is_object($group)) 
+				if (is_object($group))
 				{
 					$blog_access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'blog');
 
-					if ($blog_access == 'nobody' 
-					 || ($blog_access == 'registered' && $juser->get('guest')) 
-					 || ($blog_access == 'members' && !in_array($juser->get('id'), $group->get('members')))) 
+					if ($blog_access == 'nobody'
+					 || ($blog_access == 'registered' && $juser->get('guest'))
+					 || ($blog_access == 'members' && !in_array($juser->get('id'), $group->get('members'))))
 					{
 						$rows->offsetUnset($k);
 					}
-				} 
-				else 
+				}
+				else
 				{
 					$rows->offsetUnset($k);
 				}
