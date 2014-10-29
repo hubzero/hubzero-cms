@@ -495,7 +495,7 @@ HUB.Groups = {
 		if (localStorage && localStorage.getItem('groups.pagemanager.action'))
 		{
 			var action = localStorage.getItem('groups.pagemanager.action');
-			var item = $('.form-controls .dropdown-menu a[data-action="'+action+'"');
+			var item = $('.form-controls .dropdown-menu a[data-action="'+action+'"]');
 			item.trigger('click');
 		}
 	},
