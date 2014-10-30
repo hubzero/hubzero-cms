@@ -35,9 +35,6 @@
 	#content-header-extra a {
 		border: none;
 	}
-	.com_projects input {
-		background: #FFFFFF;
-	}
 	.com_projects {
 		background: #FFFFFF !important;
 	}
@@ -1842,10 +1839,6 @@
 	.vpadded {
 		padding-bottom: 1em;
 	}
-	.add {
-		background: none;
-		padding-left: 0;
-	}
 	.leftshift {
 		width: 70px;
 		display: inline;
@@ -1960,8 +1953,6 @@
 	.todo:after,
 	.addnew:before,
 	.addnew:after,
-	.add:before,
-	.add:after,
 	.re_sort:before,
 	.re_sort:after,
 	.project:before,
@@ -2060,7 +2051,7 @@
 		position: absolute;
 		margin-left: -20px;
 	}
-	.addnew:before, .add:before {
+	.addnew:before {
 		content: "\2295";
 		color: #52ad4b;
 	}
@@ -2203,7 +2194,7 @@
 	.sidebox h4 {
 		*background: #ededed !important;
 	}
-	.addnew, .add {
+	.addnew {
 		*background: url("../img/icons/plus.gif") 0 center no-repeat;
 		*padding-left: 20px !important;
 		*margin-left: 10px !important;

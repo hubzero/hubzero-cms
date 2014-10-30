@@ -139,7 +139,7 @@ class ProjectPubStamp extends JTable
 		if ($result = $this->_db->loadAssoc())
 		{
 			$this->bind( $result );
-			if ($this->expires && $this->expires < $now)
+			if ($this->expires && $this->expires != '0000-00-00 00:00:00' &&  $this->expires < $now)
 			{
 				// Clean up expired value
 				$this->delete();
@@ -214,7 +214,7 @@ class ProjectPubStamp extends JTable
 	 * @param      string 	$reference		Reference string to object (JSON)
 	 * @return     mixed False if error, Object on success
 	 */
-	public function registerStamp ( $projectid = 0, $reference = '', $type = 'files', $listed = NULL, $expires = NULL)
+	public function registerStamp ( $projectid = 0, $reference = '', $type = 'files', $listed = 0, $expires = NULL)
 	{
 		if (!$projectid || !$reference)
 		{
@@ -228,7 +228,7 @@ class ProjectPubStamp extends JTable
 		// Load record
 		if ($obj->checkStamp( $projectid, $reference, $type ))
 		{
-			if ($obj->expires && $obj->expires < $now)
+			if ($obj->expires && $obj->expires != '0000-00-00 00:00:00' && $obj->expires < $now)
 			{
 				// Expired
 				$obj->delete();
@@ -260,7 +260,7 @@ class ProjectPubStamp extends JTable
 		$stamp 		= ProjectsHtml::generateCode(20, 20, 0, 1, 1);
 
 		$query = "INSERT INTO $this->_tbl (stamp, projectid, listed, type, reference, expires, created, created_by)
-				 VALUES ('$stamp', $projectid, $listed, '$type', '$reference', '$expires' , '$created', '$created_by' )";
+				 VALUES ('$stamp', '$projectid', '$listed', '$type', '$reference', '$expires' , '$created', '$created_by' )";
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())

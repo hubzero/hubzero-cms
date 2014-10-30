@@ -31,43 +31,46 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JPluginHelper::importPlugin( 'hubzero' );
+if (!$this->sub)
+{
+	$this->css();
+}
+$this->js('wiki.js', 'com_wiki')
+     ->js('jquery.fileuploader.js', 'system');
+
+$juser = JFactory::getUser();
+
+JPluginHelper::importPlugin('hubzero');
 $dispatcher = JDispatcher::getInstance();
 
-if ($this->page->get('id')) {
+$tags = $this->page->tags('string');
+
+if ($this->page->exists())
+{
 	$lid = $this->page->get('id');
-} else {
-	$num = time().rand(0,10000);
-	$lid = JRequest::getInt( 'lid', $num, 'post' );
+}
+else
+{
+	$lid = JRequest::getInt('lid', (time() . rand(0,10000)), 'post');
 }
 
 // Incoming
 $scope   = JRequest::getVar('scope', '');
-$tool 	 = JRequest::getVar( 'tool', '', 'request', 'object' );
-$project = JRequest::getVar( 'project', '', 'request', 'object' );
-$canDelete = JRequest::getVar('candelete', 0);
 
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
-	<h2><?php echo $this->escape($this->title); ?></h2>
-<?php
-?>
+	<h2><?php echo $this->task == 'new' ? 'New Note' : $this->escape($this->title); ?></h2>
 </header><!-- /#content-header -->
 
 <?php
-if ($this->page->get('id')) {
-	$view = new JView(array(
-		'base_path' => $this->base_path,
-		'name'      => 'page',
-		'layout'    => 'submenu'
-	));
-	$view->option = $this->option;
-	$view->controller = $this->controller;
-	$view->page   = $this->page;
-	$view->task   = $this->task;
-	$view->sub    = $this->sub;
-	$view->display();
-}
+	$this->view('submenu')
+	     ->setBasePath($this->base_path)
+	     ->set('option', $this->option)
+	     ->set('controller', $this->controller)
+	     ->set('page', $this->page)
+	     ->set('task', $this->task)
+	     ->set('sub', $this->sub)
+	     ->display();
 ?>
 
 <section class="main section">
@@ -81,7 +84,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 }
 ?>
 
-<?php if ($this->page->get('state') == 1 && !$this->page->access('manage')) { ?>
+<?php if ($this->page->isLocked() && !$this->page->access('manage')) { ?>
 	<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_NOT_AUTH_EDITOR'); ?></p>
 <?php } ?>
 
@@ -91,27 +94,43 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 
 <?php if ($this->preview) { ?>
 	<div id="preview">
-		<section class="section">
-			<p class="warning"><?php echo JText::_('This a preview only. Changes will not take affect until saved.'); ?></p>
+		<section class="main section">
+			<p class="warning"><?php echo JText::_('COM_WIKI_WARNING_PREVIEW_ONLY'); ?></p>
 
 			<div class="wikipage">
 				<?php echo $this->revision->get('pagehtml'); ?>
 			</div>
 		</section><!-- / .section -->
-	</div><div class="clear"></div>
+	</div>
 <?php } ?>
-<?php //if ($tool && $tool->id) { ?>
 
-<?php //} ?>
+<form action="<?php echo JRoute::_($this->page->link()); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
+<?php if (!$this->sub) { ?>
+	<div class="explaination">
+	<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
+		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', JRoute::_($this->page->link('rename'))); ?></p>
+	<?php } ?>
+		<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#image')); ?></p>
+		<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#file')); ?></p>
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->get('pagename')); ?>" method="post" id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
+		<div id="file-manager" data-instructions="<?php echo JText::_('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+			<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+		</div>
+		<div id="file-uploader-list"></div>
+	</div>
+<?php } else { ?>
+	<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
+		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', JRoute::_($this->page->link('rename'))); ?></p>
+	<?php } ?>
+<?php } ?>
 	<fieldset>
+		<legend><?php echo JText::_('COM_WIKI_FIELDSET_PAGE'); ?></legend>
 
 	<?php if ($this->page->access('edit')) { ?>
 		<label for="title">
 			<?php echo JText::_('COM_WIKI_FIELD_TITLE'); ?>:
 			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
-			<input type="text" name="page[title]" id="title" value="<?php echo $this->escape($this->page->get('title')); ?>" size="38" />
+			<input type="text" name="page[title]" id="title" value="<?php echo $this->task == 'new' ? 'New Note' : $this->escape($this->page->get('title')); ?>" size="38" />
 		</label>
 	<?php } else { ?>
 		<input type="hidden" name="page[title]" id="title" value="<?php echo $this->escape($this->page->get('title')); ?>" />
@@ -123,43 +142,79 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<?php
 			echo WikiHelperEditor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '40');
 			?>
-			<!-- <span id="pagetext-overlay"><span>Drop file here to include in page</span></span> -->
 		</label>
 		<p class="ta-right hint">
-			See <a class="wiki-formatting popup" rel="external" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting'); ?>">Help: Wiki Formatting</a> for help on editing content.
+			<?php echo JText::sprintf('COM_WIKI_FIELD_PAGETEXT_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiFormatting')); ?>
 		</p>
 
-<?php if ($this->sub) { ?>
-	<div id="file-uploader"></div>
-		<div class="field-wrap mini">
-				<p><?php echo JText::_('COM_PROJECTS_NOTES_INCLUDE_FILES_EXPLAIN'); ?></p>
-				<p><a class="wiki-macros" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#image'); ?>" rel="external">[[Image(filename.jpg)]]</a> to include an image from your local project files.</p>
-				<p><a class="wiki-macros" href="<?php echo JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#file'); ?>" rel="external">[[File(filename.pdf)]]</a> to include a file from your local project files.</p>
+	<?php if ($this->sub) { ?>
+		<div class="field-wrap">
+			<div class="grid">
+				<div class="col span-half">
+					<div id="file-manager" data-instructions="<?php echo JText::_('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
+						<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+					</div>
+					<div id="file-uploader-list"></div>
+				</div>
+				<div class="col span-half omega">
+					<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#image')); ?></p>
+					<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#file')); ?></p>
+				</div>
+			</div><!-- / .grid -->
 		</div>
-<?php } ?>
-<?php
-$mode = $this->page->param('mode', 'wiki');
-if ($this->page->access('edit')) {
-	$cls = '';
-	if ($mode && $mode != 'knol') {
-		$cls = ' class="hide"';
-	}
+	<?php } ?>
+	</fieldset><div class="clear"></div>
 
-		$juser = JFactory::getUser(); ?>
+<?php if (!$this->page->exists() || $this->page->get('created_by') == $juser->get('id') || $this->page->access('manage')) {?>
+	<fieldset class="hidden">
+		<legend><?php echo JText::_('COM_WIKI_FIELDSET_ACCESS'); ?></legend>
 
-			<input type="hidden" name="params[mode]" id="params_mode" value="<?php echo $mode; ?>" />
+		<?php if ($this->page->access('edit')) {
+			$mode = $this->page->param('mode', 'wiki');
+			$cls = ' class="hide"';
+?>
+				<label<?php echo $cls; ?>>
+					<input class="option" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) { echo ' checked="checked"'; } ?> value="1" />
+					<?php echo JText::_('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
+				</label>
+				&nbsp;
 
-<?php } else { ?>
-			<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
-			<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
-			<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
-			<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
-			<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
-<?php } ?>
+				<label<?php echo $cls; ?> for="params_allow_changes">
+					<input class="option" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($this->page->param('allow_changes') == 1) { echo ' checked="checked"'; } ?> value="1" />
+					<?php echo JText::_('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
+				</label>
+
+				<label<?php echo $cls; ?> for="params_allow_comments">
+					<input class="option" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php if ($this->page->param('allow_comments') == 1) { echo ' checked="checked"'; } ?> value="1" />
+					<?php echo JText::_('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
+				</label>
+		<?php } else { ?>
+				<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
+				<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
+				<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
+				<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
+				<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
+		<?php } ?>
 
 			<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
-	</fieldset>
-	<div class="clear"></div>
+
+			<?php if ($this->page->access('manage')) { ?>
+				<label for="state">
+					<input class="option" type="checkbox" name="page[state]" id="state"<?php if ($this->page->isLocked()) { echo ' checked="checked"'; } ?> value="1" />
+					<?php echo JText::_('COM_WIKI_FIELD_STATE'); ?>
+				</label>
+			<?php } ?>
+		</fieldset>
+		<div class="clear"></div>
+<?php } else { ?>
+		<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
+		<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
+		<input type="hidden" name="page[state]" value="<?php echo $this->escape($this->page->get('state'), 0); ?>" />
+		<input type="hidden" name="authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
+		<input type="hidden" name="params[mode]" value="<?php echo $this->page->param('mode', 'wiki'); ?>" />
+		<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
+		<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
+<?php } ?>
 
 <?php if ($this->page->access('edit')) { ?>
 	<?php if (!$this->sub) { ?>
@@ -168,72 +223,54 @@ if ($this->page->access('edit')) {
 		</div>
 	<?php } ?>
 		<fieldset>
+			<legend><?php echo JText::_('COM_WIKI_FIELDSET_METADATA'); ?></legend>
 			<label>
 				<?php echo JText::_('COM_WIKI_FIELD_TAGS'); ?>:
 				<?php
-				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tags)) );
+				$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $tags)) );
 				if (count($tf) > 0) {
 					echo $tf[0];
 				} else {
-					echo '<input type="text" name="tags" value="'. $this->tags .'" size="38" />';
+					echo '<input type="text" name="tags" value="'. $tags .'" size="38" />';
 				}
 				?>
 				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
 			</label>
 <?php } else { ?>
-		<input type="hidden" name="tags" value="<?php echo $this->escape($this->tags); ?>" />
+			<input type="hidden" name="tags" value="<?php echo $this->escape($tags); ?>" />
 <?php } ?>
-			<label>
+
+			<label for="field-summary">
 				<?php echo JText::_('COM_WIKI_FIELD_EDIT_SUMMARY'); ?>:
-				<input type="text" name="revision[summary]" value="<?php echo $this->escape($this->revision->get('summary')); ?>" size="38" />
+				<input type="text" name="revision[summary]" id="field-summary" value="<?php echo $this->escape($this->revision->get('summary')); ?>" size="38" />
 				<span class="hint"><?php echo JText::_('COM_WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
 			</label>
+
 			<input type="hidden" name="revision[minor_edit]" value="1" />
 		</fieldset>
 		<div class="clear"></div>
 
 		<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
-		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+		<input type="hidden" name="pagename" value="<?php echo $this->task == 'new' ? '' : $this->escape($this->page->get('pagename')); ?>" />
 
 		<input type="hidden" name="revision[id]" value="<?php echo $this->escape($this->revision->get('id')); ?>" />
 		<input type="hidden" name="revision[pageid]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 		<input type="hidden" name="revision[version]" value="<?php echo $this->escape($this->revision->get('version')); ?>" />
 		<input type="hidden" name="revision[created_by]" value="<?php echo $this->escape($this->revision->get('created_by')); ?>" />
 		<input type="hidden" name="revision[created]" value="<?php echo $this->escape($this->revision->get('created')); ?>" />
+		<input type="hidden" name="params[mode]" id="params_mode" value="wiki" />
+		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<input type="hidden" name="page[group_cn]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
+		<input type="hidden" name="active" value="notes" />
+		<input type="hidden" name="scope" value="<?php echo trim($scope, DS); ?>" />
+		<input type="hidden" name="action" value="save" />
 
 		<?php echo JHTML::_('form.token'); ?>
 
-		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="action" value="save" />
-		<input type="hidden" name="page[group_cn]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
-		<input type="hidden" name="active" value="notes" />
-		<input type="hidden" name="scope" value="<?php echo $scope; ?>" />
-
 		<p class="submit">
-			<input type="submit" name="preview" value="<?php echo JText::_('PREVIEW'); ?>" /> &nbsp;
-			<input type="submit" name="submit" id="page-submit" value="<?php echo JText::_('SUBMIT'); ?>" />
+			<input type="submit" class="btn" name="preview" value="<?php echo JText::_('COM_WIKI_PREVIEW'); ?>" /> &nbsp;
+			<input type="submit" class="btn btn-success" name="submit" value="<?php echo JText::_('COM_WIKI_SUBMIT'); ?>" />
 		</p>
 	</form>
-
-	<style>
-		#pagetext-overlay {
-			background: rgba(255, 255, 255, 0.6); position: absolute; top: 0; bottom: 0; left: 0; right: 0;
-		}
-		#pagetext-overlay span {
-			display: block;
-			width: 200px;
-			border-radius: 0.25em;
-			background: rgba(0, 0, 0, 0.8);
-			color: #fff;
-			padding: 1em;
-			text-align: center;
-			text-shadow: rgba(0, 0, 0, 0.8);
-			margin: 200px auto 100px auto;
-		}
-	</style>
 </section><!-- / .main section -->
-
-	<?php if ($this->page->exists() && strtolower($this->page->get('namespace')) != 'special' && $canDelete) { ?>
-		<p class="mini rightfloat"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&scope='.$scope.'&pagename='.$this->page->get('pagename').'&task=delete'); ?>" class="btn"><?php echo JText::_('Delete this page'); ?></a></p>
-	<?php } ?>

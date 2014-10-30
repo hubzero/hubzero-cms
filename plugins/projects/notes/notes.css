@@ -17,6 +17,8 @@
 
 /* Project Notes 
 --------------------------------------------- */
+
+/*
 	.wiki-content {
 		margin-top: 1.5em;
 		margin-left: 25px;
@@ -97,17 +99,17 @@
 		padding: 0.2em;
 		background: #f5ebea !important;
 	}
-
 	#notes-wrap .sidebox {
-		margin-top: 3em;
+		margin-top: -1em;
 	}
-	#notes-wrap .aside {
+	#notes-wrap .side-content {
 		margin-top: 0;
 	}
-
 	
+*/
 /* Notes - wiki content - style fixes and adjustments
 --------------------------------------------- */
+/*
 	#notes-wrap {
 		width: 100%;
 		margin: 0;
@@ -222,6 +224,108 @@
 	#notes-wrap .sidebox .wikilevel_4 {
 		padding-left: 3em !important;
 	}	
+	.withside #notes-content .warning {
+		width: 50%;
+	}
+*/
+
+/* Notes list
+--------------------------------------------- */
+	
+	#notes-wrap .notes-list ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	#notes-wrap .notes-list .note:before,
+	#notes-wrap .notes-list .wikitemplate:before{
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		content: "\f0c1";
+		color: #8f8faa;
+		margin: 0;
+		padding: 0;
+		margin-left: -1.5em;
+		border: none;
+		display: inline;
+		position: relative;
+		top: auto;
+	}
+
+	#notes-wrap .notes-list .wikitemplate:before,
+	#notes-wrap .notes-list .appindex .wikitemplate:before {
+		color: #97bf9b;
+	}
+	#notes-wrap .notes-list .appindex .note:before,
+	#notes-wrap .notes-list .appindex .wikitemplate:before {
+		content: "\f06f";
+		margin-right: 0.2em;
+	}
+	#notes-wrap .notes-list li {
+		padding: 0.2em 0;
+		margin: 0;
+		padding-left: 2em;
+		border-bottom: 1px solid #dfdfdf;
+	}
+	#notes-wrap .notes-list li.active {
+		font-weight: bold;
+	}
+	#notes-wrap .notes-list li.active a {
+		color: #000000;
+	}
+	#notes-wrap .notes-list .wikilevel_2:before,
+	#notes-wrap .notes-list .wikilevel_3:before,
+	#notes-wrap .notes-list .wikilevel_4:before {
+		content: "\203A" !important;
+		color: #CCC;
+		font-weight: normal;
+		width: 10px;
+		height: 10px;
+		font-size: 10px;
+		margin: 0;
+		padding: 0;
+		margin-right: 1em;
+		padding-right: 0.1em;
+	}
+	.notes-list .wikilevel_2 {
+		padding-left: 1em !important;
+	}
+	.notes-list .wikilevel_3 {
+		padding-left: 2em !important;
+	}
+	.notes-list .wikilevel_4 {
+		padding-left: 3em !important;
+	}
+	#notes-wrap .notes-list h4 {
+		background: #e8ecf1;
+	}	
+
+/* Public page view
+--------------------------------------------- */
+	.wiki-wrap {
+		
+	}
+	.wiki-wrap .wiki-content {
+		margin: 2em;
+		padding: 2em;
+		border: 4px solid #ebf2f8;
+		background: #FFFFFF;
+	}
+	.wiki-back {
+		background: #ebf2f8;
+		text-align: center;
+		font-size: 85%;
+		padding: 0.5em 1em;
+	}
+	.wiki-back .goback {
+		float: left;
+	}
+	
+
+/* Public link 
+--------------------------------------------- */
 	.publink {
 		font-size: 80%;
 		color: #999;
@@ -238,282 +342,447 @@
 		border: 1px dashed #bce5b6;
 		background: #fbfffa;
 	}
-	.n-pub {
-		float: right;
-		margin-right: -1em;
-		margin-top: -1.2em;
-		font-size: 85%;
-		color: #8aab85;
-	}
-	.n-pub:before {
-		content: "\f02e";
-		color: #bfe5ba;
-		font-weight: normal;
-		width: 22px;
-		height: 22px;
-		font-size: 22px;
+
+/* Notes wrap
+--------------------------------------------- */
+
+	.notes-content {
+		padding: 1em 1.5em;
 		margin: 0;
-		padding: 0;
-		font-family: 'Fontcons';
-		margin-right: 0.2em;
-	}
-	
-	/*---*/
-	
-	#notes-content #hubForm {
-		padding-right: 1.5em;
-	}
-	#notes-wrap.withside .aside {
-		margin-top: -2em;
-	}	
-	
-	/*---*/
-	
-	.withside #notes-content .warning {
-		width: 50%;
-	}
-	#notes-content h2 {
-		font-size: 130%;
-		color: #728490;
-	}
-	.withside #notes-content .aside {
-		display: none; /* hide side content */
-		float: none;
-		width: 0;
-		margin: 0 !important;
-		padding: 0;
-	}
-	.withside #notes-content .subject {		
-		padding: 1em 0.5em;
-		margin: 0 !important;
-		display: block;
-		float: none;
+		border: 1px dashed #a8c7ec;
 		width: auto;
-	}
-	#notes-content #sub-section-menu {
-		display: block;
-		margin-bottom: 1em;
-		height: 20px;
-		font-size: 85%;
-		padding: 0;
-	    border: none;
-		background: #f5f5f5;	
-	}
-	#notes-content #sub-section-menu a {
-		color: #666;
-		border-bottom: 1px dotted #CCC;
-	}
-	#notes-content #sub-section-menu .active a {
-		font-weight: bold;
-		border: none;
-		color: #000;
-	}
-	#notes-content #sub-section-menu a:hover {
-		color: #000000;
-		border-bottom: 1px dotted #666;
-	}
-	#notes-content #section-useroptions {
-		font-size: 85%;
-	}
-	#notes-wrap .wiki-help {
-		margin: -1em 0 2em 0 !important;
-		font-size: 85% !important;
-		color: #999 !important;
-	}
-	#notes-wrap img {
-		max-width: 100%;
-	}
-
-/* Editing 
---------------------------------------------- */
-	#hubForm .explaination {
-		position: relative;
-		float: right;
-		min-height: 10px;
-		width: 30%;
-	}
-
-/* Wiki style fixes
---------------------------------------------- */
-	#section-useroptions li:last-child {
-		border: none;
-	}
-	
-/* Wiki Attachments
---------------------------------------------- */
-	#notes-wrap #filer {
-		border: 0;
-		background: transparent;
 		overflow: hidden;
-		height: auto !important;
-		min-height: 280px !important;
+		-moz-box-shadow: inset 0 0 2em #dfe5ed;
+		-webkit-box-shadow: inset 0 0 2em #dfe5ed;
 	}
-
-/* Wiki Reference 
---------------------------------------------- */
-	.wiki-reference {
-		background: #eef5fd;
-		font-size: 90%;
+	.notes-content .s-notes a:before {
+		width: 48px;
+		height: 48px;
+		font-size: 48px;
+		font-family: 'Fontcons';
+		content: "\f0c1";
+		color: #8f8faa;
 	}
-	.wiki-reference caption, h4.wiki-tips {
-		font-size: 100%;
-		background: #dae4ef;
-	}
-	h4.wiki-tips {
-		font-size: 90%;
-	}
-
-/* Wiki Comments
---------------------------------------------- */
-	#plg-content #notes-wrap .comments li {
-		background: none;
-		padding: 0;
-	}
-	#notes-content #commentlist-title {
-		color: #728490;
-		font-size: 110%;
-		margin-bottom: 0;
-		margin-left: 0;
-	}
-	#notes-wrap .comments li:before {
-		content: "";
-	}
-	
-/* Wiki pages */
-	.wikipage h1,
-	.wikipage h1,
-	.wikipage h2,
-	.wikipage h3,
-	.wikipage h4,
-	.wikipage h5,
-	.wikipage h6 {
-		color: #333;
-		text-shadow: none;
-		font-weight: bold;
-		padding: 0;
-		margin: 0.618em 0;
-		border: none;
-		line-height: 1.2;
-	}
-	.wikipage h1 {
-		font-size: 1.8em;
-	}
-	.wikipage h2 span {
-		color: #333;
-	}
-	.wikipage h1, 
-	.wikipage h2, 
-	.wikipage h3 {
-		margin-left: 0;
-	}
-	.wikipage ul,
-	.wikipage ol {
-		padding: 0;
-		margin: 0 0 1em 0;
-	}
-	.wikipage ul {
-		list-style-type: disc;
-	}
-	.wikipage ol {
-		list-style-type: decimal;
-	}
-	.wikipage li {
-		padding: 0;
-		margin: 0em 0 0em 2em;
-	}
-	.wikipage ul li {
-	}
-	.wikipage dd {
-		color: #888;
-	}
-	.wikipage table {
-		border: 2px solid #ccc;
-		width: auto;
-	}
-	.wikipage table td, 
-	.wikipage table th {
-		border: 1px solid #ccc;
-		margin: 0;
-		padding: 0.2em 0.4em;
-	}
-	.wikipage blockquote, #preview blockquote {
-		margin: 2em 0 2.5em 0;
-		padding: 5px 0 5px 10px;
-	}
-	.wikipage pre, #preview pre {
-		font-family: "Bitstream Vera Sans Mono", Courier, Monaco, ProFont, "American Typewriter", "Andale Mono", monospace;
-		color: #555;
-		background: #f7f7f7;
-		border: 1px solid #d7d7d7;
-		margin: 1em 1.75em;
-		padding: .25em;
-		overflow: auto;
-		font-size: 0.85em;
-		line-height: 1.95em;
-		white-space: pre;
-		white-space: pre-wrap;
-		word-wrap: break-word;
-		white-space: -moz-pre-wrap;
-		white-space: -pre-wrap;
-		white-space: -o-pre-wrap;
-
-	}
-/* Figures */
-	.wikipage .figure img,
-	#preview .figure img  {
-		margin: 0;
-		padding: 0;
-		background: transparent;
+	#notes-content .s-notes {
+		padding: 1em;
 		text-align: center;
 	}
-	.wikipage .figure,
-	#preview .figure {
-		display: inline-block;
-		background: #fff;
-		border: 1px solid #eaeaea;
-	}
-	.wikipage .figure a,
-	#preview .figure a {
-		border: none;
-	}
-	.wikipage .figcaption,
-	.figcaption {
-		display: block;
-		margin: 0;
-		padding: 0.5em;
-		background: #efefef;
-	}
-	
-/* Preview */
-	#preview .section {
-		padding: 0;
-	}
-	#preview .main .subject {
-		max-height: 400px;
-		overflow: auto;
-		border: 2px solid #eee;
-		padding: 1em;
-		margin: 1em 1em 0 0;
-		background: url("/components/com_wiki/assets/img/draft.gif");
-	}
-	#preview .aside p {
-		padding-left: 2em;
-	}
-	
-/* Submenu */
 
-	#notes-content ul.sub-menu li a {
-		border: 1px solid #949494;
-		border-bottom-width: 0;
-		font-size: 85%;
+/* From group wiki
+--------------------------------------------- */
+	.timestamp {
+		margin: 4em 0 1em 0;
+		padding: 0.5em 0.7em;
+		border-top: 1px solid #eee;
+		font-size: 90%;
+		color: #aaa;
+		background-color: #f4f4f4;
+		text-align: left;
 	}
-	#notes-content ul.sub-menu {
+/* (sub) Tabs */
+	#sub-content-header-extra {
 		margin-bottom: 2em;
 	}
-
-/* Misc
---------------------------------------------- */
+	.sub-menu {
+		padding: 0.3em !important;
+		margin-top: 1em;
+	}
+	.sub-menu li a {
+		margin-right: 0.3em;
+	}
+	.sub-menu li a span {
+		display: none;
+	}
+	.sub-menu li a:before {
+		font-family: "Fontcons";
+		margin-right: 0.4em;
+	}
+	.sub-menu li.page-delete {
+		float: right;
+	}
+	.sub-menu li.page-pdf a,
+	.sub-menu li.page-delete a {
+		background: transparent;
+		border-radius: 0;
+		color: inherit;
+		text-shadow: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		height: auto;
+		padding: 0;
+		margin-left: 30px;
+		display: inline;
+	}
+	.sub-menu li.page-pdf a:hover,
+	.sub-menu li.page-delete a:hover {
+		background: transparent;
+		color: #222;
+	}
+	.sub-menu li.page-delete a span {
+		display: none;
+	}
+	.sub-menu li.page-text a:before {
+		content: "\f036";
+	}
+	.sub-menu li.page-edit a:before {
+		content: "\270E";
+	}
+	.sub-menu li.page-comments a:before {
+		content: "\f086";
+	}
+	.sub-menu li.page-history a:before {
+		content: "\f017";
+	}
+	.sub-menu li.page-delete a:before {
+		content: "\f057";
+	}
+	.sub-menu li.page-main a:before {
+		content: "\f071";
+	}
+	.sub-menu li.page-search a:before {
+		content: "\f002";
+	}
+	.sub-menu li.page-pdf {
+		background: transparent;
+	}
+	.sub-menu li.page-pdf a:before {
+		content: "\f019";
+	}
+	.icon-index:before,
+	.sub-menu li.page-index a:before {
+		content: "\f03a";
+	}
+	.sub-menu li.page-delete span {
+		background: transparent;
+	}
 	
-/* IE7 hacks 
---------------------------------------------- */
+/* Wiki options */
+	.notes-content #sub-content-header-extra #page_options {
+		float: right;
+		margin-top: -4em;
+	}
+	.notes-content #sub-content-header-extra #page_options li {
+		display: inline-block;
+		margin-left: 0.5em;
+	}
+	.notes-content #sub-content-header-extra #page_options li.page-new {
+		display: none;
+	}
+/* Misc */
 
+/* Search */
+	.page-search {
+		position: relative;
+	}
+	.page-search-form {
+		position: absolute;
+		right: 9999px;
+		top: 99%;
+		margin: 0;
+		width: 240px;
+		padding: 5px 0 0 0;
+		z-index: 666;
+	}
+	.page-search:hover .page-search-form {
+		right: 0;
+	}
+	.page-search-form form {
+		border: 1px solid #ccc;
+		background: #fff;
+		-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		-ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		-o-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+		-webkit-border-radius: 0.25em 0 0.25em 0.25em;
+		-moz-border-radius: 0.25em 0 0.25em 0.25em;
+		-ms-border-radius: 0.25em 0 0.25em 0.25em;
+		-o-border-radius: 0.25em 0 0.25em 0.25em;
+		border-radius: 0.25em 0 0.25em 0.25em;
+	}
+	.page-search-form form:before {
+		content: "";
+		display: block;
+		border: 8px solid #ccc;
+		border-color: transparent transparent #ccc transparent;
+		position: absolute;
+		top: -9px;
+		right: 0.5em;
+	}
+	.page-search-form form:after {
+		content: "";
+		display: block;
+		border: 8px solid #fff;
+		border-color: transparent transparent #fff transparent;
+		position: absolute;
+		top: -8px;
+		right: 0.5em;
+	}
+	.page-search-form form fieldset {
+		margin: 0;
+		padding: 1em;
+		border: none;
+	}
+	.page-search-form form label span,
+	.page-search-form form legend {
+		display: none;
+	}
+	.page-search-form input {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		-moz-background-clip: padding-box;
+		-ms-background-clip: padding-box;
+		-o-background-clip: padding-box;
+		background-clip: padding-box;
+		padding: 0.45em 0.41em;
+		background: #f1f1f1;
+		margin: 0;
+		border: 1px solid #bbb;
+		display: block;
+		float: left;
+		border-right: none;
+		-webkit-border-radius: 0.25em 0 0 0.25em;
+		-moz-border-radius: 0.25em 0 0 0.25em;
+		-ms-border-radius: 0.25em 0 0 0.25em;
+		-o-border-radius: 0.25em 0 0 0.25em;
+		border-radius: 0.25em 0 0 0.25em;
+	}
+	@-moz-document url-prefix() {
+		.page-search-form input {
+			padding: 0.3em 0.41em;
+		}
+	}
+	.page-search-form input.page-search-submit {
+		background: #f1f1f1;
+		-webkit-border-radius: 0 0.25em 0.25em 0;
+		-moz-border-radius: 0 0.25em 0.25em 0;
+		-ms-border-radius: 0 0.25em 0.25em 0;
+		-o-border-radius: 0 0.25em 0.25em 0;
+		border-radius: 0 0.25em 0.25em 0;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-ms-box-sizing: border-box;
+		-o-box-sizing: border-box;
+		box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		-moz-background-clip: padding-box;
+		-ms-background-clip: padding-box;
+		-o-background-clip: padding-box;
+		background-clip: padding-box;
+		font-size: 1em;
+		line-height: 1.61803399em;
+		outline: none;
+		background: #e0e0e0;
+		background: -webkit-gradient(linear, left top, left bottom, from(#FAFAFA), to(#e0e0e0));
+		background: -webkit-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -moz-linear-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -moz-gradient(center top, #FAFAFA 0%, #e0e0e0 100%);
+		background: -ms-linear-gradient(#FAFAFA, #e0e0e0);
+		background: -o-linear-gradient(#FAFAFA, #e0e0e0);
+		background: linear-gradient(#FAFAFA, #e0e0e0);
+		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA,endColorstr=#e0e0e0);
+		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#FAFAFA, endColorstr=#e0e0e0)";
+		border: 1px solid #bbb;
+		color: #666;
+	}
+	@-moz-document url-prefix() {
+		.page-search-form input.page-search-submit {
+			padding: 0.25em 0.41em;
+		}
+	}
+	/* Uploader */
+	.qq-uploading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 107px;
+		color: #fff;
+		font-size: 18px;
+		padding: 75px 0 0 0;
+		text-align: center;
+		background: rgba(0,0,0,0.75);
+	}
+	.qq-uploader {
+		position: relative;
+		margin: 1em 0 0 0;
+		padding: 0;
+	}
+	/* Upload list */
+	.qq-upload-list {
+		list-style: none;
+		margin: 1em 0;
+	}
+	.qq-upload-list li {
+		color: #FFFFFF;
+		margin: 0 0 1px;
+		padding: 0.5em;
+		overflow: hidden;
+		line-height: 1;
+		font-size: 1em;
+		list-style: none;
+		-webkit-text-shadow: none;
+		-moz-text-shadow: none;
+		-ms-text-shadow: none;
+		-o-text-shadow: none;
+		text-shadow: none;
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		-o-border-radius: 0.5em;
+		border-radius: 0.5em;
+		position: relative;
+		background: #BFE613;
+		background: #5DA30C -moz-linear-gradient(-45deg, rgba(45, 170, 60, 0), rgba(45, 170, 60, 0) 10%, rgba(146, 209, 0, 0.4) 30%, rgba(146, 209, 0, 0.4) 50%, rgba(45, 170, 60, 0) 50%, rgba(45, 170, 60, 0));
+		background: #5DA30C -webkit-gradient(linear, 0 0, 60 60, from(rgba(45, 170, 60, 0)), color-stop(.49, rgba(45, 170, 60, 0)), color-stop(.491, rgba(146, 209, 0, .4)), color-stop(.8, rgba(146, 209, 0, .4)), color-stop(.801, rgba(45, 170, 60, 0)), to(rgba(45, 170, 60, 0)));
+		background-size: 120px 120px;
+		-webkit-animation-name: gradientShift;
+		-webkit-animation-duration: 1s;
+		-webkit-animation-iteration-count: infinite;
+		-webkit-animation-fill-mode: both;
+		-webkit-animation-timing-function: linear;
+		-moz-animation-name: gradientShift;
+		-moz-animation-duration: 1s;
+		-moz-animation-iteration-count: infinite;
+		-moz-animation-fill-mode: both;
+		-moz-animation-timing-function: linear;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=75)";
+		filter: alpha(opacity=75);
+		-webkit-opacity: 0.75;
+		-moz-opacity: 0.75;
+		opacity: 0.75;
+	}
+	@-webkit-keyframes gradientShift {
+		0%   { background-position-x: 0px; }
+		100% { background-position-x: 120px; }
+	}
+
+	@-moz-keyframes gradientShift {
+		0%   { background-position: 0px 0; }
+		100% { background-position: 120px 0; }
+	}
+	.qq-upload-file,
+	.qq-upload-spinner,
+	.qq-upload-size,
+	.qq-upload-cancel,
+	.qq-upload-failed-text {
+		margin-right: 12px;
+		z-index: 250;
+		position: relative;
+	}
+	.qq-upload-spinner {
+		display: inline-block;
+		background: url("/components/com_wiki/assets/img/loading.gif");
+		width: 15px;
+		height: 15px;
+		vertical-align: text-bottom;
+	}
+	.qq-upload-size,
+	.qq-upload-cancel {
+		font-size: 0.9em;
+		font-weight: normal;
+	}
+	.qq-upload-failed-text {
+		display: none;
+	}
+	.qq-upload-fail .qq-upload-failed-text {
+		display: inline;
+	}
+	.qq-upload-list li.qq-upload-success {
+		background: #5DA30C;
+		color: #FFFFFF;
+	}
+	.qq-upload-list li.qq-upload-fail {
+		background: #AF0000;
+		color: #FFFFFF;
+	}
+	.qq-upload-spinner,
+	.qq-upload-size,
+	.qq-upload-cancel,
+	.qq-upload-failed-text {
+		float: right;
+	}
+	.qq-upload-spinner {
+		display: none;
+	}
+	.qq-progress-bar {
+		width: 51%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-color: #5DA30C;
+		-webkit-box-shadow: 0px 0px 14px #0D4500;
+		-moz-box-shadow: 0px 0px 14px #0D4500;
+		-ms-box-shadow: 0px 0px 14px #0D4500;
+		-o-box-shadow: 0px 0px 14px #0D4500;
+		box-shadow: 0px 0px 14px #0D4500;
+		-webkit-border-radius: 0.5em;
+		-moz-border-radius: 0.5em;
+		-ms-border-radius: 0.5em;
+		-o-border-radius: 0.5em;
+		border-radius: 0.5em;
+	}
+	.qq-upload-cancel {
+		color: #800000;
+		display: none;
+	}
+	.qq-upload-success .qq-progress-bar {
+		display: none;
+	}
+
+	/* Drop areas */
+	.qq-upload-button,
+	.qq-upload-drop-area  {
+		background: #f7f7f7;
+		background: rgba(0, 0, 0, 0.05);
+		border: 2px dashed #ddd;
+		border: 2px dashed rgba(0, 0, 0, 0.1);
+		text-align: center;
+		color: #bbb;
+		padding: 0;
+		font-size: 1.5em;
+	}
+	.asset-uploader .columns {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		text-align: center;
+		padding: 0.8em 0;
+	}
+	.qq-upload-button span,
+	.qq-upload-drop-area span {
+		position: relative;
+		padding-left: 1.5em;
+	}
+	.qq-upload-button span:before,
+	.qq-upload-drop-area span:before {
+		display: block;
+		position: absolute;
+		top: -0.1em;
+		font-family: "Fontcons";
+		font-size: 1.5em;
+		line-height: 1;
+		content: "\f016";
+		left: 0;
+	}
+	.qq-upload-button:hover,
+	.qq-upload-drop-area:hover,
+	.qq-upload-drop-area-active {
+		border: 2px solid #333;
+		color: #333;
+		cursor: pointer;
+	}
+	.qq-upload-drop-area {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}

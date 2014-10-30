@@ -25,37 +25,28 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Load wiki configs
-$wiki_config = JComponentHelper::getParams( 'com_wiki' );
+$this->css()
+	 ->js();
 
-// Transform the wikitext to HTML
-$p = WikiHelperParser::getInstance();
+$html = $this->revision->get('pagehtml');
 
-$wikiconfig = array(
-	'option'   => 'com_projects',
-	'scope'    => $this->page->scope,
-	'pagename' => $this->page->pagename,
-	'pageid'   => $this->page->id
-);
+// Com_wiki adds /projects - strip it out
+$html = str_replace('projects/projects/', 'projects/', $html);
 
-// Parse text
-$html = $p->parse( $this->revision->pagetext, $wikiconfig );
+// Fix up images
+$html = str_replace($this->page->get('scope') . DS . $this->page->get('pagename') , 'wiki/' . $this->page->get('id'), $html);
 
+/*
 // Replace internal links so that these pages are accessible
 $html = projectsHelper::parseNoteRefs($this->page, $this->project->id, $this->masterscope, NULL, $html );
 
-// Parse text for project file references
-$html = projectsHelper::parseProjectFileRefs($this->page, $this->revision->pagetext, $this->project->id, $this->project->alias, NULL, $html );
-
-// Fix up images
-$html = projectsHelper::wikiFixImages($this->page, $this->revision->pagetext, $this->project->id, $this->project->alias, NULL, $html, false);
-
+*/
 ?>
 
 <div class="wiki-wrap">
-	<p class="wiki-back"><a href="<?php echo $this->url; ?>"><?php echo JText::_('COM_PROJECTS_NOTES_BACK_TO_PROJECT'); ?></a></p>
+	<p class="wiki-back"><?php echo JText::_('PLG_PROJECTS_NOTES_PUBLIC_VIEW'); ?> <span class="goback"><a href="<?php echo $this->url; ?>"><?php echo JText::_('PLG_PROJECTS_NOTES_BACK_TO_PROJECT'); ?></a></span></p>
 	<div class="wiki-content">
-		<h1 class="page-title"><?php echo $this->page->title; ?></h1>
+		<h1 class="page-title"><?php echo $this->page->get('title'); ?></h1>
 		<div class="wikipage"><?php echo $html; ?></div>
 	</div>
 </div>

@@ -44,33 +44,33 @@ if (!$this->getError()) {
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="active" value="notes" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-		<input type="hidden" name="p" value="<?php echo $this->page->id; ?>" />
+		<input type="hidden" name="p" value="<?php echo $this->page->get('id'); ?>" />
 
-		<h4><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK_TO_NOTE') . ' &ldquo;' . $this->page->title . '&rdquo;:'; ?></h4>
-		<p class="publink"><?php echo trim($juri->base(), DS) . JRoute::_('index.php?option=' . $this->option . a . 'action=get') . '?s=' . $this->pubStamp; ?></p>
+		<h4><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK_TO_NOTE') . ' &ldquo;' . $this->page->get('title') . '&rdquo;:'; ?></h4>
+		<p class="publink"><?php echo trim($juri->base(), DS) . JRoute::_('index.php?option=' . $this->option . a . 'action=get') . '?s=' . $this->publicStamp->stamp; ?></p>
 		<p class="about"><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK_ABOUT'); ?></p>
 
 		<?php if ($this->project->private == 0) { ?>
 		<h4><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LINK_LIST_SHOW_ON_PUBLIC'); ?></h4>
 		<label>
-		<input type="radio" name="action" value="<?php echo 'publist'; ?>" <?php if ($this->listed) { echo 'checked="checked"'; } ?> /><?php echo JText::_('COM_PROJECTS_NOTES_PUB_LIST'); ?>
+		<input type="radio" name="action" value="<?php echo 'publist'; ?>" <?php if ($this->publicStamp->listed) { echo 'checked="checked"'; } ?> /> <?php echo JText::_('COM_PROJECTS_NOTES_PUB_LIST'); ?>
 		</label>
 		<label class="block">
-		<input type="radio" name="action" value="<?php echo 'unlist'; ?>" <?php if (!$this->listed) { echo 'checked="checked"'; } ?>  /><?php echo JText::_('COM_PROJECTS_NOTES_PUB_UNLIST'); ?>
+		<input type="radio" name="action" value="<?php echo 'unlist'; ?>" <?php if (!$this->publicStamp->listed) { echo 'checked="checked"'; } ?>  /> <?php echo JText::_('COM_PROJECTS_NOTES_PUB_UNLIST'); ?>
 		</label>
 		<p class="submitarea">
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE_MY_CHOICE'); ?>" />
+			<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE_MY_CHOICE'); ?>" />
 			<?php if ($this->ajax) { ?>
-				<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 			<?php } else {  ?>
-				<span class="btn btncancel">
-					<a id="cancel-action" href="<?php echo $this->url . DS . $this->page->pagename; ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
+				<span>
+					<a id="cancel-action" class="btn btn-cancel" href="<?php echo $this->url . DS . $this->page->get('pagename'); ?>"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a>
 				</span>
 			<?php } ?>
 		</p>
 		<?php } elseif ($this->ajax) { ?>
 			<p class="submitarea">
-			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CLOSE_THIS'); ?>" />
+			<input type="reset" id="cancel-action" class="btn" value="<?php echo JText::_('COM_PROJECTS_CLOSE_THIS'); ?>" />
 			</p>
 		<?php } ?>
 	</fieldset>
