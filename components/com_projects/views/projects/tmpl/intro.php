@@ -59,7 +59,7 @@ $this->css('introduction.css', 'system')
 		<div class="two columns first">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_MADE_EASY'); ?></h3>
 			<p><?php echo JText::_('COM_PROJECTS_INTRO_COLLABORATION_HOW'); ?></p>
-			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=start'); ?>" id="projects-intro-start" class="btn btn-success icon-next"><?php echo JText::_('COM_PROJECTS_START_PROJECT'); ?></a></p>
+			<p><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=start'); ?>" id="projects-intro-start" class="btn icon-next"><?php echo JText::_('COM_PROJECTS_START_PROJECT'); ?></a></p>
 		</div>
 		<div class="two columns second">
 			<h3><?php echo JText::_('COM_PROJECTS_INTRO_WHAT_YOU_GET'); ?></h3>
