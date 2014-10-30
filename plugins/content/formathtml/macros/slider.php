@@ -91,7 +91,7 @@ class Slider extends Macro
 		$base_url = DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . DS . 'uploads';
 
 		//seperate image list into array of images
-		$slides = explode(',', $content);
+		$slides = array_map('trim', explode(',', $content));
 
 		//array for checked slides
 		$final_slides = array();
@@ -133,10 +133,6 @@ class Slider extends Macro
 
 		$document = \JFactory::getDocument();
 		$document->addStyleSheet('plugins/content/formathtml/macros/macro-assets/slider/slider.css');
-		if (!\JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$document->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js');
-		}
 		$document->addScript('plugins/content/formathtml/macros/macro-assets/slider/slider.js');
 		$document->addScriptDeclaration('
 			var $jQ = jQuery.noConflict();
