@@ -696,7 +696,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 				continue;
 			}
 
-			$args = explode(" ", $line);
+			$args = preg_split('/\s+/', $line);
 			switch ($args[0])
 			{
 				case 'class':
