@@ -80,7 +80,16 @@ class BlogTableEntry extends JTable
 
 		if (!$this->alias)
 		{
-			$this->alias = $this->_shorten($this->title);
+			$text = strip_tags($this->title);
+			$text = trim($text);
+			if (strlen($text) > 100)
+			{
+				$text = $text . ' ';
+				$text = substr($text, 0, 100);
+				$text = substr($text, 0, strrpos($text,' '));
+			}
+
+			$this->alias = $text;
 		}
 		$this->alias = str_replace(' ', '-', $this->alias);
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->alias));
@@ -114,26 +123,6 @@ class BlogTableEntry extends JTable
 		}
 
 		return true;
-	}
-
-	/**
-	 * Shorten a string
-	 *
-	 * @param   string   $text   String to shorten
-	 * @param   integer  $chars  Length to shorten to
-	 * @return  string
-	 */
-	private function _shorten($text, $chars=100)
-	{
-		$text = strip_tags($text);
-		$text = trim($text);
-		if (strlen($text) > $chars)
-		{
-			$text = $text . ' ';
-			$text = substr($text, 0, $chars);
-			$text = substr($text, 0, strrpos($text,' '));
-		}
-		return $text;
 	}
 
 	/**
@@ -172,15 +161,8 @@ class BlogTableEntry extends JTable
 
 			case 'first':
 				$filters['start'] = 0;
-				$filters['limit'] = 1;
 
-				$result = null;
-				if ($results = $this->find('list', $filters))
-				{
-					$result = $results[0];
-				}
-
-				return $result;
+				return $this->find('one', $filters);
 			break;
 
 			case 'all':
@@ -201,10 +183,13 @@ class BlogTableEntry extends JTable
 				{
 					$filters['sort_Dir'] = 'DESC';
 				}
-				$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
-				if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+				if ($filters['sort_Dir'])
 				{
-					$filters['sort_Dir'] = 'DESC';
+					$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+					if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+					{
+						$filters['sort_Dir'] = 'DESC';
+					}
 				}
 
 				if (empty($select))
@@ -343,75 +328,6 @@ class BlogTableEntry extends JTable
 		}
 
 		return $query;
-	}
-
-	/**
-	 * Get a record count
-	 *
-	 * @param   array    $filters  Filters to build query from
-	 * @return  integer
-	 */
-	public function getCount($filters=array())
-	{
-		return $this->find('count', $filters);
-	}
-
-		/**
-	 * Get records
-	 *
-	 * @param   array  $filters  Filters to build query from
-	 * @return  array
-	 */
-	public function getRecords($filters=array())
-	{
-		return $this->find('list', $filters);
-	}
-
-	/**
-	 * Get a list of entries based on comment count
-	 *
-	 * @param   array  $filters  Filters to build query from
-	 * @return  array
-	 */
-	public function getPopularEntries($filters=array())
-	{
-		$filters['sort'] = 'hits';
-		$filters['sort_Dir'] = 'DESC';
-
-		return $this->find('list', $filters);
-	}
-
-	/**
-	 * Get a list of entries based on date published
-	 *
-	 * @param   array  $filters  Filters to build query from
-	 * @return  array
-	 */
-	public function getRecentEntries($filters=array())
-	{
-		$filters['sort'] = 'publish_up';
-		$filters['sort_Dir'] = 'DESC';
-
-		return $this->find('list', $filters);
-	}
-
-	/**
-	 * Get the date of the first entry
-	 *
-	 * @param   array   $filters  Filters to build query from
-	 * @return  string
-	 */
-	public function getDateOfFirstEntry($filters=array())
-	{
-		$filters['sort'] = 'publish_up';
-		$filters['sort_Dir'] = 'ASC';
-		$filters['limit'] = 1;
-		$filters['start'] = 0;
-		$filters['year']  = 0;
-		$filters['month'] = 0;
-		$filters['select'] = 'm.publish_up';
-
-		return $this->find('list', $filters);
 	}
 }
 

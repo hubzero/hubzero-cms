@@ -158,8 +158,6 @@ class BlogModelArchive extends \Hubzero\Base\Object
 			break;
 
 			case 'first':
-				$filters['limit']    = 1;
-				$filters['start']    = 0;
 				$filters['sort']     = 'publish_up';
 				$filters['sort_Dir'] = 'ASC';
 
@@ -168,44 +166,25 @@ class BlogModelArchive extends \Hubzero\Base\Object
 			break;
 
 			case 'popular':
-				if ($results = $this->_tbl->getPopularEntries($filters))
-				{
-					foreach ($results as $key => $result)
-					{
-						$results[$key] = new BlogModelEntry($result);
-					}
-				}
-
-				return new \Hubzero\Base\ItemList($results);
+				$filters['sort']     = 'hits';
+				$filters['sort_Dir'] = 'DESC';
 			break;
 
 			case 'recent':
-				if ($results = $this->_tbl->getRecentEntries($filters))
-				{
-					foreach ($results as $key => $result)
-					{
-						$results[$key] = new BlogModelEntry($result);
-					}
-				}
-
-				return new \Hubzero\Base\ItemList($results);
-			break;
-
-			case 'list':
-			case 'results':
-			default:
-				if ($results = $this->_tbl->find('list', $filters))
-				{
-					foreach ($results as $key => $result)
-					{
-						$results[$key] = new BlogModelEntry($result);
-					}
-				}
-
-				return new \Hubzero\Base\ItemList($results);
+				$filters['sort']     = 'publish_up';
+				$filters['sort_Dir'] = 'DESC';
 			break;
 		}
-		return null;
+
+		if ($results = $this->_tbl->find('list', $filters))
+		{
+			foreach ($results as $key => $result)
+			{
+				$results[$key] = new BlogModelEntry($result);
+			}
+		}
+
+		return new \Hubzero\Base\ItemList($results);
 	}
 
 	/**

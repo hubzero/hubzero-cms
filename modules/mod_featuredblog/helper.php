@@ -72,27 +72,25 @@ class modFeaturedblog extends \Hubzero\Module\Module
 
 		$this->row = null;
 
-		$filters = array();
-		$filters['limit']      = 1;
-		$filters['show']       = trim($this->params->get('show'));
-		$filters['start']      = 0;
-		$filters['state']      = 'public';
-		$filters['order']      = "RAND()";
-		$filters['search']     = '';
-		$filters['scope']      = 'member';
-		$filters['group_id']   = 0;
-		$filters['authorized'] = false;
+		$filters = array(
+			'limit'      => 1,
+			'show'       => trim($this->params->get('show')),
+			'start'      => 0,
+			'state'      => 'public',
+			'sort'       => "RAND()",
+			'sort_Dir'   => '',
+			'search'     => '',
+			'scope'      => 'member',
+			'scope_id'   => 0,
+			'authorized' => false
+		);
 
 		$mp = new BlogTableEntry($database);
-		$rows = $mp->getRecords($filters);
-		if ($rows && count($rows) > 0)
-		{
-			$this->row = $rows[0];
-		}
 
 		// Did we have a result to display?
-		if ($this->row)
+		if ($row = $mp->find('one', $filters))
 		{
+			$this->row = $row;
 			$this->cls = trim($this->params->get('moduleclass_sfx'));
 			$this->txt_length = trim($this->params->get('txt_length'));
 
