@@ -36,101 +36,10 @@ defined('_JEXEC') or die('Restricted access');
 class FeedbackQuotes extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $user_id = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $fullname = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $org = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $quote = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $date = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $publish_ok = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $contact_ok = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $notes = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $short_quote = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $miniquote = NULL;
-
-	/**
-	* int(1)
-	*
-	* @var integer
-	*/
-	var $admin_rating = NULL;
-
-	/**
-	* int(1)
-	*
-	* @var integer
-	*/
-	var $notable_quote  = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -140,7 +49,7 @@ class FeedbackQuotes extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -158,18 +67,18 @@ class FeedbackQuotes extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters)
 	{
-		$query = "FROM $this->_tbl ";
+		$query = "FROM `$this->_tbl`";
 
 		$where = array();
 
 		if (isset($filters['notable_quote']) && $filters['notable_quote'] >= 0)
 		{
-			$where[] = "notable_quote=" . $this->_db->Quote($filters['notable_quote']);
+			$where[] = "`notable_quote`=" . $this->_db->Quote($filters['notable_quote']);
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -179,7 +88,7 @@ class FeedbackQuotes extends JTable
 
 			foreach ($words as $word)
 			{
-				$sqlsearch[] = "(LOWER(fullname) LIKE " . $this->_db->quote('%' . strtolower($word) . '%') . ")";
+				$sqlsearch[] = "(LOWER(`fullname`) LIKE " . $this->_db->Quote('%' . strtolower($word) . '%') . ")";
 			}
 
 			$where[] = "(" . implode(" OR ", $sqlsearch) . ")";
@@ -187,7 +96,7 @@ class FeedbackQuotes extends JTable
 
 		if (isset($filters['id']) && $filters['id'] != 0)
 		{
-			$where[] = "id=" . $this->_db->Quote($filters['id']);
+			$where[] = "`id`=" . $this->_db->Quote($filters['id']);
 		}
 
 		if (count($where))
@@ -195,59 +104,91 @@ class FeedbackQuotes extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (empty($filters['sortby']))
-		{
-			$filters['sortby'] = 'date';
-		}
-
-		$query .= " ORDER BY " . $filters['sortby'] . " DESC";
-
-		if (isset($filters['limit']) && $filters['limit'] != 'all' && $filters['limit'] > 0)
-		{
-			if (!isset($filters['start']))
-			{
-				$filters['start'] = 0;
-			}
-			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
-		}
-
 		return $query;
 	}
 
 	/**
-	 * Get a record count
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * Get a count of, single entry, or list of entries
+	 * 
+	 * @param   string   $rtrn     Data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   array    $select   List of fields to select
+	 * @return  mixed
 	 */
-	public function getCount($filters=array())
+	public function find($what='', $filters=array(), $select=array('*'))
 	{
-		$filters['limit'] = 0;
+		$what = strtolower($what);
+		$select = (array) $select;
 
-		$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
 
-	/**
-	 * Get records
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
-	 */
-	public function getResults($filters=array())
-	{
-		$query  = "SELECT * " . $this->_buildQuery($filters);
+			case 'one':
+				$filters['limit'] = 1;
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+
+				return $this->find('one', $filters);
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				$filters['sort']     = isset($filters['sort'])     ?: '`date`';
+				$filters['sort_Dir'] = isset($filters['sort_Dir']) ?: 'DESC';
+
+				if ($filters['sort_Dir'])
+				{
+					$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+					if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+					{
+						$filters['sort_Dir'] = 'DESC';
+					}
+				}
+
+				$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
+				$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+
+				if (isset($filters['limit']) && $filters['limit'] > 0)
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 
 	/**
 	 * Method to delete a row from the database table by primary key value.
 	 *
-	 * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+	 * @param   mixed    $pk  An optional primary key value to delete.  If not set the instance property value is used.
 	 * @return  boolean  True on success.
 	 */
 	public function delete($pk = null)

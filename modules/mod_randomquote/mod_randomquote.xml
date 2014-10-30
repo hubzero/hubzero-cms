@@ -49,10 +49,10 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="quotepool" type="radio" default="flash_rotation" label="Quotes Pool" description="Select which quotes to pull from">
+				<field name="quotepool" type="radio" default="notable_quotes" label="Quotes Pool" description="Select which quotes to pull from">
 					<option value="flash_rotation">Selected for Rotation</option>
 					<option value="notable_quotes">Selected for NQ Page</option>
-					<option value="">All</option>
+					<option value="all">All</option>
 				</field>
 				<field name="show_author" type="radio" default="1" label="Show author name" description="Select whether to show author name">
 					<option value="1">Show</option>

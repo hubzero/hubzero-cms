@@ -50,14 +50,14 @@ class modQuotes extends \Hubzero\Module\Module
 
 		//Get the admin configured settings
 		$this->filters = array(
-			'limit' => trim($this->params->get('maxquotes')),
-			'id'    => JRequest::getInt('quoteid', 0),
+			'limit'         => trim($this->params->get('maxquotes')),
+			'id'            => JRequest::getInt('quoteid', 0),
 			'notable_quote' => 1
 		);
 
 		// Get quotes
 		$sq = new FeedbackQuotes($this->database);
-		$this->quotes = $sq->getResults($this->filters);
+		$this->quotes = $sq->find('list', $this->filters);
 
 		$feedbackConfig = JComponentHelper::getParams('com_feedback');
 		$this->path = trim($feedbackConfig->get('uploadpath', '/site/quotes'), DS) . DS;

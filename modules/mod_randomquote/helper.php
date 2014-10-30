@@ -49,25 +49,21 @@ class modRandomQuote extends \Hubzero\Module\Module
 		$database = JFactory::getDBO();
 
 		//Get the admin configured settings
-		$filters = array();
-		$filters['limit'] = 1;
-		$this->charlimit = $this->params->get('charlimit', 150);
+		$this->charlimit  = $this->params->get('charlimit', 150);
 		$this->showauthor = $this->params->get('show_author', 1);
-		$this->showall = $this->params->get('show_all_link', 1);
+		$this->showall    = $this->params->get('show_all_link', 1);
+
 		$quotesrc = $this->params->get('quotesrc', 'miniquote');
-
-		$pool = trim($this->params->get('quotepool'));
-		$filters['notable_quote'] = ($pool == 'notable_quotes') ?  1 : 0;
-		//$filters['flash_rotation'] = ($pool == 'flash_rotation') ?  1 : 0;
-		$filters['miniquote'] = ($quotesrc == 'miniquote') ?  1 : 0;
-		$filters['sortby'] = 'RAND()';
-
-		$this->filters = $filters;
 
 		// Get quotes
 		$sq = new FeedbackQuotes($database);
-		$quotes = $sq->getResults($filters);
-		$quote = ($quotes) ? $quotes[0] : '';
+		$quote = $sq->find('one', array(
+			'limit'         => 1,
+			'notable_quote' => ($this->params->get('quotepool') == 'notable_quotes' ?  1 : 0),
+			'miniquote'     => ($quotesrc == 'miniquote' ?  1 : 0),
+			'sort'          => 'RAND()',
+			'sort_Dir'      => ''
+		));
 
 		if ($quote)
 		{

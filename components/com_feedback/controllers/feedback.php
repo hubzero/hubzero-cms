@@ -135,7 +135,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		);
 
 		$sq = new FeedbackQuotes($this->database);
-		$this->view->quotes = $sq->getResults($filters);
+		$this->view->quotes = $sq->find('list', $filters);
 
 		$this->view->path = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
 		$this->view->quoteId = JRequest::getInt('quoteid', null);
