@@ -36,45 +36,10 @@ namespace Hubzero\Plugin;
 class Params extends \JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $object_id = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $folder    = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $element   = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params    = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -84,7 +49,7 @@ class Params extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -114,63 +79,43 @@ class Params extends \JTable
 	/**
 	 * Load a record and binf to $this
 	 *
-	 * @param      integer $oid     Object ID (eg, group ID)
-	 * @param      string  $folder  Plugin folder
-	 * @param      string  $element Plugin name
-	 * @return     boolean True on success
+	 * @param   integer  $oid      Object ID (eg, group ID)
+	 * @param   string   $folder   Plugin folder
+	 * @param   string   $element  Plugin name
+	 * @return  boolean  True on success
 	 */
 	public function loadPlugin($oid=null, $folder=null, $element=NULL)
 	{
-		if (!$oid)
-		{
-			$oid = $this->object_id;
-		}
-		if (!$folder)
-		{
-			$folder = $this->folder;
-		}
-		if (!$element)
-		{
-			$element = $this->element;
-		}
+		$oid     = $oid     ?: $this->object_id;
+		$folder  = $folder  ?: $this->folder;
+		$element = $element ?: $this->element;
+
 		if (!$oid || !$element || !$folder)
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($oid) . " AND folder=" . $this->_db->Quote($folder) . " AND element=" . $this->_db->Quote($element) . " LIMIT 1");
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+
+		return parent::load(array(
+			'object_id' => (int) $oid,
+			'folder'    => (string) $folder,
+			'element'   => (int) $element
+		));
 	}
 
 	/**
 	 * Get the custom parameters for a plugin
 	 *
-	 * @param      integer $oid     Object ID (eg, group ID)
-	 * @param      string  $folder  Plugin folder
-	 * @param      string  $element Plugin name
-	 * @return     object
+	 * @param   integer  $oid      Object ID (eg, group ID)
+	 * @param   string   $folder   Plugin folder
+	 * @param   string   $element  Plugin name
+	 * @return  object
 	 */
 	public function getCustomParams($oid=null, $folder=null, $element=null)
 	{
-		if (!$oid)
-		{
-			$oid = $this->object_id;
-		}
-		if (!$folder)
-		{
-			$folder = $this->folder;
-		}
-		if (!$element)
-		{
-			$element = $this->element;
-		}
+		$oid     = $oid     ?: $this->object_id;
+		$folder  = $folder  ?: $this->folder;
+		$element = $element ?: $this->element;
+
 		if (!$oid || !$folder || !$element)
 		{
 			return null;
@@ -185,20 +130,15 @@ class Params extends \JTable
 	/**
 	 * Get the default parameters for a plugin
 	 *
-	 * @param      string  $folder  Plugin folder
-	 * @param      string  $element Plugin name
-	 * @return     object
+	 * @param   string  $folder   Plugin folder
+	 * @param   string  $element  Plugin name
+	 * @return  object
 	 */
 	public function getDefaultParams($folder=null, $element=null)
 	{
-		if (!$folder)
-		{
-			$folder = $this->folder;
-		}
-		if (!$element)
-		{
-			$element = $this->element;
-		}
+		$folder  = $folder  ?: $this->folder;
+		$element = $element ?: $this->element;
+
 		if (!$folder || !$element)
 		{
 			return null;
@@ -213,16 +153,18 @@ class Params extends \JTable
 	 * Get the parameters for a plugin
 	 * Merges default params and custom params (take precedence)
 	 *
-	 * @param      integer $oid     Object ID (eg, group ID)
-	 * @param      string  $folder  Plugin folder
-	 * @param      string  $element Plugin name
-	 * @return     object
+	 * @param   integer  $oid      Object ID (eg, group ID)
+	 * @param   string   $folder   Plugin folder
+	 * @param   string   $element  Plugin name
+	 * @return  object
 	 */
 	public function getParams($oid=null, $folder=null, $element=null)
 	{
 		$rparams = $this->getCustomParams($oid, $folder, $element);
+
 		$params = $this->getDefaultParams($folder, $element);
 		$params->merge($rparams);
+
 		return $params;
 	}
 }
