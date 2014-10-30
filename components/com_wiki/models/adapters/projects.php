@@ -59,7 +59,8 @@ class WikiModelAdapterProjects extends WikiModelAdapterAbstract
 	{
 		$segments = $this->_segments;
 		$project = JRequest::getVar('project', NULL);
-		if (is_object($project))
+		$segments['scope'] = JRequest::getVar('scope', NULL);
+		if (!$segments['scope'] && is_object($project))
 		{
 			$segments['scope'] = 'projects/' . $project->alias . '/notes';
 		}
