@@ -98,15 +98,15 @@ class cli
 
 		if (isset($length))
 		{
-			$args[] = '--length=' . $length;
+			$args[] = '--length=' . (int)$length;
 		}
 		if (isset($start))
 		{
-			$args[] = '--start=' . $start;
+			$args[] = '--start=' . (int)$start;
 		}
 		if (isset($search))
 		{
-			$args[] = '--search="' . $search . '"';
+			$args[] = '--search=' . escapeshellarg($search);
 		}
 		if (isset($upcoming) && $upcoming)
 		{
@@ -191,7 +191,7 @@ class cli
 		}
 		if (isset($file))
 		{
-			$args[] = '--file='.$file;
+			$args[] = '--file=' . escapeshellarg($file);
 		}
 
 		return self::call('run', 'migration', $args);
