@@ -279,6 +279,7 @@ class View extends AbstractView
 			// Old naming scheme "OptionHelperMethod"
 			$invokable2 = $option . 'Helper' . ucfirst($method);
 
+			$callback = null;
 			if (class_exists($invokable1))
 			{
 				$callback = new $invokable1();
