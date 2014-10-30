@@ -79,7 +79,7 @@ class ProjectModelNote extends WikiModelBook
 	 */
 	public function page($id=null, $scope = '')
 	{
-		$scope = $scope ? $scope : $this->_scope;		
+		$scope = $scope ? $scope : $this->_scope;
 		$this->_cache['page'] = WikiModelPage::getInstance($id, $scope);
 
 		return $this->_cache['page'];
