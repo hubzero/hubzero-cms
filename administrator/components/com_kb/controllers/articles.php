@@ -145,8 +145,6 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		if (is_object($row))
 		{
 			$this->view->row = $row;
@@ -175,12 +173,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if ($this->view->row->exists())
-		{
-			// Editing existing
-			//$this->view->row->checkout($this->juser->get('id'));
-		}
-		else
+		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('created_by', $this->juser->get('id'));
 			$this->view->row->set('created', JFactory::getDate()->toSql());
@@ -191,10 +184,10 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 			JPATH_COMPONENT . DS . 'kb.xml'
 		);
 
-		$c = new KbModelArchive($this->database);
+		$c = new KbModelArchive();
 
 		// Get the sections
-		$this->view->sections   = $c->categories('list', array('section' => 0, 'empty' => 1));
+		$this->view->sections = $c->categories('list', array('section' => 0, 'empty' => 1));
 
 		/*
 		$m = new KbModelAdminArticle();
@@ -202,16 +195,15 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		*/
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -249,7 +241,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		if (is_array($params))
 		{
 			$txt = array();
-			foreach ($params as $k=>$v)
+			foreach ($params as $k => $v)
 			{
 				$p->set($k, $v);
 			}

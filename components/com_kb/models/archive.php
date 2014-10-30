@@ -195,7 +195,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 				if (!isset($this->_categories_count) || !is_numeric($this->_categories_count) || $clear)
 				{
 					$tbl = new KbTableCategory($this->_db);
-					$this->_categories_count = (int) $tbl->count($filters);
+					$this->_categories_count = (int) $tbl->find('count', $filters);
 				}
 				return $this->_categories_count;
 			break;
@@ -206,7 +206,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 				if (!$this->_categories instanceof \Hubzero\Base\ItemList || $clear)
 				{
 					$tbl = new KbTableCategory($this->_db);
-					if ($results = $tbl->find($filters))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
@@ -267,7 +267,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 				if (!isset($this->_articles_count) || !is_numeric($this->_articles_count) || $clear)
 				{
 					$tbl = new KbTableArticle($this->_db);
-					$this->_articles_count = (int) $tbl->count($filters);
+					$this->_articles_count = (int) $tbl->find('count', $filters);
 				}
 				return $this->_articles_count;
 			break;
@@ -282,7 +282,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 						$filters['order'] = $filters['sort'] . " " . $filters['sort_Dir'];
 					}
 					$tbl = new KbTableArticle($this->_db);
-					if ($results = $tbl->find($filters))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{

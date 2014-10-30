@@ -493,7 +493,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	/**
 	 * Displays an RSS feed of comments for a given article
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function commentsTask()
 	{
@@ -504,194 +504,96 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Incoming
+		$alias = JRequest::getVar('alias', '');
+		$id    = JRequest::getInt('id', 0);
+
+		// Load the article
+		$category = new KbModelCategory(JRequest::getVar('category'));
+
+		$article = new KbModelArticle(($alias ? $alias : $id), $category->get('id'));
+		if (!$article->exists())
+		{
+			throw new JException(JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+		}
+
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
+		$document = JFactory::getDocument();
+		$document->setMimeEncoding('application/rss+xml');
+
+		$jconfig = JFactory::getConfig();
 
 		// Start a new feed object
-		$doc = new JDocumentFeed;
-		$app = JFactory::getApplication();
-		$params = $app->getParams();
-		$doc->link = JRoute::_('index.php?option=' . $this->_option);
-
-		// Incoming
-		$alias = JRequest::getVar('alias', '');
-
-		if (!$alias)
-		{
-			return $this->displayTask();
-		}
-
-		$entry = new KbTableArticle($this->database);
-		$entry->loadAlias($alias);
-
-		if (!$entry->id)
-		{
-			return $this->displayTask();
-		}
-
-		// Load the category object
-		$section = new KbTableCategory($this->database);
-		$section->load($entry->section);
-
-		// Load the category object
-		$category = new KbTableCategory($this->database);
-		if ($entry->category)
-		{
-			$category->load($entry->category);
-		}
-
-		// Load the comments
-		$bc = new KbTableComment($this->database);
-		$rows = $bc->getAllComments($entry->id);
+		$feed = new JDocumentFeed;
+		$feed->link = JRoute::_($article->link());
 
 		// Build some basic RSS document information
-		$jconfig = JFactory::getConfig();
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
-		$doc->title .= ($entry->title) ? ': ' . stripslashes($entry->title) : '';
-		$doc->title .= ': ' . JText::_('COM_KB_COMMENTS');
+		$feed->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
+		$feed->title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
+		$feed->title .= ': ' . JText::_('COM_KB_COMMENTS');
 
-		$doc->description = JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($entry->title));
-		$doc->copyright = JText::sprintf('COM_KB_COMMENTS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$feed->description = JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($article->get('title')));
+		$feed->copyright   = JText::sprintf('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
 
 		// Start outputing results if any found
-		if (count($rows) > 0)
+		$feed = $this->_feedItem($feed, $article->comments('list'));
+
+		// Output the feed
+		echo $feed->render();
+		die();
+	}
+
+	/**
+	 * Recursive function to append comments to a feed
+	 *
+	 * @param   object  $feed
+	 * @param   object  $comments
+	 * @return  object
+	 */
+	protected function _feedItem($feed, $comments)
+	{
+		foreach ($comments as $comment)
 		{
-			foreach ($rows as $row)
+			// Load individual item creator class
+			$item = new JFeedItem();
+
+			$item->author = JText::_('COM_KB_ANONYMOUS');
+			if (!$comment->get('anonymous'))
 			{
-				// URL link to article
-				$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&alias=' . $entry->get('alias') . '#c' . $row->id);
+				$item->author = $comment->creator('name', $item->author);
+			}
 
-				$author = JText::_('COM_KB_ANONYMOUS');
-				if (!$row->anonymous)
-				{
-					$cuser  = JUser::getInstance($row->created_by);
-					$author = $cuser->get('name');
-				}
+			// Prepare the title
+			$item->title = JText::sprintf('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author) . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
 
-				// Prepare the title
-				$title = JText::sprintf('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $author) . ' @ ' . JHTML::_('date', $row->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $row->created, JText::_('DATE_FORMAT_HZ1'));
+			// URL link to article
+			$item->link = $feed->link . '#c' . $comment->get('id');
 
-				// Strip html from feed item description text
-				if ($row->reports)
-				{
-					$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-				}
-				else
-				{
-					$description = $row->content;
-				}
-				$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($description));
+			// Strip html from feed item description text
+			if ($comment->isReported())
+			{
+				$item->description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
+			}
+			else
+			{
+				$item->description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($comment->content('clean')));
+			}
 
-				@$date = ($row->created ? date('r', strtotime($row->created)) : '');
+			$item->date = $comment->created();
+			$item->category = '';
 
-				// Load individual item creator class
-				$item = new JFeedItem();
-				$item->title       = $title;
-				$item->link        = $link;
-				$item->description = $description;
-				$item->date        = $date;
-				$item->category    = '';
-				$item->author      = $author;
+			// Loads item info into rss array
+			$feed->addItem($item);
 
-				// Loads item info into rss array
-				$doc->addItem($item);
-
-				// Check for any replies
-				if ($row->replies)
-				{
-					foreach ($row->replies as $reply)
-					{
-						// URL link to article
-						$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&alias=' . $entry->get('alias') . '#c' . $reply->id);
-
-						$author = JText::_('COM_KB_ANONYMOUS');
-						if (!$reply->anonymous)
-						{
-							$cuser  = JUser::getInstance($reply->created_by);
-							$author = $cuser->get('name');
-						}
-
-						// Prepare the title
-						$title = JText::sprintf('COM_KB_COMMENTS_RSS_REPLY_TITLE', $row->id, $author) . ' @ ' . JHTML::_('date', $reply->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $reply->created, JText::_('DATE_FORMAT_HZ1'));
-
-						// Strip html from feed item description text
-						if ($reply->reports)
-						{
-							$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-						}
-						else
-						{
-							$description = stripslashes($reply->content);
-						}
-						$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($description));
-
-						@$date = ($reply->created ? date('r', strtotime($reply->created)) : '');
-
-						// Load individual item creator class
-						$item = new JFeedItem();
-						$item->title       = $title;
-						$item->link        = $link;
-						$item->description = $description;
-						$item->date        = $date;
-						$item->category    = '';
-						$item->author      = $author;
-
-						// Loads item info into rss array
-						$doc->addItem($item);
-
-						if ($reply->replies)
-						{
-							foreach ($reply->replies as $response)
-							{
-								// URL link to article
-								$link = JRoute::_('index.php?option=' . $this->_option . '&section=' . $section->get('alias') . '&category=' . $category->get('alias') . '&alias=' . $entry->get('alias') . '#c' . $response->id);
-
-								$author = JText::_('COM_KB_ANONYMOUS');
-								if (!$response->anonymous)
-								{
-									$cuser  = JUser::getInstance($response->created_by);
-									$author = $cuser->get('name');
-								}
-
-								// Prepare the title
-								$title = JText::sprintf('COM_KB_COMMENTS_RSS_REPLY_TITLE', $reply->id, $author) . ' @ ' . JHTML::_('date', $response->created, JText::_('TIME_FORMAT_HZ1')) . ' on ' . JHTML::_('date', $response->created, JText::_('DATE_FORMAT_HZ1'));
-
-								// Strip html from feed item description text
-								if ($response->reports)
-								{
-									$description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
-								}
-								else
-								{
-									$description = stripslashes($response->content);
-								}
-								$description = html_entity_decode(\Hubzero\Utility\Sanitize::stripAll($description));
-
-								@$date = ($response->created ? date('r', strtotime($response->created)) : '');
-
-								// Load individual item creator class
-								$item = new JFeedItem();
-								$item->title       = $title;
-								$item->link        = $link;
-								$item->description = $description;
-								$item->date        = $date;
-								$item->category    = '';
-								$item->author      = $author;
-
-								// Loads item info into rss array
-								$doc->addItem($item);
-							}
-						}
-					}
-				}
+			if ($comment->replies()->total())
+			{
+				$feed = $this->_feedItem($feed, $comment->replies());
 			}
 		}
 
-		// Output the feed
-		echo $doc->render();
+		return $feed;
 	}
 }
 

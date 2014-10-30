@@ -143,7 +143,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['state']))
 		{
-			$filters['state']    = self::APP_STATE_PUBLISHED;
+			$filters['state'] = self::APP_STATE_PUBLISHED;
 		}
 
 		if (!isset($filters['sort']))
@@ -160,7 +160,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 			case 'count':
 				if (!isset($this->_articles_count) || !is_numeric($this->_articles_count) || $clear)
 				{
-					$this->_articles_count = $tbl->count($filters);
+					$this->_articles_count = $tbl->find('count', $filters);
 				}
 				return $this->_articles_count;
 			break;
@@ -170,7 +170,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 			default:
 				if (!$this->_articles instanceof \Hubzero\Base\ItemList || $clear)
 				{
-					if ($results = $tbl->find($filters))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
@@ -229,7 +229,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 			case 'count':
 				if (!isset($this->_children_count) || !is_numeric($this->_children_count) || $clear)
 				{
-					$this->_children_count = $this->_tbl->count($filters);
+					$this->_children_count = $this->_tbl->find('count', $filters);
 				}
 				return $this->_children_count;
 			break;
@@ -239,7 +239,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 			default:
 				if (!$this->_children instanceof \Hubzero\Base\ItemList || $clear)
 				{
-					if ($results = $this->_tbl->find($filters))
+					if ($results = $this->_tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{

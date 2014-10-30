@@ -188,6 +188,7 @@ function kbParseRoute($segments)
 				$vars['task'] = 'comments';
 				$vars['alias'] = urldecode($segments[1]);
 				$vars['alias'] = str_replace(':', '-', $vars['alias']);
+				$vars['category'] = $segments[0];
 			}
 			else
 			{
@@ -209,6 +210,7 @@ function kbParseRoute($segments)
 				$vars['task']  = 'comments';
 				$vars['alias'] = urldecode($segments[2]);
 				$vars['alias'] = str_replace(':', '-', $vars['alias']);
+				$vars['category'] = $segments[1];
 			}
 			else
 			{

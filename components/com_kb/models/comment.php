@@ -190,6 +190,10 @@ class KbModelComment extends \Hubzero\Base\Model
 		{
 			$filters['parent'] = $this->get('id');
 		}
+		if (!isset($filters['entry_id']))
+		{
+			$filters['entry_id'] = $this->get('entry_id');
+		}
 
 		switch (strtolower($rtrn))
 		{
@@ -232,7 +236,7 @@ class KbModelComment extends \Hubzero\Base\Model
 					}
 					else
 					{
-						$results = $this->_tbl->getComments($filters);
+						$results = $this->_tbl->getComments($filters['entry_id'], $filters['parent']);
 					}
 
 					if ($results)

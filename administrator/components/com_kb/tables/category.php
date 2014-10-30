@@ -37,59 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class KbTableCategory extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id           = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $title        = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description  = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $section      = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $state        = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $access       = NULL;
-
-	/**
-	 * varchar(200)
-	 *
-	 * @var string
-	 */
-	var $alias        = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,11 +50,11 @@ class KbTableCategory extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		$this->title       = trim($this->title);
+		$this->title = trim($this->title);
 		if ($this->title == '')
 		{
 			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
@@ -120,11 +71,12 @@ class KbTableCategory extends JTable
 		$this->description = trim($this->description);
 		$this->section     = intval($this->section);
 		$this->state       = intval($this->state);
+
 		if (!$this->id)
 		{
 			$this->access = $this->access ? $this->access : 0;
 		}
-		$this->access      = intval($this->access);
+		$this->access = intval($this->access);
 
 		return true;
 	}
@@ -135,8 +87,6 @@ class KbTableCategory extends JTable
 	 * where id is the value of the primary key of the table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetName()
 	{
@@ -148,8 +98,6 @@ class KbTableCategory extends JTable
 	 * Method to return the title to use for the asset table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -161,21 +109,18 @@ class KbTableCategory extends JTable
 	 *
 	 * @param   JTable   $table  A JTable object for the asset parent.
 	 * @param   integer  $id     The id for the asset
-	 *
 	 * @return  integer  The id of the asset's parent
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetParentId($table = null, $id = null)
 	{
 		// Initialise variables.
 		$assetId = null;
-		$db		= $this->getDbo();
+		$db = $this->getDbo();
 
 		if ($assetId === null)
 		{
 			// Build the query to get the asset id for the parent category.
-			$query	= $db->getQuery(true);
+			$query = $db->getQuery(true);
 			$query->select('id');
 			$query->from('#__assets');
 			$query->where('name = ' . $db->quote('com_kb'));
@@ -200,40 +145,30 @@ class KbTableCategory extends JTable
 	}
 
 	/**
-	 * Load a record and bind to $this
+	 * Method to load a row from the database by primary key and bind the fields
+	 * to the JTable instance properties.
 	 *
-	 * @param      string $oid Alias
-	 * @return     boolean True upon success, False if errors
+	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match.
+	 * @param   boolean  $reset  True to reset the default values before loading the new row.
+	 * @return  boolean  True if successful. False if row not found or on error (internal error state set in that case).
 	 */
-	public function load($oid=NULL, $reset = true)
+	public function load($keys = null, $reset = true)
 	{
-		if (empty($oid))
+		if (is_string($keys) && !is_numeric($keys))
 		{
-			return false;
+			return parent::load(array(
+				'alias' => $keys
+			), $reset);
 		}
 
-		if (is_numeric($oid))
-		{
-			return parent::load($oid);
-		}
-
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($keys, $reset);
 	}
 
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Alias
-	 * @return     boolean True upon success, False if errors
+	 * @param   string   $oid  Alias
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadAlias($oid=NULL)
 	{
@@ -243,13 +178,12 @@ class KbTableCategory extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
-		$query = "FROM $this->_tbl AS a";
-		$query .= " LEFT JOIN #__viewlevels AS g ON g.`id` = (a.`access` + 1)";
+		$query = "FROM `$this->_tbl` AS a LEFT JOIN `#__viewlevels` AS g ON g.`id` = (a.`access` + 1)";
 
 		$where = array();
 
@@ -273,11 +207,11 @@ class KbTableCategory extends JTable
 		{
 			if (isset($filters['section']) && $filters['section'] > 0)
 			{
-				$where[] = "(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id) > 0";
+				$where[] = "(SELECT COUNT(*) FROM `#__faq` AS fa WHERE fa.category=a.id) > 0";
 			}
 			else
 			{
-				$where[] = "(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id) > 0";
+				$where[] = "(SELECT COUNT(*) FROM `#__faq` AS fa WHERE fa.section=a.id) > 0";
 			}
 		}
 
@@ -286,78 +220,111 @@ class KbTableCategory extends JTable
 			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
-		if (isset($filters['sort']) && $filters['sort'])
-		{
-			if (substr($filters['sort'], 0, 2) != 'a.' && array_key_exists($filters['sort'], $this->getFields()))
-			{
-				$filters['sort'] = 'a.' . $filters['sort'];
-			}
-			$filters['sort_Dir'] = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
-			$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
-			if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
-			{
-				$filters['sort_Dir'] = 'DESC';
-			}
-
-			$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
-		}
-
 		return $query;
 	}
 
 	/**
-	 * Get a record count
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * Get a count of, single entry, or list of entries
+	 * 
+	 * @param   string   $rtrn     Data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   array    $select   List of fields to select
+	 * @return  mixed
 	 */
-	public function count($filters=array())
+	public function find($what='', $filters=array())
 	{
-		$filters['sort'] = null;
+		$what = strtolower($what);
 
-		$query  = "SELECT COUNT(a.id) ";
-		$query .= $this->_buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
-	/**
-	 * Get records
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
-	 */
-	public function find($filters=array())
-	{
-		// Make sure article count takes access and state into consideration
-		$access = '';
-		if (isset($filters['state']) && $filters['state'] >= 0)
+		switch ($what)
 		{
-			$access .= " AND fa.`state`=" . $this->_db->Quote($filters['state']);
-		}
-		if (isset($filters['access']) && $filters['access'] >= 0)
-		{
-			$access .= " AND fa.`access`=" . $this->_db->Quote($filters['access']);
-		}
+			case 'count':
+				$query = "SELECT COUNT(a.id) " . $this->_buildQuery($filters);
 
-		if (isset($filters['section']) && $filters['section'] > 0)
-		{
-			$query  = "SELECT a.*, g.`title` AS groupname,
-				(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.category=a.id $access) AS articles,
-				(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
-		}
-		else
-		{
-			$query  = "SELECT a.*, g.`title` AS groupname,
-				(SELECT COUNT(*) FROM #__faq AS fa WHERE fa.section=a.id $access) AS articles,
-				(SELECT COUNT(*) FROM $this->_tbl AS fc WHERE fc.section=a.id) AS categories ";
-		}
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
 
-		$query .= $this->_buildQuery($filters);
-		$query .= (isset($filters['limit']) && $filters['limit'] > 0) ? " LIMIT " . $filters['start'] . ", " . $filters['limit'] : "";
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+			case 'one':
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+
+				return $this->find('one', $filters);
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				// Make sure article count takes access and state into consideration
+				$access = '';
+				if (isset($filters['state']) && $filters['state'] >= 0)
+				{
+					$access .= " AND fa.`state`=" . $this->_db->Quote($filters['state']);
+				}
+				if (isset($filters['access']) && $filters['access'] >= 0)
+				{
+					$access .= " AND fa.`access`=" . $this->_db->Quote($filters['access']);
+				}
+
+				if (isset($filters['section']) && $filters['section'] > 0)
+				{
+					$query  = "SELECT a.*, g.`title` AS groupname,
+						(SELECT COUNT(*) FROM `#__faq` AS fa WHERE fa.category=a.id $access) AS articles,
+						(SELECT COUNT(*) FROM `$this->_tbl` AS fc WHERE fc.section=a.id) AS categories ";
+				}
+				else
+				{
+					$query  = "SELECT a.*, g.`title` AS groupname,
+						(SELECT COUNT(*) FROM `#__faq` AS fa WHERE fa.section=a.id $access) AS articles,
+						(SELECT COUNT(*) FROM `$this->_tbl` AS fc WHERE fc.section=a.id) AS categories ";
+				}
+
+				$query .= $this->_buildQuery($filters);
+
+				if (isset($filters['sort']) && $filters['sort'])
+				{
+					if (substr($filters['sort'], 0, 2) != 'a.' && array_key_exists($filters['sort'], $this->getFields()))
+					{
+						$filters['sort'] = 'a.' . $filters['sort'];
+					}
+					$filters['sort_Dir'] = (isset($filters['sort_Dir'])) ? $filters['sort_Dir'] : 'DESC';
+					$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+					if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+					{
+						$filters['sort_Dir'] = 'DESC';
+					}
+
+					$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
+				}
+
+				if (isset($filters['limit']) && $filters['limit'] > 0)
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 }
 
