@@ -734,6 +734,9 @@ class View extends Object
 			if (is_callable($callback))
 			{
 				$callback->setView($this);
+
+				$this->helper($method, $callback);
+
 				return call_user_func_array($callback, $parameters);
 			}
 		}
