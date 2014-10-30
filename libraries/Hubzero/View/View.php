@@ -32,7 +32,6 @@ namespace Hubzero\View;
 
 use Hubzero\Base\Object;
 use Hubzero\View\Exception\InvalidLayoutException;
-use Hubzero\View\Exception\InvalidHelperManagerException;
 
 /**
  * Base class for a View
@@ -115,11 +114,11 @@ class View extends Object
 	protected $_charset = 'UTF-8';
 
 	/**
-	 * HelperManager
+	 * The registered helpers.
 	 *
-	 * @var object
+	 * @var array
 	 */
-	public $helpers;
+	protected static $helpers = array();
 
 	/**
 	 * Constructor
@@ -677,92 +676,6 @@ class View extends Object
 	}
 
 	/**
-	 * Set helper manager instance
-	 *
-	 * @param   mixed  $helpers string|HelperManager
-	 * @return  object HelperManager
-	 * @throws  Exception\InvalidHelperManagerException
-	 */
-	public function setHelperManager($helpers)
-	{
-		if (is_string($helpers))
-		{
-			if (!class_exists($helpers))
-			{
-				throw new InvalidHelperManagerException(sprintf(
-					'Invalid helper manager class provided (%s)',
-					$helpers
-				));
-			}
-			$helpers = new $helpers();
-		}
-		if (!$helpers instanceof HelperManager)
-		{
-			throw new InvalidHelperManagerException(sprintf(
-				'Helper manager must extend Hubzero\View\HelperManager; got type "%s" instead',
-				(is_object($helpers) ? get_class($helpers) : gettype($helpers))
-			));
-		}
-		$helpers->setView($this);
-
-		$this->helpers = $helpers;
-
-		return $this;
-	}
-
-	/**
-	 * Get helper manager instance
-	 *
-	 * @return HelperManager
-	 */
-	public function helpers($helpers=null)
-	{
-		if (null === $this->helpers)
-		{
-			if (null === $helpers)
-			{
-				$helpers = new HelperManager();
-			}
-
-			if (is_string($helpers))
-			{
-				if (!class_exists($helpers))
-				{
-					throw new InvalidHelperManagerException(\JText::sprintf(
-						'Invalid helper manager class provided (%s)',
-						$helpers
-					));
-				}
-				$helpers = new $helpers();
-			}
-
-			if (!$helpers instanceof HelperManager)
-			{
-				throw new InvalidHelperManagerException(\JText::sprintf(
-					'Helper manager must extend Hubzero\View\HelperManager; got type "%s" instead',
-					(is_object($helpers) ? get_class($helpers) : gettype($helpers))
-				));
-			}
-			$helpers->setView($this);
-
-			$this->helpers = $helpers;
-		}
-		return $this->helpers;
-	}
-
-	/**
-	 * Get helper instance
-	 *
-	 * @param   string $name    Name of helper to return
-	 * @param   mixed  $options Options to pass to helper constructor (if not already instantiated)
-	 * @return  AbstractHelper
-	 */
-	public function helper($name, array $options = null)
-	{
-		return $this->helpers()->get($name, $options);
-	}
-
-	/**
 	 * Get the string contents of the view.
 	 *
 	 * @return string
@@ -773,32 +686,58 @@ class View extends Object
 	}
 
 	/**
-	 * Get the string contents of the view.
+	 * Register a custom helper.
 	 *
-	 * @return object
+	 * @param   string    $name
+	 * @param   callable  $helper
+	 * @return  void
+	 * @since   1.3.1
 	 */
-	/*public function view($layout=null, $name=null)
+	public function helper($name, $helper) //callable
 	{
-		if (!$layout)
+		static::$helpers[$name] = $helper;
+	}
+
+	/**
+	 * Checks if helper is registered
+	 *
+	 * @param   string   $name
+	 * @return  boolean
+	 * @since   1.3.1
+	 */
+	public function hasHelper($name)
+	{
+		return isset(static::$helpers[$name]);
+	}
+
+	/**
+	 * Dynamically handle calls to the class.
+	 *
+	 * @param   string  $method
+	 * @param   array   $parameters
+	 * @return  mixed
+	 * @throws  \BadMethodCallException
+	 * @since   1.3.1
+	 */
+	public function __call($method, $parameters)
+	{
+		if (static::hasHelper($method))
 		{
-			throw new \InvalidArgumentException(
-				'Either a view object or layout name must be provided.'
-			);
+			return call_user_func_array(static::$helpers[$method], $parameters);
 		}
 
-		// If we were passed only a view object, just return it.
-		if ($layout instanceof View)
+		$invokable = __NAMESPACE__ . '\\Helper\\' . ucfirst(strtolower($method));
+
+		if (class_exists($invokable))
 		{
-			return $layout;
+			$callback = new $invokable();
+			if (is_callable($callback))
+			{
+				$callback->setView($this);
+				return call_user_func_array($callback, $parameters);
+			}
 		}
 
-		$partial = clone $this;
-		$partial->setLayout($layout);
-		if ($name)
-		{
-			$partial->setName($name);
-		}
-
-		return $partial;
-	}*/
+		throw new \BadMethodCallException("Method {$method} does not exist.");
+	}
 }

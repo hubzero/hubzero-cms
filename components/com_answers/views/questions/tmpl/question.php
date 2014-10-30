@@ -58,9 +58,9 @@ if (!$this->question->get('anonymous'))
 <section class="main section">
 	<div class="section-inner">
 		<?php if ($this->getError()) { ?>
-		<p class="warning"><?php echo $this->getError(); ?></p>
+			<p class="warning"><?php echo $this->getError(); ?></p>
 		<?php } ?>
-	
+
 	<!-- start question block -->
 	<?php if ($this->question->isDeleted() or !$this->question->exists()) { ?>
 		<h3><?php echo JText::_('COM_ANSWERS_ERROR_QUESTION_NOT_FOUND'); ?></h3>
@@ -92,7 +92,7 @@ if (!$this->question->get('anonymous'))
 						?>
 					</p><!-- / .question-voting -->
 				<?php } ?>
-	
+
 					<p class="entry-title">
 						<strong><?php echo $name; ?></strong>
 						<a class="permalink" href="<?php echo JRoute::_($this->question->link()); ?>" title="<?php echo JText::_('COM_ANSWERS_PERMALINK'); ?>">
@@ -102,7 +102,7 @@ if (!$this->question->get('anonymous'))
 							<span class="icon-date date"><time datetime="<?php echo $this->question->created(); ?>"><?php echo $this->question->created('date'); ?></time></span>
 						</a>
 					</p><!-- / .question-title -->
-	
+
 			<?php if ($this->question->isReported()) { ?>
 					<p class="warning">
 						<?php echo JText::_('COM_ANSWERS_NOTICE_QUESTION_REPORTED'); ?>
@@ -111,19 +111,19 @@ if (!$this->question->get('anonymous'))
 					<div class="entry-subject">
 						<?php echo $this->question->subject('parsed'); ?>
 					</div><!-- / .question-subject -->
-	
+
 				<?php if ($this->question->get('question')) { ?>
 					<div class="entry-long">
 						<?php echo $this->question->content('parsed'); ?>
 					</div><!-- / .question-long -->
 				<?php } ?>
-	
+
 					<div class="entry-tags">
 						<?php echo $this->question->tags('cloud', 0); ?>
 					</div><!-- / .question-tags -->
 			<?php } ?>
 				</div><!-- / .question-content -->
-	
+
 				<p class="entry-status">
 			<?php if (!$this->question->isReported()) { ?>
 					<span>
@@ -141,7 +141,7 @@ if (!$this->question->get('anonymous'))
 			<?php } ?>
 				</p><!-- / .question-status -->
 			</div><!-- / .question -->
-	
+
 		<?php if (count($this->notifications) > 0) { ?>
 			<div class="subject-wrap">
 			<?php foreach ($this->notifications as $notification) { ?>
@@ -150,18 +150,18 @@ if (!$this->question->get('anonymous'))
 			</div>
 		<?php } ?>
 		<!-- end question block -->
-	
+
 			<?php if ($this->responding == 4 && $this->question->isOpen() && !$this->question->isReported()) { // delete question ?>
 				<section class="below section">
 					<div class="subject-wrap">
 						<p class="warning"><?php echo JText::_('COM_ANSWERS_NOTICE_CONFIRM_DELETE'); ?></p>
-	
+
 						<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=deleteq&id=' . $this->question->get('id')); ?>" method="post" id="deleteForm">
 							<input type="hidden" name="qid" value="<?php echo $this->question->get('id'); ?>" />
 							<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 							<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 							<input type="hidden" name="task" value="deleteq" />
-	
+
 							<p class="submit">
 								<input class="btn btn-danger" type="submit" value="<?php echo JText::_('COM_ANSWERS_YES_DELETE'); ?>" />
 								<a class="btn btn-secondary" href="<?php echo JRoute::_($this->question->link()); ?>"><?php echo JText::_('COM_ANSWERS_NO_DELETE'); ?></a>
@@ -215,13 +215,13 @@ if (!$this->question->get('anonymous'))
 						}
 					}
 					?>
-	
+
 				<?php if ($this->question->reward() && $this->question->isOpen() && $this->question->config('banking')) { ?>
 					<p class="intro">
 						<?php echo JText::_('COM_ANSWERS_BONUS'); ?>: <span class="pointvalue"><a href="<?php echo $this->question->config('infolink'); ?>" title="<?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_ANSWERS_WHAT_ARE_POINTS'); ?></a><?php echo JText::sprintf('COM_ANSWERS_NUMBER_POINTS', $this->question->reward()); ?></span>
 					</p>
 				<?php } ?>
-	
+
 				<?php if ($this->question->get('maxaward') && $this->question->isOpen() && $this->question->config('banking')) { ?>
 					<p class="youcanearn">
 						<?php echo JText::sprintf('COM_ANSWERS_EARN_UP_TO_FOR_BEST_ANSWER', $this->question->get('maxaward')); ?>
@@ -324,28 +324,28 @@ if (!$this->question->get('anonymous'))
 								<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 								<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 								<input type="hidden" name="task" value="savea" />
-	
+
 								<?php echo JHTML::_('form.token'); ?>
-	
+
 								<input type="hidden" name="response[id]" value="0" />
 								<input type="hidden" name="response[question_id]" value="<?php echo $this->question->get('id'); ?>" />
-	
+
 								<label for="responseanswer">
 									<?php echo JText::_('COM_ANSWERS_YOUR_RESPONSE'); ?>:
 									<?php
-									echo $this->helpers()->editor('response[answer]', '', 50, 10, 'responseanswer', array('class' => 'minimal'));
+									echo $this->editor('response[answer]', '', 50, 10, 'responseanswer', array('class' => 'minimal'));
 									?>
 								</label>
-	
+
 								<label for="answer-anonymous" id="answer-anonymous-label">
 									<input class="option" type="checkbox" name="response[anonymous]" value="1" id="answer-anonymous" />
 									<?php echo JText::_('COM_ANSWERS_POST_ANON'); ?>
 								</label>
-	
+
 								<p class="submit">
 									<input type="submit" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" />
 								</p>
-	
+
 								<div class="sidenote">
 									<p>
 										<strong><?php echo JText::_('COM_ANSWERS_COMMENT_KEEP_RELEVANT'); ?></strong>
@@ -363,7 +363,7 @@ if (!$this->question->get('anonymous'))
 						<?php } ?>
 					</div><!-- / .subject -->
 					<div class="aside">
-	
+
 					</div><!-- / .aside -->
 				</div><!-- / .section-inner -->
 			</section><!-- / .below section -->
@@ -393,7 +393,7 @@ if (!$this->question->get('anonymous'))
 					</div><!-- / .subject -->
 					<div class="aside">
 					</div><!-- / .aside -->
-				</div><!-- / .section-inner -->					
+				</div><!-- / .section-inner -->
 			</section><!-- / .below section -->
 			<!-- end list of chosen answers -->
 		<?php } ?>
@@ -444,7 +444,7 @@ if (!$this->question->get('anonymous'))
 							?>"><?php echo JText::_('COM_ANSWERS_ANSWER_THIS'); ?></a></p>
 						</div><!-- / .container -->
 					<?php } ?>
-	
+
 					<?php if ($this->juser->get('id') == $this->question->get('created_by') && $this->question->isOpen()) { ?>
 						<div class="container">
 							<p class="info"><?php echo JText::_('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE') . ($this->question->config('banking') ? ' ' . JText::_('COM_ANSWERS_DO_NOT_FORGET_TO_CLOSE_POINTS') : ''); ?></p>

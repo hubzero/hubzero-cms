@@ -62,23 +62,23 @@ $this->css();
 			</div><!-- / .explaination -->
 			<fieldset>
 				<legend><?php echo JText::_('COM_ANSWERS_YOUR_QUESTION'); ?></legend>
-	
+
 				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 				<input type="hidden" name="task" value="saveq" />
-	
+
 				<?php echo JHTML::_('form.token'); ?>
-	
+
 				<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->question->get('id', 0)); ?>" />
 				<input type="hidden" name="fields[funds]" value="<?php echo $this->escape($this->funds); ?>" />
 				<input type="hidden" name="fields[email]" value="1" />
 				<input type="hidden" name="fields[state]" value="0" />
-	
+
 				<label for="field-anonymous">
 					<input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
 					<?php echo JText::_('COM_ANSWERS_POST_QUESTION_ANON'); ?>
 				</label>
-	
+
 				<label>
 					<?php echo JText::_('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
 					<?php
@@ -88,16 +88,16 @@ $this->css();
 					echo $tf ? $tf : '<textarea name="tags" id="actags" rows="6" cols="35">' .  $this->escape($this->tag) . '</textarea>';
 					?>
 				</label>
-	
+
 				<label for="field-subject">
 					<?php echo JText::_('COM_ANSWERS_ASK_ONE_LINER'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
 					<input type="text" name="fields[subject]" id="field-subject" value="<?php echo $this->escape($this->question->get('subject', '')); ?>" />
 				</label>
-	
+
 				<label for="field-question">
 					<?php echo JText::_('COM_ANSWERS_ASK_DETAILS'); ?>:<br />
 					<?php
-						echo $this->helpers()->editor(
+						echo $this->editor(
 							'fields[question]', // name
 							$this->question->content('raw'), // content
 							35,  // cols
@@ -117,10 +117,10 @@ $this->css();
 			<?php } ?>
 			</fieldset>
 			<div class="clear"></div>
-	
+
 			<p class="submit">
 				<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_ANSWERS_SUBMIT'); ?>" />
-	
+
 				<a class="btn btn-secondary" href="<?php echo $this->question->exists() ? JRoute::_($this->question->link()) : JRoute::_('index.php?option=' . $this->option); ?>">
 					<?php echo JText::_('COM_ANSWERS_CANCEL'); ?>
 				</a>

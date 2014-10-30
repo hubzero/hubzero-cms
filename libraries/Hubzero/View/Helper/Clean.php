@@ -40,17 +40,15 @@ class Clean extends AbstractHelper
 	/**
 	 * Clean some text
 	 *
-	 * @param  string $text Text to clean
-	 * @return string
-	 * @throws \InvalidArgumentException If no text passed
+	 * @param   string  $text  Text to clean
+	 * @return  string
+	 * @throws  \InvalidArgumentException If no text passed
 	 */
 	public function __invoke($text = null)
 	{
 		if (null === $text)
 		{
-			throw new \InvalidArgumentException(
-				__CLASS__ .'::' . __METHOD__ . '(); No text passed.'
-			);
+			throw new \InvalidArgumentException(__METHOD__ . '(); No text passed.');
 		}
 
 		return Sanitize::clean($text);

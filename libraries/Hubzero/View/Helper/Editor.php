@@ -74,10 +74,7 @@ class Editor extends AbstractHelper
 			$editor = \JFactory::getUser()->getParam('editor', $editor);
 		}
 
-		if (!$id)
-		{
-			$id = str_replace(array('[', ']'), '', $name);
-		}
+		$id = $id ?: str_replace(array('[', ']'), '', $name);
 
 		return \JFactory::getEditor($editor)->display($name, $content, $width, $height, intval($col), intval($row), $buttons, $id, $asset, $author, $params);
 	}

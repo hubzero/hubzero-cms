@@ -30,7 +30,6 @@
 
 namespace Hubzero\View\Helper;
 
-use Hubzero\View\Helper\HelperInterface;
 use Hubzero\View\View;
 
 /**
@@ -41,26 +40,27 @@ abstract class AbstractHelper implements HelperInterface
 	/**
 	 * View object instance
 	 *
-	 * @var Renderer
+	 * @var  object
 	 */
 	protected $_view = null;
 
 	/**
 	 * Set the View object
 	 *
-	 * @param  Renderer $view
-	 * @return AbstractHelper
+	 * @param   object  $view
+	 * @return  object
 	 */
 	public function setView(View $view)
 	{
 		$this->_view = $view;
+
 		return $this;
 	}
 
 	/**
 	 * Get the view object
 	 *
-	 * @return null|Renderer
+	 * @return  null|Renderer
 	 */
 	public function getView()
 	{

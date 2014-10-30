@@ -40,19 +40,17 @@ class Highlight extends AbstractHelper
 	/**
 	 * Highlight some text
 	 *
-	 * @param  string  $text     Text to find phrases in
-	 * @param  integer $phrase   Phrase to highlight
-	 * @param  array   $options  Options for highlighting
-	 * @return string
-	 * @throws \InvalidArgumentException If no text was passed
+	 * @param   string   $text     Text to find phrases in
+	 * @param   integer  $phrase   Phrase to highlight
+	 * @param   array    $options  Options for highlighting
+	 * @return  string
+	 * @throws  \InvalidArgumentException If no text was passed
 	 */
 	public function __invoke($text=null, $phrase=null, $options = array())
 	{
 		if (null === $text)
 		{
-			throw new \InvalidArgumentException(
-				__CLASS__ .'::' . __METHOD__ . '(); No text passed.'
-			);
+			throw new \InvalidArgumentException(__METHOD__ . '(); No text passed.');
 		}
 
 		return String::highlight($text, $phrase, $options);

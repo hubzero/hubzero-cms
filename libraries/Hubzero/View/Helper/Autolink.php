@@ -40,30 +40,28 @@ class Autolink extends AbstractHelper
 	/**
 	 * Link some text
 	 *
-	 * @param  string $text Text to autolink
-	 * @return string
-	 * @throws \InvalidArgumentException If no text passed
+	 * @param   string  $text  Text to autolink
+	 * @return  string
+	 * @throws  \InvalidArgumentException If no text passed
 	 */
 	public function __invoke($text = null)
 	{
 		if (null === $text)
 		{
-			throw new \InvalidArgumentException(
-				__CLASS__ .'::' . __METHOD__ . '(); No text passed.'
-			);
+			throw new \InvalidArgumentException(__METHOD__ . '(); No text passed.');
 		}
 
 		// Parse for link syntax
 		// e.g. [mylink My Link] => <a href="mylink">My Link</a>
 		$char_regexes = array(
 			// URL pattern
-			'autourl'    => "(?<=[^=\"\'\[])\!?" .  // Make sure it's not preceeded by quotes and brackets
+			'url'   => "(?<=[^=\"\'\[])\!?" .  // Make sure it's not preceeded by quotes and brackets
 				//"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
 				//"([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\'\<]*[A-Za-z0-9\\/?=&~_])",  // link
 				"(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))",
 
 			// Email pattern
-			'autoemail'    => "([\s]*)" .  // whitespace
+			'email' => "([\s]*)" .  // whitespace
 				"([\._a-zA-Z0-9-\+]+@" .  // characters leading up to @
 				"(?:[0-9a-zA-Z-]+\.)+[a-zA-Z]{2,6})"  // everything after @
 		);
@@ -79,24 +77,25 @@ class Autolink extends AbstractHelper
 	/**
 	 * Automatically links any strings matching a URL pattern
 	 *
-	 * @param      array $matches Text matching link pattern
-	 * @return     string
+	 * @param   array   $matches  Text matching link pattern
+	 * @return  string
 	 */
-	public function linkAutourl($matches)
+	public function linkUrl($matches)
 	{
-		return $this->linkAuto($matches);
+		return $this->anchor($matches);
 	}
 
 	/**
 	 * Automatically links any strings matching an email pattern
 	 *
-	 * @param      array $matches Text matching link pattern
-	 * @return     string
+	 * @param   array   $matches  Text matching link pattern
+	 * @return  string
 	 */
-	public function linkAutoemail($matches)
+	public function linkEmail($matches)
 	{
 		array_splice($matches, 1, 0, 'mailto:');
-		return $this->linkAuto($matches);
+
+		return $this->anchor($matches);
 	}
 
 	/**
@@ -106,10 +105,10 @@ class Autolink extends AbstractHelper
 	 * This is to ensure links aren't parsed twice. We put the links back in place
 	 * towards the end of parsing.
 	 *
-	 * @param      array $matches Text matching link pattern
-	 * @return     string
+	 * @param   array   $matches  Text matching link pattern
+	 * @return  string
 	 */
-	public function linkAuto($matches)
+	public function anchor($matches)
 	{
 		if (empty($matches))
 		{
@@ -118,6 +117,7 @@ class Autolink extends AbstractHelper
 
 		$whole = $matches[0];
 		$prtcl = rtrim($matches[1], ':');
+
 		$url   = $matches[3];
 		$url  .= (isset($matches[4])) ? $matches[4] : '';
 		$url  .= (isset($matches[5])) ? $matches[5] : '';

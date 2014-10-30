@@ -40,15 +40,15 @@ interface HelperInterface
 	/**
 	 * Set the View object
 	 *
-	 * @param  Renderer $view
-	 * @return HelperInterface
+	 * @param   object  $view
+	 * @return  object
 	 */
 	public function setView(View $view);
 
 	/**
 	 * Get the View object
 	 *
-	 * @return Renderer
+	 * @return  object
 	 */
 	public function getView();
 }

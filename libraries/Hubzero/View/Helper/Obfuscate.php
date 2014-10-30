@@ -40,7 +40,7 @@ class Obfuscate extends AbstractHelper
 	/**
 	 * Obfuscate some text
 	 *
-	 * @param   string $text Text to obfuscate
+	 * @param   string  $text  Text to obfuscate
 	 * @return  string
 	 * @throws  \InvalidArgumentException If no text passed
 	 */
@@ -48,9 +48,7 @@ class Obfuscate extends AbstractHelper
 	{
 		if (null === $text)
 		{
-			throw new \InvalidArgumentException(
-				__CLASS__ .'::' . __METHOD__ . '(); No text passed.'
-			);
+			throw new \InvalidArgumentException(__METHOD__ . '(); No text passed.');
 		}
 
 		return String::obfuscate($text);
