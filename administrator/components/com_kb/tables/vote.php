@@ -111,7 +111,7 @@ class KbTableVote extends JTable
 		$type      = $type      ?: $this->type;
 
 		$sql  = "DELETE FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND type=" . $this->_db->Quote($type);
-		if ($user_id || $ip) 
+		if ($user_id || $ip)
 		{
 			$sql .= " AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ")";
 		}
