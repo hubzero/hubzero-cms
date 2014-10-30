@@ -66,6 +66,10 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">On</option>
 			<option value="0">Off</option>
 		</field>
+		<field name="manage_quotas" type="list" default="0" label="Manage Quotas" description="Use the CMS to manage user disk quotas?">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
 		<field name="orcid_service" type="list" default="public" label="ORCID Service" description="Select the service to use for ORCID. Sandbox is for testing and debugging purposes. The Public service only allows for searching records, new ID creation is not allowed.">
 			<option value="public">Public (search only)</option>

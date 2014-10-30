@@ -400,26 +400,31 @@ class plgUserXusers extends JPlugin
 		}
 
 		// Check if quota exists for the user
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
-		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+		$params = JComponentHelper::getParams('com_members');
 
-		$quota = new UsersQuotas($this->database);
-		$quota->load(array('user_id'=>$user['id']));
-
-		if (!$quota->id)
+		if ($params->get('manage_quotas', false))
 		{
-			$class = new MembersQuotasClasses($this->database);
-			$class->load(array('alias'=>'default'));
+			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
 
-			if ($class->id)
+			$quota = new UsersQuotas($this->database);
+			$quota->load(array('user_id'=>$user['id']));
+
+			if (!$quota->id)
 			{
-				$quota->set('user_id'    , $user['id']);
-				$quota->set('class_id'   , $class->id);
-				$quota->set('soft_blocks', $class->soft_blocks);
-				$quota->set('hard_blocks', $class->hard_blocks);
-				$quota->set('soft_files' , $class->soft_files);
-				$quota->set('hard_files' , $class->hard_files);
-				$quota->store();
+				$class = new MembersQuotasClasses($this->database);
+				$class->load(array('alias'=>'default'));
+
+				if ($class->id)
+				{
+					$quota->set('user_id'    , $user['id']);
+					$quota->set('class_id'   , $class->id);
+					$quota->set('soft_blocks', $class->soft_blocks);
+					$quota->set('hard_blocks', $class->hard_blocks);
+					$quota->set('soft_files' , $class->soft_files);
+					$quota->set('hard_files' , $class->hard_files);
+					$quota->store();
+				}
 			}
 		}
 	}
