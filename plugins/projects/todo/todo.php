@@ -178,7 +178,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			switch ($this->_task)
 			{
 				case 'page':
-					default:		$arr['html'] = $this->view();			break;
+					default:		$arr['html'] = $this->page();			break;
 				case 'save':		$arr['html'] = $this->save();			break;
 				case 'changestate': $arr['html'] = $this->save();			break;
 				case 'delete':		$arr['html'] = $this->delete();			break;
@@ -204,7 +204,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return	   string
 	 */
-	public function view()
+	public function page()
 	{
 		// Get default view from owner params
 		$owner_params = new JParameter( $this->_project->owner_params );
@@ -304,7 +304,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		if (!$view->row->exists() && $this->_task != 'new')
 		{
-			return $this->view();
+			return $this->page();
 		}
 
 		// Append breadcrumbs
@@ -602,7 +602,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$this->_todoid = $todoid;
 			return $page == 'item'
 				? $this->item()
-				: $this->view();
+				: $this->page();
 		}
 		else
 		{
@@ -763,7 +763,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 		}
 
 		// Go back to todo list
-		return $this->view();
+		return $this->page();
 	}
 
 	//----------------------------------------
