@@ -37,52 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class KbTableVote extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $object_id = NULL;
-
-	/**
-	 * varchar(15)
-	 *
-	 * @var string
-	 */
-	var $ip        = NULL;
-
-	/**
-	 * varchar(10)
-	 *
-	 * @var string
-	 */
-	var $vote      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $user_id   = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $type      = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -92,7 +50,7 @@ class KbTableVote extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -116,31 +74,25 @@ class KbTableVote extends JTable
 	/**
 	 * Get the vote for a specific object/type combination and user
 	 *
-	 * @param      integer $object_id Object ID
-	 * @param      integer $user_id   User ID
-	 * @param      string  $ip        IP Address
-	 * @param      string  $type      Object type (article, comment)
-	 * @return     string
+	 * @param   integer  $object_id  Object ID
+	 * @param   integer  $user_id    User ID
+	 * @param   string   $ip         IP Address
+	 * @param   string   $type       Object type (article, comment)
+	 * @return  string
 	 */
 	public function getVote($object_id=NULL, $user_id=NULL, $ip=NULL, $type=NULL)
 	{
-		if ($object_id == NULL)
-		{
-			$object_id = $this->object_id;
-		}
-		if ($user_id == NULL)
-		{
-			$user_id = $this->user_id;
-		}
-		if ($ip == NULL)
-		{
-			$ip = $this->ip;
-		}
-		if ($type == NULL)
-		{
-			$type = $this->type;
-		}
-		$this->_db->setQuery("SELECT vote FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ") AND type=" . $this->_db->Quote($type));
+		$object_id = $object_id ?: $this->object_id;
+		$user_id   = $user_id   ?: $this->user_id;
+		$ip        = $ip        ?: $this->ip;
+		$type      = $type      ?: $this->type;
+
+		$this->_db->setQuery(
+			"SELECT vote FROM `$this->_tbl` 
+			WHERE object_id=" . $this->_db->Quote($object_id) . " 
+			AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ") 
+			AND type=" . $this->_db->Quote($type)
+		);
 		return $this->_db->loadResult();
 	}
 
@@ -153,36 +105,25 @@ class KbTableVote extends JTable
 	 */
 	public function deleteVote($object_id=NULL, $user_id=NULL, $ip=NULL, $type=NULL)
 	{
-		if ($object_id == NULL)
-		{
-			$object_id = $this->object_id;
-		}
-		if ($user_id == NULL)
-		{
-			$user_id = $this->user_id;
-		}
-		if ($ip == NULL)
-		{
-			$ip = $this->ip;
-		}
-		if ($type == NULL)
-		{
-			$type = $this->type;
-		}
+		$object_id = $object_id ?: $this->object_id;
+		$user_id   = $user_id   ?: $this->user_id;
+		$ip        = $ip        ?: $this->ip;
+		$type      = $type      ?: $this->type;
 
-		$sql = "DELETE FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND type=" . $this->_db->Quote($type);
-		$sql .= ($user_id || $ip) ? " AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ")" : "";
+		$sql  = "DELETE FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND type=" . $this->_db->Quote($type);
+		if ($user_id || $ip) 
+		{
+			$sql .= " AND (user_id=" . $this->_db->Quote($user_id) . " OR ip=" . $this->_db->Quote($ip) . ")";
+		}
 
 		$this->_db->setQuery($sql);
-		if ($this->_db->query())
-		{
-			return true;
-		}
-		else
+		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+
+		return true;
 	}
 }
 
