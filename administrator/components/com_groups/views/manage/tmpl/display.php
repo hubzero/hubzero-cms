@@ -41,7 +41,7 @@ if ($canDo->get('core.admin'))
 
 	if ($this->config->get('super_gitlab', 0))
 	{
-		JToolBarHelper::custom('update', 'update', '', 'COM_GROUPS_UPDATE_CODE');
+		JToolBarHelper::custom('update', 'refresh', '', 'COM_GROUPS_UPDATE_CODE');
 		JToolBarHelper::spacer();
 	}
 

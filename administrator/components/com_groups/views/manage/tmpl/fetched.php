@@ -35,7 +35,7 @@ $this->css();
 JToolBarHelper::title(JText::_('COM_GROUPS'), 'groups.png');
 JToolBarHelper::custom('display','back','back','COM_GROUPS_BACK', false);
 JToolBarHelper::spacer();
-JToolBarHelper::custom('doupdate', 'doupdate', '', 'COM_GROUPS_MERGE_CODE', false);
+JToolBarHelper::custom('doupdate', 'merge', '', 'COM_GROUPS_MERGE_CODE', false);
 
 JHTML::_('behavior.tooltip');
 ?>
@@ -73,10 +73,12 @@ function submitbutton(pressbutton)
 							<hr />
 							<code><?php echo implode('<br>', $success['message']); ?></code>
 
-							<label class="merge">
-								<?php echo JText::_('COM_GROUPS_MERGE'); ?>
-								<input type="checkbox" name="id[]" checked="checked" value="<?php echo $group->get('gidNumber'); ?>" />
-							</label>
+							<?php if ($success['message'][0] != JText::_('COM_GROUPS_FETCH_CODE_UP_TO_DATE')) : ?>
+								<label class="merge">
+									<?php echo JText::_('COM_GROUPS_MERGE'); ?>
+									<input type="checkbox" name="id[]" checked="checked" value="<?php echo $group->get('gidNumber'); ?>" />
+								</label>
+							<?php endif; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>

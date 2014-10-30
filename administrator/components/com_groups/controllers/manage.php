@@ -643,6 +643,11 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		));
 	}
 
+	/**
+	 * Fetch from Gitlab
+	 * 
+	 * @return void
+	 */
 	public function updateTask()
 	{
 		// Check for request forgeries
@@ -655,6 +660,13 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
+		}
+
+		// empty list?
+		if (empty($ids))
+		{
+			$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+			return;
 		}
 
 		// vars to hold results of pull
@@ -741,14 +753,13 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			// execute command
 			$output = shell_exec($cmd);
 			$output = json_decode($output);
-			if ($output == '')
-			{
-				$output = JText::_('COM_GROUPS_FETCH_CODE_UP_TO_DATE');
-			}
 
 			// did we succeed
-			if (json_last_error() == JSON_ERROR_NONE)
+			if ($output == '' || json_last_error() == JSON_ERROR_NONE)
 			{
+				// code is up to date
+				$output = array(JText::_('COM_GROUPS_FETCH_CODE_UP_TO_DATE'));
+
 				// add success message
 				$success[] = array('group' => $group->get('cn'), 'message' => $output);
 			}
@@ -760,7 +771,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		}
 
 		// display view
-		$this->view->setLayout('log');
+		$this->view->setLayout('fetched');
 		$this->view->success = $success;
 		$this->view->failed  = $failed;
 		$this->view->config  = $this->config;
@@ -768,7 +779,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Pull from Gitlab
+	 * Merge From from Gitlab
 	 * 
 	 * @return void
 	 */
@@ -784,6 +795,13 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		if (!is_array($ids))
 		{
 			$ids = array($ids);
+		}
+
+		// empty list?
+		if (empty($ids))
+		{
+			$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+			return;
 		}
 
 		// vars to hold results of pull
@@ -844,7 +862,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		}
 
 		// display view
-		$this->view->setLayout('pull');
+		$this->view->setLayout('merged');
 		$this->view->success = $success;
 		$this->view->failed  = $failed;
 		$this->view->config  = $this->config;
