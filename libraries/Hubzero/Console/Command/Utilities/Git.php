@@ -223,7 +223,7 @@ class Git
 		if (isset($search))
 		{
 			$args['case-insensitive'] = '-i';
-			$args['search'] = '--grep="'.$search.'"';
+			$args['search'] = '--grep=' . escapeshellarg($search);
 		}
 
 		// If upcoming is set, we have to pull those commits first
@@ -287,7 +287,7 @@ class Git
 		if (isset($search))
 		{
 			$countArgs[] = '-i';
-			$countArgs[] = '--grep="'.$search.'"';
+			$countArgs[] = '--grep=' . escapeshellarg($search);
 		}
 
 		if ($installed)

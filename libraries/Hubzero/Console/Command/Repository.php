@@ -82,7 +82,14 @@ class Repository extends Base implements CommandInterface
 			$source = Config::get('repository_source_name', null);
 			$source = $this->arguments->getOpt('source', $source);
 
-			$this->mechanism = new Git($directory, $source);
+			if (is_null($source) || preg_match('/^[[:alnum:]\-\_\.]*\/[[:alnum:]\-\_\.]*$/', $source))
+			{
+				$this->mechanism = new Git($directory, $source);
+			}
+			else
+			{
+				$this->output->error('Sorry, an invalid update mechanism source was provided.');
+			}
 		}
 		else
 		{
@@ -184,8 +191,8 @@ class Repository extends Base implements CommandInterface
 	public function log()
 	{
 		$mode      = $this->output->getMode();
-		$length    = ($this->arguments->getOpt('length')) ? $this->arguments->getOpt('length') : 20;
-		$start     = ($this->arguments->getOpt('start')) ? $this->arguments->getOpt('start') : null;
+		$length    = ($this->arguments->getOpt('length')) ? (int)$this->arguments->getOpt('length') : 20;
+		$start     = ($this->arguments->getOpt('start')) ? (int)$this->arguments->getOpt('start') : null;
 		$upcoming  = $this->arguments->getOpt('include-upcoming');
 		$installed = ($this->arguments->getOpt('exclude-installed')) ? false : true;
 		$search    = ($this->arguments->getOpt('search')) ? $this->arguments->getOpt('search') : null;
