@@ -874,22 +874,6 @@
 		font-weight: normal;
 	}
 
-/* Todo - delete comment/to-do item confirmation
---------------------------------------------- */
-	/*
-	.pinboard  ul#td-comments li:nth-child(2n-1) #confirm-box {
-		-webkit-transform: rotate(-2deg);
-		-moz-transform: rotate(-2deg);
-		-o-transform: rotate(-2deg);
-		transform: rotate(-2deg);
-	}
-	.pinboard ul#td-comments li:nth-child(2n-2) #confirm-box{
-		-webkit-transform: rotate(2deg);
-		-moz-transform: rotate(2deg);
-		-o-transform: rotate(2deg);
-		transform: rotate(2deg);
-	}*/
-
 /* Todo - Comments (item page)
 --------------------------------------------- */
 	.td-comment {
@@ -902,6 +886,9 @@
 	.td-comment label,
 	.td-comment textarea {
 		display: block;
+	}
+	#td-comment {
+		width: 70%;
 	}
 	.pinboard h4.comment-blurb {
 		*padding-left: 18px !important;
