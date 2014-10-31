@@ -41,7 +41,6 @@ $this->css()
 	     ->display();
 ?>
 
-<h4 class="sumup"><?php echo JText::_('COM_PROJECTS_LATEST_ACTIVITY'); ?></h4>
 <div id="latest_activity" class="infofeed">
 		<?php
 		// Display item list

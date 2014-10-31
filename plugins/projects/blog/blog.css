@@ -4,7 +4,7 @@
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License,
- * version 2 as published by the Free Software Foundation. 
+ * version 2 as published by the Free Software Foundation.
  */
 
 /*
@@ -14,6 +14,29 @@
 	-- -- -- -- -- -- --
 
 */
+
+/* Activity items
+--------------------------------------------- */
+	.activity-item {
+		padding: 1em;
+		border: 1px solid #e8ecf1;
+		margin-bottom: 2em;
+		-moz-box-shadow: 3px 3px 3px #e8ecf1;
+		-webkit-box-shadow: 3px 3px 3px #e8ecf1;
+		box-shadow: 3px 3px 3px #e8ecf1;
+	}
+	.item-control {
+		margin-bottom: 1.5em;
+	}
+	.item-time {
+		font-size: 85%;
+		width: 90%;
+		color: #bbbbbb;
+		margin-left: 0.5em;
+	}
+	.quote .actor {
+		font-size: 85%;
+	}
 
 /* Blog form
 --------------------------------------------- */
@@ -31,27 +54,18 @@
 		background: #F5F7F2;
 		border: 1px solid #DEE4CD;
 		-moz-border-radius: 10px;
-		border-radius: 10px;		
+		border-radius: 10px;
 	}
 	#blab textarea {
 		margin: 0;
 		height: 40px;
 		width: 98%;
-		padding: 0.2em;	
+		padding: 0.2em;
 		display: block;
 		overflow: hidden;
 	}
 	#blab input, .content-feed .addcomment input {
 		width: auto;
-	}
-	#blab input.blog-submit, .content-feed .addcomment input.c-submit {
-		padding: 0.1em 0.6em;
-		border: 1px solid #999;
-		margin-right: 0.5em;
-		margin-top: 0.5em;
-		color: #000;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
 	}
 	.content-feed #blab input.blog-submit:hover {
 		cursor: pointer;
@@ -105,31 +119,12 @@
 		float: right;
 		font-weight: normal;
 		font-size: 85%;
-	}	
+	}
 
-/* News feed 
+/* News feed
 --------------------------------------------- */
 	.infofeed {
 		margin-bottom: 2em;
-		width: 98%;
-	}
-	.infofeed ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		margin-top: 1em;
-	}
-	.infofeed ul li {
-		border-bottom: 1px solid #f2f2f2;
-		padding: 0;
-		margin: 0;
-		color: #999;
-		background: #faf9fa;
-		border-right: 5px solid #FFFFFF;
-		border-left: 5px solid #FFFFFF;
-	}
-	.infofeed ul li div {
-		padding-right: 1em;
 	}
 	.infofeed h4, .sumup {
 		padding: 0.3em 0.5em;
@@ -143,7 +138,7 @@
 		border-bottom: 1px solid #ececec;
 	}
 	.infofeed span.body, .infofeed span.fullbody {
-		color: #666;
+		color: #000;
 		margin: 0;
 		padding: 0 3em 0 0;
 		display: inline-block;
@@ -151,24 +146,9 @@
 	.infofeed span.newline {
 		display: block;
 	}
-	.infofeed span.comment {
-		margin: 0;
-		padding: 0;
-		margin-left: 5em;
-		margin-top: 0.5em;
-		display: block;
-		font-size: 80%;
-		width: 90%;
-	}
 	.infofeed span.actor {
 		font-weight: bold;
 		color: #666;
-	}
-	.infofeed .mline {
-		background: #FFFFFF;
-		padding-top: 2em !important;
-		display: block;
-		padding-bottom: 1em !important;
 	}
 	.infofeed .confirmaction {
 		font-size: 85%;
@@ -182,10 +162,14 @@
 		margin-left: -20px;
 	}
 	.infofeed .activity {
-		padding-left: 5.5em;	
+		padding-left: 5.5em;
+		color: #666;
 	}
-	.mline:hover .m_options, .quote:hover .m_options {
+	.activity-item:hover .m_options, .activity-item:hover .quote:hover .m_options {
 		display: block;
+	}
+	.activity-item:hover .quote .m_options {
+		display: none;
 	}
 	.infofeed .activity:before {
 		color: #CCC;
@@ -213,7 +197,7 @@
 	.infofeed .newline {
 		margin-bottom: -1.5em !important;
 	}
-	
+
 /* New item
 --------------------------------------------- */
 	.infofeed .newitem, #plg-content .comments li.newitem {
@@ -231,17 +215,22 @@
 	.infofeed .newitem .blog-item div.previewnet {
 		background: #FFFFFF;
 	}
-	
+
 /* On-mouseover item options (in listings)
 --------------------------------------------- */
 	.m_options {
 		display: none;
-		font-size: 85%;
+		font-size: 100%;
 		color: #999;
 		float: right;
-		margin-top: -0.5em;
 		margin: 0;
 		padding: 0;
+		margin-top: -1.2em;
+		margin-right: 0.2em;
+	}
+	.quote .m_options {
+		margin: 0;
+		margin-right: -0.5em;
 	}
 	.m_options span {
 		position: absolute;
@@ -265,55 +254,66 @@
 
 /* Preview net
 --------------------------------------------- */
-
-	.infofeed .blog-item div.previewnet {
-		display: block;
-		background: #e4ecee;
-		padding: 0;
-		margin: 0;
-		text-align: center;
+	.photos {
+	   /* Prevent vertical gaps */
+		line-height: 0;
+		-webkit-column-count: 5;
+		-webkit-column-gap:   0px;
+		-moz-column-count:    5;
+		-moz-column-gap:      0px;
+		column-count:         5;
+		column-gap:           0px;
 		margin-top: 1.5em;
 		overflow: hidden;
-		height: 120px;
-		line-height: 120px;
-		position: relative;
-		vertical-align: middle;
+		background: #e4ecee;
+		*display: none; /* doesn't work in IE <10 */
 	}
-	.infofeed ul li div.previewnet {
-		padding-right: 0;	
+	.photos img {
+	  /* Just in case there are inline attributes */
+		width: auto !important;
+		height: 100% !important;
 	}
-	.previewnet img {
-		margin: 0;
-		padding: 0;
-		min-width: 50%;
-		margin: -50% 0;
+	.photos span {
+		width: 100% !important;
+		min-width: 100px;
+		min-height: 100px;
+		height: auto;
+		display: inline-block;
+		background-size: cover !important;
 	}
-	.previewnet img.net-multi {
-		min-width: 33%;
-		max-width: 33%;
-		float: left;
-		margin: 0;
+	.photos.grid4 {
+	  -moz-column-count:    4;
+	  -webkit-column-count: 4;
+	  column-count:         4;
+	 }
+	.photos.grid5 {
+	  -moz-column-count:    5;
+	  -webkit-column-count: 5;
+	  column-count:         5;
+	 }
+	.photos.grid1 {
+	  -moz-column-count:    1;
+	  -webkit-column-count: 1;
+	  column-count:         1;
+	 }
+	.photos.grid2 {
+	  -moz-column-count:    2;
+	  -webkit-column-count: 2;
+	  column-count:         2;
+	 }
+	.photos.grid3 {
+	  -moz-column-count:    3;
+	  -webkit-column-count: 3;
+	  column-count:         3;
+	 }
+	@media (max-width: 800px) {
+	  .photos.grid4 {
+	  -moz-column-count:    2;
+	  -webkit-column-count: 2;
+	  column-count:         2;
+	  }
 	}
-	.previewnet img.net-triple {
-		min-width: 33%;
-		max-width: 33%;
-		float: left;
-		margin: 0;
-	}
-	.previewnet img.net-double {
-		min-width: 50%;
-		max-width: 50%;
-		float: left;
-		margin: 0;
-	}
-	@media all and (max-width: 1100px) {
-		.previewnet img.net-double,
-		.previewnet img.net-multi,
-		.previewnet img.net-triple {
-			min-width: 50%;
-		}
-	}
-	
+
 /* Comment Form
 --------------------------------------------- */
 	#plg-content .addcomment fieldset {
@@ -326,25 +326,29 @@
 		margin: 0;
 		height: 30px;
 		width: 100%;
-		padding: 0.2em;	
+		padding: 0.2em;
 		display: block;
 		overflow: hidden;
-	}	
+		margin-top: 0.5em;
+	}
 	#plg-content .addcomment label {
 		padding: 0;
 		margin: 0;
+		display: block;
+		margin-right: 1.5em;
 	}
 	#plg-content .comments {
 		list-style: none;
-		padding: 0;
+		padding: 0.5em 0 0 0;
 		margin: 1em 0 0 0;
 		border: none;
 		width: 100%;
+		background: #eeeeee;
 	}
-	#plg-content .comments li {		
+	#plg-content .comments li {
 		margin: 0;
 		border: none;
-		padding: 0.5em 2em 0.5em 0.5em;	
+		padding: 0.5em 2em 0.5em 0.5em;
 		color: #777;
 		border-bottom: 1px solid #FFF;
 		margin-right: 0;
@@ -354,44 +358,34 @@
 	#plg-content .comments .body {
 		font-size: 90%;
 	}
-	#plg-content .comments .delit-container {
-		float: right;
-		margin-right: -5px;
-	}
 	#plg-content .addcomment {
 		padding-left: 2em;
-	}
-	#plg-content .comments li:before,
-	#plg-content .addcomment fieldset:before
-	{
-		position: absolute;
-		width: 1em;
-		height: 1em;
-		font-size: 16px;
-		font-family: 'Fontcons';
-		color: #aaa;
-		margin-right: 0.3em;
-		vertical-align: middle;
-		content: "\275D";
-		margin-left: -1.5em;
+		background: #eeeeee;
 	}
 	#plg-content .comments li,
 	#plg-content .addcomment fieldset {
 		padding-left: 2em;
 	}
-	
+	.comment-show {
+		display: block;
+		margin-left: 3.5em !important;
+	}
+	.comment-details {
+		display: block;
+	}
+	img.comment-author {
+		float: left;
+		margin-right: 0.5em;
+		margin-top: 0.5em;
+		width: 30px;
+	}
 /* Misc
 --------------------------------------------- */
-	
-	#plg-content .infofeed .mline {
-		display: block;
-		margin-bottom: 0;
-		padding-top: 0.5em;
-	}
-	
-/* IE7 hacks 
+
+
+/* IE7 hacks
 --------------------------------------------- */
-	
+
 	#blab input.blog-submit {
 		*text-align: center;
 	}
@@ -407,9 +401,8 @@
 	#blab fieldset {
 		*padding-left: 35px;
 		*background: #F5F7F2 url("images/talker_big.gif") 0 5px no-repeat;
-		*width: 93%;	
+		*width: 93%;
 	}
 	.infofeed span.body {
 		*padding: 0 100px 0 20px;
 	}
-	

@@ -415,7 +415,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$entry = trim(JRequest::getVar('blogentry', ''));
 
 		// Text clean-up
-		$entry = \Hubzero\Utility\Sanitize::stripAll($entry);
+		$entry = \Hubzero\Utility\Sanitize::stripScripts($entry);
+		$entry = \Hubzero\Utility\Sanitize::stripImages($entry);
 
 		// Instantiate project microblog entry
 		$objM = new ProjectMicroblog($this->_database);
@@ -689,6 +690,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					$eid       = $a->id;
 					$etbl      = 'activity';
 					$deletable = 0;
+					$preview   = '';
 
 					// Get blog entry
 					if ($class == 'blog')
@@ -719,7 +721,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					}
 
 					// Get/parse item preview if available
-					$ebody = $this->getItemPreview($class, $a, $body);
+					$ebody   = $body ? $this->drawBodyText($body) : '';
+					$preview = $this->getItemPreview($class, $a);
 
 					// Get comments
 					$comments = $objC->getComments($eid, $etbl);
@@ -728,9 +731,15 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					$deletable = $deletable && ($a->userid == $this->_uid or $this->_project->role == 1) ? 1 : 0;
 
 					$prep[] = array(
-						'activity' => $a, 'eid' => $eid, 'etbl' => $etbl,
-						'body' => $ebody, 'deletable' => $deletable,
-						'comments' => $comments, 'class' => $class, 'new' => $new
+						'activity' => $a,
+						'eid' => $eid,
+						'etbl' => $etbl,
+						'body' => $ebody,
+						'deletable' => $deletable,
+						'comments' => $comments,
+						'class' => $class,
+						'new' => $new,
+						'preview' => $preview
 					);
 				}
 			}
@@ -772,7 +781,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 		if ($shorten)
 		{
-			$ebody .= '<span class="fullbody hidden">' . $body . '</span>' ;
+			$ebody .= '<span class="fullbody hidden">' . preg_replace("/\n/", '<br />', trim($body)) . '</span>' ;
 		}
 
 		return $ebody;
@@ -903,14 +912,12 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
-		$files 	  = explode(',', $ref);
-		$selected = array();
-
-		// Include Git Helper
-		$this->getGitHelper();
-
-		// Include image handler
-		$ih = new ProjectsImgHandler();
+		$files 	  	 = explode(',', $ref);
+		$selected 	 = array();
+		$maxHeight   = 0;
+		$minHeight   = 0;
+		$minWidth    = 0;
+		$maxWidth	 = 0;
 
 		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
@@ -921,21 +928,37 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			$file  = count($parts) > 1 ? $parts[1] : $parts[0];
 			$hash  = count($parts) > 1 ? $parts[0] : NULL;
 
-			if (!$hash)
-			{
-				$hash   = $this->_git->gitLog($this->_path, $file, '' , 'hash');
-				$hash  	= $hash ? substr($hash, 0, 10) : '';
-			}
-
 			if ($hash)
 			{
-				$hashed = $ih->createThumbName(basename($file), '-' . $hash, 'png');
+				// Only preview mid-size images from now on
+				$hashed = md5(basename($file) . '-' . $hash) . '.png';
 
 				if (is_file(JPATH_ROOT. $to_path . DS . $hashed))
 				{
 					$preview['image'] = $to_path . DS . $hashed;
 					$preview['url']   = NULL;
 					$preview['title'] = basename($file);
+
+					// Get image properties
+					list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT. $to_path . DS . $hashed);
+
+					$preview['width'] = $width;
+					$preview['height'] = $height;
+					$preview['orientation'] = $width > $height ? 'horizontal' : 'vertical';
+					// Record min and max width and height to build image grid
+					if ($height >= $maxHeight)
+					{
+						$maxHeight = $height;
+					}
+					if ($height && $height <= $minHeight)
+					{
+						$minHeight = $height;
+					}
+					else
+					{
+						$minHeight = $height;
+					}
+
 					$selected[] = $preview;
 				}
 			}
@@ -956,7 +979,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				'layout'  => 'files'
 			)
 		);
-
+		$view->maxHeight	= $maxHeight;
+		$view->minHeight	= ($minHeight > 400) ? 400 : $minHeight;
 		$view->selected		= $selected;
 		return $view->loadTemplate();
 	}
@@ -975,7 +999,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$parent_activity = JRequest::getInt('parent_activity', 0, 'post');
 
 		// Clean-up
-		$comment = \Hubzero\Utility\Sanitize::stripAll($comment);
+		$comment = \Hubzero\Utility\Sanitize::stripScripts($comment);
+		$comment = \Hubzero\Utility\Sanitize::stripImages($comment);
 
 		// Instantiate comment
 		$objC = new ProjectComment($this->_database);
