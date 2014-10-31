@@ -145,7 +145,7 @@ class JPagination extends JObject
 	 * @param   string  $key    The name of the URL parameter for which to set a value.
 	 * @param   mixed   $value  The value to set for the URL parameter.
 	 *
-	 * @return  mixed  The old value for the parameter.
+	 * @return  object  JPagination
 	 *
 	 * @since   11.1
 	 */
@@ -164,7 +164,7 @@ class JPagination extends JObject
 			$this->_additionalUrlParams[$key] = $value;
 		}
 
-		return $result;
+		return $this;
 	}
 
 	/**
@@ -727,6 +727,16 @@ class JPagination extends JObject
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Magic method to convert the object to a string gracefully.
+	 *
+	 * @return  string  The entire pagination footer
+	 */
+	public function __toString()
+	{
+		return $this->getListFooter();
 	}
 }
 
