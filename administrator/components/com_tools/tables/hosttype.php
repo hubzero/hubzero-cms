@@ -77,7 +77,6 @@ class MwHosttype extends JTable
 	 */
 	public function check()
 	{
-
 		if (!$this->name)
 		{
 			$this->setError(JText::_('No name provided'));

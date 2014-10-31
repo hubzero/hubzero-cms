@@ -34,7 +34,6 @@ defined('_JEXEC') or die( 'Restricted access' );
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('New Host'));
 
 JToolBarHelper::title(JText::_('COM_TOOLS') . ': ' . JText::_('COM_TOOLS_HOST_TYPES') . ': ' . $text, 'tools.png');
-JToolBarHelper::apply();
 JToolBarHelper::save();
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
@@ -55,6 +54,9 @@ function submitbutton(pressbutton)
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
+	<?php if ($this->getErrors()) { ?>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
+	<?php } ?>
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -91,7 +93,7 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-	<input type="hidden" name="fields[status]" value="check" />
+	<input type="hidden" name="fields[status]" value="<?php echo (isset($this->status)) ? $this->status : 'new'; ?>" />
 	<input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->row->name); ?>" />
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
