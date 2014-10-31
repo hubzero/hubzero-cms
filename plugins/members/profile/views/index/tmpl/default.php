@@ -1045,7 +1045,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							$sexes = array(
 								'male'    => JText::_('PLG_MEMBERS_PROFILE_GENDER_OPT_MALE'),
 								'female'  => JText::_('PLG_MEMBERS_PROFILE_GENDER_OPT_FEMALE'),
-								'refused' => JText::_('PLG_MEMBERS_PROFILE_GENDER_OPT_REFUSED')
+								'refused' => JText::_('PLG_MEMBERS_PROFILE_OPT_REFUSED')
 							);
 
 							$sex = '<select name="sex" class="input-select">';
