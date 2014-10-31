@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = TagsHelper::getActions();
+$canDo = TagsHelperPermissions::getActions();
 
 JToolBarHelper::title(JText::_('COM_TAGS'), 'tags.png');
 if ($canDo->get('core.admin'))
@@ -132,7 +132,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
 						</a>
 					<?php } else { ?>
@@ -143,7 +143,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('tag'))); ?>
 						</a>
 					<?php } else { ?>
@@ -164,7 +164,7 @@ foreach ($this->rows as $row)
 					<?php echo $row->get('substitutes'); ?>
 				</td>
 				<td>
-					<?php echo ($row->created() != '0000-00-00 00:00:00' ? $row->created() : JText::_('COM_TAGS_UNKNOWN')); ?>
+					<time datetime="<?php echo $row->created(); ?>"><?php echo ($row->created() != '0000-00-00 00:00:00' ? $row->created() : JText::_('COM_TAGS_UNKNOWN')); ?></time>
 				</td>
 			</tr>
 <?php

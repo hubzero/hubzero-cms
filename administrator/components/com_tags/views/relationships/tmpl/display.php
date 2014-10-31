@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = TagsHelper::getActions();
+$canDo = TagsHelperPermissions::getActions();
 
 JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . JText::_('COM_TAGS_RELATIONSHIPS'), 'tags.png');
 
@@ -40,7 +40,7 @@ JHTML::_('behavior.tooltip');
 
 $this->css('tag_graph.css');
 ?>
-<form id="tag-sel" action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="get">
+<form id="tag-sel" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="get">
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_TAGS_FIND_TAG'); ?></span></legend>
 		<table class="admintable">
@@ -74,7 +74,7 @@ $this->css('tag_graph.css');
 
 <div id="metadata-cont">
 	<div class="col width-100">
-		<form id="metadata" action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post">
+		<form id="metadata" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post">
 			<fieldset class="adminform">
 				<legend><span><?php echo JText::_('COM_TAGS_RELATIONSHIP_METADATA'); ?></span></legend>
 				<table class="admintable">

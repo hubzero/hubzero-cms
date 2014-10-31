@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = TagsHelper::getActions();
+$canDo = TagsHelperPermissions::getActions();
 
 JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . JText::_('COM_TAGS_MERGE'), 'tags.png');
 if ($canDo->get('core.edit'))

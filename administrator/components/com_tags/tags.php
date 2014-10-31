@@ -39,7 +39,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 }
 
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'cloud.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'tags.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = JRequest::getCmd('controller', 'entries');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
