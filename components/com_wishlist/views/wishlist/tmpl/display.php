@@ -226,9 +226,14 @@ if ($this->wishlist->exists())
 
 								$state = $item->status('alias');
 
+								$name = JText::_('COM_WISHLIST_ANONYMOUS');
 								if (!$item->get('anonymous'))
 								{
-									$item->set('authorname', '<a href="' . JRoute::_('index.php?option=com_members&id=' . $item->get('proposed_by')) . '">' . $this->escape($item->get('authorname')) . '</a>');
+									$name = $this->escape(stripslashes($item->proposer('name', $name)));
+									if ($item->proposer('public'))
+									{
+										$name = '<a href="' . JRoute::_($item->proposer()->getLink()) . '">' . $name . '</a>';
+									}
 								}
 								?>
 								<tr class="<?php echo $state; ?>">
@@ -242,7 +247,7 @@ if ($this->wishlist->exists())
 										</a>
 										<br />
 										<span class="entry-details">
-											<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo ($item->get('anonymous') == 1) ? JText::_('COM_WISHLIST_ANONYMOUS') : $item->get('authorname'); ?>
+											<?php echo JText::_('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
 											<span class="entry-date-at"><?php echo JText::_('COM_WISHLIST_AT'); ?></span>
 											<span class="entry-time"><time datetime="<?php echo $item->proposed(); ?>"><?php echo $item->proposed('time'); ?></time></span>
 											<span class="entry-date-on"><?php echo JText::_('COM_WISHLIST_ON'); ?></span>

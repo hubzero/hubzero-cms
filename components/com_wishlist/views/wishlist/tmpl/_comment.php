@@ -11,13 +11,12 @@ defined('_JEXEC') or die('Restricted access');
 	}
 
 	$name = JText::_('COM_WISHLIST_ANONYMOUS');
-	$huser = new \Hubzero\User\Profile;
 	if (!$this->comment->get('anonymous'))
 	{
-		$huser = $this->comment->creator();
-		if (is_object($huser) && $huser->get('name'))
+		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
+		if ($this->comment->creator('public'))
 		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
 	}
 
@@ -28,7 +27,7 @@ defined('_JEXEC') or die('Restricted access');
 	}
 	else
 	{
-		$comment  = $this->comment->content('parsed');
+		$comment = $this->comment->content('parsed');
 	}
 
 	$this->comment->set('listcategory', $this->wishlist->get('category'));

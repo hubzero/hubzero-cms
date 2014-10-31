@@ -42,9 +42,13 @@ $this->css()
 	$user = $this->wish->proposer();
 
 	$name = JText::_('COM_WISHLIST_ANONYMOUS');
-	if ($this->wish->get('anonymous') != 1)
+	if (!$this->wish->get('anonymous'))
 	{
-		$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->wish->get('proposed_by')) . '">' . $this->wish->proposer('name') . '</a>';
+		$name = $this->escape(stripslashes($this->wish->proposer('name', $name)));
+		if ($this->wish->proposer('public'))
+		{
+			$name = '<a href="' . JRoute::_($this->wish->proposer()->getLink()) . '">' . $name . '</a>';
+		}
 	}
 
 	// && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)
