@@ -728,6 +728,65 @@ class ProjectsHtml
 		return $icon;
 	}
 
+	/**
+	 * Get array of available emotion icons
+	 *
+	 * @return     array
+	 */
+	public static function getEmoIcons()
+	{
+		$icons = array(
+				':)'    =>  'happy',
+				':-)'   =>  'grin',
+				':D'    =>  'laugh',
+				':d'    =>  'laugh',
+				';)'    =>  'wink',
+				':P'    =>  'tongue',
+				':-P'   =>  'tongue',
+				':-p'   =>  'tongue',
+				':p'    =>  'tongue',
+				':('    =>  'unhappy',
+				':\'('	=>	'cry',
+				':o'    =>  'surprised',
+				':O'    =>  'surprised',
+				':0'    =>  'surprised',
+				':|'    =>  'displeased',
+				':-|'   =>  'displeased',
+				':/'    =>  'displeased',
+				'8|'    =>  'sunglasses',
+				'O:)'   =>  'saint',
+				'>:O'   =>  'angry',
+				':-/'   =>  'surprised',
+				'l-)'   =>  'sleep',
+				'(y)'   =>  'thumbsup',
+				'^_^'   =>  'squint',
+				'-_-'   =>  'squint',
+				'3:)'   =>  'devil'
+		);
+
+		return $icons;
+	}
+
+	/**
+	 * Replace with emotion icons
+	 *
+	 * @param      string $text
+	 * @return     string
+	 */
+	public static function replaceEmoIcons($text = NULL)
+	{
+		$icons = ProjectsHtml::getEmoIcons();
+
+		foreach ($icons as $icon => $image)
+		{
+			$pat 	=  '#(?<=\s|^)(' . preg_quote($icon) .')(?=\s|$)#';
+			$rep  	= '<span class="icon-emo-' . $image . '"></span>';
+			$text 	= preg_replace($pat, $rep, $text);
+		}
+
+		return $text;
+	}
+
 	//----------------------------------------------------------
 	// Project page elements
 	//----------------------------------------------------------

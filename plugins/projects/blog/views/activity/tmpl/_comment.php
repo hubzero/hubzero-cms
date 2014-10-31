@@ -40,6 +40,11 @@ $shortComment = $shorten
 
 $longComment = ProjectsHtml::replaceUrls($longComment, 'external');
 $shortComment = ProjectsHtml::replaceUrls($shortComment, 'external');
+
+// Emotions (new)
+$longComment  = ProjectsHtml::replaceEmoIcons($longComment);
+$shortComment = ProjectsHtml::replaceEmoIcons($shortComment);
+
 ?>
 	<li class="quote <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
 	<?php if ($deletable) { ?>

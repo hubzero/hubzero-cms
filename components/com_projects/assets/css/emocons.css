@@ -1,0 +1,57 @@
+/*
+* @package     hubzero-cms
+* @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
+* @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+* @description Emocons
+               -------------------------------------------------------
+               Based off of Font Awesome
+                  http://fontello.com/
+                  Email: dave@davegandy.com
+*/
+
+@font-face {
+  font-family: 'emocons';
+  src: url('../font/emocons.eot');
+  src: url('../font/emocons.eot') format('embedded-opentype'),
+	   url('../font/emocons.woff') format('woff'),
+	   url('../font/emocons.ttf') format('truetype'),
+	   url('../font/emocons.svg#emocons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-emo-"]:before, [class*=" icon-emo-"]:before {
+	font-family: "emocons";
+	font-style: normal;
+	font-weight: normal;
+	speak: none;
+	display: inline-block;
+	text-decoration: inherit;
+	width: 1em;
+	margin-right: .2em;
+	text-align: center;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1em;
+}
+ 
+.icon-emo-devil:before { content: '\e800'; } /* 3:) */
+.icon-emo-surprised:before { content: '\e801'; } /* '' */
+.icon-emo-tongue:before { content: '\e802'; } /* :P */
+.icon-emo-coffee:before { content: '\e803'; } /* '' */
+.icon-emo-sunglasses:before { content: '\e804'; } /* '' */
+.icon-emo-displeased:before { content: '\e805'; } /* '' */
+.icon-emo-beer:before { content: '\e806'; } /* '' */
+.icon-emo-grin:before { content: '\e807'; } /* '' */
+.icon-emo-angry:before { content: '\e808'; } /* '' */
+.icon-emo-saint:before { content: '\e809'; } /* '' */
+.icon-emo-cry:before { content: '\e80a'; } /* '' */
+.icon-emo-shoot:before { content: '\e80b'; } /* '' */
+.icon-emo-squint:before { content: '\e80c'; } /* '' */
+.icon-emo-laugh:before { content: '\e80d'; } /* '' */
+.icon-emo-happy:before { content: '\e80e'; } /* :) */
+.icon-emo-wink:before { content: '\e80f'; } /* ;) */
+.icon-emo-wink2:before { content: '\e810'; } /* ;) */
+.icon-emo-unhappy:before { content: '\e811'; } /* :( */
+.icon-emo-sleep:before { content: '\e812'; } /* l-) */
+.icon-emo-thumbsup:before { content: '\e813'; } /* (y) */

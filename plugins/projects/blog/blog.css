@@ -343,7 +343,7 @@
 		margin: 1em 0 0 0;
 		border: none;
 		width: 100%;
-		background: #eeeeee;
+		background: #f4f6f8;
 	}
 	#plg-content .comments li {
 		margin: 0;
@@ -360,7 +360,7 @@
 	}
 	#plg-content .addcomment {
 		padding-left: 2em;
-		background: #eeeeee;
+		background: #f4f6f8;
 	}
 	#plg-content .comments li,
 	#plg-content .addcomment fieldset {

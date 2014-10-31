@@ -769,10 +769,14 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$body      = ProjectsHtml::replaceUrls($body, 'external');
 		$shortBody = ProjectsHtml::replaceUrls($shortBody, 'external');
 
+		// Emotions (new)
+		$body      = ProjectsHtml::replaceEmoIcons($body);
+		$shortBody = ProjectsHtml::replaceEmoIcons($shortBody);
+
 		// Style body text
 		$ebody  = '<span class="body';
 		$ebody .= strlen($shortBody) > 50 ? ' newline' : ' sameline';
-		$ebody .= '">' . $shortBody;
+		$ebody .= '">' . preg_replace("/\n/", '<br />', trim($shortBody));
 		if ($shorten)
 		{
 			$ebody .= ' <a href="#" class="more-content">' . JText::_('COM_PROJECTS_MORE') . '</a>';
