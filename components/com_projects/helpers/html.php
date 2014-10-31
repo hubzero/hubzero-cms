@@ -127,6 +127,37 @@ class ProjectsHtml
 	}
 
 	/**
+	 * Show time since present moment or an actual date
+	 *
+	 * @param      string 	$time
+	 * @return     string
+	 */
+	public static function showTime($time, $utc = false)
+	{
+		$parsed 		= date_parse($time);
+		$timestamp		= strtotime($time);
+		$current_time 	= $utc ? strtotime(JFactory::getDate()) : strtotime(date('c'));
+		$current  		= date_parse($current_time);
+		$lapsed 		= $current_time - $timestamp;
+		if ($lapsed < 30)
+		{
+			return JText::_('just now');
+		}
+		elseif ($lapsed > 86400 && $current['year'] == $parsed['year'])
+		{
+			return JHTML::_('date', $timestamp, 'M j, Y', false);
+		}
+		elseif ($lapsed > 86400)
+		{
+			return JHTML::_('date', $timestamp, 'M j', false) . ' at ' . JHTML::_('date', $timestamp, 'h:ia', false);
+		}
+		else
+		{
+			return ProjectsHtml::timeDifference($lapsed);
+		}
+	}
+
+	/**
 	 * Specially formatted time display
 	 *
 	 * @param      string 	$time
@@ -191,7 +222,7 @@ class ProjectsHtml
 	public static function timeDifference ($difference)
 	{
 		// Set the periods of time
-		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+		$periods = array('sec', 'min', 'hr', 'day', 'week', 'month', 'year', 'decade');
 
 		// Set the number of seconds per period
 		$lengths = array(1, 60, 3600, 86400, 604800, 2630880, 31570560, 315705600);
