@@ -1004,6 +1004,8 @@ class plgProjectsFiles extends JPlugin
 
 						// Generate preview
 						$this->getFilePreview(trim($file), $hash, $this->path, '');
+						// Generate medium-size preview
+						$this->getFilePreview(trim($file), $hash, $this->path, '', '', true);
 					}
 				}
 			}
@@ -4300,13 +4302,14 @@ class plgProjectsFiles extends JPlugin
 		}
 		$hash  	= $hash ? substr($hash, 0, 10) : '';
 
-		if ($medium)
-		{
-			$hash .= 'med';
-		}
-
 		$filename = basename($file);
 		$hashed = $hash ? $ih->createThumbName($filename, '-' . $hash, 'png') : NULL;
+
+		// Medium-size preview image
+		if ($medium)
+		{
+			$hashed = md5($filename . '-' . $hash) . '.png';
+		}
 
 		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
 		$to_path = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
