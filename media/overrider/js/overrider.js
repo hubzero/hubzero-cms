@@ -25,16 +25,15 @@ Joomla.overrider = {
  */
 Joomla.overrider.refreshCache = function()
 {
-	var req = new Request.JSON({
-		method: 'post',
+	$.ajax({
 		url: 'index.php?option=com_languages&task=strings.refresh&format=json',
-		onRequest: function()
-		{
-			this.states.refreshing = true;
-			document.id('refresh-status').reveal();
-		}.bind(this),
-		onSuccess: function(r)
-		{
+		type: 'POST',
+		dataType: 'json',
+		beforeSend: function() {
+			Joomla.overrider.states.refreshing = true;
+			$('#refresh-status').show();
+		},
+		success: function(r) {
 			if (r.error && r.message)
 			{
 				alert(r.message);
@@ -43,21 +42,19 @@ Joomla.overrider.refreshCache = function()
 			{
 				Joomla.renderMessages(r.messages);
 			}
-			document.id('refresh-status').dissolve();
-			this.states.refreshing = false;
-		}.bind(this),
-		onFailure: function(xhr)
+			$('#refresh-status').hide();
+			Joomla.overrider.states.refreshing = false;
+		},
+		/*onFailure: function(xhr)
 		{
 			alert(Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_REQUEST_ERROR'));
-			document.id('refresh-status').dissolve();
-		}.bind(this),
-		onError: function(text, error)
-		{
+			$('#refresh-status').dissolve();
+		}.bind(this),*/
+		error: function(text, error) {
 			alert(error + "\n\n" + text);
-			document.id('refresh-status').dissolve();
-		}.bind(this)
+			$('#refresh-status').hide();
+		}
 	});
-	req.post();
 };
 
 /**
@@ -72,7 +69,7 @@ Joomla.overrider.refreshCache = function()
 Joomla.overrider.searchStrings = function(more)
 {
 	// Prevent searching if the cache is refreshed at the moment
-	if (this.states.refreshing)
+	if (Joomla.overrider.states.refreshing)
 	{
 		return;
 	}
@@ -81,42 +78,43 @@ Joomla.overrider.searchStrings = function(more)
 	// was used to start the search (that will be the case if 'more' is null)
 	if (!more)
 	{
-		this.states.searchstring 	= document.id('jform_searchstring').value;
-		this.states.searchtype		= 'value';
-		if (document.id('jform_searchtype0').checked)
+		Joomla.overrider.states.searchstring = $('#jform_searchstring').val();
+		Joomla.overrider.states.searchtype   = 'value';
+		if ($('#jform_searchtype0').attr('checked'))
 		{
-			this.states.searchtype 	= 'constant';
+			Joomla.overrider.states.searchtype = 'constant';
 		}
 	}
 
-	if (!this.states.searchstring)
+	if (!Joomla.overrider.states.searchstring)
 	{
-		document.id('jform_searchstring').addClass('invalid');
+		$('#jform_searchstring').addClass('invalid');
 
 		return;
 	}
 
-	var req = new Request.JSON({
-		method: 'post',
-		url: 'index.php?option=com_languages&task=strings.search&format=json',
-		onRequest: function()
+	$.ajax({
+		dataType: 'json',
+		type: 'POST',
+		url: 'index.php?option=com_languages&task=strings.search&format=json&searchstring=' + Joomla.overrider.states.searchstring + '&searchtype=' + Joomla.overrider.states.searchtype + '&more=' + more,
+		beforeSend: function()
 		{
 			if (more)
 			{
 				// If 'more' is greater than 0 we have already displayed some results for
 				// the current searchstring, so display the spinner at the more link
-				document.id('more-results').addClass('overrider-spinner');
+				$('#more-results').addClass('overrider-spinner');
 			}
 			else
 			{
 				// Otherwise it is a new searchstring and we have to remove all previous results first
-				document.id('more-results').set('style', 'display:none;');
-				var children = $$('#results-container div.language-results');
-				children.destroy();
-				document.id('results-container').addClass('overrider-spinner').reveal();
+				$('#more-results').hide();
+
+				$('#results-container div.language-results').remove();
+				$('#results-container').addClass('overrider-spinner').show();
 			}
-		}.bind(this),
-		onSuccess: function(r) {
+		},
+		success: function(r) {
 			if (r.error && r.message)
 			{
 				alert(r.message);
@@ -125,41 +123,40 @@ Joomla.overrider.searchStrings = function(more)
 			{
 				Joomla.renderMessages(r.messages);
 			}
-			if(r.data)
+			if (r.data)
 			{
-				if(r.data.results)
+				if (r.data.results)
 				{
-					this.insertResults(r.data.results);
+					Joomla.overrider.insertResults(r.data.results);
 				}
-				if(r.data.more)
+				if (r.data.more)
 				{
 					// If there are more results than the sent ones
 					// display the more link
-					this.states.more = r.data.more;
-					document.id('more-results').reveal();
+					Joomla.overrider.states.more = r.data.more;
+					$('#more-results').show();
 				}
 				else
 				{
-					document.id('more-results').set('style', 'display:none;');
+					$('#more-results').set('style', 'display:none;');
 				}
 			}
-			document.id('results-container').removeClass('overrider-spinner');
-			document.id('more-results').removeClass('overrider-spinner');
-		}.bind(this),
-		onFailure: function(xhr)
+			$('#results-container').removeClass('overrider-spinner');
+			$('#more-results').removeClass('overrider-spinner');
+		},
+		/*onFailure: function(xhr)
 		{
 			alert(Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_REQUEST_ERROR'));
 			document.id('results-container').removeClass('overrider-spinner');
 			document.id('more-results').removeClass('overrider-spinner');
-		}.bind(this),
-		onError: function(text, error)
+		}.bind(this),*/
+		error: function(text, error)
 		{
 			alert(error + "\n\n" + text);
-			document.id('results-container').removeClass('overrider-spinner');
-			document.id('more-results').removeClass('overrider-spinner');
-		}.bind(this)
+			$('#results-container').removeClass('overrider-spinner');
+			$('#more-results').removeClass('overrider-spinner');
+		}
 	});
-	req.post('searchstring=' + this.states.searchstring + '&searchtype=' + this.states.searchtype + '&more=' + more);
 };
 
 /**
@@ -174,49 +171,51 @@ Joomla.overrider.searchStrings = function(more)
 Joomla.overrider.insertResults = function(results)
 {
 	// For creating an individual ID for each result we use a counter
-	this.states.counter = this.states.counter + 1;
+	Joomla.overrider.states.counter = Joomla.overrider.states.counter + 1;
 
 	// Create a container into which all the results will be inserted
-	var results_div = new Element('div', {
-		id: 'language-results' + this.states.counter,
-		'class': 'language-results',
-		style: 'display:none;'
-	});
+	var results_div = $('<div></div>')
+		.attr('id', 'language-results' + Joomla.overrider.states.counter)
+		.addClass('language-results')
+		.hide();
 
 	// Create some elements for each result and insert it into the container
-	Array.each(results, function (item, index) {
-		var div = new Element('div', {
-			'class':	'result row' + index%2,
-			onclick:	'Joomla.overrider.selectString(' + this.states.counter + index + ');',
-		});
-		var key = new Element('div', {
-			id:				'override_key' + this.states.counter + index,
-			'class':	'result-key',
-			html:			item.constant,
-			title:		item.file
-		});
-		key.inject(div);
-		var string = new Element('div', {
-			id:				'override_string' + this.states.counter + index,
-			'class':	'result-string',
-			html:			item.string
-		});
-		string.inject(div);
-		div.inject(results_div);
-	}, this);
+	$.each(results, function (index, item) {
+		var div = $('<div></div>')
+			.addClass('result row' + index%2)
+			.on('click', function(e) {
+				Joomla.overrider.selectString(String(Joomla.overrider.states.counter) + String(index));
+			});
+
+		var key = $('<div></div>')
+			.attr('id', 'override_key' + Joomla.overrider.states.counter + index)
+			.addClass('result-key')
+			.html(item.constant)
+			.attr('title', item.file);
+
+		key.appendTo(div);
+
+		var string = $('<div></div>')
+			.attr('id', 'override_string' + Joomla.overrider.states.counter + index)
+			.addClass('result-string')
+			.html(item.string);
+
+		string.appendTo(div);
+
+		div.appendTo(results_div);
+	});
 
 	// If there aren't any results display an appropriate message
-	if(!results.length)
+	if (!results.length)
 	{
-		var noresult = new Element('div', {
-			html: Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_NO_RESULTS')
-		});
-		noresult.inject(results_div);
+		var noresult = $('<div></div>').html(Joomla.JText._('COM_LANGUAGES_VIEW_OVERRIDE_NO_RESULTS'));
+		noresult.appendTo(results_div);
 	}
 
 	// Finally insert the container afore the more link and reveal it
-	results_div.inject(document.id('more-results'), 'before');
-	document.id('language-results' + this.states.counter).reveal();
+	results_div.prependTo($('#more-results'));
+
+	$('#language-results' + Joomla.overrider.states.counter).show();
 };
 
 /**
@@ -230,7 +229,7 @@ Joomla.overrider.insertResults = function(results)
  */
 Joomla.overrider.selectString = function(id)
 {
-	document.id('jform_key').value = document.id('override_key' + id).get('html');
-	document.id('jform_override').value = document.id('override_string' + id).get('html');
-	new Fx.Scroll(window).toTop();
+	$('#jform_key').val($('#override_key' + id).html());
+	$('#jform_override').val($('#override_string' + id).html());
+	//new Fx.Scroll(window).toTop();
 };
