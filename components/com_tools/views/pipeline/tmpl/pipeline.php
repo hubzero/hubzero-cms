@@ -63,7 +63,7 @@ $this->css('pipeline.css')
 			</fieldset>
 		</div><!-- / .container data-entry -->
 
-		<div class="container">
+		<div class="container cf">
 			<ul class="entries-menu order-options">
 				<?php if ($this->admin) { ?>
 				<li>
@@ -131,7 +131,7 @@ $this->css('pipeline.css')
 				<caption>
 					<?php echo JText::_('COM_TOOLS_CONTRIBTOOL_FILTER_' . strtoupper($this->filters['filterby'])); ?>
 					<span>
-						(<?php echo ($this->filters['start'] + 1); ?> - <?php echo $this->filters['start'] + count($this->rows); ?> of <?php echo $this->pageNav->total; ?>)
+						(<?php echo (count($this->rows) > 0) ? $this->filters['start'] + 1 : 0; ?> - <?php echo $this->filters['start'] + count($this->rows); ?> of <?php echo $this->pageNav->total; ?>)
 					</span>
 				</caption>
 				<thead>
