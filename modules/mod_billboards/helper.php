@@ -78,10 +78,6 @@ class modBillboards extends \Hubzero\Module\Module
 		{
 			// Push some CSS to the template
 			$this->css();
-			if (!JPluginHelper::isEnabled('system', 'jquery'))
-			{
-				$jdocument->addScript('https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js');
-			}
 			$this->js();
 		}
 
