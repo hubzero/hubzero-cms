@@ -456,7 +456,7 @@ $cc = array();
 						<div class="col span6">
 							<label>
 								<?php echo JText::_('COM_SUPPORT_COMMENT_SEVERITY'); ?>:
-								<?php echo SupportHtml::selectArray('ticket[severity]', $this->lists['severities'], $this->row->get('severity')); ?>
+								<?php echo SupportHelperHtml::selectArray('ticket[severity]', $this->lists['severities'], $this->row->get('severity')); ?>
 							</label>
 						</div>
 						<div class="col span6 omega">

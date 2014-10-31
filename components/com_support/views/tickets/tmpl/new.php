@@ -243,7 +243,7 @@ $group = JRequest::getVar('group', '');
 					<div class="col span6">
 						<label for="ticket-field-severity">
 							<?php echo JText::_('COM_SUPPORT_COMMENT_SEVERITY'); ?>
-							<?php echo SupportHtml::selectArray('problem[severity]', $this->lists['severities'], 'normal'); ?>
+							<?php echo SupportHelperHtml::selectArray('problem[severity]', $this->lists['severities'], 'normal'); ?>
 						</label>
 					</div>
 					<div class="col span6 omega">

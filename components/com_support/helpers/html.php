@@ -34,40 +34,8 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Support helper class for misc. HTML
  */
-class SupportHtml
+class SupportHelperHtml
 {
-	/**
-	 * Get the status text for a status number
-	 *
-	 * @param      integer $int Status number
-	 * @return     string
-	 */
-	public static function getStatus($open=0, $status=0)
-	{
-		switch ($open)
-		{
-			case 1:
-				switch ($status)
-				{
-					case 2:
-						$status = JText::_('COM_SUPPORT_TICKET_STATUS_WAITING');
-					break;
-					case 1:
-						$status = 'accepted';
-					break;
-					case 0:
-					default:
-						$status = JText::_('COM_SUPPORT_TICKET_STATUS_NEW');
-					break;
-				}
-			break;
-			case 0:
-				$status = JText::_('COM_SUPPORT_TICKET_STATUS_RESOLVED');
-			break;
-		}
-		return $status;
-	}
-
 	/**
 	 * Generate a select list from a simply array of values
 	 *
@@ -88,31 +56,6 @@ class SupportHtml
 					  ? ' selected="selected"'
 					  : '';
 			$html .= ' <option value="' . $anode . '"' . $selected . '>' . stripslashes($anode) . '</option>' . "\n";
-		}
-		$html .= '</select>' . "\n";
-		return $html;
-	}
-
-	/**
-	 * Generate a select list from an array of objects
-	 *
-	 * @param      string $name  Field name
-	 * @param      array  $array Values to populate
-	 * @param      string $value Chosen value
-	 * @param      string $class Field class
-	 * @param      string $js    Extra attributes to add to element
-	 * @return     string HTML <select>
-	 */
-	public static function selectObj($name, $array, $value, $class='', $js='')
-	{
-		$html  = '<select name="' . $name . '" id="' . $name . '"' . $js;
-		$html .= ($class) ? ' class="' . $class . '">' . "\n" : '>' . "\n";
-		foreach ($array as $anode)
-		{
-			$selected = ($anode->txt == $value)
-					  ? ' selected="selected"'
-					  : '';
-			$html .= ' <option value="' . $anode->id . '"' . $selected . '>' . stripslashes($anode->txt) . '</option>' . "\n";
 		}
 		$html .= '</select>' . "\n";
 		return $html;
