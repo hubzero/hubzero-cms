@@ -84,10 +84,14 @@
 	position: relative;
 }
 .auth img.wide {
+	height: 100%;
+	width: auto;
 	max-height: 100%;
 	max-width: none;
 }
 .auth img.tall {
+	width: 100%;
+	height: auto;
 	max-height: none;
 	max-width: 100%;
 }
