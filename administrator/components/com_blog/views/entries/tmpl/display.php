@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = BlogHelper::getActions('entry');
+$canDo = BlogHelperPermissions::getActions('entry');
 
 JToolBarHelper::title(JText::_('COM_BLOG_TITLE'), 'blog.png');
 if ($canDo->get('core.admin'))
@@ -128,9 +128,9 @@ function submitbutton(pressbutton)
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_COMMENTS', 'comments', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<?php if ($this->filters['scope'] == 'group') { ?>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_GROUP', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-			<?php } ?>
+				<?php if ($this->filters['scope'] == 'group') { ?>
+					<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_BLOG_COL_GROUP', 'scope_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<?php } ?>
 			</tr>
 		</thead>
 		<tfoot>
@@ -142,9 +142,9 @@ function submitbutton(pressbutton)
 <?php
 $k = 0;
 $i = 0;
-$config	= JFactory::getConfig();
-$now	= JFactory::getDate();
-$db		= JFactory::getDBO();
+$config = JFactory::getConfig();
+$now    = JFactory::getDate();
+$db     = JFactory::getDBO();
 
 $nullDate = $db->getNullDate();
 
@@ -231,30 +231,30 @@ foreach ($this->rows as $row)
 					<?php echo $row->get('id'); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
 				<td>
 					<span class="editlinktip hasTip" title="<?php echo JText::_('COM_BLOG_PUBLISH_INFO');?>::<?php echo $times; ?>">
-					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
-							<span><?php echo $alt; ?></span>
-						</a>
-					<?php } else { ?>
-						<span class="state <?php echo $cls; ?>">
-							<span><?php echo $alt; ?></span>
-						</span>
-					<?php } ?>
+						<?php if ($canDo->get('core.edit.state')) { ?>
+							<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
+								<span><?php echo $alt; ?></span>
+							</a>
+						<?php } else { ?>
+							<span class="state <?php echo $cls; ?>">
+								<span><?php echo $alt; ?></span>
+							</span>
+						<?php } ?>
 					</span>
 				</td>
 				<td>
@@ -263,28 +263,28 @@ foreach ($this->rows as $row)
 					</time>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=setcomments&amp;state=<?php echo $state; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo $cls2; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=setcomments&state=' . $state . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;entry_id=<?php echo $row->get('id'); ?>">
-						<?php echo JText::sprintf('COM_BLOG_COMMENTS', $row->get('comments')); ?>
-					</a>
-				<?php } else { ?>
-					<span class="comment">
-						<?php echo JText::sprintf('COM_BLOG_COMMENTS', $row->get('comments')); ?>
-					</span>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a class="comment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=comments&entry_id=' . $row->get('id')); ?>">
+							<?php echo JText::sprintf('COM_BLOG_COMMENTS', $row->get('comments')); ?>
+						</a>
+					<?php } else { ?>
+						<span class="comment">
+							<?php echo JText::sprintf('COM_BLOG_COMMENTS', $row->get('comments')); ?>
+						</span>
+					<?php } ?>
+				</td>
+				<?php if ($this->filters['scope'] == 'group') { ?>
+					<td>
+						<span>
+							<?php echo $this->escape($row->get('scope_id')); ?>
+						</span>
+					</td>
 				<?php } ?>
-				</td>
-			<?php if ($this->filters['scope'] == 'group') { ?>
-				<td>
-					<span>
-						<?php echo $this->escape($row->get('scope_id')); ?>
-					</span>
-				</td>
-			<?php } ?>
 			</tr>
 <?php
 	$i++;

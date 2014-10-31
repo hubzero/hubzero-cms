@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = BlogHelper::getActions('entry');
+$canDo = BlogHelperPermissions::getActions('entry');
 
 JToolBarHelper::title(JText::_('COM_BLOG_TITLE') . ': ' . JText::_('COM_BLOG_COL_COMMENTS'), 'blog.png');
 
@@ -123,7 +123,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
 					<?php echo $row->get('id'); ?>
@@ -131,7 +131,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $row->get('treename'); ?>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo \Hubzero\Utility\String::truncate($this->escape($row->content('clean')), 90); ?>
 						</a>
 					<?php } else { ?>
@@ -144,7 +144,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 				</td>
 				<td>
-					<a class="state <?php echo $cls2; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=anonymous&amp;state=<?php echo $state; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo $cls2; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=anonymous&state=' . $state . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $calt; ?></span>
 					</a>
 				</td>

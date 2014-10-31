@@ -39,7 +39,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 
 // Include scripts
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'blog.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 $scope = JRequest::getCmd('scope', 'site');
 $controllerName = JRequest::getCmd('controller', 'entries');
