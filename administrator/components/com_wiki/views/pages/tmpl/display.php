@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = WikiHelper::getActions('page');
+$canDo = WikiHelperPermissions::getActions('page');
 
 JToolBarHelper::title(JText::_('COM_WIKI'), 'wiki.png');
 if ($canDo->get('core.admin'))
@@ -159,7 +159,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					<?php } else { ?>
@@ -174,7 +174,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->get('id'); ?>&amp;state=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+						<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . $task . '&' . JUtility::getToken() . '=1'); ?>">
 							<?php echo $alt; ?>
 						</a>
 					<?php } else { ?>
@@ -190,7 +190,7 @@ foreach ($this->rows as $row)
 				</td>
 			<?php if ($row->get('revisions') > 0) { ?>
 				<td>
-					<a class="revisions" href="index.php?option=<?php echo $this->option ?>&amp;controller=revisions&amp;pageid=<?php echo $row->get('id'); ?>">
+					<a class="revisions" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=revisions&pageid=' . $row->get('id')); ?>">
 						<span><?php echo JText::sprintf('COM_WIKI_NUM_REVISIONS', $this->escape($row->get('revisions'))); ?></span>
 					</a>
 				</td>
@@ -201,14 +201,9 @@ foreach ($this->rows as $row)
 					</span>
 				</td>
 			<?php } ?>
-				<!-- <td>
-					<span class="hits">
-						<span><?php echo $this->escape($row->get('hits')); ?></span>
-					</span>
-				</td> -->
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a class="comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;pageid=<?php echo $row->get('id'); ?>">
+						<a class="comment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=comments&pageid=' . $row->get('id')); ?>">
 							<?php echo JText::sprintf('COM_WIKI_NUM_COMMENTS', $row->comments('count')); ?>
 						</a>
 					<?php } else { ?>

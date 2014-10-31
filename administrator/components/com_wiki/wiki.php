@@ -41,9 +41,9 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 
 // Include scripts
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'pagePermissions.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'parser.php');
 include_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'book.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'wiki.php');
 
 // Initiate controller
 $controllerName = JRequest::getCmd('controller', 'pages');

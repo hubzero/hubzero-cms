@@ -117,12 +117,9 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -132,7 +129,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new revision
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -142,20 +139,12 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a revision
 	 *
-	 * @return     void
+	 * @param   object  $row  Record
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
-
-		// Incoming
-		$id = JRequest::getVar('id', array(0));
-		if (is_array($id) && !empty($id))
-		{
-			$id = $id[0];
-		}
 
 		$pageid = JRequest::getInt('pageid', 0);
 		if (!$pageid)
@@ -176,10 +165,17 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		}
 		else
 		{
+			// Incoming
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
 			$this->view->revision = new WikiModelRevision($id);
 		}
 
-		if (!$id)
+		if (!$this->view->revision->exists())
 		{
 			// Creating new
 			$this->view->revision = $this->view->page->revision('current');
@@ -190,16 +186,15 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -309,7 +304,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	/**
 	 * Delete a revision
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -336,16 +331,15 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		switch ($step)
 		{
 			case 1:
+				JRequest::setVar('hidemainmenu', 1);
+
 				$this->view->ids = $ids;
 				$this->view->pageid = $pageid;
 
 				// Set any errors
-				if ($this->getError())
+				foreach ($this->getErrors() as $error)
 				{
-					foreach ($this->getError() as $error)
-					{
-						$this->view->setError($error);
-					}
+					$this->view->setError($error);
 				}
 
 				// Output the HTML
@@ -422,7 +416,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	/**
 	 * Set the approval state for a revision
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function approveTask()
 	{

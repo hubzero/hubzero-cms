@@ -2,7 +2,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = WikiHelper::getActions('page');
+$canDo = WikiHelperPermissions::getActions('page');
 
 JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_PAGE') . ': ' . JText::_('COM_WIKI_REVISIONS'), 'wiki.png');
 if ($canDo->get('core.create'))
@@ -117,7 +117,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&' . JUtility::getToken() . '=1'); ?>">
 						<?php echo JText::sprintf('COM_WIKI_REVISION_NUM', $this->escape(stripslashes($row->get('version')))); ?>
 					</a>
 				<?php } else { ?>
@@ -131,7 +131,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="access <?php echo $class . ' ' . $color_access; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id=<?php echo $row->get('id'); ?>&amp;pageid=<?php echo $this->filters['pageid']; ?>&amp;approve=<?php echo $task; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="access <?php echo $class . ' ' . $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->get('id') . '&pageid=' . $this->filters['pageid'] . '&approve=' . $task . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>

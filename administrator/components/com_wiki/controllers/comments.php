@@ -39,7 +39,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of blog entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -127,12 +127,9 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -213,7 +210,7 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -223,14 +220,12 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Show a form for editing an entry
 	 *
-	 * @param      object $row WikiTableComment
-	 * @return     void
+	 * @param   object  $row  WikiModelComment
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		if (is_object($row))
 		{
@@ -257,16 +252,15 @@ class WikiControllerComments extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**

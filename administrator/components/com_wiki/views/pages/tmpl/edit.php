@@ -2,9 +2,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = WikiHelper::getActions('page');
+$canDo = WikiHelperPermissions::getActions('page');
 
-$text = ($this->task == 'editpage' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_WIKI') . ': ' . JText::_('COM_WIKI_PAGE') .': ' . $text, 'wiki.png');
 if ($canDo->get('core.edit'))

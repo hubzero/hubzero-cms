@@ -39,7 +39,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -52,7 +52,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Display all pages in the wiki(s)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -116,7 +116,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$this->view->total = $p->pages('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $p->pages('list', $this->view->filters);
+		$this->view->rows  = $p->pages('list', $this->view->filters);
 
 		$this->view->groups = $p->groups();
 
@@ -129,12 +129,9 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -144,7 +141,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new entry
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -154,20 +151,11 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row = null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
-
-		// Incoming
-		$id = JRequest::getVar('id', array(0));
-		if (is_array($id) && !empty($id))
-		{
-			$id = $id[0];
-		}
 
 		if (is_object($row))
 		{
@@ -175,6 +163,13 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		}
 		else
 		{
+			// Incoming
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
 			// Load the article
 			$this->view->row = new WikiModelPage(intval($id));
 		}
@@ -186,22 +181,21 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getError() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save changes to an entry and go back to edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -211,8 +205,8 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Save changes to an entry
 	 *
-	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
-	 * @return     void
+	 * @param   boolean  $redirect  Redirect (true) or fall through to edit form (false) ?
+	 * @return  void
 	 */
 	public function saveTask($redirect=true)
 	{
@@ -276,7 +270,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Remove one or more pages
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -301,16 +295,15 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		switch ($step)
 		{
 			case 1:
+				JRequest::setVar('hidemainmenu', 1);
+
 				// Instantiate a new view
 				$this->view->ids = $ids;
 
 				// Set any errors
-				if ($this->getError())
+				foreach ($this->getErrors() as $error)
 				{
-					foreach ($this->getError() as $error)
-					{
-						$this->view->setError($error);
-					}
+					$this->view->setError($error);
 				}
 
 				// Output the HTML
@@ -359,7 +352,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Set the access level to public
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accesspublicTask()
 	{
@@ -369,7 +362,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Set the access level to registered users
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessregisteredTask()
 	{
@@ -379,7 +372,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Set the access level to special
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessspecialTask()
 	{
@@ -389,7 +382,8 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Set the access level
 	 *
-	 * @return     void
+	 * @param   integer  $access  Access value to set
+	 * @return  void
 	 */
 	public function accessTask($access = 0)
 	{
@@ -433,7 +427,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Reset the page hits
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function resethitsTask()
 	{
@@ -477,7 +471,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Set the state for a page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function stateTask()
 	{
@@ -521,7 +515,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	/**
 	 * Cancels a task and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
