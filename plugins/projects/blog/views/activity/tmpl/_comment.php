@@ -61,7 +61,7 @@ $shortComment = ProjectsHtml::replaceUrls($shortComment, 'external');
 			{
 				echo ' <a href="#" class="more-content">' . JText::_('COM_PROJECTS_MORE') . '</a>';
 			}
-	 	  echo '</span>'; ?>
+			echo '</span>'; ?>
 	<?php 	if ($shorten)
 			{
 			echo '<span class="fullbody hidden">' . $longComment . '</span>' ;
