@@ -1064,7 +1064,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$message .= '----------------------------'."\r\n\r\n";
 			if (!$wishid)
 			{
-				$message .= html_entity_decode(strip_tags($row->content('raw')), ENT_COMPAT, 'UTF-8');
+				$content = html_entity_decode(strip_tags($row->content('raw')), ENT_COMPAT, 'UTF-8');
+				$message .= html_entity_decode($content, ENT_QUOTES, 'UTF-8');
 				$message .= "\r\n\r\n";
 			}
 
