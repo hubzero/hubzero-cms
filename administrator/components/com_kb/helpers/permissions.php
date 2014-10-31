@@ -30,7 +30,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-class KbHelper
+class KbHelperPermissions
 {
 	/**
 	 * Name of the component

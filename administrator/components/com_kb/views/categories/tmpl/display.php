@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = KbHelper::getActions('category');
+$canDo = KbHelperPermissions::getActions('category');
 
 JToolBarHelper::title(JText::_('COM_KB'), 'kb.png');
 if ($canDo->get('core.admin'))
@@ -138,7 +138,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="glyph category" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_EDIT_CATEGORY'); ?>">
+					<a class="glyph category" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_EDIT_CATEGORY'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 					</a>
 				<?php } else { ?>
@@ -149,7 +149,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo JText::sprintf('COM_KB_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -160,7 +160,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>">
+					<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>">
 						<?php echo $row->get('groupname'); ?>
 					</a>
 				<?php } else { ?>
@@ -171,7 +171,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($row->get('categories', 0) > 0) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;id=<?php echo $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_VIEW_CATEGORIES_FOR_CATEGORY'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_VIEW_CATEGORIES_FOR_CATEGORY'); ?>">
 						<span><?php echo $row->get('categories', 0); ?></span>
 					</a>
 				<?php } else { ?>
@@ -182,7 +182,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($row->get('articles', 0) > 0) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=articles&amp;<?php echo (isset($this->filters['section']) && $this->filters['section']) ? 'category=' . $row->get('id') . '&amp;section=' . $this->filters['section'] : 'section=' . $row->get('id'); ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=articles&' . (isset($this->filters['section']) && $this->filters['section'] ? 'category=' . $row->get('id') . '&section=' . $this->filters['section'] : 'section=' . $row->get('id'))); ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
 						<span><?php echo $row->get('articles', 0) . ' ' . JText::_('COM_KB_ARTICLES'); ?></span>
 					</a>
 				<?php } else { ?>

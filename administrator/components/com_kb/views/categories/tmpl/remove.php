@@ -45,10 +45,10 @@ function submitbutton(pressbutton)
 	}
 }
 </script>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $this->task; ?>&amp;step=2" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $this->task . '&step=2'); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
- 			<tr>
+			<tr>
 				<th><?php echo JText::_('COM_KB_CHOOSE_DELETE_OPTION'); ?></th>
 			</tr>
 		</thead>

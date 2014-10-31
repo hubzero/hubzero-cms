@@ -39,7 +39,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of all categories
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -51,9 +51,9 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		$this->view->filters = array(
 			'state'  => -1,
 			'access' => -1,
-			'empty'	 => 1
+			'empty'  => 1
 		);
-		$this->view->filters['section']        = $app->getUserStateFromRequest(
+		$this->view->filters['section'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.id',
 			'id',
 			0,
@@ -61,33 +61,32 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		);
 		if (!$this->view->filters['section'])
 		{
-			$this->view->filters['section']        = $app->getUserStateFromRequest(
+			$this->view->filters['section'] = $app->getUserStateFromRequest(
 				$this->_option . '.' . $this->_controller . '.cid',
 				'cid',
 				0,
 				'int'
 			);
 		}
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort',
 			'filter_order',
 			'a.title'
 		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortdir',
 			'filter_order_Dir',
 			'ASC'
 		));
-		//$this->view->filters['filterby']       = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
 		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
+		$this->view->filters['limit'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			$config->getValue('config.list_limit'),
 			'int'
 		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
+		$this->view->filters['start'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
@@ -126,7 +125,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -136,13 +135,11 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		if (is_object($row))
 		{
@@ -174,22 +171,21 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		*/
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a category and come back to the edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -199,8 +195,8 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	/**
 	 * Save a category
 	 *
-	 * @param      integer $redirect Redirect the page after saving
-	 * @return     void
+	 * @param   boolean  $redirect  Redirect the page after saving
+	 * @return  void
 	 */
 	public function saveTask($redirect=true)
 	{
@@ -248,7 +244,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	/**
 	 * Remove an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -260,6 +256,8 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		switch ($step)
 		{
 			case 1:
+				JRequest::setVar('hidemainmenu', 1);
+
 				// Incoming
 				$id = JRequest::getVar('id', array(0));
 				if (is_array($id) && !empty($id))
@@ -300,53 +298,11 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 				$msg = null;
 				$typ = null;
 
-				// Check if we're deleting collection and all FAQs or just the collection page
-				$action = JRequest::getVar('action', 'removefaqs');
-
-				// Create an article object
-				/*$article = new KbTableArticle($this->database);
-
-				// Get all the articles in this collection
-				$faqs = $category->getCollection($id);
-
-				if ($faqs)
-				{
-					// Loop through the articles
-					foreach ($faqs as $faq)
-					{
-						if ($action == 'deletefaqs')
-						{
-							$article->delete($faq->id);
-						}
-						else
-						{
-							// Load the article
-							$a = new KbTableArticle($this->database);
-							$a->load($faq->id);
-							// Make some changes
-							if ($faq->category == $id)
-							{
-								$a->category = 0;
-							}
-							else
-							{
-								$a->section = 0;
-							}
-							// Check and store the changes
-							if (!$a->check())
-							{
-								return $a->getError();
-							}
-							if (!$a->store())
-							{
-								return $a->getError();
-							}
-						}
-					}
-				}*/
-
 				// Delete the category
 				$category = new KbModelCategory($id);
+
+				// Check if we're deleting collection and all FAQs or just the collection page
+				$category->set('delete_action', JRequest::getVar('action', 'removefaqs'));
 				if (!$category->delete())
 				{
 					$msg = $category->getError();
