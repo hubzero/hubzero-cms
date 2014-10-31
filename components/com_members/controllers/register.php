@@ -402,6 +402,22 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 		if (!$force && $check && JRequest::getMethod() == 'POST')
 		{
+			// Before going any further, we need to do a sanity check to make sure username isn't being changed.
+			// This really only happens on a race condition where someone is creating the same account
+			// using a 3rd party auth service in two different browsers. Yes, it's crazy!
+			if ($xregistration->get('login') && $this->juser->get('username')[0] == '-')
+			{
+				// Make sure the username hasn't since been set in the database
+				if (JUser::getInstance($this->juser->get('id'))->get('username')[0] != '-')
+				{
+					$this->setRedirect(
+						JRoute::_('index.php?option=com_users&view=logout'),
+						'This account appears to already exist. Please try logging in again.',
+						'warning');
+					return;
+				}
+			}
+
 			//$params = JComponentHelper::getParams('com_members');
 			$hubHomeDir = rtrim($this->config->get('homedir'),'/');
 
