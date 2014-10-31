@@ -174,6 +174,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		}
 
 		// Display results
+		$this->view->set('status', (isset($item) && $item != '') ? 'exists' : 'new');
 		$this->view->setLayout('edit')->display();
 	}
 
@@ -228,13 +229,13 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		$row = new MwHosttype($mwdb);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		$insert = false;
-		if (!$fields['id'])
+		if ($fields['status'] == 'new')
 		{
 			$insert = true;
 		}
@@ -263,13 +264,13 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		// Store new content
-		if (!$fields['id'])
+		if ($fields['status'] == 'new')
 		{
 			$result = $row->store($insert);
 		}
@@ -280,7 +281,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 		if (!$result)
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setError($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
