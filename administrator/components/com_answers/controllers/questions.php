@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -39,7 +39,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -51,7 +51,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * List all questions
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -130,12 +130,9 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -145,7 +142,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new question
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -155,20 +152,12 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a question for editing
 	 *
-	 * @return	void
+	 * @param   object  $row  AnswersModelResponse
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
-
-		// Incoming
-		$id = JRequest::getVar('id', array(0));
-		if (is_array($id))
-		{
-			$id = $id[0];
-		}
 
 		// Load object
 		if (is_object($row))
@@ -177,26 +166,32 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		}
 		else
 		{
+			// Incoming
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = $id[0];
+			}
+
 			$this->view->row = new AnswersModelQuestion($id);
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a question and fall back to edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -206,7 +201,8 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Save a question
 	 *
-	 * @return     void
+	 * @param   noolean  $redirect  Redirect after save?
+	 * @return  void
 	 */
 	public function saveTask($redirect=true)
 	{
@@ -263,7 +259,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Delete one or more questions and associated data
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -314,7 +310,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Set one or more questions to open
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function openTask()
 	{
@@ -324,7 +320,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Set one or more questions to closed
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function closeTask()
 	{
@@ -334,7 +330,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Set the state of one or more questions
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function stateTask()
 	{
@@ -360,10 +356,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Load the plugins
-		//JPluginHelper::importPlugin('xmessage');
-		//$dispatcher = JDispatcher::getInstance();
-
 		foreach ($ids as $id)
 		{
 			// Update record(s)
@@ -377,12 +369,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 			if ($publish == 1)
 			{
 				$aq->adjustCredits();
-				/*// Call the plugin
-				if (!$dispatcher->trigger('onTakeAction', array('answers_reply_submitted', array($aq->creator('id')), $this->_option, $id)))
-				{
-					$this->setError(JText::_('Failed to remove alert.'));
-				}
-				$aq->set('reward', 0);*/
 			}
 
 			if (!$aq->store())
@@ -392,7 +378,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// set message
+		// Set message
 		if ($publish == 1)
 		{
 			$message = JText::sprintf('COM_ANSWERS_QUESTIONS_CLOSED', count($ids));
@@ -411,7 +397,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task and redirect to default view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancel()
 	{

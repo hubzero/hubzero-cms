@@ -37,80 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class AnswersTableQuestion extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $subject    = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $question   = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $state      = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $anonymous  = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $email      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $helpful    = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $reward    = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -120,7 +50,7 @@ class AnswersTableQuestion extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -132,12 +62,8 @@ class AnswersTableQuestion extends JTable
 		}
 
 		// Updating entry
-		$juser = JFactory::getUser();
-		$this->created    = $this->created    ? $this->created    : JFactory::getDate()->toSql();
-		$this->created_by = $this->created_by ? $this->created_by : $juser->get('id');
-
-		// Code cleaner
-		//$this->question = nl2br($this->question);
+		$this->created    = $this->created    ?: JFactory::getDate()->toSql();
+		$this->created_by = $this->created_by ?: JFactory::getUser()->get('id');
 
 		return true;
 	}
@@ -145,8 +71,8 @@ class AnswersTableQuestion extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -258,8 +184,8 @@ class AnswersTableQuestion extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -276,8 +202,8 @@ class AnswersTableQuestion extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getResults($filters=array())
 	{
@@ -297,9 +223,9 @@ class AnswersTableQuestion extends JTable
 	/**
 	 * Get questions by tag
 	 *
-	 * @param      string  $tag   Tag to find records by
-	 * @param      integer $limit Max number of records to return
-	 * @return     array
+	 * @param   string   $tag    Tag to find records by
+	 * @param   integer  $limit  Max number of records to return
+	 * @return  array
 	 */
 	public function getQuestionsByTag($tag, $limit=100)
 	{
@@ -319,15 +245,13 @@ class AnswersTableQuestion extends JTable
 	/**
 	 * Get the ID of question either before or after the current ID
 	 *
-	 * @param      integer $id    Question ID
-	 * @param      string  $which Direction to look (prev or next)
-	 * @return     integer
+	 * @param   integer  $id     Question ID
+	 * @param   string   $which  Direction to look (prev or next)
+	 * @return  integer
 	 */
 	public function getQuestionID($id, $which)
 	{
-		$query  = "SELECT a.id ";
-		$query .= "FROM $this->_tbl AS a ";
-		$query .= "WHERE a.state != 2 AND ";
+		$query  = "SELECT a.id FROM `$this->_tbl` AS a WHERE a.state != 2 AND ";
 		$query .= ($which == 'prev') ? "a.id < " . $this->_db->Quote($id) . " " : "a.id > " . $this->_db->Quote($id);
 		$query .= ($which == 'prev') ? " ORDER BY a.id DESC "  : " ORDER BY a.id ASC ";
 		$query .= " LIMIT 1";

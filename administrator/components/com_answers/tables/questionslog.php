@@ -37,45 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class AnswersTableQuestionsLog extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $question_id     = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var unknown
-	 */
-	var $expires = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $voter   = NULL;
-
-	/**
-	 * varchar(15)
-	 *
-	 * @var string
-	 */
-	var $ip      = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -85,7 +50,7 @@ class AnswersTableQuestionsLog extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -119,10 +84,10 @@ class AnswersTableQuestionsLog extends JTable
 	/**
 	 * Check if a user has voted
 	 *
-	 * @param      integer $qid   Question ID
-	 * @param      string  $ip    IP address
-	 * @param      integer $voter Voter user ID
-	 * @return     mixed False if error, integer on success
+	 * @param   integer  $qid    Question ID
+	 * @param   string   $ip     IP address
+	 * @param   integer  $voter  Voter user ID
+	 * @return  mixed    False if error, integer on success
 	 */
 	public function checkVote($qid=null, $ip=null, $voter=null)
 	{
@@ -137,16 +102,16 @@ class AnswersTableQuestionsLog extends JTable
 
 		$now = JFactory::getDate()->toSql();
 
+		$query = "SELECT COUNT(*) FROM `$this->_tbl` WHERE question_id=" . $this->_db->Quote($qid);
 		if ($voter !== null)
 		{
-			$and = " AND voter=" . $this->_db->Quote($voter);
+			$query .= " AND voter=" . $this->_db->Quote($voter);
 		}
 		else
 		{
-			$and = " AND ip=" . $this->_db->Quote($ip);
+			$query .= " AND ip=" . $this->_db->Quote($ip);
 		}
 
-		$query = "SELECT count(*) FROM $this->_tbl WHERE question_id=" . $this->_db->Quote($qid) . $and;
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();

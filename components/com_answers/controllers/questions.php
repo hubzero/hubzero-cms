@@ -938,57 +938,45 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		}
 		$email = 0;
 
-		$question = new AnswersTableQuestion($this->database);
-		$question->load($id);
+		$question = new AnswersModelQuestion($id);
 
 		// Check if user is authorized to delete
-		if ($question->created_by != $this->juser->get('id'))
+		if ($question->get('created_by') != $this->juser->get('id'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=3')
-			);
-			return;
-		}
-		else if ($question->state == 1)
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=question&id=' . $id . '&note=2')
+				JRoute::_($question->link() . '&note=3')
 			);
 			return;
 		}
 
-		$question->state  = 2;  // Deleted by user
-		$question->reward = 0;
+		if ($question->get('state') == 1)
+		{
+			$this->setRedirect(
+				JRoute::_($question->link() . '&note=2')
+			);
+			return;
+		}
+
+		$question->set('state', 2);  // Deleted by user
+		$question->set('reward', 0);
 
 		// Store new content
-		if (!$question->store())
+		if (!$question->store(false))
 		{
-			JError::raiseError(500, $question->getError());
-			return;
+			throw new JException($question->getError(), 500);
 		}
-
-		// Get all the answers for this question
-		$ar = new AnswersTableResponse($this->database);
-		$responses = $ar->getRecords(array(
-			'ip'  => $ip,
-			'question_id' => $id
-		));
 
 		if ($reward && $this->config->get('banking'))
 		{
-			if ($responses)
+			// Get all the answers for this question
+			if ($question->comments('list', array('filterby' => 'all')))
 			{
 				$jconfig = JFactory::getConfig();
 
 				$users = array();
 				foreach ($responses as $r)
 				{
-					$user = JUser::getInstance($r->created_by);
-					if (!is_object($user))
-					{
-						continue;
-					}
-					$users[] = $user->get('id');
+					$users[] = $r->creator('id');
 				}
 
 				// Build the "from" info
@@ -1012,7 +1000,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 				$eview->jconfig  = $jconfig;
 				$eview->sitename = $jconfig->getValue('config.sitename');
 				$eview->juser    = $this->juser;
-				$eview->question = new AnswersModelQuestion($question);
+				$eview->question = $question;
 				$eview->id       = $question->get('id');
 				$eview->boundary = $from['multipart'];
 
@@ -1042,24 +1030,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			$adjusted = $BTL_Q->credit_summary() - $reward;
 			$BTL_Q->credit_adjustment($adjusted);
 		}
-
-		// Delete all tag associations
-		/*$tagging = new AnswersModelTags($this->database);
-		$tagging->remove_all_tags($id);
-
-		// Get all the answers for this question
-		if ($responses)
-		{
-			$al = new AnswersTableLog($this->database);
-			foreach ($responses as $answer)
-			{
-				// Delete votes
-				$al->deleteLog($answer->id);
-
-				// Delete response
-				$ar->deleteResponse($answer->id);
-			}
-		}*/
 
 		// Redirect to the question
 		$this->setRedirect(

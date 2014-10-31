@@ -304,7 +304,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			default:
 				if (!($this->_comments instanceof \Hubzero\Base\ItemList) || $clear)
 				{
-					if ($results = $tbl->getResults($filters))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
@@ -347,7 +347,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			case 'count':
 				if ($this->get('chosen_count', null) === null)
 				{
-					$this->set('chosen_count', $tbl->getCount($filters));
+					$this->set('chosen_count', $tbl->find('count', $filters));
 				}
 				return $this->get('chosen_count');
 			break;
@@ -357,7 +357,7 @@ class AnswersModelQuestion extends AnswersModelAbstract
 			default:
 				if ($this->get('chosen', null) === null || !($this->get('chosen') instanceof \Hubzero\Base\ItemList))
 				{
-					if ($results = $tbl->getResults($filters))
+					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{

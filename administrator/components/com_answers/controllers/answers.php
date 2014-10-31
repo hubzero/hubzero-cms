@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -39,7 +39,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -51,7 +51,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Display all responses for a given question
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -103,10 +103,10 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		$ar = new AnswersTableResponse($this->database);
 
 		// Get a record count
-		$this->view->total = $ar->getCount($this->view->filters);
+		$this->view->total   = $ar->find('count', $this->view->filters);
 
 		// Get records
-		$this->view->results = $ar->getResults($this->view->filters);
+		$this->view->results = $ar->find('list', $this->view->filters);
 
 		// Did we get any results?
 		if ($this->view->results)
@@ -126,9 +126,9 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -138,7 +138,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new response
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -148,22 +148,15 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a question response for editing
 	 *
-	 * @return	void
+	 * @param   object  $row  AnswersModelResponse
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		// Incoming
-		$id = 0;
 		$qid = JRequest::getInt('qid', 0);
-		$id = JRequest::getVar('id', array());
-		if (is_array($id) && !empty($id))
-		{
-			$id = $id[0];
-		}
 
 		if (is_object($row))
 		{
@@ -171,26 +164,33 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			// load infor from database
+			$id = JRequest::getVar('id', array());
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
 			$this->view->row = new AnswersModelResponse($id);
 		}
 
 		$this->view->question = new AnswersModelQuestion($qid);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a question and fall back to edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -200,7 +200,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Save a response
 	 *
-	 * @param   boolean $redirect
+	 * @param   boolean  $redirect
 	 * @return  void
 	 */
 	public function saveTask($redirect=true)
@@ -247,7 +247,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Removes one or more entries and associated data
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -282,7 +282,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Mark an entry as "accepted" and unmark any previously accepted entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function rejectTask()
 	{
@@ -292,7 +292,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Mark an entry as "accepted" and unmark any previously accepted entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function acceptTask()
 	{
@@ -363,7 +363,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task and redirect to default view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -375,7 +375,7 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 	/**
 	 * Reset the vote count for an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function resetTask()
 	{

@@ -40,7 +40,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 
 require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'economy.php');
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'question.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'answers.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = JRequest::getCmd('controller', 'questions');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

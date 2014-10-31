@@ -102,8 +102,8 @@ class AnswersTableResponse extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -113,7 +113,7 @@ class AnswersTableResponse extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -142,8 +142,8 @@ class AnswersTableResponse extends JTable
 			$this->anonymous = 1;
 		}
 
-		$this->created    = $this->created    ? $this->created    : JFactory::getDate()->toSql();
-		$this->created_by = $this->created_by ? $this->created_by : JFactory::getUser()->get('id');
+		$this->created    = $this->created    ?: JFactory::getDate()->toSql();
+		$this->created_by = $this->created_by ?: JFactory::getUser()->get('id');
 
 		return true;
 	}
@@ -151,8 +151,8 @@ class AnswersTableResponse extends JTable
 	/**
 	 * Get records based on filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -195,21 +195,19 @@ class AnswersTableResponse extends JTable
 	/**
 	 * Get all users and their votes for responses on a question
 	 *
-	 * @param      integer $qid Question ID
-	 * @return     mixed False on error, array on success
+	 * @param   integer  $qid  Question ID
+	 * @return  mixed    False on error, array on success
 	 */
 	public function getActions($qid=null)
 	{
-		if ($qid == null)
-		{
-			$qid = $this->question_id;
-		}
+		$qid = $qid ?: $this->question_id;
+
 		if ($qid == null)
 		{
 			return false;
 		}
 
-		$query = "SELECT id, helpful, nothelpful, state, created_by FROM $this->_tbl WHERE question_id=" . $this->_db->Quote($qid) . " AND state!='2'";
+		$query = "SELECT id, helpful, nothelpful, state, created_by FROM `$this->_tbl` WHERE question_id=" . $this->_db->Quote($qid) . " AND state!='2'";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -224,24 +222,15 @@ class AnswersTableResponse extends JTable
 	 */
 	public function getResponse($id=null, $ip = null)
 	{
-		if ($id == null)
-		{
-			$id = $this->id;
-		}
-		if ($id == null)
-		{
-			return false;
-		}
-		if ($ip == null)
-		{
-			$ip = $this->ip;
-		}
-		if ($ip == null)
+		$id = $id ?: $this->id;
+		$ip = $ip ?: $this->ip;
+
+		if ($id == null || $ip == null)
 		{
 			return false;
 		}
 
-		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN #__answers_log AS l ON r.id=l.response_id AND ip=" . $this->_db->Quote($ip) . " WHERE r.state!=2 AND r.id=" . $this->_db->Quote($id);
+		$query  = "SELECT r.*, l.helpful AS vote FROM $this->_tbl AS r LEFT JOIN `#__answers_log` AS l ON r.id=l.response_id AND ip=" . $this->_db->Quote($ip) . " WHERE r.state!=2 AND r.id=" . $this->_db->Quote($id);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -250,21 +239,19 @@ class AnswersTableResponse extends JTable
 	/**
 	 * Set a response to "deleted"
 	 *
-	 * @param      integer $id Record ID
-	 * @return     boolean True on success
+	 * @param   integer  $id  Record ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteResponse($id=null)
 	{
-		if ($id == null)
-		{
-			$id = $this->id;
-		}
+		$id = $id ?: $this->id;
+
 		if ($id == null)
 		{
 			return false;
 		}
 
-		$query  = "UPDATE $this->_tbl SET state=" . $this->_db->Quote(2) . " WHERE id=" . $this->_db->Quote($id);
+		$query  = "UPDATE `$this->_tbl` SET state=" . $this->_db->Quote(2) . " WHERE id=" . $this->_db->Quote($id);
 
 		$this->_db->setQuery($query);
 		$this->_db->query();
@@ -274,108 +261,176 @@ class AnswersTableResponse extends JTable
 	/**
 	 * Get the response IDs for a question
 	 *
-	 * @param      integer $qid Question ID
-	 * @return     mixed False if error, array on success
+	 * @param   integer  $qid  Question ID
+	 * @return  mixed    False if error, array on success
 	 */
 	public function getIds($qid=null)
 	{
-		if ($qid == null)
-		{
-			$qid = $this->question_id;
-		}
+		$qid = $qid ?: $this->question_id;
+
 		if ($qid == null)
 		{
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE question_id=" . $this->_db->Quote($qid));
-		return $this->_db->loadObjectList();
-	}
-
-	/**
-	 * Get a record count
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
-	 */
-	public function getCount($filters=array())
-	{
-		$filters['sortby'] = '';
-		$filters['limit']  = 0;
-
-		$query  = "SELECT COUNT(*) " . $this->buildQuery($filters);
-
-		$this->_db->setQuery($query);
-		return $this->_db->loadResult();
-	}
-
-	/**
-	 * Get records
-	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
-	 */
-	public function getResults($filters=array())
-	{
-		$query  = "SELECT m.*, u.name ";
-		$query .= $this->buildQuery($filters);
-
-		$this->_db->setQuery($query);
+		$this->_db->setQuery("SELECT id FROM `$this->_tbl` WHERE question_id=" . $this->_db->Quote($qid));
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
-	public function buildQuery($filters=array())
+	protected function _buildQuery($filters=array())
 	{
-		$query = "FROM $this->_tbl AS m, #__users AS u WHERE m.created_by=u.id";
+		$query = "FROM `$this->_tbl` AS m LEFT JOIN #__users AS u ON m.created_by=u.id";
 
-		switch ($filters['filterby'])
+		$where = array();
+
+		if (isset($filters['filterby']))
 		{
-			case 'all':
-				$query .= " AND (m.state=1 OR m.state=0)";
+			switch ($filters['filterby'])
+			{
+				case 'all':
+					$where[] = "(m.state=1 OR m.state=0)";
 				break;
-			case 'accepted':
-				$query .= " AND m.state=1";
+				case 'accepted':
+					$where[] = "m.state=1";
 				break;
-			case 'rejected':
-			default:
-				$query .= " AND m.state=0";
+				case 'rejected':
+				default:
+					$where[] = "m.state=0";
 				break;
+			}
+		}
+		else
+		{
+			if (isset($filters['state']))
+			{
+				if (is_array($filters['state']))
+				{
+					$filters['state'] = array_map('intval', $filters['state']);
+					$where[] = "m.state IN (" . implode(',', $filters['state']) . ")";
+				}
+				else if ($filters['state'] >= 0)
+				{
+					$where[] = "m.state=" . $this->_db->Quote($filters['state']);
+				}
+			}
 		}
 
 		if (isset($filters['question_id']) && $filters['question_id'] > 0)
 		{
-			$query .= " AND m.question_id=" . $this->_db->Quote($filters['question_id']);
+			$where[] = "m.question_id=" . $this->_db->Quote($filters['question_id']);
 		}
 
-		if (isset($filters['sortby']) && $filters['sortby'] != '')
+		if (count($where) > 0)
 		{
-			$query .= " ORDER BY " . $filters['sortby'];
-		}
-		else
-		{
-			$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
-			if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
-			{
-				$filters['sort_Dir'] = 'DESC';
-			}
-			if (isset($filters['sort']))
-			{
-				$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
-			}
-		}
-
-		if (isset($filters['limit']) && $filters['limit'] > 0)
-		{
-			$query .= " LIMIT " . (int) $filters['start'] . ", " . (int) $filters['limit'];
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
+	}
+
+	/**
+	 * Get a count of, single entry, or list of entries
+	 * 
+	 * @param   string   $rtrn     Data to return
+	 * @param   array    $filters  Filters to apply to data retrieval
+	 * @param   array    $select   List of fields to select
+	 * @return  mixed
+	 * @since   1.3.1
+	 */
+	public function find($what='', $filters=array(), $select=array())
+	{
+		$what = strtolower($what);
+		$select = (array) $select;
+
+		switch ($what)
+		{
+			case 'count':
+				$query = "SELECT COUNT(*) " . $this->_buildQuery($filters);
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadResult();
+			break;
+
+			case 'one':
+				$filters['limit'] = 1;
+
+				$result = null;
+				if ($results = $this->find('list', $filters))
+				{
+					$result = $results[0];
+				}
+
+				return $result;
+			break;
+
+			case 'first':
+				$filters['start'] = 0;
+
+				return $this->find('one', $filters);
+			break;
+
+			case 'all':
+				if (isset($filters['limit']))
+				{
+					unset($filters['limit']);
+				}
+				return $this->find('list', $filters);
+			break;
+
+			case 'list':
+			default:
+				if (empty($select))
+				{
+					$select = array(
+						'm.*',
+						'u.name'
+					);
+				}
+
+				$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
+
+				if (isset($filters['sortby']) && $filters['sortby'] != '')
+				{
+					$query .= " ORDER BY " . $filters['sortby'];
+				}
+				else
+				{
+					if (!isset($filters['sort']))
+					{
+						$filters['sort'] = 'created';
+					}
+					if (!isset($filters['sort_Dir']))
+					{
+						$filters['sort_Dir'] = 'ASC';
+					}
+					$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+					if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+					{
+						$filters['sort_Dir'] = 'ASC';
+					}
+					if (isset($filters['sort']))
+					{
+						$query .= " ORDER BY " . $filters['sort'] . " " .  $filters['sort_Dir'];
+					}
+				}
+
+				if (isset($filters['limit']) && $filters['limit'] > 0)
+				{
+					$filters['start'] = (isset($filters['start']) ? $filters['start'] : 0);
+
+					$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+				}
+
+				$this->_db->setQuery($query);
+				return $this->_db->loadObjectList();
+			break;
+		}
 	}
 }
 

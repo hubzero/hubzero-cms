@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = AnswersHelper::getActions('question');
+$canDo = AnswersHelperPermissions::getActions('question');
 
 JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_QUESTIONS'), 'answers.png');
 if ($canDo->get('core.admin'))
@@ -130,7 +130,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<span><?php echo $this->escape($row->subject('clean')); ?></span>
 					</a>
 				<?php } else { ?>
@@ -141,7 +141,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_ANSWERS_SET_STATE', $task); ?>">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_SET_STATE', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -154,7 +154,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 					<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 				</td>
 				<td>
-					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id=<?php echo $row->creator('id'); ?>">
+					<a class="glyph user" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=members&task=edit&id=' . $row->creator('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->creator('name'))); ?>
 					</a>
 				<?php if ($row->get('anonymous')) { ?>
@@ -163,7 +163,7 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 				</td>
 			<?php if ($row->comments('count', array('filterby' => 'all', 'replies' => false)) > 0) { ?>
 				<td style="white-space: nowrap;">
-					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=answers&amp;qid=<?php echo $row->get('id'); ?>">
+					<a class="glyph comment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
 						<span><?php echo JText::sprintf('COM_ANSWERS_NUM_RESPONSES', $row->comments('count')); ?></span>
 					</a>
 				</td>

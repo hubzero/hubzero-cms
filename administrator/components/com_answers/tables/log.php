@@ -37,38 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class AnswersTableLog extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $response_id     = NULL;
-
-	/**
-	 * varchar(15)
-	 *
-	 * @var string
-	 */
-	var $ip      = NULL;
-
-	/**
-	 * varchar(10)
-	 *
-	 * @var string
-	 */
-	var $helpful = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -78,37 +50,29 @@ class AnswersTableLog extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      integer $rid Answer ID
-	 * @param      string  $ip  IP address
-	 * @return     boolean True upon success, False if errors
+	 * @param   integer  $response_id  Answer ID
+	 * @param   string   $ip           IP address
+	 * @return  boolean  True upon success, False if errors
 	 */
-	public function loadByIp($rid=null, $ip=null)
+	public function loadByIp($response_id=null, $ip=null)
 	{
-		if ($rid == null)
-		{
-			$rid = $this->rid;
-		}
-		if ($rid == null)
+		$response_id = $response_id ?: $this->response_id;
+
+		if ($response_id == null)
 		{
 			return false;
 		}
-		$sql  = "SELECT * FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip) . " LIMIT 1";
-		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+
+		return parent::load(array(
+			'response_id' => (int) $response_id,
+			'ip'          => (string) $ip
+		));
 	}
 
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -144,45 +108,41 @@ class AnswersTableLog extends JTable
 	/**
 	 * Check if a vote has been registered for an answer/IP
 	 *
-	 * @param      integer $rid Answer ID
-	 * @param      string  $ip  IP address
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $response_id  Answer ID
+	 * @param   string   $ip           IP address
+	 * @return  integer
 	 */
-	public function checkVote($rid=null, $ip=null)
+	public function checkVote($response_id=null, $ip=null)
 	{
-		if ($rid == null)
+		$response_id = $response_id ?: $this->response_id;
+
+		if ($response_id == null)
 		{
-			$rid = $this->response_id;
-		}
-		if ($rid == null)
-		{
-			return false;
+			return 0;
 		}
 
-		$query = "SELECT helpful FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($rid) . " AND ip=" . $this->_db->Quote($ip);
+		$query = "SELECT helpful FROM `$this->_tbl` WHERE response_id=" . $this->_db->Quote($response_id) . " AND ip=" . $this->_db->Quote($ip);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Delete a record by answer/IP
+	 * Delete a record by answer ID
 	 *
-	 * @param      integer $rid Answer ID
-	 * @return     boolean True on success, false if error
+	 * @param   integer  $response_id  Answer ID
+	 * @return  boolean  True on success, false if error
 	 */
-	public function deleteLog($rid=null)
+	public function deleteLog($response_id=null)
 	{
-		if ($rid == null)
-		{
-			$rid = $this->rid;
-		}
-		if ($rid == null)
+		$response_id = $response_id ?: $this->response_id;
+
+		if ($response_id == null)
 		{
 			return false;
 		}
 
-		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($rid));
+		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE response_id=" . $this->_db->Quote($response_id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

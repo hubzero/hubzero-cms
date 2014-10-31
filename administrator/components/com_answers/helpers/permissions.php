@@ -29,8 +29,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
-class AnswersHelper
+/**
+ * Permissions helper
+ */
+class AnswersHelperPermissions
 {
 	/**
 	 * Name of the component
@@ -42,25 +44,29 @@ class AnswersHelper
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param	string	$extension	The extension.
-	 * @param	int		$categoryId	The category ID.
-	 *
-	 * @return	JObject
-	 * @since	1.6
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The asset ID.
+	 * @return  object   JObject
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
 	{
-		$assetName = 'com_answers';
-		$user	= JFactory::getUser();
-		$result	= new JObject;
-
+		$assetName  = self::$extension;
 		$assetName .= '.' . $assetType;
-		if ($assetId) {
+		if ($assetId)
+		{
 			$assetName .= '.' . (int) $assetId;
 		}
 
+		$user   = JFactory::getUser();
+		$result = new JObject;
+
 		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.delete'
 		);
 
 		foreach ($actions as $action)

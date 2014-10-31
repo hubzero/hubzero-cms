@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = AnswersHelper::getActions('answer');
+$canDo = AnswersHelperPermissions::getActions('answer');
 
 JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_RESPONSES'), 'answers.png');
 if ($canDo->get('core.create'))
@@ -79,14 +79,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="6">
-				<?php if ($this->question->exists()) { ?>
-					#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> -
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=questions&amp;task=edit&amp;id[]=<?php echo $this->question->get('id'); ?>">
-						<?php echo $this->escape($this->question->subject('clean')); ?>
-					</a>
-				<?php } else { ?>
-					<?php echo JText::_('COM_ANSWERS_RESPONSES_TO_ALL'); ?>
-				<?php } ?>
+					<?php if ($this->question->exists()) { ?>
+						#<?php echo $this->escape(stripslashes($this->question->get('id'))); ?> -
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=questions&task=edit&id=' . $this->question->get('id')); ?>">
+							<?php echo $this->escape($this->question->subject('clean')); ?>
+						</a>
+					<?php } else { ?>
+						<?php echo JText::_('COM_ANSWERS_RESPONSES_TO_ALL'); ?>
+					<?php } ?>
 				</th>
 			</tr>
 			<tr>
@@ -126,15 +126,15 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id') . '&qid=' . $this->question->get('id')); ?>">
 						<span><?php echo $row->content('clean', 75); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller ?>&amp;task=<?php echo $task;?>&amp;id=<?php echo $row->get('id'); ?>&amp;qid=<?php echo $this->question->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_ANSWERS_SET_STATE', $task); ?>">
+					<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&qid=' . $this->question->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_ANSWERS_SET_STATE', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
@@ -142,12 +142,12 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 					<time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
 				</td>
 				<td>
-					<a class="glyph user" href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $row->creator('id'); ?>">
+					<a class="glyph user" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=members&task=edit&id=' . $row->creator('id')); ?>">
 						<span><?php echo $this->escape(stripslashes($row->creator('name'))).' ('.$row->creator('id').')'; ?></span>
 					</a>
-				<?php if ($row->get('anonymous')) { ?>
-					<br /><span>(<?php echo JText::_('COM_ANSWERS_ANONYMOUS'); ?>)</span>
-				<?php } ?>
+					<?php if ($row->get('anonymous')) { ?>
+						<br /><span>(<?php echo JText::_('COM_ANSWERS_ANONYMOUS'); ?>)</span>
+					<?php } ?>
 				</td>
 				<td>
 					<span class="vote like" style="color:green;">+<?php echo $row->get('helpful', 0); ?></span>
