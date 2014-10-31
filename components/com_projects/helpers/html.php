@@ -927,7 +927,7 @@ class ProjectsHtml
 				{
 					continue;
 				}
-				if (in_array($tab['name'], $assets))
+				if (in_array($tab['name'], $assets) && count($assetTabs) > 1)
 				{
 					continue;
 				}
