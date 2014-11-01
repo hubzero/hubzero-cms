@@ -53,14 +53,15 @@ $shortComment = ProjectsHtml::replaceEmoIcons($shortComment);
 			 <a href="<?php echo JRoute::_('index.php?option=' . $this->option
 			. '&alias=' . $this->project->alias . '&task=view&active=feed')
 			.'/?action=deletecomment' . a . 'cid=' . $comment->id; ?>">x</a>
-		</span></span>
+			</span>
+		</span>
+		<?php } ?>
 		<img class="comment-author" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($comment->created_by, $comment->admin); ?>" alt="" />
 		<span class="comment-show">
 			<span class="comment-details">
 				<span class="actor"><?php echo $comment->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $comment->author; ?></span>
 				<span class="item-time">&middot; <?php echo ProjectsHtml::showTime($comment->created, true); ?></span>
 			</span>
-	<?php } ?>
 	<?php 	echo '<span class="body">' . $shortComment;
 			if ($shorten)
 			{
