@@ -508,18 +508,18 @@ final class JSite extends JApplication
 	 * @param mixed		The template style parameters
 	 */
 	public function setTemplate($template, $styleParams=null)
- 	{
- 		if (is_dir(JPATH_THEMES . '/' . $template)) {
- 			$this->template = new stdClass();
- 			$this->template->template = $template;
+	{
+		if (is_dir(JPATH_THEMES . '/' . $template)) {
+			$this->template = new stdClass();
+			$this->template->template = $template;
 			if ($styleParams instanceof JRegistry) {
 				$this->template->params = $styleParams;
 			}
 			else {
 				$this->template->params = new JRegistry($styleParams);
 			}
- 		}
- 	}
+		}
+	}
 
 	/**
 	 * Return a reference to the JPathway object.
