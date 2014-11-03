@@ -487,10 +487,10 @@ final class JSite extends JApplication
 		// Fallback template
 		if (!file_exists(JPATH_THEMES . '/' . $template->template . '/index.php')) {
 			JError::raiseWarning(0, JText::_('JERROR_ALERTNOTEMPLATE'));
-		    $template->template = 'beez_20';
-		    if (!file_exists(JPATH_THEMES . '/beez_20/index.php')) {
-		    	$template->template = '';
-		    }
+			$template->template = 'system';
+			if (!file_exists(JPATH_THEMES . '/system/index.php')) {
+				$template->template = '';
+			}
 		}
 
 		// Cache the result
