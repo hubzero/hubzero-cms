@@ -571,7 +571,7 @@ class plgCronSupport extends JPlugin
 				$where[] = "t.`login` IN (" . implode(", ", $usernames) . ")";
 			}
 
-			if ($tags = $params->get('support_ticketlist_excludeTags', 'fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate'))
+			if ($tags = $params->get('support_ticketlist_excludeTags'))
 			{
 				$tags = explode(',', $tags);
 				$tags = array_map('trim', $tags);
