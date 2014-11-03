@@ -58,7 +58,6 @@ switch ($this->which)
 			$i = 0;
 			foreach ($projects as $row)
 			{
-				$thumb = ProjectsHTML::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 				$goto  = 'alias=' . $row->alias;
 				$owned_by = '';
 				if ($row->owned_by_group)
@@ -78,7 +77,7 @@ switch ($this->which)
 
 				$i++; ?>
 				<tr class="mline">
-					<td class="th_image"><a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)).' ('.$row->alias.')'; ?>"><img src="<?php echo $thumb; ?>" alt="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)); ?>"  class="project-image" /></a> <?php if ($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?></td>
+					<td class="th_image"><a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)).' ('.$row->alias.')'; ?>"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)); ?>"  class="project-image" /></a> <?php if ($row->newactivity && $row->state == 1 && !$setup) { ?><span class="s-new"><?php echo $row->newactivity; ?></span><?php } ?></td>
 					<td class="th_privacy"><?php if ($row->private == 1) { echo '<span class="privacy-icon">&nbsp;</span>' ;} ?></td>
 					<td class="th_title"><a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&'.$goto); ?>" title="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)).' ('.$row->alias.')'; ?>"><?php echo ProjectsHtml::cleanText($row->title); ?></a>
 					<?php if($this->which != 'owned') { ?><span class="block">
