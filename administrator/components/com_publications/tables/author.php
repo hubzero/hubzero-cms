@@ -206,7 +206,9 @@ class PublicationAuthor extends JTable
 			return false;
 		}
 
-		$this->_db->setQuery( "SELECT * FROM $this->_tbl WHERE publication_version_id=".$vid." AND user_id=".$uid );
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_version_id=".$vid." AND user_id=".$uid;
+		$query .= " AND (role IS NULL OR role != 'submitter') LIMIT 1";
+		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind( $result );
@@ -470,6 +472,7 @@ class PublicationAuthor extends JTable
 		$query .= " LEFT JOIN $this->_tbl as A ON x.uidNumber=A.user_id AND A.publication_version_id=".$vid." ";
 		$query .= $active ? " AND A.status=1" : "";
 		$query .= " WHERE x.uidNumber=".$uid;
+		$query .= " AND (A.role IS NULL OR A.role != 'submitter')  ";
 		$query .= " LIMIT 1 ";
 
 		$this->_db->setQuery( $query );
@@ -708,7 +711,8 @@ class PublicationAuthor extends JTable
 			name='$name', firstName='$firstName', lastName='$lastName', organization='$org',
 			credit='$credit', status='$this->status', modified='$this->modified',
 			modified_by='$this->modified_by' WHERE publication_version_id=$this->publication_version_id
-			AND project_owner_id=$this->project_owner_id";
+			AND project_owner_id=$this->project_owner_id
+			AND (role IS NULL OR role != 'submitter')";
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
