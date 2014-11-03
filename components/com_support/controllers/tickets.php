@@ -1265,7 +1265,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					{
 						$token = $encryptor->buildEmailToken(1, 1, -9999, $row->get('id'));
 
-						$emails[] = array(
+						$email = array(
 							$to['email'],
 							'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
 						);
