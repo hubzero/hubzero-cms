@@ -103,10 +103,10 @@ $dispatcher = JDispatcher::getInstance();
 			<tr>
 				<th class="checkbox"></th>
 				<th class="th_image"></th>
-				<th class="th_user i_user <?php if($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task='.$this->task).'/?'.$urlbit.a.'t_sortby=name'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_NAME'); ?></a></th>
-				<th<?php if($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task='.$this->task).'/?'.$urlbit.a.'t_sortby=role'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_ROLE'); ?></a></th>
-				<th<?php if($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task='.$this->task).'/?'.$urlbit.a.'t_sortby=status'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_JOINED'); ?></a></th>
-				<th class="i_group <?php if($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if( $this->count_groups > 0 ) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task='.$this->task).'/?'.$urlbit.a.'t_sortby=group'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" ><?php } ?><?php echo JText::_('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if( $this->count_groups > 0 ) { ?></a><?php } ?></th>
+				<th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task='.$this->task).'/?'.$urlbit.a.'t_sortby=name'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_NAME'); ?></a></th>
+				<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task='.$this->task).'/?'.$urlbit.a.'t_sortby=role'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_ROLE'); ?></a></th>
+				<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task='.$this->task).'/?'.$urlbit.a.'t_sortby=status'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort"><?php echo JText::_('COM_PROJECTS_JOINED'); ?></a></th>
+				<th class="i_group <?php if ($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if ( $this->count_groups > 0 ) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task='.$this->task).'/?'.$urlbit.a.'t_sortby=group'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" ><?php } ?><?php echo JText::_('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if ( $this->count_groups > 0 ) { ?></a><?php } ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -123,7 +123,7 @@ $dispatcher = JDispatcher::getInstance();
 					$usr_class = $owner->status == 0 ? ' class="userinvited"' : ' class="useractive"';
 					$usr_class = ($creator || ($this->project->owned_by_group && $owner->native))
 						? ' class="userowner"' : $usr_class;
-					if($owner->role == 1)
+					if ($owner->role == 1)
 					{
 						$role = JText::_('COM_PROJECTS_LABEL_OWNER');
 					}
@@ -132,11 +132,11 @@ $dispatcher = JDispatcher::getInstance();
 						$role = JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
 					}
 ?>
-			<tr class="mline <?php if($owner->userid == $this->uid) { echo 'native'; } else if($owner->status == 0) { echo 'u_invited'; } ?>" id="tr_<?php echo $owner->id; ?>">
-				<td><input type="checkbox" value="<?php echo $owner->id?>" name="owner[]" class="checkmember <?php if($owner->groupid) { echo 'group:'.$owner->groupid; } ?>"  <?php if($owner->native && ($this->project->owned_by_group or ($this->managers_count == 1 && $owner->role == 1) or $this->setup)) { echo 'disabled="disabled"'; } ?> /></td>
+			<tr class="mline <?php if ($owner->userid == $this->uid) { echo 'native'; } else if ($owner->status == 0) { echo 'u_invited'; } ?>" id="tr_<?php echo $owner->id; ?>">
+				<td><input type="checkbox" value="<?php echo $owner->id?>" name="owner[]" class="checkmember <?php if ($owner->groupid) { echo 'group:'.$owner->groupid; } ?>"  <?php if ($owner->native && ($this->project->owned_by_group or ($this->managers_count == 1 && $owner->role == 1) or $this->setup)) { echo 'disabled="disabled"'; } ?> /></td>
 				<td <?php echo $usr_class; ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" /></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
-				<td class="mini nobsp"><?php if(!$creator) { ?><span class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>"><?php } ?><?php echo $role; ?><?php if(!$creator) { ?></span><?php } ?></td>
+				<td class="mini nobsp"><?php if (!$creator) { ?><span class="frole owner:<?php echo $owner->id; ?> role:<?php echo $owner->role; ?>" id="r<?php echo $owner->id; ?>"><?php } ?><?php echo $role; ?><?php if (!$creator) { ?></span><?php } ?></td>
 				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, 'M d, Y') : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>
 				<td><?php echo $owner->groupdesc ? \Hubzero\Utility\String::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span></td>
 			</tr>
@@ -145,13 +145,13 @@ $dispatcher = JDispatcher::getInstance();
 			</table>
 	<div class="nav_pager"><p>
 		<?php
-		if($this->filters['start'] == 0) {	?>
+		if ($this->filters['start'] == 0) {	?>
 			<span>&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></span>
 		<?php	} else {  ?>
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=edit').'/?edit=team'.a.'t_sortby='.$this->filters['sortby'].a.'t_limitstart='.$prev_start.a.'t_sortdir='.$this->filters['sortdir']; ?>">&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></a>
 		<?php } ?><span>&nbsp; | &nbsp;</span>
 		<?php
-		if( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
+		if ( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
 			<span><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</span>
 		<?php	} else { ?>
 			<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'task=edit').'/?edit=team'.a.'t_sortby='.$this->filters['sortby'].a.'t_limitstart='.$next_start.a.'t_sortdir='.$this->filters['sortdir']; ?>"><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</a>

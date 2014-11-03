@@ -274,7 +274,7 @@ tooltip: true,
 				</tr>
 			</table>
 <?php }
- } else { ?>
+	} else { ?>
 	<p class="noresults"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATS_NO_INFO'); ?></p>
 <?php } ?>
 </div>
