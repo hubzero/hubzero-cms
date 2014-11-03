@@ -34,18 +34,18 @@ $p_url = JRoute::_($route . a . 'active=team');
 $shown = array();
 ?>
 <div>
-		<ul id="c-browser" 	<?php if(count($this->team) == 0) { echo 'class="hidden"'; } ?>>
+		<ul id="c-browser" 	<?php if (count($this->team) == 0) { echo 'class="hidden"'; } ?>>
 			<?php
-			if(count($this->team) > 0) {
+			if (count($this->team) > 0) {
 				$i = 0;
-				foreach($this->team as $owner) {
+				foreach ($this->team as $owner) {
 
 					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
 					$actor   = \Hubzero\User\Profile::getInstance($this->uid);
 					$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
-					if(in_array($owner->userid, $this->exclude)) {
+					if (in_array($owner->userid, $this->exclude)) {
 						// Skip certain team members if necessary
 						continue;
 					}
@@ -70,10 +70,10 @@ $shown = array();
 			$missing = array();
 
 			// Check for missing items
-			if($this->authors) {
-				if(count($this->authors) > 0) {
-					foreach($this->authors as $member) {
-						if($member->project_owner_id && !in_array($member->project_owner_id, $shown)) {
+			if ($this->authors) {
+				if (count($this->authors) > 0) {
+					foreach ($this->authors as $member) {
+						if ($member->project_owner_id && !in_array($member->project_owner_id, $shown)) {
 							// Found missing
 							$miss = array();
 							$miss['owner'] = $member->project_owner_id;
@@ -86,7 +86,7 @@ $shown = array();
 
 							// Get profile thumb image
 							$thumb = '';
-							if($member->picture) {
+							if ($member->picture) {
 								$curthumb = $ih->createThumbName($member->picture);
 								$thumb = $path.DS.\Hubzero\Utility\String::pad($member->user_id).DS.$curthumb;
 							}
@@ -101,7 +101,7 @@ $shown = array();
 			}
 
 			// Add missing items
-			if(count($missing) > 0) {
+			if (count($missing) > 0) {
 				foreach ($missing as $miss) { ?>
 					<li id="owner:<?php echo $miss['owner']; ?>" class="c-click  user:<?php echo $miss['userid']; ?> owner:<?php echo $miss['owner']; ?>  name:<?php echo urlencode($miss['name']); ?> org:<?php echo urlencode($miss['organization']); ?> credit:<?php echo urlencode($miss['credit']); ?> i-missing">
 						<img width="30" height="30" src="<?php echo $miss['thumb']; ?>" class="a-ima" alt="<?php echo htmlentities($miss['name']); ?>" />
