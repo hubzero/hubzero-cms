@@ -132,6 +132,11 @@ function ProjectsBuildRoute(&$query)
 			unset($query['task']);
 		}
 	}
+	if (!empty($query['media']))
+	{
+		$segments[] = $query['media'];
+		unset($query['media']);
+	}
 
 	return $segments;
 }
@@ -149,12 +154,11 @@ function ProjectsParseRoute($segments)
 	// Valid tasks
 	$tasks = array(	'start', 'setup', 'edit',
 		'browse', 'intro', 'features', 'auth',
-		'deleteimg', 'img', 'wikipreview', 'fixownership',
-		'stats'
+		'wikipreview', 'fixownership','stats'
 	);
 
 	// Valid tasks
-	$mediaTasks = array( 'img', 'deleteimg', 'upload');
+	$mediaTasks = array( 'img', 'deleteimg', 'upload', 'media', 'thumb' );
 
 	// Views (plugins or view panels)
 	$views = array('feed', 'info', 'team',
@@ -193,10 +197,6 @@ function ProjectsParseRoute($segments)
 		if (empty($segments[1]))
 		{
 			$vars['task'] = 'view';
-			if (in_array($vars['task'], $mediaTasks))
-			{
-				$vars['controller'] = 'media';
-			}
 			return $vars;
 		}
 	}
@@ -224,6 +224,20 @@ function ProjectsParseRoute($segments)
 			if (in_array($vars['task'], $mediaTasks))
 			{
 				$vars['controller'] = 'media';
+			}
+			return $vars;
+		}
+		elseif ($segments[0] == 'media')
+		{
+			$vars['task'] = 'media';
+			$vars['controller'] = 'media';
+			if (!empty($segments[1]))
+			{
+				$vars['alias']  = $segments[1];
+			}
+			if (!empty($segments[2]))
+			{
+				$vars['media']  = $segments[2];
 			}
 			return $vars;
 		}
@@ -395,6 +409,14 @@ function ProjectsParseRoute($segments)
 	if (in_array($vars['task'], $mediaTasks))
 	{
 		$vars['controller'] = 'media';
+		if ($vars['task'] == 'thumb')
+		{
+			$vars['task'] = 'media';
+		}
+		if (!empty($segments[2]))
+		{
+			$vars['media'] = $segments[2];
+		}
 	}
 
 	return $vars;

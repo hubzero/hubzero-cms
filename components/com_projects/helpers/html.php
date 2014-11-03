@@ -31,15 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%b %d, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'M d, Y';
-	$tz = false;
-}
-
 if (!defined('n')) {
 
 /**
@@ -69,67 +60,14 @@ if (!defined('n')) {
 class ProjectsHtml
 {
 	//----------------------------------------------------------
-	// Date/time management
+	// Time format
 	//----------------------------------------------------------
-
-	/**
-	 * Format time
-	 *
-	 * @param      string $value
-	 * @param      string $format
-	 * @return     string
-	 */
-	public static function valformat($value, $format)
-	{
-		if ($format == 1)
-		{
-			return(number_format($value));
-		}
-		elseif ($format == 2 || $format == 3)
-		{
-			if ($format == 2)
-			{
-				$min = round($value / 60);
-			} else
-			{
-				$min = floor($value / 60);
-				$sec = $value - ($min * 60);
-			}
-			$hr = floor($min / 60);
-			$min -= ($hr * 60);
-			$day = floor($hr / 24);
-			$hr -= ($day * 24);
-			if ($day == 1)
-			{
-				$day = "1 day, ";
-			}
-			elseif ($day > 1)
-			{
-				$day = number_format($day) . " days, ";
-			}
-			else
-			{
-				$day = "";
-			}
-			if ($format == 2)
-			{
-				return(sprintf("%s%d:%02d", $day, $hr, $min));
-			}
-			else
-			{
-				return(sprintf("%s%d:%02d:%02d", $day, $hr, $min, $sec));
-			}
-		}
-		else
-		{
-			return($value);
-		}
-	}
 
 	/**
 	 * Show time since present moment or an actual date
 	 *
 	 * @param      string 	$time
+	 * @param      boolean 	$utc	UTC
 	 * @return     string
 	 */
 	public static function showTime($time, $utc = false)
@@ -162,6 +100,7 @@ class ProjectsHtml
 	 *
 	 * @param      string 	$time
 	 * @param      boolean 	$full	Return detailed date/time?
+	 * @param      boolean 	$utc	UTC
 	 * @return     string
 	 */
 	public static function formatTime($time, $full = false, $utc = false)
@@ -174,7 +113,6 @@ class ProjectsHtml
 
 		if ($full)
 		{
-		//	return $utc ? JFactory::getDate($timestamp)->format('g:i A M j, Y') : date('Y-m-d H:i:s', $timestamp) ;
 			return JHTML::_('date', $timestamp, 'M d, Y H:i:s', false);
 		}
 
@@ -198,7 +136,8 @@ class ProjectsHtml
 	/**
 	 * Time elapsed from moment
 	 *
-	 * @param      string $timestamp
+	 * @param      string 	$timestamp
+	 * @param      boolean 	$utc	UTC
 	 * @return     string
 	 */
 	public static function timeAgo($timestamp, $utc = true)
@@ -393,7 +332,6 @@ class ProjectsHtml
 	public static function formatSize($file_size, $round = 0)
 	{
 		if ($file_size >= 1073741824)
-	//	if ($file_size >= 107374182)
 		{
 			$file_size = round(($file_size / 1073741824 * 100), $round) / 100 . 'GB';
 		}
@@ -790,6 +728,77 @@ class ProjectsHtml
 	//----------------------------------------------------------
 	// Project page elements
 	//----------------------------------------------------------
+	
+	/**
+	 * Get project image source
+	 *
+	 * @param      string $alias
+	 * @param      string $picture
+	 * @param      array $config
+	 * @return     string HTML
+	 */
+	public static function getProjectImageSrc( $alias = '', $picture = '', $config = '' )
+	{
+		if ($alias === NULL || !$picture)
+		{
+			return false;
+		}
+		if (!$config)
+		{
+			$config = JComponentHelper::getParams('com_projects');
+		}
+		$path = trim($config->get('imagepath', '/site/projects'), DS)
+				. DS . $alias . DS . 'images';
+		
+		$src  = file_exists( JPATH_ROOT . DS . $path . DS . $picture )
+					? $path . DS . $picture
+					: NULL;
+		return $src;
+	}
+	
+	/**
+	 * Get project thumbnail source
+	 *
+	 * @param      string $alias
+	 * @param      string $picname
+	 * @param      array $config
+	 * @return     string
+	 */
+	public static function getThumbSrc( $alias = '', $picture = '', $config = '' )
+	{
+		if ($alias === NULL)
+		{
+			return false;
+		}
+		if (!$config)
+		{
+			$config = JComponentHelper::getParams('com_projects');
+		}
+		
+		$src  = '';
+		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
+
+		if (file_exists( JPATH_ROOT . $path . DS . 'thumb.png' ))
+		{
+			return $path . DS . 'thumb.png';
+		}
+
+		if ($picture)
+		{
+			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
+				. 'helpers' . DS . 'imghandler.php' );
+
+			$ih = new ProjectsImgHandler();
+			$thumb = $ih->createThumbName($picture);
+			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
+		}
+		if (!$src)
+		{
+			$src = $config->get('defaultpic');
+		}
+
+		return $src;
+	}
 
 	/**
 	 * Embed project image
@@ -799,19 +808,16 @@ class ProjectsHtml
 	 */
 	public static function embedProjectImage( $view )
 	{
-		$path = DS . trim($view->config->get('imagepath', '/site/projects'), DS) . DS . $view->project->alias . DS . 'images';
-		$image  = $view->project->picture
-			&& file_exists( JPATH_ROOT . $path . DS . $view->project->picture )
-			? $path . DS . $view->project->picture
-			: NULL; ?>
+		$source = ProjectsHtml::getProjectImageSrc($view->project->alias, $view->project->picture, $view->config); ?>
 		<div id="pimage" class="pimage">
 			<a href="<?php echo JRoute::_('index.php?option=' . $view->option . a . 'alias='
 			.$view->project->alias); ?>" title="<?php echo $view->project->title . ' - '
 			. JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>">
 	<?php
-		if ($image) {
+		if ($source) {
 		?>
-			<img src="<?php echo $image;  ?>" alt="<?php echo $view->project->title; ?>" />
+			<img src="<?php echo JRoute::_('index.php?option=' . $view->option . '&alias='
+			. $view->project->alias . '&controller=media&media=master');  ?>" alt="<?php echo $view->project->title; ?>" />
 	<?php
 		}
 		else
@@ -829,15 +835,6 @@ class ProjectsHtml
 	 */
 	public static function writeMemberOptions ( $view )
 	{
-		$dateFormat = '%b %d, %Y';
-		$tz = null;
-
-		if (version_compare(JVERSION, '1.6', 'ge'))
-		{
-			$dateFormat = 'M d, Y';
-			$tz = false;
-		}
-
 		$options = '';
 		$role    = JText::_('COM_PROJECTS_PROJECT') . ' <span>';
 
@@ -877,7 +874,7 @@ class ProjectsHtml
 		$html.= t.t.' 	<div id="options-dock">' . "\n";
 		$html.= t.t.' 		<div>' . "\n";
 		$html.= t.t.' 			<p>' . JText::_('COM_PROJECTS_JOINED')
-				. ' ' . JHTML::_('date', $view->project->since, $dateFormat, $tz) . '</p>' . "\n";
+				. ' ' . JHTML::_('date', $view->project->since, 'M d, Y') . '</p>' . "\n";
 		if ($options)
 		{
 			$html.= t.t.'			<ul>' . "\n";
@@ -1163,7 +1160,8 @@ foreach ($view->tabs as $tab)
 	?>
 	<div id="content-header" <?php if (!$show_pic) { echo 'class="nopic"'; } ?>>
 		<?php if ($show_pic) { ?>
-		<div class="pthumb"><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo ProjectsHtml::getThumbSrc($view->project->id, $view->project->alias, $view->project->picture, $view->config); ?>" alt="<?php echo $view->project->title; ?>" /></a></div>
+		<div class="pthumb"><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>" title="<?php echo JText::_('COM_PROJECTS_VIEW_UPDATES'); ?>"><img src="<?php echo	JRoute::_('index.php?option=' . $view->option . '&alias='
+			. $view->project->alias . '&controller=media&media=thumb'); ?>" alt="<?php echo $view->project->title; ?>" /></a></div>
 		<?php } ?>
 		<div class="ptitle">
 			<h2><a href="<?php echo JRoute::_('index.php?option='.$view->option.a.$goto); ?>"><?php echo \Hubzero\Utility\String::truncate($view->project->title, 50); ?> <span>(<?php echo $view->project->alias; ?>)</span></a></h2>
@@ -1200,92 +1198,9 @@ foreach ($view->tabs as $tab)
 	<?php
 	}
 
-	/**
-	 * Get project thumbnail
-	 *
-	 * @param      int $id
-	 * @param      string $alias
-	 * @param      string $picname
-	 * @param      array $config
-	 * @return     string HTML
-	 */
-	public static function getThumbSrc( $id, $alias, $picname = '', $config )
-	{
-		$src  = '';
-		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
-
-		if (file_exists( JPATH_ROOT . $path . DS . 'thumb.png' ))
-		{
-			return $path . DS . 'thumb.png';
-		}
-
-		if ($picname)
-		{
-			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
-				. 'helpers' . DS . 'imghandler.php' );
-
-			$ih = new ProjectsImgHandler();
-			$thumb = $ih->createThumbName($picname);
-			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  '';
-		}
-		if (!$src)
-		{
-			$src = $config->get('defaultpic');
-		}
-
-		return $src;
-	}
-
 	//----------------------------------------------------------
 	// Misc
 	//----------------------------------------------------------
-
-	/**
-	 * Tool development header
-	 *
-	 * @return     string HTML
-	 */
-	public static function toolDevHeader( $option, $config, $project, $tool, $active, $bcrumb = '')
-	{
-		// tool-only tab menu
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'projects',
-				'element'=>'tools',
-				'name'=>'view'
-			)
-		);
-
-		// Load plugin parameters
-		$tool_plugin 	= JPluginHelper::getPlugin( 'projects', 'tools' );
-		$view->plgparams = new JParameter($tool_plugin->params);
-
-		$view->route 	= 'index.php?option=' . $option . a . 'alias=' . $project->alias . a . 'active=tools';
-		$view->url 		= JRoute::_('index.php?option=' . $option . a . 'alias=' . $project->alias . a . 'active=tools');
-		$view->tool 	= $tool;
-		$view->active 	= $active;
-		$view->title 	= 'Tools';
-
-		// Get path for tool thumb image
-		$p_path 			= ProjectsHelper::getProjectPath($project->alias, $config->get('imagepath'), 1, 'images');
-		$imagePath 			= $p_path . DS . 'tools';
-		$view->projectPath 	= $imagePath;
-		$view->path_bc 		= $bcrumb;
-		$view->ih 			= new ProjectsImgHandler();
-		return $view->loadTemplate();
-	}
-
-	/**
-	 * Show 'no preview' message
-	 *
-	 * @param      string $msg
-	 * @return     string HTML
-	 */
-	public static function showNoPreviewMessage( $msg = '' )
-	{
-		$msg = $msg ? $msg : JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_PREVIEW_NO_CONTENT');
-		return '<p class="pale">'.$msg.'</p>';
-	}
 
 	/**
 	 * Generate random code
@@ -1339,11 +1254,7 @@ foreach ($view->tabs as $tab)
 	 */
 	public static function replaceUrls($string, $rel = 'nofollow')
 	{
-	    $host = "([a-z\d][-a-z\d]*[a-z\d]\.)+[a-z][-a-z\d]*[a-z]";
-	    $port = "(:\d{1,})?";
-	    $path = "(\/[^?<>\#\"\s]+)?";
-	    $query = "(\?[^<>\#\"\s]+)?";
-	    return preg_replace("#((ht|f)tps?:\/\/{$host}{$port}{$path}{$query})#i", "<a href=\"$1\" rel=\"{$rel}\">$1</a>", $string);
+	    return preg_replace('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', "<a href=\"$1\" rel=\"{$rel}\">$1</a>", $string);
 	}
 
 	/**
@@ -1471,7 +1382,6 @@ foreach ($view->tabs as $tab)
 	{
 		if (!$path)
 		{
-			// $this->setError( JText::_('No path set.') );
 			return false;
 		}
 
@@ -1704,7 +1614,6 @@ foreach ($view->tabs as $tab)
 	 */
 	public static function getAdminNoteCount($notes = '', $reviewer = '')
 	{
-
 		preg_match_all("#<nb:".$reviewer.">(.*?)</nb:".$reviewer.">#s", $notes, $matches);
 
 		if (count($matches) > 0)
