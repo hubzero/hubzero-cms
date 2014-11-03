@@ -292,9 +292,8 @@ tooltip: true,
 				<?php if (!empty($this->stats['topActiveProjects'])) { ?>
 				<ul>
 					<?php foreach ($this->stats['topActiveProjects'] as $topProject) {
-						$thumb = ProjectsHtml::getThumbSrc($topProject->id, $topProject->alias, $topProject->picture, $this->config);
 						?>
-					<li><span class="stats-ima-small"><img src="<?php echo $thumb; ?>" alt="" /></span>
+					<li><span class="stats-ima-small"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media'); ?>" alt="" /></span>
 						<?php if (!$topProject->private) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'task=view' . a . 'alias=' . $topProject->alias); ?>"> <?php } ?>
 						<?php echo $topProject->title; ?><?php if (!$topProject->private) { ?></a> <?php } ?>
 					</li>
@@ -375,10 +374,8 @@ tooltip: true,
 			<td class="stats-more">
 				<?php if (!empty($this->stats['topTeamProjects'])) { ?>
 				<ul>
-					<?php foreach ($this->stats['topTeamProjects'] as $topProject) {
-						$thumb = ProjectsHtml::getThumbSrc($topProject->id, $topProject->alias, $topProject->picture, $this->config);
-						?>
-					<li><span class="stats-ima-small"><img src="<?php echo $thumb; ?>" alt="" /></span>
+					<?php foreach ($this->stats['topTeamProjects'] as $topProject) {?>
+					<li><span class="stats-ima-small"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media'); ?>" alt="" /></span>
 						<?php if (!$topProject->private) { ?><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'task=view' . a . 'alias=' . $topProject->alias); ?>"> <?php } ?>
 						<?php echo $topProject->title . ' (' . $topProject->team . ' ' . JText::_('members') . ')'; ?><?php if (!$topProject->private) { ?></a> <?php } ?>
 					</li>
