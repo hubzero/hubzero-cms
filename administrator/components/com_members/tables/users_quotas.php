@@ -208,10 +208,18 @@ class UsersQuotas extends JTable
 		{
 			$where[] = "`class_id` = " . $this->_db->quote($filters['class_id']);
 		}
+		if (isset($filters['search']) && isset($filters['search_field']))
+		{
+			$where[] = $this->_db->quoteName($filters['search_field']) . ' LIKE ' . $this->_db->quote('%'.$filters['search'].'%');
+		}
+		if (isset($filters['class_alias']) && is_string($filters['class_alias']) && strlen($filters['class_alias']) > 0)
+		{
+			$where[] = 'uqc.alias = ' . $this->_db->quote($filters['class_alias']);
+		}
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE " . implode(" AND", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
@@ -258,7 +266,15 @@ class UsersQuotas extends JTable
 	{
 		$query  = "SELECT uq.*, m.username, m.name, uqc.alias AS class_alias";
 		$query .= $this->buildquery($filters);
-		$query .= " ORDER BY m.id ASC";
+
+		if (isset($filters['sort']) && isset($filters['sort_Dir']))
+		{
+			$query .= " ORDER BY {$filters['sort']} {$filters['sort_Dir']}";
+		}
+		else
+		{
+			$query .= " ORDER BY m.id ASC";
+		}
 		if (isset($filters['start']) && isset($filters['limit']))
 		{
 			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];

@@ -49,14 +49,52 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.quotas.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.quotas.limitstart', 'limitstart', 0, 'int');
+		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.quotas.search',
+			'search',
+			''
+		));
+		$this->view->filters['search_field'] = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.quotas.search_field',
+			'search_field',
+			'name'
+		));
+		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+			$this->_option . '.quotas.sort',
+			'filter_order',
+			'user_id'
+		));
+		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+			$this->_option . '.quotas.sortdir',
+			'filter_order_Dir',
+			'ASC'
+		));
+		$this->view->filters['class_alias']  = trim($app->getUserStateFromRequest(
+			$this->_option . '.quotas.class_alias',
+			'class_alias',
+			''
+		));
+		$this->view->filters['limit']        = $app->getUserStateFromRequest(
+			$this->_option . '.quotas.limit',
+			'limit',
+			$config->getValue('config.list_limit'),
+			'int'
+		);
+		$this->view->filters['start']        = $app->getUserStateFromRequest(
+			$this->_option . '.quotas.limitstart',
+			'limitstart',
+			0,
+			'int'
+		);
 
 		$obj = new UsersQuotas($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
 		$this->view->rows = $obj->getRecords($this->view->filters, true);
+
+		$classes = new MembersQuotasClasses($this->database);
+		$this->view->classes = $classes->getRecords();
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
