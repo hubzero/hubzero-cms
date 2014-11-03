@@ -3666,6 +3666,7 @@ class plgProjectsFiles extends JPlugin
 			$view->option 		= $this->_option;
 			$view->filesize		= isset($filesize) ? ProjectsHtml::formatSize($filesize) : NULL;
 			$view->remote		= $remote;
+			$view->project		= $this->_project;
 
 			if ($this->getError())
 			{
