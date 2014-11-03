@@ -144,7 +144,6 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$params = new JParameter( $row->params );
 
 			$goto  = 'alias=' . $row->alias;
-			$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
 			$html .= t.t.t.'<tr class="mline" id="tr_'.$row->id.'">'.n;
 			$html .= t.t.t.t.'<td class="th_privacy">';
 			$html .= '<span class="privacy-icon';
@@ -152,7 +151,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 			$html .= '">&nbsp;</span>';
 			$html .= '</td>'.n;
 			$html .= t.t.t.t.'<td class="th_image">';
-			$html .='<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'"><img src="'.$thumb.'" alt="'.htmlentities(ProjectsHtml::cleanText($row->title)).'" /></a></td>'.n;
+			$html .='<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'"><img src="'. JRoute::_('index.php?option=' . $this->option . '&alias=' . $row->alias . '&task=media') .'" alt="'.htmlentities(ProjectsHtml::cleanText($row->title)).'" /></a></td>'.n;
 			$html .= t.t.t.t.'<td class="th_title"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'"  title="';
 			$html .= $row->about ? htmlentities(ProjectsHtml::cleanText($row->about))
 			: htmlentities(ProjectsHtml::cleanText($row->title));

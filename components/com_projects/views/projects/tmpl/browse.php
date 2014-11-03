@@ -121,21 +121,22 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$html .= t.t.t.'</tr>'.n;
 		$html .= t.t.t.'</thead>'.n;
 		$html .= t.t.t.'<tbody>'.n;
-		foreach ($this->rows as $row) {
-			if ($row->owned_by_group && !$row->groupcn) {
+		foreach ($this->rows as $row) 
+		{
+			if ($row->owned_by_group && !$row->groupcn) 
+			{
 				continue; // owner group has been deleted
 			}
-			$goto  = 'alias=' . $row->alias;
-			$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
+
 			$html .= t.t.t.'<tr class="mline" id="tr_'.$row->id.'">'.n;
 			$html .= t.t.t.t.'<td class="th_image">';
-			$html .='<a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'"><img src="'.$thumb.'" alt="'.htmlentities(ProjectsHtml::cleanText($row->title)).'" /></a></td>'.n;
+			$html .='<a href="' . JRoute::_('index.php?option=' . $this->option .  '&task=view&alias=' . $row->alias) . '"><img src="' . JRoute::_('index.php?option=' . $this->option . '&alias=' . $row->alias . '&task=media') . '" alt="'.htmlentities(ProjectsHtml::cleanText($row->title)).'" /></a></td>'.n;
 			$html .= t.t.t.t.'<td class="th_privacy">';
 			$html .= '<span class="privacy-icon';
 			$html .= ($row->private == 1) ? ' private' : '';
 			$html .= '">&nbsp;</span>';
 			$html .= '</td>'.n;
-			$html .= t.t.t.t.'<td class="th_title"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" >'.ProjectsHtml::cleanText($row->title).'</a></td>'.n;
+			$html .= t.t.t.t.'<td class="th_title"><a href="' . JRoute::_('index.php?option=' . $this->option .  '&task=view&alias=' . $row->alias) . '" >'.ProjectsHtml::cleanText($row->title).'</a></td>'.n;
 			$html .= '<td class="mini faded">';
 			$html .= ($row->owned_by_group) ? '<span class="i_group"><a href="/groups/'.$row->groupcn.'">'.$row->groupname.'</a></span>' : '<span class="i_user"><a href="/members/'.$row->owned_by_user.'">'.$row->authorname.'</a></span>';
 			$html .= '</td>'.n;
@@ -144,10 +145,10 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 				$html .= t.t.t.t.'<td class="mini faded">';
 				if ($row->owner && $row->confirmed == 1) {
 					if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
-						$html .= '<span class="active"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('COM_PROJECTS_ACTIVE').'</a></span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, 'M d, Y');
+						$html .= '<span class="active"><a href="' . JRoute::_('index.php?option=' . $this->option .  '&task=view&alias=' . $row->alias) . '" title="'.JText::_('COM_PROJECTS_GO_TO_PROJECT').'">&raquo; '.JText::_('COM_PROJECTS_ACTIVE').'</a></span> '.JText::_('COM_PROJECTS_SINCE').' '.JHTML::_('date', $row->created, 'M d, Y');
 					}
 					else if ($row->setup_stage < $setup_complete) {
-							$html .= '<span class="setup"><a href="'.JRoute::_('index.php?option='.$this->option.a.'task=view'.a.$goto).'" title="'.JText::_('COM_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('COM_PROJECTS_STATUS_SETUP').'</a></span> '.JText::_('COM_PROJECTS_IN_PROGRESS');
+							$html .= '<span class="setup"><a href="' . JRoute::_('index.php?option=' . $this->option .  '&task=view&alias=' . $row->alias) . '" title="'.JText::_('COM_PROJECTS_CONTINUE_SETUP').'">&raquo; '.JText::_('COM_PROJECTS_STATUS_SETUP').'</a></span> '.JText::_('COM_PROJECTS_IN_PROGRESS');
 					}
 					else if ($row->state == 0) {
 						$html .= '<span class="faded italic">'.JText::_('COM_PROJECTS_STATUS_INACTIVE').'</span> ';
@@ -179,7 +180,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 	else {
 		$html .= t.t.t.'<p class="noresults">';
 		if ($this->guest) {
-			$html .= JText::_('COM_PROJECTS_NO_PROJECTS_FOUND').' '.JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option='.$this->option.a.'task=browse').'?action=login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS');
+			$html .= JText::_('COM_PROJECTS_NO_PROJECTS_FOUND').' '.JText::_('COM_PROJECTS_PLEASE').' <a href="'.JRoute::_('index.php?option=' . $this->option . '&task=browse').'?action=login">'.JText::_('COM_PROJECTS_LOGIN').'</a> '.JText::_('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS');
 		}
 		else {
 			$html .= JText::_('COM_PROJECTS_NO_AUTHOROZED_PROJECTS_FOUND');

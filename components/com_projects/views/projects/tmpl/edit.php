@@ -161,7 +161,6 @@ else
 											<td class="htd"><?php echo JText::_('COM_PROJECTS_THUMB'); ?></td>
 											<td><iframe class="filer filerMini" src="<?php echo JRoute::_('index.php?option='.$this->option. a . 'alias=' . $this->project->alias . a . 'task=img').'/?no_html=1&file='.stripslashes($this->project->picture); ?>"></iframe></td>
 										</tr>
-
 									</tbody>
 								</table>
 								<p class="submitarea">

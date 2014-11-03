@@ -77,7 +77,7 @@ if ($this->getError()) {
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	</fieldset>
 	<div class="info_blurb">
-		<div class="pthumb"><img src="<?php echo $this->thumb_src; ?>" alt="" /></div>
+		<div class="pthumb"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" /></div>
 		<div class="pinfo">
 			<p class="info_title">
 			<?php echo $this->project->title; ?> (<span class="aliasname"><?php echo $this->project->alias; ?></span>)</p>

@@ -60,7 +60,7 @@ $html  = '';
 	<div class="clear"></div>
 
 	<div class="info_blurb">
-		<div class="pthumb"><img src="<?php echo $this->thumb_src; ?>" alt="" /></div>
+		<div class="pthumb"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media') ?>" alt="" /></div>
 		<div class="pinfo">
 			<div class="grid">
 				<div class="col span6">

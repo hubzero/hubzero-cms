@@ -52,7 +52,7 @@ $title = $this->project->title ? JText::_('COM_PROJECTS_NEW_PROJECT').': '.$this
 	<div class="clear"></div>
 
 	<div class="info_blurb">
-		<div class="pthumb"><img src="<?php echo $this->thumb_src; ?>" alt="" /></div>
+		<div class="pthumb"><img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&task=media'); ?>" alt="" /></div>
 		<div class="pinfo">
 			<p class="info_title"><span class="block italic"><?php echo $this->typetitle.' '.strtolower(JText::_('COM_PROJECTS_PROJECT')); ?>:</span> <?php echo $this->project->title; ?> (<span class="aliasname"><?php echo $this->project->alias; ?></span>)</p>
 			<p class="actionlink"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=setup&' . $goto) . '/?step=0'; ?>">&laquo; <?php echo JText::_('COM_PROJECTS_CHANGE_THIS_INFO'); ?></a></p>

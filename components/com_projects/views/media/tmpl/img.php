@@ -26,7 +26,6 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $app = JFactory::getApplication();
-$src = $this->thumb && file_exists( $this->file_path . DS . $this->thumb ) ? $this->path . DS . $this->thumb :  $this->default_picture;
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -44,8 +43,8 @@ $src = $this->thumb && file_exists( $this->file_path . DS . $this->thumb ) ? $th
 	<body id="project-picture">
 		<form action="index.php" method="post" enctype="multipart/form-data" name="imaForm" id="imaForm">
 			<div id="project-thumb" class="project-thumb">
-				<img src="<?php echo $src; ?>" alt="<?php echo JText::_('COM_PROJECTS_THUMB'); ?>" />
-				<?php if ($this->thumb && file_exists( $this->file_path.DS.$this->thumb )) { ?>
+				<img src="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->alias . '&task=media'); ?>" alt="<?php echo JText::_('COM_PROJECTS_THUMB'); ?>" />
+				<?php if ($this->thumb && file_exists( $this->file_path . DS . $this->thumb )) { ?>
 				<p class="actionlink"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=deleteimg' . a . 'alias=' . $this->id).'/?no_html=1&file='.stripslashes($this->file) . '&tempid=' . $this->tempid; ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></p>
 				<?php } ?>
 			</div>
