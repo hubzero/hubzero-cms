@@ -36,7 +36,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 			{
 				// Get profile thumb image
 				$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-				$thumb = $profile->getPicture();
+				$actor   = \Hubzero\User\Profile::getInstance($this->uid);
+				$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 			?>
 			<li>
 				<img width="50" height="50" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname; ?>" />

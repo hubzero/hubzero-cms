@@ -70,9 +70,9 @@ else
 		<tbody>
 <?php foreach ($this->team as $owner)
 	{
-					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
+					$actor   = \Hubzero\User\Profile::getInstance($this->uid);
+					$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
 					// Determine css class for user
 					$username 	= $owner->username ? $owner->username : $owner->invited_email;

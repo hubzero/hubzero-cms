@@ -32,7 +32,11 @@ $author = $pAuthor->getAuthorByOwnerId($this->row->publication_version_id, $this
 
 // Get profile thumb image
 $profile = \Hubzero\User\Profile::getInstance($this->row->user_id);
-$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
+
+$juser = JFactory::getUser();
+$actor   = \Hubzero\User\Profile::getInstance($juser->get('id'));
+
+$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
 $name = $author->name ? $author->name : $author->p_name;
 $name = trim($name) ? $name : $author->invited_name;

@@ -66,7 +66,8 @@ $goto  = 'alias=' . $this->project->alias;
 	{
 					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
+					$actor   = \Hubzero\User\Profile::getInstance($this->uid);
+					$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
 					$timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
 					$lastvisit = $owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00'

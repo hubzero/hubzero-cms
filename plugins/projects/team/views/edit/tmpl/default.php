@@ -114,7 +114,8 @@ $dispatcher = JDispatcher::getInstance();
 	{
 					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
+					$actor   = \Hubzero\User\Profile::getInstance($this->uid);
+					$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
 					$username = $owner->username ? $owner->username : $owner->invited_email;
 					$creator = $this->project->created_by_user == $owner->userid ? 1 : 0;

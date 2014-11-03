@@ -42,7 +42,8 @@ $shown = array();
 
 					// Get profile thumb image
 					$profile = \Hubzero\User\Profile::getInstance($owner->userid);
-					$thumb = \Hubzero\User\Profile\Helper::getMemberPhoto($profile);
+					$actor   = \Hubzero\User\Profile::getInstance($this->uid);
+					$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
 					if(in_array($owner->userid, $this->exclude)) {
 						// Skip certain team members if necessary

@@ -55,25 +55,10 @@ if (preg_match($regex, $firstname))
 	$firstname = '';
 }
 
-// Get image handler
-$ih = new ProjectsImgHandler();
-$mconfig = JComponentHelper::getParams( 'com_members' );
-
-$path  			= DS .trim($mconfig->get('webpath'), DS);
-$default_thumb 	= DS . trim($mconfig->get('defaultpic'), DS);
-
 // Get profile thumb image
-$thumb = '';
-
-if ($this->author->picture && $this->author->user_id) {
-	$curthumb = $ih->createThumbName($this->author->picture);
-	$thumb = $path.DS.\Hubzero\Utility\String::pad($this->author->user_id).DS.$curthumb;
-}
-if (!$thumb or !is_file(JPATH_ROOT.$thumb)) {
-	$thumb = $default_thumb;
-}
-
-$base = rtrim(JURI::getInstance()->base(true), '/');
+$profile = \Hubzero\User\Profile::getInstance($this->author->user_id);
+$actor   = \Hubzero\User\Profile::getInstance($this->uid);
+$thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
 ?>
 
