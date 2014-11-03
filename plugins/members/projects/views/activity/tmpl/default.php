@@ -50,7 +50,6 @@ if (count($this->activities) > 0 ) {
 				$projects[$pid] = $obj->getProject($pid, $this->uid);
 			}
 			$goto = 'alias='.$projects[$pid]->alias;
-			$thumb = ProjectsHTML::getThumbSrc($pid, $projects[$pid]->alias, $projects[$pid]->picture, $this->config);
 			$title = $this->escape(ProjectsHtml::cleanText($projects[$pid]->title));
 			$timeclass = $projects[$pid]->lastvisit && $projects[$pid]->lastvisit <= $activity['recorded'] ? ' urgency' : '';
 			$more = count($this->activities) - $this->limit;
@@ -58,7 +57,7 @@ if (count($this->activities) > 0 ) {
 			<tr>
 				<td class="p-ima">
 					<?php if ($i == $more) { echo '<a name="more"></a>'; } ?>
-					<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'.$thumb.'" alt="'.$title.'" /></a>'; ?>
+					<?php echo '<a href="'.JRoute::_('index.php?option='.$this->option.'&task=view&'.$goto).'"><img src="'. JRoute::_('index.php?option=' . $this->option . '&alias=' . $projects[$pid]->alias . '&task=media') .'" alt="'.$title.'" /></a>'; ?>
 				</td>
 				<td>
 					<span class="rightfloat mini faded<?php echo $timeclass; ?>"><?php echo ProjectsHTML::timeAgo($a->recorded).' '.JText::_('PLG_MEMBERS_PROJECTS_AGO'); ?> </span>
