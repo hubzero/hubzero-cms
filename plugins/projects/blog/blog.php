@@ -939,7 +939,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 
 				if (is_file(JPATH_ROOT. $to_path . DS . $hashed))
 				{
-					$preview['image'] = $to_path . DS . $hashed;
+					$preview['image'] = $hashed;
 					$preview['url']   = NULL;
 					$preview['title'] = basename($file);
 
@@ -986,6 +986,8 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		$view->maxHeight	= $maxHeight;
 		$view->minHeight	= ($minHeight > 400) ? 400 : $minHeight;
 		$view->selected		= $selected;
+		$view->option 		= $this->_option;
+		$view->project 		= $this->_project;
 		return $view->loadTemplate();
 	}
 

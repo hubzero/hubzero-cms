@@ -267,6 +267,7 @@
 		overflow: hidden;
 		background: #e4ecee;
 		*display: none; /* doesn't work in IE <10 */
+		border: 5px solid #e4ecee;
 	}
 	.photos img {
 	  /* Just in case there are inline attributes */
