@@ -711,7 +711,8 @@ class PublicationAuthor extends JTable
 			name='$name', firstName='$firstName', lastName='$lastName', organization='$org',
 			credit='$credit', status='$this->status', modified='$this->modified',
 			modified_by='$this->modified_by' WHERE publication_version_id=$this->publication_version_id
-			AND project_owner_id=$this->project_owner_id";
+			AND project_owner_id=$this->project_owner_id
+			AND (role IS NULL OR role != 'submitter')";
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
