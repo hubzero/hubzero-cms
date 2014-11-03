@@ -25,17 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$yearFormat = '%Y';
-$dateFormat = '%m/%d/%Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$yearFormat = 'Y';
-	$dateFormat = 'm/d/Y';
-	$tz = false;
-}
-
 $pubHelper 		= $this->pub->_helpers->pubHelper;
 $htmlHelper 	= $this->pub->_helpers->htmlHelper;
 $projectsHelper = $this->pub->_helpers->projectsHelper;
