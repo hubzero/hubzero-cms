@@ -40,12 +40,12 @@ if (!$no_html && $tmpl != 'component') :
 	$this->css('offering.css')
 	     ->js('courses.offering.js');
 
-	$src = $this->course->logo();
-	if ($logo = $this->course->offering()->section()->logo())
+	$src = $this->course->logo('url');
+	if ($logo = $this->course->offering()->section()->logo('url'))
 	{
 		$src = $logo;
 	}
-	else if ($logo = $this->course->offering()->logo())
+	else if ($logo = $this->course->offering()->logo('url'))
 	{
 		$src = $logo;
 	}
@@ -56,7 +56,7 @@ if (!$no_html && $tmpl != 'component') :
 		</h2>
 		<?php if ($src) { ?>
 		<p class="course-identity">
-			<img src="<?php echo $src; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+			<img src="<?php echo JRoute::_($src); ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
 		</p>
 		<?php } ?>
 		<p id="page_identity">

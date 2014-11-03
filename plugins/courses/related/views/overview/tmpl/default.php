@@ -61,8 +61,8 @@ $this->css()
 			<a href="<?php echo JRoute::_($course->link()); ?>">
 				<div class="course-details">
 					<div class="course-identity">
-						<?php if ($logo = $course->logo()) { ?>
-							<img src="<?php echo $logo; ?>" alt="<?php echo JText::_('PLG_COURSES_RELATED_LOGO'); ?>" />
+						<?php if ($logo = $course->logo('url')) { ?>
+							<img src="<?php echo JRoute::_($logo); ?>" alt="<?php echo JText::_('PLG_COURSES_RELATED_LOGO'); ?>" />
 						<?php } else { ?>
 							<span></span>
 						<?php } ?>

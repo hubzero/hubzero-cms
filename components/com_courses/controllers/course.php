@@ -856,6 +856,32 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 	}
 
 	/**
+	 * Serve up a course logo
+	 *
+	 * @return  void
+	 */
+	public function logoTask()
+	{
+		$file = JPATH_ROOT . $this->course->logo();
+
+		// Initiate a new content server and serve up the file
+		$server = new \Hubzero\Content\Server();
+		$server->filename($file);
+		$server->disposition('inline');
+		$server->acceptranges(false);
+
+		if (!$server->serve())
+		{
+			// Should only get here on error
+			throw new JException(JText::_('COM_COURSES_SERVER_ERROR'), 404);
+		}
+		else
+		{
+			exit;
+		}
+	}
+
+	/**
 	 * Download a wiki file
 	 *
 	 * @return     void

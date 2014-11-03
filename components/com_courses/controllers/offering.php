@@ -598,5 +598,35 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&gid=' . $this->course->get('alias') . '&task=offerings')
 		);
 	}
+
+	/**
+	 * Serve up an offering logo
+	 *
+	 * @return  void
+	 */
+	public function logoTask()
+	{
+		if (!($logo = $this->course->offering()->section()->logo()))
+		{
+			$logo = $this->course->offering()->logo();
+		}
+		$file = JPATH_ROOT . $logo;
+
+		// Initiate a new content server and serve up the file
+		$server = new \Hubzero\Content\Server();
+		$server->filename($file);
+		$server->disposition('inline');
+		$server->acceptranges(false);
+
+		if (!$server->serve())
+		{
+			// Should only get here on error
+			throw new JException(JText::_('COM_COURSES_SERVER_ERROR'), 404);
+		}
+		else
+		{
+			exit;
+		}
+	}
 }
 

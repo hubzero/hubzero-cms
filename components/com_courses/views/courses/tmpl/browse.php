@@ -196,8 +196,8 @@ $juser = JFactory::getUser();
 								</h4>
 								<p class="course-identity">
 									<a href="<?php echo JRoute::_($course->link()); ?>">
-										<?php if ($logo = $course->logo()) { ?>
-											<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape($course->get('title')); ?>" />
+										<?php if ($logo = $course->logo('url')) { ?>
+											<img src="<?php echo JRoute::_($logo); ?>" alt="<?php echo $this->escape($course->get('title')); ?>" />
 										<?php } else { ?>
 											<span></span>
 										<?php } ?>

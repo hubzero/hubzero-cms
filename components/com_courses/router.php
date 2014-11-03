@@ -180,6 +180,7 @@ function CoursesParseRoute($segments)
 				$vars['active'] = $segments[1];
 			break;
 
+			case 'logo':
 			case 'edit':
 			case 'newoffering':
 			case 'saveoffering':
@@ -280,7 +281,7 @@ function CoursesParseRoute($segments)
 		}
 		else
 		{
-			if ($segments[2] == 'enroll')
+			if ($segments[2] == 'enroll' || $segments[2] == 'logo')
 			{
 				$vars['task'] = $segments[2];
 			}

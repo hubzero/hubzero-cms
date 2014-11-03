@@ -151,10 +151,10 @@ $this->css('course.css')
 		</div><!-- / .subject -->
 		<aside class="aside">
 			<p class="course-identity<?php echo ($this->course->config('show_stats') ? ' with-enrollment' : ''); ?>">
-				<?php if ($logo = $this->course->logo()) { ?>
+				<?php if ($logo = $this->course->logo('url')) { ?>
 					<img src="<?php 
 						$size = $this->course->logo('size');
-						echo $logo;
+						echo JRoute::_($logo);
 						?>" class="<?php echo ($size['width'] >= $size['height'] ? 'landscape' : 'portrait'); ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
 				<?php } else { ?>
 					<span></span>

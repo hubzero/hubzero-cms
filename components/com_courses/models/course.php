@@ -839,6 +839,11 @@ class CoursesModelCourse extends CoursesModelAbstract
 				$size['width']  = $width;
 				$size['height'] = $height;
 				$path = \JURI::base(true) . $path;
+
+				if ($rtrn == 'url')
+				{
+					return $this->link() . '&active=logo';
+				}
 			}
 		}
 

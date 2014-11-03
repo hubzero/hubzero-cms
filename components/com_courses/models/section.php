@@ -862,6 +862,13 @@ class CoursesModelSection extends CoursesModelAbstract
 			{
 				$path = str_replace('/administrator', '', \JURI::base(true)) . $path;
 			}
+
+			if ($rtrn == 'url')
+			{
+				$offering = CoursesModelOffering::getInstance($this->get('offering_id'));
+				return $offering->link() . '&active=logo';
+			}
+
 			return $path;
 		}
 

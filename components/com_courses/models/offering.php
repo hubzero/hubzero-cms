@@ -1603,6 +1603,10 @@ class CoursesModelOffering extends CoursesModelAbstract
 			{
 				$path = str_replace('/administrator', '', \JURI::base(true)) . $path;
 			}
+			if ($rtrn == 'url')
+			{
+				return $this->link() . '&active=logo';
+			}
 			return $path;
 		}
 

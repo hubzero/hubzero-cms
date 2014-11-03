@@ -43,8 +43,8 @@ switch ($this->count)
 		<a href="<?php echo JRoute::_($this->course->link()); ?>">
 			<div class="course-details">
 				<div class="course-identity">
-					<?php if ($logo = $this->course->logo()) { ?>
-						<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
+					<?php if ($logo = $this->course->logo('url')) { ?>
+						<img src="<?php echo JRoute::_($logo); ?>" alt="<?php echo $this->escape($this->course->get('title')); ?>" />
 					<?php } else { ?>
 						<span></span>
 					<?php } ?>
