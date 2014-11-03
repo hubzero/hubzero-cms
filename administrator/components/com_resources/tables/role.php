@@ -37,66 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesContributorRole extends JTable
 {
 	/**
-	 * int(11) Primary Key
-	 *
-	 * @var integer
-	 */
-	var $id    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $alias = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $title = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $state  = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified   = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -106,7 +50,7 @@ class ResourcesContributorRole extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -140,41 +84,30 @@ class ResourcesContributorRole extends JTable
 	}
 
 	/**
-	 * Load a record and bind to $this
+	 * Method to load a row from the database by primary key and bind the fields
+	 * to the JTable instance properties.
 	 *
-	 * @param      mixed $oid String (alias) or integer (ID)
-	 * @return     boolean True on success
+	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match. If not set the instance property value is used.
+	 * @param   boolean  $reset  True to reset the default values before loading the new row.
+	 * @return  boolean  True if successful. False if row not found or on error (internal error state set in that case).
 	 */
-	public function load($oid=NULL, $reset = true)
+	public function load($keys = null, $reset = true)
 	{
-		if ($oid === NULL)
+		if (is_numeric($keys))
 		{
-			return false;
+			return parent::load($keys);
 		}
 
-		if (is_numeric($oid))
-		{
-			return parent::load($oid);
-		}
-
-		$oid = trim($oid);
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'alias' => $keys
+		), $reset);
 	}
 
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -187,8 +120,8 @@ class ResourcesContributorRole extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -216,12 +149,12 @@ class ResourcesContributorRole extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
-		$query  = "FROM $this->_tbl AS r";
+		$query = "FROM `$this->_tbl` AS r";
 
 		$where = array();
 		if (isset($filters['state']))
@@ -236,8 +169,7 @@ class ResourcesContributorRole extends JTable
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
@@ -246,40 +178,38 @@ class ResourcesContributorRole extends JTable
 	/**
 	 * Get all the roles associated with a type
 	 *
-	 * @param      integer $type_id Type ID
-	 * @return     array
+	 * @param   integer  $type_id  Type ID
+	 * @return  array
 	 */
 	public function getRolesForType($type_id=null)
 	{
+		$type_id = intval($type_id);
+
 		if ($type_id === null)
 		{
 			$this->setError(JText::_('Missing argument'));
 			return false;
 		}
 
-		$type_id = intval($type_id);
-
-		$query = "SELECT r.id, r.title, r.alias
-					FROM $this->_tbl AS r
-					JOIN #__author_role_types AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
-					ORDER BY r.title ASC";
-
-		$this->_db->setQuery($query);
+		$this->_db->setQuery(
+			"SELECT r.id, r.title, r.alias
+			FROM `$this->_tbl` AS r
+			JOIN `#__author_role_types` AS rt ON r.id=rt.role_id AND rt.type_id=" . $this->_db->Quote($type_id) . "
+			ORDER BY r.title ASC"
+		);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Get all the types associated with a role
 	 *
-	 * @param      integer $role_id Role ID
-	 * @return     array
+	 * @param   integer  $role_id  Role ID
+	 * @return  array
 	 */
 	public function getTypesForRole($role_id=null)
 	{
-		if ($role_id === null)
-		{
-			$role_id = $this->id;
-		}
+		$role_id = $role_id ?: $this->id;
+		$role_id = intval($role_id);
 
 		if (!$role_id)
 		{
@@ -287,24 +217,22 @@ class ResourcesContributorRole extends JTable
 			return false;
 		}
 
-		$role_id = intval($role_id);
-
-		$query = "SELECT r.id, r.type, r.alias
-					FROM #__resource_types AS r
-					LEFT JOIN #__author_role_types AS rt ON r.id=rt.type_id
-					WHERE rt.role_id=" . $this->_db->Quote($role_id) . "
-					ORDER BY r.type ASC";
-
-		$this->_db->setQuery($query);
+		$this->_db->setQuery(
+			"SELECT r.id, r.type, r.alias
+			FROM `#__resource_types` AS r
+			LEFT JOIN `#__author_role_types` AS rt ON r.id=rt.type_id
+			WHERE rt.role_id=" . $this->_db->Quote($role_id) . "
+			ORDER BY r.type ASC"
+		);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Associated types with a role
 	 *
-	 * @param      integer $role_id Role ID
-	 * @param      array   $current Current types associated
-	 * @return     boolean True on success
+	 * @param   integer  $role_id  Role ID
+	 * @param   array    $current  Current types associated
+	 * @return  boolean  True on success
 	 */
 	public function setTypesForRole($role_id=null, $current=null)
 	{
@@ -313,7 +241,7 @@ class ResourcesContributorRole extends JTable
 			$role_id = $this->id;
 		}
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
+		include_once(__DIR__ . DS . 'role.type.php');
 
 		$rt = new ResourcesContributorRoleType($this->_db);
 
@@ -323,8 +251,8 @@ class ResourcesContributorRole extends JTable
 	/**
 	 * Delete a record
 	 *
-	 * @param      integer $oid Record to delete
-	 * @return     boolean True on success
+	 * @param   integer  $oid  Record to delete
+	 * @return  boolean  True on success
 	 */
 	public function delete($oid=null)
 	{
@@ -333,7 +261,7 @@ class ResourcesContributorRole extends JTable
 			$oid = $this->id;
 		}
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_resources' . DS . 'tables' . DS . 'role.type.php');
+		include_once(__DIR__ . DS . 'role.type.php');
 
 		$rt = new ResourcesContributorRoleType($this->_db);
 		if (!$rt->deleteForRole($oid))

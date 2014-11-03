@@ -31,51 +31,60 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Table class for resource imports
+ */
 class ResourcesTableImport extends JTable
 {
-	var $id         = NULL;
-	var $name       = NULL;
-	var $notes      = NULL;
-	var $file       = NULL;
-	var $count      = NULL;
-	var $created_at = NULL;
-	var $created_by = NULL;
-	var $state      = NULL;
-	var $params     = NULL;
-	var $hooks      = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
 		parent::__construct('#__resource_imports', 'id', $db);
 	}
 
+	/**
+	 * Validate data
+	 *
+	 * @return  boolean  True if data is valid
+	 */
 	public function check()
 	{
+		$this->name = trim($this->name);
 		if ($this->name == '')
 		{
-			$this->setError( JText::_('Name field is required for import.') );
+			$this->setError(JText::_('Name field is required for import.'));
 			return false;
 		}
 
 		return true;
 	}
 
-	public function find( $filters = array())
+	/**
+	 * Return a list of records
+	 *
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
+	 */
+	public function find($filters = array())
 	{
-		$sql  = "SELECT * FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery( $filters );
+		$sql  = "SELECT * FROM {$this->_tbl}" . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
-	private function _buildQuery( $filters = array() )
+	/**
+	 * Build a query from filters
+	 *
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
+	 */
+	private function _buildQuery($filters = array())
 	{
 		// var to hold conditions
 		$where = array();

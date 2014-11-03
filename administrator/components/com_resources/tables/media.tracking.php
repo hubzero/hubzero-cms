@@ -31,59 +31,54 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for resource audience level
+ * Table class for resource media tracking
  */
 class ResourceMediaTracking extends JTable
 {
-	var $id 							= NULL;
-	var $user_id 						= NULL;
-	var $session_id						= NULL;
-	var $ip_address						= NULL;
-	var $object_id 						= NULL;
-	var $object_type 					= NULL;
-	var $object_duration 				= NULL;
-	var $current_position 				= NULL;
-	var $farthest_position 				= NULL;
-	var $current_position_timestamp 	= NULL;
-	var $farthest_position_timestamp 	= NULL;
-	var $completed 						= NULL;
-	var $total_views 					= NULL;
-	var $total_viewing_time             = NULL;
-
-	//-----
-
+	/**
+	 * Constructor
+	 *
+	 * @param   object  &$db  JDatabase
+	 * @return  void
+	 */
 	public function __construct(&$db)
 	{
 		parent::__construct('#__media_tracking', 'id', $db);
 	}
 
-	//-----
-
-	public function getTrackingInformationForUserAndResource( $user_id = '', $object_id = '', $object_type = 'resource')
+	/**
+	 * Get tracking info for a specific user/resource combination
+	 *
+	 * @param   string  $user_id      User ID
+	 * @param   string  $object_id    Object ID
+	 * @param   string  $object_type  Object type
+	 * @return  object
+	 */
+	public function getTrackingInformationForUserAndResource($user_id = '', $object_id = '', $object_type = 'resource')
 	{
-		//make sure we have a resource
-		if(!$object_id)
+		// Make sure we have a resource
+		if (!$object_id)
 		{
 			return;
 		}
 
-		//start sequel
-		$sql  = "SELECT m.* FROM $this->_tbl AS m ";
+		$sql = "SELECT m.* FROM $this->_tbl AS m WHERE ";
 
-		//if we dont have a user id use session id
-		if(!$user_id)
+		// If we don't have a user ID use session ID
+		if (!$user_id)
 		{
 			$session = JFactory::getSession();
 			$session_id = $session->getId();
-			$sql .= "WHERE m.session_id='" . $session_id . "' ";
+			$sql .= "m.session_id=" . $this->_db->quote($session_id);
 		}
 		else
 		{
-			$sql .= "WHERE m.user_id=" . $user_id . " ";
+			$sql .= "m.user_id=" . $this->_db->quote($user_id);
 		}
 
-		$sql .= "AND m.object_id=" . $object_id . " AND m.object_type='" . $object_type . "'";
-		$this->_db->setQuery( $sql );
+		$sql .= " AND m.object_id=" . $this->_db->quote($object_id) . " AND m.object_type=" . $this->_db->quote($object_type);
+
+		$this->_db->setQuery($sql);
 		return $this->_db->loadObject();
 	}
 }

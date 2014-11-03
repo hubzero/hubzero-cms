@@ -37,38 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesAssoc extends JTable
 {
 	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $parent_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $child_id  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $grouping  = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -78,11 +50,12 @@ class ResourcesAssoc extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->child_id) == '')
+		$this->child_id = trim($this->child_id);
+		if ($this->child_id == '')
 		{
 			$this->setError(JText::_('Your resource association must have a child.'));
 			return false;
@@ -93,40 +66,34 @@ class ResourcesAssoc extends JTable
 	/**
 	 * Load a record by parent/child association and bind to $this
 	 *
-	 * @param      integer $pid Parent ID
-	 * @param      integer $cid Child ID
-	 * @return     boolean True on success
+	 * @param   integer  $pid  Parent ID
+	 * @param   integer  $cid  Child ID
+	 * @return  boolean  True on success
 	 */
 	public function loadAssoc($pid, $cid)
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " AND child_id=" . $this->_db->Quote($cid));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'parent_id' => $pid,
+			'child_id'  => $cid
+		));
 	}
 
 	/**
 	 * Get the record directly before or after this record
 	 *
-	 * @param      string $move Direction to look
-	 * @return     boolean True on success
+	 * @param   string   $move  Direction to look
+	 * @return  boolean  True on success
 	 */
 	public function getNeighbor($move)
 	{
 		switch ($move)
 		{
 			case 'orderup':
-				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($this->parent_id) . " AND ordering < " . $this->_db->Quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
+				$sql = "SELECT * FROM `$this->_tbl` WHERE parent_id=" . $this->_db->Quote($this->parent_id) . " AND ordering < " . $this->_db->Quote($this->ordering) . " ORDER BY ordering DESC LIMIT 1";
 			break;
 
 			case 'orderdown':
-				$sql = "SELECT * FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($this->parent_id) . " AND ordering > " . $this->_db->Quote($this->ordering) . " ORDER BY ordering LIMIT 1";
+				$sql = "SELECT * FROM `$this->_tbl` WHERE parent_id=" . $this->_db->Quote($this->parent_id) . " AND ordering > " . $this->_db->Quote($this->ordering) . " ORDER BY ordering LIMIT 1";
 			break;
 		}
 		$this->_db->setQuery($sql);
@@ -144,15 +111,13 @@ class ResourcesAssoc extends JTable
 	/**
 	 * Get the last number in an ordering
 	 *
-	 * @param      integer $pid Parent ID
-	 * @return     integer
+	 * @param   integer  $pid  Parent ID
+	 * @return  integer
 	 */
 	public function getLastOrder($pid=NULL)
 	{
-		if (!$pid)
-		{
-			$pid = $this->parent_id;
-		}
+		$pid = $pid ?: $this->parent_id;
+
 		$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " ORDER BY ordering DESC LIMIT 1");
 		return $this->_db->loadResult();
 	}
@@ -160,38 +125,31 @@ class ResourcesAssoc extends JTable
 	/**
 	 * Delete a record
 	 *
-	 * @param      integer $pid Parent ID
-	 * @param      integer $cid Child ID
-	 * @return     boolean True on success
+	 * @param   integer  $pid  Parent ID
+	 * @param   integer  $cid  Child ID
+	 * @return  boolean  True on success
 	 */
 	public function delete($pid=NULL, $cid=NULL)
 	{
-		if (!$pid)
-		{
-			$pid = $this->parent_id;
-		}
-		if (!$cid)
-		{
-			$cid = $this->child_id;
-		}
+		$pid = $pid ?: $this->parent_id;
+		$cid = $cid ?: $this->child_id;
+
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid) . " AND child_id=" . $this->_db->Quote($cid));
-		if ($this->_db->query())
+		if (!$this->_db->query())
 		{
-			return true;
-		}
-		else
-		{
-			$this->_error = $this->_db->getErrorMsg();
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+
+		return true;
 	}
 
 	/**
 	 * Store a record
 	 * Defaults to update unless forcing an insert
 	 *
-	 * @param      boolean $new Create new?
-	 * @return     boolean True on success
+	 * @param   boolean  $new  Create new?
+	 * @return  boolean  True on success
 	 */
 	public function store($new=false)
 	{
@@ -225,19 +183,18 @@ class ResourcesAssoc extends JTable
 	/**
 	 * Get a record count for a parent
 	 *
-	 * @param      integer $pid Parent ID
-	 * @return     itneger
+	 * @param   integer  $pid  Parent ID
+	 * @return  integer
 	 */
 	public function getCount($pid=NULL)
 	{
-		if (!$pid)
-		{
-			$pid = $this->parent_id;
-		}
+		$pid = $pid ?: $this->parent_id;
+
 		if (!$pid)
 		{
 			return null;
 		}
+
 		$this->_db->setQuery("SELECT count(*) FROM $this->_tbl WHERE parent_id=" . $this->_db->Quote($pid));
 		return $this->_db->loadResult();
 	}

@@ -31,21 +31,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Table class for resource import runs
+ */
 class ResourcesTableImportRun extends JTable
 {
-	var $id         = NULL;
-	var $import_id  = NULL;
-	var $processed  = NULL;
-	var $count      = NULL;
-	var $ran_by     = NULL;
-	var $ran_at     = NULL;
-	var $dry_run    = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -53,8 +48,9 @@ class ResourcesTableImportRun extends JTable
 	}
 
 	/**
-	 * [check description]
-	 * @return [type] [description]
+	 * Validate data
+	 *
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -68,25 +64,26 @@ class ResourcesTableImportRun extends JTable
 	}
 
 	/**
-	 * [find description]
-	 * @param  array  $filters [description]
-	 * @return [type]          [description]
+	 * Return a list of records
+	 *
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
-	public function find( $filters = array())
+	public function find($filters = array())
 	{
-		$sql  = "SELECT * FROM {$this->_tbl}";
-		$sql .= $this->_buildQuery( $filters );
+		$sql = "SELECT * FROM {$this->_tbl}" . $this->_buildQuery($filters);
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * [_buildQuery description]
-	 * @param  array  $filters [description]
-	 * @return [type]          [description]
+	 * Build a query from filters
+	 *
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
-	private function _buildQuery( $filters = array() )
+	private function _buildQuery($filters = array())
 	{
 		// var to hold conditions
 		$where = array();

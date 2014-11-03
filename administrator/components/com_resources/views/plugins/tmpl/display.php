@@ -35,7 +35,7 @@ JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 ?>
 <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
-	<fieldset id="filter">
+	<fieldset id="filter-bar">
 		<?php echo $this->states; ?>
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_RESOURCES_GO'); ?>" />
@@ -86,11 +86,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
 
-	$link = JRoute::_( 'index.php?option=com_plugins&task=plugin.edit&extension_id='.$row->id.'&component=resources' );
+	$link = JRoute::_('index.php?option=com_plugins&task=plugin.edit&extension_id='.$row->id.'&component=resources');
 
-	$access 	= JHTML::_('grid.access', $row, $i);
-	//$checked 	= JHTML::_('grid.checkedout', $row, $i);
-	$published 	= JHTML::_('grid.published', $row, $i);
+	$access    = JHTML::_('grid.access', $row, $i);
+	//$checked = JHTML::_('grid.checkedout', $row, $i);
+	$published = JHTML::_('grid.published', $row, $i);
 
 	$ordering = ($this->filters['sort'] == 'p.folder');
 
@@ -98,69 +98,68 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	{
 		case '2':
 			$task = 'publish';
-			$img = 'disabled.png';
-			$alt = JText::_('JTRASHED');
-			$cls = 'trashed';
+			$img  = 'disabled.png';
+			$alt  = JText::_('JTRASHED');
+			$cls  = 'trashed';
 		break;
 		case '1':
 			$task = 'unpublish';
-			$img = 'publish_g.png';
-			$alt = JText::_('JPUBLISHED');
-			$cls = 'publish';
+			$img  = 'publish_g.png';
+			$alt  = JText::_('JPUBLISHED');
+			$cls  = 'publish';
 		break;
 		case '0':
 		default:
 			$task = 'publish';
-			$img = 'publish_x.png';
-			$alt = JText::_('JUNPUBLISHED');
-			$cls = 'unpublish';
+			$img  = 'publish_x.png';
+			$alt  = JText::_('JUNPUBLISHED');
+			$cls  = 'unpublish';
 		break;
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-				<?php
-					if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) {
-						echo $this->escape($row->name);
-					} else {
-				?>
-					<a class="editlinktip hasTip" href="<?php echo $link; ?>">
-						<span><?php echo $this->escape($row->name); ?></span>
-					</a>
-				<?php } ?>
+					<?php
+						if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) {
+							echo $this->escape($row->name);
+						} else {
+					?>
+						<a class="editlinktip hasTip" href="<?php echo $link; ?>">
+							<span><?php echo $this->escape($row->name); ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
-					<span class="state <?php echo $cls; ?>">
-						<span class="text"><?php echo $alt; ?></span>
-					</span>
-				<?php } else { ?>
-					<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task);?>">
-						<span class="text"><?php echo $alt; ?></span>
-					</a>
-				<?php } ?>
+					<?php if ($tbl->isCheckedOut($this->user->get('id'), $row->checked_out)) { ?>
+						<span class="state <?php echo $cls; ?>">
+							<span class="text"><?php echo $alt; ?></span>
+						</span>
+					<?php } else { ?>
+						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+							<span class="text"><?php echo $alt; ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td class="order">
-					<span><?php echo $this->pagination->orderUpIcon( $i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'COM_RESOURCES_MOVE_UP', $row->ordering); ?></span>
-					<span><?php echo $this->pagination->orderDownIcon( $i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'COM_RESOURCES_MOVE_DOWN', $row->ordering); ?></span>
-					<?php $disabled = $row->ordering ?  '' : 'disabled="disabled"'; ?>
-					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>"  <?php echo $disabled ?> class="text_area" style="text-align: center" />
+					<span><?php echo $this->pagination->orderUpIcon($i, ($row->folder == @$this->rows[$i-1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderup', 'COM_RESOURCES_MOVE_UP', $row->ordering); ?></span>
+					<span><?php echo $this->pagination->orderDownIcon($i, $n, ($row->folder == @$this->rows[$i+1]->folder && $row->ordering > -10000 && $row->ordering < 10000), 'orderdown', 'COM_RESOURCES_MOVE_DOWN', $row->ordering); ?></span>
+					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo ($row->ordering ? '' : 'disabled="disabled"'); ?> class="text_area" style="text-align: center" />
 				</td>
 				<td align="center">
 					<?php echo $access; ?>
 				</td>
 				<td nowrap="nowrap">
-				<?php if (in_array($row->element, $this->manage)) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
-						<span><?php echo JText::_('COM_RESOURCES_COL_MANAGE'); ?></span>
-					</a>
-				<?php } ?>
+					<?php if (in_array($row->element, $this->manage)) { ?>
+						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
+							<span><?php echo JText::_('COM_RESOURCES_COL_MANAGE'); ?></span>
+						</a>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->element); ?>

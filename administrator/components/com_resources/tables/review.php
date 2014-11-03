@@ -37,66 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesReview extends JTable
 {
 	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $resource_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $user_id     = NULL;
-
-	/**
-	 * decimal(2,1)
-	 *
-	 * @var integer
-	 */
-	var $rating      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $comment     = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created     = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $anonymous   = NULL;
-
-	/**
-	 * int(11) primary key
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $state       = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -106,7 +50,7 @@ class ResourcesReview extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if valid, false if not
+	 * @return  boolean  True if valid, false if not
 	 */
 	public function check()
 	{
@@ -121,31 +65,24 @@ class ResourcesReview extends JTable
 	/**
 	 * Load a review for a specific user/resource combination
 	 *
-	 * @param      integer $resourceid Resource ID
-	 * @param      integer $userid     User ID
-	 * @return     boolean True on success, False on error
+	 * @param   integer  $resourceid  Resource ID
+	 * @param   integer  $userid      User ID
+	 * @return  boolean  True on success, False on error
 	 */
 	public function loadUserReview($resourceid, $userid)
 	{
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE resource_id=" . $this->_db->Quote($resourceid) . " AND user_id=" . $this->_db->Quote($userid) . " LIMIT 1");
-
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'resource_id' => $resourceid,
+			'user_id'     => $userid
+		));
 	}
 
 	/**
 	 * Load a rating for a specific user/resource combination
 	 *
-	 * @param      integer $resourceid Resource ID
-	 * @param      integer $userid     User ID
-	 * @return     integer
+	 * @param   integer  $resourceid  Resource ID
+	 * @param   integer  $userid      User ID
+	 * @return  integer
 	 */
 	public function loadUserRating($resourceid, $userid)
 	{
@@ -156,71 +93,70 @@ class ResourcesReview extends JTable
 	/**
 	 * Get all ratings for a specific resource
 	 *
-	 * @param      integer $resource_id Resource ID
-	 * @return     array
+	 * @param   integer  $resource_id  Resource ID
+	 * @return  array
 	 */
 	public function getRatings($resource_id=NULL)
 	{
 		$juser = JFactory::getUser();
 
-		if (!$resource_id)
-		{
-			$resource_id = $this->resource_id;
-		}
+		$resource_id = $resource_id ?: $this->resource_id;
+
 		if (!$resource_id)
 		{
 			return false;
 		}
-		//$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE resource_id=".$id." ORDER BY created DESC");
-		$this->_db->setQuery("SELECT rr.*, rr.id as id, v.helpful AS vote, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
-			."\n FROM $this->_tbl AS rr "
-			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote($juser->get('id')) . " "
-			."\n WHERE rr.resource_id=" . $this->_db->Quote($resource_id) . " AND rr.state IN (1, 3) ORDER BY rr.created DESC");
+
+		$this->_db->setQuery(
+			"SELECT rr.*, rr.id as id, v.helpful AS vote,
+			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful,
+			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful
+			FROM `$this->_tbl` AS rr
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote($juser->get('id')) . "
+			WHERE rr.resource_id=" . $this->_db->Quote($resource_id) . " AND rr.state IN (1, 3) ORDER BY rr.created DESC"
+		);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Load rating for a specific resource
 	 *
-	 * @param      integer $id     Resource ID
-	 * @param      integer $userid User ID
-	 * @return     array
+	 * @param   integer  $id      Resource ID
+	 * @param   integer  $userid  User ID
+	 * @return  array
 	 */
 	public function getRating($id=NULL, $userid)
 	{
 		if (!$userid)
 		{
-			$juser = JFactory::getUser();
-			$userid = $juser->get('id');
+			$userid = JFactory::getUser()->get('id');
 		}
 
-		if (!$id)
-		{
-			$id = $this->resource_id;
-		}
+		$id = $id ?: $this->resource_id;
+
 		if (!$id)
 		{
 			return false;
 		}
-		//$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE resource_id=".$id." ORDER BY created DESC");
-		$this->_db->setQuery("SELECT rr.*, rr.id as id, v.helpful AS vote, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful, "
-			."\n (SELECT COUNT(*) FROM #__vote_log AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful "
-			."\n FROM $this->_tbl AS rr "
-			."\n LEFT JOIN #__vote_log AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote($userid) . " "
-			."\n WHERE rr.state IN (1, 3) AND rr.id=" . $this->_db->Quote($id) . " ");
+
+		$this->_db->setQuery(
+			"SELECT rr.*, rr.id as id, v.helpful AS vote,
+			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='yes' AND v.category='review' AND v.referenceid=rr.id) AS helpful,
+			(SELECT COUNT(*) FROM `#__vote_log` AS v WHERE v.helpful='no' AND v.category='review' AND v.referenceid=rr.id) AS nothelpful
+			FROM `$this->_tbl` AS rr
+			LEFT JOIN `#__vote_log` AS v ON v.referenceid=rr.id AND v.category='review' AND v.voter=" . $this->_db->Quote($userid) . "
+			WHERE rr.state IN (1, 3) AND rr.id=" . $this->_db->Quote($id)
+		);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Get the vote for a specific item and user
 	 *
-	 * @param      integer $id       Resource ID
-	 * @param      string  $category Category
-	 * @param      integer $uid      User ID
-	 * @return     integer
+	 * @param   integer  $id        Resource ID
+	 * @param   string   $category  Category
+	 * @param   integer  $uid       User ID
+	 * @return  integer
 	 */
 	public function getVote($id, $category = 'review', $uid)
 	{
@@ -234,10 +170,12 @@ class ResourcesReview extends JTable
 			return false;
 		}
 
-		$query  = "SELECT v.helpful ";
-		$query .= "FROM #__vote_log as v  ";
-		$query .= "WHERE v.referenceid = " . $this->_db->Quote($id) . " AND v.category=" . $this->_db->Quote($category) . " AND v.voter=" . $this->_db->Quote($uid) . " LIMIT 1";
-		$this->_db->setQuery($query);
+		$this->_db->setQuery(
+			"SELECT v.helpful FROM `#__vote_log` as v
+			WHERE v.referenceid=" . $this->_db->Quote($id) . "
+			AND v.category=" . $this->_db->Quote($category) . "
+			AND v.voter=" . $this->_db->Quote($uid) . " LIMIT 1"
+		);
 		return $this->_db->loadResult();
 	}
 }

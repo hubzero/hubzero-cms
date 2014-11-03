@@ -31,37 +31,30 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for resource audience level
+ * Table class for resource detailed media tracking
  */
 class ResourceMediaTrackingDetailed extends JTable
 {
-	var $id                          = NULL;
-	var $user_id                     = NULL;
-	var $session_id                  = NULL;
-	var $ip_address                  = NULL;
-	var $object_id                   = NULL;
-	var $object_type                 = NULL;
-	var $object_duration             = NULL;
-	var $current_position            = NULL;
-	var $farthest_position           = NULL;
-	var $current_position_timestamp  = NULL;
-	var $farthest_position_timestamp = NULL;
-	var $completed                   = NULL;
-
-	//-----
-
+	/**
+	 * Constructor
+	 *
+	 * @param   object  &$db  JDatabase
+	 * @return  void
+	 */
 	public function __construct(&$db)
 	{
 		parent::__construct('#__media_tracking_detailed', 'id', $db);
 	}
 
-	//-----
-
-	public function loadByDetailId( $id )
+	/**
+	 * Load a record by ID
+	 *
+	 * @param   integer  $id  Record ID
+	 * @return  object
+	 */
+	public function loadByDetailId($id)
 	{
-		//start sequel
-		$sql  = "SELECT m.* FROM $this->_tbl AS m WHERE id=" . $this->_db->quote( $id );
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery("SELECT m.* FROM $this->_tbl AS m WHERE id=" . $this->_db->quote($id));
 		return $this->_db->loadObject();
 	}
 }

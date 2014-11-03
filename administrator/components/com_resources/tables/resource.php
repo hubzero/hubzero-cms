@@ -37,206 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesResource extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id               = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $title            = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $type             = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $logical_type     = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $introtext        = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $fulltxt         = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $footertext       = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by       = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by      = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $published        = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_up       = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_down     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $access           = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $hits             = NULL;
-
-	/**
-	 * varchar(200)
-	 *
-	 * @var string
-	 */
-	var $path             = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $checked_out      = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $checked_out_time = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $standalone       = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $group_owner      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $group_access     = NULL;
-
-	/**
-	 * decimal(2,1)
-	 *
-	 * @var integer
-	 */
-	var $rating           = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $times_rated      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params           = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $attribs          = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $alias            = NULL;
-
-	/**
-	 * float
-	 *
-	 * @var integer
-	 */
-	var $ranking          = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -244,38 +48,30 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Load a record and bind to $this
+	 * Method to load a row from the database by primary key and bind the fields
+	 * to the JTable instance properties.
 	 *
-	 * @param      string $oid Resource alias
-	 * @return     boolean True on success
+	 * @param   mixed    $keys   An optional primary key value to load the row by, or an array of fields to match. If not set the instance property value is used.
+	 * @param   boolean  $reset  True to reset the default values before loading the new row.
+	 * @return  boolean  True if successful. False if row not found or on error (internal error state set in that case).
 	 */
-	public function load($oid=NULL, $reset = true)
+	public function load($keys = null, $reset = true)
 	{
-		if ($oid === NULL)
+		if (is_numeric($keys))
 		{
-			return false;
+			return parent::load($keys, $reset);
 		}
-		if (is_numeric($oid))
-		{
-			return parent::load($oid, $reset);
-		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+
+		return parent::load(array(
+			'alias' => $keys
+		), $reset);
 	}
 
 	/**
 	 * Load a record by alias and bind to $this
 	 *
-	 * @param      string $oid Resource alias
-	 * @return     boolean True on success
+	 * @param   string   $oid  Resource alias
+	 * @return  boolean  True on success
 	 */
 	public function loadAlias($oid=NULL)
 	{
@@ -283,10 +79,11 @@ class ResourcesResource extends JTable
 	}
 
 	/**
-	 * Load a record by alias and bind to $this
+	 * Load a record by file path
 	 *
-	 * @param      string $oid Resource alias
-	 * @return     boolean True on success
+	 * @param   string   $oid        File path
+	 * @param   integer  $parent_id  Resource ID
+	 * @return  boolean  True on success
 	 */
 	public function loadByFile($oid=NULL, $parent_id=null)
 	{
@@ -294,7 +91,7 @@ class ResourcesResource extends JTable
 		{
 			return false;
 		}
-		$this->_db->setQuery("SELECT r.id FROM $this->_tbl AS r LEFT JOIN #__resource_assoc AS a ON a.child_id=r.id WHERE (r.`path`=" . $this->_db->Quote($oid) . " OR r.`path` LIKE " . $this->_db->quote('%/' . $oid) . ") AND r.`standalone`=0 AND a.parent_id=" . $this->_db->Quote($parent_id));
+		$this->_db->setQuery("SELECT r.id FROM `$this->_tbl` AS r LEFT JOIN `#__resource_assoc` AS a ON a.child_id=r.id WHERE (r.`path`=" . $this->_db->Quote($oid) . " OR r.`path` LIKE " . $this->_db->quote('%/' . $oid) . ") AND r.`standalone`=0 AND a.parent_id=" . $this->_db->Quote($parent_id));
 		if ($result = $this->_db->loadResult())
 		{
 			return true;
@@ -305,23 +102,40 @@ class ResourcesResource extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->title) == '')
+		$this->title = trim($this->title);
+		if ($this->title == '')
 		{
 			$this->setError('Your Resource must contain a title.');
 			return false;
 		}
+
+		$this->type = intval($this->type);
+		$this->logical_type = intval($this->logical_type);
+		$this->standalone = intval($this->standalone);
+
+		if (!$this->id)
+		{
+			$this->created    = $this->created    ?: JFactory::getDate()->toSql();
+			$this->created_by = $this->created_by ?: JFactory::getUser()->get('id');
+		}
+		else
+		{
+			$this->modified    = $this->modified    ?: JFactory::getDate()->toSql();
+			$this->modified_by = $this->modified_by ?: JFactory::getUser()->get('id');
+		}
+
 		return true;
 	}
 
 	/**
 	 * Get the title of a resource type
 	 *
-	 * @param      integer $which Get type or logical type
-	 * @return     string
+	 * @param   integer  $which  Get type or logical type
+	 * @return  string
 	 */
 	public function getTypeTitle($which=0)
 	{
@@ -333,7 +147,7 @@ class ResourcesResource extends JTable
 		{
 			$type = $this->type;
 		}
-		$this->_db->setQuery("SELECT type FROM #__resource_types WHERE id=" . $this->_db->Quote($type));
+		$this->_db->setQuery("SELECT type FROM `#__resource_types` WHERE id=" . $this->_db->Quote($type));
 		$title = $this->_db->loadResult();
 		return ($title) ? $title : '';
 	}
@@ -341,7 +155,7 @@ class ResourcesResource extends JTable
 	/**
 	 * Get the groups allowed to access a resource
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getGroups()
 	{
@@ -367,11 +181,11 @@ class ResourcesResource extends JTable
 	/**
 	 * Calculate the rating for a resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function calculateRating()
 	{
-		$this->_db->setQuery("SELECT rating FROM #__resource_ratings WHERE resource_id=". $this->_db->Quote($this->id));
+		$this->_db->setQuery("SELECT rating FROM `#__resource_ratings` WHERE resource_id=". $this->_db->Quote($this->id));
 		$ratings = $this->_db->loadObjectList();
 
 		$totalcount = count($ratings);
@@ -397,7 +211,7 @@ class ResourcesResource extends JTable
 	/**
 	 * Update the rating for a record
 	 *
-	 * @return     boolean True on success
+	 * @return  boolean  True on success
 	 */
 	public function updateRating()
 	{
@@ -413,8 +227,8 @@ class ResourcesResource extends JTable
 	/**
 	 * Delete records associated with a resource
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean True on success
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteExistence($id=NULL)
 	{
@@ -424,28 +238,28 @@ class ResourcesResource extends JTable
 		}
 
 		// Delete child associations
-		$this->_db->setQuery("DELETE FROM #__resource_assoc WHERE child_id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__resource_assoc` WHERE child_id=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete parent associations
-		$this->_db->setQuery("DELETE FROM #__resource_assoc WHERE parent_id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__resource_assoc` WHERE parent_id=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete tag associations
-		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='resources' AND objectid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__tags_object` WHERE tbl='resources' AND objectid=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete ratings
-		$this->_db->setQuery("DELETE FROM #__resource_ratings WHERE resource_id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__resource_ratings` WHERE resource_id=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -457,8 +271,8 @@ class ResourcesResource extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -601,8 +415,8 @@ class ResourcesResource extends JTable
 	/**
 	 * Get a list of group aliases for a user where group membership is confirmed
 	 *
-	 * @param      array $groups User's groups
-	 * @return     array
+	 * @param   array  $groups  User's groups
+	 * @return  array
 	 */
 	public static function getUsersGroups($groups)
 	{
@@ -625,9 +439,9 @@ class ResourcesResource extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   array    $filters  Filters to build query from
+	 * @param   boolean  $admin    Current user is admin?
+	 * @return  array
 	 */
 	public function getCount($filters=array(), $admin=false)
 	{
@@ -643,9 +457,9 @@ class ResourcesResource extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   array    $filters  Filters to build query from
+	 * @param   boolean  $admin    Current user is admin?
+	 * @return  array
 	 */
 	public function getRecords($filters=array(), $admin=false)
 	{
@@ -662,8 +476,8 @@ class ResourcesResource extends JTable
 	 * Build a query based off of filters
 	 * Used by plugins only
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	public function buildPluginQuery($filters=array())
 	{
@@ -967,8 +781,8 @@ class ResourcesResource extends JTable
 	 * Get record count
 	 * Used by admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getItemCount($filters=array())
 	{
@@ -1001,8 +815,8 @@ class ResourcesResource extends JTable
 	 * Get records
 	 * Used by admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getItems($filters=array())
 	{
@@ -1054,8 +868,8 @@ class ResourcesResource extends JTable
 	 * Get a record count of child resources
 	 * Used by admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getItemChildrenCount($filters=array())
 	{
@@ -1096,27 +910,27 @@ class ResourcesResource extends JTable
 	 * Get records of child resources
 	 * Used by admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getItemChildren($filters=array())
 	{
 		$gname = 'g.title';
-		$gtbl = '#__viewlevels AS g ON g.id = (r.access + 1)';
+		$gtbl = '`#__viewlevels` AS g ON g.id = (r.access + 1)';
 
 		if (isset($filters['parent_id']) && $filters['parent_id'] > 0)
 		{
 			$sql  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, r.published,
 						r.publish_up, r.publish_down, r.path, r.checked_out, r.checked_out_time, r.standalone, u.name AS editor, $gname AS groupname,
 						lt.type AS logicaltitle, ra.*, gt.type as grouptitle, t.type AS typetitle, NULL as position,
-						(SELECT count(*) FROM #__resource_assoc AS rraa WHERE rraa.child_id=r.id AND rraa.parent_id!=" . $this->_db->Quote($filters['parent_id']) . ") AS multiuse
-						FROM #__resource_types AS t,
-						$this->_tbl AS r
-						LEFT JOIN #__users AS u ON u.id = r.checked_out
+						(SELECT count(*) FROM `#__resource_assoc` AS rraa WHERE rraa.child_id=r.id AND rraa.parent_id!=" . $this->_db->Quote($filters['parent_id']) . ") AS multiuse
+						FROM `#__resource_types` AS t,
+						`$this->_tbl` AS r
+						LEFT JOIN `#__users` AS u ON u.id = r.checked_out
 						LEFT JOIN $gtbl
-						LEFT JOIN #__resource_types AS lt ON lt.id=r.logical_type,
-						#__resource_assoc AS ra
-						LEFT JOIN #__resource_types AS gt ON gt.id=ra.grouping
+						LEFT JOIN `#__resource_types` AS lt ON lt.id=r.logical_type,
+						`#__resource_assoc` AS ra
+						LEFT JOIN `#__resource_types` AS gt ON gt.id=ra.grouping
 						WHERE r.type=t.id AND ra.child_id=r.id AND ra.parent_id=" . $this->_db->Quote($filters['parent_id']);
 		}
 		else
@@ -1124,12 +938,12 @@ class ResourcesResource extends JTable
 			$sql  = "SELECT r.id, r.title, r.type, r.logical_type, r.created, r.created_by, r.access, r.published,
 						r.publish_up, r.publish_down, r.checked_out, r.checked_out_time, r.path, r.standalone, u.name AS editor, $gname AS groupname,
 						t.type AS typetitle, NULL as logicaltitle
-						FROM $this->_tbl AS r
-						LEFT JOIN #__users AS u ON u.id = r.checked_out
+						FROM `$this->_tbl` AS r
+						LEFT JOIN `#__users` AS u ON u.id = r.checked_out
 						LEFT JOIN $gtbl
-						LEFT JOIN #__resource_types AS t ON t.id=r.type
+						LEFT JOIN `#__resource_types` AS t ON t.id=r.type
 						WHERE r.standalone!=1
-						AND NOT EXISTS(SELECT * FROM #__resource_assoc AS a WHERE a.child_id = r.id)";
+						AND NOT EXISTS(SELECT * FROM `#__resource_assoc` AS a WHERE a.child_id = r.id)";
 		}
 		if (isset($filters['status']) && $filters['status'] != 'all')
 		{
@@ -1159,4 +973,3 @@ class ResourcesResource extends JTable
 		return $this->_db->loadObjectList();
 	}
 }
-

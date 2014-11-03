@@ -37,87 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesLicense extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id  = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $name     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var string
-	 */
-	var $text = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $title = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering = NULL;
-
-	/**
-	 * tinyint(3)
-	 *
-	 * @var integer
-	 */
-	var $apps_only 	= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $main 		= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $icon 		= NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $url 		= NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $agreement  = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $info  		= NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -127,44 +50,29 @@ class ResourcesLicense extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      mixed $oid Integer or string (alias)
-	 * @return     void
+	 * @param   mixed  $oid  Integer or string (alias)
+	 * @return  void
 	 */
 	public function load($keys = NULL, $reset = true)
 	{
-		if ($keys === NULL)
-		{
-			return false;
-		}
-
 		if (is_numeric($keys))
 		{
 			return parent::load($keys);
 		}
 
-		$oid = trim($keys);
-
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE name=" . $this->_db->Quote($oid));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'name' => trim($keys)
+		));
 	}
 
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		$this->text = trim($this->text);
-
 		if (!$this->text)
 		{
 			$this->setError(JText::_('Please provide some text.'));
@@ -193,12 +101,12 @@ class ResourcesLicense extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
-		$query  = "FROM $this->_tbl AS c";
+		$query  = "FROM `$this->_tbl` AS c";
 
 		$where = array();
 		if (isset($filters['state']))
@@ -213,8 +121,7 @@ class ResourcesLicense extends JTable
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
@@ -223,8 +130,8 @@ class ResourcesLicense extends JTable
 	/**
 	 * Get record counts
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getCount($filters=array())
 	{
@@ -239,13 +146,12 @@ class ResourcesLicense extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array   $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT c.*";
-		$query .= $this->_buildQuery($filters);
+		$query = "SELECT c.*" . $this->_buildQuery($filters);
 
 		if (!isset($filters['sort']) || !$filters['sort'])
 		{
@@ -269,12 +175,12 @@ class ResourcesLicense extends JTable
 	/**
 	 * Get licenses
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     array
+	 * @param   integer  $id  Resource ID
+	 * @return  array
 	 */
 	public function getLicenses($id=null)
 	{
-		$query  = "SELECT c.* FROM $this->_tbl AS c";
+		$query  = "SELECT c.* FROM `$this->_tbl` AS c";
 
 		$where = array();
 
@@ -290,8 +196,7 @@ class ResourcesLicense extends JTable
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		if (!isset($filters['sort']) || !$filters['sort'])
