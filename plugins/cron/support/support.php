@@ -158,7 +158,8 @@ class plgCronSupport extends JPlugin
 				$usernames = array_map('trim', $usernames);
 				foreach ($usernames as $k => $username)
 				{
-					$usernames[$k] = $database->quote($username);
+					$user = JUser::getInstance($username);
+					$usernames[$k] = $database->quote($user->get('id'));
 				}
 
 				$where[] = "t.`owner` IN (" . implode(", ", $usernames) . ")";
@@ -330,27 +331,28 @@ class plgCronSupport extends JPlugin
 		$lang->load('com_support');
 		$lang->load('com_support', JPATH_BASE);
 
-		$sql = "SELECT * FROM #__support_tickets WHERE open=1 AND status!=2";
+		$sql = "SELECT * FROM `#__support_tickets` WHERE `open`=1 AND `status`!=2";
 
 		if (is_object($params) && $params->get('support_ticketreminder_group'))
 		{
 			$group = \Hubzero\User\Group::getInstance($params->get('support_ticketreminder_group'));
 
+			$users = array();
 			if ($group)
 			{
 				$users = $group->get('members');
-				$database->setQuery("SELECT username FROM `#__users` WHERE id IN (" . implode(',', $users) . ");");
+				/*$database->setQuery("SELECT username FROM `#__users` WHERE id IN (" . implode(',', $users) . ");");
 				if (!($usernames = $database->loadResultArray()))
 				{
 					$usernames = array();
-				}
+				}*/
 			}
 
-			$sql .= " AND owner IN ('" . implode("','", $usernames) . "') ORDER BY created";
+			$sql .= " AND owner IN ('" . implode("','", $users) . "') ORDER BY created";
 		}
 		else
 		{
-			$sql .= " AND owner IS NOT NULL and owner !='' ORDER BY created";
+			$sql .= " AND owner IS NOT NULL AND owner !='' ORDER BY created";
 		}
 
 		$database->setQuery($sql);
@@ -455,7 +457,7 @@ class plgCronSupport extends JPlugin
 
 			$message->addPart($html, 'text/html');
 
-			//set mail
+			// Send mail
 			if (!$message->send())
 			{
 				$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));
@@ -524,7 +526,8 @@ class plgCronSupport extends JPlugin
 				$usernames = array_map('trim', $usernames);
 				foreach ($usernames as $k => $username)
 				{
-					$usernames[$k] = $database->quote($username);
+					$user = JUser::getInstance($username);
+					$usernames[$k] = $database->quote($user->get('id'));
 				}
 
 				$where[] = "t.`owner` IN (" . implode(", ", $usernames) . ")";
