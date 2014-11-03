@@ -1478,7 +1478,7 @@ class ToolsModelTool
 		{
 			$err['toolname'] = JText::_('COM_TOOLS_ERR_TOOLNAME_EXISTS');
 		}
-		else if (preg_match('#^[a-zA-Z0-9]{3,15}$#',$tool['toolname']) == '' && !$id)
+		else if ((preg_match('#^[a-zA-Z0-9]{3,15}$#',$tool['toolname']) == '' || is_numeric($tool['toolname'])) && !$id)
 		{
 			$err['toolname'] = JText::_('COM_TOOLS_ERR_TOOLNAME');
 		}
