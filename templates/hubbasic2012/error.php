@@ -81,8 +81,8 @@ $v = $browser->major();
 							<h1>
 								<a href="<?php echo empty($this->baseurl) ? "/" : $this->baseurl; ?>" title="<?php echo $config->getValue('config.sitename'); ?>">
 									<span><?php echo $config->getValue('config.sitename'); ?></span>
-									<span class="tagline"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
 								</a>
+								<span class="tagline"><?php echo JText::_('TPL_HUBBASIC_TAGLINE'); ?></span>
 							</h1>
 							<ul id="account" class="<?php echo (!$juser->get('guest')) ? 'loggedin' : 'loggedout'; ?>">
 							<?php if (!$juser->get('guest')) {
