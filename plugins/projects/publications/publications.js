@@ -255,23 +255,6 @@ HUB.ProjectPublications = {
 			});
 		}
 		
-		// Enable preview for metadata content
-		var pubwiki = $('.pubwiki');
-		if (pubwiki.length > 0) {
-			pubwiki.each(function(i, item) 
-			{
-				$(item).on('keyup', function(e) 
-				{				
-					// Preview description
-					var previewpane = $(item).attr('id').replace('pub_', '');	
-					previewpane = '#preview-' + previewpane;
-					if ($(previewpane)) {
-						HUB.ProjectPublications.previewWiki( $(item), $(previewpane) );	
-					}
-				});
-			});
-		}
-		
 		// Check abstract length
 		if($('#pub_abstract').length > 0)
 		{

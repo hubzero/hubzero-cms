@@ -421,9 +421,6 @@ class plgProjectsPublications extends JPlugin
 			case 'showitem':
 				$arr['html'] = $this->_loadContentItem();
 				break;
-			case 'wikipreview':
-				$arr['html'] = $this->_previewWiki();
-				break;
 			case 'showauthor':
 				$arr['html'] = $this->_showAuthor();
 				break;
@@ -5811,41 +5808,6 @@ class plgProjectsPublications extends JPlugin
 			}
 		}
 		return $metadata;
-	}
-
-	/**
-	 * Preview wiki
-	 *
-	 * @return     string (html)
-	 */
-	protected function _previewWiki()
-	{
-		// Incoming
-		$raw  = JRequest::getVar( 'raw', '' );
-
-		// Convert
-		if ($raw)
-		{
-			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
-
-			$p = WikiHelperParser::getInstance();
-
-			// import the wiki parser
-			$wikiconfig = array(
-				'option'   => $this->_option,
-				'scope'    => '',
-				'pagename' => 'projects',
-				'pageid'   => '',
-				'filepath' => '',
-				'domain'   => ''
-			);
-			$html = $p->parse( $raw, $wikiconfig );
-			return $html ? $html : ProjectsHtml::showNoPreviewMessage();
-		}
-		else
-		{
-			return ProjectsHtml::showNoPreviewMessage();
-		}
 	}
 
 	/**
