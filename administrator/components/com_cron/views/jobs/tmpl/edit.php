@@ -263,19 +263,34 @@ jQuery(document).ready(function($){
 									(is_object($data) ? $data->toString() : $data),
 									JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . DS . $plugin->element . '.xml'
 								);
-								$out = $param->render('params', $event['params']);
+								//$out = $param->render('params', $event['params']);
+								$html = array();
+								foreach ($param->getParams('params', $event['params']) as $p)
+								{
+									$html[] = '<div class="input-wrap">';
+									if ($p[0])
+									{
+										$html[] = $p[0];
+										$html[] = $p[1];
+									}
+									else
+									{
+										$html[] = $p[1];
+									}
+									$html[] = '</div>';
+								}
+
+								$out = (!empty($html) ? implode("\n", $html) : $out);
 							}
 
 							if (!$out)
 							{
-								$out = '<table><tbody><tr><td><i>' . JText::_('COM_CRON_NO_PARAMETERS_FOUND') . '</i></td></tr></tbody></table>';
+								$out = '<div class="input-wrap"><p><i>' . JText::_('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
 							}
 							?>
 							<fieldset class="adminform paramlist eventparams" style="display: <?php echo $style; ?>;" id="params-<?php echo $plugin->element . '--' . $event['name']; ?>">
 								<legend><span><?php echo JText::_('COM_CRON_FIELDSET_PARAMETERS'); ?></span></legend>
-								<div class="input-wrap">
-									<?php echo $out; ?>
-								</div>
+								<?php echo $out; ?>
 							</fieldset>
 							<?php
 						}
