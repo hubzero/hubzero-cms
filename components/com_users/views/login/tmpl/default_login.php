@@ -70,7 +70,7 @@ endforeach;
 				<?php endif; ?>
 			</div>
 			<div class="lower">
-				<div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(NULL, $this->returnQueryString) : JText::sprintf('Sign in with %s', ucfirst($primary)); ?></div>
+				<div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(NULL, $this->returnQueryString) : JText::sprintf('Sign in with %s', $this->authenticators[$primary]['display']); ?></div>
 			</div>
 		</div>
 	</a>
