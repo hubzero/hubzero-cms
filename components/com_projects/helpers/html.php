@@ -728,7 +728,7 @@ class ProjectsHtml
 	//----------------------------------------------------------
 	// Project page elements
 	//----------------------------------------------------------
-	
+
 	/**
 	 * Get project image source
 	 *
@@ -749,13 +749,13 @@ class ProjectsHtml
 		}
 		$path = trim($config->get('imagepath', '/site/projects'), DS)
 				. DS . $alias . DS . 'images';
-		
+
 		$src  = file_exists( JPATH_ROOT . DS . $path . DS . $picture )
 					? $path . DS . $picture
 					: NULL;
 		return $src;
 	}
-	
+
 	/**
 	 * Get project thumbnail source
 	 *
@@ -774,7 +774,7 @@ class ProjectsHtml
 		{
 			$config = JComponentHelper::getParams('com_projects');
 		}
-		
+
 		$src  = '';
 		$path = DS . trim($config->get('imagepath', '/site/projects'), DS) . DS . $alias . DS . 'images';
 
