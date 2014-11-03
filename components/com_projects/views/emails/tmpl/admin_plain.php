@@ -25,15 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%b %d, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'M d, Y';
-	$tz = false;
-}
-
 $juri 	 = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 $base 	 = rtrim($juri->base(), DS);
@@ -56,7 +47,7 @@ $message  = JText::_('COM_PROJECTS_EMAIL_ADMIN_NOTIFICATION') ."\n";
 $message .= '-------------------------------' ."\n";
 $message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title . ' (' . $this->project->alias . ')' . "\n";
 $message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
-		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' '
+		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' '
 		 . JText::_('COM_PROJECTS_BY') . ' ';
 $message .= $this->project->owned_by_group
 			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')

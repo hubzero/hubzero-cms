@@ -25,15 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%m/%d/%Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'm/d/Y';
-	$tz = false;
-}
-
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
@@ -67,7 +58,7 @@ else {
 $message .= JText::_('COM_PROJECTS_PROJECT') . ': ' . $this->project->title
 		 . ' (' . $this->project->alias.')' . "\n";
 $message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
-		 . JHTML::_('date', $this->project->created, $dateFormat, $tz) . ' ' . JText::_('COM_PROJECTS_BY').' ';
+		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' ' . JText::_('COM_PROJECTS_BY').' ';
 $message .= $this->project->owned_by_group
 			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
