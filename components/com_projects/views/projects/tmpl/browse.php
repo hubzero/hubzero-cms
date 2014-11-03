@@ -121,9 +121,9 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 		$html .= t.t.t.'</tr>'.n;
 		$html .= t.t.t.'</thead>'.n;
 		$html .= t.t.t.'<tbody>'.n;
-		foreach ($this->rows as $row) 
+		foreach ($this->rows as $row)
 		{
-			if ($row->owned_by_group && !$row->groupcn) 
+			if ($row->owned_by_group && !$row->groupcn)
 			{
 				continue; // owner group has been deleted
 			}

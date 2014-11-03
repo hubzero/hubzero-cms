@@ -70,7 +70,7 @@ if ($this->config->get('restricted_data', 0))
 	$message .= JText::_('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->params->get('hipaa_data') ."\n";
 	$message .= JText::_('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->params->get('ferpa_data') ."\n";
 	$message .= JText::_('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->params->get('export_data') ."\n";
-	if($this->params->get('followup'))
+	if ($this->params->get('followup'))
 	{
 		$message .= JText::_('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->params->get('followup') ."\n";
 	}
