@@ -28,7 +28,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ForumHelper::getActions('section');
+$canDo = ForumHelperPermissions::getActions('section');
 
 JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . JText::_('COM_FORUM_SECTIONS'), 'forum.png');
 if ($canDo->get('core.admin'))
@@ -196,7 +196,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					<?php } else { ?>
@@ -207,7 +207,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -226,7 +226,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($cat > 0) { ?>
-						<a class="glyph category" href="index.php?option=<?php echo $this->option ?>&amp;controller=categories&amp;section_id=<?php echo $row->get('id'); ?>">
+						<a class="glyph category" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=categories&section_id=' . $row->get('id')); ?>">
 							<span><?php echo $cat; ?></span>
 						</a>
 					<?php } else { ?>

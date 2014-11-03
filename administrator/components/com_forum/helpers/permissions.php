@@ -29,54 +29,44 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-
-class ForumHelper
+/**
+ * Permissions helper
+ */
+class ForumHelperPermissions
 {
-	public static $extension = 'com_forum';
-
 	/**
-	 * Configure the Linkbar.
+	 * Name of the component
 	 *
-	 * @param	string	$vName	The name of the active view.
-	 *
-	 * @return	void
-	 * @since	1.6
+	 * @var string
 	 */
-	public static function addSubmenu($vName)
-	{
-		JSubMenuHelper::addEntry(
-			JText::_('COM_FORUM_SUBMENU_CATEGORIES'),
-			'index.php?option=com_kb&extension=com_content',
-			$vName == 'categories');
-		JSubMenuHelper::addEntry(
-			JText::_('COM_FORUM_SUBMENU_FEATURED'),
-			'index.php?option=com_kb&view=featured',
-			$vName == 'featured'
-		);
-	}
+	public static $extension = 'com_forum';
 
 	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param	string	$extension	The extension.
-	 * @param	int		$categoryId	The category ID.
-	 *
-	 * @return	JObject
-	 * @since	1.6
+	 * @param   string   $extension  The extension.
+	 * @param   integer  $assetId    The asset ID.
+	 * @return  object   JObject
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
 	{
-		$assetName = 'com_forum';
-		$user = JFactory::getUser();
-		$result = new JObject;
-
+		$assetName  = self::$extension;
 		$assetName .= '.' . $assetType;
-		if ($assetId) {
+		if ($assetId)
+		{
 			$assetName .= '.' . (int) $assetId;
 		}
 
+		$user = JFactory::getUser();
+		$result = new JObject;
+
 		$actions = array(
-			'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.state', 'core.delete'
+			'core.admin',
+			'core.manage',
+			'core.create',
+			'core.edit',
+			'core.edit.state',
+			'core.delete'
 		);
 
 		foreach ($actions as $action)

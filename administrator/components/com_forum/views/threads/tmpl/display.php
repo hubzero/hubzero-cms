@@ -28,7 +28,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ForumHelper::getActions('thread');
+$canDo = ForumHelperPermissions::getActions('thread');
 
 JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . JText::_('COM_FORUM_THREADS'), 'forum.png');
 if ($canDo->get('core.admin'))
@@ -196,13 +196,13 @@ if ($this->results)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=thread&amp;thread=<?php echo $row->thread; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=thread&thread=' . $row->thread); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -213,7 +213,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $scls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;category_id=<?php echo $this->filters['category_id']; ?>&amp;task=sticky&amp;sticky=<?php echo $stickyTask; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $stickyTitle); ?>">
+						<a class="state <?php echo $scls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=sticky&sticky=' . $stickyTask . '&id=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $stickyTitle); ?>">
 							<span><?php echo $stickyAlt; ?></span>
 						</a>
 					<?php } else { ?>

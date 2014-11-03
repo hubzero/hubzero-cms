@@ -28,7 +28,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ForumHelper::getActions('category');
+$canDo = ForumHelperPermissions::getActions('category');
 
 JToolBarHelper::title(JText::_('COM_FORUM') . ': ' . JText::_('COM_FORUM_CATEGORIES'), 'forum.png');
 if ($canDo->get('core.admin'))
@@ -257,14 +257,14 @@ if ($this->results)
 ?>
 			<tr class="<?php echo "row$k" . ($row->state ==2 ? ' archived' : ''); ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</a>
 					<?php } else { ?>
@@ -275,7 +275,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;section_id=<?php echo $this->filters['section_id']; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&section_id=' . $this->filters['section_id'] . '&task=' . $task . '&id=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_FORUM_SET_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -296,7 +296,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($row->threads > 0) { ?>
-						<a class="glyph thread" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_FORUM_VIEW_THREADS_FOR'); ?>">
+						<a class="glyph thread" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id); ?>" title="<?php echo JText::_('COM_FORUM_VIEW_THREADS_FOR'); ?>">
 							<span><?php echo $row->threads; ?></span>
 						</a>
 					<?php } else { ?>
@@ -307,7 +307,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($row->posts > 0) { ?>
-						<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=threads&amp;category_id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_FORUM_VIEW_POSTS_FOR'); ?>">
+						<a class="glyph comment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=threads&category_id=' . $row->id); ?>" title="<?php echo JText::_('COM_FORUM_VIEW_POSTS_FOR'); ?>">
 							<span><?php echo $row->posts; ?></span>
 						</a>
 					<?php } else { ?>

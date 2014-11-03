@@ -36,11 +36,11 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
+require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'forum.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'section.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'category.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'models' . DS . 'thread.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'forum.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'forum.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = JRequest::getCmd('controller', 'sections');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

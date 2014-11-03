@@ -28,7 +28,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = ForumHelper::getActions('thread');
+$canDo = ForumHelperPermissions::getActions('thread');
 
 $text = ($this->row->parent ? JText::_('COM_FORUM_THREADS') : JText::_('COM_FORUM_POSTS')) . ': ';
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
