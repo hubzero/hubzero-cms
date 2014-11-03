@@ -25,15 +25,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$dateFormat = '%b %d, %Y';
-$tz = null;
-
-if (version_compare(JVERSION, '1.6', 'ge'))
-{
-	$dateFormat = 'M d, Y';
-	$tz = false;
-}
-
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $whatsleft = $this->total - $this->filters['start'] - $this->filters['limit'];
 $prev_start = $this->filters['start'] - $this->filters['limit'];
@@ -54,7 +45,7 @@ $goto  = 'alias=' . $this->project->alias;
 	<input type="hidden"  name="action" value="team" />
 </div>
 <div class="list-editing">
- <p><?php echo ucfirst(JText::_('COM_PROJECTS_SHOWING')); ?> <?php if($this->total <= count($this->team)) { echo JText::_('COM_PROJECTS_ALL'); }?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php if($this->total > count($this->team)) { echo JText::_('COM_PROJECTS_OUT_OF').' '.$this->total; }?> <?php echo JText::_('COM_PROJECTS_TEAM_MEMBERS'); ?>
+ <p><?php echo ucfirst(JText::_('COM_PROJECTS_SHOWING')); ?> <?php if ($this->total <= count($this->team)) { echo JText::_('COM_PROJECTS_ALL'); }?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php if ($this->total > count($this->team)) { echo JText::_('COM_PROJECTS_OUT_OF').' '.$this->total; }?> <?php echo JText::_('COM_PROJECTS_TEAM_MEMBERS'); ?>
 	<?php if ($this->project->role == 1) { ?>
 	<span class="editlink"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.'task=edit'.a.$goto).'/?edit=team'; ?>"><?php echo JText::_('COM_PROJECTS_EDIT_TEAM'); ?></a></span>
 	<?php } ?></p>
@@ -63,10 +54,10 @@ $goto  = 'alias=' . $this->project->alias;
 		<thead>
 			<tr>
 				<th class="th_image"></th>
-				<th class="th_user i_user <?php if($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby=name'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort ajax_action" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_NAME'); ?>"><?php echo JText::_('COM_PROJECTS_NAME'); ?></a></th>
-				<th<?php if($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby=role'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort ajax_action" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_ROLE'); ?>"><?php echo JText::_('COM_PROJECTS_ROLE'); ?></a></th>
-				<th<?php if($this->filters['sortby'] == 'date') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby=date'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_JOINED'); ?>"><?php echo JText::_('COM_PROJECTS_JOINED'); ?></a></th>
-				<th class="i_group <?php if($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if( $this->count_groups > 0 ) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby=group'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?>"><?php } ?><?php echo JText::_('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if( $this->count_groups > 0 ) { ?></a><?php } ?></th>
+				<th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') { echo 'activesort'; } ?>"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby=name'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort ajax_action" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_NAME'); ?>"><?php echo JText::_('COM_PROJECTS_NAME'); ?></a></th>
+				<th<?php if ($this->filters['sortby'] == 'role') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby=role'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort ajax_action" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_ROLE'); ?>"><?php echo JText::_('COM_PROJECTS_ROLE'); ?></a></th>
+				<th<?php if ($this->filters['sortby'] == 'date') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby=date'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_JOINED'); ?>"><?php echo JText::_('COM_PROJECTS_JOINED'); ?></a></th>
+				<th class="i_group <?php if ($this->filters['sortby'] == 'group') { echo 'activesort'; } ?>"><?php if ( $this->count_groups > 0 ) { ?><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby=group'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?>"><?php } ?><?php echo JText::_('COM_PROJECTS_ADDED_AS_PART_OF_GROUP'); ?><?php if ( $this->count_groups > 0 ) { ?></a><?php } ?></th>
 				<th><?php echo JText::_('COM_PROJECTS_TEAM_LAST_VISIT'); ?></th>
 			</tr>
 		</thead>
@@ -107,11 +98,11 @@ $goto  = 'alias=' . $this->project->alias;
 						: JText::_('COM_PROJECTS_LABEL_COLLABORATOR');
 					$username = $owner->username ? $owner->username : $owner->invited_email;
 ?>
-			<tr class="mline <?php if($owner->userid == $this->uid) { echo 'native'; } ?>" id="tr_<?php echo $owner->id; ?>">
-				<td<?php echo $usr_class; ?>><a href="/members/<?php echo $owner->userid; ?>" <?php if($owner->fullname) { ?>title="<?php echo htmlentities($owner->fullname).' ('.$owner->userid.')'; ?>"<?php } ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname ? htmlentities($owner->fullname) : ''; ?>" /></a></td>
+			<tr class="mline <?php if ($owner->userid == $this->uid) { echo 'native'; } ?>" id="tr_<?php echo $owner->id; ?>">
+				<td<?php echo $usr_class; ?>><a href="/members/<?php echo $owner->userid; ?>" <?php if ($owner->fullname) { ?>title="<?php echo htmlentities($owner->fullname).' ('.$owner->userid.')'; ?>"<?php } ?>><img width="30" height="30" src="<?php echo $thumb; ?>" alt="<?php echo $owner->fullname ? htmlentities($owner->fullname) : ''; ?>" /></a></td>
 				<td><?php echo $owner->fullname; ?><span class="block mini short prominent"><?php echo $username; ?></span></td>
 				<td class="mini"><?php echo $role; ?></td>
-				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, $dateFormat, $tz) : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>
+				<td class="mini"><?php echo $owner->status == 1 ? JHTML::_('date', $owner->added, 'M d, Y') : '<span class="invited">'.JText::_('COM_PROJECTS_INVITED').'</span>';  ?></td>
 				<td><?php echo $owner->groupdesc ? \Hubzero\Utility\String::truncate($owner->groupdesc, 30) : ''; ?><span class="block mini short prominent"><?php echo $owner->groupname; ?></span></td>
 				<td class="mini"><?php echo $lastvisit; ?></td>
 			</tr>
@@ -121,20 +112,20 @@ $goto  = 'alias=' . $this->project->alias;
 			<div class="nav_pager">
 				<p>
 				<?php
-				if($this->filters['start'] == 0) {	?>
+				if ($this->filters['start'] == 0) {	?>
 					<span>&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></span>
 				<?php	} else {  ?>
 					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby='.$this->filters['sortby'].a.'t_limitstart='.$prev_start.a.'t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action">&laquo; <?php echo JText::_('COM_PROJECTS_PREVIOUS'); ?></a>
 				<?php } ?><span>&nbsp; | &nbsp;</span>
 				<?php
-				if( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
+				if ( $whatsleft <= 0 or $this->filters['limit'] == 0 ) { ?>
 					<span><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</span>
 				<?php	} else { ?>
 					<a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'/?action=view'.a.'t_sortby='.$this->filters['sortby'].a.'t_limitstart='.$next_start.a.'t_sortdir='.$this->filters['sortdir']; ?>" class="ajax_action"><?php echo JText::_('COM_PROJECTS_NEXT'); ?> &raquo;</a>
 				<?php } ?>
 				</p>
 			</div>
-			<?php if(($this->project->role != 1 || $this->managers_count > 1) && !$this->setup && $this->project->owner_group == 0) { ?>
+			<?php if (($this->project->role != 1 || $this->managers_count > 1) && !$this->setup && $this->project->owner_group == 0) { ?>
 			<p class="extras"><a href="<?php echo JRoute::_('index.php?option='.$this->option.a.$goto.a.'active=team').'?action=quit'; ?>"><?php echo JText::_('COM_PROJECTS_LEAVE_PROJECT'); ?></a></p>
 			<?php } ?>
 </form>
