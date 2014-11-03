@@ -49,8 +49,8 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limitstart', 'limitstart', 0, 'int');
+		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.quotas.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.quotas.limitstart', 'limitstart', 0, 'int');
 
 		$obj = new UsersQuotas($this->database);
 
@@ -317,8 +317,8 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limitstart', 'limitstart', 0, 'int');
+		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.classes.limit', 'limit', $config->getValue('config.list_limit'), 'int');
+		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.classes.limitstart', 'limitstart', 0, 'int');
 
 		$obj = new MembersQuotasClasses($this->database);
 
