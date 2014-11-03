@@ -80,14 +80,37 @@ $this->css('quotas.css');
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<div class="col width-40 fltlft">
+			<label for="filter_search_field"><?php echo JText::_('SEARCH'); ?></label>
+			<select name="search_field" id="filter_search_field">
+				<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_QUOTA_USERNAME'); ?></option>
+				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_QUOTA_NAME'); ?></option>
+			</select>
+
+			<label for="filter_search"><?php echo JText::_('for'); ?></label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+
+			<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		</div>
+		<div class="col width-60 fltrt">
+			<select name="class_alias" id="filter_class_alias" onchange="document.adminForm.submit( );">
+				<option value=""<?php if ($this->filters['class_alias'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('- Quota Class -'); ?></option>
+				<?php foreach ($this->classes as $class) : ?>
+					<option value="<?php echo $class->alias; ?>"<?php if ($this->filters['class_alias'] == $class->alias) { echo ' selected="selected"'; } ?>><?php echo JText::_($class->alias); ?></option>
+				<?php endforeach; ?>
+			</select>
+		</div>
+		<div class="clr"></div>
+	</fieldset>
 	<table class="adminlist">
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JText::_('COM_MEMBERS_QUOTA_USER_ID'); ?></th>
-				<th><?php echo JText::_('COM_MEMBERS_QUOTA_USERNAME'); ?></th>
-				<th><?php echo JText::_('COM_MEMBERS_QUOTA_NAME'); ?></th>
-				<th><?php echo JText::_('COM_MEMBERS_QUOTA_CLASS'); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_QUOTA_USER_ID'), 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_QUOTA_USERNAME'), 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_QUOTA_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_QUOTA_CLASS'), 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JText::_('COM_MEMBERS_QUOTA_DISK_USAGE'); ?></th>
 			</tr>
 		</thead>
@@ -144,5 +167,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 	<?php echo JHTML::_('form.token'); ?>
 </form>
