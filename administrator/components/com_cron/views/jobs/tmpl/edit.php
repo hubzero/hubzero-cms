@@ -28,7 +28,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$canDo = CronHelper::getActions('component');
+$canDo = CronHelperPermissions::getActions('component');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 

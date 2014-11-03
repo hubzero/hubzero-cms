@@ -37,7 +37,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 }
 
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'jobs.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'cron.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = JRequest::getCmd('controller', 'jobs');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

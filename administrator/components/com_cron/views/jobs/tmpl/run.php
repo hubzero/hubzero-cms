@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CronHelper::getActions('component');
+$canDo = CronHelperPermissions::getActions('component');
 
 JToolBarHelper::title(JText::_('COM_CRON') . ': ' . JText::_('COM_CRON_RUN'), 'cron.png');
 

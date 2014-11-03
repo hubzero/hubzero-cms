@@ -28,7 +28,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CronHelper::getActions('component');
+$canDo = CronHelperPermissions::getActions('component');
 
 JToolBarHelper::title(JText::_('COM_CRON'), 'cron.png');
 if ($canDo->get('core.admin'))
@@ -103,19 +103,19 @@ if ($this->results)
 		{
 			case '2': // Deleted
 				$task = 'publish';
-				$alt = JText::_('JTRASHED');
-				$cls = 'trash';
+				$alt  = JText::_('JTRASHED');
+				$cls  = 'trash';
 			break;
 			case '1': // Published
 				$task = 'unpublish';
-				$alt = JText::_('JPUBLISHED');
-				$cls = 'publish';
+				$alt  = JText::_('JPUBLISHED');
+				$cls  = 'publish';
 			break;
 			case '0': // Unpublished
 			default:
 				$task = 'publish';
-				$alt = JText::_('JUNPUBLISHED');
-				$cls = 'unpublish';
+				$alt  = JText::_('JUNPUBLISHED');
+				$cls  = 'unpublish';
 			break;
 		}
 
@@ -141,7 +141,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 						</a>
 					<?php } else { ?>
@@ -152,7 +152,7 @@ if ($this->results)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_CRON_SET_THIS_TO', $task); ?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_CRON_SET_THIS_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
