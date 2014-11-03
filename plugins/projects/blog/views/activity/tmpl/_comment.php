@@ -45,6 +45,8 @@ $shortComment = ProjectsHtml::replaceUrls($shortComment, 'external');
 $longComment  = ProjectsHtml::replaceEmoIcons($longComment);
 $shortComment = ProjectsHtml::replaceEmoIcons($shortComment);
 
+$creator = \Hubzero\User\Profile::getInstance($comment->created_by);
+
 ?>
 	<li class="quote <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
 	<?php if ($deletable) { ?>
@@ -56,7 +58,7 @@ $shortComment = ProjectsHtml::replaceEmoIcons($shortComment);
 			</span>
 		</span>
 		<?php } ?>
-		<img class="comment-author" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($comment->created_by, $comment->admin); ?>" alt="" />
+		<img class="comment-author" src="<?php echo $creator->getPicture($comment->admin); ?>" alt="" />
 		<span class="comment-show">
 			<span class="comment-details">
 				<span class="actor"><?php echo $comment->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $comment->author; ?></span>

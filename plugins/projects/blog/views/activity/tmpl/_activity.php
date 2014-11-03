@@ -36,6 +36,8 @@ $comments 	= $activity['comments'];
 $new 		= $activity['new'];
 $preview    = $activity['preview'];
 
+$creator = \Hubzero\User\Profile::getInstance($a->userid);
+
 ?>
 		<div id="li_<?php echo $a->id; ?>" class="activity-item <?php echo $new ? ' newitem' : ''; ?>">
 			<div id="tr_<?php echo $a->id; ?>" class="item-control">
@@ -45,7 +47,7 @@ $preview    = $activity['preview'];
 					</span>
 				</span>
 				<?php } ?>
-				<div class="blog-item"><img class="blog-author" src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($a->userid, $a->admin); ?>" alt="" />
+				<div class="blog-item"><img class="blog-author" src="<?php echo $creator->getPicture($a->admin); ?>" alt="" />
 					<span class="actor"><?php echo $a->admin == 1 ? JText::_('COM_PROJECTS_ADMIN') : $a->name; ?></span>
 					<span class="item-time">&middot; <?php echo ProjectsHtml::showTime($a->recorded, true); ?></span>
 					<?php  if ($a->commentable && count($comments) == 0) { ?>
