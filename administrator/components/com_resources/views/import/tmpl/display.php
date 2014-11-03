@@ -33,14 +33,17 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('COM_RESOURCES_IMPORT_TITLE_IMPORTS'), 'import.png');
 
-JToolBarHelper::help('import.html', true);
-JToolBarHelper::spacer();
 JToolBarHelper::custom('run', 'script', 'script', 'COM_RESOURCES_RUN');
-JToolBarHelper::custom('runtest', 'script', 'script', 'COM_RESOURCES_TEST_RUN');
+JToolBarHelper::custom('runtest', 'runtest', 'script', 'COM_RESOURCES_TEST_RUN');
 JToolBarHelper::spacer();
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
 JToolBarHelper::deleteList();
+
+JToolBarHelper::spacer();
+JToolBarHelper::help('import');
+
+$this->css('import');
 ?>
 
 <script type="text/javascript">
