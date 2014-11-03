@@ -237,17 +237,17 @@
 
 /* Introduction page
 --------------------------------------------- */
-	#introduction .columns {
+	#introduction .grid {
 		border: none;
 		padding-top: 2em;
 		padding-bottom: 2em;
 	}
-	#introduction .second ul {
+	#introduction .omega ul {
 		padding-left: 0;
 		margin-left: 0.5em;
 		border: none;
 	}
-	#introduction .second li {
+	#introduction .omega li {
 		border: none;
 	}
 	.myprojects {

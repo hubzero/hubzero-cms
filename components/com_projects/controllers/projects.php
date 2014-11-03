@@ -737,9 +737,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$objT = new ProjectType( $this->database );
 			$this->view->typetitle = $objT->getTypeTitle($obj->type);
 			$this->view->uploadnow = JRequest::getInt( 'uploadnow', 0 );
-
-			// Get project thumb
-			$this->view->thumb_src = ProjectsHtml::getThumbSrc($obj->id, $obj->alias, $obj->picture, $this->config);
 		}
 
 		// Editing team
@@ -2786,7 +2783,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$this->view->option 	= $this->_option;
 			$this->view->project	= $obj;
 			$this->view->params		= $params;
-			$this->view->thumb_src 	= ProjectsHtml::getThumbSrc($obj->id, $obj->alias, $obj->picture, $this->config);
 			$this->view->config 	= $this->config;
 			$this->view->database 	= $this->database;
 			$this->view->action		= $action;
@@ -2832,7 +2828,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			'suspend', 'reinstate', 'fixownership',
 			'delete', 'intro', 'activate', 'process',
 			'upload', 'img', 'verify', 'autocomplete',
-			'showcount', 'wikipreview', 'auth', 'public', 'get');
+			'showcount', 'wikipreview', 'auth', 'public',
+			'get', 'media');
 
 		if ($names)
 		{
