@@ -255,7 +255,7 @@ if ($this->getError()) {
 							}
 						}
 						?>
-						<?php if ($version['preview'] && is_file(JPATH_ROOT . $version['preview']) && $version['commitStatus'] != 'D') { ?>
+						<?php if ($version['preview'] && $version['commitStatus'] != 'D') { ?>
 							<div id="preview-image">
 								<img src="<?php echo $version['preview']; ?>" alt="<?php echo JText::_('COM_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
 							</div>

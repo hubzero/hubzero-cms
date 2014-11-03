@@ -3124,7 +3124,7 @@ class plgProjectsFiles extends JPlugin
 
 			if ($preview)
 			{
-				$versions[$i]['preview'] = $preview;
+				$versions[$i]['preview'] = JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->_project->alias . '&task=media&media=' . basename($preview));
 			}
 			$i++;
 		}
