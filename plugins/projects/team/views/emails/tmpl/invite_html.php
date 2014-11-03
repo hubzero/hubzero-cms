@@ -45,6 +45,7 @@ else
 $projectUrl = rtrim($base, DS) . DS . trim($sef, DS);
 $sef 	.= $this->uid ? '' : '/?confirm=' . $this->code . '&email=' . $this->email;
 $link = rtrim($base, DS) . DS . trim($sef, DS);
+$thumb = rtrim($base, DS) . DS . 'projects/' . $this->project->alias . '/media';
 
 // Page title
 $title = $hubShortName . ' ' . JText::_('COM_PROJECTS_PROJECTS');
@@ -90,13 +91,6 @@ $footnote = JText::_('COM_PROJECTS_EMAIL_USER_IF_QUESTIONS') . ' '
 	. $this->actor->get('name') . '  - ' . $this->actor->get('email') . "\n";
 
 $showThumb = $config->get('showthumbemail', 0);
-
-// Get project thumbnail
-if ($showThumb)
-{
-	$thumb = ProjectsHtml::getThumbSrc($this->project->id, $this->project->alias, $this->project->picture, $config);
-	$thumb = rtrim($base, DS) . DS . trim($thumb, DS);
-}
 
 // Set some styles
 $bgcolor = '#f1f1f1';
