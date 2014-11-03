@@ -1505,28 +1505,7 @@ HUB.ProjectPublications = {
 		}
 		return url;
 	},
-	
-	previewWiki: function( raw, preview )
-	{
-		var $ = this.jQuery;
-		if (preview.length && raw.length) 
-		{				
-			// Build ajax url
-			var url = HUB.ProjectPublications.getPubUrl(1);
 
-			url = url + '&action=wikipreview';
-			url = url + '&raw=' + escape(raw.val());
-			
-			$.get(url, {}, function(data) 
-			{
-				if (data) 
-				{
-					preview.html(data);
-				}
-			});
-		}		
-	},
-	
 	checkAccess: function() 
 	{
 		var $ = this.jQuery;

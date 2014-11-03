@@ -2828,7 +2828,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			'suspend', 'reinstate', 'fixownership',
 			'delete', 'intro', 'activate', 'process',
 			'upload', 'img', 'verify', 'autocomplete',
-			'showcount', 'wikipreview', 'auth', 'public',
+			'showcount', 'preview', 'auth', 'public',
 			'get', 'media');
 
 		if ($names)
