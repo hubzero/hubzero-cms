@@ -64,7 +64,6 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 				{
 					break;
 				}
-				$thumb = ProjectsHTML::getThumbSrc($row->id, $row->alias, $row->picture, $this->pconfig);
 				$goto  = 'alias=' . $row->alias;
 				$owned_by = JText::_('MOD_MYPROJECTS_BY') . ' ';
 				if ($row->owned_by_group)
@@ -100,7 +99,7 @@ $setup_complete = $this->pconfig->get('confirm_step', 0) ? 3 : 2;
 				$i++;
 				?>
 					<li <?php echo $class; ?>>
-						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo $thumb; ?>" alt="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)); ?>" class="project-image" /></a>
+						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)) . ' (' . $row->alias . ')'; ?>"><img src="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $row->alias . '&task=media'); ?>" alt="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)); ?>" class="project-image" /></a>
 						<a href="<?php echo JRoute::_('index.php?option=com_projects&task=view&' . $goto); ?>" title="<?php echo $this->escape(ProjectsHtml::cleanText($row->title)) . ' (' . $row->alias . ')'; ?>"><?php echo \Hubzero\Utility\String::truncate(ProjectsHtml::cleanText($row->title), 30); ?></a>
 						<span class="sub">
 							<?php echo $owned_by; ?> | <?php echo $role; ?> <?php
