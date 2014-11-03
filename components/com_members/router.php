@@ -195,11 +195,9 @@ function membersParseRoute($segments)
 		}
 	}
 
-	$parts = explode('/', $_SERVER['REQUEST_URI']);
-	$file = array_pop($parts);
-
-	if (substr(strtolower($file), 0, 6) == 'image:'
-	 || substr(strtolower($file), 0, 5) == 'file:')
+	// are we serving up a file
+	$uri = JRequest::getVar('REQUEST_URI', '', 'server');
+	if (strstr($uri, 'Image:') || strstr($uri, 'File:'))
 	{
 		$vars['task'] = 'download';
 		$vars['controller'] = 'media';

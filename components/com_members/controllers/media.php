@@ -598,21 +598,23 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$parts = explode('/', $_SERVER['REQUEST_URI']);
-		$filename = array_pop($parts);
-
 		//get the file name
-		if (substr(strtolower($filename), 0, 5) == 'image')
+		$uri = JRequest::getVar('REQUEST_URI', '', 'server');
+		if (strstr($uri, 'Image:'))
 		{
-			$file = substr($filename, 6);
+			$file = str_replace('Image:', '', strstr($uri, 'Image:'));
 		}
-		elseif (substr(strtolower($filename), 0, 4) == 'file')
+		elseif (strstr($uri, 'File:'))
 		{
-			$file = substr($filename, 5);
+			$file = str_replace('File:', '', strstr($uri, 'File:'));
 		}
 
 		//decode file name
 		$file = urldecode($file);
+
+		// build base path
+		$base_path = trim($this->config->get('webpath', '/site/members'), DS);
+		$base_path .= DS . \Hubzero\User\Profile\Helper::niceidformat($member->get('uidNumber'));
 
 		//if we are on the blog
 		if (JRequest::getVar('active', 'profile') == 'blog')

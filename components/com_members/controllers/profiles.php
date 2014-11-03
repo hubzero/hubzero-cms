@@ -59,18 +59,6 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 			JRequest::setVar('task', 'view');
 		}
 
-		$parts = explode('/', $_SERVER['REQUEST_URI']);
-		$file = array_pop($parts);
-
-		if (substr(strtolower($file), 0, 6) == 'image:'
-		 || substr(strtolower($file), 0, 5) == 'file:')
-		{
-			$this->setRedirect(
-				JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_controller . '&task=donwload'), 'server')
-			);
-			return;
-		}
-
 		//$this->registerTask('__default', 'browse');
 		$this->registerTask('promo-opt-out', 'incremOptOut');
 

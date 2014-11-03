@@ -1617,9 +1617,9 @@ class Profile extends Object
 	 * @param   boolean  $thumbit    Show thumbnail or full picture?
 	 * @return  string
 	 */
-	public function getPicture($anonymous=0, $thumbit=true)
+	public function getPicture($anonymous=0, $thumbit=true, $serveFile=true)
 	{
-		return ProfileHelper::getMemberPhoto($this, $anonymous, $thumbit);
+		return ProfileHelper::getMemberPhoto($this, $anonymous, $thumbit, $serveFile);
 	}
 
 	/**
