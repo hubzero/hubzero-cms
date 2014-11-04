@@ -78,7 +78,8 @@ endforeach;
 	<div class="auth">
 		<div class="person">
 			<?php if (isset($user_img)) : ?>
-				<?php $img_properties = getimagesize(JPATH_ROOT . DS . $user_img); ?>
+				<?php $image = Hubzero\User\Profile::getInstance($user->get('id'))->getPicture(0, false, false); ?>
+				<?php $img_properties = getimagesize(JPATH_ROOT . DS . $image); ?>
 				<?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
 				<img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo JText::_('User profile picture'); ?>" />
 			<?php endif; ?>
