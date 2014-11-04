@@ -223,19 +223,22 @@ class Helper
 		{
 			if ($path && file_exists(JPATH_ROOT . $path))
 			{
-				// build base path (ex. /site/members/12345)
-				$baseMemberPath  = DS . trim($config->get('webpath', '/site/members'), DS);
-				$baseMemberPath .= DS . self::niceidformat($member->get('uidNumber'));
-
-				// if we want to serve file & path is within /site
-				if ($serveFile && strpos($path, $baseMemberPath) !== false)
+				if (!$anonymous)
 				{
-					// get picture name (allows to pics in subfolder)
-					$pic = trim(str_replace($baseMemberPath, '', $path), DS);
+					// build base path (ex. /site/members/12345)
+					$baseMemberPath  = DS . trim($config->get('webpath', '/site/members'), DS);
+					$baseMemberPath .= DS . self::niceidformat($member->get('uidNumber'));
 
-					// build serve link
-					$link = \JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber')) . DS . 'Image:' . $pic;
-					return $link;
+					// if we want to serve file & path is within /site
+					if ($serveFile && strpos($path, $baseMemberPath) !== false)
+					{
+						// get picture name (allows to pics in subfolder)
+						$pic = trim(str_replace($baseMemberPath, '', $path), DS);
+
+						// build serve link
+						$link = \JRoute::_('index.php?option=com_members&id='.$member->get('uidNumber')) . DS . 'Image:' . $pic;
+						return $link;
+					}
 				}
 
 				return str_replace('/administrator', '', rtrim(\JURI::getInstance()->base(true), DS)) . $path;
