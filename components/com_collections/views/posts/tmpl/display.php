@@ -62,11 +62,20 @@ if (!$no_html) {
 				<div class="content">
 				<?php if ($this->post->get('created_by') != $item->get('created_by')) { ?>
 					<div class="creator attribution clearfix">
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator('name'))); ?>" class="img-link">
-							<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($item->creator('name')))); ?>" />
-						</a>
+						<?php
+						$name = $this->escape(stripslashes($item->creator('name')));
+
+						if ($item->creator('public')) { ?>
+							<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
+								<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+							</a>
+						<?php } else { ?>
+							<span class="img-link">
+								<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+							</span>
+						<?php } ?>
 						<p>
-							<?php echo JText::sprintf('COM_COLLECTIONS_USER_CREATEd_POST', '<a href="' . JRoute::_('index.php?option=com_members&id=' . $item->get('created_by')) . '">' . $this->escape(stripslashes($item->creator()->get('name'))) . '</a>'); ?>
+							<?php echo JText::sprintf('COM_COLLECTIONS_USER_CREATED_POST', ($item->creator('public') ? '<a href="' . JRoute::_($item->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($item->creator()->get('name'))) . ($item->creator('public') ? '</a>' : '')); ?>
 							<br />
 							<span class="entry-date">
 								<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
@@ -104,13 +113,26 @@ if (!$no_html) {
 						</p>
 					</div><!-- / .meta -->
 					<div class="convo attribution">
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>" class="img-link">
-							<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->post->creator('name')))); ?>" />
-						</a>
-						<p>
-							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->post->get('created_by')); ?>">
-								<?php echo $this->escape(stripslashes($this->post->creator('name'))); ?>
+						<?php
+						$name = $this->escape(stripslashes($this->post->creator('name')));
+
+						if ($this->post->creator('public')) { ?>
+							<a href="<?php echo JRoute::_($this->post->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
+								<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 							</a>
+						<?php } else { ?>
+							<span class="img-link">
+								<img src="<?php echo $this->post->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+							</span>
+						<?php } ?>
+						<p>
+							<?php if ($this->post->creator('public')) { ?>
+								<a href="<?php echo JRoute::_($this->post->creator()->getLink() . '&active=collections'); ?>">
+									<?php echo $name; ?>
+								</a>
+							<?php } else { ?>
+								<?php echo $name; ?>
+							<?php } ?>
 							<?php echo JText::_('COM_COLLECTIONS_ONTO'); ?>
 							<a href="<?php echo JRoute::_($base . '&task=' . $this->collection->get('alias')); ?>">
 								<?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
@@ -134,17 +156,22 @@ if (!$no_html) {
 					foreach ($item->comments() as $comment)
 					{
 						$cuser = \Hubzero\User\Profile::getInstance($comment->created_by);
+						$cname = $this->escape(stripslashes($cuser->get('name')));
 					?>
 						<li class="comment" id="c<?php echo $comment->id; ?>">
 							<p class="comment-member-photo">
-								<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($cuser, $comment->anonymous); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($cuser->get('name')))); ?>" />
+								<img src="<?php echo $cuser->getPicture($comment->anonymous); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $cname); ?>" />
 							</p>
 							<div class="comment-content">
 								<p class="comment-title">
 									<strong>
-										<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $comment->created_by); ?>">
-											<?php echo $this->escape(stripslashes($cuser->get('name'))); ?>
-										</a>
+										<?php if ($cuser->get('public')) { ?>
+											<a href="<?php echo JRoute::_($cuser->getLink()); ?>">
+												<?php echo $cname; ?>
+											</a>
+										<?php } else { ?>
+											<?php echo $cname; ?>
+										<?php } ?>
 									</strong>
 									<a class="permalink" href="#c">
 										<span class="entry-date">
@@ -187,9 +214,7 @@ if (!$no_html) {
 
 							<label for="comment-content">
 								<span class="label-text"><?php echo JText::_('COM_COLLECTIONS_FIELD_COMMENTS'); ?></span>
-								<?php
-								echo \JFactory::getEditor()->display('comment[content]', '', '', '', 35, 5, false, 'comment-content', null, null, array('class' => 'minimal no-footer'));
-								?>
+								<?php echo $this->editor('comment[content]', '', 35, 5, 'comment-content', array('class' => 'minimal no-footer')); ?>
 							</label>
 
 							<input type="hidden" name="comment[id]" value="0" />
@@ -275,13 +300,26 @@ if (!$no_html) {
 						</div>
 					</div>
 					<div class="convo attribution">
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->collection->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($this->collection->creator('name'))); ?>" class="img-link">
-							<img src="<?php echo $this->collection->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($this->collection->creator('name')))); ?>" />
-						</a>
-						<p>
-							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->collection->get('created_by')); ?>">
-								<?php echo $this->escape(stripslashes($this->collection->creator('name'))); ?>
+						<?php
+						$name = $this->escape(stripslashes($this->collection->creator('name')));
+
+						if ($this->collection->creator('public')) { ?>
+							<a href="<?php echo JRoute::_($this->collection->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
+								<img src="<?php echo $this->collection->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
 							</a>
+						<?php } else { ?>
+							<span class="img-link">
+								<img src="<?php echo $this->collection->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+							</span>
+						<?php } ?>
+						<p>
+							<?php if ($this->collection->creator('public')) { ?>
+								<a href="<?php echo JRoute::_($this->collection->creator()->getLink()); ?>">
+									<?php echo $name; ?>
+								</a>
+							<?php } else { ?>
+								<?php echo $name; ?>
+							<?php } ?>
 							<br />
 							<span class="entry-date">
 								<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>

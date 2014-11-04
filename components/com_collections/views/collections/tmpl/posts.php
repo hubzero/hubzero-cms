@@ -175,9 +175,9 @@ $this->css()
 									<br />
 									<span class="entry-date">
 										<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
-										<span class="time"><?php echo JHTML::_('date', $row->get('created'), JText::_('TIME_FORMAT_HZ1')); ?></span>
+										<span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
 										<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
-										<span class="date"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></span>
+										<span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
 									</span>
 								</p>
 							</div><!-- / .attribution -->

@@ -34,12 +34,9 @@ defined('_JEXEC') or die( 'Restricted access' );
 if (!$this->no_html)
 {
 	$this->css()
-	     ->js();
-	if (JPluginHelper::isEnabled('system', 'jquery'))
-	{
-		$this->js('jquery.fileuploader.js', 'system')
-		     ->js('fileupload.js');
-	}
+	     ->js()
+	     ->js('jquery.fileuploader.js', 'system')
+	     ->js('fileupload.js');
 }
 
 $item = $this->entry->item();
@@ -48,12 +45,6 @@ if (!$this->entry->exists())
 {
 	$this->entry->set('original', 1);
 }
-
-//tag editor
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
-$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $item->tags('string'))));
 
 $type = 'file'; //strtolower(JRequest::getWord('type', $item->get('type')));
 if (!$type)
@@ -129,7 +120,6 @@ if (!$dir)
 				<div class="asset-uploader">
 					<div class="grid">
 					<div class="col span-half">
-			<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 						<div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //echo &amp;dir=$dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 							<noscript>
 								<label for="upload">
@@ -138,15 +128,8 @@ if (!$dir)
 								</label>
 							</noscript>
 						</div>
-			<?php } else { ?>
-						<label for="upload">
-							<?php echo JText::_('COM_COLLECTIONS_FILE'); ?>
-							<input type="file" name="upload" id="upload" />
-						</label>
-			<?php } ?>
 					</div><!-- / .col span-half -->
 					<div class="col span-half omega">
-			<?php if (JPluginHelper::isEnabled('system', 'jquery')) { ?>
 						<div id="link-adder" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir; ?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir; ?>">
 							<noscript>
 								<label for="add-link">
@@ -157,14 +140,6 @@ if (!$dir)
 								</label>
 							</noscript>
 						</div>
-			<?php } else { ?>
-						<label for="add-link">
-							<?php echo JText::_('COM_COLLECTIONS_ADD_A_LINK'); ?>
-							<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
-							<input type="hidden" name="assets[-1][id]" value="0" />
-							<input type="hidden" name="assets[-1][type]" value="link" />
-						</label>
-			<?php } ?>
 					</div><!-- / .col span-half -->
 					</div>
 				</div><!-- / .asset-uploader -->
@@ -217,9 +192,9 @@ if (!$dir)
 					<label for="field_description">
 						<?php echo JText::_('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?>
 					<?php if ($this->entry->get('original')) { ?>
-						<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($item->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 					<?php } else { ?>
-						<?php echo \JFactory::getEditor()->display('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 					<?php } ?>
 					</label>
 				<?php if ($this->task == 'save' && !$item->get('description')) { ?>
@@ -256,12 +231,7 @@ if (!$dir)
 				<div class="col span6 omega">
 				<label>
 					<?php echo JText::_(strtoupper($this->option) . '_FIELD_TAGS'); ?>
-					<?php
-					if (count($tf) > 0) {
-						echo $tf[0];
-					} else { ?>
-						<input type="text" name="tags" value="<?php echo $item->tags('string'); ?>" />
-					<?php } ?>
+					<?php echo $this->autocompleter('tags', 'tags', $this->escape($item->tags('string'))); ?>
 					<span class="hint"><?php echo JText::_(strtoupper($this->option) . '_FIELD_TAGS_HINT'); ?></span>
 				</label>
 				</div>
@@ -285,11 +255,11 @@ if (!$dir)
 
 		<p class="submit">
 			<input class="btn btn-success" type="submit" value="<?php echo JText::_(strtoupper($this->option) . '_SAVE'); ?>" />
-		<?php if ($item->get('id')) { ?>
-			<a class="btn btn-secondary" href="<?php echo JRoute::_($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">
-				<?php echo JText::_('COM_COLLECTIONS_CANCEL'); ?>
-			</a>
-		<?php } ?>
+			<?php if ($item->get('id')) { ?>
+				<a class="btn btn-secondary" href="<?php echo JRoute::_($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">
+					<?php echo JText::_('COM_COLLECTIONS_CANCEL'); ?>
+				</a>
+			<?php } ?>
 		</p>
 	</form>
 </section><!-- / .main section -->
