@@ -24,7 +24,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 }
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controller.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'poll.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 // Set the table directory
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables');

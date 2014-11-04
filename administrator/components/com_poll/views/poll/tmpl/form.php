@@ -1,30 +1,33 @@
 <?php defined('_JEXEC') or die('Restricted access');
 
-	$cid = JRequest::getVar( 'cid', array(0), '', 'array' );
-	$edit=JRequest::getVar( 'edit', true );
+	$cid  = JRequest::getVar('cid', array(0), '', 'array');
+	$edit = JRequest::getVar('edit', true );
 	JArrayHelper::toInteger($cid, array(0));
 
-	$text = ( $edit ? JText::_( 'JACTION_EDIT' ) : JText::_( 'JACTION_CREATE' ) );
+	$text = ($edit ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-	JToolBarHelper::title(  JText::_( 'COM_POLL' ).': ' . $text, 'poll.png');
+	JToolBarHelper::title(JText::_('COM_POLL') . ': ' . $text, 'poll.png');
 	if ($this->poll->id)
 	{
-		JToolBarHelper::preview('index.php?option=com_poll&controller=poll&cid='.$cid[0]);
+		JToolBarHelper::preview('index.php?option=com_poll&controller=poll&cid=' . $cid[0]);
 		JToolBarHelper::spacer();
 	}
 	JToolBarHelper::save();
 	JToolBarHelper::apply();
 	JToolBarHelper::spacer();
-	if ($edit) {
+	if ($edit)
+	{
 		// for existing items the button is renamed `close`
-		JToolBarHelper::cancel( 'cancel', 'COM_POLL_CLOSE' );
-	} else {
+		JToolBarHelper::cancel('cancel', 'COM_POLL_CLOSE');
+	}
+	else
+	{
 		JToolBarHelper::cancel();
 	}
 	JToolBarHelper::spacer();
 	JToolBarHelper::help('poll');
 
-JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
+JFilterOutput::objectHTMLSafe($this->poll, ENT_QUOTES);
 ?>
 
 <script type="text/javascript">
@@ -101,5 +104,5 @@ JFilterOutput::objectHTMLSafe( $this->poll, ENT_QUOTES );
 	<input type="hidden" name="cid[]" value="<?php echo $this->poll->id; ?>" />
 	<input type="hidden" name="textfieldcheck" value="<?php echo $n; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

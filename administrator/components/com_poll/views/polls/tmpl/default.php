@@ -2,7 +2,7 @@
 
 	JHTML::_('behavior.tooltip');
 
-	$canDo = PollHelper::getActions('component');
+	$canDo = PollHelperPermissions::getActions('component');
 
 	JToolBarHelper::title(JText::_('COM_POLL'), 'poll.png');
 	if ($canDo->get('core.edit.state'))
