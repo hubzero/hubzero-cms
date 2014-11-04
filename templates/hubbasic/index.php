@@ -35,15 +35,10 @@ $option = JRequest::getCmd('option');
 $config = JFactory::getConfig();
 $juser  = JFactory::getUser();
 
-//do we want to include jQuery
-if (JPluginHelper::isEnabled('system', 'jquery'))
-{
-	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.jquery.js');
-}
-else
-{
-	$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
-}
+JHTML::_('behavior.framework', true);
+JHTML::_('behavior.modal');
+
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.jquery.js');
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();

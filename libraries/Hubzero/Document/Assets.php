@@ -208,11 +208,9 @@ class Assets
 		// Build a list of possible paths
 		$paths = array();
 
-		if (\JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$paths[] = $base . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
-			$paths[] = $base . DS . $script . '.jquery.js';
-		}
+		// @deprecated  Support for deprecated jquery suffix
+		$paths[] = $base . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
+		$paths[] = $base . DS . $script . '.jquery.js';
 
 		$paths[] = $base . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.js';
 		$paths[] = $base . DS . $script . '.js';
@@ -303,10 +301,9 @@ class Assets
 
 		// Build a list of possible paths
 		$paths = array();
-		if (\JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$paths[] = $base . DS . $script . '.jquery.js';
-		}
+		// @deprecated  Support for deprecated jquery suffix
+		$paths[] = $base . DS . $script . '.jquery.js';
+
 		$paths[] = $base . DS . $script . '.js';
 
 		// Run through each path until we find one that works
@@ -510,12 +507,10 @@ class Assets
 		// Build a list of possible paths
 		$paths = array();
 
-		if (\JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.jquery.js';
-			$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
-			$paths[] = DS . 'modules' . DS . $module . DS . $script . '.jquery.js';
-		}
+		// @deprecated  Support for deprecated jquery suffix
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.jquery.js';
+		$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
+		$paths[] = DS . 'modules' . DS . $module . DS . $script . '.jquery.js';
 
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.js';
 		$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.js';
@@ -678,12 +673,10 @@ class Assets
 		// Build a list of possible paths
 		$paths = array();
 
-		if (\JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.jquery.js';
-			$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
-			$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.jquery.js';
-		}
+		// @deprecated  Support for deprecated jquery suffix
+		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.jquery.js';
+		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
+		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.jquery.js';
 
 		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.js';
 		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.js';

@@ -111,53 +111,26 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 		if ($lazy_loading)
 		{
 			$this->js();
-
-			if (JPluginHelper::isEnabled('system', 'jquery'))
-			{
-				$this->js("
-					jQuery(document).ready(function($){
-						var youtubefeed = $('#youtube_feed_" . $id . "').youtube({
-							type: '" . $type . "',
-							search: '" . $content . "',
-							count: " . $num_videos . ",
-							random: " . $random . ",
-							details: {
-								showLogo: " . $show_image . ",
-								altLogo: '" . $alt_image . "',
-								showTitle: " . $show_title . ",
-								altTitle: '" . $alt_title . "',
-								showDesc: " . $show_desc . ",
-								altDesc: '" . $alt_desc . "',
-								showLink: " . $show_link . ",
-								altLink: '" . $alt_link . "'
-							}
-						});
+			$this->js("
+				jQuery(document).ready(function($){
+					var youtubefeed = $('#youtube_feed_" . $id . "').youtube({
+						type: '" . $type . "',
+						search: '" . $content . "',
+						count: " . $num_videos . ",
+						random: " . $random . ",
+						details: {
+							showLogo: " . $show_image . ",
+							altLogo: '" . $alt_image . "',
+							showTitle: " . $show_title . ",
+							altTitle: '" . $alt_title . "',
+							showDesc: " . $show_desc . ",
+							altDesc: '" . $alt_desc . "',
+							showLink: " . $show_link . ",
+							altLink: '" . $alt_link . "'
+						}
 					});
-				");
-			}
-			else
-			{
-				$this->js("
-					window.addEvent('domready', function() {
-						var youtubefeed = new HUB.Youtube('youtube_feed_" . $id . "',{
-							type: '" . $type . "',
-							search: '" . $content . "',
-							count: " . $num_videos . ",
-							random: " . $random . ",
-							details: {
-								showLogo: " . $show_image . ",
-								altLogo: '" . $alt_image . "',
-								showTitle: " . $show_title . ",
-								altTitle: '" . $alt_title . "',
-								showDesc: " . $show_desc . ",
-								altDesc: '" . $alt_desc . "',
-								showLink: " . $show_link . ",
-								altLink: '" . $alt_link . "'
-							}
-						});
-					});
-				");
-			}
+				});
+			");
 		}
 		else
 		{
@@ -281,6 +254,13 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
+	/**
+	 * Get feed info
+	 *
+	 * @param      string  $url
+	 * @param      object  $params
+	 * @return     object
+	 */
 	private function _feed($url, $params)
 	{
 		// var to hold feed

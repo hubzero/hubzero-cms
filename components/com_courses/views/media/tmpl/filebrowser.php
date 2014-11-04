@@ -45,17 +45,12 @@ $base = rtrim(JURI::base(true), '/');
 			</div>
 		</fieldset>
 		<fieldset>
-			<?php if (JPluginHelper::isEnabled('system', 'jquery')) : ?>
-				<div id="ajax-uploader" data-action="<?php echo $base; ?>/index.php?option=com_courses&amp;task=ajaxupload&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1">
-					<noscript>
-						<p><input type="file" name="upload" id="upload" /></p>
-						<p><input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" /></p>
-					</noscript>
-				</div>
-			<?php else : ?>
-				<p><input type="file" name="upload" id="upload" /></p>
-				<p><input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" /></p>
-			<?php endif; ?>
+			<div id="ajax-uploader" data-action="<?php echo $base; ?>/index.php?option=com_courses&amp;task=ajaxupload&amp;listdir=<?php echo $this->listdir; ?>&amp;no_html=1">
+				<noscript>
+					<p><input type="file" name="upload" id="upload" /></p>
+					<p><input type="submit" value="<?php echo JText::_('COM_COURSES_UPLOAD'); ?>" /></p>
+				</noscript>
+			</div>
 
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="listdir" id="listdir" value="<?php echo $this->listdir; ?>" />

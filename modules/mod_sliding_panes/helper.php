@@ -94,23 +94,7 @@ class modSlidingPanes extends \Hubzero\Module\Module
 
 		$this->container = $this->params->get('container', 'pane-sliders');
 
-		if (JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$js = "jQuery(document).ready(function($){ $('#" . $this->container . " .panes-content').jSlidingPanes(); });";
-		}
-		else
-		{
-			$js = "window.addEvent('domready', function(){
-				if ($('" . $this->container . "')) {
-					myTabs" . $id . " = new ModSlidingPanes('" . $this->container . "', " . $this->params->get('rotate', 1) . ");
-
-					// this sets it up to work even if it's width isn't a set amount of pixels
-					window.addEvent('resize', myTabs" . $id . ".recalcWidths.bind(myTabs" . $id . "));
-				}
-			});";
-		}
-
-		$this->js($js);
+		$this->js("jQuery(document).ready(function($){ $('#" . $this->container . " .panes-content').jSlidingPanes(); });");
 
 		require(JModuleHelper::getLayoutPath($this->module->module));
 	}

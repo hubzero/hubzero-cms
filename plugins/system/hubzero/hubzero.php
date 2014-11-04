@@ -57,21 +57,17 @@ class plgSystemHubzero extends JPlugin
 	/**
 	 * Hook for after app routing
 	 *
-	 * @return	   void
+	 * @return   void
 	 */
 	public function onAfterRoute()
 	{
 		$app = JFactory::getApplication();
-		/*if (!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			JHTML::_('behavior.mootools');
-		}*/
 	}
 
 	/**
 	 * Hook for after app initialization
 	 *
-	 * @return	   void
+	 * @return   void
 	 */
 	public function onAfterInitialise()
 	{
@@ -205,8 +201,8 @@ class plgSystemHubzero extends JPlugin
 	/**
 	 * Hook for login failure
 	 *
-	 * @param	   unknown $response Parameter description (if any) ...
-	 * @return	   boolean
+	 * @param    unknown $response Parameter description (if any) ...
+	 * @return   boolean
 	 */
 	public function onUserLoginFailure($response)
 	{

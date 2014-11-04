@@ -569,14 +569,6 @@ $this->css()
 								</label>
 
 								<label>
-									<?php
-									if (!JPluginHelper::isEnabled('system', 'jquery'))
-									{
-										$this->js('observer.js');
-										$this->js('autocompleter.js');
-										$this->css('autocompleter.css');
-									}
-									?>
 									<input type="text" name="group" value="<?php if ($this->wishlist->get('category')=='group') { echo $this->wishlist->item('alias'); } ?>" id="acgroup" class="secondary_option" autocomplete="off" />
 								</label>
 							<?php } ?>

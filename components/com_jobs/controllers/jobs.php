@@ -1722,11 +1722,6 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'calendar.css');
 
-		if (!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$this->_getScripts('assets/js/calendar.rc4');
-		}
-
 		$jt = new JobType($this->database);
 		$jc = new JobCategory($this->database);
 

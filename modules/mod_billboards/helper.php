@@ -133,58 +133,21 @@ class modBillboards extends \Hubzero\Module\Module
 
 		// Add the javascript ready function with variables based on this specific billboard
 		// Pause: true - means the billbaord stops scrolling on hover
-		if (!JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$js = '
-				var $jQ = jQuery.noConflict();
+		$js = '
+			var $jQ = jQuery.noConflict();
 
-				$jQ(document).ready(function() {
-					$jQ(\'#' . $this->collection . '\').cycle({
-						fx: "' . $transition . '",
-						timeout: ' . $timeout .',
-						pager: ' . $js_pager . ',
-						speed: ' . $speed . ',
-						random: ' . $random . ',
-						cleartypeNoBg: true,
-						slideResize: 0,
-						pause: true
-					});
-				});';
-		}
-		else
-		{
-			$js = '
-				if (!HUB) {
-					var HUB = {};
-				}
-
-				if (!jq) {
-					var jq = $;
-				}
-
-				HUB.Billboards = {
-					jQuery: jq,
-
-					initialize: function() {
-						var $ = this.jQuery;
-
-						$(\'#' . $this->collection . '\').cycle({
-							fx: "' . $transition . '",
-							timeout: ' . $timeout .',
-							pager: ' . $js_pager . ',
-							speed: ' . $speed . ',
-							random: ' . $random . ',
-							cleartypeNoBg: true,
-							slideResize: 0,
-							pause: true
-						});
-					}
-				}
-
-				jQuery(document).ready(function($){
-					HUB.Billboards.initialize();
-				});';
-		}
+			$jQ(document).ready(function() {
+				$jQ(\'#' . $this->collection . '\').cycle({
+					fx: "' . $transition . '",
+					timeout: ' . $timeout .',
+					pager: ' . $js_pager . ',
+					speed: ' . $speed . ',
+					random: ' . $random . ',
+					cleartypeNoBg: true,
+					slideResize: 0,
+					pause: true
+				});
+			});';
 
 		$this->js($js);
 	}
