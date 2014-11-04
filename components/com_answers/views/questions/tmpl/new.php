@@ -48,17 +48,17 @@ $this->css();
 <section class="main section">
 	<div class="section-inner">
 		<?php foreach ($this->notifications as $notification) { ?>
-		<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
+			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 		<?php } ?>
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" id="hubForm">
 			<div class="explaination">
 				<p><?php echo JText::_('COM_ANSWERS_BE_POLITE'); ?></p>
-			<?php if ($this->config->get('banking')) { ?>
-				<p class="help">
-					<strong><?php echo JText::_('COM_ANSWERS_WHAT_IS_REWARD'); ?></strong><br />
-					<?php echo JText::_('COM_ANSWERS_EXPLAINED_MARKET_VALUE'); ?> <a href="<?php echo $this->config->get('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a> <?php echo JText::_('COM_ANSWERS_ABOUT_POINTS'); ?>
-				</p>
-			<?php } ?>
+				<?php if ($this->config->get('banking')) { ?>
+					<p class="help">
+						<strong><?php echo JText::_('COM_ANSWERS_WHAT_IS_REWARD'); ?></strong><br />
+						<?php echo JText::_('COM_ANSWERS_EXPLAINED_MARKET_VALUE'); ?> <a href="<?php echo $this->config->get('infolink'); ?>"><?php echo JText::_('COM_ANSWERS_LEARN_MORE'); ?></a> <?php echo JText::_('COM_ANSWERS_ABOUT_POINTS'); ?>
+					</p>
+				<?php } ?>
 			</div><!-- / .explaination -->
 			<fieldset>
 				<legend><?php echo JText::_('COM_ANSWERS_YOUR_QUESTION'); ?></legend>
@@ -81,12 +81,7 @@ $this->css();
 
 				<label>
 					<?php echo JText::_('COM_ANSWERS_TAGS'); ?>: <span class="required"><?php echo JText::_('COM_ANSWERS_REQUIRED'); ?></span><br />
-					<?php
-					JPluginHelper::importPlugin('hubzero');
-					$tf = JDispatcher::getInstance()->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->tag)));
-					$tf = implode("\n", $tf);
-					echo $tf ? $tf : '<textarea name="tags" id="actags" rows="6" cols="35">' .  $this->escape($this->tag) . '</textarea>';
-					?>
+					<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->tag), 'actags'); ?>
 				</label>
 
 				<label for="field-subject">
@@ -106,15 +101,16 @@ $this->css();
 						);
 					?>
 				</label>
-			<?php if ($this->config->get('banking')) { ?>
-				<label for="field-reward">
-					<?php echo JText::_('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
-					<input type="text" name="fields[reward]" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
-					<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
-				</label>
-			<?php } else { ?>
-				<input type="hidden" name="fields[reward]" value="0" />
-			<?php } ?>
+
+				<?php if ($this->config->get('banking')) { ?>
+					<label for="field-reward">
+						<?php echo JText::_('COM_ANSWERS_ASSIGN_REWARD'); ?>:<br />
+						<input type="text" name="fields[reward]" id="field-reward" value="" size="5" <?php if ($this->funds <= 0) { echo 'disabled="disabled" '; } ?>/>
+						<?php echo JText::_('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?></strong> <?php echo JText::_('COM_ANSWERS_POINTS_TO_SPEND'); ?>
+					</label>
+				<?php } else { ?>
+					<input type="hidden" name="fields[reward]" value="0" />
+				<?php } ?>
 			</fieldset>
 			<div class="clear"></div>
 

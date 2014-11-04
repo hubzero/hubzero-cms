@@ -42,15 +42,6 @@ $this->css()
      ->js('jquery.timepicker.js', 'system')
      ->js();
 
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher = JDispatcher::getInstance();
-$tf = $dispatcher->trigger(
-	'onGetMultiEntry',
-	array(
-		array('tags', 'tags', 'actags','', $this->entry->tags('string'))
-	)
-);
-
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00')
 {
 	$this->entry->set('publish_down', '');
@@ -66,9 +57,9 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 
 <section class="main section">
 	<div class="section-inner">
-	<?php /*if ($this->getError()) { ?>
-		<p class="error"><?php echo $this->getError(); ?></p>
-	<?php }*/ ?>
+		<?php /*if ($this->getError()) { ?>
+			<p class="error"><?php echo $this->getError(); ?></p>
+		<?php }*/ ?>
 
 		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
 			<div class="explaination">
@@ -82,27 +73,21 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 					<?php echo JText::_('COM_BLOG_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
 					<input type="text" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title'))); ?>" />
 				</label>
-			<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
-				<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
-			<?php } ?>
+				<?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
+					<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
+				<?php } ?>
 
 				<label for="entrycontent"<?php if ($this->task == 'save' && !$this->entry->get('content')) { echo ' class="fieldWithErrors"'; } ?>>
 					<?php echo JText::_('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('COM_BLOG_REQUIRED'); ?></span>
-					<?php
-					echo \JFactory::getEditor()->display('entry[content]', $this->escape($this->entry->content('raw')), '', '', 50, 40, false, 'entrycontent');
-					?>
+					<?php echo $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 40); ?>
 				</label>
-			<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
-				<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
-			<?php } ?>
+				<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
+					<p class="error"><?php echo JText::_('COM_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
+				<?php } ?>
 
 				<label>
 					<?php echo JText::_('COM_BLOG_FIELD_TAGS'); ?>
-				<?php if (count($tf) > 0) {
-					echo $tf[0];
-				} else { ?>
-					<input type="text" name="tags" value="<?php echo $this->entry->tags('string'); ?>" />
-				<?php } ?>
+					<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->entry->tags('string'))); ?>
 					<span class="hint"><?php echo JText::_('COM_BLOG_FIELD_TAGS_HINT'); ?></span>
 				</label>
 
