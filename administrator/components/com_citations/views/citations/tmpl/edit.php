@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CitationsHelper::getActions('citation');
+$canDo = CitationsHelperPermissions::getActions('citation');
 
 $text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
 
@@ -69,7 +69,7 @@ $journal = html_entity_decode($this->row->journal);
 $journal = (!preg_match('!\S!u', $journal)) ? utf8_encode($journal) : $journal;
 ?>
 
-<script type="text/javascript" src="../components/com_citations/assets/js/citations.jquery.js"></script>
+<script type="text/javascript" src="../components/com_citations/assets/js/citations.js"></script>
 
 <script type="text/javascript">
 function submitbutton(pressbutton)

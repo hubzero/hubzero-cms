@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CitationsHelper::getActions('type');
+$canDo = CitationsHelperPermissions::getActions('type');
 
 JToolBarHelper::title(JText::_('CITATIONS') . ': ' . JText::_('CITATION_TYPES'), 'citation.png');
 if ($canDo->get('core.create'))
@@ -81,12 +81,12 @@ function submitbutton(pressbutton)
 						<?php echo $t['id']; ?>
 					</td>
 					<td>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $t['id']; ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $t['id']); ?>">
 							<span><?php echo $this->escape($t['type']); ?></span>
 						</a>
 					</td>
 					<td>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $t['id']; ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $t['id']); ?>">
 							<span><?php echo $this->escape($t['type_title']); ?></span>
 						</a>
 					</td>

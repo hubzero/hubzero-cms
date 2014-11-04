@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CitationsHelper::getActions('type');
+$canDo = CitationsHelperPermissions::getActions('type');
 
 $text = ($this->task == 'edittype' ? JText::_('EDIT') : JText::_('NEW'));
 

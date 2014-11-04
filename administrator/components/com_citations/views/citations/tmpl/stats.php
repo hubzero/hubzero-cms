@@ -43,19 +43,14 @@ JToolBarHelper::title(JText::_('CITATION') . ': ' . JText::_('CITATION_STATS'), 
 			</tr>
 		</thead>
 		<tbody>
-<?php
-	foreach ($this->stats as $year => $amt)
-	{
-?>
+		<?php foreach ($this->stats as $year => $amt) { ?>
 			<tr>
 				<th><?php echo $year; ?></th>
 				<td><?php echo $amt['affiliate']; ?></td>
 				<td><?php echo $amt['non-affiliate']; ?></td>
 				<td><span style="color:#c00;"><?php echo (intval($amt['affiliate']) + intval($amt['non-affiliate'])); ?></span></td>
 			</tr>
-<?php
-	}
-?>
+		<?php } ?>
 		</tbody>
 	</table>
 </form>

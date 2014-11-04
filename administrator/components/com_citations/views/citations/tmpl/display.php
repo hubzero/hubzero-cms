@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CitationsHelper::getActions('citation');
+$canDo = CitationsHelperPermissions::getActions('citation');
 
 JToolBarHelper::title(JText::_('CITATIONS'), 'citation.png');
 if ($canDo->get('core.admin'))
@@ -146,7 +146,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						}
 					?>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 							<?php echo $this->escape($title); ?>
 						</a>
 						<br />
