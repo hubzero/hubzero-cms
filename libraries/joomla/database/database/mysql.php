@@ -519,14 +519,14 @@ class JDatabaseMySQL extends JDatabase
 
 		// START: HUBzero query timer
 
-		$timer = 0;
+		$this->timer = 0;
 
 		// Reset the error values.
- 		$this->errorNum = 0;
- 		$this->errorMsg = '';
+		$this->errorNum = 0;
+		$this->errorMsg = '';
 
 		$starttime = microtime(true);
- 		$this->cursor = mysql_query($sql, $this->connection);
+		$this->cursor = mysql_query($sql, $this->connection);
 		$endtime = microtime(true);
 
 		// If debugging is enabled then let's log the query.

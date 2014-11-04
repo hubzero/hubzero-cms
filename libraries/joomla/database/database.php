@@ -48,6 +48,14 @@ abstract class JDatabase implements JDatabaseInterface
 	private $_database;
 
 	/**
+	 * Query timer
+	 *
+	 * @var    integer
+	 * @since  1.3.0
+	 */
+	public $timer = 0;
+
+	/**
 	 * The name of the database driver.
 	 *
 	 * @var    string
