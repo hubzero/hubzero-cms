@@ -458,4 +458,50 @@ class View extends AbstractView
 
 		return $view;
 	}
+
+	/**
+	 * Dynamically handle calls to the class.
+	 *
+	 * @param   string  $method
+	 * @param   array   $parameters
+	 * @return  mixed
+	 * @throws  \BadMethodCallException
+	 * @since   1.3.1
+	 */
+	public function __call($method, $parameters)
+	{
+		if (!static::hasHelper($method))
+		{
+			$file = JPATH_ROOT . DS . 'plugins' . DS . $this->_folder . DS . $this->_element . DS . 'helpers' . DS . $method . '.php';
+			if (file_exists($file))
+			{
+				include_once $file;
+			}
+
+			// Namespaced
+			$invokable1 = '\\Plugins\\' . ucfirst($this->_folder) . '\\' . ucfirst($this->_element) . '\\Helpers\\' . ucfirst($method);
+
+			// Old naming scheme "PluginFolderElementHelperMethod"
+			$invokable2 = 'Plugin' . ucfirst($this->_folder) . ucfirst($this->_element) . 'Helper' . ucfirst($method);
+
+			$callback = null;
+			if (class_exists($invokable1))
+			{
+				$callback = new $invokable1();
+			}
+			else if (class_exists($invokable2))
+			{
+				$callback = new $invokable2();
+			}
+
+			if (is_callable($callback))
+			{
+				$callback->setView($this);
+
+				$this->helper($method, $callback);
+			}
+		}
+
+		return parent::__call($method, $parameters);
+	}
 }
