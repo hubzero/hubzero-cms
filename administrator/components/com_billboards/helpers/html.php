@@ -54,7 +54,7 @@ class BillboardsHelperHtml
 		$collections = $collection->getRecords($filters);
 
 		// Go through all the collections and add a select option for each
-		foreach($collections as $collection)
+		foreach ($collections as $collection)
 		{
 			$options[] = JHTML::_('select.option', $collection->id, $collection->name, 'value', 'text');
 			if ($collection->id == $collection_id)
