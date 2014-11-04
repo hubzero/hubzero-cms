@@ -430,6 +430,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 					}
 
 					// weighted average
+					$divisor = $divisor ? $divisor : 1;
 					$wish->set('average_imp', ($imp/$divisor));
 				}
 			}
