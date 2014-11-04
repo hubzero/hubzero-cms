@@ -123,20 +123,21 @@ class Helper
 			}
 		}
 
+		// lets make sure we have a profile object
+		if ($member instanceof \JUser)
+		{
+			$member = Profile::getInstance($member->get('id'));
+		}
+		else if (is_numeric($member) || is_string($member))
+		{
+			$member = Profile::getInstance($member);
+		}
+
 		$paths = array();
 
 		// If not anonymous
 		if (!$anonymous)
 		{
-			if ($member instanceof \JUser)
-			{
-				$member = Profile::getInstance($member->get('id'));
-			}
-			else if (is_numeric($member) || is_string($member))
-			{
-				$member = Profile::getInstance($member);
-			}
-
 			// If we have a member
 			if (is_object($member))
 			{
