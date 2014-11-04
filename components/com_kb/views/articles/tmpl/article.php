@@ -160,74 +160,74 @@ $this->css()
 			</h3>
 			<form method="post" action="<?php echo JRoute::_($this->article->link()); ?>" id="commentform">
 				<p class="comment-member-photo">
-					<span class="comment-anchor"></span>
 					<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($this->juser, (!$this->juser->get('guest') ? 0 : 1)); ?>" alt="" />
 				</p>
 				<fieldset>
-				<?php
-				if (!$this->juser->get('guest'))
-				{
-					if ($this->replyto->get('id'))
+					<?php
+					if (!$this->juser->get('guest'))
 					{
-						$name = JText::_('COM_KB_ANONYMOUS');
-						if (!$this->replyto->get('anonymous'))
+						if ($this->replyto->exists())
 						{
-							$xuser = \Hubzero\User\Profile::getInstance($this->replyto->get('created_by'));
-							if (is_object($xuser) && $xuser->get('name'))
+							$name = JText::_('COM_KB_ANONYMOUS');
+							if (!$this->replyto->get('anonymous'))
 							{
-								$name = ($xuser->get('public') ? '<a href="' . JRoute::_($xuser->getLink()) . '">' : '') . $this->escape(stripslashes($xuser->get('name'))) . ($xuser->get('public') ? '</a>' : '');
+								$name = $this->escape(stripslashes($this->replyto->creator('name')));
+								if ($this->replyto->creator('public'))
+								{
+									$name = '<a href="' . JRoute::_($this->replyto->creator()->getLink()) . '">' . $name . '</a>';
+								}
 							}
+							?>
+							<blockquote cite="c<?php echo $this->replyto->get('id'); ?>">
+								<p>
+									<strong><?php echo $name; ?></strong>
+									<span class="comment-date-at"><?php echo JText::_('COM_KB_AT'); ?></span>
+									<span class="time"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo $this->replyto->created('time'); ?></time></span>
+									<span class="comment-date-on"><?php echo JText::_('COM_KB_ON'); ?></span>
+									<span class="date"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo $this->replyto->created('date'); ?></time></span>
+								</p>
+								<p>
+									<?php echo $this->replyto->content('raw', 300); ?>
+								</p>
+							</blockquote>
+							<?php
 						}
-					?>
-					<blockquote cite="c<?php echo $this->replyto->id ?>">
-						<p>
-							<strong><?php echo $name; ?></strong>
-							<span class="comment-date-at"><?php echo JText::_('COM_KB_AT'); ?></span>
-							<span class="time"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('time')); ?></time></span>
-							<span class="comment-date-on"><?php echo JText::_('COM_KB_ON'); ?></span>
-							<span class="date"><time datetime="<?php echo $this->replyto->created(); ?>"><?php echo JHTML::_('date', $this->replyto->created('date')); ?></time></span>
-						</p>
-						<p>
-							<?php echo \Hubzero\Utility\String::truncate(stripslashes($this->replyto->content('raw')), 300); ?>
-						</p>
-					</blockquote>
-					<?php
 					}
-				}
-				?>
+					?>
 
-				<?php if ($this->article->commentsOpen()) { ?>
-					<label for="commentcontent">
-						<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
-					<?php
-					if (!$this->juser->get('guest')) {
-						echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal'));
-					} else {
-						$rtrn = JRoute::_($this->article->link() . '#post-comment', false, true);
-						?>
-						<p class="warning">
-							<?php echo JText::sprintf('COM_KB_MUST_LOG_IN', JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
-						</p>
+					<?php if ($this->article->commentsOpen()) { ?>
+						<label for="commentcontent">
+							<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
 						<?php
-					}
-					?>
-					</label>
+						if (!$this->juser->get('guest')) {
+							echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
+						} else {
+							$rtrn = JRoute::_($this->article->link() . '#post-comment', false, true);
+							?>
+							<p class="warning">
+								<?php echo JText::sprintf('COM_KB_MUST_LOG_IN', JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
+							</p>
+							<?php
+						}
+						?>
+						</label>
 
-					<?php if (!$this->juser->get('guest')) { ?>
-					<label id="comment-anonymous-label" for="comment-anonymous">
-						<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
-						<?php echo JText::_('COM_KB_FIELD_ANONYMOUS'); ?>
-					</label>
+						<?php if (!$this->juser->get('guest')) { ?>
+						<label id="comment-anonymous-label" for="comment-anonymous">
+							<input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+							<?php echo JText::_('COM_KB_FIELD_ANONYMOUS'); ?>
+						</label>
 
-					<p class="submit">
-						<input type="submit" name="submit" value="<?php echo JText::_('COM_KB_SUBMIT'); ?>" />
-					</p>
+						<p class="submit">
+							<input type="submit" name="submit" value="<?php echo JText::_('COM_KB_SUBMIT'); ?>" />
+						</p>
+						<?php } ?>
+					<?php } else { ?>
+						<p class="warning">
+							<?php echo JText::_('COM_KB_COMMENTS_CLOSED'); ?>
+						</p>
 					<?php } ?>
-				<?php } else { ?>
-					<p class="warning">
-						<?php echo JText::_('COM_KB_COMMENTS_CLOSED'); ?>
-					</p>
-				<?php } ?>
+
 					<input type="hidden" name="comment[id]" value="0" />
 					<input type="hidden" name="comment[entry_id]" value="<?php echo $this->escape($this->article->get('id')); ?>" />
 					<input type="hidden" name="comment[parent]" value="<?php echo $this->escape($this->replyto->get('id')); ?>" />
