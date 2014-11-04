@@ -176,7 +176,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		);
 
 		// Get the active category
-		$area = JRequest::getVar('area', '');
+		$area = JRequest::getString('area', '');
 
 		$this->view->categories = $dispatcher->trigger('onTagView', array(
 			$tags,
