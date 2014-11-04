@@ -68,7 +68,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 		$content = $this->params->get('q');
 
 		//build the youtube url based on the type
-		switch($type)
+		switch ($type)
 		{
 			case 'playlists':
 				$youtube_url .= 'playlists/' . $content . '?v=2';
@@ -180,7 +180,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 				{
 					$html .= '<p class="description">' . $alt_desc . '</p>';
 				}
-				elseif($type == 'playlists')
+				elseif ($type == 'playlists')
 				{
 					$html .= '<p class="description">' . $desc . '</p>';
 				}
