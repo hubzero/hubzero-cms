@@ -29,16 +29,16 @@ $this->css()
      ->js();
 
 //get the manifest for the presentation
-$contents = file_get_contents($this->manifest); 
+$contents = file_get_contents($this->manifest);
 
 //content folder
 $content_folder = $this->content_folder;
 
 //decode the json formatted manifest so we can use the information
-$presentation = json_decode( $contents );  
+$presentation = json_decode( $contents );
 $presentation = $presentation->presentation;
 ?>
-<div id="presenter-shortcuts-box"> 
+<div id="presenter-shortcuts-box">
 	<h2>Keyboard Shortcuts</h2>
 	<a href="#" id="shortcuts-close">Close</a>
 	<ul id="shortcuts-content">
@@ -54,25 +54,25 @@ $presentation = $presentation->presentation;
 <div id="presenter-container">
 	<div id="presenter-header">
 		<div id="title"><?php echo $this->publication->title; ?></div>
-		<div id="author"><?php if($this->authors) { echo 'by '.$this->helper->showContributors( $this->authors, false, true ); } ?></div>
+		<div id="author"><?php if ($this->authors) { echo 'by '.$this->helper->showContributors( $this->authors, false, true ); } ?></div>
 		<!--<div id="slide_title"></div>-->
 	</div><!-- /#header -->
-	
+
 	<div id="presenter-content">
 		<div id="presenter-left">
 			<div id="slides">
 				<ul class="no-js">
 					<?php $counter = 0; ?>
-					<?php foreach($presentation->slides as $slide) : ?>
+					<?php foreach ($presentation->slides as $slide) : ?>
 						<li id="slide_<?php echo $counter; ?>" title="<?php echo $slide->title; ?>" time="<?php echo $slide->time; ?>">
-							<?php if($slide->type == 'Image') : ?>
+							<?php if ($slide->type == 'Image') : ?>
 								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 							<?php else : ?>
-								<video class="slidevideo">  
-									<?php foreach($slide->media as $source): ?>
-										<source src="<?php echo $content_folder.DS.$source->source; ?>" /> 
+								<video class="slidevideo">
+									<?php foreach ($slide->media as $source): ?>
+										<source src="<?php echo $content_folder.DS.$source->source; ?>" />
 									<?php endforeach; ?>
-									<a href="<?php echo $content_folder.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a> 
+									<a href="<?php echo $content_folder.DS.$slide->media[0]->source; ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
 								</video>
 								<img src="<?php echo $content_folder.DS.$slide->media[3]->source; ?>" alt="<?php echo $slide->title; ?>" class="imagereplacement">
 							<?php endif; ?>
@@ -98,41 +98,41 @@ $presentation = $presentation->presentation;
 				</div>
 			</div><!-- /#control-box -->
 		</div><!-- /#left -->
-		
+
 		<div id="presenter-right">
 			<div id="media">
-				<?php if(strtolower($presentation->type) == 'video') : ?>
+				<?php if (strtolower($presentation->type) == 'video') : ?>
 					<video id="player" preload="auto" controls="controls">
-						<?php foreach($presentation->media as $source): ?>
+						<?php foreach ($presentation->media as $source): ?>
 						   	<source src="<?php echo $content_folder.DS.$source->source; ?>" >
 						<?php endforeach; ?>
 						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer"></a>
 					</video>
 				<?php else : ?>
-					<audio id="player" preload="auto" controls="controls">          
-						<?php foreach($presentation->media as $source): ?>
+					<audio id="player" preload="auto" controls="controls">
+						<?php foreach ($presentation->media as $source): ?>
 							<source src="<?php echo $content_folder.DS.$source->source; ?>" />
 						<?php endforeach; ?>
-						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if($presentation->duration) { echo $presentation->duration; } ?>"></a>
+						<a href="<?php echo $content_folder.DS.$presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if ($presentation->duration) { echo $presentation->duration; } ?>"></a>
 					</audio>
 				<?php endif; ?>
 			</div>
 			<div id="list">
 				<ul id="list_items">
 					<?php $num = 0; $counter = 0; $last_slide_id = 0; ?>
-					<?php foreach($presentation->slides as $slide) : ?>
-						<?php if((int)$slide->slide != $last_slide_id) : ?>
+					<?php foreach ($presentation->slides as $slide) : ?>
+						<?php if ((int)$slide->slide != $last_slide_id) : ?>
 							<li id="list_<?php echo $counter; ?>">
 								<img src="<?php echo $content_folder.DS.$slide->media; ?>" alt="<?php echo $slide->title; ?>" />
 								<span>
-									<?php 
+									<?php
 										$num++;
 										$max = 30;
 										$elipsis = "&hellip;";
 										echo ($num) . ". ";
-										echo substr($slide->title, 0, $max); 
-									
-										if(strlen($slide->title) > $max) 
+										echo substr($slide->title, 0, $max);
+
+										if (strlen($slide->title) > $max)
 											echo $elipsis;
 									?>
 								</span>
@@ -141,9 +141,9 @@ $presentation = $presentation->presentation;
 								<div class="list-progress">00:00/00:00</div>
 							</li>
 						<?php endif; ?>
-						<?php 
+						<?php
 							$last_slide_id = $slide->slide;
-							$counter++; 
+							$counter++;
 						?>
 					<?php endforeach; ?>
 				</ul>

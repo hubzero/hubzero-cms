@@ -29,8 +29,8 @@ $this->css()
      ->js();
 
 // Load wiki configs
-$wiki_config = JComponentHelper::getParams( 'com_wiki' ); 
-			
+$wiki_config = JComponentHelper::getParams( 'com_wiki' );
+
 // Change all relative links to point to correct locations
 $weed = DS . 'wiki' . DS . $this->masterscope . DS . $this->page->pagename . DS;
 
@@ -42,7 +42,7 @@ $p = WikiHelperParser::getInstance();
 $wikiconfig = array(
 	'option'   => 'com_projects',
 	'scope'    => $this->page->scope,
-	'pagename' => $this->page->pagename, 
+	'pagename' => $this->page->pagename,
 	'pageid'   => $this->page->id
 );
 
@@ -52,15 +52,15 @@ $html = $p->parse( $this->page->pagetext, $wikiconfig );
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php');
 
 // Replace internal links so that these pages are accessible
-$html = projectsHelper::parseNoteRefs($this->page, $this->project_id, $this->masterscope, 
+$html = projectsHelper::parseNoteRefs($this->page, $this->project_id, $this->masterscope,
 	$this->publication, $html );
 
 // Parse text for project file references
-$html = projectsHelper::parseProjectFileRefs($this->page, $this->page->pagetext, $this->project_id, 
+$html = projectsHelper::parseProjectFileRefs($this->page, $this->page->pagetext, $this->project_id,
 	$this->project_alias, $this->publication, $html, true);
 
 // Fix up images
-$html = projectsHelper::wikiFixImages($this->page, $this->page->pagetext, $this->project_id, 
+$html = projectsHelper::wikiFixImages($this->page, $this->page->pagetext, $this->project_id,
 	$this->project_alias, $this->publication, $html, true);
 
 ?>

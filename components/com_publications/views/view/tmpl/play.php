@@ -36,7 +36,7 @@ $this->css()
 
 $html = '';
 $firstattach = $this->firstattach;
-if(!$firstattach)
+if (!$firstattach)
 {
 	echo '<p class="error">'.JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND').'</p>'."\n";
 	return;
@@ -54,7 +54,7 @@ if ($attributes) {
 	$a = explode(',', $attributes);
 	$bits = array();
 	if ($a && is_array($a)) {
-		foreach ($a as $b) 
+		foreach ($a as $b)
 		{
 			if (strstr($b, ':')) {
 				$b = explode(':', $b);
@@ -68,9 +68,9 @@ if ($attributes) {
 $images = array('png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp');
 $files = array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg');
 
-if (is_file(JPATH_ROOT.$firstattach->url)) 
+if (is_file(JPATH_ROOT.$firstattach->url))
 {
-	if($firstattach->type == 'video' || $firstattach->ext == 'swf') 
+	if ($firstattach->type == 'video' || $firstattach->ext == 'swf')
 	{
 		// Serve video
 		$view = new JView( array('name'=>'view','layout'=>'video') );
@@ -85,7 +85,7 @@ if (is_file(JPATH_ROOT.$firstattach->url))
 		$view->version = $this->version;
 		$view->height = $height;
 		$view->width = $width;
-		
+
 		// Output HTML
 		if ($this->getError()) {
 			$view->setError( $this->getError() );
@@ -103,7 +103,7 @@ if (is_file(JPATH_ROOT.$firstattach->url))
 			$session = JFactory::getSession();
 
 			$session_id = $session->getId();
-			
+
 			jimport('joomla.utilities.simplecrypt');
 			$crypter = new JSimpleCrypt();
 			$token = base64_encode($crypter->encrypt($session_id));
