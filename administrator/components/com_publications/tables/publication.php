@@ -206,8 +206,12 @@ class Publication extends JTable
 		}
 
 		$query .= " #__publication_versions as V, #__projects as PP,
-				  #__publication_master_types AS MT, $this->_tbl AS C ";
-
+				  #__publication_master_types AS MT";
+		if (isset($filters['author']) && intval($filters['author']))
+		{
+			$query .= ", #__publication_authors as A ";
+		}
+		$query .= ", $this->_tbl AS C ";
 		$query .= "LEFT JOIN #__publication_categories AS t ON t.id=C.category ";
 		$query .= " WHERE V.publication_id=C.id AND MT.id=C.master_type AND PP.id = C.project_id ";
 
@@ -282,6 +286,12 @@ class Publication extends JTable
 			{
 				$query .= " AND t.url_alias='".$filters['category']."' ";
 			}
+		}
+
+		if (isset($filters['author']) && intval($filters['author']))
+		{
+			$query .= " AND A.publication_version_id=V.id AND A.user_id=" . $filters['author'];
+			$query .= " AND A.status=1 AND (A.role IS NULL OR A.role!='submitter') ";
 		}
 
 		// Master type

@@ -445,7 +445,7 @@ class PublicationLog extends JTable
 		}
 
 		$query .= " FROM #__publications as C, #__projects as P, #__publication_categories AS t, #__publication_versions as V ";
-		$query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.user_id='$uid' ";
+		$query .= " JOIN #__publication_authors as A ON A.publication_version_id = V.id AND A.role!='submitter' AND A.user_id='$uid' ";
 
 		if ($lastmonth)
 		{
