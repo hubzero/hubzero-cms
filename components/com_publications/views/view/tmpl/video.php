@@ -38,7 +38,7 @@ $this->css('video.css')
      ->css('jquery.colpick.css', 'system')
      ->js('jquery.colpick', 'system');
 
-$html5video = array("mp4","m4v","webm","ogv"); 
+$html5video = array("mp4","m4v","webm","ogv");
 ?>
 <div id="video-container">
 	<?php if (count($this->attachments) > 1) {
