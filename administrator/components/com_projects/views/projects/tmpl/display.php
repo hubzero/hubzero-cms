@@ -135,7 +135,7 @@ function submitbutton(pressbutton)
 				}
 
 				$tags = $pt->get_tag_cloud(3, 1, $row->id);
-				$thumb 	= rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media';	
+				$thumb 	= rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media';
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>

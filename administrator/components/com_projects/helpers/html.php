@@ -193,7 +193,7 @@ class ProjectsHtml
 	{
 		$file_size = str_replace(' ', '', $file_size);
 
-		if($from == 'b')
+		if ($from == 'b')
 		{
 			if ($to == 'GB')
 			{
