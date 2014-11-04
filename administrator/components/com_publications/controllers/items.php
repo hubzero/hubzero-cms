@@ -1201,6 +1201,19 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					if ($action == 'publish')
 					{
 						$row->accepted = JFactory::getDate()->toSql();
+
+						// Get master type info
+						$mt = new PublicationMasterType( $this->database );
+						$pub->_type = $mt->getType($pub->base);
+
+						// Get curation model
+						$pub->_curationModel = new PublicationsCuration(
+							$this->database,
+							$pub->_type->curation
+						);
+
+						// Store curation manifest
+						$row->curation = json_encode($pub->_curationModel->_manifest);
 					}
 					$row->modified = JFactory::getDate()->toSql();
 					$row->modified_by = $this->juser->get('id');
