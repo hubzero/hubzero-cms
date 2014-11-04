@@ -43,6 +43,10 @@ HUBzero is a registered trademark of Purdue University.
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="display_limit" type="text" size="5" default="50" label="Display Limit" description="Number of items to return"/>
+				<field name="include_publications" type="list" default="0" label="Include Publications" description="List publications by user">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>
