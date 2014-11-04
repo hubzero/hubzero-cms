@@ -39,6 +39,14 @@ JToolBarHelper::editList();
 include_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS.'html'.DS.'html'.DS.'grid.php');
 
 $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
+
+$juri 	 = JURI::getInstance();
+$base 	 = rtrim($juri->base(), DS);
+if (substr($base, -13) == 'administrator')
+{
+	$base = substr($base, 0, strlen($base)-13);
+}
+
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -96,8 +104,6 @@ function submitbutton(pressbutton)
 			{
 				$row = $this->rows[$i];
 
-				$thumb = ProjectsHtml::getThumbSrc($row->id, $row->alias, $row->picture, $this->config);
-
 				if ($row->owned_by_group && !$row->groupcn)
 				{
 					$row->groupname = '<span class="italic pale">'.JText::_('COM_PROJECTS_INFO_DELETED_GROUP').'</span>';
@@ -129,6 +135,7 @@ function submitbutton(pressbutton)
 				}
 
 				$tags = $pt->get_tag_cloud(3, 1, $row->id);
+				$thumb 	= rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media';	
 			?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>

@@ -53,6 +53,7 @@ else
 $link 		= rtrim($base, DS) . DS . trim($sef, DS);
 $projectUrl = $link;
 $browseLink = rtrim($base, DS) . DS . trim($sef_browse, DS);
+$thumb 		= rtrim($base, DS) . DS . 'projects/' . $this->project->alias . '/media';
 
 // Page title
 $title = $hubShortName . ' ' . JText::_('COM_PROJECTS_PROJECTS');
@@ -84,13 +85,6 @@ $owner   = $this->project->owned_by_group
 		 : $this->project->fullname;
 
 $showThumb = $config->get('showthumbemail', 0);
-
-// Get project thumbnail
-if ($showThumb)
-{
-	$thumb = ProjectsHtml::getThumbSrc($this->project->id, $this->project->alias, $this->project->picture, $config);
-	$thumb = rtrim($base, DS) . DS . trim($thumb, DS);
-}
 
 ?>
 
