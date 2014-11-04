@@ -25,77 +25,43 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$default = DS . trim($this->config->get('defaultpic'), DS);
-$file = '';
-
-if ($this->row->picture)
-{
-	// Build upload path
-	$file  = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($this->user->get('id'));
-	$file .= DS . trim($this->row->picture, DS);
-}
-
-$ow = 0;
-$oh = 0;
-$base = rtrim(JURI::getInstance()->base(true), '/');
-
-if ($file && file_exists(JPATH_ROOT . $file))
-{
-	list($ow, $oh) = getimagesize(JPATH_ROOT . $file);
-	$img = $base . $file;
-}
-else if ($default && file_exists(JPATH_ROOT . $default))
-{
-	list($ow, $oh) = getimagesize(JPATH_ROOT . $default);
-	$img = $base . $default;
-}
-
-//scale if image is bigger than 120w x120h
-$num = max($ow/120, $oh/120);
-if ($num > 1)
-{
-	$mw = round($ow/$num);
-	$mh = round($oh/$num);
-}
-else
-{
-	$mw = $ow;
-	$mh = $oh;
-}
-
 $this->css();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-					<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
+			</a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
 <section class="main section">
 	<p class="passed"><?php echo JText::_('COM_FEEDBACK_STORY_THANKS'); ?></p>
 
-	<table class="storybox">
-		<tbody>
-			<tr>
-				<td><img src="<?php echo $img; ?>" width="<?php echo $mw; ?>" height="<?php echo $mh; ?>" alt="" /></td>
-				<td>
-					<blockquote cite="<?php echo$this->escape($this->row->fullname); ?>" class="quote">
-						<?php echo $this->escape(stripslashes($this->row->quote)); ?>
-					</div>
-					<div class="quote">
-						<strong><?php echo $this->escape($this->row->fullname); ?></strong><br />
-						<em><?php echo $this->escape($this->row->org); ?></em>
-					</div>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div class="quote">
+		<?php if (count($this->addedPictures)) { ?>
+			<?php foreach ($this->addedPictures as $img) { ?>
+				<img src="<?php echo $this->path . '/' . $img; ?>" alt="" />
+			<?php } ?>
+		<?php } ?>
+
+		<blockquote cite="<?php echo $this->escape($this->row->fullname); ?>">
+			<?php echo $this->escape(stripslashes($this->row->quote)); ?>
+		</div>
+		<p class="cite">
+			<?php
+			$profile = \Hubzero\User\Profile::getInstance($this->row->user_id);
+			if ($profile)
+			{
+				echo '<img src="' . $profile->getPicture() . '" alt="' . $this->escape($this->row->fullname) . '" width="30" height="30" />';
+			}
+			?>
+			<cite><?php echo $this->escape($this->row->fullname); ?></cite><br />
+			<?php echo $this->escape($this->row->org); ?>
+		</p>
+	</div>
 </section><!-- / .main section -->

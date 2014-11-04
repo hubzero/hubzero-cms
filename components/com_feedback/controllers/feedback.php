@@ -151,9 +151,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	public function storyTask($row=null)
 	{
 		// Check to see if the user temp folder for holding pics is there, if so then remove it
-		if (is_dir('tmp/feedback') === true and is_dir('tmp/feedback/' . $this->juser->get('id')) === true)
+		if (is_dir(JPATH_ROOT . '/tmp/feedback/' . $this->juser->get('id')))
 		{
-			Jfolder::delete('tmp/feedback/' . $this->juser->get('id'));
+			JFolder::delete(JPATH_ROOT . '/tmp/feedback/' . $this->juser->get('id'));
 		}
 
 		if ($this->juser->get('guest'))
@@ -161,13 +161,11 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			$here = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($here)),
-				JText::_('To submit a success story, you need to be logged in. Please login using the form below:'),
+				JText::_('COM_FEEDBACK_STORY_LOGIN'),
 				'warning'
 			);
 			return;
 		}
-
-		$this->view->setLayout('story');
 
 		// Incoming
 		$this->view->quote = array(
@@ -187,10 +185,10 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		if (!is_object($row))
 		{
 			$row = new FeedbackQuotes($this->database);
-			$row->org = $this->view->user->get('organization');
+			$row->org      = $this->view->user->get('organization');
 			$row->fullname = $this->view->user->get('name');
 		}
-		$row->userid = $this->view->user->get('uidNumber');
+		$row->user_id   = $this->view->user->get('uidNumber');
 		$row->useremail = $this->view->user->get('email');
 
 		$this->view->row = $row;
@@ -205,7 +203,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		}
 
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->setLayout('story')
+			->display();
 	}
 
 	/**
@@ -297,10 +297,12 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$files = $_FILES;
 		$addedPictures = array();
 
+		jimport('joomla.filesystem.file');
+		jimport('joomla.filesystem.folder');
+
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
 		if (!is_dir($path))
 		{
-			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
 				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
@@ -308,33 +310,45 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		}
 
 		// If there is a temp dir for this user then copy the contents to the newly created folder
-		$tempDir = 'tmp/feedback/' . $this->juser->get('id');
-		$tempDirFiles = scandir($tempDir);
+		$tempDir = JPATH_ROOT . '/tmp/feedback/' . $this->juser->get('id');
 
-		if (is_dir('tmp/feedback/') === true and is_dir($tempDir) === true)
+		if (is_dir($tempDir))
 		{
-			foreach ($tempDirFiles as $tempDirFile)
+			$dirIterator = new DirectoryIterator($tempDir);
+			foreach ($dirIterator as $file)
 			{
-				rename($tempDir . '/' . $tempDirFile, $path . '/' . $tempDirFile);
-				array_push($addedPictures, $tempDirFile);
+				if ($file->isDot() || $file->isDir())
+				{
+					continue;
+				}
+
+				$name = $file->getFilename();
+
+				if ($file->isFile())
+				{
+					if ('cvs' == strtolower($name)
+					 || '.svn' == strtolower($name))
+					{
+						continue;
+					}
+
+					if (JFile::move($tempDir . '/' . $name, $path . '/' . $name))
+					{
+						array_push($addedPictures, $name);
+					}
+				}
 			}
+
+			// Remove temp folder
+			JFolder::delete($tempDir);
 		}
 
-		// Check to see if the user temp folder for holding pics is there, if so then remove it
-		if (is_dir('tmp/feedback') === true and is_dir('tmp/feedback/' . $this->juser->get('id')) === true)
-		{
-			Jfolder::delete('tmp/feedback/' . $this->juser->get('id'));
-		}
-
-		// Output HTML
 		$this->view->addedPictures = $addedPictures;
-		$this->view->path = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
+		$this->view->path   = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
 
 		// Output HTML
-		$this->view->setLayout('thanks');
-
-		$this->view->user = $this->juser;
-		$this->view->row = $row;
+		$this->view->user   = $this->juser;
+		$this->view->row    = $row;
 		$this->view->config = $this->config;
 
 		// Set page title
@@ -345,16 +359,15 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Set error messages
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
-		$this->view->display();
+		$this->view
+			->setLayout('thanks')
+			->display();
 	}
 
 	/**

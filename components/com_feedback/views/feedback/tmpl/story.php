@@ -67,7 +67,7 @@ $jconfig = JFactory::getConfig();
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="sendstory" />
 
-			<input type="hidden" name="fields[userid]" value="<?php echo $this->row->userid; ?>" id="userid" />
+			<input type="hidden" name="fields[user_id]" value="<?php echo $this->row->user_id; ?>" id="userid" />
 			<input type="hidden" name="fields[useremail]" value="<?php echo $this->row->useremail; ?>" id="useremail" />
 
 			<label for="field-fullname">
