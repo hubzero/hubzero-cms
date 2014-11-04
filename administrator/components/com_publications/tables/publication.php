@@ -291,7 +291,7 @@ class Publication extends JTable
 		if (isset($filters['author']) && intval($filters['author']))
 		{
 			$query .= " AND A.publication_version_id=V.id AND A.user_id=" . $filters['author'];
-			$query .= " AND A.status=1 AND A.role!='submitter' ";
+			$query .= " AND A.status=1 AND (A.role IS NULL OR A.role!='submitter') ";
 		}
 
 		// Master type
