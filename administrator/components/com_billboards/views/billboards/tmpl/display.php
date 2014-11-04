@@ -98,7 +98,7 @@ $juser = JFactory::getUser();
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;cid=<?php echo $row->id; ?>"><?php echo $row->name; ?></a>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $row->name; ?></a>
 				</td>
 				<td>
 					<?php echo $row->bcollection; ?>
@@ -107,7 +107,7 @@ $juser = JFactory::getUser();
 					<input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" style="text-align: center" />
 				</td>
 				<td>
-					<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;cid=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_BILLBOARDS_SET_TO', $task); ?>">
+					<a class="state <?php echo $class;?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_BILLBOARDS_SET_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>

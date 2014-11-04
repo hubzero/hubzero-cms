@@ -64,9 +64,9 @@ JToolBarHelper::help('collections');
 ?>
 
 			<tr>
-				<td><input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked, this);" /></td>
+				<td><input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" /></td>
 				<td><?php echo $row->id; ?></td>
-				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>"><?php echo $this->escape(stripslashes($row->name)); ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->name)); ?></a></td>
 			</tr>
 
 <?php

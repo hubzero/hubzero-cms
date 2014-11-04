@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * HTML helper for the billboards component
  */
-class BillboardsHtml
+class BillboardsHelperHtml
 {
 	/**
 	 * Build a select list of the collections available

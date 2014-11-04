@@ -167,10 +167,10 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		$this->view->media_path = rtrim(str_replace($this->view->media_path, "", $this->view->image_location), DS);
 
 		// Build the collection select list
-		$this->view->clist = BillboardsHTML::buildCollectionsList($this->view->row->collection_id);
+		$this->view->clist = BillboardsHelperHtml::buildCollectionsList($this->view->row->collection_id);
 
 		// Build the select list for possible learn-more locations
-		$this->view->learnmorelocation = BillboardsHTML::buildLearnMoreList($this->view->row->learn_more_location);
+		$this->view->learnmorelocation = BillboardsHelperHtml::buildLearnMoreList($this->view->row->learn_more_location);
 
 		// Set any errors
 		if ($this->getError())
