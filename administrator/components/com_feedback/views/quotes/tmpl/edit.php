@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = FeedbackHelper::getActions('quote');
+$canDo = FeedbackHelperPermissions::getActions('quote');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 

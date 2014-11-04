@@ -39,7 +39,7 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 
 // Include scripts
 require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'quotes.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'feedback.php');
+require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = JRequest::getCmd('controller', 'quotes');
 if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))

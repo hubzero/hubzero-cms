@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = FeedbackHelper::getActions('quote');
+$canDo = FeedbackHelperPermissions::getActions('quote');
 
 JToolBarHelper::title(JText::_('COM_FEEDBACK'), 'feedback.png');
 if ($canDo->get('core.admin'))
