@@ -164,6 +164,13 @@ class JToolBar extends JObject
 
 		foreach ($this->_bar as $key => $button)
 		{
+			for ($j = 0; $j < 9; $j++)
+			{
+				if (!isset($this->_bar[$key][$j]))
+				{
+					$this->_bar[$key][$j] = null;
+				}
+			}
 			$this->_bar[$key][9] = array();
 			if ($button[0] == 'Separator')
 			{
