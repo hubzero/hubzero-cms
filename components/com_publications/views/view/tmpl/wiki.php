@@ -25,6 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+     ->js();
+
 // Load wiki configs
 $wiki_config = JComponentHelper::getParams( 'com_wiki' ); 
 			

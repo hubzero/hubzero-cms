@@ -68,11 +68,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->_alias = JRequest::getVar( 'alias', '' );
 		$this->_resid = JRequest::getInt( 'resid', 0 );
 
-		if (JPluginHelper::isEnabled('system', 'jquery'))
-		{
-			$this->_getStyles('', 'jquery.fancybox.css', true); // add fancybox styling
-		}
-
 		if (strrpos(strtolower($this->_alias), '.rdf') > 0)
 		{
 			$this->_resourceMap();
@@ -310,13 +305,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	public function introTask()
 	{
 		$this->view->setLayout('intro');
-
-		// Push some styles to the template
-		$this->_getStyles();
-		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
-
-		// Push some scripts to the template
-		$this->_getPublicationScripts();
 
 		// Set page title
 		$this->_buildTitle();
@@ -650,12 +638,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->publication = $publication;
 		$this->version     = $version;
 
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getPublicationScripts();
-
 		// Initiate a helper class
 		$helper = new PublicationHelper($this->database, $publication->version_id, $publication->id);
 
@@ -781,7 +763,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if ($tab == 'about')
 		{
 			// Build the HTML of the "about" tab
-			$view = new JView( array('name'=>'about') );
+			$view = new \Hubzero\Component\View(array(
+				'name'   => 'about',
+				'layout' => 'default'
+			));
 			$view->option 		= $this->_option;
 			$view->config 		= $this->config;
 			$view->database 	= $this->database;
@@ -828,7 +813,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->_buildPathway();
 
 		// Determine the layout we're using
-		$v = array('name'=>'view');
+		$v = array('name'=>'view', 'layout'=>'default');
 		$app = JFactory::getApplication();
 		if ($publication->cat_alias
 		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html'
@@ -840,7 +825,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Instantiate a new view
-		$view 					= new JView( $v );
+		$view 					= new \Hubzero\Component\View( $v );
 		$view->version 			= $version;
 		$view->config 			= $this->config;
 		$view->option 			= $this->_option;
@@ -1076,14 +1061,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getPublicationScripts();
-
 		// Instantiate a new view
-		$view 				= new JView( array('name'=>'view') );
+		$view 				= new \Hubzero\Component\View( array('name'=>'view', 'layout'=>'default') );
 		$view->option 		= $this->_option;
 		$view->config 		= $this->config;
 		$view->database 	= $this->database;
@@ -1334,7 +1313,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 					&& $this->_task != 'download' && $render != 'download'))
 				{
 					// Instantiate a new view
-					$view 				= new JView( array('name'=>'view', 'layout'=>'inline') );
+					$view 				= new \Hubzero\Component\View( array('name'=>'view', 'layout'=>'inline') );
 					$view->option 		= $this->_option;
 					$view->config 		= $this->config;
 					$view->database 	= $this->database;
@@ -1618,15 +1597,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			return;
 		}
 
-		// Push some styles to the template
-		$this->_getStyles();
-
 		$document = JFactory::getDocument();
 		$document->addStyleSheet('components' . DS . 'com_publications' . DS . 'assets' . DS . 'css' . DS . 'wiki.css');
 		$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
-
-		// Push some scripts to the template
-		$this->_getPublicationScripts();
 
 		// Set page title
 		$document->setTitle( JText::_(strtoupper($this->_option)).': '.stripslashes($this->publication->title) );
@@ -1635,7 +1608,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->_buildPathway();
 
 		// Instantiate a new view
-		$view = new JView( array('name' => 'view', 'layout' => 'wiki') );
+		$view = new \Hubzero\Component\View( array('name' => 'view', 'layout' => 'wiki') );
 		$view->option 			= $this->_option;
 		$view->project_alias	= $this->publication->project_alias;
 		$view->project_id		= $this->publication->project_id;
@@ -1713,7 +1686,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		else
 		{
 			// Instantiate a new view
-			$view = new JView( array('name'=>'view','layout'=>'watch') );
+			$view = new \Hubzero\Component\View( array('name'=>'view','layout'=>'watch') );
 			$view->option 			= $this->_option;
 			$view->config 			= $this->config;
 			$view->database 		= $this->database;
@@ -1903,15 +1876,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$jdoc = JFactory::getDocument();
 		$jdoc->_scripts = array();
 
-		// Add the stylesheet
-		$jdoc->addStyleSheet("/components/" . $this->_option . "/assets/css/publications.css");
-
 		//add the required javascript files
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
 		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
 		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flowplayer.js");
-		$jdoc->addScript("/components/" . $this->_option . "/video/js/video.js");
-		$jdoc->addStyleSheet("/components/" . $this->_option . "/video/css/video.css");
 
 		// First attachment (former 'first child')
 		$this->firstattach  = $this->attachments ? $this->attachments[0] : NULL;
@@ -1937,7 +1905,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$subs = JFolder::files(JPATH_ROOT . DS . $path, '.srt|.SRT');
 
 		// Instantiate a new view
-		$view = new JView(array(
+		$view = new \Hubzero\Component\View(array(
 			'name'   => 'view',
 			'layout' => 'video'
 		));
@@ -2493,12 +2461,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$lang->load('com_projects');
 
 		// Instantiate a new view
-		$view 			= new JView( array('name'=>'submit') );
+		$view 			= new \Hubzero\Component\View( array('name'=>'submit', 'layout'=>'default') );
 		$view->option 	= $this->_option;
 		$view->config 	= $this->config;
-
-		// Push some styles to the template
-		$this->_getStyles();
 
 		// Add projects stylesheet
 		\Hubzero\Document\Assets::addComponentStylesheet('com_projects');
@@ -2587,7 +2552,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 						!$cgroup->is_member_of('managers',$this->juser->get('id')))
 					{
 						$this->_buildPathway(null);
-						$view = new JView( array('name'=>'error', 'layout' =>'restricted') );
+						$view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
 						$view->error  = JText::_('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
 						$view->title = $this->title;
 						$view->display();
@@ -2742,12 +2707,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	{
 		// Set the task
 		$this->_task = 'block';
-
-		// Push some styles to the template
-		$this->_getStyles();
-
-		// Push some scripts to the template
-		$this->_getPublicationScripts();
 
 		// Set page title
 		$this->_buildTitle();

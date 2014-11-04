@@ -23,6 +23,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+	 ->css('jquery.fancybox.css', 'system')
+     ->js();
+
 // Get primary elements
 $elements = $this->publication->_curationModel->getElements(1);
 

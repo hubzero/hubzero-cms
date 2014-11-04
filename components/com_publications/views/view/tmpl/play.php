@@ -30,6 +30,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+	 ->css('jquery.fancybox.css', 'system')
+     ->js();
+
 $html = '';
 $firstattach = $this->firstattach;
 if(!$firstattach)

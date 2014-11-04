@@ -29,17 +29,14 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
+$this->css()
+	 ->css('jquery.fancybox.css', 'system')
+     ->js();
 ?>
 
 <div id="abox-content">
 <?php
-/*
-if (!is_file(JPATH_ROOT . $this->url))
-{
-	echo '<p class="error">'.JText::_('COM_PUBLICATIONS_FILE_NOT_FOUND').'</p>'."\n";
-	return;
-}
-*/
 
 $oWidth = '780';
 $oHeight= '480';

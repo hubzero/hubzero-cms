@@ -1,7 +1,9 @@
 <?php // no direct access
 defined('_JEXEC') or die('Restricted access');
-$i = 1;
 
+$this->css('introduction.css', 'system')
+     ->css()
+     ->js();
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
