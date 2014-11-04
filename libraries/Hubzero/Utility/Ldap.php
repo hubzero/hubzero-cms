@@ -518,8 +518,17 @@ class Ldap
 		$ldap_params = \JComponentHelper::getParams('com_system');
 		$hubLDAPBaseDN = $ldap_params->get('ldap_basedn','');
 
-		$dn = "cn=" . $dbinfo['cn'] . ",ou=groups," . $hubLDAPBaseDN;
-		$filter = '(objectclass=*)';
+		if (is_numeric($group) && $group >= 0)
+		{
+			$dn = 'ou=groups,' . $hubLDAPBaseDN;
+			$filter = '(gidNumber=' . $group . ')';
+		}
+		else
+		{
+			$dn = "cn=" . $group . ",ou=groups," . $hubLDAPBaseDN;
+			$filter = '(objectclass=*)';
+		}
+
 		$reqattr = array('gidNumber','cn','description','memberUid');
 
 		$entry = ldap_search($conn, $dn, $filter, $reqattr, 0, 1, 0);
