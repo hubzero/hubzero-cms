@@ -47,7 +47,7 @@ include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wishlist.owne
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.rank.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'wish.attachment.php');
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'wishlist.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = JRequest::getCmd('controller', 'lists');
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))

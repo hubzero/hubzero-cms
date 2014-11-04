@@ -37,59 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WishRank extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $wishid      	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $userid 		= NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $voted    	    = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $importance     = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $effort		    = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $due    	    = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,7 +50,7 @@ class WishRank extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -115,54 +66,43 @@ class WishRank extends JTable
 	/**
 	 * Get a record and bind to $this
 	 *
-	 * @param      integer $oid    User ID
-	 * @param      integer $wishid Wish ID
-	 * @return     boolean False if error, True on success
+	 * @param   integer  $userid  User ID
+	 * @param   integer  $wishid  Wish ID
+	 * @return  boolean  False if error, True on success
 	 */
-	public function load_vote($oid=NULL, $wishid=NULL)
+	public function load_vote($userid=NULL, $wishid=NULL)
 	{
-		if ($oid === NULL)
+		$userid = $userid ?: $this->userid;
+		$wishid = $wishid ?: $this->wishid;
+
+		if ($userid === NULL or $wishid === NULL)
 		{
-			$oid = $this->userid;
-		}
-		if ($wishid === NULL)
-		{
-			$wishid = $this->wishid;
+			$this->setError(JText::_('Missing wish or user ID'));
+			return false;
 		}
 
-		if ($oid === NULL or $wishid === NULL)
-		{
-			return false;
-		}
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE userid=" . $this->_db->Quote($oid) . " AND wishid=" . $this->_db->Quote($wishid));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'userid' => $userid,
+			'wishid' => $wishid
+		));
 	}
 
 	/**
 	 * Get votes on a wish
 	 *
-	 * @param      integer $wishid Wish ID
-	 * @return     mixed False if error, array on success
+	 * @param   integer  $wishid  Wish ID
+	 * @return  mixed    False if error, array on success
 	 */
 	public function get_votes($wishid=NULL)
 	{
-		if ($wishid === NULL)
-		{
-			$wishid = $this->wishid;
-		}
+		$wishid = $wishid ?: $this->wishid;
 
 		if ($wishid === NULL)
 		{
+			$this->setError(JText::_('Missing wish ID'));
 			return false;
 		}
+
 		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE wishid=" . $this->_db->Quote($wishid));
 		return $this->_db->loadObjectList();
 	}
@@ -170,22 +110,18 @@ class WishRank extends JTable
 	/**
 	 * Remove a vote
 	 *
-	 * @param      integer $wishid Wish ID
-	 * @param      integer $oid    User ID
-	 * @return     boolean False if error, True on success
+	 * @param   integer  $wishid  Wish ID
+	 * @param   integer  $userid  User ID
+	 * @return  boolean  False if error, True on success
 	 */
-	public function remove_vote($wishid=NULL, $oid=NULL)
+	public function remove_vote($wishid=NULL, $userid=NULL)
 	{
-		if ($oid === NULL)
-		{
-			$oid = $this->userid;
-		}
+		$userid = $userid ?: $this->userid;
+		$wishid = $wishid ?: $this->wishid;
+
 		if ($wishid === NULL)
 		{
-			$wishid = $this->wishid;
-		}
-
-		if ($wishid === NULL) {
+			$this->setError(JText::_('Missing wish ID'));
 			return false;
 		}
 
@@ -194,6 +130,7 @@ class WishRank extends JTable
 		{
 			$query .= " AND userid=" . $this->_db->Quote($oid);
 		}
+
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{

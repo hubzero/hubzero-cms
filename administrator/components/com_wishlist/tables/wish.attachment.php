@@ -37,38 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WishAttachment extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $wish = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $filename = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -78,16 +50,18 @@ class WishAttachment extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if ($this->wish == NULL)
+		if (!$this->wish)
 		{
 			$this->setError(JText::_('Error: wish not found.'));
 			return false;
 		}
-		if (trim($this->filename) == '')
+
+		$this->filename = trim($this->filename);
+		if ($this->filename == '')
 		{
 			$this->setError(JText::_('Error: attachment not found.'));
 			return false;
@@ -97,15 +71,13 @@ class WishAttachment extends JTable
 	}
 
 	/**
-	 * Short description for 'getID'
+	 * Get the ID for the record matching all specified columns
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getID()
 	{
-		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename='" . $this->filename . "' AND description='" . $this->description . "' AND wish=" . $this->wish);
+		$this->_db->setQuery("SELECT id FROM $this->_tbl WHERE filename=" . $this->_db->quote($this->filename) . " AND description=" . $this->_db->quote($this->description) . " AND wish=" . $this->_db->quote($this->wish));
 		$id = $this->_db->loadResult();
 		$this->id = $id;
 	}
@@ -113,8 +85,8 @@ class WishAttachment extends JTable
 	/**
 	 * Look for attachment string and replace with file/link
 	 *
-	 * @param      string $text Text to parse
-	 * @return     string
+	 * @param   string  $text  Text to parse
+	 * @return  string
 	 */
 	public function parse($text)
 	{
@@ -124,8 +96,8 @@ class WishAttachment extends JTable
 	/**
 	 * Find a record and generate a linkt o the file
 	 *
-	 * @param      array $matches preg_replace_callback matches
-	 * @return     string HTML
+	 * @param   array   $matches  preg_replace_callback matches
+	 * @return  string  HTML
 	 */
 	public function getAttachment($matches)
 	{
@@ -139,18 +111,20 @@ class WishAttachment extends JTable
 		$tokens = explode('#', $match);
 		$id = intval(end($tokens));
 
-		$this->_db->setQuery("SELECT a.filename, a.description, a.wish, l.category, l.referenceid
-							FROM $this->_tbl AS a
-							JOIN #__wishlist_item AS i ON i.id=a.wish
-							JOIN #__wishlist AS l ON l.id=i.wishlist
-							WHERE a.id=" . $id);
+		$this->_db->setQuery(
+			"SELECT a.filename, a.description, a.wish, l.category, l.referenceid
+			FROM `$this->_tbl` AS a
+			JOIN `#__wishlist_item` AS i ON i.id=a.wish
+			JOIN `#__wishlist` AS l ON l.id=i.wishlist
+			WHERE a.id=" . $id
+		);
 		$a = $this->_db->loadRow();
 
 		if ($this->output == 'web')
 		{
 			if (is_file($this->uppath . DS . $a[0]))
 			{
-				$path = rtrim(JRoute::_('index.php?option=com_wishlist&task=wish&category='.$a[3].'&rid='.$a[4].'&wishid='.$a[2]), DS);
+				$path = rtrim(JRoute::_('index.php?option=com_wishlist&task=wish&category=' . $a[3] . '&rid=' . $a[4] . '&wishid=' . $a[2]), DS);
 
 				if (preg_match("/bmp|gif|jpg|jpe|jpeg|tif|tiff|png/i", $a[0]))
 				{
@@ -189,9 +163,9 @@ class WishAttachment extends JTable
 	/**
 	 * Remove a record
 	 *
-	 * @param      string  $filename File to remove
-	 * @param      integer $wish     Wish ID
-	 * @return     mixed String if error, True otherwise
+	 * @param   string   $filename  File to remove
+	 * @param   integer  $wish      Wish ID
+	 * @return  mixed    String if error, True otherwise
 	 */
 	public function deleteAttachment($filename, $wish)
 	{
@@ -206,22 +180,16 @@ class WishAttachment extends JTable
 	/**
 	 * Get a record based off of filename and wish ID
 	 *
-	 * @param      string  $filename File name
-	 * @param      integer $wish     Wish ID
-	 * @return     mixed False if error, object otherwise
+	 * @param   string   $filename  File name
+	 * @param   integer  $wish      Wish ID
+	 * @return  mixed    False if error, object otherwise
 	 */
 	public function loadAttachment($filename=NULL, $wish=NULL)
 	{
-		if ($filename === NULL)
+		if ($filename === NULL || $wish === NULL)
 		{
 			return false;
 		}
-		if ($wish === NULL)
-		{
-			return false;
-		}
-		//$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND wish=" . $this->_db->Quote($wish));
-		//return $this->_db->loadObject($this);
 
 		$fields = array(
 			'filename' => $filename,

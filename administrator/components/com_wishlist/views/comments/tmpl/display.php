@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = WishlistHelper::getActions('component');
+$canDo = WishlistHelperPermissions::getActions('component');
 
 JToolBarHelper::title(JText::_('COM_WISHLIST') . ': ' . JText::_('COM_WISHLIST_COMMENTS'), 'wishlist.png');
 if ($canDo->get('core.edit.state'))
@@ -158,7 +158,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				<td>
 					<?php echo $row->prfx; ?>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&wish=' . $row->wish); ?>">
 							<span><?php echo $this->escape($comment); ?></span>
 						</a>
 					<?php } else { ?>
@@ -175,7 +175,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;id=<?php echo $row->id; ?>&amp;wish=<?php echo $this->filters['wish']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK', $task);?>">
+						<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&wish=' . $this->filters['wish'] . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_WISHLIST_SET_TASK', $task);?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -186,7 +186,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="<?php echo $aclass; ?> state" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $atask; ?>&amp;id=<?php echo $row->id; ?>&amp;wish=<?php echo $row->wish; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $aalt; ?>">
+						<a class="<?php echo $aclass; ?> state" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $atask . '&id=' . $row->id . '&wish=' . $row->wish . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo $aalt; ?>">
 							<span><?php echo $aalt; ?></span>
 						</a>
 					<?php } else { ?>

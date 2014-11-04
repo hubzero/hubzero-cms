@@ -37,80 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WishlistPlan extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $wishid		= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $version	= NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by	= NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $minor_edit	= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $pagetext	= NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $pagehtml	= NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $approved   = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $summary	= NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -120,7 +50,7 @@ class WishlistPlan extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -142,9 +72,8 @@ class WishlistPlan extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = JFactory::getDate()->toSql();
+			$this->created_by = JFactory::getUser()->get('id');
 		}
 
 		return true;
@@ -153,8 +82,8 @@ class WishlistPlan extends JTable
 	/**
 	 * Get a record for a wish
 	 *
-	 * @param      integer $wishid Wish ID
-	 * @return     mixed False if error, array on success
+	 * @param   integer  $wishid  Wish ID
+	 * @return  mixed    False if error, array on success
 	 */
 	public function getPlan($wishid)
 	{
@@ -163,44 +92,19 @@ class WishlistPlan extends JTable
 			return false;
 		}
 
-		$query  = "SELECT *, xp.name AS authorname ";
-		$query .= "FROM #__wishlist_implementation AS p ";
-		$query .= "LEFT JOIN #__xprofiles AS xp ON xp.uidNumber=p.created_by ";
-		$query .= "WHERE p.wishid = " . $this->_db->Quote($wishid) . " ORDER BY p.created DESC LIMIT 1";
+		$query  = "SELECT *, xp.name AS authorname 
+					FROM `#__wishlist_implementation` AS p 
+					LEFT JOIN `#__xprofiles` AS xp ON xp.uidNumber=p.created_by 
+					WHERE p.wishid = " . $this->_db->Quote($wishid) . " ORDER BY p.created DESC LIMIT 1";
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
-	 * Get a record and bind to $this
-	 *
-	 * @param      integer $keys Record ID
-	 * @return     boolean True on success
-	 */
-	public function load($keys = NULL, $reset = true)
-	{
-		if ($keys == NULL or !is_numeric($keys))
-		{
-			return false;
-		}
-
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE id=" . $this->_db->Quote($keys));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-	}
-
-	/**
 	 * Delete a record based on wish
 	 *
-	 * @param      integer $wishid Wish ID
-	 * @return     boolean False if errors, True on success
+	 * @param   integer  $wishid  Wish ID
+	 * @return  boolean  False if errors, True on success
 	 */
 	public function deletePlan($wishid)
 	{

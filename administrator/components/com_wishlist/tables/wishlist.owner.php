@@ -37,31 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WishlistOwner extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $wishlist = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $userid	  = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -71,10 +50,10 @@ class WishlistOwner extends JTable
 	/**
 	 * Delete a record
 	 *
-	 * @param      integer $listid     List ID
-	 * @param      integer $uid        User ID
-	 * @param      object  $admingroup Admin group
-	 * @return     boolean False if errors, True on success
+	 * @param   integer  $listid      List ID
+	 * @param   integer  $uid         User ID
+	 * @param   object   $admingroup  Admin group
+	 * @return  boolean  False if errors, True on success
 	 */
 	public function delete_owner($listid, $uid, $admingroup)
 	{
@@ -99,15 +78,16 @@ class WishlistOwner extends JTable
 	/**
 	 * Save a list of users as owners of a wishlist
 	 *
-	 * @param      integer $listid     List ID
-	 * @param      object  $admingroup Admin group
-	 * @param      array   $newowners  Users to add
-	 * @param      integer $type       Type
-	 * @return     boolean False if errors, True on success
+	 * @param   integer  $listid      List ID
+	 * @param   object   $admingroup  Admin group
+	 * @param   array    $newowners   Users to add
+	 * @param   integer  $type        Type
+	 * @return  boolean  False if errors, True on success
 	 */
 	public function save_owners($listid, $admingroup, $newowners = array(), $type = 0)
 	{
-		if ($listid === NULL) {
+		if ($listid === NULL)
+		{
 			return false;
 		}
 
@@ -140,15 +120,16 @@ class WishlistOwner extends JTable
 					$kind = $type==2 ? JText::_('member of Advisory Committee') : JText::_('list administrator');
 					$subject = JText::_('Wish List') . ', ' . JText::_('You have been added as a') . ' ' . $kind . ' ' . JText::_('FOR') . ' ' . JText::_('Wish List') . ' #' . $listid;
 
-					$from = array();
-					$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('Wish List');
-					$from['email'] = $jconfig->getValue('config.mailfrom');
+					$from = array(
+						'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('Wish List'),
+						'email' => $jconfig->getValue('config.mailfrom')
+					);
 
 					$message  = $subject . '. ';
 					$message .= "\r\n\r\n";
 					$message .= '----------------------------' . "\r\n";
 					$url = JURI::base() . JRoute::_('index.php?option=com_wishlist&id=' . $listid);
-				    $message .= JText::_('Please go to') . ' ' . $url . ' ' . JText::_('to view the wish list and rank new wishes.');
+					$message .= JText::sprintf('Please go to %s to view the wish list and rank new wishes.', $url);
 
 					JPluginHelper::importPlugin('xmessage');
 					$dispatcher = JDispatcher::getInstance();
@@ -165,13 +146,13 @@ class WishlistOwner extends JTable
 	/**
 	 * Get a list of owners
 	 *
-	 * @param      integer $listid     List ID
-	 * @param      object  $admingroup Admin Group
-	 * @param      object  $wishlist   Wish list
-	 * @param      integer $native     Get groups assigned to this wishlist?
-	 * @param      integer $wishid     Wish ID
-	 * @param      array   $owners     Owners
-	 * @return     mixed False if errors, array on success
+	 * @param   integer  $listid      List ID
+	 * @param   object   $admingroup  Admin Group
+	 * @param   object   $wishlist    Wish list
+	 * @param   integer  $native      Get groups assigned to this wishlist?
+	 * @param   integer  $wishid      Wish ID
+	 * @param   array    $owners      Owners
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function get_owners($listid, $admingroup, $wishlist='', $native=0, $wishid=0, $owners = array())
 	{
@@ -180,20 +161,20 @@ class WishlistOwner extends JTable
 			return false;
 		}
 
-		$obj = new Wishlist($this->_db);
+		$obj  = new Wishlist($this->_db);
 		$objG = new WishlistOwnerGroup($this->_db);
 		if (!$wishlist)
 		{
 			$wishlist = $obj->get_wishlist($listid);
 		}
 
-		// if private user list, add the user
+		// If private user list, add the user
 		if ($wishlist->category == 'user')
 		{
 			$owners[] = $wishlist->referenceid;
 		}
 
-		// if resource, get contributors
+		// If resource, get contributors
 		if ($wishlist->category == 'resource' &&  $wishlist->resource->type != 7)
 		{
 			$cons = $obj->getCons($wishlist->referenceid);
@@ -206,7 +187,7 @@ class WishlistOwner extends JTable
 			}
 		}
 
-		// get groups
+		// Get groups
 		$groups = $objG->get_owner_groups($listid, (is_object($admingroup) ? $admingroup->get('group') : $admingroup), $wishlist, $native);
 		if ($groups)
 		{
@@ -230,16 +211,13 @@ class WishlistOwner extends JTable
 			}
 		}
 
-		// get individuals
+		// Get individuals
 		if (!$native)
 		{
-			$sql = "SELECT o.userid"
-				. "\n FROM #__wishlist_owners AS o "
-				. "\n WHERE o.wishlist=" . $this->_db->Quote($listid) . " AND o.type!=2";
+			$sql = "SELECT o.userid FROM `#__wishlist_owners` AS o WHERE o.wishlist=" . $this->_db->Quote($listid) . " AND o.type!=2";
 
 			$this->_db->setQuery($sql);
-			$results =  $this->_db->loadObjectList();
-			if ($results)
+			if ($results =  $this->_db->loadObjectList())
 			{
 				foreach ($results as $result)
 				{
@@ -251,20 +229,17 @@ class WishlistOwner extends JTable
 		$owners = array_unique($owners);
 		sort($owners);
 
-		// are we also including advisory committee?
+		// Are we also including advisory committee?
 		$wconfig = JComponentHelper::getParams('com_wishlist');
-		$allow_advisory = $wconfig->get('allow_advisory');
+
 		$advisory = array();
 
-		if ($allow_advisory)
+		if ($wconfig->get('allow_advisory'))
 		{
-			$sql = "SELECT DISTINCT o.userid"
-					. "\n FROM #__wishlist_owners AS o "
-					. "\n WHERE o.wishlist=" . $this->_db->Quote($listid) . " AND o.type=2";
+			$sql = "SELECT DISTINCT o.userid FROM `#__wishlist_owners` AS o WHERE o.wishlist=" . $this->_db->Quote($listid) . " AND o.type=2";
 
 			$this->_db->setQuery($sql);
-			$results =  $this->_db->loadObjectList();
-			if ($results)
+			if ($results = $this->_db->loadObjectList())
 			{
 				foreach ($results as $result)
 				{
@@ -273,17 +248,16 @@ class WishlistOwner extends JTable
 			}
 		}
 
-		// find out those who voted - for distribution of points
+		// Find out those who voted - for distribution of points
 		if ($wishid)
 		{
 			$activeowners = array();
-			$query  = "SELECT v.userid ";
-			$query .= "FROM #__wishlist_vote AS v LEFT JOIN #__wishlist_item AS i ON v.wishid = i.id ";
+
+			$query  = "SELECT v.userid FROM `#__wishlist_vote` AS v LEFT JOIN `#__wishlist_item` AS i ON v.wishid = i.id ";
 			$query .= "WHERE i.wishlist = " . $this->_db->Quote($listid) . " AND v.wishid=" . $this->_db->Quote($wishid) . " AND (v.userid IN ('" . implode("','", $owners) . "')) ";
 
 			$this->_db->setQuery($query);
-			$result = $this->_db->loadObjectList();
-			if ($result)
+			if ($result = $this->_db->loadObjectList())
 			{
 				foreach ($result as $r)
 				{

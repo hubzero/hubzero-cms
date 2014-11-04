@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = WishlistHelper::getActions('list');
+$canDo = WishlistHelperPermissions::getActions('list');
 
 $text = ($this->row->id ? JText::_('COM_WISHLIST_EDIT') : JText::_('COM_WISHLIST_NEW'));
 

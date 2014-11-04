@@ -37,31 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WishlistOwnerGroup extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $wishlist	= NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $groupid	= NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -71,12 +50,12 @@ class WishlistOwnerGroup extends JTable
 	/**
 	 * Get the groups ow a wishlist owner
 	 *
-	 * @param      integer $listid       List ID
-	 * @param      string  $controlgroup Control group name
-	 * @param      object  $wishlist     Wishlist
-	 * @param      integer $native       Get groups assigned to this wishlist?
-	 * @param      array   $groups       List of gorups
-	 * @return     mixed False if errors, array on success
+	 * @param   integer  $listid        List ID
+	 * @param   string   $controlgroup  Control group name
+	 * @param   object   $wishlist      Wishlist
+	 * @param   integer  $native        Get groups assigned to this wishlist?
+	 * @param   array    $groups        List of gorups
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function get_owner_groups($listid, $controlgroup='', $wishlist=null, $native=0, $groups = array())
 	{
@@ -127,9 +106,7 @@ class WishlistOwnerGroup extends JTable
 		// get groups assigned to this wishlist
 		if (!$native)
 		{
-			$sql = "SELECT o.groupid"
-				. "\n FROM #__wishlist_ownergroups AS o "
-				. "\n WHERE o.wishlist=" . $this->_db->Quote($listid);
+			$sql = "SELECT o.groupid FROM `#__wishlist_ownergroups` AS o WHERE o.wishlist=" . $this->_db->Quote($listid);
 
 			$this->_db->setQuery($sql);
 			$wishgroups = $this->_db->loadObjectList();
@@ -154,10 +131,10 @@ class WishlistOwnerGroup extends JTable
 	/**
 	 * Remove a user as owner
 	 *
-	 * @param      integer $listid     List ID
-	 * @param      integer $groupid    Group ID
-	 * @param      object  $admingroup Admin group
-	 * @return     boolean False if errors, true on success
+	 * @param   integer  $listid      List ID
+	 * @param   integer  $groupid     Group ID
+	 * @param   object   $admingroup  Admin group
+	 * @return  boolean  False if errors, true on success
 	 */
 	 public function delete_owner_group($listid, $groupid, $admingroup)
 	 {
@@ -182,10 +159,10 @@ class WishlistOwnerGroup extends JTable
 	/**
 	 * Add a user as owner to groups
 	 *
-	 * @param      integer $listid     Wishlist ID
-	 * @param      object  $admingroup Admin group
-	 * @param      array   $newgroups  Groups to add to
-	 * @return     boolean True on success
+	 * @param   integer  $listid      Wishlist ID
+	 * @param   object   $admingroup  Admin group
+	 * @param   array    $newgroups   Groups to add to
+	 * @return  boolean  True on success
 	 */
 	public function save_owner_groups($listid, $admingroup, $newgroups = array())
 	{
