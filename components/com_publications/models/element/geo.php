@@ -57,11 +57,11 @@ class PublicationsElementGeo extends PublicationsElement
 	public function fetchTooltip($label, $description, &$element, $control_name='', $name='')
 	{
 		$output = '<label id="' . $control_name . '-' . $name . '-lbl" for="' . $control_name . '-' . $name . '"';
-		if ($description) 
+		if ($description)
 		{
 			$output .= ' class="hasTip" title="' . JText::_($label) . '::' . JText::_($description) . '">';
-		} 
-		else 
+		}
+		else
 		{
 			$output .= '>';
 		}
