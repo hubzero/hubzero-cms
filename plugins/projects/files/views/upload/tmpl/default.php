@@ -87,7 +87,7 @@ if (!$this->getError()) {
 
 		<div class="field-wrap">
 			<div class="asset-uploader">
-		<?php if (JPluginHelper::isEnabled('system', 'jquery') && !$basic) { ?>
+		<?php if (!$basic) { ?>
 					<div id="ajax-uploader" data-action="<?php echo $this->url . '?' . $this->do . '=save&amp;no_html=1&amp;ajax=1'  . $subdirlink; ?>" >
 						<label class="addnew">
 							<input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
@@ -146,7 +146,7 @@ if (!$this->getError()) {
 			<?php } ?>
 		</p>
 		</div>
-		<?php if (JPluginHelper::isEnabled('system', 'jquery') && !$basic) { ?>
+		<?php if (!$basic) { ?>
 			<p class="hint rightfloat mini faded">Having trouble with the file upload? Try using <a href="<?php echo $this->url . '?action=upload&basic=1' .$subdirlink; ?>">basic upload</a>.</p>
 		<?php } ?>
 	</fieldset>
