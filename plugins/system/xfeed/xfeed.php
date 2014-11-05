@@ -39,17 +39,6 @@ jimport('joomla.event.plugin');
 class plgSystemXFeed extends JPlugin
 {
 	/**
-	 * Constructor
-	 *
-	 * @param     object $subject The object to observe
-	 * @return    void
-	 */
-	public function __construct(&$subject)
-	{
-		parent::__construct($subject, NULL);
-	}
-
-	/**
 	 * Perform actions after initialization
 	 *
 	 * @return     void
