@@ -37,38 +37,10 @@ namespace Hubzero\Message;
 class Component extends \JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id        = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $component = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $action    = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title     = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -78,7 +50,7 @@ class Component extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -107,8 +79,8 @@ class Component extends \JTable
 	/**
 	 * Get a record count based on filters passed
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build query from
+	 * @return  integer
 	 */
 	public function getCount($filters = array())
 	{
@@ -121,8 +93,8 @@ class Component extends \JTable
 	/**
 	 * Get records based on filters passed
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     array
+	 * @param   array  $filters  Filters to build query from
+	 * @return  array
 	 */
 	public function getRecords($filters = array())
 	{
@@ -135,8 +107,8 @@ class Component extends \JTable
 	/**
 	 * Builds a query string based on filters passed
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters = array())
 	{
@@ -171,7 +143,7 @@ class Component extends \JTable
 	/**
 	 * Get all records
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getComponents()
 	{

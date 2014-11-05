@@ -36,45 +36,10 @@ namespace Hubzero\Message;
 class Notify extends \JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $method   = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $type     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $priority = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -84,7 +49,7 @@ class Notify extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -100,23 +65,18 @@ class Notify extends \JTable
 	/**
 	 * Get records for a user
 	 *
-	 * @param      integer $uid  User ID
-	 * @param      string  $type Record type
-	 * @return     mixed False if errors, array on success
+	 * @param   integer  $uid   User ID
+	 * @param   string   $type  Record type
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function getRecords($uid=null, $type=null)
 	{
-		if (!$uid)
-		{
-			$uid = $this->uid;
-		}
+		$uid  = $uid  ?: $this->uid;
+		$type = $type ?: $this->type;
+
 		if (!$uid)
 		{
 			return false;
-		}
-		if (!$type)
-		{
-			$type = $this->type;
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE `uid`=" . $this->_db->Quote($uid);
@@ -130,22 +90,19 @@ class Notify extends \JTable
 	/**
 	 * Clear all entries for a user
 	 *
-	 * @param      integer $uid  User ID
-	 * @return     boolean True on success
+	 * @param   integer  $uid  User ID
+	 * @return  boolean  True on success
 	 */
 	public function clearAll($uid=null)
 	{
-		if (!$uid)
-		{
-			$uid = $this->uid;
-		}
+		$uid = $uid ?: $this->uid;
+
 		if (!$uid)
 		{
 			return false;
 		}
 
 		$query  = "DELETE FROM $this->_tbl WHERE `uid`=" . $this->_db->Quote($uid);
-
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -157,8 +114,8 @@ class Notify extends \JTable
 	/**
 	 * Delete notifications for action
 	 * 
-	 * @param  [type] $type [description]
-	 * @return [type]       [description]
+	 * @param   string   $type
+	 * @return  boolean  True on success, False on error
 	 */
 	public function deleteType($type)
 	{
@@ -175,6 +132,5 @@ class Notify extends \JTable
 		}
 		return true;
 	}
-
 }
 

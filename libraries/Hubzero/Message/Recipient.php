@@ -36,59 +36,10 @@ namespace Hubzero\Message;
 class Recipient extends \JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $mid      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid      = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created  = NULL;
-
-	/**
-	 * datetime (0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $expires  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $actionid = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $state    = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -98,7 +49,7 @@ class Recipient extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -114,42 +65,31 @@ class Recipient extends \JTable
 	/**
 	 * Load a record by message ID and user ID and bind to $this
 	 *
-	 * @param      integer $mid Message ID
-	 * @param      integer $uid User ID
-	 * @return     boolean True on success
+	 * @param   integer  $mid  Message ID
+	 * @param   integer  $uid  User ID
+	 * @return  boolean  True on success
 	 */
 	public function loadRecord($mid=NULL, $uid=NULL)
 	{
-		if (!$mid)
-		{
-			$mid = $this->mid;
-		}
-		if (!$uid)
-		{
-			$uid = $this->uid;
-		}
+		$mid = $mid ?: $this->mid;
+		$uid = $uid ?: $this->uid;
+
 		if (!$mid || !$uid)
 		{
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid=" . $this->_db->Quote($mid) . " AND uid=" . $this->_db->Quote($uid));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'mid' => $mid,
+			'uid' => $uid
+		));
 	}
 
 	/**
 	 * Builds a query string based on filters passed
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters Filters to build query from
+	 * @return  string  SQL
 	 */
 	private function buildQuery($uid, $filters=array())
 	{
@@ -175,23 +115,21 @@ class Recipient extends \JTable
 	/**
 	 * Get records for a user based on filters passed
 	 *
-	 * @param      integer $uid     User ID
-	 * @param      array   $filters Filters to build query from
-	 * @return     mixed False if errors, array on success
+	 * @param   integer  $uid      User ID
+	 * @param   array    $filters  Filters to build query from
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function getMessages($uid=null, $filters=array())
 	{
-		if (!$uid)
-		{
-			$uid = $this->uid;
-		}
+		$uid = $uid ?: $this->uid;
+
 		if (!$uid)
 		{
 			return false;
 		}
 
 		$query = "SELECT m.*, s.whenseen, r.expires, r.actionid, r.state,
-		 			(CASE WHEN r.actionid > 0 AND s.whenseen IS NULL THEN 1 ELSE 0 END) AS importance " . $this->buildQuery($uid, $filters);
+					(CASE WHEN r.actionid > 0 AND s.whenseen IS NULL THEN 1 ELSE 0 END) AS importance " . $this->buildQuery($uid, $filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -200,16 +138,14 @@ class Recipient extends \JTable
 	/**
 	 * Get a record count for a user based on filters passed
 	 *
-	 * @param      integer $uid     User ID
-	 * @param      array   $filters Filters to build query from
-	 * @return     mixed False if errors, integer on success
+	 * @param   integer  $uid      User ID
+	 * @param   array    $filters  Filters to build query from
+	 * @return  mixed    False if errors, integer on success
 	 */
 	public function getMessagesCount($uid=null, $filters=array())
 	{
-		if (!$uid)
-		{
-			$uid = $this->uid;
-		}
+		$uid = $uid ?: $this->uid;
+
 		if (!$uid)
 		{
 			return false;
@@ -226,16 +162,14 @@ class Recipient extends \JTable
 	/**
 	 * Get a list of unread messages for a user
 	 *
-	 * @param      integer $uid   User ID
-	 * @param      unknown $limit Number of records to return
-	 * @return     mixed False if errors, array on success
+	 * @param   integer  $uid    User ID
+	 * @param   integer  $limit  Number of records to return
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function getUnreadMessages($uid=null, $limit=null)
 	{
-		if (!$uid)
-		{
-			$uid = $this->uid;
-		}
+		$uid = $uid ?: $this->uid;
+
 		if (!$uid)
 		{
 			return false;
@@ -257,15 +191,13 @@ class Recipient extends \JTable
 	/**
 	 * Delete all messages marked as trash for a user
 	 *
-	 * @param      integer $uid User ID
-	 * @return     boolean True on success
+	 * @param   integer  $uid  User ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteTrash($uid=null)
 	{
-		if (!$uid)
-		{
-			$uid = $this->uid;
-		}
+		$uid = $uid ?: $this->uid;
+
 		if (!$uid)
 		{
 			return false;
@@ -285,9 +217,9 @@ class Recipient extends \JTable
 	/**
 	 * Set the state of multiple messages
 	 *
-	 * @param      integer $state State to set
-	 * @param      array   $ids   List of message IDs
-	 * @return     boolean True on success
+	 * @param   integer  $state  State to set
+	 * @param   array    $ids    List of message IDs
+	 * @return  boolean  True on success
 	 */
 	public function setState($state=0, $ids=array())
 	{

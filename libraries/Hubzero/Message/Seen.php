@@ -36,31 +36,10 @@ namespace Hubzero\Message;
 class Seen extends \JTable
 {
 	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $mid      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid      = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $whenseen = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -70,7 +49,7 @@ class Seen extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -92,55 +71,42 @@ class Seen extends \JTable
 	/**
 	 * Load a record by message ID and user ID and bind to $this
 	 *
-	 * @param      integer $mid Message ID
-	 * @param      integer $uid User ID
-	 * @return     boolean True on success
+	 * @param   integer  $mid  Message ID
+	 * @param   integer  $uid  User ID
+	 * @return  boolean  True on success
 	 */
 	public function loadRecord($mid=NULL, $uid=NULL)
 	{
-		if (!$mid)
-		{
-			$mid = $this->mid;
-		}
-		if (!$uid)
-		{
-			$uid = $this->uid;
-		}
+		$mid = $mid ?: $this->mid;
+		$uid = $uid ?: $this->uid;
+
 		if (!$mid || !$uid)
 		{
 			return false;
 		}
 
-		$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE mid=" . $this->_db->Quote($mid) . " AND uid=" . $this->_db->Quote($uid));
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'mid' => $mid,
+			'uid' => $uid
+		));
 	}
 
 	/**
 	 * Save a record
 	 *
-	 * @param      boolean $new Create a new record? (updates by default)
-	 * @return     boolean True on success, false on errors
+	 * @param   boolean  $new  Create a new record? (updates by default)
+	 * @return  boolean  True on success, false on errors
 	 */
 	public function store($new=false)
 	{
+		$ret = false;
+
 		if (!$new)
 		{
 			$this->_db->setQuery("UPDATE $this->_tbl SET whenseen=" . $this->_db->Quote($this->whenseen) . " WHERE mid=" . $this->_db->Quote($this->mid) . " AND uid=" . $this->_db->Quote($this->uid));
 			if ($this->_db->query())
 			{
 				$ret = true;
-			}
-			else
-			{
-				$ret = false;
 			}
 		}
 		else
@@ -150,11 +116,8 @@ class Seen extends \JTable
 			{
 				$ret = true;
 			}
-			else
-			{
-				$ret = false;
-			}
 		}
+
 		if (!$ret)
 		{
 			$this->setError(__CLASS__ . '::store failed <br />' . $this->_db->getErrorMsg());

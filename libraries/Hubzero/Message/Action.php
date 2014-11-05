@@ -36,38 +36,10 @@ namespace Hubzero\Message;
 class Action extends \JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * varchar(20)
-	 *
-	 * @var string
-	 */
-	var $class       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $element     = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -77,7 +49,7 @@ class Action extends \JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -93,22 +65,17 @@ class Action extends \JTable
 	/**
 	 * Get records for specific type, element, component, and user
 	 *
-	 * @param      string  $type      Action type
-	 * @param      string  $component Component name
-	 * @param      integer $element   ID of element that needs action
-	 * @param      integer $uid       User ID
-	 * @return     mixed False if errors, array on success
+	 * @param   string   $type       Action type
+	 * @param   string   $component  Component name
+	 * @param   integer  $element    ID of element that needs action
+	 * @param   integer  $uid        User ID
+	 * @return  mixed    False if errors, array on success
 	 */
 	public function getActionItems($type=null, $component=null, $element=null, $uid=null)
 	{
-		if (!$component)
-		{
-			$component = $this->class;
-		}
-		if (!$element)
-		{
-			$element = $this->element;
-		}
+		$component = $component ?: $this->class;
+		$element   = $element   ?: $this->element;
+
 		if (!$component || !$element || !$uid || !$type)
 		{
 			$this->setError(\JText::_('Missing argument.'));
