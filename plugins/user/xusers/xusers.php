@@ -225,6 +225,35 @@ class plgUserXusers extends JPlugin
 		$session = JFactory::getSession();
 		$session->set('registration.incomplete', true);
 
+		// Check if quota exists for the user
+		$params = JComponentHelper::getParams('com_members');
+
+		if ($params->get('manage_quotas', false))
+		{
+			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'users_quotas.php';
+			require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'quotas_classes.php';
+
+			$quota = new UsersQuotas($this->database);
+			$quota->load(array('user_id'=>$juser->get('id')));
+
+			if (!$quota->id)
+			{
+				$class = new MembersQuotasClasses($this->database);
+				$class->load(array('alias'=>'default'));
+
+				if ($class->id)
+				{
+					$quota->set('user_id'    , $juser->get('id'));
+					$quota->set('class_id'   , $class->id);
+					$quota->set('soft_blocks', $class->soft_blocks);
+					$quota->set('hard_blocks', $class->hard_blocks);
+					$quota->set('soft_files' , $class->soft_files);
+					$quota->set('hard_files' , $class->hard_files);
+					$quota->store();
+				}
+			}
+		}
+
 		return true;
 	}
 
