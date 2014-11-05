@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css('media.css')
      ->js('jquery.fileuploader.js', 'system')
-     ->js('courses.fileupload.jquery.js');
+     ->js('courses.fileupload.js');
 
 $base = rtrim(JURI::base(true), '/');
 ?>
