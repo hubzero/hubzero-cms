@@ -758,7 +758,7 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 			if ($output == '' || json_last_error() == JSON_ERROR_NONE)
 			{
 				// code is up to date
-				$output = array(JText::_('COM_GROUPS_FETCH_CODE_UP_TO_DATE'));
+				$output = ($output == '') ? array(JText::_('COM_GROUPS_FETCH_CODE_UP_TO_DATE')) : $output;
 
 				// add success message
 				$success[] = array('group' => $group->get('cn'), 'message' => $output);
