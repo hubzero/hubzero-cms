@@ -28,41 +28,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
      ->js();
 
-// Load wiki configs
-$wiki_config = JComponentHelper::getParams( 'com_wiki' );
+$html = $this->page->pagehtml;
 
-// Change all relative links to point to correct locations
-$weed = DS . 'wiki' . DS . $this->masterscope . DS . $this->page->pagename . DS;
-
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wiki' . DS . 'helpers' . DS . 'parser.php');
-
-// Transform the wikitext to HTML
-$p = WikiHelperParser::getInstance();
-
-$wikiconfig = array(
-	'option'   => 'com_projects',
-	'scope'    => $this->page->scope,
-	'pagename' => $this->page->pagename,
-	'pageid'   => $this->page->id
-);
-
-// Parse text
-$html = $p->parse( $this->page->pagetext, $wikiconfig );
-
-include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php');
-
-// Replace internal links so that these pages are accessible
-$html = projectsHelper::parseNoteRefs($this->page, $this->project_id, $this->masterscope,
-	$this->publication, $html );
-
-// Parse text for project file references
-$html = projectsHelper::parseProjectFileRefs($this->page, $this->page->pagetext, $this->project_id,
-	$this->project_alias, $this->publication, $html, true);
+// Com_wiki adds /projects - strip it out
+$html = str_replace('projects/projects/', 'projects/', $html);
 
 // Fix up images
-$html = projectsHelper::wikiFixImages($this->page, $this->page->pagetext, $this->project_id,
-	$this->project_alias, $this->publication, $html, true);
-
+$html = str_replace($this->page->scope . DS . $this->page->pagename , 'wiki/' . $this->page->id, $html);
 ?>
 <div class="wiki-wrap">
 	<p class="wiki-back"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id); ?>"><?php echo JText::_('COM_PUBLICATIONS_BACK_TO_PUBLICATION'); ?>  &ldquo;<?php echo $this->publication->title; ?>&rdquo;</a></p>
