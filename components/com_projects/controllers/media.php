@@ -458,6 +458,7 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 		$media   = trim(JRequest::getVar( 'media', 'thumb' ));
 		$alias 	 = trim(JRequest::getVar( 'alias', '' ));
 		$source	 = NULL;
+		$redirect= false;
 
 		if (!$alias)
 		{
@@ -486,13 +487,16 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 			{
 				// Other images are non-public; in 'preview' folder
 				// Check authorization
+				/*
 				if (!$this->_authorize($obj->id))
 				{
 					JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 					return;
 				}
+				*/
 				$path 	= trim($this->config->get('imagepath', '/site/projects'), DS);
 				$source = $path . DS . $alias . DS . 'preview' . DS . $media;
+				$redirect = true;
 			}
 		}
 
@@ -502,6 +506,12 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 			$xserver->filename($source);
 			$xserver->serve_inline(JPATH_ROOT . DS . $source);
 			exit;
+		}
+		elseif ($redirect)
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option)
+			);
 		}
 
 		return;
