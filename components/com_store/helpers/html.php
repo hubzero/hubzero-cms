@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Helper class for misc functions
  */
-class StoreHtml
+class StoreHelperHtml
 {
 	/**
 	 * Get a default image for the store item
@@ -78,11 +78,11 @@ class StoreHtml
 		{
 			if ($category == 'service')
 			{
-				$html = '<img src="/components/' . $option . '/assets/img/premiumservice.gif" alt="' . JText::_('COM_STORE_PREMIUM_SERVICE') . '" />';
+				$html = '<img src="' . JURI::base(true). '/components/' . $option . '/assets/img/premiumservice.gif" alt="' . JText::_('COM_STORE_PREMIUM_SERVICE') . '" />';
 			}
 			else
 			{
-				$html = '<img src="/components/' . $option . '/assets/img/nophoto.gif" alt="' . JText::_('COM_STORE_MSG_NO_PHOTO') . '" />';
+				$html = '<img src="' . JURI::base(true). '/components/' . $option . '/assets/img/nophoto.gif" alt="' . JText::_('COM_STORE_MSG_NO_PHOTO') . '" />';
 			}
 		}
 

@@ -42,66 +42,63 @@ $this->css()
 	</div>
 </header>
 
-
 <section class="main section">
 	<form class="section-inner" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
 		<h3><?php echo JText::_('COM_STORE_SPEND_MERCHANDISE_AND_PREMIUM_SERVICES'); ?></h3>
-<?php
-if ($this->rows) {
-?>
-		<p><?php echo JText::sprintf('COM_STORE_THERE_ARE_ITEMS_AVAILABLE', count($this->rows)); ?></p>
-		<ul class="storeitems">
-		<?php
-			foreach ($this->rows as $row)
-			{
-				$cls = '';
-				if ($row->featured) {
-					$cls = 'featured';
-				} else if ($row->created > JFactory::getDate(time() - (30 * 24 * 60 * 60))) {
-					$cls = 'new';
-				}
-		?>
-		<li class="cf<?php echo ($cls) ? ' ' . $cls : ''; ?>">
-			<div class="imageholder">
-				<?php echo StoreHtml::productimage( $this->option, $row->id, $row->root, $row->webpath, $row->title, $row->category ); ?>
-			</div>
-			<div class="infoholder">
-				<h4><?php echo $row->title; ?></h4>
-				<p><?php echo \Hubzero\Utility\String::truncate($row->description, 200); ?></p>
-				<p>
-			<?php if ($row->category ) { ?>
-					<span class="sizes"><?php echo JText::_('COM_STORE_CATEGORY'); ?>: <?php echo $row->category; ?></span>
-				<?php } ?>
-				<?php if ($row->size && $row->available) { ?>
-					<span class="sizes"><?php echo JText::_('COM_STORE_SIZES'); ?>: <?php echo $row->size; ?></span>
-				<?php } ?>
-				<?php 
-				if ($row->category != 'service') {
-					if ($row->available) { ?>
-						<span class="yes"><?php echo JText::_('COM_STORE_INSTOCK'); ?></span>
-					<?php } else { ?>
-						<span class="no"><?php echo JText::_('COM_STORE_SOLDOUT'); ?></span>
-					<?php 
+		<?php if ($this->rows) { ?>
+			<p><?php echo JText::sprintf('COM_STORE_THERE_ARE_ITEMS_AVAILABLE', count($this->rows)); ?></p>
+			<ul class="storeitems">
+			<?php
+				foreach ($this->rows as $row)
+				{
+					$cls = '';
+					if ($row->featured) {
+						$cls = 'featured';
+					} else if ($row->created > JFactory::getDate(time() - (30 * 24 * 60 * 60))) {
+						$cls = 'new';
 					}
+			?>
+			<li class="cf<?php echo ($cls) ? ' ' . $cls : ''; ?>">
+				<div class="imageholder">
+					<?php echo StoreHelperHtml::productimage($this->option, $row->id, $row->root, $row->webpath, $row->title, $row->category); ?>
+				</div>
+				<div class="infoholder">
+					<h4><?php echo $row->title; ?></h4>
+					<p><?php echo \Hubzero\Utility\String::truncate($row->description, 200); ?></p>
+					<p>
+						<?php if ($row->category ) { ?>
+							<span class="sizes"><?php echo JText::_('COM_STORE_CATEGORY'); ?>: <?php echo $row->category; ?></span>
+						<?php } ?>
+						<?php if ($row->size && $row->available) { ?>
+							<span class="sizes"><?php echo JText::_('COM_STORE_SIZES'); ?>: <?php echo $row->size; ?></span>
+						<?php } ?>
+						<?php 
+						if ($row->category != 'service') {
+							if ($row->available) { ?>
+								<span class="yes"><?php echo JText::_('COM_STORE_INSTOCK'); ?></span>
+							<?php } else { ?>
+								<span class="no"><?php echo JText::_('COM_STORE_SOLDOUT'); ?></span>
+							<?php 
+							}
+						}
+						?>
+					</p>
+				</div>
+				<div class="purchase">
+					<span class="price"><a href="<?php echo $this->infolink; ?>" title="<?php echo JText::_('COM_STORE_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_STORE_WHAT_ARE_POINTS'); ?></a><?php echo $row->price; ?></span>
+					<?php if ($row->available) { ?>
+						<a class="button buy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart&action=add&item=' . $row->id); ?>" title="<?php echo JText::_('COM_STORE_BUY'); ?>"><?php echo JText::_('COM_STORE_BUY'); ?></a>
+					<?php } else { ?>
+						<span class="button buy_disabled">&nbsp;</span>
+					<?php } ?>
+				</div>
+			</li>
+			<?php
 				}
-				?>
-				</p>
-			</div>
-			<div class="purchase">
-				<span class="price"><a href="<?php echo $this->infolink; ?>" title="<?php echo JText::_('COM_STORE_WHAT_ARE_POINTS'); ?>"><?php echo JText::_('COM_STORE_WHAT_ARE_POINTS'); ?></a><?php echo $row->price; ?></span>
-			<?php if ($row->available) { ?>
-				<a class="button buy" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart&action=add&item=' . $row->id); ?>" title="<?php echo JText::_('COM_STORE_BUY'); ?>"><?php echo JText::_('COM_STORE_BUY'); ?></a>
-			<?php } else { ?>
-				<span class="button buy_disabled">&nbsp;</span>
-			<?php } ?>
-			</div>
-		</li>
-		<?php
-			}
-		?>
-		</ul>
-<?php } else { ?>
-		<p><?php echo JText::_('COM_STORE_NO_PRODUCTS'); ?></p>
-<?php } ?>
+			?>
+			</ul>
+		<?php } else { ?>
+			<p><?php echo JText::_('COM_STORE_NO_PRODUCTS'); ?></p>
+		<?php } ?>
 	</form><!-- / .section-inner -->
 </section><!-- / .main section -->
