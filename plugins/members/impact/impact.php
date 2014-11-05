@@ -270,6 +270,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 	public function onMembersContributions($member, $option, $limit=0, $limitstart=0, $sort, $areas=null)
 	{
 		$database = JFactory::getDBO();
+		$juser 	= JFactory::getUser();
 
 		if (is_array($areas) && $limit)
 		{
@@ -344,6 +345,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 					$rows[$key]->href = $sef;
 					$rows[$key]->text = $rows[$key]->abstract;
 					$rows[$key]->section = 'impact';
+					$rows[$key]->author = $uidNumber == $juser->get('id') ? true : false;
 				}
 			}
 
@@ -380,8 +382,17 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		{
 			$html .= ' <span>|</span> doi:' . $row->doi . "\n";
 		}
-
-		$html .= ' <span>|</span> Project: <a href="' . JRoute::_('index.php?option=com_projects&alias='. $row->project_alias . '&active=publications&pid=' . $row->id) . '">' . $row->project_title . '</a>' . "\n";
+		if (isset($row->project_private) && $row->project_private != 1 || $row->author == true)
+		{
+			$url  = 'index.php?option=com_projects&alias='. $row->project_alias;
+			$url .= $row->author == true ? '&active=publications&pid=' . $row->id : '';
+			$html .= ' <span>|</span> Project: ';
+			$html .= '<a href="';
+			$html .= JRoute::_($url) . '">';
+			$html .= $row->project_title;
+			$html .='</a>';
+			$html .= "\n";
+		}
 		$html .= '</p>' . "\n";
 		if ($row->text)
 		{

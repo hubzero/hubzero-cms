@@ -499,7 +499,8 @@ class Publication extends JTable
 				C.ranking as master_ranking, C.times_rated as master_times_rated,
 				C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias,
 				t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title,
-				PP.state as project_status, PP.provisioned as project_provisioned, MT.alias as base";
+				PP.state as project_status, PP.private as project_private,
+				PP.provisioned as project_provisioned, MT.alias as base";
 		$sql .= ", (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ) AS dev_version_label ";
 		$sql .= ", (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
 
@@ -585,6 +586,7 @@ class Publication extends JTable
 				MT.alias as base, PP.alias as project_alias,
 				PP.title as project_title, PP.state as project_status,
 				PP.provisioned as project_provisioned,
+				PP.private as project_private,
 				PP.owned_by_group as project_group ";
 
 		$sql .= ",(SELECT vv.version_label FROM #__publication_versions as vv
