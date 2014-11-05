@@ -107,7 +107,7 @@ if ($this->groupboards)
 
 		<label for="field_description">
 			<?php echo JText::_('Add a description'); ?>
-			<?php echo \JFactory::getEditor()->display('description', '', '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+			<?php echo $this->editor('description', '', 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
 

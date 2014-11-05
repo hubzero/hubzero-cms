@@ -290,7 +290,7 @@ $this->css()
 					<?php if (!$this->juser->get('guest')) { ?>
 						<label for="comment_content">
 							Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-							<?php echo JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'comment_content', null, null, array('class' => 'minimal no-footer')); ?>
+							<?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', array('class' => 'minimal no-footer')); ?>
 						</label>
 
 						<label id="comment-anonymous-label">

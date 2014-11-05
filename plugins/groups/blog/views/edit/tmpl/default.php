@@ -31,11 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-//tag editor
-JPluginHelper::importPlugin( 'hubzero' );
-$dispatcher = JDispatcher::getInstance();
-$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags','', $this->entry->tags('string'))) );
-
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00')
 {
 	$this->entry->set('publish_down', '');
@@ -71,9 +66,7 @@ $this->css()
 
 		<label for="entry_content">
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-			<?php
-			echo JFactory::getEditor()->display('entry[content]', $this->escape($this->entry->content('raw')), '', '', 50, 30, false, 'entry_content');
-			?>
+			<?php echo $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 30, 'entry_content'); ?>
 		</label>
 		<?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
 			<p class="error"><?php echo JText::_('PLG_GROUPS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -88,11 +81,7 @@ $this->css()
 
 		<label>
 			<?php echo JText::_('PLG_GROUPS_BLOG_FIELD_TAGS'); ?>
-			<?php if (count($tf) > 0) {
-				echo $tf[0];
-			} else { ?>
-				<input type="text" name="tags" value="<?php echo $this->escape($this->entry->tags('string')); ?>" />
-			<?php } ?>
+			<?php echo $this->autocompleter('tags', 'tags', $this->escape($this->entry->tags('string')), 'actags'); ?>
 			<span class="hint"><?php echo JText::_('PLG_GROUPS_BLOG_FIELD_TAGS_HINT'); ?></span>
 		</label>
 
@@ -156,10 +145,10 @@ $this->css()
 	<p class="submit">
 		<input class="btn btn-success" type="submit" value="<?php echo JText::_('PLG_GROUPS_BLOG_SAVE'); ?>" />
 
-	<?php if ($this->entry->get('id')) { ?>
-		<a class="btn btn-secondary" href="<?php echo JRoute::_($this->entry->link()); ?>">
-			<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>
-		</a>
-	<?php } ?>
+		<?php if ($this->entry->get('id')) { ?>
+			<a class="btn btn-secondary" href="<?php echo JRoute::_($this->entry->link()); ?>">
+				<?php echo JText::_('PLG_GROUPS_BLOG_CANCEL'); ?>
+			</a>
+		<?php } ?>
 	</p>
 </form>

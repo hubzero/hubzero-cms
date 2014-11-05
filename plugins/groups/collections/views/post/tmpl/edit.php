@@ -40,12 +40,6 @@ if (!$this->entry->exists())
 	$this->entry->set('original', 1);
 }
 
-//tag editor
-JPluginHelper::importPlugin('hubzero');
-$dispatcher = JDispatcher::getInstance();
-
-$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags','', $item->tags('string'))));
-
 $type = 'file'; //strtolower(JRequest::getWord('type', $item->get('type')));
 if (!$type)
 {
@@ -162,9 +156,9 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 				<label for="field_description">
 					<?php echo JText::_('Description'); ?>
 					<?php if ($this->entry->get('original')) { ?>
-						<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($item->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 					<?php } else { ?>
-						<?php echo \JFactory::getEditor()->display('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field_description', null, null, array('class' => 'minimal no-footer')); ?>
+						<?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', array('class' => 'minimal no-footer')); ?>
 					<?php } ?>
 				</label>
 				<?php if ($this->task == 'save' && !$item->get('description')) { ?>
@@ -202,12 +196,7 @@ $jbase = rtrim(JURI::getInstance()->base(true), '/');
 			<div class="col span6 omega">
 				<label>
 					<?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?> <!-- <span class="optional">optional</span> -->
-					<?php
-					if (count($tf) > 0) {
-						echo $tf[0];
-					} else { ?>
-						<input type="text" name="tags" value="<?php echo $item->tags('string'); ?>" />
-					<?php } ?>
+					<?php echo $this->autocompleter('tags', 'tags', $this->escape($item->tags('string')), 'actags'); ?>
 					<span class="hint"><?php echo JText::_('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
 				</label>
 			</div>

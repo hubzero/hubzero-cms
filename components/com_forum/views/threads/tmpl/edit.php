@@ -143,20 +143,14 @@ else
 				<label for="fieldcomment">
 					<?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_FORUM_REQUIRED'); ?></span>
 					<?php
-					echo \JFactory::getEditor()->display('fields[comment]', $this->escape(stripslashes($this->post->content('raw'))), '', '', 35, 15, false, 'fieldcomment', null, null, array('class' => 'minimal no-footer'));
+					echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->content('raw'))), 35, 15, 'fieldcomment', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
 				<label>
 					<?php echo JText::_('COM_FORUM_FIELD_TAGS'); ?>:
 					<?php
-						JPluginHelper::importPlugin('hubzero');
-						$tf = JDispatcher::getInstance()->trigger(
-							'onGetMultiEntry',
-							array(array('tags', 'tags', 'actags', '', $this->post->tags('string')))
-						);
-
-						echo (count($tf) > 0) ? implode("\n", $tf) : '<input type="text" name="tags" id="actags" value="'. $this->escape($this->post->tags('string')) .'" />';
+						echo $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags');
 					?>
 				</label>
 

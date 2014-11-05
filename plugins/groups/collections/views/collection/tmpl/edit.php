@@ -67,7 +67,7 @@ $default = $this->params->get('access-plugin');
 
 		<label for="field-description">
 			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
-			<?php echo \JFactory::getEditor()->display('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), '', '', 35, 5, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
+			<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field-description', array('class' => 'minimal no-footer')); ?>
 		</label>
 	</fieldset>
 

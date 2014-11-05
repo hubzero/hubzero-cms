@@ -144,21 +144,14 @@ $this->css()
 				<label for="field_comment">
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo JText::_('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
 					<?php
-					echo \JFactory::getEditor()->display('fields[comment]', $this->escape(stripslashes($this->post->content('raw'))), '', '', 35, 15, false, 'field_comment', null, null, array('class' => 'minimal no-footer'));
+					echo $this->editor('fields[comment]', $this->escape(stripslashes($this->post->content('raw'))), 35, 15, 'field_comment', array('class' => 'minimal no-footer'));
 					?>
 				</label>
 
 				<label>
 					<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_TAGS'); ?>:
 					<?php
-						JPluginHelper::importPlugin('hubzero');
-						$dispatcher = JDispatcher::getInstance();
-						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'tags', 'actags', '', $this->post->tags('string'))) );
-						if (count($tf) > 0) {
-							echo $tf[0];
-						} else {
-							echo '<input type="text" name="tags" value="'. $this->escape($this->post->tags('string')) .'" />';
-						}
+						echo $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags');
 					?>
 				</label>
 

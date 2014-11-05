@@ -155,7 +155,7 @@ defined('_JEXEC') or die('Restricted access');
 							<label for="field_<?php echo $this->comment->get('id'); ?>_comment">
 								<span class="label-text"><?php echo JText::_('COM_FORUM_FIELD_COMMENTS'); ?></span>
 								<?php
-								echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 4, false, 'field_' . $this->comment->get('id') . '_comment', null, null, array('class' => 'minimal no-footer'));
+								echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', array('class' => 'minimal no-footer'));
 								?>
 							</label>
 

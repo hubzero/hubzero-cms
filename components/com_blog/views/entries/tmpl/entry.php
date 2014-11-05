@@ -358,7 +358,7 @@ $entry_month = substr($this->row->get('publish_up'), 5, 2);
 					<label for="commentcontent">
 						Your <?php echo ($replyto->exists()) ? 'reply' : 'comments'; ?>:
 						<?php
-							echo \JFactory::getEditor()->display('comment[content]', '', '', '', 40, 15, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
+							echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal no-footer'));
 						?>
 					</label>
 					<?php } else { ?>
