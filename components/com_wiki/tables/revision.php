@@ -37,87 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WikiTableRevision extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $pageid     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $version    = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $minor_edit = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $pagetext   = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $pagehtml   = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $approved   = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $summary    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $length     = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct($db)
 	{
@@ -127,7 +50,7 @@ class WikiTableRevision extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -164,39 +87,39 @@ class WikiTableRevision extends JTable
 	/**
 	 * Load a record by the page/version combination and bind to $this
 	 *
-	 * @param      integer $pageid  Page ID
-	 * @param      integer $version Version number
-	 * @return     boolean True on success
+	 * @param   integer  $pageid   Page ID
+	 * @param   integer  $version  Version number
+	 * @return  boolean  True on success
 	 */
 	public function loadByVersion($pageid, $version=0)
 	{
 		if (!$pageid)
 		{
-			return;
+			return false;
 		}
+
 		if ($version)
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version));
+			$query = "SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND version=" . $this->_db->Quote($version);
 		}
 		else
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND approved=" . $this->_db->Quote('1') . " ORDER BY version DESC LIMIT 1");
+			$query = "SELECT * FROM $this->_tbl WHERE pageid=" . $this->_db->Quote($pageid) . " AND approved=" . $this->_db->Quote('1') . " ORDER BY version DESC LIMIT 1";
 		}
+		$this->_db->setQuery($query);
 		if ($result = $this->_db->loadAssoc())
 		{
 			return $this->bind($result);
 		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+
+		$this->setError($this->_db->getErrorMsg());
+		return false;
 	}
 
 	/**
 	 * Get a list of all contributors on a wiki page
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getContributors()
 	{
@@ -217,7 +140,7 @@ class WikiTableRevision extends JTable
 	/**
 	 * Get a count of all revisions for a page
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	public function getRevisionCount()
 	{
@@ -228,8 +151,8 @@ class WikiTableRevision extends JTable
 	/**
 	 * Get all the revision numbers for a page
 	 *
-	 * @param      integer $pageid Page ID
-	 * @return     array
+	 * @param   integer  $pageid  Page ID
+	 * @return  array
 	 */
 	public function getRevisionNumbers($pageid=NULL)
 	{
@@ -244,8 +167,8 @@ class WikiTableRevision extends JTable
 	/**
 	 * Get all the revisions for a page
 	 *
-	 * @param      integer $pageid Page ID
-	 * @return     array
+	 * @param   integer  $pageid  Page ID
+	 * @return  array
 	 */
 	public function getRevisions($pageid=NULL)
 	{
@@ -253,49 +176,62 @@ class WikiTableRevision extends JTable
 		{
 			$pageid = $this->pageid;
 		}
-		return $this->getRecords(array('pageid' => $pageid, 'approved' => array(0, 1)));
+		return $this->getRecords(array(
+			'pageid'   => $pageid,
+			'approved' => array(0, 1))
+		);
 	}
 
 	/**
 	 * Get a record count based off of filters passed
 	 *
-	 * @param      array $filters Filters to build from
-	 * @return     integer
+	 * @param   array    $filters  Filters to build from
+	 * @return  integer
 	 */
 	public function getRecordsCount($filters=array())
 	{
-		$sql  = "SELECT COUNT(*) ";
-		$sql .= $this->buildQuery($filters);
+		$query = "SELECT COUNT(*) " . $this->buildQuery($filters);
 
-		$this->_db->setQuery($sql);
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 
 	/**
 	 * Get a list of records based off of filters passed
 	 *
-	 * @param      array $filters Filters to build from
-	 * @return     array
+	 * @param   array  $filters  Filters to build from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
-		$sql  = "SELECT r.id, r.pageid, r.version, r.created, r.created_by, r.minor_edit, r.approved, r.summary, r.length, u.name AS created_by_name, u.username AS created_by_alias ";
-		$sql .= $this->buildQuery($filters);
+		$query  = "SELECT r.id, r.pageid, r.version, r.created, r.created_by, r.minor_edit, r.approved, r.summary, r.length, u.name AS created_by_name, u.username AS created_by_alias ";
+		$query .= $this->buildQuery($filters);
 
-		$this->_db->setQuery($sql);
+		if (!isset($filters['sortby']) || $filters['sortby'] == '')
+		{
+			$filters['sortby'] = 'version DESC, created DESC';
+		}
+
+		$query .= " ORDER BY " . $filters['sortby'];
+
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
+		{
+			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
+		}
+
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Build an SQL statement based on filters passed
 	 *
-	 * @param      array $filters Filters to build from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build from
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters)
 	{
-		$query = " FROM $this->_tbl AS r
-					LEFT JOIN #__users AS u ON r.created_by=u.id";
+		$query = "FROM $this->_tbl AS r LEFT JOIN #__users AS u ON r.created_by=u.id";
 
 		$where = array();
 
@@ -323,20 +259,6 @@ class WikiTableRevision extends JTable
 		if (count($where) > 0)
 		{
 			$query .= " WHERE " . implode(" AND ", $where);
-		}
-
-		if (isset($filters['sortby']) && $filters['sortby'] != '')
-		{
-			$query .= " ORDER BY " . $filters['sortby'];
-		}
-		else
-		{
-			$query .= " ORDER BY version DESC, created DESC";
-		}
-
-		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
-		{
-			$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 		}
 
 		return $query;

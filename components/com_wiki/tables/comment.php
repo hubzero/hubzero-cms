@@ -37,87 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WikiTableComment extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $pageid     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $version    = NULL;
-
-	/**
-	 * datetime
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $ctext      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $chtml      = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $rating     = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $anonymous  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $parent     = NULL;
-
-	/**
-	 * int(1)
-	 *
-	 * @var integer
-	 */
-	var $status     = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -128,8 +51,8 @@ class WikiTableComment extends JTable
 	 * Build a query from filters passed
 	 * Used for admin interface
 	 *
-	 * @param      array $filters Filters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to build query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -185,8 +108,8 @@ class WikiTableComment extends JTable
 	/**
 	 * Returns either a count or list of records
 	 *
-	 * @param   string $what    What type of data to return (count, one, first, all, list)
-	 * @param   array  $filters An associative array of filters used to construct a query
+	 * @param   string  $what     What type of data to return (count, one, first, all, list)
+	 * @param   array   $filters  An associative array of filters used to construct a query
 	 * @return  mixed
 	 */
 	public function find($what='', $filters=array(), $select=array('*'))
@@ -254,7 +177,6 @@ class WikiTableComment extends JTable
 					$filters['sort_Dir'] = 'DESC';
 				}
 
-				//$query  = "SELECT " . implode(', ', $select) . " " . $this->_buildQuery($filters);
 				$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
 
 				if (isset($filters['limit']) && $filters['limit'] > 0)

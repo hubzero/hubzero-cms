@@ -37,122 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WikiTablePage extends JTable
 {
 	/**
-	 * Primary key field in the table
-	 *
-	 * @var	integer
-	 */
-	public $id = NULL;
-
-	/**
-	 * Page name
-	 *
-	 * @var	string
-	 */
-	public $pagename = NULL;
-
-	/**
-	 * Page hits
-	 *
-	 * @var	integer
-	 */
-	public $hits = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var	string
-	 */
-	public $created  = NULL;
-
-	/**
-	 * Creator of the page int(11)
-	 *
-	 * @var	integer
-	 */
-	public $created_by  = NULL;
-
-	/**
-	 * Page rating decimal(2,1)
-	 *
-	 * @var	integer
-	 */
-	public $rating = NULL;
-
-	/**
-	 * Number of times a page is rated
-	 *
-	 * @var	integer
-	 */
-	public $times_rated = NULL;
-
-	/**
-	 * Page title
-	 *
-	 * @var	string
-	 */
-	public $title = NULL;
-
-	/**
-	 * Scope
-	 *
-	 * @var	string
-	 */
-	public $scope = NULL;
-
-	/**
-	 * Parameters
-	 *
-	 * @var	string
-	 */
-	public $params = NULL;
-
-	/**
-	 * Ranking of the page
-	 *
-	 * @var	integer
-	 */
-	public $ranking = NULL;
-
-	/**
-	 * Access state
-	 *
-	 * @var	integer
-	 */
-	public $access = NULL;
-
-	/**
-	 * Group the wiki page belongs to
-	 *
-	 * @var	string
-	 */
-	public $group_cn = NULL;
-
-	/**
-	 * Published state
-	 *
-	 * @var	integer
-	 */
-	public $state = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var	string
-	 */
-	public $modified = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var	integer
-	 */
-	public $version_id = NULL;
-
-	/**
 	 * Object constructor to set table and key field
 	 *
-	 * @param 	object 		$db JDatabase object
-	 * @return     void
+	 * @param   object  $db  JDatabase object
+	 * @return  void
 	 */
 	public function __construct($db)
 	{
@@ -165,9 +53,9 @@ class WikiTablePage extends JTable
 	 * This method must be invoked as:
 	 *     $page = WikiTablePage::getInstance($pagename);
 	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object WikiTablePage
+	 * @param   string  $pagename  The page to load
+	 * @param   string  $scope     The page scope
+	 * @return  object  WikiTablePage
 	 */
 	public static function getInstance($type, $prefix = 'JTable', $config = array()) //($pagename=NULL, $scope='')
 	{
@@ -208,9 +96,9 @@ class WikiTablePage extends JTable
 	/**
 	 * Loads a database record into the current object
 	 *
-	 * @param 	integer 	$oid
-	 * @param 	string 		$scope
-	 * @return 	boolean		True if data successfully loaded into object
+	 * @param   integer  $oid
+	 * @param   string   $scope
+	 * @return  boolean  True if data successfully loaded into object
 	 */
 	public function load($oid=NULL, $scope=NULL)
 	{
@@ -253,9 +141,9 @@ class WikiTablePage extends JTable
 	/**
 	 * Loads a database record into the current object
 	 *
-	 * @param 	integer 	$oid
-	 * @param 	string 		$scope
-	 * @return 	boolean		True if data successfully loaded into object
+	 * @param   integer  $oid
+	 * @param   string   $scope
+	 * @return  boolean  True if data successfully loaded into object
 	 */
 	public function loadByTitle($oid=NULL, $scope='')
 	{
@@ -296,8 +184,8 @@ class WikiTablePage extends JTable
 	/**
 	 * Loads a database record into the current object
 	 *
-	 * @param 	integer 	$oid
-	 * @return 	boolean		True if data successfully loaded into object
+	 * @param   integer  $oid
+	 * @return  boolean  True if data successfully loaded into object
 	 */
 	public function loadById($oid=NULL)
 	{
@@ -321,7 +209,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Returns the record ID for a given page
 	 *
-	 * @return 	integer
+	 * @return  integer
 	 */
 	public function getID()
 	{
@@ -333,7 +221,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Checks if a page exists
 	 *
-	 * @return 	boolean
+	 * @return  boolean
 	 */
 	public function exist()
 	{
@@ -347,7 +235,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Calculates the average (5 star) rating for a page
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function calculateRating()
 	{
@@ -391,8 +279,8 @@ class WikiTablePage extends JTable
 	/**
 	 * Loads a specific page revision
 	 *
-	 * @param 	integer 	$version
-	 * @return 	object		WikiTableRevision
+	 * @param   integer  $version
+	 * @return  object   WikiTableRevision
 	 */
 	public function getRevision($version)
 	{
@@ -408,7 +296,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Counts the number of revisions for a page
 	 *
-	 * @return 	integer
+	 * @return  integer
 	 */
 	public function getRevisionCount()
 	{
@@ -420,19 +308,13 @@ class WikiTablePage extends JTable
 	/**
 	 * Loads the most current page revision
 	 *
-	 * @return 	object		WikiTableRevision
+	 * @return  object  WikiTableRevision
 	 */
 	public function getCurrentRevision()
 	{
 		$obj = new WikiTableRevision($this->_db);
-		/*if ($this->version_id)
-		{
-			$obj->load($this->version_id);
-		}
-		else
-		{*/
-			$obj->loadByVersion($this->id);
-		//}
+		$obj->loadByVersion($this->id);
+
 		return $obj;
 	}
 
@@ -440,8 +322,8 @@ class WikiTablePage extends JTable
 	 * Set the current page version ID
 	 * If no revision ID passed, it retrieves the current (active) revision
 	 *
-	 * @param      integer $id Revision ID
-	 * @return     boolean False if errors, True otherwise
+	 * @param   integer  $id  Revision ID
+	 * @return  boolean  False if errors, True otherwise
 	 */
 	public function setRevisionId($id=null)
 	{
@@ -462,8 +344,8 @@ class WikiTablePage extends JTable
 	 * Determine the namespace
 	 * Namespaces are determined by a colon (e.g., Special:Cite)
 	 *
-	 * @param      string $pagename Name to get namespace from
-	 * @return     boolean False if errors, True otherwise
+	 * @param   string   $pagename  Name to get namespace from
+	 * @return  boolean  False if errors, True otherwise
 	 */
 	public function getNamespace($pagename=null)
 	{
@@ -484,8 +366,8 @@ class WikiTablePage extends JTable
 	 * Determine the namespace
 	 * Namespaces are determined by a colon (e.g., Special:Cite)
 	 *
-	 * @param      string $pagename Name to get namespace from
-	 * @return     boolean False if errors, True otherwise
+	 * @param   string   $pagename  Name to get namespace from
+	 * @return  boolean  False if errors, True otherwise
 	 */
 	public function stripNamespace($pagename=null)
 	{
@@ -505,7 +387,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Returns an array of page templates
 	 *
-	 * @return 	array
+	 * @return  array
 	 */
 	public function getTemplates()
 	{
@@ -516,7 +398,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Method for checking that fields are valid before sending to the database
 	 *
-	 * @return    boolean True if all fields are valid
+	 * @return  boolean  True if all fields are valid
 	 */
 	public function check()
 	{
@@ -588,8 +470,8 @@ class WikiTablePage extends JTable
 	/**
 	 * Check if a group alias is valid
 	 *
-	 * @param      integer $gid Group alias
-	 * @return     boolean True if valid, false if not
+	 * @param   integer  $gid  Group alias
+	 * @return  boolean  True if valid, false if not
 	 */
 	private function _validCn($gid)
 	{
@@ -607,7 +489,7 @@ class WikiTablePage extends JTable
 	/**
 	 * Returns an array of objects of user data for a given page ID
 	 *
-	 * @return 	array
+	 * @return  array
 	 */
 	public function getAuthors()
 	{
@@ -619,8 +501,8 @@ class WikiTablePage extends JTable
 	 * Saves a string of comma-separated usernames or IDs to authors table
 	 * Removes any database entries not found in the string of authors
 	 *
-	 * @param 	string 		$authors
-	 * @return 	boolean 	True if authors successfully saved
+	 * @param   string   $authors
+	 * @return  boolean  True if authors successfully saved
 	 */
 	public function updateAuthors($authors=NULL)
 	{
@@ -631,8 +513,8 @@ class WikiTablePage extends JTable
 	/**
 	 * Returns whether a user is an author for a given page
 	 *
-	 * @param 	integer 	$user_id
-	 * @return 	boolean		True if user is an author
+	 * @param   integer  $user_id
+	 * @return  boolean  True if user is an author
 	 */
 	public function isAuthor($user_id=NULL)
 	{
@@ -643,8 +525,8 @@ class WikiTablePage extends JTable
 	/**
 	 * Deletes all information associated with a page
 	 *
-	 * @param 	integer 	$id
-	 * @return 	boolean 	True if all info successfully deleted
+	 * @param   integer  $id
+	 * @return  boolean  True if all info successfully deleted
 	 */
 	public function deleteBits($id=NULL)
 	{
@@ -660,35 +542,35 @@ class WikiTablePage extends JTable
 		}
 
 		// Delete the page's version history
-		$this->_db->setQuery("DELETE FROM #__wiki_version WHERE pageid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__wiki_version` WHERE pageid=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's tags
-		$this->_db->setQuery("DELETE FROM #__tags_object WHERE tbl='wiki' AND objectid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__tags_object` WHERE tbl='wiki' AND objectid=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's comments
-		$this->_db->setQuery("DELETE FROM #__wiki_comments WHERE pageid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__wiki_comments` WHERE pageid=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's attachments
-		$this->_db->setQuery("DELETE FROM #__wiki_attachments WHERE pageid=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__wiki_attachments` WHERE pageid=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		// Delete the page's authors
-		$this->_db->setQuery("DELETE FROM #__wiki_page_author WHERE page_id=" . $this->_db->Quote($id));
+		$this->_db->setQuery("DELETE FROM `#__wiki_page_author` WHERE page_id=" . $this->_db->Quote($id));
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -700,19 +582,19 @@ class WikiTablePage extends JTable
 	/**
 	 * Returns a record count of the table
 	 *
-	 * @param    string $group_cn Group CN
-	 * @return   integer
+	 * @param   string   $group_cn  Group CN
+	 * @return  integer
 	 */
 	public function count($group_cn=null)
 	{
-		$query = "SELECT COUNT(*) FROM $this->_tbl";
+		$query = "SELECT COUNT(*) FROM $this->_tbl WHERE ";
 		if ($group_cn)
 		{
-			$query .= " WHERE `group_cn`=" . $this->_db->Quote($group_cn);
+			$query .= "`group_cn`=" . $this->_db->Quote($group_cn);
 		}
 		else
 		{
-			$query .= " WHERE `group_cn`='' OR `group_cn` IS NULL ";
+			$query .= "`group_cn`='' OR `group_cn` IS NULL ";
 		}
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -721,12 +603,12 @@ class WikiTablePage extends JTable
 	/**
 	 * Returns an array of groups that have wiki pages
 	 *
-	 * @param 	array 	$filters
-	 * @return 	array
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function getGroups($filters=array())
 	{
-		$query = "SELECT DISTINCT g.gidNumber, g.cn, g.description FROM #__xgroups AS g, #__wiki_page AS w WHERE w.group_cn=g.cn ORDER BY g.cn";
+		$query = "SELECT DISTINCT g.gidNumber, g.cn, g.description FROM `#__xgroups` AS g, `#__wiki_page` AS w WHERE w.group_cn=g.cn ORDER BY g.cn";
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -736,8 +618,8 @@ class WikiTablePage extends JTable
 	 * Returns a record count for a wiki
 	 * Accepts an array of filters used to build the query
 	 *
-	 * @param 	array 	$filters
-	 * @return 	integer
+	 * @param   array    $filters
+	 * @return  integer
 	 */
 	public function getPagesCount($filters=array())
 	{
@@ -751,8 +633,8 @@ class WikiTablePage extends JTable
 	/**
 	 * Returns an array of records based on the filters passed to it
 	 *
-	 * @param 	array 	$filters
-	 * @return 	array
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function getPages($filters=array())
 	{
@@ -763,8 +645,8 @@ class WikiTablePage extends JTable
 	/**
 	 * Builds an SQL statement based on the filters passed to it
 	 *
-	 * @param 	array 	$filters
-	 * @return 	string
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	public function buildQuery($filters)
 	{
@@ -774,7 +656,7 @@ class WikiTablePage extends JTable
 		}
 		else
 		{
-			$query = "SELECT t.*, (SELECT COUNT(*) FROM #__wiki_version AS tt WHERE tt.pageid=t.id) AS revisions";
+			$query = "SELECT t.*, (SELECT COUNT(*) FROM `#__wiki_version` AS tt WHERE tt.pageid=t.id) AS revisions";
 		}
 		$query .= " FROM $this->_tbl AS t";
 
@@ -849,8 +731,8 @@ class WikiTablePage extends JTable
 	 * Builds an SQL statement based on the filters passed to it
 	 * Used only in plugins for other components (e.g., com_tags)
 	 *
-	 * @param 	array 	$filters
-	 * @return 	string
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	public function buildPluginQuery($filters=array())
 	{
@@ -1075,14 +957,14 @@ class WikiTablePage extends JTable
 	/**
 	 * Get page metrics
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getMetrics()
 	{
-		$this->_db->setQuery("SELECT visitors, visits FROM #__wiki_page_metrics WHERE pageid = " . $this->_db->Quote($this->id));
-		$vals = $this->_db->loadObjectList();
 		$stats = null;
-		if ($vals)
+
+		$this->_db->setQuery("SELECT visitors, visits FROM `#__wiki_page_metrics` WHERE pageid = " . $this->_db->Quote($this->id));
+		if ($vals = $this->_db->loadObjectList())
 		{
 			$stats = array(
 				'visitors' => 0,
@@ -1094,14 +976,15 @@ class WikiTablePage extends JTable
 				$stats['visits']   = $val->visits;
 			}
 		}
+
 		return $stats;
 	}
 
 	/**
 	 * Strip unwanted characters
 	 *
-	 * @param      string $txt Text to normalize
-	 * @return     string
+	 * @param   string  $txt  Text to normalize
+	 * @return  string
 	 */
 	public function normalize($txt)
 	{
@@ -1112,7 +995,7 @@ class WikiTablePage extends JTable
 	 * Get the page title
 	 * If title isn't set, it will split the camelcase pagename into a spaced title
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function getTitle()
 	{
@@ -1124,8 +1007,8 @@ class WikiTablePage extends JTable
 	 * Splits camel-case page names
 	 * e.g., MyPageName => My Page Name
 	 *
-	 * @param      string $page Wiki page name
-	 * @return     string
+	 * @param   string  $page  Wiki page name
+	 * @return  string
 	 */
 	public function splitPagename($page)
 	{
@@ -1247,8 +1130,8 @@ class WikiTablePage extends JTable
 	 * slightly broken w.r.t. POSIX character classes.  (It includes
 	 * "\xaa" and "\xba" in [:alpha:].)
 	 *
-	 * @param      string $regexp Regular expression
-	 * @return     string Return description (if any) ...
+	 * @param   string  $regexp  Regular expression
+	 * @return  string
 	 */
 	private function _pcreFixPosixClasses($regexp)
 	{

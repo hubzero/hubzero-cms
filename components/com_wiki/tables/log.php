@@ -37,59 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WikiTableLog extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $pid       = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $timestamp = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $uid       = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $action    = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $comments  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $actorid   = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,7 +50,7 @@ class WikiTableLog extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if valid, false if not
+	 * @return  boolean  True if valid, false if not
 	 */
 	public function check()
 	{
@@ -123,15 +74,13 @@ class WikiTableLog extends JTable
 	/**
 	 * Retrieve all entries for a specific page
 	 *
-	 * @param      integer $pid Page ID
-	 * @return     array
+	 * @param   integer  $pid  Page ID
+	 * @return  array
 	 */
 	public function getLogs($pid=null)
 	{
-		if (!$pid)
-		{
-			$pid = $this->pid;
-		}
+		$pid = $pid ?: $this->pid;
+
 		if (!$pid)
 		{
 			return null;
@@ -144,15 +93,13 @@ class WikiTableLog extends JTable
 	/**
 	 * Delete all entries for a specific page
 	 *
-	 * @param      integer $pid Page ID
-	 * @return     boolean True on success
+	 * @param   integer  $pid  Page ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteLogs($pid=null)
 	{
-		if (!$pid)
-		{
-			$pid = $this->pid;
-		}
+		$pid = $pid ?: $this->pid;
+
 		if (!$pid)
 		{
 			return false;

@@ -37,52 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WikiTableAttachment extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $pageid      = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $filename    = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by  = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -92,8 +50,9 @@ class WikiTableAttachment extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Resource alias
-	 * @return     boolean True on success
+	 * @param   mixed    $keys    Alias or ID
+	 * @param   inteher  $pageid  Parent page ID
+	 * @return  boolean  True on success
 	 */
 	public function load($oid=NULL, $pageid=NULL)
 	{
@@ -101,31 +60,24 @@ class WikiTableAttachment extends JTable
 		{
 			return false;
 		}
+
 		if (is_string($oid))
 		{
-			$this->_db->setQuery("SELECT * FROM $this->_tbl WHERE filename=" . $this->_db->Quote($oid) . " AND pageid=" . $this->_db->Quote($pageid));
-			if ($result = $this->_db->loadAssoc())
-			{
-				return $this->bind($result);
-			}
-			else
-			{
-				$this->setError($this->_db->getErrorMsg());
-				return false;
-			}
+			return parent::load(array(
+				'filename' => $oid,
+				'pageid'   => $pageid
+			));
 		}
-		else
-		{
-			parent::load($oid);
-		}
+
+		return parent::load($oid);
 	}
 
 	/**
 	 * Get a record ID based on filename and page ID
 	 *
-	 * @param      string $filename File name
-	 * @param      string $pageid   Parent page ID
-	 * @return     array
+	 * @param   string  $filename  File name
+	 * @param   string  $pageid    Parent page ID
+	 * @return  array
 	 */
 	public function getID($filename, $pageid)
 	{
@@ -136,20 +88,17 @@ class WikiTableAttachment extends JTable
 	/**
 	 * Delete a record based on parent page and filename
 	 *
-	 * @param      string $filename File name
-	 * @param      string $pageid   Parent page ID
-	 * @return     boolean False if errors, true on success
+	 * @param   string   $filename  File name
+	 * @param   string   $pageid    Parent page ID
+	 * @return  boolean  False if errors, true on success
 	 */
 	public function deleteFile($filename, $pageid)
 	{
-		if (!$filename)
+		if (!$filename || !$pageid)
 		{
 			return false;
 		}
-		if (!$pageid)
-		{
-			return false;
-		}
+
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE filename=" . $this->_db->Quote($filename) . " AND pageid=" . $this->_db->Quote($pageid));
 		if (!$this->_db->query())
 		{
@@ -162,8 +111,8 @@ class WikiTableAttachment extends JTable
 	/**
 	 * Turn attachment syntax into links
 	 *
-	 * @param      string $text Text to look for attachments in
-	 * @return     string
+	 * @param   string  $text  Text to look for attachments in
+	 * @return  string
 	 */
 	public function parse($text)
 	{
@@ -175,8 +124,8 @@ class WikiTableAttachment extends JTable
 	/**
 	 * Processor for parse()
 	 *
-	 * @param      array $matches Attachment syntax string
-	 * @return     string
+	 * @param   array   $matches  Attachment syntax string
+	 * @return  string
 	 */
 	public function getAttachment($matches)
 	{
@@ -187,7 +136,7 @@ class WikiTableAttachment extends JTable
 		$this->_db->setQuery("SELECT filename, description FROM $this->_tbl WHERE id=" . $this->_db->Quote($id));
 		$a = $this->_db->loadRow();
 
-		if (is_file(JPATH_ROOT.$this->path . DS . $this->pageid . DS . $a[0]))
+		if (is_file(JPATH_ROOT . $this->path . DS . $this->pageid . DS . $a[0]))
 		{
 			if (preg_match("#bmp|gif|jpg|jpe|jpeg|tif|tiff|png#i", $a[0]))
 			{
@@ -201,29 +150,24 @@ class WikiTableAttachment extends JTable
 				return $html;
 			}
 		}
-		else
-		{
-			return '[file #' . $id . ' not found]';
-		}
+
+		return '[file #' . $id . ' not found]';
 	}
 
 	/**
 	 * Set the page ID for a record
 	 *
-	 * @param      integer $oldid Old page ID
-	 * @param      integer $newid New page ID
-	 * @return     boolean False if errors, true on success
+	 * @param   integer  $oldid  Old page ID
+	 * @param   integer  $newid  New page ID
+	 * @return  boolean  False if errors, true on success
 	 */
 	public function setPageID($oldid=null, $newid=null)
 	{
-		if (!$oldid)
+		if (!$oldid || !$newid)
 		{
 			return false;
 		}
-		if (!$newid)
-		{
-			return false;
-		}
+
 		$this->_db->setQuery("UPDATE $this->_tbl SET pageid=" . $this->_db->Quote($newid) . " WHERE pageid=" . $this->_db->Quote($oldid));
 		if (!$this->_db->query())
 		{

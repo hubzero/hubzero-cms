@@ -37,30 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WikiTableAuthor extends JTable
 {
 	/**
-	 * Primary key field in the table
-	 *
-	 * @var		integer
-	 */
-	public $id = NULL;
-
-	/**
-	 * User ID
-	 *
-	 * @var		integer
-	 */
-	public $user_id = NULL;
-
-	/**
-	 * Wiki page ID
-	 *
-	 * @var		integer
-	 */
-	public $page_id = NULL;
-
-	/**
 	 * Object constructor to set table and key field
 	 *
-	 * @param 	object 		$db JDatabase object
+	 * @param   object  $db  JDatabase object
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -70,8 +50,7 @@ class WikiTableAuthor extends JTable
 	/**
 	 * Method for checking that fields are valid before sending to the database
 	 *
-	 * @return 	boolean 	True if all fields are valid
-	 * @return     void
+	 * @return  boolean  True if all fields are valid
 	 */
 	public function check()
 	{
@@ -95,20 +74,14 @@ class WikiTableAuthor extends JTable
 	/**
 	 * Returns the record ID for a given page ID/user ID combo
 	 *
-	 * @param 	integer 	$page_id
-	 * @param 	integer 	$user_id
-	 * @return 	integer
+	 * @param   integer  $page_id
+	 * @param   integer  $user_id
+	 * @return  integer
 	 */
 	public function getId($page_id=NULL, $user_id=NULL)
 	{
-		if (!$page_id)
-		{
-			$page_id = $this->page_id;
-		}
-		if (!$user_id)
-		{
-			$user_id = $this->user_id;
-		}
+		$page_id = $page_id ?: $this->page_id;
+		$user_id = $user_id ?: $this->user_id;
 
 		if (!$page_id || !$user_id)
 		{
@@ -127,9 +100,9 @@ class WikiTableAuthor extends JTable
 	/**
 	 * Returns whether a user is an author for a given page
 	 *
-	 * @param 	integer 	$page_id
-	 * @param 	integer 	$user_id
-	 * @return 	boolean		True if user is an author
+	 * @param   integer  $page_id
+	 * @param   integer  $user_id
+	 * @return  boolean  True if user is an author
 	 */
 	public function isAuthor($page_id=NULL, $user_id=NULL)
 	{
@@ -144,15 +117,13 @@ class WikiTableAuthor extends JTable
 	/**
 	 * Returns an array of user IDs for a given page ID
 	 *
-	 * @param 	integer 	$page_id
-	 * @return 	array
+	 * @param   integer  $page_id
+	 * @return  array
 	 */
 	public function getAuthorIds($page_id=NULL)
 	{
-		if (!$page_id)
-		{
-			$page_id = $this->page_id;
-		}
+		$page_id = $page_id ?: $this->page_id;
+
 		if (!$page_id)
 		{
 			$this->setError(JText::_('Missing page ID.'));
@@ -165,41 +136,34 @@ class WikiTableAuthor extends JTable
 	/**
 	 * Returns an array of objects of user data for a given page ID
 	 *
-	 * @param 	integer 	$page_id
-	 * @return 	array
+	 * @param   integer  $page_id
+	 * @return  array
 	 */
 	public function getAuthors($page_id=NULL)
 	{
-		if (!$page_id)
-		{
-			$page_id = $this->page_id;
-		}
+		$page_id = $page_id ?: $this->page_id;
+
 		if (!$page_id)
 		{
 			$this->setError(JText::_('Missing page ID.'));
 			return false;
 		}
-		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, #__users AS u WHERE wa.page_id=" . $this->_db->Quote($page_id) . " AND u.id=wa.user_id");
+		$this->_db->setQuery("SELECT wa.user_id, u.username, u.name FROM $this->_tbl AS wa, `#__users` AS u WHERE wa.page_id=" . $this->_db->Quote($page_id) . " AND u.id=wa.user_id");
 		return $this->_db->loadObjectList();
 	}
 
 	/**
 	 * Removes an author for a page
 	 *
-	 * @param 	integer 	$page_id
-	 * @param 	integer 	$user_id
-	 * @return 	boolean 	True if entry successfully removed
+	 * @param   integer  $page_id
+	 * @param   integer  $user_id
+	 * @return  boolean  True if entry successfully removed
 	 */
 	public function removeAuthor($page_id=NULL, $user_id=NULL)
 	{
-		if (!$page_id)
-		{
-			$page_id = $this->page_id;
-		}
-		if (!$user_id)
-		{
-			$user_id = $this->user_id;
-		}
+		$page_id = $page_id ?: $this->page_id;
+		$user_id = $user_id ?: $this->user_id;
+
 		if (!$page_id || !$user_id)
 		{
 			$this->setError(JText::_("Missing argument (page_id: $page_id, user_id: $user_id)."));
@@ -218,20 +182,19 @@ class WikiTableAuthor extends JTable
 	/**
 	 * Removes all author for a page
 	 *
-	 * @param 	integer 	$page_id
-	 * @return 	boolean 	True if all entries successfully removed
+	 * @param   integer  $page_id
+	 * @return  boolean  True if all entries successfully removed
 	 */
 	public function removeAuthors($page_id=NULL)
 	{
-		if (!$page_id)
-		{
-			$page_id = $this->page_id;
-		}
+		$page_id = $page_id ?: $this->page_id;
+
 		if (!$page_id)
 		{
 			$this->setError(JText::_('Missing page ID.'));
 			return false;
 		}
+
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE page_id=" . $this->_db->Quote($page_id));
 		if (!$this->_db->query())
 		{
@@ -244,21 +207,20 @@ class WikiTableAuthor extends JTable
 	/**
 	 * Saves a string of comma-separated usernames or IDs to authors table
 	 *
-	 * @param 	integer 	$page_id
-	 * @param 	string 		$authors
-	 * @return 	boolean 	True if authors successfully saved
+	 * @param   integer  $page_id
+	 * @param   string   $authors
+	 * @return  boolean  True if authors successfully saved
 	 */
 	public function updateAuthors($authors=NULL, $page_id=NULL)
 	{
-		if (!$page_id)
-		{
-			$page_id = $this->page_id;
-		}
+		$page_id = $page_id ?: $this->page_id;
+
 		if (!$page_id)
 		{
 			$this->setError(JText::_("Missing argument (page_id: $page_id)."));
 			return false;
 		}
+
 		// Get the list of existing authors
 		$ids = $this->getAuthorIds($page_id);
 
@@ -272,7 +234,7 @@ class WikiTableAuthor extends JTable
 			foreach ($authArray as $author)
 			{
 				// Attempt to load each user
-				$targetuser =& JUser::getInstance($author);
+				$targetuser = JUser::getInstance($author);
 
 				// Ensure we found an account
 				if (!is_object($targetuser))
@@ -331,13 +293,12 @@ class WikiTableAuthor extends JTable
 	/**
 	 * Transition old author strings to table
 	 *
-	 * @return     boolean True on success, false on error
+	 * @return  boolean  True on success, false on error
 	 */
 	public function transitionAuthors()
 	{
-		$this->_db->setQuery("SELECT id, authors FROM #__wiki_page WHERE authors!='' AND authors IS NOT NULL");
-		$pages = $this->_db->loadObjectList();
-		if ($pages)
+		$this->_db->setQuery("SELECT id, authors FROM `#__wiki_page` WHERE authors!='' AND authors IS NOT NULL");
+		if ($pages = $this->_db->loadObjectList())
 		{
 			foreach ($pages as $page)
 			{

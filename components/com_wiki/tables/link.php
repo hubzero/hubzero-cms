@@ -37,59 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class WikiTableLink extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id        = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $page_id   = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $timestamp = NULL;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $scope = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $scope_id = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $url      = NULL;
-
-	/**
-	 * varchar(250)
-	 *
-	 * @var string
-	 */
-	var $link    = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct($db)
 	{
@@ -99,7 +50,7 @@ class WikiTableLink extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if valid, false if not
+	 * @return  boolean  True if valid, false if not
 	 */
 	public function check()
 	{
@@ -128,15 +79,13 @@ class WikiTableLink extends JTable
 	/**
 	 * Retrieve all entries for a specific page
 	 *
-	 * @param      integer $pid Page ID
-	 * @return     array
+	 * @param   integer  $page_id  Page ID
+	 * @return  array
 	 */
 	public function find($page_id=null)
 	{
-		if (!$page_id)
-		{
-			$page_id = $this->page_id;
-		}
+		$page_id = $page_id ?: $this->page_id;
+
 		if (!$page_id)
 		{
 			return null;
@@ -149,15 +98,13 @@ class WikiTableLink extends JTable
 	/**
 	 * Delete all entries for a specific page
 	 *
-	 * @param      integer $pid Page ID
-	 * @return     boolean True on success
+	 * @param   integer  $pid  Page ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteByPage($page_id=null)
 	{
-		if (!$page_id)
-		{
-			$page_id = $this->page_id;
-		}
+		$page_id = $page_id ?: $this->page_id;
+
 		if (!$page_id)
 		{
 			return false;
@@ -175,8 +122,8 @@ class WikiTableLink extends JTable
 	/**
 	 * Delete all entries for a specific page
 	 *
-	 * @param      integer $pid Page ID
-	 * @return     boolean True on success
+	 * @param   integer  $pid  Page ID
+	 * @return  boolean  True on success
 	 */
 	public function addLinks($links=array())
 	{
@@ -215,9 +162,9 @@ class WikiTableLink extends JTable
 	/**
 	 * Update entries
 	 *
-	 * @param      integer $pid   Page ID
-	 * @param      array   $links Entries
-	 * @return     boolean True on success
+	 * @param   integer  $pid   Page ID
+	 * @param   array    $links  Entries
+	 * @return  boolean  True on success
 	 */
 	public function updateLinks($page_id, $data=array())
 	{
