@@ -4318,8 +4318,8 @@ class plgProjectsFiles extends JPlugin
 		$from_path = $this->prefix . $path . DS;
 		$from_path = $subdir ? $from_path . $subdir . DS : $from_path;
 
-		$maxWidth 	= $medium == true ? 800 : 180;
-		$maxHeight 	= $medium == true ? 800 : 180;
+		$maxWidth 	= $medium == true ? 600 : 180;
+		$maxHeight 	= $medium == true ? 600 : 180;
 
 		if ($hashed && is_file(JPATH_ROOT. $to_path . DS . $hashed))
 		{
@@ -4370,6 +4370,11 @@ class plgProjectsFiles extends JPlugin
 			$ih->set('path',JPATH_ROOT. $to_path . DS);
 			$ih->set('maxWidth', $maxWidth);
 			$ih->set('maxHeight', $maxHeight);
+			if ($medium)
+			{
+				$ih->set('quality', 50);
+				$ih->set('force', false);
+			}
 			if (!$ih->process())
 			{
 				//$this->setError( $ih->getError() );
