@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $option = 'com_update';
 
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!JFactory::getUser()->authorise('core.admin', $option))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
