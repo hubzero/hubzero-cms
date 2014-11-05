@@ -34,16 +34,14 @@ use Hubzero\View\View as AbstractView;
 use Hubzero\Document\Assets;
 
 /**
- * Base class for a View
- *
- * Class holding methods for displaying presentation data.
+ * Class for a component View
  */
 class View extends AbstractView
 {
 	/**
 	 * Layout name
 	 *
-	 * @var    string
+	 * @var  string
 	 */
 	protected $_layout = 'display';
 
@@ -51,13 +49,7 @@ class View extends AbstractView
 	 * Constructor
 	 *
 	 * @param   array  $config  A named configuration array for object construction.<br/>
-	 *                          name: the name (optional) of the view (defaults to the view class name suffix).<br/>
-	 *                          charset: the character set to use for display<br/>
-	 *                          escape: the name (optional) of the function to use for escaping strings<br/>
-	 *                          base_path: the parent path (optional) of the views directory (defaults to the component folder)<br/>
-	 *                          template_plath: the path (optional) of the layout directory (defaults to base_path + /views/ + view name<br/>
-	 *                          helper_path: the path (optional) of the helper files (defaults to base_path + /helpers/)<br/>
-	 *                          layout: the layout (optional) to use to display the view<br/>
+	 * @return  void
 	 */
 	public function __construct($config = array())
 	{
@@ -75,161 +67,11 @@ class View extends AbstractView
 	}
 
 	/**
-	 * Determine the asset directory
-	 *
-	 * @param   string  $path     File path
-	 * @param   string  $default  Default directory
-	 * @return  string
-	 */
-	private function _assetDir(&$path, $default='')
-	{
-		if (substr($path, 0, 2) == './')
-		{
-			$path = substr($path, 2);
-
-			return '';
-		}
-
-		if (substr($path, 0, 1) == '/')
-		{
-			$path = substr($path, 1);
-
-			return '/';
-		}
-
-		return $default;
-	}
-
-	/**
-	 * Push CSS to the document
-	 *
-	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
-	 * @param   string  $component   Component name
-	 * @return  object
-	 */
-	public function css($stylesheet = '', $component = null)
-	{
-		$component = $component ?: $this->get('option', \JRequest::getCmd('option'));
-
-		// Adding style declarations
-		if ($component === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
-		{
-			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
-			return $this;
-		}
-
-		if ($stylesheet && substr($stylesheet, -4) != '.css')
-		{
-			$stylesheet .= '.css';
-		}
-
-		// Adding from an absolute path
-		$dir = $this->_assetDir($stylesheet, 'css');
-		if ($dir == '/')
-		{
-			Assets::addStylesheet($dir . $stylesheet);
-			return $this;
-		}
-
-		// Adding a system stylesheet
-		if ($component == 'system')
-		{
-			Assets::addSystemStylesheet($stylesheet, $dir);
-			return $this;
-		}
-
-		if (substr($component, 0, strlen('com_')) !== 'com_')
-		{
-			$component = 'com_' . $component;
-		}
-
-		// Adding a component stylesheet
-		Assets::addComponentStylesheet($component, $stylesheet, $dir);
-		return $this;
-	}
-
-	/**
-	 * Push javascript to the document
-	 *
-	 * @param   string  $stylesheet  Stylesheet name (optional, uses component name if left blank)
-	 * @param   string  $component   Component name
-	 * @return  object
-	 */
-	public function js($script = '', $component = null)
-	{
-		$component = $component ?: $this->get('option', \JRequest::getCmd('option'));
-
-		// Adding script declaration
-		if ($component === true || strstr($script, '(') || strstr($script, ';'))
-		{
-			\JFactory::getDocument()->addScriptDeclaration($script);
-			return $this;
-		}
-
-		// Adding from an absolute path
-		$dir = $this->_assetDir($script, 'js');
-		if ($dir == '/')
-		{
-			Assets::addScript($dir . $script);
-			return $this;
-		}
-
-		// Adding a system script
-		if ($component == 'system')
-		{
-			Assets::addSystemScript($script, $dir);
-			return $this;
-		}
-
-		if (substr($component, 0, strlen('com_')) !== 'com_')
-		{
-			$component = 'com_' . $component;
-		}
-
-		// Adding a component script
-		Assets::addComponentScript($component, $script, $dir);
-		return $this;
-	}
-
-	/**
-	 * Get the path to an image
-	 *
-	 * @param   string  $image      Image name
-	 * @param   string  $component  Component name
-	 * @return  string
-	 */
-	public function img($image, $component = null)
-	{
-		if (!$component)
-		{
-			$component = $this->get('option', \JRequest::getCmd('option'));
-		}
-
-		$dir = $this->_assetDir($image, 'img');
-		if ($dir == '/')
-		{
-			return rtrim(\JURI::base(true), '/') . $dir . $image;
-		}
-
-		if ($component == 'system')
-		{
-			return Assets::getSystemImage($image, $dir);
-		}
-
-		if (substr($component, 0, strlen('com_')) !== 'com_')
-		{
-			$component = 'com_' . $component;
-		}
-
-		return Assets::getComponentImage($component, $image, $dir);
-	}
-
-	/**
 	 * Create a component view and return it
 	 *
-	 * @param   string $layout View layout
-	 * @param   string $name   View name
-	 * @return	object
+	 * @param   string  $layout  View layout
+	 * @param   string  $name    View name
+	 * @return  object
 	 */
 	public function view($layout, $name=null)
 	{
@@ -264,10 +106,14 @@ class View extends AbstractView
 	{
 		if (!static::hasHelper($method))
 		{
-			$file = JPATH_COMPONENT . DS . 'helpers' . DS . $method . '.php';
-			if (file_exists($file))
+			foreach ($this->_path['helper'] as $path)
 			{
-				include_once $file;
+				$file = $path . DS . $method . '.php';
+				if (file_exists($file))
+				{
+					include_once $file;
+					break;
+				}
 			}
 
 			$option = ($this->option ? $this->option : \JRequest::getCmd('option'));

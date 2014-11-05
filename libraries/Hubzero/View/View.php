@@ -564,28 +564,6 @@ class View extends Object
 	}
 
 	/**
-	 * Load a helper file
-	 *
-	 * @param   string  $hlp  The name of the helper source file automatically searches the helper paths and compiles as needed.
-	 * @return  void
-	 */
-	public function loadHelper($hlp = null)
-	{
-		// Clean the file name
-		$file = preg_replace('/[^A-Z0-9_\.-]/i', '', $hlp);
-
-		// Load the template script
-		jimport('joomla.filesystem.path');
-		$helper = \JPath::find($this->_path['helper'], $this->_createFileName('helper', array('name' => $file)));
-
-		if ($helper != false)
-		{
-			// Include the requested template filename in the local scope
-			include_once $helper;
-		}
-	}
-
-	/**
 	 * Sets an entire array of search paths for templates or resources.
 	 *
 	 * @param   string  $type  The type of path to set, typically 'template'.
@@ -723,7 +701,9 @@ class View extends Object
 	{
 		if (static::hasHelper($method))
 		{
-			return call_user_func_array(static::$helpers[$method], $parameters);
+			$callback = static::$helpers[$method]->setView($this);
+
+			return call_user_func_array($callback, $parameters);
 		}
 
 		$invokable = __NAMESPACE__ . '\\Helper\\' . ucfirst(strtolower($method));
