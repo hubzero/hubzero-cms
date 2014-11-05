@@ -32,8 +32,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('CMS Updater: repository'));
-JToolBarHelper::custom('rollback', 'back', '', 'Rollback repository', false);
-JToolBarHelper::spacer();
+//JToolBarHelper::custom('rollback', 'back', '', 'Rollback repository', false);
+//JToolBarHelper::spacer();
 JToolBarHelper::custom('update', 'purge', '', 'Update repository', false);
 
 $this->css();
