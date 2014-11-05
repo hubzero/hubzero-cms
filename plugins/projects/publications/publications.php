@@ -1645,7 +1645,8 @@ class plgProjectsPublications extends JPlugin
 			array(
 				'folder'=>'projects',
 				'element'=>'publications',
-				'name'=>'start',
+				'name'=>'draft',
+				'layout'=>'start'
 			)
 		);
 
