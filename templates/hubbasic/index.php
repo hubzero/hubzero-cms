@@ -38,7 +38,7 @@ $juser  = JFactory::getUser();
 JHTML::_('behavior.framework', true);
 JHTML::_('behavior.modal');
 
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.jquery.js');
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
