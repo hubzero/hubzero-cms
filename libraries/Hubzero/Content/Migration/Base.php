@@ -903,6 +903,48 @@ class Base
 	}
 
 	/**
+	 * Sets the asset rules
+	 *
+	 * @param  string $element the element to which the rules apply
+	 * @param  array  $rules the incoming rules to set
+	 * @return void
+	 **/
+	public function setAssetRules($element, $rules)
+	{
+		if ($this->baseDb->tableExists('#__assets'))
+		{
+			$asset = \JTable::getInstance('Asset');
+			if (!$asset->loadByName($element))
+			{
+				return false;
+			}
+
+			// Loop through and map textual groups to ids (if applicable)
+			{
+				foreach ($rules as $idx => $rule)
+				{
+					foreach ($rule as $group => $value)
+					{
+						if (!is_numeric($group))
+						{
+							$query = "SELECT `id` FROM `#__usergroups` WHERE `title` = " . $this->baseDb->quote($group);
+							$this->baseDb->setQuery($query);
+							if ($id = $this->baseDb->loadResult())
+							{
+								unset($rules[$idx][$group]);
+								$rules[$idx][$id] = $value;
+							}
+						}
+					}
+				}
+			}
+
+			$asset->rules = json_encode($rules);
+			$asset->store();
+		}
+	}
+
+	/**
 	 * Remove component entries from the appropriate table, depending on the Joomla version
 	 *
 	 * @param $name - (string) component name
