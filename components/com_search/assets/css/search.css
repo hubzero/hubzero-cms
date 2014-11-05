@@ -1,6 +1,6 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_ysearch/ysearch.css
+ * @file        components/com_search/assets/css/search.css
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -173,14 +173,32 @@
 		font-weight: bold;
 	}
 	.expand {
-		width: 15px;
-		height: 15px;
+		width: 1em;
+		height: 1em;
 		float: left;
 		cursor: pointer;
-		margin-right: 4px;
-		background: url('/components/com_search/assets/img/expand.gif') no-repeat 0 0;
+		margin-right: 0.5em;
 		display: none;
+		position: relative;
+		font-style: normal;
+		font-weight: normal;
 	}
+	.expand:before {
+		content: "\271A";
+		font-family: "Fontcons";
+		border: 1px solid #666;
+		font-size: 0.75em;
+		padding: 0.2em;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+	}
+	.expand.expanded:before {
+		content: "\2010";
+	}
+
 	h4 {
 		font-weight: normal;
 		font-style: italic;

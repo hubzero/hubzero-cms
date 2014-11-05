@@ -15,34 +15,15 @@ jQuery(document).ready(function($){
 			var list = this.parentNode.nextSibling;
 			while (list.tagName != 'UL')
 				list = list.nextSibling;
-			if ($(list).css('display') == 'block')
+			if ($(this).hasClass('expanded'))
 			{
-				var list = el.parentNode.nextSibling;
-				while(list.tagName != 'UL')
-					list = list.nextSibling;
-				if (list.style.display == 'block')
-				{
-					list.style.display = 'none';
-					el.style.background = 'url(\'/components/com_search/assets/img/expand.gif\') no-repeat 0 0';
-				}
-				else
-				{
-					list.style.display = 'block';
-					el.style.background = 'url(\'/components/com_search/assets/img/expand.gif\') no-repeat -20px 0';
-				}
-			});
-		});
-
-		// Enable auto-submit of per-page setting form by ...
-		//  ... hiding the submit button
-		document.body.getElements('.search-per-page-submitter').each(function(el) { el.style.display = 'none'; });
-		//  ... and making the select element submit its parent form on change
-		document.body.getElements('.search-per-page-selector').each(function(el) 
-		{
-			el.addEvent('change', function()
+				$(list).hide();
+				$(this).removeClass('expanded');
+			}
+			else
 			{
 				$(list).show();
-				$(this).css('background', 'url(\'/components/com_search/assets/img/expand.gif\') no-repeat -20px 0');
+				$(this).addClass('expanded');
 			}
 		})
 		.show();
@@ -72,7 +53,7 @@ jQuery(document).ready(function($){
 		});
 
 		taglist.append('<li class="showmore"><a href="#">show more...</a></li>');
-		taglist.find('.showmore').on('click', function ( e ) {
+		taglist.find('.showmore').on('click', function (e) {
 			e.preventDefault();
 
 			var newtext = ($(this).find('a').html() === 'show more...') ? 'show fewer...' : 'show more...';
