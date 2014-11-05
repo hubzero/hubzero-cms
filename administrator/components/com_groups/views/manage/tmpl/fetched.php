@@ -73,7 +73,8 @@ function submitbutton(pressbutton)
 							<hr />
 							<code><?php echo implode('<br>', $success['message']); ?></code>
 
-							<?php if ($success['message'][0] != JText::_('COM_GROUPS_FETCH_CODE_UP_TO_DATE')) : ?>
+							<?php if ($success['message'][0] != JText::_('COM_GROUPS_FETCH_CODE_UP_TO_DATE')
+										&& !preg_match('/ineligible/', $success['message'][0])) : ?>
 								<label class="merge">
 									<?php echo JText::_('COM_GROUPS_MERGE'); ?>
 									<input type="checkbox" name="id[]" checked="checked" value="<?php echo $group->get('gidNumber'); ?>" />
