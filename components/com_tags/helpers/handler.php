@@ -34,7 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'tag.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'object.php');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'group.php');
 
 /**
  * Tag helper class for adding/removing/displaying tags on objects
