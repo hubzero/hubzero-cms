@@ -95,13 +95,13 @@
 	.menu-wrapper ul {
 		list-style: none;
 		margin: 0;
-		padding: 0;
-		height: 35px;
+		padding: 0.2em 0 0 0;
+		height: 25px;
 	}
 	.menu-wrapper ul li {
-		margin: 0;
+		margin: 1em 0 0 0;
 		padding: 0.4em;
-		display: inline-block;
+		display: inline;
 		height: 25px;
 	}
 	.menu-wrapper ul li a:before {
@@ -185,7 +185,10 @@
 	}
 	.menu-wrapper ul li.sideli {
 		float: right;
+		margin-top: -0.1em;	
 		margin-right: 2em;
+		height: 25px;
+		padding: 0.1em 0.5em;
 	}
 
 /*
@@ -286,13 +289,18 @@
 --------------------------------------------- */
 @media all and (max-width: 900px) {
 	.menu-wrapper ul li {
-		width: 30px;
+		min-width: 35px;
 		margin: 0;
-		padding: 0.4em 0.8em;
+		padding: 0 0.5em;
 		text-align: center;
 		display: block;
 		float: left;
 		position: relative;
+	}
+	.menu-wrapper ul li.active {
+		margin-left: 0;
+		padding: 0.3em 0.5em;
+		margin-top: -0.3em;
 	}
 	.menu-wrapper ul a.assets:after {
 		position: absolute;
@@ -303,7 +311,6 @@
 		width: 25px;
 		height: 25px;
 		font-size: 25px;
-		margin-top: 0.5em;
 	}
 	.menu-wrapper ul li.active a:before {
 		margin-top: 0;
@@ -318,15 +325,19 @@
 		display: none;
 	}
 	.menu-wrapper ul li .mini {
-		position: absolute;
-		display: inline;
-		margin-left: 0.5em;
+		position: relative;
+		display: block;
+		margin: -1.5em 0 0 2.7em;
+		color: #666;
 	}
 	.menu-wrapper ul li a:hover:before {
 		color: black;
 	}
 	.menu-wrapper ul li .submenu-wrap {
 		text-align: left;
+	}
+	.menu-wrapper ul li.sideli {
+		display: none;	
 	}
 	.project-inner-wrap {
 		background: #FFFFFF;
