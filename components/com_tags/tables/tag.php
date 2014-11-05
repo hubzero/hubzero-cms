@@ -37,73 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class TagsTableTag extends JTable
 {
 	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $id          = NULL;
-
-	/**
-	 * string(100)
-	 *
-	 * @var string
-	 */
-	var $tag         = NULL;
-
-	/**
-	 * string(100)
-	 *
-	 * @var string
-	 */
-	var $raw_tag     = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * tinyint(3)
-	 *
-	 * @var integer
-	 */
-	var $admin       = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -114,8 +51,8 @@ class TagsTableTag extends JTable
 	 * Load a database row and populate this object with results
 	 * Uses unique tag string as identifier
 	 *
-	 * @param      string $oid Tag
-	 * @return     boolean True if tag found and loaded
+	 * @param   string   $oid  Tag
+	 * @return  boolean  True if tag found and loaded
 	 */
 	public function loadTag($oid=NULL)
 	{
@@ -133,7 +70,7 @@ class TagsTableTag extends JTable
 		}
 		else
 		{
-			$this->_db->setQuery("SELECT t.* FROM $this->_tbl AS t JOIN #__tags_substitute AS s ON s.tag_id=t.id WHERE s.tag=" . $this->_db->Quote($oid) . " LIMIT 1");
+			$this->_db->setQuery("SELECT t.* FROM $this->_tbl AS t JOIN `#__tags_substitute` AS s ON s.tag_id=t.id WHERE s.tag=" . $this->_db->Quote($oid) . " LIMIT 1");
 			if ($result = $this->_db->loadAssoc())
 			{
 				return $this->bind($result);
@@ -149,8 +86,8 @@ class TagsTableTag extends JTable
 	/**
 	 * Delete a tag and associated content
 	 *
-	 * @param      integer $oid Tag ID
-	 * @return     boolean True on success, false if errors
+	 * @param   integer  $oid  Tag ID
+	 * @return  boolean  True on success, false if errors
 	 */
 	public function delete($oid=null)
 	{
@@ -173,7 +110,7 @@ class TagsTableTag extends JTable
 			$comment = json_encode($comment);
 		}
 
-		$query = 'DELETE FROM #__tags_object WHERE tagid = ' . $this->_db->Quote($this->$k);
+		$query = 'DELETE FROM `#__tags_object` WHERE tagid = ' . $this->_db->Quote($this->$k);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -181,15 +118,7 @@ class TagsTableTag extends JTable
 			return false;
 		}
 
-		$query = 'DELETE FROM #__tags_substitute WHERE tag_id = ' . $this->_db->Quote($this->$k);
-		$this->_db->setQuery($query);
-		if (!$this->_db->query())
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
-
-		$query = 'DELETE FROM #__tags_group WHERE tagid = ' . $this->_db->Quote($this->$k);
+		$query = 'DELETE FROM `#__tags_substitute` WHERE tag_id = ' . $this->_db->Quote($this->$k);
 		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
@@ -198,9 +127,11 @@ class TagsTableTag extends JTable
 		}
 
 		$result = parent::delete($oid);
+
 		if ($result)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+			require_once(__DIR__ . DS . 'log.php');
+
 			$log = new TagsTableLog($this->_db);
 			$log->log($oid, 'tag_deleted', $comment);
 		}
@@ -211,8 +142,8 @@ class TagsTableTag extends JTable
 	/**
 	 * Inserts a new row if id is zero or updates an existing row in the database table
 	 *
-	 * @param     boolean $updateNulls If false, null object variables are not updated
-	 * @return    null|string null if successful otherwise returns and error message
+	 * @param   boolean      $updateNulls  If false, null object variables are not updated
+	 * @return  null|string  Null if successful otherwise returns and error message
 	 */
 	public function store($updateNulls=false)
 	{
@@ -227,19 +158,22 @@ class TagsTableTag extends JTable
 		}
 
 		$result = parent::store($updateNulls);
+
 		if ($result)
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'log.php');
+			require_once(__DIR__ . DS . 'log.php');
+
 			$log = new TagsTableLog($this->_db);
 			$log->log($this->$k, $action);
 		}
+
 		return $result;
 	}
 
 	/**
 	 * Check if a tag already exists
 	 *
-	 * @return     boolean True if tag exists, false if not
+	 * @return  boolean  True if tag exists, false if not
 	 */
 	public function checkExistence()
 	{
@@ -258,15 +192,13 @@ class TagsTableTag extends JTable
 	/**
 	 * Get the number of times a tag was used
 	 *
-	 * @param      integer $tagid Tag ID
-	 * @return     integer
+	 * @param   integer  $tagid  Tag ID
+	 * @return  integer
 	 */
 	public function getUsage($tagid=NULL)
 	{
-		if (!$tagid)
-		{
-			$tagid = $this->id;
-		}
+		$tagid = $tagid ?: $this->id;
+
 		if (!$tagid)
 		{
 			return null;
@@ -279,10 +211,10 @@ class TagsTableTag extends JTable
 	/**
 	 * Get the number of tags on an object
 	 *
-	 * @param      integer $tagid    Tag ID
-	 * @param      integer $objectid Object ID
-	 * @param      string  $tbl      Object type
-	 * @return     integer
+	 * @param   integer  $tagid     Tag ID
+	 * @param   integer  $objectid  Object ID
+	 * @param   string   $tbl       Object type
+	 * @return  integer
 	 */
 	public function getUsageForObject($tagid=null, $objectid=null, $tbl=null)
 	{
@@ -293,7 +225,7 @@ class TagsTableTag extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     True if data is valid
+	 * @return  True if data is valid
 	 */
 	public function check()
 	{
@@ -324,8 +256,8 @@ class TagsTableTag extends JTable
 	 * Normalize a raw tag
 	 * Strips all non-alphanumeric characters
 	 *
-	 * @param      string $tag Raw tag
-	 * @return     string
+	 * @param   string  $tag  Raw tag
+	 * @return  string
 	 */
 	public function normalize($tag)
 	{
@@ -387,8 +319,8 @@ class TagsTableTag extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to determien hwo to build query
+	 * @return  string  SQL
 	 */
 	public function buildQuery($filters)
 	{
@@ -427,8 +359,8 @@ class TagsTableTag extends JTable
 		else
 		{
 			$query = "SELECT DISTINCT t.id, t.tag, t.raw_tag, t.admin, t.created,
-						(SELECT COUNT(*) FROM #__tags_object AS tt WHERE tt.tagid=t.id) AS total,
-						(SELECT COUNT(*) FROM #__tags_substitute AS s WHERE s.tag_id=t.id) AS substitutes";
+						(SELECT COUNT(*) FROM `#__tags_object` AS tt WHERE tt.tagid=t.id) AS total,
+						(SELECT COUNT(*) FROM `#__tags_substitute` AS s WHERE s.tag_id=t.id) AS substitutes";
 		}
 		$tj = new TagsTableObject($this->_db);
 
@@ -446,7 +378,7 @@ class TagsTableTag extends JTable
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			$query .= " LEFT JOIN #__tags_substitute AS sb ON sb.tag_id=t.id";
+			$query .= " LEFT JOIN `#__tags_substitute` AS sb ON sb.tag_id=t.id";
 			// Used to also query using unfiltered search text agains the rawtag and the tag.
 			// Figured this was safer
 			$where[] = "(LOWER(t.`raw_tag`) LIKE " . $this->_db->quote($filters['search'] . '%') . " OR LOWER(sb.`raw_tag`) LIKE " . $this->_db->quote($filters['search'] . '%') . ")";
@@ -534,8 +466,8 @@ class TagsTableTag extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     integer
+	 * @param   array    $filters  Filters to determien hwo to build query
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -550,8 +482,8 @@ class TagsTableTag extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     array
+	 * @param   array  $filters  Filters to determien hwo to build query
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -562,10 +494,10 @@ class TagsTableTag extends JTable
 	/**
 	 * Get tags for an object
 	 *
-	 * @param      string  $tbl      Object type
-	 * @param      integer $state    Object state
-	 * @param      integer $objectid Object ID
-	 * @return     array
+	 * @param   string   $tbl       Object type
+	 * @param   integer  $state     Object state
+	 * @param   integer  $objectid  Object ID
+	 * @return  array
 	 */
 	public function getCloud($tbl='', $state=0, $objectid=0)
 	{
@@ -600,14 +532,14 @@ class TagsTableTag extends JTable
 	/**
 	 * Search for tags containing the search string
 	 *
-	 * @param      array $filters Params for building the query
-	 * @return     array
+	 * @param   array  $filters  Params for building the query
+	 * @return  array
 	 */
 	public function getAutocomplete($filters=array())
 	{
 		$query = "SELECT DISTINCT t.id, t.tag, t.raw_tag
 					FROM $this->_tbl AS t
-					LEFT JOIN #__tags_substitute AS s ON s.tag_id=t.id
+					LEFT JOIN `#__tags_substitute` AS s ON s.tag_id=t.id
 					WHERE";
 		if (isset($filters['admin']) && $filters['admin'])
 		{
@@ -627,18 +559,15 @@ class TagsTableTag extends JTable
 	/**
 	 * Get a list of all tags
 	 *
-	 * @param      boolean $authorized Administrator?
-	 * @return     array
+	 * @param   boolean  $authorized  Administrator?
+	 * @return  array
 	 */
 	public function getAllTags($authorized=false)
 	{
+		$filter = "";
 		if (!$authorized)
 		{
 			$filter = "WHERE admin=0 ";
-		}
-		else
-		{
-			$filter = "";
 		}
 
 		$query = "SELECT id, tag, raw_tag, admin, COUNT(*) as tcount
@@ -653,11 +582,11 @@ class TagsTableTag extends JTable
 	/**
 	 * Get the top used tags
 	 *
-	 * @param      integer $limit           Number of tags to get
-	 * @param      string  $tbl             Object type
-	 * @param      string  $order           Sort results by
-	 * @param      integer $exclude_private Exclude private objects?
-	 * @return     array
+	 * @param   integer  $limit            Number of tags to get
+	 * @param   string   $tbl              Object type
+	 * @param   string   $order            Sort results by
+	 * @param   integer  $exclude_private  Exclude private objects?
+	 * @return  array
 	 */
 	public function getTopTags($limit=25, $tbl='', $order='tcount DESC', $exclude_private=1)
 	{
@@ -692,9 +621,9 @@ class TagsTableTag extends JTable
 	/**
 	 * Get recently used tags
 	 *
-	 * @param      integer $limit Number of tags to find
-	 * @param      string  $order Sort results by
-	 * @return     array
+	 * @param   integer  $limit  Number of tags to find
+	 * @param   string   $order  Sort results by
+	 * @return  array
 	 */
 	public function getRecentTags($limit=25, $order='taggedon DESC', $exclude_private=1)
 	{
@@ -730,26 +659,23 @@ class TagsTableTag extends JTable
 	 * Get tags related to another tag
 	 * Relation is based off of number of uses on same objects
 	 *
-	 * @param      integer $id    ID of tag to find relations to
-	 * @param      integer $limit Number of tags to find
-	 * @return     mixed Array of tags if results found, null if not
+	 * @param   integer  $id     ID of tag to find relations to
+	 * @param   integer  $limit  Number of tags to find
+	 * @return  mixed    Array of tags if results found, null if not
 	 */
 	public function getRelatedTags($id=null, $limit=25)
 	{
-		if (!$id)
-		{
-			$id = $this->id;
-		}
+		$id = $id ?: $this->id;
+
 		if (!$id)
 		{
 			return null;
 		}
 
-		$this->_db->setQuery("SELECT objectid, tbl FROM #__tags_object WHERE tagid=" . $this->_db->Quote($id));
-		$objs = $this->_db->loadObjectList();
-		if ($objs)
+		$this->_db->setQuery("SELECT objectid, tbl FROM `#__tags_object` WHERE tagid=" . $this->_db->Quote($id));
+		if ($objs = $this->_db->loadObjectList())
 		{
-			$sql = "SELECT t.* FROM $this->_tbl AS t, #__tags_object AS tg WHERE t.id=tg.tagid AND tg.tagid != " . $this->_db->Quote($id) . " AND t.admin=0 AND (";
+			$sql = "SELECT t.* FROM `$this->_tbl` AS t, `#__tags_object` AS tg WHERE t.id=tg.tagid AND tg.tagid != " . $this->_db->Quote($id) . " AND t.admin=0 AND (";
 			$s = array();
 			foreach ($objs as $obj)
 			{
@@ -761,29 +687,24 @@ class TagsTableTag extends JTable
 			$this->_db->setQuery($sql);
 			return $this->_db->loadObjectList();
 		}
-		else
-		{
-			return null;
-		}
+
+		return null;
 	}
 
 	/**
 	 * Get all the substitutions for this tag
 	 *
-	 * @param      integer $tag_id   Tag ID
-	 * @param      boolean $asString Return results as string?
-	 * @param      integer $offset   Record offset
-	 * @param      integer $limit    Number of records to return (returns all if less than 1)
-	 * @return     mixed Array by default, string if $asString is set to true
+	 * @param   integer  $tag_id    Tag ID
+	 * @param   boolean  $asString  Return results as string?
+	 * @param   integer  $offset    Record offset
+	 * @param   integer  $limit     Number of records to return (returns all if less than 1)
+	 * @return  mixed    Array by default, string if $asString is set to true
 	 */
 	public function getSubstitutions($tag_id=null, $asString=false, $offset=0, $limit=0)
 	{
-		if (!$tag_id)
-		{
-			$tag_id = $this->id;
-		}
+		$tag_id = $tag_id ?: $this->id;
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
+		require_once(__DIR__ . DS . 'substitute.php');
 
 		$subs = new TagsTableSubstitute($this->_db);
 		if ($asString)
@@ -796,25 +717,23 @@ class TagsTableTag extends JTable
 	/**
 	 * Get all the substitutions for this tag
 	 *
-	 * @param      integer $tag_id   Tag ID
-	 * @param      boolean $asString Return results as string?
-	 * @param      integer $offset   Record offset
-	 * @param      integer $limit    Number of records to return (returns all if less than 1)
-	 * @return     mixed Array by default, string if $asString is set to true
+	 * @param   integer  $tag_id    Tag ID
+	 * @param   boolean  $asString  Return results as string?
+	 * @param   integer  $offset    Record offset
+	 * @param   integer  $limit     Number of records to return (returns all if less than 1)
+	 * @return  mixed    Array by default, string if $asString is set to true
 	 */
 	public function saveSubstitutions($tag_string='', $tag_id=null)
 	{
-		if (!$tag_id)
-		{
-			$tag_id = $this->id;
-		}
+		$tag_id = $tag_id ?: $this->id;
+
 		if (!$tag_id)
 		{
 			$this->setError(JText::_('Missing argument.'));
 			return false;
 		}
 
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'substitute.php');
+		require_once(__DIR__ . DS . 'substitute.php');
 
 		$ts = new TagsTableSubstitute($this->_db);
 		$subs = $ts->getRecords($tag_id);
@@ -871,9 +790,9 @@ class TagsTableTag extends JTable
 		$sql = "SELECT t.id FROM $this->_tbl AS t WHERE t.tag IN ('" . implode("','", $tags) . "')";
 		$this->_db->setQuery($sql);
 
-		if (($ids = $this->_db->loadObjectList()))
+		if ($ids = $this->_db->loadObjectList())
 		{
-			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'tables' . DS . 'object.php');
+			require_once(__DIR__ . DS . 'object.php');
 
 			$to = new TagsTableObject($this->_db);
 

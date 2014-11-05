@@ -38,59 +38,10 @@ defined('_JEXEC') or die('Restricted access');
 class TagsTableLog extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $tag_id    = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $timestamp = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $user_id   = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $action    = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $comments  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $actorid   = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -100,7 +51,7 @@ class TagsTableLog extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -130,15 +81,15 @@ class TagsTableLog extends JTable
 	/**
 	 * Get all records for a tag
 	 *
-	 * @param      integer $tag_id Tag ID
-	 * @return     array
+	 * @param   integer  $tag_id    Tag ID
+	 * @param   string   $action    Action taken
+	 * @param   string   $comments  Comments
+	 * @return  boolean
 	 */
 	public function log($tag_id=null, $action=null, $comments=null)
 	{
-		if (!$tag_id)
-		{
-			$tag_id = $this->tag_id;
-		}
+		$tag_id = $tag_id ?: $this->tag_id;
+
 		if (!$tag_id || !$action)
 		{
 			$this->setError(JText::_('Missing argument.'));
@@ -166,15 +117,13 @@ class TagsTableLog extends JTable
 	/**
 	 * Get all records for a tag
 	 *
-	 * @param      integer $tag_id Tag ID
-	 * @return     array
+	 * @param   integer  $tag_id  Tag ID
+	 * @return  array
 	 */
 	public function getLogs($tag_id=null)
 	{
-		if (!$tag_id)
-		{
-			$tag_id = $this->tag_id;
-		}
+		$tag_id = $tag_id ?: $this->tag_id;
+
 		if (!$tag_id)
 		{
 			return null;
@@ -186,18 +135,16 @@ class TagsTableLog extends JTable
 	/**
 	 * Delete logs for a tag
 	 *
-	 * @param      integer $tag_id Tag ID
-	 * @return     boolean True on success
+	 * @param   integer  $tag_id  Tag ID
+	 * @return  boolean  True on success
 	 */
 	public function deleteLogs($tag_id=null)
 	{
+		$tag_id = $tag_id ?: $this->tag_id;
+
 		if (!$tag_id)
 		{
-			$tag_id = $this->tag_id;
-		}
-		if (!$tag_id)
-		{
-			return null;
+			return false;
 		}
 
 		$this->_db->setQuery("DELETE FROM $this->_tbl WHERE `tag_id`=" . $this->_db->Quote($tag_id));
@@ -206,13 +153,15 @@ class TagsTableLog extends JTable
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
+
+		return true;
 	}
 
 	/**
 	 * Format a log
 	 *
-	 * @param      object $log Database row (TagsTableLog)
-	 * @return     string
+	 * @param   object $log Database row (TagsTableLog)
+	 * @return  string
 	 */
 	public function formatLog($log=null)
 	{
@@ -225,8 +174,8 @@ class TagsTableLog extends JTable
 	/**
 	 * Build a query from filters
 	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to determien hwo to build query
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters)
 	{
@@ -261,19 +210,41 @@ class TagsTableLog extends JTable
 			$query .= implode(" AND ", $where);
 		}
 
-		if (!isset($filters['count']) || !$filters['count'])
-		{
-			if (!isset($filters['sort']) || $filters['sort'] == '')
-			{
-				$filters['sort'] = 'timestamp';
-			}
+		return $query;
+	}
 
-			if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
-			{
-				$filters['sort_Dir'] = 'DESC';
-			}
-			$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
+	/**
+	 * Get a record count
+	 *
+	 * @param   array    $filters  Filters to determien hwo to build query
+	 * @return  integer
+	 */
+	public function count($filters=array())
+	{
+		$this->_db->setQuery("SELECT COUNT(*)" . $this->_buildQuery($filters));
+		return $this->_db->loadResult();
+	}
+
+	/**
+	 * Get records
+	 *
+	 * @param   array  $filters  Filters to determien hwo to build query
+	 * @return  array
+	 */
+	public function find($filters=array())
+	{
+		$query = "SELECT o.*" . $this->_buildQuery($filters);
+
+		if (!isset($filters['sort']) || $filters['sort'] == '')
+		{
+			$filters['sort'] = 'timestamp';
 		}
+
+		if (!isset($filters['sort_Dir']) || !in_array(strtoupper($filters['sort_Dir']), array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'DESC';
+		}
+		$query .= " ORDER BY " . $filters['sort'] . " " . $filters['sort_Dir'];
 
 		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
 		{
@@ -284,33 +255,7 @@ class TagsTableLog extends JTable
 			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 		}
 
-		return $query;
-	}
-
-	/**
-	 * Get a record count
-	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     integer
-	 */
-	public function count($filters=array())
-	{
-		$filters['limit'] = 0;
-		$filters['count'] = true;
-
-		$this->_db->setQuery("SELECT COUNT(*)" . $this->_buildQuery($filters));
-		return $this->_db->loadResult();
-	}
-
-	/**
-	 * Get records
-	 *
-	 * @param      array $filters Filters to determien hwo to build query
-	 * @return     array
-	 */
-	public function find($filters=array())
-	{
-		$this->_db->setQuery("SELECT o.*" . $this->_buildQuery($filters));
+		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
 }
