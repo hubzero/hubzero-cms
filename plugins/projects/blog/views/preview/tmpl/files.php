@@ -89,6 +89,11 @@ if ($empty)
 		{
 			$style = $genStyle . 'background:' . $selected[$i]['color'] . ';';
 		}
+		if (count($selected) == 1)
+		{
+			// Single image - do not scale
+			$style .= 'background-size:contain !important;background-position: center;';
+		}
 	?>
 		<span style="<?php echo $style; ?>"></span>
 	<?php } ?>

@@ -962,6 +962,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 					{
 						$minHeight = $height;
 					}
+					if ($width > $maxWidth)
+					{
+						$maxWidth = $width;
+					}
 
 					$selected[] = $preview;
 				}
@@ -984,6 +988,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			)
 		);
 		$view->maxHeight	= $maxHeight;
+		$view->maxWidth		= $maxWidth;
 		$view->minHeight	= ($minHeight > 400) ? 400 : $minHeight;
 		$view->selected		= $selected;
 		$view->option 		= $this->_option;
