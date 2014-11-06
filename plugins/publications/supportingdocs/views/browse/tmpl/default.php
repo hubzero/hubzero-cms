@@ -43,31 +43,23 @@ $document->addStyleSheet('plugins' . DS . 'publications' . DS
 <?php
 if ($useBlocks)
 {
-	// Get primary elements
-	$elements = $this->publication->_curationModel->getElements(2);
+	// Get elements in primary and supporting role
+	$prime    = $this->publication->_curationModel->getElements(1);
+	$second   = $this->publication->_curationModel->getElements(2);
+	$elements = array_merge($prime, $second);
 
 	// Get attachment type model
 	$attModel = new PublicationsModelAttachments($database);
 
-	$attachments = $this->publication->_attachments;
-	$attachments = isset($attachments[2])
-				 ? $attachments[2] : NULL;
-
-	if ($elements && $attachments)
+	if ($elements)
 	{
-		foreach ($elements as $element)
-		{
-			// Draw button
-			$launcher = $attModel->drawLauncher(
-				$element->manifest->params->type,
-				$this->publication,
-				$element,
-				$elements,
-				$this->authorized
-			);
-
-			echo $launcher;
-		}
+		// Draw list
+		$list = $attModel->listItems(
+			$elements,
+			$this->publication,
+			$this->authorized
+		);
+		echo $list;
 	}
 	else
 	{
