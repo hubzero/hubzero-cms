@@ -86,9 +86,10 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
 
 		@media only screen and (max-device-width: 480px) {
-			/*body { -webkit-text-size-adjust: 140% !important; }*/
 			body {
-				font-size: 120%;
+				-webkit-text-size-adjust: 100% !important;
+				-ms-text-size-adjust: 100% !important;
+				font-size: 100% !important;
 			}
 			table.tbl-wrap,
 			table.tbl-wrap td.tbl-body {
@@ -98,7 +99,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 			table.tbl-header td {
 				width: auto !important;
 			}
-			table.tbl-header .mobilehide {
+			td.tbl-body .mobilehide {
 				display: none !important;
 			}
 		}

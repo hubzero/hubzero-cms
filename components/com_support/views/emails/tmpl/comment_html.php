@@ -105,9 +105,10 @@ switch ($this->ticket->get('severity'))
 		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
 
 		@media only screen and (max-device-width: 480px) {
-			/*body { -webkit-text-size-adjust: 140% !important; }*/
 			body {
-				font-size: 120%;
+				-webkit-text-size-adjust: 100% !important;
+				-ms-text-size-adjust: 100% !important;
+				font-size: 100% !important;
 			}
 			table.tbl-wrap,
 			table.tbl-wrap td.tbl-body {
@@ -117,12 +118,15 @@ switch ($this->ticket->get('severity'))
 			table.tbl-header td {
 				width: auto !important;
 			}
-			table.tbl-header .mobilehide {
+			td.tbl-body .mobilehide {
 				display: none !important;
 			}
 			#ticket-number {
 				float: none !important;
 				width: auto !important;
+			}
+			table#ticket-comments>tbody>tr>td {
+				padding: 0 !important;
 			}
 		}
 		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
@@ -242,7 +246,7 @@ switch ($this->ticket->get('severity'))
 																		-webkit-background-size: 30px 30px;
 																		-moz-background-size: 30px 30px;
 																		background-size: 30px 30px;">
-											<thead>
+											<thead class="mobilehide">
 												<tr>
 													<th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
 														<?php echo $this->escape($this->ticket->get('summary')); ?>
@@ -253,7 +257,7 @@ switch ($this->ticket->get('severity'))
 												<tr>
 													<td width="100%" style="padding: 8px;">
 														<div id="ticket-number" style="float: left; width: 5em; font-size: 2.5em; font-weight: bold; text-align: center; padding: 30px;" align="center">
-															#<?php echo $this->ticket->get('id'); ?>
+															<a href="<?php echo $link; ?>">#<?php echo $this->ticket->get('id'); ?></a>
 														</div>
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
@@ -277,10 +281,10 @@ switch ($this->ticket->get('severity'))
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_TAGS'); ?>:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->ticket->tags('string'); ?></td>
 																</tr>
-																<tr>
+																<?php /*<tr class="mobilehide">
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_LINK'); ?>:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
-																</tr>
+																</tr>*/ ?>
 															</tbody>
 														</table>
 													</td>
@@ -292,7 +296,7 @@ switch ($this->ticket->get('severity'))
 											<tbody>
 												<tr>
 													<th style="text-align: left;" align="left"><?php echo $this->comment->creator('name'); ?> (<?php echo $this->comment->creator('username'); ?>)</th>
-													<th class="timestamp" style="color: #999; text-align: right;" align="right"><?php echo  JText::sprintf('COM_SUPPORT_TICKET_CREATED', $this->comment->created('time'), $this->comment->created('date')); ?></th>
+													<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?php echo JText::sprintf('COM_SUPPORT_TICKET_CREATED', $this->comment->created('time'), $this->comment->created('date')); ?></span></th>
 												</tr>
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
@@ -364,7 +368,7 @@ switch ($this->ticket->get('severity'))
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo JText::sprintf('COM_SUPPORT_EMAIL_WHY_NOTFIED', $jconfig->getValue('config.sitename'), $link, $link, $juri->base(), $juri->base()); ?></span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo JText::sprintf('COM_SUPPORT_EMAIL_WHY_NOTFIED', $jconfig->getValue('config.sitename'), $link, '#' . $this->ticket->get('id'), $juri->base(), $juri->base()); ?></span>
 													</td>
 												</tr>
 											</tbody>

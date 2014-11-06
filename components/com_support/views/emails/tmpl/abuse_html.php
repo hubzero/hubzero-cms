@@ -86,9 +86,10 @@ $this->commentor = JFactory::getUser($this->reported->author);
 		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
 
 		@media only screen and (max-device-width: 480px) {
-			/*body { -webkit-text-size-adjust: 140% !important; }*/
 			body {
-				font-size: 120%;
+				-webkit-text-size-adjust: 100% !important;
+				-ms-text-size-adjust: 100% !important;
+				font-size: 100% !important;
 			}
 			table.tbl-wrap,
 			table.tbl-wrap td.tbl-body {
@@ -98,7 +99,7 @@ $this->commentor = JFactory::getUser($this->reported->author);
 			table.tbl-header td {
 				width: auto !important;
 			}
-			table.tbl-header .mobilehide {
+			td.tbl-body .mobilehide {
 				display: none !important;
 			}
 			#ticket-number {
@@ -249,7 +250,7 @@ $this->commentor = JFactory::getUser($this->reported->author);
 											<tbody>
 												<tr>
 													<th style="text-align: left;" align="left"><?php echo $this->commentor->get('name'); ?> (<?php echo $this->commentor->get('username'); ?>)</th>
-													<th class="timestamp" style="color: #999; text-align: right;" align="right">@ <?php echo JHTML::_('date', $this->reported->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->reported->created, JText::_('DATE_FORMAT_HZ1')); ?></th>
+													<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide">@ <?php echo JHTML::_('date', $this->reported->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->reported->created, JText::_('DATE_FORMAT_HZ1')); ?></span></th>
 												</tr>
 												<tr>
 													<td colspan="2" style="padding: 0 2em;">
