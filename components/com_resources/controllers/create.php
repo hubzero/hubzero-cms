@@ -707,6 +707,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 	{
 		// Initiate extended database class
 		$row = new ResourcesResource($this->database);
+		$row->load(JRequest::getInt('id', 0));
 		if (!$row->bind($_POST))
 		{
 			JError::raiseError(500, $row->getError());
@@ -724,13 +725,13 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$row->published = ($row->published) ? $row->published : 2;
+			$row->published = ($row->published ?: 2);
 		}
-		$row->publish_up   = ($row->publish_up) ? $row->publish_up : JFactory::getDate()->toSql();
-		$row->publish_down = '0000-00-00 00:00:00';
+		$row->publish_up   = ($row->publish_up   && $row->publish_up   != '0000-00-00 00:00:00' ?: JFactory::getDate()->toSql());
+		$row->publish_down = ($row->publish_down && $row->publish_down != '0000-00-00 00:00:00' ?: '0000-00-00 00:00:00');
 		$row->modified     = JFactory::getDate()->toSql();
 		$row->modified_by  = $this->juser->get('id');
-		$row->access	   = 0;
+		$row->access       = ($row->access ?: 0);
 
 		$row->fulltxt   = trim($row->fulltxt);
 		$row->introtext = $row->introtext
