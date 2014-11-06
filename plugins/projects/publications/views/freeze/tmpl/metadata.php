@@ -27,7 +27,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $required 		= (isset($this->manifest->params->required) && $this->manifest->params->required) ? true : false;
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
-$elName   		= 'element' . $this->elementId;
+$elName   		= 'description-element' . $this->elementId;
 $aliasmap 		= $this->manifest->params->aliasmap;
 $field 			= $this->manifest->params->field;
 $value 			= $this->pub && isset($this->pub->$field) ? $this->pub->$field : NULL;
@@ -36,32 +36,75 @@ $class 			= $value ? ' be-complete' : '';
 $size  			= isset($this->manifest->params->maxlength) && $this->manifest->params->maxlength
 				? 'maxlength="' . $this->manifest->params->maxlength . '"' : '';
 $placeholder 	= isset($this->manifest->params->placeholder)
-				? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
+			   	? 'placeholder="' . $this->manifest->params->placeholder . '"' : '';
 
 $editor			= $this->manifest->params->input == 'editor' ? 1 : 0;
+$aboutTxt 		= $this->manifest->adminTips
+				? $this->manifest->adminTips
+				: $this->manifest->about;
+
+$shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
+
+if ($shorten)
+{
+	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
+	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
+				. JText::_('COM_PUBLICATIONS_READ_MORE') . '</a>';
+	$about.= ' <div class="hidden">';
+	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
+	$about.= ' </div>';
+}
+else
+{
+	$about = $aboutTxt;
+}
+
+$props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
+
+// Build url
+$route = $this->pub->_project->provisioned
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
+
+$url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
+
+// Get curator status
+if ($this->name == 'curator') {
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'curator');
+}
 
 ?>
-
+<?php if ($this->name == 'curator') { ?>
 <div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
+echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?>">
+<?php } else { ?>
+	<div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
+	echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
+<?php } ?>
 	<!-- Showing status only -->
 	<div class="element_overview">
-		<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
-		<?php if (trim($value)) {
-			// Parse editor text
-			if ($editor)
-			{
-				$model = new PublicationsModelPublication($this->pub);
-				$value = $model->parse($aliasmap, $field, 'parsed');
-			}
-			else
-			{
-				$value = '<p>' . $value . '</p>';
-			}
-			?>
-			<?php echo $value ? '<div class="element-value">' . $value . '</div>' : '<p class="noresults">' . JText::_('PLG_PROJECTS_PUBLICATIONS_NO_VALUE') . '</p>'; ?>
-		<?php } else { ?>
-			<p class="noresults"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_NO_VALUE'); ?></p>
+		<?php if ($this->name == 'curator') { ?>
+		<div class="block-aside"><div class="block-info"><?php echo $about; ?></div></div>
+		<?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, $url, $this->manifest->label); ?>
+		<div class="block-subject">
+		<?php } ?>
+			<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
+			    <?php if ($this->name == 'curator') { $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); } ?>
+			<?php if ($value) {
+				// Parse editor text
+				if ($editor)
+				{
+					$model = new PublicationsModelPublication($this->pub);
+					$value = $model->parse($aliasmap, $field, 'parsed');
+				}
+				?>
+				<div class="element-value"><?php echo $value; ?></div>
+			<?php } else { ?>
+				<p class="noresults">No user input</p>
+			<?php } ?>
+		<?php if ($this->name == 'curator') { ?>
+		</div>
 		<?php } ?>
 	</div>
 </div>

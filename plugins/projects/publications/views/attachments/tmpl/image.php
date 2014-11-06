@@ -52,27 +52,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 		$file 	= ProjectsHtml::fixFileName(basename($data->path), '-' . $data->id);
 	}
 
-	$filePath  = $data->pubPath . DS . $file;
 	$thumbName = $ih->createThumbName($file, $suffix, $format);
-	$thumbPath = $data->pubPath . DS . $thumbName;
 
-	// No file found
-	if (!is_file($filePath))
-	{
-		return;
-	}
-
-	// Image src
-	if (is_file($thumbPath))
-	{
-		$thumbSrc = str_replace(JPATH_ROOT, '', $thumbPath);
-	}
-	else
-	{
-		$thumbSrc = $this->configs->defaultThumb;
-	}
-
-	$filePath = str_replace(JPATH_ROOT, '', $filePath);
+	$filePath = JRoute::_('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $file;
+	$thumbSrc = JRoute::_('index.php?option=com_publications&id=' . $data->pid . '&v=' . $data->vid) . '/Image:' . $thumbName;
 
 	// Is this image used for publication thumbail?
 	$class = $data->pubThumb == 1 ? ' starred' : '';

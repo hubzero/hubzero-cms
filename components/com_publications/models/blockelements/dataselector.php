@@ -72,15 +72,10 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 
 			break;
 
-			case 'curator':
-				$html = $this->drawCurationItem( $elementid, $manifest, $pub,
-						$status->elements->$elementid, $path, $master
-				);
-			break;
-
 			case 'freeze':
+			case 'curator':
 				$html = $this->drawItem( $elementid, $manifest, $pub,
-						$status->elements->$elementid, $path, $master
+						$status->elements->$elementid, $path, $master, $viewname
 				);
 			break;
 		}
@@ -93,7 +88,8 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 	 *
 	 * @return  object
 	 */
-	public function drawItem( $elementId, $manifest, $pub = NULL, $status = NULL, $path = NULL, $master = NULL)
+	public function drawItem( $elementId, $manifest, $pub = NULL,
+		$status = NULL, $path = NULL, $master = NULL, $viewname = 'freeze')
 	{
 		$layout = $manifest->params->type . 'selector';
 		$view = new \Hubzero\Plugin\View(
@@ -130,53 +126,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$view->attachments	 = $attachments;
 		$view->database		 = $this->_parent->_db;
 		$view->master		 = $master;
-
-		return $view->loadTemplate();
-	}
-
-	/**
-	 * Draw curation element
-	 *
-	 * @return  object
-	 */
-	public function drawCurationItem( $elementId, $manifest, $pub = NULL, $status = NULL, $path = NULL, $master = NULL)
-	{
-		$layout = $manifest->params->type . 'selector';
-
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=> 'projects',
-				'element'	=> 'publications',
-				'name'		=> 'curation',
-				'layout'	=>  $layout
-			)
-		);
-
-		// Get attachment type model
-		$attModel = new PublicationsModelAttachments($this->_parent->_db);
-
-		// Make sure we have attachments
-		if (!isset($pub->_attachments))
-		{
-			// Get attachments
-			$pContent = new PublicationAttachment( $this->_parent->_db );
-			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
-		}
-
-		// Get attached items
-		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
-		$attachments = $attModel->getElementAttachments($elementId, $attachments,
-					   $manifest->params->type, $manifest->params->role);
-
-		$view->path			 = $path;
-		$view->pub 			 = $pub;
-		$view->manifest		 = $manifest;
-		$view->status		 = $status;
-		$view->elementId	 = $elementId;
-		$view->attachments	 = $attachments;
-		$view->database		 = $this->_parent->_db;
-		$view->master		 = $master;
+		$view->name			 = $viewname;
 
 		return $view->loadTemplate();
 	}

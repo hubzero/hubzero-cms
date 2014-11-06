@@ -25,54 +25,100 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$error 			= $this->status->getError();
+
 $required 		= (isset($this->manifest->params->required) && $this->manifest->params->required) ? true : false;
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
-$max 	  		= $this->manifest->params->max;
+$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->sequence, $this->active, $this->elementId);
 
-$error 			= $this->status->getError();
+$aboutTxt 		= $this->manifest->adminTips
+				? $this->manifest->adminTips
+				: $this->manifest->about;
+
+$shorten = ($aboutTxt && strlen($aboutTxt) > 200) ? 1 : 0;
+
+if ($shorten)
+{
+	$about = \Hubzero\Utility\String::truncate($aboutTxt, 200);
+	$about.= ' <a href="#more-' . $elName . '" class="more-content">'
+				. JText::_('COM_PUBLICATIONS_READ_MORE') . '</a>';
+	$about.= ' <div class="hidden">';
+	$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutTxt . '</div>';
+	$about.= ' </div>';
+}
+else
+{
+	$about = $aboutTxt;
+}
+
+$props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
 
 $modelAttach = new PublicationsModelAttachmentLink();
 
-?>
+// Build url
+$route = $this->pub->_project->provisioned
+			? 'index.php?option=com_publications&task=submit'
+			: 'index.php?option=com_projects&alias='
+				. $this->pub->_project->alias . '&active=publications';
 
-<div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
+$url = $this->pub->id ? JRoute::_($route . '&pid=' . $this->pub->id) : JRoute::_($route);
+
+// Get curator status
+if ($this->name == 'curator') {
+$curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'curator');
+}
+
+?>
+<?php if ($this->name == 'curator') { ?>
+<div id="<?php echo $elName; ?>" class="blockelement fileselector<?php echo $required ? ' el-required' : ' el-optional';
+echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?> ">
+<?php } else { ?>
+	<div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
+	echo $complete ? ' el-complete' : ' el-incomplete'; ?>">
+<?php } ?>
 	<!-- Showing status only -->
 	<div class="element_overview">
-		<div>
-			<h5 class="element-title"><?php echo $this->manifest->label; ?> </h5>
-
-		<?php if (count($this->attachments) > 0) { ?>
-		<div class="list-wrapper">
-			<ul class="itemlist">
-		<?php	$i= 1; ?>
-				<?php foreach ($this->attachments as $att) {
-
-					$i++;
-
-					$data 			= new stdClass;
-					$data->row 		= $att;
-					$data->ordering = $i;
-					$data->editUrl  = NULL;
-					$data->id		= $att->id;
-					$data->viewer	= 'freeze';
-
-					// Draw attachment
-					echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams);
-				}
-			?>
-			</ul>
-			</div>
-		<?php } else {  ?>
-			<p class="noresults">No user input</p>
-		<?php } ?>
-
-			<?php if ($error || ($required && !$complete)) { ?>
-				<p class="witherror"><?php echo $error ? $error : JText::_('Missing required input'); ?></p>
-			<?php } else { ?>
-
-			<?php } ?>
+		<?php if ($this->name == 'curator') { ?>
+		<div class="block-aside"><div class="block-info"><?php echo $about; ?></div>
 		</div>
+		<?php echo $this->pub->_curationModel->drawChecker($props, $curatorStatus, $url, $this->manifest->label); ?>
+		<div class="block-subject">
+		<?php } ?>
+			<h5 class="element-title"><?php echo $this->manifest->label; ?></h5>
+			<?php if ($this->name == 'curator') { echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'curator', $elName); } ?>
+			<?php if (count($this->attachments) > 0) { ?>
+			<div class="list-wrapper">
+				<ul class="itemlist">
+			<?php	$i= 1; ?>
+					<?php foreach ($this->attachments as $att) {
+
+						$i++;
+
+						$data 			= new stdClass;
+						$data->row 		= $att;
+						$data->ordering = $i;
+						$data->editUrl  = NULL;
+						$data->id		= $att->id;
+						$data->props	= $props;
+						$data->viewer	= $this->name;
+
+						// Draw attachment
+						echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams);
+	 				} ?>
+				</ul>
+			</div>
+			<?php } elseif (!$required) {  ?>
+				<p class="noresults">No user input</p>
+			<?php } ?>
+
+				<?php if ($error || ($required && !$complete)) { ?>
+					<p class="witherror"><?php echo $error ? $error : JText::_('Missing required input'); ?></p>
+				<?php } else { ?>
+
+				<?php } ?>
+		<?php if ($this->name == 'curator') { ?>
+		</div>
+		<?php } ?>
 	</div>
 </div>

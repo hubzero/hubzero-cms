@@ -125,12 +125,9 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 
 			break;
 
-			case 'curator':
-				$html = $this->drawCurationItem( $elementid, $manifest, $pub, $status->elements->$elementid, $master);
-			break;
-
 			case 'freeze':
-				$html = $this->drawItem( $elementid, $manifest, $pub, $status->elements->$elementid, $master);
+			case 'curator':
+				$html = $this->drawItem( $elementid, $manifest, $pub, $status->elements->$elementid, $master, $viewname);
 			break;
 		}
 
@@ -142,7 +139,8 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 	 *
 	 * @return  object
 	 */
-	public function drawItem( $elementId, $manifest, $pub = NULL, $status = NULL, $master = NULL)
+	public function drawItem( $elementId, $manifest, $pub = NULL,
+		$status = NULL, $master = NULL, $viewname = 'freeze')
 	{
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -157,30 +155,7 @@ class PublicationsModelBlockElementMetadata extends PublicationsModelBlockElemen
 		$view->manifest		 = $manifest;
 		$view->status		 = $status;
 		$view->elementId	 = $elementId;
-
-		return $view->loadTemplate();
-	}
-
-	/**
-	 * Draw curation element
-	 *
-	 * @return  object
-	 */
-	public function drawCurationItem( $elementId, $manifest, $pub = NULL, $status = NULL, $master = NULL)
-	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'curation',
-				'layout'	=>'metadata'
-			)
-		);
-
-		$view->pub 			 = $pub;
-		$view->manifest		 = $manifest;
-		$view->status		 = $status;
-		$view->elementId	 = $elementId;
+		$view->name			 = $viewname;
 		$view->master		 = $master;
 
 		return $view->loadTemplate();

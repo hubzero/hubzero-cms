@@ -222,6 +222,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming && $thi
 					$data->editUrl  = $editUrl;
 					$data->id		= $att->id;
 					$data->props	= $props;
+					$data->pid		= $this->pub->id;
+					$data->vid		= $this->pub->version_id;
 
 					$data->projectPath = $this->path;
 					$data->git		   = $git;
@@ -229,7 +231,6 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming && $thi
 					$data->md5		   = $att->content_hash;
 					$data->viewer	   = 'edit';
 					$data->allowRename = $allowRename;
-
 					$data->downloadUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
 										. $this->pub->id . '&v=' . $this->pub->version_number )
 										. '?el=' . $this->elementId . a . 'a=' . $att->id . a . 'download=1';
