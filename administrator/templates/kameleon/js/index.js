@@ -135,7 +135,7 @@ smaller area with "overflow: scroll" enabled?
 			notice.fadeOut({duration:jQuery.growl.settings.noticeFadeTimeout, complete: callback});
 		},
 		noticeFadeTimeout: 'slow',
-		displayTimeout: 1500,
+		displayTimeout: 2000,
 		defaultImage: 'growl.jpg',
 		defaultStylesheet: null,
 		noticeElement: function(el) {
@@ -173,7 +173,7 @@ jQuery(document).ready(function($){
 	// Apply Uniform to make buttons, selects, etc. look consistent
 	$("select, input[type=file]").uniform();
 
-	/* // Display the nints and required badge when field is focused
+	/* // Display the hints and required badge when field is focused
 	if ($('#item-form').length) {
 		$('#item-form input').each(function(i, el){
 			if ($(el).is(":focus")) {
@@ -193,6 +193,13 @@ jQuery(document).ready(function($){
 	if (msg.length && msg.html().replace(/\s+/, '') != '') {
 		if (msg.find('dd.error, dd.warning').length) {
 			$.growl.settings.displayTimeout = 0;
+		} else {
+			msg.find('dd.message').each(function(i, el) {
+				var tm = ($(el).text().length * 10) + 500;
+				if (tm > 2000) {
+					$.growl.settings.displayTimeout = tm;
+				}
+			});
 		}
 		$.growl('', msg.html());
 	}
