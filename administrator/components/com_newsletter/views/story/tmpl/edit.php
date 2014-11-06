@@ -63,7 +63,7 @@ $editor = JEditor::getInstance();
 				</tr>
 				<tr>
 					<td class="key"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
-					<td><input type="text" name="story[title]" value="<?php echo $this->story->title; ?>" style="width:100%" /></td>
+					<td><input type="text" name="story[title]" value="<?php echo $this->escape($this->story->title); ?>" style="width:100%" /></td>
 				</tr>
 				<?php if ($this->story->id) : ?>
 					<tr>
@@ -90,7 +90,7 @@ $editor = JEditor::getInstance();
 					<td>
 						<?php
 							$params = array("full_paths"=>true);
-							echo $editor->display("story[story]", stripslashes($this->story->story), '100%', '300px', '50', '10', true, '', '', '', $params);
+							echo $editor->display("story[story]", $this->escape($this->story->story), '100%', '300px', '50', '10', true, '', '', '', $params);
 						?>
 					</td>
 				</tr>
