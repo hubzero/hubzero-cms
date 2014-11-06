@@ -739,7 +739,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$tab = 'about';
 		}
-		
+
 		// Get parameters and merge with the component params
 		$rparams = new JParameter( $publication->params );
 		$params = $this->config;
