@@ -32,7 +32,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } else { ?>
-	<?php if($this->file && $this->gallery_path && $this->thumb) { ?>
+	<?php if ($this->file && $this->gallery_path && $this->thumb) { ?>
 	<form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 			<fieldset >
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
@@ -46,7 +46,7 @@ if ($this->getError()) {
 				<input type="hidden" name="move" value="<?php echo $this->move; ?>" />
 				<input type="hidden" name="selections" id="ajax-selections" value="" />
 				<input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->provisioned == 1 ? 1 : 0; ?>" />
-				<?php if($this->project->provisioned == 1 ) { ?>
+				<?php if ($this->project->provisioned == 1 ) { ?>
 				<input type="hidden" name="task" value="submit" />
 				<?php } ?>
 			</fieldset>
@@ -54,11 +54,14 @@ if ($this->getError()) {
 		<div class="g-ima"><img src="<?php echo $this->gallery_path.DS.$this->thumb; ?>" /></div>
 		<div class="g-title">
 				<span class="g-filename"><span class="leftshift faded"><?php echo $this->type == 'image' ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_IMAGE')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_FILE')); ?>:</span><?php echo $this->ima; ?></span>
-				<label for="title"><span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_TITLE')); ?>:</span>
-				<input type="text" name="title" class="long" maxlength="80" value="<?php echo $this->shot->title; ?>"  /></label>
+				<div class="clear"></div>
+				<label class="display_inline">
+					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_TITLE')); ?>:</span>
+					<input type="text" name="title" class="long" maxlength="250" value="<?php echo $this->shot->title; ?>"  />
+				</label>
 				<p class="submitarea">
 				<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
-				<?php if($this->ajax) { ?>
+				<?php if ($this->ajax) { ?>
 				<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 				<?php } else {
 					$rtn = JRequest::getVar('HTTP_REFERER', $this->url, 'server');
@@ -71,7 +74,7 @@ if ($this->getError()) {
 	</form>
 	<div class="clear"></div>
 
-	<?php if($this->type == 'image') { ?>
+	<?php if ($this->type == 'image') { ?>
 	<div id="gallery-preview">
 		<img src="<?php echo $this->gallery_path.DS.$this->file; ?>" />
 	</div>
