@@ -53,7 +53,7 @@ $options = array();
 					<?php foreach ($this->reports as $report) : ?>
 						<?php $options[] = JHTML::_('select.option', $report->name, ucwords($report->name), 'value', 'text'); ?>
 					<?php endforeach; ?>
-					<?php echo JHTML::_('select.genericlist', $options, 'report_type', null); ?>
+					<?php echo JHTML::_('select.genericlist', $options, 'report_type', null, 'value', 'text', $this->report_type); ?>
 					<button class="btn btn-success"><?php echo JText::_('COM_TIME_REPORTS_BEGIN'); ?></button>
 				</form>
 			</div>
