@@ -31,6 +31,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
 //JHTML::_('behavior.chart', 'resize');
+
+JHTML::_('behavior.chart');
 ?>
 <div class="<?php echo $this->module->module; ?>">
 	<div id="container<?php echo $this->module->id; ?>" class="chart" style="min-width: 400px; height: 200px;"></div>
