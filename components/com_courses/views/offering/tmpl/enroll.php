@@ -30,24 +30,44 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
-
-$base = 'index.php?option=' . $this->option . '&controller=course&gid=' . $this->course->get('alias');
 ?>
 <header id="content-header">
 	<h2>
 		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 	</h2>
-	<div id="content-header-extra">
-		<p>
-			<a class="icon-browse btn" href="<?php echo JRoute::_($base); ?>">
-				<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
-			</a>
+
+	<?php if ($logo = $this->course->logo('url')) { ?>
+		<p class="course-identity">
+			<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
 		</p>
-	</div>
+	<?php } ?>
+
+	<p id="page_identity">
+		<a class="prev" href="<?php echo JRoute::_($this->course->link()); ?>">
+			<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
+		</a>
+		<strong>
+			<?php echo JText::_('COM_COURSES_OFFERING'); ?>:
+		</strong>
+		<span>
+			<?php echo $this->escape(stripslashes($this->course->offering()->get('title'))); ?>
+		</span>
+		<strong>
+			<?php echo JText::_('COM_COURSES_SECTION'); ?>:
+		</strong>
+		<span>
+			<?php echo $this->escape(stripslashes($this->course->offering()->section()->get('title'))); ?>
+		</span>
+	</p>
 </header>
 
 <section class="main section">
 	<div class="section-inner">
 		<p><?php echo JText::_('COM_COURSES_ENROLLMENT_ACHIEVED'); ?></p>
+		<p>
+			<a class="icon-browse btn" href="<?php echo JRoute::_($this->course->link()); ?>">
+				<?php echo JText::_('COM_COURSES_COURSE_OVERVIEW'); ?>
+			</a>
+		</p>
 	</div>
 </section>

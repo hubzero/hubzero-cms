@@ -38,10 +38,10 @@ $this->css('offering');
 		<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 	</h2>
 
-	<?php if ($logo = $this->course->logo()) { ?>
-	<p class="course-identity">
-		<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
-	</p>
+	<?php if ($logo = $this->course->logo('url')) { ?>
+		<p class="course-identity">
+			<img src="<?php echo $logo; ?>" alt="<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>" />
+		</p>
 	<?php } ?>
 
 	<p id="page_identity">
