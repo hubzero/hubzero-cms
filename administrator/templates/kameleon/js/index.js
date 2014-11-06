@@ -135,7 +135,7 @@ smaller area with "overflow: scroll" enabled?
 			notice.fadeOut({duration:jQuery.growl.settings.noticeFadeTimeout, complete: callback});
 		},
 		noticeFadeTimeout: 'slow',
-		displayTimeout: 1500,
+		displayTimeout: 2000,
 		defaultImage: 'growl.jpg',
 		defaultStylesheet: null,
 		noticeElement: function(el) {
