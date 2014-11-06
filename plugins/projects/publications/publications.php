@@ -1039,6 +1039,7 @@ class plgProjectsPublications extends JPlugin
 		$view->config 		= $this->_config;
 		$view->choices 		= $choices;
 		$view->title		= $this->_area['title'];
+		$view->useBlocks    = $this->useBlocks;
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -1674,6 +1675,7 @@ class plgProjectsPublications extends JPlugin
 		$view->config 		= $this->_config;
 		$view->choices 		= $choices;
 		$view->title		= $this->_area['title'];
+		$view->useBlocks    = $this->useBlocks;
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -3208,6 +3210,7 @@ class plgProjectsPublications extends JPlugin
 				$row->secret = $code;
 
 				$row->params = 'stage=content'."\n";
+
 				if (!$row->store())
 				{
 					// Roll back
@@ -3940,6 +3943,12 @@ class plgProjectsPublications extends JPlugin
 			{
 				$row->removeMainFlag($main_vid);
 			}
+
+			// Mark as curated
+			if ($state == 1)
+			{
+				$row->saveParam($row->id, 'curated', 1);
+			}
 		}
 
 		// OnAfterPublish
@@ -4385,6 +4394,12 @@ class plgProjectsPublications extends JPlugin
 				if ($main && $main_vid && $main_vid != $row->id)
 				{
 					$row->removeMainFlag($main_vid);
+				}
+
+				// Mark as uncurated
+				if ($state == 1 && isset($this->useBlocks) && !$this->useBlocks)
+				{
+					$row->saveParam($row->id, 'curated', 2);
 				}
 
 				// Finalize attachments for publication
