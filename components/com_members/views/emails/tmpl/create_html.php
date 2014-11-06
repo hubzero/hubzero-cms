@@ -69,37 +69,25 @@ $jconfig = JFactory::getConfig();
 		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
 
 		@media only screen and (max-device-width: 480px) {
-			/*body { -webkit-text-size-adjust: 140% !important; }*/
-			/* Step 1: Reset colors */
-			a[href^="tel"], a[href^="sms"] {
-				text-decoration: none;
-				color: #333; /* or whatever your want */
-				pointer-events: none;
-				cursor: default;
+			body {
+				-webkit-text-size-adjust: 100% !important;
+				-ms-text-size-adjust: 100% !important;
+				font-size: 100% !important;
 			}
-			/* Step 2: Set colors for inteded items */
-			.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-				text-decoration: default;
-				color: #0fa1ca !important;
-				pointer-events: auto;
-				cursor: default;
+			table.tbl-wrap,
+			table.tbl-wrap td.tbl-body {
+				width: auto !important;
+				margin: 0 2em !important;
+			}
+			table.tbl-header td {
+				width: auto !important;
+			}
+			td.tbl-body .mobilehide {
+				display: none !important;
 			}
 		}
 		@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
 			/* tablets, smaller screens, etc */
-			/* Step 1a: Repeating for the iPad */
-			a[href^="tel"], a[href^="sms"] {
-				text-decoration: none;
-				color: #333;
-				pointer-events: none;
-				cursor: default;
-			}
-			.mobile_link a[href^="tel"], .mobile_link a[href^="sms"] {
-				text-decoration: default;
-				color: #0fa1ca !important;
-				pointer-events: auto;
-				cursor: default;
-			}
 		}
 		</style>
 
@@ -129,14 +117,14 @@ $jconfig = JFactory::getConfig();
 					<td bgcolor="#ffffff" align="center" style="border-collapse: collapse;">
 
 						<!-- Start Content Wrapper Table -->
-						<table width="670" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+						<table class="tbl-wrap" width="670" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
 							<tbody>
 								<tr style="border-collapse: collapse;">
 									<td bgcolor="#ffffff" width="10" style="border-collapse: collapse;"></td>
-									<td bgcolor="#ffffff" width="650" align="left" style="border-collapse: collapse;">
+									<td class="tbl-body" bgcolor="#ffffff" width="650" align="left" style="border-collapse: collapse;">
 
 										<!-- Start Header Spacer -->
-										<table  width="650" cellpadding="0" cellspacing="0" border="0">
+										<table  width="100%" cellpadding="0" cellspacing="0" border="0">
 											<tr style="border-collapse: collapse;">
 												<td height="30" style="border-collapse: collapse;"></td>
 											</tr>
@@ -144,13 +132,13 @@ $jconfig = JFactory::getConfig();
 										<!-- End Header Spacer -->
 
 										<!-- Start Header -->
-										<table cellpadding="2" cellspacing="3" border="0" width="100%" style="border-collapse: collapse; border-bottom: 2px solid #e1e1e1;">
+										<table class="tbl-header" cellpadding="2" cellspacing="3" border="0" width="100%" style="border-collapse: collapse; border-bottom: 2px solid #e1e1e1;">
 											<tbody>
 												<tr>
 													<td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
 														<?php echo $jconfig->getValue('config.sitename'); ?>
 													</td>
-													<td width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
+													<td class="mobilehide" width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
 														<span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
 															<a href="<?php echo $this->baseURL; ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?php echo $this->baseURL; ?></a>
 														</span>
@@ -166,7 +154,7 @@ $jconfig = JFactory::getConfig();
 										<!-- End Header -->
 
 										<!-- Start Header Spacer -->
-										<table  width="650" cellpadding="0" cellspacing="0" border="0">
+										<table  width="100%" cellpadding="0" cellspacing="0" border="0">
 											<tr style="border-collapse: collapse;">
 												<td height="30" style="border-collapse: collapse;"></td>
 											</tr>
@@ -208,7 +196,7 @@ $jconfig = JFactory::getConfig();
 										<!-- ====== End Header ====== -->
 
 										<!-- ====== Start Header Spacer ====== -->
-										<table  width="670" cellpadding="0" cellspacing="0" border="0">
+										<table  width="100%" cellpadding="0" cellspacing="0" border="0">
 											<tr style="border-collapse: collapse;">
 												<td height="30" style="border-collapse: collapse;"></td>
 											</tr>
@@ -255,7 +243,7 @@ $jconfig = JFactory::getConfig();
 										</table>
 
 										<!-- Start Footer Spacer -->
-										<table width="650" cellpadding="0" cellspacing="0" border="0">
+										<table width="100%" cellpadding="0" cellspacing="0" border="0">
 											<tr style="border-collapse: collapse;">
 												<td height="30" style="border-collapse: collapse;"></td>
 											</tr>
@@ -263,7 +251,7 @@ $jconfig = JFactory::getConfig();
 										<!-- End Footer Spacer -->
 
 										<!-- Start Header -->
-										<table width="650" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse; border-top: 2px solid #e1e1e1;">
+										<table width="100%" cellpadding="2" cellspacing="3" border="0" style="border-collapse: collapse; border-top: 2px solid #e1e1e1;">
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
@@ -275,7 +263,7 @@ $jconfig = JFactory::getConfig();
 										<!-- End Header -->
 
 										<!-- Start Footer Spacer -->
-										<table width="650" cellpadding="0" cellspacing="0" border="0">
+										<table width="100%" cellpadding="0" cellspacing="0" border="0">
 											<tbody>
 												<tr style="border-collapse: collapse;">
 													<td height="30" style="border-collapse: collapse; color: #fff !important;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
