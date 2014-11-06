@@ -113,6 +113,13 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 			{
 				// Load from gallery
 				$source = $path . DS . 'gallery' . DS . $file;
+
+				// Default image
+				if (!is_file(JPATH_ROOT . DS . $source))
+				{
+					$source = $this->config->get('gallery_thumb',
+					 	'/components/com_publications/assets/img/gallery_thumb.gif');
+				}
 			}
 		}
 
