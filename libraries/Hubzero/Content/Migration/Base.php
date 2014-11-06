@@ -1027,20 +1027,21 @@ class Base
 	/**
 	 * Remove module entries from the appropriate table, depending on the Joomla version
 	 *
-	 * @param $name - (string) plugin name
+	 * @param $name   - (string) plugin name
+	 * @param $client - (int)    client (site=0, admin=1)
 	 * @return bool
 	 **/
-	public function deleteModuleEntry($element)
+	public function deleteModuleEntry($element, $client=null)
 	{
 		if ($this->baseDb->tableExists('#__extensions'))
 		{
 			// Delete module entry
-			$query = "DELETE FROM `#__extensions` WHERE `element` = '{$element}'";
+			$query = "DELETE FROM `#__extensions` WHERE `element` = '{$element}'" . ((isset($client)) ? " AND `client_id` = " . $this->baseDb->quote($client) : '');
 			$this->baseDb->setQuery($query);
 			$this->baseDb->query();
 
 			// See if entries are present in #__modules table as well
-			$query = "SELECT `id` FROM `#__modules` WHERE `module` = '{$element}'";
+			$query = "SELECT `id` FROM `#__modules` WHERE `module` = '{$element}'" . ((isset($client)) ? " AND `client_id` = " . $this->baseDb->quote($client) : '');
 			$this->baseDb->setQuery($query);
 			$ids = $this->baseDb->loadColumn();
 
@@ -1058,7 +1059,7 @@ class Base
 		}
 		else
 		{
-			$query = "SELECT `id` FROM `#__modules` WHERE `module` = '{$element}'";
+			$query = "SELECT `id` FROM `#__modules` WHERE `module` = '{$element}'" . ((isset($client)) ? " AND `client_id` = " . $this->baseDb->quote($client) : '');
 			$this->baseDb->setQuery($query);
 			$ids = $this->baseDb->loadColumn();
 
