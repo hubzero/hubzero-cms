@@ -105,7 +105,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 
 						// Draw attachment
 						echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams);
-	 				} ?>
+					} ?>
 				</ul>
 			</div>
 			<?php } elseif (!$required) {  ?>
