@@ -132,20 +132,22 @@ class plgCronSupport extends JPlugin
 		if (is_object($params))
 		{
 			$statuses = array();
-			if ($params->get('support_ticketpending_waiting', 1))
+			if (is_numeric($params->get('support_ticketpending_status1')))
 			{
-				$statuses[] = '2';
+				$statuses[] = $params->get('support_ticketpending_status1');
 			}
-			if ($params->get('support_ticketpending_new', 0))
+			if (is_numeric($params->get('support_ticketpending_status2')))
 			{
-				$statuses[] = '0';
+				$statuses[] = $params->get('support_ticketpending_status2');
 			}
-			if ($params->get('support_ticketpending_accepted', 0))
+			if (is_numeric($params->get('support_ticketpending_status3')))
 			{
-				$statuses[] = '1';
+				$statuses[] = $params->get('support_ticketpending_status3');
 			}
-
-			$where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
+			if (count($statuses))
+			{
+				$where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
+			}
 
 			if ($group = $params->get('support_ticketpending_group'))
 			{
@@ -500,20 +502,23 @@ class plgCronSupport extends JPlugin
 			}
 
 			$statuses = array();
-			if ($params->get('support_ticketlist_waiting', 1))
+			if (is_numeric($params->get('support_ticketlist_status1')))
 			{
-				$statuses[] = '2';
+				$statuses[] = $params->get('support_ticketlist_status1');
 			}
-			if ($params->get('support_ticketlist_new', 1))
+			if (is_numeric($params->get('support_ticketlist_status2')))
 			{
-				$statuses[] = '0';
+				$statuses[] = $params->get('support_ticketlist_status2');
 			}
-			if ($params->get('support_ticketlist_accepted', 1))
+			if (is_numeric($params->get('support_ticketlist_status3')))
 			{
-				$statuses[] = '1';
+				$statuses[] = $params->get('support_ticketlist_status3');
 			}
 
-			$where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
+			if (count($statuses))
+			{
+				$where[] = "t.`status` IN (" . implode(',', $statuses) . ")";
+			}
 
 			if ($group = $params->get('support_ticketlist_group'))
 			{
@@ -755,7 +760,7 @@ class plgCronSupport extends JPlugin
 			$sql .= " WHERE " . implode(" AND ", $where);
 		}
 		$sql .= " ORDER BY t.`created` ASC LIMIT 0, 500";
-		//echo $sql;
+
 		$database->setQuery($sql);
 		if (!($results = $database->loadObjectList()))
 		{
