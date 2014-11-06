@@ -407,6 +407,12 @@ class ToolsControllerSessions extends \Hubzero\Component\SiteController
 							break;
 						}
 
+						// Fail if whitelist is empty
+						if (empty($params_whitelist))
+						{
+							break;
+						}
+
 						// Fail if $value isn't prefixed with a whitelisted directory
 						foreach ($params_whitelist as $wl)
 						{
