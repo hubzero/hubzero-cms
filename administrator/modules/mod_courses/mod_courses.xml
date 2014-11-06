@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           administrator/modules/mod_resources/mod_resources.xml
+@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2014 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension type="module" version="1.5" client="administrator">
+	<name>Courses</name>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<description>This module shows on the Admin area Home Page and displays items that administrator needs to watch for.</description>
+	<files>
+		<filename module="mod_courses">mod_courses.php</filename>
+		<filename>courses.css</filename>
+		<filename>index.html</filename>
+		<filename>tmpl/default.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="cache" type="list" default="1" label="MOD_COURSES_CACHE_LABEL" description="MOD_COURSES_CACHE_DESC">
+					<option value="1">MOD_COURSES_CACHE_GLOBAL</option>
+					<option value="0">MOD_COURSES_CACHE_NONE</option>
+				</field>
+			</fieldset>
+			<fieldset name="colors">
+				<field name="color_published" type="text" default="#656565" label="MOD_COURSES_COLOR_PUBLISHED_LABEL" description="MOD_COURSES_COLOR_PUBLISHED_DESC" />
+				<field name="color_draft" type="text" default="#999999" label="MOD_COURSES_COLOR_DRAFT_LABEL" description="MOD_COURSES_COLOR_DRAFT_DESC" />
+				<field name="color_archived" type="text" default="#cccccc" label="MOD_COURSES_COLOR_ARCHIVED_LABEL" description="MOD_COURSES_COLOR_ARCHIVED_DESC" />
+				<field name="color_unpublished" type="text" default="#ffffff" label="MOD_COURSES_COLOR_UNPUBLISHED_LABEL" description="MOD_COURSES_COLOR_UNPUBLISHED_DESC" />
+			</fieldset>
+		</fields>
+	</config>
+</extension>

@@ -1,0 +1,83 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_courses/assets/css/mod_courses.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+	.mod_courses {
+		padding: 1.618em;
+		position: relative;
+	}
+	.mod_courses .legend table,
+	.mod_courses .legend table thead tr,
+	.mod_courses .legend table thead th,
+	.mod_courses .legend table tbody tr,
+	.mod_courses .legend table tbody td {
+		border: none;
+		background: transparent;
+	}
+	.mod_courses .legend table {
+		width: auto;
+	}
+	.mod_courses .legend table tbody td {
+		padding: 0.2em;
+	}
+
+	.mod_courses .courses-stats-overview {
+		margin: 0.618em 0 0 0;
+		padding: 2.218em 0 0 0;
+		table-layout: fixed;
+	}
+	.mod_courses .courses-stats-overview {
+		padding: 1.218em 0 0 0;
+		table-layout: fixed;
+	}
+	.mod_courses .courses-stats-overview tbody tr td,
+	.mod_courses .courses-stats-overview tbody tr td:first-child {
+		text-align: center;
+		font-size: 1.1em;
+		font-weight: 300;
+		padding: 0;
+		border: none;
+	}
+	.mod_courses .courses-stats-overview tbody tr td a {
+		color: #444;
+	}
+	.mod_courses .courses-stats-overview tbody tr td.pending a {
+		color: orange;
+	}
+	.mod_courses .courses-stats-overview tbody tr td span {
+		font-weight: 400;
+		color: #999;
+	}
+	.mod_courses .courses-stats-overview tbody tr td.published-items a {
+		color: orange;
+	}
+
+/* Hero */
+	.hero .mod_courses .courses-stats-overview tbody tr td,
+	.hero .mod_courses .courses-stats-overview tbody tr td:first-child {
+		font-size: 3em;
+	}
+	.hero .mod_courses .courses-stats-overview tbody tr td span {
+		font-size: 0.35em;
+		display: block;
+		margin: 1em 0 0 0;
+	}
+	.hero .mod_courses .overview-container {
+		position: relative;
+		float: left;
+		width: 50%;
+		margin: 0;
+		padding: 0;
+	}
+	.hero .mod_courses:before,
+	.hero .mod_courses:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.hero .mod_courses:after {
+		clear: left;
+	}
