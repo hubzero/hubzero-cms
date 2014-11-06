@@ -263,6 +263,7 @@ jQuery(document).ready(function($){
 									(is_object($data) ? $data->toString() : $data),
 									JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element . DS . $plugin->element . '.xml'
 								);
+								$param->addElementPath(JPATH_ROOT . DS . 'plugins' . DS . 'cron' . DS . $plugin->element);
 								//$out = $param->render('params', $event['params']);
 								$html = array();
 								foreach ($param->getParams('params', $event['params']) as $p)
