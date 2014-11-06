@@ -85,9 +85,10 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link(
 		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
 
 		@media only screen and (max-device-width: 480px) {
-			/*body { -webkit-text-size-adjust: 140% !important; }*/
 			body {
-				font-size: 120%;
+				-webkit-text-size-adjust: 100% !important;
+				-ms-text-size-adjust: 100% !important;
+				font-size: 100% !important;
 			}
 			table.tbl-wrap,
 			table.tbl-wrap td.tbl-body {
@@ -97,7 +98,7 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link(
 			table.tbl-header td {
 				width: auto !important;
 			}
-			table.tbl-header .mobilehide {
+			td.tbl-body .mobilehide {
 				display: none !important;
 			}
 		}
@@ -261,7 +262,7 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link(
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>"><?php echo $link; ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>">question #<?php echo $this->question->get('id'); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

@@ -85,9 +85,10 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link(
 		table { border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
 
 		@media only screen and (max-device-width: 480px) {
-			/*body { -webkit-text-size-adjust: 140% !important; }*/
 			body {
-				font-size: 120%;
+				-webkit-text-size-adjust: 100% !important;
+				-ms-text-size-adjust: 100% !important;
+				font-size: 100% !important;
 			}
 			table.tbl-wrap,
 			table.tbl-wrap td.tbl-body {
@@ -97,7 +98,7 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link(
 			table.tbl-header td {
 				width: auto !important;
 			}
-			table.tbl-header .mobilehide {
+			td.tbl-body .mobilehide {
 				display: none !important;
 			}
 		}
@@ -267,7 +268,7 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link(
 												<tr>
 													<td class="mobilehide" rowspan="2" style="font-size: 2.5em; font-weight: bold; text-align: center; vertical-align: top; padding: 0 30px 8px 0;" align="center" valign="top"><p style="display: block; border: 1px solid #c2e1e3; margin:0; padding: 1em; background-color: #e6fafb;">!</p></td>
 													<th style="text-align: left;" align="left"><?php echo $this->row->get('anonymous') ? JText::_('COM_ANSWERS_ANONYMOUS') : $this->escape(stripslashes($this->row->creator('name'))); ?></th>
-													<th class="timestamp" style="color: #999; text-align: right;" align="right">@ <?php echo $this->row->created('time'); ?> on <?php echo $this->row->created('date'); ?></th>
+													<th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide">@ <?php echo $this->row->created('time'); ?> on <?php echo $this->row->created('date'); ?></span></th>
 												</tr>
 												<tr>
 													<td colspan="2" style="padding: 0" cellpadding="0" cellspacing="0" border="0">
@@ -290,7 +291,7 @@ $link = rtrim($juri->base(), '/') . '/' . ltrim(JRoute::_($this->question->link(
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>"><?php echo $link; ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were added to the list of recipients on <a href="<?php echo $link; ?>">question #<?php echo $this->question->get('id'); ?></a>. Visit our <a href="<?php echo $juri->base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $juri->base(); ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>
