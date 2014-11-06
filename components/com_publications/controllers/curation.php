@@ -552,6 +552,9 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			}
 		}
 
+		// Mark as curated
+		$row->saveParam($row->id, 'curated', 1);
+
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
 
