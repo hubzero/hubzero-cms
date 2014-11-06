@@ -113,7 +113,6 @@ function PublicationsParseRoute($segments)
 	{
 		return $vars;
 	}
-
 	if (!empty($segments[0]) && $segments[0] == 'curation')
 	{
 		$vars['controller'] = 'curation';
@@ -139,6 +138,10 @@ function PublicationsParseRoute($segments)
 	{
 		$vars['task'] = 'view';
 		$vars['id']   = $segments[0];
+		if (!empty($segments[1]))
+		{
+			$vars['v'] = $segments[1];
+		}
 	}
 	elseif (in_array($segments[0], $tasks))
 	{
@@ -224,6 +227,14 @@ function PublicationsParseRoute($segments)
 				}
 			break;
 		}
+	}
+
+	// are we serving up a file
+	$uri = JRequest::getVar('REQUEST_URI', '', 'server');
+	if (strstr($uri, 'Image:') || strstr($uri, 'File:'))
+	{
+		$vars['task'] = 'download';
+		$vars['controller'] = 'media';
 	}
 
 	return $vars;
