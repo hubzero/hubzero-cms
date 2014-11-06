@@ -39,67 +39,37 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseAreas()
-	{
-		$area = array(
-			'name' => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true,
-			'icon' => 'f05a'
-		);
-		return $area;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component'
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function onCourse($config, $course, $offering, $action='', $areas=null)
+	public function onCourse($course, $offering, $describe=false)
 	{
-		$return = 'html';
-		$active = $this->_name;
-		$active_real = $this->_name;
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', $this->params->get('plugin_access', 'members'))
+			->set('display_menu_tab', true)
+			->set('icon', 'f05a');
 
-		// The output array we're returning
-		$arr = array(
-			'html'=>'',
-			'name' => $active
-		);
-
-		//get this area details
-		$this_area = $this->onCourseAreas();
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
+		if ($describe)
 		{
-			if (!in_array($this_area['name'], $areas))
-			{
-				//return $arr;
-				$return = 'metadata';
-			}
+			return $response;
 		}
 
-		// Is the user a course manager?
-		//$total = $offering->pages(array('count' => true));
+		if (!($active = JRequest::getVar('active')))
+		{
+			JRequest::setVar('active', ($active = $this->_name));
+		}
+
 		// Section specific pages
 		$total = $offering->pages(array(
 			'count'       => true,
@@ -123,7 +93,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		), true);
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($return == 'html')
+		if ($response->get('name') == $active)
 		{
 			$action = strtolower(JRequest::getWord('group', ''));
 			if ($action && $action != 'edit' && $action != 'delete')
@@ -146,26 +116,20 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 				$action = $act;
 			}
 
-			$this->view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => $this->_type,
-					'element' => $this->_name,
-					'name'    => 'pages'
-				)
-			);
+			$this->view = $this->view('default', 'pages');
 			$this->view->option     = JRequest::getCmd('option', 'com_courses');
 			$this->view->controller = JRequest::getWord('controller', 'course');
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
-			$this->view->config     = $config;
+			$this->view->config     = $course->config();
 			$this->view->juser      = JFactory::getUser();
 
 			switch ($action)
 			{
 				case 'add':
-				case 'edit':   $this->_edit();   break;
-				case 'save':   $this->_save();   break;
-				case 'delete': $this->_delete(); break;
+				case 'edit':     $this->_edit();         break;
+				case 'save':     $this->_save();         break;
+				case 'delete':   $this->_delete();       break;
 
 				case 'upload':   $this->_fileUpload();   break;
 				case 'download': $this->_fileDownload(); break;
@@ -182,20 +146,19 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 				echo $this->view->loadTemplate();
 				exit();
 			}
-			$arr['html'] = $this->view->loadTemplate();
+			$response->set('html', $this->view->loadTemplate());
 		}
 
-		$arr['metadata']['count'] = $total;
+		$response->set('meta_count', $total);
 
 		// Return the output
-		return $arr;
+		return $response;
 	}
 
 	/**
-	 * Set redirect and message
+	 * Set layout and data for main page
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @return  void
 	 */
 	public function _list()
 	{
@@ -225,7 +188,6 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 		$pages = array_merge($spages, $opages);
 		$pages = array_merge($pages, $gpages);
 
-		//$page = $this->view->offering->page($active);
 		if ($active)
 		{
 			foreach ($pages as $p)
@@ -246,10 +208,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Set layout to the edit form
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @param   mixed  $model
+	 * @return  void
 	 */
 	public function _edit($model=null)
 	{
@@ -316,10 +278,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Save a record
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @return  void
 	 */
 	public function _save()
 	{
@@ -367,10 +328,9 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Delete a record
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @return  void
 	 */
 	public function _delete()
 	{
@@ -407,10 +367,10 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set redirect and message
 	 *
-	 * @param      string $url  URL to redirect to
-	 * @param      string $msg  Message to send
-	 * @param      string $type Message type (message, error, warning, info)
-	 * @return     void
+	 * @param   string  $url   URL to redirect to
+	 * @param   string  $msg   Message to send
+	 * @param   string  $type  Message type (message, error, warning, info)
+	 * @return  void
 	 */
 	public function setRedirect($url, $msg=null, $type='message')
 	{
@@ -424,7 +384,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Upload a file to the wiki via AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function _ajaxUpload()
 	{
@@ -501,7 +461,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
-		// don't overwrite previous files that were uploaded
+		// Don't overwrite previous files that were uploaded
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
 
@@ -551,7 +511,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Upload a file to the wiki
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function _fileUpload()
 	{
@@ -617,7 +577,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Build and return the file path
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _path($page=null)
 	{
@@ -666,7 +626,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Delete a file in the wiki
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function _fileDelete()
 	{
@@ -747,7 +707,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for uploading files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function _files()
 	{
@@ -767,7 +727,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of files
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function _fileList()
 	{
@@ -835,7 +795,7 @@ class plgCoursesPages extends \Hubzero\Plugin\Plugin
 	/**
 	 * Download a wiki file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function _fileDownload()
 	{

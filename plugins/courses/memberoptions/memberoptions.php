@@ -32,124 +32,96 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'plgCoursesMemberOptions'
- *
- * Long description (if any) ...
+ * Courses plugin class for member options
  */
 class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Short description for 'onCourseAreas'
+	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     array Return description (if any) ...
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function &onCourseAreas()
+	public function onCourse($course, $offering, $describe=false)
 	{
-		$area = array(
-			'name' => 'memberoptions',
-			'title' => JText::_('COURSE_MEMBEROPTIONS'),
-			'default_access' => 'registered',
-			'display_menu_tab' => false
-		);
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', 'registered')
+			->set('display_menu_tab', false);
 
-		return $area;
-	}
-
-	/**
-	 * Short description for 'onCourse'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $course Parameter description (if any) ...
-	 * @param      unknown $option Parameter description (if any) ...
-	 * @param      unknown $authorized Parameter description (if any) ...
-	 * @param      integer $limit Parameter description (if any) ...
-	 * @param      integer $limitstart Parameter description (if any) ...
-	 * @param      string $action Parameter description (if any) ...
-	 * @param      unknown $access Parameter description (if any) ...
-	 * @param      unknown $areas Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
-	 */
-	public function onCourse( $course, $option, $authorized, $limit=0, $limitstart=0, $action='', $access, $areas=null)
-	{
-		// The output array we're returning
-		$arr = array(
-			'html'=>''
-		);
-
-		$user = JFactory::getUser();
-		$this->course = $course;
-		$this->option = $option;
-
-		// Things we need from the form
-		$recvEmailOptionID = JRequest::getInt('memberoptionid', 0);
-		$recvEmailOptionValue = JRequest::getInt('recvpostemail', 0);
-
-		include_once(JPATH_ROOT.DS.'plugins'.DS.'courses'.DS.'memberoptions'.DS.'memberoption.class.php');
-
-		switch ($action)
+		if ($describe)
 		{
-			case 'editmemberoptions':
-				$arr['html'] .= $this->edit($course, $user, $recvEmailOptionID, $recvEmailOptionValue);
-				break;
-			case 'savememberoptions':
-				$arr['html'] .= $this->save($course, $user, $recvEmailOptionID, $recvEmailOptionValue);
-				break;
-			default:
-				$arr['html'] .= $this->edit($course, $user, $recvEmailOptionID, $recvEmailOptionValue);
-				break;
+			return $response;
 		}
 
-		return $arr;
+		if (!($active = JRequest::getVar('active')))
+		{
+			JRequest::setVar('active', ($active = $this->_name));
+		}
 
+		if ($response->get('name') == $active)
+		{
+			// Things we need from the form
+			$recvEmailOptionID    = JRequest::getInt('memberoptionid', 0);
+			$recvEmailOptionValue = JRequest::getInt('recvpostemail', 0);
+
+			include_once(__DIR__ . DS . 'memberoption.class.php');
+
+			switch ($action)
+			{
+				case 'editmemberoptions':
+					$response->set('html', $this->edit($course, $user, $recvEmailOptionID, $recvEmailOptionValue));
+				break;
+				case 'savememberoptions':
+					$response->set('html', $this->save($course, $user, $recvEmailOptionID, $recvEmailOptionValue));
+				break;
+				default:
+					$response->set('html', $this->edit($course, $user, $recvEmailOptionID, $recvEmailOptionValue));
+				break;
+			}
+		}
+
+		// Return the output
+		return $response;
 	}
 
 	/**
-	 * Short description for 'edit'
+	 * Show an edit form
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $course Parameter description (if any) ...
-	 * @param      object $user Parameter description (if any) ...
-	 * @param      unknown $recvEmailOptionID Parameter description (if any) ...
-	 * @param      unknown $recvEmailOptionValue Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   object  $course
+	 * @param   object  $user
+	 * @param   integer $recvEmailOptionID
+	 * @param   unknown $recvEmailOptionValue
+	 * @return  string
 	 */
 	protected function edit($course, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
-		// HTML output
 		// Instantiate a view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'=>'courses',
-				'element'=>'memberoptions',
-				'name'=>'browse'
-			)
-		);
+		$view = $this->view('default', 'browse');
 
 		// Load the options
-		/* @var $recvEmailOption courses_MemberOption */
 		$database = JFactory::getDBO();
 		$recvEmailOption = new courses_MemberOption($database);
-		$recvEmailOption->loadRecord( $course->get('gidNumber'), $user->id, COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
+		$recvEmailOption->loadRecord($course->get('gidNumber'), $user->get('id'), COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION);
 
-		if($recvEmailOption->id)
+		if ($recvEmailOption->id)
 		{
-			$view->recvEmailOptionID = $recvEmailOption->id;
+			$view->recvEmailOptionID    = $recvEmailOption->id;
 			$view->recvEmailOptionValue = $recvEmailOption->optionvalue;
 		}
 		else
 		{
-			$view->recvEmailOptionID = 0;
+			$view->recvEmailOptionID    = 0;
 			$view->recvEmailOptionValue = 0;
 		}
 
@@ -163,33 +135,30 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Short description for 'save'
+	 * Save setting
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $course Parameter description (if any) ...
-	 * @param      object $user Parameter description (if any) ...
-	 * @param      unknown $recvEmailOptionID Parameter description (if any) ...
-	 * @param      unknown $recvEmailOptionValue Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param   object  $course
+	 * @param   object  $user
+	 * @param   integer $recvEmailOptionID
+	 * @param   unknown $recvEmailOptionValue
+	 * @return  mixed
 	 */
 	protected function save($course, $user, $recvEmailOptionID, $recvEmailOptionValue)
 	{
 		$postSaveRedirect = JRequest::getVar('postsaveredirect', '');
 
-		//instantaite database object
+		// Instantaite database object
 		$database = JFactory::getDBO();
 
 		// Save the COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION setting
-		/* @var $row XForum */
 		$row = new courses_MemberOption($database);
 
 		//bind the data
 		$rowdata = array(
-			'id' => $recvEmailOptionID,
-			'userid' => $user->id,
-			'gidNumber' => $course->get('gidNumber'),
-			'optionname' => COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION,
+			'id'          => $recvEmailOptionID,
+			'userid'      => $user->get('id'),
+			'gidNumber'   => $course->get('gidNumber'),
+			'optionname'  => COURSES_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION,
 			'optionvalue' => $recvEmailOptionValue
 		);
 
@@ -198,25 +167,28 @@ class plgCoursesMemberOptions extends \Hubzero\Plugin\Plugin
 		// Check content
 		if (!$row->check())
 		{
-			$this->setError( $row->getError() );
+			$this->setError($row->getError());
 			return;
 		}
 
 		// Store content
 		if (!$row->store())
 		{
-			$this->setError( $row->getError() );
-			return $this->edittopic();
+			$this->setError($row->getError());
+			return $this->edit();
 		}
 
 		$app = JFactory::getApplication();
 		$app->enqueueMessage('You have successfully updated your email settings','Message');
 
 		if (!$postSaveRedirect)
-			$app->redirect( JRoute::_($this->course->link() . '&active=memberoptions&task=edit' ) );
+		{
+			$app->redirect(JRoute::_($this->course->link() . '&active=' . $this->_name . '&task=edit'));
+		}
 		else
-			$app->redirect( $postSaveRedirect );
-
+		{
+			$app->redirect($postSaveRedirect);
+		}
 	}
 }
 

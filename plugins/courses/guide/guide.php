@@ -32,23 +32,23 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Courses Plugin class for pages
+ * Courses Plugin class for intro guide
  */
 class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Event call after course outline
 	 *
-	 * @param      object $course   Current course
-	 * @param      object $offering Current offering
-	 * @return     void
+	 * @param   object  $course    Current course
+	 * @param   object  $offering  Current offering
+	 * @return  void
 	 */
 	public function onCourseAfterOutline($course, $offering)
 	{
@@ -64,88 +64,54 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'courses',
-				'element' => $this->_name,
-				'name'    => $this->_name,
-				'layout'  => 'overlay'
-			)
-		);
-		$this->view->option     = JRequest::getCmd('option', 'com_courses');
-		$this->view->controller = JRequest::getWord('controller', 'course');
-		$this->view->course     = $course;
-		$this->view->offering   = $offering;
-		$this->view->juser      = JFactory::getUser();
-		$this->view->plugin     = $this->_name;
+		$this->view = with($this->view('overlay', $this->_name))
+			->set('option', JRequest::getCmd('option', 'com_courses'))
+			->set('controller', JRequest::getWord('controller', 'course'))
+			->set('course', $course)
+			->set('offering', $offering)
+			->set('juser', JFactory::getUser())
+			->set('plugin', $this->_name);
 
 		return $this->view->loadTemplate();
 	}
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseAreas()
-	{
-		$tmpl = JRequest::getWord('tmpl', NULL);
-
-		if (!isset($tmpl) || $tmpl != 'component')
-		{
-			\Hubzero\Document\Assets::addPluginStylesheet($this->_type, $this->_name);
-			\Hubzero\Document\Assets::addPluginScript($this->_type, $this->_name, 'guide.overlay');
-		}
-
-		$area = array(
-			'name'  => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access'  => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true,
-			'icon' => 'f059'
-		);
-		return $area;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function onCourse($config, $course, $offering, $action='', $areas=null)
+	public function onCourse($course, $offering, $describe=false)
 	{
-		$return = 'html';
-		$active = $this->_name;
-		$active_real = $this->_name;
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', $this->params->get('plugin_access', 'members'))
+			->set('display_menu_tab', true)
+			->set('icon', 'f059');
 
-		// The output array we're returning
-		$arr = array(
-			'html'=>'',
-			'name' => $active
-		);
-
-		//get this area details
-		$this_area = $this->onCourseAreas();
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
+		if ($describe)
 		{
-			if (!in_array($this_area['name'], $areas))
-			{
-				$return = 'metadata';
-			}
+			return $response;
+		}
+
+		$tmpl = JRequest::getWord('tmpl', null);
+		if (!isset($tmpl) || $tmpl != 'component')
+		{
+			$this->css()
+			     ->js('system', 'jquery.fancybox')
+			     ->js('guide.overlay');
+		}
+
+		if (!($active = JRequest::getVar('active')))
+		{
+			JRequest::setVar('active', ($active = $this->_name));
 		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($return == 'html')
+		if ($response->get('name') == $active)
 		{
 			$active = strtolower(JRequest::getWord('unit', ''));
 
@@ -158,13 +124,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 				$action = $act;
 			}
 
-			$this->view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'courses',
-					'element' => $this->_name,
-					'name'    => $this->_name
-				)
-			);
+			$this->view = $this->view('default', $this->_name);
 			$this->view->option     = JRequest::getCmd('option', 'com_courses');
 			$this->view->controller = JRequest::getWord('controller', 'course');
 			$this->view->course     = $course;
@@ -175,7 +135,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 
 			switch ($action)
 			{
-				case 'mark':   $this->_mark();   break;
+				case 'mark': $this->_mark(); break;
 
 				default: $this->_default(); break;
 			}
@@ -187,18 +147,17 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 				echo $this->view->loadTemplate();
 				exit();
 			}
-			$arr['html'] = $this->view->loadTemplate();
+			$response->set('html', $this->view->loadTemplate());
 		}
 
 		// Return the output
-		return $arr;
+		return $response;
 	}
 
 	/**
-	 * Set redirect and message
+	 * Set default layout
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @return  void
 	 */
 	public function _default()
 	{
@@ -206,10 +165,9 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Mark the overlay as having been viewed
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @return  void
 	 */
 	public function _mark()
 	{
@@ -226,11 +184,11 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			if (!is_object($cookie) || !isset($cookie->first_visit))
 			{
 				// Drop cookie
-				$prefs                = array();
-				$prefs['first_visit'] = JFactory::getDate()->toSql();
-				$lifetime             = time() + 365*24*60*60;
+				$lifetime = time() + 365*24*60*60;
 
-				\Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, $prefs);
+				\Hubzero\Utility\Cookie::bake('plugin.courses.guide', $lifetime, array(
+					'first_visit' => JFactory::getDate()->toSql()
+				));
 			}
 		}
 		$member->set('first_visit', JFactory::getDate()->toSql());

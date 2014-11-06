@@ -1040,32 +1040,30 @@ class CoursesModelOffering extends CoursesModelAbstract
 	}
 
 	/**
-	 * Check a user's authorization
+	 * Get a list of plugins
 	 *
-	 * @param      string $action Action to check
-	 * @return     boolean True if authorized, false if not
+	 * @param   string  $name
+	 * @return  mixed
 	 */
-	public function plugins($idx=null)
+	public function plugins($name=null)
 	{
 		if (!isset($this->_plugins) || !is_array($this->_plugins))
 		{
 			$this->importPlugin('courses');
 
-			$plugins = $this->trigger('onCourseAreas', array());
-
-			array_unshift($plugins, array(
-				'name'             => 'outline',
-				'title'            => JText::_('Outline'),
-				'default_access'   => 'members',
-				'display_menu_tab' => true
-			));
-
-			$this->_plugins = $plugins;
+			$course = CoursesModelCourse::getInstance($this->get('course_id'));
+			$this->_plugins = $this->trigger('onCourse', array($course, $this, true));
 		}
 
 		if ($idx !== null)
 		{
-			return isset($this->_plugins[$idx]);
+			foreach ($this->_plugins as $plugin)
+			{
+				if ($plugin->get('name') == $name)
+				{
+					return $plugin;
+				}
+			}
 		}
 
 		return $this->_plugins;
@@ -1404,98 +1402,6 @@ class CoursesModelOffering extends CoursesModelAbstract
 		}
 
 		return true;
-	}
-
-	/**
-	 * Short description for 'getPluginAccess'
-	 * Long description (if any) ...
-	 *
-	 * @param string $get_plugin Parameter description (if any) ...
-	 * @return mixed Return description (if any) ...
-	 */
-	public function getPluginAccess($get_plugin = '')
-	{
-		// Get plugins
-		$this->importPlugin('courses');
-
-		// Trigger the functions that return the areas we'll be using
-		//then add overview to array
-		$hub_course_plugins = $this->trigger('onCourseAreas', array());
-		array_unshift($hub_course_plugins, array(
-			'name' => 'outline',
-			'title' => 'Outline',
-			'default_access' => 'members'
-		));
-
-		//array to store plugin preferences when after retrieved from db
-		$active_course_plugins = array();
-
-		//get the course plugin preferences
-		//returns array of tabs and their access level (ex. [overview] => 'anyone', [messages] => 'registered')
-		$course_plugins = $this->get('plugins');
-
-		if ($course_plugins)
-		{
-			$course_plugins = explode(',', $course_plugins);
-
-			foreach ($course_plugins as $plugin)
-			{
-				$temp = explode('=', trim($plugin));
-
-				if ($temp[0])
-				{
-					$active_course_plugins[$temp[0]] = trim($temp[1]);
-				}
-			}
-		}
-
-		//array to store final course plugin preferences
-		//array of acceptable access levels
-		$course_plugin_access = array();
-		$acceptable_levels = array('nobody', 'anyone', 'registered', 'members');
-
-		//if we have already set some
-		if ($active_course_plugins)
-		{
-			//for each plugin that is active on the hub
-			foreach ($hub_course_plugins as $hgp)
-			{
-				//if course defined access level is not an acceptable value or not set use default value that is set per plugin
-				//else use course defined access level
-				if (!isset($active_course_plugins[$hgp['name']]) || !in_array($active_course_plugins[$hgp['name']], $acceptable_levels))
-				{
-					$value = $hgp['default_access'];
-				}
-				else
-				{
-					$value = $active_course_plugins[$hgp['name']];
-				}
-
-				//store final  access level in array of access levels
-				$course_plugin_access[$hgp['name']] = $value;
-			}
-		}
-		else
-		{
-			//for each plugin that is active on the hub
-			foreach ($hub_course_plugins as $hgp)
-			{
-				$value = $hgp['default_access'];
-
-				//store final  access level in array of access levels
-				$course_plugin_access[$hgp['name']] = $value;
-			}
-		}
-
-		//if we wanted to return only a specific level return that otherwise return all access levels
-		if ($get_plugin != '')
-		{
-			return $course_plugin_access[$get_plugin];
-		}
-		else
-		{
-			return $course_plugin_access;
-		}
 	}
 
 	/**

@@ -32,168 +32,119 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Courses Plugin class for course members
+ * Plugin class for course announcements
  */
 class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseAreas()
-	{
-		$area = array(
-			'name' => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'), //$this->params->get('plugin_access', 'managers'),
-			'display_menu_tab' => true,
-			'icon' => 'f095'
-		);
-		return $area;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function onCourse($config, $course, $offering, $action='', $areas=null)
+	public function onCourse($course, $offering, $describe=false)
 	{
-		// The output array we're returning
-		$arr = array(
-			'html'     => '',
-			'metadata' => ''
-		);
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', $this->params->get('plugin_access', 'members'))
+			->set('display_menu_tab', true)
+			->set('icon', 'f095');
 
-		//get this area details
-		$this_area = $this->onCourseAreas();
+		if ($describe)
+		{
+			return $response;
+		}
 
-		// Set some variables so other functions have access
-		$this->action = $action;
-		$this->option = JRequest::getVar('option', 'com_courses');
-		$this->course = $course;
-		$this->offering = $offering;
+		if (!($active = JRequest::getVar('active')))
+		{
+			JRequest::setVar('active', ($active = $this->_name));
+		}
 
 		// Get a student count
-		$arr['metadata']['count'] = $offering->announcements(array('count' => true));
+		$response->set('meta_count', $offering->announcements(array('count' => true)));
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
+		if ($response->get('name') == $active)
 		{
-			if (!in_array($this_area['name'], $areas))
+			// Set some variables so other functions have access
+			$this->option   = JRequest::getCmd('option', 'com_courses');
+			$this->course   = $course;
+			$this->offering = $offering;
+
+			// Set the page title
+			$document = JFactory::getDocument();
+			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_ANNOUNCEMENTS'));
+
+			$pathway = JFactory::getApplication()->getPathway();
+			$pathway->addItem(
+				JText::_('PLG_COURSES_' . strtoupper($this->_name)),
+				$this->offering->link() . '&active=' . $this->_name
+			);
+
+			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
+
+			$action = JRequest::getWord('action', '');
+
+			switch (strtolower($action))
 			{
-				return $arr;
+				case 'save':   $response->set('html', $this->_save());   break;
+				case 'new':    $response->set('html', $this->_edit());   break;
+				case 'edit':   $response->set('html', $this->_edit());   break;
+				case 'delete': $response->set('html', $this->_delete()); break;
+				default:       $response->set('html', $this->_list());   break;
 			}
-		}
-		else if ($areas != $this_area['name'])
-		{
-			return $arr;
-		}
-
-		// Only perform the following if this is the active tab/plugin
-		$this->config = $config;
-
-		//Create user object
-		$juser = JFactory::getUser();
-
-		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_ANNOUNCEMENTS'));
-
-		$pathway = JFactory::getApplication()->getPathway();
-		$pathway->addItem(
-			JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			$this->offering->link() . '&active=' . $this->_name
-		);
-
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'announcement.php');
-
-		$action = JRequest::getWord('action', '');
-
-		switch (strtolower($action))
-		{
-			case 'save':     $arr['html'] .= $this->_save();     break;
-			case 'new':      $arr['html'] .= $this->_edit();     break;
-			case 'edit':     $arr['html'] .= $this->_edit();     break;
-			case 'delete':   $arr['html'] .= $this->_delete();   break;
-
-			default: $arr['html'] .= $this->_list(); break;
 		}
 
 		// Return the output
-		return $arr;
+		return $response;
 	}
 
 	/**
 	 * Set redirect and message
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @param      object $msg  Message to send
-	 * @return     void
+	 * @param   object  $url  URL to redirect to
+	 * @param   object  $msg  Message to send
+	 * @return  void
 	 */
 	public function onCourseBeforeOutline($course, $offering)
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'courses',
-				'element' => $this->_name,
-				'name'    => 'latest'
-			)
-		);
-		$view->course   = $course;
-		$view->offering = $offering;
-		$view->params   = $this->params;
-
-		return $view->loadTemplate();
+		return $this->view('default', 'latest')
+					->set('course', $course)
+					->set('offering', $offering)
+					->set('params', $this->params)
+					->loadTemplate();
 	}
 
 	/**
 	 * Administrative dashboard info
 	 *
-	 * @param      object $course   CoursesModelCourse
-	 * @param      object $offering CoursesModelOffering
-	 * @return     string
+	 * @param   object  $course    CoursesModelCourse
+	 * @param   object  $offering  CoursesModelOffering
+	 * @return  string
 	 */
 	public function onCourseDashboard($course, $offering)
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse',
-				'layout'  => 'dashboard'
-			)
-		);
-
-		$view->course   = $course;
-		$view->offering = $offering;
-		$view->option   = 'com_courses';
-		$view->config   = $course->config();
-		$view->params   = $this->params;
+		$view = with($this->view('dashboard', 'browse'))
+			->set('course', $course)
+			->set('offering', $offering)
+			->set('option', JRequest::getCmd('option', 'com_courses'))
+			->set('config', $course->config())
+			->set('params', $this->params);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -202,41 +153,31 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a list of all entries
 	 *
-	 * @return  string HTML
+	 * @return  string  HTML
 	 */
 	private function _list()
 	{
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'browse'
-			)
-		);
-
-		$jconfig = JFactory::getConfig();
-
-		$view->option   = $this->option;
-		$view->course   = $this->course;
-		$view->offering = $this->offering;
-		$view->params   = $this->params;
+		$view = with($this->view('default', 'browse'))
+			->set('course', $this->course)
+			->set('offering', $this->offering)
+			->set('option', $this->option)
+			->set('config', $this->course->config())
+			->set('params', $this->params)
+			->set('no_html', JRequest::getInt('no_html', 0));
 
 		// Get filters for the entries list
-		$view->filters  = array(
+		$filters = array(
 			'search' => JRequest::getVar('q', ''),
-			'limit'  => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'limit'  => JRequest::getInt('limit', JFactory::getConfig()->get('list_limit', 25)),
 			'start'  => JRequest::getInt('limitstart', 0)
 		);
-		$view->filters['start'] = ($view->filters['limit'] == 0 ? 0 : $view->filters['start']);
+		$filters['start'] = ($filters['limit'] == 0 ? 0 : $filters['start']);
 
-		$view->no_html = JRequest::getInt('no_html', 0);
+		$view->set('filters', $filters);
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		return $view->loadTemplate();
@@ -245,7 +186,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Display a form for editing or creating an entry
 	 *
-	 * @return  string HTML
+	 * @return  string  HTML
 	 */
 	private function _edit($model=null)
 	{
@@ -255,32 +196,22 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 			return $this->_list();
 		}
 
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => $this->_type,
-				'element' => $this->_name,
-				'name'    => 'edit'
-			)
-		);
+		$view = with($this->view('default', 'edit'))
+			->set('course', $this->course)
+			->set('offering', $this->offering)
+			->set('option', $this->option)
+			->set('params', $this->params);
 
-		$view->option   = $this->option;
-		$view->course   = $this->course;
-		$view->offering = $this->offering;
-		$view->params   = $this->params;
-
-		if (!is_object($model))
+		if (!($model instanceof CoursesModelAnnouncement))
 		{
-			$id = JRequest::getInt('entry', 0);
-			$model = CoursesModelAnnouncement::getInstance($id);
+			$model = CoursesModelAnnouncement::getInstance(JRequest::getInt('entry', 0));
 		}
-		$view->model = $model;
 
-		if ($this->getError())
+		$view->set('model', $model);
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
+			$view->setError($error);
 		}
 
 		// Display edit form
@@ -290,7 +221,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save an entry
 	 *
-	 * @return  string HTML
+	 * @return  string  HTML
 	 */
 	private function _save()
 	{
@@ -353,9 +284,9 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 		{
 			if ($this->getError())
 			{
-				$response->code = 1;
+				$response->code   = 1;
 				$response->errors = $this->getErrors();
-				$response->data = $fields;
+				$response->data   = $fields;
 			}
 			ob_clean();
 			header('Content-type: text/plain');
@@ -370,7 +301,7 @@ class plgCoursesAnnouncements extends \Hubzero\Plugin\Plugin
 	/**
 	 * Mark an entry as deleted
 	 *
-	 * @return  string HTML
+	 * @return  string  HTML
 	 */
 	private function _delete()
 	{

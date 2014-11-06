@@ -39,94 +39,60 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseAreas()
-	{
-		$area = array(
-			'name' => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true,
-			'icon' => 'f0ae'
-		);
-		return $area;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function onCourse($config, $course, $offering, $action='', $areas=null)
+	public function onCourse($course, $offering, $describe=false)
 	{
-		$return = 'html';
-		$active = $this->_name;
-		$active_real = $this->_name;
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', $this->params->get('plugin_access', 'members'))
+			->set('display_menu_tab', true)
+			->set('icon', 'f0ae');
 
-		// The output array we're returning
-		$arr = array(
-			'html'=>'',
-			'name' => $active
-		);
-
-		//get this area details
-		$this_area = $this->onCourseAreas();
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
+		if ($describe)
 		{
-			if (!in_array($this_area['name'], $areas))
-			{
-				//return $arr;
-				$return = 'metadata';
-			}
+			return $response;
+		}
+
+		if (!($active = JRequest::getVar('active')))
+		{
+			JRequest::setVar('active', ($active = $this->_name));
 		}
 
 		// Check to see if user is member and plugin access requires members
 		$sparams = new JRegistry($course->offering()->section()->get('params'));
 		if (!$course->offering()->section()->access('view') && !$sparams->get('preview', 0))
 		{
-			$arr['html'] = '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>';
-			return $arr;
+			$response->set('html', '<p class="info">' . JText::sprintf('COURSES_PLUGIN_REQUIRES_MEMBER', ucfirst($active)) . '</p>');
+			return $response;
 		}
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($return == 'html')
+		if ($response->get('name') == $active)
 		{
-			\Hubzero\Document\Assets::addPluginStylesheet('courses', $this->_name);
+			$this->css();
 
 			// Course and action
 			$this->course = $course;
 			$action = strtolower(JRequest::getWord('action', ''));
 
-			$this->view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'courses',
-					'element' => $this->_name,
-					'name'    => 'outline'
-				)
-			);
+			$this->view = $this->view('default', 'outline');
 			$this->view->option     = JRequest::getCmd('option', 'com_courses');
 			$this->view->controller = JRequest::getWord('controller', 'course');
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
-			$this->view->config     = $config;
+			$this->view->config     = $course->config();
 			$this->view->juser      = JFactory::getUser();
 
 			switch ($action)
@@ -142,18 +108,17 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 				break;
 			}
 
-			$arr['html'] = $this->view->loadTemplate();
+			$response->set('html', $this->view->loadTemplate());
 		}
 
 		// Return the output
-		return $arr;
+		return $response;
 	}
 
 	/**
-	 * Set redirect and message
+	 * Set the layout to the default outline view
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @return  void
 	 */
 	private function _display()
 	{
@@ -177,9 +142,9 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Show the builder interface
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	private function _build()
 	{
@@ -244,10 +209,10 @@ class plgCoursesOutline extends \Hubzero\Plugin\Plugin
 	/**
 	 * Set redirect and message
 	 *
-	 * @param      string $url  URL to redirect to
-	 * @param      string $msg  Message to send
-	 * @param      string $type Message type (message, error, warning, info)
-	 * @return     void
+	 * @param   string  $url   URL to redirect to
+	 * @param   string  $msg   Message to send
+	 * @param   string  $type  Message type (message, error, warning, info)
+	 * @return  void
 	 */
 	public function setRedirect($url, $msg=null, $type='message')
 	{

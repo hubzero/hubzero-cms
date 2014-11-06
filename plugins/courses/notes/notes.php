@@ -31,10 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'plugins' . DS . 'courses' . DS . 'notes' . DS . 'models' . DS . 'note.php');
+require_once(__DIR__ . DS . 'models' . DS . 'note.php');
 
 /**
- * Courses Plugin class for course members
+ * Courses Plugin class for user notes
  */
 class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 {
@@ -46,97 +46,60 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseAreas()
-	{
-		$area = array(
-			'name' => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true,
-			'icon' => '270D'
-		);
-		return $area;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function onCourse($config, $course, $offering, $action='', $areas=null)
+	public function onCourse($course, $offering, $describe=false)
 	{
-		$return = 'html';
-		$active = $this->_name;
-		$active_real = 'discussion';
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', $this->params->get('plugin_access', 'members'))
+			->set('display_menu_tab', true)
+			->set('icon', '270D');
 
-		// The output array we're returning
-		$arr = array(
-			'html' => '',
-			'name' => $active
-		);
-
-		$this_area = $this->onCourseAreas();
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
+		if ($describe)
 		{
-			if (!in_array($this_area['name'], $areas))
-			{
-				$return = 'metadata';
-			}
-		}
-		else if ($areas != $arr['name'])
-		{
-			$return = 'metadata';
+			return $response;
 		}
 
-		if ($return == 'html')
+		if (!($active = JRequest::getVar('active')))
 		{
-			$this->config   = $config;
+			JRequest::setVar('active', ($active = $this->_name));
+		}
+
+		if ($response->get('name') == $active)
+		{
 			$this->course   = $course;
 			$this->offering = $offering;
 			$this->database = JFactory::getDBO();
 
-			$this->view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'courses',
-					'element' => $this->_name,
-					'name'    => 'notes'
-				)
-			);
-			$this->view->option     = JRequest::getCmd('option', 'com_courses');
-			$this->view->controller = JRequest::getWord('controller', 'course');
-			$this->view->course     = $course;
-			$this->view->offering   = $offering;
-			$this->view->no_html    = JRequest::getInt('no_html', 0);
+			$this->view = with($this->view('default', 'notes'))
+				->set('option', JRequest::getCmd('option', 'com_courses'))
+				->set('controller', JRequest::getWord('controller', 'course'))
+				->set('course', $course)
+				->set('offering', $offering)
+				->set('no_html', JRequest::getInt('no_html', 0));
+
 			$this->view->filters = array(
-				'section_id' => $offering->section()->get('id')
+				'section_id' => $offering->section()->get('id'),
+				'search'     => JRequest::getVar('search', '')
 			);
-			$this->view->filters['search'] = JRequest::getVar('search', '');
 
 			$this->view->model = new CoursesPluginModelNote(0);
 
-			$action = strtolower(JRequest::getWord('action', ''));
-			if ($action)
+			if ($action = strtolower(JRequest::getWord('action', '')))
 			{
 				switch ($action)
 				{
-					case 'add':    $result = $this->_edit();   break;
-					case 'edit':   $result = $this->_edit();   break;
-					case 'save':   $result = $this->_save();   break;
-					case 'delete': $result = $this->_delete(); break;
+					case 'add':      $result = $this->_edit();   break;
+					case 'edit':     $result = $this->_edit();   break;
+					case 'save':     $result = $this->_save();   break;
+					case 'delete':   $result = $this->_delete(); break;
 					case 'download': $result = $this->_download(); break;
 
 					default: $result = $this->_list(); break;
@@ -159,21 +122,19 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
-			$arr['html'] = $this->view->loadTemplate();
+			$response->set('html', $this->view->loadTemplate());
 		}
 
-		$arr['metadata']['count'] = 0;
-
 		// Return the output
-		return $arr;
+		return $response;
 	}
 
 	/**
 	 * Set redirect and message
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @param      object $msg  Message to send
-	 * @return     void
+	 * @param   object  $url  URL to redirect to
+	 * @param   object  $msg  Message to send
+	 * @return  void
 	 */
 	public function onCourseAfterLecture($course, $unit, $lecture)
 	{
@@ -182,13 +143,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'courses',
-				'element' => $this->_name,
-				'name'    => 'lecture'
-			)
-		);
+		$this->view = $this->view('default', 'lecture');
 
 		$this->database = JFactory::getDBO();
 		$this->juser    = JFactory::getUser();
@@ -203,10 +158,9 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Set layout to the listing
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @return  void
 	 */
 	public function _list()
 	{
@@ -217,9 +171,9 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Download
 	 *
-	 * @return     string
+	 * @return  void
 	 */
 	public function _download()
 	{
@@ -245,10 +199,10 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Set layout to the edit view
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @param   mixed  $model
+	 * @return  void
 	 */
 	public function _edit($model=null)
 	{
@@ -257,7 +211,7 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 			$this->view->setLayout('edit');
 		}
 
-		if (is_object($model))
+		if ($model instanceof CoursesPluginModelNote)
 		{
 			$this->view->model = $model;
 		}
@@ -270,11 +224,9 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Save a record
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @param      object $msg  Message to send
-	 * @return     void
+	 * @return  mixed
 	 */
 	public function _save()
 	{
@@ -339,10 +291,9 @@ class plgCoursesNotes extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Set redirect and message
+	 * Delete a record
 	 *
-	 * @param      object $url  URL to redirect to
-	 * @return     string
+	 * @return  mixed
 	 */
 	public function _delete()
 	{

@@ -38,93 +38,57 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 /**
  * Courses Plugin class for user progress
  */
-class plgCoursesProgress extends JPlugin
+class plgCoursesProgress extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var  boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
-
-	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseAreas()
-	{
-		$area = array(
-			'name' => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'members'),
-			'display_menu_tab' => true,
-			'icon' => 'f012'
-		);
-		return $area;
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function onCourse($config, $course, $instance, $action='', $areas=null)
+	public function onCourse($course, $offering, $describe=false)
 	{
-		$return = 'html';
-		$active = $this->_name;
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', $this->params->get('plugin_access', 'members'))
+			->set('display_menu_tab', true)
+			->set('icon', 'f012');
 
-		// The output array we're returning
-		$arr = array(
-			'html'     => '',
-			'metadata' => ''
-		);
-
-		//get this area details
-		$this_area = $this->onCourseAreas();
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
+		if ($describe)
 		{
-			if (!in_array($this_area['name'], $areas))
-			{
-				return $arr;
-			}
+			return $response;
 		}
-		else if ($areas != $this_area['name'])
+
+		if (!($active = JRequest::getVar('active')))
 		{
-			return $arr;
+			JRequest::setVar('active', ($active = $this->_name));
+		}
+
+		if ($response->get('name') != $active)
+		{
+			return $response;
 		}
 
 		// Check to see if user is member and plugin access requires members
 		if (!$course->offering()->section()->access('view'))
 		{
-			$view = new \Hubzero\Plugin\View(array(
-				'folder'  => 'courses',
-				'element' => 'progress',
-				'name'    => 'report',
-				'layout'  => '_not_enrolled'
-			));
+			$view = $this->view('_not_enrolled', 'report');
 			$view->set('course', $course)
 			     ->set('option', 'com_courses')
 			     ->set('message', 'You must be enrolled to utilize the progress feature.');
-			$arr['html'] = $view->__toString();
-			return $arr;
+
+			$response->set('html', $view->__toString());
+			return $response;
 		}
 
 		$this->member = $course->offering()->section()->member(JFactory::getUser()->get('id'));
@@ -133,14 +97,7 @@ class plgCoursesProgress extends JPlugin
 		$this->db     = JFactory::getDBO();
 
 		// Instantiate a vew
-		$this->view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'courses',
-				'element' => $active,
-				'name'    => 'report',
-				'layout'  => 'student'
-			)
-		);
+		$this->view = $this->view('student', 'report');
 		$this->view->course  = $course;
 		$this->view->member  = $this->member;
 		$this->view->option  = 'com_courses';
@@ -164,16 +121,16 @@ class plgCoursesProgress extends JPlugin
 			default:                    $this->progress();            break;
 		}
 
-		$arr['html'] = $this->view->loadTemplate();
+		$response->set('html', $this->view->loadTemplate());
 
 		// Return the output
-		return $arr;
+		return $response;
 	}
 
 	/**
 	 * Save grading policy
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function progress()
 	{
@@ -204,7 +161,7 @@ class plgCoursesProgress extends JPlugin
 	/**
 	 * Render assessment details partial view
 	 *
-	 * @return void
+	 * @return  void
 	 **/
 	private function assessmentdetails()
 	{

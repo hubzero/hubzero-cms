@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 //get no_html request var
-$no_html = JRequest::getInt( 'no_html', 0 );
+$no_html = JRequest::getInt('no_html', 0);
 $tmpl    = JRequest::getWord('tmpl', false);
 $sparams = new JRegistry($this->course->offering()->section()->get('params'));
 
@@ -111,93 +111,52 @@ if (!$no_html && $tmpl != 'component') :
 
 				<ul id="page_menu">
 					<?php
-						//instantiate objects
-						$juser = JFactory::getUser();
+					$active = JRequest::getVar('active');
 
-						//variable to hold course menu html
-						$course_menu = '';
-
-						//loop through each category and build menu item
-						foreach ($this->plugins as $k => $cat)
+					// Loop through each plugin and build menu item
+					foreach ($this->plugins as $plugin)
+					{
+						// Do we want to show in menu?
+						if (!$plugin->get('display_menu_tab'))
 						{
-							//do we want to show category in menu?
-							if ($cat['display_menu_tab'])
-							{
-								if (!$this->course->offering()->access('manage', 'section')
-								 && isset($this->course_plugin_access[$cat['name']])
-								 && $this->course_plugin_access[$cat['name']] == 'managers')
-								{
-									continue;
-								}
-								//active menu item
-								$li_cls = ($this->active == $cat['name']) ? 'active' : '';
-
-								//menu name & title
-								$active = $cat['name'];
-								$title  = $cat['title'];
-								$cls    = $cat['name'];
-								if (!isset($cat['icon']))
-								{
-									$cat['icon'] = 'f0a1';
-								}
-
-								//get the menu items access level
-								//$access = $access_levels[$cat['name']];
-
-								//menu link
-								$link = JRoute::_($this->course->offering()->link() . '&active=' . $active);
-
-								//Are we on the overview tab with sub course pages?
-								if ($cat['name'] == 'outline') // && count($this->pages) > 0
-								{
-									$true_active_tab = JRequest::getVar('active', 'outline');
-									$li_cls = ($true_active_tab != $this->active) ? '' : $li_cls;
-
-									if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0))
-									{
-										$menu_item  = '<li class="protected course-overview-tab"><span class="outline">' . JText::_('COM_COURSES_OUTLINE') . '</span>';
-									}
-									else
-									{
-										$menu_item  = "<li class=\"{$li_cls} course-overview-tab\">";
-										$menu_item .= '<a class="outline" href="' . $link . '" data-icon="&#x' . $cat['icon'] . ';" data-title="' . JText::_('COM_COURSES_OUTLINE') . '">' . JText::_('COM_COURSES_OUTLINE') . '</a>';
-									}
-									$menu_item .= '</li>';
-								}
-								else
-								{
-									if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0))
-									{
-										$menu_item  = '<li class="protected members-only course-' . $cls . '-tab" data-title="' . JText::_('COM_COURSES_RESTRICTED_PAGE') . '">';
-										$menu_item .= '<span class="' . $cls . '" data-icon="&#x' . $cat['icon'] . '">' . $title . '</span>';
-										$menu_item .= '</li>';
-									}
-									else
-									{
-										//menu item meta data vars
-										$metadata   = (isset($this->sections[$k]['metadata'])) ? $this->sections[$k]['metadata'] : array();
-										$meta_count = (isset($metadata['count']) && $metadata['count'] != '') ? $metadata['count'] : '';
-										$meta_alert = (isset($metadata['alert']) && $metadata['alert'] != '') ? $metadata['alert'] : '';
-
-										//create menu item
-										$menu_item  = '<li class="' . $li_cls . ' course-' . $cls . '-tab">';
-										$menu_item .= '<a class="' . $cls . '" data-icon="&#x' . $cat['icon'] . '" data-title="' . $this->escape(stripslashes($title)) . '" href="' . $link . '">' . $this->escape($title) . '</a>';
-										if ($meta_count)
-										{
-											$menu_item .= '<span class="meta">';
-											$menu_item .= '<span class="count">' . $meta_count . '</span>';
-											$menu_item .= '</span>';
-										}
-										$menu_item .= $meta_alert;
-										$menu_item .= '</li>';
-									}
-								}
-
-								//add menu item to variable holding entire menu
-								$course_menu .= $menu_item;
-							}
+							continue;
 						}
-						echo $course_menu;
+
+						// Do we have access?
+						if (!$this->course->offering()->access('manage', 'section') && $plugin->get('default_access') == 'managers')
+						{
+							continue;
+						}
+
+						// Can we view this tab?
+						if (!$this->course->offering()->access('view') && !$sparams->get('preview', 0))
+						{
+							?>
+							<li class="protected members-only course-<?php echo $plugin->get('name'); ?>-tab" data-title="<?php echo JText::_('COM_COURSES_RESTRICTED_PAGE'); ?>">
+								<span class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>">
+									<?php echo $this->escape($plugin->get('title')); ?>
+								</span>
+							</li>
+							<?php
+						}
+						else
+						{
+							$link = JRoute::_($this->course->offering()->link() . '&active=' . $plugin->get('name'));
+							?>
+							<li class="<?php echo ($active == $plugin->get('name') ? 'active' : ''); ?> course-<?php echo $plugin->get('name'); ?>-tab">
+								<a class="<?php echo $plugin->get('name'); ?>" data-icon="&#x<?php echo $plugin->get('icon', 'f0a1'); ?>" data-title="<?php echo $this->escape($plugin->get('title')); ?>" href="<?php echo $link; ?>">
+									<?php echo $this->escape($plugin->get('title')); ?>
+								</a>
+								<?php if ($meta_count = $plugin->get('meta_count')) { ?>
+									<span class="meta">
+										<span class="count"><?php echo $meta_count; ?></span>
+									</span>
+								<?php } ?>
+								<?php echo $plugin->get('meta_alert'); ?>
+							</li>
+							<?php
+						}
+					}
 					?>
 				</ul><!-- /#page_menu -->
 			</div><!-- /#page_sidebar -->
@@ -212,15 +171,15 @@ if (!$no_html && $tmpl != 'component') :
 					?>
 				</div><!-- /#page_notifications -->
 
-				<div id="page_content" class="course_<?php echo $this->active; ?>">
+				<div id="page_content" class="course_<?php echo $active; ?>">
 <?php endif; ?>
 
 					<?php
-					for ($i=0, $n=count($this->plugins); $i < $n; $i++)
+					foreach ($this->plugins as $plugin)
 					{
-						if ($this->active == $this->plugins[$i]['name'])
+						if ($html = $plugin->get('html'))
 						{
-							echo $this->sections[$i]['html'];
+							echo $html;
 						}
 					}
 					?>

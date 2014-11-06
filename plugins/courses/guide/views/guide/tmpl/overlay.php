@@ -31,13 +31,11 @@
 defined('_JEXEC') or die('Restricted access');
 
 JPluginHelper::importPlugin('courses');
-$plugins = JDispatcher::getInstance()->trigger('onCourseAreas', array());
-
-$course_plugin_access = array();
-foreach ($plugins as $plugin)
-{
-	$course_plugin_access[$plugin['name']] = $plugin['default_access'];
-}
+$plugins = JDispatcher::getInstance()->trigger('onCourse', array(
+	$this->course,
+	$this->offering,
+	true
+));
 ?>
 <div id="guide-overlay" class="guide-wrap" data-action="<?php echo JRoute::_($this->offering->link() . '&active=' . $this->plugin . '&unit=mark'); ?>">
 	<div class="guide-content">
@@ -47,21 +45,16 @@ foreach ($plugins as $plugin)
 				<div class="guide-nav">
 					<ul>
 						<?php
-						foreach ($plugins as $k => $cat)
+						foreach ($plugins as $k => $plugin)
 						{
 							//do we want to show category in menu?
-							if ($cat['display_menu_tab'])
+							if (!$plugin->get('display_menu_tab'))
 							{
-								if (!$this->course->offering()->access('manage', 'section')
-								 && isset($course_plugin_access[$cat['name']])
-								 && $course_plugin_access[$cat['name']] == 'managers')
-								{
-									continue;
-								}
+								continue;
 							}
 							?>
 							<li>
-								<strong class="<?php echo $cat['name']; ?>"><?php echo $cat['title']; ?></strong> <span><?php echo JText::_('PLG_COURSES_' . strtoupper($cat['name']) . '_BLURB'); ?></span>
+								<strong class="<?php echo $plugin->get('name'); ?>"><?php echo $plugin->get('title'); ?></strong> <span><?php echo JText::_('PLG_COURSES_' . strtoupper($plugin->get('name')) . '_BLURB'); ?></span>
 							</li>
 							<?php
 						}

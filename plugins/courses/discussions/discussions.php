@@ -41,16 +41,16 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
-	public function &onCourseAreas()
+	public function onCourseAreas()
 	{
 		$area = array(
 			'name' => $this->_name,
@@ -65,7 +65,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     object
+	 * @return  array
 	 */
 	public function onSectionEdit()
 	{
@@ -75,7 +75,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return the alias and name for this category of content
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onAssetgroupEdit()
 	{
@@ -85,8 +85,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update any category associated with the assetgroup
 	 *
-	 * @param      object  $model CoursesModelAssetgroup
-	 * @return     mixed
+	 * @param   object  $model  CoursesModelAssetgroup
+	 * @return  mixed
 	 */
 	public function onAssetgroupSave($assetgroup)
 	{
@@ -179,8 +179,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting an assetgroup
 	 *
-	 * @param      object  $model CoursesModelAssetgroup
-	 * @return     void
+	 * @param   object  $model  CoursesModelAssetgroup
+	 * @return  void
 	 */
 	public function onAssetgroupDelete($assetgroup)
 	{
@@ -226,8 +226,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Update any section associated with the unit
 	 *
-	 * @param      object  $model CoursesModelUnit
-	 * @return     mixed
+	 * @param   object  $model  CoursesModelUnit
+	 * @return  mixed
 	 */
 	public function onUnitSave($unit)
 	{
@@ -256,8 +256,8 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Actions to perform after deleting a unit
 	 *
-	 * @param      object  $model CoursesModelUnit
-	 * @return     void
+	 * @param   object  $model  CoursesModelUnit
+	 * @return  void
 	 */
 	public function onUnitDelete($unit)
 	{
@@ -296,42 +296,31 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function onCourse($config, $course, $offering, $action='', $areas=null)
+	public function onCourse($course, $offering, $describe=false)
 	{
-		$return = 'html';
-		$active = $this->_name;
-		$active_real = 'discussion';
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', $this->params->get('plugin_access', 'members'))
+			->set('display_menu_tab', true)
+			->set('icon', 'f086');
 
-		// The output array we're returning
-		$arr = array(
-			'html' => '',
-			'name' => $active
-		);
-
-		//get this area details
-		$this_area = $this->onCourseAreas();
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
+		if ($describe)
 		{
-			if (!in_array($this_area['name'], $areas))
-			{
-				//return $arr;
-				$return = 'metadata';
-			}
+			return $response;
 		}
 
-		$this->config   = $config;
+		if (!($active = JRequest::getVar('active')))
+		{
+			JRequest::setVar('active', ($active = $this->_name));
+		}
+
+		$this->config   = $course->config();
 		$this->course   = $course;
 		$this->offering = $offering;
 		$this->database = JFactory::getDBO();
@@ -339,7 +328,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		$this->params->merge(new JRegistry($offering->section()->get('params')));
 
 		// Determine if we need to return any HTML (meaning this is the active plugin)
-		if ($return == 'html')
+		if ($response->get('name') == $active)
 		{
 			$this->_active = $this->_name;
 
@@ -356,10 +345,10 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 			));
 
 			//option and paging vars
-			$this->option = 'com_courses';
-			$this->name = 'courses';
+			$this->option     = 'com_courses';
+			$this->name       = 'courses';
 			$this->limitstart = JRequest::getInt('limitstart', 0);
-			$this->limit = JRequest::getInt('limit', 500);
+			$this->limit      = JRequest::getInt('limit', 500);
 
 			$action = '';
 
@@ -444,45 +433,45 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 
 			switch ($action)
 			{
-				case 'sections':       $arr['html'] .= $this->sections();       break;
-				case 'newsection':     $arr['html'] .= $this->sections();       break;
-				case 'editsection':    $arr['html'] .= $this->sections();       break;
-				case 'savesection':    $arr['html'] .= $this->savesection();    break;
-				case 'deletesection':  $arr['html'] .= $this->deletesection();  break;
+				case 'sections':       $response->set('html', $this->sections());       break;
+				case 'newsection':     $response->set('html', $this->sections());       break;
+				case 'editsection':    $response->set('html', $this->sections());       break;
+				case 'savesection':    $response->set('html', $this->savesection());    break;
+				case 'deletesection':  $response->set('html', $this->deletesection());  break;
 
-				case 'categories':     $arr['html'] .= $this->categories();     break;
-				case 'savecategory':   $arr['html'] .= $this->savecategory();   break;
-				case 'newcategory':    $arr['html'] .= $this->editcategory();   break;
-				case 'editcategory':   $arr['html'] .= $this->editcategory();   break;
-				case 'deletecategory': $arr['html'] .= $this->deletecategory(); break;
+				case 'categories':     $response->set('html', $this->categories());     break;
+				case 'savecategory':   $response->set('html', $this->savecategory());   break;
+				case 'newcategory':    $response->set('html', $this->editcategory());   break;
+				case 'editcategory':   $response->set('html', $this->editcategory());   break;
+				case 'deletecategory': $response->set('html', $this->deletecategory()); break;
 
-				case 'threads':        $arr['html'] .= $this->threads();        break;
-				case 'savethread':     $arr['html'] .= $this->savethread();     break;
-				case 'editthread':     $arr['html'] .= $this->editthread();     break;
-				case 'deletethread':   $arr['html'] .= $this->deletethread();   break;
+				case 'threads':        $response->set('html', $this->threads());        break;
+				case 'savethread':     $response->set('html', $this->savethread());     break;
+				case 'editthread':     $response->set('html', $this->editthread());     break;
+				case 'deletethread':   $response->set('html', $this->deletethread());   break;
 
-				case 'orderup':        $arr['html'] .= $this->orderup();        break;
-				case 'orderdown':      $arr['html'] .= $this->orderdown();      break;
+				case 'orderup':        $response->set('html', $this->orderup());        break;
+				case 'orderdown':      $response->set('html', $this->orderdown());      break;
 
-				case 'download':       $arr['html'] .= $this->download();       break;
-				case 'search':         $arr['html'] .= $this->panel();          break;
+				case 'download':       $response->set('html', $this->download());       break;
+				case 'search':         $response->set('html', $this->panel());          break;
 
-				default: $arr['html'] .= $this->panel(); break;
+				default: $response->set('html', $this->panel()); break;
 			}
 		}
 
 		$tModel = new ForumTablePost($this->database);
 
-		$arr['metadata']['count'] = $tModel->getCount(array(
+		$response->set('meta_count', $tModel->getCount(array(
 			'scope'    => 'course',
 			'scope_id' => $offering->get('id'),
 			'state'    => array(1, 3),
 			'parent'   => 0,
 			'scope_sub_id' => ($this->params->get('discussions_threads', 'all') != 'all' ? $course->offering()->section()->get('id') : null)
-		));
+		)));
 
 		// Return the output
-		return $arr;
+		return $response;
 	}
 
 	/**

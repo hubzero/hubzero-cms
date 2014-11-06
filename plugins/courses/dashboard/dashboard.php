@@ -32,130 +32,78 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Courses Plugin class for course members
+ * Courses Plugin class for manager dashboard
  */
 class plgCoursesDashboard extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
-	 * Return the alias and name for this category of content
-	 *
-	 * @return     array
-	 */
-	public function &onCourseAreas()
-	{
-		$area = array(
-			'name' => $this->_name,
-			'title' => JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			'default_access' => $this->params->get('plugin_access', 'managers'), //$this->params->get('plugin_access', 'managers'),
-			'display_menu_tab' => true,
-			'icon' => 'f083'
-		);
-		return $area;
-	}
-
-	/**
 	 * Return data on a course view (this will be some form of HTML)
 	 *
-	 * @param      object  $course      Current course
-	 * @param      string  $option     Name of the component
-	 * @param      string  $authorized User's authorization level
-	 * @param      integer $limit      Number of records to pull
-	 * @param      integer $limitstart Start of records to pull
-	 * @param      string  $action     Action to perform
-	 * @param      array   $access     What can be accessed
-	 * @param      array   $areas      Active area(s)
-	 * @return     array
+	 * @param   object   $course    Current course
+	 * @param   object   $offering  Name of the component
+	 * @param   boolean  $describe  Return plugin description only?
+	 * @return  object
 	 */
-	public function onCourse($config, $course, $offering, $action='', $areas=null)
+	public function onCourse($course, $offering, $describe=false)
 	{
-		// The output array we're returning
-		$arr = array(
-			'html'     => '',
-			'metadata' => ''
-		);
-
-		//get this area details
-		$this_area = $this->onCourseAreas();
-
-		// Check if our area is in the array of areas we want to return results for
-		if (is_array($areas))
+		if (!$offering->access('manage', 'section'))
 		{
-			if (!in_array($this_area['name'], $areas))
-			{
-				return $arr;
-			}
-		}
-		else if ($areas != $this_area['name'])
-		{
-			return $arr;
+			return;
 		}
 
-		// Set some variables so other functions have access
-		$this->action = $action;
-		$this->option = JRequest::getVar('option', 'com_courses');
-		$this->course = $course;
-		$this->offering = $offering;
+		$response = with(new \Hubzero\Base\Object)
+			->set('name', $this->_name)
+			->set('title', JText::_('PLG_COURSES_' . strtoupper($this->_name)))
+			->set('default_access', $this->params->get('plugin_access', 'managers'))
+			->set('display_menu_tab', true)
+			->set('icon', 'f083');
 
-		// Only perform the following if this is the active tab/plugin
-		$this->config = $config;
-
-		//Create user object
-		$juser = JFactory::getUser();
-
-		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_' . strtoupper($this->_name)));
-
-		$pathway = JFactory::getApplication()->getPathway();
-		$pathway->addItem(
-			JText::_('PLG_COURSES_' . strtoupper($this->_name)),
-			$this->offering->link() . '&active=' . $this->_name
-		);
-
-		$arr['html'] .= $this->_overview();
-
-		// Return the output
-		return $arr;
-	}
-
-	/**
-	 * Display a list of all announcements
-	 *
-	 * @return     string HTML
-	 */
-	private function _overview()
-	{
-		// Get course members based on their status
-		// Note: this needs to happen *after* any potential actions ar performed above
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'  => 'courses',
-				'element' => $this->_name,
-				'name'    => 'overview'
-			)
-		);
-
-		$view->option   = $this->option;
-		$view->course   = $this->course;
-		$view->offering = $this->offering;
-		$view->params   = $this->params;
-
-		if ($this->getError())
+		if ($describe)
 		{
+			return $response;
+		}
+
+		$nonadmin = JFactory::getApplication()->getUserState('com_courses.offering' . $offering->get('id') . '.nonadmin', 0);
+		if (!($active = JRequest::getVar('active')) && !$nonadmin)
+		{
+			JRequest::setVar('active', ($active = $this->_name));
+		}
+
+		if ($response->get('name') == $active)
+		{
+			// Set the page title
+			$document = JFactory::getDocument();
+			$document->setTitle($document->getTitle() . ': ' . JText::_('PLG_COURSES_' . strtoupper($this->_name)));
+
+			$pathway = JFactory::getApplication()->getPathway();
+			$pathway->addItem(
+				JText::_('PLG_COURSES_' . strtoupper($this->_name)),
+				$offering->link() . '&active=' . $this->_name
+			);
+
+			$view = with($this->view('default', 'overview'))
+				->set('option', JRequest::getVar('option', 'com_courses'))
+				->set('course', $course)
+				->set('offering', $offering)
+				->set('params', $this->params);
+
 			foreach ($this->getErrors() as $error)
 			{
 				$view->setError($error);
 			}
+
+			$response->set('html', $view->loadTemplate());
 		}
 
-		return $view->loadTemplate();
+		// Return the output
+		return $response;
 	}
 }
 
