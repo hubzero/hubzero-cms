@@ -30,6 +30,12 @@ $blocks = $this->pub->_curationModel->_blocks;
 
 $history = $this->pub->_curationModel->getHistory($this->pub, 1);
 
+if (!$this->ajax)
+{
+	$this->css('curation.css')
+		 ->js('curation.js');
+}
+
 ?>
 <div id="abox-content" class="history-wrap">
 	<h3><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY_VIEW'); ?></h3>
@@ -50,8 +56,8 @@ $history = $this->pub->_curationModel->getHistory($this->pub, 1);
 			$trClass = $i % 2 == 0 ? ' even' : ' odd';
 			$i++;
 			?>
-			<div class="history-block <?php echo $trClass; ?>">
-				<div class="changelog-time columns four first">
+			<div class="history-block <?php echo $trClass; ?> grid">
+				<div class="changelog-time col span3">
 					<?php echo $event->created; ?>
 					<span class="block"><?php echo $this->escape(stripslashes($author->get('name'))); ?></span>
 					<span class="block">(
@@ -60,7 +66,7 @@ $history = $this->pub->_curationModel->getHistory($this->pub, 1);
 						: JText::_('COM_PUBLICATIONS_CURATION_AUTHOR');  ?>
 					)</span>
 				</div>
-				<div class="changelog-text columns four second third fourth"><?php echo $event->changelog; ?></div>
+				<div class="changelog-text col span9 omega"><?php echo $event->changelog; ?></div>
 				<div class="clear"></div>
 			</div>
 		<?php } ?>

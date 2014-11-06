@@ -140,21 +140,9 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Push some CSS to the template
-		$this->_getStyles();
-		$this->_getStyles('', 'jquery.fancybox.css', true);
-
 		//push the stylesheet to the view
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-
-		// Add stylesheet
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications'
-			. DS . 'css' . DS . 'curation.css');
-		$document->addStyleSheet('components' . DS . 'com_publications' . DS
-			. 'assets' . DS . 'css' . DS . 'curation.css');
-		$document->addScript('components' . DS . 'com_publications' . DS
-			. 'assets' . DS . 'js' . DS . 'curation.js');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'css/curation.css');
 
 		if ($this->getError())
 		{
@@ -236,23 +224,6 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Push some CSS to the template
-		$this->_getStyles();
-
-		//push the stylesheet to the view
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-
-		// Add stylesheet
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications'
-			. DS . 'css' . DS . 'curation.css');
-		$document->addStyleSheet('components' . DS . 'com_publications' . DS
-			. 'assets' . DS . 'css' . DS . 'curation.css');
-		$document->addScript('components' . DS . 'com_publications' . DS
-			. 'assets' . DS . 'js' . DS . 'curation.js');
-
-		$this->_getStyles('', 'jquery.fancybox.css', true); // add fancybox styling
-
 		if ($this->getError())
 		{
 			foreach ($this->getErrors() as $error)
@@ -308,6 +279,10 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
 			return;
 		}
+
+		//push the stylesheet to the view
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'css/curation.css');
 
 		// Main version
 		if ($pub->main == 1)
@@ -440,14 +415,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			// Set the pathway
 			$this->_buildPathway();
 
-			// Add stylesheet
-			$document = JFactory::getDocument();
-			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications'
-				. DS . 'css' . DS . 'curation.css');
-			$document->addStyleSheet('components' . DS . 'com_publications' . DS
-				. 'assets' . DS . 'css' . DS . 'curation.css');
-			$document->addScript('components' . DS . 'com_publications' . DS
-				. 'assets' . DS . 'js' . DS . 'curation.js');
+			// Add plugin style
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'css/curation.css');
 		}
 
 		$this->view->pub 		    = $pub;
@@ -455,8 +424,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->view->option 		= $this->_option;
 		$this->view->database 		= $this->database;
 		$this->view->config			= $this->config;
+		$this->view->ajax			= JRequest::getInt( 'ajax', 0 );
 		$this->view->display();
-
 	}
 
 	/**

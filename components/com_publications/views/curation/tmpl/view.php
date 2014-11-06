@@ -25,6 +25,12 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+     ->js()
+	 ->css('jquery.fancybox.css', 'system')
+	 ->css('curation.css')
+	 ->js('curation.js');
+
 // Get blocks
 $blocks = $this->pub->_curationModel->_blocks;
 

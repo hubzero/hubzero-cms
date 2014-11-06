@@ -39,6 +39,12 @@ $pa = new PublicationAuthor( $this->database );
 
 $pubHelper = new PublicationHelper ($this->database);
 
+$this->css()
+     ->js()
+	 ->css('jquery.fancybox.css', 'system')
+	 ->css('curation.css')
+	 ->js('curation.js');
+
 ?>
 <div id="content-header" class="full">
 	<h2><?php echo $this->title; ?></h2>
@@ -61,40 +67,40 @@ $pubHelper = new PublicationHelper ($this->database);
 			</tr>
 		</thead>
 		<tbody>
-			<?php 
-				foreach ($this->rows as $row) {	
-						
-						$submitted  = $row->reviewed && $row->state == 5 
-									? strtolower(JText::_('COM_PUBLICATIONS_CURATION_RESUBMITTED')) 
+			<?php
+				foreach ($this->rows as $row) {
+
+						$submitted  = $row->reviewed && $row->state == 5
+									? strtolower(JText::_('COM_PUBLICATIONS_CURATION_RESUBMITTED'))
 									: strtolower(JText::_('COM_PUBLICATIONS_CURATION_SUBMITTED'));
 						$submitted .= ' <span class="prominent">' . JHTML::_('date', $row->submitted, 'M d, Y') . '</span> ';
-						
+
 						// Get submitter
-						$submitter = $pa->getSubmitter($row->id, $row->created_by);	
-						$submitted .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY') 
+						$submitter = $pa->getSubmitter($row->id, $row->created_by);
+						$submitted .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
 							. ' ' . $submitter->name . '</span>';
-						
+
 						if ($row->state == 7)
 						{
 							$reviewed  = strtolower(JText::_('COM_PUBLICATIONS_CURATION_REVIEWED'))
 								.' <span class="prominent">' . JHTML::_('date', $row->reviewed, 'M d, Y') . '</span> ';
 
 							$reviewer  = \Hubzero\User\Profile::getInstance($row->reviewed_by);
-							$reviewed .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY') 
-								. ' ' . $reviewer->get('name') . '</span>';	
-						}	
-									
+							$reviewed .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
+								. ' ' . $reviewer->get('name') . '</span>';
+						}
+
 						$class = $row->state == 5 ? 'status-pending' : 'status-wip';
-							
+
 						// Normalize type title
 						$cat_name  = PublicationHelper::writePubCategory($row->cat_alias, $row->cat_name);
 
 						$abstract  = $row->abstract ? stripslashes($row->abstract) : '';
-						
+
 						// Get thumbnail
-						$pubThumb  = $pubHelper->getThumb($row->id, $row->version_id, $this->config, false, $row->cat_url);	
+						$pubThumb  = $pubHelper->getThumb($row->id, $row->version_id, $this->config, false, $row->cat_url);
 					?>
-					<tr class="mline mini faded" id="tr_<?php echo $row->id; ?>">						
+					<tr class="mline mini faded" id="tr_<?php echo $row->id; ?>">
 						<td><?php echo $row->id; ?></td>
 						<td class="pub-image"><img src="<?php echo $pubThumb; ?>" alt="" /></td>
 						<td><?php if ($row->state == 5) { ?><a href="<?php echo JRoute::_($route . '&id=' . $row->id); ?>" <?php if ($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php } ?><?php echo $row->title; ?><?php if ($row->state == 5) { ?></a><?php } ?></td>
@@ -112,17 +118,17 @@ $pubHelper = new PublicationHelper ($this->database);
 							<a href="<?php echo JRoute::_($route . '&id=' . $row->id . '&task=history') . '?ajax=1&no_html=1'; ?>" class="btn btn-secondary icon-history fancybox"><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY'); ?></a>
 						</td>
 					</tr>
-					<?php 
+					<?php
 				}
 			?>
 		</tbody>
 		</table>
 </div>
-<?php 
+<?php
 	$pn = $this->pageNav->getListFooter();
 	$pn = str_replace('/?/&amp;','/?',$pn);
 	$f = 'task=display';
-	foreach ($this->filters as $k=>$v) 
+	foreach ($this->filters as $k=>$v)
 	{
 		$f .= ($v && ($k == 'tag' || $k == 'category')) ? '&amp;'.$k.'='.$v : '';
 	}

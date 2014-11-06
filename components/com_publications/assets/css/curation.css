@@ -526,6 +526,9 @@
 		padding: 0;
 		margin: 0;
 	}
+	.history-blocks .omega {
+		text-align: left;
+	}
 	.history-blocks ul {
 		line-height: 1em;
 	}
