@@ -43,9 +43,18 @@ defined('_JEXEC') or die( 'Restricted access' );
 		<?php for ( $i = 0; $i < count($this->choices); $i++)
 		{
 			$current = $this->choices[$i];
-
+			$action = 'publication';
+			if (isset($this->useBlocks) && !$this->useBlocks)
+			{
+				// Check if type is supported (need a plugin)
+				if (!JPluginHelper::isEnabled('projects', $current->alias))
+				{
+					continue;
+				}
+				$action = 'new';
+			}
 		?>
-		<div class="s-<?php echo $current->alias; ?>"><p><a href="<?php echo $this->url.'?action=publication'.a.'base='.$current->alias; ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p></div>
+		<div class="s-<?php echo $current->alias; ?>"><p><a href="<?php echo $this->url.'?action='. $action . a . 'base='.$current->alias; ?>"><?php echo $current->type; ?> <span class="block"><?php echo $current->description; ?></span></a></p></div>
 
 		<?php } ?>
 		<div class="clear"></div>
