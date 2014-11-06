@@ -925,6 +925,9 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		// Use new curation flow?
+		$useBlocks  = $this->config->get('curation', 0);
+
 		// Incoming version
 		$version 	= JRequest::getVar( 'version', '' );
 
@@ -1198,18 +1201,21 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					{
 						$row->accepted = JFactory::getDate()->toSql();
 
-						// Get master type info
-						$mt = new PublicationMasterType( $this->database );
-						$pub->_type = $mt->getType($pub->base);
+						if ($useBlocks)
+						{
+							// Get master type info
+							$mt = new PublicationMasterType( $this->database );
+							$pub->_type = $mt->getType($pub->base);
 
-						// Get curation model
-						$pub->_curationModel = new PublicationsCuration(
-							$this->database,
-							$pub->_type->curation
-						);
+							// Get curation model
+							$pub->_curationModel = new PublicationsCuration(
+								$this->database,
+								$pub->_type->curation
+							);
 
-						// Store curation manifest
-						$row->curation = json_encode($pub->_curationModel->_manifest);
+							// Store curation manifest
+							$row->curation = json_encode($pub->_curationModel->_manifest);
+						}
 					}
 					$row->modified = JFactory::getDate()->toSql();
 					$row->modified_by = $this->juser->get('id');
@@ -1357,6 +1363,13 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					$url,  $row->getError(), 'error'
 				);
 				return;
+			}
+
+			// Mark as curated/non-curated
+			if ($action == 'publish')
+			{
+				$curated = $useBlocks ? 1 : 2;
+				$row->saveParam($row->id, 'curated', $curated);
 			}
 		}
 
