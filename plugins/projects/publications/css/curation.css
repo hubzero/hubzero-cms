@@ -978,6 +978,9 @@
 		background: #FFFFFF;
 		padding: 0.5em 1em;
 	}
+	.freeze .element-value, .freeze .element-value p, .freeze .element-value ul {
+		font-size: 1em !important;
+	}
 	.freeze .element-title, .freeze .element-title:hover {
 		background: none;
 	}

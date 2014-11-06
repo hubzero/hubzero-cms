@@ -24,6 +24,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
+
 ?>
 <div id="abox-content">
 <h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_EDIT_IMAGE'); ?></h3>
@@ -32,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 if ($this->getError()) {
 	echo ('<p class="error">'.$this->getError().'</p>');
 } else { ?>
-	<?php if ($this->file && $this->gallery_path && $this->thumb) { ?>
+	<?php if ($this->file && $this->thumb) { ?>
 	<form id="hubForm-ajax" method="post" action="<?php echo $this->url; ?>">
 			<fieldset >
 				<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
@@ -51,9 +52,9 @@ if ($this->getError()) {
 				<?php } ?>
 			</fieldset>
 	<div id="gallery-thumb">
-		<div class="g-ima"><img src="<?php echo $this->gallery_path.DS.$this->thumb; ?>" /></div>
+		<div class="g-ima"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->pid . '&v=' . $this->vid) . '/Image:' . $this->thumb; ?>" /></div>
 		<div class="g-title">
-				<span class="g-filename"><span class="leftshift faded"><?php echo $this->type == 'image' ? ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_IMAGE')) : ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_FILE')); ?>:</span><?php echo $this->ima; ?></span>
+				<span class="g-filename"><span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_FILE')); ?>:</span><?php echo $this->ima; ?></span>
 				<div class="clear"></div>
 				<label class="display_inline">
 					<span class="leftshift faded"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_TITLE')); ?>:</span>
@@ -74,9 +75,9 @@ if ($this->getError()) {
 	</form>
 	<div class="clear"></div>
 
-	<?php if ($this->type == 'image') { ?>
+	<?php if ($this->file) { ?>
 	<div id="gallery-preview">
-		<img src="<?php echo $this->gallery_path.DS.$this->file; ?>" />
+		<img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->pid . '&v=' . $this->vid) . '/Image:' . $this->file; ?>" />
 	</div>
 	<?php }  ?>
 	<?php } ?>

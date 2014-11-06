@@ -6070,13 +6070,6 @@ class plgProjectsPublications extends JPlugin
 			)
 		);
 
-		// Get screenshot path
-		$webpath = $this->_pubconfig->get('webpath');
-
-		// Get publications helper
-		$helper = new PublicationHelper( $this->_database );
-		$gallery_path = $helper->buildPath($pid, $vid, $webpath, 'gallery');
-
 		$ih = new ProjectsImgHandler();
 
 		// Load screenshot info if any
@@ -6092,9 +6085,6 @@ class plgProjectsPublications extends JPlugin
 			$fpath =  ProjectsHelper::getProjectPath($this->_project->alias,
 					$this->_config->get('webpath'), 1);
 
-			$prefix = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
-			$from_path = $prefix . $fpath;
-
 			// Include Git Helper
 			$this->getGitHelper();
 
@@ -6105,7 +6095,6 @@ class plgProjectsPublications extends JPlugin
 			$ih = new ProjectsImgHandler();
 			$view->file = $ih->createThumbName($filename, '-'.substr($hash, 0, 3));
 			$view->thumb = $ih->createThumbName($filename, '-'.substr($hash, 0, 3).'_tn', $extension = 'png');
-
 		}
 		else
 		{
@@ -6113,36 +6102,12 @@ class plgProjectsPublications extends JPlugin
 			$view->thumb = '';
 		}
 
-		if (!is_file(JPATH_ROOT.$gallery_path. DS .$view->file)
-			|| !is_file(JPATH_ROOT.$gallery_path. DS .$view->thumb))
-		{
-			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_GALLERY_MISSING_FILE') );
-		}
-
-		// Is image?
-		$ext = explode('.',$ima);
-		$ext = end($ext);
-		if (in_array($ext, $this->_image_ext) )
-		{
-			$view->type = 'image';
-		}
-		elseif (in_array($ext, $this->_video_ext))
-		{
-			$view->type = 'video';
-		}
-		else
-		{
-			$view->type = '';
-		}
-		$view->ext = $ext;
-
 		// Build pub url
 		$view->route = $this->_project->provisioned
 					? 'index.php?option=com_publications' . a . 'task=submit'
 					: 'index.php?option=com_projects' . a . 'alias=' . $this->_project->alias . a . 'active=publications';
 		$view->url = JRoute::_($view->route . a . 'pid=' . $pid);
 
-		$view->gallery_path = $gallery_path;
 		$view->shot 		= $pScreenshot;
 		$view->ima 			= $ima;
 		$view->vid 			= $vid;
