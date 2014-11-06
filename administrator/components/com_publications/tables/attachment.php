@@ -514,7 +514,17 @@ class PublicationAttachment extends JTable
 		}
 		if (isset($filters['role']) && $filters['role'] != '')
 		{
-			if ($filters['role'] == 4)
+			if (is_array($filters['role']))
+			{
+				$tquery = '';
+				foreach ($filters['role'] as $role)
+				{
+					$tquery .= "'" . $role . "',";
+				}
+				$tquery = substr($tquery,0,strlen($tquery) - 1);
+				$query .= " AND (a.role IN (" . $tquery . ") ) ";
+			}
+			elseif ($filters['role'] == 4)
 			{
 				$query .= " AND (a.role=0 OR a.role=2) ";
 			}

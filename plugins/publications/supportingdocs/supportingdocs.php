@@ -34,26 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Publications Plugin class for supporting docs
  */
-class plgPublicationsSupportingDocs extends JPlugin
+class plgPublicationsSupportingDocs extends \Hubzero\Plugin\Plugin
 {
-
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'supportingdocs' );
-		$this->_params = new JParameter( $this->_plugin->params );
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -104,66 +92,68 @@ class plgPublicationsSupportingDocs extends JPlugin
 			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
 			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_supportingdocs'))
-				{
-					$rtrn == 'metadata';
-				}
-				else
-				{
-					return $arr;
-				}
+				// do nothing
+				return $arr;
 			}
 		}
-
-		$database = JFactory::getDBO();
-
-		// Initiate a publication helper class
-		$helper = new PublicationHelper($database, $publication->id, $publication->version_id);
-
-		$config = JComponentHelper::getParams( $option );
-		$jconfig = JFactory::getConfig();
-
-		// Instantiate a view
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=>'publications',
-				'element'	=>'supportingdocs',
-				'name'		=>'browse'
-			)
-		);
-
-		// Get docs
-		$pContent = new PublicationAttachment( $database );
-		$view->docs = $pContent->getAttachments( $publication->version_id, $filters = array('role' => 4));
-
-		// Get projects html helper
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
-
-		// Build publication path
-		$base_path 	= $config->get('webpath');
-		$view->path = $helper->buildPath(
-			$publication->id,
-			$publication->version_id,
-			$base_path,
-			$publication->secret,
-			$root = 1
-		);
-
-		// Pass the view some info
-		$view->option 		= $option;
-		$view->publication 	= $publication;
-		$view->helper 		= $helper;
-		$view->config 		= $config;
-		$view->version 		= $version;
-		$view->live_site 	= $jconfig->getValue('config.live_site') . DS;
-		$view->authorized	= $authorized;
-		if ($this->getError())
+		if (!$publication->_category->_params->get('plg_supportingdocs'))
 		{
-			$view->setError( $this->getError() );
+			return $arr;
 		}
 
-		// Return the output
-		$arr['html'] = $view->loadTemplate();
+		// Are we returning HTML?
+		if ($rtrn == 'all' || $rtrn == 'html')
+		{
+			$database = JFactory::getDBO();
+
+			// Initiate a publication helper class
+			$helper = new PublicationHelper($database, $publication->id, $publication->version_id);
+
+			$config = JComponentHelper::getParams( $option );
+			$jconfig = JFactory::getConfig();
+
+			// Instantiate a view
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'	=>'publications',
+					'element'	=>'supportingdocs',
+					'name'		=>'browse'
+				)
+			);
+
+			// Get docs
+			$pContent = new PublicationAttachment( $database );
+			$view->docs = $pContent->getAttachments( $publication->version_id, $filters = array('role' => array(0,1,2)));
+
+			// Get projects html helper
+			require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
+
+			// Build publication path
+			$base_path 	= $config->get('webpath');
+			$view->path = $helper->buildPath(
+				$publication->id,
+				$publication->version_id,
+				$base_path,
+				$publication->secret,
+				$root = 1
+			);
+
+			// Pass the view some info
+			$view->option 		= $option;
+			$view->publication 	= $publication;
+			$view->helper 		= $helper;
+			$view->config 		= $config;
+			$view->version 		= $version;
+			$view->live_site 	= $jconfig->getValue('config.live_site') . DS;
+			$view->authorized	= $authorized;
+			if ($this->getError())
+			{
+				$view->setError( $this->getError() );
+			}
+
+			// Return the output
+			$arr['html'] = $view->loadTemplate();
+		}
 
 		return $arr;
 	}
