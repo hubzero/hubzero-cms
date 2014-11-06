@@ -129,7 +129,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 		</field>
 		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="fields_whitelist" type="text" menu="hide" label="Directory fieldeter whitelist" default="/home" description="White-list of directories acceptable to include in tool fieldeter passing feature" />
+		<field name="params_whitelist" type="text" menu="hide" label="Directory parameter whitelist" default="/home" description="White-list of directories acceptable to include in tool parameter passing feature" />
 	</fieldset>
 	<fieldset name="middleware">
 		<field name="mw_on" type="list" default="0" label="Middleware" description="Indicate whether the component is active or not">
