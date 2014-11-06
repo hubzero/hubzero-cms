@@ -36,8 +36,8 @@ $desect_path = explode(DS, $this->subdir);
 $path_bc = '';
 $url = '';
 $parent = '';
-if(count($desect_path) > 0) {
-	for($p = 0; $p < count($desect_path); $p++) {
+if (count($desect_path) > 0) {
+	for ($p = 0; $p < count($desect_path); $p++) {
 		$parent .= count($desect_path) > 1 && $p != count($desect_path)  ? $url  : '';
 		$url .= DS.$desect_path[$p];
 		$path_bc .= ' &raquo; <span><a href="'.$p_url.'/?subdir='.urlencode($url).'" class="folder">'.$desect_path[$p].'</a></span> ';
@@ -49,21 +49,14 @@ $skipped = 0;
 
 ?>
 <form action="<?php echo JRoute::_($route).'?active=publications'; ?>" method="post" enctype="multipart/form-data" id="upload-form" >
-	<ul id="c-browser" 	<?php if(count($this->files) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?>>
+	<ul id="c-browser" 	<?php if (count($this->files) == 0 && isset($this->attachments) && count($this->attachments) == 0) { echo 'class="hidden"'; } ?>>
 		<?php
-		if($this->subdir) { ?>
+		if ($this->subdir) { ?>
 			<li><a href="<?php echo $p_url.'/?action=browser'.a.'subdir='.$parent; ?>" class="uptoparent gotodir"><?php echo JText::_('COM_PROJECTS_FILES_BACK_TO_PARENT_DIR'); ?></a></li>
 		<?php }
-		if(count($this->files) > 0) {
-			// Do ordering
-			$names = array();
-			foreach ($this->files as $f) {
-				$names[] = $f['name'];
-			}
-			sort($names);
-			array_multisort($this->files, SORT_ASC, SORT_STRING, $names, SORT_ASC );
+		if (count($this->files) > 0) {
 			$i = 0;
-			foreach($this->files as $file) {
+			foreach ($this->files as $file) {
 				if ($this->images)
 				{
 					// Skip non-image/video files
@@ -77,7 +70,7 @@ $skipped = 0;
 				}
 
 				// Ignore hidden files
-				if(substr(basename($file['fpath']), 0, 1) == '.')
+				if (substr(basename($file['fpath']), 0, 1) == '.')
 				{
 					continue;
 				}
@@ -95,10 +88,10 @@ $skipped = 0;
 
 	// Check for missing items
 	// Primary content / Supporting docs
-	if(isset($this->attachments)) {
-		if(count($this->attachments) > 0) {
-			foreach($this->attachments as $attachment) {
-				if(!in_array($attachment->path, $shown)) {
+	if (isset($this->attachments)) {
+		if (count($this->attachments) > 0) {
+			foreach ($this->attachments as $attachment) {
+				if (!in_array($attachment->path, $shown)) {
 					// Found missing
 					$miss = array();
 					$miss['fpath'] = $attachment->path;
@@ -110,10 +103,10 @@ $skipped = 0;
 	}
 
 	// Screenshots
-	if($this->images) {
-		if(count($this->shots) > 0) {
-			foreach($this->shots as $shot) {
-				if(!in_array($shot->filename, $shown)) {
+	if ($this->images) {
+		if (count($this->shots) > 0) {
+			foreach ($this->shots as $shot) {
+				if (!in_array($shot->filename, $shown)) {
 					// Found missing
 					$miss = array();
 					$miss['fpath'] = $shot->filename;
@@ -125,7 +118,7 @@ $skipped = 0;
 	}
 
 	// Add missing items
-	if(count($missing) > 0) {
+	if (count($missing) > 0) {
 		foreach ($missing as $miss) { ?>
 			<li class="c-click i-missing" id="file::<?php echo urlencode($miss['fpath']); ?>"><img src="<?php echo ProjectsHtml::getFileIcon($miss['ext']); ?>" alt="<?php echo $miss['ext']; ?>" /><?php echo ProjectsHtml::shortenFileName($miss['fpath'], 50); ?><span class="c-missing"><?php echo JText::_('PLG_PROJECTS_FILES_MISSING_FILE'); ?></span></li>
 	<?php	}
