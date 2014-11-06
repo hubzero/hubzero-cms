@@ -1328,7 +1328,6 @@ class PublicationsHtml
 			case 'video':
 			case 'inlineview':
 				$msg   = JText::_('COM_PUBLICATIONS_VIEW_PUBLICATION');
-				$url .= $serveas == 'video' ? a . 'render=video' : '';
 
 				if (!$disabled)
 				{
