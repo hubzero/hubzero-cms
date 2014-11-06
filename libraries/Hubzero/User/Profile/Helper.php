@@ -116,10 +116,9 @@ class Helper
 		}
 		if (!$dfthumb)
 		{
-			$dfthumb = $dffull;
 			if ($thumbit)
 			{
-				$dfthumb = self::thumbit($dfthumb);
+				$dfthumb = self::thumbit($dffull);
 			}
 		}
 
