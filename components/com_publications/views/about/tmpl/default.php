@@ -79,7 +79,7 @@ $schema 	= $metaElements->getSchema();
 	// Show gallery images
 	if ($this->params->get('show_gallery') || $useBlocks)
 	{
-		if ($useBlocks)
+		if ($useBlocks && $this->params->get('curated') != 2)
 		{
 			// Get handler model
 			$modelHandler = new PublicationsModelHandlers($this->database);

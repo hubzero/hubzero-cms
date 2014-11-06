@@ -88,6 +88,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->registerTask('__default', 'intro');
 
 		// Register tasks
+		$this->registerTask('view', 'page');
 		$this->registerTask('download', 'serve');
 		$this->registerTask('video', 'serve');
 		$this->registerTask('play', 'serve');
@@ -120,7 +121,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			);
 		}
 
-		if ($this->publication && ($this->_task == 'view' || $this->_task == 'serve' || $this->_task == 'wiki'))
+		if ($this->publication && ($this->_task == 'view'
+			|| $this->_task == 'serve' || $this->_task == 'wiki'))
 		{
 			$url = 'index.php?option='.$this->_option.'&id='.$this->publication->id;
 
@@ -272,16 +274,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	}
 
 	/**
-	 * Push scripts to document head
-	 *
-	 * @return     void
-	 */
-	protected function _getPublicationScripts()
-	{
-		$this->_getScripts('assets/js/' . $this->_name);
-	}
-
-	/**
 	 * Login view
 	 *
 	 * @return     void
@@ -350,6 +342,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			}
 		}
 		$this->view->display();
+		return;
 	}
 
 	/**
@@ -450,6 +443,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->setName('browse')
 					->setLayout('default')
 					->display();
+		return;
 	}
 
 	/**
@@ -478,13 +472,12 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	 *
 	 * @return     void
 	 */
-	public function viewTask()
+	public function pageTask()
 	{
 		// Incoming
 		$fsize    = JRequest::getVar( 'fsize', '' );    // A parameter to see file size without formatting
 		$version  = JRequest::getVar( 'v', '' );        // Get version number of a publication
 		$tab      = JRequest::getVar( 'active', '' );   // The active tab (section)
-		$pass     = JRequest::getVar( 'in', '' );  	    // Version-unique identifier, to grant access to 'posted' resource
 		$no_html  = JRequest::getInt( 'no_html', 0 );   // No-html display?
 
 		$id 	= $this->_id;
@@ -746,7 +739,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$tab = 'about';
 		}
-
+		
 		// Get parameters and merge with the component params
 		$rparams = new JParameter( $publication->params );
 		$params = $this->config;
@@ -813,7 +806,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->_buildPathway();
 
 		// Determine the layout we're using
-		$v = array('name'=>'view', 'layout'=>'default');
+		$layout = 'default';
 		$app = JFactory::getApplication();
 		if ($publication->cat_alias
 		 && (is_file(JPATH_ROOT . DS . 'templates' . DS .  $app->getTemplate()  . DS . 'html'
@@ -821,39 +814,37 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		 || is_file(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'views' . DS . 'view'
 			. DS . 'tmpl' . DS . $publication->cat_url.'.php')))
 		{
-			$v['layout'] = $type_alias;
+			$layout = $type_alias;
 		}
 
-		// Instantiate a new view
-		$view 					= new \Hubzero\Component\View( $v );
-		$view->version 			= $version;
-		$view->config 			= $this->config;
-		$view->option 			= $this->_option;
-		$view->publication 		= $publication;
-		$view->params 			= $params;
-		$view->authorized 		= $authorized;
-		$view->restricted 		= $restricted;
-		$view->content 			= $content;
-		$view->authors 			= $authors;
-		$view->cats 			= $cats;
-		$view->tab 				= $tab;
-		$view->sections 		= $sections;
-		$view->database 		= $this->database;
-		$view->usersgroups 		= $usersgroups;
-		$view->helper 			= $helper;
-		$view->filters 			= $filters;
-		$view->license 			= $license;
-		$view->path 			= $path;
-		$view->lastPubRelease 	= $lastPubRelease;
-		$view->contributable 	= $this->_contributable;
+		$this->view->version 		= $version;
+		$this->view->config 		= $this->config;
+		$this->view->option 		= $this->_option;
+		$this->view->publication 	= $publication;
+		$this->view->params 		= $params;
+		$this->view->authorized 	= $authorized;
+		$this->view->restricted 	= $restricted;
+		$this->view->content 		= $content;
+		$this->view->authors 		= $authors;
+		$this->view->cats 			= $cats;
+		$this->view->tab 			= $tab;
+		$this->view->sections 		= $sections;
+		$this->view->database 		= $this->database;
+		$this->view->usersgroups 	= $usersgroups;
+		$this->view->helper 		= $helper;
+		$this->view->filters 		= $filters;
+		$this->view->license 		= $license;
+		$this->view->path 			= $path;
+		$this->view->lastPubRelease = $lastPubRelease;
+		$this->view->contributable 	= $this->_contributable;
 
 		// Archival package
 		$tarname  = JText::_('Publication').'_'.$publication->id.'.zip';
-		$view->archPath = JPATH_ROOT . $helper->buildPath($id, $publication->version_id, $base_path) . DS . $tarname;
+		$this->view->archPath = JPATH_ROOT . $helper->buildPath($id, $publication->version_id, $base_path) . DS . $tarname;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$this->view->setError( $this->getError() );
 		}
 
 		if ($no_html)
@@ -862,10 +853,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Output HTML
-		$view->display();
+		$this->view->setName('view')
+					->setLayout($layout)
+					->display();
 
 		// Insert .rdf link in the header
 		ResourceMapGenerator::putRDF($id);
+
+		return;
 	}
 
 	/**
@@ -1061,38 +1056,38 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Set the pathway
 		$this->_buildPathway();
 
-		// Instantiate a new view
-		$view 				= new \Hubzero\Component\View( array('name'=>'view', 'layout'=>'default') );
-		$view->option 		= $this->_option;
-		$view->config 		= $this->config;
-		$view->database 	= $this->database;
-		$view->publication 	= $this->publication;
-		$view->cats 		= $cats;
-		$view->tab 			= 'play';
-		$view->sections 	= $sections;
-		$view->database 	= $this->database;
-		$view->helper 		= $helper;
-		$view->filters 		= array();
-		$view->license 		= $license;
-		$view->path 		= $path;
-		$view->authors 		= $authors;
-		$view->authorized 	= true;
-		$view->restricted 	= false;
-		$view->usersgroups  = NULL;
-		$view->params 		= $params;
-		$view->content 		= array('primary' => array());
-		$view->version		= $this->version;
-		$view->lastPubRelease 	= NULL;
-		$view->contributable 	= false;
+		$this->view->option 		= $this->_option;
+		$this->view->config 		= $this->config;
+		$this->view->database 		= $this->database;
+		$this->view->publication 	= $this->publication;
+		$this->view->cats 			= $cats;
+		$this->view->tab 			= 'play';
+		$this->view->sections 		= $sections;
+		$this->view->database 		= $this->database;
+		$this->view->helper 		= $helper;
+		$this->view->filters 		= array();
+		$this->view->license 		= $license;
+		$this->view->path 			= $path;
+		$this->view->authors 		= $authors;
+		$this->view->authorized 	= true;
+		$this->view->restricted 	= false;
+		$this->view->usersgroups  	= NULL;
+		$this->view->params 		= $params;
+		$this->view->content 		= array('primary' => array());
+		$this->view->version		= $this->version;
+		$this->view->lastPubRelease = NULL;
+		$this->view->contributable 	= false;
 
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$this->view->setError( $this->getError() );
 		}
 
 		// Output HTML
-		$view->display();
-
+		$this->view->setName('view')
+					->setLayout('default')
+					->display();
+		return;
 	}
 
 	 /**
@@ -1291,18 +1286,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				$tarname
 			);
 		}
-		elseif ($render == 'video' || $this->task == 'video' || $serveas == 'video')
-		{
-			// HTML5 video
-			$this->_video();
-			return;
-		}
-		elseif ($render == 'presenter' || $this->task == 'watch' || $serveas == 'presenter')
-		{
-			// HUB presenter
-			$this->_watch();
-			return;
-		}
 		else
 		{
 			// File-type attachment - serve inline or as download
@@ -1313,47 +1296,50 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 					&& $this->_task != 'download' && $render != 'download'))
 				{
 					// Instantiate a new view
-					$view 				= new \Hubzero\Component\View( array('name'=>'view', 'layout'=>'inline') );
-					$view->option 		= $this->_option;
-					$view->config 		= $this->config;
-					$view->database 	= $this->database;
-					$view->publication 	= $publication;
-					$view->helper 		= $helper;
-					$view->attachments 	= $attachments;
-					$view->primary		= $primary;
-					$view->aid 			= $aid ? $aid : $primary->id;
-					$view->version 		= $version;
+					$this->view = new \Hubzero\Component\View(array(
+						'name'   => 'view',
+						'layout' => 'inline'
+					));
+					$this->view->option 		= $this->_option;
+					$this->view->config 		= $this->config;
+					$this->view->database 		= $this->database;
+					$this->view->publication 	= $publication;
+					$this->view->helper 		= $helper;
+					$this->view->attachments 	= $attachments;
+					$this->view->primary		= $primary;
+					$this->view->aid 			= $aid ? $aid : $primary->id;
+					$this->view->version 		= $version;
 
 					// Get publication plugin params
 					$pplugin 			= JPluginHelper::getPlugin( 'projects', 'publications' );
 					$pparams 			= new JParameter($pplugin->params);
 
-					$view->googleView	= $pparams->get('googleview');
+					$this->view->googleView	= $pparams->get('googleview');
 
 					$mt = new \Hubzero\Content\Mimetypes();
 
-					$view->mimetype 	= $mt->getMimeType(JPATH_ROOT . $path . DS . $pPath);
-					$mParts 			= explode('/', $view->mimetype);
-					$view->type 		= strtolower(array_shift($mParts));
-					$eParts				= explode('.', $pPath);
-					$view->ext 			= strtolower(array_pop($eParts));
-					$view->url 			= $path . DS . $pPath;
+					$this->view->mimetype 	= $mt->getMimeType(JPATH_ROOT . $path . DS . $pPath);
+					$mParts 				= explode('/', $this->view->mimetype);
+					$this->view->type 		= strtolower(array_shift($mParts));
+					$eParts					= explode('.', $pPath);
+					$this->view->ext 		= strtolower(array_pop($eParts));
+					$this->view->url 		= $path . DS . $pPath;
 
 					// Output HTML
 					if ($this->getError())
 					{
-						$view->setError( $this->getError() );
+						$this->view->setError( $this->getError() );
 					}
 
 					// For inline content - if JS is unavailable
 					if (!$no_html)
 					{
-						$this->content = $view->loadTemplate();
+						$this->content = $this->view->loadTemplate();
 						$this->_playContent();
 						return;
 					}
 
-					$view->display();
+					$this->view->display();
 					return;
 				}
 
@@ -1598,350 +1584,39 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . 'com_publications' . DS . 'assets' . DS . 'css' . DS . 'wiki.css');
 		$document->addStyleSheet('plugins' . DS . 'groups' . DS . 'wiki' . DS . 'wiki.css');
 
 		// Set page title
-		$document->setTitle( JText::_(strtoupper($this->_option)).': '.stripslashes($this->publication->title) );
+		$document->setTitle( JText::_(strtoupper($this->_option)) . ': '
+			. stripslashes($this->publication->title) );
 
 		// Set the pathway
 		$this->_buildPathway();
 
 		// Instantiate a new view
-		$view = new \Hubzero\Component\View( array('name' => 'view', 'layout' => 'wiki') );
-		$view->option 			= $this->_option;
-		$view->project_alias	= $this->publication->project_alias;
-		$view->project_id		= $this->publication->project_id;
-		$view->config 			= $this->config;
-		$view->database 		= $this->database;
-		$view->helper			= $helper;
-		$view->masterscope		= $masterscope;
-		$view->publication 		= $this->publication;
-		$view->attachments		= $this->attachments;
-		$view->page				= $page;
+		$this->view->option 		= $this->_option;
+		$this->view->project_alias	= $this->publication->project_alias;
+		$this->view->project_id		= $this->publication->project_id;
+		$this->view->config 		= $this->config;
+		$this->view->database 		= $this->database;
+		$this->view->helper			= $helper;
+		$this->view->masterscope	= $masterscope;
+		$this->view->publication 	= $this->publication;
+		$this->view->attachments	= $this->attachments;
+		$this->view->page			= $page;
 
 		// Output HTML
 		if ($this->getError())
 		{
-			$view->setError( $this->getError() );
+			$this->view->setError( $this->getError() );
 		}
-
-		$view->display();
-		return;
-
-	}
-
-	/**
-	 * Display presenter
-	 *
-	 * @return     void
-	 */
-	protected function _watch()
-	{
-		if (!$this->publication)
-		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			return;
-		}
-		// We do need attachments!
-		if (!$this->attachments || count($this->attachments) <= 0)
-		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
-			return;
-		}
-
-		//document object
-		$jdoc = JFactory::getDocument();
-
-		//add the HUBpresenter stylesheet
-		$jdoc->addStyleSheet("/components/" . $this->_option . "/presenter/css/app.css");
-
-		//add the HUBpresenter required javascript files
-		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
-		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.easing.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flash.detect.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.scrollto.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.touch-punch.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/jquery.hotkeys.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flowplayer.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/app.js");
-
-		$pre = $this->_preWatch();
-
-		//get the errors
-		$errors = $pre['errors'];
-
-		//get the manifest
-		$manifest = $pre['manifest'];
-
-		//get the content path
-		$content_folder = $pre['content_folder'];
-
-		//if we have no errors
-		if ( count($errors) > 0 )
-		{
-			echo PresenterHelper::errorMessage( $errors );
-		}
-		else
-		{
-			// Instantiate a new view
-			$view = new \Hubzero\Component\View( array('name'=>'view','layout'=>'watch') );
-			$view->option 			= $this->_option;
-			$view->config 			= $this->config;
-			$view->database 		= $this->database;
-			$view->manifest 		= $manifest;
-			$view->content_folder 	= $content_folder;
-			$view->publication 		= $this->publication;
-			$view->attachments 		= $this->attachments;
-			$view->doc 				= $jdoc;
-
-			// Get publication helper
-			$view->helper = new PublicationHelper($this->database);
-
-			// Get version authors
-			$pa = new PublicationAuthor( $this->database );
-			$view->authors = $pa->getAuthors($this->publication->version_id);
-
-			// Build publication path
-			$base_path = $this->config->get('webpath');
-			$view->path = $view->helper->buildPath($this->publication->id, $this->publication->version_id,
-				$base_path, $this->publication->secret);
-
-			// Output HTML
-			if ($this->getError())
-			{
-				$view->setError( $this->getError() );
-			}
-		}
-
-		// do we have javascript?
-		$js 	  = JRequest::getVar("tmpl", "");
-		$no_html  = JRequest::getInt('no_html', 0);
-
-		if ($js != "" && $no_html)
-		{
-			$view->display();
-		}
-		else
-		{
-			// Will watch inside a tab
-			$this->content = $view->loadTemplate();
-			$this->_playContent();
-		}
-
-		return;
-	}
-
-	/**
-	 * Perform a some setup needed for presenter()
-	 *
-	 * @return     array
-	 */
-	protected function _preWatch()
-	{
-		//var to hold error messages
-		$errors = array();
-
-		//database object
-		$database = JFactory::getDBO();
-
-		//inlude the HUBpresenter library
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'presenter' . DS . 'lib' . DS . 'helper.php');
-
-		if (!$this->publication)
-		{
-			$errors[] = "Unable to find presentation.";
-		}
-
-		// Get publication helper
-		$helper = new PublicationHelper($this->database);
-
-		// Build publication path
-		$base_path = $this->config->get('webpath');
-		$path = $helper->buildPath($this->publication->id, $this->publication->version_id, $base_path, $this->publication->secret);
-
-		// check to make sure we have a presentation document defining cuepoints, slides, and media
-		$manifest_path_json = $path . DS . 'presentation.json';
-		$manifest_path_xml = $path . DS . 'presentation.xml';
-
-		//check if the formatted json exists
-		if ( !file_exists($manifest_path_json) )
-		{
-			//check to see if we just havent converted yet
-			if ( !file_exists($manifest_path_xml) )
-			{
-				$errors[] = "Missing outline used to build presentation.";
-			}
-			else
-			{
-				$job = PresenterHelper::createJsonManifest( $path, $manifest_path_xml );
-				if ($job != "")
-				{
-					$errors[] = $job;
-				}
-			}
-		}
-
-		//path to media
-		$media_path = JPATH_ROOT . $path;
-
-		//check if path exists
-		if (!is_dir($media_path))
-		{
-			$errors[] = "Path to media does not exist.";
-		}
-		else
-		{
-			//get all files matching  /.mp4|.webs|.ogv|.m4v|.mp3/
-			$media = JFolder::files($media_path, '.mp4|.webm|.ogv|.m4v|.mp3', false, false );
-			foreach ($media as $m)
-			{
-				$ext[] = array_pop(explode(".",$m));
-			}
-
-			//if we dont have all the necessary media formats
-			if ( (in_array("mp4", $ext) && count($ext) < 3) || (in_array("mp3", $ext) && count($ext) < 2) )
-			{
-				$errors[] = "Missing necessary media formats for video or audio.";
-			}
-
-			// make sure if any slides are video we have three formats of video and backup image for mobile
-			$slide_path = $media_path . DS . 'slides';
-			$slides = JFolder::files($slide_path,'',false,false);
-
-			//array to hold slides with video clips
-			$slide_video = array();
-
-			// build array for checking slide video formats
-			foreach ($slides as $s)
-			{
-				$parts = explode(".",$s);
-				$ext = array_pop($parts);
-				$name = implode(".", $parts);
-
-				if (in_array($ext, array("mp4","m4v","webm","ogv")))
-				{
-					$slide_video[$name][$ext] = $name.".".$ext;
-				}
-			}
-
-			//make sure for each of the slide videos we have all three formats
-			//and has a backup image for the slide
-			foreach ($slide_video as $k => $v)
-			{
-				if (count($v) < 3)
-				{
-					$errors[] = "Video Slides must be Uploaded in the Three Standard Formats. You currently only have " . count($v) . " ({$k}." . implode(", {$k}.", array_keys($v)) . ").";
-				}
-
-				if ( !file_exists($slide_path . DS . $k .'.png') )
-				{
-					$errors[] = "Slides containing video must have a still image of the slide for mobile support. Please upload an image with the filename '" . $k . ".png" . "'.";
-				}
-			}
-
-			$this->database = $database;
-		}
-
-		$return = array();
-		$return['errors'] = $errors;
-		$return['content_folder'] = $path;
-		$return['manifest'] = $manifest_path_json;
-
-		return $return;
-	}
-
-	/**
-	 * Display an HTML5 video
-	 *
-	 * @return     void
-	 */
-	protected function _video()
-	{
-		if (!$this->publication)
-		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			return;
-		}
-
-		// We do need attachments!
-		if (!$this->attachments || count($this->attachments) <= 0)
-		{
-			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_ERROR_FINDING_ATTACHMENTS') );
-			return;
-		}
-
-		//document object
-		$jdoc = JFactory::getDocument();
-		$jdoc->_scripts = array();
-
-		//add the required javascript files
-		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js");
-		$jdoc->addScript("https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js");
-		$jdoc->addScript("/components/" . $this->_option . "/presenter/js/flowplayer.js");
-
-		// First attachment (former 'first child')
-		$this->firstattach  = $this->attachments ? $this->attachments[0] : NULL;
-
-		$paramsClass = 'JRegistry';
-
-		// Get the height and width
-		$attribs = new $paramsClass($this->firstattach->attribs);
-		$width  = intval($attribs->get('width', 0));
-		$height = intval($attribs->get('height', 0));
-
-		// Get publication helper
-		$helper = new PublicationHelper($this->database);
-
-		// Build publication path
-		$base_path = $this->config->get('webpath');
-		$path = $helper->buildPath($this->publication->id, $this->publication->version_id,
-			$base_path, $this->publication->secret, $root = 0);
-
-		// get the videos
-		$videos = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4|.ogv|.OGV|.webm|.WEBM');
-		$video_mp4 = JFolder::files(JPATH_ROOT . DS . $path, '.mp4|.MP4');
-		$subs = JFolder::files(JPATH_ROOT . DS . $path, '.srt|.SRT');
-
-		// Instantiate a new view
-		$view = new \Hubzero\Component\View(array(
-			'name'   => 'view',
-			'layout' => 'video'
-		));
-		$view->option   = $this->_option;
-		$view->config   = $this->config;
-		$view->database = $this->database;
-
-		$view->path     = $path;
-		$view->videos   = $videos;
-		$view->subs     = $subs;
-
-		$view->width    = $width;
-		$view->height   = $height;
 
 		// Output HTML
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$view->setError($error);
-			}
-		}
-
-		$no_html  = JRequest::getInt('no_html', 0);
-		if ($no_html)
-		{
-			$view->display();
-		}
-		else
-		{
-			// Will watch inside a tab
-			$this->content = $view->loadTemplate();
-			$this->_playContent();
-		}
-
+		$this->view->setName('view')
+					->setLayout('wiki')
+					->display();
 		return;
+
 	}
 
 	/**
@@ -2362,67 +2037,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	}
 
 	/**
-	 * Check for image
-	 *
-	 * @param      string $filename
-	 * @param      string $path
-	 * @return     string
-	 */
-	private function _checkForImage($filename, $path)
-	{
-
-		$d = @dir(JPATH_ROOT.$path);
-
-		$images = array();
-
-		if ($d)
-		{
-			while (false !== ($entry = $d->read()))
-			{
-				$img_file = $entry;
-				if (is_file(JPATH_ROOT.$upath.$path . DS . $img_file) && substr($entry,0,1) != '.' && strtolower($entry) !== 'index.html')
-				{
-					if (eregi( "bmp|jpg|png", $img_file ))
-					{
-						$images[] = $img_file;
-					}
-				}
-			}
-			$d->close();
-		}
-
-		$b = 0;
-		$img = '';
-		if ($images)
-		{
-			foreach ($images as $ima)
-			{
-				if (substr($ima, 0, strlen($filename)) == $filename)
-				{
-					$img = $ima;
-					break;
-				}
-			}
-		}
-
-		if (!$img)
-		{
-			return '';
-		}
-
-		$juri = JURI::getInstance();
-		$base = $juri->base();
-
-		// Ensure the base has format of http://base (no trailing slash)
-		if (substr($base, -1) == DS)
-		{
-			$base = substr($base, 0, -1);
-		}
-
-		return $base.$path . DS . $img;
-	}
-
-	/**
 	 * Contribute a publication
 	 *
 	 * @return     void
@@ -2447,23 +2061,32 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Include needed classes
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'autocomplete.php' );
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
+			. 'helpers' . DS . 'html.php' );
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
+			. 'helpers' . DS . 'helper.php' );
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
+			. 'helpers' . DS . 'imghandler.php' );
+		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
+			. 'helpers' . DS . 'autocomplete.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
 			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' .
+			DS . 'models' . DS . 'publication.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' .
+			DS . 'models' . DS . 'curation.php');
 
 		$lang = JFactory::getLanguage();
 		$lang->load('com_projects');
 
 		// Instantiate a new view
-		$view 			= new \Hubzero\Component\View( array('name'=>'submit', 'layout'=>'default') );
-		$view->option 	= $this->_option;
-		$view->config 	= $this->config;
+		$this->view = new \Hubzero\Component\View(array(
+			'name'   => 'submit',
+			'layout' => 'default'
+		));
+		$this->view->option 	= $this->_option;
+		$this->view->config 	= $this->config;
 
 		// Add projects stylesheet
 		\Hubzero\Document\Assets::addComponentStylesheet('com_projects');
@@ -2552,10 +2175,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 						!$cgroup->is_member_of('managers',$this->juser->get('id')))
 					{
 						$this->_buildPathway(null);
-						$view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
-						$view->error  = JText::_('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
-						$view->title = $this->title;
-						$view->display();
+						$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+						$this->view->error  = JText::_('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP');
+						$this->view->title = $this->title;
+						$this->view->display();
 						return;
 					}
 				}
@@ -2574,7 +2197,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		);
 
 		$content = $dispatcher->trigger( 'onProject', $plugin_params);
-		$view->content = (is_array($content) && isset($content[0]['html'])) ? $content[0]['html'] : '';
+		$this->view->content = (is_array($content) && isset($content[0]['html'])) ? $content[0]['html'] : '';
 
 		if (isset($content[0]['msg']) && !empty($content[0]['msg']))
 		{
@@ -2583,10 +2206,10 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		if ($ajax)
 		{
-			echo $view->content;
+			echo $this->view->content;
 			return;
 		}
-		elseif (!$view->content && isset($content[0]['referer']) && $content[0]['referer'] != '')
+		elseif (!$this->view->content && isset($content[0]['referer']) && $content[0]['referer'] != '')
 		{
 			$this->_redirect = $content[0]['referer'];
 			return;
@@ -2599,18 +2222,18 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Output HTML
-		$view->project  = isset($project) ? $project : '';
-		$view->action 	= $action;
-		$view->uid		= $this->juser->get('id');
-		$view->pid 		= $pid;
-		$view->title 	= $this->_title;
-		$view->msg 		= $this->getNotifications('success');
-		$error 			= $this->getError() ? $this->getError() : $this->getNotifications('error');
+		$this->view->project= isset($project) ? $project : '';
+		$this->view->action = $action;
+		$this->view->uid	= $this->juser->get('id');
+		$this->view->pid 	= $pid;
+		$this->view->title 	= $this->_title;
+		$this->view->msg 	= $this->getNotifications('success');
+		$error 				= $this->getError() ? $this->getError() : $this->getNotifications('error');
 		if ($error)
 		{
-			$view->setError( $error );
+			$this->view->setError( $error );
 		}
-		$view->display();
+		$this->view->display();
 
 		return;
 	}
@@ -2625,7 +2248,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
-			$this->view();
+			$this->pageTask();
 			return;
 		}
 
@@ -2642,7 +2265,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		if (!$no_html)
 		{
 			// Push through to the resource view
-			$this->view();
+			$this->pageTask();
 		}
 	}
 
@@ -2727,14 +2350,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$this->introTask();
 			return;
 		}
-
-		$view->title = $this->_title;
-		$view->option = $this->_option;
-		$view->publication = $publication;
-
-		// Output HTML
-		$view->display();
-		return;
 	}
 
 	/**

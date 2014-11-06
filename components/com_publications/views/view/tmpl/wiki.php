@@ -26,6 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
+     ->css('wiki.css')
      ->js();
 
 $html = $this->page->pagehtml;

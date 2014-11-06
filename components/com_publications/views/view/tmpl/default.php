@@ -134,7 +134,7 @@ else
 	$feeds = '';
 
 	// Sort out primary files and draw a launch button
-	if ($this->config->get('curation', 0) && $this->tab != 'play')
+	if ($this->config->get('curation', 0) && $this->tab != 'play' && $this->params->get('curated') != 2)
 	{
 		// Get primary elements
 		$elements = $this->publication->_curationModel->getElements(1);
