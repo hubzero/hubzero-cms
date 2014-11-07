@@ -28,28 +28,66 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Hubzero\View\Helper;
+namespace Hubzero\Pagination;
 
-use Hubzero\Pagination\Paginator;
+use Hubzero\Base\Object;
 
 /**
- * Create a pagination object and return it
+ * Pagination object representing a particular item in the pagination lists.
+ *
+ * @since  1.3.1
  */
-class Pagination extends AbstractHelper
+class Item extends Object
 {
 	/**
-	 * Instantiate the paginator and return it
+	 * The link text.
 	 *
-	 * @param   integer  $total  Total number of records
-	 * @param   integer  $start  Where to start
-	 * @param   integer  $limit  Number of records per page
-	 * @return  object
+	 * @var  string
 	 */
-	public function __invoke($total, $start, $limit)
-	{
-		$start = $start ?: 0;
-		$limit = $limit ?: \JFactory::getConfig()->get('list_limit');
+	public $text;
 
-		return new Paginator($total, $start, $limit);
+	/**
+	 * The number of rows as a base offset.
+	 *
+	 * @var  integer
+	 */
+	public $base;
+
+	/**
+	 * The link URL.
+	 *
+	 * @var  string
+	 */
+	public $link;
+
+	/**
+	 * The prefix used for request variables.
+	 *
+	 * @var  integer
+	 */
+	public $prefix;
+
+	/**
+	 * The prefix used for request variables.
+	 *
+	 * @var  integer
+	 */
+	public $rel;
+
+	/**
+	 * Class constructor.
+	 *
+	 * @param   string   $text    The link text.
+	 * @param   integer  $prefix  The prefix used for request variables.
+	 * @param   integer  $base    The number of rows as a base offset.
+	 * @param   string   $link    The link URL.
+	 * @return  void
+	 */
+	public function __construct($text, $prefix = '', $base = null, $link = null)
+	{
+		$this->text   = $text;
+		$this->prefix = $prefix;
+		$this->base   = $base;
+		$this->link   = $link;
 	}
 }

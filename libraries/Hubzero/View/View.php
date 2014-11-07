@@ -198,7 +198,7 @@ class View extends Object
 		}
 		else
 		{
-			$this->setLayout('default');
+			$this->setLayout($this->_layout);
 		}
 
 		$this->baseurl = \JURI::base(true);
