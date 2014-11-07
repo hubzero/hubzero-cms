@@ -58,27 +58,25 @@ $useBlocks  = $this->pubconfig->get('curation', 0);
 
 $i = 1;
 
-$pubHelper = new PublicationHelper ($this->database);
-
 ?>
 <form action="<?php echo $url; ?>" method="post" id="plg-form" >
 	<div id="plg-header">
 		<h3 class="publications"><?php echo $this->title; ?></h3>
 	</div>
 	<?php
-	if(count($this->rows) > 0 ) {
+	if (count($this->rows) > 0 ) {
 	?>
-	<div class="list-editing"><p><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SHOWING')); ?> <?php if($this->total <= count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_ALL'); }?> <span class="prominent"> <?php echo count($this->rows); ?></span> <?php if($this->total > count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_OUT_OF').' '.$this->total; }?> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'); ?>
+	<div class="list-editing"><p><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_SHOWING')); ?> <?php if ($this->total <= count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_ALL'); }?> <span class="prominent"> <?php echo count($this->rows); ?></span> <?php if ($this->total > count($this->rows)) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_OUT_OF').' '.$this->total; }?> <?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S'); ?>
 		<span class="editlink addnew"><a href="<?php echo $url . '/?action=start'; ?>" ><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION'); ?></a></span></p>
 		</div>
 		<table id="filelist" class="listing">
 			<thead>
 				<tr>
 					<th></th>
-					<th<?php if($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo $url . '/?t_sortby=title'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></a></th>
-					<th class="thtype<?php if($this->filters['sortby'] == 'id') { echo ' activesort'; } ?>"><a href="<?php echo $url . '/?t_sortby=id'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('ID'); ?>"><?php echo JText::_('ID'); ?></a></th>
-					<th class="thtype<?php if($this->filters['sortby'] == 'type') { echo ' activesort'; } ?>"><a href="<?php echo $url . '/?t_sortby=type'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TYPE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_TYPE'); ?></a></th>
-					<th<?php if($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?> colspan="2"><a href="<?php echo $url . '/?t_sortby=status'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></a></th>
+					<th<?php if ($this->filters['sortby'] == 'title') { echo ' class="activesort"'; } ?>><a href="<?php echo $url . '/?t_sortby=title'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></a></th>
+					<th class="thtype<?php if ($this->filters['sortby'] == 'id') { echo ' activesort'; } ?>"><a href="<?php echo $url . '/?t_sortby=id'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('ID'); ?>"><?php echo JText::_('ID'); ?></a></th>
+					<th class="thtype<?php if ($this->filters['sortby'] == 'type') { echo ' activesort'; } ?>"><a href="<?php echo $url . '/?t_sortby=type'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_TYPE'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CONTENT_TYPE'); ?></a></th>
+					<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?> colspan="2"><a href="<?php echo $url . '/?t_sortby=status'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PROJECTS_SORT_BY') . ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></a></th>
 					<th class="condensed centeralign"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASES'); ?></th>
 					<th></th>
 				</tr>
@@ -101,15 +99,12 @@ $pubHelper = new PublicationHelper ($this->database);
 					$showStats = true;
 				}
 
-				// Get thumbnail
-				$pubThumb  = $pubHelper->getThumb($row->id, $row->version_id, $this->pubconfig, false, $row->cat_url);
-
 				$trClass = $i % 2 == 0 ? ' even' : ' odd';
 				$i++;
 			?>
 			<tr class="mini faded mline<?php echo $trClass; ?>" id="tr_<?php echo $row->id; ?>">
-				<td class="pub-image"><img src="<?php echo $pubThumb; ?>" alt="" /></td>
-				<td><a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" <?php if($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php echo $row->title; ?></a> v.<?php echo $row->version_label; ?></td>
+				<td class="pub-image"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt="" /></td>
+				<td><a href="<?php echo JRoute::_($route . '&pid=' . $row->id); ?>" <?php if ($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php echo $row->title; ?></a> v.<?php echo $row->version_label; ?></td>
 				<td><?php echo $row->id; ?></td>
 				<td class="restype"><?php echo $row->base; ?></td>
 				<td class="showstatus">

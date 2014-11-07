@@ -31,8 +31,6 @@ if ($this->line->alias) {
 	$sef = JRoute::_('index.php?option='.$this->option.'&id='. $this->line->id);
 }
 
-$pubthumb = $this->helper->getThumb($this->line->id, $this->line->version_id, $this->config, false, $this->line->cat_url);
-
 $html  = "\t".'<li';
 switch ($this->line->access)
 {
@@ -43,7 +41,7 @@ switch ($this->line->access)
 	default: $html .= ' class="public"'; break;
 }
 $html .= '>'."\n";
-$html .= "\t". "\t". '<div class="pub-thumb"><img src="' . $pubthumb . '" alt=""/></div>' . "\n";
+$html .= "\t". "\t". '<div class="pub-thumb"><img src="' . JRoute::_('index.php?option=com_publications&id=' . $this->line->id . '&v=' . $this->line->version_id) . '/Image:thumb' . '" alt=""/></div>' . "\n";
 $html .= "\t" . "\t" . '<div class="pub-details">' . "\n";
 $html .= "\t\t".'<p class="title"><a href="'.$sef.'">'. $this->escape($this->line->title) . '</a>'."\n";
 $html .= '</p>'."\n";
