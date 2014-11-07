@@ -75,9 +75,13 @@ defined('_JEXEC') or die('Restricted access');
 				<p class="comment-title">
 					<strong>
 						<?php if (!$this->comment->get('anonymous')) { ?>
-							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')); ?>"><!--
-								--><?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?><!--
-							--></a>
+							<?php if ($this->comment->creator('public')) { ?>
+								<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')); ?>"><!--
+									--><?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?><!--
+								--></a>
+							<?php } else { ?>
+								<?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?>
+							<?php } ?>
 						<?php } else { ?>
 							<?php echo JText::_('PLG_HUBZERO_COMMENTS_ANONYMOUS'); ?>
 						<?php } ?>
@@ -180,7 +184,7 @@ defined('_JEXEC') or die('Restricted access');
 								<label for="comment_<?php echo $this->comment->get('id'); ?>_content">
 									<span class="label-text"><?php echo JText::_('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS'); ?></span>
 									<?php
-									echo \JFactory::getEditor()->display('comment[content]', '', '', '', 35, 4, false, 'comment_' . $this->comment->get('id') . '_content', null, null, array('class' => 'minimal no-footer'));
+									echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', array('class' => 'minimal no-footer'));
 									?>
 								</label>
 

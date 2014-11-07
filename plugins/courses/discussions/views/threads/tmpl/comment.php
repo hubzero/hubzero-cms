@@ -25,7 +25,11 @@ defined('_JEXEC') or die('Restricted access');
 	$name = JText::_('PLG_COURSES_DISCUSSIONS_ANONYMOUS');
 	if (!$this->comment->get('anonymous'))
 	{
-		$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $this->escape(stripslashes($this->comment->creator('name'))) . '</a>';
+		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
+		if ($this->comment->creator('public'))
+		{
+			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $name . '</a>';
+		}
 	}
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
@@ -150,9 +154,7 @@ defined('_JEXEC') or die('Restricted access');
 
 						<label for="comment_<?php echo $this->comment->get('id'); ?>_reply">
 							<span class="label-text"><?php echo JText::_('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
-							<?php
-							echo \JFactory::getEditor()->display('fields[comment]', '', '', '', 35, 5, false, 'comment_' . $this->comment->get('id') . '_reply', null, null, array('class' => 'minimal no-footer'));
-							?>
+							<?php echo $this->editor('fields[comment]', '', 35, 5, 'comment_' . $this->comment->get('id') . '_reply', array('class' => 'minimal no-footer')); ?>
 						</label>
 
 						<label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">

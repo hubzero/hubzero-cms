@@ -79,7 +79,7 @@ if (!$this->thread->thread)
 								$huser = \Hubzero\User\Profile::getInstance($this->thread->created_by);
 								if (is_object($huser) && $huser->get('name'))
 								{
-									$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->thread->created_by) . '">' . $this->escape(stripslashes($huser->get('name'))) . '</a>';
+									$name = ($huser->get('public') ? '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->thread->created_by) . '">' : '') . $this->escape(stripslashes($huser->get('name'))) . ($huser->get('public') ? '</a>' : '');
 								}
 							}
 

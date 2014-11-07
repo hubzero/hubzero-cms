@@ -201,9 +201,7 @@ $this->js();
 
 					<label>
 						<?php echo JText::_('PLG_COURSES_REVIEWS_YOUR_COMMENTS'); ?>: <span class="required"><?php echo JText::_('PLG_COURSES_REVIEWS_REQUIRED'); ?></span>
-						<?php
-							echo \JFactory::getEditor()->display('comment[content]', $this->escape(stripslashes($comment->content)), '', '', 35, 20, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
-						?>
+						<?php echo $this->editor('comment[content]', $this->escape(stripslashes($comment->content)), 35, 20, 'commentcontent', array('class' => 'minimal no-footer')); ?>
 					</label>
 
 

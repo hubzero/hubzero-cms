@@ -35,27 +35,11 @@ defined('_JEXEC') or die('Restricted access');
 
 	$cls = isset($this->cls) ? $this->cls : 'odd';
 
-	/*JPluginHelper::importPlugin('hubzero');
-	$dispatcher = JDispatcher::getInstance();
-	$wikiconfig = array(
-		'option'   => $this->option,
-		'scope'    => '',
-		'pagename' => $this->obj->get('alias'),
-		'pageid'   => $this->obj->get('id'),
-		'filepath' => '',
-		'domain'   => ''
-	);
-	$result = $dispatcher->trigger('onGetWikiParser', array($wikiconfig, true));
-	$p = (is_array($result) && !empty($result)) ? $result[0] : null;*/
-
 	if (!$this->comment->get('anonymous')
 	  && $this->obj->get('created_by') == $this->comment->get('created_by'))
 	{
 		$cls .= ' author';
 	}
-
-	//$xuser = new \Hubzero\User\Profile();
-	//$xuser->load($this->comment->created_by);
 
 	$rtrn = $this->url ? $this->url : JRequest::getVar('REQUEST_URI', $this->obj->link() . '&active=reviews', 'server');
 	if (!strstr($rtrn, 'index.php'))
@@ -97,9 +81,13 @@ defined('_JEXEC') or die('Restricted access');
 				<p class="comment-title">
 					<strong>
 					<?php if (!$this->comment->get('anonymous')) { ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')); ?>">
+						<?php if ($this->comment-creator('public')) { ?>
+							<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')); ?>">
+								<?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?>
+							</a>
+						<?php } else { ?>
 							<?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?>
-						</a>
+						<?php } ?>
 					<?php } else { ?>
 						<?php echo JText::_('PLG_COURSES_REVIEWS_ANONYMOUS'); ?>
 					<?php } ?>
@@ -184,9 +172,7 @@ defined('_JEXEC') or die('Restricted access');
 
 							<label for="comment-<?php echo $this->comment->get('id'); ?>-content">
 								<span class="label-text"><?php echo JText::_('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?></span>
-								<?php
-									echo \JFactory::getEditor()->display('comment[content]', '', '', '', 35, 4, false, 'comment-' . $this->comment->get('id') . '-content', null, null, array('class' => 'minimal no-footer'));
-								?>
+								<?php echo $this->editor('comment[content]', '', 35, 4, 'comment-' . $this->comment->get('id') . '-content', array('class' => 'minimal no-footer')); ?>
 							</label>
 
 							<label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
