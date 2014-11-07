@@ -1344,8 +1344,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 				}
 
 				// Download - default action
-				$downloadable['path'] = JPATH_ROOT . $path . DS . $pPath;
-				$downloadable['name'] = basename($pPath);
+				$downloadable['path'] 		= JPATH_ROOT . $path . DS . $pPath;
+				$downloadable['name'] 		= basename($pPath);
+				$downloadable['serveas'] 	= basename($pPath);
 			}
 
 			// Link-type attachment
@@ -1393,7 +1394,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$xserver->filename($downloadable['path']);
 		$xserver->disposition($disp);
 		$xserver->acceptranges(false); // @TODO fix byte range support
-		$xserver->saveas(JText::_($downloadable['name']));
+		$xserver->saveas($downloadable['serveas']);
 
 		if (!$xserver->serve())
 		{
@@ -1655,8 +1656,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$tarpath = JPATH_ROOT . $path . DS . $tarname;
 
 		$archive = array();
-		$archive['path'] = $tarpath;
-		$archive['name'] = $tarname;
+		$archive['path'] 	= $tarpath;
+		$archive['name'] 	= $tarname;
+		$archive['serveas']	= $pub->title . ' v.' . $pub->version_label . '.zip';
 
 		// Check if archival is already there (locked version)
 		if (($pub->state == 1 || $pub->state == 0 || $pub->state == 6) && file_exists($tarpath))
