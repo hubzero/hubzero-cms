@@ -1,41 +1,28 @@
 /**
  * @package     hubzero-cms
- * @file        templates/hubbasic/js/globals.js
+ * @file        templates/hubbasic2012/js/hub.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-//-----------------------------------------------------------
 //  Create our namespace
-//-----------------------------------------------------------
-if (!HUB) {
+if (typeof HUB === "undefined") {
 	var HUB = {};
-	HUB.Base = {};
 }
+HUB.Base = {};
 
-var alertFallback = true;
+// Fallback support for browsers that don't have console.log
 if (typeof console === "undefined" || typeof console.log === "undefined") {
 	console = {};
 	console.log = function() {};
 }
 
-//-----------------------------------------------------------
-//  Various functions - encapsulated in HUB namespace
-//-----------------------------------------------------------
+// Support for jQuery noConflict mode
 if (!jq) {
 	var jq = $;
-
-	$.getDocHeight = function(){
-		var D = document;
-		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
-	};
-} else {
-	jq.getDocHeight = function(){
-		var D = document;
-		return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
-	};
 }
 
+// Let's get down to business...
 jQuery(document).ready(function(jq){
 	var $ = jq,
 		w = 760,
@@ -75,9 +62,7 @@ jQuery(document).ready(function(jq){
 						var sizeTokens = sizeString.split('x');
 						w = parseInt(sizeTokens[0]);
 						h = parseInt(sizeTokens[1]);
-					}
-					else if(sizeString && sizeString == 'fullxfull')
-					{
+					} else if (sizeString && sizeString == 'fullxfull') {
 						w = screen.width;
 						h = screen.height;
 					}

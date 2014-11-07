@@ -651,9 +651,7 @@
 		-o-border-radius: 0 0 3px 3px;
 		border-radius: 0 0 3px 3px;
 	}
-/*---------------------------------------------------------------
-	Breadcrumb trail
----------------------------------------------------------------*/
+/* Breadcrumb trail */
 	#trail {
 		margin: 0;
 		padding: 1em 65px;
@@ -1007,6 +1005,33 @@
 		background-position: 0.2em 1em;
 		letter-spacing: 1px;
 	}
+
+	section.section {
+		display: table;
+		table-layout: fixed;
+		width: 100%;
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
+	}
+	section.section>.section-inner {
+		display: table-row;
+	}
+	section.section .subject {
+		display: table-cell;
+		vertical-align: top;
+		margin-right: 0;
+		padding-right: 30px;
+	}
+	section.section .aside {
+		float: none;
+		display: table-cell;
+		vertical-align: top;
+		width: 210px;
+	}
+
 	#page_sidebar a {
 		border: none;
 	}
@@ -1367,7 +1392,7 @@
 		display: none;
 	}
 
-/* Tooltips */
+/* Tooltips 
 	.tooltip,
 	.tool-tip {
 		color: #fff;
@@ -1691,104 +1716,6 @@
 	.fourhalf-stars:before  { content: "\2605\2605\2605\2605\f089"; }
 	.five-stars:before      { content: "\2605\2605\2605\2605\2605"; }
 
-/* File types */
-	.pdf { background: url("../images/icons/16x16/pdf.png") 0 0 no-repeat; padding-left: 25px; }
-	.swf { background: url("../images/icons/16x16/swf.png") 0 0 no-repeat; padding-left: 25px; }
-	.ppt { background: url("../images/icons/16x16/ppt.png") 0 0 no-repeat; padding-left: 25px; }
-	.pps { background: url("../images/icons/16x16/pps.png") 0 0 no-repeat; padding-left: 25px; }
-	.php,
-	.htm,
-	.html { background: url("../images/icons/16x16/html.png") 0 0 no-repeat; padding-left: 25px; }
-	.tar,
-	.zip { background: url("../images/icons/16x16/zip.png") 0 0 no-repeat; padding-left: 25px; }
-	.wmv { background: url("../images/icons/16x16/wmv.png") 0 0 no-repeat; padding-left: 25px; }
-	.doc { background: url("../images/icons/16x16/doc.png") 0 0 no-repeat; padding-left: 25px; }
-	.asx { background: url("../images/icons/16x16/asx.png") 0 0 no-repeat; padding-left: 25px; }
-	.asf { background: url("../images/icons/16x16/asf.png") 0 0 no-repeat; padding-left: 25px; }
-	.txt,
-	.articles li { background: url("../images/icons/16x16/txt.png") 0 0 no-repeat; padding-left: 25px; margin: 1em 0;}
-	.mp3 { background: url("../images/icons/16x16/podcast.gif") 0 0 no-repeat; padding-left: 25px; }
-	.mp4 { background: url("../images/icons/16x16/vodcast.gif") 0 0 no-repeat; padding-left: 25px; }
-	.profile { background: url("../images/icons/16x16/profile.gif") 0 0 no-repeat; }
-	.categories li,
-	.dir { background: url("../images/icons/16x16/folder.gif") 0 0 no-repeat; padding-left: 20px; }
-	
-	.protected { background: url("../images/icons/lock.png") 0 0 no-repeat; padding-left: 20px; }
-	.private { background: url("../images/icons/eye.png") 0 0 no-repeat; padding-left: 20px; }
-	.email { background: url("../images/icons/email.png") 0 0 no-repeat; padding-left: 20px; }
-	.invite { background: url("../images/icons/email_go.png") 0 0 no-repeat; padding-left: 20px; }
-	.new-email { background: url("../images/icons/email_add.png") 0 0 no-repeat; padding-left: 20px; }
-	.edit { background: url("../images/icons/page_edit.png") 0 0 no-repeat; padding-left: 20px; }
-	.add { background: url("../images/icons/add.png") 0 0 no-repeat; padding-left: 20px; }
-	.delete { background: url("../images/icons/delete.png") 0 0 no-repeat; padding-left: 20px; }
-	.map { background: url("../images/icons/map.png") 0 0 no-repeat; padding-left: 20px; }
-	.stats { background: url("../images/icons/chart_bar.png") 0 0 no-repeat; padding-left: 20px; }
-	.tag { background: url("../images/icons/tag_orange.png") 0 0 no-repeat; padding-left: 20px; }
-	.group { background: url("../images/icons/group.png") 0 0 no-repeat; padding-left: 20px; }
-	.user { background: url("../images/icons/user.png") 0 0 no-repeat; padding-left: 20px; }
-	.edit-member { background: url("../images/icons/user_edit.png") 0 0 no-repeat; padding-left: 20px; }
-	.new-ticket { background: url("../images/icons/note_add.png") 0 0 no-repeat; padding-left: 20px; }
-	.supported { background: url("../images/icons/award_star_gold_1.png") 0 0 no-repeat; padding-left: 20px; }
-	.phone,
-	.smstxt { background: url("../images/icons/phone.png") 0 0 no-repeat; padding-left: 20px; }
-	.bell { background: url("../images/icons/bell.png") 0 0 no-repeat; padding-left: 20px; }
-	.im { background: url("../images/icons/comment.png") 0 0 no-repeat; padding-left: 20px; }
-	.internal,
-	.box { background: url("../images/icons/box.png") 0 0 no-repeat; padding-left: 20px; }
-	.comments {background: url("../images/icons/comments.png") 0 0 no-repeat; padding-left: 20px; }
-	.event { background: url("../images/icons/calendar_view_day.png") 0 0 no-repeat; padding-left: 20px; }
-	.feed,
-	.newsfeed,
-	.rss { background: url("../images/icons/feed.png") 0 0 no-repeat; padding-left: 20px; }
-
-/* Metadata 
-	.metadata {
-		border: 1px dashed #bbb;
-		margin: 0 0 1.5em 0;
-		padding: 10px;
-	}
-	.metadata p {
-		margin: 0.2em 0;
-		padding: 0;
-		font-size: 90%;
-	}
-	.metadata p:before {
-		font-family: 'Fontcons';
-		font-size: 12px;
-		line-height: 12px;
-		margin-right: 0.2em;
-	}
-	.metadata p.review:before {
-		content: "\2605";
-	}
-	.metadata p.citation:before {
-		content: "\275D";
-	}
-	.metadata p.usage:before { 
-		content: "\f080";
-	}
-	.metadata p.answer:before { 
-		content: "\f086";
-	}
-	.metadata p.wiki:before,
-	.metadata p.topics:before { 
-		content: "\f072";
-	}
-	.metadata p.groups:before { 
-		content: "\f086";
-	}
-	.metadata p.resources:before { 
-		content: "\270D";
-	}
-	.metadata p.favorite:before {
-		content: "\2665";
-	}
-	.metadata p.points:before {
-		content: "\f006";
-	}
-	.metadata p.messages:before { 
-		content: "\2709";
-	}*/
 /* Results */
 	/* Category headers */
 	.category-header {
@@ -1908,7 +1835,7 @@
 		position: absolute;
 		top: 0;
 		right: 5px;
-		width: 214px;
+		min-width: 214px;
 		text-align: right;
 	}
 	#content-header-extra p {
@@ -1952,7 +1879,7 @@
 		border-color: #eef0e7;
 		background-color: #eef0e7;
 	}
-	.entry-search input {
+	/*.entry-search input {
 		background: #fff url("/components/com_kb/assets/img/search.png") 5px 50% no-repeat;
 		padding: 5px 5px 5px 20px;
 	}
@@ -1960,7 +1887,7 @@
 	.entry-search ul.token-input-list-act {
 		background: #fff url("/components/com_tags/assets/img/tags.png") 5px 50% no-repeat;
 		padding-left: 23px;
-	}
+	}*/
 	.entry-search ul.token-input-list-act li input,
 	.entry-search ul.textboxlist-holder li input {
 		padding: 5px;

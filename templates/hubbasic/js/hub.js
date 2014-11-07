@@ -1,194 +1,161 @@
 /**
  * @package     hubzero-cms
- * @file        templates/hubbasic/js/globals.js
+ * @file        templates/hubbasic/js/hub.js
  * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-$.getDocHeight = function(){
-     var D = document;
-     return Math.max(Math.max(D.body.scrollHeight, D.documentElement.scrollHeight), Math.max(D.body.offsetHeight, D.documentElement.offsetHeight), Math.max(D.body.clientHeight, D.documentElement.clientHeight));
-};
-
-if (!event.preventDefault) {
-	event.preventDefault = function() {
-		event.returnValue = false; //ie
-	};
-}
-
-//-----------------------------------------------------------
 //  Create our namespace
-//-----------------------------------------------------------
-if (!HUB) {
+if (typeof HUB === "undefined") {
 	var HUB = {};
 }
+HUB.Base = {};
 
-//-----------------------------------------------------------
-//  Various functions - encapsulated in HUB namespace
-//-----------------------------------------------------------
+// Fallback support for browsers that don't have console.log
+if (typeof console === "undefined" || typeof console.log === "undefined") {
+	console = {};
+	console.log = function() {};
+}
+
+// Support for jQuery noConflict mode
 if (!jq) {
 	var jq = $;
 }
 
-HUB.Base = {
-	
-	jQuery: jq,
-	
-	templatepath: '',
+// Let's get down to business...
+jQuery(document).ready(function(jq){
+	var $ = jq,
+		w = 760,
+		h = 520,
+		templatepath = '/templates/hubbasic/';
 
-	//  Overlay for "loading", lightbox, etc.
-	overlayer: function() {
-		var $ = this.jQuery;
-		// The following code creates and inserts HTML into the document:
-		// <div id="initializing" style="display:none;">
-		//   <img id="loading" src="templates/zepar/images/circle_animation.gif" alt="" />
-		// </div>
-		var imgpath = '';
-		$('script').each(function(i, s) {
-			if (s.src && s.src.match(/hub\.jquery\.js(\?.*)?$/)) {
-				HUB.Base.templatepath = s.src.replace(/js\/hub\.jquery\.js(\?.*)?$/,'');
-				imgpath = HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif';
-			}
-		});
-		
-		$('<div id="sbox-overlay" style="position:absolute;top:0;left:0;z-index:997;display:none;"><div id="initializing" style="position:absolute;top:0;left:50%;z-index:998;display:none;"><img id="loading" src="'+imgpath+'" alt="" /></div></div>')
-			.on('click', function(){
-				$(this).css({ display:'none', visibility: 'hidden', opacity: '0' })
-			})
-			.appendTo(document.body);
-		
-		// Note: the rest of the code is in a separate function because it's needs to be
-		// able to be called by itself (usually after loading some HTML via AJAX).
-		HUB.Base.launchTool();
-	},
+	// Set focus on username field for login form
+	if ($('#username').length > 0) {
+		$('#username').focus();
+	}
 
-	launchTool: function() {
-		var $ = this.jQuery;
-		
-		$('.launchtool').each(function(i, trigger) {
-			$(trigger).on('click', function(e) {
-				$('#sbox-overlay').css({
-					width: $(window).width(), 
-					height: $.getDocHeight(), 
-					display: 'block',
-					visibility: 'visible',
-					opacity: '0.7'
-				});
-				$('#initializing').css({
-					top: ($(window).scrollTop() + ($(window).height() / 2) - 90), 
-					display: 'block',
-					zIndex: 65557
-				});
-			});
-		});
-	},
-
-	// set focus on username field for login form
-	setLoginFocus: function() {
-		var $ = this.jQuery;
-		
-		if ($('#username')) {
-			$('#username').focus();
-		}
-	},
-
-	// turn links with specific classes into popups
-	popups: function() {
-		var w = 760, h = 520, $ = this.jQuery;
-		
-		$('a').each(function(i, trigger) {
-			if ($(trigger).is('.demo, .popinfo, .popup, .breeze')) {
-				$(trigger).click(function (e) {
-					e.preventDefault();
-					
-					if ($(this).attr('class')) {
-						var sizeString = $(this).attr('class').split(' ').pop();
-						if (sizeString && sizeString.match('/\d+x\d+/')) {
-							var sizeTokens = sizeString.split('x');
-							w = parseInt(sizeTokens[0]);
-							h = parseInt(sizeTokens[1]);
-						}
-					}
-					
-					window.open($(this).attr('href'), 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w);
-				});
-			}
-			
-			if ($(trigger).attr('rel') && $(trigger).attr('rel').indexOf('external') !=- 1) {
-				$(trigger).attr('target','_blank');
-			}
-		});
-	},
-
-	searchbox: function() {
-		var $ = this.jQuery;
-		
-		if ($('#searchword')) {
-			$('#searchword').css('color', '#999');
-			$('#searchword').focus(function(){
+	// Set the search box's placeholder text color
+	if ($('#searchword').length > 0) {
+		$('#searchword')
+			.css('color', '#777')
+			.on('focus', function(){
 				if ($(this).val() == 'Search') {
-					$(this).val('');
-					$(this).css('color', '#333');
+					$(this).val('').css('color', '#ddd');
+				}
+			})
+			.on('blur', function(){
+				if ($(this).val() == '' || $(this).val() == 'Search') {
+					$(this).val('Search').css('color', '#777');
 				}
 			});
-			$('#searchword').blur(function(){
-				if ($(this).val() == '' || $(this).val() == 'Search') {
-					$(this).val('Search');
-					$(this).css('color', '#999');
+	}
+
+	// Turn links with specific classes into popups
+	$('a').each(function(i, trigger) {
+		if ($(trigger).is('.demo, .popinfo, .popup, .breeze')) {
+			$(trigger).on('click', function (e) {
+				e.preventDefault();
+
+				if ($(this).attr('class')) {
+					var sizeString = $(this).attr('class').split(' ').pop();
+					if (sizeString && sizeString.match(/\d+x\d+/gi)) {
+						var sizeTokens = sizeString.split('x');
+						w = parseInt(sizeTokens[0]);
+						h = parseInt(sizeTokens[1]);
+					} else if (sizeString && sizeString == 'fullxfull') {
+						w = screen.width;
+						h = screen.height;
+					}
 				}
+
+				window.open($(this).attr('href'), 'popup', 'resizable=1,scrollbars=1,height='+ h + ',width=' + w);
 			});
 		}
-	},
+		if ($(trigger).attr('rel') && $(trigger).attr('rel').indexOf('external') !=- 1) {
+			$(trigger).attr('target', '_blank');
+		}
+	});
 
-	// launch functions
-	initialize: function() {
-		var $ = this.jQuery;
-		
-		HUB.Base.setLoginFocus();
-		HUB.Base.searchbox();
-		HUB.Base.popups();
-		HUB.Base.overlayer();
-		
-		$('a[rel=lightbox]').fancybox({
+	if (jQuery.fancybox) {
+		// Set the overlay trigger for launch tool links
+		$('.launchtool').on('click', function(e) {
+			$.fancybox({
+				closeBtn: false, 
+				href: HUB.Base.templatepath + 'images/anim/circling-ball-loading.gif'
+			});
 		});
-		
-		// Init tooltips
-		$('.hasTip').tooltip({
-			position:'TOP RIGHT',
-			//offset: [10,-20],
-			onBeforeShow: function(event, position) {
-				var tip = this.getTip(),
-					tipText = tip[0].innerHTML;
-					
-				if (tipText.indexOf(" :: ") != -1) {
-					var parts = tipText.split(" :: ");
-					tip[0].innerHTML = "<span class=\"tooltip-title\">"+parts[0]+"</span><span>"+parts[1]+"</span>";
+
+		// Set overlays for lightboxed elements
+		$('a[rel=lightbox]').fancybox();
+	}
+
+	// Init tooltips
+	if (jQuery.ui && jQuery.ui.tooltip) {
+		$('.hasTip, .tooltips').tooltip({
+			position: {
+				my: 'center bottom',
+				at: 'center top'
+			},
+			// When moving between hovering over many elements quickly, the tooltip will jump around
+			// because it can't start animating the fade in of the new tip until the old tip is
+			// done. Solution is to disable one of the animations.
+			hide: false,
+			content: function () {
+				return $(this).attr('title');
+			},
+			create: function(event, ui) {
+				var tip = $(this),
+					tipText = tip.attr('title');
+
+				if (tipText.indexOf('::') != -1) {
+					var parts = tipText.split('::');
+					tip.attr('title', parts[1]);
 				}
-			}
-		}).dynamic({ bottom: { direction: 'down' }, right: { direction: 'left' } });
-		$('.tooltips').tooltip({
-			position:'TOP RIGHT',
-			//offset: [10,2],
-			onBeforeShow: function(event, position) {
-				var tip = this.getTip(),
-					tipText = tip[0].innerHTML;
-					
-				if (tipText.indexOf(" :: ") != -1) {
-					var parts = tipText.split(" :: ");
-					tip[0].innerHTML = "<span class=\"tooltip-title\">"+parts[0]+"</span><span>"+parts[1]+"</span>";
-				}
-			}
-		}).dynamic({ bottom: { direction: 'down' }, right: { direction: 'left' } });
-		
+			},
+			tooltipClass: 'tooltip'
+		});
+
 		// Init fixed position DOM: tooltips
 		$('.fixedToolTip').tooltip({
 			relative: true
 		});
 	}
-	
-};
 
-jQuery(document).ready(function($){
-	HUB.Base.initialize();
+	//test for placeholder support
+	var test = document.createElement('input'),
+		placeholder_supported = ('placeholder' in test);
+
+	//if we dont have placeholder support mimic it with focus and blur events
+	if (!placeholder_supported) {
+		$('input[type=text]:not(.no-legacy-placeholder-support)').each(function(i, el) {
+			var placeholderText = $(el).attr('placeholder');
+
+			//make sure we have placeholder text
+			if (placeholderText != '' && placeholderText != null) {
+				//add plceholder text and class
+				if ($(el).val() == '') {
+					$(el).addClass('placeholder-support').val(placeholderText);
+				}
+
+				//attach event listeners to input
+				$(el)
+					.on('focus', function() {
+						if ($(el).val() == placeholderText) {
+							$(el).removeClass('placeholder-support').val('');
+						}
+					})
+					.on('blur', function(){
+						if ($(el).val() == '') {
+							$(el).addClass('placeholder-support').val(placeholderText);
+						}
+					});
+			}
+		});
+
+		$('form').on('submit', function(event){
+			$('.placeholder-support').each(function (i, el) {
+				$(this).val('');
+			});
+		});
+	}
 });
-

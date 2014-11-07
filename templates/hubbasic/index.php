@@ -38,7 +38,7 @@ $juser  = JFactory::getUser();
 JHTML::_('behavior.framework', true);
 JHTML::_('behavior.modal');
 
-$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js');
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/hub.js?v=' . filemtime(JPATH_ROOT . '/templates/' . $this->template . '/js/hub.js'));
 
 $browser = new \Hubzero\Browser\Detector();
 $b = $browser->name();
@@ -53,28 +53,23 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 <!--[if IE 9 ]>    <html dir="<?php echo  $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo  $this->language; ?>" class="<?php echo $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(array('fontcons', 'reset', 'columns', 'notifications', 'pagination', 'tabs', 'tags', 'comments', 'voting', 'layout')); /* reset MUST come before all others except fontcons */ ?>" />
+		<meta name="viewport" content="width=device-width" />
+
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo \Hubzero\Document\Assets::getSystemStylesheet(); ?>" />
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/main.css" />
 		<link rel="stylesheet" type="text/css" media="print" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/print.css" />
 
 		<jdoc:include type="head" />
 
-		<!--[if lt IE 9]>
-			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
-		<![endif]-->
+		<!--[if lt IE 9]><script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script><![endif]-->
 
-		<!--[if IE 9]>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
-		<![endif]-->
-		<!--[if IE 8]>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
-		<![endif]-->
-		<!--[if IE 7]>
-			<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" />
-		<![endif]-->
+		<!--[if IE 9]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" /><![endif]-->
+		<!--[if IE 8]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" /><![endif]-->
+		<!--[if IE 7]><link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" /><![endif]-->
 	</head>
 	<body <?php if ($this->countModules('banner or welcome')) { echo 'class="frontpage"'; } ?>>
 		<jdoc:include type="modules" name="notices" />
+
 		<div id="top">
 			<p class="skip" id="to-content"><a href="#content">Skip to content</a></p>
 			<?php if ($this->countModules('helppane')) : ?>
@@ -106,17 +101,29 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 							$database = JFactory::getDBO();
 							$recipient = new \Hubzero\Message\Recipient($database);
 							$rows = $recipient->getUnreadMessages($juser->get('id'), 0);
-					?>
-							<li id="logout"><a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a></li>
-							<li id="myaccount"><a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Dashboard'); ?></span></a></li>
+							?>
+							<li id="logout">
+								<a href="<?php echo JRoute::_('index.php?option=com_users&view=logout'); ?>"><span><?php echo JText::_('Logout'); ?></span></a>
+							</li>
+							<li id="myaccount">
+								<a href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>"><span><?php echo JText::_('My Dashboard'); ?></span></a>
+							</li>
 							<?php if (is_numeric($juser->get('username')) && $juser->get('username') < 0) { ?>
-								<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?></a></li>
+								<li id="username">
+									<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?></a>
+								</li>
 							<?php } else { ?>
-								<li id="username"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a></li>
+								<li id="username">
+									<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=profile'); ?>"><?php echo $juser->get('name'); ?> (<?php echo $juser->get('username'); ?>)</a>
+								</li>
 							<?php } ?>
-							<li id="usermessages"><a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a></li>
+							<li id="usermessages">
+								<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=inbox'); ?>"><?php echo count($rows); ?> New Messages</a>
+							</li>
 					<?php } else { ?>
-						<li id="login"><a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a></li>
+						<li id="login">
+							<a href="<?php echo JRoute::_('index.php?option=com_users&view=login'); ?>" title="<?php echo JText::_('Login'); ?>"><?php echo JText::_('Sign In'); ?></a>
+						</li>
 					<?php } ?>
 				</ul>
 
@@ -130,27 +137,26 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<div class="clear"></div>
 		</nav><!-- / #nav -->
 
-<?php if ($this->countModules('banner or welcome') && $option == 'com_content') : ?>
-		<div id="home-splash">
-			<div id="features">
-<?php if ($this->countModules('banner')) : ?>
-				<jdoc:include type="modules" name="banner" />
-<?php else : ?>
-<?php endif; ?>
-			</div><!-- / #features -->
-<?php if ($this->countModules('welcome')) : ?>
-			<div id="welcome">
-				<jdoc:include type="modules" name="welcome" />
-			</div><!-- / #welcome -->
-<?php endif; ?>
-		</div><!-- / #home-splash -->
-<?php endif; ?>
+		<?php if ($this->countModules('banner or welcome') && $option == 'com_content') : ?>
+			<div id="home-splash">
+				<div id="features">
+					<?php if ($this->countModules('banner')) : ?>
+						<jdoc:include type="modules" name="banner" />
+					<?php endif; ?>
+				</div><!-- / #features -->
+				<?php if ($this->countModules('welcome')) : ?>
+					<div id="welcome">
+						<jdoc:include type="modules" name="welcome" />
+					</div><!-- / #welcome -->
+				<?php endif; ?>
+			</div><!-- / #home-splash -->
+		<?php endif; ?>
 
-<?php if (!$this->countModules('banner or welcome')) : ?>
-		<div id="trail">
-			<jdoc:include type="modules" name="breadcrumbs" />
-		</div><!-- / #trail -->
-<?php endif; ?>
+		<?php if (!$this->countModules('banner or welcome')) : ?>
+			<div id="trail">
+				<jdoc:include type="modules" name="breadcrumbs" />
+			</div><!-- / #trail -->
+		<?php endif; ?>
 
 		<div id="wrap">
 			<main id="content" class="<?php echo $option; ?>">
@@ -196,6 +202,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 			<jdoc:include type="modules" name="footer" />
 			<!-- End footer modules output -->
 		</footer><!-- / #footer -->
+
 		<jdoc:include type="modules" name="endpage" />
 	</body>
 </html>
