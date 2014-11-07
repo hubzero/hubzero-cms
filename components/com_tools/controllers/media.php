@@ -111,8 +111,8 @@ class ToolsControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		$fpath = $path . DS . $file['name'];
-		exec("clamscan -i --no-summary --block-encrypted $fpath", $output, $status);
-		if ($status == 1)
+
+		if (!JFile::isSafe($fpath))
 		{
 			JFile::delete($fpath);
 

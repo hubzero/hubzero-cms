@@ -70,6 +70,40 @@ class JFile
 	}
 
 	/**
+	 * Run a virus scan against a file
+	 *
+	 * @param   string  $file  The name of the file [not full path]
+	 *
+	 * @return  boolean
+	 *
+	 * @since   11.1
+	 */
+	public static function isSafe($file)
+	{
+		if ($command = JFactory::getConfig()->get('virus_scanner', "clamscan -i --no-summary --block-encrypted"))
+		{
+			$command = trim($command);
+			if (strstr($command, '%s'))
+			{
+				$command = sprintf($command, $file);
+			}
+			else
+			{
+				$command .= ' ' . str_replace(' ', '\ ', $file);
+			}
+
+			exec($command, $output, $status);
+
+			if ($status == 1)
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Copies a file
 	 *
 	 * @param   string   $src          The path to the source file

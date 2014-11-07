@@ -487,8 +487,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
-		exec("clamscan -i --no-summary --block-encrypted $file", $output, $status);
-		if ($status == 1)
+		if (!JFile::isSafe($file))
 		{
 			if (JFile::delete($file))
 			{

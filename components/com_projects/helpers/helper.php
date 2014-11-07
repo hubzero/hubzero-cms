@@ -476,9 +476,8 @@ class ProjectsHelper extends JObject {
 	 */
 	public static function virusCheck( $fpath = '' )
 	{
-		exec("clamscan -i --no-summary --block-encrypted " . escapeshellarg($fpath), $output, $status);
-
-		if ($status == 1)
+		jimport('joomla.filesystem.file');
+		if (!JFile::isSafe($fpath))
 		{
 			unlink($fpath);
 			return true;

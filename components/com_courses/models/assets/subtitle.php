@@ -145,8 +145,7 @@ class SubtitleAssetHandler extends AssetHandler
 		set_time_limit(60);
 
 		// Scan for viruses
-		exec("clamscan -i --no-summary --block-encrypted {$_FILES['files']['tmp_name'][0]}", $output, $status);
-		if ($status == 1)
+		if (!JFile::isSafe($_FILES['files']['tmp_name'][0]))
 		{
 			// Scan failed, return an error
 			return array('error' => 'File rejected because the anti-virus scan failed.');

@@ -542,12 +542,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		//scan file for virus if we have enabled scans
 		if ($this->config->get('scan_uploads', 1))
 		{
-			//run clamscan on fule
-			$command = "clamscan -i --no-summary --block-encrypted " . str_replace(' ', '\ ', $finalFileName);
-			exec($command, $output, $status);
-
+			//run scan on file
 			//scan failed
-			if ($status > 0)
+			if (!JFile::isSafe($finalFileName))
 			{
 				//delete file
 				unlink($finalFileName);
@@ -710,12 +707,9 @@ class GroupsControllerMedia extends GroupsControllerAbstract
 		//scan file for virus if we have enabled scans
 		if ($this->config->get('scan_uploads', 1))
 		{
-			//run clamscan on fule
-			$command = "clamscan -i --no-summary --block-encrypted " . str_replace(' ', '\ ', $file);
-			exec($command, $output, $status);
-
+			//run scan on file
 			//scan failed
-			if ($status > 0)
+			if (!JFile::isSafe($file))
 			{
 				//delete file
 				unlink($file);

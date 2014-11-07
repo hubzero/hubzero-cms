@@ -159,8 +159,7 @@ class FileAssetHandler extends AssetHandler
 		set_time_limit(60);
 
 		// Scan for viruses
-		exec("clamscan -i --no-summary --block-encrypted {$_FILES['files']['tmp_name'][0]}", $output, $status);
-		if ($status == 1)
+		if (!JFile::isSafe($_FILES['files']['tmp_name'][0]))
 		{
 			// Scan failed, delete asset and association and return an error
 			$assetObj->delete();

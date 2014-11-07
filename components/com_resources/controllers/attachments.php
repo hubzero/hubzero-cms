@@ -478,8 +478,7 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		exec("clamscan -i --no-summary --block-encrypted $file", $output, $status);
-		if ($status == 1)
+		if (!JFile::isSafe($file))
 		{
 			if (JFile::delete($file))
 			{
@@ -814,8 +813,8 @@ class ResourcesControllerAttachments extends \Hubzero\Component\SiteController
 
 		// Scan for viruses
 		$fpath = $path . DS . $file['name'];
-		exec("clamscan -i --no-summary --block-encrypted $fpath", $output, $status);
-		if ($status == 1)
+
+		if (!JFile::isSafe($fpath))
 		{
 			if (JFile::delete($fpath))
 			{

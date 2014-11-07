@@ -2366,8 +2366,8 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		{
 			// Scan for viruses
 			$path = $path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
-			exec("clamscan -i --no-summary --block-encrypted $path", $output, $status);
-			if ($status == 1)
+
+			if (!JFile::isSafe($path))
 			{
 				if (JFile::delete($path))
 				{

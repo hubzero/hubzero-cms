@@ -1496,8 +1496,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		{
 			// Scan for viruses
 			//$path = $file_path . DS . $file['name']; //JPATH_ROOT . DS . 'virustest';
-			exec("clamscan -i --no-summary --block-encrypted $finalfile", $output, $status);
-			if ($status == 1)
+
+			if (!JFile::isSafe($finalfile))
 			{
 				if (JFile::delete($finalfile))
 				{
