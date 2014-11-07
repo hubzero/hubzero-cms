@@ -793,5 +793,60 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		echo json_encode($json);
 	}
+
+	/**
+	 * Download a picture
+	 *
+	 * @return  void
+	 */
+	public function pictureTask()
+	{
+		//get vars
+		$id = JRequest::getInt('id', 0);
+
+		//check to make sure we have an id
+		if (!$id || $id == 0)
+		{
+			return;
+		}
+
+		//Load member profile
+		$member = \Hubzero\User\Profile::getInstance($id);
+
+		// check to make sure we have member profile
+		if (!$member)
+		{
+			return;
+		}
+
+		$file  = DS . trim($this->config->get('webpath', '/site/members'), DS);
+		$file .= DS . \Hubzero\User\Profile\Helper::niceidformat($member->get('uidNumber'));
+		$file .= DS . JRequest::getVar('image', $member->get('picture'));
+
+		// Ensure the file exist
+		if (!file_exists(JPATH_ROOT . DS . $file))
+		{
+			JError::raiseError(404, JText::_('The requested file could not be found: ') . ' ' . $file);
+			return;
+		}
+
+		// Serve up the image
+		$xserver = new \Hubzero\Content\Server();
+		$xserver->filename(JPATH_ROOT . DS . $file);
+		$xserver->disposition('attachment');
+		$xserver->acceptranges(false); // @TODO fix byte range support
+
+		//serve up file
+		if (!$xserver->serve())
+		{
+			// Should only get here on error
+			JError::raiseError(404, JText::_('An error occured while trying to output the file'));
+		}
+		else
+		{
+			exit;
+		}
+		return;
+	}
 }
 
