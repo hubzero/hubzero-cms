@@ -205,6 +205,7 @@ HUB.GroupsMediaBrowser = {
 		
 		if($("#ajax-uploader").length)
 		{
+			var totalFiles = 0;
 			var uploader = new qq.FileUploader({
 					element: $("#ajax-uploader")[0],
 					action: $("#ajax-uploader").attr("data-action"),
@@ -217,6 +218,8 @@ HUB.GroupsMediaBrowser = {
 							   '</div>',
 					onSubmit: function(id, file)
 					{
+						totalFiles++;
+
 						// set folder params
 						uploader.setParams({
 							'folder' : $('.foldertree').attr('data-activefolder')
@@ -225,21 +228,36 @@ HUB.GroupsMediaBrowser = {
 						// add uploading indicator
 						if(!$(".qq-uploading").length)
 						{
-							$(".upload-browser-col.right").append("<div class=\"qq-uploading\"></div>");
+							$(".upload-browser-col.right").append("<div class=\"qq-uploading\"><span>Uploading 1 file, 0 completed</span></div>");
+						}
+						// otherwise add 
+						else
+						{
+							$('.qq-uploading span').text('Uploading ' + totalFiles + ' files, 0 completed');
 						}
 					},
 					onComplete: function(id, file, response)
 					{
-						$(".upload-browser-filelist-iframe").attr("src", $(".upload-browser-filelist-iframe").attr("src"));
-						$(".qq-uploading").fadeOut("slow", function() {
-							$(".qq-uploading").remove();
-						});
-						
-						// tell the parent that images were just uploaded
-						// group edit screen - picking group logo
-						if (parent.HUB.Groups)
+						if (uploader._filesInProgress == 0)
 						{
-							parent.HUB.Groups.imagesUploaded();
+							$(".upload-browser-filelist-iframe").attr("src", $(".upload-browser-filelist-iframe").attr("src"));
+							$(".qq-uploading").fadeOut("slow", function() {
+								$(".qq-uploading").remove();
+							});
+							
+							// tell the parent that images were just uploaded
+							// group edit screen - picking group logo
+							if (parent.HUB.Groups)
+							{
+								parent.HUB.Groups.imagesUploaded();
+							}
+
+							// reset count
+							totalFiles = 0;
+						}
+						else
+						{
+							$('.qq-uploading span').text('Uploading ' + totalFiles + ' files, ' + (totalFiles - uploader._filesInProgress) + ' completed')
 						}
 					}
 				});
