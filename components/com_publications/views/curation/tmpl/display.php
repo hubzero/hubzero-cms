@@ -37,8 +37,6 @@ $route 	= 'index.php?option=' . $this->option . a . '&controller=curation';
 
 $pa = new PublicationAuthor( $this->database );
 
-$pubHelper = new PublicationHelper ($this->database);
-
 $this->css()
      ->js()
 	 ->css('jquery.fancybox.css', 'system')
@@ -68,37 +66,31 @@ $this->css()
 		</thead>
 		<tbody>
 			<?php
-				foreach ($this->rows as $row) {
+				foreach ($this->rows as $row)
+				{
+					$submitted  = $row->reviewed && $row->state == 5
+								? strtolower(JText::_('COM_PUBLICATIONS_CURATION_RESUBMITTED'))
+								: strtolower(JText::_('COM_PUBLICATIONS_CURATION_SUBMITTED'));
+					$submitted .= ' <span class="prominent">' . JHTML::_('date', $row->submitted, 'M d, Y') . '</span> ';
 
-						$submitted  = $row->reviewed && $row->state == 5
-									? strtolower(JText::_('COM_PUBLICATIONS_CURATION_RESUBMITTED'))
-									: strtolower(JText::_('COM_PUBLICATIONS_CURATION_SUBMITTED'));
-						$submitted .= ' <span class="prominent">' . JHTML::_('date', $row->submitted, 'M d, Y') . '</span> ';
+					// Get submitter
+					$submitter = $pa->getSubmitter($row->id, $row->created_by);
+					$submitted .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
+						. ' ' . $submitter->name . '</span>';
 
-						// Get submitter
-						$submitter = $pa->getSubmitter($row->id, $row->created_by);
-						$submitted .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
-							. ' ' . $submitter->name . '</span>';
+					if ($row->state == 7)
+					{
+						$reviewed  = strtolower(JText::_('COM_PUBLICATIONS_CURATION_REVIEWED'))
+							.' <span class="prominent">' . JHTML::_('date', $row->reviewed, 'M d, Y') . '</span> ';
 
-						if ($row->state == 7)
-						{
-							$reviewed  = strtolower(JText::_('COM_PUBLICATIONS_CURATION_REVIEWED'))
-								.' <span class="prominent">' . JHTML::_('date', $row->reviewed, 'M d, Y') . '</span> ';
+						$reviewer  = \Hubzero\User\Profile::getInstance($row->reviewed_by);
+						$reviewed .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
+							. ' ' . $reviewer->get('name') . '</span>';
+					}
 
-							$reviewer  = \Hubzero\User\Profile::getInstance($row->reviewed_by);
-							$reviewed .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
-								. ' ' . $reviewer->get('name') . '</span>';
-						}
+					$class = $row->state == 5 ? 'status-pending' : 'status-wip';
 
-						$class = $row->state == 5 ? 'status-pending' : 'status-wip';
-
-						// Normalize type title
-						$cat_name  = PublicationHelper::writePubCategory($row->cat_alias, $row->cat_name);
-
-						$abstract  = $row->abstract ? stripslashes($row->abstract) : '';
-
-						// Get thumbnail
-						$pubThumb  = $pubHelper->getThumb($row->id, $row->version_id, $this->config, false, $row->cat_url);
+					$abstract  = $row->abstract ? stripslashes($row->abstract) : '';
 					?>
 					<tr class="mline mini faded" id="tr_<?php echo $row->id; ?>">
 						<td><?php echo $row->id; ?></td>
