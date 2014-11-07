@@ -284,11 +284,13 @@ $this->css()
 					?>
 					<tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
 						<td<?php if ($row->get('status')) { echo ($row->status('color') ? ' style="border-left-color: #' . $row->status('color') . ';"' : ''); } ?>>
-							<span class="ticket-id">
-								<?php echo $row->get('id'); ?>
-							</span>
-							<span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status('class'); ?> status hasTip" title="<?php echo JText::_('COM_SUPPORT_DETAILS'); ?> :: <?php echo JText::_('COM_SUPPORT_COL_STATUS') . ': ' . $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>">
-								<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+							<span class="hasTip" title="<?php echo JText::_('COM_SUPPORT_DETAILS'); ?> :: <?php echo JText::_('COM_SUPPORT_COL_STATUS') . ': ' . $row->status('text'); ?>">
+								<span class="ticket-id">
+									<?php echo $row->get('id'); ?>
+								</span>
+								<span class="<?php echo ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status('class'); ?> status">
+									<?php echo $row->status('text'); echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
+								</span>
 							</span>
 						</td>
 						<td colspan="6">
