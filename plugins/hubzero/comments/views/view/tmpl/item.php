@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access');
 					<strong>
 						<?php if (!$this->comment->get('anonymous')) { ?>
 							<?php if ($this->comment->creator('public')) { ?>
-								<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')); ?>"><!--
+								<a href="<?php echo JRoute::_($this->comment->creator()->getLink()); ?>"><!--
 									--><?php echo $this->escape(stripslashes($this->comment->creator('name'))); ?><!--
 								--></a>
 							<?php } else { ?>

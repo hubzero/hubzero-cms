@@ -121,7 +121,7 @@ $this->js();
 							$xuser->load($reply->created_by);
 							if (is_object($xuser) && $xuser->get('name'))
 							{
-								$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $reply->created_by) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
+								$name = '<a href="' . JRoute::_($xuser->getLink()) . '">' . $this->escape(stripslashes($xuser->get('name'))) . '</a>';
 							}
 						}
 					?>

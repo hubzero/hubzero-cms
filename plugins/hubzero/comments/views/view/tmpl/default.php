@@ -63,7 +63,7 @@ $this->css()->js();
 								$comment->set('anonymous', (!$this->juser->get('guest') ? 0 : 1));
 							}
 							?>
-							<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($comment->creator(), $comment->get('anonymous')); ?>" alt="" />
+							<img src="<?php echo $comment->creator()->getPicture($comment->get('anonymous')); ?>" alt="" />
 						</p>
 						<fieldset>
 							<?php
@@ -76,7 +76,7 @@ $this->css()->js();
 									$name = JText::_('COM_KB_ANONYMOUS');
 									if (!$reply->get('anonymous'))
 									{
-										$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $reply->get('created_by')) . '">' . $this->escape(stripslashes($repy->creator('name'))) . '</a>';
+										$name = ($reply->creator('public') ? '<a href="' . JRoute::_($reply->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($repy->creator('name'))) . ($reply->creator('public') ? '</a>' : '');
 									}
 									?>
 									<blockquote cite="c<?php echo $reply->get('id'); ?>">
@@ -98,7 +98,7 @@ $this->css()->js();
 								<?php
 								if (!$this->juser->get('guest'))
 								{
-									echo \JFactory::getEditor()->display('comment[content]', $this->escape($comment->content('raw')), '', '', 35, 15, false, 'commentcontent', null, null, array('class' => 'minimal no-footer'));
+									echo $this->editor('comment[content]', $this->escape($comment->content('raw')), 35, 15, 'commentcontent', array('class' => 'minimal no-footer'));
 								}
 								?>
 							</label>

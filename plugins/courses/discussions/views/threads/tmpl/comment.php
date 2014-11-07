@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 		$name = $this->escape(stripslashes($this->comment->creator('name', $name)));
 		if ($this->comment->creator('public'))
 		{
-			$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->comment->get('created_by')) . '">' . $name . '</a>';
+			$name = '<a href="' . JRoute::_($this->comment->creator()->getLink()) . '">' . $name . '</a>';
 		}
 	}
 
