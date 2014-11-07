@@ -54,22 +54,22 @@ class View extends AbstractView
 		parent::__construct($config);
 
 		// Set a base path for use by the view
-		if (array_key_exists('base_path', $config)) 
+		if (array_key_exists('base_path', $config))
 		{
 			$this->_basePath = $config['base_path'];
-		} 
-		else 
+		}
+		else
 		{
 			$this->_basePath = __DIR__;
 		}
 
 		// set the default template search path
-		if (array_key_exists('template_path', $config)) 
+		if (array_key_exists('template_path', $config))
 		{
 			// user-defined dirs
 			$this->_setPath('template', $config['template_path']);
-		} 
-		else 
+		}
+		else
 		{
 			$this->_setPath('template', $this->_basePath . DS . 'Views');
 		}

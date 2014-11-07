@@ -89,7 +89,7 @@ function paginator_item_active($item)
 			<li class="page"><span>...</span></li>
 		<?php } ?>
 		<?php
-		for (; $this->pages->i <= $this->pages->stoploop && $this->pages->i <= $this->pages->total; $this->pages->i++) 
+		for (; $this->pages->i <= $this->pages->stoploop && $this->pages->i <= $this->pages->total; $this->pages->i++)
 		{
 			if (isset($this->pages->pages[$this->pages->i]))
 			{
