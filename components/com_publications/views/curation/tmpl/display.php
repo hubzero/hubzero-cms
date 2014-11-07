@@ -94,7 +94,7 @@ $this->css()
 					?>
 					<tr class="mline mini faded" id="tr_<?php echo $row->id; ?>">
 						<td><?php echo $row->id; ?></td>
-						<td class="pub-image"><img src="<?php echo $pubThumb; ?>" alt="" /></td>
+						<td class="pub-image"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt="" /></td>
 						<td><?php if ($row->state == 5) { ?><a href="<?php echo JRoute::_($route . '&id=' . $row->id); ?>" <?php if ($abstract) { echo 'title="'.$abstract.'"'; } ?>><?php } ?><?php echo $row->title; ?><?php if ($row->state == 5) { ?></a><?php } ?></td>
 						<td>v.<?php echo $row->version_label; ?></td>
 						<td><span class="icon <?php echo $row->base; ?>">&nbsp;</span><?php echo $row->base; ?></td>
