@@ -235,6 +235,7 @@
 		min-height: 90px;
 		background: transparent url("../images/layout/noise-white.png") 0 0;
 		position: relative;
+		padding: 30px 0;
 	}
 
 /* MAsthead */
@@ -421,7 +422,7 @@
 /* Message */
 	#offline-message {
 		width: 18em;
-		margin: 30px auto 50px auto;
+		margin: 0 auto 0 auto;
 		text-align: left;
 		color: #ddd;
 		text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -532,6 +533,67 @@
 	#offline-message a:hover {
 		color: #fff;
 		border-bottom: 1px solid #fff;
+	}
+
+	form fieldset {
+		margin: 0;
+		padding: 1em 4em;
+		border: none;
+		-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+		   -moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+		    -ms-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+		     -o-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+		        box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);
+		background: #fff;
+	}
+	form fieldset label {
+		display: block;
+	}
+	form fieldset input[type=text],
+	form fieldset input[type=password] {
+		width: 100%;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-size: 1em;
+		line-height: 1.61803399em;
+		max-width: 100%;
+		padding: 0.4045084975em;
+		outline: none;
+		border: 1px solid #D9D9D9;
+		border-color: rgba(0, 0, 0, .19) rgba(0, 0, 0, .13) rgba(0, 0, 0, .07);
+		background: #F0F0F0;
+		background: rgba(0, 0, 0, .039);
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
+		-webkit-background-clip: padding-box;
+		   -moz-background-clip: padding-box;
+		    -ms-background-clip: padding-box;
+		     -o-background-clip: padding-box;
+		        background-clip: padding-box;
+		-webkit-border-radius: 1px;
+		   -moz-border-radius: 1px;
+		    -ms-border-radius: 1px;
+		     -o-border-radius: 1px;
+		        border-radius: 1px;
+		-webkit-transition: all 0.1s ease-out;
+		   -moz-transition: all 0.1s ease-out;
+		    -ms-transition: all 0.1s ease-out;
+		     -o-transition: all 0.1s ease-out;
+		        transition: all 0.1s ease-out;
+	}
+	form fieldset input[type="text"]:focus,
+	form fieldset input[type="password"]:focus {
+		background-color: #fff;
+		border-color: #0fa1ca;
+	}
+	form fieldset label {
+		text-shadow: none;
+		color: #666;
+	}
+	form fieldset #submit-buton {
+		text-align: center;
 	}
 
 /* Debug */
