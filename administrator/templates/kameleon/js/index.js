@@ -88,7 +88,7 @@ smaller area with "overflow: scroll" enabled?
 		var notice = $(html)
 			.hide()
 			.css(jQuery.growl.settings.noticeCss)
-			.fadeIn(jQuery.growl.settings.notice);;
+			.fadeIn(jQuery.growl.settings.notice);
 
 		$.growl.settings.noticeDisplay(notice);
 		instance.append(notice);
@@ -112,14 +112,11 @@ smaller area with "overflow: scroll" enabled?
 			position: 'fixed',
 			top: '30%',
 			right: '50%',
-			width: '211px',
+			//width: '30em',
 			zIndex: 50000
 		},
 		noticeTemplate: 
 			'<div class="growl-notice">' +
-			//' <p><img src="%image%" alt="" /></p>' +
-			//' <p class="icon">&#xf005;</p>' +
-			//' <h3 style="margin-top: 15px; color: #fff;">%title%</h3>' +
 			'  %message%' + '<a href="#" class="growl-close" rel="close" title="Close">Close</a>' +
 			'</div>',
 		noticeCss: {
@@ -177,7 +174,6 @@ jQuery(document).ready(function($){
 	if ($('#item-form').length) {
 		$('#item-form input').each(function(i, el){
 			if ($(el).is(":focus")) {
-				console.log(el);
 				$(el).closest('div.input-wrap').addClass('focused');
 			} else {
 				$(el).closest('div.input-wrap').removeClass('focused');
