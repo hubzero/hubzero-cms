@@ -33,7 +33,7 @@ namespace Hubzero\Pagination;
 use Hubzero\View\View as AbstractView;
 
 /**
- * Base class for a plugin View
+ * Base class for a paginator View
  */
 class View extends AbstractView
 {
@@ -77,9 +77,6 @@ class View extends AbstractView
 
 	/**
 	 * Method to get the view name
-	 *
-	 * In most cases (e.g., components) this maps to a directory under "views"
-	 * but in this case we have no such sub-directory. So always return nothing.
 	 *
 	 * @return  string
 	 */

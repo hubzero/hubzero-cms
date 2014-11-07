@@ -411,7 +411,7 @@ class Paginator extends Object
 		$this->set('pages.ellipsis', false);
 
 		// Build the page navigation list.
-		$data = $this->_buildDataObject();
+		$data = $this->getData();
 
 		$data->prefix    = $this->prefix;
 		$data->i         = $this->get('pages.i');
