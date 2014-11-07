@@ -385,8 +385,7 @@
 	padding: 0;
 	background: rgba(0,0,0,0.75);
 }
-.qq-uploading:after {
-	content: 'Uploading...';
+.qq-uploading span {
 	position: absolute;
 	top: 50%;
 	left: 0;
