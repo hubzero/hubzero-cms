@@ -206,6 +206,7 @@ class CollectionsTablePost extends JTable
 						i.created AS item_created,
 						i.created_by AS item_created_by,
 						i.positive AS item_positive,
+						i.state AS item_state,
 						i.access AS item_access,
 						i.negative AS item_negative,
 						i.type AS item_type,
