@@ -4913,8 +4913,9 @@ class plgProjectsPublications extends JPlugin
 		$move 	= JRequest::getInt('move', 0);
 		$item 	= urldecode(JRequest::getVar( 'item', '' ));
 
-		$type = strtolower(array_shift(explode('::', $item)));
-		$item = array_pop(explode('::', $item));
+		$parts = explode('::', $item);
+		$type = strtolower(array_shift($parts));
+		$item = array_pop($parts);
 		$hash = '';
 
 		if (!$type || !$item)
