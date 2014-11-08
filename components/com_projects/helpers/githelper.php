@@ -297,7 +297,7 @@ class ProjectsGitHelper extends JObject
 		switch ( $return )
 		{
 			case 'combined':
-				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%s" --name-only ';
+				$exec = ' log --diff-filter=AMR --pretty=format:"%ci||%an||%ae||%H||%s" --name-only ';
 				break;
 
 			case 'date':
@@ -384,7 +384,8 @@ class ProjectsGitHelper extends JObject
 			$entry['num'] 		= count($out);
 			$entry['author'] 	= $data[1];
 			$entry['email'] 	= $data[2];
-			$entry['message'] 	= $data[3];
+			$entry['hash'] 		= $data[3];
+			$entry['message'] 	= $data[4];
 			return $entry;
 		}
 
