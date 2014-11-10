@@ -215,23 +215,24 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming && $thi
 					$data->ext 	= strtolower(end($parts));
 
 					// Set default title
-					$incNum			= $max > 1 ? ' (' . $i . ')' : '';
-					$dTitle			= $defaultTitle ? $defaultTitle . $incNum : basename($data->path);
-					$data->title 	= $att->title && $att->title != $defaultTitle ? $att->title : $dTitle;
-					$data->ordering = $i;
-					$data->editUrl  = $editUrl;
-					$data->id		= $att->id;
-					$data->props	= $props;
-					$data->pid		= $this->pub->id;
-					$data->vid		= $this->pub->version_id;
-
-					$data->projectPath = $this->path;
-					$data->git		   = $git;
-					$data->pubPath	   = $pubPath;
-					$data->md5		   = $att->content_hash;
-					$data->viewer	   = 'edit';
-					$data->allowRename = $allowRename;
-					$data->downloadUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+					$incNum				= $max > 1 ? ' (' . $i . ')' : '';
+					$dTitle				= $defaultTitle ? $defaultTitle . $incNum : basename($data->path);
+					$data->title 		= $att->title && $att->title != $defaultTitle 
+										? $att->title : $dTitle;
+					$data->ordering 	= $i;
+					$data->editUrl  	= $editUrl;
+					$data->id			= $att->id;
+					$data->props		= $props;
+					$data->pid			= $this->pub->id;
+					$data->vid			= $this->pub->version_id;
+					$data->version		= $this->pub->version_number;
+					$data->projectPath  = $this->path;
+					$data->git		    = $git;
+					$data->pubPath	    = $pubPath;
+					$data->md5		    = $att->content_hash;
+					$data->viewer	    = 'edit';
+					$data->allowRename  = $allowRename;
+					$data->downloadUrl  = JRoute::_('index.php?option=com_publications&task=serve&id='
 										. $this->pub->id . '&v=' . $this->pub->version_number )
 										. '?el=' . $this->elementId . a . 'a=' . $att->id . a . 'download=1';
 

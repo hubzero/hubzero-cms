@@ -83,10 +83,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php if ($viewer == 'edit') { ?>
 			<span>
 				<?php if (!$data->pubThumb) { ?>
-				<a href="<?php echo $data->editUrl . '/?action=saveitem&aid=' . $data->id . '&p=' . $data->props . '&makedefault=1'; ?>" class="item-default" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT'); ?>">&nbsp;</a>
+				<a href="<?php echo $data->editUrl . '/?action=saveitem&aid=' . $data->id . '&p=' . $data->props . '&makedefault=1&version=' . $data->version; ?>" class="item-default" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT'); ?>">&nbsp;</a>
 				<?php } ?>
 				<a href="<?php echo $data->editUrl . '/?action=edititem&aid=' . $data->id . '&p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? JText::_('PLG_PROJECTS_PUBLICATIONS_RELABEL') : JText::_('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>
-				<a href="<?php echo $data->editUrl . '/?action=deleteitem&aid=' . $data->id . '&p=' . $data->props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+				<a href="<?php echo $data->editUrl . '/?action=deleteitem&version=' . $data->version . '&aid=' . $data->id . '&p=' . $data->props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
 			<?php } ?>
 		</span>
