@@ -84,7 +84,12 @@ class PublicationsBlockCitations extends PublicationsModelBlock
 		if ($viewname == 'curator')
 		{
 			// Output HTML
-			$view = new JView( array('name'=>'curation', 'layout'=> 'block' ) );
+			$view = new \Hubzero\Component\View(
+				array(
+					'name'		=> 'curation',
+					'layout'	=> 'block'
+				)
+			);
 		}
 		else
 		{

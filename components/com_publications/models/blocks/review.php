@@ -76,8 +76,8 @@ class PublicationsBlockReview extends PublicationsModelBlock
 
 		if ($viewname == 'curator')
 		{
-			// Output HTML
-			$view = new JView( array('name'=>'curation', 'layout'=> 'block' ) );
+			// Do not show
+			return;
 		}
 		else
 		{
