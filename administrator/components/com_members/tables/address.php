@@ -32,33 +32,25 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for member/object association
+ * Table class for member addresses
  */
 class MembersAddress extends JTable
 {
-	var $id               = null;
-	var $uidNumber        = null;
-	var $addressTo        = null;
-	var $address1         = null;
-	var $address2         = null;
-	var $addressCity      = null;
-	var $addressRegion    = null;
-	var $addressPostal    = null;
-	var $addressCountry   = null;
-	var $addressLatitude  = null;
-	var $addressLongitude = null;
-
-
-	public function __construct( $db )
+	/**
+	 * Object constructor to set table and key field
+	 *
+	 * @param   object  $db  JDatabase object
+	 * @return  void
+	 */
+	public function __construct($db)
 	{
 		parent::__construct('#__xprofiles_address', 'id', $db);
 	}
 
-
 	/**
-	 * Check method for saving addresses
+	 * Method for checking that fields are valid before sending to the database
 	 *
-	 * @return     void
+	 * @return  boolean  True if the object is ok
 	 */
 	public function check()
 	{
@@ -71,122 +63,37 @@ class MembersAddress extends JTable
 		return true;
 	}
 
-
 	/**
 	 * Method to verify we can delete address
 	 *
-	 * @return     void
+	 * @param   unknown  $pk
+	 * @param   unknown  $joins
+	 * @return  boolean
 	 */
 	public function canDelete($pk = NULL, $joins = NULL)
 	{
 		return true;
 	}
 
-
 	/**
 	 * Method to get addressed for member
 	 *
-	 * @param      $uidNumber    Member User Id
-	 * @return     void
+	 * @param   integer  $uidNumber  Member User Id
+	 * @return  array
 	 */
-	public function getAddressesForMember( $uidNumber )
+	public function getAddressesForMember($uidNumber)
 	{
-		//make sure we have a user id
+		// Make sure we have a user id
 		if (!isset($uidNumber))
 		{
-			$this->setError( JText::_('You must supply a user id.') );
+			$this->setError(JText::_('You must supply a user id.'));
 			return false;
 		}
 
-		//query database for addresses for user id
-		$sql = "SELECT * FROM {$this->_tbl} WHERE uidNumber=" . $this->_db->quote( $uidNumber );
-		$this->_db->setQuery( $sql );
+		// Query database for addresses for user id
+		$sql = "SELECT * FROM {$this->_tbl} WHERE uidNumber=" . $this->_db->quote($uidNumber);
+		$this->_db->setQuery($sql);
 
 		return $this->_db->loadObjectList();
-	}
-
-
-	/**
-	 * Method to format addresses for display on profile tab
-	 *
-	 * @param      $addresses           Array of Member Addresses
-	 * @param      $displayEditLinks    Display Edit/Delete links with addresses
-	 * @return     void
-	 */
-	public function formatAddressesForProfile( $addresses = array(), $displayEditLinks = false )
-	{
-		$formattedAddresses = '<div class="grid cf">';
-
-		if (count($addresses) < 1)
-		{
-			$formattedAddresses .= '<div class="col span4">';
-			$formattedAddresses .= JText::_('Enter an Address');
-			$formattedAddresses .= '</div>';
-		}
-		else
-		{
-			foreach ($addresses as $k => $address)
-			{
-				//start
-				if (($k+1) % 3 == 0)
-				{
-					$formattedAddresses .= '<div class="col span4 omega">';
-				}
-				else
-				{
-					$formattedAddresses .= '<div class="col span4">';
-				}
-
-				//do we have a to field
-				if (isset($address->addressTo) && $address->addressTo != '')
-				{
-					$formattedAddresses .= '<strong>' . $address->addressTo . '</strong><br />';
-				}
-
-				//do we have an address line 1
-				if (isset($address->address1) && $address->address1 != '')
-				{
-					$formattedAddresses .= $address->address1 . '<br />';
-				}
-
-				//do we have an address line 2
-				if (isset($address->address2) && $address->address2 != '')
-				{
-					$formattedAddresses .= $address->address2 . '<br />';
-				}
-
-				//do we gave a city state and zip
-				$formattedAddresses .= $address->addressCity . ' ' . $address->addressRegion . ', ' . $address->addressPostal . '<br />';
-
-				//do we have a country && its not USA
-				if (isset($address->addressCountry) && $address->addressCountry != '' && $address->addressCountry != 'US' &&
-					$address->addressCountry != 'USA' && $address->addressCountry != 'United States' && $address->addressCountry != 'United States of America')
-				{
-					$formattedAddresses .= $address->addressCountry . '<br />';
-				}
-
-				//do we want to display edit links
-				if ($displayEditLinks)
-				{
-					$formattedAddresses .= '<span class="address-links">';
-					$formattedAddresses .= '<a class="edit edit-address" href="'.JRoute::_('index.php?option=com_members&id='.JFactory::getUser()->get('id').'&active=profile&action=editaddress&addressid='.$address->id).'">Edit</a>';
-					$formattedAddresses .= ' | <a class="delete delete-address" href="'.JRoute::_('index.php?option=com_members&id='.JFactory::getUser()->get('id').'&active=profile&action=deleteaddress&addressid='.$address->id).'">Delete</a>';
-					$formattedAddresses .= '</span>';
-				}
-
-				//end column
-				$formattedAddresses .= '</div><!-- /#end address col -->';
-				if ((($k+1) % 3 == 0) && count($addresses) > 3)
-				{
-					$formattedAddresses .= '</div>';
-					$formattedAddresses .= '<div class="grid cf">';
-				}
-			}
-		}
-
-		//end grid
-		$formattedAddresses .= '</div><!-- /#end address grid -->';
-
-		return $formattedAddresses;
 	}
 }

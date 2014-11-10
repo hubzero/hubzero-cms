@@ -40,8 +40,8 @@ $juser = JFactory::getUser();
 	<h2><?php echo $this->title; ?></h2>
 </header><!-- / #content-header -->
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="post">
-	<section class="main section">
+<section class="main section">
+	<form class="section-inner" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="post">
 		<div class="subject">
 			<div class="container data-entry">
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_MEMBERS_SEARCH'); ?>" />
@@ -75,7 +75,7 @@ $juser = JFactory::getUser();
 			{
 				$html .= ' class="active-index"';
 			}
-			$html .= '>' . JText::_('ALL') . '</a> ' . "\n";
+			$html .= '>' . JText::_('COM_MEMBERS_BROWSE_FILTER_ALL') . '</a> ' . "\n";
 			foreach ($letters as $letter)
 			{
 				$url  = 'index.php?option=' . $this->option . '&task=browse&index=' . strtolower($letter);
@@ -349,7 +349,7 @@ $juser = JFactory::getUser();
 					} else { ?>
 						<tr>
 							<td colspan="4">
-								<p class="warning"><?php echo JText::_('NO_MEMBERS_FOUND'); ?></p>
+								<p class="warning"><?php echo JText::_('COM_MEMBERS_BROWSE_NO_MEMBERS_FOUND'); ?></p>
 							</td>
 						</tr>
 					<?php } ?>
@@ -405,5 +405,5 @@ $juser = JFactory::getUser();
 				</p>
 			</div><!-- / .container -->
 		</aside><!-- / .aside -->
-	</section><!-- / .main section -->
-</form>
+	</form>
+</section><!-- / .main section -->

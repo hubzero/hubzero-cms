@@ -60,7 +60,7 @@ if (isset($this->registration_update))
 }
 
 //incremental registration
-require_once JPATH_BASE.'/administrator/components/com_members/tables/incremental.php';
+require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental.php';
 $uid = (int)$this->profile->get('uidNumber');
 $incrOpts = new ModIncrementalRegistrationOptions;
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);
@@ -624,9 +624,10 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					|| ($this->params->get('access_address') == 2 && $isUser)
 				) : ?>
 				<?php
-					//get member addresses
-					$membersAddress = new MembersAddress( JFactory::getDBO());
-					$addresses = $membersAddress->getAddressesForMember( $this->profile->get("uidNumber"));
+					// Get member addresses
+					$db = JFactory::getDBO();
+					$membersAddress = new MembersAddress($db);
+					$addresses = $membersAddress->getAddressesForMember($this->profile->get("uidNumber"));
 
 					$cls = '';
 					if ($this->params->get('access_address') == 2)
@@ -635,11 +636,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 					}
 					if (count($addresses) < 1)
 					{
-						$cls .= ($isUser) ? " hidden" : " hide";
+						$cls .= ($isUser) ? ' hidden' : ' hide';
 					}
 					if (isset($update_missing) && in_array('address', array_keys($update_missing)))
 					{
-						$cls = str_replace(" hide", '', $cls);
+						$cls  = str_replace(' hide', '', $cls);
 						$cls .= ' missing';
 					}
 				?>
@@ -649,21 +650,27 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							<?php echo JText::_('PLG_MEMBERS_PROFILE_ADDRESS'); ?>
 						</div>
 						<div class="value">
-							<?php echo $membersAddress->formatAddressesForProfile( $addresses, $isUser); ?>
+							<?php
+							$this->view('default', 'address')
+							     ->set('addresses', $addresses)
+							     ->set('displayEditLinks', $isUser)
+							     ->set('profile', $this->profile)
+							     ->display();
+							?>
 						</div>
 						<br class="clear" />
 						<?php
-							$addAddressLink = '<a class="btn add add-address" href="'.JRoute::_('index.php?option=com_members&id='.JFactory::getUser()->get('id').'&active=profile&action=addaddress').'">' . JText::_('PLG_MEMBERS_PROFILE_ADDRESS_ADD') . '</a>';
+							$addAddressLink = '<a class="btn add add-address" href="' . JRoute::_($this->profile->getLink() . '&active=profile&action=addaddress') . '">' . JText::_('PLG_MEMBERS_PROFILE_ADDRESS_ADD') . '</a>';
 
 							$this->view('default', 'edit')
 							     ->set('registration_field', 'address')
 							     ->set('profile_field', 'address')
 							     ->set('registration', $this->registration->address)
-							     ->set('title', JText::_('Address'))
+							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_ADDRESS_TITLE'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label for="profile_address">' . JText::_('PLG_MEMBERS_PROFILE_ADDRESS') . '<br />'.$addAddressLink.'</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[address]',$this->params->get('access_address'),'input-select') . '</label>')
+							     ->set('inputs', '<label for="profile_address">' . JText::_('PLG_MEMBERS_PROFILE_ADDRESS') . '<br />' . $addAddressLink . '</label>')
+							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[address]', $this->params->get('access_address'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>

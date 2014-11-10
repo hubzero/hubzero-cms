@@ -39,9 +39,9 @@ $this->css('introduction.css', 'system')
 
 	<?php if ($this->juser->get('guest')) { ?>
 		<div id="content-header-extra">
-			<ul id="useroptions">
-				<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_members&controller=register'); ?>"><?php echo JText::_('Join now!'); ?></a></li>
-			</ul>
+			<p>
+				<a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option=com_members&controller=register'); ?>"><?php echo JText::_('COM_MEMBERS_REGISTER_NOW'); ?></a>
+			</p>
 		</div><!-- / #content-header-extra -->
 	<?php } ?>
 </header>
@@ -51,35 +51,28 @@ $this->css('introduction.css', 'system')
 		<div class="col span9">
 			<div class="grid">
 				<div class="col span6">
-					<h3>Why be a member?</h3>
-					<p>As a member, you instantly become part of a community designed
-					for you and your colleagues.  Being part of the community provides quick and easy access to share knowledge with
-					fellow researchers around the world helping you achieve more of your
-					goals.  Membership is free, get started today!</p>
+					<h3><?php echo JText::_('COM_MEMBERS_WHY_BECOME_MEMBER'); ?></h3>
+					<p><?php echo JText::_('COM_MEMBERS_WHY_BECOME_MEMBER_EXPLANATION'); ?></p>
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
-					<h3>How do I become a member?</h3>
-					<p>To become a member, click on the register link at the top of the page,
-					create a username and password, and complete the rest of the form.  After
-					submitting, you will receive a confirmation email momentarily; please
-					follow the instructions within.  You are now part of the unique experience
-					that is the HUB!</p>
+					<h3><?php echo JText::_('COM_MEMBERS_HOW_TO_BECOME_MEMBER'); ?></h3>
+					<p><?php echo JText::_('COM_MEMBERS_HOW_TO_BECOME_MEMBER_EXPLANATION'); ?></p>
 				</div><!-- / .col span6 -->
 			</div>
 		</div>
 		<div class="col span3 omega">
 			<ul>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>">Forgot your username?</a>
+					<a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>"><?php echo JText::_('COM_MEMBERS_FORGOT_USERNAME'); ?></a>
 				</li>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>">Forgot your password?</a>
+					<a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>"><?php echo JText::_('COM_MEMBERS_FORGOT_PASSWORD'); ?></a>
 				</li>
 				<li>
-					<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=members'); ?>">Need Help?</a>
+					<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=members'); ?>"><?php echo JText::_('COM_MEMBERS_NEED_HELP'); ?></a>
 				</li>
 				<li>
-					<a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>">Groups</a>
+					<a href="<?php echo JRoute::_('index.php?option=com_groups'); ?>"><?php echo JText::_('COM_GROUPS'); ?></a>
 				</li>
 			</ul>
 		</div>
@@ -90,7 +83,7 @@ $this->css('introduction.css', 'system')
 
 	<div class="grid">
 		<div class="col span3">
-			<h2>Find members</h2>
+			<h2><?php echo JText::_('COM_MEMBERS_FIND_MEMBERS'); ?></h2>
 		</div><!-- / .col span3 -->
 		<div class="col span9 omega">
 			<div class="grid">
@@ -98,20 +91,20 @@ $this->css('introduction.css', 'system')
 					<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
 						<fieldset>
 							<p>
-								<label for="gsearch">Keyword or phrase:</label>
+								<label for="gsearch"><?php echo JText::_('COM_MEMBERS_FIND_MEMBERS_SEARCH_LABEL'); ?></label>
 								<input type="text" name="search" id="gsearch" value="" />
 								<input type="submit" value="Search" />
 							</p>
 							<p>
-								Search public members. Members with private profiles do not show up in results.
+								<?php echo JText::_('COM_MEMBERS_FIND_MEMBERS_BY_SEARCH'); ?>
 							</p>
 						</fieldset>
 					</form>
 				</div><!-- / .col span6 -->
 				<div class="col span6 omega">
 					<div class="browse">
-						<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>">Browse the list of available members</a></p>
-						<p>A list of all public members. Members with private profiles do not show up in results.</p>
+						<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_MEMBERS_FIND_MEMBERS_BY_BROWSING'); ?></a></p>
+						<p><?php echo JText::_('COM_MEMBERS_FIND_MEMBERS_LISTING'); ?></p>
 					</div><!-- / .browse -->
 				</div><!-- / .col span6 -->
 			</div><!-- / .grid -->
@@ -123,7 +116,7 @@ $this->css('introduction.css', 'system')
 	?>
 	<div class="grid">
 		<div class="col span3">
-			<h2>Top contributors</h2>
+			<h2><?php echo JText::_('COM_MEMBERS_TOP_CONTRIBUTOR'); ?></h2>
 		</div><!-- / .col span3 -->
 		<div class="col span9 omega">
 			<div class="grid">
@@ -167,29 +160,29 @@ $this->css('introduction.css', 'system')
 		<div class="col span-half <?php echo $cls; ?>">
 			<div class="contributor">
 				<p class="contributor-photo">
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $contributor->get('uidNumber')); ?>">
-						<img src="<?php echo \Hubzero\User\Profile\Helper::getMemberPhoto($contributor, 0); ?>" alt="<?php echo JText::sprintf('%s\'s photo', $this->escape(stripslashes($contributor->get('name')))); ?>" />
+					<a href="<?php echo JRoute::_($contributor->getLink()); ?>">
+						<img src="<?php echo $contributor->getPicture(); ?>" alt="<?php echo JText::sprintf('COM_MEMBERS_TOP_CONTRIBUTOR_PICTURE', $this->escape(stripslashes($contributor->get('name')))); ?>" />
 					</a>
 				</p>
 				<div class="contributor-content">
 					<h4 class="contributor-name">
-						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $contributor->get('uidNumber')); ?>">
+						<a href="<?php echo JRoute::_($contributor->getLink()); ?>">
 							<?php echo $this->escape(stripslashes($contributor->get('name'))); ?>
 						</a>
 					</h4>
-				<?php if ($contributor->get('organization')) { ?>
-					<p class="contributor-org">
-						<?php echo $this->escape(stripslashes($contributor->get('organization'))); ?>
-					</p>
-				<?php } ?>
+					<?php if ($org = $contributor->get('organization')) { ?>
+						<p class="contributor-org">
+							<?php echo $this->escape(stripslashes($org)); ?>
+						</p>
+					<?php } ?>
 					<div class="clearfix"></div>
 				</div>
 				<p class="course-instructor-bio">
-				<?php if ($contributor->get('bio')) { ?>
-					<?php echo \Hubzero\Utility\String::truncate(stripslashes($contributor->get('bio')), 200); ?>
-				<?php } else { ?>
-					<em><?php echo JText::_('This contributor has yet to write their bio.'); ?></em>
-				<?php } ?>
+					<?php if ($contributor->get('bio')) { ?>
+						<?php echo $contributor->getBio('clean', 200); ?>
+					<?php } else { ?>
+						<em><?php echo JText::_('COM_MEMBERS_TOP_CONTRIBUTOR_NO_BIO'); ?></em>
+					<?php } ?>
 				</p>
 			</div>
 		</div><!-- / .col span-third -->
@@ -204,7 +197,7 @@ $this->css('introduction.css', 'system')
 	else
 	{
 ?>
-			<p>No contributors found. <a href="<?php echo JRoute::_('index.php?option=com_resources&task=new'); ?>">Be the first!</a></p>
+			<p><?php echo JText::sprintf('COM_MEMBERS_TOP_CONTRIBUTOR_NO_RESULTS', JRoute::_('index.php?option=com_resources&task=new')); ?></p>
 <?php
 	}
 ?>

@@ -31,34 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-if (!defined('n'))
-{
-	/**
-	 * Description for '"t"'
-	 */
-	define('t', "\t");
-
-	/**
-	 * Description for '"n"'
-	 */
-	define('n', "\n");
-
-	/**
-	 * Description for '"br"'
-	 */
-	define('br', "<br />");
-
-	/**
-	 * Description for '"sp"'
-	 */
-	define('sp', "&#160;");
-
-	/**
-	 * Description for '"a"'
-	 */
-	define('a', "&amp;");
-}
-
 /**
  * Members helper class for various HTML output
  */
@@ -67,18 +39,18 @@ class MembersHtml
 	/**
 	 * Generate a select list for access levels
 	 *
-	 * @param      string  $name  Select name
-	 * @param      integer $value Value to preselect
-	 * @param      string  $class Class to add to the element
-	 * @param      string  $id    Select ID
-	 * @return     string Return description (if any) ...
+	 * @param   string  $name   Select name
+	 * @param   integer $value  Value to preselect
+	 * @param   string  $class  Class to add to the element
+	 * @param   string  $id     Select ID
+	 * @return  string  HTML select list
 	 */
 	public static function selectAccess($name, $value, $class='', $id='')
 	{
 		$arr = array(
-			0 => JText::_('Public') . JText::_(' (anyone can see)'),
-			1 => JText::_('Registered users') . JText::_(' (only logged in members can see)'),
-			2 => JText::_('Private') . JText::_(' (only you can see)')
+			0 => JText::_('COM_MEMBERS_FIELD_ACCESS_PUBLIC'),
+			1 => JText::_('COM_MEMBERS_FIELD_ACCESS_REGISTERED'),
+			2 => JText::_('COM_MEMBERS_FIELD_ACCESS_PRIVATE')
 		);
 
 		$html  = '<select name="' . $name . '"';
@@ -99,17 +71,17 @@ class MembersHtml
 	/**
 	 * Output a response for a single option field
 	 *
-	 * @param      string $response Normalized response code
-	 * @return     string
+	 * @param   string  $response  Normalized response code
+	 * @return  string
 	 */
 	public static function propercase_singleresponse($response)
 	{
 		$html = '';
 		switch ($response)
 		{
-			case '':        $html .= JText::_('n/a');               break;
-			case 'no':      $html .= JText::_('None');              break;
-			case 'refused': $html .= JText::_('Declined Response'); break;
+			case '':        $html .= JText::_('COM_MEMBERS_FIELD_VALUE_NA');      break;
+			case 'no':      $html .= JText::_('COM_MEMBERS_FIELD_VALUE_NONE');    break;
+			case 'refused': $html .= JText::_('COM_MEMBERS_FIELD_VALUE_REFUSED'); break;
 			default:        $html .= htmlentities(ucfirst($response), ENT_COMPAT, 'UTF-8'); break;
 		}
 		return $html;
@@ -118,15 +90,15 @@ class MembersHtml
 	/**
 	 * Output a response for a multi-option field
 	 *
-	 * @param      array $response_array Response codes
-	 * @return     string
+	 * @param   array   $response_array  Response codes
+	 * @return  string
 	 */
 	public static function propercase_multiresponse($response_array)
 	{
 		$html = '';
 		if (count($response_array) == 0)
 		{
-			$html .= JText::_('n/a');
+			$html .= JText::_('COM_MEMBERS_FIELD_VALUE_NA');
 		}
 		else
 		{
@@ -138,11 +110,11 @@ class MembersHtml
 				}
 				if ($response_array[$i] == 'no')
 				{
-					$html .= JText::_('None');
+					$html .= JText::_('COM_MEMBERS_FIELD_VALUE_NONE');
 				}
 				elseif ($response_array[$i] == 'refused')
 				{
-					$html .= JText::_('Declined Response');
+					$html .= JText::_('COM_MEMBERS_FIELD_VALUE_REFUSED');
 				}
 				else
 				{
@@ -156,8 +128,8 @@ class MembersHtml
 	/**
 	 * Obfuscate an email address
 	 *
-	 * @param      string $email Email address
-	 * @return     string
+	 * @param   string  $email  Email address
+	 * @return  string
 	 */
 	public static function obfuscate($email)
 	{
@@ -174,8 +146,8 @@ class MembersHtml
 	/**
 	 * Transform a date to an epoch
 	 *
-	 * @param      string $datestr Datetime (0000-00-00 00:00:00)
-	 * @return     integer
+	 * @param   string   $datestr  Datetime (0000-00-00 00:00:00)
+	 * @return  integer
 	 */
 	public static function date2epoch($datestr)
 	{
@@ -192,9 +164,9 @@ class MembersHtml
 	/**
 	 * Format a value
 	 *
-	 * @param      number  $value  Value to format
-	 * @param      integer $format Format to apply
-	 * @return     mixed
+	 * @param   number   $value   Value to format
+	 * @param   integer  $format  Format to apply
+	 * @return  mixed
 	 */
 	public static function valformat($value, $format)
 	{
