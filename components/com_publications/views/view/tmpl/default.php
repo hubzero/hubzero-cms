@@ -58,7 +58,7 @@ else
 	$this->helper->getCitations();
 	$this->helper->getLastCitationDate();
 	$stats = new AndmoreStats($this->database, $this->publication->id,
-		$this->publication->master_rating, count($this->helper->citations), 
+		$this->publication->master_rating, count($this->helper->citations),
 		$this->helper->lastCitationDate);
 	$statshtml = $stats->display();
 
