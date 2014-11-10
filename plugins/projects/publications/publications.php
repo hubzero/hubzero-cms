@@ -718,7 +718,7 @@ class plgProjectsPublications extends JPlugin
 		$mt   = new PublicationMasterType( $this->_database );
 
 		// Check that version exists
-		$version = $objV->checkVersion($pid, $version) ? $version : 'default';
+		$version = $objV->checkVersion($pid, $version) ? $version : 'dev';
 
 		// Instantiate project publication
 		$pub 	 		= $objP->getPublication($pid, $version, $this->_project->id);
