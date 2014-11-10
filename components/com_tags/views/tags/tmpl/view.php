@@ -33,6 +33,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css();
 
+$this->tagstring = str_replace(array('%20', ' ', '+'), ',', $this->tagstring);
+
 $name  = JText::_('COM_TAGS_ALL_CATEGORIES');
 $total = $this->total;
 $here  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : '');
@@ -69,9 +71,6 @@ foreach ($cats as $cat)
 	}
 
 	$sef = JRoute::_($here . ($blob ? '&area=' . stripslashes($blob) : ''));
-	$sef = str_replace('%20', ',', $sef);
-	$sef = str_replace(' ', ',', $sef);
-	$sef = str_replace('+', ',', $sef);
 
 	// Is this the active category?
 	$a = '';
@@ -115,12 +114,7 @@ foreach ($cats as $cat)
 				}
 
 				// Build the HTML
-				$sef = JRoute::_($here . '&area='. stripslashes($blob));
-				$sef = str_replace('%20', ',', $sef);
-				$sef = str_replace(' ', ',', $sef);
-				$sef = str_replace('+', ',', $sef);
-
-				$k[] = "\t\t\t".'<li><a' . $a . ' href="' . $sef . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+				$k[] = "\t\t\t".'<li><a' . $a . ' href="' . JRoute::_($here . '&area='. stripslashes($blob)) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
 			}
 		}
 		// Do we actually have any links?
@@ -141,72 +135,48 @@ foreach ($cats as $cat)
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul id="useroptions">
-			<li class="last">
-				<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-					<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-tag tag btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_TAGS_MORE_TAGS'); ?>
+			</a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
-	<section class="main section">
+<section class="main section">
+	<form class="section-inner" action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="get">
 		<div class="subject">
 			<div class="container data-entry">
+				<input type="hidden" name="task" value="view" />
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<?php
-					JPluginHelper::importPlugin('hubzero');
-					$tf = JDispatcher::getInstance()->trigger( 'onGetMultiEntry', array(array('tags', 'tag', 'actags','',$this->search)) );
-					?>
-					<label for="actags">
-						<?php echo JText::_('COM_TAGS_SEARCH_WITH_TAGS'); ?>
-					</label>
-					<?php if (count($tf) > 0) {
-						echo $tf[0];
-					} else { ?>
-					<input type="text" name="tag" id="actags" value="<?php echo $this->escape($this->search); ?>" />
-					<?php } ?>
+					<?php echo $this->autocompleter('tags', 'tag', $this->escape($this->search), 'actags'); ?>
 				</fieldset>
 			</div><!-- / .container -->
 
 			<?php foreach ($this->tags as $tagobj) { ?>
 				<?php if ($tagobj->get('description') != '') { ?>
-			<div class="container">
-				<div class="container-block">
-					<h4><?php echo JText::_('COM_TAGS_DESCRIPTION'); ?></h4>
-					<div class="tag-description">
-						<?php echo stripslashes($tagobj->get('description')); ?>
-						<div class="clearfix"></div>
-					</div>
-				</div>
-			</div><!-- / .container -->
+					<div class="container">
+						<div class="container-block">
+							<h4><?php echo JText::_('COM_TAGS_DESCRIPTION'); ?></h4>
+							<div class="tag-description">
+								<?php echo stripslashes($tagobj->get('description')); ?>
+								<div class="clearfix"></div>
+							</div>
+						</div>
+					</div><!-- / .container -->
 				<?php } ?>
 			<?php } ?>
 
 			<div class="container">
 				<ul class="entries-menu">
 					<li>
-						<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php
-							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=title');
-							$sef = str_replace('%20',',',$sef);
-							$sef = str_replace(' ',',',$sef);
-							$sef = str_replace('+',',',$sef);
-							echo $sef;
-						?>" title="<?php echo JText::_('COM_TAGS_OPT_SORT_BY_TITLE'); ?>">
+						<a<?php echo ($this->filters['sort'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&sort=title'); ?>" title="<?php echo JText::_('COM_TAGS_OPT_SORT_BY_TITLE'); ?>">
 							<?php echo JText::_('COM_TAGS_OPT_TITLE'); ?>
 						</a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php
-							$sef = JRoute::_('index.php?option='.$this->option.'&tag='.$this->tagstring.'&area='.$this->active.'&sort=date');
-							$sef = str_replace('%20',',',$sef);
-							$sef = str_replace(' ',',',$sef);
-							$sef = str_replace('+',',',$sef);
-							echo $sef;
-						?>" title="<?php echo JText::_('COM_TAGS_OPT_SORT_BY_DATE'); ?>">
+						<a<?php echo ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&sort=date'); ?>" title="<?php echo JText::_('COM_TAGS_OPT_SORT_BY_DATE'); ?>">
 							<?php echo JText::_('COM_TAGS_OPT_DATE'); ?>
 						</a>
 					</li>
@@ -222,11 +192,11 @@ foreach ($cats as $cat)
 
 						$base = rtrim(JURI::base(), '/');
 
-						$html  = '<h3>' . $this->escape(stripslashes($name)) . ' <span>(' . JText::sprintf('%s-%s of %s', ($this->filters['start'] + 1), $ttl, $total) . ')</span></h3>'."\n";
+						$html  = '<h3>' . $this->escape(stripslashes($name)) . ' <span>(' . JText::sprintf('COM_TAGS_RESULTS_THROUGH_OF', ($this->filters['start'] + 1), $ttl, $total) . ')</span></h3>'."\n";
 
 						if ($this->results)
 						{
-							$html .= '<ol class="results">'."\n";
+							$html .= '<ol class="results">' . "\n";
 							foreach ($this->results as $row)
 							{
 								$obj = 'plgTags' . ucfirst($row->section);
@@ -242,17 +212,17 @@ foreach ($cats as $cat)
 										$row->href = JRoute::_($row->href);
 									}
 
-									$html .= "\t".'<li>'."\n";
-									$html .= "\t\t".'<p class="title"><a href="' . $row->href . '">'.\Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>'."\n";
+									$html .= "\t" . '<li>' . "\n";
+									$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . \Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>' . "\n";
 									if ($row->ftext)
 									{
-										$html .= "\t\t".'<p>'.\Hubzero\Utility\String::truncate(strip_tags($row->ftext), 200)."</p>\n";
+										$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(strip_tags($row->ftext), 200) . "</p>\n";
 									}
-									$html .= "\t\t".'<p class="href">' . $base . $row->href . '</p>'."\n";
-									$html .= "\t".'</li>'."\n";
+									$html .= "\t\t" . '<p class="href">' . $base . $row->href . '</p>' . "\n";
+									$html .= "\t" . '</li>' . "\n";
 								}
 							}
-							$html .= '</ol>'."\n";
+							$html .= '</ol>' . "\n";
 						}
 						else
 						{
@@ -304,6 +274,5 @@ foreach ($cats as $cat)
 				</p>
 			</div>
 		</aside><!-- / .aside -->
-	</section><!-- / .main section -->
-	<input type="hidden" name="task" value="view" />
-</form>
+	</form>
+</section><!-- / .main section -->

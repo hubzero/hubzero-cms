@@ -158,6 +158,15 @@
 		text-align: center;
 	}
 
+	.com_tags .sort-options a:before {
+		content: "\2191";
+		font-family: "Fontcons";
+	}
+	.com_tags .sort-options a.asc:before {
+		content: "\2193";
+		font-family: "Fontcons";
+	}
+
 /* [!] HACKS - IE 7 and older */
 	#introduction {
 		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="intro-before"></small>' + this.innerHTML + '<small class="intro-after">&#xf02c;</small>');

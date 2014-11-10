@@ -39,7 +39,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -62,7 +62,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Display the main page for this component
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -77,20 +77,18 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->_buildPathway(null);
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
 	/**
 	 * View items tagged with this tag
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function viewTask()
 	{
@@ -320,22 +318,21 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	 * Returns results (JSON format) for a search string
 	 * Used for autocompletion scripts called via AJAX
 	 *
-	 * @return     string JSON
+	 * @return  string  JSON
 	 */
 	public function autocompleteTask()
 	{
-		$filters = array();
-		$filters['limit']  = 20;
-		$filters['start']  = 0;
-		$filters['admin']  = 0;
-		$filters['search'] = trim(JRequest::getString('value', ''));
+		$filters = array(
+			'limit'  => 20,
+			'start'  => 0,
+			'admin'  => 0,
+			'search' => trim(JRequest::getString('value', ''))
+		);
 
 		// Create a Tag object
-		//$obj = new TagsTableTag($this->database);
 		$cloud = new TagsModelCloud();
 
 		// Fetch results
-		//$rows = $obj->getAutocomplete($filters);
 		$rows = $cloud->tags('list', $filters);
 
 		// Output search results in JSON format
@@ -370,23 +367,10 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Generate an RSS feed
 	 *
-	 * @return     string RSS
+	 * @return  string  RSS
 	 */
 	public function feedTask()
 	{
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
-
-		$app = JFactory::getApplication();
-
-		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
-		$jdoc->setMimeEncoding('application/rss+xml');
-
-		// Start a new feed object
-		$doc = new JDocumentFeed;
-		$params = $app->getParams();
-		$doc->link = JRoute::_('index.php?option=' . $this->_option);
-
 		// Incoming
 		$tagstring = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
 
@@ -536,6 +520,15 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$title = trim($title);
 		$title .= ': ' . $area;
 
+		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
+
+		// Set the mime encoding for the document
+		$jdoc = JFactory::getDocument();
+		$jdoc->setMimeEncoding('application/rss+xml');
+
+		// Start a new feed object
+		$doc = new JDocumentFeed;
+		$doc->link        = JRoute::_('index.php?option=' . $this->_option);
 		$doc->title       = $jconfig->getValue('config.sitename') . ' - ' . $title;
 		$doc->description = JText::sprintf('COM_TAGS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), $title);
 		$doc->copyright   = JText::sprintf('COM_TAGS_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
@@ -551,9 +544,6 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				// Prepare the title
 				$title = strip_tags($row->title);
 				$title = html_entity_decode($title);
-
-				// URL link to article
-				//$link = JRoute::_($row->href);
 
 				// Strip html from feed item description text
 				$description = html_entity_decode(\Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->ftext)),300));
@@ -591,7 +581,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Browse the list of tags
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function browseTask()
 	{
@@ -620,15 +610,29 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			'search',
 			''
 		));
-		$this->view->filters['sortby'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortby',
-			'sortby',
-			''
-		);
 
-		if (!in_array($this->view->filters['sortby'], array('raw_tag', 'total')))
+		// Fallback support for deprecated sorting option
+		if ($sortby = JRequest::getVar('sortby'))
 		{
-			$this->view->filters['sortby'] = '';
+			JRequest::setVar('sort', $sortby);
+		}
+		$this->view->filters['sort'] = urldecode($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sort',
+			'sort',
+			'raw_tag'
+		));
+		$this->view->filters['sort_Dir'] = strtolower($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.sort_Dir',
+			'sortdir',
+			'asc'
+		));
+		if (!in_array($this->view->filters['sort'], array('raw_tag', 'total')))
+		{
+			$this->view->filters['sort'] = 'raw_tag';
+		}
+		if (!in_array($this->view->filters['sort_Dir'], array('asc', 'desc')))
+		{
+			$this->view->filters['sort_Dir'] = 'asc';
 		}
 
 		$this->view->total = 0;
@@ -645,7 +649,6 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				'int'
 			);
 
-			//$this->view->rows = $t->getTopTags($limit);
 			$this->view->rows = $t->tags('list', array(
 				'limit'    => $limit,
 				'admin'    => 0,
@@ -687,20 +690,18 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->view->config = $this->config;
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
 	/**
 	 * Create a new tag
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function createTask()
 	{
@@ -708,15 +709,13 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Show a form for editing a task
+	 * Show a form for editing a tag
 	 *
-	 * @param      object $tag TagsTableTag
-	 * @return     void
+	 * @param   object  $tag  TagsTableTag
+	 * @return  void
 	 */
 	public function editTask($tag=NULL)
 	{
-		$this->view->setLayout('edit');
-
 		// Check that the user is authorized
 		if (!$this->config->get('access-edit-tag'))
 		{
@@ -735,11 +734,13 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			$this->view->tag = new TagsModelTag(intval(JRequest::getInt('id', 0, 'request')));
 		}
 
-		$this->view->filters = array();
-		$this->view->filters['limit']  = JRequest::getInt('limit', 0);
-		$this->view->filters['start']  = JRequest::getInt('limitstart', 0);
-		$this->view->filters['sortby'] = JRequest::getInt('sortby', '');
-		$this->view->filters['search'] = urldecode(JRequest::getString('search', ''));
+		$this->view->filters = array(
+			'limit'    => JRequest::getInt('limit', 0),
+			'start'    => JRequest::getInt('limitstart', 0),
+			'sort'     => JRequest::getVar('sort', ''),
+			'sort_Dir' => JRequest::getVar('sortdir', ''),
+			'search'   => urldecode(JRequest::getString('search', ''))
+		);
 
 		// Set the pathway
 		$this->_buildPathway();
@@ -748,21 +749,20 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->_buildTitle();
 
 		// Pass error messages to the view
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Cancel a task and redirect to the main listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -776,7 +776,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Save a tag
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -823,7 +823,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Delete one or more tags
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteTask()
 	{
@@ -866,14 +866,14 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			$tag->delete();
 		}
 
-		//get the browse filters so we can go back to previous view
+		// Get the browse filters so we can go back to previous view
 		$search = JRequest::getVar('search', '');
 		$sortby = JRequest::getVar('sortby', '');
 		$limit  = JRequest::getInt('limit', 25);
 		$start  = JRequest::getInt('limitstart', 0);
 		$count  = JRequest::getInt('count', 1);
 
-		//redirect back to browse mode
+		// Redirect back to browse mode
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&task=browse&search=' . $search . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count)
 		);
@@ -882,8 +882,8 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Method to set the document path
 	 *
-	 * @param      array $tags Tags currently viewing
-	 * @return     void
+	 * @param   array  $tags  Tags currently viewing
+	 * @return  void
 	 */
 	protected function _buildPathway($tags=null)
 	{
@@ -923,8 +923,8 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	/**
 	 * Method to build and set the document title
 	 *
-	 * @param      array $tags Tags currently viewing
-	 * @return     void
+	 * @param   array  $tags  Tags currently viewing
+	 * @return  void
 	 */
 	protected function _buildTitle($tags=null)
 	{
@@ -942,14 +942,14 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			}
 			$this->view->title .= ': ' . implode(' + ', $t);
 		}
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+
+		JFactory::getDocument()->setTitle($this->view->title);
 	}
 
 	/**
 	 * Method to check admin access permission
 	 *
-	 * @return	boolean	True on success
+	 * @return  boolean  True on success
 	 */
 	protected function _authorize($assetType='tag', $assetId=null)
 	{

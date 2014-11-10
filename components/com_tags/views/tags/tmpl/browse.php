@@ -33,8 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css()
      ->js();
-
-$this->filters['sort'] = '';
 ?>
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
@@ -48,8 +46,8 @@ $this->filters['sort'] = '';
 	</div><!-- / #content-header-extra -->
 </header>
 
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
-	<section class="main section">
+<section class="main section">
+	<form class="section-inner" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
 		<div class="subject">
 
 			<div class="container data-entry">
@@ -64,19 +62,21 @@ $this->filters['sort'] = '';
 				<ul class="entries-menu sort-options">
 					<li>
 						<?php
-							$cls = ($this->filters['sortby'] == 'total') ? ' class="active"' : '';
-							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=total&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0));
+							$filters = '&search=' . urlencode($this->filters['search']) . '&limit=' . JRequest::getInt('limit', 25) . '&limitstart=' . JRequest::getInt('limitstart', 0);
+
+							$cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
+							$url = JRoute::_('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
 						?>
-						<a <?php echo $cls; ?> href="<?php echo $url; ?>" title="<?php echo JText::_('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE'); ?>">
+						<a class="<?php echo $cls . ($cls ? $this->filters['sort_Dir'] : 'asc'); ?>" href="<?php echo $url; ?>" title="<?php echo JText::_('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE'); ?>">
 							<?php echo JText::_('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
 						</a>
 					</li>
 					<li>
 						<?php
-							$cls = ($this->filters['sortby'] == '' || $this->filters['sortby'] == 'raw_tag') ? ' class="active"' : '';
-							$url = JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=raw_tag&search='.urlencode($this->filters['search']).'&limit='.JRequest::getVar("limit", 25).'&limitstart='.JRequest::getVar("limitstart", 0));
+							$cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag') ? 'active ' : '';
+							$url = JRoute::_('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
 						?>
-						<a<?php echo $cls; ?> href="<?php echo $url; ?>" title="<?php echo JText::_('COM_TAGS_BROWSE_SORT_ALPHA_TITLE'); ?>">
+						<a class="<?php echo $cls . ($cls ? $this->filters['sort_Dir'] : 'asc'); ?>" href="<?php echo $url; ?>" title="<?php echo JText::_('COM_TAGS_BROWSE_SORT_ALPHA_TITLE'); ?>">
 							<?php echo JText::_('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
 						</a>
 					</li>
@@ -136,14 +136,14 @@ $this->filters['sort'] = '';
 					<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
 							<td>
 						<?php if ($this->config->get('access-delete-tag')) { ?>
-								<a class="icon-delete delete delete-tag" data-confirm="<?php echo JText::_('COM_TAGS_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sortby=' . $this->filters['sortby'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+								<a class="icon-delete delete delete-tag" data-confirm="<?php echo JText::_('COM_TAGS_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
 									<?php echo JText::_('COM_TAGS_DELETE_TAG'); ?>
 								</a>
 						<?php } ?>
 							</td>
 							<td>
 						<?php if ($this->config->get('access-edit-tag')) { ?>
-								<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sortby=' . $this->filters['sortby'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>&quot;">
+								<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>&quot;">
 									<?php echo JText::_('COM_TAGS_EDIT'); ?>
 								</a>
 						<?php } ?>
@@ -158,7 +158,8 @@ $this->filters['sort'] = '';
 				</table>
 				<?php
 					$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-					$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
+					$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+					$this->pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
 					echo $this->pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
@@ -176,5 +177,5 @@ $this->filters['sort'] = '';
 				</p>
 			</div><!-- / .container -->
 		</aside><!-- / .aside -->
-	</section><!-- / .main section -->
-</form>
+	</form>
+</section><!-- / .main section -->
