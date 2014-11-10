@@ -222,7 +222,9 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming && $thi
 					$data->editUrl  = $editUrl;
 					$data->id		= $att->id;
 					$data->props	= $props;
-
+					$data->pid		= $this->pub->id;
+					$data->vid		= $this->pub->version_id;
+					$data->version	= $this->pub->version_number;
 					$data->projectPath = $this->path;
 					$data->git		   = $git;
 					$data->pubPath	   = $pubPath;

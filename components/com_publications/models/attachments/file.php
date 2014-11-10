@@ -611,6 +611,12 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 					chmod($hfile, 0644);
 				}
 				$pAttach->store();
+
+				// Produce thumbnail (if applicable)
+				if ($configs->handler && $configs->handler->getName() == 'imageviewer')
+				{
+					$configs->handler->makeThumbnail($pAttach, $pub, $newConfigs);
+				}
 			}
 		}
 

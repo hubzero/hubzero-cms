@@ -132,6 +132,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 					$data->id		= $att->id;
 					$data->props	= $props;
 					$data->viewer	= 'edit';
+					$data->version	= $this->pub->version_number;
 
 					// Draw attachment
 					echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams);

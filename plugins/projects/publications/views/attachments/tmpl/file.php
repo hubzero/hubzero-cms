@@ -51,7 +51,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<a href="<?php echo $data->downloadUrl; ?>" class="item-download" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a>
 				<?php } ?>
 				<a href="<?php echo $data->editUrl . '/?action=edititem' . a . 'aid=' . $data->id . a .'p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo ($data->gone || $allowRename == false) ? JText::_('PLG_PROJECTS_PUBLICATIONS_RELABEL') : JText::_('PLG_PROJECTS_PUBLICATIONS_RENAME'); ?>">&nbsp;</a>
-				<a href="<?php echo $data->editUrl . '/?action=deleteitem' . a . 'aid=' . $data->id . a . 'p=' . $data->props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
+				<a href="<?php echo $data->editUrl . '/?action=deleteitem' . a . 'version=' . $data->version . a . 'aid=' . $data->id . a . 'p=' . $data->props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
 			<?php } else { ?>
 				<span><a href="<?php echo $data->downloadUrl; ?>" class="item-download" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD'); ?>">&nbsp;</a></span>
