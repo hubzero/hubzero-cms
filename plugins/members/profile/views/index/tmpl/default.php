@@ -274,19 +274,26 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							//get list of organizations from db
 							include_once(JPATH_ROOT . DS . 'administrator' . DS .'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
 							$database = JFactory::getDBO();
-							$xo = new MembersTableOrganization( $database);
-							$orgs = $xo->getOrgs();
+							$xo = new MembersTableOrganization($database);
+							$orgs = $xo->find('list');
+
+							$organization_alt = '';
 
 							//create select for organizations and optional text input
 							$organizations  = '<select name="org" class="input-select">';
 							$organizations .= '<option value="">' . JText::_('PLG_MEMBERS_PROFILE_SELECT_OR_ENTER_BELOW') . '</option>';
 							foreach ($orgs as $o)
 							{
-								$sel = ($o == $this->profile->get("organization")) ? "selected=\"selected\"" : "";
-								$organizations .= "<option {$sel} value=\"{$o}\">{$o}</option>";
+								$sel = ($o->organization == $this->profile->get("organization")) ? "selected=\"selected\"" : "";
+								if ($o->organization == $this->profile->get("organization"))
+								{
+									$sel = 'selected="selected"';
+									$organization_alt = $o->organization;
+								}
+								$organizations .= '<option ' . $sel . ' value="' . $o->organization . '">' . $o->organization . '</option>';
 							}
 							$organizations .= '</select>';
-							$organization_alt = (!in_array($this->profile->get("organization"), $orgs)) ? $this->escape($this->profile->get('organization')) : "";
+							$organization_alt = ($organization_alt ?: $this->escape($this->profile->get('organization')));
 							$organizations_text = "<input type=\"text\" name=\"orgtext\" class=\"input-text\" value=\"{$organization_alt}\" />";
 
 							$this->view('default', 'edit')
@@ -296,8 +303,8 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							     ->set('title', JText::_('PLG_MEMBERS_PROFILE_ORGANIZATION'))
 							     ->set('profile', $this->profile)
 							     ->set('isUser', $isUser)
-							     ->set('inputs', '<label>' . JText::_('PLG_MEMBERS_PROFILE_ORGANIZATION') . $organizations.'</label><label>' . JText::_('PLG_MEMBERS_PROFILE_ENTER_ORG_BELOW') . $organizations_text.'</label>')
-							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[org]',$this->params->get('access_org'),'input-select') . '</label>')
+							     ->set('inputs', '<label>' . JText::_('PLG_MEMBERS_PROFILE_ORGANIZATION') . $organizations . '</label><label>' . JText::_('PLG_MEMBERS_PROFILE_ENTER_ORG_BELOW') . $organizations_text . '</label>')
+							     ->set('access', '<label>' . JText::_('PLG_MEMBERS_PROFILE_PRIVACY') . MembersHtml::selectAccess('access[org]', $this->params->get('access_org'), 'input-select') . '</label>')
 							     ->display();
 						?>
 					</div>

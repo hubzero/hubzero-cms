@@ -309,43 +309,41 @@ if ($this->registration->Organization != REG_HIDE) {
 	include_once( JPATH_ROOT.DS.'administrator' . DS .'components'.DS.'com_members'.DS.'tables'.DS.'organization.php' );
 	$database = JFactory::getDBO();
 
-	$xo = new MembersTableOrganization( $database );
-	$orgs = $xo->getOrgs();
-
-	if (count($orgs) <= 0) {
-		$orgs[0] = 'Purdue University';
-		$orgs[1] = 'University of Pennsylvania';
-		$orgs[2] = 'University of California at Berkeley';
-		$orgs[3] = 'Vanderbilt University';
-	}
+	$xo = new MembersTableOrganization($database);
+	$orgs = $xo->find('list');
 
 	foreach ($orgs as $org)
 	{
-		$org_known = ($org == $organization) ? 1 : 0;
+		$org_known = ($org->organization == $organization) ? 1 : 0;
 	}
 
 	$html .= "\t\t".'<label'.$fieldclass.'>'."\n";
 	$html .= "\t\t\t".JText::_('ORG').': '.$required."\n";
 	$html .= "\t\t\t".'<select name="org">'."\n";
 	$html .= "\t\t\t\t".'<option value=""';
-	if (!$org_known) {
+	if (!$org_known)
+	{
 		$html .= ' selected="selected"';
 	}
 	$html .= '>';
-	if ($org_known) {
+	if ($org_known)
+	{
 		$html .= JText::_('(other / none)');
-	} else {
+	}
+	else
+	{
 		$html .= JText::_('(select from list or enter below)');
 	}
 	$html .= '</option>'."\n";
 	foreach ($orgs as $org)
 	{
-		$html .= "\t\t\t\t".'<option value="'. $this->escape($org) .'"';
-		if ($org == $organization) {
+		$html .= "\t\t\t\t".'<option value="'. $this->escape($org->organization) .'"';
+		if ($org->organization == $organization)
+		{
 			$orgtext = '';
 			$html .= ' selected="selected"';
 		}
-		$html .= '>' . $this->escape($org) . '</option>'."\n";
+		$html .= '>' . $this->escape($org->organization) . '</option>'."\n";
 	}
 	$html .= "\t\t\t".'</select>'."\n";
 	$html .= $message;

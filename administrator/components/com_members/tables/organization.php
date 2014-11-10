@@ -39,8 +39,8 @@ class MembersTableOrganization extends JTable
 	/**
 	 * Object constructor to set table and key field
 	 *
-	 * @param object $db JDatabase object
-	 * @return     void
+	 * @param   object  $db  JDatabase object
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -50,7 +50,7 @@ class MembersTableOrganization extends JTable
 	/**
 	 * Method for checking that fields are valid before sending to the database
 	 *
-	 * @return boolean True if the object is ok
+	 * @return  boolean  True if the object is ok
 	 */
 	public function check()
 	{
@@ -64,12 +64,14 @@ class MembersTableOrganization extends JTable
 	}
 
 	/**
-	 * Returns an array of objects
+	 * Returns a list, count or single record
 	 *
-	 * @param	array	$filters	An associative array of filters used to construct a query
-	 * @return	array
+	 * @param   string  $what     Data to return?
+	 * @param   array   $filters  An associative array of filters used to construct a query
+	 * @param   array   $select   List of fields to return
+	 * @return  mixed
 	 */
-	public function find($what='', $filters, $select=array('*'))
+	public function find($what='', $filters=array(), $select=array('*'))
 	{
 		$what = strtolower($what);
 		$select = (array) $select;
@@ -151,8 +153,8 @@ class MembersTableOrganization extends JTable
 	/**
 	 * Build SQL based on filters passed
 	 *
-	 * @param      array $filters
-	 * @return     string
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -185,25 +187,5 @@ class MembersTableOrganization extends JTable
 		}
 
 		return $query;
-	}
-
-	/**
-	 * Returns an array of organizations
-	 *
-	 * @param	array	$filters	An associative array of filters used to construct a query
-	 * @return	array
-	 */
-	public function getOrgs($filters = array())
-	{
-		$orgs = array();
-		if ($records = $this->find('list', $filters))
-		{
-			foreach ($records as $record)
-			{
-				$orgs[] = $record->organization;
-			}
-		}
-
-		return $orgs;
 	}
 }

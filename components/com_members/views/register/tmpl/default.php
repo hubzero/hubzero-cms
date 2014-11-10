@@ -470,19 +470,11 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organization.php');
 					$database = JFactory::getDBO();
 					$xo = new MembersTableOrganization($database);
-					$orgs = $xo->getOrgs();
-
-					if (!$orgs || count($orgs) <= 0)
-					{
-						$orgs[0] = 'Purdue University';
-						$orgs[1] = 'University of Pennsylvania';
-						$orgs[2] = 'University of California at Berkeley';
-						$orgs[3] = 'Vanderbilt University';
-					}
+					$orgs = $xo->find('list');
 
 					foreach ($orgs as $org)
 					{
-						if ($org == $this->registration['org'])
+						if ($org->organization == $this->registration['org'])
 						{
 							$org_known = 1;
 						}
@@ -495,7 +487,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 						<select name="org" id="org">
 							<option value=""<?php if (!$org_known) { echo ' selected="selected"'; } ?>><?php echo ($org_known) ? JText::_('(other / none)') : JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
 							<?php foreach ($orgs as $org) { ?>
-								<option value="<?php echo $this->escape($org); ?>"<?php if ($org == $this->registration['org']) { $orgtext = ''; echo ' selected="selected"'; } ?>><?php echo $this->escape($org); ?></option>
+								<option value="<?php echo $this->escape($org->organization); ?>"<?php if ($org->organization == $this->registration['org']) { $orgtext = ''; echo ' selected="selected"'; } ?>><?php echo $this->escape($org->organization); ?></option>
 							<?php } ?>
 						</select>
 						<?php echo ($message) ? $message . "\n" : ''; ?>
@@ -732,7 +724,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					}
 					?>
 					<fieldset<?php echo $fieldclass; ?>>
-						<legend><?php echo JText::_('Disability'); ?>: <?php echo $required; ?></legend>
+						<legend><?php echo JText::_('COM_MEMBERS_REGISTER_DISABILITY'); ?>: <?php echo $required; ?></legend>
 						<?php echo ($message) ? $message : ''; ?>
 
 						<label>
@@ -779,7 +771,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 
 						<label>
 							<input type="radio" class="option" name="disability" id="disabilityrefused" value="refused"<?php if (in_array('refused', $this->registration['disability'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('Do not wish to reveal'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_DO_NOT_REVEAL'); ?>
 						</label>
 					</fieldset>
 				<?php } ?>
@@ -854,7 +846,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 
 						<label>
 							<input type="radio" class="option" name="hispanic" id="hispanicrefused" value="refused"<?php if (in_array('refused', $this->registration['hispanic'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('Do not wish to reveal'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_DO_NOT_REVEAL'); ?>
 						</label>
 					</fieldset>
 				<?php } ?>
@@ -907,7 +899,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 
 						<label>
 							<input type="checkbox" class="option" name="racerefused" id="racerefused"<?php if (in_array('refused', $this->registration['race'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('Do not wish to reveal'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_DO_NOT_REVEAL'); ?>
 						</label>
 
 						<?php echo ($message) ? $message . "\n" : ''; ?>
@@ -924,9 +916,9 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 
 			//define mail preference options
 			$options = array(
-				'-1' => '- Select email option &mdash;',
-				'1'  => 'Yes, send me emails',
-				'0'  => 'No, don\'t send me emails'
+				'-1' => JText::_('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES_SELECT'),
+				'1'  => JText::_('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES_YES'),
+				'0'  => JText::_('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES_NO')
 			);
 
 			//if we dont have a mail pref option set to unanswered
@@ -939,7 +931,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 				<legend><?php echo JText::_('Receive Email Updates'); ?></legend>
 
 				<label for="mailPreferenceOption"<?php echo $fieldclass; ?>>
-					Would you like to receive email updates (newsletters, etc.)? <?php echo ($this->registrationOptIn == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+					<?php echo JText::_('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES'); ?> <?php echo ($this->registrationOptIn == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
 					<select name="mailPreferenceOption">
 						<?php foreach ($options as $key => $value) { ?>
 							<option <?php echo ($key == $this->registration['mailPreferenceOption']) ? 'selected="selected"' : ''; ?> value="<?php echo $key; ?>"><?php echo $value; ?></option>
@@ -956,18 +948,18 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 			$required = ($this->registrationCAPTCHA == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';
 			$message = (isset($this->xregistration->_invalid['captcha']) && !empty($this->xregistration->_invalid['captcha'])) ? '<span class="error">' . $this->xregistration->_invalid['captcha'] . '</span>' : '';
 
-			JPluginHelper::importPlugin( 'hubzero' );
+			JPluginHelper::importPlugin('hubzero');
 			$dispatcher = JDispatcher::getInstance();
-			$captchas = $dispatcher->trigger( 'onGetCaptcha' );
+			$captchas = $dispatcher->trigger('onGetCaptcha');
 
 			if (count($captchas) > 0) { ?>
 				<fieldset>
-					<legend><?php echo JText::_('Human Check'); ?></legend>
+					<legend><?php echo JText::_('COM_MEMBERS_REGISTER_HUMAN_CHECK'); ?></legend>
 					<?php echo ($message) ? $message : ''; ?>
 			<?php } ?>
 
 			<label id="botcheck-label" for="botcheck">
-				<?php echo JText::_('Please leave this field blank.'); ?> <?php echo $required; ?>
+				<?php echo JText::_('COM_MEMBERS_REGISTER_BOT_CHECK_LABEL'); ?> <?php echo $required; ?>
 				<input type="text" name="botcheck" id="botcheck" value="" />
 			</label>
 
@@ -984,7 +976,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 				<label<?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ? ' class="fieldWithErrors"' : ''; ?>>
 					<input type="checkbox" class="option" id="usageAgreement" value="1" name="usageAgreement"<?php if ($this->registration['usageAgreement']) { echo ' checked="checked"'; } ?>/>
 					<?php echo ($this->registrationTOU == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
-					<?php echo JText::_('Yes, I have read and agree to the <a class="popup 700x500" href="/legal/terms">Terms of Use</a>.'); ?>
+					<?php echo JText::_('Yes, I have read and agree to the <a class="popup 700x500" href="' . JURI::base(true) . '/legal/terms">Terms of Use</a>.'); ?>
 				</label>
 
 				<?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ? '<span class="error">' . $this->xregistration->_invalid['usageAgreement'] . '</span>' : ''; ?>
@@ -996,14 +988,14 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 		<?php } ?>
 
 		<p class="submit">
-			<input type="submit" name="<?php echo $this->task; ?>" value="<?php echo JText::_('COM_MEMBERS_REGISTER_BUTTON_'.strtoupper($this->task)); ?>" />
+			<input type="submit" name="<?php echo $this->task; ?>" value="<?php echo JText::_('COM_MEMBERS_REGISTER_BUTTON_' . strtoupper($this->task)); ?>" />
 		</p>
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 		<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
 		<input type="hidden" name="act" value="submit" />
-		<?php echo JHTML::_( 'form.token' ); ?>
+		<?php echo JHTML::_('form.token'); ?>
 
 		<input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(JURI::base(true), '/'); ?>" />
 

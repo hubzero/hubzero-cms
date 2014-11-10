@@ -71,7 +71,7 @@ class MembersTableOrganizationType extends JTable
 	}
 
 	/**
-	 * Returns an array of objects
+	 * Returns a list, count or single record
 	 *
 	 * @param   string  $what     Data to return?
 	 * @param   array   $filters  An associative array of filters used to construct a query
