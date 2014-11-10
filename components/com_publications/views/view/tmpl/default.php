@@ -27,32 +27,26 @@ $this->css()
 	 ->css('jquery.fancybox.css', 'system')
      ->js();
 
-// Which layout?
-$launcherLayout  = $this->config->get('launcher_layout', 0);
-
-$juser = JFactory::getUser();
 $html = '';
 
-if ($launcherLayout)
+// New launcher layout?
+if ($this->config->get('launcher_layout', 0))
 {
-	// New launcher layout
-	$view = new JView(
-		array('name' => 'view', 'layout' => 'launcher')
-	);
-	$view->publication 	 	= $this->publication;
-	$view->contributable 	= $this->contributable;
-	$view->option 		 	= $this->option;
-	$view->config 		 	= $this->config;
-	$view->params 		 	= $this->params;
-	$view->authorized 	 	= $this->authorized;
-	$view->restricted 	 	= $this->restricted;
-	$view->database 	 	= $this->database;
-	$view->lastPubRelease 	= $this->lastPubRelease;
-	$view->version		 	= $this->version;
-	$view->license			= $this->license;
-	$view->sections			= $this->sections;
-	$view->cats				= $this->cats;
-	echo $view->loadTemplate();
+	$this->view('launcher')
+	     ->set('option', $this->option)
+	     ->set('publication', $this->publication)
+	     ->set('config', $this->config)
+	     ->set('contributable', $this->contributable)
+	     ->set('authorized', $this->authorized)
+	     ->set('restricted', $this->restricted)
+	     ->set('database', $this->database)
+	     ->set('lastPubRelease', $this->lastPubRelease)
+	     ->set('version', $this->version)
+	     ->set('license', $this->license)
+	     ->set('sections', $this->sections)
+	     ->set('cats', $this->cats)
+	     ->set('params', $params)
+	     ->display();
 }
 else
 {
@@ -64,7 +58,8 @@ else
 	$this->helper->getCitations();
 	$this->helper->getLastCitationDate();
 	$stats = new AndmoreStats($this->database, $this->publication->id,
-		$this->publication->master_rating, count($this->helper->citations), $this->helper->lastCitationDate);
+		$this->publication->master_rating, count($this->helper->citations), 
+		$this->helper->lastCitationDate);
 	$statshtml = $stats->display();
 
 	$xtra = '';
@@ -106,7 +101,8 @@ else
 		$xtra = '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
 	}
 
-	$html .= PublicationsHtml::metadata($this->option, $this->params, $this->publication, $statshtml, $this->sections, $this->version, $xtra, $this->lastPubRelease);
+	$html .= PublicationsHtml::metadata($this->option, $this->params, $this->publication,
+		$statshtml, $this->sections, $this->version, $xtra, $this->lastPubRelease);
 	$html .= '</div><!-- / .aside -->'."\n";
 	$html .= '<div class="subject">'."\n";
 	$html .= ' <div class="overviewcontainer">'."\n";

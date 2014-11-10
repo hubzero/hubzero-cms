@@ -25,12 +25,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = $this->publication->license_text ? $this->publication->license_text : $this->license->text;
-$text = preg_replace("/\r\n/", "\r", trim($text));
 ?>
-	<header id="content-header">
-		<h2><?php echo $this->title; ?></h2>
-		<div class="license-wrap">
-			<?php if ($this->getError()) { echo '<p class="error">'.$this->getError().'</p>'; } else { echo '<pre>' . $text . '</pre>'; } ?>
-		</div>
-	</header>
+<li>
+	<span class="pub-thumb"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->row->id . '&v=' . $this->row->version_id) . '/Image:thumb'; ?>" alt=""/></span>
+	<span class="pub-details">
+		<a href="<?php echo JRoute::_('index.php?option=com_publications&id='.$this->row->id); ?>" title="<?php echo stripslashes($this->row->abstract); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($this->row->title), 100); ?></a>
+		<span class="block details"><?php echo implode(' <span>|</span> ', $this->info); ?></span>
+	</span>
+</li>

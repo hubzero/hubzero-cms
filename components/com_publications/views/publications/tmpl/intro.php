@@ -1,4 +1,27 @@
-<?php // no direct access
+<?php
+/**
+ * @package		HUBzero CMS
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ *
+ * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License,
+ * version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+// no direct access
 defined('_JEXEC') or die('Restricted access');
 
 $this->css('introduction.css', 'system')
@@ -29,53 +52,27 @@ $this->css('introduction.css', 'system')
 	<div class="grid">
 		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6';  ?>">
 			<h3><?php echo JText::_('Recent Publications'); ?></h3>
-			<?php if ($this->results && count($this->results) > 0) { ?>
-				<ul class="mypubs">
-					<?php foreach ($this->results as $row) {
-						// Get version authors
-						$pa = new PublicationAuthor( $this->database );
-						$authors = $pa->getAuthors($row->version_id);
-						$info = array();
-						$info[] =  JHTML::_('date', $row->published_up, 'd M Y');
-						$info[] = $row->cat_name;
-						$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
-					?>
-					<li>
-						<span class="pub-thumb"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt=""/></span>
-						<span class="pub-details">
-							<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id); ?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($row->title), 100); ?></a>
-							<span class="block details"><?php echo implode(' <span>|</span> ', $info); ?></span>
-						</span>
-					</li>
-					<?php }?>
-				</ul>
-			<?php } else {
+			<?php if ($this->results && count($this->results) > 0) {
+				// Display List of items
+				$this->view('_list')
+				     ->set('results', $this->results)
+				     ->set('config', $this->config)
+				     ->set('helper', new PublicationHelper($this->database))
+				     ->display();
+				} else {
 				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>');
 			} ?>
 		</div>
 		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6';  ?>">
 			<h3><?php echo JText::_('COM_PUBLICATIONS_PUPULAR'); ?></h3>
-			<?php if ($this->best && count($this->best) > 0) { ?>
-				<ul class="mypubs">
-					<?php foreach ($this->best as $row) {
-						// Get version authors
-						$pa = new PublicationAuthor( $this->database );
-						$authors = $pa->getAuthors($row->version_id);
-						$info = array();
-						$info[] =  JHTML::_('date', $row->published_up, 'd M Y');
-						$info[] = $row->cat_name;
-						$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS').': '. $this->helper->showContributors( $authors, false, true );
-					?>
-					<li>
-						<span class="pub-thumb"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb'; ?>" alt=""/></span>
-						<span class="pub-details">
-							<a href="<?php echo JRoute::_('index.php?option=com_publications'.a.'id='.$row->id); ?>" title="<?php echo stripslashes($row->abstract); ?>"><?php echo \Hubzero\Utility\String::truncate(stripslashes($row->title), 100); ?></a>
-							<span class="block details"><?php echo implode(' <span>|</span> ', $info); ?></span>
-						</span>
-					</li>
-					<?php }?>
-				</ul>
-			<?php } else {
+			<?php if ($this->best && count($this->best) > 0)
+			{ 		// Display List of items
+					$this->view('_list')
+					     ->set('results', $this->best)
+					     ->set('config', $this->config)
+					     ->set('helper', new PublicationHelper($this->database))
+					     ->display();
+			} else {
 				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>');
 			} ?>
 		</div>

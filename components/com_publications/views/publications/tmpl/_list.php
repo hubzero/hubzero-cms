@@ -25,12 +25,32 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = $this->publication->license_text ? $this->publication->license_text : $this->license->text;
-$text = preg_replace("/\r\n/", "\r", trim($text));
+$database = JFactory::getDBO();
+
+// Get version authors
+$pa = new PublicationAuthor( $database );
 ?>
-	<header id="content-header">
-		<h2><?php echo $this->title; ?></h2>
-		<div class="license-wrap">
-			<?php if ($this->getError()) { echo '<p class="error">'.$this->getError().'</p>'; } else { echo '<pre>' . $text . '</pre>'; } ?>
-		</div>
-	</header>
+
+<ul class="mypubs">
+<?php
+
+foreach ($this->results as $row)
+{
+	// Get version authors
+	$authors = $pa->getAuthors($row->version_id);
+
+	$info = array();
+	$info[] =  JHTML::_('date', $row->published_up, 'd M Y');
+	$info[] = $row->cat_name;
+	$info[] = JText::_('COM_PUBLICATIONS_CONTRIBUTORS') . ': '
+		. $this->helper->showContributors( $authors, false, true );
+
+	// Display List of items
+	$this->view('_item')
+	     ->set('option', 'com_publications')
+	     ->set('row', $row)
+	     ->set('info', $info)
+	     ->display();
+}
+?>
+</ul>

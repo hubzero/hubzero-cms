@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -125,15 +125,16 @@ $this->css()
 			<div class="clearfix"></div>
 			<div class="container-block">
 			<?php
-			if ($this->results) {
-				switch ($this->filters['sortby'])
-				{
-					case 'date_created': $show_date = 1; break;
-					case 'date_modified': $show_date = 2; break;
-					case 'date':
-					default: $show_date = 3; break;
-				}
-				echo PublicationsHtml::writeResults( $database, $this->results, $this->filters, $show_date );
+			if ($this->results)
+			{
+				// Display List of items
+				$this->view('_list')
+				     ->set('results', $this->results)
+				     ->set('filters', $this->filters)
+				     ->set('config', $this->config)
+				     ->set('helper', new PublicationHelper($database))
+				     ->display();
+
 				echo '<div class="clear"></div>';
 			} else { ?>
 				<p class="warning"><?php echo JText::_('COM_PUBLICATIONS_NO_RESULTS'); ?></p>
