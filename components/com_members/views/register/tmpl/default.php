@@ -446,24 +446,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 					$database = JFactory::getDBO();
 					$rot = new MembersTableOrganizationType($database);
-					$types = $rot->getTypes();
-
-					if (!$types || count($types) <= 0)
-					{
-						$types = array(
-							'universityundergraduate' => 'University / College Undergraduate',
-							'universitygraduate'      => 'University / College Graduate Student',
-							'universityfaculty'       => 'University / College Faculty', // university
-							'universitystaff'         => 'University / College Staff',
-							'precollegestudent'       => 'K-12 (Pre-College) Student',
-							'precollegefacultystaff'  => 'K-12 (Pre-College) Faculty/Staff', // precollege
-							'nationallab'             => 'National Laboratory',
-							'industry'                => 'Industry / Private Company',
-							'government'              => 'Government Agency',
-							'military'                => 'Military',
-							'unemployed'              => 'Retired / Unemployed'
-						);
-					}
+					$types = $rot->find('list');
 					?>
 					<label<?php echo $fieldclass; ?>>
 						<?php echo JText::_('Employment Type'); ?>: <?php echo ($this->registrationEmployment == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
@@ -471,8 +454,8 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 							<?php if (empty($this->registration['orgtype']) || !empty($this->xregistration->_invalid['orgtype'])) { ?>
 								<option value="" selected="selected"><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
 							<?php } ?>
-							<?php foreach ($types as $type => $title) { ?>
-								<option value="<?php echo $type; ?>"<?php if ($this->registration['orgtype'] == $type) { echo ' selected="selected"'; } ?>><?php echo $title; ?></option>
+							<?php foreach ($types as $orgtype) { ?>
+								<option value="<?php echo $this->escape($orgtype->type); ?>"<?php if ($this->registration['orgtype'] == $orgtype->type) { echo ' selected="selected"'; } ?>><?php echo $this->escape($orgtype->type); ?></option>
 							<?php } ?>
 						</select>
 						<?php echo ($message) ? "\t\t\t\t" . $message . "\n" : ''; ?>

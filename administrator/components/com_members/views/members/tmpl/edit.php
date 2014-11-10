@@ -146,33 +146,19 @@ function submitbutton(pressbutton)
 					<?php
 					include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 
-					$rot = new MembersTableOrganizationType(JFactory::getDBO());
-					$types = $rot->getTypes();
-
-					if (!$types || count($types) <= 0)
+					$database = JFactory::getDBO();
+					$rot = new MembersTableOrganizationType($database);
+					if ($types = $rot->find('list'))
 					{
-						$types = array(
-							'universityundergraduate' => JText::_('University / College Undergraduate'),
-							'universitygraduate'      => JText::_('University / College Graduate Student'),
-							'universityfaculty'       => JText::_('University / College Faculty'), // university
-							'universitystaff'         => JText::_('University / College Staff'),
-							'precollegestudent'       => JText::_('K-12 (Pre-College) Student'),
-							'precollegefacultystaff'  => JText::_('K-12 (Pre-College) Faculty/Staff'), // precollege
-							'nationallab'             => JText::_('National Laboratory'),
-							'industry'                => JText::_('Industry / Private Company'),
-							'government'              => JText::_('Government Agency'),
-							'military'                => JText::_('Military'),
-							'unemployed'              => JText::_('Retired / Unemployed')
-						);
-					}
-					foreach ($types as $type => $title)
-					{
-						echo '<option value="' . $type . '"';
-						if ($this->profile->get('orgtype') == $type)
+						foreach ($types as $orgtype)
 						{
-							echo ' selected="selected"';
+							echo '<option value="' . $this->escape($orgtype->type) . '"';
+							if ($this->profile->get('orgtype') == $orgtype->type)
+							{
+								echo ' selected="selected"';
+							}
+							echo '>' . $this->escape(stripslashes($orgtype->title)) . '</option>' . "\n";
 						}
-						echo '>' . $this->escape(stripslashes($title)) . '</option>' . "\n";
 					}
 					?>
 				</select>

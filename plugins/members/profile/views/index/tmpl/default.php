@@ -335,14 +335,14 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 							//get organization types from db
 							include_once(JPATH_ROOT . DS . 'administrator' . DS .'components' . DS . 'com_members' . DS . 'tables' . DS . 'organizationtype.php');
 							$database = JFactory::getDBO();
-							$xot = new MembersTableOrganizationType( $database);
-							$orgtypes = $xot->getTypes();
+							$xot = new MembersTableOrganizationType($database);
+							$orgtypes = $xot->find('list');
 
 							//output value
-							if (array_key_exists($this->profile->get("orgtype"), $orgtypes)) {
-								$orgtype = $orgtypes[$this->profile->get("orgtype")];
-							} else {
-								$orgtype = $this->escape($this->profile->get('orgtype'));
+							$orgtype = $this->escape($this->profile->get('orgtype'));
+							foreach ($orgtypes as $ot)
+							{
+								$orgtype = ($ot->type == $this->profile->get('orgtype') ? $this->escape($ot->title) : $orgtype);
 							}
 						?>
 						<div class="value">
@@ -351,11 +351,11 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 						<br class="clear" />
 						<?php
 							//build select of org types
-							$organization_types  = "<select name=\"orgtype\" class=\"input-select\">";
-							foreach ($orgtypes as $k => $o)
+							$organization_types  = '<select name="orgtype" class="input-select">';
+							foreach ($orgtypes as $orgtype)
 							{
-								$sel = ($k == $this->profile->get("orgtype")) ? "selected=\"selected\"" : "";
-								$organization_types .= "<option {$sel} value=\"{$k}\">{$o}</option>";
+								$sel = ($orgtype->type == $this->profile->get('orgtype')) ? ' selected="selected"' : '';
+								$organization_types .= '<option' . $sel . ' value="' . $this->escape($orgtype->type) . '">' . $this->escape($orgtype->title) . '</option>';
 							}
 							$organization_types .= "</select>";
 
