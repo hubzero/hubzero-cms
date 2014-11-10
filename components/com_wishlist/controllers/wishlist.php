@@ -112,7 +112,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				break;
 				case 'settings':
 					$pathway->addItem(
-						JText::_(strtoupper($this->_task)),
+						JText::_(strtoupper($this->_option . '_' . $this->_task)),
 						'index.php?option=' . $this->_option . '&task=settings&id=' . $this->_listid
 					);
 				break;

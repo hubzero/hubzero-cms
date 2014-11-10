@@ -76,7 +76,7 @@ if ($this->wishlist->exists())
 				<?php } ?>
 			</div><!-- / .aside -->
 			<fieldset>
-				<legend><?php echo JText::_('Details'); ?></legend>
+				<legend><?php echo JText::_('COM_WISHLIST_DETAILS'); ?></legend>
 
 			<?php if ($this->task == 'editwish') { ?>
 				<label for="field-by">
