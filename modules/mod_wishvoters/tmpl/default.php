@@ -32,40 +32,40 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
-	<h3><?php echo JText::_('Giving the Most Input'); ?></h3>
+	<h3><?php echo JText::_('MOD_WISHVOTERS_GIVING_MOST_INPUT'); ?></h3>
 <?php if (count($this->rows) <= 0) { ?>
-	<p><?php echo JText::_('No-one has yet voted for a single wish on this list.'); ?></p>
+	<p><?php echo JText::_('MOD_WISHVOTERS_NO_VOTES'); ?></p>
 <?php } else { ?>
 	<ul class="voterslist">
 		<li class="title">
-			<?php echo JText::_('Name (login)'); ?>
-			<span><?php echo JText::_('wishes ranked'); ?></span>
+			<?php echo JText::_('MOD_WISHVOTERS_COL_NAME'); ?>
+			<span><?php echo JText::_('MOD_WISHVOTERS_COL_RANKED'); ?></span>
 		</li>
-<?php
-	$k=1;
-	foreach ($this->rows as $row)
-	{
-		if ($k <= intval($this->params->get('limit', 10)))
-		{
-			$name = JText::_('UNKNOWN');
-			$auser = JUser::getInstance($row->userid);
-			if (is_object($auser))
+		<?php
+			$k=1;
+			foreach ($this->rows as $row)
 			{
-				$name  = $auser->get('name');
-				$login = $auser->get('username');
+				if ($k <= intval($this->params->get('limit', 10)))
+				{
+					$name = JText::_('MOD_WISHVOTERS_UNKNOWN');
+					$auser = JUser::getInstance($row->userid);
+					if (is_object($auser))
+					{
+						$name  = $auser->get('name');
+						$login = $auser->get('username');
+					}
+					?>
+					<li>
+						<span class="lnum"><?php echo $k; ?>.</span>
+						<?php echo stripslashes($name); ?>
+						<span class="wlogin">(<?php echo stripslashes($login); ?>)</span>
+						<span><?php echo $row->times; ?></span>
+					</li>
+					<?php
+					$k++;
+				}
 			}
-?>
-		<li>
-			<span class="lnum"><?php echo $k; ?>.</span>
-			<?php echo stripslashes($name); ?>
-			<span class="wlogin">(<?php echo stripslashes($login); ?>)</span>
-			<span><?php echo $row->times; ?></span>
-		</li>
-<?php
-			$k++;
-		}
-	}
-?>
+		?>
 	</ul>
 <?php } ?>
 </div><!-- / <?php echo ($this->params->get('moduleclass')) ? '.' . $this->params->get('moduleclass') : ''; ?> -->
