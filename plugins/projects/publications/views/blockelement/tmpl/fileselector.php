@@ -217,7 +217,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming && $thi
 					// Set default title
 					$incNum				= $max > 1 ? ' (' . $i . ')' : '';
 					$dTitle				= $defaultTitle ? $defaultTitle . $incNum : basename($data->path);
-					$data->title 		= $att->title && $att->title != $defaultTitle 
+					$data->title 		= $att->title && $att->title != $defaultTitle
 										? $att->title : $dTitle;
 					$data->ordering 	= $i;
 					$data->editUrl  	= $editUrl;
