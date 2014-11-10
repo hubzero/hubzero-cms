@@ -128,6 +128,8 @@ $schema 	= $metaElements->getSchema();
 		$listLabel = isset($this->publication->_curationModel->_manifest->params->list_label)
 				? $this->publication->_curationModel->_manifest->params->list_label
 				: JText::_('COM_PUBLICATIONS_CONTENT_LIST');
+		// Add plugin style
+		\Hubzero\Document\Assets::addPluginStylesheet('publications', 'supportingdocs');
 
 		if ($listAll)
 		{
