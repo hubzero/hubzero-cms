@@ -448,13 +448,12 @@ class PublicationsModelAttachments extends JObject
 			return false;
 		}
 
-		$i = 0;
 		foreach ($elements as $element)
 		{
 			// File?
 			if ($element->manifest->params->type != 'file')
 			{
-				continue;
+			//	continue;
 			}
 
 			// Load attachment type
@@ -468,11 +467,6 @@ class PublicationsModelAttachments extends JObject
 			$attachments = $pub->_attachments;
 			$attachments = isset($attachments['elements'][$element->id])
 						 ? $attachments['elements'][$element->id] : NULL;
-
-			if ($attachments)
-			{
-				$i++;
-			}
 
 			// Add to bundle
 			$type->addToBundle(
@@ -501,14 +495,13 @@ class PublicationsModelAttachments extends JObject
 			return false;
 		}
 
-		$i = 0;
 		$contents = NULL;
 		foreach ($elements as $element)
 		{
 			// File?
 			if ($element->manifest->params->type != 'file')
 			{
-				continue;
+			//	continue;
 			}
 
 			// Load attachment type
@@ -522,11 +515,6 @@ class PublicationsModelAttachments extends JObject
 			$attachments = $pub->_attachments;
 			$attachments = isset($attachments['elements'][$element->id])
 						 ? $attachments['elements'][$element->id] : NULL;
-
-			if ($attachments)
-			{
-				$i++;
-			}
 
 			// Add to bundle
 			$contents .= $type->drawPackageList(

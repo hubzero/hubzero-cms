@@ -76,7 +76,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 
 		// Fancy launcher?
 		$configs->fancyLauncher = isset($typeParams->fancyLauncher)
-			? $typeParams->fancyLauncher : 1;
+			? $typeParams->fancyLauncher : 0;
 
 		return $configs;
 	}
@@ -110,7 +110,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 
 				$html .= '<li>';
 				$html .= $authorized == 'administrator' ? '[' . $this->_name . '] ' : '';
-				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blanl">' . $title . '</a>';
+				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blank">' . $title . '</a>';
 				$html .='</li>';
 			}
 		}
@@ -214,25 +214,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		{
 			// Make new attachment record
 			$pAttach = new PublicationAttachment( $this->_parent->_db );
-			$pAttach->publication_id 		= $att->publication_id;
-			$pAttach->title 				= $att->title;
-			$pAttach->role 					= $att->role;
-			$pAttach->element_id 			= $elementId;
-			$pAttach->path 					= $att->path;
-			$pAttach->vcs_hash 				= $att->vcs_hash;
-			$pAttach->vcs_revision 			= $att->vcs_revision;
-			$pAttach->object_id 			= $att->object_id;
-			$pAttach->object_name 			= $att->object_name;
-			$pAttach->object_instance 		= $att->object_instance;
-			$pAttach->object_revision 		= $att->object_revision;
-			$pAttach->type 					= $att->type;
-			$pAttach->params 				= $att->params;
-			$pAttach->attribs 				= $att->attribs;
-			$pAttach->ordering 				= $att->ordering;
-			$pAttach->publication_version_id= $newVersion->id;
-			$pAttach->created_by 			= $juser->get('id');
-			$pAttach->created 				= JFactory::getDate()->toSql();
-			if (!$pAttach->store())
+			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, $juser->get('id') ))
 			{
 				continue;
 			}
@@ -246,9 +228,6 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	 */
 	public function serve( $element, $elementId, $pub, $blockParams, $itemId = 0)
 	{
-		// Incoming
-		$forceDownload = JRequest::getInt( 'download', 0 );		// Force downlaod action?
-
 		// Get configs
 		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
 
@@ -448,7 +427,6 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	/**
 	 * Remove attachment
 	 *
-	 *
 	 * @return     boolean or error
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -481,8 +459,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	}
 
 	/**
-	 * Update file attachment properties
-	 *
+	 * Update attachment properties
 	 *
 	 * @return     boolean or error
 	 */
@@ -634,5 +611,27 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 			$view->setError( $this->getError() );
 		}
 		return $view->loadTemplate();
+	}
+
+	/**
+	 * Add to zip bundle
+	 *
+	 * @return  boolean
+	 */
+	public function addToBundle( $zip, $attachments, $element, $elementId,
+		$pub, $blockParams, &$readme, $bundleDir)
+	{
+		return false;
+	}
+
+	/**
+	 * Draw list
+	 *
+	 * @return  boolean
+	 */
+	public function drawPackageList( $attachments, $element, $elementId,
+		$pub, $blockParams, $authorized)
+	{
+		return false;
 	}
 }

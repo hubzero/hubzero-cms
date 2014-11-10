@@ -692,6 +692,39 @@ class PublicationAttachment extends JTable
 	}
 
 	/**
+	 * Copy entry
+	 *
+	 * @return     object or FALSE
+	 */
+	public function copyAttachment( $att = NULL, $vid = NULL, $elementId = NULL, $uid = 0 )
+	{
+		$pAttach = new PublicationAttachment( $this->_db );
+		$pAttach->publication_id 		= $att->publication_id;
+		$pAttach->title 				= $att->title;
+		$pAttach->role 					= $att->role;
+		$pAttach->element_id 			= $elementId;
+		$pAttach->path 					= $att->path;
+		$pAttach->vcs_hash 				= $att->vcs_hash;
+		$pAttach->vcs_revision 			= $att->vcs_revision;
+		$pAttach->object_id 			= $att->object_id;
+		$pAttach->object_name 			= $att->object_name;
+		$pAttach->object_instance 		= $att->object_instance;
+		$pAttach->object_revision 		= $att->object_revision;
+		$pAttach->type 					= $att->type;
+		$pAttach->params 				= $att->params;
+		$pAttach->attribs 				= $att->attribs;
+		$pAttach->ordering 				= $att->ordering;
+		$pAttach->publication_version_id= $vid;
+		$pAttach->created_by 			= $uid;
+		$pAttach->created 				= JFactory::getDate()->toSql();
+		if ($pAttach->store())
+		{
+			return $this->bind($pAttach);
+		}
+		return false;
+	}
+
+	/**
 	 * Load entry by version and path
 	 *
 	 * @param      integer 	$vid		pub version id

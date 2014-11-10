@@ -521,14 +521,14 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		// Get configs
 		$configs = $this->getConfigs($elementparams, $elementId, $pub, $blockParams);
 
-		$juser = JFactory::getUser();
-
 		// Get configs for new version
 		$typeParams = $elementparams->typeParams;
 		$directory  = isset($typeParams->directory) && $typeParams->directory
 					? $typeParams->directory : $newVersion->secret;
 
 		$newConfigs = new stdClass;
+
+		$juser = JFactory::getUser();
 
 		// Directory path within pub folder
 		$newConfigs->dirPath = $configs->subdir
@@ -557,25 +557,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		{
 			// Make new attachment record
 			$pAttach = new PublicationAttachment( $this->_parent->_db );
-			$pAttach->publication_id 		= $att->publication_id;
-			$pAttach->title 				= $att->title;
-			$pAttach->role 					= $att->role;
-			$pAttach->element_id 			= $elementId;
-			$pAttach->path 					= $att->path;
-			$pAttach->vcs_hash 				= $att->vcs_hash;
-			$pAttach->vcs_revision 			= $att->vcs_revision;
-			$pAttach->object_id 			= $att->object_id;
-			$pAttach->object_name 			= $att->object_name;
-			$pAttach->object_instance 		= $att->object_instance;
-			$pAttach->object_revision 		= $att->object_revision;
-			$pAttach->type 					= $att->type;
-			$pAttach->params 				= $att->params;
-			$pAttach->attribs 				= $att->attribs;
-			$pAttach->ordering 				= $att->ordering;
-			$pAttach->publication_version_id= $newVersion->id;
-			$pAttach->created_by 			= $juser->get('id');
-			$pAttach->created 				= JFactory::getDate()->toSql();
-			if (!$pAttach->store())
+			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, $juser->get('id') ))
 			{
 				continue;
 			}
