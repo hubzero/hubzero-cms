@@ -90,7 +90,7 @@ if (!$this->sub)
 					<a href="<?php echo JRoute::_($this->page->link('addcomment') . '#commentform'); ?>" class="icon-add add btn"><?php echo JText::_('COM_WIKI_ADD_COMMENT'); ?></a>
 				</p>
 			<?php } ?>
-			<h3 id="commentlist-title"><?php echo JText::_('COMMENTS'); ?></h3>
+			<h3 id="commentlist-title"><?php echo JText::_('COM_WIKI_COMMENTS'); ?></h3>
 
 			<?php
 			$filters = array('version' => '');

@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('All Pages'),
+	JText::_('COM_WIKI_SPECIAL_ALL_PAGES'),
 	$this->page->link()
 );
 

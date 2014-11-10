@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $pathway = JFactory::getApplication()->getPathway();
 $pathway->addItem(
-	JText::_('Long Pages'),
+	JText::_('COM_WIKI_SPECIAL_LONG_PAGES'),
 	'index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Special:LongPages'
 );
 

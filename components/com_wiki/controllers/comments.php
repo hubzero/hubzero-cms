@@ -39,8 +39,8 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 	/**
 	 * Constructor
 	 *
-	 * @param      array $config Optional configurations
-	 * @return     void
+	 * @param   array  $config  Optional configurations
+	 * @return  void
 	 */
 	public function __construct($config=array())
 	{
@@ -75,7 +75,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -111,12 +111,10 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 	/**
 	 * Display comments for a wiki page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		$this->view->page      = $this->page;
 		$this->view->config    = $this->config;
 		$this->view->base_path = $this->_base_path;
@@ -151,7 +149,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_name)),
+				JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -160,7 +158,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 			$this->page->link()
 		);
 		$pathway->addItem(
-			JText::_(strtoupper($this->_task)),
+			JText::_(strtoupper($this->_option . '_' . $this->_task)),
 			$this->page->link('comments')
 		);
 
@@ -168,21 +166,20 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$this->view->juser = $this->juser;
 		$this->view->message = $this->_message;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Create a comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function newTask()
 	{
@@ -192,7 +189,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 	/**
 	 * Edit a comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -232,7 +229,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 	/**
 	 * Save a comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -283,7 +280,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 	/**
 	 * Remove a comment
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
