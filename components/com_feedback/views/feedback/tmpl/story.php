@@ -32,12 +32,11 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $this->css()
-     ->js();
+     ->js()
+     ->js('jquery.ui.widget.js', 'system')
+     ->js('jquery.iframe-transport.js', 'system')
+     ->js('jquery.fileuploader.js', 'system');
 
-$document = JFactory::getDocument();
-$document->addScript('media/system/js/jquery.ui.widget.js');
-$document->addScript('media/system/js/jquery.iframe-transport.js');
-$this->js('jquery.fileuploader.js', 'system');
 $jconfig = JFactory::getConfig();
 ?>
 <header id="content-header">
@@ -53,71 +52,73 @@ $jconfig = JFactory::getConfig();
 </header><!-- / #content-header -->
 
 <section class="main section">
-<?php if ($this->getError()) { ?>
-	<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_FIELDS'); ?></p>
-<?php } ?>
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=story'); ?>" method="post" id="hubForm" enctype="multipart/form-data">
-		<div class="explaination">
-			<p><?php echo JText::_('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
-		</div>
-		<fieldset>
-			<legend><?php echo JText::_('COM_FEEDBACK_STORY_YOUR_STORY'); ?></legend>
-
-			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-			<input type="hidden" name="task" value="sendstory" />
-
-			<input type="hidden" name="fields[user_id]" value="<?php echo $this->row->user_id; ?>" id="userid" />
-			<input type="hidden" name="fields[useremail]" value="<?php echo $this->row->useremail; ?>" id="useremail" />
-
-			<label for="field-fullname">
-				<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('COM_FEEDBACK_REQUIRED'); ?></span>
-				<input type="text" name="fields[fullname]" id="field-fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" />
-			</label>
-
-			<label for="field-org">
-				<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?>
-				<input type="text" name="fields[org]" id="field-org" value="<?php echo $this->escape($this->row->org); ?>" size="30" />
-			</label>
+	<div class="section-inner">
+		<?php if ($this->getError()) { ?>
+			<p class="error"><?php echo JText::_('COM_FEEDBACK_ERROR_MISSING_FIELDS'); ?></p>
+		<?php } ?>
+		<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=story'); ?>" method="post" id="hubForm" enctype="multipart/form-data">
+			<div class="explaination">
+				<p><?php echo JText::_('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
+			</div>
 			<fieldset>
-				<legend>
-					<?php echo JText::_('COM_FEEDBACK_PICTURES'); ?>
-				</legend>
-				<div class="field-wrap">
-					<div id="ajax-uploader" data-instructions="<?php echo JText::_('COM_FEEDBACK_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo JRoute::_('/feedback/success_story?controller=feedback&task=uploadimage&option=com_feedback&no_html=1'); ?>">
-						<noscript>
-							<label for="upload">
-								<input type="file" name="files[]" id="field-files" multiple="multiple"/>
-							</label>
-						</noscript>
+				<legend><?php echo JText::_('COM_FEEDBACK_STORY_YOUR_STORY'); ?></legend>
+
+				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+				<input type="hidden" name="task" value="sendstory" />
+
+				<input type="hidden" name="fields[user_id]" value="<?php echo $this->row->user_id; ?>" id="userid" />
+				<input type="hidden" name="fields[useremail]" value="<?php echo $this->row->useremail; ?>" id="useremail" />
+
+				<label for="field-fullname">
+					<?php echo JText::_('COM_FEEDBACK_NAME'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
+					<input type="text" name="fields[fullname]" id="field-fullname" value="<?php echo $this->escape($this->row->fullname); ?>" size="30" />
+				</label>
+
+				<label for="field-org">
+					<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?>
+					<input type="text" name="fields[org]" id="field-org" value="<?php echo $this->escape($this->row->org); ?>" size="30" />
+				</label>
+				<fieldset>
+					<legend>
+						<?php echo JText::_('COM_FEEDBACK_PICTURES'); ?>
+					</legend>
+					<div class="field-wrap">
+						<div id="ajax-uploader" data-instructions="<?php echo JText::_('COM_FEEDBACK_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . 'controller=' . $this->controller . '&task=uploadimage&no_html=1'); ?>">
+							<noscript>
+								<label for="upload">
+									<input type="file" name="files[]" id="field-files" multiple="multiple" />
+								</label>
+							</noscript>
+						</div>
 					</div>
-				</div>
-			</fieldset>
-			<label<?php echo ($this->getError() && $this->row->quote == '') ? ' class="fieldWithErrors"' : ''; ?> for="field-quote">
-				<?php echo JText::_('COM_FEEDBACK_STORY_DESCRIPTION'); ?>
-				<textarea name="fields[quote]" id="field-quote" rows="40" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>
-			</label>
-			<?php if ($this->getError() && $this->row->quote == '') { ?>
-				<p class="error"><?php echo JText::_('COM_FEEDBACK_STORY_MISSING_DESCRIPTION'); ?></p>
-			<?php } ?>
+				</fieldset>
+				<label<?php echo ($this->getError() && $this->row->quote == '') ? ' class="fieldWithErrors"' : ''; ?> for="field-quote">
+					<?php echo JText::_('COM_FEEDBACK_STORY_DESCRIPTION'); ?>
+					<textarea name="fields[quote]" id="field-quote" rows="40" cols="15"><?php echo $this->escape($this->row->quote); ?></textarea>
+				</label>
+				<?php if ($this->getError() && $this->row->quote == '') { ?>
+					<p class="error"><?php echo JText::_('COM_FEEDBACK_STORY_MISSING_DESCRIPTION'); ?></p>
+				<?php } ?>
 
-			<label for="field-publish_ok">
-				<input type="checkbox" name="fields[publish_ok]" id="field-publish_ok" value="1" class="option"<?php if ($this->row->publish_ok) { echo ' checked="checked"'; } ?> />
-				<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_QUOTE', $jconfig->getValue('config.sitename'), $jconfig->getValue('config.sitename')); ?>
-			</label>
+				<label for="field-publish_ok">
+					<input type="checkbox" name="fields[publish_ok]" id="field-publish_ok" value="1" class="option"<?php if ($this->row->publish_ok) { echo ' checked="checked"'; } ?> />
+					<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_QUOTE', $jconfig->getValue('config.sitename'), $jconfig->getValue('config.sitename')); ?>
+				</label>
 
-			<label for="field-contact_ok">
-				<input type="checkbox" name="fields[contact_ok]" id="field-contact_ok" value="1" class="option"<?php if ($this->row->contact_ok) { echo ' checked="checked"'; } ?> />
-				<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', $jconfig->getValue('config.sitename')); ?>
-			</label>
-		</fieldset><div class="clear"></div>
+				<label for="field-contact_ok">
+					<input type="checkbox" name="fields[contact_ok]" id="field-contact_ok" value="1" class="option"<?php if ($this->row->contact_ok) { echo ' checked="checked"'; } ?> />
+					<?php echo JText::sprintf('COM_FEEDBACK_STORY_AUTHORIZE_CONTACT', $jconfig->getValue('config.sitename')); ?>
+				</label>
+			</fieldset><div class="clear"></div>
 
-		<p class="submit">
-			<input class="btn btn-success" type="submit" name="submit" value="<?php echo JText::_('COM_FEEDBACK_SUBMIT'); ?>" />
+			<p class="submit">
+				<input class="btn btn-success" type="submit" name="submit" value="<?php echo JText::_('COM_FEEDBACK_SUBMIT'); ?>" />
 
-			<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-				<?php echo JText::_('COM_FEEDBACK_CANCEL'); ?>
-			</a>
-		</p>
-	</form>
+				<a class="btn btn-secondary" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+					<?php echo JText::_('COM_FEEDBACK_CANCEL'); ?>
+				</a>
+			</p>
+		</form>
+	</div>
 </section><!-- / .main section -->

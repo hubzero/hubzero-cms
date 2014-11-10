@@ -39,25 +39,25 @@ jimport('joomla.application.module.helper');
 	<h2><?php echo $this->title; ?></h2>
 
 	<div id="content-header-extra">
-		<ul>
-			<li>
-				<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
-					<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
-				</a>
-			</li>
-		</ul>
+		<p>
+			<a class="icon-main main-page btn" href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>">
+				<?php echo JText::_('COM_FEEDBACK_MAIN'); ?>
+			</a>
+		</p>
 	</div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
 <section class="main section">
-	<h3><?php echo JText::_('COM_FEEDBACK_HAVE_AN_OPINION'); ?> <span><?php echo JText::_('COM_FEEDBACK_CAST_A_VOTE'); ?></span></h3>
+	<div class="section-inner">
+		<h3><?php echo JText::_('COM_FEEDBACK_HAVE_AN_OPINION'); ?> <span><?php echo JText::_('COM_FEEDBACK_CAST_A_VOTE'); ?></span></h3>
 
-<?php if (count(JModuleHelper::isEnabled('mod_poll')) > 0) { ?>
-	<div class="introtext">
-		<?php echo JModuleHelper::renderModule(JModuleHelper::getModule('mod_poll')); ?>
+		<?php if (count(JModuleHelper::isEnabled('mod_poll')) > 0) { ?>
+			<div class="introtext">
+				<?php echo JModuleHelper::renderModule(JModuleHelper::getModule('mod_poll')); ?>
+			</div>
+		<?php } else { ?>
+			<p class="warning"><?php echo JText::_('COM_FEEDBACK_NO_ACTIVE_POLLS'); ?></p>
+		<?php } ?>
 	</div>
-<?php } else { ?>
-	<p class="warning"><?php echo JText::_('COM_FEEDBACK_NO_ACTIVE_POLLS'); ?></p>
-<?php } ?>
 </section><!-- / .main section -->
 

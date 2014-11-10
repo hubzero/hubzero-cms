@@ -39,7 +39,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	/**
 	 * Determine task and execute it
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -51,7 +51,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	/**
 	 * Set the pathway (breadcrumbs)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _buildPathway()
 	{
@@ -76,7 +76,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	/**
 	 * Set the page title
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	protected function _buildTitle()
 	{
@@ -85,14 +85,14 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		{
 			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
+
+		JFactory::getDocument()->setTitle($this->_title);
 	}
 
 	/**
 	 * Display the main page
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -125,7 +125,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	/**
 	 * Show a list of quotes
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function quotesTask()
 	{
@@ -137,7 +137,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$sq = new FeedbackQuotes($this->database);
 		$this->view->quotes = $sq->find('list', $filters);
 
-		$this->view->path = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
+		$this->view->path    = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
 		$this->view->quoteId = JRequest::getInt('quoteid', null);
 
 		$this->view->display();
@@ -146,7 +146,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for sending a success story
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function storyTask($row=null)
 	{
@@ -211,7 +211,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	/**
 	 * Show the latest poll
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function pollTask()
 	{
@@ -238,7 +238,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	/**
 	 * Save a success story and show a thank you message
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function sendstoryTask()
 	{
@@ -253,7 +253,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$fields = JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$dir = \Hubzero\Utility\String::pad($fields['user_id']);
+		$dir  = \Hubzero\Utility\String::pad($fields['user_id']);
 		$path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
 
 		// Initiate class and bind posted items to database fields
@@ -305,7 +305,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		{
 			if (!JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 			}
 		}
 
@@ -373,7 +373,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	/**
 	 * Show a form for submitting suggestions
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function suggestionsTask()
 	{
@@ -383,23 +383,24 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Takes recieved files and saves them to a temporary directory specific directory then returns a json object with those file names.
+	 * Takes recieved files and saves them to a temporary directory specific
+	 * directory then returns a json object with those file names.
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadImageTask()
 	{
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			echo json_encode(array('error' => JText::_('Must be logged in.')));
+			echo json_encode(array('error' => JText::_('COM_FEEDBACK_STORY_LOGIN')));
 			return;
 		}
 
-		//max upload size
+		// Max upload size
 		$sizeLimit = $this->config->get('maxAllowed', 40000000);
 
-		// get the file
+		// Get the file
 		if (isset($_GET['qqfile']))
 		{
 			$stream = true;
@@ -414,11 +415,11 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			echo json_encode(array('error' => JText::_('File not found')));
+			echo json_encode(array('error' => JText::_('COM_FEEDBACK_ERROR_FILE_NOT_FOUND')));
 			return;
 		}
 
-		//define upload directory and make sure its writable
+		// Define upload directory and make sure its writable
 		$path = 'tmp/feedback/' . $this->juser->get('id');
 
 		if (!is_dir($path))
@@ -426,31 +427,31 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				echo json_encode(array('error' => JText::_('Error uploading. Unable to create path.')));
+				echo json_encode(array('error' => JText::_('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
 			}
 		}
 
 		if (!is_writable($path))
 		{
-			echo json_encode(array('error' => JText::_('Server error. Upload directory isn\'t writable.')));
+			echo json_encode(array('error' => JText::_('COM_FEEDBACK_ERROR_UPLOAD_PATH_IS_NOT_WRITABLE')));
 			return;
 		}
 
-		//check to make sure we have a file and its not too big
+		// Check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => JText::_('File is empty')));
+			echo json_encode(array('error' => JText::_('COM_FEEDBACK_ERROR_EMPTY_FILE')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
 			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('File is too large. Max file upload size is %s', $max)));
+			echo json_encode(array('error' => JText::sprintf('COM_FEEDBACK_ERROR_FILE_TOO_LARGE', $max)));
 			return;
 		}
 
-		// don't overwrite previous files that were uploaded
+		// Don't overwrite previous files that were uploaded
 		$pathinfo = pathinfo($file);
 		$filename = $pathinfo['filename'];
 
@@ -470,13 +471,13 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 		if ($stream)
 		{
-			//read the php input stream to upload file
+			// Read the php input stream to upload file
 			$input = fopen("php://input", "r");
 			$temp = tmpfile();
 			$realSize = stream_copy_to_stream($input, $temp);
 			fclose($input);
 
-			//move from temp location to target location which is user folder
+			// Move from temp location to target location which is user folder
 			$target = fopen($file , "w");
 			fseek($temp, 0, SEEK_SET);
 			stream_copy_to_stream($temp, $target);
@@ -493,13 +494,13 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			{
 				echo json_encode(array(
 					'success' => false,
-					'error'  => JText::_('ATTACHMENT: File rejected because the anti-virus scan failed.')
+					'error'  => JText::_('COM_FEEDBACK_ERROR_FILE_FAILED_VIRUS_SCAN')
 				));
 				return;
 			}
 		}
 
-		//echo result
+		// Output result
 		echo json_encode(array(
 			'success'    => true,
 			'file'       => $filename . '.' . $ext,

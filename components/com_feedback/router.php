@@ -32,12 +32,10 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'FeedbackBuildRoute'
+ * Turn querystring parameters into an SEF route
  *
- * Long description (if any) ...
- *
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param   array  &$query  List of key/value pairs
+ * @return  array  Segments to build a SEF URL from
  */
 function FeedbackBuildRoute(&$query)
 {
@@ -53,12 +51,10 @@ function FeedbackBuildRoute(&$query)
 }
 
 /**
- * Short description for 'FeedbackParseRoute'
+ * Parse a SEF route
  *
- * Long description (if any) ...
- *
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * @param   array  $segments  Segments to build a SEF URL from
+ * @return  array  List of key/value pairs
  */
 function FeedbackParseRoute($segments)
 {
