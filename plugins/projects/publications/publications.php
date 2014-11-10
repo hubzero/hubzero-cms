@@ -2451,6 +2451,7 @@ class plgProjectsPublications extends JPlugin
 	public function makeNewVersion($pub, $oldVersion, $newVersion)
 	{
 		// Initialize helpers
+		$pub->_helpers = new stdClass();
 		$pub->_helpers->pubHelper 		= new PublicationHelper($this->_database, $pub->version_id, $pub->id);
 		$pub->_helpers->htmlHelper	  	= new PublicationsHtml();
 		$pub->_helpers->projectsHelper 	= new ProjectsHelper( $this->_database );
@@ -2466,7 +2467,6 @@ class plgProjectsPublications extends JPlugin
 
 		// Transfer data
 		$pub->_curationModel->transfer($pub, $oldVersion, $newVersion);
-		return 'test';
 
 		// Set response message
 		$this->set('_msg', JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NEW_VERSION_STARTED'));
@@ -2584,6 +2584,7 @@ class plgProjectsPublications extends JPlugin
 				$new->reviewed 		= NULL;
 				$new->reviewed_by   = 0;
 				$new->curation		= NULL; // Curation manifest needs to reflect any new requirements
+				$new->params		= NULL; // Accept fresh configs
 
 				if ($new->store())
 				{
