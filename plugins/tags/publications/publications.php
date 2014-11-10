@@ -83,8 +83,8 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 		$rt = new PublicationCategory($database);
 		foreach ($rt->getCategories() as $category)
 		{
-			$response['children'][$category->alias] = array(
-				'name'     => $category->alias,
+			$response['children'][$category->url_alias] = array(
+				'name'     => $category->url_alias,
 				'title'    => $category->name,
 				'total'    => 0,
 				'results'  => null,
@@ -121,7 +121,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 
 		foreach ($response['children'] as $k => $t)
 		{
-			$filters['type'] = $t['id'];
+			$filters['category'] = $t['id'];
 
 			// Execute a count query for each area/category
 			$database->setQuery($this->_buildPluginQuery($filters));
@@ -140,14 +140,14 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 			// we'll need to modify the query a bit
 			if (isset($response['children'][$areas]))
 			{
-				$filters['type'] = $response['children'][$areas]['id'];
+				$filters['category'] = $response['children'][$areas]['id'];
 
 				$database->setQuery($this->_buildPluginQuery($filters));
 				$response['children'][$areas]['results'] = $database->loadObjectList();
 			}
 			else
 			{
-				unset($filters['type']);
+				unset($filters['category']);
 
 				$database->setQuery($this->_buildPluginQuery($filters));
 				$response['results'] = $database->loadObjectList();
@@ -164,13 +164,13 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 			// we'll need to modify the query a bit
 			if (isset($response['children'][$areas]))
 			{
-				$filters['type'] = $response['children'][$areas]['id'];
+				$filters['category'] = $response['children'][$areas]['id'];
 
 				$response['children'][$key]['sql'] = $this->_buildPluginQuery($filters);
 			}
 			else
 			{
-				unset($filters['type']);
+				unset($filters['category']);
 				$response['sql'] = $this->_buildPluginQuery($filters);
 			}
 		}
