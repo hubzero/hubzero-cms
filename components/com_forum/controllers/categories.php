@@ -211,7 +211,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 
 		$this->view->section = $this->model->section(0);
 		$this->view->section->set('scope', $this->model->get('scope'));
-		$this->view->section->set('title', JText::_('Posts'));
+		$this->view->section->set('title', JText::_('COM_FORUM_POSTS'));
 		$this->view->section->set('alias', str_replace(' ', '-', $this->view->section->get('title')));
 		$this->view->section->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->section->get('title'))));
 
@@ -226,7 +226,7 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 
 		$this->view->category = $this->view->section->category(0);
 		$this->view->category->set('scope', $this->model->get('scope'));
-		$this->view->category->set('title', JText::_('Search'));
+		$this->view->category->set('title', JText::_('COM_FORUM_SEARCH'));
 		$this->view->category->set('alias', str_replace(' ', '-', $this->view->category->get('title')));
 		$this->view->category->set('alias', preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($this->view->category->get('title'))));
 

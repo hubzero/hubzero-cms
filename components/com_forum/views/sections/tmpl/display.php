@@ -101,7 +101,7 @@ $juser = JFactory::getUser();
 
 							<?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->get('id')) { ?>
 								<?php if ($this->config->get('access-delete-section')) { ?>
-									<a class="icon-delete delete" data-txt-confirm="<?php echo JText::_('Are you sure you wish to delete this item?'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" title="<?php echo JText::_('COM_FORUM_DELETE'); ?>">
+									<a class="icon-delete delete" data-txt-confirm="<?php echo JText::_('COM_FORUM_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_('index.php?option='.$this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" title="<?php echo JText::_('COM_FORUM_DELETE'); ?>">
 										<span><?php echo JText::_('COM_FORUM_DELETE'); ?></span>
 									</a>
 								<?php } ?>
