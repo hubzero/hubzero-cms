@@ -561,3 +561,11 @@
 	.changelog-time, .changelog-text {
 		padding: 0.5em 1em;
 	}
+	.public-page, .public-page:hover {
+		border: none;
+		margin-left: 1em;
+	}
+	.public-page:before {
+		padding-top: 0.3em;
+		position: absolute;
+	}

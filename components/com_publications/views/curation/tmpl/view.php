@@ -38,8 +38,6 @@ $pubHelper 		= $this->pub->_helpers->pubHelper;
 $htmlHelper 	= $this->pub->_helpers->htmlHelper;
 $projectsHelper = $this->pub->_helpers->projectsHelper;
 
-$pubThumb  = $pubHelper->getThumb($this->pub->id, $this->pub->version_id, $this->config, false, $this->pub->cat_url);
-
 $now = JFactory::getDate()->toSql();
 
 // Get creator name
@@ -77,7 +75,7 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 		</h3>
 	</div>
 	<p class="instruct">
-		<span class="pubimage"><img src="<?php echo $pubThumb; ?>" alt="" /></span>
+		<span class="pubimage"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_id) . '/Image:thumb'; ?>" alt="" /></span>
 		<strong class="block"><?php echo $this->pub->reviewed ? JText::_('COM_PUBLICATIONS_CURATION_RESUBMITTED') : JText::_('COM_PUBLICATIONS_CURATION_SUBMITTED'); echo ' ' . JHTML::_('date', $this->pub->submitted, 'M d, Y') . $by; ?></strong>
 	<?php echo JText::_('COM_PUBLICATIONS_CURATION_REVIEW_AND_ACT'); ?>
 	<span class="legend">

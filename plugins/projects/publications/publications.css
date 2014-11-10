@@ -1723,6 +1723,10 @@
 		width: auto;
 		white-space: nowrap;
 	}
+	.public-page:hover:before,
+	.manageit:hover:before {
+		color: black;
+	}
 
 /* Form within publication edit screens
 --------------------------------------------- */

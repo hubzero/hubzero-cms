@@ -105,9 +105,10 @@ $this->css()
 							<?php } ?>
 						</td>
 						<td><span class="status-icon <?php echo $class; ?>"></span> <span class="status-label"><?php echo $row->state == 5 ? JText::_('COM_PUBLICATIONS_CURATION_STATUS_PENDING') : JText::_('COM_PUBLICATIONS_CURATION_PENDING_AUTHOR_CHANGES'); ?></span></td>
-						<td><?php if ($row->state == 5) { ?><a href="<?php echo JRoute::_($route . '&id=' . $row->id); ?>" class="btn icon-next btn-secondary btn-primary"><?php echo JText::_('COM_PUBLICATIONS_CURATION_REVIEW'); ?></a><?php } ?>
+						<td><?php if ($row->state == 5) { ?><a href="<?php echo JRoute::_($route . '&id=' . $row->id); ?>" class="btn icon-next btn-secondary btn-primary" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_OVER_REVIEW'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_REVIEW'); ?></a><?php } ?>
 							<?php if ($row->state == 7) { echo $reviewed; } ?>
-							<a href="<?php echo JRoute::_($route . '&id=' . $row->id . '&task=history') . '?ajax=1&no_html=1'; ?>" class="btn btn-secondary icon-history fancybox"><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY'); ?></a>
+							<a href="<?php echo JRoute::_($route . '&id=' . $row->id . '&task=history') . '?ajax=1&no_html=1'; ?>" class="btn btn-secondary icon-history fancybox" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_OVER_HISTORY'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY'); ?></a>
+							<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_VIEW_PUB_PAGE'); ?>">&nbsp;</a>
 						</td>
 					</tr>
 					<?php
