@@ -198,7 +198,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 			else
 			{
 				// No sub-categories - this should be easy
-				$this->view->cats[$i]['title'] = JText::_($t);
+				$this->view->cats[$i]['title'] = $t;
 				$this->view->cats[$i]['total'] = (!is_array($this->view->totals[$i])) ? $this->view->totals[$i] : 0;
 			}
 
