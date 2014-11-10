@@ -197,7 +197,7 @@ $this->css()
 
 					<?php if ($this->article->commentsOpen()) { ?>
 						<label for="commentcontent">
-							<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('COM_KB_REQUIRED'); ?></span>
+							<?php echo JText::_('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 						<?php
 						if (!$this->juser->get('guest')) {
 							echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', array('class' => 'minimal'));
