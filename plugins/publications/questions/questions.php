@@ -31,26 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Publications Plugin class for questions
  */
-class plgPublicationsQuestions extends JPlugin
+class plgPublicationsQuestions extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -62,11 +53,14 @@ class plgPublicationsQuestions extends JPlugin
 	 */
 	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
 	{
-		if ($publication->_category->_params->get('plg_questions') && $extended) {
+		if ($publication->_category->_params->get('plg_questions') && $extended)
+		{
 			$areas = array(
 				'questions' => JText::_('PLG_PUBLICATION_QUESTIONS')
 			);
-		} else {
+		}
+		else
+		{
 			$areas = array();
 		}
 		return $areas;
@@ -96,19 +90,11 @@ class plgPublicationsQuestions extends JPlugin
 			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
 			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_questions'))
-				{
-					$rtrn == 'metadata';
-				}
-				else
-				{
-					return $arr;
-				}
+				$rtrn = 'metadata';
 			}
 		}
 
-		// Only applicable to latest published version
-		if (!$extended)
+		if (!$publication->_category->_params->get('plg_questions') || !$extended)
 		{
 			return $arr;
 		}
@@ -187,8 +173,6 @@ class plgPublicationsQuestions extends JPlugin
 	 */
 	private function _browse()
 	{
-		\Hubzero\Document\Assets::addPluginStylesheet('publications', $this->_name);
-
 		// Instantiate a view
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -247,8 +231,6 @@ class plgPublicationsQuestions extends JPlugin
 
 		$lang = JFactory::getLanguage();
 		$lang->load('com_answers');
-
-		\Hubzero\Document\Assets::addPluginStylesheet('publications', $this->_name);
 
 		$view = new \Hubzero\Plugin\View(
 			array(
