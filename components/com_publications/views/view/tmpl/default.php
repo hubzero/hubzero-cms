@@ -26,6 +26,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $this->css()
 	 ->css('jquery.fancybox.css', 'system')
      ->js();
+$authorized = ($this->restricted && !$this->authorized) ? false : true;
 
 $html = '';
 
@@ -148,7 +149,7 @@ else
 				$this->publication,
 				$element,
 				$elements,
-				$this->authorized
+				$authorized
 			);
 
 			$html .= $launcher;

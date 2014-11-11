@@ -306,6 +306,7 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 			// Handler will draw list
 			return $handler->drawList($attachments, $configs, $pub, $authorized);
 		}
+		$notice = $authorized ? ' (' . JText::_('unavailable')  . ')' : '';
 
 		// Draw bundles
 		if ($configs->multiZip && $attachments && count($attachments) > 1)
@@ -325,14 +326,14 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 
 			// Serve as bundle
 			$html .= '<li>';
-			$html .= is_file($fpath)
+			$html .= is_file($fpath) && $authorized
 					? '<a href="' . $url . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
-					: $icon . ' ' . $title . ' (unavailable)';
+					: $icon . ' ' . $title . $notice;
 			$html .= '<span class="extras">';
 			$html .= $ext ? '('.strtoupper($ext) : '';
 			$html .= $size ? ' | '.$size : '';
 			$html .= $ext ? ')' : '';
-			if ($authorized == 'administrator')
+			if ($authorized === 'administrator')
 			{
 				$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
 				. $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">'
@@ -364,14 +365,14 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 				$title 		= $title ? $title : basename($attach->path);
 				$pop		= JText::_('Download') . ' ' . $title;
 				$html .= '<li>';
-				$html .= is_file($fpath)
+				$html .= is_file($fpath) && $authorized
 						? '<a href="' . $itemUrl . '" title="' . $pop . '">' . $icon . ' ' . $title . '</a>'
-						: $icon . ' ' . $title . ' (unavailable)';
+						: $icon . ' ' . $title . $notice;
 				$html .= '<span class="extras">';
 				$html .= $ext ? '('.strtoupper($ext) : '';
 				$html .= $size ? ' | '.$size : '';
 				$html .= $ext ? ')' : '';
-				if ($authorized == 'administrator')
+				if ($authorized === 'administrator')
 				{
 					$html .= ' <span class="edititem"><a href="index.php?option=com_publications&controller=items&task=editcontent&id='
 					. $pub->id . '&el=' . $elementId . '&v=' . $pub->version_number . '">'
