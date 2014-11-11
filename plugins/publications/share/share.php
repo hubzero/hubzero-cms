@@ -31,35 +31,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
-
 /**
  * Short description for 'plgPublicationsShare'
  *
  * Long description (if any) ...
  */
-class plgPublicationsShare extends JPlugin
+class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 {
-
 	/**
-	 * Short description for 'plgPublicationsShare'
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown &$subject Parameter description (if any) ...
-	 * @param      unknown $config Parameter description (if any) ...
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function plgPublicationsShare(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		// load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'share' );
-		$this->_params = new JParameter( $this->_plugin->params );
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Short description for 'onPublicationsAreas'
@@ -111,17 +95,11 @@ class plgPublicationsShare extends JPlugin
 
 		// Incoming action
 		$sharewith = JRequest::getVar('sharewith', '');
-		if ($sharewith && $sharewith != 'email') {
+		if ($sharewith && $sharewith != 'email')
+		{
 			$this->share($sharewith, $url, $publication, $version);
 			return;
 		}
-
-		// Add stylesheet and js
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'publications' . DS
-			. 'share' . DS . 'assets' . DS . 'css' . DS . 'share.css');
-		$document->addScript('plugins' . DS . 'publications' . DS
-			. 'share' . DS . 'assets' . DS . 'js' . DS . 'share.js');
 
 		// Build the HTML meant for the "about" tab's metadata overview
 		if ($rtrn == 'all' || $rtrn == 'metadata')
@@ -139,7 +117,7 @@ class plgPublicationsShare extends JPlugin
 			$view->option 		= $option;
 			$view->publication 	= $publication;
 			$view->version 		= $version;
-			$view->_params 		= $this->_params;
+			$view->_params 		= $this->params;
 			$view->url 			= $url;
 			if ($this->getError())
 			{
@@ -181,7 +159,7 @@ class plgPublicationsShare extends JPlugin
 				break;
 
 			case 'google':
-				$link = 'http://www.google.com/bookmarks/mark?op=edit&bkmk='.$url
+				$link = 'https://plus.google.com/share?url='.$url
 					.'&title='.$jconfig->getValue('config.sitename').': '
 					.JText::_('PLG_PUBLICATION_SHARE_RESOURCE').' '.$publication->id
 					.' - '.stripslashes($publication->title).'&labels='.$jconfig->getValue('config.sitename');

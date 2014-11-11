@@ -31,6 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css('assets/css/share.css')
+     ->js('assets/js/share.js');
+
 $jconfig = JFactory::getConfig();
 
 $i = 1;
