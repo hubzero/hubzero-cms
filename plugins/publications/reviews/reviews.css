@@ -41,3 +41,6 @@
 	div.submitarea input {
 		width: auto !important;
 	}
+	.section-options {
+		text-align: right;
+	}

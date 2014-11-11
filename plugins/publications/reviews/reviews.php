@@ -36,6 +36,12 @@ defined('_JEXEC') or die('Restricted access');
  */
 class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 {
+	/**
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
+	 *
+	 * @var    boolean
+	 */
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Constructor
@@ -48,15 +54,8 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	{
 		parent::__construct($subject, $config);
 
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'reviews' );
-		$this->_params = new JParameter( $this->_plugin->params );
-
-		$this->loadLanguage();
-
 		$this->infolink = '/kb/points/';
-		$upconfig = JComponentHelper::getParams( 'com_members' );
-		$this->banking = $upconfig->get('bankAccounts');
+		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
 	}
 
 	/**
@@ -69,15 +68,12 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 	 */
 	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
 	{
+		$areas = array();
 		if ($publication->_category->_params->get('plg_reviews') && $extended)
 		{
 			$areas = array(
 				'reviews' => JText::_('PLG_PUBLICATION_REVIEWS')
 			);
-		}
-		else
-		{
-			$areas = array();
 		}
 
 		return $areas;
@@ -128,19 +124,10 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
 			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_reviews'))
-				{
-					$rtrn == 'metadata';
-				}
-				else
-				{
-					return $arr;
-				}
+				$rtrn == 'metadata';
 			}
 		}
-
-		// Only applicable to latest published version
-		if (!$extended)
+		if (!$publication->_category->_params->get('plg_reviews') || !$extended)
 		{
 			return $arr;
 		}
