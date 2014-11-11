@@ -317,7 +317,11 @@ class ProjectsHelper extends JObject {
 		$from['multipart'] = md5(date('U'));
 
 		// Get message body
-		$eview 					= new JView( array('name'=>'emails', 'layout'=> $layout . '_plain' ) );
+		$eview = new \Hubzero\Component\View(array(
+			'name'   => 'emails',
+			'layout' => $layout . '_plain'
+		));
+
 		$eview->option 			= $option;
 		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
 		$eview->project 		= $project;

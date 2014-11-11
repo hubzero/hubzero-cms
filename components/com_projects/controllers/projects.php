@@ -348,12 +348,12 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			}
 			else
 			{
-				$view 		 = new JView( array('name' => 'error') );
-				$view->error = JText::_('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
-				$view->title = $reviewer == 'sponsored'
+				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
+				$this->view->error  = JText::_('COM_PROJECTS_REVIEWER_RESTRICTED_ACCESS');
+				$this->view->title = $reviewer == 'sponsored'
 							 ? JText::_('COM_PROJECTS_REVIEWER_SPS')
 							 : JText::_('COM_PROJECTS_REVIEWER_HIPAA');
-				$view->display();
+				$this->view->display();
 				return;
 			}
 		}
@@ -513,10 +513,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 						!$cgroup->is_member_of('managers',$this->juser->get('id')))
 					{
 						$this->_buildPathway(null);
-						$view 			= new JView( array('name'=>'error', 'layout' => 'restricted') );
-						$view->error  	= JText::_('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP');
-						$view->title 	= $this->title;
-						$view->display();
+						$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+						$this->view->error  = JText::_('COM_PROJECTS_SETUP_ERROR_NOT_FROM_CREATOR_GROUP');
+						$this->view->title = $this->title;
+						$this->view->display();
 						return;
 					}
 				}
@@ -826,14 +826,14 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$action  		=  JRequest::getVar( 'action', '' );
 		$sync 			=  0;
 
-		// Stop ajax action if user got logged put
+		// Stop ajax action if user got logged out
 		if ($ajax && $this->juser->get('guest'))
 		{
 			// Project on hold
-			$view 		  = new JView( array('name' => 'error') );
-			$view->error  = JText::_('COM_PROJECTS_PROJECT_RELOGIN');
-			$view->title  = JText::_('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
-			$view->display();
+			$this->view 		= new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
+			$this->view->error  = JText::_('COM_PROJECTS_PROJECT_RELOGIN');
+			$this->view->title  = JText::_('COM_PROJECTS_PROJECT_RELOGIN_REQUIRED');
+			$this->view->display();
 			return;
 		}
 
@@ -884,7 +884,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				// Options for project creator
 				if ($project->created_by_user == $this->juser->get('id'))
 				{
-					$view 			= new JView( array('name'=>'changeowner') );
+					$view 			= new \Hubzero\Component\View( array('name'=>'changeowner', 'layout' =>'default') );
 					$view->project 	= $project;
 					$view->task 	= $this->_task;
 					$view->option 	= $this->_option;
@@ -897,7 +897,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				else
 				{
 					// Project on hold
-					$view 		 = new JView( array('name' => 'error') );
+					$view 		 = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
 					$view->error = JText::_('COM_PROJECTS_PROJECT_OWNER_DELETED');
 					$view->title = JText::_('COM_PROJECTS_PROJECT_OWNERSHIP_ERROR');
 					$view->display();
@@ -1036,7 +1036,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				else
 				{
 					// Different email
-					$view 		  = new JView( array('name' => 'error') );
+					$view 		  = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
 					$view->error  = JText::_('COM_PROJECTS_INVITE_DIFFERENT_EMAIL');
 					$view->title  = $this->title;
 					$view->display();
@@ -1063,7 +1063,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				else
 				{
 					// Need to be project creator
-					$view 			= new JView( array('name' => 'error') );
+					$view 			= new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'default') );
 					$view->error  	= JText::_('COM_PROJECTS_ERROR_MUST_BE_PROJECT_CREATOR');
 					$view->title 	= $this->title;
 					$view->display();
@@ -3357,7 +3357,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$subject_pending = JText::_('COM_PROJECTS_EMAIL_SUBJECT_INVITE') . ' ' . $project->alias;
 
 		// Message body
-		$eview 					= new JView( array('name'=>'emails', 'layout'=> 'invite_plain' ) );
+		$eview = new \Hubzero\Component\View( array('name'=>'emails', 'layout' =>'invite_plain') );
 		$eview->option 			= $this->_option;
 		$eview->hubShortName 	= $jconfig->getValue('config.sitename');
 		$eview->project 		= $project;
