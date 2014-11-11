@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -31,16 +31,16 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects'
 	. DS . 'helpers' . DS . 'html.php');
 
 /**
- * Handles a link attachment
+ * Handles a Datastore Lite attachment
  */
-class PublicationsModelAttachmentLink extends PublicationsModelAttachment
+class PublicationsModelAttachmentData extends PublicationsModelAttachment
 {
 	/**
 	* Attachment type name
 	*
 	* @var		string
 	*/
-	protected	$_name = 'link';
+	protected	$_name = 'data';
 
 	/**
 	 * Get configs
@@ -106,7 +106,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 				$itemUrl 	= $url . '&a=' . $attach->id;
 				$title 		= $attach->title ? $attach->title : $configs->title;
 				$title 		= $title ? $title : $attach->path;
-				$pop		= JText::_('View link') . ' ' . $title;
+				$pop		= JText::_('Browse data') . ' ' . $title;
 
 				$html .= '<li>';
 				$html .= $authorized == 'administrator' ? '[' . $this->_name . '] ' : '';
@@ -427,6 +427,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	/**
 	 * Remove attachment
 	 *
+	 *
 	 * @return     boolean or error
 	 */
 	public function removeAttachment($row, $element, $elementId, $pub, $blockParams)
@@ -544,7 +545,7 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		{
 			if ($counter && !empty($accept))
 			{
-				$error = JText::_('Error: unacceptable URL. URL should start with: ');
+				$error = JText::_('Error: unacceptable attachment path');
 				foreach ($params->allowed_ext as $ext)
 				{
 					$error .= ' ' . $ext .',';
@@ -588,32 +589,6 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 	}
 
 	/**
-	 * Draw attachment
-	 *
-	 * @return  HTML string
-	 */
-	public function drawAttachment($data, $params)
-	{
-		// Output HTML
-		$view = new \Hubzero\Plugin\View(
-			array(
-				'folder'	=>'projects',
-				'element'	=>'publications',
-				'name'		=>'attachments',
-				'layout'	=> $this->_name
-			)
-		);
-		$view->data 	= $data;
-		$view->params   = $params;
-
-		if ($this->getError())
-		{
-			$view->setError( $this->getError() );
-		}
-		return $view->loadTemplate();
-	}
-
-	/**
 	 * Build Data object
 	 *
 	 * @return  HTML string
@@ -629,6 +604,32 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 		$data->viewer	= $view->viewer;
 		$data->version	= $view->pub->version_number;
 		return $data;
+	}
+
+	/**
+	 * Draw attachment
+	 *
+	 * @return  HTML string
+	 */
+	public function drawAttachment($data, $params)
+	{
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'publications',
+				'name'		=>'attachments',
+				'layout'	=> 'link'
+			)
+		);
+		$view->data 	= $data;
+		$view->params   = $params;
+
+		if ($this->getError())
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();
 	}
 
 	/**

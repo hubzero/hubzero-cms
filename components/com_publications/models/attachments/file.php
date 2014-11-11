@@ -1473,6 +1473,75 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 	}
 
 	/**
+	 * Build Data object
+	 *
+	 * @return  HTML string
+	 */
+	public function buildDataObject($att, $view, $i = 1)
+	{
+		// Get configs
+		$configs  = $this->getConfigs($view->manifest->params, $view->elementId, $view->pub, $view->master->params);
+
+		$data 		= new stdClass;
+		$data->path = str_replace($configs->path . DS, '', $att->path);
+		$parts 		= explode('.', $data->path);
+		$data->ext 	= strtolower(end($parts));
+
+		// Customize title
+		$defaultTitle	= $view->manifest->params->title
+						? str_replace('{pubtitle}', $view->pub->title,
+						$view->manifest->params->title) : NULL;
+		$defaultTitle	= $view->manifest->params->title
+						? str_replace('{pubversion}', $view->pub->version_label,
+						$defaultTitle) : NULL;
+		// Allow rename?
+		$allowRename = isset($view->manifest->params->typeParams->allowRename)
+					 ? $view->manifest->params->typeParams->allowRename
+					 : false;
+
+		// Set default title
+		$incNum				= $view->manifest->params->max > 1 ? ' (' . $i . ')' : '';
+		$dTitle				= $defaultTitle ? $defaultTitle . $incNum : basename($data->path);
+		$data->title 		= $att->title && $att->title != $defaultTitle
+							? $att->title : $dTitle;
+
+		$data->ordering 	= $i;
+		$data->editUrl  	= $view->editUrl;
+		$data->id			= $att->id;
+		$data->props		= $view->master->block . '-' . $view->master->sequence . '-' . $view->elementId;
+		;
+		$data->pid			= $view->pub->id;
+		$data->vid			= $view->pub->version_id;
+		$data->version		= $view->pub->version_number;
+		$data->projectPath  = $configs->path;
+		$data->git		    = $view->git;
+		$data->pubPath	    = $configs->pubPath;
+		$data->md5		    = $att->content_hash;
+		$data->viewer	    = $view->viewer;
+		$data->allowRename  = $allowRename;
+		$data->downloadUrl  = JRoute::_('index.php?option=com_publications&task=serve&id='
+							. $view->pub->id . '&v=' . $view->pub->version_number )
+							. '?el=' . $view->elementId . a . 'a=' . $att->id . a . 'download=1';
+
+		// Is attachment (image) also publication thumbnail
+		$params = new JParameter( $att->params );
+		$data->pubThumb = $params->get('pubThumb', NULL);
+		$data->suffix = $params->get('suffix', NULL);
+
+		$data->hash	  	= $att->vcs_hash;
+		$data->gone 	= is_file($configs->path . DS . $att->path) ? false : true;
+
+		// Get file size
+		$data->size		= $att->vcs_hash
+						? $view->git->gitLog($configs->path, $att->path, $att->vcs_hash, 'size') : NULL;
+		$data->gitStatus= $data->gone
+					? JText::_('PLG_PROJECTS_PUBLICATIONS_MISSING_FILE')
+					: NULL;
+
+		return $data;
+	}
+
+	/**
 	 * Draw attachment
 	 *
 	 * @return  HTML string

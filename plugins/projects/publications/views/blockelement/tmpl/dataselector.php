@@ -26,8 +26,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $error 			= $this->status->getError();
-
-$required 		= (isset($this->manifest->params->required) && $this->manifest->params->required) ? true : false;
+$required 		= (isset($this->manifest->params->required)
+				&& $this->manifest->params->required) ? true : false;
 $complete 		= isset($this->status->status) && $this->status->status == 1 ? 1 : 0;
 $elName   		= 'element' . $this->elementId;
 
@@ -51,43 +51,88 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText)))
 
 $section  = $this->master->block;
 $sequence = $this->master->sequence;
-
 $props = $this->master->block . '-' . $this->master->sequence . '-' . $this->elementId;
 
 $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
-$selectUrl   = $prov
-		? JRoute::_( $route) . '?active=links' . a . 'action=select' . a . 'p=' . $props
-			. a . 'vid=' . $this->pub->version_id
-		: JRoute::_( $route . '&active=links&action=select') .'/?p=' . $props . '&pid='
-			. $this->pub->id . '&vid=' . $this->pub->version_id;
-
-$editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
-$nextEl  = 'element' . ($this->elementId + 1);
-
-$modelAttach = new PublicationsModelAttachmentLink();
+$this->editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publications&pid=' . $this->pub->id);
 
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'author');
 
+// Get attachment model
+$modelAttach = new PublicationsModelAttachments($this->database);
+
+// Get handler model
+$modelHandler = new PublicationsModelHandlers($this->database);
+
+// Is there handler choice?
+$handlers 	  = $this->manifest->params->typeParams->handlers;
+
+// Is there handler assigned?
+$handler 	  = $this->manifest->params->typeParams->handler;
+$useHandles   = ($handlers || $handler ) ? true : false;
+
+if ($handler)
+{
+	// Load handler
+	$handler = $modelHandler->ini($handler);
+}
+
+$multiZip 		= (isset($this->manifest->params->typeParams->multiZip)
+				&& $this->manifest->params->typeParams->multiZip == 0)
+				? false : true;
+
 ?>
 
-<div id="<?php echo $elName; ?>" class="blockelement fileselector<?php echo $required ? ' el-required' : ' el-optional';
+<div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
 echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?> ">
 	<!-- Showing status only -->
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
 		<div class="block-aside"></div>
 		<div class="block-subject">
 			<span class="checker">&nbsp;</span>
-			<h5 class="element-title"><?php echo $this->manifest->label; ?>
+			<h5 class="element-title"><?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; } ?>
 			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&el=' . $this->elementId . '#' . $elName; ?>"><?php echo JText::_('[edit]'); ?></a></span>
 			</h5>
 		</div>
 	</div>
 	<!-- Active editing -->
 	<div class="element_editing<?php if (!$active) { echo ' hidden'; } ?>">
+		<?php if (count($this->attachments) > 0 && $useHandles)  { ?>
+		<div class="handler-aside">
+			<?php
+				// Present handler options
+				echo $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments);
+			?>
+		</div>
+		<?php } else { ?>
 		<div class="block-aside">
+			<?php if (count($this->attachments) > 1 && $multiZip && $this->type == 'file')
+			{  // Default handler for multiple files - zip together
+
+				$versionParams 	= new JParameter( $this->pub->params );
+				$bundleName		= $versionParams->get($elName . 'bundlename', 'bundle');
+
+				$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+							. $this->pub->id . '&v=' . $this->pub->version_number )
+							. '?el=' . $this->elementId . '&download=1';
+
+				?>
+				<div class="handler-controls block">
+					<div class="handler-type multizip">
+						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MULTI_DOWNLOAD'); ?> <a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ZIP_BUNDLE'); ?>.</a>
+						</p>
+						<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
+							<input type="text" name="elt[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
+							<span class="save-param-status"></span>
+							<span class="save-param-wrap"><a href="<?php echo $prov ? JRoute::_( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : JRoute::_( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
+						</label>
+					</div>
+				</div>
+			<?php }
+			?>
 			<div class="block-info">
 			<?php
 				$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
@@ -107,43 +152,52 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 				}
 
 				echo $about;
-			?>
-			</div>
-		</div>
+		?>
+		</div></div>
+		<?php } ?>
 
 		<div class="block-subject">
 			<span class="checker">&nbsp;</span>
 			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo JText::_('Optional'); ?></span><?php } ?>
-				<?php echo $this->manifest->label; ?>
+				<?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; }?>
 			</label>
 			<?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
 			<div class="list-wrapper">
 			<ul class="itemlist">
 		<?php if (count($this->attachments) > 0) {
-			$i= 1; ?>
+			$i = 1; ?>
 				<?php foreach ($this->attachments as $att) {
 
-					$i++;
+					// Collect data
+					$data = $modelAttach->buildDataObject(
+						$this->type,
+						$att,
+						$this,
+						$i
+					);
+					if ($data)
+					{
+						$i++;
 
-					$data 			= new stdClass;
-					$data->row 		= $att;
-					$data->ordering = $i;
-					$data->editUrl  = $editUrl;
-					$data->id		= $att->id;
-					$data->props	= $props;
-					$data->viewer	= 'edit';
-					$data->version	= $this->pub->version_number;
-
-					// Draw attachment
-					echo $modelAttach->drawAttachment($data, $this->manifest->params->typeParams);
+						// Draw attachment
+						echo $modelAttach->drawAttachment(
+							$att->type,
+							$data,
+							$this->manifest->params->typeParams,
+							$handler
+						);
+					}
 				}
 			}  ?>
 				</ul>
-				<?php if ($max > count($this->attachments)) { ?>
-				<div class="item-new">
-					<span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox nox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ADD_URL'); ?></a></span>
-				</div>
-				<?php } ?>
+				<?php if ($max > count($this->attachments)) {
+					// Draw link to select more items
+					$this->view('_select', 'attachments')
+					     ->set('pub', $this->pub)
+					     ->set('type', $this->type)
+					     ->set('props', $props)
+					     ->display();
+				} ?>
 			</div>
 			<?php if ($active && !$last && $this->collapse) { ?>
 				<p class="element-move">

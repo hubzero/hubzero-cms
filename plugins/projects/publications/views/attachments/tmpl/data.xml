@@ -19,14 +19,14 @@
 -->
 
 <metadata>
-	<layout title="Standard Project Publications File Selector Layout">
+	<layout title="Link Publication Attachment Layout">
 		<message>
-			<![CDATA[STANDARD PROJECT PUBLICATIONS FILE SELECTOR LAYOUT DESC]]>
+			<![CDATA[LINK PUBLICATION ATTACHMENT LAYOUT DESC]]>
 		</message>
 	</layout>
 	<state>
-		<name>Standard Project Publications File Selector Layout</name>
-		<description>STANDARD PROJECT PUBLICATIONS FILE SELECTOR LAYOUT DESC</description>
+		<name>Link Publication Attachment Layout</name>
+		<description>LINK PUBLICATION ATTACHMENT LAYOUT DESC</description>
 		<params>
 		</params>
 	</state>

@@ -271,6 +271,48 @@ class PublicationsModelAttachments extends JObject
 	}
 
 	/**
+	 * Draws attachment
+	 *
+	 * @return  object
+	 */
+	public function drawAttachment( $name, $data = NULL, $typeParams = NULL, $handler = NULL )
+	{
+		// Load attachment type
+		$type = $this->loadAttach($name);
+
+		if ($type === false)
+		{
+			return false;
+		}
+		if (!$data)
+		{
+			return false;
+		}
+
+		// Draw
+		return $type->drawAttachment($data, $typeParams, $handler);
+	}
+
+	/**
+	 * Draws attachment
+	 *
+	 * @return  object
+	 */
+	public function buildDataObject( $name, $attachment, $view, $ordering = 1 )
+	{
+		// Load attachment type
+		$type = $this->loadAttach($name);
+
+		if ($type === false)
+		{
+			return false;
+		}
+
+		// Draw
+		return $type->buildDataObject($attachment, $view, $ordering);
+	}
+
+	/**
 	 * Update attachment record
 	 *
 	 * @return object

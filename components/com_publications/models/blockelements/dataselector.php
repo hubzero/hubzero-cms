@@ -38,6 +38,20 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 	protected	$_name = 'dataselector';
 
 	/**
+	* Git helper
+	*
+	* @var		string
+	*/
+	protected	$_git = NULL;
+
+	/**
+	* Project repo path
+	*
+	* @var		string
+	*/
+	protected	$path = NULL;
+
+	/**
 	 * Render
 	 *
 	 * @return  object
@@ -49,7 +63,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 
 		// Get project path
 		$config 	= JComponentHelper::getParams( 'com_projects' );
-		$path 		= ProjectsHelper::getProjectPath($pub->_project->alias,
+		$this->path = ProjectsHelper::getProjectPath($pub->_project->alias,
 					  $config->get('webpath'), $config->get('offroot'));
 
 		$showElement 	= $master->props['showElement'];
@@ -57,6 +71,17 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 
 		// Incoming
 		$activeElement  = JRequest::getInt( 'el', $showElement );
+
+		// Git helper
+		if (!$this->_git)
+		{
+			include_once( JPATH_ROOT . DS . 'components' . DS
+				. 'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
+			$this->_git = new ProjectsGitHelper(
+				$config->get('gitpath', '/opt/local/bin/git'),
+				0,
+				$config->get('offroot', 0) ? '' : JPATH_ROOT);
+		}
 
 		// Do we need to collapse inactive elements?
 		$collapse = isset($master->params->collapse_elements) && $master->params->collapse_elements ? 1 : 0;
@@ -66,7 +91,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 			case 'edit':
 			default:
 				$html = $this->drawSelector( $elementid, $manifest, $pub,
-						$status->elements->$elementid, $path, $activeElement,
+						$status->elements->$elementid, $activeElement,
 						$collapse, $total, $master, $order
 				);
 
@@ -75,7 +100,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 			case 'freeze':
 			case 'curator':
 				$html = $this->drawItem( $elementid, $manifest, $pub,
-						$status->elements->$elementid, $path, $master, $viewname
+						$status->elements->$elementid, $master, $viewname
 				);
 			break;
 		}
@@ -89,15 +114,14 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 	 * @return  object
 	 */
 	public function drawItem( $elementId, $manifest, $pub = NULL,
-		$status = NULL, $path = NULL, $master = NULL, $viewname = 'freeze')
+		$status = NULL, $master = NULL, $viewname = 'freeze')
 	{
-		$layout = $manifest->params->type . 'selector';
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=>'projects',
 				'element'	=>'publications',
 				'name'		=>'freeze',
-				'layout'	=>$layout
+				'layout'	=>'dataselector'
 			)
 		);
 
@@ -118,7 +142,8 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$attachments = $attModel->getElementAttachments($elementId, $attachments,
 					   $manifest->params->type, $manifest->params->role);
 
-		$view->path			 = $path;
+		$view->type 		 = $manifest->params->type;
+		$view->path			 = $this->path;
 		$view->pub 			 = $pub;
 		$view->manifest		 = $manifest;
 		$view->status		 = $status;
@@ -127,6 +152,8 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$view->database		 = $this->_parent->_db;
 		$view->master		 = $master;
 		$view->name			 = $viewname;
+		$view->viewer		 = 'freeze';
+		$view->git			 = $this->_git;
 
 		return $view->loadTemplate();
 	}
@@ -137,7 +164,7 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 	 * @return  object
 	 */
 	public function drawSelector( $elementId, $manifest, $pub = NULL, $status = NULL,
-		$path, $active = 0, $collapse = 0, $total = 0,
+		$active = 0, $collapse = 0, $total = 0,
 		$master = NULL, $order = 0)
 	{
 		// Get attachment type model
@@ -157,18 +184,17 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$attachments = $attModel->getElementAttachments($elementId, $attachments,
 					   $manifest->params->type, $manifest->params->role);
 
-		$layout = $manifest->params->type . 'selector';
-
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'	=> 'projects',
 				'element'	=> 'publications',
 				'name'		=> 'blockelement',
-				'layout'	=>  $layout
+				'layout'	=> 'dataselector'
 			)
 		);
 
-		$view->path			 = $path;
+		$view->type 		 = $manifest->params->type;
+		$view->path			 = $this->path;
 		$view->pub 			 = $pub;
 		$view->manifest		 = $manifest;
 		$view->status		 = $status;
@@ -180,6 +206,8 @@ class PublicationsModelBlockElementDataselector extends PublicationsModelBlockEl
 		$view->master 		 = $master;
 		$view->database		 = $this->_parent->_db;
 		$view->order		 = $order;
+		$view->viewer		 = 'edit';
+		$view->git			 = $this->_git;
 
 		return $view->loadTemplate();
 	}
