@@ -407,4 +407,111 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0)
 		);
 	}
+
+	/**
+	 * Quote a value for a CSV file
+	 *
+	 * @param   string $val
+	 * @return  string
+	 */
+	public static function quoteCsv($val)
+	{
+		if (!isset($val))
+		{
+			return '';
+		}
+
+		if (strpos($val, "\n") !== false || strpos($val, ',') !== false)
+		{
+			return '"' . str_replace(array('\\', '"'), array('\\\\', '""'), $val) . '"';
+		}
+
+		return $val;
+	}
+
+	/**
+	 * Quote a CSV row
+	 *
+	 * @param   array  $vals 
+	 * @return  string
+	 */
+	public function quoteCsvRow($vals)
+	{
+		return implode(',', array_map(array($this, 'quoteCsv'), $vals)) . "\n";
+	}
+
+	/**
+	 * Export codes as a CSV file
+	 *
+	 * @return  void
+	 */
+	public function exportTask()
+	{
+		$fields  = array('id', 'code', 'created', 'expires', 'redeemed', 'redeemed by');
+		$rows    = array();
+		$section = JRequest::getInt('section', 0);
+
+		if (!$section)
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0),
+				JText::_('No section specified'),
+				'warning'
+			);
+			return;
+		}
+
+		// Incoming
+		$ids = JRequest::getVar('id', array());
+		$ids = (is_array($ids) ? $ids : array($ids));
+
+		// Do we have any IDs?
+		if (empty($ids))
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0),
+				JText::_('No codes selected'),
+				'warning'
+			);
+			return;
+		}
+
+		// Output header
+		@ob_end_clean();
+
+		header("Pragma: public");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+		header("Expires: 0");
+
+		header("Content-Transfer-Encoding: binary");
+		header('Content-type: text/comma-separated-values');
+		header('Content-disposition: attachment; filename="section_' . $section . '_codes.csv"');
+
+		echo $this->quoteCsvRow($fields);
+
+		foreach ($ids as $id)
+		{
+			// Load the code
+			$model = new CoursesModelSectionCode($id);
+
+			// Ensure we found a record
+			if (!$model->exists())
+			{
+				continue;
+			}
+
+			$row = array(
+				$model->get('id'),
+				$model->get('code'),
+				$model->get('created'),
+				$model->get('expires'),
+				$model->get('redeemed'),
+				$model->get('redeemed_by'),
+			);
+
+			echo $this->quoteCsvRow($row);
+		}
+
+		exit;
+	}
 }

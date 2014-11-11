@@ -39,6 +39,8 @@ if ($canDo->get('core.create'))
 	$bar->appendButton('Popup', 'refresh', 'COM_COURSES_GENERATE', 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section=' . $this->section->get('id') . '&task=options&tmpl=component', 500, 200);
 
 	JToolBarHelper::spacer();
+	JToolBarHelper::custom('export', 'export', 'export', 'COM_COURSES_EXPORT_CODES', false);
+	JToolBarHelper::spacer();
 	JToolBarHelper::addNew();
 }
 if ($canDo->get('core.edit'))
