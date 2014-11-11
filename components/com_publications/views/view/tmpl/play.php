@@ -73,24 +73,19 @@ if (is_file(JPATH_ROOT.$firstattach->url))
 	if ($firstattach->type == 'video' || $firstattach->ext == 'swf')
 	{
 		// Serve video
-		$view = new JView( array('name'=>'view','layout'=>'video') );
-		$view->option = $this->option;
-		$view->config = $this->config;
-		$view->database = $this->database;
-		$view->publication = $this->publication;
-		$view->helper = $this->helper;
-		$view->attachments = $this->attachments;
-		$view->firstattach = $firstattach;
-		$view->path = $this->path;
-		$view->version = $this->version;
-		$view->height = $height;
-		$view->width = $width;
-
-		// Output HTML
-		if ($this->getError()) {
-			$view->setError( $this->getError() );
-		}
-		$view->display();
+		$this->view('video')
+		     ->set('option', $this->option)
+		     ->set('publication', $this->publication)
+		     ->set('config', $this->config)
+		     ->set('firstattach', $firstattach)
+		     ->set('attachments', $this->attachments)
+		     ->set('helper', $this->helper)
+		     ->set('database', $this->database)
+		     ->set('version', $this->version)
+		     ->set('path', $this->path)
+		     ->set('height', $height)
+		     ->set('width', $width)
+		     ->display();
 	}
 	else if (in_array(strtolower($firstattach->ext), $images)) {
 		$html .= '<img ' . $attributes . ' src="' . $firstattach->url . '" alt="Image" />'."\n";
