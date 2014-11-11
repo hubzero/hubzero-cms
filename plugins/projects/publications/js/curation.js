@@ -588,7 +588,7 @@ HUB.ProjectPublicationsDraft = {
 					{
 						HUB.ProjectPublicationsDraft.timer = setTimeout(function(v,r,e) {
 						   return function() { HUB.ProjectPublicationsDraft.checkElementCompleteness(v,r,e) }
-						   } ($(textarea).val(), required, $(item)), HUB.ProjectPublicationsDraft.doneTypingInterval);
+						   } ($(textarea).val().trim(), required, $(item)), HUB.ProjectPublicationsDraft.doneTypingInterval);
 					});
 					$(textarea).on('keydown', function(e)
 					{
@@ -607,6 +607,10 @@ HUB.ProjectPublicationsDraft = {
 						var timer = setInterval(function()
 						{
 							 var val = CKEDITOR.instances[editorId].getData();
+							 val = val.replace(/&nbsp;/g,'');
+							 val = val.replace(/<p><\/p>/g,'');
+							 val = val.trim();
+
 							 HUB.ProjectPublicationsDraft.checkElementCompleteness(val, required, $(item))
 						}, HUB.ProjectPublicationsDraft.doneTypingInterval);
 					}
