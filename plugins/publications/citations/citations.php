@@ -31,33 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Publications Plugin class for citations
  */
-class plgPublicationsCitations extends JPlugin
+class plgPublicationsCitations extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'citations' );
-		$this->_params = new JParameter( $this->_plugin->params );
-
-		// Load component configs
-		$this->_config 		= JComponentHelper::getParams('com_publications');
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -107,15 +91,13 @@ class plgPublicationsCitations extends JPlugin
 			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
 			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_citations'))
-				{
-					$rtrn == 'metadata';
-				}
-				else
-				{
-					return $arr;
-				}
+				$rtrn = 'metadata';
 			}
+		}
+
+		if (!$publication->_category->_params->get('plg_citations'))
+		{
+			return $arr;
 		}
 
 		$database = JFactory::getDBO();
@@ -140,6 +122,7 @@ class plgPublicationsCitations extends JPlugin
 		// Are we returning HTML?
 		if ($rtrn == 'all' || $rtrn == 'html')
 		{
+			$config = JComponentHelper::getParams( $option );
 			// Instantiate a view
 			$view = new \Hubzero\Plugin\View(
 				array(
@@ -153,7 +136,7 @@ class plgPublicationsCitations extends JPlugin
 			$view->option 		= $option;
 			$view->publication 	= $publication;
 			$view->citations 	= $citations;
-			$view->format 		= $this->_config->get('citation_format', 'apa');
+			$view->format 		= $config->get('citation_format', 'apa');
 			if ($this->getError())
 			{
 				$view->setError( $this->getError() );
@@ -166,16 +149,17 @@ class plgPublicationsCitations extends JPlugin
 		// Are we returning metadata?
 		if ($rtrn == 'all' || $rtrn == 'metadata')
 		{
-			if ($publication->alias)
-			{
-				$url = JRoute::_('index.php?option='.$option.'&alias='.$publication->alias.'&active=citations&v=' . $publication->version_number);
-			}
-			else
-			{
-				$url = JRoute::_('index.php?option='.$option.'&id='.$publication->id.'&active=citations&v=' . $publication->version_number);
-			}
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'  => $this->_type,
+					'element' => $this->_name,
+					'name'    => 'metadata'
+				)
+			);
+			$view->url = JRoute::_('index.php?option=' . $option . '&' . ($publication->alias ? 'alias=' . $publication->alias : 'id=' . $publication->id) . '&active=citations&v=' . $publication->version_number);
+			$view->citations = $citations;
 
-			$arr['metadata']  = '<p class="citation"><a href="'.$url.'">'.JText::sprintf('PLG_PUBLICATION_CITATIONS_COUNT',count($citations)).'</a></p>';
+			$arr['metadata'] = $view->loadTemplate();
 		}
 
 		// Return results
