@@ -181,7 +181,7 @@ class plgPublicationsShare extends JPlugin
 				break;
 
 			case 'google':
-				$link = 'http://www.google.com/bookmarks/mark?op=edit&bkmk='.$url
+				$link = 'https://plus.google.com/share?url='.$url
 					.'&title='.$jconfig->getValue('config.sitename').': '
 					.JText::_('PLG_PUBLICATION_SHARE_RESOURCE').' '.$publication->id
 					.' - '.stripslashes($publication->title).'&labels='.$jconfig->getValue('config.sitename');

@@ -182,7 +182,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			break;
 
 			case 'google':
-				$link = 'http://www.google.com/bookmarks/mark?op=edit&bkmk=' . $url . '&title=' . $jconfig->getValue('config.sitename') . ': ' . JText::_('PLG_RESOURCES_SHARE_RESOURCE') . ' ' . $resource->id . ' - ' . stripslashes($resource->title) . '&labels=' . $jconfig->getValue('config.sitename');
+				$link = 'https://plus.google.com/share?url=' . $url . '&title=' . $jconfig->getValue('config.sitename') . ': ' . JText::_('PLG_RESOURCES_SHARE_RESOURCE') . ' ' . $resource->id . ' - ' . stripslashes($resource->title) . '&labels=' . $jconfig->getValue('config.sitename');
 			break;
 
 			case 'digg':
