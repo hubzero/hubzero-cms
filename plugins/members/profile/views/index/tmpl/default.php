@@ -60,7 +60,10 @@ if (isset($this->registration_update))
 }
 
 //incremental registration
-require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental.php';
+require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/awards.php';
+require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/groups.php';
+require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/options.php';
+
 $uid = (int)$this->profile->get('uidNumber');
 $incrOpts = new ModIncrementalRegistrationOptions;
 $isIncrementalEnabled = $incrOpts->isEnabled($uid);

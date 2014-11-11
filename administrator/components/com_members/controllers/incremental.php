@@ -31,6 +31,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/tables/incremental/awards.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/tables/incremental/groups.php';
+require_once JPATH_COMPONENT_ADMINISTRATOR . '/tables/incremental/options.php';
+
 /**
  * Controller class for incremental registration
  */
@@ -39,7 +43,7 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 	/**
 	 * Display settings
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -49,7 +53,7 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 	/**
 	 * Save settings
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -75,15 +79,15 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 				$hours *= 24;
 			}
 
-			$this->database->setQuery('INSERT INTO #__incremental_registration_groups(hours) VALUES (' . $hours . ')');
-			$this->database->execute('INSERT INTO #__incremental_registration_groups(hours) VALUES (' . $hours . ')');
+			$this->database->setQuery('INSERT INTO `#__incremental_registration_groups` (hours) VALUES (' . $hours . ')');
+			$this->database->execute('INSERT INTO `#__incremental_registration_groups` (hours) VALUES (' . $hours . ')');
 			$gid = $this->database->insertid();
 
 			foreach ($_POST['group-cols-' . $idx] as $colKey)
 			{
 				if ($colKey = trim($colKey))
 				{
-					$this->database->setQuery('INSERT INTO #__incremental_registration_group_label_rel(group_id, label_id) VALUES (' . $gid . ', (SELECT id FROM #__incremental_registration_labels WHERE field = ' . $this->database->quote($colKey) . '))');
+					$this->database->setQuery('INSERT INTO `#__incremental_registration_group_label_rel` (group_id, label_id) VALUES (' . $gid . ', (SELECT id FROM `#__incremental_registration_labels` WHERE field = ' . $this->database->quote($colKey) . '))');
 					$this->database->execute();
 				}
 			}
@@ -100,7 +104,7 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 
 			if ($popoverText != $exPopover || $awardPer != $exAward || $testGroup != $exGroup)
 			{
-				$this->database->setQuery('INSERT INTO #__incremental_registration_options(popover_text, award_per, test_group) VALUES (' . $this->database->quote($popoverText) . ', ' . $awardPer . ', ' . $testGroup . ')');
+				$this->database->setQuery('INSERT INTO `#__incremental_registration_options` (popover_text, award_per, test_group) VALUES (' . $this->database->quote($popoverText) . ', ' . $awardPer . ', ' . $testGroup . ')');
 				$this->database->execute();
 			}
 		}
@@ -121,7 +125,7 @@ class MembersControllerIncremental extends \Hubzero\Component\AdminController
 
 			if ($hours)
 			{
-				$this->database->setQuery('INSERT INTO #__incremental_registration_popover_recurrence(idx, hours) VALUES (' . $idx . ', ' . $hours . ')');
+				$this->database->setQuery('INSERT INTO `#__incremental_registration_popover_recurrence` (idx, hours) VALUES (' . $idx . ', ' . $hours . ')');
 				$this->database->execute();
 			}
 		}

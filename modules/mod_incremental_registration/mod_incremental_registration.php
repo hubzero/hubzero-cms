@@ -97,7 +97,9 @@ class ModIncrementalRegistrationController
 
 		$dbh = JFactory::getDBO();
 
-		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental.php';
+		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/awards.php';
+		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/groups.php';
+		require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/options.php';
 
 		$opts = new ModIncrementalRegistrationOptions;
 		if (!$opts->isEnabled($uid))

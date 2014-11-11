@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Member Registration') . ': ' . JText::_('Incremental Options'), 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS_REGISTRATION') . ': ' . JText::_('Incremental Options'), 'user.png');
 JToolBarHelper::save();
 
 $dbh = JFactory::getDBO();
@@ -39,7 +39,6 @@ list($popoverText, $awardPer, $testGroup) = $dbh->loadRow();
 $dbh->setQuery('SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx');
 $recur = $dbh->loadResultArray();
 
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/tables/incremental.php';
 $groups = new ModIncrementalRegistrationGroups;
 $possibleCols = $groups->getPossibleColumns();
 $groupDefs = $groups->getAllGroups();
