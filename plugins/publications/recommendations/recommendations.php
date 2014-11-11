@@ -31,30 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Publications Plugin class for recommendations
  */
-class plgPublicationRecommendations extends JPlugin
+class plgPublicationsRecommendations extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'recommendations' );
-		$this->_params = new JParameter( $this->_plugin->params );
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -90,41 +77,27 @@ class plgPublicationRecommendations extends JPlugin
 		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'publications' . DS . 'recommendations' . DS . 'publication.recommendation.php');
 
 		// Set some filters for returning results
-		$filters = array();
-		$filters['id'] = $publication->id;
-		$filters['threshold'] = $this->_params->get('threshold');
-		$filters['threshold'] = ($filters['threshold']) ? $filters['threshold'] : '0.21';
-		$filters['limit'] = $this->_params->get('display_limit');
-		$filters['limit'] = ($filters['limit']) ? $filters['limit'] : 10;
+		$filters = array(
+			'id'        => $publication->id,
+			'threshold' => $this->params->get('threshold', '0.21'),
+			'limit'     => $this->params->get('display_limit', 10)
+		);
 
 		// Get recommendations
 		$database = JFactory::getDBO();
 		$r = new PublicationRecommendation($database);
 		$results = $r->getResults($filters);
 
+		$view = new \Hubzero\Plugin\View(array(
+			'folder'  => $this->_type,
+			'element' => $this->_name,
+			'name'    => 'browse'
+		));
+
 		// Instantiate a view
 		if ($miniview)
 		{
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'publications',
-					'element'=>'recommendations',
-					'name'=>'browse',
-					'layout'=>'mini'
-				)
-			);
-		}
-		else
-		{
-			\Hubzero\Document\Assets::addPluginScript('resources', 'recommendations');
-
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'=>'publications',
-					'element'=>'recommendations',
-					'name'=>'browse'
-				)
-			);
+			$view->setLayout('mini');
 		}
 
 		// Pass the view some info

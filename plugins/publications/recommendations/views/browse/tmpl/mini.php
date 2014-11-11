@@ -25,10 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-// Add stylesheet
-$document = JFactory::getDocument();
-$document->addStyleSheet('plugins' . DS . 'publications' . DS
-	. 'recommendations' . DS . 'assets' . DS . 'css' . DS . 'recommendations.css');
+$this->css('assets/css/recommendations.css');
 
 ?>
 <div id="recommendations">
