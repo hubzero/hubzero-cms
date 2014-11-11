@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -41,7 +41,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 	/**
 	 * Display all employer types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -50,25 +50,38 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		// Get paging variables
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort_Dir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		$obj = new MembersTableOrganizationType($this->database);
 
@@ -76,7 +89,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		$this->view->total = $obj->find('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $obj->find('list', $this->view->filters);
+		$this->view->rows  = $obj->find('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -87,9 +100,9 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -99,7 +112,7 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 	/**
 	 * Add a new employer type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -109,13 +122,12 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an employer type
 	 *
-	 * @return     void
+	 * @param   mixed  $model  MembersTableOrganizationType
+	 * @return  void
 	 */
 	public function editTask($model=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		if (is_object($model))
 		{
@@ -138,23 +150,34 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
-	 * Short description for 'saveorgtype'
+	 * Save a record and return to edit form
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save a record
+	 *
+	 * @param   boolean  $redirect  Redirect after saving?
+	 * @return  void
+	 */
+	public function saveTask($redirect = true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -184,17 +207,23 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Output messsage and redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('REGISTER_ORGTYPE_SAVED')
-		);
+		if ($redirect)
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_MEMBERS_ORGTYPE_SAVED')
+			);
+			return;
+		}
+
+		$this->editTask($model);
 	}
 
 	/**
 	 * Remove an employer type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -221,14 +250,14 @@ class MembersControllerEmployers extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('REGISTER_ORGTYPE_REMOVED')
+			JText::_('COM_MEMBERS_ORGTYPE_REMOVED')
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{

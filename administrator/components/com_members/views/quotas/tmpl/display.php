@@ -30,11 +30,16 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = MembersHelper::getActions('component');
+
 // Menu
 JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS'), 'user.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::custom('restoreDefault', 'restore', 'restore', 'Default');
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::addNew();
+	JToolBarHelper::editList();
+	JToolBarHelper::custom('restoreDefault', 'restore', 'restore', 'Default');
+}
 
 $this->css('quotas.css');
 ?>
@@ -82,16 +87,16 @@ $this->css('quotas.css');
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-40 fltlft">
-			<label for="filter_search_field"><?php echo JText::_('SEARCH'); ?></label>
+			<label for="filter_search_field"><?php echo JText::_('COM_MEMBERS_SEARCH'); ?></label>
 			<select name="search_field" id="filter_search_field">
 				<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_QUOTA_USERNAME'); ?></option>
 				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_QUOTA_NAME'); ?></option>
 			</select>
 
-			<label for="filter_search"><?php echo JText::_('for'); ?></label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+			<label for="filter_search"><?php echo JText::_('COM_MEMBERS_SEARCH_FOR'); ?></label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_MEMBERS_GO'); ?>" />
 		</div>
 		<div class="col width-60 fltrt">
 			<select name="class_alias" id="filter_class_alias" onchange="document.adminForm.submit( );">
@@ -133,12 +138,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->user_id); ?>
 					</a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->username); ?>
 					</a>
 				</td>
@@ -149,11 +154,11 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo ($row->class_alias) ? $this->escape($row->class_alias) : 'custom'; ?>
 				</td>
 				<td>
-					<div class="usage-calculating">[calculating...]</div>
+					<div class="usage-calculating"><?php echo JText::_('COM_MEMBERS_QUOTA_CALCULATING'); ?></div>
 					<div class="usage-outer">
 						<div class="usage-inner"></div>
 					</div>
-					<div class="usage-unavailable">unavailable</div>
+					<div class="usage-unavailable"><?php echo JText::_('COM_MEMBERS_QUOTA_UNAVAILABLE'); ?></div>
 				</td>
 			</tr>
 <?php

@@ -34,7 +34,7 @@ $canDo = MembersHelper::getActions('component');
 
 $juser =  JFactory::getUser();
 
-JToolBarHelper::title(JText::_('MEMBERS'), 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS'), 'user.png');
 if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences($this->option, '550');
@@ -42,8 +42,8 @@ if ($canDo->get('core.admin'))
 }
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList('confirm', JText::_('Confirm'));
-	JToolBarHelper::unpublishList('unconfirm', JText::_('Unconfirm'));
+	JToolBarHelper::publishList('confirm', JText::_('COM_MEMBERS_CONFIRM'));
+	JToolBarHelper::unpublishList('unconfirm', JText::_('COM_MEMBERS_UNCONFIRM'));
 	JToolBarHelper::spacer();
 }
 if ($canDo->get('core.create'))
@@ -77,31 +77,31 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-40 fltlft">
-			<label for="filter_search_field"><?php echo JText::_('SEARCH'); ?></label>
+			<label for="filter_search_field"><?php echo JText::_('COM_MEMBERS_SEARCH'); ?></label>
 			<select name="search_field" id="filter_search_field">
-				<option value="uidNumber"<?php if ($this->filters['search_field'] == 'uidNumber') { echo ' selected="selected"'; } ?>><?php echo JText::_('ID'); ?></option>
-				<option value="email"<?php if ($this->filters['search_field'] == 'email') { echo ' selected="selected"'; } ?>><?php echo JText::_('EMAIL'); ?></option>
-				<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo JText::_('USERNAME'); ?></option>
-				<option value="surname"<?php if ($this->filters['search_field'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo JText::_('LAST_NAME'); ?></option>
-				<option value="givenName"<?php if ($this->filters['search_field'] == 'givenName') { echo ' selected="selected"'; } ?>><?php echo JText::_('FIRST_NAME'); ?></option>
-				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('FULL_NAME'); ?></option>
+				<option value="uidNumber"<?php if ($this->filters['search_field'] == 'uidNumber') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_ID'); ?></option>
+				<option value="email"<?php if ($this->filters['search_field'] == 'email') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_EMAIL'); ?></option>
+				<option value="username"<?php if ($this->filters['search_field'] == 'username') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_USERNAME'); ?></option>
+				<option value="surname"<?php if ($this->filters['search_field'] == 'surname') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_LAST_NAME'); ?></option>
+				<option value="givenName"<?php if ($this->filters['search_field'] == 'givenName') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_FIRST_NAME'); ?></option>
+				<option value="name"<?php if ($this->filters['search_field'] == 'name') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_FULL_NAME'); ?></option>
 			</select>
 
-			<label for="filter_search"><?php echo JText::_('for'); ?></label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+			<label for="filter_search"><?php echo JText::_('COM_MEMBERS_SEARCH_FOR'); ?></label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 
-			<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_MEMBERS_GO'); ?>" />
 		</div>
 		<div class="col width-60 fltrt">
 			<select name="emailConfirmed" id="filter_emailConfirmed" onchange="document.adminForm.submit( );">
-				<option value="0"<?php if ($this->filters['emailConfirmed'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('- Email confirmed -'); ?></option>
-				<option value="1"<?php if ($this->filters['emailConfirmed'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Confirmed'); ?></option>
-				<option value="-1"<?php if ($this->filters['emailConfirmed'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Unconfirmed'); ?></option>
+				<option value="0"<?php if ($this->filters['emailConfirmed'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></option>
+				<option value="1"<?php if ($this->filters['emailConfirmed'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED'); ?></option>
+				<option value="-1"<?php if ($this->filters['emailConfirmed'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED'); ?></option>
 			</select>
 			<select name="public" id="filter_public" onchange="document.adminForm.submit( );">
-				<option value="-1"<?php if ($this->filters['public'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('- Profile access -'); ?></option>
-				<option value="1"<?php if ($this->filters['public'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('Public'); ?></option>
-				<option value="0"<?php if ($this->filters['public'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('Private'); ?></option>
+				<option value="-1"<?php if ($this->filters['public'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FILTER_PROFILE_ACCESS'); ?></option>
+				<option value="1"<?php if ($this->filters['public'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_PROFILE_ACCESS_PUBLIC'); ?></option>
+				<option value="0"<?php if ($this->filters['public'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FIELD_PROFILE_ACCESS_PRIVATE'); ?></option>
 			</select>
 		</div>
 		<div class="clr"></div>
@@ -111,14 +111,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('ID'), 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Name'), 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Username'), 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Organization'), 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('E-Mail'), 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', JText::_('Registered'), 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', JText::_('# of contributions'), 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('Last Visit'), 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_ID'), 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_NAME'), 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_USERNAME'), 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_ORGANIZATION'), 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_EMAIL'), 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_REGISTERED'), 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_CONTRIBUTIONS'), 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_LAST_VISIT'), 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -155,34 +155,34 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			$row->middleName = implode(' ', $bits);
 		}
 	}
-	$row->surname = (trim($row->surname)) ? trim($row->surname) : JText::_('[undefined]');
-	$row->givenName = (trim($row->givenName)) ? trim($row->givenName) : JText::_('[undefined]');
+	$row->surname   = (trim($row->surname))   ? trim($row->surname)   : JText::_('COM_MEMBERS_UNDEFINED');
+	$row->givenName = (trim($row->givenName)) ? trim($row->givenName) : JText::_('COM_MEMBERS_UNDEFINED');
 
 	switch ($row->emailConfirmed)
 	{
 		case '1':
 			$task = 'unconfirm';
 			$img = 'publish_g.png';
-			$alt = JText::_('Yes');
+			$alt = JText::_('JYES');
 			$state = 'publish';
 			break;
 		case '3':
 			$task = 'unconfirm';
 			$img = 'publish_g.png';
-			$alt = JText::_('Domain Supplied Email');
+			$alt = JText::_('COM_MEMBERS_DOMAIN_SUPPLIED_EMAIL');
 			$state = 'publish';
 			break;
 		default:
 			$task = 'confirm';
 			$img = 'publish_x.png';
-			$alt = JText::_('No');
+			$alt = JText::_('JNO');
 			$state = 'unpublish';
 			break;
 	}
 
 	if (!$row->lastvisitDate || $row->lastvisitDate == "0000-00-00 00:00:00")
 	{
-		$lvisit = '<span class="never" style="color:#bbb;">' . JText::_('never') . '</span>';
+		$lvisit = '<span class="never" style="color:#bbb;">' . JText::_('COM_MEMBERS_NEVER') . '</span>';
 	}
 	else
 	{
@@ -210,7 +210,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->uidNumber; ?>
 				</td>
 				<td>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->uidNumber; ?>" title="<?php echo $this->escape(stripslashes($row->name)); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><span class=&quot;glyph org&quot;><?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : '[organization unknown]'; ?></span><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; ?></span>">
+					<a class="editlinktip hasTip" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->uidNumber); ?>" title="<?php echo $this->escape(stripslashes($row->name)); ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><span class=&quot;glyph org&quot;><?php echo ($row->organization) ? $this->escape(stripslashes($row->organization)) : JText::_('COM_MEMBERS_UNKNOWN'); ?></span><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; ?></span>">
 						<?php echo $this->escape(stripslashes($row->surname)) . ', ' . $this->escape(stripslashes($row->givenName)) . ' ' . $this->escape(stripslashes($row->middleName)); ?>
 					</a>
 				</td>
@@ -223,7 +223,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 				<td>
-					<a class="state <?php echo $state; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->uidNumber; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="Set this to <?php echo $task;?>">
+					<a class="state <?php echo $state; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->uidNumber . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_MEMBERS_SET_TASK', $task); ?>">
 						<span class="text"><?php echo $alt; ?></span>
 					</a>
 				</td>

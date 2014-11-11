@@ -30,11 +30,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$canDo = MembersHelper::getActions('component');
+
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_PASSWORD_BLACKLIST') . ': ' . $text, 'user.png');
-JToolBarHelper::apply();
-JToolBarHelper::save();
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::apply();
+	JToolBarHelper::save();
+	JToolBarHelper::spacer();
+}
 JToolBarHelper::cancel();
 ?>
 
@@ -63,7 +69,7 @@ function submitbutton(pressbutton)
 			<input type="hidden" name="task" value="save" />
 
 			<div class="input-wrap">
-				<label for="field-word"><?php echo JText::_('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>:</label>
+				<label for="field-word"><?php echo JText::_('COM_MEMBERS_PASSWORD_BLACKLIST_WORD'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[word]" id="field-word" value="<?php echo $this->escape(stripslashes($this->row->word)); ?>" />
 			</div>
 		</fieldset>
@@ -79,5 +85,6 @@ function submitbutton(pressbutton)
 		</table>
 	</div>
 	<div class="clr"></div>
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

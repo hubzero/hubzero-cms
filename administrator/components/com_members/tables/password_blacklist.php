@@ -37,28 +37,14 @@ defined('_JEXEC') or die('Restricted access');
 class MembersPasswordBlacklist extends JTable
 {
 	/**
-	 * ID - primary key
-	 *
-	 * @var int(11)
-	 */
-	var $id = null;
-
-	/**
-	 * Word
-	 *
-	 * @var char(32)
-	 */
-	var $word = null;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__password_blacklist', 'id', $db );
+		parent::__construct('#__password_blacklist', 'id', $db);
 	}
 
 	/**
@@ -69,9 +55,10 @@ class MembersPasswordBlacklist extends JTable
 	public function check()
 	{
 		// Make sure they gave a word
-		if (trim($this->word) == '')
+		$this->word = trim($this->word);
+		if ($this->word == '')
 		{
-			$this->setError( JText::_('PASSWORD_BLACKLIST_MUST_HAVE_WORD') );
+			$this->setError(JText::_('PASSWORD_BLACKLIST_MUST_HAVE_WORD'));
 			return false;
 		}
 
@@ -81,8 +68,8 @@ class MembersPasswordBlacklist extends JTable
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string  Database query
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -94,8 +81,8 @@ class MembersPasswordBlacklist extends JTable
 	/**
 	 * Get a count of the number of blacklisted passwords (used mainly for pagination)
 	 *
-	 * @param  array $filters
-	 * @return object Return count of rows
+	 * @param   array    $filters
+	 * @return  integer  Return count of rows
 	 */
 	public function getCount($filters=array())
 	{
@@ -109,14 +96,28 @@ class MembersPasswordBlacklist extends JTable
 	/**
 	 * Get the an object list of blacklisted passwords
 	 *
-	 * @param  array $filters start and limit, needed for pagination
-	 * @return object Return password rule records
+	 * @param   array  $filters  Start and limit, needed for pagination
+	 * @return  array  Return password rule records
 	 */
 	public function getRecords($filters=array())
 	{
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'word';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+		if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+
 		$query  = "SELECT pb.*";
 		$query .= $this->buildquery($filters);
-		$query .= " ORDER BY pb.word ASC";
+		$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
 		$query .= " LIMIT " . (int) $filters['start'] . "," . (int) $filters['limit'];
 
 		$this->_db->setQuery($query);

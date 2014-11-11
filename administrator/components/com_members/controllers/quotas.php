@@ -39,7 +39,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Display member quotas
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -91,7 +91,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
-		$this->view->rows = $obj->getRecords($this->view->filters, true);
+		$this->view->rows  = $obj->getRecords($this->view->filters, true);
 
 		$classes = new MembersQuotasClasses($this->database);
 		$this->view->classes = $classes->getRecords();
@@ -107,12 +107,9 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -122,7 +119,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new quota class
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -133,12 +130,12 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a member quota
 	 *
-	 * @param      integer $id ID of user to edit
-	 * @return     void
+	 * @param   integer  $id  ID of user to edit
+	 * @return  void
 	 */
 	public function editTask($id=0)
 	{
-		$this->view->setLayout('edit');
+		JRequest::setVar('hidemainmenu', 1);
 
 		if (!$id)
 		{
@@ -152,14 +149,14 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$quotas          = new UsersQuotas($this->database);
+		$quotas = new UsersQuotas($this->database);
 		$this->view->row = $quotas->getRecord($id);
 
 		// Build classes select option
 		$quotaClass = new MembersQuotasClasses($this->database);
 		$classes    = $quotaClass->getRecords();
 		$selected   = '';
-		$options[]  = JHTML::_('select.option', '0', JText::_('custom'), 'value', 'text');
+		$options[]  = JHTML::_('select.option', '0', JText::_('COM_MEMBERS_QUOTA_CUSTOM'), 'value', 'text');
 
 		foreach ($classes as $class)
 		{
@@ -174,22 +171,21 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->du = $this->getQuotaUsageTask('array', $this->view->row->id);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Apply changes to a user quota
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -200,8 +196,8 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Save user quota
 	 *
-	 * @param      integer $redirect - whether or not to redirect after save
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $redirect  Whether or not to redirect after save
+	 * @return  void
 	 */
 	public function saveTask($redirect=1)
 	{
@@ -236,7 +232,6 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		// Try to save
 		if (!$row->save($fields))
 		{
-			$this->view->setLayout('edit');
 			$this->view->task = 'edit';
 			$this->setError($row->getError());
 			$this->editTask($row->id);
@@ -255,7 +250,6 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			$this->view->setLayout('edit');
 			$this->view->task = 'edit';
 			$this->editTask($row->id);
 		}
@@ -264,7 +258,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Restore member to default quota class
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function restoreDefaultTask()
 	{
@@ -329,7 +323,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -345,7 +339,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Display quota classes
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayClassesTask()
 	{
@@ -362,7 +356,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		// Get a record count
 		$this->view->total = $obj->getCount($this->view->filters, true);
-		$this->view->rows = $obj->getRecords($this->view->filters, true);
+		$this->view->rows  = $obj->getRecords($this->view->filters, true);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -375,12 +369,9 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -390,7 +381,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new quota class
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addClassTask()
 	{
@@ -401,14 +392,12 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a quota class
 	 *
-	 * @param      integer $id ID of class to edit
-	 * @return     void
+	 * @param   integer  $id  ID of class to edit
+	 * @return  void
 	 */
 	public function editClassTask($id=0)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('editClass');
 
 		if (!$id)
 		{
@@ -430,22 +419,21 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$this->view->user_count = count($quotas->getRecords(array('class_id'=>$id)));
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('editClass')
+			->display();
 	}
 
 	/**
 	 * Apply changes to a quota class item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyClassTask()
 	{
@@ -456,8 +444,8 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Save quota class
 	 *
-	 * @param      integer $redirect - whether or not to redirect after save
-	 * @return     void
+	 * @param   integer  $redirect  Whether or not to redirect after save
+	 * @return  void
 	 */
 	public function saveClassTask($redirect=1)
 	{
@@ -473,7 +461,6 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		// Try to save
 		if (!$row->save($fields))
 		{
-			$this->view->setLayout('editClass');
 			$this->view->task = 'editClass';
 			$this->setError($row->getError());
 			$this->editClassTask($row->id);
@@ -496,7 +483,6 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			$this->view->setLayout('editClass');
 			$this->view->task = 'editClassTask';
 			$this->editClassTask($row->id);
 		}
@@ -505,7 +491,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Removes class(es)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteClassTask()
 	{
@@ -567,17 +553,19 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelClassTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses';
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=displayClasses'
+		);
 	}
 
 	/**
 	 * Get class values
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getClassValuesTask()
 	{
@@ -600,7 +588,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 	/**
 	 * Get quota usage info for a given quota id
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function getQuotaUsageTask($returnType='json', $id=NULL)
 	{
@@ -645,7 +633,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 					}
 				}
 
-				$used = ($info['softspace'] != 0) ? bcdiv($info['space'], $info['softspace'], 6) : 0;
+				$used = (isset($info['softspace']) && $info['softspace'] != 0) ? bcdiv($info['space'], $info['softspace'], 6) : 0;
 				$percent = round($used * 100);
 
 				$success = true;

@@ -30,11 +30,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = MembersHelper::getActions('component');
+
 // Menu
 JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_PASSWORD_BLACKLIST'), 'user.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::addNew();
+	JToolBarHelper::editList();
+	JToolBarHelper::spacer();
+	JToolBarHelper::deleteList();
+}
 ?>
 
 <nav role="navigation" class="sub sub-navigation">
@@ -53,8 +59,8 @@ JToolBarHelper::deleteList();
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JText::_('COM_MEMBERS_PASSWORD_ID'); ?></th>
-				<th><?php echo JText::_('COM_MEMBERS_PASSWORD_WORD'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_WORD', 'word', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -73,7 +79,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $row->id; ?>
@@ -95,6 +101,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

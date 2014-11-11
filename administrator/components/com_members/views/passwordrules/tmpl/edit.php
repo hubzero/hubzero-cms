@@ -30,12 +30,18 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$canDo = MembersHelper::getActions('component');
+
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_PASSWORD_RULES') . ': '. $text, 'user.png');
-JToolBarHelper::apply();
-JToolBarHelper::save();
-JToolBarHelper::cancel();
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::apply();
+	JToolBarHelper::save();
+	JToolBarHelper::spacer();
+	JToolBarHelper::cancel();
+}
 ?>
 
 <script type="text/javascript">
@@ -99,5 +105,6 @@ function submitbutton(pressbutton)
 		</table>
 	</div>
 	<div class="clr"></div>
-	<?php echo JHTML::_( 'form.token' ); ?>
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

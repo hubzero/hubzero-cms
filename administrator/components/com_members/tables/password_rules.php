@@ -37,84 +37,21 @@ defined('_JEXEC') or die('Restricted access');
 class MembersPasswordRules extends JTable
 {
 	/**
-	 * ID - primary key
-	 *
-	 * @var int(11)
-	 */
-	var $id = null;
-
-	/**
-	 * Class
-	 *
-	 * @var char(255)
-	 */
-	var $class = null;
-
-	/**
-	 * Description
-	 *
-	 * @var char(255)
-	 */
-	var $description = null;
-
-	/**
-	 * Enabled
-	 *
-	 * @var tinyint(1)
-	 */
-	var $enabled = null;
-
-	/**
-	 * Failure message
-	 *
-	 * @var char(255)
-	 */
-	var $failuremsg = null;
-
-	/**
-	 * Group
-	 *
-	 * @var char(32)
-	 */
-	var $grp = null;
-
-	/**
-	 * Ordering
-	 *
-	 * @var int(11)
-	 */
-	var $ordering = null;
-
-	/**
-	 * Rule
-	 *
-	 * @var char(255)
-	 */
-	var $rule = null;
-
-	/**
-	 * Value
-	 *
-	 * @var char(255)
-	 */
-	var $value = null;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__password_rule', 'id', $db );
+		parent::__construct('#__password_rule', 'id', $db);
 	}
 
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string  Database query
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -126,13 +63,13 @@ class MembersPasswordRules extends JTable
 	/**
 	 * Get a count of the number of password rules (used mainly for pagination)
 	 *
-	 * @param  array $filters
-	 * @return object Return count of rows
+	 * @param   array    $filters
+	 * @return  integer  Return count of rows
 	 */
 	public function getCount($filters=array())
 	{
 		$query  = "SELECT COUNT(DISTINCT pr.id)";
-		$query .= $this->buildquery($filters);
+		$query .= $this->buildQuery($filters);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
@@ -141,15 +78,29 @@ class MembersPasswordRules extends JTable
 	/**
 	 * Get the an object list of password rules
 	 *
-	 * @param  array $filters start and limit, needed for pagination
-	 * @return object Return password rule records
+	 * @param   array  $filters  Start and limit, needed for pagination
+	 * @return  array  Return password rule records
 	 */
 	public function getRecords($filters=array())
 	{
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'ordering';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+		$filters['sort_Dir'] = strtoupper($filters['sort_Dir']);
+		if (!in_array($filters['sort_Dir'], array('ASC', 'DESC')))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
+
 		$query  = "SELECT pr.*";
-		$query .= $this->buildquery($filters);
-		$query .= " ORDER BY pr.ordering ASC";
-		$query .= " LIMIT ".$filters['start'].",".$filters['limit'];
+		$query .= $this->buildQuery($filters);
+		$query .= " ORDER BY `" . $filters['sort'] . "` " . $filters['sort_Dir'];
+		$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
@@ -158,102 +109,113 @@ class MembersPasswordRules extends JTable
 	/**
 	 * Insert default content
 	 *
-	 * @param      int $restore_defaults - whether or not to force restoration of default values (even if other values are present)
-	 * @return     void
+	 * @param   integer  $restore_defaults  Whether or not to force restoration of default values (even if other values are present)
+	 * @return  void
 	 */
 	public function defaultContent($restore_defaults=0)
 	{
-		$default_content = array();
-		$default_content[] = array(
-							'class'       => 'alpha',
-							'description' => 'Must contain at least 1 letter',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must contain at least 1 letter',
-							'grp'         => 'hub',
-							'ordering'    => '1',
-							'rule'        => 'minClassCharacters',
-							'value'       => '1');
-		$default_content[] = array(
-							'class'       => 'nonalpha',
-							'description' => 'Must contain at least 1 number or punctuation mark',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must contain at least 1 number or punctuation mark',
-							'grp'         => 'hub',
-							'ordering'    => '2',
-							'rule'        => 'minClassCharacters',
-							'value'       => '1');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'Must be at least 8 characters long',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must be at least 8 characters long',
-							'grp'         => 'hub',
-							'ordering'    => '3',
-							'rule'        => 'minPasswordLength',
-							'value'       => '8');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'Must be no longer than 16 characters',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must be no longer than 16 characters',
-							'grp'         => 'hub',
-							'ordering'    => '4',
-							'rule'        => 'maxPasswordLength',
-							'value'       => '16');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'Must contain more than 4 unique characters',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must contain more than 4 unique characters',
-							'grp'         => 'hub',
-							'ordering'    => '5',
-							'rule'        => 'minUniqueCharacters',
-							'value'       => '5');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'Must not contain easily guessed words',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must not contain easily guessed words',
-							'grp'         => 'hub',
-							'ordering'    => '6',
-							'rule'        => 'notBlacklisted',
-							'value'       => '');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'Must not contain your name or parts of your name',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must not contain your name or parts of your name',
-							'grp'         => 'hub',
-							'ordering'    => '7',
-							'rule'        => 'notNameBased',
-							'value'       => '');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'Must not contain your username',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must not contain your username',
-							'grp'         => 'hub',
-							'ordering'    => '8',
-							'rule'        => 'notUsernameBased',
-							'value'       => '');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'Must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
-							'grp'         => 'hub',
-							'ordering'    => '9',
-							'rule'        => 'notReused',
-							'value'       => '365');
-		$default_content[] = array(
-							'class'       => '',
-							'description' => 'Must be changed at least every 120 days',
-							'enabled'     => '0',
-							'failuremsg'  => 'Must be changed at least every 120 days',
-							'grp'         => 'hub',
-							'ordering'    => '10',
-							'rule'        => 'notStale',
-							'value'       => '120');
+		$default_content = array(
+			array(
+				'class'       => 'alpha',
+				'description' => 'Must contain at least 1 letter',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must contain at least 1 letter',
+				'grp'         => 'hub',
+				'ordering'    => '1',
+				'rule'        => 'minClassCharacters',
+				'value'       => '1'
+			),
+			array(
+				'class'       => 'nonalpha',
+				'description' => 'Must contain at least 1 number or punctuation mark',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must contain at least 1 number or punctuation mark',
+				'grp'         => 'hub',
+				'ordering'    => '2',
+				'rule'        => 'minClassCharacters',
+				'value'       => '1'
+			),
+			array(
+				'class'       => '',
+				'description' => 'Must be at least 8 characters long',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must be at least 8 characters long',
+				'grp'         => 'hub',
+				'ordering'    => '3',
+				'rule'        => 'minPasswordLength',
+				'value'       => '8'
+			),
+			array(
+				'class'       => '',
+				'description' => 'Must be no longer than 16 characters',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must be no longer than 16 characters',
+				'grp'         => 'hub',
+				'ordering'    => '4',
+				'rule'        => 'maxPasswordLength',
+				'value'       => '16'
+			),
+			array(
+				'class'       => '',
+				'description' => 'Must contain more than 4 unique characters',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must contain more than 4 unique characters',
+				'grp'         => 'hub',
+				'ordering'    => '5',
+				'rule'        => 'minUniqueCharacters',
+				'value'       => '5'
+			),
+			array(
+				'class'       => '',
+				'description' => 'Must not contain easily guessed words',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must not contain easily guessed words',
+				'grp'         => 'hub',
+				'ordering'    => '6',
+				'rule'        => 'notBlacklisted',
+				'value'       => ''
+			),
+			array(
+				'class'       => '',
+				'description' => 'Must not contain your name or parts of your name',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must not contain your name or parts of your name',
+				'grp'         => 'hub',
+				'ordering'    => '7',
+				'rule'        => 'notNameBased',
+				'value'       => ''
+			),
+			array(
+				'class'       => '',
+				'description' => 'Must not contain your username',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must not contain your username',
+				'grp'         => 'hub',
+				'ordering'    => '8',
+				'rule'        => 'notUsernameBased',
+				'value'       => ''
+			),
+			array(
+				'class'       => '',
+				'description' => 'Must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must be different than the previous password (re-use of the same password will not be allowed for one (1) year)',
+				'grp'         => 'hub',
+				'ordering'    => '9',
+				'rule'        => 'notReused',
+				'value'       => '365'
+			),
+			array(
+				'class'       => '',
+				'description' => 'Must be changed at least every 120 days',
+				'enabled'     => '0',
+				'failuremsg'  => 'Must be changed at least every 120 days',
+				'grp'         => 'hub',
+				'ordering'    => '10',
+				'rule'        => 'notStale',
+				'value'       => '120'
+			)
+		);
 
 		// Get a few config values from joomla
 		$app    = JFactory::getApplication();
@@ -261,7 +223,7 @@ class MembersPasswordRules extends JTable
 		$prefix = $app->getCfg('dbprefix');
 
 		// Check auto_increment value of the table (wish there was a jdatabase method for this?)
-		$query =  "SELECT AUTO_INCREMENT AS ai";
+		$query  =  "SELECT AUTO_INCREMENT AS ai";
 		$query .= " FROM information_schema.tables";
 		$query .= " WHERE table_schema = '{$schema}' AND table_name = '" . str_replace('#__', $prefix, $this->_tbl) . "'";
 		$this->_db->setQuery($query);

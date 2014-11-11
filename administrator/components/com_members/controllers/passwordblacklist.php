@@ -39,7 +39,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	/**
 	 * Display password blacklist
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -48,9 +48,32 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		$app = JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limitstart', 'limitstart', 0, 'int');
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'word'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort_Dir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get password rules object
 		$pbObj = new MembersPasswordBlacklist($this->database);
@@ -63,12 +86,16 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 
 		// Initiate pagination
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination($this->view->total, $this->view->filters['start'], $this->view->filters['limit']);
+		$this->view->pageNav = new JPagination(
+			$this->view->total,
+			$this->view->filters['start'],
+			$this->view->filters['limit']
+		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -78,7 +105,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	/**
 	 * Create a new blacklisted password
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -89,14 +116,12 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	/**
 	 * Edit a blacklisted password
 	 *
-	 * @param      integer $id ID of word to edit
-	 * @return     void
+	 * @param   integer  $id  ID of word to edit
+	 * @return  void
 	 */
 	public function editTask($id=0)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		if (!$id)
 		{
@@ -115,19 +140,21 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		$this->view->row->load($id);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Apply changes to a password blacklist item
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -138,8 +165,8 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	/**
 	 * Save blacklisted password
 	 *
-	 * @param      integer $redirect - whether or not to redirect after save
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $redirect  Whether or not to redirect after save
+	 * @return  void
 	 */
 	public function saveTask($redirect=1)
 	{
@@ -170,13 +197,12 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 			// Redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('PASSWORD_BLACKLIST_SAVE_SUCCESS'),
+				JText::_('COM_MEMBERS_PASSWORD_BLACKLIST_SAVE_SUCCESS'),
 				'message'
 			);
 		}
 		else
 		{
-			$this->view->setLayout('edit');
 			$this->view->task = 'edit';
 			$this->editTask($row->id);
 		}
@@ -185,7 +211,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 	/**
 	 * Removes [a] password blacklist item(s)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -215,7 +241,7 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 			// Output message and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('PASSWORD_BLACKLIST_DELETE_NO_ROW_SELECTED'),
+				JText::_('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_NO_ROW_SELECTED'),
 				'warning'
 			);
 		}
@@ -223,14 +249,14 @@ class MembersControllerPasswordBlacklist extends \Hubzero\Component\AdminControl
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('PASSWORD_BLACKLIST_DELETE_SUCCESS')
+			JText::_('COM_MEMBERS_PASSWORD_BLACKLIST_DELETE_SUCCESS')
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{

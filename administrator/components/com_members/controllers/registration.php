@@ -41,7 +41,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 	/**
 	 * Display configurations for registration
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -64,7 +64,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 	/**
 	 * Save changes to the registration
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -77,7 +77,7 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('No data to save'),
+				JText::_('COM_MEMBERS_REGISTRATION_ERROR_MISSING_DATA'),
 				'error'
 			);
 			return;
@@ -102,14 +102,14 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('Configuration saved')
+			JText::_('COM_MEMBERS_REGISTRATION_SAVED')
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{

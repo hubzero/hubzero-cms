@@ -249,7 +249,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			JRoute::_('index.php?option='.$this->_option.'&controller='.$this->_controller.'&task=edit&id[]='.$profile->get('uidNumber'), false),
-			JText::_('MEMBER_SAVED')
+			JText::_('COM_MEMBERS_MEMBER_SAVED')
 		);
 	}
 
@@ -345,7 +345,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Do we have an ID?
 		if (!$id)
 		{
-			JError::raiseError(500, JText::_('MEMBERS_NO_ID'));
+			JError::raiseError(500, JText::_('COM_MEMBERS_NO_ID'));
 			return;
 		}
 
@@ -498,7 +498,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 			if (!empty($validated))
 			{
 				// Set error
-				$this->setError(JText::_('MEMBERS_PASSWORD_DOES_NOT_MEET_REQUIREMENTS'));
+				$this->setError(JText::_('COM_MEMBERS_PASSWORD_DOES_NOT_MEET_REQUIREMENTS'));
 				$this->validated = $validated;
 				$redirect = false;
 			}
@@ -607,7 +607,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 				$path = JPATH_ROOT . DS . trim($this->config->get('webpath', '/site/members'), DS) . DS . \Hubzero\Utility\String::pad($id);
 				if (!file_exists($path . DS . $file) or !$file)
 				{
-					$this->setError(JText::_('FILE_NOT_FOUND'));
+					$this->setError(JText::_('COM_MEMBERS_FILE_NOT_FOUND'));
 				}
 				else
 				{
@@ -629,7 +629,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('MEMBER_REMOVED')
+			JText::_('COM_MEMBERS_REMOVED')
 		);
 	}
 
@@ -672,7 +672,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('MEMBERS_NO_ID'),
+				JText::_('COM_MEMBERS_NO_ID'),
 				'error'
 			);
 			return;
@@ -707,7 +707,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('MEMBERS_CONFIRMATION_CHANGED')
+			JText::_('COM_MEMBERS_CONFIRMATION_CHANGED')
 		);
 	}
 
@@ -826,7 +826,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		// Ensure the file exist
 		if (!file_exists(JPATH_ROOT . DS . $file))
 		{
-			JError::raiseError(404, JText::_('The requested file could not be found: ') . ' ' . $file);
+			JError::raiseError(404, JText::_('COM_MEMBERS_FILE_NOT_FOUND') . ' ' . $file);
 			return;
 		}
 
@@ -840,7 +840,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		if (!$xserver->serve())
 		{
 			// Should only get here on error
-			JError::raiseError(404, JText::_('An error occured while trying to output the file'));
+			JError::raiseError(404, JText::_('COM_MEMBERS_MEDIA_ERROR_SERVING_FILE'));
 		}
 		else
 		{

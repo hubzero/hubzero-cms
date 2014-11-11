@@ -41,7 +41,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 	/**
 	 * Display all organizations
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -50,25 +50,38 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		// Get paging variables
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'organization'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort_Dir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		$obj = new MembersTableOrganization($this->database);
 
@@ -76,7 +89,7 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		$this->view->total = $obj->find('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $obj->find('list', $this->view->filters);
+		$this->view->rows  = $obj->find('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -87,9 +100,9 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -109,13 +122,12 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an organization
 	 *
-	 * @return     void
+	 * @param   mixed  $model  MembersTableOrganization
+	 * @return  void
 	 */
 	public function editTask($model=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		if (is_object($model))
 		{
@@ -138,21 +150,34 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
-	 * Save an organization
+	 * Save a record and return to edit form
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Save a record
+	 *
+	 * @param   boolean  $redirect  Redirect after saving?
+	 * @return  void
+	 */
+	public function saveTask($redirect = true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -182,17 +207,23 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('REGISTER_ORG_SAVED')
-		);
+		if ($redirect)
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_MEMBERS_ORGANIZATIONS_SAVED')
+			);
+			return;
+		}
+
+		$this->editTask($model);
 	}
 
 	/**
 	 * Remove an organization
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -225,14 +256,14 @@ class MembersControllerOrganizations extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('REGISTER_ORG_REMOVED')
+			JText::_('COM_MEMBERS_ORGANIZATIONS_REMOVED')
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{

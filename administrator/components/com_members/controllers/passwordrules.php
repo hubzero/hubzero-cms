@@ -39,7 +39,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of password rules
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -48,9 +48,33 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limit', 'limit', $config->getValue('config.list_limit'), 'int');
-		$this->view->filters['start'] = $app->getUserStateFromRequest($this->_option . '.' . $this->_controller . '.limitstart', 'limitstart', 0, 'int');
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'ordering'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort_Dir',
+				'filter_order_Dir',
+				'ASC'
+			)
+		);
+		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
+
 
 		// Get password rules object
 		$prObj = new MembersPasswordRules($this->database);
@@ -73,12 +97,16 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 
 		// Initiate pagination
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination($this->view->total, $this->view->filters['start'], $this->view->filters['limit']);
+		$this->view->pageNav = new JPagination(
+			$this->view->total,
+			$this->view->filters['start'],
+			$this->view->filters['limit']
+		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -106,8 +134,6 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		if (!$id)
 		{
 			// Incoming
@@ -127,19 +153,21 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		$this->view->rules_list = $this->rulesList($this->view->row->rule);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			$this->view->setError($this->getError());
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Apply changes to a password rule
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -150,8 +178,8 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	/**
 	 * Save password rule
 	 *
-	 * @param      integer $redirect - whether or not to redirect after save
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $redirect  Whether or not to redirect after save
+	 * @return  void
 	 */
 	public function saveTask($redirect=1)
 	{
@@ -177,13 +205,12 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('PASSWORD_RULES_SAVE_SUCCESS'),
+				JText::_('COM_MEMBERS_PASSWORD_RULES_SAVE_SUCCESS'),
 				'message'
 			);
 		}
 		else
 		{
-			$this->view->setLayout('edit');
 			$this->view->task = 'edit';
 			$this->editTask($fields['id']);
 		}
@@ -192,7 +219,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	/**
 	 * Order up
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function orderupTask()
 	{
@@ -204,14 +231,14 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		// Output message and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('PASSWORD_RULES_ORDERING_SAVED')
+			JText::_('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
 		);
 	}
 
 	/**
 	 * Order down
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function orderdownTask()
 	{
@@ -223,15 +250,15 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		// Output message and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('PASSWORD_RULES_ORDERING_SAVED')
+			JText::_('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
 		);
 	}
 
 	/**
 	 * Reorder rules
 	 *
-	 * @param      integer $up - whether order up or down
-	 * @return     void
+	 * @param   integer  $up  Whether order up or down
+	 * @return  void
 	 */
 	public function orderTask($up)
 	{
@@ -249,7 +276,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	/**
 	 * Save order
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveorderTask()
 	{
@@ -285,14 +312,14 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		// Output message and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('PASSWORD_RULES_ORDERING_SAVED')
+			JText::_('COM_MEMBERS_PASSWORD_RULES_ORDERING_SAVED')
 		);
 	}
 
 	/**
 	 * Toggle a password rule between enabled and disabled
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function toggle_enabledTask()
 	{
@@ -323,14 +350,14 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		// Output message and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('PASSWORD_RULES_TOGGLE_ENABLED')
+			JText::_('COM_MEMBERS_PASSWORD_RULES_TOGGLE_ENABLED')
 		);
 	}
 
 	/**
 	 * Restore default password rules (found in password_rules table class)
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function restore_default_contentTask()
 	{
@@ -343,14 +370,14 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		// Output message and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('PASSWORD_RULES_RESTORED')
+			JText::_('COM_MEMBERS_PASSWORD_RULES_RESTORED')
 		);
 	}
 
 	/**
 	 * Removes [a] password rule(s)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -383,7 +410,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 			// Output message and redirect
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('PASSWORD_RULES_DELETE_NO_ROW_SELECTED'),
+				JText::_('COM_MEMBERS_PASSWORD_RULES_DELETE_NO_ROW_SELECTED'),
 				'warning'
 			);
 		}
@@ -391,14 +418,14 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 		// Output messsage and redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('PASSWORD_RULES_DELETE_SUCCESS')
+			JText::_('COM_MEMBERS_PASSWORD_RULES_DELETE_SUCCESS')
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -410,7 +437,7 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	/**
 	 * Build rules select list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function rulesList($current_rule='')
 	{

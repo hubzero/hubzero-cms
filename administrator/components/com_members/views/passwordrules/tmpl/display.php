@@ -30,13 +30,19 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = MembersHelper::getActions('component');
+
 // Menu
 JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_PASSWORD_RULES'), 'user.png');
-JToolBarHelper::custom('restore_default_content', 'refresh', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', false, false);
-JToolBarHelper::spacer();
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::custom('restore_default_content', 'refresh', 'refresh', 'COM_MEMBERS_PASSWORD_RESTORE_DEFAULTS', false, false);
+	JToolBarHelper::spacer();
+	JToolBarHelper::addNew();
+	JToolBarHelper::editList();
+	JToolBarHelper::spacer();
+	JToolBarHelper::deleteList();
+}
 ?>
 
 <nav role="navigation" class="sub sub-navigation">
@@ -77,14 +83,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
-				<th scope="col"><?php echo JText::_('COM_MEMBERS_PASSWORD_ID'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_MEMBERS_PASSWORD_RULE'); ?></th>
-				<th scope="col"><?php echo JText::_('COM_MEMBERS_PASSWORD_DESCRIPTION'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_RULE', 'rule', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_DESCRIPTION', 'description', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th scope="col">
-					<?php echo JText::_('COM_MEMBERS_PASSWORD_ORDERING'); ?>
+					<?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ORDERING', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
 					<?php echo JHTML::_('grid.order',  $this->rows); ?>
 				</th>
-				<th scope="col"><?php echo JText::_('COM_MEMBERS_PASSWORD_ENABLED'); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_PASSWORD_ENABLED', 'enabled', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -139,6 +145,8 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->filters['sort']; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->filters['sort_Dir']; ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>

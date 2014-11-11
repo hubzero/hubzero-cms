@@ -30,11 +30,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$canDo = MembersHelper::getActions('component');
 
-JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS').': '. $text, 'user.png');
-JToolBarHelper::apply();
-JToolBarHelper::save();
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+
+JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTAS') . ': ' . $text, 'user.png');
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::apply();
+	JToolBarHelper::save();
+	JToolBarHelper::spacer();
+}
 JToolBarHelper::cancel();
 ?>
 
@@ -85,10 +91,10 @@ JToolBarHelper::cancel();
 			<input type="hidden" name="task" value="save" />
 
 			<?php if (!$this->row->id) : ?>
-				<div class="input-wrap" data-hint="Enter a username or user ID">
-					<label for="field-user_id">User:</label>
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_MEMBERS_QUOTA_USER_HINT'); ?>">
+					<label for="field-user_id"><?php echo JText::_('COM_MEMBERS_QUOTA_USER'); ?>:</label>
 					<input type="text" name="fields[user_id]" id="field-user_id" value="" />
-					<span class="hint">Enter a username or user ID</span>
+					<span class="hint"><?php echo JText::_('COM_MEMBERS_QUOTA_USER_HINT'); ?></span>
 				</div>
 			<?php else : ?>
 				<input type="hidden" name="fields[user_id]" id="field-user_id" value="<?php echo $this->row->user_id; ?>" />
@@ -136,7 +142,7 @@ JToolBarHelper::cancel();
 			<tbody>
 				<tr>
 					<th><?php echo JText::_('COM_MEMBERS_QUOTA_SPACE'); ?></th>
-					<td><?php echo (isset($this->du['info']['space']) ? $this->du['info']['space'] / 1024 : 0); ?> blocks (<?php echo $this->du['percent']; ?>%)</td>
+					<td><?php echo JText::sprintf('COM_MEMBERS_QUOTA_SPACE_DISPLAY', (isset($this->du['info']['space']) ? $this->du['info']['space'] / 1024 : 0), $this->du['percent']); ?></td>
 				</tr>
 				<tr>
 					<th><?php echo JText::_('COM_MEMBERS_QUOTA_FILES'); ?></th>

@@ -30,12 +30,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$canDo = MembersHelper::getActions('component');
+
 // Menu
 JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTA_CLASSES'), 'user.png');
-JToolBarHelper::addNew('addClass');
-JToolBarHelper::editList('editClass');
-JToolBarHelper::deleteList('Are you sure?', 'deleteClass');
-JToolBarHelper::spacer();
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::addNew('addClass');
+	JToolBarHelper::editList('editClass');
+	JToolBarHelper::deleteList('COM_MEMBERS_QUOTA_CONFIRM_DELETE', 'deleteClass');
+	JToolBarHelper::spacer();
+}
 JToolBarHelper::help('quotaclasses');
 ?>
 
@@ -48,7 +53,7 @@ JToolBarHelper::help('quotaclasses');
 	<table class="adminlist">
 		<thead>
 		 	<tr>
-				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th><?php echo JText::_('COM_MEMBERS_QUOTA_ID'); ?></th>
 				<th><?php echo JText::_('COM_MEMBERS_QUOTA_ALIAS'); ?></th>
 				<th><?php echo JText::_('COM_MEMBERS_QUOTA_SOFT_BLOCKS'); ?></th>
@@ -73,15 +78,15 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editClass&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editClass&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->id); ?>
 					</a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=editClass&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=editClass&id=' . $row->id); ?>">
 						<?php echo $this->escape($row->alias); ?>
 					</a>
 				</td>

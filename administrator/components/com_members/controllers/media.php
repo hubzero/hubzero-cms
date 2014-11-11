@@ -39,7 +39,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Upload a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -64,7 +64,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		// make sure we have id
 		if (!$id)
 		{
-			$this->setError(JText::_('MEMBERS_NO_ID'));
+			$this->setError(JText::_('COM_MEMBERS_NO_ID'));
 			$this->displayTask($curfile, $id);
 			return;
 		}
@@ -72,7 +72,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		// make sure we have a file
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('MEMBERS_NO_FILE'));
+			$this->setError(JText::_('COM_MEMBERS_NO_FILE'));
 			$this->displayTask($curfile, $id);
 			return;
 		}
@@ -83,7 +83,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.folder');
 			if (!JFolder::create($path))
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(JText::_('COM_MEMBERS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask($curfile, $id);
 				return;
 			}
@@ -92,7 +92,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		// make sure file is not empty
 		if ($file['size'] == 0)
 		{
-			$this->setError(JText::_('FILE_HAS_NO_SIZE'));
+			$this->setError(JText::_('COM_MEMBERS_FILE_HAS_NO_SIZE'));
 			$this->displayTask($curfile, $id);
 			return;
 		}
@@ -112,7 +112,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		if (!in_array($ext, $allowedExtensions))
 		{
 			$these = implode(', ', $allowedExtensions);
-			$this->setError(JText::sprintf('FILE_TYPE_NOT_ALLOWED', $these));
+			$this->setError(JText::sprintf('COM_MEMBERS_FILE_TYPE_NOT_ALLOWED', $these));
 			$this->displayTask($curfile, $id);
 			return;
 		}
@@ -125,7 +125,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		// upload image
 		if (!JFile::upload($file['tmp_name'], $filePath))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(JText::_('COM_MEMBERS_ERROR_UPLOADING'));
 			$this->displayTask($curfile, $id);
 			return;
 		}
@@ -166,7 +166,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Delete a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -177,7 +177,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		$id = JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('MEMBERS_NO_ID'));
+			$this->setError(JText::_('COM_MEMBERS_NO_ID'));
 			$this->displayTask('', $id);
 			return;
 		}
@@ -186,7 +186,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		$file = JRequest::getVar('file', '');
 		if (!$file)
 		{
-			$this->setError(JText::_('MEMBERS_NO_FILE'));
+			$this->setError(JText::_('COM_MEMBERS_NO_FILE'));
 			$this->displayTask('', $id);
 			return;
 		}
@@ -198,7 +198,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		// if we have file
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(JText::_('COM_MEMBERS_FILE_NOT_FOUND'));
 		}
 		else
 		{
@@ -208,7 +208,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 			jimport('joomla.filesystem.file');
 			if (!JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(JText::_('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);
 				return;
 			}
@@ -228,7 +228,7 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 			{
 				if (!JFile::delete($path . DS . $curthumb))
 				{
-					$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+					$this->setError(JText::_('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
 					$this->displayTask($file, $id);
 					return;
 				}
@@ -251,14 +251,12 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Display a file and its info
 	 *
-	 * @param      string  $file File name
-	 * @param      integer $id   User ID
-	 * @return     void
+	 * @param   string   $file  File name
+	 * @param   integer  $id    User ID
+	 * @return  void
 	 */
 	public function displayTask($file='', $id=0)
 	{
-		$this->view->setLayout('display');
-
 		// Load the component config
 		$this->view->config = $this->config;
 
@@ -289,7 +287,9 @@ class MembersControllerMedia extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 

@@ -30,11 +30,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ($this->task == 'editClass' ? JText::_('EDIT') : JText::_('NEW'));
+$canDo = MembersHelper::getActions('component');
+
+$text = ($this->task == 'editClass' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
 JToolBarHelper::title(JText::_('COM_MEMBERS_QUOTA_CLASSES') . ': ' . $text, 'user.png');
-JToolBarHelper::apply('applyClass');
-JToolBarHelper::save('saveClass');
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::apply('applyClass');
+	JToolBarHelper::save('saveClass');
+	JToolBarHelper::spacer();
+}
 JToolBarHelper::cancel('cancelClass');
 ?>
 

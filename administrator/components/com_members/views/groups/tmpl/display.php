@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="task" value="add" />
 
 						<select name="gid" style="max-width: 15em;">
-							<option value=""><?php echo JText::_('Select...'); ?></option>
+							<option value=""><?php echo JText::_('COM_MEMBERS_SELECT'); ?></option>
 							<?php
 							foreach ($this->rows as $row)
 							{
@@ -52,13 +52,13 @@ defined('_JEXEC') or die('Restricted access');
 							?>
 						</select>
 						<select name="tbl">
-							<option value="invitees"><?php echo JText::_('INVITEES'); ?></option>
-							<option value="applicants"><?php echo JText::_('APPLICANTS'); ?></option>
-							<option value="members" selected="selected"><?php echo JText::_('MEMBERS'); ?></option>
-							<option value="managers"><?php echo JText::_('MANAGERS'); ?></option>
+							<option value="invitees"><?php echo JText::_('COM_MEMBERS_GROUPS_INVITEES'); ?></option>
+							<option value="applicants"><?php echo JText::_('COM_MEMBERS_GROUPS_APPLICANTS'); ?></option>
+							<option value="members" selected="selected"><?php echo JText::_('COM_MEMBERS_GROUPS_MEMBERS'); ?></option>
+							<option value="managers"><?php echo JText::_('COM_MEMBERS_GROUPS_MANAGERS'); ?></option>
 						</select>
 
-						<input type="submit" value="<?php echo JText::_('ADD_GROUP'); ?>" />
+						<input type="submit" value="<?php echo JText::_('COM_MEMBERS_GROUPS_ADD'); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -68,64 +68,64 @@ defined('_JEXEC') or die('Restricted access');
 
 		<table class="paramlist admintable">
 			<tbody>
-<?php
-		$applicants = \Hubzero\User\Helper::getGroups($this->id, 'applicants');
-		$invitees = \Hubzero\User\Helper::getGroups($this->id, 'invitees');
-		$members = \Hubzero\User\Helper::getGroups($this->id, 'members');
-		$managers = \Hubzero\User\Helper::getGroups($this->id, 'managers');
+				<?php
+				$applicants = \Hubzero\User\Helper::getGroups($this->id, 'applicants');
+				$invitees   = \Hubzero\User\Helper::getGroups($this->id, 'invitees');
+				$members    = \Hubzero\User\Helper::getGroups($this->id, 'members');
+				$managers   = \Hubzero\User\Helper::getGroups($this->id, 'managers');
 
-		$applicants = (is_array($applicants)) ? $applicants : array();
-		$invitees   = (is_array($invitees))   ? $invitees   : array();
-		$members    = (is_array($members))    ? $members    : array();
-		$managers   = (is_array($managers))   ? $managers   : array();
+				$applicants = (is_array($applicants)) ? $applicants : array();
+				$invitees   = (is_array($invitees))   ? $invitees   : array();
+				$members    = (is_array($members))    ? $members    : array();
+				$managers   = (is_array($managers))   ? $managers   : array();
 
-		$groups = array_merge($applicants, $invitees);
-		$managerids = array();
-		foreach ($managers as $manager)
-		{
-			$groups[] = $manager;
-			$managerids[] = $manager->cn;
-		}
-		foreach ($members as $mem)
-		{
-			if (!in_array($mem->cn,$managerids))
-			{
-				$groups[] = $mem;
-			}
-		}
-
-		if (count($groups) > 0)
-		{
-			foreach ($groups as $group)
-			{
-?>
-				<tr>
-					<td class="paramlist_key"><a href="index.php?option=com_groups&amp;controller=manage&amp;task=edit&amp;id[]=<?php echo $group->cn; ?>" target="_parent"><?php echo $group->description . ' (' . $group->cn . ')'; ?></a></td>
-					<td class="paramlist_value"><?php
-					$seen[] = $group->cn;
-
-					if ($group->registered)
+				$groups = array_merge($applicants, $invitees);
+				$managerids = array();
+				foreach ($managers as $manager)
+				{
+					$groups[] = $manager;
+					$managerids[] = $manager->cn;
+				}
+				foreach ($members as $mem)
+				{
+					if (!in_array($mem->cn,$managerids))
 					{
-						$status = JText::_('applicant');
-						if ($group->regconfirmed)
-						{
-							$status = JText::_('member');
-							if ($group->manager)
+						$groups[] = $mem;
+					}
+				}
+
+				if (count($groups) > 0)
+				{
+					foreach ($groups as $group)
+					{
+						?>
+						<tr>
+							<td class="paramlist_key"><a href="<?php echo JRoute::_('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn); ?>" target="_parent"><?php echo $group->description . ' (' . $group->cn . ')'; ?></a></td>
+							<td class="paramlist_value"><?php
+							$seen[] = $group->cn;
+
+							if ($group->registered)
 							{
-								$status = JText::_('manager');
+								$status = JText::_('COM_MEMBERS_GROUPS_APPLICANT');
+								if ($group->regconfirmed)
+								{
+									$status = JText::_('COM_MEMBERS_GROUPS_MEMBER');
+									if ($group->manager)
+									{
+										$status = JText::_('COM_MEMBERS_GROUPS_MANAGER');
+									}
+								}
 							}
-						}
+							else
+							{
+								$status = JText::_('COM_MEMBERS_GROUPS_INVITEE');
+							}
+							echo $status; ?></td>
+						</tr>
+						<?php
 					}
-					else
-					{
-						$status = JText::_('invitee');
-					}
-					echo $status; ?></td>
-				</tr>
-<?php
-			}
-		}
-?>
+				}
+				?>
 			</tbody>
 		</table>
 

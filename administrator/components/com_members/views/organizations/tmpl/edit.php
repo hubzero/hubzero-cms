@@ -30,10 +30,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$text = ($this->task == 'edit' ? JText::_('Edit Organization') : JText::_('New Organization'));
+$canDo = MembersHelper::getActions('component');
 
-JToolBarHelper::title(JText::_('Member Registration') . ': ' . $text, 'user.png');
-JToolBarHelper::save();
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+
+JToolBarHelper::title(JText::_('COM_MEMBERS_REGISTRATION') . ': ' . JText::_('COM_MEMBERS_ORGANIZATIONS') . ': ' . $text, 'user.png');
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::apply();
+	JToolBarHelper::save();
+	JToolBarHelper::spacer();
+}
 JToolBarHelper::cancel();
 
 ?>
@@ -54,11 +61,11 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Details'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-organization"><?php echo JText::_('Organization'); ?>:</label><br />
-				<input type="text" name="organization" id="field-organization" value="<?php echo $this->escape($this->model->organization); ?>" size="50" />
+				<label for="field-organization"><?php echo JText::_('COM_MEMBERS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<input type="text" name="organization" id="field-organization" value="<?php echo $this->escape($this->model->organization); ?>" />
 			</div>
 		</fieldset>
 	</div>
@@ -66,7 +73,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th class="key"><?php echo JText::_('ID'); ?>:</th>
+					<th class="key"><?php echo JText::_('COM_MEMBERS_FIELD_ID'); ?>:</th>
 					<td>
 						<?php echo $this->model->id; ?>
 						<input type="hidden" name="id" value="<?php echo $this->model->id; ?>" />

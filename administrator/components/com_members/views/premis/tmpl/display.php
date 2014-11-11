@@ -30,11 +30,15 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('Member Registration') . ': ' . JText::_('PREMIS Data Import'), 'user.png');
-JToolBarHelper::addNew();
-JToolBarHelper::editList();
-JToolBarHelper::deleteList();
+$canDo = MembersHelper::getActions('component');
 
+JToolBarHelper::title(JText::_('COM_MEMBERS_REGISTRATION') . ': ' . JText::_('COM_MEMBERS_PREMIS'), 'user.png');
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::addNew();
+	JToolBarHelper::editList();
+	JToolBarHelper::deleteList();
+}
 ?>
 
 <?php

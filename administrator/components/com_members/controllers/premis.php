@@ -39,12 +39,10 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 	/**
 	 * Display all employer types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		// Set any errors
 		if ($this->getError())
 		{
@@ -52,9 +50,16 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
+	/**
+	 * Save records
+	 *
+	 * @return  void
+	 */
 	public function saveTask()
 	{
 		$file = JRequest::getVar('upload', '', 'files', 'array');
@@ -91,14 +96,16 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if(!JFolder::create( $path )) {
+			if (!JFolder::create($path))
+			{
 				// error
 			}
 		}
 
 		// Check if file exists
 		$counter = '';
-		while (file_exists($path . DS . $filename . $counter . '.' . $ext)) {
+		while (file_exists($path . DS . $filename . $counter . '.' . $ext))
+		{
 			if (empty($counter))
 			{
 				$counter = 1;
@@ -110,7 +117,7 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 
 		$uploaded = JFile::upload($file['tmp_name'], $filename);
 
-		if($uploaded)
+		if ($uploaded)
 		{
 			// parse the file and do the registration
 			$skipLines = 1;
@@ -154,7 +161,8 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 						$line['msg'] = $return['message'];
 						$ok++;
 					}
-					else {
+					else
+					{
 						$line['msg'] = $return['message'];
 						$fail++;
 					}
@@ -185,6 +193,11 @@ class MembersControllerPremis extends \Hubzero\Component\AdminController
 		$this->view->display();
 	}
 
+	/**
+	 * Display stats
+	 *
+	 * @return  void
+	 */
 	public function statTask()
 	{
 		echo 'ff';

@@ -37,76 +37,34 @@ defined('_JEXEC') or die('Restricted access');
 class MembersQuotasClasses extends JTable
 {
 	/**
-	 * ID - primary key
-	 *
-	 * @var int(11)
-	 */
-	var $id = null;
-
-	/**
-	 * Alias
-	 *
-	 * @var varchar(255)
-	 */
-	var $alias = null;
-
-	/**
-	 * Hard files limit
-	 *
-	 * @var int(11)
-	 */
-	var $hard_files = null;
-
-	/**
-	 * Soft files limit
-	 *
-	 * @var int(11)
-	 */
-	var $soft_files = null;
-
-	/**
-	 * Hard blocks limit
-	 *
-	 * @var int(11)
-	 */
-	var $hard_blocks = null;
-
-	/**
-	 * Soft blocks limit
-	 *
-	 * @var int(11)
-	 */
-	var $soft_blocks = null;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct( &$db )
 	{
-		parent::__construct( '#__users_quotas_classes', 'id', $db );
+		parent::__construct('#__users_quotas_classes', 'id', $db);
 	}
 
 	/**
 	 * Override the check function to do a little input cleanup
 	 *
-	 * @return return true
+	 * @return  boolean  True if valid, False if not
 	 */
 	public function check()
 	{
 		// Make sure they gave an alias
 		if (trim($this->alias) == '')
 		{
-			$this->setError( JText::_('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_ALIAS') );
+			$this->setError(JText::_('COM_MEMBERS_QUOTA_CLASS_MUST_HAVE_ALIAS'));
 			return false;
 		}
 
 		// Make sure the alias isn't 'custom'
 		if (trim($this->alias) == 'custom')
 		{
-			$this->setError( JText::_('COM_MEMBERS_QUOTA_CLASS_CUSTOM') );
+			$this->setError(JText::_('COM_MEMBERS_QUOTA_CLASS_CUSTOM'));
 			return false;
 		}
 
@@ -119,7 +77,7 @@ class MembersQuotasClasses extends JTable
 			$this->_db->setQuery($query);
 			if ($this->_db->loadResult())
 			{
-				$this->setError( JText::_('COM_MEMBERS_QUOTA_CLASS_NON_UNIQUE_ALIAS') );
+				$this->setError(JText::_('COM_MEMBERS_QUOTA_CLASS_NON_UNIQUE_ALIAS'));
 				return false;
 			}
 		}
@@ -130,7 +88,8 @@ class MembersQuotasClasses extends JTable
 	/**
 	 * Override store to add logging
 	 *
-	 * @return return true
+	 * @param   boolean  $updateNulls
+	 * @return  boolean
 	 */
 	public function store($updateNulls = false)
 	{
@@ -153,16 +112,15 @@ class MembersQuotasClasses extends JTable
 
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
 	 * Override delete to add logging
 	 *
-	 * @return return true
+	 * @param   string   $pk
+	 * @return  boolean
 	 */
 	public function delete($pk = null)
 	{
@@ -184,21 +142,31 @@ class MembersQuotasClasses extends JTable
 
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string  Database query
 	 */
 	public function buildQuery($filters=array())
 	{
 		$query = " FROM $this->_tbl AS uqc";
+
+		$where = array();
+
+		if (isset($filters['alias']) && $filters['alias'])
+		{
+			$where[] = "`alias`=" . $this->_db->Quote($filters['alias']);
+		}
+
+		if (count($where))
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
 
 		return $query;
 	}
@@ -206,8 +174,8 @@ class MembersQuotasClasses extends JTable
 	/**
 	 * Get a count of the number of quota classes
 	 *
-	 * @param  array $filters
-	 * @return object Return count of rows
+	 * @param   array    $filters
+	 * @return  integer  Return count of rows
 	 */
 	public function getCount($filters=array())
 	{
@@ -221,8 +189,8 @@ class MembersQuotasClasses extends JTable
 	/**
 	 * Get the an object list of quotas classes
 	 *
-	 * @param  array $filters start and limit, needed for pagination
-	 * @return object Return password rule records
+	 * @param   array  $filters  Start and limit, needed for pagination
+	 * @return  array  Return password rule records
 	 */
 	public function getRecords($filters=array())
 	{

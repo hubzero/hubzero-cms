@@ -39,63 +39,14 @@ require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_m
 class UsersQuotas extends JTable
 {
 	/**
-	 * ID - primary key
-	 *
-	 * @var int(11)
-	 */
-	var $id = null;
-
-	/**
-	 * User ID
-	 *
-	 * @var int(11)
-	 */
-	var $user_id = null;
-
-	/**
-	 * Quota class ID
-	 *
-	 * @var int(11)
-	 */
-	var $class_id = null;
-
-	/**
-	 * Hard files limit
-	 *
-	 * @var int(11)
-	 */
-	var $hard_files = null;
-
-	/**
-	 * Soft files limit
-	 *
-	 * @var int(11)
-	 */
-	var $soft_files = null;
-
-	/**
-	 * Hard blocks limit
-	 *
-	 * @var int(11)
-	 */
-	var $hard_blocks = null;
-
-	/**
-	 * Soft blocks limit
-	 *
-	 * @var int(11)
-	 */
-	var $soft_blocks = null;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__users_quotas', 'id', $db );
+		parent::__construct('#__users_quotas', 'id', $db);
 	}
 
 	/**
@@ -139,7 +90,8 @@ class UsersQuotas extends JTable
 	/**
 	 * Override store to make mw call too
 	 *
-	 * @return return true
+	 * @param   boolean  $updateNulls
+	 * @return  boolean
 	 */
 	public function store($updateNulls = false)
 	{
@@ -184,17 +136,15 @@ class UsersQuotas extends JTable
 
 			return true;
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}
 
 	/**
-	 * Build query method
+	 * Build SQL based on filters passed
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string
 	 */
 	public function buildQuery($filters=array())
 	{
@@ -228,8 +178,8 @@ class UsersQuotas extends JTable
 	/**
 	 * Retrieve a record
 	 *
-	 * @param  int $id of record to return
-	 * @return object Return password rule records
+	 * @param   integer  $id  ID of record to return
+	 * @return  object   Return password rule records
 	 */
 	public function getRecord($id)
 	{
@@ -244,8 +194,8 @@ class UsersQuotas extends JTable
 	/**
 	 * Get a count of the number of quota classes
 	 *
-	 * @param  array $filters
-	 * @return object Return count of rows
+	 * @param   array    $filters
+	 * @return  integer  Return count of rows
 	 */
 	public function getCount($filters=array())
 	{
@@ -259,8 +209,8 @@ class UsersQuotas extends JTable
 	/**
 	 * Get the an object list of quotas classes
 	 *
-	 * @param  array $filters start and limit, needed for pagination
-	 * @return object Return password rule records
+	 * @param   array  $filters  Start and limit, needed for pagination
+	 * @return  array  Return password rule records
 	 */
 	public function getRecords($filters=array())
 	{
@@ -287,8 +237,8 @@ class UsersQuotas extends JTable
 	/**
 	 * Update all quotas of a certain class ID to reflect a change in class defaults
 	 *
-	 * @param    int $id
-	 * @return   void
+	 * @param   integer  $id
+	 * @return  boolean
 	 */
 	public function updateUsersByClassId($id)
 	{
@@ -322,8 +272,8 @@ class UsersQuotas extends JTable
 	/**
 	 * Upon deletion of a class, restore all users of that class to the default class
 	 *
-	 * @param    int $id
-	 * @return   void
+	 * @param   integer  $id
+	 * @return  boolean
 	 */
 	public function restoreDefaultClass($id)
 	{

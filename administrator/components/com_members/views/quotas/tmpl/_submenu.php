@@ -34,8 +34,8 @@ $task = strtolower(JRequest::getCmd('task', ''));
 ?>
 <nav role="navigation" class="sub sub-navigation">
 	<ul>
-		<li><a<?php if (!$task) { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>">Members</a></li>
-		<li><a<?php if ($task == 'displayclasses') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=displayClasses">Quota Classes</a></li>
-		<li><a<?php if ($task == 'import') { echo ' class="active"'; } ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=import">Import</a></li>
+		<li><a<?php if (!$task) { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo JText::_('COM_MEMBERS_QUOTAS'); ?></a></li>
+		<li><a<?php if ($task == 'displayclasses') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=displayClasses'); ?>"><?php echo JText::_('COM_MEMBERS_QUOTA_CLASSES'); ?></a></li>
+		<li><a<?php if ($task == 'import') { echo ' class="active"'; } ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=import'); ?>"><?php echo JText::_('COM_MEMBERS_QUOTAS_IMPORT'); ?></a></li>
 	</ul>
 </nav><!-- / .sub-navigation -->

@@ -37,262 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class MembersProfile extends JTable
 {
 	/**
-	 * in(11)
-	 *
-	 * @var integer
-	 */
-	var $uidNumber = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $name = null;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $username = null;
-
-	/**
-	 * varchar(100)
-	 *
-	 * @var string
-	 */
-	var $email = null;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $registerDate = null;
-
-	/**
-	 * varchar(11)
-	 *
-	 * @var string
-	 */
-	var $gidNumber = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $homeDirectory = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $loginShell = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $ftpShell = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $userPassword = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $gid = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $orgtype = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $organization = null;
-
-	/**
-	 * char(2)
-	 *
-	 * @var string
-	 */
-	var $countryresident = null;
-
-	/**
-	 * char(2)
-	 *
-	 * @var string
-	 */
-	var $countryorigin = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $gender = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $url = null;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $reason = null;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $mailPreferenceOption = null;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $usageAgreement = null;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $jobsAllowed = null;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modifiedDate = null;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $emailConfirmed = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $regIP = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $regHost = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $nativeTribe = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $phone = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $proxyPassword = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $proxyUidNumber = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $givenName = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $middleName = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $surname = null;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $picture = null;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $vip = null;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $public = null;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params = null;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct($db)
 	{
@@ -302,17 +50,19 @@ class MembersProfile extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if (trim($this->givenName) == '')
+		$this->givenName = trim($this->givenName);
+		if ($this->givenName == '')
 		{
 			$this->setError(JText::_('MEMBER_MUST_HAVE_FIRST_NAME'));
 			return false;
 		}
 
-		if (trim($this->surname) == '')
+		$this->surname = trim($this->surname);
+		if ($this->surname == '')
 		{
 			$this->setError(JText::_('MEMBER_MUST_HAVE_LAST_NAME'));
 			return false;
@@ -337,9 +87,9 @@ class MembersProfile extends JTable
 	/**
 	 * Construct a query from filters
 	 *
-	 * @param      array   $filters Filters to construct query from
-	 * @param      boolean $admin   Admin access?
-	 * @return     string SQL
+	 * @param   array    $filters  Filters to construct query from
+	 * @param   boolean  $admin    Admin access?
+	 * @return  string   SQL
 	 */
 	public function buildQuery($filters=array(), $admin)
 	{
@@ -369,7 +119,6 @@ class MembersProfile extends JTable
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			//$show = '';
 			$words = explode(' ', $filters['search']);
 			$words = array_map('strtolower', $words);
 			if ($sqlsearch)
@@ -419,7 +168,7 @@ class MembersProfile extends JTable
 					$sqlsearch .= " (";
 					foreach ($words as $word)
 					{
-						$sqlsearch .= " MATCH (m.name) AGAINST (" . $this->_db->quote($word) . " IN BOOLEAN MODE) OR"; //" (LOWER(m.givenName) LIKE '%$word%') OR (LOWER(m.surname) LIKE '%$word%') OR (LOWER(m.middleName) LIKE '%$word%') OR (LOWER(m.name) LIKE '%$word%') OR";
+						$sqlsearch .= " MATCH (m.name) AGAINST (" . $this->_db->quote($word) . " IN BOOLEAN MODE) OR";
 					}
 					$sqlsearch = substr($sqlsearch, 0, -3);
 					$sqlsearch .= ") ";
@@ -433,11 +182,11 @@ class MembersProfile extends JTable
 		}
 
 		$query  = $select."FROM $this->_tbl AS m ";
-		if (isset($filters['contributions'])) //(!isset($filters['count']) || !$filters['count']) &&
+		if (isset($filters['contributions']))
 		{
 			$query .= ($filters['show'] == 'contributors' ? 'INNER' : 'LEFT') . ' JOIN #__contributors_view AS cv ON m.uidNumber = cv.uidNumber';
 		}
-		//$query .= " LEFT JOIN #__users AS u ON u.id=m.uidNumber";
+
 		if (isset($filters['sortby']) && $filters['sortby'] == "RAND()")
 		{
 			$query .= " LEFT JOIN #__xprofiles_bio AS b ON b.uidNumber=m.uidNumber";
@@ -489,14 +238,15 @@ class MembersProfile extends JTable
 	/**
 	 * Get a record count based off of filters passed
 	 *
-	 * @param      array   $filters Filters to construct query from
-	 * @param      boolean $admin   Admin access?
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @param   boolean  $admin    Admin access?
+	 * @return  integer
 	 */
 	public function getCount($filters=array(), $admin=false)
 	{
 		$filters['count'] = true;
-		if ($admin) {
+		if ($admin)
+		{
 			$filters['authorized'] = true;
 		}
 		$query  = "SELECT count(DISTINCT m.uidNumber) ";
@@ -509,16 +259,15 @@ class MembersProfile extends JTable
 	/**
 	 * Get records based off of filters passed
 	 *
-	 * @param      array   $filters Filters to construct query from
-	 * @param      boolean $admin   Admin access?
-	 * @return     array
+	 * @param   array    $filters  Filters to construct query from
+	 * @param   boolean  $admin    Admin access?
+	 * @return  array
 	 */
 	public function getRecords($filters=array(), $admin=false)
 	{
 		if ($admin)
 		{
 			$filters['authorized'] = true;
-			//$filters['count'] = true;
 		}
 
 		if ($filters['sortby'] == 'fullname ASC')
@@ -527,14 +276,6 @@ class MembersProfile extends JTable
 		}
 
 		$query  = "SELECT m.uidNumber, m.username, m.name, m.givenName, m.givenName AS fname, m.middleName, m.middleName AS mname, m.surname, m.surname AS lname, m.organization, m.email, m.vip, m.public, m.picture, m.emailConfirmed, NULL AS lastvisitDate ";
-		/*$query .= "CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' AND m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&bnsp;' THEN
-		   CONCAT(m.surname, ', ', m.givenName, COALESCE(CONCAT(' ', m.middleName), ''))
-		ELSE
-		   COALESCE(m.name, '')
-		END AS fullname ";*/
-		/*$query  .= "CASE WHEN m.givenName IS NOT NULL AND m.givenName != '' AND m.givenName != '&nbsp;' THEN m.givenName ELSE SUBSTRING_INDEX(m.name, ' ', 1) END AS fname,
-					CASE WHEN m.middleName IS NOT NULL AND m.middleName != '' AND m.middleName != '&nbsp;' THEN m.middleName ELSE SUBSTRING_INDEX(SUBSTRING_INDEX(m.name,' ', 2), ' ',-1) END AS mname,
-					CASE WHEN m.surname IS NOT NULL AND m.surname != '' AND m.surname != '&nbsp;' THEN m.surname ELSE SUBSTRING_INDEX(m.name, ' ', -1) END AS lname ";*/
 		$query .= $this->buildQuery($filters, $admin);
 		$query .= " GROUP BY m.uidNumber";
 		if (isset($filters['sortby']) && $filters['sortby'] != '')
@@ -587,9 +328,9 @@ class MembersProfile extends JTable
 	/**
 	 * Return records for specified fields and filters
 	 *
-	 * @param      string $select Fields to return
-	 * @param      string $where  Filters
-	 * @return     array
+	 * @param   string  $select  Fields to return
+	 * @param   string  $where   Filters
+	 * @return  array
 	 */
 	public function selectWhere($select, $where)
 	{
@@ -603,8 +344,8 @@ class MembersProfile extends JTable
 	 * Construct a query from filters
 	 * Use by admin interface
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -664,8 +405,8 @@ class MembersProfile extends JTable
 	 * Get a record count based off of filters passed
 	 * Use by admin interface
 	 *
-	 * @param      array   $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getRecordCount($filters=array())
 	{
@@ -679,8 +420,8 @@ class MembersProfile extends JTable
 	 * Get records based off of filters passed
 	 * Use by admin interface
 	 *
-	 * @param      array   $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecordEntries($filters=array())
 	{
@@ -707,7 +448,7 @@ class MembersProfile extends JTable
 						SUBSTRING_INDEX(m.name, ' ', -1)
 					END AS lname ";
 		$query .= $this->_buildQuery($filters);
-		//$query .= " GROUP BY m.uidNumber";
+
 		if (isset($filters['sort']) && $filters['sort'] != '')
 		{
 			$query .= " ORDER BY " . $filters['sort'] . ' ' . $filters['sort_Dir'];

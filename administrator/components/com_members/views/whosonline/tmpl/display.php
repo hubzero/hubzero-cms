@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Menu
-JToolBarHelper::title(JText::_('Who\'s Online'), 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS_WHOSONLINE'), 'user.png');
 
 //get whos online summary
 $siteUserCount  = 0;
@@ -52,8 +52,8 @@ foreach ($this->rows as $row)
 <table class="adminlist whosonline-summary">
 	<thead>
 		<tr>
-			<th scope="col"><?php echo JText::_( 'Site' ); ?></th>
-			<th scope="col"><?php echo JText::_( 'Administrator' ); ?></th>
+			<th scope="col"><?php echo JText::_('COM_MEMBERS_WHOSONLINE_SITE'); ?></th>
+			<th scope="col"><?php echo JText::_('COM_MEMBERS_WHOSONLINE_ADMIN'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -68,9 +68,9 @@ foreach ($this->rows as $row)
 <table class="adminlist whosonline-list">
 	<thead>
 		<tr>
-			<th><?php echo JText::_('User'); ?></th>
-			<th><?php echo JText::_('Location'); ?></th>
-			<th><?php echo JText::_('Last Activity'); ?></th>
+			<th><?php echo JText::_('COM_MEMBERS_WHOSONLINE_COL_USER'); ?></th>
+			<th><?php echo JText::_('COM_MEMBERS_WHOSONLINE_COL_LOCATION'); ?></th>
+			<th><?php echo JText::_('COM_MEMBERS_WHOSONLINE_COL_ACTIVITY'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -89,11 +89,11 @@ foreach ($this->rows as $row)
 							if ($editAuthorized)
 							{
 								$editLink = JRoute::_('index.php?option=com_members&controller=members&task=edit&id='. $row->userid);
-								echo '<a href="' . $editLink . '" title="' . JText::_('Edit User') . '">' . $juser->get('name') . ' [' . $juser->get('username') . ']' . '</a>';
+								echo '<a href="' . $editLink . '" title="' . JText::_('JACTION_EDIT') . '">' . $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']' . '</a>';
 							}
 							else
 							{
-								echo $juser->get('name') . ' [' . $juser->get('username') . ']';
+								echo $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']';
 							}
 						?>
 					</td>
@@ -104,14 +104,14 @@ foreach ($this->rows as $row)
 						?>
 					</td>
 					<td>
-						<?php echo JText::sprintf('%.1f hours ago', (time() - $row->time)/3600.0); ?>
+						<?php echo JText::sprintf('COM_MEMBERS_WHOSONLINE_AGO', (time() - $row->time)/3600.0); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>
 		<?php else : ?>
 			<tr>
 				<td colspan="3">
-					<?php echo JText::_('Currently there are no users online.'); ?>
+					<?php echo JText::_('COM_MEMBERS_WHOSONLINE_NO_RESULTS'); ?>
 				</td>
 			</tr>
 		<?php endif; ?>

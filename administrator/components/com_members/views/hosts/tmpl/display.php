@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="hidden" name="task" value="add" />
 
 						<input type="text" name="host" value="" />
-						<input type="submit" value="<?php echo JText::_('ADD_HOST'); ?>" />
+						<input type="submit" value="<?php echo JText::_('COM_MEMBERS_HOSTS_ADD'); ?>" />
 					</td>
 				</tr>
 			</tbody>
@@ -53,22 +53,23 @@ defined('_JEXEC') or die('Restricted access');
 
 		<table class="paramlist admintable">
 			<tbody>
-<?php
-		if (count($this->rows) > 0)
-		{
-			foreach ($this->rows as $row)
-			{
-?>
-				<tr>
-					<td class="paramlist_key"><?php echo $row; ?></td>
-					<td class="paramlist_value"><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=remove&amp;host=<?php echo $row; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1"><?php echo JText::_('DELETE'); ?></a></td>
-				</tr>
-<?php
-			}
-		}
-?>
+				<?php
+				if (count($this->rows) > 0)
+				{
+					foreach ($this->rows as $row)
+					{
+						?>
+						<tr>
+							<td class="paramlist_key"><?php echo $row; ?></td>
+							<td class="paramlist_value"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=remove&host=' . $row . '&id=' . $this->id . '&' . JUtility::getToken() . '=1'); ?>"><?php echo JText::_('JACTION_DELETE'); ?></a></td>
+						</tr>
+						<?php
+					}
+				}
+				?>
 			</tbody>
 		</table>
+
 		<?php echo JHTML::_('form.token'); ?>
 	</form>
 </div>
