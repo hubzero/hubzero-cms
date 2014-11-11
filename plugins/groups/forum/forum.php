@@ -1303,7 +1303,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$juser = JFactory::getUser();
 		$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
 		$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n\r\n" ;
-		$prependtext .= $juser->name . " (". $juser->username . ") wrote:";
+		$prependtext .= ($model->anonymous) ? "Anonymous" : $juser->name . " (". $juser->username . ")";
+		$prependtext .= " wrote:";
 
 		$output = html_entity_decode(strip_tags($model->comment), ENT_COMPAT, 'UTF-8');
 		$output = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $output);
