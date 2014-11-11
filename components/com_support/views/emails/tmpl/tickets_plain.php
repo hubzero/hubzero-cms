@@ -34,8 +34,6 @@ defined('_JEXEC') or die('Restricted access');
 $juri = JURI::getInstance();
 $jconfig = JFactory::getConfig();
 
-$st = new SupportTags(JFactory::getDBO());
-
 $bdcolor = array(
 	'critical' => '#e9bcbc',
 	'major'    => '#e9e1bc',
