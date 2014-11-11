@@ -107,6 +107,10 @@ function CollectionsParseRoute($segments)
 		else
 		{
 			$vars['task'] = $segments[0];
+			if ($vars['task'] == 'reorder')
+			{
+				$vars['controller'] = 'posts';
+			}
 			if (isset($segments[1]))
 			{
 				if (is_numeric($segments[1]))

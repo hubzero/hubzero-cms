@@ -121,6 +121,9 @@
 		border: 1px solid #ddd\9; /* [!] IE 8 */
 		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 	}
+	.view-list .post {
+		width: auto;
+	}
 	@-moz-document url-prefix() {
 		.post {
 			width: 326px;
@@ -354,6 +357,7 @@
 		-webkit-transition: opacity 0.3s;
 		width: 100%;
 	}
+	.view-list .img-link img,
 	.full .img-link img {
 		width: auto;
 	}
@@ -415,12 +419,32 @@
 	.post table span.collection:before {
 		content: "\f005";
 	}
-	
+
 	.post .private:before {
 		content: "\f023";
 		font-family: "Fontcons";
 		color: #666;
 		margin-right: 0.2em;
+	}
+
+	.post .sort-handle {
+		background: rgba(0, 0, 0, 0.1);
+		text-shadow: 0 1px 0 #fff;
+		padding: 0.2em;
+		cursor: pointer;
+		position: absolute;
+		top: 0.5em;
+		right: 0.5em;
+		width: 1em;
+		height: 1em;
+		border-radius: 0.2em;
+		font-size: 1.5em;
+		text-align: center;
+	}
+	.post .sort-handle:before {
+		content: "\2195";
+		font-family: "Fontcons";
+		line-height: 1;
 	}
 
 	/* Comments */
@@ -651,6 +675,37 @@
 	}
 	.file-list li span.file-meta {
 		display: block;
+	}
+
+	p.overview .view-options {
+		text-align: right;
+	}
+	p.overview .view-options a {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		overflow: hidden;
+		white-space: nowrap;
+		color: #d0d0d0;
+		margin: 0.2em 0 0 0.5em;
+		font-size: 1.8em;
+		line-height: 1;
+		border: none;
+	}
+	p.overview .view-options a:hover,
+	p.overview .view-options a.selected {
+		color: #333;
+		border: none;
+	}
+	p.overview .view-options a:before {
+		text-align: center;
+		display: inline-block;
+	}
+	.icon-grid:before {
+		content: "\f00a";
+	}
+	.icon-list:before {
+		content: "\f039";
 	}
 
 /* Instructions */

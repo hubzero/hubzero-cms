@@ -337,6 +337,14 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 		{
 			$filters['access'] = (JFactory::getUser()->get('guest') ? 0 : array(0, 1));
 		}
+		if (!isset($filters['sort']))
+		{
+			if ($sort = $this->get('sort', 'created'))
+			{
+				$filters['sort'] = 'p.' . $sort;
+			}
+			$filters['sort_Dir'] = ($this->get('sort', 'created') == 'ordering' ? 'asc' : 'desc');
+		}
 
 		if (isset($filters['count']) && $filters['count'])
 		{
