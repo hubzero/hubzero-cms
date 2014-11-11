@@ -844,8 +844,8 @@ class ResourcesModelResource extends \Hubzero\Base\Object
 							case 'rating':   $key = 'rating';     break;
 							case 'ranking':  $key = 'ranking';    break;
 							case 'author':   $key = 'author';     break;
-						}
-						$res = array();*/
+						}*/
+						$res = array();
 						foreach ($this->children as $child)
 						{
 							if ($child->standalone)
