@@ -26,10 +26,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 // Add stylesheet
-$document = JFactory::getDocument();
-$document->addStyleSheet('plugins' . DS . 'publications' . DS . 'related' . DS . 'assets' . DS . 'css' . DS . 'related.css');
-
-$dateFormat = 'd M, Y';
+$this->css('assets/css/related.css');
 
 $juser = JFactory::getUser();
 $database = JFactory::getDBO();
@@ -118,7 +115,7 @@ else { ?>
 <?php } ?>
 								<tr>
 									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_DATE'); ?></th>
-									<td><?php echo JHTML::_('date',$line->published_up, $dateFormat); ?></td>
+									<td><?php echo JHTML::_('date',$line->published_up, 'd M, Y'); ?></td>
 								</tr>
 								<tr>
 									<th><?php echo JText::_('PLG_PUBLICATION_RELATED_AVG_RATING'); ?></th>
