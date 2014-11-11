@@ -34,6 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $useBlocks 	= $this->config->get('curation', 0);
 $webpath 	= $this->config->get('webpath');
 $abstract	= stripslashes($this->publication->abstract);
+$authorized = ($this->restricted && !$this->authorized) ? false : true;
 
 // Set the document description
 if ($this->publication->abstract)
@@ -170,11 +171,11 @@ $schema 	= $metaElements->getSchema();
 				$list = $attModel->listItems(
 					$elements,
 					$this->publication,
-					$this->authorized,
+					$authorized,
 					$append
 				);
 				?>
-				<h4 class="list-header"><?php echo $listLabel ? $listLabel : JText::_('COM_PUBLICATIONS_CONTENT_LIST'); ?><?php if ($showArchive) { ?><span class="viewalltypes archival-package"><a href="<?php echo $archiveUrl; ?>"><?php echo JText::_('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></span> <?php } ?></h4>
+				<h4 class="list-header"><?php echo $listLabel ? $listLabel : JText::_('COM_PUBLICATIONS_CONTENT_LIST'); ?><?php if ($showArchive && $authorized) { ?><span class="viewalltypes archival-package"><a href="<?php echo $archiveUrl; ?>"><?php echo JText::_('COM_PUBLICATIONS_ARCHIVE_PACKAGE'); ?></a></span> <?php } ?></h4>
 				<div class="pub-content">
 					<?php echo $list; ?>
 				</div>

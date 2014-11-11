@@ -788,6 +788,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$view->publication 	= $publication;
 			$view->helper 		= $helper;
 			$view->authorized 	= $authorized;
+			$view->restricted 	= $restricted;
 			$view->version 		= $version;
 			$view->usersgroups 	= $usersgroups;
 			$view->sections 	= $sections;

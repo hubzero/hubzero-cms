@@ -25,6 +25,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 // Which layout?
 $launcherLayout  = $this->config->get('launcher_layout', 0);
+$authorized = ($this->restricted && !$this->authorized) ? false : true;
 
 $juser = JFactory::getUser();
 $html = '';
@@ -148,7 +149,7 @@ else
 				$this->publication,
 				$element,
 				$elements,
-				$this->authorized
+				$authorized
 			);
 
 			$html .= $launcher;
