@@ -2,6 +2,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $this->css()
+     ->css('jquery.fancybox.css', 'system')
      ->js();
 ?>
 <header id="content-header"><h2><?php echo $this->title; ?></h2></header><!-- / #content-header -->

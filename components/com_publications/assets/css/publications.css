@@ -538,8 +538,8 @@
 		padding: 0;
 		margin: 0;
 	}
-	.com_publications #abox-content {
-		text-align: center;
+	#abox-content {
+		text-align: left !important;
 	}
 	.tabbed #abox-content div.sample {
 		/* display: none; */
