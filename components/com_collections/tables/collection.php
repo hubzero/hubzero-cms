@@ -32,106 +32,15 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Table class for forum posts
+ * Table class for collections
  */
 class CollectionsTableCollection extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title     = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $alias     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $object_id  = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $object_type = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $state  = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $access = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $is_default = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $positive = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $negative = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -141,8 +50,10 @@ class CollectionsTableCollection extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True on success
+	 * @param   mixed    $oid          Record alias
+	 * @param   integer  $object_id    Object ID
+	 * @param   string   $object_type  Object type
+	 * @return  boolean  True on success
 	 */
 	public function load($oid=NULL, $object_id=null, $object_type=null)
 	{
@@ -156,35 +67,29 @@ class CollectionsTableCollection extends JTable
 			return parent::load($oid);
 		}
 
-		$oid = trim($oid);
+		$fields = array(
+			'alias'  => trim($oid)
+		);
 
 		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid);
 		if ($object_id !== null)
 		{
-			$query .= " AND object_id=" . $this->_db->Quote(intval($object_id));
+			$fields['object_id'] = intval($object_id);
 		}
 		if ($object_type !== null)
 		{
-			$query .= " AND object_type=" . $this->_db->Quote(strtolower(trim($object_type)));
+			$fields['object_type'] = strtolower(trim($object_type));
 		}
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
 	 * Load a record by its alias and bind data to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True upon success, False if errors
+	 * @param   integer  $object_id    Object ID
+	 * @param   string   $object_type  Object type
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadDefault($object_id=null, $object_type=null)
 	{
@@ -192,28 +97,22 @@ class CollectionsTableCollection extends JTable
 		{
 			return false;
 		}
-		$object_id   = intval($object_id);
-		$object_type = trim($object_type);
 
-		$query = "SELECT * FROM $this->_tbl WHERE object_id=" . $this->_db->Quote($object_id) . " AND object_type=" . $this->_db->Quote($object_type) . " AND is_default=" . $this->_db->Quote('1') . " LIMIT 1";
+		$fields = array(
+			'object_id'   => intval($object_id),
+			'object_type' => trim($object_type),
+			'is_default'  => 1
+		);
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
 	 * Populate the object with default data
 	 *
-	 * @param      integer $group ID of group the data belongs to
-	 * @return     boolean True if data is bound to $this object
+	 * @param   integer  $object_id    Object ID
+	 * @param   string   $object_type  Object type
+	 * @return  boolean  True if data is bound to $this object
 	 */
 	public function setup($object_id=0, $object_type='')
 	{
@@ -253,7 +152,7 @@ class CollectionsTableCollection extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -264,10 +163,7 @@ class CollectionsTableCollection extends JTable
 			return false;
 		}
 
-		//if (!$this->alias)
-		//{
-			$this->alias = str_replace(' ', '-', strtolower($this->title));
-		//}
+		$this->alias = str_replace(' ', '-', strtolower($this->title));
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
 		$this->object_id = intval($this->object_id);
@@ -322,8 +218,8 @@ class CollectionsTableCollection extends JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -380,22 +276,14 @@ class CollectionsTableCollection extends JTable
 			$where[] = "b.is_default=" . $this->_db->Quote(intval($filters['is_default']));
 		}
 
-		/*if (isset($filters['object_id']) && $filters['object_id'] && isset($filters['object_type']) && $filters['object_type'])
+		if (isset($filters['object_id']) && $filters['object_id'])
 		{
-			$where[] = "((b.object_id=" . $this->_db->Quote(intval($filters['object_id'])) . " AND b.object_type=" . $this->_db->Quote($filters['object_type']) . ")
-						OR b.id IN (SELECT following_id FROM #__collections_following WHERE follower_id=" . $this->_db->Quote(intval($filters['object_id'])) . " AND follower_type=" . $this->_db->Quote($filters['object_type'])  . " AND following_type='collection'))";
+			$where[] = "b.object_id=" . $this->_db->Quote(intval($filters['object_id']));
 		}
-		else
-		{*/
-			if (isset($filters['object_id']) && $filters['object_id'])
-			{
-				$where[] = "b.object_id=" . $this->_db->Quote(intval($filters['object_id']));
-			}
-			if (isset($filters['object_type']) && $filters['object_type'])
-			{
-				$where[] = "b.object_type=" . $this->_db->Quote($filters['object_type']);
-			}
-		//}
+		if (isset($filters['object_type']) && $filters['object_type'])
+		{
+			$where[] = "b.object_type=" . $this->_db->Quote($filters['object_type']);
+		}
 
 		if (isset($filters['created']) && $filters['created'])
 		{
@@ -413,8 +301,7 @@ class CollectionsTableCollection extends JTable
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
@@ -424,8 +311,8 @@ class CollectionsTableCollection extends JTable
 	 * Return data based on a set of filters. Returned value 
 	 * can be integer, object, or array
 	 * 
-	 * @param   string $what
-	 * @param   array  $filters
+	 * @param   string  $what
+	 * @param   array   $filters
 	 * @return  mixed
 	 */
 	public function find($what='', $filters=array())
@@ -523,8 +410,8 @@ class CollectionsTableCollection extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -534,8 +421,8 @@ class CollectionsTableCollection extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{

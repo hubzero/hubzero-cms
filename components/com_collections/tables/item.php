@@ -37,108 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class CollectionsTableItem extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title      = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $url   = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $state      = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $access     = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $positive   = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $negative   = NULL;
-
-	/**
-	 * varchar(150)
-	 *
-	 * @var string
-	 */
-	var $type   = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $object_id  = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -148,7 +50,7 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -191,8 +93,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Description
-	 * @return     boolean True on success
+	 * @param   string   $oid  Description
+	 * @return  boolean  True on success
 	 */
 	public function loadByDescription($oid=NULL)
 	{
@@ -206,8 +108,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Title
-	 * @return     boolean True on success
+	 * @param   string   $oid  Title
+	 * @return  boolean  True on success
 	 */
 	public function loadByTitle($oid=NULL)
 	{
@@ -221,8 +123,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Load a record by its alias and bind data to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True upon success, False if errors
+	 * @param   string   $oid  Record alias
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadType($object_id=null, $object_type=null)
 	{
@@ -329,8 +231,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -409,8 +311,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -420,8 +322,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -431,8 +333,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Get a repost count
 	 *
-	 * @param      mixed   $id
-	 * @return     integer
+	 * @param   mixed    $id
+	 * @return  integer
 	 */
 	public function getReposts($id=null)
 	{
@@ -461,8 +363,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getVote($id=null)
 	{
@@ -487,15 +389,11 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Get a total of all likes
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getLikes($filters=array())
 	{
-		//$filters['limit'] = 0;
-
-		//$query = "SELECT SUM(b.positive) " . $this->buildQuery($filters);
-
 		if (isset($filters['object_id']))
 		{
 			$query = "SELECT positive FROM `$this->_tbl` WHERE type=" . $this->_db->Quote($filters['object_type']) . " AND object_id=" . $this->_db->Quote($filters['object_id']);
@@ -512,15 +410,11 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Get a total of all dislikes
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getDislikes($filters=array())
 	{
-		//$filters['limit'] = 0;
-
-		//$query = "SELECT SUM(b.negative) " . $this->buildQuery($filters);
-
 		if (isset($filters['object_id']))
 		{
 			$query = "SELECT negative FROM `$this->_tbl` WHERE type=" . $this->_db->Quote($filters['object_type']) . " AND object_id=" . $this->_db->Quote($filters['object_id']);
@@ -537,8 +431,8 @@ class CollectionsTableItem extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getTrending($filters=array())
 	{

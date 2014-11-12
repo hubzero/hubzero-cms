@@ -37,73 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class CollectionsTableAsset extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $item_id = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $filename    = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * int(2)
-	 *
-	 * @var integer
-	 */
-	var $state = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $type = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $ordering = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -113,7 +50,7 @@ class CollectionsTableAsset extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -145,31 +82,20 @@ class CollectionsTableAsset extends JTable
 			$this->created_by = JFactory::getUser()->get('id');
 			$this->state      = 1;
 
-			$this->ordering = $this->_getHighestOrdering($this->item_id) + 1;
+			$this->_db->setQuery("SELECT ordering FROM $this->_tbl WHERE item_id=" . $this->_db->Quote($this->item_id) . " ORDER BY ordering DESC LIMIT 1");
+
+			$this->ordering = (int) $this->_db->loadResult() + 1;
 		}
 
 		return true;
 	}
 
 	/**
-	 * Get the last page in the ordering
-	 *
-	 * @param      string  $gid    Group alias (cn)
-	 * @return     integer
-	 */
-	public function _getHighestOrdering($item_id)
-	{
-		$sql = "SELECT ordering from $this->_tbl WHERE item_id=" . $this->_db->Quote(intval($item_id)) . " ORDER BY ordering DESC LIMIT 1";
-		$this->_db->setQuery($sql);
-		return $this->_db->loadResult();
-	}
-
-	/**
 	 * Load a record
 	 *
-	 * @param      integer $oid     ID
-	 * @param      integer $item_id Item ID
-	 * @return     boolean True upon success, False if errors
+	 * @param   integer  $oid      ID
+	 * @param   integer  $item_id  Item ID
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function load($oid=null, $item_id=null)
 	{
@@ -190,8 +116,8 @@ class CollectionsTableAsset extends JTable
 	 * Return data based on a set of filters. Returned value 
 	 * can be integer, object, or array
 	 * 
-	 * @param   string $what
-	 * @param   array  $filters
+	 * @param   string  $what
+	 * @param   array   $filters
 	 * @return  mixed
 	 */
 	public function find($what='', $filters=array())
@@ -271,8 +197,8 @@ class CollectionsTableAsset extends JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -297,10 +223,6 @@ class CollectionsTableAsset extends JTable
 		{
 			$where[] = "a.filename=" . $this->_db->Quote($filters['filename']);
 		}
-		/*if (isset($filters['description']))
-		{
-			$where[] = "a.description=" . $this->_db->Quote($filters['description']);
-		}*/
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
 			$where[] = "(LOWER(a.filename) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
@@ -328,8 +250,8 @@ class CollectionsTableAsset extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -339,8 +261,8 @@ class CollectionsTableAsset extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
@@ -350,9 +272,9 @@ class CollectionsTableAsset extends JTable
 	/**
 	 * Rename a file and mark the record as "deleted"
 	 *
-	 * @param      integer $id   Entry ID
-	 * @param      string  $path File path
-	 * @return     boolean True on success, false on error
+	 * @param   integer  $id    Entry ID
+	 * @param   string   $path  File path
+	 * @return  boolean  True on success, false on error
 	 */
 	public function remove($id=null)
 	{
@@ -374,14 +296,11 @@ class CollectionsTableAsset extends JTable
 			return false;
 		}
 
-		//$UrlPtn = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
-		//if (!preg_match("/$UrlPtn/", $this->filename) && $this->filename != 'http://')
 		if ($this->type == 'file')
 		{
 			jimport('joomla.filesystem.file');
 
-			$config = JComponentHelper::getParams('com_collections');
-			$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->item_id;
+			$path = $this->path($this->item_id);
 
 			$ext = JFile::getExt($this->filename);
 			$fileRemoved = JFile::stripExt($this->filename) . uniqid('_d') . '.' . $ext;
@@ -417,8 +336,8 @@ class CollectionsTableAsset extends JTable
 	/**
 	 * Delete a record
 	 *
-	 * @param      integer $oid   Entry ID
-	 * @return     boolean True on success, false on error
+	 * @param   integer  $oid  Entry ID
+	 * @return  boolean  True on success, false on error
 	 */
 	public function delete($oid=null)
 	{
@@ -430,8 +349,7 @@ class CollectionsTableAsset extends JTable
 
 		$this->load($oid);
 
-		$config = JComponentHelper::getParams('com_collections');
-		$path = JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $this->item_id;
+		$path = $this->path($this->item_id);
 
 		jimport('joomla.filesystem.file');
 		if (!JFile::delete($path . DS . $this->filename))
@@ -440,5 +358,17 @@ class CollectionsTableAsset extends JTable
 		}
 
 		return parent::delete();
+	}
+
+	/**
+	 * Get file path
+	 *
+	 * @param   integer  $id  Entry ID
+	 * @return  string
+	 */
+	public function path($id=null)
+	{
+		$config = JComponentHelper::getParams('com_collections');
+		return JPATH_ROOT . DS . trim($config->get('filepath', '/site/collections'), DS) . DS . $id;
 	}
 }

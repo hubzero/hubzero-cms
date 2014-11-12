@@ -35,7 +35,11 @@ $this->juser = JFactory::getUser();
 
 $base = $this->member->getLink() . '&active=' . $this->name;
 
-$viewas = JRequest::getWord('viewas', $this->collection->get('layout', 'grid'));
+if (!$this->collection->get('layout'))
+{
+	$this->collection->set('layout', 'grid');
+}
+$viewas = JRequest::getWord('viewas', $this->collection->get('layout'));
 
 $this->css()
      ->js('jquery.masonry', 'com_collections')
@@ -91,8 +95,8 @@ $this->css()
 				<?php } ?>
 			<?php } ?>
 			<span class="view-options">
-				<a href="<?php echo JRoute::_($base . '&viewas=grid'); ?>" class="icon-grid<?php if ($viewas == 'grid') { echo ' selected'; } ?>" data-view="view-grid" title="<?php echo JText::_('Grid View'); ?>"><?php echo JText::_('Grid View'); ?></a>
-				<a href="<?php echo JRoute::_($base . '&viewas=list'); ?>" class="icon-list<?php if ($viewas == 'list') { echo ' selected'; } ?>" data-view="view-list" title="<?php echo JText::_('List View'); ?>"><?php echo JText::_('List View'); ?></a>
+				<a href="<?php echo JRoute::_($base . '&viewas=grid'); ?>" class="icon-grid<?php if ($viewas == 'grid') { echo ' selected'; } ?>" data-view="view-grid" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_GRID_VIEW'); ?>"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_GRID_VIEW'); ?></a>
+				<a href="<?php echo JRoute::_($base . '&viewas=list'); ?>" class="icon-list<?php if ($viewas == 'list') { echo ' selected'; } ?>" data-view="view-list" title="<?php echo JText::_('PLG_MEMBERS_COLLECTIONS_LIST_VIEW'); ?>"><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_LIST_VIEW'); ?></a>
 			</span>
 		</p>
 	<?php } ?>

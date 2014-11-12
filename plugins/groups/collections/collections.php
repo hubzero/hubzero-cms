@@ -1007,9 +1007,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		}
 		$row->set('_assets', JRequest::getVar('assets', null, 'post'));
 		$row->set('_tags', trim(JRequest::getVar('tags', '')));
+		$row->set('state', 1);
 		if (!$row->exists())
 		{
-			$row->set('state', 1);
 			$row->set('access', 0);
 		}
 

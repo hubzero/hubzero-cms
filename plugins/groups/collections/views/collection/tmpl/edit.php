@@ -69,6 +69,27 @@ $default = $this->params->get('access-plugin');
 			<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_DESCRIPTION'); ?>
 			<?php echo $this->editor('fields[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field-description', array('class' => 'minimal no-footer')); ?>
 		</label>
+
+		<div class="grid">
+			<div class="col span6">
+				<label for="field-layout"<?php if ($this->task == 'save' && !$this->entry->get('layout')) { echo ' class="fieldWithErrors"'; } ?>>
+					<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT'); ?>
+					<select name="fields[layout]" id="field-layout">
+						<option value="grid"<?php if ($this->entry->get('layout') == 'grid') { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_GRID'); ?></option>
+						<option value="list"<?php if ($this->entry->get('layout') == 'list') { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT_LIST'); ?></option>
+					</select>
+				</label>
+			</div>
+			<div class="col span6 omega">
+				<label for="field-sort"<?php if ($this->task == 'save' && !$this->entry->get('sort')) { echo ' class="fieldWithErrors"'; } ?>>
+					<?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_SORT'); ?>
+					<select name="fields[sort]" id="field-sort">
+						<option value="created"<?php if ($this->entry->get('sort') == 'created') { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_SORT_CREATED'); ?></option>
+						<option value="ordering"<?php if ($this->entry->get('sort') == 'ordering') { echo ' selected="selected"'; } ?>><?php echo JText::_('PLG_GROUPS_COLLECTIONS_FIELD_SORT_ORDERING'); ?></option>
+					</select>
+				</label>
+			</div>
+		</div>
 	</fieldset>
 
 	<input type="hidden" name="fields[id]" value="<?php echo $this->entry->get('id'); ?>" />

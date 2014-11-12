@@ -37,38 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class CollectionsTableVote extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $user_id  = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $item_id = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $voted      = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -78,9 +50,9 @@ class CollectionsTableVote extends JTable
 	/**
 	 * Load a record by its bulletin and user IDs
 	 *
-	 * @param      integer $item_id Bulletin ID
-	 * @param      integer $user_id     User ID
-	 * @return     boolean True upon success, False if errors
+	 * @param   integer  $item_id  Bulletin ID
+	 * @param   integer  $user_id  User ID
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadByBulletin($item_id=null, $user_id=null)
 	{
@@ -95,7 +67,7 @@ class CollectionsTableVote extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -118,8 +90,8 @@ class CollectionsTableVote extends JTable
 	/**
 	 * Get a total of all likes
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getLikes($filters=array())
 	{
@@ -157,8 +129,8 @@ class CollectionsTableVote extends JTable
 	/**
 	 * Get a total of all dislikes
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getDislikes($filters=array())
 	{

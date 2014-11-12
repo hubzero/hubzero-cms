@@ -37,59 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class CollectionsTablePost extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $collection_id = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $item_id = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $description = NULL;
-
-	/**
-	 * tinyint(2)
-	 *
-	 * @var integer
-	 */
-	var $original = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -99,9 +50,9 @@ class CollectionsTablePost extends JTable
 	/**
 	 * Load a record by its collection and item IDs
 	 *
-	 * @param      integer $collection_id
-	 * @param      integer $item_id
-	 * @return     boolean True upon success, False if errors
+	 * @param   integer  $collection_id
+	 * @param   integer  $item_id
+	 * @return  boolean  True upon success, False if errors
 	 */
 	public function loadByBoard($collection_id=null, $item_id=null)
 	{
@@ -116,7 +67,7 @@ class CollectionsTablePost extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -138,6 +89,14 @@ class CollectionsTablePost extends JTable
 		{
 			$this->created    = JFactory::getDate()->toSql();
 			$this->created_by = JFactory::getUser()->get('id');
+
+			if (!$this->ordering)
+			{
+				$this->_db->setQuery("SELECT MAX(ordering)+1 FROM $this->_tbl WHERE collection_id=" . $this->_db->Quote($this->collection_id));
+
+				$this->ordering = $this->_db->loadResult();
+				$this->ordering = ($this->ordering ?: 1);
+			}
 		}
 
 		return true;
@@ -147,8 +106,8 @@ class CollectionsTablePost extends JTable
 	 * Return data based on a set of filters. Returned value 
 	 * can be integer, object, or array
 	 * 
-	 * @param   string $what
-	 * @param   array  $filters
+	 * @param   string  $what
+	 * @param   array   $filters
 	 * @return  mixed
 	 */
 	public function find($what='', $filters=array())
@@ -245,8 +204,8 @@ class CollectionsTablePost extends JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -321,8 +280,7 @@ class CollectionsTablePost extends JTable
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
@@ -331,8 +289,8 @@ class CollectionsTablePost extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
@@ -342,8 +300,8 @@ class CollectionsTablePost extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{

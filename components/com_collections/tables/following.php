@@ -37,52 +37,10 @@ defined('_JEXEC') or die('Restricted access');
 class CollectionsTableFollowing extends JTable
 {
 	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id         = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $follower_type = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $follower_id = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created    = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $following_type = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $following_id = NULL;
-
-	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -92,8 +50,11 @@ class CollectionsTableFollowing extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True on success
+	 * @param   string   $oid             Record alias
+	 * @param   string   $following_type  Following type
+	 * @param   string   $follower_id     Follower ID
+	 * @param   string   $follower_type   Follower type
+	 * @return  boolean  True on success
 	 */
 	public function load($oid=NULL, $following_type=null, $follower_id=null, $follower_type=null)
 	{
@@ -126,7 +87,7 @@ class CollectionsTableFollowing extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
@@ -162,8 +123,8 @@ class CollectionsTableFollowing extends JTable
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -190,8 +151,7 @@ class CollectionsTableFollowing extends JTable
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
@@ -200,8 +160,8 @@ class CollectionsTableFollowing extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function count($filters=array())
 	{
@@ -216,8 +176,8 @@ class CollectionsTableFollowing extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function find($filters=array())
 	{

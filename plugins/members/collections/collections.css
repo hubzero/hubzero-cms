@@ -79,10 +79,10 @@
 	fieldset.filters {
 		margin: -20px -20px 20px -20px;
 		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-ms-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
 		border-bottom: 1px solid #ddd;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	}
@@ -112,10 +112,10 @@
 		font-size: 90%;
 		background-color: #fff;
 		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		-moz-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		   -moz-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		    -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		margin: 0 10px 20px 10px;
 		width: 332px;
 		border: 1px solid #ddd\9; /* [!] IE 8 */
@@ -140,7 +140,6 @@
 		width: 327px;
 	}
 	.post.collection {
-		/*float: left;*/
 		z-index: 1;
 		background: #fff;
 	}
@@ -173,10 +172,10 @@
 
 	.post:hover {
 		-webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-		-moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-		-ms-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-		-o-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+		   -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+		    -ms-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+		     -o-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+		        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 	}
 	.post .content {
 		padding: 15px 15px 0 15px;
@@ -193,19 +192,12 @@
 		text-shadow: 0 1px 1px #fff;
 	}
 	.private .content:after {
-		position: absolute;
 		bottom: 0.7em;
-		right: 1.4em;
-		font-family: "Fontcons";
 		content: "\f023";
-		color: #9c9c9c;
-		text-shadow: 0 1px 1px #fff;
 	}
-	
 	.post .meta {
 		position: relative;
 	}
-
 	.post .stats {
 		overflow: hidden;
 		border-bottom: 1px solid #d4d4d4;
@@ -226,7 +218,6 @@
 		margin: 0;
 		padding: 1em 1.2em 0em 1.2em;
 		font-size: 1.2em;
-		/*border-bottom: 1px solid #f0f0f0;*/
 	}
 	.post .holder {
 		padding: 1em 1.4em 1em 1.4em;
@@ -279,10 +270,10 @@
 		margin: 0.5em 0.2em 0 0.2em;
 		padding: 0.3em .7em;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		color: inherit;
 		border: 1px solid #bbb;
 		background-color: #ededed;
@@ -311,7 +302,7 @@
 		font-family: "Fontcons";
 	}
 	.post .actions a.repost:before {
-		content: "\f005"; /*"\21BB";*/
+		content: "\f005";
 	}
 	.post .actions a.unpost:before {
 		content: "\2298";
@@ -364,61 +355,6 @@
 	.post .img-link {
 		position: relative;
 	}
-	/* Tables */
-	.post table {
-		border: none;
-		margin: 0;
-	}
-	.post table tr td {
-		text-align: center;
-		border: none;
-		border-top: 1px solid #f0f0f0;
-		border-left: 1px solid #f0f0f0;
-		font-size: 1.2em;
-		color: #999;
-	}
-	.post table tr td:first-child {
-		border-left: none;
-	}
-	.post table strong {
-		font-size: 2em;
-		font-weight: normal;
-	}
-	.post table span {
-		margin: 0;
-		padding: 0;
-		display: inline-block;
-		width: 1em;
-		height: 1em;
-		overflow: hidden;
-		line-height: 1;
-	}
-	.post table span:before {
-		content: "";
-		font-family: "Fontcons";
-		margin-right: 1em;
-		color: #bbb;
-	}
-	.post table span.link:before {
-		content: "\26D3";
-	}
-	.post table span.link {
-		margin: 0;
-		padding: 0;
-		font-size: 1em;
-	}
-	.post table span.file:before {
-		content: "\f016";
-	}
-	.post table span.text:before {
-		content: "\f036";
-	}
-	.post table span.image:before {
-		content: "\f03e";
-	}
-	.post table span.collection:before {
-		content: "\f005";
-	}
 
 	.post .private:before {
 		content: "\f023";
@@ -427,6 +363,7 @@
 		margin-right: 0.2em;
 	}
 
+	/* Sorting handle */
 	.post .sort-handle {
 		background: rgba(0, 0, 0, 0.1);
 		text-shadow: 0 1px 0 #fff;
@@ -445,6 +382,9 @@
 		content: "\2195";
 		font-family: "Fontcons";
 		line-height: 1;
+	}
+	.view-grid .post .sort-handle {
+		display: none;
 	}
 
 	/* Comments */
@@ -560,10 +500,10 @@
 		padding: 0 0.5em;
 		margin-right: 0.2em;
 		-webkit-border-radius: 0.25em 0 0 0.25em;
-		-moz-border-radius: 0.25em 0 0 0.25em;
-		-ms-border-radius: 0.25em 0 0 0.25em;
-		-o-border-radius: 0.25em 0 0 0.25em;
-		border-radius: 0.25em 0 0 0.25em;
+		   -moz-border-radius: 0.25em 0 0 0.25em;
+		    -ms-border-radius: 0.25em 0 0 0.25em;
+		     -o-border-radius: 0.25em 0 0 0.25em;
+		        border-radius: 0.25em 0 0 0.25em;
 		content: "\21BB";
 	}
 	.btn.repost:before {
@@ -604,7 +544,7 @@
 	.entry-details .count {
 		margin-right: 1em;
 	}
-	.colormuted, 
+	.colormuted,
 	.colormuted a {
 		color: #4d4d4d;
 	}
@@ -631,7 +571,6 @@
 	.collection .content:after {
 		content: "\f005";
 	}
-	
 	.deleted .content:after {
 		content: "\f014";
 	}
@@ -677,6 +616,7 @@
 		display: block;
 	}
 
+	/* Layout icons */
 	p.overview .view-options {
 		text-align: right;
 	}
@@ -714,10 +654,10 @@
 		margin: 3em auto;
 		background-color: #fff;
 		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		-moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
-		-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
-		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		   -moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		    -ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		     -o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		        box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
 		border: 1px solid #ddd\9; /* [!] IE 8 */
 		*border: 1px solid #ddd\9; /* [!] IE 7,6 */
 	}
@@ -853,16 +793,13 @@
 		color: #bbb;
 		text-shadow: 0 1px 0 #FFF;
 		padding: 0;
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		-ms-border-radius: 3px;
-		-o-border-radius: 3px;
-		border-radius: 3px;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		font-size: 1.5em;
 	}
-	/*.asset-uploader:hover {
-		border: 3px solid #333;
-	}*/
 	.asset-uploader .columns {
 		margin-top: 0;
 		padding-top: 0;
@@ -885,15 +822,11 @@
 		display: block;
 		position: absolute;
 		top: -0.2em;
-		left: -1.1em;
-		left: -0.2em;
+		left: 0;
 		font-family: "Fontcons";
-		content: "\f08c"; /*"\f046";*/
 		font-size: 1.5em;
 		line-height: 1;
-		
 		content: "\f016";
-		left: 0;
 	}
 	.linker-button span:before {
 		font-size: 1.5em;
@@ -904,7 +837,6 @@
 	.qq-upload-button:hover,
 	.qq-upload-drop-area:hover,
 	.qq-upload-drop-area-active {
-		/*background: #fdfce4;*/
 		border: 3px solid #333;
 		color: #333;
 		cursor: pointer;
@@ -918,7 +850,7 @@
 	.qq-upload-list {
 		display: none;
 	}
-	
+
 	#sbox-content #hubForm.full fieldset {
 		margin: 0;
 	}
@@ -941,10 +873,10 @@
 	#sbox-content .post {
 		margin: 0;
 		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-ms-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
 	}
 	#sbox-content .post .description {
 		font-size: 1.1em;
@@ -969,10 +901,10 @@
 	.post-modal .fancybox-outer,
 	.post-modal .fancybox-inner {
 		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-ms-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
 		background: transparent;
 	}
 
@@ -989,10 +921,10 @@
 	.new-collection:hover {
 		background: transparent;
 		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-ms-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
 	}
 	.new-post a,
 	.new-collection a {
@@ -1006,10 +938,10 @@
 		margin: 0;
 		padding: 4em 2em 2em 2em;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		font-size: 1.5em;
 		line-height: 1;
 		position: relative;
@@ -1032,10 +964,10 @@
 		color: #333;
 		cursor: pointer;
 		-webkit-box-shadow: none;
-		-moz-box-shadow: none;
-		-ms-box-shadow: none;
-		-o-box-shadow: none;
-		box-shadow: none;
+		   -moz-box-shadow: none;
+		    -ms-box-shadow: none;
+		     -o-box-shadow: none;
+		        box-shadow: none;
 	}
 	.instructions .new-post,
 	.instructions .new-collection {
