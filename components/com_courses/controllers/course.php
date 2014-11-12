@@ -293,7 +293,6 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$data = JRequest::getVar('course', array(), 'post', 'none', 2);
-		$tags = trim(JRequest::getVar('tags', ''));
 
 		$course = CoursesModelCourse::getInstance($data['id']);
 
@@ -335,7 +334,11 @@ class CoursesControllerCourse extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$course->tag($tags, $this->juser->get('id'));
+		if (isset($_POST['tags']))
+		{
+			$tags = trim(JRequest::getVar('tags', ''));
+			$course->tag($tags, $this->juser->get('id'));
+		}
 
 		// Rename the temporary upload directory if it exist
 		if ($isNew)

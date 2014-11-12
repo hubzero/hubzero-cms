@@ -108,14 +108,6 @@
 		background: #f1f1f1;
 		text-align: center;
 	}
-	p.course-identity.with-enrollment {
-		margin: 30px 0 0 0;
-		-webkit-border-radius: 0.25em 0.25em 0 0;
-		   -moz-border-radius: 0.25em 0.25em 0 0;
-		    -ms-border-radius: 0.25em 0.25em 0 0;
-		     -o-border-radius: 0.25em 0.25em 0 0;
-		        border-radius: 0.25em 0.25em 0 0;
-	}
 	p.course-identity span:after {
 		content: "\f09c";
 		font-family: "Fontcons";
@@ -131,31 +123,13 @@
 		width: 100%;
 		*width: auto;
 	}
-	p.course-enrollment {
-		text-align: center;
-		background: #ececec;
-		-webkit-border-radius: 0 0 0.25em 0.25em;
-		   -moz-border-radius: 0 0 0.25em 0.25em;
-		    -ms-border-radius: 0 0 0.25em 0.25em;
-		     -o-border-radius: 0 0 0.25em 0.25em;
-		        border-radius: 0 0 0.25em 0.25em;
-		padding: 1em;
-		margin: 0 0 30px 0;
-		color: #999;
-	}
-	p.course-enrollment strong {
-		color: #333;
-	}
 
 /* Offering info */
-	.offering-info {
+	.course-summary {
 		margin: 30px 0 30px 0;
 		background: #333;
-		color: #fff;
 		padding: 0.27em;
 		color: #bbb;
-		border: 0.27em solid #504545;
-		font-weight: 700;
 		-webkit-border-radius: 0.27em;
 		   -moz-border-radius: 0.27em;
 		    -ms-border-radius: 0.27em;
@@ -174,42 +148,52 @@
 		     -o-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
 		        box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.15);
 	}
-	.offering-info:hover {
+	.course-summary:hover {
 		-webkit-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
 		   -moz-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
 		    -ms-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
 		     -o-box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
 		        box-shadow: inset 0 0 0 0.27em rgba(255, 255, 255, 0.2), inset 0 0 46.97em rgba(0, 0, 0, 0.5);
 	}
-	.offering-info table {
+	form.course-summary {
+		padding: 1em;
+	}
+	form.course-summary label input {
+		background: #fff;
+	}
+	.course-summary table {
 		border: none;
+		font-size: 90%;
 	}
-	.offering-info table tbody th {
-		border-right: 1px solid #5c5d62;
+	.course-summary table tbody th,
+	.course-summary table tbody td {
+		border: none;
 		border-bottom: 1px solid #5c5d62;
+		padding: 0.618em 1em;
 	}
-	.offering-info table tbody td {
-		border-bottom: 1px solid #5c5d62;
-		font-weight: normal;
+	.course-summary table tbody td {
+		text-align: right;
 	}
-	.offering-info p {
+	.course-summary p {
 		margin: 1em;
 		text-align: center;
 	}
-	.offering-info .btn-group-wrap {
+
+	.course-summary .btn-group-wrap {
 		margin: 1em;
 	}
-	.offering-info .btn-group {
+	.course-summary .btn-group {
 		display: block;
 	}
-	.offering-info .btn {
+	.course-summary .btn {
 		-webkit-box-sizing: border-box;
 		   -moz-box-sizing: border-box;
 		    -ms-box-sizing: border-box;
 		     -o-box-sizing: border-box;
 		        box-sizing: border-box;
 	}
-	.offering-info .btn.enroll {
+	.course-summary .btn-group .btn,
+	.course-summary .btn.enroll {
 		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
 		color: #996633;
 		text-shadow: 0px 1px 0px #fedd9b;
@@ -224,7 +208,7 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71,endColorstr=#febe4d);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#feda71, endColorstr=#febe4d)";
 	}
-	.offering-info .btn.preview {
+	.course-summary .btn.preview {
 		border-color: #c6edf9 #64b3cc #64b3cc #c6edf9;
 		color: #41788c;
 		text-shadow: 0px 1px 0px #bfeafb;
@@ -239,21 +223,20 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#aae5f7,endColorstr=#73d0f1);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#aae5f7, endColorstr=#73d0f1)";
 	}
-	.offering-info .btn.preview,
-	.offering-info .btn.enroll,
-	.offering-info .btn.access {
+	.course-summary .btn.preview,
+	.course-summary .btn.enroll,
+	.course-summary .btn.access {
 		display: block;
 		width: 100%;
 	}
 
-	.offering-info .btn-group .btn {
+	.course-summary .btn-group .btn {
 		width: 80%;
 		float: left;
-		/*white-space: normal;*/
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
-	.offering-info .btn-group .btn.dropdown-toggle {
+	.course-summary .btn-group .btn.dropdown-toggle {
 		width: 20%;
 		border-left-color: #996633;
 	}
@@ -269,7 +252,8 @@
 	.btn-group .dropdown-menu li a:before {
 		display: none;
 	}
-	.offering-info .btn.enroll:hover {
+	.course-summary .btn-group .btn:hover,
+	.course-summary .btn.enroll:hover {
 		border-color: #fee9aa #b98a37 #b98a37 #fee9aa;
 		color: #996633;
 		background: #febe4d;
@@ -283,7 +267,7 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d,endColorstr=#feda71);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#febe4d, endColorstr=#feda71)";
 	}
-	.offering-info .btn.preview:hover {
+	.course-summary .btn.preview:hover {
 		border-color: #c6edf9 #64b3cc #64b3cc #c6edf9;
 		color: #41788c;
 		background: #73d0f1;
@@ -297,7 +281,7 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#73d0f1,endColorstr=#aae5f7);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#73d0f1, endColorstr=#aae5f7)";
 	}
-	.offering-info strong {
+	.course-summary strong {
 		font-size: 2em;
 		display: block;
 		text-align: center;

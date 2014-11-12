@@ -267,8 +267,8 @@ class CoursesTableSection extends JTable
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string  Database query
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -294,7 +294,15 @@ class CoursesTableSection extends JTable
 
 		if (isset($filters['enrollment']))
 		{
-			$where[] = "os.enrollment=" . $this->_db->Quote(intval($filters['enrollment']));
+			$filters['enrollment'] = array_map('intval', $filters['enrollment']);
+			if (is_array($filters['enrollment']))
+			{
+				$where[] = "os.enrollment IN (" . implode(',', $filters['enrollment']) . ")";
+			}
+			else
+			{
+				$where[] = "os.enrollment=" . $this->_db->Quote(intval($filters['enrollment']));
+			}
 		}
 
 		if (isset($filters['search']) && $filters['search'])
@@ -311,10 +319,37 @@ class CoursesTableSection extends JTable
 			$where[] = "(os.publish_down = '0000-00-00 00:00:00' OR os.publish_down >= " . $this->_db->Quote($now) . ")";
 		}
 
+		if (isset($filters['started']))
+		{
+			$now = JFactory::getDate()->toSql();
+
+			if ($filters['started'] === true)
+			{
+				$where[] = "(os.start_date = '0000-00-00 00:00:00' OR os.start_date <= " . $this->_db->Quote($now) . ")";
+			}
+			else if ($filters['started'] === false)
+			{
+				$where[] = "(os.start_date != '0000-00-00 00:00:00' AND os.start_date > " . $this->_db->Quote($now) . ")";
+			}
+		}
+
+		if (isset($filters['ended']))
+		{
+			$now = JFactory::getDate()->toSql();
+
+			if ($filters['ended'] === true)
+			{
+				$where[] = "(os.end_date != '0000-00-00 00:00:00' AND os.end_date < " . $this->_db->Quote($now) . ")";
+			}
+			else if ($filters['ended'] === false)
+			{
+				$where[] = "(os.end_date = '0000-00-00 00:00:00' OR os.end_date >= " . $this->_db->Quote($now) . ")";
+			}
+		}
+
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
