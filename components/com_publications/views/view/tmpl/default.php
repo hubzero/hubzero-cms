@@ -27,7 +27,6 @@ $this->css()
 	 ->css('jquery.fancybox.css', 'system')
      ->js();
 $authorized = ($this->restricted && !$this->authorized) ? false : true;
-
 $html = '';
 
 // New launcher layout?
@@ -50,10 +49,11 @@ if ($this->config->get('launcher_layout', 0))
 	     ->display();
 }
 else
-{
-	$html  = '<section class="main upperpane">'."\n";
-	$html .= '<div class="aside rankarea">'."\n";
+{ ?>
+	<section class="main upperpane">
+		<div class="aside rankarea">
 
+	<?php
 	// Show stats
 	$statshtml = '';
 	$this->helper->getCitations();
@@ -102,34 +102,28 @@ else
 		$xtra = '<p class="supported"><a href="'.$link.'">'.$tag->raw_tag.'</a></p>';
 	}
 
-	$html .= PublicationsHtml::metadata($this->option, $this->params, $this->publication,
-		$statshtml, $this->sections, $this->version, $xtra, $this->lastPubRelease);
-	$html .= '</div><!-- / .aside -->'."\n";
-	$html .= '<div class="subject">'."\n";
-	$html .= ' <div class="overviewcontainer">'."\n";
-	$html .= PublicationsHtml::title( $this->option, $this->publication );
+	echo PublicationsHtml::metadata($this->option, $this->params, $this->publication,
+		$statshtml, $this->sections, $this->version, $xtra, $this->lastPubRelease); ?>
 
+	</div><!-- / .aside -->
+	<div class="subject">
+		<div class="overviewcontainer">
+			<?php echo PublicationsHtml::title( $this->option, $this->publication ); ?>
+<?php
 	// Display authors
-	if ($this->params->get('show_authors')) {
-		if ($this->authors) {
-			$html .= '<div id="authorslist">'."\n";
-			$html .= $this->helper->showContributors( $this->authors, true, false, false, $this->params->get('format_authors', 0) )."\n";
-			$html .= '</div>'."\n";
-		}
-	}
+	if ($this->params->get('show_authors') && $this->authors) { ?>
+		<div id="authorslist">
+			<?php echo $this->helper->showContributors($this->authors, true, false, false, false, $this->params->get('format_authors', 0)); ?>
+		</div>
+	<?php }	?>
+	<p class="ataglance"><?php echo $this->publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->abstract), 250) : ''; ?></p>
 
-	// Display mini abstract
-	$html .= '<p class="ataglance">';
-	$html .= $this->publication->abstract ? \Hubzero\Utility\String::truncate(stripslashes($this->publication->abstract), 250) : '';
-	$html .= '</p>'."\n";
-
+<?php
 	// Show published date and category
-	$html .= PublicationsHtml::showSubInfo( $this->publication, $this->option );
-
-	$html .= ' </div><!-- / .overviewcontainer -->'."\n";
-	$html .= ' <div class="aside launcharea">'."\n";
-	$feeds = '';
-
+	echo PublicationsHtml::showSubInfo( $this->publication, $this->option ); ?>
+		</div><!-- / .overviewcontainer -->
+		<div class="aside launcharea">
+<?php
 	// Sort out primary files and draw a launch button
 	if ($this->config->get('curation', 0) && $this->tab != 'play' && $this->params->get('curated') != 2)
 	{
