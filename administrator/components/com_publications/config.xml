@@ -39,6 +39,7 @@
 		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder thumbnail image for video-type files in publication gallery" />
 		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder thumbnail image for image-type files in publication gallery" />
 		<field name="email_image" type="text" menu="hide" default="" label="Email header image (http://)" description="Default image for HTML email header - use full address starting with http://" />
+		<field name="masterimage" type="text" menu="hide" default="" label="Default master image" description="Default image for publication page cover" />
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
 		<field name="documentation" type="text" menu="hide" default="" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
 		<field name="deposit_terms" type="text" menu="hide" default="" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
