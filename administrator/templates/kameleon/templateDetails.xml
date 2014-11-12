@@ -33,6 +33,7 @@
 					<option value="dark">TPL_KAMELEON_FIELD_HEADER_DARK</option>
 				</field>
 				<field name="theme" type="list" default="" label="TPL_KAMELEON_FIELD_THEME_LABEL" description="TPL_KAMELEON_FIELD_THEME_DESC">
+					<option value="custom">TPL_KAMELEON_FIELD_THEME_CUSTOM</option>
 					<option value="">TPL_KAMELEON_FIELD_THEME_GRAY</option>
 					<option value="charcoal">TPL_KAMELEON_FIELD_THEME_CHARCOAL</option>
 					<option value="blue">TPL_KAMELEON_FIELD_THEME_BLUE</option>
@@ -40,14 +41,18 @@
 					<option value="aqua">TPL_KAMELEON_FIELD_THEME_AQUA</option>
 					<option value="green">TPL_KAMELEON_FIELD_THEME_GREEN</option>
 					<option value="olive">TPL_KAMELEON_FIELD_THEME_OLIVE</option>
+					<option value="lime">TPL_KAMELEON_FIELD_THEME_LIME</option>
 					<option value="orange">TPL_KAMELEON_FIELD_THEME_ORANGE</option>
 					<option value="red">TPL_KAMELEON_FIELD_THEME_RED</option>
 					<option value="wine">TPL_KAMELEON_FIELD_THEME_WINE</option>
 					<option value="salmon">TPL_KAMELEON_FIELD_THEME_SALMON</option>
+					<option value="pink">TPL_KAMELEON_FIELD_THEME_PINK</option>
+					<option value="purplepowder">TPL_KAMELEON_FIELD_THEME_PURPLEPOWDER</option>
 					<option value="purple">TPL_KAMELEON_FIELD_THEME_PURPLE</option>
 					<option value="grape">TPL_KAMELEON_FIELD_THEME_GRAPE</option>
 					<option value="yellow">TPL_KAMELEON_FIELD_THEME_YELLOW</option>
 				</field>
+				<field name="color" type="color" default="" label="TPL_KAMELEON_FIELD_COLOR_LABEL" description="TPL_KAMELEON_FIELD_COLOR_DESC" />
 			</fieldset>
 		</fields>
 	</config>

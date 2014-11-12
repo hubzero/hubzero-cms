@@ -36,9 +36,17 @@ $app = JFactory::getApplication();
 // Load base styles
 $this->addStyleSheet('templates/' . $this->template . '/css/login.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/login.css'));
 // Load theme
-if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
+if ($theme = $this->params->get('theme'))
 {
-	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+	if ($theme == 'custom')
+	{
+		$color = $this->params->get('color');
+		$this->addStyleDeclaration(include_once(__DIR__ . '/css/themes/custom.php'));
+	}
+	else if ($theme != 'gray')
+	{
+		$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $theme . '.css');
+	}
 }
 // Load language direction CSS
 if ($this->direction == 'rtl')

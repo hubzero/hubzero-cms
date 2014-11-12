@@ -1,15 +1,18 @@
 /**
  * @package     hubzero-cms
- * @file        templates/kameleon/css/themes/green.css
+ * @file        templates/kameleon/css/themes/pink.css
  * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-/* Green Style Sheet 
-	a {
-		color: #97bd59;
+/* Salmon Style Sheet 
+	a,
+	a:active,
+	a:visited {
+		color: #a63b2a;
 	}
-	a:hover {
+	a:hover,
+	a:focus {
 		color: #000;
 	}
 
@@ -18,30 +21,27 @@
 	div.configuration,
 	h2.modal-title,
 	.light .main-navigation {
-		background: #73c36c;
+		background: #f184a4;
 	}
 	.light .main-navigation ul#menu ul {
-		background: #73c36c;
+		background: #f184a4;
 	}
 	.light .main-navigation ul#menu ul li {
 		background-color: rgba(0, 0, 0, 0.2);
 	}
-	/*.light .main-navigation ul#menu a {
-		color: #fff;
-	}*/
 
 /* Dark header */
 	.dark #toolbar-box {
-		background: #73c36c;
-		border-color: #73c36c;
+		background: #f184a4;
+		border-color: #f184a4;
 	}
 	.dark #toolbar-box .pagetitle h2 {
 		color: #fff;
 	}
 	.dark .toolbar-box li a span:after {
 		text-shadow:
-		     -1px -1px 0 #73c36c,
-		      1px -1px 0 #73c36c,
-		      -1px 1px 0 #73c36c,
-		       1px 1px 0 #73c36c;
+		     -1px -1px 0 #f184a4,
+		      1px -1px 0 #f184a4,
+		      -1px 1px 0 #f184a4,
+		       1px 1px 0 #f184a4;
 	}
