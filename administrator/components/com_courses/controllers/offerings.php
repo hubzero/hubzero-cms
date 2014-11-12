@@ -51,11 +51,12 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['course']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.course',
-			'course',
-			0
+		$this->view->filters = array(
+			'course' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.course',
+				'course',
+				0
+			)
 		);
 
 		$this->view->course = CoursesModelCourse::getInstance($this->view->filters['course']);
@@ -72,6 +73,11 @@ class CoursesControllerOfferings extends \Hubzero\Component\AdminController
 			'search',
 			''
 		)));
+		$this->view->filters['state']  = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.state',
+			'state',
+			'-1'
+		));
 		// Filters for returning results
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',

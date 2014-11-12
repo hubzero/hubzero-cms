@@ -57,6 +57,11 @@ class CoursesControllerPages extends \Hubzero\Component\AdminController
 			'search',
 			''
 		)));
+		$this->view->filters['active']  = trim($app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.active',
+			'active',
+			'-1'
+		));
 		// Filters for returning results
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',

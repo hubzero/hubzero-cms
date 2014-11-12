@@ -32,9 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- *
  * Course section table class
- *
  */
 class CoursesTableSection extends JTable
 {
@@ -42,7 +40,7 @@ class CoursesTableSection extends JTable
 	 * ID, primary key for course instances table
 	 * int(11)
 	 *
-	 * @var int(11)
+	 * @var integer
 	 */
 	var $id = NULL;
 
@@ -140,8 +138,8 @@ class CoursesTableSection extends JTable
 	/**
 	 * Contructor method for JTable class
 	 *
-	 * @param  database object
-	 * @return void
+	 * @param   object  &$db  database object
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -152,11 +150,11 @@ class CoursesTableSection extends JTable
 	 * Returns a reference to a CoursesTableSection object
 	 *
 	 * This method must be invoked as:
-	 *     $inst = CoursesInstance::getInstance($alias);
+	 *     $inst = CoursesTableSection::getInstance($alias);
 	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object CoursesTableSection
+	 * @param   string  $pagename  The page to load
+	 * @param   string  $scope     The page scope
+	 * @return  object  CoursesTableSection
 	 */
 	public static function getInstance($type, $prefix = 'JTable', $config = array())
 	{
@@ -184,8 +182,8 @@ class CoursesTableSection extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True on success
+	 * @param   string   $oid  Record alias
+	 * @return  boolean  True on success
 	 */
 	public function load($oid=NULL, $offering_id=null)
 	{
@@ -200,29 +198,26 @@ class CoursesTableSection extends JTable
 
 		if ($oid == '!!default!!')
 		{
-			$query = "SELECT * FROM $this->_tbl WHERE `is_default`=1 AND `offering_id`=" . $this->_db->Quote(intval($offering_id)) . " LIMIT 1";
+			$fields = array(
+				'is_default'  => 1,
+				'offering_id' => intval($offering_id)
+			);
 		}
 		else
 		{
-			$query = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote(trim($oid)) . " AND offering_id=" . $this->_db->Quote(intval($offering_id));
+			$fields = array(
+				'alias'       => trim($oid),
+				'offering_id' => intval($offering_id)
+			);
 		}
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
 	 * Override the check function to do a little input cleanup
 	 *
-	 * @return return true
+	 * @return  boolean
 	 */
 	public function check()
 	{
@@ -256,9 +251,8 @@ class CoursesTableSection extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = JFactory::getDate()->toSql();
+			$this->created_by = JFactory::getUser()->get('id');
 		}
 
 		return true;
@@ -356,10 +350,10 @@ class CoursesTableSection extends JTable
 	}
 
 	/**
-	 * Get a count of course offerings
+	 * Get a count of entries
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array    $filters
+	 * @return  integer
 	 */
 	public function count($filters=array())
 	{
@@ -371,10 +365,10 @@ class CoursesTableSection extends JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get a list of entries
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters=array())
 	{

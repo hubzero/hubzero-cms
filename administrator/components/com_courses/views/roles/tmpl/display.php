@@ -55,6 +55,7 @@ JToolBarHelper::help('roles');
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
 		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 	</fieldset>
 	<div class="clr"></div>
 

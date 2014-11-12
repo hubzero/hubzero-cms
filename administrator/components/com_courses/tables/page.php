@@ -232,7 +232,7 @@ Class CoursesTablePage extends JTable
 				$filters['active'] = array_map('intval', $filters['active']);
 				$where[] = "r.`active` IN (" . implode(',', $filters['active']) . ")";
 			}
-			else
+			else if ($filters['active'] >= 0)
 			{
 				$where[] = "r.`active`=" . $this->_db->quote(intval($filters['active']));
 			}

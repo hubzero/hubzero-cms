@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Courses table
+ * Courses table class for section coupon codes
  */
 class CoursesTableSectionCode extends JTable
 {
@@ -95,8 +95,8 @@ class CoursesTableSectionCode extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -106,7 +106,7 @@ class CoursesTableSectionCode extends JTable
 	/**
 	 * Validate fields before store()
 	 *
-	 * @return     boolean True if all fields are valid
+	 * @return  boolean  True if all fields are valid
 	 */
 	public function check()
 	{
@@ -128,9 +128,8 @@ class CoursesTableSectionCode extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = JFactory::getDate()->toSql();
+			$this->created_by = JFactory::getUser()->get('id');
 		}
 
 		return true;
@@ -140,9 +139,9 @@ class CoursesTableSectionCode extends JTable
 	 * Populate the current object with a database record if found
 	 * Accepts either an alias or an ID
 	 *
-	 * @param      mixed   $oid        Unique ID or code to retrieve
-	 * @param      integer $section_id Unique section ID
-	 * @return     boolean True on success
+	 * @param   mixed    $oid         Unique ID or code to retrieve
+	 * @param   integer  $section_id  Unique section ID
+	 * @return  boolean  True on success
 	 */
 	public function load($oid=NULL, $section_id=NULL)
 	{
@@ -156,24 +155,17 @@ class CoursesTableSectionCode extends JTable
 			return parent::load($oid);
 		}
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE `code`=" . $this->_db->Quote($oid) . " AND `section_id`=" . $this->_db->Quote($section_id) . " LIMIT 1";
-		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'code'       => $oid,
+			'section_id' => $section_id
+		));
 	}
 
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -181,9 +173,16 @@ class CoursesTableSectionCode extends JTable
 
 		$where = array();
 
-		if (isset($filters['redeemed']) && $filters['redeemed'])
+		if (isset($filters['redeemed']))
 		{
-			$where[] = "c.redeemed_by > 0";
+			if ($filters['redeemed'] > 0)
+			{
+				$where[] = "c.redeemed_by > 0";
+			}
+			else if ($filters['redeemed'] == 0)
+			{
+				$where[] = "c.redeemed_by = 0";
+			}
 		}
 		if (isset($filters['section_id']))
 		{
@@ -200,8 +199,7 @@ class CoursesTableSectionCode extends JTable
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		if (isset($filters['limit']) && $filters['limit'] != 0)
@@ -223,8 +221,8 @@ class CoursesTableSectionCode extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function count($filters=array())
 	{
@@ -239,8 +237,8 @@ class CoursesTableSectionCode extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function find($filters=array())
 	{

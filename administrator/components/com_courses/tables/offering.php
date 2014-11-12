@@ -132,8 +132,8 @@ class CoursesTableOffering extends JTable
 	/**
 	 * Contructor method for JTable class
 	 *
-	 * @param  database object
-	 * @return void
+	 * @param   object  &$db  Database object
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -146,9 +146,10 @@ class CoursesTableOffering extends JTable
 	 * This method must be invoked as:
 	 *     $inst = CoursesInstance::getInstance($alias);
 	 *
-	 * @param      string $pagename The page to load
-	 * @param      string $scope    The page scope
-	 * @return     object CoursesTableOffering
+	 * @param   string  $type    The page to load
+	 * @param   string  $prefix  The page scope
+	 * @param   array   $config  Config options
+	 * @return  object  CoursesTableOffering
 	 */
 	public static function getInstance($type, $prefix = 'JTable', $config = array())
 	{
@@ -175,8 +176,9 @@ class CoursesTableOffering extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True on success
+	 * @param   mixed    $oid        Record ID or alias
+	 * @param   integer  $course_id  Course ID
+	 * @return  boolean  True on success
 	 */
 	public function load($oid=NULL, $course_id=null)
 	{
@@ -188,26 +190,17 @@ class CoursesTableOffering extends JTable
 		{
 			return parent::load($oid);
 		}
-		$oid = trim($oid);
 
-		$query = "SELECT * FROM $this->_tbl WHERE alias=" . $this->_db->Quote($oid) . " AND course_id=" . $this->_db->Quote(intval($course_id));
-
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'alias'     => trim($oid),
+			'course_id' => intval($course_id)
+		));
 	}
 
 	/**
 	 * Override the check function to do a little input cleanup
 	 *
-	 * @return return true
+	 * @return  boolean
 	 */
 	public function check()
 	{
@@ -234,9 +227,8 @@ class CoursesTableOffering extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = JFactory::getDate()->toSql();
+			$this->created_by = JFactory::getUser()->get('id');
 		}
 
 		return true;
@@ -245,7 +237,7 @@ class CoursesTableOffering extends JTable
 	/**
 	 * Return a unique alias based on given alias
 	 *
-	 * @return     integer
+	 * @return  void
 	 */
 	private function makeAliasUnique()
 	{
@@ -271,8 +263,8 @@ class CoursesTableOffering extends JTable
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -300,7 +292,7 @@ class CoursesTableOffering extends JTable
 			$filters['state'] = 1;
 		}
 
-		if (isset($filters['state']))
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
 			$where[] = "ci.state=" . $this->_db->Quote(intval($filters['state']));
 		}
@@ -323,8 +315,8 @@ class CoursesTableOffering extends JTable
 	/**
 	 * Get a count of course offerings
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array    $filters
+	 * @return  integer
 	 */
 	public function count($filters=array())
 	{
@@ -338,8 +330,8 @@ class CoursesTableOffering extends JTable
 	/**
 	 * Get an object list of course units
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters=array())
 	{

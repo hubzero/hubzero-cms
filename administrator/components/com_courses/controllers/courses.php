@@ -50,37 +50,42 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		)));
-
-		// Filters for returning results
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'search' => urldecode(trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			))),
+			// Filters for returning results
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'state' => trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				'-1'
+			)),
+			// Get sorting variables
+			'sort' => trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			)),
+			'sort_Dir' => trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			))
 		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		// Get sorting variables
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'title'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -104,12 +109,9 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -119,7 +121,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new course
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -129,20 +131,12 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Displays an edit form
 	 *
-	 * @return	void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
-
-		// Incoming
-		$id = JRequest::getVar('id', array(0));
-		if (is_array($id) && !empty($id))
-		{
-			$id = $id[0];
-		}
 
 		if (is_object($row))
 		{
@@ -150,32 +144,39 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 		}
 		else
 		{
+			// Incoming
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id) && !empty($id))
+			{
+				$id = $id[0];
+			}
+
 			$this->view->row = CoursesModelCourse::getInstance($id);
 		}
+
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('state', 3);
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->config = $this->config;
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a course and fall through to edit view
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -185,7 +186,8 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Saves changes to a course or saves a new entry if creating
 	 *
-	 * @return void
+	 * @param   boolean  $redirect  Redirect after saving?
+	 * @return  void
 	 */
 	public function saveTask($redirect=true)
 	{
@@ -232,7 +234,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Copy an entry and all associated data
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function copyTask()
 	{
@@ -277,7 +279,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Removes a course and all associated information
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -329,7 +331,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -341,7 +343,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Publish a course
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -351,7 +353,7 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Unpublish a course
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -361,7 +363,8 @@ class CoursesControllerCourses extends \Hubzero\Component\AdminController
 	/**
 	 * Set the state of a course
 	 *
-	 * @return void
+	 * @param   integer  $state
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{

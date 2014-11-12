@@ -105,8 +105,8 @@ class CoursesTableSectionDate extends JTable
 	/**
 	 * Contructor method for JTable class
 	 *
-	 * @param  database object
-	 * @return void
+	 * @param   object  &$db  Database object
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -116,8 +116,10 @@ class CoursesTableSectionDate extends JTable
 	/**
 	 * Load a record and bind to $this
 	 *
-	 * @param      string $oid Record alias
-	 * @return     boolean True on success
+	 * @param   mixed    $oid
+	 * @param   string   $scope
+	 * @param   integer  $section_id
+	 * @return  boolean  True on success
 	 */
 	public function load($oid=null, $scope=null, $section_id=null)
 	{
@@ -130,29 +132,22 @@ class CoursesTableSectionDate extends JTable
 			return parent::load($oid);
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE scope=" . $this->_db->Quote(trim($scope)) . " AND scope_id=" . $this->_db->Quote(intval($oid));
+		$fields = array(
+			'scope'    => trim($scope),
+			'scope_id' => intval($oid)
+		);
 		if ($section_id !== null)
 		{
-			$query .= " AND section_id=" . $this->_db->Quote(intval($section_id));
+			$fields['section_id'] = intval($section_id);
 		}
-		$query .= " LIMIT 1";
 
-		$this->_db->setQuery($query);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load($fields);
 	}
 
 	/**
 	 * Override the check function to do a little input cleanup
 	 *
-	 * @return return true
+	 * @return  boolean
 	 */
 	public function check()
 	{
@@ -201,13 +196,12 @@ class CoursesTableSectionDate extends JTable
 	/**
 	 * Build query method
 	 *
-	 * @param  array $filters
-	 * @return $query database query
+	 * @param   array   $filters
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS sd";
-		//$query .= " INNER JOIN #__courses_offerings AS o ON o.id=os.offering_id";
 
 		$where = array();
 
@@ -228,18 +222,17 @@ class CoursesTableSectionDate extends JTable
 
 		if (count($where) > 0)
 		{
-			$query .= " WHERE ";
-			$query .= implode(" AND ", $where);
+			$query .= " WHERE " . implode(" AND ", $where);
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Get a count of course offerings
+	 * Get a count of entries
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array    $filters
+	 * @return  integer
 	 */
 	public function count($filters=array())
 	{
@@ -251,10 +244,10 @@ class CoursesTableSectionDate extends JTable
 	}
 
 	/**
-	 * Get an object list of course units
+	 * Get a list of entries
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   array  $filters
+	 * @return  array
 	 */
 	public function find($filters=array())
 	{
@@ -286,15 +279,16 @@ class CoursesTableSectionDate extends JTable
 	}
 
 	/**
-	 * Get a count of course offerings
+	 * Delete all records by section ID
 	 *
-	 * @param  array $filters
-	 * @return object Return course units
+	 * @param   integer  $section_id
+	 * @return  boolean
 	 */
 	public function deleteBySection($section_id)
 	{
 		$query  = "DELETE FROM $this->_tbl WHERE `section_id`=" . $this->_db->Quote($section_id);
 
+		$this->_db->setQuery($query);
 		if (!$this->_db->query())
 		{
 			$this->setError($this->_db->getErrorMsg());

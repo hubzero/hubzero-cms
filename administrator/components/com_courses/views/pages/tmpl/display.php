@@ -58,10 +58,21 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="col width-50 fltlft">
+			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-active').val('-1');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+		</div>
+		<div class="col width-50 fltrt">
+			<label for="filter-active"><?php echo JText::_('COM_COURSES_FIELD_STATE'); ?>:</label>
+			<select name="active" id="filter-active" onchange="this.form.submit();">
+				<option value="-1"<?php if ($this->filters['active'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_ALL_STATES'); ?></option>
+				<option value="0"<?php if ($this->filters['active'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></option>
+				<option value="1"<?php if ($this->filters['active'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></option>
+			</select>
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 

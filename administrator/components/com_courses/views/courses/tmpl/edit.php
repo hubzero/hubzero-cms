@@ -106,18 +106,33 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?>">
 				<label for="field-alias"><?php echo JText::_('COM_COURSES_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->get('alias')); ?>" size="50" />
+				<input type="text" name="fields[alias]" id="field-alias" value="<?php echo $this->escape($this->row->get('alias')); ?>" />
 				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" size="50" />
+				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape($this->row->get('title')); ?>" />
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_BLURB_HINT'); ?>">
 				<label for="field-blurb"><?php echo JText::_('COM_COURSES_FIELD_BLURB'); ?>:</label><br />
 				<textarea name="fields[blurb]" id="field-blurb" cols="40" rows="3"><?php echo $this->escape($this->row->get('blurb')); ?></textarea>
 				<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_BLURB_HINT'); ?></span>
 			</div>
+			<div class="col width-50 fltlft">
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_LENGTH_HINT'); ?>">
+					<label for="field-length"><?php echo JText::_('COM_COURSES_FIELD_LENGTH'); ?>:</label><br />
+					<input type="text" name="fields[length]" id="field-length" value="<?php echo $this->escape($this->row->get('length')); ?>" />
+					<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_LENGTH_HINT'); ?></span>
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_EFFORT_HINT'); ?>">
+					<label for="field-effort"><?php echo JText::_('COM_COURSES_FIELD_EFFORT'); ?>:</label><br />
+					<input type="text" name="fields[effort]" id="field-effort" value="<?php echo $this->escape($this->row->get('effort')); ?>" />
+					<span class="hint"><?php echo JText::_('COM_COURSES_FIELD_EFFORT_HINT'); ?></span>
+				</div>
+			</div>
+			<div class="clr"></div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COURSES_FIELD_DESCRIPTION_HINT'); ?>">
 				<label for="field-description"><?php echo JText::_('COM_COURSES_FIELD_DESCRIPTION'); ?>:</label><br />
 				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape($this->row->description('raw')), '', '', 40, 15, false, 'field-description'); ?>

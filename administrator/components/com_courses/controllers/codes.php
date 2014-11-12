@@ -73,6 +73,11 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 			'search',
 			''
 		)));
+		$this->view->filters['redeemed']  = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.redeemed',
+			'redeemed',
+			'-1'
+		);
 		// Filters for returning results
 		$this->view->filters['limit']  = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',

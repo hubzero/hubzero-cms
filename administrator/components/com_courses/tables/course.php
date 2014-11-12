@@ -130,8 +130,8 @@ class CoursesTableCourse extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -144,8 +144,6 @@ class CoursesTableCourse extends JTable
 	 * where id is the value of the primary key of the table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetName()
 	{
@@ -157,8 +155,6 @@ class CoursesTableCourse extends JTable
 	 * Method to return the title to use for the asset table.
 	 *
 	 * @return  string
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetTitle()
 	{
@@ -170,10 +166,7 @@ class CoursesTableCourse extends JTable
 	 *
 	 * @param   JTable   $table  A JTable object for the asset parent.
 	 * @param   integer  $id     The id for the asset
-	 *
 	 * @return  integer  The id of the asset's parent
-	 *
-	 * @since   11.1
 	 */
 	protected function _getAssetParentId($table = null, $id = null)
 	{
@@ -211,7 +204,7 @@ class CoursesTableCourse extends JTable
 	/**
 	 * Validate fields before store()
 	 *
-	 * @return     boolean True if all fields are valid
+	 * @return  boolean  True if all fields are valid
 	 */
 	public function check()
 	{
@@ -239,17 +232,17 @@ class CoursesTableCourse extends JTable
 
 		if (!$this->id)
 		{
-			$juser = JFactory::getUser();
-			$this->created = JFactory::getDate()->toSql();
-			$this->created_by = $juser->get('id');
+			$this->created    = JFactory::getDate()->toSql();
+			$this->created_by = JFactory::getUser()->get('id');
 		}
+
 		return true;
 	}
 
 	/**
 	 * Return a unique alias based on given alias
 	 *
-	 * @return     integer
+	 * @return  integer
 	 */
 	private function makeAliasUnique()
 	{
@@ -273,33 +266,12 @@ class CoursesTableCourse extends JTable
 	}
 
 	/**
-	 * Save changes
-	 *
-	 * @return     boolean
-	 */
-	/*public function save()
-	{
-		$this->setError('You\'re doing it wrong!');
-		return false;
-	}
-
-	/**
-	 * Insert or Update the object
-	 *
-	 * @return     boolean
-	 */
-	/*public function store()
-	{
-		$this->setError('You\'re doing it wrong!');
-		return false;
-	}
-
-	/**
 	 * Populate the current object with a database record if found
 	 * Accepts either an alias or an ID
 	 *
-	 * @param      mixed $oid Unique ID or alias of object to retrieve
-	 * @return     boolean True on success
+	 * @param   mixed    $keys   Unique ID or alias of object to retrieve
+	 * @param   mixed    $reset  Reset object
+	 * @return  boolean  True on success
 	 */
 	public function load($keys = NULL, $reset = true)
 	{
@@ -310,27 +282,19 @@ class CoursesTableCourse extends JTable
 
 		if (is_numeric($keys))
 		{
-			return parent::load($keys);
+			return parent::load($keys, $reset);
 		}
 
-		$sql  = "SELECT * FROM $this->_tbl WHERE `alias`=" . $this->_db->Quote($keys) . " LIMIT 1";
-		$this->_db->setQuery($sql);
-		if ($result = $this->_db->loadAssoc())
-		{
-			return $this->bind($result);
-		}
-		else
-		{
-			$this->setError($this->_db->getErrorMsg());
-			return false;
-		}
+		return parent::load(array(
+			'alias' => $keys
+		), $reset);
 	}
 
 	/**
 	 * Build a query based off of filters passed
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     string SQL
+	 * @param   array   $filters  Filters to construct query from
+	 * @return  string  SQL
 	 */
 	protected function _buildQuery($filters=array())
 	{
@@ -347,11 +311,30 @@ class CoursesTableCourse extends JTable
 
 		$where = array();
 
-		if (isset($filters['state']))
+		if (isset($filters['state']) && $filters['state'] >= 0)
 		{
-			$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			if (is_array($filters['state']))
+			{
+				$filters['state'] = array_map('intval', $filters['state']);
+				$where[] = "c.state IN (" . $filters['state'] . ")";
+			}
+			else
+			{
+				$where[] = "c.state=" . $this->_db->Quote($filters['state']);
+			}
 		}
-
+		if (isset($filters['created_by']) && $filters['created_by'] >= 0)
+		{
+			$where[] = "c.created_by=" . $this->_db->Quote($filters['created_by']);
+		}
+		if (isset($filters['access']) && $filters['access'] >= 0)
+		{
+			$where[] = "c.access=" . $this->_db->Quote($filters['access']);
+		}
+		if (isset($filters['alias']) && $filters['alias'])
+		{
+			$where[] = "c.alias=" . $this->_db->Quote($filters['alias']);
+		}
 		if (isset($filters['group_id']) && $filters['group_id'] >= 0)
 		{
 			$where[] = "c.group_id=" . $this->_db->Quote($filters['group_id']);
@@ -408,14 +391,14 @@ class CoursesTableCourse extends JTable
 	/**
 	 * Get a record count
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     integer
+	 * @param   array    $filters  Filters to construct query from
+	 * @return  integer
 	 */
 	public function getCount($filters=array())
 	{
 		$filters['limit'] = 0;
 
-		$query = "SELECT COUNT(*) ";
+		$query  = "SELECT COUNT(*) ";
 		$query .= (isset($filters['tag']) && $filters['tag'] != '') ? ", COUNT(DISTINCT t.tag) AS uniques " : " ";
 		$query .= $this->_buildQuery($filters);
 
@@ -426,12 +409,12 @@ class CoursesTableCourse extends JTable
 	/**
 	 * Get records
 	 *
-	 * @param      array $filters Filters to construct query from
-	 * @return     array
+	 * @param   array  $filters  Filters to construct query from
+	 * @return  array
 	 */
 	public function getRecords($filters=array())
 	{
-		$query  = "SELECT c.*, (SELECT COUNT(*) FROM #__courses_members AS m WHERE m.student=1 AND m.course_id=c.id) AS students";
+		$query  = "SELECT c.*, (SELECT COUNT(*) FROM `#__courses_members` AS m WHERE m.student=1 AND m.course_id=c.id) AS students";
 		$query .= (isset($filters['tag']) && $filters['tag'] != '') ? ", t.tag, t.raw_tag, COUNT(DISTINCT t.tag) AS uniques " : " ";
 		$query .= $this->_buildQuery($filters);
 
@@ -449,11 +432,13 @@ class CoursesTableCourse extends JTable
 	}
 
 	/**
-	 * Get groups for a user
+	 * Get courses for a user
 	 *
-	 * @param      integer $uid  User ID
-	 * @param      string  $type Membership type to return groups for
-	 * @return     array
+	 * @param   integer  $uid    User ID
+	 * @param   string   $type   Status in course
+	 * @param   integer  $limit  Number of records
+	 * @param   integer  $start  Where to start in record paging
+	 * @return  array
 	 */
 	public function getUserCourses($uid, $type='all', $limit=null, $start=0)
 	{

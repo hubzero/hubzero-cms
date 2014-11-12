@@ -69,10 +69,21 @@ function submitbutton(pressbutton)
 
 <form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="col width-50 fltlft">
+			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
 
-		<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-redeemed').val('-1');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+		</div>
+		<div class="col width-50 fltrt">
+			<label for="filter-redeemed"><?php echo JText::_('COM_COURSES_FIELD_STATE'); ?>:</label>
+			<select name="redeemed" id="filter-redeemed" onchange="this.form.submit();">
+				<option value="-1"<?php if ($this->filters['redeemed'] == -1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_ALL_STATES'); ?></option>
+				<option value="1"<?php if ($this->filters['redeemed'] == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_FILTER_REDEEMED'); ?></option>
+				<option value="0"<?php if ($this->filters['redeemed'] == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COURSES_FILTER_UNREDEEMED'); ?></option>
+			</select>
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -122,7 +133,7 @@ foreach ($this->rows as $i => $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('code'))); ?>
 					</a>
 				<?php } else { ?>
@@ -132,17 +143,19 @@ foreach ($this->rows as $i => $row)
 				<?php } ?>
 				</td>
 				<td>
-					<?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?>
+					<time datetime="<?php echo $row->get('created'); ?>"><?php echo JHTML::_('date', $row->get('created'), JText::_('DATE_FORMAT_HZ1')); ?></time>
 				</td>
 				<td>
 					<?php echo ($row->get('expires') && $row->get('expires') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('expires'), JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_COURSES_NEVER'); ?>
 				</td>
 			<?php if ($row->get('redeemed')) { ?>
 				<td>
-					<?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? JHTML::_('date', $row->get('redeemed'), JText::_('DATE_FORMAT_HZ1')) : JText::_('COM_COURSES_UNKNOWN'); ?>
+					<span class="state <?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? 'yes' : 'no'; ?>">
+						<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . JHTML::_('date', $row->get('redeemed'), JText::_('DATE_FORMAT_HZ1')) . '</time>' : JText::_('JNO'); ?></span>
+					</span>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=students&amp;task=edit&amp;section=<?php echo $row->get('section_id'); ?>&amp;id[]=<?php echo $row->get('redeemed_by'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=students&task=edit&section=' . $row->get('section_id') . '&id=' . $row->get('redeemed_by')); ?>">
 						<?php echo $this->escape(stripslashes($row->redeemer()->get('name'))); ?>
 					</a>
 				</td>
