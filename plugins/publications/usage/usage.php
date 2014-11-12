@@ -34,25 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Publications Plugin class for usage
  */
-class plgPublicationsUsage extends JPlugin
+class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'usage' );
-		$this->_params = new JParameter( $this->_plugin->params );
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -64,19 +53,14 @@ class plgPublicationsUsage extends JPlugin
 	 */
 	public function &onPublicationAreas( $publication, $version = 'default', $extended = true )
 	{
+		$areas = array();
 		if ($publication->_category->_params->get('plg_usage') && $extended)
 		{
 			$areas = array(
 				'usage' => JText::_('PLG_PUBLICATION_USAGE')
 			);
 		}
-		else
-		{
-			$areas = array();
-		}
 
-		// Temp - do not show the actual panel yet
-		$areas = array();
 		return $areas;
 	}
 
@@ -104,28 +88,17 @@ class plgPublicationsUsage extends JPlugin
 			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
 			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_usage'))
-				{
-					$rtrn == 'metadata';
-				}
-				else
-				{
-					return $arr;
-				}
+				$rtrn = 'metadata';
 			}
 		}
 
-		// Only applicable to latest published version
-		if (!$extended)
+		if (!$publication->_category->_params->get('plg_usage') || !$extended)
 		{
 			return $arr;
 		}
 
-		// Display panel only for tools
-		if ($publication->base != 'apps')
-		{
-			$rtrn == 'metadata';
-		}
+		// Temporarily display only metadata
+		$rtrn == 'metadata';
 
 		// Check if we have a needed database table
 		$database = JFactory::getDBO();
@@ -152,7 +125,7 @@ class plgPublicationsUsage extends JPlugin
 
 		// Get/set some variables
 		$dthis  = JRequest::getVar('dthis', date('Y') . '-' . date('m'));
-		$period = JRequest::getInt('period', $this->_params->get('period', 14));
+		$period = JRequest::getInt('period', $this->params->get('period', 14));
 
 		include_once( JPATH_ROOT . DS . 'administrator' .DS. 'components' . DS . $option . DS . 'tables' . DS . 'stats.php' );
 		require_once( JPATH_ROOT . DS . 'components' . DS . $option . DS . 'helpers' . DS . 'usage.php' );
@@ -181,8 +154,8 @@ class plgPublicationsUsage extends JPlugin
 			$view->option 		= $option;
 			$view->publication 	= $publication;
 			$view->stats 		= $stats;
-			$view->chart_path 	= $this->_params->get('chart_path','');
-			$view->map_path 	= $this->_params->get('map_path','');
+			$view->chart_path 	= $this->params->get('chart_path','');
+			$view->map_path 	= $this->params->get('map_path','');
 			$view->dthis 		= $dthis;
 			$view->period 		= $period;
 			if ($this->getError())
