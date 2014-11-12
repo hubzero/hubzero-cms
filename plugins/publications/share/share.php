@@ -79,25 +79,23 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 		);
 
 		// Hide if version not published
-		if ($publication->state == 4 || $publication->state == 5 || $publication->state == 6)
+		if (!$extended || $publication->state == 4 || $publication->state == 5 || $publication->state == 6)
 		{
 			return $arr;
 		}
 
 		$juri = JURI::getInstance();
 		$sef = JRoute::_('index.php?option='.$option.'&id='.$publication->id);
-		if (substr($sef,0,1) == '/')
-		{
-			$sef = substr($sef,1,strlen($sef));
-		}
-		$url = $juri->base().$sef;
+		$url = $juri->base() . trim($sef, DS);
 		$url = $url . DS . '?v=' . $publication->version_number;
+
+		$mediaUrl = $juri->base() . trim($sef, DS) . DS . $publication->version_id . DS . 'Image:master';
 
 		// Incoming action
 		$sharewith = JRequest::getVar('sharewith', '');
 		if ($sharewith && $sharewith != 'email')
 		{
-			$this->share($sharewith, $url, $publication, $version);
+			$this->share($sharewith, $url, $mediaUrl, $publication, $version);
 			return;
 		}
 
@@ -141,15 +139,21 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 	 * @param      mixed $publication Parameter description (if any) ...
 	 * @return     void
 	 */
-	public function share($with, $url, $publication, $version)
+	public function share($with, $url, $mediaUrl, $publication, $version)
 	{
 		$jconfig = JFactory::getConfig();
 
 		$link = '';
+		$description = $publication->abstract
+			? \Hubzero\Utility\String::truncate(stripslashes($publication->abstract), 250) : '';
+		$description = urlencode($description);
+		$title = stripslashes($publication->title);
+		$title = urlencode($title);
+
 		switch ($with)
 		{
 			case 'facebook':
-				$link = 'http://www.facebook.com/sharer.php?u='.$url;
+				$link = 'https://www.facebook.com/sharer/sharer.php?u=' . $url . '&t=' . $title;
 				break;
 
 			case 'twitter':
@@ -159,21 +163,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'google':
-				$link = 'https://plus.google.com/share?url='.$url
-					.'&title='.$jconfig->getValue('config.sitename').': '
-					.JText::_('PLG_PUBLICATION_SHARE_RESOURCE').' '.$publication->id
-					.' - '.stripslashes($publication->title).'&labels='.$jconfig->getValue('config.sitename');
-				break;
-
-			case 'digg':
-				$link = 'http://digg.com/submit?phase=2&url='.$url
-				.'&title='.$jconfig->getValue('config.sitename').': '
-				.JText::_('PLG_PUBLICATION_SHARE_RESOURCE').' '.$publication->id
-				.' - '.stripslashes($publication->title);
-				break;
-
-			case 'technorati':
-				$link = 'http://www.technorati.com/faves?add='.$url;
+				$link = 'https://plus.google.com/share?url='.$url;
 				break;
 
 			case 'delicious':
@@ -186,6 +176,16 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 				$link = 'http://reddit.com/submit?url='.$url.'&title='
 				.$jconfig->getValue('config.sitename').': '.JText::_('PLG_PUBLICATION_SHARE_RESOURCE')
 				.' '.$publication->id.' - '.stripslashes($publication->title);
+				break;
+
+			case 'linkedin':
+				$link = 'https://www.linkedin.com/shareArticle?mini=true&url='.$url.'&title='
+				. $title . '&summary=' . $description;
+				break;
+
+			case 'pinterest':
+				$link = 'https://pinterest.com/pin/create/button/?url=' . $url . '&media='
+				. $mediaUrl . '&description=' . $title . ': ' . $description;
 				break;
 		}
 

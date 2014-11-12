@@ -37,115 +37,56 @@ $this->css('assets/css/share.css')
 $jconfig = JFactory::getConfig();
 
 $i = 1;
-$limit = intval($this->_params->get('icons_limit')) ? intval($this->_params->get('icons_limit')) : 8;
+$limit = intval($this->_params->get('icons_limit')) ? $this->_params->get('icons_limit') : 0;
 
-$popup = '<ul class="sharelinks">';
+$popup = '<ol class="sharelinks">';
 $title = JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',$jconfig->getValue('config.sitename'),stripslashes($this->publication->title));
 $metadata  = '<div class="share">'."\n";
 $metadata .= "\t".JText::_('PLG_PUBLICATION_SHARE').': ';
 
-// Facebook
-if ($this->_params->get('share_facebook')) {
-	$inline  = "\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=share&sharewith=facebook');
-	$inline .= '" title="'.JText::sprintf('PLG_PUBLICATION_SHARE_ON','Facebook').'" class="share_facebook popup" rel="external">&nbsp;'."\n";
+// Available options
+$sharing = array('facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'delicious', 'reddit');
 
-	$metadata .= ($i <= $limit) ? $inline.'</a>' :'';
-	$popup 	  .= '<li class="';
-	$popup 	  .= ($i % 2) ? 'odd' : 'even';
-	$popup    .= '">'.$inline.' '.JText::_('Facebook').'</a></li>';
-	$i++;
-}
+foreach ($sharing as $shared)
+{
+	if ($this->_params->get('share_' . $shared)) {
 
-// Twitter
-if ($this->_params->get('share_twitter')) {
-	$inline = "\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=share&sharewith=twitter');
-	$inline .= '" title="'.JText::sprintf('PLG_PUBLICATION_SHARE_ON','Twitter').'" class="share_twitter popup" rel="external">&nbsp;'."\n";
+		// Show activity
+		$link = $this->view('_item')
+	     ->set('option', $this->option)
+	     ->set('publication', $this->publication)
+		 ->set('name', $shared)
+	     ->loadTemplate();
 
-	$metadata .= ($i <= $limit) ? $inline.'</a>' :'';
-	$popup 	  .= '<li class="';
-	$popup 	  .= ($i % 2) ? 'odd' : 'even';
-	$popup    .= '">'.$inline.' '.JText::_('Twitter').'</a></li>';
-	$i++;
-}
-
-// Google
-if ($this->_params->get('share_google')) {
-	$inline = "\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=share&sharewith=google');
-	$inline .= '" title="'.JText::sprintf('PLG_PUBLICATION_SHARE_CREATE_BOOKMARK', 'Google').'" class="share_google popup" rel="external">&nbsp;'."\n";
-
-	$metadata .= ($i <= $limit) ? $inline.'</a>' :'';
-	$popup 	  .= '<li class="';
-	$popup 	  .= ($i % 2) ? 'odd' : 'even';
-	$popup    .= '">'.$inline.' '.JText::_('Google').'</a></li>';
-	$i++;
-}
-
-// Digg
-if ($this->_params->get('share_digg')) {
-	$inline = "\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=share&sharewith=digg');
-	$inline .= '" title="'.JText::sprintf('PLG_PUBLICATION_SHARE_ON','Digg').'" class="share_digg popup" rel="external">&nbsp;'."\n";
-
-	$metadata .= ($i < $limit) ? $inline.'</a>' :'';
-	$popup 	  .= '<li class="';
-	$popup 	  .= ($i % 2) ? 'odd' : 'even';
-	$popup    .= '">'.$inline.' '.JText::_('Digg').'</a></li>';
-	$i++;
-}
-
-// Technorati
-if ($this->_params->get('share_technorati')) {
-	$inline  = "\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=share&sharewith=technorati');
-	$inline .= '" title="'.JText::sprintf('PLG_PUBLICATION_SHARE_ON','Technorati').'" class="share_technorati popup" rel="external">&nbsp;'."\n";
-
-	$metadata .= ($i < $limit) ? $inline.'</a>' :'';
-	$popup 	  .= '<li class="';
-	$popup 	  .= ($i % 2) ? 'odd' : 'even';
-	$popup    .= '">'.$inline.' '.JText::_('Technorati').'</a></li>';
-	$i++;
-}
-
-// Delicious
-if ($this->_params->get('share_delicious')) {
-	$inline    = "\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=share&sharewith=delicious');
-	$inline   .= '" title="'.JText::sprintf('PLG_PUBLICATION_SHARE_ON','Delicious').'" class="share_delicious popup" rel="external">&nbsp;'."\n";
-
-	$metadata .= ($i < $limit) ? $inline.'</a>' :'';
-	$popup 	  .= '<li class="';
-	$popup 	  .= ($i % 2) ? 'odd' : 'even';
-	$popup    .= '">'.$inline.' '.JText::_('Delicious').'</a></li>';
-	$i++;
-}
-
-// Reddit
-if ($this->_params->get('share_reddit')) {
-	$inline    = "\t".'<a href="'.JRoute::_('index.php?option='.$this->option.'&id='.$this->publication->id.'&active=share&sharewith=reddit');
-	$inline   .= '" title="'.JText::sprintf('PLG_PUBLICATION_SHARE_ON','Reddit').'" class="share_reddit popup" rel="external">&nbsp;'."\n";
-
-	$metadata .= ($i < $limit) ? $inline.'</a>' :'';
-	$popup 	  .= '<li class="';
-	$popup 	  .= ($i % 2) ? 'odd' : 'even';
-	$popup    .= '">'.$inline.' '.JText::_('Reddit').'</a></li>';
-	$i++;
+		$metadata .= (!$limit || $i <= $limit) ? $link : '';
+		$popup 	  .= '<li class="';
+		$popup 	  .= ($i % 2) ? 'odd' : 'even';
+		$popup    .= '">'. $link . '</li>';
+		$i++;
+	}
 }
 
 // Pop up more
-if (($i+2) > $limit) {
+if ($limit > 0 && $i > $limit)
+{
 	$metadata .= '...';
 }
+$popup .= '</ol>';
 
-$popup .= '</ul>';
-
-$metadata .= '<dl class="shareinfo">'."\n";
-$metadata .= "\t".'<dd>'."\n";
-$metadata .= "\t\t".'<p>'."\n";
-$metadata .= "\t\t\t".JText::_('PLG_PUBLICATION_SHARE_RESOURCE')."\n";
-$metadata .= "\t\t".'</p>'."\n";
-$metadata .= "\t\t".'<div>'."\n";
-$metadata .= $popup;
-//$metadata .= "\t\t".'<div class="clear"></div>'."\n";
-$metadata .= "\t\t".'</div>'."\n";
-$metadata .= "\t".'</dd>'."\n";
-$metadata .= '</dl>'."\n";
+// Show pop-up?
+if ($limit > 0)
+{
+	$metadata .= '<dl class="shareinfo">'."\n";
+	$metadata .= "\t".'<dd>'."\n";
+	$metadata .= "\t\t".'<p>'."\n";
+	$metadata .= "\t\t\t".JText::_('PLG_PUBLICATION_SHARE_RESOURCE')."\n";
+	$metadata .= "\t\t".'</p>'."\n";
+	$metadata .= "\t\t".'<div>'."\n";
+	$metadata .= $popup;
+	$metadata .= "\t\t".'</div>'."\n";
+	$metadata .= "\t".'</dd>'."\n";
+	$metadata .= '</dl>'."\n";
+}
 $metadata .= '</div>'."\n";
 
 echo $metadata;
