@@ -51,7 +51,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="registrationCAPTCHA"  type="text" menu="hide" default="RHHH" label="CAPTCHA" description="CAPTCHA check" />
 		<param name="registrationTOU"  type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
 		<param name="registrationAddress"  type="text" menu="hide" default="--OO" label="Address" description="" />
-		<param name="registrationORCID"  type="text" menu="hide" default="OOOO" label="ORCID" description="" />
+		<param name="registrationORCID"  type="text" menu="hide" default="HHHH" label="ORCID" description="" />
 	</params>
 	<fieldset name="basic">
 		<field name="contribution_counting" type="list" default="1" label="Contribution Counting" description="Enable (potentially slow) contribution counting in browse view">
@@ -145,6 +145,6 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="registrationCAPTCHA"          type="text" menu="hide" default="RHHH" label="CAPTCHA" description="CAPTCHA check" />
 		<field name="registrationTOU"              type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
 		<field name="registrationAddress"          type="text" menu="hide" default="--OO" label="Address" description="" />
-		<field name="registrationORCID"            type="text" menu="hide" default="OHHO" label="ORCID" description="" />
+		<field name="registrationORCID"            type="text" menu="hide" default="HHHH" label="ORCID" description="" />
 	</fieldset>
 </config>
