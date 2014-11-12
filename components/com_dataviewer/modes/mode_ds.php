@@ -125,7 +125,6 @@ function get_dd($db_id)
 		$link = get_db();
 		mysql_query(query_gen_total($dd), $link);
 		$total = mysql_query('SELECT FOUND_ROWS() AS total', $link);
-		$total = mysql_fetch_assoc($total);
 		if ($total) {
 			$total = mysql_fetch_assoc($total);
 			$total = isset($total['total']) ? $total['total'] : 0;

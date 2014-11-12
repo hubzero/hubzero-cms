@@ -88,7 +88,6 @@ function get_dd($db_id, $dv_id = false, $version = false)
 	mysql_query(query_gen_total($dd), $link);
 	$total = mysql_query('SELECT FOUND_ROWS() AS total', $link);
 	$total = mysql_fetch_assoc($total);
-	$total = mysql_fetch_assoc($total);
 	$total = isset($total['total']) ? $total['total'] : 0;
 	$dd['total_records'] = $total;
 
