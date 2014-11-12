@@ -301,113 +301,13 @@ class PublicationHelper extends JObject
 	 */
 	public function showContributors( $contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false, $format = false)
 	{
-		if (!$contributors)
-		{
-			$contributors = $this->_contributors;
-		}
-
-		if ($contributors != '')
-		{
-			$html 		= '';
-			$names 		= array();
-			$orgs 		= array();
-			$i 			= 1;
-			$k 			= 0;
-			$orgsln 	= '';
-			$names_s 	= array();
-			$orgsln_s 	= '';
-
-			foreach ($contributors as $contributor)
-			{
-				if ($incSubmitter == false && $contributor->role == 'submitter')
-				{
-					continue;
-				}
-
-				// Build the user's name and link to their profile
-				if ($contributor->name)
-				{
-					$name = $contributor->name;
-				}
-				else
-				{
-					$name = $contributor->p_name;
-				}
-				if ($format)
-				{
-					$nameParts    = explode(" ", $name);
-					$name = end($nameParts);
-					$name.= count($nameParts) > 1 ? ', ' . strtoupper(substr($nameParts[0], 0, 1)) . '.' : '';
-					$name.= count($nameParts) > 2 ? ' ' . strtoupper(substr($nameParts[1], 0, 1)) . '.' : '';
-				}
-
-				if (!$contributor->organization)
-				{
-					$contributor->org = $contributor->p_organization;
-				}
-
-				$name = str_replace( '"', '&quot;', $name );
-				if ($contributor->user_id && $contributor->open)
-				{
-					$link  = '<a href="'.JRoute::_('index.php?option=com_members&amp;id=' . $contributor->user_id)
-							. '" title="View the profile of ' . $name . '">' . $name . '</a>';
-				}
-				else
-				{
-					$link = $name;
-				}
-				$link .= ($contributor->role) ? ' ('.$contributor->role.')' : '';
-
-				if (trim($contributor->organization) != '' && !in_array(trim($contributor->organization), $orgs))
-				{
-					$orgs[$i-1] = trim($contributor->organization);
-					$orgsln 	.= $i. '. ' .trim($contributor->organization).' ';
-					$orgsln_s 	.= trim($contributor->organization).' ';
-					$k = $i;
-					$i++;
-				}
-				else if (trim($contributor->organization) != '')
-				{
-					$k = array_search(trim($contributor->organization), $orgs) + 1;
-				}
-				else
-				{
-					$k = 0;
-				}
-
-				$link_s = $link;
-				if ($showorgs && $k)
-				{
-					$link .= '<sup>'. $k .'</sup>';
-				}
-				$names_s[] = $link_s;
-				$names[] = $link;
-			}
-
-			if (count($names) > 0)
-			{
-				$html = '<p>' . ucfirst(JText::_('By')) . ' ';
-				$html .= count($names) > 1 && count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
-				$html .= '</p>';
-			}
-			if ($showorgs && count($orgs) > 0)
-			{
-				$html .= '<p class="orgs">';
-				$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
-				$html .= '</p>';
-			}
-			if ($showaslist)
-			{
-				$html = count($names) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s ) ;
-			}
-
-		}
-		else
-		{
-			$html = '';
-		}
-
-		return $html;
+		$view = new \Hubzero\Component\View( array('name'=>'view', 'layout' =>'_contributors'));
+		$view->contributors  = $contributors;
+		$view->showorgs  = $showorgs;
+		$view->showaslist  = $showaslist;
+		$view->incSubmitter  = $incSubmitter;
+		$view->format  = $format;
+		return $view->loadTemplate();
 	}
 
 	/**
