@@ -570,7 +570,7 @@ class PdfFormDeployment
 	{
 		$dep = new PdfFormDeployment;
 		$dep->formId = $fid;
-		foreach (array('startTime', 'endTime', 'resultsOpen', 'resultsClosed', 'timeLimit', 'allowedAttempts') as $key)
+		foreach (array('resultsOpen', 'resultsClosed', 'timeLimit', 'allowedAttempts') as $key)
 		{
 			if (!isset($data[$key]))
 			{

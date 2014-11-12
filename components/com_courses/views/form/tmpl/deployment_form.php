@@ -37,30 +37,6 @@ $this->css('jquery.ui.css', 'system');
 		<h3>Times</h3>
 		<p>
 			<label>
-				<span>Start time:</span><input type="datetime" name="deployment[startTime]" value="<?php echo htmlentities(($val = $this->dep->getStartTime()) ? JHTML::_('date', $val, 'Y-m-d H:i:s') : JHTML::_('date', 'now', 'Y-m-d H:i:s')) ?>" />
-			</label>
-			<?php if ($showErrors && $this->dep->hasErrors('startTime')): ?>
-			<ul class="errors">
-				<?php foreach ($this->dep->getErrors('startTime') as $err): ?>
-				<li><?php echo $err ?></li>
-				<?php endforeach; ?>
-			</ul>
-			<?php endif; ?>
-		</p>
-		<p>
-			<label>
-				<span>End time:</span><input type="datetime" name="deployment[endTime]" value="<?php echo htmlentities(($val = $this->dep->getEndTime()) ? JHTML::_('date', $val, 'Y-m-d H:i:s') : '') ?>" />
-			</label>
-			<?php if ($showErrors && $this->dep->hasErrors('endTime')): ?>
-			<ul class="error">
-				<?php foreach ($this->dep->getErrors('endTime') as $err): ?>
-				<li><?php echo $err ?></li>
-				<?php endforeach; ?>
-			</ul>
-			<?php endif; ?>
-		</p>
-		<p>
-			<label>
 				<span>Time limit:</span><input type="number" step="1" min="0" class="minutes" name="deployment[timeLimit]" value="<?php echo htmlentities(($val = $this->dep->getTimeLimit()) ? $val : '') ?>" /> minutes
 			</label>
 			<?php if ($showErrors && $this->dep->hasErrors('timeLimit')): ?>
