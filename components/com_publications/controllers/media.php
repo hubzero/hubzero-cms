@@ -94,7 +94,7 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 			$pid
 		);
 
-		if ($file == 'thumb')
+		if (strtolower($file) == 'thumb')
 		{
 			// Get publication thumbnail
 			$source = $pubHelper->getThumb($pid, $vid, $this->config );
@@ -104,10 +104,34 @@ class PublicationsControllerMedia extends \Hubzero\Component\SiteController
 			// Build publication path
 			$path = $pubHelper->buildPath($pid, $vid, $this->config->get('webpath'));
 
-			if ($file == 'master')
+			if (strtolower($file) == 'master')
 			{
 				// Get master image
 				$source = $path . DS . 'master.png';
+
+				// Default image
+				if (!is_file(JPATH_ROOT . DS . $source))
+				{
+					// Grab first bigger image in gallery
+					if (is_dir(JPATH_ROOT . DS . $path . DS . 'gallery'))
+					{
+						$file_list = scandir(JPATH_ROOT . DS . $path . DS . 'gallery');
+						foreach ($file_list as $file)
+						{
+							list($width, $height, $type, $attr) = getimagesize(JPATH_ROOT . DS . $path . DS . 'gallery' . DS . $file);
+							if ($width > 200)
+							{
+								$source = $path . DS . 'gallery' . DS . $file;
+								break;
+							}
+						}
+					}
+					if (!is_file(JPATH_ROOT . DS . $source))
+					{
+						$source = $this->config->get('masterimage',
+						'/components/com_publications/assets/img/master.png');
+					}
+				}
 			}
 			else
 			{
