@@ -204,6 +204,7 @@ class WikiModelBook extends \Hubzero\Base\Object
 			$page = new WikiTablePage($this->_db);
 			$page->pagename = $f;
 			$page->title    = $page->getTitle();
+			$page->access   = 0;
 			if ($this->_scope != '__site__')
 			{
 				$page->group_cn = $this->_scope;
