@@ -61,12 +61,14 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-30 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
 			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_COURSES_STUDENTS_SEARCH_PLACEHOLDER'); ?>" />
+
 			<input type="submit" value="<?php echo JText::_('COM_COURSES_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-70 fltrt">
 			<label for="filter_offering"><?php echo JText::_('COM_COURSES_OFFERING'); ?>:</label>
@@ -167,14 +169,14 @@ foreach ($this->rows as $row)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($row->get('user_id')); ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id=<?php echo $row->get('id'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('name'))); ?>
 						</a>
 					<?php } else { ?>
@@ -185,7 +187,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;offering=<?php echo $row->get('offering_id'); ?>&amp;id=<?php echo $row->get('id'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&offering=' . $row->get('offering_id') . '&id=' . $row->get('id')); ?>">
 							<?php echo $this->escape(stripslashes($row->get('email'))); ?>
 						</a>
 					<?php } else { ?>

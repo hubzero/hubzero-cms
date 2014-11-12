@@ -49,7 +49,7 @@ JToolBarHelper::spacer();
 JToolBarHelper::help('roles');
 
 ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape(stripslashes($this->filters['search'])); ?>" placeholder="<?php echo JText::_('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
@@ -78,9 +78,9 @@ JToolBarHelper::help('roles');
 		<tbody>
 <?php
 $k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
-	$row = &$this->rows[$i];
+	$row =& $this->rows[$i];
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -93,7 +93,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
 					</a>
 				<?php } else { ?>
@@ -104,7 +104,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
 				<?php } else { ?>
