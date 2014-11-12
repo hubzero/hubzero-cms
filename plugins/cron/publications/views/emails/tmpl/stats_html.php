@@ -62,27 +62,8 @@ $boxBgColor 	 = '#f6eddd';
 $append = '?from=' . $this->juser->get('email');
 $lastMonth = date('M Y', strtotime("-1 month"));
 
-if ($this->profilePic)
-{
-	$profileThumb = $ih->createThumbName($this->profilePic);
-	$profileThumb = $pPath . DS . \Hubzero\Utility\String::pad($this->juser->get('id')) . DS . $profileThumb;
-
-	if (!is_file(JPATH_ROOT . DS . $profileThumb))
-	{
-		$profileThumb = $pPath . DS . \Hubzero\Utility\String::pad($this->juser->get('id')) . DS . 'thumb.png';
-	}
-
-	if (!is_file(JPATH_ROOT . DS . $profileThumb))
-	{
-		$profileThumb = NULL;
-	}
-	else
-	{
-		$profileThumb = $base . DS . $profileThumb;
-	}
-}
-
 $profileLink = $base . DS . 'members' . DS . $this->juser->get('id');
+$profileThumb= $base . DS . 'members' . DS . $this->juser->get('id') . DS . 'Image:thumb.png';
 
 // More publications?
 $more = count($this->pubstats) - $this->limit;
@@ -261,29 +242,21 @@ $more = count($this->pubstats) - $this->limit;
 										<tbody>
 											<?php
 												$i = 0;
-												foreach ($this->pubstats as $stat) {
-												// Get pub image
-												$pubthumb = $this->helper->getThumb(
-													$stat->publication_id,
-													$stat->publication_version_id,
-													$this->config,
-													false,
-													$stat->cat_url
-												);
-
-												$i++;
-
-												if ($i > $this->limit)
+												foreach ($this->pubstats as $stat)
 												{
-													break;
-												}
+													$i++;
 
-												$sefManage 	= $baseManage . DS . $stat->publication_id;
-												$sefView 	= $baseView . DS . $stat->publication_id;
+													if ($i > $this->limit)
+													{
+														break;
+													}
 
-												$thumb = $base . DS . trim($pubthumb, DS);
-												$link  = $base . DS . trim($sefView, DS) . $append;
-												$manageLink  = $base . DS . trim($sefManage, DS) . $append;
+													$sefManage 	= $baseManage . DS . $stat->publication_id;
+													$sefView 	= $baseView . DS . $stat->publication_id;
+
+													$thumb = $baseView . DS . $stat->publication_id . DS . $stat->id . DS . 'Image:thumb';
+													$link  = $base . DS . trim($sefView, DS) . $append;
+													$manageLink  = $base . DS . trim($sefManage, DS) . $append;
 											?>
 											<tr>
 												<td width="25"></td>

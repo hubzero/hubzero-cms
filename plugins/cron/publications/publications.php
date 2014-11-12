@@ -179,7 +179,6 @@ class plgCronPublications extends JPlugin
 			$eview->juser	   = $juser;
 			$eview->pubstats   = $pubstats;
 			$eview->limit	   = $limit;
-			$eview->profilePic = $author->picture;
 			$eview->image	   = $image;
 			$eview->helper	   = $helper;
 			$eview->config	   = $pconfig;
