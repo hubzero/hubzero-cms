@@ -34,25 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Publications Plugin class for versions
  */
-class plgPublicationsVersions extends JPlugin
+class plgPublicationsVersions extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'publications', 'versions' );
-		$this->_params = new JParameter( $this->_plugin->params );
-
-		$this->loadLanguage();
-	}
+	protected $_autoloadLanguage = true;
 
 	/**
 	 * Return the alias and name for this category of content
@@ -64,13 +53,12 @@ class plgPublicationsVersions extends JPlugin
 	 */
 	public function &onPublicationAreas( $publication, $version = 'default', $extended = true)
 	{
+		$areas = array();
 		if ($publication->_category->_params->get('plg_versions'))
 		{
 			$areas = array(
 				'versions' => JText::_('PLG_PUBLICATION_VERSIONS')
 			);
-		} else {
-			$areas = array();
 		}
 		return $areas;
 	}
