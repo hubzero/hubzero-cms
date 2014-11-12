@@ -98,7 +98,7 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 		}
 
 		// Temporarily display only metadata
-		$rtrn == 'metadata';
+		$rtrn = 'metadata';
 
 		// Check if we have a needed database table
 		$database = JFactory::getDBO();

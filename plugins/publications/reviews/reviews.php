@@ -124,7 +124,7 @@ class plgPublicationsReviews extends \Hubzero\Plugin\Plugin
 			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
 			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				$rtrn == 'metadata';
+				$rtrn = 'metadata';
 			}
 		}
 		if (!$publication->_category->_params->get('plg_reviews') || !$extended)

@@ -84,18 +84,15 @@ class plgPublicationsWishlist extends \Hubzero\Plugin\Plugin
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array($areas))
 		{
-			if (!array_intersect($areas, $this->onPublicationAreas($publication))
-			&& !array_intersect($areas, array_keys($this->onPublicationAreas($publication))))
+			if (!array_intersect( $areas, $this->onPublicationAreas( $publication ) )
+			&& !array_intersect( $areas, array_keys( $this->onPublicationAreas( $publication ) ) ))
 			{
-				if ($publication->_category->_params->get('plg_wishlist'))
-				{
-					$rtrn == 'metadata';
-				}
-				else
-				{
-					return $arr;
-				}
+				$rtrn = 'metadata';
 			}
+		}
+		if (!$publication->_category->_params->get('plg_wishlist') || !$extended)
+		{
+			return $arr;
 		}
 
 		$database = JFactory::getDBO();
