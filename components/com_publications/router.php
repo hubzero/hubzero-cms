@@ -224,6 +224,10 @@ function PublicationsParseRoute($segments)
 				else
 				{
 					$vars['active'] = $segments[1];
+					if ($vars['active'] == 'share' && !empty($segments[2]))
+					{
+						$vars['v'] = $segments[2];
+					}
 				}
 			break;
 		}
