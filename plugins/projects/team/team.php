@@ -163,7 +163,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			{
 				case 'edit':
 				case 'setup':
-					$arr['html'] = $this->view( 1 );
+					$arr['html'] = $this->display( 1 );
 					break;
 
 				case 'delete':
@@ -190,7 +190,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 
 				case 'view':
 				default:
-					$arr['html'] = $this->view();
+					$arr['html'] = $this->display();
 					break;
 
 				case 'select':
@@ -223,7 +223,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function view( $edit = 0 )
+	public function display( $edit = 0 )
 	{
 		$layout = $edit ? 'edit' : 'view';
 		$setup  = $this->_task == 'setup' ? 1 : 0;
