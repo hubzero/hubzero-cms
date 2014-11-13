@@ -340,6 +340,19 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 			}
 		}*/
 
+		// Get a list of all statuses
+		$sobj = new SupportTableStatus($this->database);
+
+		$statuses = array();
+		if ($data = $sobj->find('all'))
+		{
+			foreach ($data as $status)
+			{
+				$statuses[$status->id] = $status;
+			}
+		}
+
+		// Get a count of tickets
 		$response->total = $obj->getTicketsCount($filters);
 
 		if ($response->total)
@@ -369,6 +382,21 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 				unset($response->tickets[$i]->name);
 				unset($response->tickets[$i]->login);
 				unset($response->tickets[$i]->email);
+
+				$status = $response->tickets[$i]->status;
+
+				$response->tickets[$i]->status = new stdClass;
+				if (!$status)
+				{
+					$response->tickets[$i]->status->alias = 'new';
+					$response->tickets[$i]->status->title = 'New';
+				}
+				else
+				{
+					$response->tickets[$i]->status->alias = (isset($statuses[$status]) ? $statuses[$status]->alias : 'unknown');
+					$response->tickets[$i]->status->title = (isset($statuses[$status]) ? $statuses[$status]->title : 'unknown');
+				}
+				$response->tickets[$i]->status->id    = $status;
 
 				$response->tickets[$i]->url = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->tickets[$i]->id), DS);
 			}
