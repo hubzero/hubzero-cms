@@ -25,6 +25,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
+$this->css()
+	 ->js();
+
 // List sorting
 $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 $whatsleft = $this->total - $this->filters['start'] - $this->filters['limit'];
