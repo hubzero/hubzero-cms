@@ -100,12 +100,6 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		// Check authorization
-		if (!$authorized && !$project->owner)
-		{
-			return $arr;
-		}
-
 		// Do we have a project ID?
 		if (!is_object($project) or !$project->id)
 		{
