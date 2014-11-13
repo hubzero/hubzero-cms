@@ -120,7 +120,7 @@ $canedit = ($this->pub->state == 1 || $this->pub->state == 0 || $this->pub->stat
 			<?php if ($this->project->provisioned == 1 ) { ?>
 				<p class="notice"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_PROV_WARNING').' <a href="'
 				. JRoute::_('index.php?option=com_publications' . a . 'task=submit' . a . 'pid='
-				. $this->pub->id) . '?active=team' . a . 'action=editauthors' . a . 'version='. $this->pub->version_number . ' " class="showinbox">'
+				. $this->pub->id) . '?active=team' . a . 'action=editauthors' . a . 'version='. $this->pub->version_number . '" class="showinbox">'
 				.JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHORS_EDIT_TEAM').'</a>.'; ?></p>
 			<?php } ?>
 		 </div>

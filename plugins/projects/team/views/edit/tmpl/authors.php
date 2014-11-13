@@ -28,15 +28,15 @@ defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div id="abox-content">
 <?php if ($this->ajax) { ?>
-<h3><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS_ACCESS'); ?></h3>
+<h3><?php echo JText::_('PLG_PROJECTS_TEAM_EDIT_AUTHORS_ACCESS'); ?></h3>
 <?php } ?>
 
 <?php if (!$this->ajax) { ?>
 <form action="<?php echo $this->url; ?>" method="post" id="plg-form" >
 	<?php if ($this->project->provisioned == 1 ) { ?>
-		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS_TEAM')); ?></h3>
+		<h3 class="prov-header"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo $this->url.'?version='.$this->version; ?>">"<?php echo $this->pub->title; ?>"</a> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_EDIT_AUTHORS_TEAM')); ?></h3>
 	<?php } else { ?>
-		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS')); ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_AUTHORS_TEAM')); ?></span>
+		<h3 class="publications"><a href="<?php echo $this->route; ?>"><?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_PUBLICATIONS')); ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo $this->url; ?>">"<?php echo $this->pub->title; ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(JText::_('PLG_PROJECTS_TEAM_EDIT_AUTHORS_TEAM')); ?></span>
 		</h3>
 	<?php }
 }
@@ -57,14 +57,14 @@ else
 	<?php } ?>
 </fieldset>
 <div id="author-access">
-	<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHOR_ACCESS_TIPS'); ?></p>
+	<p><?php echo JText::_('PLG_PROJECTS_TEAM_PUB_AUTHOR_ACCESS_TIPS'); ?></p>
 	<table class="listing">
 		<thead>
 			<tr>
 				<th class="th_image"></th>
-				<th class="th_user"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHOR_MEMBER_NAME'); ?></th>
-				<th class="checkbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHOR_FULL_ACCESS'); ?></th>
-				<th class="checkbox"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_AUTHOR_DELETE'); ?></th>
+				<th class="th_user"><?php echo JText::_('PLG_PROJECTS_TEAM_PUB_AUTHOR_MEMBER_NAME'); ?></th>
+				<th class="checkbox"><?php echo JText::_('PLG_PROJECTS_TEAM_PUB_AUTHOR_FULL_ACCESS'); ?></th>
+				<th class="checkbox"><?php echo JText::_('PLG_PROJECTS_TEAM_PUB_AUTHOR_DELETE'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -89,7 +89,7 @@ else
 			</tbody>
 			</table>
 			<p class="submitarea">
-				<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE_MY_CHANGES'); ?>" />
+				<input type="submit" class="btn" value="<?php echo JText::_('PLG_PROJECTS_TEAM_SAVE_MY_CHANGES'); ?>" />
 			</p>
 		</div>
 </form>

@@ -1166,10 +1166,6 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$pid 		= JRequest::getInt( 'pid', 0 );
 		$ajax 		= JRequest::getInt('ajax', 0);
 
-		// Load language file
-		$lang = JFactory::getLanguage();
-		$lang->load('plg_projects_publications');
-
 		// Load publication & version classes
 		$objP = new Publication($this->_database);
 		$row  = new PublicationVersion($this->_database);
