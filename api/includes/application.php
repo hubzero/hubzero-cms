@@ -829,7 +829,7 @@ class Hubzero_API extends JApplication
 
 		$config = JFactory::getConfig();
 		$options['mode'] = $config->getValue('config.sef');
-		$router =& parent::getRouter('api', $options);
+		$router = parent::getRouter('api', $options);
 		return $router;
 	}
 

@@ -176,7 +176,7 @@ class JRouterApi extends JRouter
 	 */
 	function &build($url)
 	{
-		$uri =& parent::build($url);
+		$uri = parent::build($url);
 
 		// Get the path data
 		$route = $uri->getPath();
@@ -747,7 +747,7 @@ class JRouterApi extends JRouter
 	function &_createURI($url)
 	{
 		//Create the URI
-		$uri =& parent::_createURI($url);
+		$uri = parent::_createURI($url);
 
 		// Set URI defaults
 		$menu = JFactory::getApplication()->getMenu();
