@@ -961,8 +961,9 @@ HUB.Plugins.Autocomplete = {
 				wsel = null,
 				showid = false,
 				cls = '',
-				hint = ''
-				limit = null;
+				hint = '',
+				limit = null,
+				storeRecent = true;
 
 			id = $(input).attr('id');
 			if (!id) {
@@ -1007,6 +1008,9 @@ HUB.Plugins.Autocomplete = {
 			} else {
 				limit = 1;
 			}
+
+			// recent use storage
+			var recentStorageKey = 'autocompleter.recent.' + option;
 
 			value = $('#'+id).val();
 			var data = [];
@@ -1061,7 +1065,48 @@ HUB.Plugins.Autocomplete = {
 					}
 					return "<li>" + item[this.propertyToSearch]+ "</li>";
 				},
-				onAdd: function(item){
+				onResult: function(results)
+				{
+					// if we want to use recent & we have stored recent items
+					if (storeRecent && localStorage && localStorage.getItem(recentStorageKey))
+					{
+						// get recent items
+						var topResults = [];
+						var recent     = JSON.parse(localStorage.getItem(recentStorageKey));
+						var items      = recent.items;
+
+						// loop through each recent item & get its value 
+						// if we have one in the results set
+						for (var i =0; i < items.length; i++)
+						{
+							for (var j=0; j < results.length; j++)
+							{
+								// if found push to top results &
+								// remove from original result set
+								var id = results[j].id;
+								if (items[i] == id)
+								{
+									topResults.push(results[j]);
+									results.splice(j, 1);
+								}
+							}
+						}
+
+						// get top results in reverse order because of how 
+						// we are going to prepend to results array as we iterate
+						topResults = topResults.reverse();
+						for (var i=0, n=topResults.length; i < n; i++)
+						{
+							results.unshift(topResults[i]);
+						}
+					}
+
+					// return  original results of local storage is not 
+					// eligible or user has not existing recent usage 
+					return results;
+				},
+				onAdd: function(item)
+				{
 					// pasting in comma separated items
 					if (item.name.indexOf(',') > -1)
 					{
@@ -1085,6 +1130,37 @@ HUB.Plugins.Autocomplete = {
 						$.getJSON('/index.php?option=com_groups&no_html=1&task=memberslist&group=' + $('#'+id).val(), function(data) {
 							HUB.Plugins.Autocomplete.writeSelectList(data.members, wsel);
 						});
+					}
+
+					// if we want to store recent &
+					// we have local storage
+					if (storeRecent && localStorage)
+					{
+						// check to see if we have existing recent items
+						if (recent = localStorage.getItem(recentStorageKey))
+						{
+							// parse and add ids to list
+							recent = JSON.parse(recent);
+
+							// make sure it only exists once
+							// removes it from current location
+							var index = recent.items.indexOf(item.id);
+							if (index != -1)
+							{
+								recent.items.splice(index, 1);
+							}
+
+							// adds to top of list
+							recent.items.unshift(item.id);
+						}
+						else
+						{
+							//otherwise create new list
+							var recent = { items: [item.id] };
+						}
+
+						// set list of recent to local storage
+						localStorage.setItem(recentStorageKey, JSON.stringify(recent));
 					}
 				}
 			});
