@@ -31,55 +31,52 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
-
 /**
  * Projects Files plugin
  */
-class plgProjectsFiles extends JPlugin
+class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function plgProjectsFiles(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
+	protected $_autoloadLanguage = true;
 
-		// Load plugin parameters
-		$this->_plugin 		= JPluginHelper::getPlugin( 'projects', 'files' );
-		$this->_params 		= new JParameter($this->_plugin->params);
+	/**
+	 * Store redirect URL
+	 *
+	 * @var	   string
+	 */
+	protected $_referer = NULL;
 
-		// Load component configs
-		$this->_config 		= JComponentHelper::getParams('com_projects');
-		$this->_valid_cases = array('files');
+	/**
+	 * Store output message
+	 *
+	 * @var	   array
+	 */
+	protected $_message = NULL;
 
-		$this->gitpath 	  	= $this->_config->get('gitpath', '/opt/local/bin/git');
-		$this->prefix     	= $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
+	/**
+	 * Sync queue
+	 *
+	 * @var	   array
+	 */
+	protected $_queue = NULL;
 
-		$this->_usageGit	= $this->_params->get('disk_usage');
+	/**
+	 * Valid repo locations
+	 *
+	 * @var	   array
+	 */
+	protected $_valid_cases = array('files');
 
-		// Remote connections
-		$this->_connect		= NULL;
-		$this->_rServices	= array();
-		$this->_rSync		= array('service'	=> NULL,
-									'status' 	=> NULL,
-									'message' 	=> NULL,
-									'debug' 	=> NULL,
-									'error' 	=> NULL,
-									'output' 	=> NULL,
-									'auto'		=> NULL
-									);
-
-		// Output collectors
-		$this->_referer 	= '';
-		$this->_message 	= array();
-
-		$this->_queue		= array();
-	}
+	/**
+	 * Repo path prefix
+	 *
+	 * @var	   array
+	 */
+	protected $prefix = NULL;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -174,14 +171,26 @@ class plgProjectsFiles extends JPlugin
 		// Are we returning HTML?
 		if ($returnhtml)
 		{
-			// Load language file
-			$this->loadLanguage();
-
 			$database = JFactory::getDBO();
 
 			// Get joomla libraries
 			jimport('joomla.filesystem.folder');
 			jimport('joomla.filesystem.file');
+
+			$this->_config = JComponentHelper::getParams('com_projects');
+			$this->prefix  = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
+
+			// Remote connections
+			$this->_connect		= NULL;
+			$this->_rServices	= array();
+			$this->_rSync		= array('service'	=> NULL,
+										'status' 	=> NULL,
+										'message' 	=> NULL,
+										'debug' 	=> NULL,
+										'error' 	=> NULL,
+										'output' 	=> NULL,
+										'auto'		=> NULL
+										);
 
 			// Tool repo ? Load tool
 			if (preg_match("/tools:/", $case))
@@ -459,7 +468,7 @@ class plgProjectsFiles extends JPlugin
 		);
 
 		// Get used space in project directory
-		$view->dirsize = $this->getDiskUsage($this->path, $this->prefix, $this->_usageGit);
+		$view->dirsize = $this->getDiskUsage($this->path, $this->prefix, $this->params->get('disk_usage'));
 
 		// Get connection details for user
 		$objO = new ProjectOwner( $this->_database );
@@ -533,8 +542,8 @@ class plgProjectsFiles extends JPlugin
 		$view->quota 		= $view->params->get('quota')
 							? $view->params->get('quota')
 							: ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-		$view->fileparams 	= $this->_params;
-		$view->sizelimit 	= ProjectsHTML::formatSize($this->_params->get('maxUpload', '104857600'));
+		$view->fileparams 	= $this->params;
+		$view->sizelimit 	= ProjectsHTML::formatSize($this->params->get('maxUpload', '104857600'));
 
 		return $view->loadTemplate();
 	}
@@ -662,7 +671,7 @@ class plgProjectsFiles extends JPlugin
 		$view->step 		= $step;
 		$view->props		= $props;
 		$view->filter		= $filter;
-		$view->sizelimit 	= $this->_params->get('maxUpload', '104857600');
+		$view->sizelimit 	= $this->params->get('maxUpload', '104857600');
 
 		if ($prov)
 		{
@@ -1072,7 +1081,7 @@ class plgProjectsFiles extends JPlugin
 		);
 
 		// Get used space
-		$usageGit = $prov ? false : $this->_usageGit;
+		$usageGit = $prov ? false : $this->params->get('disk_usage');
 		$dirsize = $this->getDiskUsage($this->path, $prefix, false);
 
 		// Get quota & routing
@@ -1109,9 +1118,9 @@ class plgProjectsFiles extends JPlugin
 		$view->case 		= $this->_case;
 		$view->ajax			= $ajax;
 		$view->config 		= $this->_config;
-		$view->sizelimit 	= $this->_params->get('maxUpload', '104857600');
+		$view->sizelimit 	= $this->params->get('maxUpload', '104857600');
 		$view->title		= $this->_area['title'];
-		$view->params 		= $this->_params;
+		$view->params 		= $this->params;
 
 		// Get messages	and errors
 		$view->msg = $this->_msg;
@@ -1131,7 +1140,7 @@ class plgProjectsFiles extends JPlugin
 	{
 		// Incoming
 		$expand  	= JRequest::getInt('expand_zip');
-		$sizeLimit 	= $this->_params->get('maxUpload', '104857600');
+		$sizeLimit 	= $this->params->get('maxUpload', '104857600');
 		$pid 		= JRequest::getInt('pid', 0);
 
 		$prov    	= ($this->_task == 'saveprov' || $this->_project->provisioned == 1) ? 1 : 0;
@@ -1190,7 +1199,7 @@ class plgProjectsFiles extends JPlugin
 						  ? $quota
 						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')),
 							'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($this->path, $prefix, $this->_usageGit);
+			$dirsize 	= $this->getDiskUsage($this->path, $prefix, $this->params->get('disk_usage'));
 		}
 
 		// Some checks
@@ -1460,7 +1469,7 @@ class plgProjectsFiles extends JPlugin
 			$quota 		= $quota
 						  ? $quota
 						  : ProjectsHtml::convertSize(floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
-			$dirsize 	= $this->getDiskUsage($this->path, $prefix, $this->_usageGit);
+			$dirsize 	= $this->getDiskUsage($this->path, $prefix, $this->params->get('disk_usage'));
 		}
 
 		// Compute used space
@@ -1491,9 +1500,9 @@ class plgProjectsFiles extends JPlugin
 				$file = $this->subdir ? $this->subdir . DS . $file : $file;
 
 				// Check file size
-				$sizelimit = ProjectsHtml::formatSize($this->_params->get('maxUpload', '104857600'));
+				$sizelimit = ProjectsHtml::formatSize($this->params->get('maxUpload', '104857600'));
 
-				if ( $files['size'][$i] > intval($this->_params->get('maxUpload', '104857600')))
+				if ( $files['size'][$i] > intval($this->params->get('maxUpload', '104857600')))
 				{
 					$this->setError( JText::_('COM_PROJECTS_FILES_ERROR_EXCEEDS_LIMIT') . ' '
 						. $sizelimit . '. ' . JText::_('COM_PROJECTS_FILES_ERROR_TOO_LARGE_USE_OTHER_METHOD') );
@@ -1679,7 +1688,7 @@ class plgProjectsFiles extends JPlugin
 		}
 
 		// Reserved names (service directories)
-		$reserved = ProjectsHelper::getParamArray($this->_params->get('reservedNames'));
+		$reserved = ProjectsHelper::getParamArray($this->params->get('reservedNames'));
 
 		$temp_path 	 = $this->_task == 'saveprov' ? 'temp' : $this->getProjectPath ($this->_project->alias, 'temp');
 		$archive 	 = $prefix . $temp_path . DS . $file;
@@ -1841,7 +1850,7 @@ class plgProjectsFiles extends JPlugin
 
 		// Reserved names (service directories)
 		$reserved = ProjectsHelper::getParamArray(
-			$this->_params->get('reservedNames'));
+			$this->params->get('reservedNames'));
 
 		// Do virus check
 		if (ProjectsHelper::virusCheck($tmp_name))
@@ -2052,7 +2061,7 @@ class plgProjectsFiles extends JPlugin
 
 		// Reserved names (service directories)
 		$reserved = ProjectsHelper::getParamArray(
-			$this->_params->get('reservedNames', '' ));
+			$this->params->get('reservedNames', '' ));
 
 		$route  = 'index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias;
 		$url 	= ($this->_case != 'files' && $this->_tool->name)
@@ -3328,9 +3337,6 @@ class plgProjectsFiles extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		// Load language file
-		$this->loadLanguage();
-
 		// Instantiate a project
 		$obj = new Project( $database );
 
@@ -3380,6 +3386,7 @@ class plgProjectsFiles extends JPlugin
 			$serve    = $prefix. $tempPath . DS . $tempName;
 
 			// Get file content
+			chdir($prefix . $path);
 			$this->_git->getContent($file, $hash, $serve);
 
 			$deleteTemp = 1;
@@ -3866,7 +3873,7 @@ class plgProjectsFiles extends JPlugin
 		$commit  	= JRequest::getInt( 'commit', 0 );
 		$download  	= JRequest::getInt( 'download', 0 );
 
-		if (!$this->_params->get('latex'))
+		if (!$this->params->get('latex'))
 		{
 			$this->setError( JText::_('COM_PROJECTS_FILES_COMPILE_NOTALOWWED') );
 			return;
@@ -3902,7 +3909,7 @@ class plgProjectsFiles extends JPlugin
 		$compiler = new ProjectsCompiler();
 
 		// Tex compiler path
-		$texpath = DS . trim($this->_params->get('texpath'), DS);
+		$texpath = DS . trim($this->params->get('texpath'), DS);
 
 		$remote 	= NULL;
 		$fpath 		= NULL;
@@ -4141,7 +4148,7 @@ class plgProjectsFiles extends JPlugin
 			if ($cType == 'application/pdf')
 			{
 				// GS path
-				$gspath = trim($this->_params->get('gspath'), DS);
+				$gspath = trim($this->params->get('gspath'), DS);
 				if ($gspath && file_exists(DS . $gspath . DS . 'gs' ))
 				{
 					$gspath = DS . $gspath . DS;
@@ -4415,7 +4422,7 @@ class plgProjectsFiles extends JPlugin
 			return false;
 		}
 
-		$maxDownload 	= intval($this->_params->get('maxDownload', 104857600));
+		$maxDownload 	= intval($this->params->get('maxDownload', 104857600));
 
 		// Get temp directory
 		$base_path 		= $this->getProjectPath ($this->_project->alias, 'temp');
@@ -4504,6 +4511,11 @@ class plgProjectsFiles extends JPlugin
 		{
 			// Git helper
 			include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
+			if (!isset($this->_config))
+			{
+				$this->_config 	 = JComponentHelper::getParams('com_projects');
+			}
+
 			$this->_git = new ProjectsGitHelper(
 				$this->_config->get('gitpath', '/opt/local/bin/git'),
 				0,
@@ -4543,19 +4555,20 @@ class plgProjectsFiles extends JPlugin
 			$document->addScript('plugins' . DS . 'projects' . DS . 'files' . DS . 'js' . DS . 'diskspace.js');
 		}
 
-		// Make sure Git helper is included
-		$this->getGitHelper();
-
 		// Get path and initialize Git
 		if ($by == 'admin')
 		{
 			$this->_project = $project;
 			$path = $this->getProjectPath($project->alias, $case);
+			$this->_config = JComponentHelper::getParams('com_projects');
+			$this->prefix  = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
 		}
 		else
 		{
 			$path = $this->path;
 		}
+		// Make sure Git helper is included
+		$this->getGitHelper();
 
 		$route  = 'index.php?option=' . $option . a . 'alias=' . $project->alias;
 
@@ -4580,7 +4593,7 @@ class plgProjectsFiles extends JPlugin
 		}
 
 		// Report .git usage?
-		if ($this->_usageGit == true || $by == 'admin')
+		if ($this->params->get('disk_usage') == true || $by == 'admin')
 		{
 			$view->dirsize 	  = self::getDiskUsage($path, $this->prefix, true);
 			$view->totalspace = self::getDiskUsage($path, $this->prefix, false, false);
@@ -4629,8 +4642,8 @@ class plgProjectsFiles extends JPlugin
 		$view->option 	= $option;
 		$view->config 	= $config;
 		$view->title	= isset($this->_area['title']) ? $this->_area['title'] : '';
-		$view->pparams 	= $this->_params;
-		$view->usageGit = $this->_usageGit;
+		$view->pparams 	= $this->params;
+		$view->usageGit = $this->params->get('disk_usage');
 
 		return $view->loadTemplate();
 	}
@@ -5093,6 +5106,12 @@ class plgProjectsFiles extends JPlugin
 		$sorting 	= array();
 		$i			= 0;
 
+		if (!isset($this->prefix))
+		{
+			$this->_config = JComponentHelper::getParams('com_projects');
+			$this->prefix  = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
+		}
+
 		if (!is_dir($this->prefix . $path))
 		{
 			return $get_count ? count($files) : $files;
@@ -5441,7 +5460,7 @@ class plgProjectsFiles extends JPlugin
 
 			if ($get == 'diskspace')
 			{
-				$diskSpace = $diskSpace + $this->getDiskUsage($path, $prefix, $this->_usageGit);
+				$diskSpace = $diskSpace + $this->getDiskUsage($path, $prefix, $this->params->get('disk_usage'));
 			}
 			elseif ($get == 'commitCount')
 			{
@@ -5734,7 +5753,7 @@ class plgProjectsFiles extends JPlugin
 		$pparams = new JParameter( $this->_project->params );
 
 		// Timed sync?
-		$autoSync = $this->_params->get('auto_sync', 0);
+		$autoSync = $this->params->get('auto_sync', 0);
 
 		// Remote service(s) active?
 		if (!empty($this->_rServices) && $this->_case == 'files')
@@ -5830,7 +5849,7 @@ class plgProjectsFiles extends JPlugin
 		$synced = $pparams->get($service . '_sync', 1);
 
 		// Get disk usage
-		$diskUsage = $this->getDiskUsage($path, $this->prefix, $this->_usageGit);
+		$diskUsage = $this->getDiskUsage($path, $this->prefix, $this->params->get('disk_usage'));
 		$quota 	   = $pparams->get('quota')
 					? $pparams->get('quota')
 					: ProjectsHtml::convertSize( floatval($this->_config->get('defaultQuota', '1')), 'GB', 'b');
@@ -6672,7 +6691,7 @@ class plgProjectsFiles extends JPlugin
 			}
 
 			// Timed sync?
-			$autoSync = $this->_params->get('auto_sync', 0);
+			$autoSync = $this->params->get('auto_sync', 0);
 			if ($autoSync > 0)
 			{
 				if ($autoSync < 1)
@@ -6748,7 +6767,7 @@ class plgProjectsFiles extends JPlugin
 		}
 
 		// Is there time lock?
-		$timeLock = $this->_params->get('sync_lock', 0);
+		$timeLock = $this->params->get('sync_lock', 0);
 		if ($timeLock)
 		{
 			$timecheck = date('c', time() - (1 * $timeLock * 60));
@@ -6832,11 +6851,10 @@ class plgProjectsFiles extends JPlugin
 		jimport('joomla.filesystem.folder');
 		jimport('joomla.filesystem.file');
 
-		// Load language file
-		$this->loadLanguage();
-
 		$this->_database = JFactory::getDBO();
-		$this->_uid = $uid;
+		$this->_uid 	 = $uid;
+		$this->_config 	 = JComponentHelper::getParams('com_projects');
+		$this->prefix    = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
 
 		if (!$this->_uid)
 		{
