@@ -31,36 +31,31 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
-
 /**
  * Projects Links plugin
  */
-class plgProjectsLinks extends JPlugin
+class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function plgProjectsLinks(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
+	protected $_autoloadLanguage = true;
 
-		// Load plugin parameters
-		$this->_plugin 		= JPluginHelper::getPlugin( 'projects', 'links' );
-		$this->_params 		= new JParameter($this->_plugin->params);
+	/**
+	 * Store redirect URL
+	 *
+	 * @var	   string
+	 */
+	protected $_referer = NULL;
 
-		// Load component configs
-		$this->_config 		= JComponentHelper::getParams('com_projects');
-		$this->_pubconfig 	= JComponentHelper::getParams('com_publications');
-
-		// Output collectors
-		$this->_referer 	= '';
-		$this->_message 	= array();
-	}
+	/**
+	 * Store output message
+	 *
+	 * @var	   array
+	 */
+	protected $_message = NULL;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -119,9 +114,6 @@ class plgProjectsLinks extends JPlugin
 		// Get this area details
 		$this->_area = $this->onProjectAreas(true);
 
-		// Load language file
-		$this->loadLanguage();
-
 		// Check if our area is in the array of areas we want to return results for
 		if (is_array( $areas ))
 		{
@@ -152,6 +144,10 @@ class plgProjectsLinks extends JPlugin
 				$juser = JFactory::getUser();
 				$this->_uid = $juser->get('id');
 			}
+
+			// Load component configs
+			$this->_config 		= JComponentHelper::getParams('com_projects');
+			$this->_pubconfig 	= JComponentHelper::getParams('com_publications');
 
 			// Actions
 			switch ($this->_task)
@@ -739,11 +735,10 @@ class plgProjectsLinks extends JPlugin
 		// Set pub assoc and load curation
 		$view->publication->_curationModel->setPubAssoc($view->publication);
 
+		// Add css?
 		if (!$ajax)
 		{
-			$document = JFactory::getDocument();
-			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications'
-				. DS . 'css' . DS . 'selector.css');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
 		}
 
 		if ($this->_task == 'newcite')
