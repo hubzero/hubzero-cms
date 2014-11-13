@@ -13,50 +13,358 @@
 		font-family: "Fontcons";
 		margin-right: 0.2em;
 	}
-	.icon-file:before       { content: "\@{iconFile}"; }
-	.icon-cart:before       { content: "\@{iconShoppingCart}"; }
-	.icon-basket:before     { content: "\@{iconBasket}"; }
-	.icon-warning:before    { content: "\@{iconWarning}"; }
-	.icon-success:before    { content: "\@{iconSuccess}"; }
-	.icon-info:before       { content: "\@{iconInfo}"; }
-	.icon-error:before,  
-	.icon-danger:before     { content: "\@{iconError}"; }
-	.icon-email:before      { content: "\@{iconEnvelope}"; }
-	.icon-add:before        { content: "\@{iconPlusSign}"; }
-	.icon-delete:before     { content: "\@{iconTrash}"; }
-	.icon-edit:before       { content: "\@{iconPencil}"; }
-	.icon-save:before       { content: "\@{iconFloppy}"; }
-	.icon-comments:before   { content: "\@{iconComments}"; }
-	.icon-comment:before    { content: "\@{iconComment}"; }
-	.icon-category:before,  
-	.icon-folder:before     { content: "\@{iconFolderClose}"; }
-	.icon-search:before     { content: "\@{iconSearch}"; }
-	.icon-stats:before      { content: "\@{iconLineGraph}"; }
-	.icon-tags:before       { content: "\@{iconTags}"; }
-	.icon-tag:before        { content: "\@{iconTag}"; }
-	.icon-user:before       { content: "\@{iconUser}"; }
-	.icon-group:before      { content: "\@{iconGroup}"; }
-	.icon-archive:before    { content: "\@{iconArchive}"; }
-	.icon-config:before     { content: "\@{iconCog}"; }
-	.icon-abuse:before      { content: "\@{iconBanCircle}"; }
-	.icon-tag:before        { content: "\@{iconTag}"; }
-	.icon-feed:before       { content: "\@{iconFeed}"; }
-	.icon-browse:before     { content: "\@{iconThList}"; }
-	.icon-history:before,  
-	.icon-time:before       { content: "\@{iconTime}"; }
-	.icon-reply:before      { content: "\@{iconReply}"; }
-	.icon-date:before       { content: "\@{iconCalendar}"; }
-	.icon-prev:before       { content: "\@{iconArrowLeft}"; }
-	.icon-next:before       { content: "\@{iconArrowRight}"; }
-	.icon-main:before       { content: "\@{iconHeirarchy}"; }
-	.icon-points:before     { content: "\@{iconCoins}"; }
-	.icon-upload:before     { content: "\@{iconCloudUpload}"; }
-	.icon-home:before       { content: "\@{iconHome}"; }
-	.icon-success:before    { content: "\@{iconSuccess}"; }
-	.icon-ban-circle:before { content: "\@{iconBanCircle}"; }
-	.icon-lock:before       { content: "\@{iconLock}"; }
-	.icon-download:before   { content: "\@{iconDownload}"; }
-	.icon-move:before       { content: "\@{iconMove}"; }
-	.icon-extract:before    { content: "\@{iconBox}"; }
-	.icon-plus:before       { content: "\@{iconPlus}"; }
-	.icon-email-alt:before  { content: "\@{iconEnvelopeAlt}"; }
+
+	// Voting
+	.icon-heart:before              { content: "\@{iconHeart}"; }
+	.icon-heart-empty:before        { content: "\@{iconHeartEmpty}"; }
+	.icon-star:before               { content: "\@{iconStar}"; }
+	.icon-star-empty:before         { content: "\@{iconStarEmpty}"; }
+	.icon-star-half:before          { content: "\@{iconStarHalf}"; }
+	.icon-thumbs-down:before        { content: "\@{iconThumbsDown}"; }
+	.icon-thumbs-up:before          { content: "\@{iconThumbsUp}"; }
+
+
+	// Notifications
+	.icon-help:before               { content: "\@{iconHelp}"; }
+	.icon-info:before               { content: "\@{iconInfo}"; }
+	.icon-success:before            { content: "\@{iconSuccess}"; }
+	.icon-error:before              { content: "\@{iconError}"; }
+	.icon-warning:before            { content: "\@{iconWarning}"; }
+	.icon-plus-sign:before          { content: "\@{iconPlusSign}"; }
+	.icon-minus-sign:before         { content: "\@{iconMinusSign}"; }
+	.icon-remove-sign:before        { content: "\@{iconRemoveSign}"; }
+	.icon-success-sign:before       { content: "\@{iconSuccessSign}"; }
+	.icon-warning-sign:before       { content: "\@{iconWarningSign}"; }
+	.icon-remove-circle:before      { content: "\@{iconRemoveCircle}"; }
+	.icon-success-circle:before     { content: "\@{iconSuccessCircle}"; }
+	.icon-ban-circle:before         { content: "\@{iconBanCircle}"; }
+
+	// Security
+	.icon-lock:before               { content: "\@{iconLock}"; }
+	.icon-unlock:before             { content: "\@{iconUnlock}"; }
+	.icon-flag:before               { content: "\@{iconFlag}"; }
+	.icon-shield:before             { content: "\@{iconShield}"; }
+
+	// Config
+	.icon-tools:before              { content: "\@{iconTools}"; }
+	.icon-settings:before           { content: "\@{iconSettings}"; }
+	.icon-dashboard:before          { content: "\@{iconDashboard}"; }
+	.icon-key:before                { content: "\@{iconKey}"; }
+	.icon-cogs:before               { content: "\@{iconCogs}"; }
+	.icon-toolbox:before            { content: "\@{iconToolbox}"; }
+	.icon-wrench:before             { content: "\@{iconWrench}"; }
+
+	// Mail
+	.icon-envelope:before           { content: "\@{iconEnvelope}"; }
+	.icon-envelope-alt:before       { content: "\@{iconEnvelopeAlt}"; }
+	.icon-inbox:before              { content: "\@{iconInbox}"; }
+
+	// User
+	.icon-user:before               { content: "\@{iconUser}"; }
+	.icon-group:before              { content: "\@{iconGroup}"; }
+
+	// Zoom
+	.icon-zoom-in:before            { content: "\@{iconZoomIn}"; }
+	.icon-zoom-out:before           { content: "\@{iconZoomOut}"; }
+
+	// Tags
+	.icon-tag:before                { content: "\@{iconTag}"; }
+	.icon-tags:before               { content: "\@{iconTags}"; }
+
+	// Travel / transportation
+	.icon-time:before               { content: "\@{iconTime}"; }
+	.icon-road:before               { content: "\@{iconRoad}"; }
+	.icon-earth:before              { content: "\@{iconEarth}"; }
+	.icon-map:before                { content: "\@{iconMap}"; }
+	.icon-map-marker:before         { content: "\@{iconMapMarker}"; }
+	.icon-globe:before              { content: "\@{iconGlobe}"; }
+	.icon-plane:before              { content: "\@{iconPlane}"; }
+	.icon-suitcase:before           { content: "\@{iconSuitcase}"; }
+	.icon-truck:before              { content: "\@{iconTruck}"; }
+
+	// Download / Upload
+	.icon-download:before           { content: "\@{iconDownload}"; }
+	.icon-download-alt:before       { content: "\@{iconDownloadAlt}"; }
+	.icon-upload:before             { content: "\@{iconUpload}"; }
+	.icon-upload-alt:before         { content: "\@{iconUploadAlt}"; }
+	.icon-cloud-upload:before       { content: "\@{iconCloudUpload}"; }
+
+	// Sound
+	.icon-headphones:before         { content: "\@{iconHeadphones}"; }
+	.icon-volume-off:before         { content: "\@{iconVolumeOff}"; }
+	.icon-volume-down:before        { content: "\@{iconVolumeDown}"; }
+	.icon-volume-up:before          { content: "\@{iconVolumeUp}"; }
+	.icon-music:before              { content: "\@{iconMusic}"; }
+
+	// video
+	.icon-step-backward:before      { content: "\@{iconStepBackward}"; }
+	.icon-fast-backward:before      { content: "\@{iconFastBackward}"; }
+	.icon-backward:before           { content: "\@{iconBackward}"; }
+	.icon-play:before               { content: "\@{iconPlay}"; }
+	.icon-pause:before              { content: "\@{iconPause}"; }
+	.icon-stop:before               { content: "\@{iconStop}"; }
+	.icon-forward:before            { content: "\@{iconForward}"; }
+	.icon-fast-forward:before       { content: "\@{iconFastForward}"; }
+	.icon-step-forward:before       { content: "\@{iconStepForward}"; }
+	.icon-eject:before              { content: "\@{iconEject}"; }
+	.icon-play-circle:before        { content: "\@{iconPlayCircle}"; }
+	.icon-repeat:before             { content: "\@{iconRepeat}"; }
+	.icon-refresh:before            { content: "\@{iconRefresh}"; }
+
+	// Media
+	.icon-feed:before               { content: "\@{iconFeed}"; }
+	.icon-note:before               { content: "\@{iconNote}"; }
+	.icon-book:before               { content: "\@{iconBook}"; }
+	.icon-bookmark:before           { content: "\@{iconBookmark}"; }
+	.icon-print:before              { content: "\@{iconPrint}"; }
+	.icon-camera:before             { content: "\@{iconCamera}"; }
+	.icon-facetime:before           { content: "\@{iconFacetime}"; }
+	.icon-picture:before            { content: "\@{iconPicture}"; }
+
+	// Text edit
+	.icon-font:before               { content: "\@{iconFont}"; }
+	.icon-bold:before               { content: "\@{iconBold}"; }
+	.icon-italic:before             { content: "\@{iconItalic}"; }
+	.icon-text-height:before        { content: "\@{iconTextHeight}"; }
+	.icon-text-width:before         { content: "\@{iconTextWidth}"; }
+	.icon-align-left:before         { content: "\@{iconAlignLeft}"; }
+	.icon-align-center:before       { content: "\@{iconAlignCenter}"; }
+	.icon-align-right:before        { content: "\@{iconAlignRight}"; }
+	.icon-align-justify:before      { content: "\@{iconAlignJustify}"; }
+	.icon-list:before               { content: "\@{iconList}"; }
+	.icon-indent-left:before        { content: "\@{iconIndentLeft}"; }
+	.icon-indent-right:before       { content: "\@{iconIndentRight}"; }
+	.icon-list-ul:before            { content: "\@{iconListUl}"; }
+	.icon-list-ol:before            { content: "\@{iconListOl}"; }
+	.icon-strikethrough:before      { content: "\@{iconStrikethrough}"; }
+	.icon-underline:before          { content: "\@{iconUnderline}"; }
+	.icon-table:before              { content: "\@{iconTable}"; }
+
+	// Actions
+	.icon-remove:before             { content: "\@{iconRemove}"; }
+	.icon-pencil:before             { content: "\@{iconPencil}"; }
+	.icon-adjust:before             { content: "\@{iconAdjust}"; }
+	.icon-tint:before               { content: "\@{iconTint}"; }
+	.icon-pencil-box:before         { content: "\@{iconPencilBox}"; }
+	.icon-share-box:before          { content: "\@{iconShareBox}"; }
+	.icon-check-box:before          { content: "\@{iconCheckBox}"; }
+	.icon-search:before             { content: "\@{iconSearch}"; }
+
+	// Directional
+	.icon-move:before               { content: "\@{iconMove}"; }
+	.icon-chevron-left:before       { content: "\@{iconChevronLeft}"; }
+	.icon-chevron-right:before      { content: "\@{iconChevronRight}"; }
+	.icon-arrow-left:before         { content: "\@{iconArrowLeft}"; }
+	.icon-arrow-right:before        { content: "\@{iconArrowRight}"; }
+	.icon-arrow-up:before           { content: "\@{iconArrowUp}"; }
+	.icon-arrow-down:before         { content: "\@{iconArrowDown}"; }
+	.icon-share-alt:before          { content: "\@{iconShareAlt}"; }
+	.icon-resize-full:before        { content: "\@{iconResizeFull}"; }
+	.icon-resize-small:before       { content: "\@{iconResizeSmall}"; }
+	.icon-reply-all:before          { content: "\@{iconReplyAll}"; }
+	.icon-reply:before              { content: "\@{iconReply}"; }
+	.icon-random:before             { content: "\@{iconRandom}"; }
+	.icon-chevron-up:before         { content: "\@{iconChevronUp}"; }
+	.icon-chevron-down:before       { content: "\@{iconChevronDown}"; }
+	.icon-reload:before             { content: "\@{iconReload}"; }
+	.icon-resize-vertical:before    { content: "\@{iconResizeVertical}"; }
+	.icon-resize-horizontal:before  { content: "\@{iconResizeHorizontal}"; }
+	.icon-caret-down:before         { content: "\@{iconCaretDown}"; }
+	.icon-caret-up:before           { content: "\@{iconCaretUp}"; }
+	.icon-caret-left:before         { content: "\@{iconCaretLeft}"; }
+	.icon-caret-right:before        { content: "\@{iconCaretRight}"; }
+	.icon-sort:before               { content: "\@{iconSort}"; }
+	.icon-exchange:before           { content: "\@{iconExchange}"; }
+	.icon-hand-right:before         { content: "\@{iconHandRight}"; }
+	.icon-hand-left:before          { content: "\@{iconHandLeft}"; }
+	.icon-hand-up:before            { content: "\@{iconHandUp}"; }
+	.icon-hand-down:before          { content: "\@{iconHandDown}"; }
+	.icon-circle-arrow-left:before  { content: "\@{iconCircleArrowLeft}"; }
+	.icon-circle-arrow-right:before { content: "\@{iconCircleArrowRight}"; }
+	.icon-circle-arrow-up:before    { content: "\@{iconCircleArrowUp}"; }
+	.icon-circle-arrow-down:before  { content: "\@{iconCircleArrowDown}"; }
+
+	// Folders
+	.icon-folder-close:before       { content: "\@{iconFolderClose}"; }
+	.icon-folder-close-alt:before   { content: "\@{iconFolderCloseAlt}"; }
+	.icon-folder-open:before        { content: "\@{iconFolderOpen}"; }
+	.icon-folder-open-alt:before    { content: "\@{iconFolderOpenAlt}"; }
+
+	// Files
+	.icon-file-alt:before           { content: "\@{iconFileAlt}"; }
+	.icon-file-alt-text:before      { content: "\@{iconFileAltText}"; }
+	.icon-documents:before          { content: "\@{iconDocuments}"; }
+	.icon-file:before               { content: "\@{iconFile}"; }
+
+	// Date / time
+	.icon-calendar:before           { content: "\@{iconCalendar}"; }
+	.icon-calendar-alt:before       { content: "\@{iconCalendarAlt}"; }
+	.icon-hourglass:before          { content: "\@{iconHourglass}"; }
+	.icon-alarm-clock:before        { content: "\@{iconAlarmClock}"; }
+
+	// Commerce
+	.icon-shopping-cart:before      { content: "\@{iconShoppingCart}"; }
+	.icon-basket:before             { content: "\@{iconBasket}"; }
+	.icon-money:before              { content: "\@{iconMoney}"; }
+	.icon-credit-card:before        { content: "\@{iconCreditCard}"; }
+	.icon-coins:before              { content: "\@{iconCoins}"; }
+
+	// Comments
+	.icon-comment:before            { content: "\@{iconComment}"; }
+	.icon-comments:before           { content: "\@{iconComments}"; }
+	.icon-comment-alt:before        { content: "\@{iconCommentAlt}"; }
+	.icon-comments-alt:before       { content: "\@{iconCommentsAlt}"; }
+
+	// Sign in / out
+	.icon-signout:before            { content: "\@{iconSignout}"; }
+	.icon-signin:before             { content: "\@{iconSignin}"; }
+	.icon-plug:before               { content: "\@{iconPlug}"; }
+	.icon-unplug:before             { content: "\@{iconUnplug}"; }
+	.icon-power:before              { content: "\@{iconPower}"; }
+
+	// Charts
+	.icon-pie-chart:before          { content: "\@{iconPieChart}"; }
+	.icon-bar-chart:before          { content: "\@{iconBarChart}"; }
+	.icon-line-graph:before         { content: "\@{iconLineGraph}"; }
+
+	// States
+	.icon-ellipsis:before           { content: "\@{iconEllipsis}"; }
+	.icon-plus:before               { content: "\@{iconPlus}"; }
+	.icon-minus:before              { content: "\@{iconMinus}"; }
+	.icon-asterisk:before           { content: "\@{iconAsterisk}"; }
+	.icon-eye-open:before           { content: "\@{iconEyeOpen}"; }
+	.icon-eye-close:before          { content: "\@{iconEyeClose}"; }
+
+	// Quotes
+	.icon-quote-open:before         { content: "\@{iconQuoteOpen}"; }
+	.icon-quote-closed:before       { content: "\@{iconQuoteClosed}"; }
+
+	// Awards
+	.icon-trophy:before             { content: "\@{iconTrophy}"; }
+	.icon-award:before              { content: "\@{iconAward}"; }
+	.icon-gift:before               { content: "\@{iconGift}"; }
+	.icon-certificate:before        { content: "\@{iconCertificate}"; }
+
+	// Misc
+	.icon-pushpin:before            { content: "\@{iconPushpin}"; }
+	.icon-external-link:before      { content: "\@{iconExternalLink}"; }
+	.icon-bolt:before               { content: "\@{iconBolt}"; }
+	.icon-leaf:before               { content: "\@{iconLeaf}"; }
+	.icon-fire:before               { content: "\@{iconFire}"; }
+	.icon-cloud:before              { content: "\@{iconCloud}"; }
+	.icon-film:before               { content: "\@{iconFilm}"; }
+	.icon-th-large:before           { content: "\@{iconThLarge}"; }
+	.icon-th:before                 { content: "\@{iconTh}"; }
+	.icon-th-list:before            { content: "\@{iconThList}"; }
+	.icon-easel:before              { content: "\@{iconEasel}"; }
+	.icon-scissors:before           { content: "\@{iconScissors}"; }
+	.icon-circle-blank:before       { content: "\@{iconCircleBlank}"; }
+	.icon-spinner:before            { content: "\@{iconSpinner}"; }
+	.icon-circle:before             { content: "\@{iconCircle}"; }
+	.icon-anchor:before             { content: "\@{iconAnchor}"; }
+	.icon-magnet:before             { content: "\@{iconMagnet}"; }
+	.icon-block:before              { content: "\@{iconBlock}"; }
+	.icon-list-alt:before           { content: "\@{iconListAlt}"; }
+	.icon-paperclip:before          { content: "\@{iconPaperclip}"; }
+	.icon-beaker:before             { content: "\@{iconBeaker}"; }
+	.icon-box:before                { content: "\@{iconBox}"; }
+	.icon-copy:before               { content: "\@{iconCopy}"; }
+	.icon-eyedropper:before         { content: "\@{iconEyedropper}"; }
+	.icon-building:before           { content: "\@{iconBuilding}"; }
+	.icon-floppy:before             { content: "\@{iconFloppy}"; }
+	.icon-hand:before               { content: "\@{iconHand}"; }
+	.icon-lightbulb:before          { content: "\@{iconLightbulb}"; }
+	.icon-news:before               { content: "\@{iconNews}"; }
+	.icon-palette:before            { content: "\@{iconPalette}"; }
+	.icon-pictures:before           { content: "\@{iconPictures}"; }
+	.icon-beaker:before             { content: "\@{iconBeaker}"; }
+	.icon-layers:before             { content: "\@{iconLayers}"; }
+	.icon-support:before            { content: "\@{iconSupport}"; }
+	.icon-activity:before           { content: "\@{iconActivity}"; }
+	.icon-monitor:before            { content: "\@{iconMonitor}"; }
+	.icon-eraser:before             { content: "\@{iconEraser}"; }
+	.icon-government:before         { content: "\@{iconGovernment}"; }
+	.icon-archive:before            { content: "\@{iconArchive}"; }
+	.icon-link:before               { content: "\@{iconLink}"; }
+	.icon-signal:before             { content: "\@{iconSignal}"; }
+	.icon-cog:before                { content: "\@{iconCog}"; }
+	.icon-trash:before              { content: "\@{iconTrash}"; }
+	.icon-home:before               { content: "\@{iconHome}"; }
+	.icon-table-header:before       { content: "\@{iconTableHeader}"; }
+	.icon-bell:before               { content: "\@{iconBell}"; }
+	.icon-book-open:before          { content: "\@{iconBookOpen}"; }
+	.icon-blocks:before             { content: "\@{iconBlocks}"; }
+	.icon-heirarchy:before          { content: "\@{iconHeirarchy}"; }
+	.icon-layout:before             { content: "\@{iconLayout}"; }
+	.icon-phone:before              { content: "\@{iconPhone}"; }
+	.icon-atom:before               { content: "\@{iconAtom}"; }
+	.icon-wand:before               { content: "\@{iconWand}"; }
+	.icon-bug:before                { content: "\@{iconBug}"; }
+	.icon-puzzle:before             { content: "\@{iconPuzzle}"; }
+	.icon-game:before               { content: "\@{iconGame}"; }
+	.icon-paper-airplane:before     { content: "\@{iconPaperAirplane}"; }
+	.icon-pen:before                { content: "\@{iconPen}"; }
+	.icon-scan:before               { content: "\@{iconScan}"; }
+	.icon-megaphone:before          { content: "\@{iconMegaphone}"; }
+	.icon-factory:before            { content: "\@{iconFactory}"; }
+	.icon-umbrella:before           { content: "\@{iconUmbrella}"; }
+	.icon-alt:before                { content: "\@{iconblockAlt}"; }
+	.icon-mortar-board:before       { content: "\@{iconMortarBoard}"; }
+	.icon-check-empty:before        { content: "\@{iconCheckEmpty}"; }
+	.icon-bookmark-empty:before     { content: "\@{iconBookmarkEmpty}"; }
+	.icon-tasks:before              { content: "\@{iconTasks}"; }
+	.icon-filter:before             { content: "\@{iconFilter}"; }
+	.icon-fullscreen:before         { content: "\@{iconFullscreen}"; }
+	.icon-quill:before              { content: "\@{iconQuill}"; }
+	.icon-window:before             { content: "\@{iconWindow}"; }
+	.icon-window-publish:before     { content: "\@{iconWindowPublish}"; }
+	.icon-light-down:before         { content: "\@{iconLightDown}"; }
+	.icon-light-up:before           { content: "\@{iconLightUp}"; }
+	.icon-columns:before            { content: "\@{iconColumns}"; }
+	.icon-legal:before              { content: "\@{iconLegal}"; }
+	.icon-screenshot:before         { content: "\@{iconScreenshot}"; }
+	.icon-paste:before              { content: "\@{iconPaste}"; }
+	.icon-radiation:before          { content: "\@{iconRadiation}"; }
+	.icon-snowflake:before          { content: "\@{iconSnowflake}"; }
+
+	// Computers / devices
+	.icon-desktop:before            { content: "\@{iconDesktop}"; }
+	.icon-laptop:before             { content: "\@{iconLaptop}"; }
+	.icon-tablet:before             { content: "\@{iconTablet}"; }
+	.icon-mobile-phone:before       { content: "\@{iconMobilePhone}"; }
+	.icon-keyboard:before           { content: "\@{iconKeyboard}"; }
+	.icon-mouse:before              { content: "\@{iconMouse}"; }
+	.icon-terminal:before           { content: "\@{iconTerminal}"; }
+	.icon-database:before           { content: "\@{iconDatabase}"; }
+	.icon-hdd:before                { content: "\@{iconHdd}"; }
+	.icon-network:before            { content: "\@{iconNetwork}"; }
+	.icon-script:before             { content: "\@{iconScript}"; }
+	.icon-script-alt:before         { content: "\@{iconScriptAlt}"; }
+
+	// Gauge
+	.icon-gauge-low:before          { content: "\@{iconGaugeLow}"; }
+	.icon-gauge-medium:before       { content: "\@{iconGaugeMedium}"; }
+	.icon-gauge-high:before         { content: "\@{iconGaugeHigh}"; }
+
+	// Aliases
+	.icon-cart:before               { content: "\@{iconShoppingCart}"; }
+	.icon-danger:before             { content: "\@{iconError}"; }
+	.icon-email:before              { content: "\@{iconEnvelope}"; }
+	.icon-add:before                { content: "\@{iconPlusSign}"; }
+	.icon-delete:before             { content: "\@{iconTrash}"; }
+	.icon-edit:before               { content: "\@{iconPencil}"; }
+	.icon-save:before               { content: "\@{iconFloppy}"; }
+	.icon-config:before             { content: "\@{iconCog}"; }
+	.icon-abuse:before              { content: "\@{iconBanCircle}"; }
+	.icon-browse:before             { content: "\@{iconThList}"; }
+	.icon-stats:before              { content: "\@{iconLineGraph}"; }
+	.icon-category:before           { content: "\@{iconFolderClose}"; }
+	.icon-folder:before             { content: "\@{iconFolderClose}"; }
+	.icon-date:before               { content: "\@{iconCalendar}"; }
+	.icon-prev:before               { content: "\@{iconArrowLeft}"; }
+	.icon-next:before               { content: "\@{iconArrowRight}"; }
+	.icon-main:before               { content: "\@{iconHeirarchy}"; }
+	.icon-points:before             { content: "\@{iconCoins}"; }
+	.icon-upload:before             { content: "\@{iconCloudUpload}"; }
+	.icon-history:before            { content: "\@{iconTime}"; }
+	.icon-extract:before            { content: "\@{iconBox}"; }
