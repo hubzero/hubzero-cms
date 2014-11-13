@@ -900,6 +900,9 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	 */
 	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		$live_site = rtrim(JURI::base(), '/');
 
 		// Get plugins
@@ -915,8 +918,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		if (!isset($_POST['reporter']) || !isset($_POST['problem']))
 		{
 			// This really, REALLY shouldn't happen.
-			JError::raiseError(500, JText::_('COM_SUPPORT_ERROR_MISSING_DATA'));
-			return;
+			throw new JException(JText::_('COM_SUPPORT_ERROR_MISSING_DATA'), 400);
 		}
 		$reporter = JRequest::getVar('reporter', array(), 'post', 'none', 2);
 		$problem  = JRequest::getVar('problem', array(), 'post', 'none', 2);
@@ -1646,6 +1648,9 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			);
 			return;
 		}
+
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
 		$id = JRequest::getInt('id', 0, 'post');

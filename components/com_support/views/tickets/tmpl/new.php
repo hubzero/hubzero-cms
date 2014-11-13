@@ -324,6 +324,8 @@ $group = JRequest::getVar('group', '');
 			</fieldset><div class="clear"></div>
 		<?php } ?>
 
+		<?php echo JHTML::_('form.token'); ?>
+
 		<p class="submit">
 			<input class="btn btn-success" type="submit" name="submit" value="<?php echo JText::_('COM_SUPPORT_SUBMIT'); ?>" />
 		</p>

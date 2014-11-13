@@ -629,6 +629,9 @@ $cc = array();
 				<input type="hidden" name="email_submitter" id="email_submitter" value="1" />
 				<input type="hidden" name="email_owner" id="email_owner" value="1" />
 			<?php } // ACL can create comments (admin) ?>
+
+				<?php echo JHTML::_('form.token'); ?>
+
 				<p class="submit">
 					<input type="submit" value="<?php echo JText::_('COM_SUPPORT_SUBMIT_COMMENT'); ?>" />
 				</p>
