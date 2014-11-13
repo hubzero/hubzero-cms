@@ -544,7 +544,6 @@ class SupportTicket extends JTable
 			$sql .= " AND ";
 			$sql .= "(
 						LOWER(f.report) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-						OR LOWER(u.username) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
 						OR LOWER(f.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
 						OR LOWER(f.login) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
