@@ -34,9 +34,11 @@ use Exception;
 use stdClass;
 use JText;
 use JFactory;
+use JUser;
 use JRoute;
 use JURI;
 use JParameter;
+use JComponentHelper;
 
 include_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_members' . DS . 'tables' . DS . 'profile.php';
 include_once JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php';
@@ -315,6 +317,19 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if ($isNew)
 		{
+			$usersConfig = JComponentHelper::getParams('com_users');
+			$newUsertype = $usersConfig->get('new_usertype');
+			if (!$newUsertype)
+			{
+				$db = JFactory::getDbo();
+				$query = $db->getQuery(true)
+					->select('id')
+					->from('#__usergroups')
+					->where('title = "Registered"');
+				$db->setQuery($query);
+				$newUsertype = $db->loadResult();
+			}
+
 			$date = JFactory::getDate();
 			$user = JUser::getInstance();
 			$user->set('username', $this->_profile->get('username'));
@@ -337,6 +352,24 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			{
 				$this->_profile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
 				$this->_profile->set('uidNumber', $user->get('id'));
+				$this->_profile->set('gidNumber', $profile->get('gidNumber'));
+
+				if (!$this->_profile->get('homeDirectory'))
+				{
+					$this->_profile->set('homeDirectory', $profile->get('homeDirectory'));
+				}
+				if (!$this->_profile->get('loginShell'))
+				{
+					$this->_profile->set('loginShell', $profile->get('loginShell'));
+				}
+				if (!$this->_profile->get('ftpShell'))
+				{
+					$this->_profile->set('ftpShell', $profile->get('ftpShell'));
+				}
+				if (!$this->_profile->get('jobsAllowed'))
+				{
+					$this->_profile->set('jobsAllowed', $profile->get('jobsAllowed'));
+				}
 			}
 		}
 
@@ -372,7 +405,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	private function _saveTagsData()
 	{
 		// save tags
-		$tags = new \MembersModelTags($this->record->entry->uidNumber);
+		$tags = new \MembersModelTags($this->_profile->get('uidNumber'));
 		$tags->setTags($this->record->tags, $this->_user->get('id'));
 	}
 }
