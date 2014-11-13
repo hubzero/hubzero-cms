@@ -200,7 +200,7 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 			case 'reddit':
 				$link = 'http://reddit.com/submit?url='.$url.'&title=' . $title;
 				break;
-			
+
 			case 'linkedin':
 				$link = 'https://www.linkedin.com/shareArticle?mini=true&url='.$url.'&title='
 				. $title . '&summary=' . $description;
