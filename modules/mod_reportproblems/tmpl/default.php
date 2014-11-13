@@ -136,6 +136,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 					<input type="hidden" name="controller" value="tickets" />
 					<input type="hidden" name="task" value="save" />
 					<input type="hidden" name="no_html" value="1" />
+
+					<?php echo JHTML::_('form.token'); ?>
 				</fieldset>
 				<div class="submit"><input type="submit" id="send-form" value="<?php echo JText::_('MOD_REPORTPROBLEMS_SUBMIT'); ?>" /></div>
 			</form>
