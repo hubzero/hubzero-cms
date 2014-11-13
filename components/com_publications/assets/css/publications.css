@@ -72,7 +72,7 @@
 		top: 0.3em;
 	}
 	.com_publications .aside.extracontent ul {
-		width: 100%;
+		width: auto;
 		background: #f1edf5;
 		padding: 1em 0;
 		border-top: 1px solid #e2dbe8;
@@ -167,6 +167,7 @@
 	#introbody .extracontent {
 		margin: 0;
 		border: none;
+		padding: 0;
 		line-height: 1.2em;
 	}
 	#introbody .extracontent li {
@@ -1341,13 +1342,6 @@
 		font-size: 0.8em;
 		margin-right: 0.5em;
 	}
-	h3.prov-header, #mypub h3, #abox-content h3.prov-header {
-		background: #f9f6ec;
-		padding: 0.2em 0.5em;
-		margin: 0;
-		width: 100%;
-		border: none;
-	}
 	h3.prov-header a {
 		color: #000;
 		border-bottom: 1px dotted #000;
@@ -1901,6 +1895,7 @@
 		background: #f9f6ec;
 		padding: 0.2em;
 		margin: 0;
+		margin-bottom: 1em;
 		width: 100%;
 		border: none;
 		font-size: 100%;
