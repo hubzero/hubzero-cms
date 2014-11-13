@@ -31,8 +31,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-jimport( 'joomla.plugin.plugin' );
-
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'publication.php');
 include_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'models' . DS . 'curation.php');
 
@@ -43,47 +41,28 @@ require_once(JPATH_ROOT . DS. 'administrator' . DS . 'components' . DS
 /**
  * Project publications
  */
-class plgProjectsPublications extends JPlugin
+class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function plgProjectsPublications(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
+	protected $_autoloadLanguage = true;
 
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin( 'projects', 'publications' );
-		$this->_params = new JParameter( $this->_plugin->params );
+	/**
+	 * Store redirect URL
+	 *
+	 * @var	   string
+	 */
+	protected $_referer = NULL;
 
-		// Load component configs
-		$this->_config = JComponentHelper::getParams( 'com_projects' );
-
-		// Load publications component configs
-		$this->_pubconfig = JComponentHelper::getParams( 'com_publications' );
-
-		// Areas that can be updated after publication
-		$this->_updateAllowed = ProjectsHelper::getParamArray(
-			$this->_params->get('updatable_areas', '' ));
-
-		// Common extensions (for gallery)
-		$this->_image_ext = ProjectsHelper::getParamArray(
-			$this->_params->get('image_types', 'bmp, jpeg, jpg, png' ));
-		$this->_video_ext = ProjectsHelper::getParamArray(
-			$this->_params->get('video_types', 'avi, mpeg, mov, wmv' ));
-
-		// Process steps
-		$this->_section = '';
-		$this->_layout = '';
-
-		// Output collectors
-		$this->_referer = '';
-		$this->_message = array();
-	}
+	/**
+	 * Store output message
+	 *
+	 * @var	   array
+	 */
+	protected $_message = NULL;
 
 	/**
 	 * Event call to determine if this plugin should return data
@@ -95,7 +74,7 @@ class plgProjectsPublications extends JPlugin
 		$area = array();
 
 		// Check if plugin is restricted to certain projects
-		$projects = $this->_params->get('restricted') ? ProjectsHelper::getParamArray($this->_params->get('restricted')) : array();
+		$projects = $this->params->get('restricted') ? ProjectsHelper::getParamArray($this->params->get('restricted')) : array();
 
 		if (!empty($projects))
 		{
@@ -206,8 +185,6 @@ class plgProjectsPublications extends JPlugin
 			return $arr;
 		}
 
-		// Load language file
-		$this->loadLanguage();
 		$database = JFactory::getDBO();
 
 		// Get task
@@ -225,6 +202,20 @@ class plgProjectsPublications extends JPlugin
 			$this->_uid = $juser->get('id');
 		}
 		$this->_database = $database;
+
+		// Load component configs
+		$this->_config = JComponentHelper::getParams( 'com_projects' );
+		$this->_pubconfig = JComponentHelper::getParams( 'com_publications' );
+
+		// Areas that can be updated after publication
+		$this->_updateAllowed = ProjectsHelper::getParamArray(
+			$this->params->get('updatable_areas', '' ));
+
+		// Common extensions (for gallery)
+		$this->_image_ext = ProjectsHelper::getParamArray(
+			$this->params->get('image_types', 'bmp, jpeg, jpg, png' ));
+		$this->_video_ext = ProjectsHelper::getParamArray(
+			$this->params->get('video_types', 'avi, mpeg, mov, wmv' ));
 
 		// Use new curation flow?
 		$this->useBlocks  = $this->_pubconfig->get('curation', 0);
@@ -1793,7 +1784,7 @@ class plgProjectsPublications extends JPlugin
 		$view->base 		= $base;
 		$view->active 		= 'content';
 		$view->config 		= $this->_config;
-		$view->pubparams 	= $this->_params;
+		$view->pubparams 	= $this->params;
 		$view->inreview 	= 0;
 		$view->title		= $this->_area['title'];
 
@@ -5062,7 +5053,7 @@ class plgProjectsPublications extends JPlugin
 		// Get serveas and choices depending on content selection
 		$serve = $this->_pubTypeHelper->dispatch($base, 'getServeAs',
 			$data = array('vid' => $vid, 'selections' => $selections,
-				'original_serveas' => $view->original_serveas, 'params' => $this->_params));
+				'original_serveas' => $view->original_serveas, 'params' => $this->params));
 
 		$serveas = ($serve && isset($serve['serveas'])) ? $serve['serveas'] : 'external';
 		$view->choices = ($serve && isset($serve['choices'])) ? $serve['choices'] : array();
