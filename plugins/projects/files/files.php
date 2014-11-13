@@ -368,7 +368,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 				case 'newdir':
 					$ajax 			= JRequest::getInt('ajax', 0);
-					$arr['html'] 	= $ajax ? $this->_newDir() :  $this->view();
+					$arr['html'] 	= $ajax ? $this->_newDir() :  $this->display();
 					break;
 
 				case 'trash':
@@ -387,7 +387,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				case 'browse':
 				default:
 
-				$arr['html'] 	= $this->view();
+				$arr['html'] 	= $this->display();
 				break;
 			}
 		}
@@ -409,7 +409,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function view ($sync = 0)
+	public function display($sync = 0)
 	{
 		// Build query
 		$filters = array();
@@ -5804,11 +5804,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$ajax)
 		{
-			return $this->view();
+			return $this->display();
 		}
 		else
 		{
-			$this->_rSync['output'] = $this->view();
+			$this->_rSync['output'] = $this->display();
 			return json_encode($this->_rSync);
 		}
 	}
@@ -6687,7 +6687,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$timecheck = date('c', time() - (1 * 1 * 60));
 			if ($synced >= $timecheck)
 			{
-				$status['output'] = $this->view(2);
+				$status['output'] = $this->display(2);
 			}
 
 			// Timed sync?
