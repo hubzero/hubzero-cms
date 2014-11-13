@@ -89,6 +89,7 @@
 	.com_publications .aside.extracontent li a {
 		padding: 0.2em 1em;
 		width: 100%;
+		padding-left: 0;
 	}
 	.aside.extracontent li a:hover {
 		background: none;
@@ -105,6 +106,7 @@
 		color: #aaa;
 		border: none;
 		content: "\270D";
+		margin-left: -0.5em;
 	}
 	.extracontent .dataset a:before {
 		content: "\f071";
