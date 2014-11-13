@@ -31,40 +31,38 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Projects - Databases plugin
  */
-class plgProjectsDatabases extends JPlugin
+class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 {
 	/**
-	 * Constructor
+	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @var    boolean
 	 */
-	public function plgProjectsDatabases(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
+	protected $_autoloadLanguage = true;
 
-		// Load plugin parameters
-		$this->_plugin = JPluginHelper::getPlugin('projects', 'databases');
-		$this->_params = new JParameter($this->_plugin->params);
+	/**
+	 * Store redirect URL
+	 *
+	 * @var	   string
+	 */
+	protected $_referer = NULL;
 
-		// Dataviewer
-		$this->dataviewer = 'dataviewer';
+	/**
+	 * Store output message
+	 *
+	 * @var	   array
+	 */
+	protected $_message = NULL;
 
-		// Load component configs
-		$this->_config 		= JComponentHelper::getParams('com_projects');
-		$this->gitpath 		= $this->_config->get('gitpath', '/opt/local/bin/git');
-		$this->prefix 		= $this->_config->get('offroot', 0) ? '' : JPATH_ROOT ;
-
-		// Output collectors
-		$this->_referer 	= '';
-		$this->_message 	= array();
-	}
+	/**
+	 * Store output message
+	 *
+	 * @var	   array
+	 */
+	public $dataviewer = 'dataviewer';
 
 	/**
 	 * Event call after databases initialized
@@ -87,7 +85,7 @@ class plgProjectsDatabases extends JPlugin
 		$area = array();
 
 		// Check if plugin is restricted to certain projects
-		$projects = $this->_params->get('restricted') ? ProjectsHelper::getParamArray($this->_params->get('restricted')) : array();
+		$projects = $this->params->get('restricted') ? ProjectsHelper::getParamArray($this->params->get('restricted')) : array();
 
 		if (!empty($projects))
 		{
@@ -151,19 +149,41 @@ class plgProjectsDatabases extends JPlugin
 		$uid, $msg = '', $error = '',
 		$action = 'view', $areas = null)
 	{
+		$arr = array(
+			'html'=>'',
+			'metadata'=>'',
+			'message'=>'',
+			'error'=>''
+		);
+
+		// Get this area details
+		$this->_area = $this->onProjectAreas();
+
+		// Check if our area is in the array of areas we want to return results for
+		if (is_array( $areas ))
+		{
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
+			{
+				return;
+			}
+		}
+
+		// Load component configs
+		$this->_config 		= JComponentHelper::getParams('com_projects');
+		$this->gitpath 		= $this->_config->get('gitpath', '/opt/local/bin/git');
 
 		// Check if the plugin parameters the two mysql accounts are properly set
 		$db_opt_rw['driver']    = 'mysqli';
-		$db_opt_rw['host']      = $this->_params->get('db_host');
-		$db_opt_rw['user']      = $this->_params->get('db_user');
-		$db_opt_rw['password']  = $this->_params->get('db_password');
+		$db_opt_rw['host']      = $this->params->get('db_host');
+		$db_opt_rw['user']      = $this->params->get('db_user');
+		$db_opt_rw['password']  = $this->params->get('db_password');
 		$db_opt_rw['prefix']    = '';
 		$db_rw = JDatabase::getInstance($db_opt_rw);
 
 		$db_opt_ro['driver']    = 'mysqli';
-		$db_opt_ro['host']      = $this->_params->get('db_host');
-		$db_opt_ro['user']      = $this->_params->get('db_ro_user');
-		$db_opt_ro['password']  = $this->_params->get('db_ro_password');
+		$db_opt_ro['host']      = $this->params->get('db_host');
+		$db_opt_ro['user']      = $this->params->get('db_ro_user');
+		$db_opt_ro['password']  = $this->params->get('db_ro_password');
 		$db_opt_ro['prefix']    = '';
 		$db_ro = JDatabase::getInstance($db_opt_ro);
 
@@ -180,13 +200,6 @@ class plgProjectsDatabases extends JPlugin
 
 			return array('html'=>$view->loadTemplate());
 		}
-
-		$arr = array(
-			'html'=>'',
-			'metadata'=>'',
-			'message'=>'',
-			'error'=>''
-		);
 
 		// Incoming
 		$raw_op = JRequest::getInt('raw_op', 0);
@@ -210,9 +223,6 @@ class plgProjectsDatabases extends JPlugin
 			return $arr;
 		}
 
-		// Load language file
-		JPlugin::loadLanguage( 'plg_projects_databases' );
-
 		$this->_project 	= $project;
 		$this->_option 		= $option;
 		$this->_database 	= JFactory::getDBO();
@@ -229,6 +239,10 @@ class plgProjectsDatabases extends JPlugin
 		{
 			return $this->browser();
 		}
+		if ($action == 'select')
+		{
+			return $this->select();
+		}
 
 		$act_func = 'act_' . $action;
 
@@ -244,7 +258,6 @@ class plgProjectsDatabases extends JPlugin
 				$act_func = 'act_list';
 			}
 		}
-
 
 		// detect CR as new line
 		ini_set('auto_detect_line_endings', true);
@@ -277,6 +290,133 @@ class plgProjectsDatabases extends JPlugin
 
 			return $this->$act_func();
 		}
+	}
+
+	/**
+	 * Browser within publications NEW
+	 *
+	 * @return     string
+	 */
+	public function select()
+	{
+		// Incoming
+		$props  = JRequest::getVar( 'p', '' );
+		$ajax   = JRequest::getInt( 'ajax', 0 );
+		$pid    = JRequest::getInt( 'pid', 0 );
+		$vid    = JRequest::getInt( 'vid', 0 );
+		$filter = urldecode(JRequest::getVar( 'filter', '' ));
+
+		// Parse props for curation
+		$parts   = explode('-', $props);
+		$block   = isset($parts[0]) ? $parts[0] : 'content';
+		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
+
+		// Provisioned project?
+		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
+
+		// Output HTML
+		$view = new \Hubzero\Plugin\View(
+			array(
+				'folder'	=>'projects',
+				'element'	=>'databases',
+				'name'		=>'selector',
+				'layout'	=>'default'
+			)
+		);
+
+		// Load classes
+		$objP  			= new Publication( $this->_database );
+		$view->version 	= new PublicationVersion( $this->_database );
+
+		// Load publication version
+		$view->version->load($vid);
+		if (!$view->version->id)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+		}
+
+		// Get publication
+		$view->publication = $objP->getPublication($view->version->publication_id,
+			$view->version->version_number, $this->_project->id);
+
+		if (!$view->publication)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_FILES_SELECTOR_ERROR_NO_PUBID'));
+		}
+
+		// On error
+		if ($this->getError())
+		{
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'	=>'projects',
+					'element'	=>'files',
+					'name'		=>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+
+		// Load master type
+		$mt   				= new PublicationMasterType( $this->_database );
+		$view->publication->_type   	= $mt->getType($view->publication->base);
+		$view->publication->_project 	= $this->_project;
+
+		// Get attachments
+		$pContent = new PublicationAttachment( $this->_database );
+		$view->publication->_attachments = $pContent->sortAttachments ( $vid );
+
+		// Get curation model
+		$view->publication->_curationModel = new PublicationsCuration($this->_database,
+		$view->publication->_type->curation);
+
+		// Make sure block exists, else use default
+		if (!$view->publication->_curationModel->setBlock( $block, $step ))
+		{
+			$block = 'content';
+			$step  = 1;
+		}
+
+		// Set pub assoc and load curation
+		$view->publication->_curationModel->setPubAssoc($view->publication);
+
+		if (!$ajax)
+		{
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
+		}
+
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->project 		= $this->_project;
+		$view->authorized 	= $this->_authorized;
+		$view->uid 			= $this->_uid;
+		$view->ajax			= $ajax;
+		$view->element		= $element;
+		$view->block		= $block;
+		$view->step 		= $step;
+		$view->props		= $props;
+		$view->filter		= $filter;
+
+		// Get messages	and errors
+		if ($this->getError())
+		{
+			$view->setError( $this->getError() );
+		}
+		$html =  $view->loadTemplate();
+		$arr = array(
+			'html' => $html,
+			'metadata' => '',
+			'msg' => '',
+			'referer' => ''
+		);
+
+		return $arr;
 	}
 
 	/**
@@ -1173,7 +1313,6 @@ class plgProjectsDatabases extends JPlugin
 		$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->_project->alias . "/databases/";
 		return array('referer'=>$url, 'msg'=>$this->_message);
 	}
-
 
 	/**
 	 * Making a copy of the database for publications
