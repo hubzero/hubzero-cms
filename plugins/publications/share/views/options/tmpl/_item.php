@@ -32,4 +32,4 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 ?>
-	<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=share&v=' . $this->publication->version_number . '&sharewith=' . strtolower($this->name)); ?>" title="<?php echo JText::sprintf('PLG_PUBLICATION_SHARE_ON', ucfirst($this->name)); ?>" class="popup" rel="external"><span class="share_<?php echo strtolower($this->name);  ?>"><span><?php echo ucfirst($this->name); ?></span></span></a>
+	<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=share&v=' . $this->publication->version_number . '&sharewith=' . strtolower($this->name)); ?>" title="<?php echo JText::sprintf('PLG_PUBLICATION_SHARE_ON', ucfirst($this->name)); ?>" class="popup" rel="external"><span class="share_<?php echo strtolower($this->name);  ?>"><span><?php echo JText::_('PLG_PUBLICATIONS_SHARE_' . strtoupper($this->name)); ?></span></span></a>

@@ -159,7 +159,7 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 			case 'twitter':
 				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',
 						$jconfig->getValue('config.sitename'),
-						stripslashes($publication->title)).' '.$url);
+						$title).' '.$url);
 				break;
 
 			case 'google':
@@ -167,15 +167,11 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'delicious':
-				$link = 'http://del.icio.us/post?url='.$url.'&title='
-				.$jconfig->getValue('config.sitename').': '.JText::_('PLG_PUBLICATION_SHARE_RESOURCE')
-				.' '.$publication->id.' - '.stripslashes($publication->title);
+				$link = 'http://del.icio.us/post?url='.$url.'&title=' . $title;
 				break;
 
 			case 'reddit':
-				$link = 'http://reddit.com/submit?url='.$url.'&title='
-				.$jconfig->getValue('config.sitename').': '.JText::_('PLG_PUBLICATION_SHARE_RESOURCE')
-				.' '.$publication->id.' - '.stripslashes($publication->title);
+				$link = 'http://reddit.com/submit?url='.$url.'&title=' . $title;
 				break;
 
 			case 'linkedin':
