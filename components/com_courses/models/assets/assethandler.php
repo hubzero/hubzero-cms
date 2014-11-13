@@ -84,13 +84,26 @@ class AssetHandler
 	 *
 	 * @return void
 	 **/
-	public function __construct(&$db, $fileType=null)
+	public function __construct(&$db, $fileType=null, $scanHandlers=true)
 	{
 		// Set the database object
 		$this->db = $db;
 
-		// Initialize the object
-		$this->initialize($fileType);
+		if ($scanHandlers)
+		{
+			// Initialize the object
+			$this->initialize($fileType);
+		}
+	}
+
+	/**
+	 * Constructs a new object without scanning for handlers
+	 *
+	 * @return void
+	 **/
+	public static function newWithoutHandlers($db)
+	{
+		return new static($db, null, false);
 	}
 
 	/**
@@ -203,7 +216,7 @@ class AssetHandler
 	 *
 	 * @return array - message and status code from individual handlers
 	 **/
-	public function create($class=null)
+	public function doCreate($class=null)
 	{
 		// @FIXME: how do we want to handle having an unknown extension?  Just upload it or throw an error?
 
@@ -228,7 +241,8 @@ class AssetHandler
 		if (isset($handler) && method_exists($handler, 'create'))
 		{
 			// Run create and return the results
-			return $handler::create();
+			$object = $handler::newWithoutHandlers($this->db);
+			return $object->create();
 		}
 		else
 		{
@@ -254,11 +268,13 @@ class AssetHandler
 
 		if ($classAlt != 'AssetHandler' && class_exists($classAlt) && method_exists($classAlt, 'edit'))
 		{
-			return $classAlt::edit($asset);
+			$object = $classAlt::newWithoutHandlers($this->db);
+			return $object->edit($asset);
 		}
 		else if ($class != 'AssetHandler' && class_exists($class) && method_exists($class, 'edit'))
 		{
-			return $class::edit($asset);
+			$object = $class::newWithoutHandlers($this->db);
+			return $object->edit($asset);
 		}
 		else
 		{
@@ -283,7 +299,8 @@ class AssetHandler
 
 		if ($class != 'AssetHandler' && class_exists($class) && method_exists($class, 'preview'))
 		{
-			return $class::preview($asset);
+			$object = $class::newWithoutHandlers($this->db);
+			return $object->preview($asset);
 		}
 		else
 		{

@@ -471,7 +471,8 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$name = JRequest::getCmd('name');
 
 		// Get the file extension
-		$ext = strtolower(array_pop(explode('.', $name)));
+		$exts = explode('.', $name);
+		$ext  = strtolower(array_pop($exts));
 
 		// Initiate our file handler
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'assets' . DS . 'assethandler.php');
@@ -543,7 +544,7 @@ class CoursesControllerApi extends \Hubzero\Component\ApiController
 		$assetHandler = new AssetHandler($this->db, $ext);
 
 		// Create the new asset
-		$return = $assetHandler->create(JRequest::getWord('handler', null));
+		$return = $assetHandler->doCreate(JRequest::getWord('handler', null));
 
 		// Check for errors in response
 		if (array_key_exists('error', $return))
