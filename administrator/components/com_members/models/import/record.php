@@ -302,9 +302,9 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	{
 		$isNew = (!$this->_profile->get('uidNumber'));
 
-		if (!$this->_profile->store())
+		if (!isset($this->raw->password))
 		{
-			throw new Exception(JText::_('Unable to save the entry data.'));
+			$this->raw->password = null;
 		}
 
 		if ($isNew && !$this->raw->password)
@@ -313,9 +313,41 @@ class Record extends \Hubzero\Content\Import\Model\Record
 			$this->raw->password = $this->_profile->get('username');
 		}
 
+		if ($isNew)
+		{
+			$date = JFactory::getDate();
+			$user = JUser::getInstance();
+			$user->set('username', $this->_profile->get('username'));
+			$user->set('name', $this->_profile->get('name'));
+			$user->set('email', $this->_profile->get('email'));
+			$user->set('id', 0);
+			$user->set('groups', array($newUsertype));
+			$user->set('registerDate', $date->toMySQL());
+			$user->set('password', $this->raw->password);
+			$user->set('password_clear', $this->raw->password);
+			$user->save();
+			$user->set('password_clear', '');
+
+			// Attempt to get the new user
+			$profile = \Hubzero\User\Profile::getInstance($user->get('id'));
+			$result  = is_object($profile);
+
+			// Did we successfully create an account?
+			if ($result)
+			{
+				$this->_profile->set('emailConfirmed', -rand(1, pow(2, 31)-1));
+				$this->_profile->set('uidNumber', $user->get('id'));
+			}
+		}
+
+		if (!$this->_profile->store())
+		{
+			throw new Exception(JText::_('Unable to save the entry data.'));
+		}
+
 		if ($password = $this->raw->password)
 		{
-			\Hubzero\User\Password::changePassword($this->_profile->get('username'), $password);
+			\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $password);
 		}
 	}
 
@@ -340,7 +372,7 @@ class Record extends \Hubzero\Content\Import\Model\Record
 	private function _saveTagsData()
 	{
 		// save tags
-		$tags = new \MembersModelsTags($this->record->entry->uidNumber);
+		$tags = new \MembersModelTags($this->record->entry->uidNumber);
 		$tags->setTags($this->record->tags, $this->_user->get('id'));
 	}
 }
