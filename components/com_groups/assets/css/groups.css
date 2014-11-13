@@ -314,7 +314,7 @@
 	} 
 	#page_menu li a,
 	#page_menu li span {
-		color: #aaa;
+		color: #888;
 		position: relative;
 		display: block;
 		background-image: none;
@@ -406,7 +406,6 @@
 		padding: 0;
 	}
 	#page_menu li .meta .count {
-		color: #bbb;
 		background: #e1e1e1;
 		background: rgba(0, 0, 0, 0.1);
 		text-shadow: 0 1px 1px #fff;
