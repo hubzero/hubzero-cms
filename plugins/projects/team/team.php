@@ -118,9 +118,9 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ))
 		{
-			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) 
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
 			{
 				return;
 			}
