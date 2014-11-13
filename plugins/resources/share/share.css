@@ -87,39 +87,46 @@
 	.shareinfo.active dd {
 		left: -250px;
 	}
-
 	.shareinfo dt {
 		margin: 0;
 		padding: 0;
 		text-transform: uppercase;
-		text-align: right; 
+		text-align: right;
 		letter-spacing: 1px;
 		font-size: 85%;
 		line-height: 1em;
 		color: #999;
 		position: relative;
-
 		display: none;
 	}
-	.aside ul.sharelinks {
-		padding: 0 0 1em 0; 
-		margin: -1em 0 0 0; 
+	.aside ol.sharelinks {
+		padding: 0 0 1em 0;
+		margin: -1em 0 0 -1em;
 		list-style: none;
-		z-index: 9999; 
+		z-index: 9999;
 		border:none
 	}
-	.aside ul.sharelinks li {
-		border:none;
+	.aside ol.sharelinks li {
+		border: none;
 	}
-	.aside ul.sharelinks li a {
+	.aside ol.sharelinks li span {
+		display: inline;
+	}
+	.share a, .aside ol.sharelinks li a {
+		border: none;
+	}
+	.share a span span {
+		display: none;
+	}
+	.aside ol.sharelinks li a, .aside ol.sharelinks li a:hover {
 		border:none;
 		display:inline;
 		padding:0 0 0 10px;
 	}
-	.aside ul.sharelinks li a:before {
+	.aside ol.sharelinks li a:before {
 		display:none;
 	}
-	.aside ul.sharelinks li a:hover {
+	.aside ol.sharelinks li a:hover {
 		color:#747474;
 		border: none;
 		background-color:transparent;
@@ -133,7 +140,7 @@
 		display: inline;
 		margin: -2em 0.5em 0.5em 0.5em;
 		position: absolute;
-		left: 120px;
+		left: 100px;
 	}
 	.metadata .share {
 		z-index: 1;
@@ -143,60 +150,49 @@
 	}
 
 /* Share Icons */
-	.share_facebook,
-	.aside li .share_facebook:hover {
-		background: url("images/facebook.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 14px;
-	}
-	.share_twitter,
-	.aside li .share_twitter:hover {
-		background: url("images/twitter.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 14px;
-	}
-	.share_google,
-	.aside li .share_google:hover {
-		background: url("images/google.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 14px;
-	}
-	.share_digg,
-	.aside li .share_digg:hover {
-		background: url("images/digg.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 14px;
-	}
-	.share_technorati,
-	.aside li .share_technorati:hover {
-		background: url("images/technorati.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 14px;
-	}
-	.share_delicious,
-	.aside li .share_delicious:hover {
-		background: url("images/delicious.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 14px;
-	}
-	.share_email,
-	.aside li .share_email:hover {
-		background: url("images/envelope.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 16px;
-	}
-	.share_print,
-	.aside li .share_print:hover {
-		background: url("images/printer.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 14px;
-	}
-	.share_reddit,
-	.aside li .share_reddit:hover {
-		background: url("images/reddit.gif") 0 -18px no-repeat; 
-		padding-top: 0.1em; 
-		padding-left: 14px;
-	}
+@font-face {
+	font-family: 'Socicons';
+	src: url('/media/system/css/fonts/socicons-webfont.eot');
+	src: url('/media/system/css/fonts/socicons-webfont.eot?#iefix') format('embedded-opentype'),
+		url('/media/system/css/fonts/socicons-webfont.woff') format('woff'),
+		url('/media/system/css/fonts/socicons-webfont.ttf') format('truetype'),
+		url('/media/system/css/fonts/socicons-webfont.svgz#SociconsRegular') format('svg'),
+		url('/media/system/css/fonts/socicons-webfont.svg#SociconsRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="share_"], [class*=" share_"] {
+	border: none;
+}
+[class^="share_"]:before, [class*=" share_"]:before {
+	font-family: 'Socicons';
+	font-style: normal;
+	font-weight: normal;
+	speak: none;
+	display: inline-block;
+	text-decoration: inherit;
+	text-align: center;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1em;
+	content: "";
+	width: 16px;
+	height: 16px;
+	font-size: 16px;
+}
+.share_twitter:before         { content: "\f010"; color: #46b1e8; }
+.share_facebook:before        { content: "\f012"; color: #49659d; }
+.share_google:before     	  { content: "\f014"; color: black }
+.share_linkedin:before        { content: "\f016"; color: #2875b7; }
+.share_pinterest:before       { content: "\f01a"; color: #ba1325; }
+.share_delicious,
+.share_delicious {
+	background: url("images/delicious.gif") 0 -18px no-repeat;
+}
+.share_reddit {
+	background: url("images/reddit.gif") 0 -18px no-repeat;
+}
+
 
 /* IE 7 hacks */
 	html>body .shareinfo.active dd  {

@@ -171,35 +171,40 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 		$jconfig = JFactory::getConfig();
 
 		$link = '';
+		$description = $resource->introtext
+			? \Hubzero\Utility\String::truncate(stripslashes($resource->introtext), 250) : '';
+		$description = urlencode($description);
+		$title = stripslashes($resource->title);
+		$title = urlencode($title);
+
 		switch ($with)
 		{
 			case 'facebook':
-				$link = 'http://www.facebook.com/sharer.php?u=' . $url;
-			break;
+				$link = 'https://www.facebook.com/sharer/sharer.php?u=' . $url . '&t=' . $title;
+				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . JText::sprintf('PLG_RESOURCES_SHARE_VIEWING', $jconfig->getValue('config.sitename'), stripslashes($resource->title));
-			break;
+				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_RESOURCES_SHARE_VIEWING',
+						$jconfig->getValue('config.sitename'),
+						$title).' '.$url);
+				break;
 
 			case 'google':
-				$link = 'https://plus.google.com/share?url=' . $url . '&title=' . $jconfig->getValue('config.sitename') . ': ' . JText::_('PLG_RESOURCES_SHARE_RESOURCE') . ' ' . $resource->id . ' - ' . stripslashes($resource->title) . '&labels=' . $jconfig->getValue('config.sitename');
-			break;
-
-			case 'digg':
-				$link = 'http://digg.com/submit?phase=2&url=' . $url . '&title=' . $jconfig->getValue('config.sitename') . ': ' . JText::_('PLG_RESOURCES_SHARE_RESOURCE') . ' ' . $resource->id . ' - ' . stripslashes($resource->title);
-			break;
-
-			case 'technorati':
-				$link = 'http://www.technorati.com/faves?add='.$url;
-			break;
+				$link = 'https://plus.google.com/share?url='.$url;
+				break;
 
 			case 'delicious':
-				$link = 'http://del.icio.us/post?url=' . $url . '&title=' . $jconfig->getValue('config.sitename') . ': ' . JText::_('PLG_RESOURCES_SHARE_RESOURCE') . ' ' . $resource->id . ' - ' . stripslashes($resource->title);
-			break;
+				$link = 'http://del.icio.us/post?url='.$url.'&title=' . $title;
+				break;
 
 			case 'reddit':
-				$link = 'http://reddit.com/submit?url=' . $url . '&title=' . $jconfig->getValue('config.sitename') . ': ' . JText::_('PLG_RESOURCES_SHARE_RESOURCE') . ' ' . $resource->id . ' - ' . stripslashes($resource->title);
-			break;
+				$link = 'http://reddit.com/submit?url='.$url.'&title=' . $title;
+				break;
+			
+			case 'linkedin':
+				$link = 'https://www.linkedin.com/shareArticle?mini=true&url='.$url.'&title='
+				. $title . '&summary=' . $description;
+				break;
 		}
 
 		if ($link)
