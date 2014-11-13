@@ -48,21 +48,178 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		JLoader::import('joomla.environment.request');
 		JLoader::import('joomla.application.component.helper');
 
+		//get the userid and attempt to load user profile
+		$userid = JFactory::getApplication()->getAuthn('user_id');
+		$result = \Hubzero\User\Profile::getInstance($userid);
+
+		//make sure we have a user
+		//if ($result === false) return $this->not_found();
+
 		$this->config = JComponentHelper::getParams('com_support');
 		$this->database = JFactory::getDBO();
 
 		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'acl.php');
 		$this->acl = SupportACL::getACL();
-		$this->acl->setUser(JFactory::getApplication()->getAuthn('user_id'));
+		$this->acl->setUser($userid);
 
 		switch ($this->segments[0])
 		{
-			case 'ticket':  $this->ticket();  break;
-			case 'tickets': $this->tickets(); break;
-			case 'stats':   $this->stats();   break;
-			case 'create':  $this->create();  break;
-			default:        $this->error();   break;
+			case 'ticket':
+				switch ($this->segments[1])
+				{
+					case 'create': $this->commentCreate(); break;
+					case 'edit':   $this->commentUpdate(); break;
+					case 'delete': $this->commentDelete(); break;
+					default:
+						$this->ticketRead($this->segments[1]);
+					break;
+				}
+			break;
+			case 'tickets': $this->tickets();      break;
+			case 'stats':   $this->stats();        break;
+			case 'create':  $this->ticketCreate(); break;
+			case 'comment':
+				switch ($this->segments[1])
+				{
+					case 'create': $this->commentCreate(); break;
+					case 'edit':   $this->commentUpdate(); break;
+					case 'delete': $this->commentDelete(); break;
+					default:       $this->commentRead();   break;
+				}
+			break;
+			default:
+				$this->service();
+			break;
 		}
+	}
+
+	/**
+	 * Displays a available options and parameters the API
+	 * for this comonent offers.
+	 *
+	 * @return  void
+	 */
+	private function service()
+	{
+		$response = new stdClass();
+		$response->component = 'support';
+		$response->tasks = array();
+
+		if ($this->acl->check('read', 'tickets'))
+		{
+			$response->tasks = array(
+				'comment' => array(
+					'description' => JText::_('Get a specific comment on a ticket.'),
+					'parameters'  => array(
+						'ticket' => array(
+							'description' => JText::_('Ticket ID. Used in conjuction with the position parameter.'),
+							'type'        => 'integer',
+							'default'     => '0'
+						),
+						'position' => array(
+							'description' => JText::_('Comment position. Used in conjuction with the ticket parameter.'),
+							'type'        => 'integer',
+							'default'     => 'null',
+							'accepts'     => array('first', 'last')
+						),
+						'id' => array(
+							'description' => JText::_('Comment ID. Specifying this will override any other parameters'),
+							'type'        => 'integer',
+							'default'     => '0'
+						),
+					),
+				),
+				'comment/create' => array(
+					'description' => JText::_('Create a comment on a support ticket.'),
+					'parameters'  => array(
+						'ticket' => array(
+							'description' => JText::_('Ticket ID.'),
+							'type'        => 'integer',
+							'default'     => '0',
+							'required'    => 'true'
+						),
+						'comment' => array(
+							'description' => JText::_('Comment text.'),
+							'type'        => 'string',
+							'default'     => 'null'
+						),
+						'status' => array(
+							'description' => JText::_('Ticket status.'),
+							'type'        => 'integer',
+							'default'     => 'null'
+						),
+						'open' => array(
+							'description' => JText::_('Open/Closed state of the ticket.'),
+							'type'        => 'integer',
+							'default'     => 'null'
+						),
+						'tags' => array(
+							'description' => JText::_('Comma-separated list of tags to apply to the ticket.'),
+							'type'        => 'string',
+							'default'     => 'null'
+						),
+						'cc' => array(
+							'description' => JText::_('Comma-separated list of user IDs, usernames, and/or email addresses.'),
+							'type'        => 'string',
+							'default'     => 'null'
+						),
+						'owner' => array(
+							'description' => JText::_('User currently assigned to the ticket.'),
+							'type'        => 'string',
+							'default'     => 'null'
+						),
+						'severity' => array(
+							'description' => JText::_('User currently assigned to the ticket.'),
+							'type'        => 'string',
+							'default'     => 'null'
+						),
+					),
+				),
+				'ticket' => array(
+					'description' => JText::_('Get detail information about a ticket.'),
+					'parameters'  => array(
+						'id' => array(
+							'description' => JText::_('Ticket ID.'),
+							'type'        => 'integer',
+							'default'     => 'null'
+						),
+					),
+				),
+				'tickets' => array(
+					'description' => JText::_('Get a list of threads for a specific section and category.'),
+					'parameters'  => array(
+						'section' => array(
+							'description' => JText::_('Section alias.'),
+							'type'        => 'string',
+							'default'     => 'null'
+						),
+						'category' => array(
+							'description' => JText::_('Category alias.'),
+							'type'        => 'string',
+							'default'     => 'null'
+						),
+						'search' => array(
+							'description' => JText::_('A word or phrase to search for.'),
+							'type'        => 'string',
+							'default'     => 'null'
+						),
+						'limit' => array(
+							'description' => JText::_('Number of result to return.'),
+							'type'        => 'integer',
+							'default'     => '25'
+						),
+						'limitstart' => array(
+							'description' => JText::_('Number of where to start returning results.'),
+							'type'        => 'integer',
+							'default'     => '0'
+						),
+					),
+				),
+			);
+		}
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
 	}
 
 	/**
@@ -142,7 +299,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 
 
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
-				FROM #__support_tickets
+				FROM `#__support_tickets`
 				WHERE report!=''
 				AND type=" . $type . " AND open=1";
 		if (!$group)
@@ -284,62 +441,6 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		$response->total   = 0;
 		$response->tickets = array();
 
-		/*if ($filters['closed'])
-		{
-			$sql = "SELECT c.ticket, c.created
-					FROM #__support_comments AS c
-					LEFT JOIN #__support_tickets AS t ON c.ticket=t.id";
-
-			$where = array();
-			$where[] = "t.report != ''";
-			$where[] = $filters['type'];
-			if ($filters['group'] && $filters['group'] == '_none_')
-			{
-				$where[] = "(t.`group`='' OR t.`group` IS NULL)";
-			}
-			else if ($filters['group'])
-			{
-				$where[] = "t.`group`=" . $this->database->Quote($filters['group']);
-			}
-			if (is_array($filters['opened']))
-			{
-				$where[] = "c.`created` >= " . $this->_db->Quote($filters['closed'][0]);
-				$where[] = "c.`created` <= " . $this->_db->Quote($filters['closed'][1]);
-			}
-			else
-			{
-				$where[] = "c.`created` >= " . $this->_db->Quote($filters['closed'][0]);
-			}
-
-			$sql .= " WHERE " . implode(" AND ", $where);
-			$sql .= " ORDER BY c.created ASC";
-
-			$this->database->setQuery($sql);
-			$clsd = $this->database->loadObjectList();
-			if ($clsd)
-			{
-				$closedTickets = array();
-				foreach ($clsd as $closed)
-				{
-					if (!isset($closedTickets[$closed->ticket]))
-					{
-						$closedTickets[$closed->ticket] = $closed;
-					}
-					else
-					{
-						if ($closedTickets[$closed->ticket]->created < $closed->created)
-						{
-							$closedTickets[$closed->ticket] = $closed;
-						}
-					}
-				}
-				foreach ($closedTickets as $ticketId)
-				{
-					$filters[]
-				}
-			}
-		}*/
-
 		// Get a list of all statuses
 		$sobj = new SupportTableStatus($this->database);
 
@@ -407,69 +508,122 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 	}
 
 	/**
+	 * Displays details for a ticket
+	 *
+	 * @return    void
+	 */
+	private function ticketRead($id=0)
+	{
+		if (!$this->acl->check('read', 'tickets'))
+		{
+			return $this->errorMessage(403, JText::_('Permission denied.'));
+		}
+
+		// Initiate class and bind data to database fields
+		$ticket_id = JRequest::getInt('ticket', $id);
+
+		// Initiate class and bind data to database fields
+		$ticket = new SupportModelTicket($ticket_id);
+
+		$response = new stdClass;
+		$response->id = $ticket->get('id');
+
+		$response->owner = new stdClass;
+		$response->owner->username = $ticket->owner('username');
+		$response->owner->name     = $ticket->owner('name');
+		$response->owner->id       = $ticket->owner('id');
+
+		$response->reporter = new stdClass;
+		$response->reporter->name     = $ticket->submitter('name');
+		$response->reporter->username = $ticket->submitter('username');
+		$response->reporter->email    = $ticket->submitter('email');
+
+		$response->status = new stdClass;
+		$response->status->alias = $ticket->status('class');
+		$response->status->title = $ticket->status('text');
+		$response->status->id    = $ticket->get('status');
+
+		foreach (array('created', 'severity', 'os', 'browser', 'ip', 'hostname', 'uas', 'referrer', 'open', 'closed') as $prop)
+		{
+			$response->$prop = $ticket->get($prop);
+		}
+
+		$response->report = $ticket->content('raw');
+
+		$response->url = rtrim(JURI::base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_support&controller=tickets&task=tickets&id=' . $response->id), DS);
+
+		$response->comments = array();
+		foreach ($ticket->comments() as $comment)
+		{
+			$c = new stdClass;
+			$c->id = $comment->get('id');
+			$c->created = $comment->get('created');
+			$c->creator = new stdClass;
+			$c->creator->username = $comment->creator('username');
+			$c->creator->name     = $comment->creator('name');
+			$c->creator->id       = $comment->creator('id');
+			$c->private = ($comment->access ? true : false);
+			$c->content = $comment->content('raw');
+
+			$response->comments[] = $c;
+		}
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
+	}
+
+	/**
 	 * Create a new ticket
 	 *
 	 * @return     void
 	 */
-	private function create()
+	private function ticketCreate()
 	{
 		//get the userid and attempt to load user profile
 		$userid = JFactory::getApplication()->getAuthn('user_id');
 		$result = \Hubzero\User\Profile::getInstance($userid);
 
 		//make sure we have a user
-		if ($result === false)	return $this->not_found();
-
-		$this->setMessageType(JRequest::getVar('format', 'json'));
-
-		// Create an object for returning messages
-		$msg = new stdClass;
+		if ($result === false) return $this->not_found();
 
 		// Initiate class and bind data to database fields
-		$ticket = new SupportTicket($this->database);
+		$ticket = new SupportModelTicket();
 
 		// Set the created date
-		$ticket->created   = $msg->submitted = JFactory::getDate()->toSql();
+		$ticket->set('created', JFactory::getDate()->toSql());
 
 		// Incoming
-		$ticket->report   = JRequest::getVar('report', '', 'post', 'none', 2);
-		if (!$ticket->report)
+		$ticket->set('report', JRequest::getVar('report', '', 'post', 'none', 2));
+		if (!$ticket->get('report'))
 		{
 			$this->errorMessage(500, JText::_('Error: Report contains no text.'));
 			return;
 		}
-		$ticket->os        = JRequest::getVar('os', 'unknown', 'post');
-		$ticket->browser   = JRequest::getVar('browser', 'unknown', 'post');
-		$ticket->severity  = JRequest::getVar('severity', 'normal', 'post');
+		$ticket->set('os', JRequest::getVar('os', 'unknown', 'post'));
+		$ticket->set('browser', JRequest::getVar('browser', 'unknown', 'post'));
+		$ticket->set('severity', JRequest::getVar('severity', 'normal', 'post'));
 
 		// Cut suggestion at 70 characters
-		$ticket->summary   = substr($ticket->report, 0, 70);
-		if (strlen($ticket->summary) >= 70)
+		$summary = substr($ticket->get('report'), 0, 70);
+		if (strlen($summary) >= 70)
 		{
-			$ticket->summary .= '...';
+			$summary .= '...';
 		}
+		$ticket->set('summary', $summary);
 
 		// Get user data
-		//$juser = JFactory::getUser();
-		$ticket->name      = $result->get('name');
-		$ticket->email     = $result->get('email');
-		$ticket->login     = $result->get('username');
+		$ticket->set('name', $result->get('name'));
+		$ticket->set('email', $result->get('email'));
+		$ticket->set('login', $result->get('username'));
 
 		// Set some helpful info
-		$ticket->instances = 1;
-		$ticket->section   = 1;
-		$ticket->open      = 1;
-		$ticket->status    = 0;
+		$ticket->set('instances', 1);
+		$ticket->set('section', 1);
+		$ticket->set('open', 1);
+		$ticket->set('status', 0);
 
-		$ticket->ip        = JRequest::ip();
-		$ticket->hostname  = gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server'));
-
-		// Check the data
-		if (!$ticket->check())
-		{
-			$this->errorMessage(500, $ticket->getErrors());
-			return;
-		}
+		$ticket->set('ip', JRequest::ip());
+		$ticket->set('hostname', gethostbyaddr(JRequest::getVar('REMOTE_ADDR','','server')));
 
 		// Save the data
 		if (!$ticket->store())
@@ -479,17 +633,272 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Any tags?
-		$tags = trim(JRequest::getVar('tags', '', 'post'));
-		if ($tags)
+		if ($tags = trim(JRequest::getVar('tags', '', 'post')))
 		{
-			$st = new SupportModelTags($ticket->id);
-			$st->setTags($tags, $result->get('uidNumber'));
+			$ticket->tag($tags, $result->get('uidNumber'));
 		}
 
 		// Set the response
-		$msg->success = true;
-		$msg->ticket  = $ticket->id;
+		$msg = new stdClass;
+		$msg->submitted = $ticket->get('created');
+		$msg->ticket    = $ticket->get('id');
 
-		$this->setMessage($msg);
+		$this->setMessageType(JRequest::getVar('format', 'json'));
+		$this->setMessage($msg, 200, 'OK');
+	}
+
+	/**
+	 * Display details for a comment
+	 *
+	 * @return    void
+	 */
+	private function commentRead()
+	{
+		if (!$this->acl->check('read', 'tickets'))
+		{
+			return $this->errorMessage(403, JText::_('Permission denied.'));
+		}
+
+		// Initiate class and bind data to database fields
+		$id = JRequest::getInt('comment', 0);
+
+		// Initiate class and bind data to database fields
+		$ticket = new SupportModelComment($id);
+
+		$response = new stdClass;
+		$response->id = $comment->get('id');
+		$response->ticket = $comment->get('ticket');
+
+		$response->owner = new stdClass;
+		$response->owner->username = $ticket->owner('username');
+		$response->owner->name     = $ticket->owner('name');
+		$response->owner->id       = $ticket->owner('id');
+
+		$response->content = $comment->content('raw');
+
+		$response->url = rtrim(JURI::base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_support&controller=tickets&task=tickets&id=' . $comment->get('ticket') . '#c' . $comment->get('id')), DS);
+
+		$response->private = ($comment->get('access') ? true : false);
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
+	}
+
+	/**
+	 * Create a new comment on a ticket
+	 *
+	 * @return     void
+	 */
+	private function commentCreate()
+	{
+		// Initiate class and bind data to database fields
+		$ticket_id = JRequest::getInt('ticket', 0, 'post');
+
+		// Load the old ticket so we can compare for the changelog
+		$old = new SupportModelTicket($ticket_id);
+		$old->set('tags', $old->tags('string'));
+
+		if (!$old->exists())
+		{
+			$this->errorMessage(500, JText::sprintf('Ticket "%s" does not exist.', $ticket_id));
+			return;
+		}
+
+		// Initiate class and bind posted items to database fields
+		$ticket = new SupportModelTicket($ticket_id);
+		$ticket->set('status',   JRequest::getInt('status', $ticket->get('status'), 'post'));
+		$ticket->set('open',     JRequest::getInt('open', $ticket->get('open'), 'post'));
+		$ticket->set('category', JRequest::getInt('category', $ticket->get('category'), 'post'));
+		$ticket->set('severity', JRequest::getVar('severity', $ticket->get('severity'), 'post'));
+		$ticket->set('owner',    JRequest::getVar('owner', $ticket->get('owner'), 'post'));
+		$ticket->set('group',    JRequest::getVar('group', $ticket->get('group'), 'post'));
+
+		// If an existing ticket AND closed AND previously open
+		if ($ticket_id && !$ticket->get('open') && $ticket->get('open') != $old->get('open'))
+		{
+			// Record the closing time
+			$ticket->set('closed', JFactory::getDate()->toSql());
+		}
+
+		// Any tags?
+		if ($tags = trim(JRequest::getVar('tags', '', 'post')))
+		{
+			$ticket->tag($tags, $user->get('uidNumber'));
+			$ticket->set('tags', $ticket->tags('string'));
+		}
+
+		// Store new content
+		if (!$ticket->store())
+		{
+			$this->errorMessage(500, $ticket->getError());
+			return;
+		}
+
+		// Create a new comment
+		$comment = new SupportModelComment();
+		$comment->set('ticket', $ticket->get('id'));
+		$comment->set('comment', nl2br(JRequest::getVar('comment', '', 'post', 'none', 2)));
+		if ($comment->get('comment'))
+		{
+			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
+			if ($ticket->isWaiting() && $user->get('username') == $ticket->get('login'))
+			{
+				$ticket->open();
+			}
+		}
+		$comment->set('created', JFactory::getDate()->toSql());
+		$comment->set('created_by', $user->get('uidNumber'));
+		$comment->set('access', JRequest::getInt('access', 0, 'post'));
+
+		// Compare fields to find out what has changed for this ticket and build a changelog
+		$comment->changelog()->diff($old, $ticket);
+
+		$comment->changelog()->cced(JRequest::getVar('cc', '', 'post'));
+
+		// Store new content
+		if (!$comment->store())
+		{
+			$this->errorMessage(500, $comment->getError());
+			return;
+		}
+
+		$jconfig = JFactory::getConfig();
+
+		if ($ticket->get('owner'))
+		{
+			$comment->addTo(array(
+				'role'  => JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'),
+				'name'  => $ticket->owner('name'),
+				'email' => $ticket->owner('email'),
+				'id'    => $ticket->owner('id')
+			));
+		}
+
+		// Add any CCs to the e-mail list
+		foreach ($comment->changelog()->get('cc') as $cc)
+		{
+			$comment->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
+		}
+
+		// Check if the notify list has eny entries
+		if (count($comment->to()))
+		{
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'helpers' . DS . 'utilities.php');
+
+			$allowEmailResponses = $ticket->config('email_processing');
+			if ($allowEmailResponses)
+			{
+				try
+				{
+					$encryptor = new \Hubzero\Mail\Token();
+				}
+				catch (Exception $e)
+				{
+					$allowEmailResponses = false;
+				}
+			}
+
+			$subject = JText::sprintf('COM_SUPPORT_EMAIL_SUBJECT_TICKET_COMMENT', $ticket->get('id'));
+
+			$from = array(
+				'name'      => JText::sprintf('COM_SUPPORT_EMAIL_FROM', $jconfig->getValue('config.sitename')),
+				'email'     => $jconfig->getValue('config.mailfrom'),
+				'multipart' => md5(date('U'))
+			);
+
+			$message = array();
+
+			// Plain text email
+			$eview = new \Hubzero\Component\View(array(
+				'base_path' => JPATH_ROOT . '/components/com_support',
+				'name'      => 'emails',
+				'layout'    => 'comment_plain'
+			));
+			$eview->option     = 'com_support';
+			$eview->controller = 'tickets';
+			$eview->comment    = $comment;
+			$eview->ticket     = $ticket;
+			$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
+
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+			// HTML email
+			$eview->setLayout('comment_html');
+			$message['multipart'] = $eview->loadTemplate();
+
+			// Send e-mail to admin?
+			JPluginHelper::importPlugin('xmessage');
+			$dispatcher = JDispatcher::getInstance();
+
+			foreach ($comment->to('ids') as $to)
+			{
+				if ($allowEmailResponses)
+				{
+					// The reply-to address contains the token
+					$token = $encryptor->buildEmailToken(1, 1, $to['id'], $ticket->get('id'));
+					$from['replytoemail'] = 'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@');
+				}
+
+				// Get the user's email address
+				if (!$dispatcher->trigger('onSendMessage', array('support_reply_submitted', $subject, $message, $from, array($to['id']), 'com_support')))
+				{
+					$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
+				}
+				$comment->changelog()->notified(
+					$to['role'],
+					$to['name'],
+					$to['email']
+				);
+			}
+
+			foreach ($comment->to('emails') as $to)
+			{
+				if ($allowEmailResponses)
+				{
+					$token = $encryptor->buildEmailToken(1, 1, -9999, $ticket->get('id'));
+
+					$email = array(
+						$to['email'],
+						'htc-' . $token . strstr($jconfig->getValue('config.mailfrom'), '@')
+					);
+
+					// In this case each item in email in an array, 1- To, 2:reply to address
+					SupportUtilities::sendEmail($email[0], $subject, $message, $from, $email[1]);
+				}
+				else
+				{
+					// email is just a plain 'ol string
+					SupportUtilities::sendEmail($to['email'], $subject, $message, $from);
+				}
+
+				$comment->changelog()->notified(
+					$to['role'],
+					$to['name'],
+					$to['email']
+				);
+			}
+		}
+
+		// Were there any changes?
+		if (count($comment->changelog()->get('notifications')) > 0
+		 || count($comment->changelog()->get('cc')) > 0
+		 || count($comment->changelog()->get('changes')) > 0)
+		{
+			// Save the data
+			if (!$comment->store())
+			{
+				$this->errorMessage(500, $comment->getError());
+				return;
+			}
+		}
+
+		$msg = new stdClass;
+		$msg->ticket  = $ticket->get('id');
+		$msg->comment = $comment->get('id');
+		$msg->notified = $comment->changelog()->get('notifications');
+
+		$this->setMessageType(JRequest::getVar('format', 'json'));
+		$this->setMessage($msg, 200, 'OK');
 	}
 }
