@@ -613,6 +613,7 @@ abstract class JTable extends JObject
 		else
 		{
 			$stored = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
+			\Hubzero\Console\Event::fire($this->getTableName() . '.new', $this);
 		}
 
 		// If the store failed return false.
