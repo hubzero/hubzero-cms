@@ -301,7 +301,11 @@ class PublicationHelper extends JObject
 	 */
 	public function showContributors( $contributors = '', $showorgs = false, $showaslist = false, $incSubmitter = false, $format = false)
 	{
-		$view = new \Hubzero\Component\View( array('name'=>'view', 'layout' =>'_contributors'));
+		$view = new \Hubzero\Component\View(array(
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+			'name'   => 'view',
+			'layout' => '_contributors',
+		));
 		$view->contributors  = $contributors;
 		$view->showorgs  = $showorgs;
 		$view->showaslist  = $showaslist;
