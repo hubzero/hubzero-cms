@@ -184,9 +184,9 @@ class plgResourcesShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . JText::sprintf('PLG_RESOURCES_SHARE_VIEWING',
+				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_RESOURCES_SHARE_VIEWING',
 						$jconfig->getValue('config.sitename'),
-						$title . ' ' . $url);
+						stripslashes($resource->title)) . ' ' . $url);
 				break;
 
 			case 'google':

@@ -157,9 +157,9 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',
+				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',
 						$jconfig->getValue('config.sitename'),
-						$title . ' ' . $url);
+						stripslashes($publication->title) . ' ' . $url));
 				break;
 
 			case 'google':
