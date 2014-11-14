@@ -39,7 +39,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	/**
 	 * Display a list of all categories
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -52,35 +52,40 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 			'state'  => -1,
 			'access' => -1
 		);
-		$this->view->filters['object_type']        = $app->getUserStateFromRequest(
+		$this->view->filters['object_type'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.object_type',
 			'object_type',
 			''
 		);
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sort',
 			'filter_order',
 			'title'
 		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
+		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.sortdir',
 			'filter_order_Dir',
 			'ASC'
 		));
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
+		$this->view->filters['search'] = urldecode(trim($app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.search',
 			'search',
 			''
 		)));
+		$this->view->filters['state'] = $app->getUserStateFromRequest(
+			$this->_option . '.' . $this->_controller . '.state',
+			'state',
+			'-1'
+		);
 
 		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
+		$this->view->filters['limit'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limit',
 			'limit',
 			$config->getValue('config.list_limit'),
 			'int'
 		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
+		$this->view->filters['start'] = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.limitstart',
 			'limitstart',
 			0,
@@ -104,7 +109,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	/**
 	 * Create a new collection
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -114,13 +119,11 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	/**
 	 * Edit a collection
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		if (is_object($row))
 		{
@@ -146,16 +149,15 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -218,7 +220,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	/**
 	 * Delete one or more entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -252,9 +254,9 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	}
 
 	/**
-	 * Set the access level of an article to 'public'
+	 * Set the access level of an entry to 'public'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accesspublicTask()
 	{
@@ -262,9 +264,9 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	}
 
 	/**
-	 * Set the access level of an article to 'registered'
+	 * Set the access level of an entry to 'registered'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessregisteredTask()
 	{
@@ -272,9 +274,9 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	}
 
 	/**
-	 * Set the access level of an article to 'special'
+	 * Set the access level of an entry to 'special'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessspecialTask()
 	{
@@ -282,9 +284,9 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	}
 
 	/**
-	 * Set the access level of an article to 'special'
+	 * Set the access level of an entry to 'special'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessprivateTask()
 	{
@@ -292,10 +294,10 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	}
 
 	/**
-	 * Set the access level of an article
+	 * Set the access level of an entry
 	 *
-	 * @param      integer $access Access level to set
-	 * @return     void
+	 * @param   integer  $access  Access level to set
+	 * @return  void
 	 */
 	public function accessTask($access=0)
 	{
@@ -313,7 +315,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 			return;
 		}
 
-		// Load the article
+		// Load the entry
 		$row = new CollectionsModelCollection($id);
 		$row->set('access', $access);
 
@@ -337,7 +339,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	/**
 	 * Calls stateTask to publish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -347,7 +349,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	/**
 	 * Calls stateTask to unpublish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -357,8 +359,8 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @param   integer  $state  The state to set entries to
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{
@@ -420,7 +422,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{

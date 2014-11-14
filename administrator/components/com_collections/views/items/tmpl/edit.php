@@ -30,11 +30,11 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = CollectionsHelperPermissions::getActions('collection');
+$canDo = CollectionsHelperPermissions::getActions('post');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . $text, 'collection.png');
+JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . JText::_('COM_COLLECTIONS_ITEMS') . ': ' . $text, 'collection.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -56,12 +56,10 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if ($('#field-title').val() == '') {
-		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_TITLE'); ?>');
-	} else if ($('#field-object_type').val() == '') {
-		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_TYPE'); ?>');
-	} else if ($('#field-object_id').val() == '') {
-		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_OBJECT_ID'); ?>');
+	if ($('#field-item_id').val() == '') {
+		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'); ?>');
+	} else if ($('#field-collection_id').val() == '') {
+		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'); ?>');
 	} else {
 		<?php echo JFactory::getEditor()->save('text'); ?>
 
@@ -78,61 +76,15 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-object_type"><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-					<select name="fields[object_type]" id="field-object_type">
-						<!-- <option value="site"<?php if ($this->row->get('object_type') == 'site' || $this->row->get('object_type') == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_SITE'); ?></option> -->
-						<option value="member"<?php if ($this->row->get('object_type') == 'member') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_MEMBER'); ?></option>
-						<option value="group"<?php if ($this->row->get('object_type') == 'group') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_TYPE_GROUP'); ?></option>
-					</select>
-				</div>
-			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap" data-hint="<?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?>">
-					<label for="field-title"><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_ID'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-					<input type="text" name="fields[object_id]" id="field-object_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('object_id'))); ?>" />
-					<span class="hint"><?php echo JText::_('COM_COLLECTIONS_FIELD_OWNER_ID_HINT'); ?></span>
-				</div>
-			</div>
-			<div class="clr"></div>
-
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_COLLECTIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
 				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
-			</div>
-
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?>">
-				<label for="field-alias"><?php echo JText::_('COM_COLLECTIONS_FIELD_ALIAS'); ?>:</label><br />
-				<input type="text" name="fields[alias]" id="field-alias" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
-				<span class="hint"><?php echo JText::_('COM_COLLECTIONS_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo JText::_('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
 				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape($this->row->description('raw')), '', '', 35, 10, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
-
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-layout"><?php echo JText::_('COM_COLLECTIONS_FIELD_LAYOUT'); ?></label>
-					<select name="fields[layout]" id="field-layout">
-						<option value="grid"<?php if ($this->row->get('layout') == 'grid') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_LAYOUT_GRID'); ?></option>
-						<option value="list"<?php if ($this->row->get('layout') == 'list') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_LAYOUT_LIST'); ?></option>
-					</select>
-				</div>
-			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label for="field-sort"><?php echo JText::_('COM_COLLECTIONS_FIELD_SORT'); ?></label>
-					<select name="fields[sort]" id="field-sort">
-						<option value="created"<?php if ($this->row->get('sort') == 'created') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_SORT_CREATED'); ?></option>
-						<option value="ordering"<?php if ($this->row->get('sort') == 'ordering') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_COLLECTIONS_FIELD_SORT_ORDERING'); ?></option>
-					</select>
-				</div>
-			</div>
-			<div class="clr"></div>
-		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta">
@@ -152,25 +104,6 @@ function submitbutton(pressbutton)
 					<td>
 						<?php echo $this->row->get('created'); ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_LIKES'); ?>:</th>
-					<td>
-						<?php echo $this->row->get('positive', 0); ?>
-						<input type="hidden" name="fields[positive]" id="field-positive" value="<?php echo $this->escape($this->row->get('positive', 0)); ?>" />
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_POSTS'); ?>:</th>
-					<td>
-						<?php echo $this->row->count('post'); ?>
-					</td>
-				</tr>
-				<tr>
-					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_FOLLOWERS'); ?>:</th>
-					<td>
-						<?php echo $this->row->count('followers'); ?>
 					</td>
 				</tr>
 			</tbody>

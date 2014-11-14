@@ -58,6 +58,11 @@ JSubMenuHelper::addEntry(
 	'index.php?option=com_collections&controller=posts',
 	$controllerName == 'posts'
 );
+JSubMenuHelper::addEntry(
+	JText::_('COM_COLLECTIONS_ITEMS'),
+	'index.php?option=com_collections&controller=items',
+	$controllerName == 'items'
+);
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'CollectionsController' . ucfirst($controllerName);

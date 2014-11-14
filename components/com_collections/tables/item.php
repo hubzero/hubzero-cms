@@ -269,7 +269,7 @@ class CollectionsTableItem extends JTable
 			{
 				$where[] = "b.created_by=" . $this->_db->Quote($filters['created_by']);
 			}
-			else
+			else if (!JFactory::getApplication()->isAdmin())
 			{
 				$where[] = "d.access=0";
 				$where[] = "s.id = (SELECT MAX(s2.id) FROM #__collections_posts s2 WHERE s.item_id = s2.item_id)";
@@ -287,7 +287,7 @@ class CollectionsTableItem extends JTable
 				$filters['state'] = array_map('intval', $filters['state']);
 				$where[] = "b.state IN (" . implode(',', $filters['state']) . ")";
 			}
-			else
+			else if ($filters['state'] >= 0)
 			{
 				$where[] = "b.state=" . $this->_db->Quote(intval($filters['state']));
 			}
