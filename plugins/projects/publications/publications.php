@@ -968,8 +968,33 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				   'pid=' . $row->publication_id), 'publication', 1 );
 		}
 
-		// Notify
-		// TBD
+		// Notify project managers
+		$objO = new ProjectOwner($this->_database);
+		$managers = $objO->getIds($this->_project->id, 1, 1);
+		if (!empty($managers))
+		{
+			$profile = \Hubzero\User\Profile::getInstance($this->_uid);
+			$juri = JURI::getInstance();
+
+			$sef = JRoute::_('index.php?option=' . $this->_option . a
+				. 'alias=' . $this->_project->alias . a . 'active=publications'
+				. a . 'pid=' . $row->publication_id);
+			$sef = trim($sef, DS);
+
+			ProjectsHelper::sendHUBMessage(
+				'com_projects',
+				$this->_config,
+				$this->_project,
+				$managers,
+				JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STARTED'),
+				'projects_admin_notice',
+				'publication',
+				$profile->get('name') . ' '
+					. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
+					.' (id ' . $row->publication_id . ')' . ' - ' . $juri->base()
+					. $sef . '/?version=' . $row->version_number
+			);
+		}
 	}
 
 	/**
@@ -3564,45 +3589,8 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Record activity
 		if (!$this->getError() && $newpub && !$this->_project->provisioned)
 		{
-			$objAA = new ProjectActivity ( $this->_database );
-			$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
-				   JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
-					.' (id '.$pid.')', $pid, 'publication',
-				   JRoute::_('index.php?option=' . $this->_option . a .
-				   'alias=' . $this->_project->alias . a . 'active=publications' . a .
-				   'pid='.$pid), 'publication', 1 );
-
-			// Notify project managers
-			$objO = new ProjectOwner($this->_database);
-			$managers = $objO->getIds($this->_project->id, 1, 1);
-			if (!empty($managers))
-			{
-				$profile = \Hubzero\User\Profile::getInstance($this->_uid);
-
-				$juri = JURI::getInstance();
-
-				$sef = JRoute::_('index.php?option=' . $this->_option . a
-					. 'alias=' . $this->_project->alias . a . 'active=publications'
-					. a . 'pid='.$pid);
-				if (substr($sef,0,1) == '/')
-				{
-					$sef = substr($sef,1,strlen($sef));
-				}
-
-				ProjectsHelper::sendHUBMessage(
-					'com_projects',
-					$this->_config,
-					$this->_project,
-					$managers,
-					JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STARTED'),
-					'projects_admin_notice',
-					'publication',
-					$profile->get('name') . ' '
-						. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_STARTED_NEW_PUB')
-						.' (id '.$pid.')' . ' - ' . $juri->base()
-						. $sef . '/?version=' . $row->version_number
-				);
-			}
+			// Record action, notify team
+			$this->onAfterCreate($row);
 		}
 
 		// Pass success or error message
@@ -3962,7 +3950,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$notify = 1;
 
 		// Log activity in curation history
-		$pub->_curationModel->saveHistory($pub, $this->_uid, $originalStatus, $state, 0 );
+		if (isset($pub->_curationModel))
+		{
+			$pub->_curationModel->saveHistory($pub, $this->_uid, $originalStatus, $state, 0 );
+		}
 
 		// Display status message
 		switch ($state)
@@ -4068,7 +4059,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		}
 
 		// Produce archival package
-		if ($state == 1 || $state == 5)
+		if (isset($pub->_curationModel) && ($state == 1 || $state == 5))
 		{
 			$pub->_curationModel->package();
 		}
@@ -4301,6 +4292,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				return;
 			}
 
+			// Save version before changes
+			$originalStatus = $row->state;
+
 			// Save state
 			$row->state = $state;
 			$row->main = $main;
@@ -4400,103 +4394,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				// Produce archival package
 				$this->archivePub($row->publication_id, $row->id);
 
-				// Display status message
-				switch ($state)
-				{
-					case 1:
-					default:
-						$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PUBLISHED');
-						$action 	= $republish
-									? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REPUBLISHED')
-									: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_PUBLISHED');
-						break;
+				// OnAfterPublish
+				$this->onAfterChangeState( $pub, $row, $originalStatus );
 
-					case 4:
-						$this->_msg = $this->_task == 'revert'
-									? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_REVERTED')
-									: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_SAVED') ;
-						$action 	= $this->_task == 'revert'
-									? JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_REVERTED')
-									: JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SAVED');
-						$notify = 0;
-						break;
-
-					case 5:
-						$this->_msg = JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_SUCCESS_PENDING');
-						$action 	= JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ACTIVITY_SUBMITTED');
-						break;
-				}
-				$this->_msg .= ' <a href="'.JRoute::_('index.php?option=com_publications' . a .
-					    'id=' . $pid ) .'">'. JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VIEWIT').'</a>';
-
-				$pubtitle = \Hubzero\Utility\String::truncate($row->title, 100);
-				$action .= ' '.$row->version_label.' ';
-				$action .=  JText::_('PLG_PROJECTS_PUBLICATIONS_OF_PUBLICATION').' "'.html_entity_decode($pubtitle).'"';
-				$action  = htmlentities($action, ENT_QUOTES, "UTF-8");
-
-				// Record activity
-				if (!$this->_project->provisioned)
-				{
-					$objAA = new ProjectActivity ( $this->_database );
-					$aid = $objAA->recordActivity( $this->_project->id, $this->_uid,
-						   $action, $pid, $pubtitle,
-						   JRoute::_('index.php?option=' . $this->_option . a .
-						   'alias=' . $this->_project->alias . a . 'active=publications' . a .
-						   'pid=' . $pid) . '/?version=' . $row->version_number, 'publication', 1 );
-				}
-
-				// Send out notifications
-				$profile = \Hubzero\User\Profile::getInstance($this->_uid);
-				$actor 	 = $profile
-						? $profile->get('name')
-						: JText::_('PLG_PROJECTS_PUBLICATIONS_PROJECT_MEMBER');
-				$juri 	 = JURI::getInstance();
-				$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
-				$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
-				$message = $actor . ' ' . html_entity_decode($action) . '  - ' . $link;
-
-				if ($notify)
-				{
-					$admingroup = $this->_config->get('admingroup', '');
-					$group = \Hubzero\User\Group::getInstance($admingroup);
-					$admins = array();
-
-					if ($admingroup && $group)
-					{
-						$members 	= $group->get('members');
-						$managers 	= $group->get('managers');
-						$admins 	= array_merge($members, $managers);
-						$admins 	= array_unique($admins);
-
-						ProjectsHelper::sendHUBMessage(
-							'com_projects',
-							$this->_config,
-							$this->_project,
-							$admins,
-							JText::_('COM_PROJECTS_EMAIL_ADMIN_NEW_PUB_STATUS'),
-							'projects_new_project_admin',
-							'publication',
-							$message
-						);
-					}
-				}
-
-				// Notify project managers (in all cases)
-				$objO = new ProjectOwner($this->_database);
-				$managers = $objO->getIds($this->_project->id, 1, 1);
-				if (!$this->_project->provisioned && !empty($managers))
-				{
-					ProjectsHelper::sendHUBMessage(
-						'com_projects',
-						$this->_config,
-						$this->_project,
-						$managers,
-						JText::_('COM_PROJECTS_EMAIL_MANAGERS_NEW_PUB_STATUS'),
-						'projects_admin_notice',
-						'publication',
-						$message
-					);
-				}
 			}
 		}
 
