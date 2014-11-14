@@ -41,7 +41,7 @@ class plgCronMembers extends JPlugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -63,9 +63,10 @@ class plgCronMembers extends JPlugin
 	/**
 	 * Calculate point royalties for members
 	 *
-	 * @return     array
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function onPointRoyalties($params=null)
+	public function onPointRoyalties(CronModelJob $job)
 	{
 		/*
 		jimport('joomla.error.profiler');

@@ -41,7 +41,7 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -79,10 +79,13 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Close tickets in a pending state for a specific amount of time
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function cleanTempUploads($params=null)
+	public function cleanTempUploads(CronModelJob $job)
 	{
+		$params = $job->get('params');
+
 		$sconfig = JComponentHelper::getParams('com_support');
 		$path = JPATH_ROOT . DS . trim($sconfig->get('webpath', '/site/tickets'), DS);
 
@@ -116,10 +119,13 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Close tickets in a pending state for a specific amount of time
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function onClosePending($params=null)
+	public function onClosePending(CronModelJob $job)
 	{
+		$params = $job->get('params');
+
 		$database = JFactory::getDBO();
 
 		$sql = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(JFactory::getDate()->toSql());
@@ -319,10 +325,13 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Send emails reminding people of their open tickets
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function sendTicketsReminder($params=null)
+	public function sendTicketsReminder(CronModelJob $job)
 	{
+		$params = $job->get('params');
+
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
 
@@ -343,11 +352,6 @@ class plgCronSupport extends JPlugin
 			if ($group)
 			{
 				$users = $group->get('members');
-				/*$database->setQuery("SELECT username FROM `#__users` WHERE id IN (" . implode(',', $users) . ");");
-				if (!($usernames = $database->loadResultArray()))
-				{
-					$usernames = array();
-				}*/
 			}
 
 			$sql .= " AND owner IN ('" . implode("','", $users) . "') ORDER BY created";
@@ -397,10 +401,11 @@ class plgCronSupport extends JPlugin
 			}*/
 		}
 
-		$from = array();
-		$from['name']      = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT');
-		$from['email']     = $jconfig->getValue('config.mailfrom');
-		$from['multipart'] = md5(date('U'));
+		$from = array(
+			'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT'),
+			'email'     => $jconfig->getValue('config.mailfrom'),
+			'multipart' => md5(date('U'))
+		);
 
 		//set mail additional args (mail return path - used for bounces)
 		if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
@@ -465,7 +470,6 @@ class plgCronSupport extends JPlugin
 				$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));
 			}
 			$mailed[] = $juser->get('username');
-			//echo $message;
 		}
 
 		return true;
@@ -474,10 +478,13 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Send emails reminding people of their open tickets
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function sendTicketList($params=null)
+	public function sendTicketList(CronModelJob $job)
 	{
+		$params = $job->get('params');
+
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
 
@@ -488,7 +495,7 @@ class plgCronSupport extends JPlugin
 		$lang->load('com_support');
 		$lang->load('com_support', JPATH_BASE);
 
-		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`username`=t.`owner`";
+		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`id`=t.`owner`";
 
 		$where = array();
 
@@ -556,11 +563,11 @@ class plgCronSupport extends JPlugin
 			{
 				if ($owned == 1)
 				{
-					$where[] = "(t.`owner` IS NULL OR t.`owner`='')";
+					$where[] = "(t.`owner` IS NULL OR t.`owner`='0')";
 				}
 				else if ($owned == 2)
 				{
-					$where[] = "(t.`owner` IS NOT NULL AND t.`owner` !='')";
+					$where[] = "(t.`owner` IS NOT NULL AND t.`owner` !='0')";
 				}
 			}
 
@@ -698,7 +705,7 @@ class plgCronSupport extends JPlugin
 				}
 			}
 
-			if ($created = $params->get('support_ticketpending_activity', '--'))
+			if ($created = $params->get('support_ticketlist_activity', '--'))
 			{
 				$op = '';
 				switch ($created)
@@ -739,6 +746,7 @@ class plgCronSupport extends JPlugin
 						$timestamp = JFactory::getDate('-1 year');
 					break;
 
+					case 'all':
 					case '--':
 						$op = '';
 					break;
@@ -784,7 +792,7 @@ class plgCronSupport extends JPlugin
 		$from['email']     = $jconfig->getValue('config.mailfrom');
 		$from['multipart'] = md5(date('U'));
 
-		//set mail additional args (mail return path - used for bounces)
+		// Set mail additional args (mail return path - used for bounces)
 		if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
 		{
 			$args = '-f hubmail-bounces@' . $host;
@@ -864,7 +872,7 @@ class plgCronSupport extends JPlugin
 
 			$message->addPart($html, 'text/html');
 
-			//set mail
+			// Send mail
 			$logger = \JFactory::getLogger();
 			if (!$message->send())
 			{
@@ -872,7 +880,6 @@ class plgCronSupport extends JPlugin
 				$logger->error('CRON email failed: ' . JText::sprintf('Failed to mail %s', $email));
 			}
 			$mailed[] = $email;
-			//echo $message;
 		}
 
 		return true;

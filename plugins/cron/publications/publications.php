@@ -41,7 +41,7 @@ class plgCronPublications extends JPlugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -69,9 +69,10 @@ class plgCronPublications extends JPlugin
 	/**
 	 * Send emails to authors with the monthly stats
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function sendAuthorStats($params = null)
+	public function sendAuthorStats(CronModelJob $job)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
@@ -80,8 +81,8 @@ class plgCronPublications extends JPlugin
 		$pconfig = JComponentHelper::getParams('com_publications');
 
 		// Get some params
-		$limit 	 = $pconfig->get('limitStats', 5);
-		$image 	 = $pconfig->get('email_image', '');
+		$limit = $pconfig->get('limitStats', 5);
+		$image = $pconfig->get('email_image', '');
 
 		$lang = JFactory::getLanguage();
 		$lang->load('com_publications', JPATH_BASE);
@@ -98,9 +99,8 @@ class plgCronPublications extends JPlugin
 		}
 
 		// Helpers
-		require_once( JPATH_ROOT . DS . 'components'. DS .'com_members' . DS . 'helpers' . DS . 'imghandler.php');
-
-		require_once( JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'helpers' . DS . 'helper.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS .'com_members' . DS . 'helpers' . DS . 'imghandler.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'helpers' . DS . 'helper.php');
 
 		// Get publication helper
 		$helper = new PublicationHelper($database);
@@ -113,6 +113,7 @@ class plgCronPublications extends JPlugin
 		$query .= " AND A.user_id > 0 AND A.status=1 ";
 
 		// If we need to restrict to selected authors
+		$params = $job->get('params');
 		if (is_object($params) && $params->get('userids'))
 		{
 			$apu    = explode(',', $params->get('userids'));
@@ -137,10 +138,11 @@ class plgCronPublications extends JPlugin
 		}
 
 		// Set email config
-		$from = array();
-		$from['name']      = $jconfig->getValue('config.fromname') . ' ' . JText::_('Publications');
-		$from['email']     = $jconfig->getValue('config.mailfrom');
-		$from['multipart'] = md5(date('U'));
+		$from = array(
+			'name'      => $jconfig->getValue('config.fromname') . ' ' . JText::_('Publications'),
+			'email'     => $jconfig->getValue('config.mailfrom'),
+			'multipart' => md5(date('U'))
+		);
 
 		$subject = JText::_('PLG_CRON_PUBLICATIONS_MONTHLY_REPORT');
 
@@ -168,21 +170,21 @@ class plgCronPublications extends JPlugin
 			// Plain text
 			$eview = new \Hubzero\Plugin\View(
 				array(
-					'folder'	=>'cron',
-					'element'	=>'publications',
-					'name'		=>'emails',
-					'layout' 	=>'stats_plain'
+					'folder'  =>'cron',
+					'element' =>'publications',
+					'name'    =>'emails',
+					'layout'  =>'stats_plain'
 				)
 			);
 			$eview->option     = 'com_publications';
 			$eview->controller = 'publications';
-			$eview->juser	   = $juser;
+			$eview->juser      = $juser;
 			$eview->pubstats   = $pubstats;
-			$eview->limit	   = $limit;
-			$eview->image	   = $image;
-			$eview->helper	   = $helper;
-			$eview->config	   = $pconfig;
-			$eview->totals 	   = $pubLog->getTotals($author->user_id, 'author');
+			$eview->limit      = $limit;
+			$eview->image      = $image;
+			$eview->helper     = $helper;
+			$eview->config     = $pconfig;
+			$eview->totals     = $pubLog->getTotals($author->user_id, 'author');
 
 			$plain = $eview->loadTemplate();
 			$plain = str_replace("\n", "\r\n", $plain);
@@ -210,18 +212,19 @@ class plgCronPublications extends JPlugin
 				$this->setError(JText::sprintf('PLG_CRON_PUBLICATIONS_ERROR_FAILED_TO_MAIL', $juser->get('email')));
 			}
 			$mailed[] = $juser->get('email');
-
 		}
-		print_r($mailed);
+
+		//print_r($mailed);
 		return true;
 	}
 
 	/**
 	 * Compute unique user stats from text logs
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function rollUserStats($params = null)
+	public function rollUserStats(CronModelJob $job)
 	{
 		$database = JFactory::getDBO();
 		$pconfig = JComponentHelper::getParams('com_publications');
@@ -229,10 +232,10 @@ class plgCronPublications extends JPlugin
 		$numMonths = 3;
 		$includeCurrent = true;
 
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
 
 		// Get publication helper
 		$helper = new PublicationHelper($database);
@@ -251,8 +254,7 @@ class plgCronPublications extends JPlugin
 		// Compute and store stats for each publication
 		foreach ($pubs as $publication)
 		{
-			$views 	   = $helper->getUserLogs($publication->id, $pconfig,'view', $numMonths, $includeCurrent);
-
+			$views     = $helper->getUserLogs($publication->id, $pconfig,'view', $numMonths, $includeCurrent);
 			$downloads = $helper->getUserLogs($publication->id, $pconfig,'primary', $numMonths, $includeCurrent);
 		}
 

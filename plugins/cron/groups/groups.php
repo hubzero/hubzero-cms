@@ -41,7 +41,7 @@ class plgCronGroups extends JPlugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -68,37 +68,38 @@ class plgCronGroups extends JPlugin
 	/**
 	 * Remove unused group folders
 	 *
-	 * @return     array
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function cleanGroupFolders($params=null)
+	public function cleanGroupFolders(CronModelJob $job)
 	{
-		//include needed libraries
+		// include needed libraries
 		jimport('joomla.filesystem.folder');
 
-		//get group params
+		// get group params
 		$groupParameters = JComponentHelper::getParams('com_groups');
 
-		//get group upload path
+		// get group upload path
 		$groupUploadPath = ltrim($groupParameters->get('uploadpath', '/site/groups'), DS);
 
-		//get group folders
+		// get group folders
 		$groupFolders = JFolder::folders(JPATH_ROOT . DS . $groupUploadPath);
 
-		//loop through each group folder
+		// loop through each group folder
 		foreach ($groupFolders as $groupFolder)
 		{
-			//load group object for each folder
+			// load group object for each folder
 			$hubzeroGroup = \Hubzero\User\Group::getInstance(trim($groupFolder));
 
-			//if we dont have a group object delete folder
+			// if we dont have a group object delete folder
 			if (!is_object($hubzeroGroup))
 			{
-				//delete folder
+				// delete folder
 				JFolder::delete(JPATH_ROOT . DS . $groupUploadPath . DS . $groupFolder);
 			}
 		}
 
-		//job is no longer active
+		// job is no longer active
 		return true;
 	}
 
@@ -106,12 +107,15 @@ class plgCronGroups extends JPlugin
 	/**
 	 * Send scheduled group announcements
 	 *
-	 * @return     array
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function sendGroupAnnouncements($params=null)
+	public function sendGroupAnnouncements(CronModelJob $job)
 	{
+		$database = JFactory::getDBO();
+
 		// get hubzero announcement object
-		$hubzeroAnnouncement = new \Hubzero\Item\Announcement( JFactory::getDBO() );
+		$hubzeroAnnouncement = new \Hubzero\Item\Announcement($database);
 
 		// get all announcements that are not yet sent but want to be mailed
 		$announcements = $hubzeroAnnouncement->find(array('email' => 1,'sent' => 0));
@@ -130,7 +134,7 @@ class plgCronGroups extends JPlugin
 
 				// mark as sent
 				$hubzeroAnnouncement->sent = 1;
-				$hubzeroAnnouncement->save( $hubzeroAnnouncement );
+				$hubzeroAnnouncement->save($hubzeroAnnouncement);
 			}
 		}
 		return true;

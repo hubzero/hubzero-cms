@@ -41,7 +41,7 @@ class plgCronCourses extends JPlugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -68,9 +68,10 @@ class plgCronCourses extends JPlugin
 	/**
 	 * Sync claimed/denied passport badges
 	 *
-	 * @return     array
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function syncPassportBadgeStatus($params=null)
+	public function syncPassportBadgeStatus(CronModelJob $job)
 	{
 		$params = JComponentHelper::getParams('com_courses');
 
@@ -159,9 +160,10 @@ class plgCronCourses extends JPlugin
 	/**
 	 * Email instructor course digest
 	 *
-	 * @return     array
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function emailInstructorDigest($params=null)
+	public function emailInstructorDigest(CronModelJob $job)
 	{
 		$lang     = JFactory::getLanguage();
 		$database = JFactory::getDBO();
@@ -182,6 +184,7 @@ class plgCronCourses extends JPlugin
 
 		$course_id = 0;
 
+		$params = $job->get('params');
 		if (isset($params) && is_object($params))
 		{
 			$course_id = $params->get('course');

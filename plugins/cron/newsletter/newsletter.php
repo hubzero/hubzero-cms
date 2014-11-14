@@ -34,14 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.plugin.plugin');
 
 /**
- * Cron plugin for support tickets
+ * Cron plugin for newsletters
  */
 class plgCronNewsletter extends JPlugin
 {
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -69,19 +69,21 @@ class plgCronNewsletter extends JPlugin
 	/**
 	 * Processes any queued newsletter mailings.
 	 *
-	 * @return     void
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function processMailings( $params = null )
+	public function processMailings(CronModelJob $job)
 	{
-		//load needed libraries
+		// load needed libraries
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'helpers' . DS . 'helper.php';
 
-		//needed vars
+		// needed vars
 		$limit     = 25;
 		$processed = array();
 
-		//do we have a param defined limit
+		// do we have a param defined limit
+		$params = $job->get('params');
 		if (is_object($params) && $params->get('newsletter_queue_limit'))
 		{
 			$paramDefinedLimit = $params->get('newsletter_queue_limit');
@@ -91,10 +93,10 @@ class plgCronNewsletter extends JPlugin
 			}
 		}
 
-		//create needed objects
+		// create needed objects
 		$database = JFactory::getDBO();
 
-		//get all queued mailing recipients
+		// get all queued mailing recipients
 		$sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.html_body, nm.plain_body, nm.headers, nm.args, nm.tracking
 				FROM `#__newsletter_mailings` AS nm, `#__newsletter_mailing_recipients` AS nmr
 				WHERE nm.id=nmr.mid
@@ -103,31 +105,31 @@ class plgCronNewsletter extends JPlugin
 				AND UTC_TIMESTAMP() >= nm.date
 				ORDER BY nmr.date_added
 				LIMIT {$limit}";
-		$database->setQuery( $sql );
+		$database->setQuery($sql);
 		$queuedEmails = $database->loadObjectList();
 
-		//loop through each newsletter recipient, prepare and mail
+		// loop through each newsletter recipient, prepare and mail
 		foreach ($queuedEmails as $queuedEmail)
 		{
-			//get tracking & unsubscribe token
-			$emailToken = NewsletterHelper::generateMailingToken( $queuedEmail );
+			// get tracking & unsubscribe token
+			$emailToken = NewsletterHelper::generateMailingToken($queuedEmail);
 
-			//if tracking is on add it to email
+			// if tracking is on add it to email
 			if ($queuedEmail->tracking)
 			{
-				$queuedEmail->html_body = NewsletterHelper::addTrackingToEmailMessage( $queuedEmail->html_body, $emailToken );
+				$queuedEmail->html_body = NewsletterHelper::addTrackingToEmailMessage($queuedEmail->html_body, $emailToken);
 			}
 
-			//create unsubscribe link
+			// create unsubscribe link
 			$unsubscribeMailtoLink = '';
 			$unsubscribeLink       = 'https://' . $_SERVER['SERVER_NAME'] . '/newsletter/unsubscribe?e=' . $queuedEmail->email . '&t=' . $emailToken;
 
-			//add unsubscribe link - placeholder & in header (must do after adding tracking!!)
+			// add unsubscribe link - placeholder & in header (must do after adding tracking!!)
 			$queuedEmail->html_body = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->html_body);
 			$queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_LINK}}", $unsubscribeLink, $queuedEmail->headers);
 			$queuedEmail->headers   = str_replace("{{UNSUBSCRIBE_MAILTO_LINK}}", $unsubscribeMailtoLink, $queuedEmail->headers);
 
-			//add mailing id to header
+			// add mailing id to header
 			$queuedEmail->headers  = str_replace("{{CAMPAIGN_MAILING_ID}}", $queuedEmail->mailingid, $queuedEmail->headers);
 
 			// create new message
@@ -174,17 +176,17 @@ class plgCronNewsletter extends JPlugin
 			// mail message
 			if ($message->send())
 			{
-				//add to process email array
+				// add to process email array
 				$processed[] = $queuedEmail->email;
 
-				//load recipient object
-				$newsletterMailingRecipient = new NewsletterMailingRecipient( $database );
-				$newsletterMailingRecipient->load( $queuedEmail->mailing_recipientid );
+				// load recipient object
+				$newsletterMailingRecipient = new NewsletterMailingRecipient($database);
+				$newsletterMailingRecipient->load($queuedEmail->mailing_recipientid);
 
-				//mark as sent and save
+				// mark as sent and save
 				$newsletterMailingRecipient->status    = 'sent';
 				$newsletterMailingRecipient->date_sent = JFactory::getDate()->toSql();
-				$newsletterMailingRecipient->save( $newsletterMailingRecipient );
+				$newsletterMailingRecipient->save($newsletterMailingRecipient);
 			}
 		}
 
@@ -195,21 +197,22 @@ class plgCronNewsletter extends JPlugin
 	/**
 	 * Processes newsletter mailing actions (clicks, opens, etc) IP addresses into location data for stats
 	 *
-	 * @return     void
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function processIps( $params = null )
+	public function processIps(CronModelJob $job)
 	{
-		//load needed libraries
+		// load needed libraries
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';
 
-		//get db
+		// get db
 		$database = JFactory::getDBO();
 
-		//get actions
-		$newsletterMailingRecipientAction = new NewsletterMailingRecipientAction( $database );
+		// get actions
+		$newsletterMailingRecipientAction = new NewsletterMailingRecipientAction($database);
 		$unconvertedActions = $newsletterMailingRecipientAction->getUnconvertedActions();
 
-		//convert all unconverted actions
+		// convert all unconverted actions
 		foreach ($unconvertedActions as $action)
 		{
 			// attempt to locate
@@ -222,19 +225,19 @@ class plgCronNewsletter extends JPlugin
 				continue;
 			}
 
-			//if we got a valid result lets update our action with location info
+			// if we got a valid result lets update our action with location info
 			if (is_object($location) && $location['latitude'] != '' && $location['longitude'] != '-')
 			{
 				$sql = "UPDATE `#__newsletter_mailing_recipient_actions`
 						SET
-							countrySHORT=" . $database->quote( $location['countryCode'] ) . ",
-							countryLONG=" . $database->quote( $location['country'] ) . ",
-							ipREGION=" . $database->quote( $location['region'] ) . ",
-							ipCITY=" . $database->quote( $location['city'] ) . ",
-							ipLATITUDE=" . $database->quote( $location['latitude'] ) . ",
-							ipLONGITUDE=" . $database->quote( $location['longitude'] ) . "
-						WHERE id=" . $database->quote( $action->id );
-				$database->setQuery( $sql );
+							countrySHORT=" . $database->quote($location['countryCode']) . ",
+							countryLONG=" . $database->quote($location['country']) . ",
+							ipREGION=" . $database->quote($location['region']) . ",
+							ipCITY=" . $database->quote($location['city']) . ",
+							ipLATITUDE=" . $database->quote($location['latitude']) . ",
+							ipLONGITUDE=" . $database->quote($location['longitude']) . "
+						WHERE id=" . $database->quote($action->id);
+				$database->setQuery($sql);
 				$database->query();
 			}
 		}

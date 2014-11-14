@@ -41,16 +41,16 @@ class plgCronCache extends JPlugin
 	/**
 	 * Path to cache directory
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	protected $_path = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$subject Event observer
-	 * @param      array  $config   Optional config values
-	 * @return     void
+	 * @param   object  &$subject  Event observer
+	 * @param   array   $config    Optional config values
+	 * @return  void
 	 */
 	public function __construct(&$subject, $config)
 	{
@@ -62,7 +62,7 @@ class plgCronCache extends JPlugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -89,10 +89,10 @@ class plgCronCache extends JPlugin
 	/**
 	 * Trash all expired cache data
 	 *
-	 * @param     $params object JRegistry
-	 * @return    boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function trashExpiredData($params=null)
+	public function trashExpiredData(CronModelJob $job)
 	{
 		if (!is_dir($this->_path))
 		{
@@ -108,10 +108,10 @@ class plgCronCache extends JPlugin
 	/**
 	 * Clean out old system CSS files
 	 *
-	 * @param     $params object JRegistry
-	 * @return    boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function cleanSystemCss($params=null)
+	public function cleanSystemCss(CronModelJob $job)
 	{
 		if (!is_dir($this->_path))
 		{

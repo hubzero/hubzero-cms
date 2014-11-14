@@ -46,34 +46,35 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Filters
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.jobs.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.jobs.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.jobs.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => trim($app->getUserStateFromRequest(
+				$this->_option . '.jobs.sort',
+				'filter_order',
+				'id'
+			)),
+			'sort_Dir' => trim($app->getUserStateFromRequest(
+				$this->_option . '.jobs.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			))
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.jobs.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.jobs.sort',
-			'filter_order',
-			'id'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.jobs.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 
 		$model = new CronModelJobs();
 
 		// Get a record count
-		$this->view->total = $model->jobs('count', $this->view->filters);
+		$this->view->total   = $model->jobs('count', $this->view->filters);
 
 		// Get records
 		$this->view->results = $model->jobs('list', $this->view->filters);
@@ -87,12 +88,9 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -102,7 +100,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Display a form for creating a new entry
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -112,28 +110,27 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a form for editing an entry
 	 *
-	 * @return	void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		// Incoming
-		$id = JRequest::getVar('id', array(0));
-		if (is_array($id))
-		{
-			$id = intval($id[0]);
-		}
-
-		// load infor from database
+		// Load info from database
 		if (is_object($row))
 		{
 			$this->view->row = $row;
 		}
 		else
 		{
+			// Incoming
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = intval($id[0]);
+			}
+
 			$this->view->row = new CronModelJob($id);
 		}
 
@@ -195,24 +192,23 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->notifications = ($this->getComponentMessage()) ? $this->getComponentMessage() : array();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Saves an entry and redirects to listing
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -222,8 +218,8 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Save changes to an entry
 	 *
-	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
-	 * @return     void
+	 * @param   boolean  $redirect  Redirect (true) or fall through to edit form (false) ?
+	 * @return  void
 	 */
 	public function saveTask($redirect=true)
 	{
@@ -302,7 +298,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Deletes one or more records and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function runTask()
 	{
@@ -348,7 +344,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 			$job->store();
 
 			// Show related content
-			$results = $dispatcher->trigger($job->get('event'), array($job->get('params')));
+			$results = $dispatcher->trigger($job->get('event'), array($job));
 			if ($results)
 			{
 				if (is_array($results))
@@ -374,20 +370,18 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 
 		$this->view->output = $output;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
 	/**
 	 * Deletes one or more records and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -430,7 +424,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Calls stateTask to publish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -440,7 +434,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Calls stateTask to unpublish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -450,8 +444,8 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @param   integer  $state  The state to set entries to
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{
@@ -486,7 +480,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// set message
+		// Set message
 		if ($state == 1)
 		{
 			$message = JText::sprintf('COM_CRON_ITEMS_PUBLISHED', count($ids));
@@ -505,7 +499,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Cancels a task and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{

@@ -111,7 +111,7 @@ class CronControllerJobs extends \Hubzero\Component\SiteController
 				// Show related content
 				$job->mark('start_run');
 
-				$results = $dispatcher->trigger($job->get('event'), array($job->get('params')));
+				$results = $dispatcher->trigger($job->get('event'), array($job));
 				if ($results)
 				{
 					if (is_array($results))

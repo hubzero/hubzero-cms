@@ -41,7 +41,7 @@ class plgCronUsers extends JPlugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -63,9 +63,10 @@ class plgCronUsers extends JPlugin
 	/**
 	 * Remove user accounts with negative, numeric, usernames
 	 *
-	 * @return     array
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function cleanAuthTempAccounts($params=null)
+	public function cleanAuthTempAccounts(CronModelJob $job)
 	{
 		$db = JFactory::getDBO();
 

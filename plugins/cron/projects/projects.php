@@ -41,7 +41,7 @@ class plgCronProjects extends JPlugin
 	/**
 	 * Return a list of events
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function onCronEvents()
 	{
@@ -74,9 +74,10 @@ class plgCronProjects extends JPlugin
 	/**
 	 * Compute and log overall projects usage stats
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function computeStats($params=null)
+	public function computeStats(CronModelJob $job)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
@@ -87,36 +88,25 @@ class plgCronProjects extends JPlugin
 		$period = 'alltime';
 
 		$publishing =
-			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'publication.php')
+			is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php')
 			&& JPluginHelper::isEnabled('projects', 'publications')
 			? 1 : 0;
 
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.microblog.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.comment.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.owner.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.type.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.todo.php' );
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.microblog.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.comment.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.type.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.todo.php');
 
 		if ($publishing)
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'publication.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'version.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
+			require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'version.php');
 		}
 
-		require_once( JPATH_ROOT . DS . 'components'. DS
-				.'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
 
 		$obj = new Project( $database );
 
@@ -132,9 +122,10 @@ class plgCronProjects extends JPlugin
 	/**
 	 * Auto sync project repositories connected with GDrive
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function googleSync($params=null)
+	public function googleSync(CronModelJob $job)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
@@ -142,27 +133,21 @@ class plgCronProjects extends JPlugin
 		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');
 
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.owner.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-			. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
-		require_once( JPATH_SITE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_publications' . DS . 'tables' . DS . 'attachment.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_publications' . DS . 'tables' . DS . 'publication.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-			.'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS.'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS.'com_projects' . DS . 'tables' . DS . 'project.owner.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'connect.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'html.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'helper.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
+		require_once(JPATH_SITE . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'remote' . DS . 'google.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS.'com_publications' . DS . 'tables' . DS . 'attachment.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS.'com_publications' . DS . 'tables' . DS . 'publication.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS.'com_publications' . DS . 'tables' . DS . 'version.php');
 
 		// Get all projects
-		$obj = new Project( $database );
-		$projects = $obj->getValidProjects(array(), array(), $pconfig, false, 'alias' );
+		$obj = new Project($database);
+		$projects = $obj->getValidProjects(array(), array(), $pconfig, false, 'alias');
 
 		if (!$projects)
 		{
@@ -173,7 +158,7 @@ class plgCronProjects extends JPlugin
 		$webdir = DS . trim($pconfig->get('webpath'), DS);
 
 		// Get plugin
-		JPluginHelper::importPlugin( 'projects', 'files');
+		JPluginHelper::importPlugin('projects', 'files');
 		$dispatcher = JDispatcher::getInstance();
 
 		JRequest::setVar('auto', 1);
@@ -183,9 +168,9 @@ class plgCronProjects extends JPlugin
 			// Load project
 			$project = $obj->getProject($alias, 0);
 
-			$pparams 	= new JParameter( $project->params );
-			$connected 	= $pparams->get('google_dir_id');
-			$token 		= $pparams->get('google_token');
+			$pparams   = new JParameter($project->params);
+			$connected = $pparams->get('google_dir_id');
+			$token     = $pparams->get('google_token');
 
 			if (!$connected || !$token)
 			{
@@ -217,9 +202,10 @@ class plgCronProjects extends JPlugin
 	/**
 	 * Optimize project repos
 	 *
-	 * @return     boolean
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
 	 */
-	public function gitGc($params=null)
+	public function gitGc(CronModelJob $job)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
@@ -227,8 +213,7 @@ class plgCronProjects extends JPlugin
 		$jconfig = JFactory::getConfig();
 		$pconfig = JComponentHelper::getParams('com_projects');
 
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_projects' . DS . 'tables' . DS . 'project.php');
 
 		// Get all projects
 		$obj = new Project( $database );
@@ -242,7 +227,7 @@ class plgCronProjects extends JPlugin
 		$prefix = $pconfig->get('offroot', 0) ? '' : JPATH_ROOT;
 		$webdir = DS . trim($pconfig->get('webpath'), DS);
 
-		include_once( JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php' );
+		include_once(JPATH_ROOT . DS . 'components' . DS .'com_projects' . DS . 'helpers' . DS . 'githelper.php');
 		$git = new ProjectsGitHelper(
 			$pconfig->get('gitpath', '/opt/local/bin/git'),
 			0,
