@@ -77,44 +77,57 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
+		<div class="col width-50 fltlft">
+			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_BLOG_FILTER_SEARCH_PLACEHOLDER'); ?>" />
 
-		<?php if ($this->filters['scope'] == 'group') { ?>
-				<?php
-				$filters = array();
-				$filters['authorized'] = 'admin';
-				$filters['fields'] = array('cn','description','published','gidNumber','type');
-				$filters['type'] = array(1,3);
-				$filters['sortby'] = 'description';
-				$groups = \Hubzero\User\Group::find($filters);
+			<?php if ($this->filters['scope'] == 'group') { ?>
+				<label for="filter_scope_id"><?php echo JText::_('COM_BLOG_SCOPE_GROUP'); ?>:</label>
+				<select name="scope_id" id="filter_scope_id">
+					<?php
+					$groups = \Hubzero\User\Group::find(array(
+						'authorized' => 'admin',
+						'fields'     => array('cn','description','published','gidNumber','type'),
+						'type'       => array(1,3),
+						'sortby'     => 'description'
+					));
 
-				$html  = '<label for="filter_scope_id">' . JText::_('COM_BLOG_SCOPE_GROUP') . ':</label> '."\n";
-				$html .= '<select name="scope_id" id="filter_scope_id">'."\n";
-				$html .= '<option value="0"';
-				if ($this->filters['scope_id'] == 0)
-				{
-					$html .= ' selected="selected"';
-				}
-				$html .= '>'.JText::_('JNONE').'</option>'."\n";
-				if ($groups)
-				{
-					foreach ($groups as $group)
+					$html  = '<option value="0"';
+					if ($this->filters['scope_id'] == 0)
 					{
-						$html .= ' <option value="'.$group->gidNumber.'"';
-						if ($this->filters['scope_id'] == $group->gidNumber)
-						{
-							$html .= ' selected="selected"';
-						}
-						$html .= '>' . $this->escape(stripslashes($group->description)) . '</option>'."\n";
+						$html .= ' selected="selected"';
 					}
-				}
-				$html .= '</select>'."\n";
-				echo $html;
-				?>
-		<?php } ?>
-		<input type="submit" value="<?php echo JText::_('COM_BLOG_GO'); ?>" />
-		<button type="button" onclick="$('#filter_search').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+					$html .= '>' . JText::_('JNONE') . '</option>' . "\n";
+					if ($groups)
+					{
+						foreach ($groups as $group)
+						{
+							$html .= ' <option value="' . $group->gidNumber . '"';
+							if ($this->filters['scope_id'] == $group->gidNumber)
+							{
+								$html .= ' selected="selected"';
+							}
+							$html .= '>' . $this->escape(stripslashes($group->description)) . '</option>' . "\n";
+						}
+					}
+					echo $html;
+					?>
+				</select>
+			<?php } ?>
+
+			<input type="submit" value="<?php echo JText::_('COM_BLOG_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+		</div>
+		<div class="col width-50 fltrt">
+			<label for="filter-state"><?php echo JText::_('COM_COURSES_FIELD_STATE'); ?>:</label>
+			<select name="state" id="filter-state" onchange="this.form.submit();">
+				<option value=""<?php if ($this->filters['state'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_ALL_STATES'); ?></option>
+				<option value="public"<?php if ($this->filters['state'] == 'public') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_PUBLIC'); ?></option>
+				<option value="registered"<?php if ($this->filters['state'] == 'registered') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_REGISTERED'); ?></option>
+				<option value="private"<?php if ($this->filters['state'] == 'private') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_PRIVATE'); ?></option>
+				<option value="trashed"<?php if ($this->filters['state'] == 'trashed') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_TRASHED'); ?></option>
+			</select>
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 
