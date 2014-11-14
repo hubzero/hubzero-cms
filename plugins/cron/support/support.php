@@ -358,7 +358,7 @@ class plgCronSupport extends JPlugin
 		}
 		else
 		{
-			$sql .= " AND owner IS NOT NULL AND owner !='' ORDER BY created";
+			$sql .= " AND owner IS NOT NULL AND owner !='0' ORDER BY created";
 		}
 
 		$database->setQuery($sql);
