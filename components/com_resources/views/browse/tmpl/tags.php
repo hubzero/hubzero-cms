@@ -42,7 +42,7 @@ $this->css()
 	<h2><?php echo $this->title; ?></h2>
 
 	<?php foreach ($this->types as $type) { ?>
-		<?php if ($type->id == $this->filters['type']) { ?>
+		<?php if ($type->id == $this->filters['type'] && $type->contributable) { ?>
 		<div id="content-header-extra">
 			<p>
 				<?php if ($type->id == 7) { ?>
