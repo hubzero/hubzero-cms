@@ -45,11 +45,11 @@ class Migration20141112191247ComCourses extends Base
 				{
 					foreach ($sections as $section)
 					{
-						$query  = "SELECT `id` FROM `#__courses_offering_section_dates`";
+						$query  = "SELECT * FROM `#__courses_offering_section_dates`";
 						$query .= " WHERE `section_id` = " . $this->db->quote($section->id);
 						$query .= " AND `scope` = 'asset' AND `scope_id` = " . $this->db->quote($deployment->asset_id);
 						$this->db->setQuery($query);
-						$found = $this->db->loadResult();
+						$found = $this->db->loadObject();
 
 						if (!$found)
 						{
@@ -61,6 +61,19 @@ class Migration20141112191247ComCourses extends Base
 							$query .= $this->db->quote($deployment->start_time) . ",";
 							$query .= $this->db->quote($deployment->end_time) . ",";
 							$query .= $this->db->quote(\JFactory::getDate()->toSql()) . ")";
+
+							$this->db->setQuery($query);
+							$this->db->query();
+						}
+						else
+						{
+							$start = (isset($found->publish_up) && $found->publish_up != '0000-00-00 00:00:00') ? $found->publish_up : $deployment->start_time;
+							$end   = (isset($found->publish_down) && $found->publish_down != '0000-00-00 00:00:00') ? $found->publish_down : $deployment->end_time;
+							$query  = "UPDATE `#__courses_offering_section_dates` SET ";
+							$query .= "publish_up = " . $this->db->quote($start);
+							$query .= ", ";
+							$query .= "publish_down = " . $this->db->quote($end);
+							$query .= " WHERE `id` = " . $this->db->quote($found->id);
 
 							$this->db->setQuery($query);
 							$this->db->query();
