@@ -1333,6 +1333,7 @@ class CoursesModelOffering extends CoursesModelAbstract
 		//  - Course ID
 		$o_id = $this->get('id');
 		$c_id = $this->get('course_id');
+		$oldOfferingAssets = $this->assets();
 
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
@@ -1396,6 +1397,35 @@ class CoursesModelOffering extends CoursesModelAbstract
 					if (!JFile::copy($src, $dest, JPATH_ROOT))
 					{
 						$this->setError(JText::_('Failed to copy offering logo.'));
+					}
+				}
+			}
+
+			// Copy assets (grab the assets from the original offering)
+			if ($oldOfferingAssets)
+			{
+				foreach ($oldOfferingAssets as $asset)
+				{
+					$oldAssetId = $asset->get('id');
+					if (!$asset->copy())
+					{
+						$this->setError($asset->getError());
+					}
+					else
+					{
+						// Copy asset associations
+						$tbl = new CoursesTableAssetAssociation($this->_db);
+						foreach ($tbl->find(array('scope_id' => $o_id, 'scope' => 'offering', 'asset_id' => $oldAssetId)) as $aa)
+						{
+							$tbl->bind($aa);
+							$tbl->id = 0;
+							$tbl->scope_id = $this->get('id');
+							$tbl->asset_id = $asset->get('id');
+							if (!$tbl->store())
+							{
+								$this->setError($tbl->getError());
+							}
+						}
 					}
 				}
 			}

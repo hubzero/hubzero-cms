@@ -111,7 +111,7 @@ class PdfForm
 	 *
 	 * @return bool
 	 **/
-	public function loadByAssetId($asset_id)
+	public static function loadByAssetId($asset_id)
 	{
 		$dbh = self::getDbh();
 		$dbh->setQuery('SELECT `id` FROM `#__courses_forms` WHERE `asset_id` = ' . $asset_id);
@@ -510,15 +510,9 @@ class PdfForm
 			return $this->title;
 		}
 
-		static $checked;
-
-		if (!$checked)
-		{
-			$checked = true;
-			$dbh = self::getDbh();
-			$dbh->setQuery('SELECT title FROM #__courses_forms WHERE id = '.$this->getId());
-			$this->title = $dbh->loadResult();
-		}
+		$dbh = self::getDbh();
+		$dbh->setQuery('SELECT title FROM #__courses_forms WHERE id = '.$this->getId());
+		$this->title = $dbh->loadResult();
 
 		return $this->title;
 	}
@@ -665,5 +659,67 @@ class PdfForm
 		);
 
 		return $dbh->loadResult();
+	}
+
+	/**
+	 * Copy existing form and data to new form
+	 *
+	 * @return mixed
+	 **/
+	public function copy()
+	{
+		$title     = $this->getTitle();
+		$questions = $this->getPageLayout();
+		$oldId     = $this->getId();
+
+		// Save new
+		$this->id = null;
+		$id = $this->getId();
+		$this->setTitle($title);
+
+		$base = $this->base . $oldId;
+
+		// Copy actual files
+		if (is_dir($base))
+		{
+			// Scan for versions
+			$versions = array();
+			$dirs     = scandir($base);
+			foreach ($dirs as $dir)
+			{
+				if (is_numeric($dir) && is_dir($base . DS . $dir) && $dir != '.' && $dir != '..')
+				{
+					$versions[] = $dir;
+				}
+			}
+
+			if (!empty($versions))
+			{
+				$base .= DS . max($versions);
+			}
+
+			\JFolder::copy($base, $this->base . $id);
+		}
+
+		// Copy questions
+		$this->setPageLayout($questions);
+
+		// Copy deployment (only most recent)
+		try
+		{
+			$dep = PdfFormDeployment::latestFromFormId($oldId);
+			$dep->setId(null);
+			$dep->setFormId($id);
+			$dep->genNewCrumb();
+			$dep->save();
+
+			// Return the deployment crumb
+			return $dep->getCrumb();
+		}
+		catch (\Hubzero\Error\Exception\RuntimeException $e)
+		{
+			// Just return the form id
+			return $id;
+		}
 	}
 }

@@ -306,6 +306,16 @@ class PdfFormDeployment
 	}
 
 	/**
+	 * Load by form id
+	 *
+	 * @return object
+	 **/
+	public static function latestFromFormId($formId, $section_id=null)
+	{
+		return self::find('form_id = ' . (int)$formId . ' ORDER BY `id` DESC');
+	}
+
+	/**
 	 * Load deployment
 	 *
 	 * @return object
@@ -318,8 +328,7 @@ class PdfFormDeployment
 
 		if (!($res = $dbh->loadAssoc()))
 		{
-			JError::raiseError(404, 'no such deployment');
-			return;
+			throw new \Hubzero\Error\Exception\RuntimeException("no such deployment");
 		}
 
 		foreach ($res as $k=>$v)
@@ -382,6 +391,16 @@ class PdfFormDeployment
 	public function setId($id)
 	{
 		$this->id = $id;
+	}
+
+	/**
+	 * Sets the form id
+	 *
+	 * @return void
+	 **/
+	public function setFormId($formId)
+	{
+		$this->formId = $formId;
 	}
 
 	/**
@@ -495,6 +514,16 @@ class PdfFormDeployment
 	}
 
 	/**
+	 * Generates a new form deployment crumb
+	 *
+	 * @return string
+	 **/
+	public function genNewCrumb()
+	{
+		$this->crumb = str_replace(array('/', '+'), array('-', '-'), substr(base64_encode(openssl_random_pseudo_bytes(self::CRUMB_LEN + 1)), 0, self::CRUMB_LEN));
+	}
+
+	/**
 	 * Check if there are errors
 	 *
 	 * @return bool
@@ -586,7 +615,7 @@ class PdfFormDeployment
 			$dep->$key = $data[$key];
 		}
 
-		$dep->crumb = str_replace(array('/', '+'), array('-', '-'), substr(base64_encode(openssl_random_pseudo_bytes(self::CRUMB_LEN + 1)), 0, self::CRUMB_LEN));
+		$dep->genNewCrumb();
 
 		return $dep;
 	}

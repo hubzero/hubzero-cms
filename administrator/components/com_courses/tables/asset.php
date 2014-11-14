@@ -28,6 +28,8 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+use \Hubzero\Console\Event;
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
@@ -170,6 +172,26 @@ class CoursesTableAsset extends JTable
 		}
 
 		return true;
+	}
+
+	/**
+	 * Overload the store function to make sure a path is set
+	 *
+	 * @param   boolean  $updateNulls  True to update fields even if they are null.
+	 * @return  boolean  True on success.
+	 **/
+	public function store($updateNulls = false)
+	{
+		if (!$this->path)
+		{
+			Event::register($this->getTableName() . '.new', function($table)
+			{
+				$table->path = $table->course_id . '/' . $table->id;
+				$table->store();
+			});
+		}
+
+		return parent::store($updateNulls);
 	}
 
 	/**

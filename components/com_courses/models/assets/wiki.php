@@ -122,7 +122,9 @@ class WikiAssetHandler extends ContentAssetHandler
 				}
 
 				// Build the upload path if it doesn't exist
-				$uploadDirectory = JPATH_ROOT . DS . trim($cconfig->get('uploadpath', '/site/courses'), DS) . DS . $this->asset['course_id'] . DS . $this->assoc['asset_id'] . DS;
+				require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'asset.php';
+				$asset = new CoursesModelAsset($this->assoc['asset_id']);
+				$uploadDirectory = JPATH_ROOT . DS . $asset->path($this->asset['course_id']);
 
 				// Make sure upload directory exists and is writable
 				if (!is_dir($uploadDirectory))

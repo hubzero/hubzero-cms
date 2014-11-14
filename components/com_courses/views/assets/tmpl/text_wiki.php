@@ -31,12 +31,14 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$asset = new CoursesModelAsset($this->asset->id);
+
 $config = array(
 	'option'   => 'com_courses',
 	'scope'    => $this->course->get('alias') . DS . $this->course->offering()->alias() . DS . 'asset',
 	'pagename' => $this->asset->id,
 	'pageid'   => '',
-	'filepath' => DS . 'site' . DS . 'courses' . DS . $this->course->get('id') . DS . $this->asset->id,
+	'filepath' => $asset->path($this->course->get('id')),
 	'domain'   => $this->course->get('alias')
 );
 

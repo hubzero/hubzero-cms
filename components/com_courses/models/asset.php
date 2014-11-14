@@ -159,7 +159,14 @@ class CoursesModelAsset extends CoursesModelAbstract
 		}
 
 		// /site/courses/{course ID}/{asset ID}/{asset file}
-		$path = DS . trim($this->_params->get('uploadpath', '/site/courses'), DS) . DS . $course . DS . $this->get('id');
+		$assetPath = $this->get('path');
+
+		if (DS != '/')
+		{
+			$assetPath = str_replace('/', DS, $assetPath);
+		}
+
+		$path = DS . trim($this->_params->get('uploadpath', '/site/courses'), DS) . DS . $assetPath;
 		if ($withUrl)
 		{
 			$path .= DS . ltrim($this->get('url'), DS);
@@ -393,7 +400,7 @@ class CoursesModelAsset extends CoursesModelAbstract
 
 		// Get the configured upload path
 		$config = JComponentHelper::getParams('com_courses');
-		$base_path = DS . trim($config->get('filepath', '/site/courses'), DS) . DS . $course->get('id') . DS . $this->get('id');
+		$base_path = $this->path($course->get('id'));
 
 		// Does the path start with a slash?
 		$filename = DS . ltrim($filename, DS);
@@ -497,5 +504,46 @@ class CoursesModelAsset extends CoursesModelAbstract
 		}
 
 		return $this->units;
+	}
+
+	/**
+	 * Copy an entry and associated data
+	 *
+	 * @param  bool $forms whether or not to duplicate forms as well
+	 * @return bool
+	 */
+	public function copy($forms=true)
+	{
+		// Keep track of the original id
+		$originalId = $this->get('id');
+
+		// Reset the ID. This will force store() to create a new record.
+		$this->set('id', 0);
+
+		if (!$this->store())
+		{
+			return false;
+		}
+
+		// If this is a form...
+		if ($forms && $this->get('type') == 'form')
+		{
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'form.php';
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formDeployment.php';
+			require_once JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'formRespondent.php';
+
+			// Copy the form as well...look up by asset_id
+			if ($form = PdfForm::loadByAssetId($originalId))
+			{
+				// This will either return the form id or the deployment crumb
+				$identifier = $form->copy();
+				$form->setAssetId($this->get('id'));
+
+				$this->set('url', $identifier);
+				$this->store();
+			}
+		}
+
+		return true;
 	}
 }

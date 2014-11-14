@@ -486,11 +486,9 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 	 */
 	public function copy($unit_id=null, $deep=true)
 	{
-		// Get some old info we may need
-		//  - Asset group ID
-		//  - Unit ID
-		$a_id = $this->get('id');
-		$u_id = $this->get('unit_id');
+		// Keep a copy of the original asset group for later
+		$oldAssetGroupId     = $this->get('id');
+		$oldAssetGroupAssets = $this->assets();
 
 		// Reset the ID. This will force store() to create a new record.
 		$this->set('id', 0);
@@ -513,23 +511,37 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 
 		if ($deep)
 		{
-			// Copy assets
-			$tbl = new CoursesTableAssetAssociation($this->_db);
-			//foreach ($this->assets(array('asset_scope_id' => $u_id)) as $asset)
-			foreach ($tbl->find(array('scope_id' => $a_id, 'scope' => 'asset_group')) as $asset)
+			// Copy assets (grab the assets from the original asset group)
+			if ($oldAssetGroupAssets)
 			{
-				$tbl->bind($asset);
-				$tbl->id = 0;
-				$tbl->scope_id = $this->get('id');
-				//if (!$asset->copy($this->get('id')))
-				if (!$tbl->store())
+				foreach ($oldAssetGroupAssets as $asset)
 				{
-					$this->setError($tbl->getError());
+					$oldAssetId = $asset->get('id');
+					if (!$asset->copy())
+					{
+						$this->setError($asset->getError());
+					}
+					else
+					{
+						// Copy asset associations
+						$tbl = new CoursesTableAssetAssociation($this->_db);
+						foreach ($tbl->find(array('scope_id' => $oldAssetGroupId, 'scope' => 'asset_group', 'asset_id' => $oldAssetId)) as $aa)
+						{
+							$tbl->bind($aa);
+							$tbl->id = 0;
+							$tbl->scope_id = $this->get('id');
+							$tbl->asset_id = $asset->get('id');
+							if (!$tbl->store())
+							{
+								$this->setError($tbl->getError());
+							}
+						}
+					}
 				}
 			}
 
-			// Copy asset groups
-			if ($children = $this->_tbl->find(array('w' => array('parent' => $a_id))))
+			// Copy asset groups (child asset groups)
+			if ($children = $this->_tbl->find(array('w' => array('parent' => $oldAssetGroupId))))
 			{
 				$found = array();
 
@@ -550,13 +562,6 @@ class CoursesModelAssetgroup extends CoursesModelAbstract
 					}
 				}
 			}
-			/*foreach ($this->children(null, true, array('parent' => $a_id)) as $assetgroup)
-			{
-				if (!$assetgroup->copy($unit_id, $deep))
-				{
-					$this->setError($assetgroup->getError());
-				}
-			}*/
 		}
 
 		return true;
