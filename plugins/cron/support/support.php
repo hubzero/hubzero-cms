@@ -183,11 +183,11 @@ class plgCronSupport extends JPlugin
 			{
 				if ($owned == 1)
 				{
-					$where[] = "(t.`owner` IS NULL OR `owner`='')";
+					$where[] = "(t.`owner` IS NULL OR `owner`='0')";
 				}
 				else if ($owned == 2)
 				{
-					$where[] = "(t.`owner` IS NOT NULL AND `owner` !='')";
+					$where[] = "(t.`owner` IS NOT NULL AND `owner` !='0')";
 				}
 			}
 
@@ -352,7 +352,7 @@ class plgCronSupport extends JPlugin
 		}
 		else
 		{
-			$sql .= " AND owner IS NOT NULL AND owner !='' ORDER BY created";
+			$sql .= " AND owner IS NOT NULL AND owner !='0' ORDER BY created";
 		}
 
 		$database->setQuery($sql);
@@ -486,7 +486,7 @@ class plgCronSupport extends JPlugin
 		$lang->load('com_support');
 		$lang->load('com_support', JPATH_BASE);
 
-		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`username`=t.`owner`";
+		$sql = "SELECT t.*, o.`name` AS owner_name FROM `#__support_tickets` AS t LEFT JOIN `#__users` AS o ON o.`id`=t.`owner`";
 
 		$where = array();
 
@@ -551,11 +551,11 @@ class plgCronSupport extends JPlugin
 			{
 				if ($owned == 1)
 				{
-					$where[] = "(t.`owner` IS NULL OR t.`owner`='')";
+					$where[] = "(t.`owner` IS NULL OR t.`owner`='0')";
 				}
 				else if ($owned == 2)
 				{
-					$where[] = "(t.`owner` IS NOT NULL AND t.`owner` !='')";
+					$where[] = "(t.`owner` IS NOT NULL AND t.`owner` !='0')";
 				}
 			}
 
@@ -693,7 +693,7 @@ class plgCronSupport extends JPlugin
 				}
 			}
 
-			if ($created = $params->get('support_ticketpending_activity', '--'))
+			if ($created = $params->get('support_ticketlist_activity', '--'))
 			{
 				$op = '';
 				switch ($created)
