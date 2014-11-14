@@ -67,13 +67,16 @@ class Event
 	 **/
 	public static function fire($name)
 	{
+		$args = func_get_args();
+		unset($args[0]);
+
 		if (isset(self::$events[$name]))
 		{
 			foreach (self::$events[$name] as $event)
 			{
 				if (is_callable($event))
 				{
-					$event();
+					call_user_func_array($event, $args);
 				}
 			}
 		}
