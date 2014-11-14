@@ -157,25 +157,25 @@ class plgPublicationsShare extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'twitter':
-				$link = 'http://twitter.com/home?status=' . urlencode(JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',
+				$link = 'http://twitter.com/home?status=' . JText::sprintf('PLG_PUBLICATION_SHARE_VIEWING',
 						$jconfig->getValue('config.sitename'),
-						$title).' '.$url);
+						$title . ' ' . $url);
 				break;
 
 			case 'google':
-				$link = 'https://plus.google.com/share?url='.$url;
+				$link = 'https://plus.google.com/share?url=' . $url;
 				break;
 
 			case 'delicious':
-				$link = 'http://del.icio.us/post?url='.$url.'&title=' . $title;
+				$link = 'http://del.icio.us/post?url=' . $url . '&title=' . $title;
 				break;
 
 			case 'reddit':
-				$link = 'http://reddit.com/submit?url='.$url.'&title=' . $title;
+				$link = 'http://reddit.com/submit?url=' . $url . '&title=' . $title;
 				break;
 
 			case 'linkedin':
-				$link = 'https://www.linkedin.com/shareArticle?mini=true&url='.$url.'&title='
+				$link = 'https://www.linkedin.com/shareArticle?mini=true&url=' . $url . '&title='
 				. $title . '&summary=' . $description;
 				break;
 
