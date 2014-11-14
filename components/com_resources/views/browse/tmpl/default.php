@@ -35,7 +35,8 @@ defined('_JEXEC') or die('Restricted access');
 $database = JFactory::getDBO();
 
 $sortbys = array();
-if ($this->config->get('show_ranking')) {
+if ($this->config->get('show_ranking'))
+{
 	$sortbys['ranking'] = JText::_('COM_RESOURCES_RANKING');
 }
 $sortbys['date'] = JText::_('COM_RESOURCES_DATE_PUBLISHED');
@@ -51,21 +52,21 @@ $this->css()
 	<div id="content-header-extra">
 		<p>
 			<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
-				<?php echo JText::_('Submit a resource'); ?>
+				<?php echo JText::_('COM_RESOURCES_SUBMIT_A_RESOURCE'); ?>
 			</a>
 		</p>
 	</div><!-- / #content-header -->
 </header><!-- / #content-header -->
 
-<form action="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse'); ?>" id="resourcesform" method="get">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get">
 	<section class="main section">
 		<div class="subject">
 			<div class="container data-entry">
-				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('Search'); ?>" />
+				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_RESOURCES_SEARCH'); ?>" />
 				<fieldset class="entry-search">
-					<legend><?php echo JText::_('Search for Courses'); ?></legend>
-					<label for="entry-search-field"><?php echo JText::_('Enter keyword or phrase'); ?></label>
-					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Enter keyword or phrase'); ?>" />
+					<legend><?php echo JText::_('COM_RESOURCES_FIND_RESOURCE'); ?></legend>
+					<label for="entry-search-field"><?php echo JText::_('COM_RESOURCES_SEARCH_LABEL'); ?></label>
+					<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_RESOURCES_SEARCH_LABEL'); ?>" />
 					<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
 					<input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
 				</fieldset>
@@ -86,7 +87,7 @@ $this->css()
 							<li>
 								<a href="<?php echo JRoute::_($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
 									<?php echo $this->escape(stripslashes($tag)); ?>
-									<span class="remove">x</a>
+									<span class="remove" title="<?php echo JText::_('COM_RESOURCES_REMOVE_TAG'); ?>">x</a>
 								</a>
 							</li>
 							<?php
@@ -99,7 +100,7 @@ $this->css()
 
 			<?php if (isset($this->filters['tag_ignored']) && count($this->filters['tag_ignored']) > 0) { ?>
 				<div class="warning">
-					<p><?php echo JText::_('Searching only allows up to 5 tags. The following tags were ignored:'); ?></p>
+					<p><?php echo JText::_('COM_RESOURCES_SEARCH_TAG_LIMIT_REACHED'); ?></p>
 					<ol class="tags">
 					<?php
 					$url  = 'index.php?option=' . $this->option . '&task=browse';
@@ -129,10 +130,16 @@ $this->css()
 				$qs .= ($this->filters['tag']    ? '&tag=' . $this->escape($this->filters['tag'])       : '');
 				?>
 				<ul class="entries-menu order-options">
-					<li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="Sort by title">&darr; Title</a></li>
-					<li><a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=date' . $qs); ?>" title="Sort by date published">&darr; Published</a></li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_TITLE'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_TITLE'); ?></a>
+					</li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=date' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
+					</li>
 					<?php if ($this->config->get('show_ranking')) { ?>
-					<li><a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=ranking' . $qs); ?>" title="Sort by date published">&darr; Ranking</a></li>
+					<li>
+						<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_RANKING'); ?></a>
+					</li>
 					<?php } ?>
 				</ul>
 
@@ -140,7 +147,7 @@ $this->css()
 					<ul class="entries-menu filter-options">
 						<li>
 							<select name="type" id="filter-type">
-								<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('All Types'); ?></a>
+								<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_ALL_TYPES'); ?></a>
 								<?php foreach ($this->types as $item) { ?>
 									<?php
 									if ($item->id == 7 && !JComponentHelper::isEnabled('com_tools', true))
@@ -182,17 +189,16 @@ $this->css()
 		</div><!-- / .subject -->
 		<aside class="aside">
 			<div class="container">
-				<h3>Finding a resource</h3>
-				<p>Use the sorting or filtering options to sort results and/or narrow down the list of resources.</p>
-				<p>Use the 'Search' to find specific resources by title or description.</p>
+				<h3><?php echo JText::_('COM_RESOURCES_FIND_RESOURCE'); ?></h3>
+				<p><?php echo JText::_('COM_RESOURCES_FIND_RESOURCE_DETAILS'); ?></p>
 			</div><!-- / .container -->
 			<div class="container">
-				<h3>Popular Tags</h3>
+				<h3><?php echo JText::_('COM_RESOURCES_POPULAR_TAGS'); ?></h3>
 				<?php
 				$rt = new ResourcesTags(0);
 				echo $rt->getTopTagCloud(20, $this->filters['tag']);
 				?>
-				<p>Click a tag to see only resources with that tag.</p>
+				<p><?php echo JText::_('COM_RESOURCES_POPULAR_TAGS_HINT'); ?></p>
 			</div>
 		</aside><!-- / .aside -->
 	</section><!-- / .main section -->

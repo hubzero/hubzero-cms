@@ -167,13 +167,13 @@ $juser = JFactory::getUser();
 						?>
 						<p>
 						<?php if ($audio) { ?>
-							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=audio'; ?>"><?php echo JText::_('Audio podcast'); ?></a><br />
+							<a class="feed" id="resource-audio-feed" href="<?php echo $live_site .'/resources/' . $this->model->resource->id . '/feed.rss?format=audio'; ?>"><?php echo JText::_('COM_RESOURCES_AUDIO_PODCAST'); ?></a><br />
 						<?php } ?>
 						<?php if ($video) { ?>
-							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/'.$this->model->resource->id.'/feed.rss?format=video'; ?>"><?php echo JText::_('Video podcast'); ?></a><br />
+							<a class="feed" id="resource-video-feed" href="<?php echo $live_site .'/resources/' . $this->model->resource->id . '/feed.rss?format=video'; ?>"><?php echo JText::_('COM_RESOURCES_VIDEO_PODCAST'); ?></a><br />
 						<?php } ?>
 						<?php if ($notes) { ?>
-							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/'.$this->model->resource->id.'/feed.rss?format=slides'; ?>"><?php echo JText::_('Slides/Notes podcast'); ?></a>
+							<a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/' . $this->model->resource->id . '/feed.rss?format=slides'; ?>"><?php echo JText::_('COM_RESOURCES_SLIDES_PODCAST'); ?></a>
 						<?php } ?>
 						</p>
 						<?php
@@ -249,10 +249,10 @@ $juser = JFactory::getUser();
 	{
 		// Build the results
 		$sortbys = array(
-			'date'     => JText::_('Date'),
-			'title'    => JText::_('Title'),
-			'author'   => JText::_('Author'),
-			'ordering' => JText::_('Ordering')
+			'date'     => JText::_('COM_RESOURCES_DATE'),
+			'title'    => JText::_('COM_RESOURCES_TITLE'),
+			'author'   => JText::_('COM_RESOURCES_AUTHOR'),
+			'ordering' => JText::_('COM_RESOURCES_ORDERING')
 		);
 		if ($this->model->params->get('show_ranking'))
 		{
@@ -281,7 +281,7 @@ $juser = JFactory::getUser();
 			<section class="section">
 				<div class="subject">
 					<h3>
-						<?php echo JText::_('In This Series'); ?>
+						<?php echo JText::_('COM_RESOURCES_IN_THIS_SERIES'); ?>
 					</h3>
 
 					<?php

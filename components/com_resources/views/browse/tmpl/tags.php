@@ -42,29 +42,29 @@ $this->css()
 	<h2><?php echo $this->title; ?></h2>
 
 	<?php foreach ($this->types as $type) { ?>
-		<?php if ($type->id == $this->filters['type']) { ?>
+		<?php if ($type->id == $this->filters['type'] && $type->contributable) { ?>
 		<div id="content-header-extra">
 			<p>
 				<?php if ($type->id == 7) { ?>
-				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=com_tools&task=create'); ?>">
-					<?php
-					$name = $type->type;
-					if (substr($type->type, -1) == 's')
-					{
-						$name = substr($type->type, 0, -1);
-					}
-					echo JText::sprintf('Start a new %s', $this->escape(stripslashes($name))); ?>
-				</a>
+					<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=com_tools&task=create'); ?>">
+						<?php
+						$name = $type->type;
+						if (substr($type->type, -1) == 's')
+						{
+							$name = substr($type->type, 0, -1);
+						}
+						echo JText::sprintf('COM_RESOURCES_START_NEW_TYPE', $this->escape(stripslashes($name))); ?>
+					</a>
 				<?php } else { ?>
-				<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=1&type=' . $type->id); ?>">
-					<?php
-					$name = $type->type;
-					if (substr($type->type, -1) == 's')
-					{
-						$name = substr($type->type, 0, -1);
-					}
-					echo JText::sprintf('Start a new %s', $this->escape(stripslashes($name))); ?>
-				</a>
+					<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=draft&step=1&type=' . $type->id); ?>">
+						<?php
+						$name = $type->type;
+						if (substr($type->type, -1) == 's')
+						{
+							$name = substr($type->type, 0, -1);
+						}
+						echo JText::sprintf('COM_RESOURCES_START_NEW_TYPE', $this->escape(stripslashes($name))); ?>
+					</a>
 				<?php } ?>
 			</p>
 		</div>
@@ -109,36 +109,39 @@ $this->css()
 				</ul>
 			</div><!-- / #level-3 -->
 
-			<input type="hidden" name="pretype" id="pretype" value="<?php echo $this->escape($this->filters['type']); ?>" />
 			<input type="hidden" name="id" id="id" value="" />
+			<input type="hidden" name="pretype" id="pretype" value="<?php echo $this->escape($this->filters['type']); ?>" />
 			<input type="hidden" name="preinput" id="preinput" value="<?php echo $this->escape($this->tag); ?>" />
 			<input type="hidden" name="preinput2" id="preinput2" value="<?php echo $this->escape($this->tag2); ?>" />
 			<div class="clear"></div>
 		</div><!-- / #tagbrowser -->
 
-		<p id="viewalltools"><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&type='.$this->filters['type']); ?>"><?php echo JText::_('COM_RESOURCES_VIEW_MORE'); ?></a></p>
+		<p id="viewalltools"><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $this->filters['type']); ?>"><?php echo JText::_('COM_RESOURCES_VIEW_MORE'); ?></a></p>
 		<div class="clear"></div>
 
 		<?php
-		$database = JFactory::getDBO();
+		if ($this->supportedtag)
+		{
+			$database = JFactory::getDBO();
 
-		if ($this->supportedtag) {
-			include_once(JPATH_ROOT.DS.'components'.DS.'com_tags'.DS.'helpers'.DS.'handler.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
-			$tag = new TagsTableTag( $database );
+			$tag = new TagsTableTag($database);
 			$tag->loadTag($this->supportedtag);
 
-			$sl = $this->config->get('supportedlink');
-			if ($sl) {
+			if ($sl = $this->config->get('supportedlink'))
+			{
 				$link = $sl;
-			} else {
-				$link = JRoute::_('index.php?option=com_tags&tag='.$tag->tag);
 			}
-		?>
-		<p class="supported">
-			<?php echo JText::_('COM_RESOURCES_WHATS_THIS'); ?> <a href="<?php echo $link; ?>"><?php echo JText::sprintf('COM_RESOURCES_ABOUT_TAG', $tag->raw_tag); ?></a>
-		</p>
-		<?php
+			else
+			{
+				$link = JRoute::_('index.php?option=com_tags&tag=' . $tag->tag);
+			}
+			?>
+			<p class="supported">
+				<?php echo JText::_('COM_RESOURCES_WHATS_THIS'); ?> <a href="<?php echo $link; ?>"><?php echo JText::sprintf('COM_RESOURCES_ABOUT_TAG', $tag->raw_tag); ?></a>
+			</p>
+			<?php
 		}
 		?>
 	</section>

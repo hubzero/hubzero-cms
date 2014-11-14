@@ -40,7 +40,7 @@ $this->css('introduction.css', 'system')
 	<div id="content-header-extra">
 		<p>
 			<a class="icon-add btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=new'); ?>">
-				<?php echo JText::_('Submit a resource'); ?>
+				<?php echo JText::_('COM_RESOURCES_SUBMIT_A_RESOURCE'); ?>
 			</a>
 		</p>
 	</div><!-- / #content-header -->
@@ -51,19 +51,19 @@ $this->css('introduction.css', 'system')
 		<div class="col span9">
 			<div class="grid">
 				<div class="col span6">
-					<h3><?php echo JText::_('What are resources?'); ?></h3>
-					<p><?php echo JText::_('Resources are user-submitted pieces of content that range from video presentations to publications to simulation tools.'); ?></p>
+					<h3><?php echo JText::_('COM_RESOURCES_WHAT_ARE_RESOURCES'); ?></h3>
+					<p><?php echo JText::_('COM_RESOURCES_WHAT_ARE_RESOURCES_EXPLANATION'); ?></p>
 				</div>
 				<div class="col span6 omega">
-					<h3><?php echo JText::_('Who can submit a resource?'); ?></h3>
-					<p><?php echo JText::_('Anyone can submit a resource! Resources must be relevant to the community and may undergo a short approval process to ensure all appropriate files and information are included.'); ?></p>
+					<h3><?php echo JText::_('COM_RESOURCES_WHO_CAN_SUBMIT'); ?></h3>
+					<p><?php echo JText::_('COM_RESOURCES_WHO_CAN_SUBMIT_EXPLANATION'); ?></p>
 				</div>
 			</div>
 		</div>
 		<div class="col span3 omega">
 			<p>
 				<a class="popup" href="<?php echo JRoute::_('index.php?option=com_help&component=resources&page=index'); ?>">
-					<?php echo JText::_('Need Help?'); ?>
+					<?php echo JText::_('COM_RESOURCES_NEED_HELP'); ?>
 				</a>
 			</p>
 		</div>
@@ -74,7 +74,7 @@ $this->css('introduction.css', 'system')
 
 	<div class="grid">
 		<div class="col span3">
-			<h2><?php echo JText::_('Find a resource'); ?></h2>
+			<h2><?php echo JText::_('COM_RESOURCES_FIND_RESOURCE'); ?></h2>
 		</div><!-- / .col span3 -->
 		<div class="col span9 omega">
 			<div class="grid">
@@ -82,18 +82,18 @@ $this->css('introduction.css', 'system')
 					<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get" class="search">
 						<fieldset>
 							<p>
-								<label for="rsearch"><?php echo JText::_('Keyword or phrase:'); ?></label>
+								<label for="rsearch"><?php echo JText::_('COM_RESOURCES_SEARCH_LABEL'); ?></label>
 								<input type="text" name="terms" id="rsearch" value="" />
 								<input type="hidden" name="domains[]" value="resources" />
 								<input type="hidden" name="section" value="resources" />
-								<input type="submit" value="<?php echo JText::_('Search'); ?>" />
+								<input type="submit" value="<?php echo JText::_('COM_RESOURCES_SEARCH'); ?>" />
 							</p>
 						</fieldset>
 					</form>
 				</div><!-- / .col span-half -->
 				<div class="col span-half omega">
 					<div class="browse">
-						<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('Browse the list of available resources'); ?></a></p>
+						<p><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo JText::_('COM_RESOURCES_BROWSE_LIST'); ?></a></p>
 					</div><!-- / .browse -->
 				</div><!-- / .col span-half -->
 			</div><!-- / .grid -->
@@ -105,7 +105,7 @@ if ($this->categories) {
 ?>
 	<div class="grid">
 		<div class="col span3">
-			<h2><?php echo JText::_('Categories'); ?></h2>
+			<h2><?php echo JText::_('COM_RESOURCES_CATEGORIES'); ?></h2>
 		</div><!-- / .col span3 -->
 		<div class="col span9 omega">
 			<div class="grid">
@@ -149,8 +149,8 @@ if ($this->categories) {
 							<?php echo $this->escape(strip_tags(stripslashes($category->description))); ?>
 						</p>
 						<p>
-							<a class="read-more" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>" title="<?php echo JText::sprintf('Browse %s', $this->escape(stripslashes($category->type))); ?>">
-								<?php echo JText::sprintf('Browse <span>%s </span>&rsaquo;', $this->escape(stripslashes($category->type))); ?>
+							<a class="read-more" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
+								<?php echo JText::sprintf('COM_RESOURCES_BROWSE_CATEGORY', $this->escape(stripslashes($category->type))); ?>
 							</a>
 						</p>
 					</div>
