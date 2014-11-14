@@ -142,12 +142,12 @@ class Application
 		$shortName = strtolower(with(new \ReflectionClass($command))->getShortName());
 
 		// Fire default before event
-		Event::fire($shortName . '.' . 'before' . ucfirst($task), $this->output);
+		Event::fire($shortName . '.' . 'before' . ucfirst($task));
 
 		$command->{$task}();
 
 		// Fire default after event
-		Event::fire($shortName . '.' . 'after' . ucfirst($task), $this->output);
+		Event::fire($shortName . '.' . 'after' . ucfirst($task));
 
 		$this->output->render();
 	}

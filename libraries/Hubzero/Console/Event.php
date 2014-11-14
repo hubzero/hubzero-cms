@@ -50,6 +50,8 @@ class Event
 	/**
 	 * Registers an event callback
 	 *
+	 * @param  string $name the name of the hook to register the closure under
+	 * @param  closure $callback the callback to fire when that hook is poked
 	 * @return void
 	 **/
 	public static function register($name, \Closure $callback)
@@ -60,9 +62,10 @@ class Event
 	/**
 	 * Fires registered event callbacks for a given event name
 	 *
+	 * @param  string $name the event hook to fire
 	 * @return void
 	 **/
-	public static function fire($name, Output $output)
+	public static function fire($name)
 	{
 		if (isset(self::$events[$name]))
 		{
