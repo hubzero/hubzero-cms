@@ -847,13 +847,31 @@ class JDatabasePDO extends JDatabase
 		return $result;
 	}
 
+	/**
+	 * Get the details list of keys for a table.
+	 *
+	 * @param   string  $table  The name of the table.
+	 *
+	 * @return  array  An array of the column specification for the table.
+	 *
+	 * @since   11.1
+	 * @throws  JDatabaseException
+	 */
+	public function getTableKeys($table)
+	{
+		// Get the details columns information.
+		$this->setQuery('SHOW KEYS FROM ' . $this->quoteName($table));
+		$keys = $this->loadObjectList();
+
+		return $keys;
+	}
+
 	public function dropTable($table, $ifExists = true) {}
 	public function fetchArray($cursor = null) {}
 	public function fetchAssoc($cursor = null) {}
 	public function fetchObject($cursor = null, $class = 'stdClass') {}
 	public function freeResult($cursor = null) {}
 	public function getQuery($new = false) {}
-	public function getTableKeys($tables) {}
 	public function lockTable($tableName) {}
 	public function renameTable($oldTable, $newTable, $backup = null, $prefix = null) {}
 	public function transactionCommit() {}
