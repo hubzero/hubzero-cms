@@ -13,6 +13,10 @@ jQuery(document).ready(function(jq){
 	var $ = jq
 		attach = $("#ajax-uploader");
 
+	$("#ajax-uploader-list").sortable({
+		handle: '.asset-handle'
+	});
+
 	if (attach.length) {
 		var linkr = $('#link-adder');
 

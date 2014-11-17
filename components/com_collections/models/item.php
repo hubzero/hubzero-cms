@@ -306,12 +306,13 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Get a count or a list of the assets on this entry
 	 *
-	 * @param   array $filters Filters to apply to data fetch
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Reset internal cahce?
 	 * @return  mixed
 	 */
-	public function assets($filters=array())
+	public function assets($filters=array(), $reset = false)
 	{
-		if (!isset($this->_assets) || !($this->_assets instanceof \Hubzero\Base\ItemList))
+		if (!($this->_assets instanceof \Hubzero\Base\ItemList) || $reset)
 		{
 			$tbl = new CollectionsTableAsset($this->_db);
 
@@ -320,7 +321,7 @@ class CollectionsModelItem extends CollectionsModelAbstract
 				$filters['item_id'] = $this->exists() ? $this->get('id') : 0;
 			}
 
-			if (($results = $tbl->getRecords($filters)))
+			if ($results = $tbl->getRecords($filters))
 			{
 				foreach ($results as $key => $result)
 				{

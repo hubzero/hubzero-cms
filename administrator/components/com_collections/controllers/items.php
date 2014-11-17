@@ -132,6 +132,12 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 			$this->view->row = new CollectionsModelItem($id);
 		}
 
+		if (!$this->view->row->exists())
+		{
+			$this->view->row->set('created_by', $this->juser->get('id'));
+			$this->view->row->set('created', JFactory::getDate()->toSql());
+		}
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{

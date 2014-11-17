@@ -66,10 +66,8 @@ function submitbutton(pressbutton)
 	}
 
 	// do field validation
-	if ($('#field-item_id').val() == '') {
-		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_ITEM_ID'); ?>');
-	} else if ($('#field-collection_id').val() == '') {
-		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_COLLECTION_ID'); ?>');
+	if ($('#field-type').val() == '') {
+		alert('<?php echo JText::_('COM_COLLECTIONS_ERROR_MISSING_TYPE'); ?>');
 	} else {
 		<?php echo JFactory::getEditor()->save('text'); ?>
 
@@ -87,7 +85,7 @@ function submitbutton(pressbutton)
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-title"><?php echo JText::_('COM_COLLECTIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
+				<label for="field-title"><?php echo JText::_('COM_COLLECTIONS_FIELD_TITLE'); ?>:</label><br />
 				<input type="text" name="fields[title]" id="field-title" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
 			</div>
 
@@ -109,11 +107,6 @@ function submitbutton(pressbutton)
 		</fieldset>
 
 		<fieldset class="adminform">
-			<?php /*if (!$this->row->get('id')) { ?>
-				<p><?php echo JText::_('COM_COLLECTIONS_UPLOAD_ADDED_LATER'); ?></p>
-			<?php } else { ?>
-				<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=media&task=files&tmpl=component&listdir=' . $dir); ?>"></iframe>
-			<?php }*/ ?>
 			<div class="input-wrap">
 				<div class="asset-uploader">
 					<div class="col width-50 fltlft">
@@ -139,33 +132,20 @@ function submitbutton(pressbutton)
 
 				<div id="ajax-uploader-list">
 					<?php
-					$assets = $this->row->assets();
+					$assets = $this->row->assets(array(), true);
 					if ($assets->total() > 0)
 					{
 						$i = 0;
 						foreach ($assets as $asset)
 						{
-							?>
-							<p class="item-asset">
-								<span class="asset-handle">
-								</span>
-								<span class="asset-file">
-									<?php if ($asset->get('type') == 'link') { ?>
-										<input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
-									<?php } else { ?>
-										<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
-										<input type="hidden" name="assets[<?php echo $i; ?>][filename]" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" />
-									<?php } ?>
-								</span>
-								<span class="asset-description">
-									<input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $this->escape(stripslashes($asset->get('type'))); ?>" />
-									<input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $this->escape($asset->get('id')); ?>" />
-									<a class="delete" data-id="<?php echo $this->escape($asset->get('id')); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=media&no_html=1&remove=' . $asset->get('id')); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
-										<?php echo JText::_('JACTION_DELETE'); ?>
-									</a>
-								</span>
-							</p>
-							<?php
+							$this->view('_asset', 'media')
+							     ->set('i', $i)
+							     ->set('option', $this->option)
+							     ->set('controller', $this->controller)
+							     ->set('asset', $asset)
+							     ->set('no_html', 1)
+							     ->display();
+
 							$i++;
 						}
 					}
@@ -188,8 +168,8 @@ function submitbutton(pressbutton)
 				<tr>
 					<th><?php echo JText::_('COM_COLLECTIONS_FIELD_TYPE'); ?>:</th>
 					<td>
-						<?php echo $this->row->get('type'); ?>
-						<input type="hidden" name="fields[type]" id="field-type" value="<?php echo $this->escape($this->row->get('type')); ?>" />
+						<?php echo $this->row->get('type', 'file'); ?>
+						<input type="hidden" name="fields[type]" id="field-type" value="<?php echo $this->escape($this->row->get('type', 'file')); ?>" />
 					</td>
 				</tr>
 				<?php if ($object_id = $this->row->get('object_id')) { ?>
