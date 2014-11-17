@@ -177,6 +177,14 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		// Add some data
+		if ($files  = JRequest::getVar('fls', '', 'files', 'array'))
+		{
+			$row->set('_files', $files);
+		}
+		$row->set('_assets', JRequest::getVar('assets', null, 'post'));
+		$row->set('_tags', trim(JRequest::getVar('tags', '')));
+
 		// Store new content
 		if (!$row->store(true))
 		{
@@ -249,4 +257,3 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 		);
 	}
 }
-

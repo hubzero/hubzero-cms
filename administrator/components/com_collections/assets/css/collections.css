@@ -1,0 +1,192 @@
+/**
+ * @package     hubzero-cms
+ * @file        plugins/members/collections/collections.css
+ * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	Members Collections plugin CSS
+	-- -- -- -- -- -- --
+
+*/
+
+/* Forms */
+	#item-form .asset-uploader {
+		padding: 1em 0;
+	}
+	#item-form .item-asset {
+		background: #f7f7f7;
+		border-radius: 0.25em;
+		position: relative;
+		margin: 0 0 0.5em 0;
+		padding: 1em;
+	}
+	#item-form .item-asset .asset-file {
+		margin-right: 4em;
+		display: inline-block;
+		width: 80%;
+	}
+	#item-form .item-asset .asset-handle {
+		margin-right: 1em;
+		display: inline-block;
+		width: 16px;
+		height: 16px;
+		position: relative;
+	}
+	#item-form .item-asset .asset-handle:after {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		position: absolute;
+		top: 0.2em;
+		left: 0;
+		content: "\f0dc";
+		font-family: "Fontcons";
+		font-size: 16px;
+		line-height: 1;
+		color: #ccc;
+	}
+	#item-form .item-asset:hover .asset-handle,
+	#item-form .item-asset:hover .asset-handle:after,
+	#item-form .item-asset .asset-handle:hover:after,
+	#item-form .item-asset .asset-handle:after:hover {
+		cursor: move;
+		color: #333;
+	}
+	#item-form .item-asset span.asset-description {
+		position: absolute;
+		right: 1em;
+		top: 25%;
+		font-size: 90%;
+	}
+	#item-form .item-asset .delete {
+		font-size: 1.7em;
+		display: block;
+		overflow: hidden;
+		width: 1em;
+		height: 1em;
+		border: none;
+	}
+	#item-form .item-asset .delete:before {
+		margin-right: 1em;
+		content: "\f014";
+		font-family: "Fontcons";
+	}
+	#item-form .file-add {
+		margin: 1em 0 2em 0;
+	}
+	#item-form .file-add a {
+		float: right;
+	}
+	#item-form .file-add:after {
+		content: " ";
+		display: block;
+		clear: right;
+		visibility: hidden;
+		height: 1px;
+		overflow: hidden;
+	}
+	#item-form label {
+		position: relative;
+	}
+	#item-form label span.syntax {
+		float: right;
+		line-height: inherit;
+	}
+
+/* Drag and drop file upload */
+	.qq-uploading {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 107px;
+		color: #fff;
+		font-size: 18px;
+		padding: 75px 0 0 0;
+		text-align: center;
+		background: rgba(0,0,0,0.75);
+	}
+	.qq-uploader {
+		position: relative;
+		margin: 0;
+		padding: 0;
+	}
+	.linker-button,
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		background: #f7f7f7;
+		border: 3px dashed #ddd;
+		text-align: center;
+		color: #bbb;
+		text-shadow: 0 1px 0 #FFF;
+		padding: 0;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+		font-size: 1.5em;
+	}
+	.linker-button,
+	.qq-upload-button,
+	.qq-upload-drop-area {
+		text-align: center;
+		padding: 0.8em 0;
+	}
+	.linker-button>span,
+	.qq-upload-button>span,
+	.qq-upload-drop-area>span {
+		position: relative;
+		padding-left: 1.5em;
+	}
+	.linker-button>span:before,
+	.qq-upload-button>span:before,
+	.qq-upload-drop-area>span:before {
+		display: block;
+		position: absolute;
+		top: -0.2em;
+		left: 0;
+		font-family: "Fontcons";
+		font-size: 1.5em;
+		line-height: 1;
+		content: "\f016";
+	}
+	.linker-button>span:before {
+		font-size: 1.5em;
+		left: -0.1em;
+		content: "\26D3";
+	}
+	.linker-button:hover,
+	.qq-upload-button:hover,
+	.qq-upload-drop-area:hover,
+	.qq-upload-drop-area-active {
+		border: 3px solid #333;
+		color: #333;
+		cursor: pointer;
+	}
+	.qq-uploader div.uploader {
+		width: auto;
+	}
+	.qq-uploader div.uploader>span.filename,
+	.qq-uploader div.uploader>span.action {
+		display: none;
+	}
+	.qq-uploader div.uploader>input {
+		width: auto !important;
+		float: none;
+		height: auto;
+	}
+	.qq-upload-drop-area {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+	.qq-upload-list {
+		display: none;
+	}
+

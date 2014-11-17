@@ -34,6 +34,12 @@ $canDo = CollectionsHelperPermissions::getActions('post');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
+$dir = $this->row->get('id');
+if (!$dir)
+{
+	$dir = 'tmp' . time(); // . rand(0, 100);
+}
+
 JToolBarHelper::title(JText::_('COM_COLLECTIONS') . ': ' . JText::_('COM_COLLECTIONS_ITEMS') . ': ' . $text, 'collection.png');
 if ($canDo->get('core.edit'))
 {
@@ -44,6 +50,10 @@ if ($canDo->get('core.edit'))
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
 JToolBarHelper::help('collection');
+
+$this->css()
+     ->js('jquery.fileuploader.js', 'system')
+     ->js('fileupload.js');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -78,19 +88,120 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_COLLECTIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="fields[title]" id="field-title" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+				<input type="text" name="fields[title]" id="field-title" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+			</div>
+
+			<div class="input-wrap">
+				<label for="field-url"><?php echo JText::_('COM_COLLECTIONS_FIELD_URL'); ?>:</label><br />
+				<input type="text" name="fields[url]" id="field-url" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('url'))); ?>" />
 			</div>
 
 			<div class="input-wrap">
 				<label for="field-description"><?php echo JText::_('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?></label><br />
 				<?php echo JFactory::getEditor()->display('fields[description]', $this->escape($this->row->description('raw')), '', '', 35, 10, false, 'field-description', null, null, array('class' => 'minimal no-footer')); ?>
 			</div>
+
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_COLLECTIONS_FIELD_TAGS_HINT'); ?>">
+				<label for="field-tags"><?php echo JText::_('COM_COLLECTIONS_FIELD_TAGS'); ?>:</label><br />
+				<input type="text" name="tags" id="field-tags" value="<?php echo $this->escape(stripslashes($this->row->tags('string'))); ?>" />
+				<span class="hint"><?php echo JText::_('COM_COLLECTIONS_FIELD_TAGS_HINT'); ?></span>
+			</div>
+		</fieldset>
+
+		<fieldset class="adminform">
+			<?php /*if (!$this->row->get('id')) { ?>
+				<p><?php echo JText::_('COM_COLLECTIONS_UPLOAD_ADDED_LATER'); ?></p>
+			<?php } else { ?>
+				<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=media&task=files&tmpl=component&listdir=' . $dir); ?>"></iframe>
+			<?php }*/ ?>
+			<div class="input-wrap">
+				<div class="asset-uploader">
+					<div class="col width-50 fltlft">
+						<div id="ajax-uploader" data-txt-instructions="<?php echo JText::_('Click or drop file'); ?>" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=upload'); ?>" data-list="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=list&dir='); ?>">
+							<noscript>
+								<label for="upload"><?php echo JText::_('File:'); ?></label>
+								<input type="file" name="upload" id="field-upload" />
+							</noscript>
+						</div>
+					</div><!-- / .col span-half -->
+					<div class="col width-50 fltrt">
+						<div id="link-adder" data-txt-delete="<?php echo JText::_('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo JText::_('Click to add link'); ?>" data-base="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=delete&dir='); ?>" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=create&dir='); ?>" data-list="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=list&dir='); ?>">
+							<noscript>
+								<label for="add-link"><?php echo JText::_('Add a link:'); ?></label>
+								<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
+								<input type="hidden" name="assets[-1][id]" value="0" />
+								<input type="hidden" name="assets[-1][type]" value="link" />
+							</noscript>
+						</div>
+					</div><!-- / .col span-half -->
+					<div class="clr"></div>
+				</div><!-- / .asset-uploader -->
+
+				<div id="ajax-uploader-list">
+					<?php
+					$assets = $this->row->assets();
+					if ($assets->total() > 0)
+					{
+						$i = 0;
+						foreach ($assets as $asset)
+						{
+							?>
+							<p class="item-asset">
+								<span class="asset-handle">
+								</span>
+								<span class="asset-file">
+									<?php if ($asset->get('type') == 'link') { ?>
+										<input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
+									<?php } else { ?>
+										<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
+										<input type="hidden" name="assets[<?php echo $i; ?>][filename]" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" />
+									<?php } ?>
+								</span>
+								<span class="asset-description">
+									<input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $this->escape(stripslashes($asset->get('type'))); ?>" />
+									<input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $this->escape($asset->get('id')); ?>" />
+									<a class="delete" data-id="<?php echo $this->escape($asset->get('id')); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=media&no_html=1&remove=' . $asset->get('id')); ?>" title="<?php echo JText::_('Delete this asset'); ?>">
+										<?php echo JText::_('JACTION_DELETE'); ?>
+									</a>
+								</span>
+							</p>
+							<?php
+							$i++;
+						}
+					}
+					?>
+				</div><!-- / .field-wrap -->
+			</div>
+		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta">
 			<tbody>
+				<?php if ($this->row->exists()) { ?>
+					<tr>
+						<th><?php echo JText::_('COM_COLLECTIONS_FIELD_ID'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('id'); ?>
+						</td>
+					</tr>
+				<?php } ?>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_CREATOR'); ?>:</th>
+					<th><?php echo JText::_('COM_COLLECTIONS_FIELD_TYPE'); ?>:</th>
+					<td>
+						<?php echo $this->row->get('type'); ?>
+						<input type="hidden" name="fields[type]" id="field-type" value="<?php echo $this->escape($this->row->get('type')); ?>" />
+					</td>
+				</tr>
+				<?php if ($object_id = $this->row->get('object_id')) { ?>
+					<tr>
+						<th><?php echo JText::_('COM_COLLECTIONS_FIELD_OBJECT_ID'); ?>:</th>
+						<td>
+							<?php echo $object_id; ?>
+						</td>
+					</tr>
+				<?php } ?>
+				<tr>
+					<th><?php echo JText::_('COM_COLLECTIONS_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
 						$editor = JUser::getInstance($this->row->get('created_by'));
@@ -100,12 +211,31 @@ function submitbutton(pressbutton)
 					</td>
 				</tr>
 				<tr>
-					<th class="key"><?php echo JText::_('COM_COLLECTIONS_FIELD_CREATED'); ?>:</th>
+					<th><?php echo JText::_('COM_COLLECTIONS_FIELD_CREATED'); ?>:</th>
 					<td>
 						<?php echo $this->row->get('created'); ?>
 						<input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->escape($this->row->get('created')); ?>" />
 					</td>
 				</tr>
+				<?php if ($this->row->get('modified_by')) { ?>
+					<tr>
+						<th><?php echo JText::_('COM_COLLECTIONS_FIELD_MODIFIER'); ?>:</th>
+						<td>
+							<?php
+							$modifier = JUser::getInstance($this->row->get('modified_by'));
+							echo $this->escape(stripslashes($modifier->get('name')));
+							?>
+							<input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?php echo $this->escape($this->row->get('modified_by')); ?>" />
+						</td>
+					</tr>
+					<tr>
+						<th><?php echo JText::_('COM_COLLECTIONS_FIELD_MODIFIED'); ?>:</th>
+						<td>
+							<?php echo $this->row->get('modified'); ?>
+							<input type="hidden" name="fields[modified]" id="field-modified" value="<?php echo $this->escape($this->row->get('modified')); ?>" />
+						</td>
+					</tr>
+				<?php } ?>
 			</tbody>
 		</table>
 
@@ -133,7 +263,9 @@ function submitbutton(pressbutton)
 	</div>
 	<div class="clr"></div>
 
-	<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+	<input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->row->get('id'); ?>" />
+	<input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $dir; ?>" />
+	<input type="hidden" name="fields[object_id]" value="<?php echo $this->escape($this->row->get('object_id')); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
