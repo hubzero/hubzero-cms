@@ -54,7 +54,7 @@ $this->css()
 				<div class="container-block">
 					<h3><?php echo $this->escape(stripslashes($this->article->get('title'))); ?></h3>
 					<div class="entry-content">
-						<?php echo stripslashes($this->article->content()); ?>
+						<?php echo $this->article->content('parsed'); ?>
 					</div>
 				<?php if ($tags = $this->article->tags('cloud')) { ?>
 					<div class="entry-tags">
