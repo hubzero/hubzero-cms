@@ -29,9 +29,9 @@
 			<option value="1">JYES</option>
 		</field>
 		<field name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
-		<field name="email" type="list" default="0" label="Email authors" description="Email contributors when administrator make changes to status of a publication">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
+		<field name="email" type="list" default="0" label="Messaging" description="Allow component to send out emails">
+			<option value="0">ON</option>
+			<option value="1">OFF</option>
 		</field>
 		<field name="default_category" type="text" menu="hide" default="dataset" label="Default category" description="Optionally set the category of newly created publications to the specified value if exists" />
 		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="Default picture" description="Default placeholder image for all publications" />
@@ -43,10 +43,6 @@
 		<field name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
 		<field name="documentation" type="text" menu="hide" default="" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
 		<field name="deposit_terms" type="text" menu="hide" default="" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
-		<field name="dbcheck" type="list" default="0" label="Auto-install" description="Check db setup on every visit and auto-install db tables">
-			<option value="0">OFF</option>
-			<option value="1">ON</option>
-		</field>
 	</fieldset>
 	<fieldset name="CURATION">
 		<field name="curation" type="list" default="0" label="Curation" description="Use curation flow for all publications.">

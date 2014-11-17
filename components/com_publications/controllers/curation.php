@@ -62,17 +62,6 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$lang = JFactory::getLanguage();
 		$lang->load('plg_projects_publications');
 
-		//continue with parent execute method
-		parent::execute();
-	}
-
-	/**
-	 * Show test options
-	 *
-	 * @return     void
-	 */
-	public function displayTask()
-	{
 		// Is curation enabled?
 		if (!$this->config->get('curation', 0))
 		{
@@ -80,6 +69,17 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		//continue with parent execute method
+		parent::execute();
+	}
+
+	/**
+	 * Display task
+	 *
+	 * @return     void
+	 */
+	public function displayTask()
+	{
 		// Get all uer groups
 		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 
@@ -743,50 +743,94 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	 */
 	public function onAfterStatusChange( $pub, $status )
 	{
-		$sendmail = 0;
-
-		// Add message to project
-		if (!$this->getError())
+		if ($this->getError())
 		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-				. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
+			return;
+		}
+		// Add message to project
+		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.activity.php');
 
-			$activity = $status == 1
-						? JText::_('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
-						: JText::_('COM_PUBLICATIONS_CURATION_ACTIVITY_KICKBACK');
+		$activity = $status == 1
+					? JText::_('COM_PUBLICATIONS_CURATION_ACTIVITY_PUBLISHED')
+					: JText::_('COM_PUBLICATIONS_CURATION_ACTIVITY_KICKBACK');
 
-			$pubtitle 	= \Hubzero\Utility\String::truncate($pub->title, 100);
+		$pubtitle 	= \Hubzero\Utility\String::truncate($pub->title, 100);
 
-			// Log activity in curation history
-			$pub->_curationModel->saveHistory($pub, $this->juser->get('id'), $pub->state, $status, 1 );
+		// Log activity in curation history
+		$pub->_curationModel->saveHistory($pub, $this->juser->get('id'), $pub->state, $status, 1 );
 
-			// Add activity
-			$activity .= ' ' . strtolower(JText::_('version')) . ' ' . $pub->version_label . ' '
-			. JText::_('COM_PUBLICATIONS_OF') . ' ' . strtolower(JText::_('publication')) . ' "'
-			. $pubtitle . '" ';
+		// Add activity
+		$activity .= ' ' . strtolower(JText::_('version')) . ' ' . $pub->version_label . ' '
+		. JText::_('COM_PUBLICATIONS_OF') . ' ' . strtolower(JText::_('publication')) . ' "'
+		. $pubtitle . '" ';
 
-			// Build return url
-			$link 	= '/projects/' . $pub->_project->alias . '/publications/'
-					. $pub->id . '/?version=' . $pub->version_number;
+		// Build return url
+		$link 	= '/projects/' . $pub->_project->alias . '/publications/'
+				. $pub->id . '/?version=' . $pub->version_number;
 
-			$objAA = new ProjectActivity ( $this->database );
-			$aid   = $objAA->recordActivity(
-					$pub->project_id,
-					$this->juser->get('id'),
-					$activity,
-					$pub->id,
-					$pubtitle,
-					$link,
-					'publication',
-					0,
-					$admin = 1
-			);
+		// Record activity
+		$objAA = new ProjectActivity ( $this->database );
+		$aid   = $objAA->recordActivity(
+				$pub->project_id,
+				$this->juser->get('id'),
+				$activity,
+				$pub->id,
+				$pubtitle,
+				$link,
+				'publication',
+				0,
+				$admin = 1
+		);
 
-			$sendmail = $this->config->get('email') ? 1 : 0;
+		// Start message
+		$juri 	 = JURI::getInstance();
+		$sef	 = 'publications' . DS . $pub->id . DS . $pub->version_number;
+		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+		$manage  = rtrim($juri->base(), DS) . DS . 'projects' . DS . $pub->_project->alias . DS . 'publications' . DS . $pub->id . DS . $pub->version_number;
+		$message  = $status == 1 ? JText::_('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_APPROVED') : JText::_('COM_PUBLICATIONS_CURATION_EMAIL_CURATOR_KICKED_BACK');
+
+		if ($status != 1)
+		{
+			$message .= "\n" . "\n";
+			$message .= JText::_('COM_PUBLICATIONS_CURATION_TAKE_ACTION') . ' ' . $manage;
+		}
+		else
+		{
+			$message .= ' ' . $link;
 		}
 
-		// Send notifications
-		// TBD
+		$pubtitle 	= \Hubzero\Utility\String::truncate($pub->title, 100);
+		$subject 	= ucfirst(JText::_('COM_PUBLICATIONS_CURATION_VERSION'))
+					. ' ' . $pub->version_label . ' ' . JText::_('COM_PUBLICATIONS_OF') . ' '
+					. strtolower(JText::_('COM_PUBLICATIONS_PUBLICATION'))
+					. ' "' . $pubtitle . '" ';
+		$subject .= $status == 1
+			? JText::_('COM_PUBLICATIONS_MSG_ADMIN_PUBLISHED')
+			: JText::_('COM_PUBLICATIONS_MSG_ADMIN_KICKED_BACK');
+
+		// Get authors
+		$pa = new PublicationAuthor( $this->database );
+		$authors = $pa->getAuthors($pub->version_id, 1, 1, 1);
+
+		// No authors – send to publication creator
+		if (count($authors) == 0)
+		{
+			$authors = array($pub->created_by);
+		}
+
+		// Make sure there are no duplicates
+		$authors = array_unique($authors);
+
+		// Notify authors
+		PublicationHelper::notify(
+			$this->config,
+			$pub,
+			$authors,
+			$subject,
+			$message,
+			true
+		);
 
 		return;
 	}

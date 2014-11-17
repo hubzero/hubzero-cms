@@ -3947,7 +3947,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	public function onAfterChangeState( $pub, $row, $originalStatus = 3 )
 	{
 		$state  = $row->state;
-		$notify = 1;
+		$notify = 1; // Notify administrators/curators?
 
 		// Log activity in curation history
 		if (isset($pub->_curationModel))
@@ -4015,6 +4015,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
 		$message = $actor . ' ' . html_entity_decode($action) . '  - ' . $link;
 
+		// Notify admin group
 		if ($notify)
 		{
 			$admingroup = $this->_config->get('admingroup', '');
@@ -4038,6 +4039,36 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 					'publication',
 					$message
 				);
+			}
+
+			// Notify curators by email
+			if ($this->useBlocks && isset($pub->_type))
+			{
+				$curatorMessage = ($state == 5) ? $message . "\n" . "\n" . JText::_('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS_REVIEW') . ' ' . rtrim($juri->base(), DS) . DS . 'publications/curation' : $message;
+
+				$curatorgroups = array($pub->_type->curatorgroup);
+				if ($this->_pubconfig->get('curatorgroup', ''))
+				{
+					$curatorgroups[] = $this->_pubconfig->get('curatorgroup', '');
+				}
+				foreach ($curatorgroups as $curatorgroup)
+				{
+					if (trim($curatorgroup) && $group = \Hubzero\User\Group::getInstance($curatorgroup))
+					{
+						$members 	= $group->get('members');
+						$managers 	= $group->get('managers');
+						$admins 	= array_merge($members, $managers);
+						$admins 	= array_unique($admins);
+
+						PublicationHelper::notify(
+							$this->_pubconfig,
+							$pub,
+							$admins,
+							JText::_('PLG_PROJECTS_PUBLICATIONS_EMAIL_CURATORS'),
+							$curatorMessage
+						);
+					}
+				}
 			}
 		}
 

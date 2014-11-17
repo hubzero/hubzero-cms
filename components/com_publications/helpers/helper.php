@@ -810,4 +810,105 @@ class PublicationHelper extends JObject
 		</h3>
 	<?php
 	}
+
+	/**
+	 * Send email
+	 *
+	 * @param      array 	$config
+	 * @param      object 	$publication
+	 * @param      array 	$addressees
+	 * @param      string 	$subject
+	 * @param      string 	$message
+	 * @return     void
+	 */
+	public static function notify( $config, $publication, $addressees = array(),
+		$subject = NULL, $message = NULL, $hubMessage = NULL)
+	{
+		if (!$subject || !$message || empty($addressees))
+		{
+			return false;
+		}
+
+		// Is messaging turned on?
+		if ($config->get('email') != 1)
+		{
+			return false;
+		}
+
+		// Set up email config
+		$jconfig = JFactory::getConfig();
+		$from = array();
+		$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_PUBLICATIONS');
+		$from['email'] = $jconfig->getValue('config.mailfrom');
+
+		// Html email
+		$from['multipart'] = md5(date('U'));
+
+		// Get message body
+		$eview = new \Hubzero\Component\View(array(
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+			'name'   => 'emails',
+			'layout' => '_plain'
+		));
+
+		$eview->publication 	= $publication;
+		$eview->message			= $message;
+		$eview->subject			= $subject;
+
+		$body = array();
+		$body['plaintext'] 	= $eview->loadTemplate();
+		$body['plaintext'] 	= str_replace("\n", "\r\n", $body['plaintext']);
+
+		// HTML email
+		$eview->setLayout('_html');
+		$body['multipart'] = $eview->loadTemplate();
+		$body['multipart'] = str_replace("\n", "\r\n", $body['multipart']);
+
+		$body_plain = is_array($body) && isset($body['plaintext']) ? $body['plaintext'] : $body;
+		$body_html  = is_array($body) && isset($body['multipart']) ? $body['multipart'] : NULL;
+
+		// Send HUB message
+		if ($hubMessage)
+		{
+			JPluginHelper::importPlugin( 'xmessage' );
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger( 'onSendMessage',
+				array(
+					'publication_status_changed',
+					$subject,
+					$body,
+					$from,
+					$addressees,
+					'com_publications'
+				)
+			);
+		}
+		else
+		{
+			// Send email
+			foreach ($addressees as $userid)
+			{
+				$user = \Hubzero\User\Profile::getInstance($userid);
+				if ($user === false)
+				{
+					continue;
+				}
+
+				$mail = new \Hubzero\Mail\Message();
+				$mail->setSubject($subject)
+					->addTo($user->get('email'), $user->get('name'))
+					->addFrom($from['email'], $from['name'])
+					->setPriority('normal');
+
+				$mail->addPart($body_plain, 'text/plain');
+
+				if ($body_html)
+				{
+					$mail->addPart($body_html, 'text/html');
+				}
+
+				$mail->send();
+			}
+		}
+	}
 }
