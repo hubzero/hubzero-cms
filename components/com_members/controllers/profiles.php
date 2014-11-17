@@ -539,7 +539,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		}
 
 		// check if unconfirmed
-		if ($profile->get('emailConfirmed') != 1 && !$this->view->authorized)
+		if ($profile->get('emailConfirmed') > 1 && !$this->view->authorized)
 		{
 			JError::raiseError(403, JText::_('MEMBERS_NOT_CONFIRMED'));
 			return;
