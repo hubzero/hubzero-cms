@@ -380,7 +380,57 @@ class Record extends \Hubzero\Content\Import\Model\Record
 
 		if ($password = $this->raw->password)
 		{
-			\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $password);
+			if ($isNew)
+			{
+				// We need to bypass any hashing
+				$this->raw->password = '*';
+				\Hubzero\User\Password::changePasshash($this->_profile->get('uidNumber'), $password);
+			}
+			else
+			{
+				\Hubzero\User\Password::changePassword($this->_profile->get('uidNumber'), $password);
+			}
+		}
+
+		if ($isNew && $this->_options['emailnew'] == 1)
+		{
+			$jconfig = JFactory::getConfig();
+
+			$eview = new \Hubzero\Component\View(array(
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_members',
+				'name'      => 'emails',
+				'layout'    => 'confirm'
+			));
+			$eview->option       = 'com_members';
+			$eview->controller   = 'register';
+			$eview->sitename     = $jconfig->getValue('config.sitename');
+			$eview->login        = $this->_profile->get('username');
+			$eview->name         = $this->_profile->get('name');
+			$eview->registerDate = $this->_profile->get('registerDate');
+			$eview->confirm      = $this->_profile->get('emailConfirmed');
+			$eview->baseURL      = JURI::base();
+
+			$msg = new \Hubzero\Mail\Message();
+			$msg->setSubject($jconfig->getValue('config.sitename') .' ' . JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'))
+			    ->addTo($this->_profile->get('email'))
+			    ->addFrom($jconfig->getValue('config.mailfrom'), $jconfig->getValue('config.sitename') . ' Administrator')
+			    ->addHeader('X-Component', 'com_members');
+
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+
+			$msg->addPart($message, 'text/plain');
+
+			$eview->setLayout('confirm_html');
+			$message = $eview->loadTemplate();
+			$message = str_replace("\n", "\r\n", $message);
+
+			$msg->addPart($message, 'text/html');
+
+			if (!$msg->send())
+			{
+				array_push($this->record->errors, JText::sprintf('COM_MEMBERS_REGISTER_ERROR_EMAILING_CONFIRMATION'));
+			}
 		}
 	}
 

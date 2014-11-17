@@ -196,37 +196,15 @@ function submitbutton(pressbutton)
 				<span class="hint"><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_APPROVED_HINT'); ?></span>
 			</div>
 
-			<?php /*<div class="input-wrap" data-hint="<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_PUBLIC_HINT'); ?>">
-				<label for="param-public">
-					<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_PUBLIC'); ?>
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW_HINT'); ?>">
+				<label for="param-emailnew">
+					<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW'); ?>
 				</label>
-				<select name="params[public]" id="param-public">
-					<option value="0"<?php echo ($this->params->get('public', 1) == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
-					<option value="1"<?php echo ($this->params->get('public', 1) == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
+				<select name="params[emailnew]" id="param-emailnew">
+					<option value="0"<?php echo ($this->params->get('emailnew', 1) == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JNO'); ?></option>
+					<option value="1"<?php echo ($this->params->get('emailnew', 1) == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('JYES'); ?></option>
 				</select>
-				<span class="hint"><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_PUBLIC_HINT'); ?></span>
-			</div>
-
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_MAILPREF_HINT'); ?>">
-				<label for="param-mailPreferenceOption">
-					<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_MAILPREF'); ?>
-				</label>
-				<select name="params[mailPreferenceOption]" id="param-mailPreferenceOption">
-					<option value="0" <?php if ($this->params->get('mailPreferenceOption', 0) == 0) { echo 'selected="selected"'; } ?>><?php echo JText::_('JNO'); ?></option>
-					<option value="1" <?php if ($this->params->get('mailPreferenceOption', 0) == 1) { echo 'selected="selected"'; } ?>><?php echo JText::_('JYES'); ?></option>
-				</select>
-				<span class="hint"><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_MAILPREF_HINT'); ?></span>
-			</div>*/ ?>
-
-			<div class="input-wrap" data-hint="<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_MATCHNAME_HINT'); ?>">
-				<label for="param-namematch">
-					<?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_MATCHNAME'); ?>
-				</label>
-				<select name="params[namematch]" id="param-namematch">
-					<option value="0" <?php if ($this->params->get('namematch', 0) == 0) { echo 'selected="selected"'; } ?>><?php echo JText::_('JNO'); ?></option>
-					<option value="1" <?php if ($this->params->get('namematch', 0) == 1) { echo 'selected="selected"'; } ?>><?php echo JText::_('JYES'); ?></option>
-				</select>
-				<span class="hint"><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_MATCHNAME_HINT'); ?></span>
+				<span class="hint"><?php echo JText::_('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW_HINT'); ?></span>
 			</div>
 		</fieldset>
 
