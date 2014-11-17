@@ -63,7 +63,7 @@ $this->css('introduction.css', 'system')
 				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>');
 			} ?>
 		</div>
-		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6';  ?>">
+		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6 omega';  ?>">
 			<h3><?php echo JText::_('COM_PUBLICATIONS_PUPULAR'); ?></h3>
 			<?php if ($this->best && count($this->best) > 0)
 			{ 		// Display List of items
