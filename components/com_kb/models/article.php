@@ -557,6 +557,18 @@ class KbModelArticle extends \Hubzero\Base\Model
 					$this->set('fulltxt.parsed', (string) $this->get('fulltxt', ''));
 					$this->set('fulltxt', $content);
 
+					// Wackadoodle way of running content parses on the article
+					$article = new stdClass;
+					$article->id = $this->get('id');
+					$article->text = $this->get('fulltxt.parsed');
+
+					$this->trigger('onContentPrepare', array(
+						'com_content.article',
+						&$article,
+						&$this->_params
+					));
+					$this->set('fulltxt.parsed', $article->text);
+
 					return $this->content($as, $shorten);
 				}
 
