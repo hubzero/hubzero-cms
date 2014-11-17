@@ -54,10 +54,12 @@ if (!$isRegister)
 {
 	// Instantiate a new profile object
 	$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
-
-	$fname = $fname ?: $profile->get('givenName');
-	$lname = $lname ?: $profile->get('surname');
-	$email = $email ?: $profile->get('email');
+	if ($profile)
+	{
+		$fname = $fname ?: $profile->get('givenName');
+		$lname = $lname ?: $profile->get('surname');
+		$email = $email ?: $profile->get('email');
+	}
 }
 
 
