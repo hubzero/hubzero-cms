@@ -211,6 +211,21 @@ $termsUrl = $config->get('deposit_terms', '');
 			</div>
 		</div>
 	 </div>
+	<?php // Comments ?>
+	<div class="blockelement" id="review-comment">
+		<div class="element_editing">
+			<div class="pane-wrapper">
+				<span class="checker">&nbsp;</span>
+				<h5 class="element-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_COMMENT'); ?></h5>
+				<div class="element-instructions">
+					<label><span class="optional"><?php echo JText::_('Optional'); ?></span>
+					<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DESC_COMMENT'); ?>	
+						<textarea name="comment" cols="10" rows="5"></textarea>
+					</label>
+				</div>
+			</div>
+		</div>
+	 </div>
 	<?php // Agreements ?>
 	<div class="blockelement" id="review-agreement">
 		<div class="element_editing">

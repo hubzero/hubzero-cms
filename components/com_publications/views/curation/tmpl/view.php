@@ -100,6 +100,12 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 			<input type="hidden" name="id" id="pid" value="<?php echo $this->pub->id; ?>" />
 			<input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->version_id; ?>" />
 		 </fieldset>
+		<?php if ($this->history && $this->history->comment) { ?>
+			<div class="submitter-comment">
+				<h5><?php echo JText::_('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT'); ?></h5>
+				<p><?php echo $this->history->comment; ?></p>
+			</div>
+		<?php } ?>
 		<div class="curation-blocks">
 <?php foreach ($blocks as $sequence => $block) {
 

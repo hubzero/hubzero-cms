@@ -1664,6 +1664,9 @@ class PublicationsCuration extends JObject
 	 */
 	public function saveHistory( $pub, $actor = 0, $oldStatus = 0, $newStatus = 0, $curator = 0 )
 	{
+		// Incoming
+		$comment = JRequest::getVar('comment', '', 'post');
+
 		// Collect details
 		$changelog = $this->getChangeLog($pub, $oldStatus, $newStatus, $curator);
 
@@ -1682,6 +1685,7 @@ class PublicationsCuration extends JObject
 		$obj->curator					= $curator;
 		$obj->newstatus					= $newStatus;
 		$obj->oldstatus					= $oldStatus;
+		$obj->comment					= \Hubzero\Utility\Sanitize::clean(htmlspecialchars($comment));
 
 		if ($obj->store())
 		{

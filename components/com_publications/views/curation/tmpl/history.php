@@ -58,7 +58,7 @@ if (!$this->ajax)
 			?>
 			<div class="history-block <?php echo $trClass; ?> grid">
 				<div class="changelog-time col span3">
-					<?php echo $event->created; ?>
+					<?php echo JHTML::_('date', $event->created, 'M d, Y H:iA'); ?>
 					<span class="block"><?php echo $this->escape(stripslashes($author->get('name'))); ?></span>
 					<span class="block">(
 					<?php echo ($event->curator)

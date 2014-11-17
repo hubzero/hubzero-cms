@@ -470,6 +470,16 @@
 		border: none;
 	}
 
+/* Submitter comment
+--------------------------------------------- */
+
+	.submitter-comment {
+		padding: 0.5em 1em;
+		background: #f1f7f8;
+		border: 4px solid #b9cfda;
+		margin: 0 0 1em 0;
+	}
+
 /* Misc
 --------------------------------------------- */
 	.hidden {

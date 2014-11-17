@@ -822,7 +822,7 @@ class PublicationHelper extends JObject
 	 * @return     void
 	 */
 	public static function notify( $config, $publication, $addressees = array(),
-		$subject = NULL, $message = NULL, $hubMessage = NULL)
+		$subject = NULL, $message = NULL, $hubMessage = false)
 	{
 		if (!$subject || !$message || empty($addressees))
 		{

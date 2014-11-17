@@ -569,6 +569,9 @@
 	.draft-review #review-agreement .element-instructions:before {
 		content: "\2611";
 	}
+	.draft-review #review-comment .element-instructions:before {
+		content: "\275D";
+	}
 	.draft-review .icon-apply:before {
 		color: #FFFFFF;
 	}

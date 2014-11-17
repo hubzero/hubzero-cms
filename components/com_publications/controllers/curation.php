@@ -328,6 +328,10 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		$this->_pub = $pub;
 
+		// Get last history record (from author)
+		$obj = new PublicationCurationHistory($this->database);
+		$this->view->history = $obj->getLastRecord($pub->version_id);
+
 		// Set page title
 		$this->_buildTitle();
 
@@ -340,7 +344,6 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->view->database 		= $this->database;
 		$this->view->config			= $this->config;
 		$this->view->display();
-
 	}
 
 	/**
