@@ -788,7 +788,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 					$group = \Hubzero\User\Group::getInstance($this->get('group_cn'));
 
 					// Is this a group manager?
-					if ($group->is_member_of('managers', $juser->get('id')))
+					if ($group && $group->is_member_of('managers', $juser->get('id')))
 					{
 						// Allow access to all options
 						$this->config()->set('access-page-manage', true);
@@ -833,7 +833,7 @@ class WikiModelPage extends \Hubzero\Base\Model
 							// Standard wiki
 							default:
 								// 1 = private to group, 2 = ...um, can't remember
-								if ($group->is_member_of('members', $juser->get('id')))
+								if ($group && $group->is_member_of('members', $juser->get('id')))
 								{
 									$this->config()->set('access-page-create', true);
 									if ($this->get('state') != 1)
