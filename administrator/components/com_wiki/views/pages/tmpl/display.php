@@ -160,11 +160,11 @@ foreach ($this->rows as $row)
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
 						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							<?php echo $this->escape(stripslashes($row->get('title', JText::_('COM_WIKI_NONE')))); ?>
 						</a>
 					<?php } else { ?>
 						<span>
-							<?php echo $this->escape(stripslashes($row->get('title'))); ?>
+							<?php echo $this->escape(stripslashes($row->get('title', JText::_('COM_WIKI_NONE')))); ?>
 						</span>
 					<?php } ?>
 					<br /><?php if ($row->get('scope')) { ?><span style="color: #999; font-size: 90%"><?php echo $this->escape(stripslashes($row->get('scope'))); ?>/</span> &nbsp; <?php } ?><span style="color: #999; font-size: 90%"><?php echo $this->escape(stripslashes($row->get('pagename'))); ?></span>
