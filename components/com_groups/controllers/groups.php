@@ -791,6 +791,36 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 					->send();
 		}
 
+		// create home page
+		if ($this->_task == 'new')
+		{
+			// create page
+			$page = new GroupsModelPage(array(
+				'gidNumber' => $group->get('gidNumber'),
+				'parent'    => 0,
+				'lft'       => 1,
+				'rgt'       => 2,
+				'depth'     => 0,
+				'alias'     => 'overview',
+				'title'     => 'Overview',
+				'state'     => 1,
+				'privacy'   => 'default',
+				'home'      => 1
+			));
+			$page->store(false);
+
+			// create page version
+			$version = new GroupsModelPageVersion(array(
+				'pageid'     => $page->get('id'),
+				'version'    => 1,
+				'content'    => "<!-- {FORMAT:HTML} -->\n<p>[[Group.DefaultHomePage()]]</p>",
+				'created'    => JFactory::getDate(),
+				'created_by' => JFactory::getUser()->get('id'),
+				'approved'   => 1
+			));
+			$version->store(false);
+		}
+
 		// Show success message to user
 		if ($this->_task == 'new')
 		{
