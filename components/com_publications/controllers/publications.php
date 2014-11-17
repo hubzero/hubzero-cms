@@ -309,7 +309,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->view->option 		= $this->_option;
 		$this->view->database 		= $this->database;
 		$this->view->config 		= $this->config;
-		$this->view->contributable 	= $this->_contributable;
+		$this->view->contributable 	= $this->_contributable && $this->config->get('contribute') == 1 ? true : false;
 
 		$this->view->filters 		   = array();
 		$this->view->filters['sortby'] = 'date_published';
@@ -2057,7 +2057,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$pconfig = JComponentHelper::getParams( 'com_projects' );
 
 		// Redirect if publishing is turned off
-		if (!$this->_contributable)
+		if (!$this->_contributable || !$this->config->get('contribute', 0))
 		{
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
 			return;

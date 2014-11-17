@@ -24,7 +24,11 @@
 			<option value="0">OFF</option>
 			<option value="1">ON</option>
 		</field>
-		<field name="autoapprove" type="list" default="1" label="Auto-approve" description="Automatically approve new submissions">
+		<field name="contribute" type="list" default="1" label="Allow User Contributions" description="Allow users to work on drafts from within Publications component">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="autoapprove" type="list" default="0" label="Auto-approve" description="Automatically approve new submissions">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
