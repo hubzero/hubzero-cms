@@ -16,7 +16,7 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function (jq) {
 	var $ = jq;
 
-	$('#content')
+	$('.below')
 			// Toggle text and classes when clicking reply
 			.on('click', 'a.reply', function (e) {
 				e.preventDefault();

@@ -20,7 +20,7 @@ jQuery(document).ready(function (jq) {
 		});
 	}
 
-	$('#content')
+	$('.below')
 		// Toggle text and classes when clicking reply
 		.on('click', 'a.reply', function (e) {
 			e.preventDefault();
