@@ -658,7 +658,14 @@ $this->css()
 		</div><!-- / .subject -->
 		<div class="aside">
 			<p>
-				<a class="icon-add add btn" href="<?php echo JRoute::_($this->wish->link('comment'));?>">
+				<?php 
+					$link = JRoute::_($this->wish->link('comment'));
+					if ($this->juser->get('guest'))
+					{
+						$link = JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($link));
+					}
+				?>
+				<a class="icon-add add btn" href="<?php echo $link;?>">
 					<?php echo JText::_('COM_WISHLIST_ADD_A_COMMENT'); ?>
 				</a>
 			</p>
