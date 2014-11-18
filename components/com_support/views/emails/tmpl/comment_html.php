@@ -46,7 +46,7 @@ if (!($this->comment instanceof SupportModelComment))
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
-	$base = substr($base, 0, strlen($base)-13);
+	$base = rtrim(substr($base, 0, strlen($base)-13), DS);
 	$sef = 'support/ticket/' . $this->ticket->get('id');
 }
 else
@@ -373,7 +373,7 @@ switch ($this->ticket->get('severity'))
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo JText::sprintf('COM_SUPPORT_EMAIL_WHY_NOTFIED', $jconfig->getValue('config.sitename'), $link, $link, $juri->base(), $juri->base()); ?></span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo JText::sprintf('COM_SUPPORT_EMAIL_WHY_NOTFIED', $jconfig->getValue('config.sitename'), $link, $link, $base, $base); ?></span>
 													</td>
 												</tr>
 											</tbody>

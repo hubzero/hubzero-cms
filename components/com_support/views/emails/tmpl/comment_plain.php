@@ -46,14 +46,14 @@ if (!($this->comment instanceof SupportModelComment))
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
-	$base = substr($base, 0, strlen($base)-13);
+	$base = rtrim(substr($base, 0, strlen($base)-13), DS);
 	$sef = 'support/ticket/' . $this->ticket->get('id');
 }
 else
 {
 	$sef = JRoute::_($this->ticket->link());
 }
-$link = rtrim($base, DS) . DS . trim($sef, DS);
+$link = $base . DS . trim($sef, DS);
 
 // Build message
 $message = '';
