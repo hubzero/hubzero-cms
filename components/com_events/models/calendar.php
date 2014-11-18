@@ -163,18 +163,18 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 					{
 						foreach ($results as $key => $result)
 						{
-							// get repeating occurrences
-							// wrap in try/catch to prevent 500 error
-							$r = new When\When();
-							try
-							{
-								$r->startDate(JFactory::getDate($result->publish_up))
-								  ->until($end)
-								  ->rrule($result->repeating_rule)
-								  ->generateOccurrences();
-							}
-							catch (Exception $e)
-							{}
+							// turn start date in datetime object
+							$start = JFactory::getDate($result->publish_up);
+
+							// get the repeating & pass start date
+							$rule = new \Recurr\Rule($result->repeating_rule, $start);
+
+							// define constraint that date must be between event publish_up & end 
+							$constraint  = new \Recurr\Transformer\Constraint\BetweenConstraint($start, $end);
+
+							// create transformmer & generate occurances
+							$transformer = new \Recurr\Transformer\ArrayTransformer();
+							$occurrences = $transformer->transform($rule, null, $constraint);
 
 							// calculate diff so we can create down
 							$diff = new DateInterval('P0Y0DT0H0M');
@@ -184,17 +184,11 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 							}
 
 							// create new event for each reoccurrence
-							foreach ($r->occurrences as $occurrence)
+							foreach ($occurrences as $occurrence)
 							{
-								// dont include the original event
-								if ($occurrence == JFactory::getDate($result->publish_up))
-								{
-									continue;
-								}
-
 								$event               = clone($result);
-								$event->publish_up   = $occurrence->format('Y-m-d H:i:s');
-								$event->publish_down = $occurrence->add($diff)->format('Y-m-d H:i:s');
+								$event->publish_up   = $occurrence->getStart()->format('Y-m-d H:i:s');
+								$event->publish_down = $occurrence->getStart()->add($diff)->format('Y-m-d H:i:s');
 								$repeats[]           = new EventsModelEvent($event);
 							}
 						}

@@ -570,54 +570,6 @@
         ]
     },
     {
-        "name": "tplaner/when",
-        "version": "dev-develop",
-        "version_normalized": "dev-develop",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/tplaner/when.git",
-            "reference": "2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/tplaner/when/zipball/2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a",
-            "reference": "2e7aae395422165ad76b7d67e6e89cfcb3ce0b5a",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2014-06-16 22:55:57",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "When": "src/"
-            }
-        },
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Tom Planer",
-                "email": "tplaner@gmail.com"
-            }
-        ],
-        "description": "Date/Calendar recursion library.",
-        "homepage": "https://github.com/tplaner/When",
-        "keywords": [
-            "DateTime",
-            "date",
-            "recurrence",
-            "time"
-        ],
-        "support": {
-            "source": "https://github.com/tplaner/when/tree/develop",
-            "issues": "https://github.com/tplaner/when/issues"
-        }
-    },
-    {
         "name": "facebook/php-sdk-v4",
         "version": "4.0.11",
         "version_normalized": "4.0.11.0",
@@ -775,5 +727,131 @@
         ],
         "description": "Symfony Yaml Component",
         "homepage": "http://symfony.com"
+    },
+    {
+        "name": "doctrine/collections",
+        "version": "v1.2",
+        "version_normalized": "1.2.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/collections.git",
+            "reference": "b99c5c46c87126201899afe88ec490a25eedd6a2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/collections/zipball/b99c5c46c87126201899afe88ec490a25eedd6a2",
+            "reference": "b99c5c46c87126201899afe88ec490a25eedd6a2",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "time": "2014-02-03 23:07:43",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Doctrine\\Common\\Collections\\": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jonathan Wage",
+                "email": "jonwage@gmail.com",
+                "homepage": "http://www.jwage.com/",
+                "role": "Creator"
+            },
+            {
+                "name": "Guilherme Blanco",
+                "email": "guilhermeblanco@gmail.com",
+                "homepage": "http://www.instaclick.com"
+            },
+            {
+                "name": "Roman Borschel",
+                "email": "roman@code-factory.org"
+            },
+            {
+                "name": "Benjamin Eberlei",
+                "email": "kontakt@beberlei.de"
+            },
+            {
+                "name": "Johannes Schmitt",
+                "email": "schmittjoh@gmail.com",
+                "homepage": "https://github.com/schmittjoh",
+                "role": "Developer of wrapped JMSSerializerBundle"
+            }
+        ],
+        "description": "Collections Abstraction library",
+        "homepage": "http://www.doctrine-project.org",
+        "keywords": [
+            "array",
+            "collections",
+            "iterator"
+        ]
+    },
+    {
+        "name": "simshaun/recurr",
+        "version": "v0.3.2",
+        "version_normalized": "0.3.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/simshaun/recurr.git",
+            "reference": "11174941c9ca058f22df5821f8817f9b2e2a5a50"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/simshaun/recurr/zipball/11174941c9ca058f22df5821f8817f9b2e2a5a50",
+            "reference": "11174941c9ca058f22df5821f8817f9b2e2a5a50",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/collections": "1.2.*",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.1.*"
+        },
+        "time": "2014-09-29 21:23:39",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Recurr": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Shaun Simmons",
+                "email": "shaun@envysphere.com",
+                "homepage": "http://envysphere.com"
+            }
+        ],
+        "description": "PHP library for working with recurrence rules",
+        "homepage": "https://github.com/simshaun/recurr",
+        "keywords": [
+            "dates",
+            "events",
+            "recurrence",
+            "recurring",
+            "rrule"
+        ]
     }
 ]

@@ -64,16 +64,10 @@
         "monolog/monolog": "1.11.0",
         "willdurand/geocoder": "@stable",
         "guzzle/guzzle": "3.8.*@dev",
-        "tplaner/when": "dev-develop",
         "predis/predis": "0.8.6",
-	"symfony/yaml": "2.5.*"
+        "symfony/yaml": "2.5.*",
+        "simshaun/recurr": "0.3.2"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/tplaner/when"
-        }
-    ],
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },
         "classmap": [ "libraries/joomla" ]
