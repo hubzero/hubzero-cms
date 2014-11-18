@@ -390,12 +390,6 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 
 		$juser = JFactory::getUser();
 
-		// Incoming
-		$start_time = JRequest::getVar('start_time', '08:00', 'post');
-		$start_pm   = JRequest::getInt('start_pm', 0, 'post');
-		$end_time   = JRequest::getVar('end_time', '17:00', 'post');
-		$end_pm     = JRequest::getInt('end_pm', 0, 'post');
-
 		// Bind the posted data to an event object
 		$row = new EventsEvent($this->database);
 		if (!$row->bind($_POST))
@@ -479,47 +473,11 @@ class EventsControllerEvents extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// reformat the time into 24hr format if necessary
-		if ($this->config->getCfg('calUseStdTime') =='YES')
-		{
-			list($hrs,$mins) = explode(':', $start_time);
-			$hrs = intval($hrs);
-			$mins = intval($mins);
-			if ($hrs != 12 && $start_pm) $hrs += 12;
-			else if ($hrs == 12 && !$start_pm) $hrs = 0;
-			if ($hrs < 10) $hrs = '0' . $hrs;
-			if ($mins < 10) $mins = '0' . $mins;
-			$start_time = $hrs . ':' . $mins;
-
-			list($hrs,$mins) = explode(':', $end_time);
-			$hrs = intval($hrs);
-			$mins = intval($mins);
-			if ($hrs!= 12 && $end_pm) $hrs += 12;
-			else if ($hrs == 12 && !$end_pm) $hrs = 0;
-			if ($hrs < 10) $hrs = '0' . $hrs;
-			if ($mins < 10) $mins = '0' . $mins;
-			$end_time = $hrs . ':' . $mins;
-		}
-
-		// build local timezone
-		$tz = new DateTimezone(JFactory::getConfig()->get('offset'));
-
-		if ($row->publish_up)
-		{
-			$publishtime = $row->publish_up . ' ' . $start_time . ':00';
-			$row->publish_up = JFactory::getDate($publishtime, $tz)->toSql();
-		}
-		else
+		// make sure we have a start date
+		if (!$row->publish_up)
 		{
 			$row->publish_up = JFactory::getDate()->toSql();
 		}
-
-		if ($row->publish_down)
-		{
-			$publishtime = $row->publish_down . ' ' . $end_time . ':00';
-			$row->publish_down = JFactory::getDate($publishtime, $tz)->toSql();
-		}
-
 
 		// If this is a new event, publish it, otherwise retain its state
 		if (!$row->id)

@@ -93,58 +93,26 @@ var HUB = {};
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_EVENTS_PUBLISHING'); ?></span></legend>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-publish_up"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_STARTDATE'); ?></label><br />
-					<input type="text" name="publish_up" id="field-publish_up" maxlength="10" value="<?php echo $this->escape($this->times['start_publish']); ?>" />
-				</div>
+			<div class="input-wrap">
+				<label for="field-publish_up"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_STARTDATE'); ?></label><br />
+				<?php echo JHTML::_('calendar', $this->row->publish_up, 'publish_up', 'field-publish_up'); ?>
 			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label for="field-start_time"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_STARTTIME');?></label><br />
-					<input type="text" name="start_time" id="field-start_time" maxlength="8" value="<?php echo $this->escape($this->times['start_time']); ?>" />
-					<?php if ($this->config->getCfg('calUseStdTime') =='YES') { ?>
-						<input id="start_pm0" name="start_pm" type="radio" value="0" <?php if (!$this->times['start_pm']) echo "checked"; ?> />AM
-						<input id="start_pm1" name="start_pm" type="radio" value="1" <?php if ($this->times['start_pm']) echo "checked"; ?> />PM
-					<?php } ?>
-				</div>
-			</div>
-			<div class="clr"></div>
 
-			<div class="col width-50 fltlft">
-				<div class="input-wrap">
-					<label for="field-publish_down"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ENDDATE'); ?></label><br />
-					<input type="text" name="publish_down" id="field-publish_down" maxlength="10" value="<?php echo $this->escape($this->times['stop_publish']); ?>" />
-				</div>
+			<div class="input-wrap">
+				<label for="field-publish_down"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ENDDATE'); ?></label><br />
+				<?php echo JHTML::_('calendar', $this->row->publish_down, 'publish_down', 'field-publish_down'); ?>
 			</div>
-			<div class="col width-50 fltrt">
-				<div class="input-wrap">
-					<label for="field-end_time"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_ENDTIME');?></label><br />
-					<input class="inputbox" type="text" name="end_time" id="field-end_time" maxlength="8" value="<?php echo $this->escape($this->times['end_time']); ?>" />
-					<?php if ($this->config->getCfg('calUseStdTime') =='YES') { ?>
-						<input id="end_pm0" name="end_pm" type="radio"  value="0" <?php if (!$this->times['end_pm']) echo "checked"; ?> />AM
-						<input id="end_pm1" name="end_pm" type="radio"  value="1" <?php if ($this->times['end_pm']) echo "checked"; ?> />PM
-					<?php } ?>
-				</div>
-			</div>
-			<div class="clr"></div>
 		</fieldset>
 
 		<?php if ($this->row->scope == 'group') : ?>
 			<fieldset class="adminform">
 				<legend><span><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?></span></legend>
 
-				<table class="admintable">
-					<tbody>
-						<tr>
-							<td class="key" width="20%"><label for="reccurence"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?>:</label></td>
-							<td>
-								<input type="text" name="repeating_rule" value="<?php echo stripslashes($this->row->repeating_rule); ?>" />
-								<span class="hint"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT', 'http://www.kanzaki.com/docs/ical/rrule.html'); ?></span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="input-wrap">
+					<label for="field-repeating_rule"><?php echo JText::_('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE'); ?></label><br />
+					<input type="text" name="repeating_rule" value="<?php echo stripslashes($this->row->repeating_rule); ?>" />
+					<span class="block-hint"><?php echo JText::sprintf('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT', 'http://www.kanzaki.com/docs/ical/rrule.html'); ?></span>
+				</div>
 			</fieldset>
 		<?php endif; ?>
 
