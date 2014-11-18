@@ -46,14 +46,14 @@ if (!($this->comment instanceof SupportModelComment))
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
-	$base = substr($base, 0, strlen($base)-13);
+	$base = rtrim(substr($base, 0, strlen($base)-13), DS);
 	$sef = 'support/ticket/' . $this->ticket->get('id');
 }
 else
 {
 	$sef = JRoute::_($this->ticket->link());
 }
-$link = rtrim($base, DS) . DS . trim($sef, DS);
+$link = $base . DS . trim($sef, DS);
 
 // Build message
 $message = '';
@@ -61,7 +61,7 @@ if ($this->delimiter)
 {
 	$message .= $this->delimiter . "\n";
 	$message .= JText::_('COM_SUPPORT_EMAIL_REPLY_ABOVE') . "\n";
-	$message .= 'Message from ' . rtrim($juri->base(), DS) . '/support / Ticket #' . $this->ticket->get('id') . "\n";
+	$message .= 'Message from ' . $base . '/support / Ticket #' . $this->ticket->get('id') . "\n";
 }
 $message .= '----------------------------'."\n";
 $message .= strtoupper(JText::_('COM_SUPPORT_TICKET')).': '.$this->ticket->get('id')."\n";

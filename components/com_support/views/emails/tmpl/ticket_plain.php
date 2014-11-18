@@ -42,14 +42,14 @@ if (!($this->ticket instanceof SupportModelTicket))
 $base = rtrim($juri->base(), DS);
 if (substr($base, -13) == 'administrator')
 {
-	$base = substr($base, 0, strlen($base)-13);
+	$base = rtrim(substr($base, 0, strlen($base)-13), DS);
 	$sef = 'support/ticket/' . $this->ticket->get('id');
 }
 else
 {
 	$sef = JRoute::_($this->ticket->link());
 }
-$link = $base . trim($sef, DS);
+$link = $base . DS . trim($sef, DS);
 
 $usertype = JText::_('COM_SUPPORT_UNKNOWN');
 if ($this->ticket->submitter('id'))
