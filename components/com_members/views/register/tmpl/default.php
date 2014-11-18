@@ -383,7 +383,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 				<?php if ($this->registrationORCID != REG_HIDE) { ?>
 					<div class="grid">
 						<div class="col span9">
-							<label<?php echo (!empty($this->xregistration->_invalid['orcid']) ? ' class="fieldWithErrors"' : ''); ?>>
+							<label for="orcid"<?php echo (!empty($this->xregistration->_invalid['orcid']) ? ' class="fieldWithErrors"' : ''); ?>>
 								<?php echo JText::_('COM_MEMBERS_ORCID'); ?>: <?php echo ($this->registrationORCID == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 								<input name="orcid" id="orcid" type="text" value="<?php echo $this->escape($this->registration['orcid']); ?>" />
 								<?php echo (!empty($this->xregistration->_invalid['orcid'])) ? '<span class="error">' . $this->xregistration->_invalid['orcid'] . '</span>' : ''; ?>
@@ -397,16 +397,16 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 				<?php } ?>
 
 				<?php if ($this->registrationURL != REG_HIDE) { ?>
-					<label<?php echo (!empty($this->xregistration->_invalid['web']) ? ' class="fieldWithErrors"' : ''); ?>>
-						<?php echo JText::_('Website URL'); ?>: <?php echo ($this->registrationURL == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+					<label for="web"<?php echo (!empty($this->xregistration->_invalid['web']) ? ' class="fieldWithErrors"' : ''); ?>>
+						<?php echo JText::_('COM_MEMBERS_REGISTER_URL'); ?>: <?php echo ($this->registrationURL == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 						<input name="web" id="web" type="text" value="<?php echo $this->escape($this->registration['web']); ?>" placeholder="http://" />
 						<?php echo (!empty($this->xregistration->_invalid['web'])) ? '<span class="error">' . $this->xregistration->_invalid['web'] . '</span>' : ''; ?>
 					</label>
 				<?php } ?>
 
 				<?php if ($this->registrationPhone != REG_HIDE) { ?>
-					<label<?php echo (!empty($this->xregistration->_invalid['phone']) ? ' class="fieldWithErrors"' : ''); ?>>
-						<?php echo JText::_('Telephone (###-###-####)'); ?>: <?php echo ($this->registrationPhone == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+					<label for="phone"<?php echo (!empty($this->xregistration->_invalid['phone']) ? ' class="fieldWithErrors"' : ''); ?>>
+						<?php echo JText::_('COM_MEMBERS_REGISTER_PHONE'); ?>: <?php echo ($this->registrationPhone == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 						<input name="phone" id="phone" type="text" value="<?php echo $this->escape($this->registration['phone']); ?>" placeholder="###-###-####" />
 						<?php echo (!empty($this->xregistration->_invalid['phone'])) ? '<span class="error">' . $this->xregistration->_invalid['phone'] . '</span>' : ''; ?>
 					</label>
@@ -421,22 +421,29 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 		 || $this->registrationReason != REG_HIDE
 		) { ?>
 			<div class="explaination">
-				<p>By providing this information you are helping us target our efforts to our users. We will <em>not</em> disclose your personal information to others unless required by law
-				<?php if ($this->registrationEmployment != REG_HIDE || $this->registrationOrganization != REG_HIDE ) { ?>
-					, and we will <em>not</em> contact your employer
-				<?php } ?>
+				<p>
+					<?php
+					if ($this->registrationEmployment != REG_HIDE || $this->registrationOrganization != REG_HIDE )
+					{
+						echo JText::_('COM_MEMBERS_REGISTER_PERSONAL_INFO_DISCLAIMER_ALT');
+					}
+					else
+					{
+						echo JText::_('COM_MEMBERS_REGISTER_PERSONAL_INFO_DISCLAIMER');
+					}
+					?>
 				</p>
 				<?php if ($this->registrationCitizenship != REG_HIDE
 				 || $this->registrationResidency != REG_HIDE
 				 || $this->registrationSex != REG_HIDE
 				 || $this->registrationDisability != REG_HIDE
 				) { ?>
-					<p>We operate as a community service and are committed to serving a diverse population of users. This information helps us assess our progress towards that goal.</p>
+					<p><?php echo JText::_('COM_MEMBERS_REGISTER_PERSONAL_INFO_WHY_WE_COLLECT'); ?></p>
 				<?php } ?>
 			</div>
 
 			<fieldset>
-				<legend><?php echo JText::_('Personal Information'); ?></legend>
+				<legend><?php echo JText::_('COM_MEMBERS_REGISTER_LEGEND_PERSONAL_INFO'); ?></legend>
 
 				<?php if ($this->registrationEmployment != REG_HIDE) { ?>
 					<?php
@@ -448,8 +455,8 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					$rot = new MembersTableOrganizationType($database);
 					$types = $rot->find('list');
 					?>
-					<label<?php echo $fieldclass; ?>>
-						<?php echo JText::_('Employment Type'); ?>: <?php echo ($this->registrationEmployment == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+					<label for="orgtype"<?php echo $fieldclass; ?>>
+						<?php echo JText::_('COM_MEMBERS_REGISTER_EMPLOYMENT_TYPE'); ?>: <?php echo ($this->registrationEmployment == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 						<select name="orgtype" id="orgtype">
 							<?php if (empty($this->registration['orgtype']) || !empty($this->xregistration->_invalid['orgtype'])) { ?>
 								<option value="" selected="selected"><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
@@ -482,10 +489,10 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 
 					$message = (!empty($this->xregistration->_invalid['org'])) ? '<span class="error">' . $this->xregistration->_invalid['org'] . '</span>' : '';
 					?>
-					<label<?php echo ($message) ? ' class="fieldWithErrors"' : ''; ?>>
-						<?php echo JText::_('Organization or School'); ?>: <?php echo ($this->registrationOrganization == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';; ?>
+					<label for="org"<?php echo ($message) ? ' class="fieldWithErrors"' : ''; ?>>
+						<?php echo JText::_('COM_MEMBERS_REGISTER_ORGANIZATION'); ?>: <?php echo ($this->registrationOrganization == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : '';; ?>
 						<select name="org" id="org">
-							<option value=""<?php if (!$org_known) { echo ' selected="selected"'; } ?>><?php echo ($org_known) ? JText::_('(other / none)') : JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
+							<option value=""<?php if (!$org_known) { echo ' selected="selected"'; } ?>><?php echo ($org_known) ? JText::_('COM_MEMBERS_REGISTER_OTHER_NONE') : JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
 							<?php foreach ($orgs as $org) { ?>
 								<option value="<?php echo $this->escape($org->organization); ?>"<?php if ($org->organization == $this->registration['org']) { $orgtext = ''; echo ' selected="selected"'; } ?>><?php echo $this->escape($org->organization); ?></option>
 							<?php } ?>
@@ -501,18 +508,18 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					$fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
 					$reasons = array(
-						'Required for class',
-						'Developing a new course',
-						'Using in an existing course',
-						'Using simulation tools for research',
-						'Using as background for my research',
-						'Learning about subject matter',
-						'Keeping current in subject matter'
+						'COM_MEMBERS_REGISTER_REASON_REQUIRED_FOR_CLASS',
+						'COM_MEMBERS_REGISTER_REASON_DEVELOPING_COURSE',
+						'COM_MEMBERS_REGISTER_REASON_USING_IN_COURSE',
+						'COM_MEMBERS_REGISTER_REASON_USING_TOOLS_FOR_RESEARCH',
+						'COM_MEMBERS_REGISTER_REASON_USING_FOR_RESEARCH',
+						'COM_MEMBERS_REGISTER_REASON_LEARNING_ABOUT_SUBJECT',
+						'COM_MEMBERS_REGISTER_REASON_KEEPING_CURRENT_IN_SUBJECT'
 					);
 					$otherreason = '';
 					?>
-					<label<?php echo $fieldclass; ?>>
-						<?php echo JText::_('Reason for Account'); ?>: <?php echo ($this->registrationReason == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+					<label for="reason"<?php echo $fieldclass; ?>>
+						<?php echo JText::_('COM_MEMBERS_REGISTER_REASON'); ?>: <?php echo ($this->registrationReason == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 						<select name="reason" id="reason">
 						<?php if (!in_array($this->registration['reason'], $reasons)) { ?>
 							<option value="" selected="selected"><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_OR_ENTER'); ?></option>
@@ -528,7 +535,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 
 				<?php if ($this->registrationInterests != REG_HIDE) { ?>
 					<label<?php echo (!empty($this->xregistration->_invalid['interests'])) ? ' class="fieldWithErrors"' : ''; ?>>
-						<?php echo JText::_('What are you interested in?'); ?>: <?php echo ($this->registrationInterests == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
+						<?php echo JText::_('COM_MEMBERS_REGISTER_INTERESTS'); ?>: <?php echo ($this->registrationInterests == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 						<?php
 						JPluginHelper::importPlugin('hubzero');
 						$dispatcher = JDispatcher::getInstance();
@@ -553,19 +560,25 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 		 || $this->registrationRace != REG_HIDE
 		) { ?>
 			<div class="explaination">
-				<?php if ($this->registrationHispanic != REG_HIDE) { ?>
-					<p>All users are asked to clarify if they are of Hispanic origin or descent.
-				<?php } ?>
-				<?php if ($this->registrationRace != REG_HIDE) { ?>
-					, but only United States citizens and Permanent Resident Visa holders need answer the next section
-				<?php } ?>
-				<?php if ($this->registrationHispanic != REG_HIDE) { ?>
-					</p>
-				<?php } ?>
-				<p>Please provide this information if you feel comfortable doing so. This information will not affect the level of service you receive.</p>
+				<?php
+				if ($this->registrationHispanic != REG_HIDE)
+				{
+					echo '<p>';
+					if ($this->registrationRace != REG_HIDE)
+					{
+						echo JText::_('COM_MEMBERS_REGISTER_DEMOGRAPHICS_DISCLAIMER_ALT');
+					}
+					else
+					{
+						echo JText::_('COM_MEMBERS_REGISTER_DEMOGRAPHICS_DISCLAIMER');
+					}
+					echo '</p>';
+				}
+				?>
+				<p><?php echo JText::_('COM_MEMBERS_REGISTER_DEMOGRAPHICS_PLEASE_PROVIDE'); ?></p>
 			</div>
 			<fieldset>
-				<legend><?php echo JText::_('Demographics'); ?></legend>
+				<legend><?php echo JText::_('COM_MEMBERS_REGISTER_LEGEND_DEMOGRAPHICS'); ?></legend>
 
 				<?php if ($this->registrationCitizenship != REG_HIDE) { ?>
 					<?php
@@ -580,24 +593,24 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					?>
 					<fieldset<?php echo $fieldclass; ?>>
 						<legend>
-							Are you a Legal Citizen or Permanent Resident of the <abbr title="United States">US</abbr>?
+							<?php echo JText::_('COM_MEMBERS_REGISTER_CITIZEN_OF_USA'); ?>
 							<?php echo ($this->registrationCitizenship == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
 						</legend>
 
 						<?php echo ($message) ? $message . "\n" : ''; ?>
 
-						<label>
+						<label for="corigin_usyes">
 							<input type="radio" class="option" name="corigin_us" id="corigin_usyes" value="yes"<?php if (strcasecmp($this->registration['countryorigin'],'US') == 0) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('COM_MEMBERS_REGISTER_FORM_YES'); ?>
 						</label>
 
-						<label>
+						<label for="corigin_usno">
 							<input type="radio" class="option" name="corigin_us" id="corigin_usno" value="no"<?php if (!empty($this->registration['countryorigin']) && (strcasecmp($this->registration['countryorigin'], 'US') != 0)) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('COM_MEMBERS_REGISTER_FORM_NO'); ?>
 						</label>
 
-						<label>
-							<?php echo JText::_('Citizen or Permanent Resident of'); ?>:
+						<label for="corigin">
+							<?php echo JText::_('COM_MEMBERS_REGISTER_CITIZEN'); ?>:
 							<select name="corigin" id="corigin">
 								<?php if (!$this->registration['countryorigin'] || $this->registration['countryorigin'] == 'US') { ?>
 									<option value=""><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
@@ -635,24 +648,24 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					?>
 					<fieldset<?php echo $fieldclass; ?>>
 						<legend>
-							<?php echo JText::_('Do you Currently Live in the <abbr title="United States">US</abbr>?'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_RESIDENT_OF_USA'); ?>
 							<?php echo ($this->registrationResidency == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
 						</legend>
 
 						<?php echo ($message) ? $message . "\n" : ''; ?>
 
-						<label>
+						<label for="cresident_usyes">
 							<input type="radio" class="option" name="cresident_us" id="cresident_usyes" value="yes"<?php if (strcasecmp($this->registration['countryresident'], 'US') == 0) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('COM_MEMBERS_REGISTER_FORM_YES'); ?>
 						</label>
 
-						<label>
+						<label for="cresident_usno">
 							<input type="radio" class="option" name="cresident_us" id="cresident_usno" value="no"<?php if (!empty($this->registration['countryresident']) && strcasecmp($this->registration['countryresident'], 'US') != 0) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('COM_MEMBERS_REGISTER_FORM_NO'); ?>
 						</label>
 
-						<label>
-							<?php echo JText::_('Currently Living in'); ?>:
+						<label for="cresident">
+							<?php echo JText::_('COM_MEMBERS_REGISTER_RESIDENT'); ?>:
 							<select name="cresident" id="cresident">
 								<?php if (!$this->registration['countryresident'] || strcasecmp($this->registration['countryresident'], 'US') == 0) { ?>
 									<option value=""><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
@@ -682,9 +695,9 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 						<legend><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_GENDER'); ?>: <?php echo ($this->registrationSex == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?></legend>
 						<?php echo (!empty($this->xregistration->_invalid['sex'])) ? '<span class="error">' . $this->xregistration->_invalid['sex'] . '</span>' : ''; ?>
 						<input type="hidden" name="sex" value="unspecified" />
-						<label><input class="option" type="radio" name="sex" valie="male"<?php echo ($this->registration['sex'] == 'male' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_MALE'); ?></label>
-						<label><input class="option" type="radio" name="sex" valie="female"<?php echo ($this->registration['sex'] == 'female' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_FEMALE'); ?></label>
-						<label><input class="option" type="radio" name="sex" valie="refused"<?php echo ($this->registration['sex'] == 'refused' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_REFUSED'); ?></label>
+						<label for="sex_male"><input class="option" type="radio" name="sex" id="sex_male" value="male"<?php echo ($this->registration['sex'] == 'male' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_MALE'); ?></label>
+						<label for="sex_female"><input class="option" type="radio" name="sex" id="sex_female" value="female"<?php echo ($this->registration['sex'] == 'female' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_FEMALE'); ?></label>
+						<label for="sex_refused"><input class="option" type="radio" name="sex" id="sex_refused" value="refused"<?php echo ($this->registration['sex'] == 'refused' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_REFUSED'); ?></label>
 					</fieldset>
 				<?php } ?>
 
@@ -729,47 +742,47 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 
 						<label>
 							<input type="radio" class="option" name="disability" id="disabilityyes" value="yes"<?php if ($disabilityyes) { echo ' checked="checked"'; } ?> />
-							<?php echo JText::_('Yes'); ?>
+							<?php echo JText::_('JYES'); ?>
 						</label>
 
 						<fieldset>
-							<label>
+							<label for="disabilityblind">
 								<input type="checkbox" class="option" name="disabilityblind" id="disabilityblind" <?php if (in_array('blind', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/>
-								<?php echo JText::_('Blind / Visually Impaired'); ?>
+								<?php echo JText::_('COM_MEMBERS_REGISTER_DISABILITY_VISION'); ?>
 							</label>
 
-							<label>
+							<label for="disabilitydeaf">
 								<input type="checkbox" class="option" name="disabilitydeaf" id="disabilitydeaf" <?php if (in_array('deaf', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/>
-								<?php echo JText::_('Deaf / Hard of Hearing'); ?>
+								<?php echo JText::_('COM_MEMBERS_REGISTER_DISABILITY_HEARING'); ?>
 							</label>
 
-							<label>
+							<label for="disabilityphysical">
 								<input type="checkbox" class="option" name="disabilityphysical" id="disabilityphysical" <?php if (in_array('physical', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/>
-								<?php echo JText::_('Physical / Orthopedic Disability'); ?>
+								<?php echo JText::_('COM_MEMBERS_REGISTER_DISABILITY_PHYSICAL'); ?>
 							</label>
 
-							<label>
+							<label for="disabilitylearning">
 								<input type="checkbox" class="option" name="disabilitylearning" id="disabilitylearning" <?php if (in_array('learning', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/>
-								<?php echo JText::_('Learning / Cognitive Disability'); ?>
+								<?php echo JText::_('COM_MEMBERS_REGISTER_DISABILITY_LEARNING'); ?>
 							</label>
 
-							<label>
+							<label for="disabilityvocal">
 								<input type="checkbox" class="option" name="disabilityvocal" id="disabilityvocal" <?php if (in_array('vocal', $this->registration['disability'])) { echo 'checked="checked" '; } ?>/>
-								<?php echo JText::_('Vocal / Speech Disability'); ?>
+								<?php echo JText::_('COM_MEMBERS_REGISTER_DISABILITY_VOCAL'); ?>
 							</label>
 
-							<label>
-								<?php echo JText::_('Other (please specify)'); ?>:
+							<label for="disabilityother">
+								<?php echo JText::_('COM_MEMBERS_REGISTER_DISABILITY_OTHER'); ?>:
 								<input name="disabilityother" id="disabilityother" type="text" value="<?php echo $this->escape($disabilityother); ?>" />
 							</label>
 						</fieldset>
 
-						<label>
+						<label for="disabilityno">
 							<input type="radio" class="option" name="disability" id="disabilityno" value="no"<?php if (in_array('no', $this->registration['disability'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('No (none)'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_DISABILITY_NONE'); ?>
 						</label>
 
-						<label>
+						<label for="disabilityrefused">
 							<input type="radio" class="option" name="disability" id="disabilityrefused" value="refused"<?php if (in_array('refused', $this->registration['disability'])) { echo ' checked="checked" '; } ?>/>
 							<?php echo JText::_('COM_MEMBERS_REGISTER_DO_NOT_REVEAL'); ?>
 						</label>
@@ -809,42 +822,42 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					}
 					?>
 					<fieldset<?php echo $fieldclass; ?>>
-						<legend>Hispanic or Latino (<a class="popup 700x500" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raceethnic'); ?>">more information</a>) <?php echo $required; ?></legend>
+						<legend><?php echo JText::_('COM_MEMBERS_REGISTER_LEGEND_HISPANIC'); ?> (<a class="popup 700x500" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raceethnic'); ?>">more information</a>) <?php echo $required; ?></legend>
 						<?php echo $message; ?>
 
-						<label>
+						<label for="hispanicyes">
 							<input type="radio" class="option" name="hispanic" id="hispanicyes" value="yes" <?php if ($hispanicyes) { echo 'checked="checked"'; } ?> />
-							<?php echo JText::_('Yes (Hispanic Origin or Descent)'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_HISPANIC_YES'); ?>
 						</label>
 
 						<fieldset>
-							<label>
+							<label for="hispaniccuban">
 								<input type="checkbox" class="option" name="hispaniccuban" id="hispaniccuban" <?php if (in_array('cuban', $this->registration['hispanic'])) { echo 'checked="checked"'; } ?> />
-								<?php echo JText::_('Cuban'); ?>
+								<?php echo JText::_('COM_MEMBERS_REGISTER_HISPANIC_CUBAN'); ?>
 							</label>
 
-							<label>
+							<label for="hispanicmexican">
 								<input type="checkbox" class="option" name="hispanicmexican" id="hispanicmexican" <?php if (in_array('mexican', $this->registration['hispanic'])) { echo 'checked="checked"'; } ?> />
-								<?php echo JText::_('Mexican American or Chicano'); ?>
+								<?php echo JText::_('COM_MEMBERS_REGISTER_HISPANIC_MEXICAN'); ?>
 							</label>
 
-							<label>
+							<label for="hispanicpuertorican">
 								<input type="checkbox" class="option" name="hispanicpuertorican" id="hispanicpuertorican" <?php if (in_array('puertorican', $this->registration['hispanic'])) { echo 'checked="checked"'; } ?> />
-								<?php echo JText::_('Puerto Rican'); ?>
+								<?php echo JText::_('COM_MEMBERS_REGISTER_HISPANIC_PUERTO_RICAN'); ?>
 							</label>
 
-							<label>
-								<?php echo JText::_('Other Hispanic or Latino'); ?>:
+							<label for="hispanicother">
+								<?php echo JText::_('COM_MEMBERS_REGISTER_HISPANIC_OTHER'); ?>:
 								<input name="hispanicother" id="hispanicother" type="text" value="<?php echo $this->escape($hispanicother); ?>" />
 							</label>
 						</fieldset>
 
-						<label>
+						<label for="hispanicno">
 							<input type="radio" class="option" name="hispanic" id="hispanicno" value="no"<?php if (in_array('no', $this->registration['hispanic'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('No (not Hispanic or Latino)'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_HISPANIC_NO'); ?>
 						</label>
 
-						<label>
+						<label for="hispanicrefused">
 							<input type="radio" class="option" name="hispanic" id="hispanicrefused" value="refused"<?php if (in_array('refused', $this->registration['hispanic'])) { echo ' checked="checked" '; } ?>/>
 							<?php echo JText::_('COM_MEMBERS_REGISTER_DO_NOT_REVEAL'); ?>
 						</label>
@@ -863,41 +876,41 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					}
 					?>
 					<fieldset<?php echo $fieldclass; ?>>
-						<legend>U.S. Citizens and Permanent Residents Only (<a class="popup 675x678" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raceethnic'); ?>">more information</a>) <?php echo $required; ?></legend>
+						<legend><?php echo JText::_('COM_MEMBERS_REGISTER_LEGEND_RACE'); ?> (<a class="popup 675x678" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=raceethnic'); ?>">more information</a>) <?php echo $required; ?></legend>
 
-						<p class="hint"><?php echo JText::_('Select one or more that apply.'); ?></p>
+						<p class="hint"><?php echo JText::_('COM_MEMBERS_REGISTER_SELECT_ONE_OR_MORE'); ?></p>
 
-						<label>
+						<label for="racenativeamerican">
 							<input type="checkbox" class="option" name="racenativeamerican" id="racenativeamerican" value="nativeamerican"<?php if (in_array('nativeamerican', $this->registration['race'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('American Indian or Alaska Native'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_RACE_AMERICAN_INDIAN'); ?>
 						</label>
 
-						<label class="indent">
-							<?php echo JText::_('Tribal Affiliation(s)'); ?>:
+						<label for="racenativetribe" class="indent">
+							<?php echo JText::_('COM_MEMBERS_REGISTER_RACE_TRIBE'); ?>:
 							<input name="racenativetribe" id="racenativetribe" type="text" value="<?php echo $this->escape($this->registration['nativetribe']); ?>" />
 						</label>
 
-						<label>
+						<label for="raceasian">
 							<input type="checkbox" class="option" name="raceasian" id="raceasian"<?php if (in_array('asian', $this->registration['race'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('Asian'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_RACE_ASIAN'); ?>
 						</label>
 
-						<label>
+						<label for="raceblack">
 							<input type="checkbox" class="option" name="raceblack" id="raceblack"<?php if (in_array('black', $this->registration['race'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('Black or African American'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_RACE_BLACK'); ?>
 						</label>
 
-						<label>
+						<label for="racehawaiian">
 							<input type="checkbox" class="option" name="racehawaiian" id="racehawaiian"<?php if (in_array('hawaiian', $this->registration['race'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('Native Hawaiian or Other Pacific Islander'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_RACE_PACIFIC_ISLANDER'); ?>
 						</label>
 
-						<label>
+						<label for="racewhite">
 							<input type="checkbox" class="option" name="racewhite" id="racewhite"<?php if (in_array('white', $this->registration['race'])) { echo ' checked="checked" '; } ?>/>
-							<?php echo JText::_('White'); ?>
+							<?php echo JText::_('COM_MEMBERS_REGISTER_RACE_WHITE'); ?>
 						</label>
 
-						<label>
+						<label for="racerefused">
 							<input type="checkbox" class="option" name="racerefused" id="racerefused"<?php if (in_array('refused', $this->registration['race'])) { echo ' checked="checked" '; } ?>/>
 							<?php echo JText::_('COM_MEMBERS_REGISTER_DO_NOT_REVEAL'); ?>
 						</label>
@@ -928,7 +941,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 			}
 			?>
 			<fieldset>
-				<legend><?php echo JText::_('Receive Email Updates'); ?></legend>
+				<legend><?php echo JText::_('COM_MEMBERS_REGISTER_LEGEND_EMAIL_UPDATES'); ?></legend>
 
 				<label for="mailPreferenceOption"<?php echo $fieldclass; ?>>
 					<?php echo JText::_('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES'); ?> <?php echo ($this->registrationOptIn == REG_REQUIRED) ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
@@ -973,10 +986,10 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 			<fieldset>
 				<legend><?php echo JText::_('COM_MEMBERS_REGISTER_TERMS_AND_CONDITIONS'); ?></legend>
 
-				<label<?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ? ' class="fieldWithErrors"' : ''; ?>>
+				<label for="usageAgreement"<?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ? ' class="fieldWithErrors"' : ''; ?>>
 					<input type="checkbox" class="option" id="usageAgreement" value="1" name="usageAgreement"<?php if ($this->registration['usageAgreement']) { echo ' checked="checked"'; } ?>/>
 					<?php echo ($this->registrationTOU == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
-					<?php echo JText::_('Yes, I have read and agree to the <a class="popup 700x500" href="' . JURI::base(true) . '/legal/terms">Terms of Use</a>.'); ?>
+					<?php echo JText::sprintf('COM_MEMBERS_REGISTER_TOS', JURI::base(true)); ?>
 				</label>
 
 				<?php echo (!empty($this->xregistration->_invalid['usageAgreement'])) ? '<span class="error">' . $this->xregistration->_invalid['usageAgreement'] . '</span>' : ''; ?>
