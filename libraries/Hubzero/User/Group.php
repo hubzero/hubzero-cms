@@ -1154,11 +1154,9 @@ class Group extends Object
 			}
 		}
 
-		if (in_array('all', $types))
-		{
-			$where_clause = '';
-		}
-		else
+		$where = array();
+
+		if (!in_array('all', $types))
 		{
 			$t = implode(",", $types);
 
@@ -1169,151 +1167,82 @@ class Group extends Object
 			$t = str_replace('course', 4, $t);
 			$t = str_replace('system', 0, $t);
 
-			$where_clause = 'WHERE type IN (' . $t . ')';
+			$where[] = 'type IN (' . $t . ')';
 		}
 
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
-			if ($where_clause != '')
+			if (is_numeric($filters['search']))
 			{
-				$where_clause .= " AND";
+				$where[] = "gidNumber=" . $db->quote($filters['search']);
 			}
 			else
 			{
-				$where_clause = "WHERE";
+				$where[] = "(LOWER(description) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(cn) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . ")";
 			}
-
-			$where_clause .= " (LOWER(description) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . " OR LOWER(cn) LIKE " . $db->quote('%' . strtolower($filters['search']) . '%') . ")";
 		}
 
 		if (isset($filters['index']) && $filters['index'] != '')
 		{
-			if ($where_clause != '')
-			{
-				$where_clause .= " AND";
-			}
-			else
-			{
-				$where_clause = "WHERE";
-			}
-
-			$where_clause .= " (LOWER(description) LIKE " . $db->quote(strtolower($filters['index']) . '%') . ") ";
+			$where[] = "(LOWER(description) LIKE " . $db->quote(strtolower($filters['index']) . '%') . ")";
 		}
 
 		if (isset($filters['authorized']) && $filters['authorized'] === 'admin')
 		{
 			if (isset($filters['discoverability']) && $filters['discoverability'] != '')
 			{
-				if ($where_clause != '')
-				{
-					$where_clause .= " AND";
-				}
-				else
-				{
-					$where_clause .= "WHERE";
-				}
-
 				switch ($filters['discoverability'])
 				{
 					case 0:
-						$where_clause .= " discoverability=0";
+						$where[] = "discoverability=0";
 						break;
 					case 1:
-						$where_clause .= " discoverability=1";
+						$where[] = "discoverability=1";
 						break;
 				}
-			}
-			else
-			{
-				$where_clause .= "";
 			}
 		}
 		else
 		{
-			if ($where_clause != '')
-			{
-				$where_clause .= " AND";
-			}
-			else
-			{
-				$where_clause .= "WHERE";
-			}
-
-			$where_clause .= " discoverability=0";
+			$where[] = "discoverability=0";
 		}
 
 		if (isset($filters['policy']) && $filters['policy'])
 		{
-			if ($where_clause != '')
-			{
-				$where_clause .= " AND";
-			}
-			else
-			{
-				$where_clause .= "WHERE";
-			}
-
 			switch ($filters['policy'])
 			{
 				case 'closed':
-					$where_clause .= " join_policy=3";
+					$where[] = "join_policy=3";
 					break;
 				case 'invite':
-					$where_clause .= " join_policy=2";
+					$where[] = "join_policy=2";
 					break;
 				case 'restricted':
-					$where_clause .= " join_policy=1";
+					$where[] = "join_policy=1";
 					break;
 				case 'open':
 				default:
-					$where_clause .= " join_policy=0";
+					$where[] = "join_policy=0";
 					break;
 			}
 		}
 
 		if (isset($filters['published']) && $filters['published'] != '')
 		{
-			if ($where_clause != '')
-			{
-				$where_clause .= " AND";
-			}
-			else
-			{
-				$where_clause .= "WHERE";
-			}
-
-			$where_clause .= " published=".$filters['published'];
+			$where[] = "published=" . $filters['published'];
 		}
 
 		if (isset($filters['approved']) && $filters['approved'] != '')
 		{
-			if ($where_clause != '')
-			{
-				$where_clause .= " AND";
-			}
-			else
-			{
-				$where_clause .= "WHERE";
-			}
-
-			$where_clause .= " approved=".$filters['approved'];
+			$where[] = "approved=" . $filters['approved'];
 		}
 
 		if (isset($filters['created']) && $filters['created'] != '')
 		{
-			if ($where_clause != '')
-			{
-				$where_clause .= " AND";
-			}
-			else
-			{
-				$where_clause .= "WHERE";
-			}
-
 			if ($filters['created'] == 'pastday')
 			{
 				$pastDay = date("Y-m-d H:i:s", strtotime('-1 DAY'));
-				$where_clause .= " created >= '" . $pastDay . "'";
+				$where[] = "created >= '" . $pastDay . "'";
 			}
 		}
 
@@ -1325,7 +1254,11 @@ class Group extends Object
 
 		$field = implode(',', $filters['fields']);
 
-		$query = "SELECT $field FROM `#__xgroups` $where_clause";
+		$query = "SELECT $field FROM `#__xgroups`";
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
 
 		if (isset($filters['sortby']) && $filters['sortby'] != '')
 		{
