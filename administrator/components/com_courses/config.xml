@@ -34,7 +34,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="default_asset_groups" type="text" menu="hide" default="Lectures, Homework, Exam" label="COM_COURSES_ASSETGROUPS_LABEL" description="COM_COURSES_ASSETGROUPS_DESC" size="50" />
 		<field name="default_enrollment" type="list" default="0" label="COM_COURSES_ENROLLMENT_LABEL" description="COM_COURSES_ENROLLMENT_DESC">
 			<option value="0">COM_COURSES_FIELD_ENROLLMENT_OPEN</option>
-			<option value="1">COM_COURSES_FIELD_ENROLLMENT_REQUIRED</option>
+			<option value="1">COM_COURSES_FIELD_ENROLLMENT_RESTRICTED</option>
 			<option value="2">COM_COURSES_FIELD_ENROLLMENT_CLOSED</option>
 		</field>
 		<field name="section_grade_policy" type="list" default="1" label="COM_COURSES_GRADEPOLICY_LABEL" description="COM_COURSES_GRADEPOLICY_DESC">
