@@ -45,11 +45,13 @@ class MembersControllerRegistration extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		$config = new JParameter($this->config->toString());
-		$config->loadSetupFile(JPATH_COMPONENT . DS . 'config.xml');
+		$config = new JForm('com_members.registration');
+		$config->loadFile(JPATH_COMPONENT . DS . 'config.xml', true, '/config');
+		$config->bind($this->config->toArray());
+
 		$this->config = $config;
 
-		$this->view->params = $this->config->renderToArray();
+		$this->view->params = $config->getFieldset('registration');
 
 		// Set any errors
 		if ($this->getError())

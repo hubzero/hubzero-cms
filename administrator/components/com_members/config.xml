@@ -28,31 +28,6 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="registrationUsername"  type="text" menu="hide" default="RRUU" label="Username" description="" />
-		<param name="registrationPassword"  type="text" menu="hide" default="RRUU" label="Password" description="" />
-		<param name="registrationConfirmPassword"  type="text" menu="hide" default="RRUU" label="Password Confirmation" description="" />
-		<param name="registrationFullname"  type="text" menu="hide" default="RRUU" label="Full Name" description="" />
-		<param name="registrationEmail"  type="text" menu="hide" default="RRUU" label="Email" description="" />
-		<param name="registrationConfirmEmail"  type="text" menu="hide" default="RRUU" label="Email Confirmation" description="" />
-		<param name="registrationURL"  type="text" menu="hide" default="OHHO" label="URL" description="" />
-		<param name="registrationPhone"  type="text" menu="hide" default="OHHO" label="Phone" description="" />
-		<param name="registrationEmployment"  type="text" menu="hide" default="RORO" label="Employment" description="" />
-		<param name="registrationOrganization"  type="text" menu="hide" default="OOOO" label="Organization" description="" />
-		<param name="registrationCitizenship"  type="text" menu="hide" default="RHRH" label="Citizenship" description="" />
-		<param name="registrationResidency"  type="text" menu="hide" default="RHRH" label="Residency" description="" />
-		<param name="registrationSex"  type="text" menu="hide" default="RHRH" label="Sex" description="" />
-		<param name="registrationDisability"  type="text" menu="hide" default="RHRH" label="Disability" description="" />
-		<param name="registrationHispanic"  type="text" menu="hide" default="RHRH" label="Hispanic" description="" />
-		<param name="registrationRace"  type="text" menu="hide" default="OHHH" label="Race" description="" />
-		<param name="registrationInterests"  type="text" menu="hide" default="OOOO" label="Interests" description="" />
-		<param name="registrationReason"  type="text" menu="hide" default="OOOO" label="Reason" description=""/>
-		<param name="registrationOptIn"  type="text" menu="hide" default="OOUU" label="OptIn" description="" />
-		<param name="registrationCAPTCHA"  type="text" menu="hide" default="RHHH" label="CAPTCHA" description="CAPTCHA check" />
-		<param name="registrationTOU"  type="text" menu="hide" default="RHRH" label="TOU" description="Terms of Use" />
-		<param name="registrationAddress"  type="text" menu="hide" default="--OO" label="Address" description="" />
-		<param name="registrationORCID"  type="text" menu="hide" default="HHHH" label="ORCID" description="" />
-	</params>
 	<fieldset name="basic">
 		<field name="contribution_counting" type="list" default="1" label="Contribution Counting" description="Enable (potentially slow) contribution counting in browse view">
 			<option value="0">Disable</option>

@@ -77,15 +77,15 @@ foreach ($this->params as $field => $values)
 {
 	if (substr($field, 0, strlen('registration')) == 'registration')
 	{
-		$title = $values[3];
-		$value = $values[4];
+		$title = $values->title;
+		$value = $values->value;
 
 		$create = strtoupper(substr($value, 0, 1));
 		$proxy  = strtoupper(substr($value, 1, 1));
 		$update = strtoupper(substr($value, 2, 1));
 		$edit   = strtoupper(substr($value, 3, 1));
 
-		$field = str_replace('registration', '', $field);
+		$field = str_replace('registration', '', $values->name);
 ?>
 				<tr>
 					<td><?php echo $title; ?></td>
