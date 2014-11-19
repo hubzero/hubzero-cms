@@ -14,11 +14,12 @@
 		width: auto;
 	}
 
-	#component-form 
-
 	.fields,
 	.query {
 		padding: 0.5em 1em 1em 1em;
+	}
+	.fields.title {
+		margin: 0;
 	}
 	.fields.sort {
 		padding-top: 1.5em;
@@ -26,17 +27,23 @@
 	.fields.sort>p {
 		padding: 0;
 	}
-	.query {
-	}
 	.query fieldset {
 		margin: 0;
 		border: none;
 		padding: 0;
 	}
 	.query fieldset p {
-		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-		margin: 0;
 		padding: 0.5em;
+		background: #efefef;
+		margin: 0 0 0.2em 0;
+		border-radius: 0.25em;
+		position: relative;
+	}
+	.query fieldset p input[type=text],
+	.query fieldset p input[type=password],
+	.query fieldset p input[type=email],
+	.query fieldset p select {
+		margin: 0;
 	}
 	.query fieldset div.querycntnr {
 		position: relative;
@@ -46,7 +53,6 @@
 		background: transparent;
 		border: none;
 		padding: 0.5em 0;
-		border-bottom: 2px solid #ccc;
 	}
 	.query fieldset legend {
 		padding: 0.5em 0;
@@ -55,28 +61,25 @@
 		background: #fff;
 	}
 	.query fieldset fieldset p.operator {
+		background: #efefef;
+		margin: 0 0 0.25em 0;
 		padding: 0.5em;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+		border-radius: 0.25em;
 	}
 	.query fieldset fieldset p.conditions {
-		padding-left: 3em;
+		margin-left: 3.4em;
 	}
 	.query fieldset fieldset fieldset p.operator {
-		padding-left: 3em;
+		margin-left: 3.4em;
 	}
 	.query fieldset fieldset fieldset p.conditions {
-		padding-left: 6em;
-	}
-	.query fieldset fieldset fieldset p.operator:before,
-	.query fieldset fieldset p.conditions:before {
-		content: "\221F";
-		font-size: 18px;
-		padding-right: 0.2em;
+		margin-left: 6.8em;
 	}
 	.query fieldset div.querycntnr span.query-btns {
 		position: absolute;
 		bottom: 0.5em;
 		right: 0;
+		z-index: 9999;
 	}
 	table.admintable .query select, 
 	table.admintable .query .input-text, 
@@ -92,7 +95,6 @@
 		background: #fff;
 	}
 	.query fieldset button {
-		/*border: 2px solid #cacaca;*/
 		border: none;
 		width: 24px;
 		height: 24px;
@@ -124,7 +126,7 @@
 		line-height: 17px;
 	}
 	.query fieldset button.remove:before {
-		content: "\00D7"; /* \2297 */
+		content: "\00D7";
 	}
 	.query fieldset button.add:before {
 		content: "+";
