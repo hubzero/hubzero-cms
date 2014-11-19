@@ -120,7 +120,7 @@ class Helper extends Module
 		$sql = "SELECT id, created, YEAR(created) AS `year`, MONTH(created) AS `month`, status, owner
 				FROM `#__support_tickets`
 				WHERE report!=''
-				AND type=0 AND open=1";
+				AND type=0";
 		$sql .= " AND (`group`='' OR `group` IS NULL)";
 		$sql .= " ORDER BY created ASC";
 		$database->setQuery($sql);
