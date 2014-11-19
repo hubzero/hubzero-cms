@@ -76,10 +76,12 @@ $this->css('course.css')
 			<?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
 				<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" class="form-inplace" method="post">
 					<label for="field_title">
+						<?php echo JText::_('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 						<input type="text" name="course[title]" id="field_title" value="<?php echo $this->escape($this->course->get('title')); ?>" />
 					</label>
 
 					<label for="field_blurb">
+						<?php echo JText::_('COM_COURSES_FIELD_BLURB'); ?>
 						<textarea name="course[blurb]" id="field_blurb" cols="50" rows="5"><?php echo $this->escape($this->course->get('blurb')); ?></textarea>
 					</label>
 
