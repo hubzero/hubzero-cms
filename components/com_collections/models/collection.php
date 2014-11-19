@@ -586,7 +586,11 @@ class CollectionsModelCollection extends CollectionsModelAbstract
 		{
 			case 'group':
 				$group = \Hubzero\User\Group::getInstance($this->get('object_id'));
-				$href = 'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->get('alias');
+				$href = 'index.php?option=com_groups';
+				if ($group)
+				{
+					$href .= '&cn=' . $group->get('cn') . '&active=collections&scope=' . $this->get('alias');
+				}
 			break;
 
 			case 'member':
