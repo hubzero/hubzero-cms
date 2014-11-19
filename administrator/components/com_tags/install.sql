@@ -26,24 +26,78 @@
  * HUBzero is a registered trademark of Purdue University.
  */
 
+# table #__tags
+# ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `#__tags` (
-  `id` int(11) NOT NULL auto_increment,
-  `tag` varchar(100) default NULL,
-  `raw_tag` varchar(100) default NULL,
-  `alias` varchar(100) default NULL,
-  `description` text,
-  `admin` tinyint(3) NOT NULL default '0',
-  PRIMARY KEY  (`id`),
-  FULLTEXT KEY `description` (`description`)
-) TYPE=MyISAM DEFAULT CHARSET utf8;
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tag` varchar(100) NOT NULL DEFAULT '',
+  `raw_tag` varchar(100) NOT NULL DEFAULT '',
+  `description` text NOT NULL,
+  `admin` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) NOT NULL DEFAULT '0',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_tag` (`tag`),
+  FULLTEXT KEY `ftidx_raw_tag_description` (`raw_tag`,`description`),
+  FULLTEXT KEY `ftidx_description` (`description`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+# table #__tags_log
+# ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `#__tags_log` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tag_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `timestamp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `action` varchar(50) NOT NULL DEFAULT '',
+  `comments` text NOT NULL,
+  `actorid` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_tag_id` (`tag_id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+# table #__tags_object
+# ------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `#__tags_object` (
-  `id` int(11) NOT NULL auto_increment,
-  `objectid` int(11) default NULL,
-  `tagid` int(11) default NULL,
-  `strength` tinyint(3) default '0',
-  `taggerid` int(11) default '0',
-  `taggedon` datetime default '0000-00-00 00:00:00',
-  `tbl` varchar(255) default NULL,
-  PRIMARY KEY  (`id`)
-) TYPE=MyISAM DEFAULT CHARSET utf8;
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `objectid` int(11) unsigned NOT NULL DEFAULT '0',
+  `tagid` int(11) unsigned NOT NULL DEFAULT '0',
+  `strength` tinyint(3) NOT NULL DEFAULT '0',
+  `taggerid` int(11) unsigned NOT NULL DEFAULT '0',
+  `taggedon` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `tbl` varchar(255) NOT NULL DEFAULT '',
+  `label` varchar(30) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `idx_tagid` (`tagid`),
+  KEY `idx_objectid_tbl` (`objectid`,`tbl`),
+  KEY `idx_label_tagid` (`label`,`tagid`),
+  KEY `idx_tbl_objectid_label_tagid` (`tbl`,`objectid`,`label`,`tagid`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+
+# table #__tags_substitute
+# ------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS `#__tags_substitute` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tag_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `tag` varchar(100) NOT NULL DEFAULT '',
+  `raw_tag` varchar(100) NOT NULL DEFAULT '',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`),
+  KEY `idx_tag_id` (`tag_id`),
+  KEY `idx_created_by` (`created_by`),
+  KEY `idx_tag` (`tag`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

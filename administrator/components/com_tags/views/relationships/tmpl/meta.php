@@ -36,12 +36,11 @@ JToolBarHelper::title(JText::_('COM_TAGS') . ': ' . JText::_('COM_TAGS_FOCUS_ARE
 //JToolBarHelper::cancel();
 //JToolBarHelper::custom('index', 'edit', ' ', 'Tag Relationships', false);
 JToolBarHelper::spacer();
-JToolBarHelper::help('focusareas.html', true);
+JToolBarHelper::help('focusareas');
 
 JHTML::_('behavior.framework');
 
-$doc = JFactory::getDocument();
-$doc->addScript('/administrator/components/' . $this->option . '/assets/js/tag_graph.js');
+$this->js('tag_graph.js');
 
 $dbh = JFactory::getDBO();
 $dbh->setQuery(
