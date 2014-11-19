@@ -38,13 +38,11 @@ if ($canDo->get('core.admin'))
 {
 	JToolBarHelper::preferences('com_groups', '550');
 	JToolBarHelper::spacer();
-
-	if ($this->config->get('super_gitlab', 0))
-	{
-		JToolBarHelper::custom('update', 'refresh', '', 'COM_GROUPS_UPDATE_CODE');
-		JToolBarHelper::spacer();
-	}
-
+}
+if ($canDo->get('core.manage') && $this->config->get('super_gitlab', 0))
+{
+	JToolBarHelper::custom('update', 'refresh', '', 'COM_GROUPS_UPDATE_CODE');
+	JToolBarHelper::spacer();
 }
 if ($canDo->get('core.create'))
 {
