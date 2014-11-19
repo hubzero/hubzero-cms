@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-JToolBarHelper::title( JText::_( 'MEMBERS' ).': Manage Points', 'user.png' );
+JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_MENU_POINTS'), 'user.png' );
 JToolBarHelper::preferences('com_members', '550');
 
 ?>
@@ -41,7 +41,7 @@ JToolBarHelper::preferences('com_members', '550');
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-<?php if ($this->rows) { ?>
+	<?php if ($this->rows) { ?>
 		<table class="adminlist">
 			<caption>Top Earners</caption>
 			<thead>
@@ -54,42 +54,42 @@ JToolBarHelper::preferences('com_members', '550');
 				</tr>
 			</thead>
 			<tbody>
-<?php
-$k = 0;
-for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
-{
-	$row = &$this->rows[$i];
-	$wuser = \Hubzero\User\Profile::getInstance( $row->uid );
-	if (is_object($wuser)) {
-		$name = $wuser->get('name');
-	} else {
-		$name = JText::_('UNKNOWN');
-	}
-?>
+				<?php
+				$k = 0;
+				for ($i=0, $n=count($this->rows); $i < $n; $i++)
+				{
+					$row =& $this->rows[$i];
+					$wuser = \Hubzero\User\Profile::getInstance($row->uid);
+					$name  = JText::_('COM_MEMBERS_UNKNOWN');
+					if (is_object($wuser))
+					{
+						$name = $wuser->get('name');
+					}
+				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<th scope="row"><?php echo $name; ?></th>
 					<td><?php echo $row->uid; ?></td>
 					<td><?php echo $row->earnings; ?></td>
 					<td><?php echo $row->balance; ?></td>
 					<td>
-						<a class="icon-16-preview" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;uid=<?php echo $row->uid; ?>">
+						<a class="icon-16-preview" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&uid=' . $row->uid); ?>">
 							<span>view</span>
 						</a>
 					</td>
 				</tr>
-<?php
-	$k = 1 - $k;
-}
-?>
+				<?php
+					$k = 1 - $k;
+				}
+				?>
 			</tbody>
 		</table>
-<?php } else { ?>
+	<?php } else { ?>
 		<p>No user information found.</p>
-<?php } ?>
+	<?php } ?>
 
-<?php if (count($this->stats) > 0) { ?>
+	<?php if (count($this->stats) > 0) { ?>
 		<table class="adminlist">
-			<caption>Economy Activity Stats as of <?php echo JHTML::_('date', date( "Y-m-d H:i:s" ), JText::_('DATE_FORMAT_HZ1')); ?></caption>
+			<caption>Economy Activity Stats as of <?php echo JHTML::_('date', JFactory::getDate()->toSql(), JText::_('DATE_FORMAT_HZ1')); ?></caption>
 			<thead>
 				<tr>
 					<th scope="col" rowspan="2">Activity</th>
@@ -108,51 +108,51 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</tr>
 			</thead>
 			<tbody>
-<?php
-
-foreach ($this->stats as $stat)
-{
-	if (isset($stat['class'])) {
-		switch ( $stat['class'] )
-		{
-			case 'spendtotal':
-				$class = ' style="color:red; background-color:#f2ede9;border-top:2px solid #ccc;"';
-			break;
-			case 'earntotal':
-				$class = ' style="color:green; background-color:#ecf9e9;"';
-			break;
-			case 'royaltytotal':
-				$class = ' style="color:#000000;border-top:2px solid #ccc;background-color:#efefef;"';
-			break;
-			default:
-				$class = '';
-			break;
-		}
-	}
-?>
-				<tr>
-					<th scope="row"<?php echo $class; ?>><?php echo $stat['memo']; ?></th>
-					<td<?php echo $class; ?>><?php echo $stat['alltimepts']; ?></td>
-					<td><?php echo $stat['alltimetran']; ?></td>
-					<td><?php echo isset($stat['avg']) ? $stat['avg'] : ''; ?></td>
-					<td><?php echo isset($stat['thismonthpts']) ? $stat['thismonthpts'] : '' ; ?></td>
-					<td><?php echo isset($stat['thismonthtran']) ? $stat['thismonthtran'] : '' ; ?></td>
-					<td><?php echo $stat['lastmonthpts']; ?></td>
-					<td><?php echo $stat['lastmonthtran']; ?></td>
-				</tr>
-<?php
-}
-?>
+				<?php
+				foreach ($this->stats as $stat)
+				{
+					if (isset($stat['class']))
+					{
+						switch ($stat['class'])
+						{
+							case 'spendtotal':
+								$class = ' style="color:red; background-color:#f2ede9;border-top:2px solid #ccc;"';
+							break;
+							case 'earntotal':
+								$class = ' style="color:green; background-color:#ecf9e9;"';
+							break;
+							case 'royaltytotal':
+								$class = ' style="color:#000000;border-top:2px solid #ccc;background-color:#efefef;"';
+							break;
+							default:
+								$class = '';
+							break;
+						}
+					}
+					?>
+					<tr>
+						<th scope="row"<?php echo $class; ?>><?php echo $stat['memo']; ?></th>
+						<td<?php echo $class; ?>><?php echo $stat['alltimepts']; ?></td>
+						<td><?php echo $stat['alltimetran']; ?></td>
+						<td><?php echo isset($stat['avg']) ? $stat['avg'] : ''; ?></td>
+						<td><?php echo isset($stat['thismonthpts']) ? $stat['thismonthpts'] : '' ; ?></td>
+						<td><?php echo isset($stat['thismonthtran']) ? $stat['thismonthtran'] : '' ; ?></td>
+						<td><?php echo $stat['lastmonthpts']; ?></td>
+						<td><?php echo $stat['lastmonthtran']; ?></td>
+					</tr>
+					<?php
+				}
+				?>
 			</tbody>
 		</table>
-		<!--<p>Distribute <a href="index.php?option=<?php echo $this->option; ?>&amp;task=royalty&amp;auto=0">Royalties</a> for current month.</p>//-->
-<?php } else { ?>
+		<!--<p>Distribute <a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=royalty&auto=0'); ?>">Royalties</a> for current month.</p>//-->
+	<?php } else { ?>
 		<p>No summary information found.</p>
-<?php } ?>
+	<?php } ?>
 
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

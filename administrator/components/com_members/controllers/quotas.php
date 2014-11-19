@@ -160,7 +160,7 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 
 		foreach ($classes as $class)
 		{
-			$options[] = JHTML::_('select.option', $class->id, JText::_($class->alias), 'value', 'text');
+			$options[] = JHTML::_('select.option', $class->id, $class->alias, 'value', 'text');
 			if ($class->id == $this->view->row->class_id)
 			{
 				$selected = $class->id;

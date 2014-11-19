@@ -57,27 +57,30 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 $canDo = MembersHelper::getActions('component');
 
 JSubMenuHelper::addEntry(
-	JText::_('Members'),
+	JText::_('COM_MEMBERS'),
 	'index.php?option=com_members',
 	$controllerName == 'members'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Who\'s Online'),
+	JText::_('COM_MEMBERS_MENU_ONLINE'),
 	'index.php?option=com_members&controller=whosonline',
 	$controllerName == 'whosonline'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Messaging'),
+	JText::_('COM_MEMBERS_MENU_MESSAGING'),
 	'index.php?option=com_members&controller=messages',
 	$controllerName == 'messages'
 );
+if (JComponentHelper::getParams($option)->get('bankAccounts'))
+{
+	JSubMenuHelper::addEntry(
+		JText::_('COM_MEMBERS_MENU_POINTS'),
+		'index.php?option=com_members&controller=points',
+		$controllerName == 'points'
+	);
+}
 JSubMenuHelper::addEntry(
-	JText::_('Points'),
-	'index.php?option=com_members&controller=points',
-	$controllerName == 'points'
-);
-JSubMenuHelper::addEntry(
-	JText::_('Plugins'),
+	JText::_('COM_MEMBERS_MENU_PLUGINS'),
 	'index.php?option=' . $option . '&controller=plugins',
 	$controllerName == 'plugins'
 );
@@ -92,12 +95,12 @@ if ($canDo->get('core.admin'))
 }
 
 JSubMenuHelper::addEntry(
-	JText::_('Quotas'),
+	JText::_('COM_MEMBERS_MENU_QUOTAS'),
 	'index.php?option=com_members&controller=quotas',
 	$controllerName == 'quotas'
 );
 JSubMenuHelper::addEntry(
-	JText::_('Registration'),
+	JText::_('COM_MEMBERS_MENU_REGISTRATION'),
 	'index.php?option=' .  $option . '&controller=registration',
 	(in_array($controllerName, array('registration', 'organizations', 'employers', 'incremental', 'premis')))
 );
@@ -105,7 +108,7 @@ JSubMenuHelper::addEntry(
 if ($canDo->get('core.admin'))
 {
 	JSubMenuHelper::addEntry(
-		JText::_('Import'),
+		JText::_('COM_MEMBERS_MENU_IMPORT'),
 		'index.php?option=com_members&controller=import',
 		($controllerName == 'import' || $controllerName == 'importhooks')
 	);

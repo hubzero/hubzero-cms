@@ -32,9 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 
 $canDo = MembersHelper::getActions('component');
 
-$text = ($this->task == 'edit' ? JText::_('EDIT') : JText::_('NEW'));
+$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
-JToolBarHelper::title(JText::_('MEMBER') . ': ' . JText::_('Messaging') . ': ' . $text, 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_MENU_MESSAGING') . ': ' . $text, 'user.png');
 if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::apply();
@@ -59,18 +59,18 @@ function submitbutton(pressbutton)
 	<?php } ?>
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Message Action'); ?></span></legend>
+			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
 			<div class="input-wrap">
-				<label for="field-component"><?php echo JText::_('Component'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-component"><?php echo JText::_('COM_MEMBERS_FIELD_COMPONENT'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[component]" id="field-component" value="<?php echo $this->escape(stripslashes($this->row->component)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-action"><?php echo JText::_('Action'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-action"><?php echo JText::_('COM_MEMBERS_FIELD_ACTION'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[action]" id="field-action" value="<?php echo $this->escape(stripslashes($this->row->action)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="field-component"><?php echo JText::_('Action Description'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
+				<label for="field-component"><?php echo JText::_('COM_MEMBERS_FIELD_DESCRIPTION'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label>
 				<input type="text" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 		</fieldset>
@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 		<table class="meta">
 			<tbody>
 				<tr>
-					<th><?php echo JText::_('ID'); ?></th>
+					<th><?php echo JText::_('COM_MEMBERS_FIELD_ID'); ?></th>
 					<td><?php echo $this->row->id; ?></td>
 				</tr>
 			</tbody>

@@ -98,7 +98,7 @@ foreach ($this->params as $field => $values)
 								<option value="U"<?php if ($create == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('COM_MEMBERS_REGISTRATION_READ_ONLY'); ?></option>
 							</select>
 						<?php else: ?>
-							<?php echo JText::_('n/a'); ?>
+							<?php echo JText::_('COM_MEMBERS_NOT_APPLICABLE'); ?>
 							<input type="hidden" name="settings[<?php echo $field; ?>][create]" value="-">
 						<?php endif; ?>
 					</td>
@@ -111,7 +111,7 @@ foreach ($this->params as $field => $values)
 								<option value="U"<?php if ($proxy == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('COM_MEMBERS_REGISTRATION_READ_ONLY'); ?></option>
 							</select>
 						<?php else: ?>
-							<?php echo JText::_('n/a'); ?>
+							<?php echo JText::_('COM_MEMBERS_NOT_APPLICABLE'); ?>
 							<input type="hidden" name="settings[<?php echo $field; ?>][proxy]" value="-">
 						<?php endif; ?>
 					</td>
@@ -124,7 +124,7 @@ foreach ($this->params as $field => $values)
 								<option value="U"<?php if ($update == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('COM_MEMBERS_REGISTRATION_READ_ONLY'); ?></option>
 							</select>
 						<?php else: ?>
-							<?php echo JText::_('n/a'); ?>
+							<?php echo JText::_('COM_MEMBERS_NOT_APPLICABLE'); ?>
 							<input type="hidden" name="settings[<?php echo $field; ?>][update]" value="-">
 						<?php endif; ?>
 					</td>
@@ -137,7 +137,7 @@ foreach ($this->params as $field => $values)
 								<option value="U"<?php if ($edit == 'U') { echo ' selected="selected"'; }?>><?php echo JText::_('COM_MEMBERS_REGISTRATION_READ_ONLY'); ?></option>
 							</select>
 						<?php else: ?>
-							<?php echo JText::_('n/a'); ?>
+							<?php echo JText::_('COM_MEMBERS_NOT_APPLICABLE'); ?>
 							<input type="hidden" name="settings[<?php echo $field; ?>][edit]" value="-">
 						<?php endif; ?>
 					</td>

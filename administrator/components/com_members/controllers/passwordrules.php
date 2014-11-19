@@ -441,15 +441,15 @@ class MembersControllerPasswordRules extends \Hubzero\Component\AdminController
 	 */
 	public function rulesList($current_rule='')
 	{
-		$rules[] = JHTML::_('select.option', 'minClassCharacters',  JText::_('minClassCharacters'),  'value', 'text');
-		$rules[] = JHTML::_('select.option', 'minPasswordLength',   JText::_('minPasswordLength'),   'value', 'text');
-		$rules[] = JHTML::_('select.option', 'maxPasswordLength',   JText::_('maxPasswordLength'),   'value', 'text');
-		$rules[] = JHTML::_('select.option', 'minUniqueCharacters', JText::_('minUniqueCharacters'), 'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notBlacklisted',      JText::_('notBlacklisted'),      'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notNameBased',        JText::_('notNameBased'),        'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notUsernameBased',    JText::_('notUsernameBased'),    'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notReused',           JText::_('notReused'),           'value', 'text');
-		$rules[] = JHTML::_('select.option', 'notStale',            JText::_('notStale'),            'value', 'text');
+		$rules[] = JHTML::_('select.option', 'minClassCharacters',  'minClassCharacters',  'value', 'text');
+		$rules[] = JHTML::_('select.option', 'minPasswordLength',   'minPasswordLength',   'value', 'text');
+		$rules[] = JHTML::_('select.option', 'maxPasswordLength',   'maxPasswordLength',   'value', 'text');
+		$rules[] = JHTML::_('select.option', 'minUniqueCharacters', 'minUniqueCharacters', 'value', 'text');
+		$rules[] = JHTML::_('select.option', 'notBlacklisted',      'notBlacklisted',      'value', 'text');
+		$rules[] = JHTML::_('select.option', 'notNameBased',        'notNameBased',        'value', 'text');
+		$rules[] = JHTML::_('select.option', 'notUsernameBased',    'notUsernameBased',    'value', 'text');
+		$rules[] = JHTML::_('select.option', 'notReused',           'notReused',           'value', 'text');
+		$rules[] = JHTML::_('select.option', 'notStale',            'notStale',            'value', 'text');
 
 		$rselected = $current_rule;
 

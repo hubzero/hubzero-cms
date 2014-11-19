@@ -42,8 +42,8 @@ if ($canDo->get('core.admin'))
 }
 if ($canDo->get('core.edit.state'))
 {
-	JToolBarHelper::publishList('confirm', JText::_('COM_MEMBERS_CONFIRM'));
-	JToolBarHelper::unpublishList('unconfirm', JText::_('COM_MEMBERS_UNCONFIRM'));
+	JToolBarHelper::publishList('confirm', 'COM_MEMBERS_CONFIRM');
+	JToolBarHelper::unpublishList('unconfirm', 'COM_MEMBERS_UNCONFIRM');
 	JToolBarHelper::spacer();
 }
 if ($canDo->get('core.create'))
@@ -88,7 +88,7 @@ function submitbutton(pressbutton)
 			</select>
 
 			<label for="filter_search"><?php echo JText::_('COM_MEMBERS_SEARCH_FOR'); ?></label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 
 			<input type="submit" value="<?php echo JText::_('COM_MEMBERS_GO'); ?>" />
 		</div>
@@ -111,14 +111,14 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_ID'), 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_NAME'), 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_USERNAME'), 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_ORGANIZATION'), 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_EMAIL'), 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_REGISTERED'), 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_CONTRIBUTIONS'), 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-				<th scope="col"><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_COL_LAST_VISIT'), 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_NAME', 'lname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ORGANIZATION', 'org', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<!-- <th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_CONTRIBUTIONS', 'rcount', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>

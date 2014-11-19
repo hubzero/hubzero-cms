@@ -38,7 +38,7 @@ if ($canDo->get('core.edit'))
 {
 	JToolBarHelper::addNew();
 	JToolBarHelper::editList();
-	JToolBarHelper::custom('restoreDefault', 'restore', 'restore', 'Default');
+	JToolBarHelper::custom('restoreDefault', 'restore', 'restore', 'COM_MEMBERS_DEFAULT');
 }
 
 $this->css('quotas.css');
@@ -94,15 +94,15 @@ $this->css('quotas.css');
 			</select>
 
 			<label for="filter_search"><?php echo JText::_('COM_MEMBERS_SEARCH_FOR'); ?></label>
-			<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
 
 			<input type="submit" value="<?php echo JText::_('COM_MEMBERS_GO'); ?>" />
 		</div>
 		<div class="col width-60 fltrt">
 			<select name="class_alias" id="filter_class_alias" onchange="document.adminForm.submit( );">
-				<option value=""<?php if ($this->filters['class_alias'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('- Quota Class -'); ?></option>
+				<option value=""<?php if ($this->filters['class_alias'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
 				<?php foreach ($this->classes as $class) : ?>
-					<option value="<?php echo $class->alias; ?>"<?php if ($this->filters['class_alias'] == $class->alias) { echo ' selected="selected"'; } ?>><?php echo JText::_($class->alias); ?></option>
+					<option value="<?php echo $class->alias; ?>"<?php if ($this->filters['class_alias'] == $class->alias) { echo ' selected="selected"'; } ?>><?php echo $this->escape($class->alias); ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
@@ -112,10 +112,10 @@ $this->css('quotas.css');
 		<thead>
 			<tr>
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_QUOTA_USER_ID'), 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_QUOTA_USERNAME'), 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_QUOTA_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th><?php echo JHTML::_('grid.sort', JText::_('COM_MEMBERS_QUOTA_CLASS'), 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_QUOTA_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 				<th><?php echo JText::_('COM_MEMBERS_QUOTA_DISK_USAGE'); ?></th>
 			</tr>
 		</thead>
@@ -135,7 +135,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k quota-row"; ?>">
 				<td>
-					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<input class="row-id" type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">

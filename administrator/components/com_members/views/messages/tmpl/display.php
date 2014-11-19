@@ -34,7 +34,7 @@ $canDo = MembersHelper::getActions('component');
 
 $juser =  JFactory::getUser();
 
-JToolBarHelper::title(JText::_('MEMBERS') . ': ' . JText::_('Messaging'), 'user.png');
+JToolBarHelper::title(JText::_('COM_MEMBERS') . ': ' . JText::_('COM_MEMBERS_MENU_MESSAGING'), 'user.png');
 if ($canDo->get('core.create'))
 {
 	JToolBarHelper::addNew();
@@ -47,8 +47,6 @@ if ($canDo->get('core.delete'))
 {
 	JToolBarHelper::deleteList();
 }
-
-include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'html' . DS . 'grid.php');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -65,17 +63,17 @@ function submitbutton(pressbutton)
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label for="field-component"><?php echo JText::_('SEARCH'); ?></label>
+		<label for="field-component"><?php echo JText::_('COM_MEMBERS_SEARCH'); ?></label>
 		<select name="component" id="field-component">
-			<option value=""><?php echo JText::_('Select component...'); ?></option>
-<?php if ($this->components) { ?>
-	<?php foreach ($this->components as $component) { ?>
-			<option value="<?php echo $component; ?>"<?php if ($this->filters['component'] == $component) { echo ' selected="selected"'; } ?>><?php echo $component; ?></option>
-	<?php } ?>
-<?php } ?>
+			<option value=""><?php echo JText::_('COM_MEMBERS_FILTER_COMPONENT'); ?></option>
+			<?php if ($this->components) { ?>
+				<?php foreach ($this->components as $component) { ?>
+					<option value="<?php echo $component; ?>"<?php if ($this->filters['component'] == $component) { echo ' selected="selected"'; } ?>><?php echo $component; ?></option>
+				<?php } ?>
+			<?php } ?>
 		</select>
 
-		<input type="submit" value="<?php echo JText::_('GO'); ?>" />
+		<input type="submit" value="<?php echo JText::_('COM_MEMBERS_GO'); ?>" />
 	</fieldset>
 	<div class="clr"></div>
 
@@ -83,10 +81,10 @@ function submitbutton(pressbutton)
 		<thead>
 		 	<tr>
 				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Component', 'component', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Action', 'action', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-				<th scope="col"><?php echo JHTML::_('grid.sort', 'Title', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_COMPONENT', 'component', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_ACTION', 'action', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_MEMBERS_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -106,7 +104,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
 					<?php } ?>
 				</td>
 				<td>
@@ -119,7 +117,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
 							<?php echo $this->escape($row->action); ?>
 						</a>
 					<?php } else { ?>

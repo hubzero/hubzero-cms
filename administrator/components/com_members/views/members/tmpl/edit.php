@@ -92,13 +92,13 @@ function submitbutton(pressbutton)
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu" class="member-nav">
-						<li><a href="#" onclick="return false;" id="profile" class="active">Profile</a></li>
-						<li><a href="#" onclick="return false;" id="demographics">Demographics</a></li>
+						<li><a href="#" onclick="return false;" id="profile" class="active"><?php echo JText::_('COM_MEMBERS_PROFILE'); ?></a></li>
+						<li><a href="#" onclick="return false;" id="demographics"><?php echo JText::_('COM_MEMBERS_DEMOGRAPHICS'); ?></a></li>
 						<?php if (is_object($this->password)) : ?>
-							<li><a href="#" onclick="return false;" id="password">Password</a></li>
+							<li><a href="#" onclick="return false;" id="password"><?php echo JText::_('COM_MEMBERS_FIELD_PASSWORD'); ?></a></li>
 						<?php endif; ?>
-						<li><a href="#" onclick="return false;" id="groups">Groups</a></li>
-						<li><a href="#" onclick="return false;" id="hosts">Hosts</a></li>
+						<li><a href="#" onclick="return false;" id="groups"><?php echo JText::_('COM_MEMBERS_GROUPS'); ?></a></li>
+						<li><a href="#" onclick="return false;" id="hosts"><?php echo JText::_('COM_MEMBERS_HOSTS'); ?></a></li>
 					</ul>
 					<div class="clr"></div>
 				</div>
@@ -431,14 +431,14 @@ function submitbutton(pressbutton)
 				<fieldset class="adminform">
 					<legend><span><?php echo JText::_('COM_MEMBERS_GROUPS'); ?></span></legend>
 
-					<iframe height="500" name="grouper" id="grouper" src="index.php?option=<?php echo $this->option; ?>&amp;controller=groups&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+					<iframe height="500" name="grouper" id="grouper" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=groups&tmpl=component&id=' . $this->profile->get('uidNumber')); ?>"></iframe>
 				</fieldset>
 			</div>
 			<div id="page-hosts" class="tab">
 				<fieldset class="adminform">
-					<legend><span><?php echo JText::_('HOSTS'); ?></span></legend>
+					<legend><span><?php echo JText::_('COM_MEMBERS_HOSTS'); ?></span></legend>
 
-					<iframe height="500" name="hosts" id="hosts-list" src="index.php?option=<?php echo $this->option; ?>&amp;controller=hosts&amp;tmpl=component&amp;id=<?php echo $this->profile->get('uidNumber'); ?>"></iframe>
+					<iframe height="500" name="hosts" id="hosts-list" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=hosts&tmpl=component&id=' . $this->profile->get('uidNumber')); ?>"></iframe>
 				</fieldset>
 			</div>
 		</div>
@@ -504,33 +504,45 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="email"><?php echo JText::_('COM_MEMBERS_FIELD_EMAIL'); ?></label>
-			<?php
-			if ($this->profile->get('emailConfirmed') == 1) {
-				$confirmed = '<label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" checked="checked" /> '.JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRMED').'</label>';
-			} elseif ($this->profile->get('emailConfirmed') == 2) {
-				$confirmed = JText::_('COM_MEMBERS_FIELD_EMAIL_GRANDFATHERED').'<input type="hidden" name="emailConfirmed" id="emailConfirmed" value="2" />';
-			} elseif ($this->profile->get('emailConfirmed') == 3) {
-				$confirmed = JText::_('COM_MEMBERS_FIELD_EMAIL_DOMAIN_SUPPLIED').'<input type="hidden" name="emailConfirmed" id="emailConfirmed" value="3" />';
-			} elseif ($this->profile->get('emailConfirmed') < 0) {
-				if ($this->profile->get('email')) {
-					$confirmed  = JText::_('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION');
-					$confirmed .= '<br />[code: ' . -$this->profile->get('emailConfirmed') . '] <label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> '.JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRM').'</label>';
-				} else {
-					$confirmed  = JText::_('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE');
+				<?php
+				if ($this->profile->get('emailConfirmed') == 1)
+				{
+					$confirmed = '<label for="emailConfirmed"><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" checked="checked" /> ' . JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRMED') . '</label>';
 				}
-			} else {
-				$confirmed  = '['.JText::_('COM_MEMBERS_FIELD_EMAIL_UNKNOWN_STATUS').'] <label><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> '.JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRM').'</label>';
-			}
-			?>
-			<?php if ($this->profile->get('email')) { ?>
-				<input type="text" name="profile[email]" id="email" value="<?php echo $this->escape(stripslashes($this->profile->get('email'))); ?>" /> (<?php echo $confirmed; ?>)
-			<?php } else { ?>
-				<span style="color:#c00;"><?php echo JText::_('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE'); ?></span><br />
-				<input type="text" name="profile[email]" id="email" value="" />
+				elseif ($this->profile->get('emailConfirmed') == 2)
+				{
+					$confirmed = JText::_('COM_MEMBERS_FIELD_EMAIL_GRANDFATHERED') . '<input type="hidden" name="emailConfirmed" id="emailConfirmed" value="2" />';
+				}
+				elseif ($this->profile->get('emailConfirmed') == 3)
+				{
+					$confirmed = JText::_('COM_MEMBERS_FIELD_EMAIL_DOMAIN_SUPPLIED') . '<input type="hidden" name="emailConfirmed" id="emailConfirmed" value="3" />';
+				}
+				elseif ($this->profile->get('emailConfirmed') < 0)
+				{
+					if ($this->profile->get('email'))
+					{
+						$confirmed  = JText::_('COM_MEMBERS_FIELD_EMAIL_AWAITING_CONFIRMATION');
+						$confirmed .= '<br />[code: ' . -$this->profile->get('emailConfirmed') . '] <label for="emailConfirmed"><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> ' . JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
+					}
+					else
+					{
+						$confirmed  = JText::_('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE');
+					}
+				}
+				else
+				{
+					$confirmed  = '[' . JText::_('COM_MEMBERS_FIELD_EMAIL_UNKNOWN_STATUS') . '] <label for="emailConfirmed"><input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" /> ' . JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
+				}
+				?>
+				<?php if ($this->profile->get('email')) { ?>
+					<input type="text" name="profile[email]" id="email" value="<?php echo $this->escape(stripslashes($this->profile->get('email'))); ?>" /> (<?php echo $confirmed; ?>)
+				<?php } else { ?>
+					<span style="color:#c00;"><?php echo JText::_('COM_MEMBERS_FIELD_EMAIL_NONE_ON_FILE'); ?></span><br />
+					<input type="text" name="profile[email]" id="email" value="" />
 
-				<input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" />
-				<label for="emailConfirmed"><?php echo JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRM'); ?></label>
-			<?php } ?>
+					<input type="checkbox" name="emailConfirmed" id="emailConfirmed" value="1" />
+					<label for="emailConfirmed"><?php echo JText::_('COM_MEMBERS_FIELD_EMAIL_CONFIRM'); ?></label>
+				<?php } ?>
 			</div>
 			<div class="input-wrap">
 				<label for="jobsAllowed"><?php echo JText::_('COM_MEMBERS_FIELD_JOBS_ALLOWED'); ?></label>
