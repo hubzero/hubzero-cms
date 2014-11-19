@@ -104,11 +104,12 @@
 	.el-failed .checker:before {
 		color: red;
 	}
-	.el-updated .checker:before {
+	.el-updated .checker:before,
+	.el-skipped .checker:before {
 		color: orange;
 	}
 	.el-required.el-incomplete.el-updated .checker:before {
-		color: red;
+		/*color: red;*/
 	}
 	.el-coming .checker:before {
 		color: #CCC;
@@ -486,9 +487,11 @@
 		background: #fef5f1;
 		border: 1px solid #ecd8cf;
 	}
+	/*
 	.el-required.el-incomplete .status-notice {
 		display: none;
 	}
+	*/
 
 /* Review
 --------------------------------------------- */
@@ -701,6 +704,10 @@
 	.el-failed .field-wrap textarea,
 	.el-failed .chosenitem,
 	.el-failed .list-wrapper,
+	.el-skipped .field-wrap input,
+	.el-skipped .field-wrap textarea,
+	.el-skipped .chosenitem,
+	.el-skipped .list-wrapper,
 	.el-required.el-incomplete.el-updated .field-wrap input,
 	.el-required.el-incomplete.el-updated .field-wrap textarea,
 	.el-required.el-incomplete.el-updated .chosenitem,

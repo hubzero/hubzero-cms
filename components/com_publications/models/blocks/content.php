@@ -141,7 +141,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		$view->pub			= $pub;
 		$view->active		= $this->_name;
 		$view->step			= $sequence;
-		$view->showControls	= 1;
+		$view->showControls	= isset($master->params->collapse_elements) && $master->params->collapse_elements == 1 ? 3 : 1;
 		$view->status		= $status;
 		$view->master		= $master;
 

@@ -623,6 +623,42 @@ class PublicationsCuration extends JObject
 	}
 
 	/**
+	 * Skip requirement
+	 *
+	 * @param   integer  $actor			Actor user ID
+	 * @param   integer  $elementId		Element ID
+	 * @return  boolean
+	 */
+	public function skip ($actor = 0, $elementId = 0)
+	{
+		if (!$this->_blocks || !$this->_block || !$this->_pub)
+		{
+			return false;
+		}
+
+		// Incoming
+		$reason  = urldecode(JRequest::getVar('review', ''));
+
+		if (!trim($reason))
+		{
+			$this->setError('Please provide a reason for skipping requirement');
+			return false;
+		}
+
+		// Record update time
+		$data 				= new stdClass;
+		$data->updated 		= JFactory::getDate()->toSql();
+		$data->updated_by 	= $actor;
+		$data->review_status = 3;
+		$data->update		= stripslashes($reason);
+		$this->saveUpdate($data, $elementId, $this->_blockname, $this->_pub, $this->_blockorder);
+
+		$this->set('_message', 'Your request has been saved');
+
+		return true;
+	}
+
+	/**
 	 * Remove dispute
 	 *
 	 * @param   integer  $actor			Actor user ID
@@ -820,15 +856,12 @@ class PublicationsCuration extends JObject
 				continue;
 			}
 			$autoStatus 		= self::getStatus($block->name, $this->_pub, $sequence);
+			$reviewStatus		= self::getReviewStatus($block->name, $this->_pub, $sequence);
+
 			$result->blocks->$sequence = new stdClass();
 			$result->blocks->$sequence->name 		= $block->name;
-			$result->blocks->$sequence->status 		= $autoStatus;
-			$result->blocks->$sequence->review 		= ($this->_pub->state == 5 || $this->_pub->state == 7)
-													? self::getReviewStatus($block->name, $this->_pub, $sequence)
-													: NULL;
 			$result->blocks->$sequence->manifest 	= $block;
 			$result->blocks->$sequence->firstElement= self::getFirstElement($block->name, $this->_pub, $sequence);
-			$reviewStatus							= $result->blocks->$sequence->review;
 
 			if ($autoStatus->status > 0)
 			{
@@ -850,17 +883,26 @@ class PublicationsCuration extends JObject
 
 			$k++;
 
-			if ($autoStatus->status > 0 &&
-				(!$reviewStatus
-				|| ($reviewStatus->status >= 1 || $reviewStatus->lastupdate))
-			)
+			if ($autoStatus->status > 0 || $reviewStatus->status == 1 || $reviewStatus->lastupdate)
 			{
 				$i++;
 			}
-		}
 
-		$nextBlock = $result->lastBlock + 1;
-		$result->nextBlock = isset($this->_blocks->$nextBlock) ? $nextBlock : $result->lastBlock;
+			// Look at both auto and review status to determine if complete
+			if ($reviewStatus)
+			{
+				foreach ($block->elements as $elementId => $element)
+				{
+					if ($autoStatus->elements->$elementId->status == 0 && $reviewStatus->elements->$elementId->status == 2)
+					{
+						$i--;
+						$reviewStatus->status = 2;
+					}
+				}
+			}
+			$result->blocks->$sequence->status 		= $autoStatus;
+			$result->blocks->$sequence->review      = $reviewStatus;
+		}
 
 		// Are all sections complete for submission?
 		$result->complete  = $i == $k ? 1 : 0;
@@ -1301,6 +1343,7 @@ class PublicationsCuration extends JObject
 			$failed 	= 0;
 			$incomplete = 0;
 			$pending 	= 0;
+			$skipped	= 0;
 
 			foreach ($manifest->elements as $elementId => $element)
 			{
@@ -1314,7 +1357,8 @@ class PublicationsCuration extends JObject
 				// Store element label (for history tracking)
 				$status->elements->$elementId->label = $element->label;
 
-				if ($status->elements->$elementId->status >= 1 || $status->elements->$elementId->lastupdate)
+				if ($status->elements->$elementId->status >= 1
+					|| $status->elements->$elementId->lastupdate)
 				{
 					$success++;
 				}
@@ -1330,13 +1374,18 @@ class PublicationsCuration extends JObject
 				{
 					$pending++;
 				}
-
+				if ($status->elements->$elementId->status == 3)
+				{
+					$skipped++;
+				}
 				$i++;
 			}
 
-			$success 	    	= $success == $i ? 1 : 0;
-			$status->status 	= $failed > 0 ? 0 : $success;
-			$status->lastupdate = $pending > 0 && $failed == 0 ? true : NULL;
+			// Determine block status based on element status
+			$passed 	    	= ($success == $i || $pub->state == 1) ? 1 : 0;
+			$status->status 	= $failed > 0 ? 0 : $passed;
+			$status->status 	= $incomplete == $i ? 2 : $status->status; // unreviewed
+			$status->lastupdate = ($pending > 0 || $skipped > 0) && $passed == 1 ? true : NULL;
 		}
 		else
 		{
@@ -1358,7 +1407,7 @@ class PublicationsCuration extends JObject
 	public function getReviewItemStatus( $props = NULL, $items = NULL )
 	{
 		$status = new PublicationsModelStatus();
-		$status->status 		= 2;
+		$status->status 		= 2; // unreviewed
 		$status->updated_by 	= 0;
 
 		if ($props === NULL || $items === NULL)
@@ -1377,6 +1426,10 @@ class PublicationsCuration extends JObject
 		{
 			$status->status = 1;
 		}
+		elseif ($record->review_status == 3)
+		{
+			$status->status = 3;
+		}
 		elseif ($record->review_status == 2)
 		{
 			$status->status  = 0;
@@ -1389,10 +1442,10 @@ class PublicationsCuration extends JObject
 			$status->lastupdate = $record->updated;
 			$status->updated_by = $record->updated_by;
 		}
-		if ($record->update && $record->updated > $record->reviewed)
-		{
+	//	if ($record->update && $record->updated > $record->reviewed)
+	//	{
 			$status->message = $record->update;
-		}
+	//	}
 
 		return $status;
 	}
@@ -1416,11 +1469,6 @@ class PublicationsCuration extends JObject
 		$status->authornotice 	= NULL;
 		$status->updated_by		= 0;
 
-		if ($pub->state != 7 && $pub->state != 5)
-		{
-			return $status;
-		}
-
 		if ($elId)
 		{
 			$reviewStatus = $pub->_curationModel->_progress->blocks->$step->review->elements->$elId;
@@ -1437,19 +1485,22 @@ class PublicationsCuration extends JObject
 
 		$status->status 		= $reviewStatus->status;
 		$status->curatornotice 	= $reviewStatus->getError();
-		$status->updated		= $pub->reviewed ? $reviewStatus->lastupdate : NULL;
+		$status->updated		= $reviewStatus->lastupdate;
+		$status->authornotice 	= $reviewStatus->message;
 
 		if ($status->updated && isset($reviewStatus->updated_by) && $reviewStatus->updated_by)
 		{
 			$profile = \Hubzero\User\Profile::getInstance($reviewStatus->updated_by);
 			$by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('name');
 
-			$status->updatenotice 	= JText::_('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
-				. JHTML::_('date', $status->updated, 'M d, Y H:i') . $by;
-
-			if ($reviewStatus->message)
+			if ($status->status != 3)
 			{
-				$status->authornotice = $reviewStatus->message;
+				$status->updatenotice 	= JText::_('COM_PUBLICATIONS_CURATION_UPDATED') . ' '
+					. JHTML::_('date', $status->updated, 'M d, Y H:i') . $by;
+			}
+			else
+			{
+				$status->updatenotice 	= JText::_('COM_PUBLICATIONS_CURATION_SKIPPED') . ' ' . $by;
 			}
 		}
 
@@ -1471,9 +1522,10 @@ class PublicationsCuration extends JObject
 		<?php if ($viewer == 'curator' && !$curatorStatus->updatenotice) { ?>
 		<span class="edit-notice">[<a href="#">edit</a>]</span>
 		<?php } ?>
+		<?php if (($viewer == 'author' && (!$curatorStatus->curatornotice && $curatorStatus->status == 3)) || ($viewer == 'curator' && !$curatorStatus->updatenotice)) { return; }?>
 		<div class="status-notice">
 			<span class="update-notice"><?php if ($viewer == 'curator') { echo  $curatorStatus->updatenotice; }
-			else {
+			elseif ($curatorStatus->status != 3) {
 				if ($curatorStatus->authornotice && $curatorStatus->updated)
 				{
 					?>
@@ -1494,14 +1546,13 @@ class PublicationsCuration extends JObject
 
 			<span class="fail-notice"><?php echo $viewer == 'curator' ? JText::_('COM_PUBLICATIONS_CURATION_NOTICE_TO_AUTHORS') : JText::_('COM_PUBLICATIONS_CURATION_CHANGE_REQUEST'); ?></span>
 			<span class="notice-text"><?php echo $curatorStatus->curatornotice; ?></span>
-			<?php if ($curatorStatus->authornotice && $curatorStatus->updated && $viewer == 'curator') { ?>
+			<?php if ($curatorStatus->authornotice && $viewer == 'curator') { ?>
 			<span class="dispute-notice">
 				<strong><?php echo JText::_('COM_PUBLICATIONS_CURATION_DISPUTE_NOTICE'); ?></strong>
 				<?php echo $curatorStatus->authornotice; ?>
 			</span>
 			<?php } ?>
 		</div>
-
 	<?php }
 
 	/**

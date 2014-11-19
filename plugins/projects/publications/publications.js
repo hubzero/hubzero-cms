@@ -209,7 +209,7 @@ HUB.ProjectPublications = {
 						
 			$('#c-show').empty();
 			$('#c-show').append('<p id="loading-content">' + HUB.ProjectPublications.loadingIma('') + '</p>');
-			$.get(url, {}, function(data) 
+			$.post(url, {}, function(data) 
 			{
 				if (data) 
 				{
@@ -301,7 +301,7 @@ HUB.ProjectPublications = {
 			
 			$('#c-show').empty();
 			$('#c-show').append('<p id="loading-content">' + HUB.ProjectPublications.loadingIma('') + '</p>');
-			$.get(url, {}, function(data) 
+			$.post(url, {}, function(data) 
 			{
 				if (data) 
 				{
@@ -592,7 +592,7 @@ HUB.ProjectPublications = {
 					url = url + '&vid=' + vid + '&move=' + move + '&action=showitem&item=' + it;
 				}					
 				
-				$.get(url, {}, function(data) 
+				$.post(url, {}, function(data) 
 				{
 					if (data) 
 					{
@@ -667,7 +667,7 @@ HUB.ProjectPublications = {
 					var move 		= $('#move') ? $('#move').val() : 0;
 					var url = HUB.ProjectPublications.getPubUrl(1);
 					url = url + '&vid=' + vid + '&move=' + move + '&action=showauthor&owner=' + owner;
-					$.get(url, {}, function(data) 
+					$.post(url, {}, function(data) 
 					{
 						if (data) 
 						{
@@ -718,7 +718,8 @@ HUB.ProjectPublications = {
 		
 		// Get selections
 		selections = HUB.ProjectPublications.gatherSelections('clone-'); 
-		
+		selections = selections.substring(0, 500);
+
 		var pubop = $('#pub-options');
 		if (!pubop.length) 
 		{
@@ -738,7 +739,7 @@ HUB.ProjectPublications = {
 		}
 		href = href + '&base=' + base;
 							
-		$.get(href, {}, function(data) 
+		$.post(href, {}, function(data) 
 		{
 			if (data) 
 			{
@@ -868,7 +869,7 @@ HUB.ProjectPublications = {
 		$('#pick-tags').empty().addClass('loading-content');
 		$('#pick-tags').html(HUB.ProjectPublications.loadingIma(''));
 		
-		$.get(url, {}, function(data) 
+		$.post(url, {}, function(data) 
 		{
 			if (data) 
 			{
@@ -1378,7 +1379,7 @@ HUB.ProjectPublications = {
 		var url = HUB.ProjectPublications.getPubUrl(1);
 		url = url + '&vid=' + vid + '&action=showaudience&audience=' + selections + '&no_audience=' + noshow;	
 				
-		$.get( url, {}, function(data) {
+		$.post( url, {}, function(data) {
 			if(data)
 			{
 				out.html(data);

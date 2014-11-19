@@ -68,7 +68,7 @@ $text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
 
 <!-- Load content selection browser //-->
 <div id="<?php echo $elName; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional';
-echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 && $this->license) ? ' el-partial' : ''; ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?> ">
+echo $complete == 1 ? ' el-complete' : ' el-incomplete'; echo ($complete == 0 && $this->license) ? ' el-partial' : ''; ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated && $curatorStatus->status != 2 ? ' el-updated' : ''; ?> ">
 	<div class="element_editing">
 		<div class="pane-wrapper">
 			<span class="checker">&nbsp;</span>

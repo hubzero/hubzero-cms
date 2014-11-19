@@ -91,10 +91,11 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText)))
 {
 	$aboutText = '<p>' . $aboutText . '</p>';
 }
+$complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
-echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo ' el-editor'; } ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?> ">
+echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo ' el-editor'; } ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated && $curatorStatus->status != 2 ? ' el-updated' : ''; echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : ''; ?> ">
 	<!-- Showing status only -->
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
 		<div class="block-aside"></div>
@@ -177,12 +178,18 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($editor) { echo
 				$output .= '  </span>';
 				echo $output; ?>
 			</label>
+			<?php if ($curatorStatus->status == 3 && !$complete) { ?>
+				<p class="warning"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
+			<?php } ?>
 			<?php // Navigate to next element
-				if ($active && !$last && $this->collapse) { ?>
+				if ($active && $this->collapse) { ?>
 				<p class="element-move">
-				<span class="button-wrapper icon-next">
-					<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
-				</span>
+					<span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
+						<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
+					</span>
+					<span class="button-wrapper icon-apply">
+						<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="apply-<?php echo $props; ?>" class="save-element btn icon-apply" />
+					</span>
 				</p>
 			<?php } ?>
 		</div>

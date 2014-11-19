@@ -364,6 +364,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'dispute':
+			case 'skip':
 			case 'undispute':
 				$arr['html'] = $this->saveDraft();
 				break;
@@ -802,6 +803,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$pub->_curationModel->dispute($this->_uid, $element);
 				break;
 
+			case 'skip':
+				$pub->_curationModel->skip($this->_uid, $element);
+				break;
+
 			case 'undispute':
 				$pub->_curationModel->undispute($this->_uid, $element);
 				break;
@@ -882,7 +887,16 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			if ($next)
 			{
-				$route .= a . 'el=' . $next . '#element' . $next;
+				if ($next == $element)
+				{
+					// Move to next block
+					$route .= a . 'section=' . $nextsection;
+					$route .= $nextnum ? a . 'step=' . $nextnum : '';
+				}
+				else
+				{
+					$route .= a . 'el=' . $next . '#element' . $next;
+				}
 			}
 			elseif ($element)
 			{

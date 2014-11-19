@@ -66,7 +66,12 @@ if (!$this->ajax)
 						: JText::_('COM_PUBLICATIONS_CURATION_AUTHOR');  ?>
 					)</span>
 				</div>
-				<div class="changelog-text col span9 omega"><?php echo $event->changelog; ?></div>
+				<div class="changelog-text col span9 omega">
+					<?php echo $event->changelog; ?>
+					<?php if ($event->comment) {  ?>
+						<p><?php echo  JText::_('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment . '</span>'; ?></p>
+					<?php } ?>
+				</div>
 				<div class="clear"></div>
 			</div>
 		<?php } ?>

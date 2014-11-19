@@ -55,6 +55,8 @@ $required = isset($this->pub->_curationModel->_progress->blocks->$step->manifest
 $activeEl = isset($this->master->props['showElement'])
 			? $this->master->props['showElement'] : 0;
 $element =  JRequest::getInt( 'el', $activeEl );
+
+$isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 ?>
 <div id="pub-editor" class="pane-desc">
 	<form action="<?php echo $url; ?>" method="post" id="plg-form" enctype="multipart/form-data">
@@ -93,15 +95,17 @@ $element =  JRequest::getInt( 'el', $activeEl );
 						<?php
 						if ($this->active != 'review') { ?>
 						<div class="submit-area <?php echo $this->showControls == 2 ? ' extended' : ''; ?>" id="submit-area">
-							<?php if ($this->step != 1 && $this->showControls) { ?>
+							<?php if (!$isFirst && $this->showControls && $this->showControls != 3) { ?>
 								<span class="button-wrapper bw-previous icon-prev">
 									<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_PREVIOUS'); ?>" id="c-previous" class="submitbutton btn icon-prev" />
 								</span>
 							<?php } ?>
+							<?php if ($this->showControls && $this->showControls != 3) { ?>
 							<span class="button-wrapper icon-apply">
 								<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES'); ?>" id="c-apply" class="submitbutton btn icon-apply" />
 							</span>
-							<?php if ($this->showControls) { ?>
+							<?php } ?>
+							<?php if ($this->showControls && $this->showControls != 3) { ?>
 							<span class="button-wrapper icon-next">
 								<input type="submit" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="c-next" class="submitbutton btn icon-next" />
 							</span>
@@ -130,6 +134,28 @@ $element =  JRequest::getInt( 'el', $activeEl );
 			</fieldset>
 			<p class="submitarea">
 				<input type="submit" id="notice-submit" class="btn" value="<?php echo JText::_('COM_PUBLICATIONS_SAVE'); ?>" />
+			</p>
+		</form>
+	</div>
+</div>
+
+<div class="hidden">
+	<div id="skip-notice" class="addnotice">
+		<form id="skip-notice-form" name="skipForm" action="<?php echo $url; ?>" method="post">
+		 <fieldset>
+			<input type="hidden" name="pid" value="<?php echo $this->pub->id; ?>" />
+			<input type="hidden" name="version" value="<?php echo $this->pub->version_number; ?>" />
+			<input type="hidden" name="p" id="skip-props" value="" />
+			<input type="hidden" name="active" value="publications" />
+			<input type="hidden" name="action" value="skip" />
+			<h5 id="notice-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_TITLE'); ?></h5>
+			<label>
+				<span class="block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_LABEL'); ?></span>
+				<textarea name="review" id="skip-notice-review" rows="5" cols="10"></textarea>
+			</label>
+			</fieldset>
+			<p class="submitarea">
+				<input type="submit" id="skip-notice-submit" class="btn" value="<?php echo JText::_('COM_PUBLICATIONS_SAVE'); ?>" />
 			</p>
 		</form>
 	</div>

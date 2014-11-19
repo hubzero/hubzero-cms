@@ -73,17 +73,17 @@ $i = 1;
 		<?php foreach ($blocks as $sequence => $block ) {
 
 			$blockname = $block->name;
-			$status    = $block->review && $block->status->status != 0
+			$status    = $block->review && $block->review->status != 2
 						? $block->review->status : $block->status->status;
 			$updated   = $block->review ? $block->review->lastupdate : NULL;
 
-			if ($status == 2)
-			{
-				$class = 'c_incomplete';
-			}
-			elseif ($updated && $block->status->status != 0)
+			if ($updated && $block->review->status != 2)
 			{
 				$class = 'c_wip';
+			}
+			elseif ($status == 2 || $status == 3)
+			{
+				$class = 'c_incomplete';
 			}
 			else
 			{
