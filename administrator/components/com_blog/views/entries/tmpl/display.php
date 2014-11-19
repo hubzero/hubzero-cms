@@ -119,7 +119,7 @@ function submitbutton(pressbutton)
 			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
 		</div>
 		<div class="col width-50 fltrt">
-			<label for="filter-state"><?php echo JText::_('COM_COURSES_FIELD_STATE'); ?>:</label>
+			<label for="filter-state"><?php echo JText::_('COM_BLOG_FIELD_STATE'); ?>:</label>
 			<select name="state" id="filter-state" onchange="this.form.submit();">
 				<option value=""<?php if ($this->filters['state'] == '') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_ALL_STATES'); ?></option>
 				<option value="public"<?php if ($this->filters['state'] == 'public') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_BLOG_FIELD_STATE_PUBLIC'); ?></option>

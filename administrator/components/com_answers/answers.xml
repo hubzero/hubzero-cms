@@ -27,19 +27,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Answers</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Manage Questions and Answers</description>
-	<files>
-	    <filename>router.php</filename>
-	    <filename>answers.css</filename>
-		<filename>answers.html.php</filename>
+	<files folder="site">
+		<filename>router.php</filename>
+		<filename>answers.css</filename>
 		<filename>answers.php</filename>
 		<filename>answers.js</filename>
-		<filename>answers.tags.php</filename>
 		<filename>vote.css</filename>
 		<filename>vote.js</filename>
 		<filename>controller.php</filename>
@@ -75,38 +73,29 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>images/thumbup_ok.gif</filename>
 		<filename>images/yes_lit.gif</filename>
 	</files>
-	<languages>
-                <language tag="en-GB">en-GB.com_answers.ini</language>
-        </languages>
-    <install>
-        <sql>
-            <file charset="utf8" driver="mysql">install.sql</file>
-        </sql>
-    </install>
-    <uninstall>
-    </uninstall>
-    <administration>
-        <menu>Answers</menu>
-        <files>
-            <filename>install.sql</filename>
-            <filename>admin.answers.html.php</filename>
-            <filename>admin.answers.php</filename>
-            <filename>admin.controller.php</filename>
-		<filename>answers.config.php</filename>
-		<filename>vote.class.php</filename>
-            <filename>answers.class.php</filename>
-            <filename>toolbar.answers.php</filename>
-            <filename>toolbar.answers.html.php</filename>
-	    <filename>config.xml</filename>
-            <filename>index.html</filename>
-        </files>
-    </administration>
-	<params>
-		<param name="pageclass_sfx" type="text" size="20" default="" label="Page Class" description="A css class for the page, this allows individual page styling" />
-		<param name="show_creator" type="radio" default="1" label="Page Title" description="Show/Hide the item's creator">
-			<option value="0">Hide</option>
-			<option value="1">Show</option>
-		</param>
-	</params>
-</install>
-
+	<languages folder="site">
+		<language tag="en-GB">en-GB.com_answers.ini</language>
+	</languages>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+	</uninstall>
+	<administration>
+		<menu>Answers</menu>
+		<files folder="admin">
+			<filename>install.sql</filename>
+			<filename>helpers/permissions.php</filename>
+			<filename>answers.php</filename>
+			<filename>controllers/answers.php</filename>
+			<filename>controllers/questions.php</filename>
+			<filename>config.xml</filename>
+			<filename>index.html</filename>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">en-GB.com_answers.ini</language>
+		</languages>
+	</administration>
+</extension>

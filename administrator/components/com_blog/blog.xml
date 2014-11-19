@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Blog</name>
 	<author>HUBzero</author>
 	<creationDate>11/22/2009</creationDate>
@@ -35,9 +35,9 @@ HUBzero is a registered trademark of Purdue University.
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<version>1.0</version>
 	<description>Manage A Blog</description>
-	<files>
+	<files folder="site">
 		<filename>router.php</filename>
-	    <filename>controller.php</filename>
+		<filename>controller.php</filename>
 		<filename>blog.xml</filename>
 		<filename>blog.php</filename>
 		<filename>tables/blog.entry.php</filename>
@@ -46,7 +46,7 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>views/entry/tmpl/default.php</filename>
 		<filename>index.html</filename>
 	</files>
-	<languages>
+	<languages folder="site">
 		<language tag="en-GB">en-GB.com_blog.ini</language>
 	</languages>
 	<install>
@@ -59,18 +59,10 @@ HUBzero is a registered trademark of Purdue University.
 			<file charset="utf8" driver="mysql">uninstall.sql</file>
 		</sql>
 	</uninstall>
-	<install>
-	</install>
-	<installfile>
-		<filename></filename>
-	</installfile>
-	<uninstallfile>
-		<filename></filename>
-	</uninstallfile>
 	<administration>
 		<menu>Blog</menu>
-		<files>
-		    <filename>controller.php</filename>
+		<files folder="admin">
+			<filename>controller.php</filename>
 			<filename>blog.php</filename>
 			<filename>views/entries/tmpl/default.php</filename>
 			<filename>views/edit/tmpl/default.php</filename>
@@ -80,7 +72,4 @@ HUBzero is a registered trademark of Purdue University.
 			<language tag="en-GB">en-GB.com_blog.menu.ini</language>
 		</languages>
 	</administration>
-	<params>
-		<param name="pageclass_sfx" type="text" size="20" default="" label="Page Class" description="A css class for the page, this allows individual page styling" />
-	</params>
-</install>
+</extension>

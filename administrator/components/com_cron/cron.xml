@@ -27,13 +27,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>CRON</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Launch CRON jobs</description>
-	<files>
+	<files folder="site">
 		<filename>router.php</filename>
 		<filename>answers.css</filename>
 		<filename>answers.html.php</filename>
@@ -75,7 +75,7 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>images/thumbup_ok.gif</filename>
 		<filename>images/yes_lit.gif</filename>
 	</files>
-	<languages>
+	<languages folder="site">
 		<language tag="en-GB">en-GB.com_cron.ini</language>
 	</languages>
 	<install>
@@ -83,11 +83,9 @@ HUBzero is a registered trademark of Purdue University.
 			<file charset="utf8" driver="mysql">install.sql</file>
 		</sql>
 	</install>
-	<uninstall>
-	</uninstall>
 	<administration>
 		<menu>CRON</menu>
-		<files>
+		<files folder="admin">
 			<filename>install.sql</filename>
 			<filename>admin.answers.html.php</filename>
 			<filename>admin.answers.php</filename>
@@ -101,6 +99,4 @@ HUBzero is a registered trademark of Purdue University.
 			<filename>index.html</filename>
 		</files>
 	</administration>
-	<params>
-	</params>
-</install>
+</extension>

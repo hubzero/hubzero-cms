@@ -27,47 +27,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Feedback</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Capture and manage user success stories. </description>
-    <files>
-        <filename>feedback.css</filename>
-        <filename>feedback.php</filename>
-        <filename>feedback.html.php</filename>
-	    <filename>controller.php</filename>
-	    <filename>router.php</filename>
-	    <filename>index.html</filename>
+	<files folder="site">
+		<filename>feedback.css</filename>
+		<filename>feedback.php</filename>
+		<filename>feedback.html.php</filename>
+		<filename>controller.php</filename>
+		<filename>router.php</filename>
+		<filename>index.html</filename>
 		<filename>images/contributor.gif</filename>
 		<filename>images/poll-large.gif</filename>
 		<filename>images/quotes-large.gif</filename>
 		<filename>images/wishbone-large.gif</filename>
 		<filename>images/alert-large.gif</filename>
-    </files>
-    <languages>
-                    <language tag="en-GB">en-GB.com_feedback.ini</language>
-		            </languages>
-    <administration>
-        <menu>Feedback</menu>
-		<submenu>
-			<menu>Manage Success Stories</menu>
-		</submenu>
-        <files>
-    		<filename>admin.controller.php</filename>
-	    	<filename>admin.feedback.html.php</filename>
-		    <filename>admin.feedback.php</filename>
-		    <filename>config.xml</filename>
-		    <filename>index.html</filename>
-		    <filename>quotes.class.php</filename>
-		    <filename>selectedquotes.class.php</filename>
-		    <filename>toolbar.feedback.html.php</filename>
-		    <filename>toolbar.feedback.php</filename>
-        </files>
+	</files>
+	<languages folder="site">
+		<language tag="en-GB">en-GB.com_feedback.ini</language>
+	</languages>
+	<administration>
+		<menu>Feedback</menu>
+		<files folder="admin">
+			<filename>admin.controller.php</filename>
+			<filename>admin.feedback.html.php</filename>
+			<filename>admin.feedback.php</filename>
+			<filename>config.xml</filename>
+			<filename>index.html</filename>
+			<filename>quotes.class.php</filename>
+			<filename>selectedquotes.class.php</filename>
+			<filename>toolbar.feedback.html.php</filename>
+			<filename>toolbar.feedback.php</filename>
+		</files>
 		<languages folder="admin">
-                <language tag="en-GB">en-GB.com_feedback.ini</language>
-        </languages>
-    </administration>
-</install>
-
+			<language tag="en-GB">en-GB.com_feedback.ini</language>
+		</languages>
+	</administration>
+</extension>

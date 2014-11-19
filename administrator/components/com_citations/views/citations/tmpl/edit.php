@@ -167,7 +167,7 @@ function submitbutton(pressbutton)
 				<input type="text" name="citation[author]" id="author" value="<?php echo $this->escape($author); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="author_address"><?php echo JText::_('Author Address'); ?>:</label><br />
+				<label for="author_address"><?php echo JText::_('COM_CITATIONS_FIELD_AUTHOR_ADDRESS'); ?>:</label><br />
 				<input type="text" name="citation[author_address]" id="author_address" value="<?php echo $this->escape(stripslashes($this->row->author_address)); ?>" />
 			</div>
 			<div class="input-wrap">
@@ -183,7 +183,7 @@ function submitbutton(pressbutton)
 				<input type="text" name="citation[booktitle]" id="booktitle" maxlength="250" value="<?php echo $this->escape($booktitle); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="shorttitle"><?php echo JText::_('Short Title'); ?>:</label><br />
+				<label for="shorttitle"><?php echo JText::_('COM_CITATIONS_FIELD_SHORT_TITLE'); ?>:</label><br />
 				<input type="text" name="citation[short_title]" id="shorttitle" maxlength="250" value="<?php echo $this->escape($short_title); ?>" />
 			</div>
 			<div class="input-wrap">
@@ -224,11 +224,11 @@ function submitbutton(pressbutton)
 				<input type="text" name="citation[doi]" id="doi" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->doi)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="callnumber"><?php echo JText::_('Call Number'); ?>:</label><br />
+				<label for="callnumber"><?php echo JText::_('COM_CITATIONS_FIELD_CALL_NUMBER'); ?>:</label><br />
 				<input type="text" name="citation[call_number]" id="callnumber" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->call_number)); ?>" />
 			</div>
 			<div class="input-wrap">
-				<label for="accessionnumber"><?php echo JText::_('Accession Number'); ?>:</label><br />
+				<label for="accessionnumber"><?php echo JText::_('COM_CITATIONS_FIELD_ACCESSION_NUMBER'); ?>:</label><br />
 				<input type="text" name="citation[accession_number]" id="accessionnumber" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->accession_number)); ?>" />
 			</div>
 			<div class="input-wrap">
@@ -277,7 +277,7 @@ function submitbutton(pressbutton)
 				<br /><span class="hint"><?php echo JText::_('EPRINT_EXPLANATION'); ?></span>
 			</div>
 			<div class="input-wrap">
-				<label for="abstract"><?php echo JText::_('Abstract'); ?>:</label><br />
+				<label for="abstract"><?php echo JText::_('COM_CITATIONS_FIELD_ABSTRACT'); ?>:</label><br />
 				<?php echo $editor->display('citation[abstract]', stripslashes($this->row->abstract), '', '', 50, 10, false, 'abstract'); ?>
 			</div>
 			<div class="input-wrap">
@@ -285,11 +285,11 @@ function submitbutton(pressbutton)
 				<?php echo $editor->display('citation[note]', stripslashes($this->row->note), '', '', 50, 10, false, 'note'); ?>
 			</div>
 			<div class="input-wrap">
-				<label for="keywords"><?php echo JText::_('Keywords'); ?>:</label><br />
+				<label for="keywords"><?php echo JText::_('COM_CITATIONS_FIELD_KEYWORDS'); ?>:</label><br />
 				<?php echo $editor->display('citation[keywords]', stripslashes($this->row->keywords), '', '', 50, 10, false, 'keywords'); ?>
 			</div>
 			<div class="input-wrap">
-				<label for="research_notes"><?php echo JText::_('Research Notes'); ?>:</label><br />
+				<label for="research_notes"><?php echo JText::_('COM_CITATIONS_FIELD_RESEARCH_NOTES'); ?>:</label><br />
 				<?php echo $editor->display('citation[research_notes]', stripslashes($this->row->research_notes), '', '', 50, 10, false, 'research_notes'); ?>
 			</div>
 		</fieldset>
@@ -388,24 +388,21 @@ function submitbutton(pressbutton)
 		</fieldset>
 
 		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Citation Sponsors'); ?></span></legend>
+			<legend><span><?php echo JText::_('COM_CITATIONS_OPTIONS'); ?></span></legend>
 
-			<div class="input-wrap">
-				<select name="sponsors[]" multiple="multiple">
+			<div class="input-wrap" data-hint="<?php echo JText::_('COM_CITATIONS_FIELD_SPONSORS_HINT'); ?>">
+				<label for="field-sponsors"><?php echo JText::_('COM_CITATIONS_FIELD_SPONSORS'); ?></label>
+				<select name="sponsors[]" id="field-sponsors" multiple="multiple">
 					<!--<option value="sponsors">- Select Citation Sponsor &mdash;</option>-->
 					<?php foreach ($this->sponsors as $s) : ?>
 						<?php $sel = (in_array($s['id'], $this->row_sponsors)) ? 'selected="selected"': ''; ?>
 						<option <?php echo $sel; ?> value="<?php echo $s['id']; ?>"><?php echo $this->escape(stripslashes($s['sponsor'])); ?></option>
 					<?php endforeach; ?>
 				</select>
-				<span class="hint">Select multiple sponsors by Ctrl + click.</span>
+				<span class="hint"><?php echo JText::_('COM_CITATIONS_FIELD_SPONSORS_HINT'); ?></span>
 			</div>
-		</fieldset>
 
 		<?php if ($this->config->get('citation_allow_tags', 'no') == 'yes') : ?>
-			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('Tags'); ?></span></legend>
-
 				<div class="input-wrap">
 					<?php
 						$t = array();
@@ -414,15 +411,12 @@ function submitbutton(pressbutton)
 							$t[] = stripslashes($tag['raw_tag']);
 						}
 					?>
-					<textarea name="tags" rows="10"><?php echo implode(',', $t); ?></textarea>
+					<label for="field-tags"><?php echo JText::_('COM_CITATIONS_FIELD_TAGS'); ?></label>
+					<textarea name="tags" id="field-tags" rows="10"><?php echo implode(',', $t); ?></textarea>
 				</div>
-			</fieldset>
 		<?php endif; ?>
 
 		<?php if ($this->config->get('citation_allow_badges', 'no') == 'yes') : ?>
-			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('Badges'); ?></span></legend>
-
 				<div class="input-wrap">
 					<?php
 						$b = array();
@@ -431,21 +425,16 @@ function submitbutton(pressbutton)
 							$b[] = stripslashes($badge['raw_tag']);
 						}
 					?>
-					<textarea name="badges" rows="10"><?php echo implode(',', $b); ?></textarea>
+					<label for="field-badges"><?php echo JText::_('COM_CITATIONS_FIELD_BADGES'); ?></label>
+					<textarea name="badges" id="field-badges" rows="10"><?php echo implode(',', $b); ?></textarea>
 				</div>
-			</fieldset>
 		<?php endif; ?>
 
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Exclude from Export'); ?></span></legend>
 
 			<div class="input-wrap">
-				<textarea name="exclude" rows="10"><?php echo $this->params->get('exclude'); ?></textarea>
+				<label for="field-exclude"><?php echo JText::_('COM_CITATIONS_FIELD_EXCLUDE_FROM_EXPORT'); ?></label>
+				<textarea name="exclude" id="field-exclude" rows="10"><?php echo $this->params->get('exclude'); ?></textarea>
 			</div>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><span><?php echo JText::_('Abstract Rollover'); ?></span></legend>
 
 			<?php
 				$rollovers = $this->config->get("citation_rollover", "no");
@@ -476,7 +465,8 @@ function submitbutton(pressbutton)
 				}
 			?>
 			<div class="input-wrap">
-				<input type="checkbox" name="rollover" id="rollover" value="1" <?php echo $ckd; ?> /> <label for="rollover">Show Abstract in Rollover</label>
+				<input type="checkbox" name="rollover" id="rollover" value="1" <?php echo $ckd; ?> />
+				<label for="rollover"><?php echo JText::_('COM_CITATIONS_FIELD_ABSTRACT_ROLLOVER'); ?></label>
 			</div>
 		</fieldset>
 	</div>

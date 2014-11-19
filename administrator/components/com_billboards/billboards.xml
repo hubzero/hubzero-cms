@@ -27,52 +27,47 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Billboards</name>
 	<author>Sam Wilson</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Manage Billboards (slides of content/announcements)</description>
-	<files>
+	<files folder="site">
 		<!-- no front end component -->
 	</files>
-	<languages>
+	<languages folder="site">
 		<language tag="en-GB">en-GB.com_billboards.ini</language>
 	</languages>
-		<install>
-			<sql>
-				<file charset="utf8" driver="mysql">install.sql</file>
-			</sql>
-		</install>
-		<uninstall>
-		</uninstall>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
 	<administration>
 		<menu>Billboards</menu>
-			<files>
-				<filename>billboards.php</filename>
-				<filename>billboards.xml</filename>
-				<filename>config.xml</filename>
-				<filename>controller.php</filename>
-				<filename>helpers/html.php</filename>
-				<filename>index.html</filename>
-				<filename>install.sql</filename>
-				<filename>tables/billboard.php</filename>
-				<filename>tables/collection.php</filename>
-				<filename>views/billboard/tmpl/default.php</filename>
-				<filename>views/billboard/tmpl/default.xml</filename>
-				<filename>views/billboard/tmpl/index.html</filename>
-				<filename>views/billboards/tmpl/default.php</filename>
-				<filename>views/billboards/tmpl/default.xml</filename>
-				<filename>views/billboards/tmpl/index.html</filename>
-				<filename>views/collection/tmpl/default.php</filename>
-				<filename>views/collection/tmpl/default.xml</filename>
-				<filename>views/collection/tmpl/index.html</filename>
-				<filename>views/collections/tmpl/default.php</filename>
-				<filename>views/collections/tmpl/default.xml</filename>
-				<filename>views/collections/tmpl/index.html</filename>
-			</files>
+		<files folder="admin">
+			<filename>billboards.php</filename>
+			<filename>billboards.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>helpers/html.php</filename>
+			<filename>index.html</filename>
+			<filename>install.sql</filename>
+			<filename>tables/billboard.php</filename>
+			<filename>tables/collection.php</filename>
+			<filename>views/billboard/tmpl/default.php</filename>
+			<filename>views/billboard/tmpl/default.xml</filename>
+			<filename>views/billboard/tmpl/index.html</filename>
+			<filename>views/billboards/tmpl/default.php</filename>
+			<filename>views/billboards/tmpl/default.xml</filename>
+			<filename>views/billboards/tmpl/index.html</filename>
+			<filename>views/collection/tmpl/default.php</filename>
+			<filename>views/collection/tmpl/default.xml</filename>
+			<filename>views/collection/tmpl/index.html</filename>
+			<filename>views/collections/tmpl/default.php</filename>
+			<filename>views/collections/tmpl/default.xml</filename>
+			<filename>views/collections/tmpl/index.html</filename>
+		</files>
 	</administration>
-	<params>
-		<param name="image_location" type="text" size="50" menu="hide" default="/site/media/images/billboards/" label="Image Location" description="Location of billboard images" />
-	</params>
-</install>
+</extension>

@@ -110,17 +110,17 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<div class="asset-uploader">
 					<div class="col width-50 fltlft">
-						<div id="ajax-uploader" data-txt-instructions="<?php echo JText::_('Click or drop file'); ?>" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=upload'); ?>" data-list="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=list&dir='); ?>">
+						<div id="ajax-uploader" data-txt-instructions="<?php echo JText::_('COM_COLLECTIONS_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=upload'); ?>" data-list="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=list&dir='); ?>">
 							<noscript>
-								<label for="upload"><?php echo JText::_('File:'); ?></label>
+								<label for="upload"><?php echo JText::_('COM_COLLECTIONS_FIELD_FILE'); ?></label>
 								<input type="file" name="upload" id="field-upload" />
 							</noscript>
 						</div>
 					</div><!-- / .col span-half -->
 					<div class="col width-50 fltrt">
-						<div id="link-adder" data-txt-delete="<?php echo JText::_('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo JText::_('Click to add link'); ?>" data-base="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=delete&dir='); ?>" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=create&dir='); ?>" data-list="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=list&dir='); ?>">
+						<div id="link-adder" data-txt-delete="<?php echo JText::_('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo JText::_('COM_COLLECTIONS_CLICK_TO_ADD_LINK'); ?>" data-base="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=delete&dir='); ?>" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=create&dir='); ?>" data-list="<?php echo JRoute::_('index.php?option=' . $this->option . '&no_html=1&controller=media&task=list&dir='); ?>">
 							<noscript>
-								<label for="add-link"><?php echo JText::_('Add a link:'); ?></label>
+								<label for="add-link"><?php echo JText::_('COM_COLLECTIONS_FIELD_LINK'); ?></label>
 								<input type="text" name="assets[-1][filename]" id="add-link" value="http://" />
 								<input type="hidden" name="assets[-1][id]" value="0" />
 								<input type="hidden" name="assets[-1][type]" value="link" />
