@@ -27,14 +27,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>System</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Manage a system configurations</description>
-	<files>
-	</files>
 	<languages>
 		<language tag="en-GB">en-GB.com_system.ini</language>
 	</languages>
@@ -43,19 +41,9 @@ HUBzero is a registered trademark of Purdue University.
 			<file charset="utf8" driver="mysql">install.sql</file>
 		</sql>
 	</install>
-	<uninstall>
-	</uninstall>
-	<install>
-	</install>
-	<installfile>
-		<filename></filename>
-	</installfile>
-	<uninstallfile>
-		<filename></filename>
-	</uninstallfile>
 	<administration>
-		<menu>Knowledgebase</menu>
-		<files>
+		<menu>System</menu>
+		<files folder="admin">
 			<filename>system.php</filename>
 		</files>
 		<languages folder="admin">
@@ -63,6 +51,4 @@ HUBzero is a registered trademark of Purdue University.
 			<language tag="en-GB">en-GB.com_system.menu.ini</language>
 		</languages>
 	</administration>
-	<params>
-	</params>
-</install>
+</extension>

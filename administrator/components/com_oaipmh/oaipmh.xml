@@ -1,59 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="component" version="2.0.0">
-<name>oaipmh</name>
-<!-- The following elements are optional and free of formatting constraints -->
-<creationDate>2012-09-06</creationDate>
-<author>Brandon Beatty</author>
-<authorEmail>bbeatty@purdue.edu</authorEmail>
-<authorUrl>http://www.purdue.edu</authorUrl>
-<copyright>2012</copyright>
-<!--  The version string is recorded in the components table -->
-<version>2.0</version>
-<!-- The description is optional and defaults to the name -->
-<description>This component is an implementation of OAI-PMH on HUBzero.</description>
-
-<!-- Site Main File Copy Section -->
-<files folder="site">
-	<folder>views</folder>
-	<filename>controller.php</filename>
-	<filename>index.html</filename>
-	<filename>oaipmh.php</filename>
-</files>
-
-<install>
-	<sql>
-		<file charset="utf8" driver="mysql">install.sql</file>
-	</sql>
-</install>
-<uninstall>
-	<sql>
-		<file charset="utf8" driver="mysql">uninstall.sql</file>
-	</sql>
-</uninstall>
-
-<administration>
-	<menu>OAI-PMH</menu>
-	<files folder="admin">
-		<folder>tables</folder>
+<extension type="component" version="2.0.0">
+	<name>oaipmh</name>
+	<creationDate>2012-09-06</creationDate>
+	<author>Brandon Beatty</author>
+	<authorEmail>bbeatty@purdue.edu</authorEmail>
+	<authorUrl>http://www.purdue.edu</authorUrl>
+	<copyright>2012</copyright>
+	<version>2.0</version>
+	<description>This component is an implementation of OAI-PMH on HUBzero.</description>
+	<files folder="site">
 		<folder>views</folder>
-		<filename>config.xml</filename>
 		<filename>controller.php</filename>
 		<filename>index.html</filename>
-		<filename>install.sql</filename>
 		<filename>oaipmh.php</filename>
-   		<filename>uninstall.sql</filename>
 	</files>
-</administration>
-
-<params>
-	<param name="max" default="500" />
-	<param name="allow_ore" default="0" />
-	<param name="repository_name" default="" />
-	<param name="base_url" default="" />
-	<param name="eamil" default="" />
-	<param name="edate" default="2012-02-12 00:00:00" />
-	<param name="del" default="No" />
-	<param name="gran" default="c" />
-</params>
-
-</install>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+		</sql>
+	</install>
+	<uninstall>
+		<sql>
+			<file charset="utf8" driver="mysql">uninstall.sql</file>
+		</sql>
+	</uninstall>
+	<administration>
+		<menu>OAI-PMH</menu>
+		<files folder="admin">
+			<folder>tables</folder>
+			<folder>views</folder>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>install.sql</filename>
+			<filename>oaipmh.php</filename>
+			<filename>uninstall.sql</filename>
+		</files>
+	</administration>
+</extension>

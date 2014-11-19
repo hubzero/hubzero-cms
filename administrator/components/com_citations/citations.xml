@@ -27,13 +27,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="component" version="1.5">
+<extension type="component" version="1.5">
 	<name>Citations</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>Manage citations</description>
-	<files>
+	<files folder="site">
 		<filename>BibTex.php</filename>
 		<filename>citations.html.php</filename>
 		<filename>citations.css</filename>
@@ -50,7 +50,7 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>views/intro/tmpl/index.html</filename>
 	</files>
 	<administration>
-		<files>
+		<files folder="admin">
 			<menu>Citations Manager</menu>
 			<filename>citations.class.php</filename>
 			<filename>admin.citations.html.php</filename>
@@ -65,11 +65,7 @@ HUBzero is a registered trademark of Purdue University.
 			<language tag="en-GB">en-GB.com_citations.menu.ini</language>
 		</languages>
 	</administration>
-	<params>
-		<param name="pageclass_sfx" type="text" size="20" default="" label="Page Class" description="A css class for the page, this allows individual page styling" />
-	</params>
 	<languages>
 		<language tag="en-GB">en-GB.com_citations.ini</language>
 	</languages>
-</install>
-
+</extension>
