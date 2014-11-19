@@ -328,7 +328,7 @@ class CollectionsTableCollection extends JTable
 	protected function _buildQuery($filters=array())
 	{
 		$query  = " FROM $this->_tbl AS b";
-		$query .= " INNER JOIN `#__collections_items` AS im ON im.type=" . $this->_db->Quote('collection') . " AND im.object_id=b.id";
+		$query .= " LEFT JOIN `#__collections_items` AS im ON im.type=" . $this->_db->Quote('collection') . " AND im.object_id=b.id";
 		$query .= " LEFT JOIN `#__collections_following` AS f ON f.following_type=" . $this->_db->Quote('collection') . " AND f.following_id=b.id";
 		if (isset($filters['user_id']) && $filters['user_id'])
 		{
