@@ -660,7 +660,7 @@ class Migration
 					{
 						// Just a warning...display message and carry on (my wayward son)
 						$message = (isset($result['message']) && !empty($result['message'])) ? $result['message'] : '[no message provided]';
-						$this->log("Warning: post hook '{$hook}' resulted in an error: {$message}", 'warning');
+						$this->log("Warning: {$timing} hook '{$hook}' resulted in an error: {$message}", 'warning');
 					}
 				}
 			}
