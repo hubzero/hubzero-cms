@@ -116,7 +116,7 @@ class Service extends JTable
 		$query .= "FROM $this->_tbl AS s ";
 
 		// do we have special admin group
-		if ($specialgroup) 
+		if ($specialgroup)
 		{
 			$juser = JFactory::getUser();
 
