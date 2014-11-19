@@ -238,63 +238,40 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$this->offset = $jconfig->getValue('config.offset');
 
 		// Incoming
-		$year  = JRequest::getVar('year',  strftime("%Y", time()+($this->offset*60*60)));
-		$month = JRequest::getVar('month', strftime("%m", time()+($this->offset*60*60)));
-		$day   = JRequest::getVar('day',   strftime("%d", time()+($this->offset*60*60)));
+		$this->year     = JRequest::getVar('year',  strftime("%Y", time()+($this->offset*60*60)));
+		$this->month    = JRequest::getVar('month', strftime("%m", time()+($this->offset*60*60)));
+		$this->day      = JRequest::getVar('day',   strftime("%d", time()+($this->offset*60*60)));
+		$this->category = JRequest::getInt('category', 0);
+		$this->gid      = intval($this->juser->get('gid'));
 
-		$category = JRequest::getInt('category', 0);
-
-		if ($day<="9"&preg_match("/(^[1-9]{1})/", $day))
+		// fix single digit day & month
+		if ($this->day <= 9 && preg_match("/(^[1-9]{1})/", $this->day))
 		{
-			$day = "0$day";
+			$this->day = "0{$this->day}";
 		}
-		if ($month<="9"&preg_match("/(^[1-9]{1})/", $month))
+		if ($this->month <=9 && preg_match("/(^[1-9]{1})/", $this->month))
 		{
-			$month = "0$month";
-		}
-		/*
-		$ee = new EventsEvent($this->database);
-
-		// Find the date of the first event
-		$row = $ee->getFirst();
-		if ($row)
-		{
-			$pyear = substr($row, 0, 4);
-			$pmonth = substr($row, 4, 2);
-			if ($year < $pyear)
-			{
-				$year = $pyear;
-			}
-			if ($month < $pmonth)
-			{
-				//$month = $pmonth;
-			}
+			$this->month = "0{$this->month}";
 		}
 
-		// Find the date of the last event
-		$row = $ee->getLast();
-		if ($row)
+		// make sure we have a valid year
+		if ($this->year < 1000)
 		{
-			$thisyear = strftime("%Y", time()+($this->offset*60*60));
-			$fyear = substr($row,0,4);
-			$fmonth = substr($row,4,2);
-			if ($year > $fyear && $year > $thisyear)
-			{
-				$year = ($fyear > $thisyear) ? $fyear : $thisyear;
-			}
-			if ($month > $fmonth)
-			{
-				//$month = $fmonth;
-			}
+			JError::raiseError(404, JText::_('COM_EVENTS_YEAR_NOT_VALID'));
+			return;
 		}
-		*/
-		$this->year  = $year;
-		$this->month = $month;
-		$this->day   = $day;
-
-		$this->category = $category;
-
-		$this->gid = intval($this->juser->get('gid'));
+		// make sure we have a valid month
+		if ($this->month < 1 || $this->month > 12)
+		{
+			JError::raiseError(404, JText::_('COM_EVENTS_MONTH_NOT_VALID'));
+			return;
+		}
+		// make sure we have a valid day
+		if ($this->day < 1 || $this->day > 31)
+		{
+			JError::raiseError(404, JText::_('COM_EVENTS_DAY_NOT_VALID'));
+			return;
+		}
 	}
 
 	/**
