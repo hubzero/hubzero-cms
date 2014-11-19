@@ -476,7 +476,7 @@ class CitationsCitation extends JTable
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getCount($filter=array(), $admin=true)
+	public function getCount($filter=array(), $admin=true, $gid = NULL)
 	{
 		$filter['sort'] = '';
 		$filter['limit'] = 0;
@@ -530,7 +530,7 @@ class CitationsCitation extends JTable
 			}
 		}
 
-		$query .= $this->buildQuery($filter, $admin);
+		$query .= $this->buildQuery($filter, $admin, $gid);
 
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
@@ -538,6 +538,7 @@ class CitationsCitation extends JTable
 		}
 
 		$this->_db->setQuery($query);
+
 		return $this->_db->loadResult();
 	}
 
@@ -550,7 +551,7 @@ class CitationsCitation extends JTable
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function buildQuery($filter=array(), $admin=true)
+	public function buildQuery($filter=array(), $admin=true, $gid=NULL)
 	{
 		$query = " WHERE r.published=1";
 
@@ -564,6 +565,11 @@ class CitationsCitation extends JTable
 			//	$query .= " OR LOWER(u.username) = " . $this->_db->Quote(strtolower($filter['search'])) . "
 			//				OR r.uid = " . $this->_db->Quote($filter['search']);
 			//}
+		}
+		// group search
+		if (isset($gid) && $gid != NULL)
+		{
+			$query .= " AND r.gid='".$gid."'";
 		}
 
 		//tag search
@@ -884,7 +890,7 @@ class CitationsCitation extends JTable
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getRecords($filter=array(), $admin=true)
+	public function getRecords($filter=array(), $admin=true, $gid=NULL)
 	{
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
@@ -933,7 +939,8 @@ class CitationsCitation extends JTable
 			}
 		}
 
-		$query .= $this->buildQuery($filter, $admin);
+		$query .= $this->buildQuery($filter, $admin, $gid);
+
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
 	}
@@ -1035,6 +1042,17 @@ class CitationsCitation extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
+	}
+
+	public function getEarliestYear()
+	{
+		//get the earliest year we have citations for
+		$query = "SELECT c.year FROM " . $this->_tbl . " as c WHERE c.published=1 AND c.year <> 0 AND c.year IS NOT NULL ORDER BY c.year ASC LIMIT 1";
+		$this->_db->setQuery( $query );
+		$earliest_year = $this->_db->loadResult();
+		$earliest_year = ($earliest_year) ? $earliest_year : 1990;
+
+		return $earliest_year;
 	}
 
 	/**
