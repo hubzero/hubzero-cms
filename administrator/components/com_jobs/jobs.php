@@ -51,7 +51,7 @@ include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'shortlist.php
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'stats.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'type.php');
 
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'jobs.php');
+include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
 
 $controllerName = JRequest::getCmd('controller', 'jobs');

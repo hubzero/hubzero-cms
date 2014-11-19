@@ -32,64 +32,18 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Short description for 'JobsHtml'
- *
- * Long description (if any) ...
+ * Jobs helper class for HTML elements
  */
-class JobsHtml
+class JobsHelperHtml
 {
-
 	/**
-	 * Short description for 'error'
+	 * Generate a <select> list
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public static function error( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="error">'.$msg.'</'.$tag.'>'."\n";
-	}
-
-	/**
-	 * Short description for 'warning'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $msg Parameter description (if any) ...
-	 * @param      string $tag Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public static function warning( $msg, $tag='p' )
-	{
-		return '<'.$tag.' class="warning">'.$msg.'</'.$tag.'>'."\n";
-	}
-
-	/**
-	 * Short description for 'alert'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $msg Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
-	 */
-	public static function alert( $msg )
-	{
-		return "<script type=\"text/javascript\"> alert('".$msg."'); window.history.go(-1); </script>\n";
-	}
-
-	/**
-	 * Short description for 'formSelect'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $name Parameter description (if any) ...
-	 * @param      array $array Parameter description (if any) ...
-	 * @param      unknown $value Parameter description (if any) ...
-	 * @param      string $class Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   string  $name   Field name
+	 * @param   array   $array  Field options
+	 * @param   mixed   $value  Current vlaue
+	 * @param   string  $class  Field class
+	 * @return  string  HTML
 	 */
 	public static function formSelect($name, $array, $value, $class='')
 	{
@@ -105,24 +59,4 @@ class JobsHtml
 		$out .= '</select>'."\n";
 		return $out;
 	}
-
-	/**
-	 * Short description for 'txt_unpee'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $pee Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
-	 */
-	public static function txt_unpee($pee)
-	{
-		$pee = str_replace("\t", '', $pee);
-		$pee = str_replace('</p><p>', '', $pee);
-		$pee = str_replace('<p>', '', $pee);
-		$pee = str_replace('</p>', "\n", $pee);
-		$pee = str_replace('<br />', '', $pee);
-		$pee = trim($pee);
-		return $pee;
-	}
 }
-

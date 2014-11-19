@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = JobsHelper::getActions('job');
+$canDo = JobsHelperPermissions::getActions('job');
 
 JToolBarHelper::title(JText::_('COM_JOBS'), 'addedit.png');
 if ($canDo->get('core.admin'))

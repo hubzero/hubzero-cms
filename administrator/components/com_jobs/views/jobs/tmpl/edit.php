@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = JobsHelper::getActions('job');
+$canDo = JobsHelperPermissions::getActions('job');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 
@@ -52,13 +52,10 @@ $this->row->code = !$this->isnew ? $this->row->code : JText::_('COM_JOBS_ISNEW')
 
 $startdate = ($this->row->startdate && $this->row->startdate !='0000-00-00 00:00:00') ? JHTML::_('date', $this->row->startdate, 'Y-M-d') : '';
 $closedate = ($this->row->closedate && $this->row->closedate !='0000-00-00 00:00:00') ? JHTML::_('date', $this->row->closedate, 'Y-M-d') : '';
-$opendate  = ($this->row->opendate  && $this->row->opendate  !='0000-00-00 00:00:00')  ? JHTML::_('date', $this->row->opendate, 'Y-M-d')  : '';
+$opendate  = ($this->row->opendate  && $this->row->opendate  !='0000-00-00 00:00:00') ? JHTML::_('date', $this->row->opendate, 'Y-M-d')  : '';
 
 $status = (!$this->isnew) ? $this->row->status : 4; // draft mode
 
-$this->row->description = trim(stripslashes($this->row->description));
-$this->row->description = preg_replace('/<br\\s*?\/??>/i', "", $this->row->description);
-$this->row->description = JobsHtml::txt_unpee($this->row->description);
 $employerid = ($this->task != 'edit') ? 1 : $this->job->employerid;
 
 $expired = $this->subscription->expires && $this->subscription->expires < $now ? 1 : 0;
@@ -150,11 +147,11 @@ function submitbutton(pressbutton)
 
 			<div class="input-wrap">
 				<label for="cid"><?php echo JText::_('COM_JOBS_FIELD_CATEGORY'); ?>:</label><br />
-				<?php echo JobsHtml::formSelect('cid', $this->cats, $this->row->cid, '', ''); ?>
+				<?php echo JobsHelperHtml::formSelect('cid', $this->cats, $this->row->cid, '', ''); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="type"><?php echo JText::_('COM_JOBS_FIELD_TYPE'); ?>:</label><br />
-				<?php echo JobsHtml::formSelect('type', $this->types, $this->row->type, '', ''); ?>
+				<?php echo JobsHelperHtml::formSelect('type', $this->types, $this->row->type, '', ''); ?>
 			</div>
 			<div class="input-wrap">
 				<label for="companyLocationCountry"><?php echo JText::_('COM_JOBS_FIELD_COUNTRY'); ?>:</label><br />
@@ -188,7 +185,7 @@ function submitbutton(pressbutton)
 			</div>
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_JOBS_FIELD_DESCRIPTION_HINT'); ?>">
 				<label for="description"><?php echo JText::_('COM_JOBS_FIELD_DESCRIPTION'); ?>:</label><br />
-				<textarea name="description" id="description"  cols="55" rows="30"><?php echo $this->escape(stripslashes($this->row->description)); ?></textarea>
+				<?php echo $this->editor('description', $this->escape(stripslashes($this->row->description)), 50, 30, 'description'); ?>
 				<span class="hint"><?php echo JText::_('COM_JOBS_FIELD_DESCRIPTION_HINT'); ?></span>
 			</div>
 			<div class="input-wrap">

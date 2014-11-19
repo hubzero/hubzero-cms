@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = JobsHelper::getActions('category');
+$canDo = JobsHelperPermissions::getActions('category');
 
 JToolBarHelper::title(JText::_('COM_JOBS') . ': ' . JText::_('COM_JOBS_CATEGORIES'), 'addedit.png');
 if ($canDo->get('core.create'))

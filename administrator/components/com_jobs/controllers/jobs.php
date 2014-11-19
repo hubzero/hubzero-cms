@@ -39,7 +39,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Jobs List
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -90,7 +90,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 
 		// Get data
 		$obj = new Job($this->database);
-		$this->view->rows = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1);
+		$this->view->rows  = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1);
 
 		$this->view->total = $obj->get_openings($this->view->filters, $this->juser->get('id'), 1, '', 1);
 
@@ -105,12 +105,9 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -121,7 +118,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 	 * Create a job posting
 	 * Displays the edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -131,14 +128,12 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Edit Job Posting
 	 *
-	 * @param      integer $isnew Parameter description (if any) ...
-	 * @return     void
+	 * @param   integer  $isnew  Is this a new entry?
+	 * @return  void
 	 */
 	public function editTask($isnew=0)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		$jconfig = JFactory::getConfig();
 		$live_site = rtrim(JURI::base(),'/');
@@ -199,11 +194,11 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		else
 		{
 			// site admin
-			$this->view->employer->uid = 1;
-			$this->view->employer->subscriptionid = 1;
-			$this->view->employer->companyName 		= $jconfig->getValue('config.sitename');
-			$this->view->employer->companyLocation  = '';
-			$this->view->employer->companyWebsite   = $live_site;
+			$this->view->employer->uid             = 1;
+			$this->view->employer->subscriptionid  = 1;
+			$this->view->employer->companyName     = $jconfig->getValue('config.sitename');
+			$this->view->employer->companyLocation = '';
+			$this->view->employer->companyWebsite  = $live_site;
 		}
 
 		// Get subscription info
@@ -226,22 +221,21 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		$this->view->isnew = $isnew;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save Job Posting
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -249,13 +243,13 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$data 		= array_map('trim',$_POST);
-		$action	 	= JRequest::getVar('action', '');
-		$message	= JRequest::getVar('message', '');
-		$id 		= JRequest::getInt('id', 0);
+		$data       = array_map('trim',$_POST);
+		$action     = JRequest::getVar('action', '');
+		$message    = JRequest::getVar('message', '');
+		$id         = JRequest::getInt('id', 0);
 		$employerid = JRequest::getInt('employerid', 0);
-		$emailbody 	= '';
-		$statusmsg	= '';
+		$emailbody  = '';
+		$statusmsg  = '';
 
 		$job = new Job($this->database);
 		$employer = new Employer($this->database);
@@ -305,7 +299,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 
 					if ($allowed_ads <= 0)
 					{
-						$statusmsg .= JobsHtml::error(JText::_('COM_JOBS_ERROR_OVER_LIMIT'));
+						$statusmsg .= JText::_('COM_JOBS_ERROR_OVER_LIMIT');
 						$action = '';
 					}
 					else
@@ -317,7 +311,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 				break;
 
 				case 'unpublish':
-					$job->status 	= 3;
+					$job->status = 3;
 					$statusmsg .= JText::_('COM_JOBS_MESSAGE_JOB_UNPUBLISHED');
 				break;
 
@@ -326,7 +320,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 				break;
 
 				case 'delete':
-					$job->status 	= 2;
+					$job->status = 2;
 					$statusmsg .= JText::_('COM_JOBS_MESSAGE_JOB_DELETED');
 				break;
 			}
@@ -335,9 +329,9 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			$job->edited = JFactory::getDate()->toSql();
 		}
 
-		if (!$job->store()) {
-			echo JobsHtml::alert($job->getError());
-			exit();
+		if (!$job->store())
+		{
+			throw new JException($job->getError(), 500);
 		}
 
 		if (!$job->id)
@@ -351,14 +345,15 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			$jconfig = JFactory::getConfig();
 
 			// E-mail "from" info
-			$from = array();
-			$from['email'] = $jconfig->getValue('config.mailfrom');
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_JOBS_JOBS');
+			$from = array(
+				'email' => $jconfig->getValue('config.mailfrom'),
+				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_JOBS_JOBS')
+			);
 
 			$juri    = JURI::getInstance();
 			$jconfig = JFactory::getConfig();
 
-			$base 	 = rtrim($juri->base(), DS);
+			$base = rtrim($juri->base(), DS);
 			if (substr($base, -13) == 'administrator')
 			{
 				$base = substr($base, 0, strlen($base)-13);
@@ -369,7 +364,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 			// start email message
 			$emailbody .= $subject . ':' . "\r\n";
 			$emailbody .= $statusmsg . "\r\n";
-			$emailbody  .= JText::_('COM_JOBS_MESSAGE_JOB') . ': ' . $link . "\r\n";
+			$emailbody .= JText::_('COM_JOBS_MESSAGE_JOB') . ': ' . $link . "\r\n";
 			if ($message)
 			{
 				$emailbody .= "\n";
@@ -380,8 +375,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
-			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject,
-				$emailbody, $from, array($job->addedBy), $this->_option)))
+			if (!$dispatcher->trigger('onSendMessage', array('jobs_ad_status_changed', $subject, $emailbody, $from, array($job->addedBy), $this->_option)))
 			{
 				$this->setError(JText::_('COM_JOBS_ERROR_FAILED_TO_MESSAGE_USERS'));
 			}
@@ -397,10 +391,10 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Check job ad quota depending on subscription
 	 *
-	 * @param      object $job Parameter description (if any) ...
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      unknown $database Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @param    object  $job       Job entry
+	 * @param   integer  $uid       User ID
+	 * @param   object   $database  JDatabase
+	 * @return  integer
 	 */
 	private function _checkQuota($job, $uid, $database)
 	{
@@ -410,15 +404,14 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 		$maxads = isset($this->config->parameters['maxads']) && intval($this->config->parameters['maxads']) > 0  ? $this->config->parameters['maxads'] : 3;
 		$service = $objS->getUserService($uid);
 		$activejobs = $job->countMyActiveOpenings($uid, 1);
-		$allowed_ads = $service == 'employer_basic' ? 1 - $activejobs : $maxads - $activejobs;
 
-		return $allowed_ads;
+		return ($service == 'employer_basic' ? 1 - $activejobs : $maxads - $activejobs);
 	}
 
 	/**
 	 * Remove Job Posting
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -458,7 +451,7 @@ class JobsControllerJobs extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{

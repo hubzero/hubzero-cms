@@ -31,7 +31,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = JobsHelper::getActions('type');
+$canDo = JobsHelperPermissions::getActions('type');
 
 $text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
 JToolBarHelper::title(JText::_('COM_JOBS') . ': ' . JText::_('COM_JOBS_TYPES') . ': ' . $text, 'addedit.png');
