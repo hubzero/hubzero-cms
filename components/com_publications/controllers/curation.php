@@ -711,6 +711,10 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$data->reviewed 		= JFactory::getDate()->toSql();
 		$data->reviewed_by 		= $this->juser->get('id');
 		$data->review_status 	= $action == 'pass' ? 1 : 2;
+		if ($action == 'pass')
+		{
+			$data->update = '';
+		}
 		if ($review)
 		{
 			$data->review   = $review;
