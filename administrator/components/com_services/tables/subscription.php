@@ -29,159 +29,40 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Subscription'
- *
- * Long description (if any) ...
+ * Table class for service subscription
  */
 class Subscription extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * Constructor
 	 *
-	 * @var unknown
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
-	var $id       		= NULL;  // @var int(11) Primary key
-
-	/**
-	 * Description for 'uid'
-	 *
-	 * @var unknown
-	 */
-	var $uid      		= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'serviceid'
-	 *
-	 * @var unknown
-	 */
-	var $serviceid  	= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'units'
-	 *
-	 * @var unknown
-	 */
-	var $units 			= NULL;  //	@var int(11)
-
-	/**
-	 * Description for 'status'
-	 *
-	 * @var unknown
-	 */
-	var $status 		= NULL;  //	@var int(11)
-
-	/**
-	 * Description for 'code'
-	 *
-	 * @var unknown
-	 */
-	var $code 			= NULL;  //	@var varchar
-
-	/**
-	 * Description for 'contact'
-	 *
-	 * @var unknown
-	 */
-	var $contact 		= NULL;  //	@var varchar
-
-	/**
-	 * Description for 'added'
-	 *
-	 * @var unknown
-	 */
-	var $added 			= NULL;  //	@var datetime
-
-	/**
-	 * Description for 'updated'
-	 *
-	 * @var unknown
-	 */
-	var $updated 		= NULL;  //	@var datetime
-
-	/**
-	 * Description for 'expires'
-	 *
-	 * @var unknown
-	 */
-	var $expires 		= NULL;  //	@var datetime
-
-	/**
-	 * Description for 'pendingunits'
-	 *
-	 * @var unknown
-	 */
-	var $pendingunits 	= NULL;  //	@var int(11)
-
-	/**
-	 * Description for 'installment'
-	 *
-	 * @var unknown
-	 */
-	var $installment 	= NULL;  //	@var int(11)
-
-	/**
-	 * Description for 'pendingpayment'
-	 *
-	 * @var unknown
-	 */
-	var $pendingpayment = NULL;  //	@var int(11)
-
-	/**
-	 * Description for 'totalpaid'
-	 *
-	 * @var unknown
-	 */
-	var $totalpaid 		= NULL;  //	@var int(11)
-
-	/**
-	 * Description for 'notes'
-	 *
-	 * @var unknown
-	 */
-	var $notes 			= NULL;  //	@var text
-
-	/**
-	 * Description for 'usepoints'
-	 *
-	 * @var unknown
-	 */
-	var $usepoints 		= NULL;  //	@var tinyint
-
-	//-----------
-
-	/**
-	 * Short description for '__construct'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__users_points_subscriptions', 'id', $db );
+		parent::__construct('#__users_points_subscriptions', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->uid ) == '') {
-			$this->setError( JText::_('Entry must have a user ID.') );
+		if (!$this->uid)
+		{
+			$this->setError(JText::_('Entry must have a user ID.'));
 			return false;
 		}
 
-		if (trim( $this->serviceid ) == '') {
-			$this->setError( JText::_('Entry must have a service ID.') );
+		if (!$this->serviceid)
+		{
+			$this->setError(JText::_('Entry must have a service ID.'));
 			return false;
 		}
 
@@ -189,103 +70,96 @@ class Subscription extends JTable
 	}
 
 	/**
-	 * Short description for 'loadSubscription'
+	 * Load a record and bind to $this
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $id Parameter description (if any) ...
-	 * @param      unknown $oid Parameter description (if any) ...
-	 * @param      unknown $serviceid Parameter description (if any) ...
-	 * @param      array $status Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $id         Entry ID
+	 * @param   integer  $oid        User ID
+	 * @param   integer  $serviceid  Service ID
+	 * @param   array    $status     List of statuses
+	 * @return  boolean  True upon success, False if errors
 	 */
-	public function loadSubscription( $id = NULL, $oid=NULL, $serviceid = NULL, $status = array(0, 1, 2) )
+	public function loadSubscription($id = NULL, $oid=NULL, $serviceid = NULL, $status = array(0, 1, 2))
 	{
-		if ($id == 0 or  ($oid === NULL && $serviceid === NULL)) {
+		if ($id == 0 or  ($oid === NULL && $serviceid === NULL))
+		{
 			return false;
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE ";
-		if ($id) {
+		if ($id)
+		{
 			$query .= "id='$id' ";
-		} else if ($oid && $serviceid) {
+		}
+		else if ($oid && $serviceid)
+		{
 			$query .= "uid='$oid' AND serviceid='$serviceid' ";
 		}
-		$query .= " AND status IN ( ";
-		$tquery = '';
-		foreach ($status as $tagg)
+		$query .= " AND status IN (" . implode(",", $status) . ")";
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadAssoc())
 		{
-			$tquery .= "'".$tagg."',";
+			return $this->bind($result);
 		}
-		$tquery = substr($tquery,0,strlen($tquery) - 1);
-
-		$query .= $tquery.")";
-
-		$this->_db->setQuery( $query );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
+		else
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 	}
 
 	/**
-	 * Short description for 'cancelSubscription'
+	 * Cancel a subscription
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $subid Parameter description (if any) ...
-	 * @param      integer $refund Parameter description (if any) ...
-	 * @param      integer $unitsleft Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   integer  $subid      Subscription ID
+	 * @param   integer  $refund     Refund amount
+	 * @param   integer  $unitsleft  Units left
+	 * @return  boolean  True on success, False on error
 	 */
-	public function cancelSubscription( $subid = NULL, $refund=0, $unitsleft=0)
+	public function cancelSubscription($subid = NULL, $refund=0, $unitsleft=0)
 	{
-		if ($subid === NULL ) {
+		if ($subid === NULL )
+		{
 			return false;
 		}
 
 		// status quo if now money back is expected
 		$unitsleft = $refund ? $unitsleft : 0;
 
-		$query  = "UPDATE $this->_tbl SET status='2', pendingpayment='$refund', pendingunits='$unitsleft' WHERE id='$subid'" ;
-		$this->_db->setQuery( $query );
-		if (!$this->_db->query()) {
-			$this->setError( $this->_db->getErrorMsg() );
+		$query = "UPDATE $this->_tbl SET status='2', pendingpayment='$refund', pendingunits='$unitsleft' WHERE id='$subid'" ;
+		$this->_db->setQuery($query);
+		if (!$this->_db->query())
+		{
+			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
 		return true;
 	}
 
 	/**
-	 * Short description for 'getSubscriptionsCount'
+	 * Get a count of records
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   array    $filters  Filters to apply
+	 * @param   boolean  $admin    Is admin?
+	 * @return  integer
 	 */
-	public function getSubscriptionsCount( $filters=array(), $admin=false )
+	public function getSubscriptionsCount($filters=array(), $admin=false)
 	{
 		$filters['exlcudeadmin'] = 1;
 		$filter = $this->buildQuery( $filters, $admin );
 
 		$sql = "SELECT count(*) FROM $this->_tbl AS u JOIN #__users_points_services as s ON s.id=u.serviceid $filter";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getSubscriptions'
+	 * Get a list of records
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     object Return description (if any) ...
+	 * @param   array    $filters  Filters to apply
+	 * @param   boolean  $admin    Is admin?
+	 * @return  array
 	 */
 	public function getSubscriptions($filters, $admin=false)
 	{
@@ -302,16 +176,15 @@ class Subscription extends JTable
 	}
 
 	/**
-	 * Short description for 'getSubscription'
+	 * Get a subscription
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $id  User ID
+	 * @return  mixed
 	 */
 	public function getSubscription($id)
 	{
-		if ($id === NULL ) {
+		if ($id === NULL)
+		{
 			return false;
 		}
 
@@ -320,7 +193,7 @@ class Subscription extends JTable
 		$sql .= " JOIN #__jobs_employers as e ON e.uid=u.uid ";
 		$sql .= " WHERE u.id='$id' ";
 
-		$this->_db->setQuery( $sql );
+		$this->_db->setQuery($sql);
 		$result = $this->_db->loadObjectList();
 
 		$result = $result ? $result[0] : NULL;
@@ -328,44 +201,41 @@ class Subscription extends JTable
 	}
 
 	/**
-	 * Short description for 'buildQuery'
+	 * Build a query statement
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      array $filters Parameter description (if any) ...
-	 * @param      boolean $admin Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   array    $filters  Filters to apply
+	 * @param   boolean  $admin    Is admin?
+	 * @return  string   SQL
 	 */
-	public function buildQuery( $filters=array(), $admin=false )
+	public function buildQuery($filters=array(), $admin=false)
 	{
-		$juser = JFactory::getUser();
-		$now = JFactory::getDate()->toSql();
-
-		$query  = "";
-		$query .= "WHERE 1=1 ";
-		if (isset($filters['filterby'])) {
+		$query = "WHERE 1=1 ";
+		if (isset($filters['filterby']))
+		{
 			switch ($filters['filterby'])
 			{
-				case 'pending':    $query .= "AND (u.status=0 OR u.pendingpayment > 0 OR u.pendingunits > 0) "; break;
-				case 'cancelled':  $query .= "AND u.status=2 ";             break;
-				default:  		   $query .= '';   							break;
+				case 'pending':   $query .= "AND (u.status=0 OR u.pendingpayment > 0 OR u.pendingunits > 0) "; break;
+				case 'cancelled': $query .= "AND u.status=2 ";  break;
+				default:          $query .= ''; break;
 			}
 		}
 
-		if (isset($filters['exlcudeadmin'])) {
+		if (isset($filters['exlcudeadmin']))
+		{
 			$query .= "AND u.uid!=1 ";
 		}
 
 		$query .= " ORDER BY ";
-		if (isset($filters['sortby'])) {
+		if (isset($filters['sortby']))
+		{
 			switch ($filters['sortby'])
 			{
 				case 'date':
-				case 'date_added':      $query .= 'u.added DESC';      		break;
-				case 'date_expires':    $query .= 'u.expires DESC';    		break;
-				case 'date_updated':    $query .= 'u.updated DESC';        	break;
-				case 'category':    	$query .= 's.category DESC';        break;
-				case 'status':    		$query .= 'u.status ASC';        	break;
+				case 'date_added':   $query .= 'u.added DESC';    break;
+				case 'date_expires': $query .= 'u.expires DESC';  break;
+				case 'date_updated': $query .= 'u.updated DESC';  break;
+				case 'category':     $query .= 's.category DESC'; break;
+				case 'status':       $query .= 'u.status ASC';    break;
 				case 'pending':
 				default:  $query .= 'u.pendingunits DESC, u.pendingpayment DESC, u.status ASC, u.updated DESC ';   break;
 			}
@@ -375,53 +245,52 @@ class Subscription extends JTable
 	}
 
 	/**
-	 * Short description for 'generateCode'
+	 * Generate a code
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      integer $minlength Parameter description (if any) ...
-	 * @param      integer $maxlength Parameter description (if any) ...
-	 * @param      integer $usespecial Parameter description (if any) ...
-	 * @param      integer $usenumbers Parameter description (if any) ...
-	 * @param      integer $useletters Parameter description (if any) ...
-	 * @return     string Return description (if any) ...
+	 * @param   integer  $minlength   Minimum length
+	 * @param   integer  $maxlength   Maximum length
+	 * @param   integer  $usespecial  Use special characters?
+	 * @param   integer  $usenumbers  Use numbers?
+	 * @param   integer  $useletters  Use letters?
+	 * @return  string   Return description (if any) ...
 	 */
-	public function generateCode($minlength = 6, $maxlength = 6, $usespecial = 0, $usenumbers = 1, $useletters = 1 )
+	public function generateCode($minlength = 6, $maxlength = 6, $usespecial = 0, $usenumbers = 1, $useletters = 1)
 	{
 		$key = '';
 		$charset = '';
+
 		if ($useletters) $charset .= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		if ($usenumbers) $charset .= "0123456789";
 		if ($usespecial) $charset .= "~@#$%^*()_+-={}|]["; // Note: using all special characters this reads: "~!@#$%^&*()_+`-={}|\\]?[\":;'><,./";
 		if ($minlength > $maxlength) $length = mt_rand ($maxlength, $minlength);
 		else $length = mt_rand ($minlength, $maxlength);
 		for ($i=0; $i<$length; $i++) $key .= $charset[(mt_rand(0,(strlen($charset)-1)))];
+
 		return $key;
 	}
 
 	/**
-	 * Short description for 'getRemaining'
+	 * Get remaining
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      string $type Parameter description (if any) ...
-	 * @param      object $subscription Parameter description (if any) ...
-	 * @param      integer $maxunits Parameter description (if any) ...
-	 * @param      mixed $unitsize Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   string   $type          Type
+	 * @param   object   $subscription  Subscription object
+	 * @param   integer  $maxunits      Maximum units
+	 * @param   mixed    $unitsize      Unit size
+	 * @return  mixed
 	 */
-	public function getRemaining( $type='unit', $subscription = NULL, $maxunits = 24, $unitsize=1 )
+	public function getRemaining($type='unit', $subscription = NULL, $maxunits = 24, $unitsize=1)
 	{
-		if ($subscription === NULL ) {
+		if ($subscription === NULL)
+		{
 			return false;
 		}
 
 		$current_time = time();
 
-		$limits = array();
+		$limits    = array();
 		$starttime = $subscription->added;
-		$lastunit = 0;
-		$today = JFactory::getDate(time() - (24 * 60 * 60))->toSql();
+		$lastunit  = 0;
+		$today     = JFactory::getDate(time() - (24 * 60 * 60))->toSql();
 
 		for ($i = 0; $i < $maxunits; $i++)
 		{
@@ -431,11 +300,13 @@ class Subscription extends JTable
 
 		for ($j = 0; $j < count($limits); $j++)
 		{
-			if (strtotime($current_time) < strtotime($limits[$j])) {
+			if (strtotime($current_time) < strtotime($limits[$j]))
+			{
 				$lastunit = $j + 1;
-				if ($type == 'unit') {
-					$remaining= $subscription->units - $lastunit;
-					$refund = $remaining > 0 ? $remaining : 0;
+				if ($type == 'unit')
+				{
+					$remaining = $subscription->units - $lastunit;
+					$refund    = $remaining > 0 ? $remaining : 0;
 					return ($remaining);
 				}
 			}

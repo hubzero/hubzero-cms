@@ -29,253 +29,129 @@
  */
 
 // No direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'Service'
- *
- * Long description (if any) ...
+ * Table class for services
  */
 class Service extends JTable
 {
-
 	/**
-	 * Description for 'id'
+	 * Constructor
 	 *
-	 * @var unknown
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
-	var $id          	= NULL;  // @var int(11) Primary key
-
-	/**
-	 * Description for 'title'
-	 *
-	 * @var unknown
-	 */
-	var $title       	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'category'
-	 *
-	 * @var unknown
-	 */
-	var $category    	= NULL;  // @var varchar(50)
-
-	/**
-	 * Description for 'alias'
-	 *
-	 * @var unknown
-	 */
-	var $alias		 	= NULL;  // @var varchar(50)
-
-	/**
-	 * Description for 'description'
-	 *
-	 * @var unknown
-	 */
-	var $description 	= NULL;  // @var varchar(250)
-
-	/**
-	 * Description for 'unitprice'
-	 *
-	 * @var unknown
-	 */
-	var $unitprice   	= NULL;  // @var float
-
-	/**
-	 * Description for 'pointsprice'
-	 *
-	 * @var unknown
-	 */
-	var $pointsprice   	= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'currency'
-	 *
-	 * @var unknown
-	 */
-	var $currency    	= NULL;  // @var varchar(11)
-
-	/**
-	 * Description for 'maxunits'
-	 *
-	 * @var unknown
-	 */
-	var $maxunits 		= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'minunits'
-	 *
-	 * @var unknown
-	 */
-	var $minunits   	= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'unitsize'
-	 *
-	 * @var unknown
-	 */
-	var $unitsize   	= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'status'
-	 *
-	 * @var unknown
-	 */
-	var $status   		= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'restricted'
-	 *
-	 * @var unknown
-	 */
-	var $restricted   	= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'ordering'
-	 *
-	 * @var unknown
-	 */
-	var $ordering   	= NULL;  // @var int(11)
-
-	/**
-	 * Description for 'unitmeasure'
-	 *
-	 * @var unknown
-	 */
-	var $unitmeasure    = NULL;  // @var varchar
-
-	/**
-	 * Description for 'changed'
-	 *
-	 * @var unknown
-	 */
-	var $changed     	= NULL;  // @var datetime
-
-	/**
-	 * Description for 'params'
-	 *
-	 * @var unknown
-	 */
-	var $params   		= NULL;  // @var text
-
-	//-----------
-
-	/**
-	 * Short description for '__construct'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown &$db Parameter description (if any) ...
-	 * @return     void
-	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
-		parent::__construct( '#__users_points_services', 'id', $db );
+		parent::__construct('#__users_points_services', 'id', $db);
 	}
 
 	/**
-	 * Short description for 'check'
+	 * Validate data
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
-		if (trim( $this->alias ) == '') {
-			$this->_error = 'Entry must have an alias.';
+		$this->alias = trim($this->alias);
+		if ($this->alias == '')
+		{
+			$this->setError(JText::_('Entry must have an alias.'));
 			return false;
 		}
-		if (trim( $this->category ) == '') {
-			$this->_error = 'Entry must have a category.';
+
+		$this->category = trim($this->category);
+		if ($this->category == '')
+		{
+			$this->setError(JText::_('Entry must have a category.'));
 			return false;
 		}
+
 		return true;
 	}
 
 	/**
-	 * Short description for 'loadService'
+	 * Load a record and bind to $this
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $alias Parameter description (if any) ...
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @return     boolean Return description (if any) ...
+	 * @param   string   $alias  Entry alias
+	 * @param   integer  $id     Entry ID
+	 * @return  boolean  True upon success, False if errors
 	 */
-	public function loadService( $alias=NULL, $id = NULL )
+	public function loadService($alias=NULL, $id = NULL)
 	{
-		if ($alias === NULL && $id === NULL) {
+		if ($alias === NULL && $id === NULL)
+		{
 			return false;
 		}
 
-		$query  = "SELECT * FROM $this->_tbl WHERE ";
-		if ($alias) {
-			$query .= "alias='$alias' ";
-		} else {
-			$query .= "id='$id' ";
+		if ($alias)
+		{
+			return parent::load(array(
+				'alias'   => $alias
+			));
 		}
 
-		$this->_db->setQuery(  $query );
-		if ($result = $this->_db->loadAssoc()) {
-			return $this->bind( $result );
-		} else {
-			$this->setError( $this->_db->getErrorMsg() );
-			return false;
-		}
+		return parent::load($id);
 	}
 
 	/**
-	 * Short description for 'getServices'
+	 * Get a list of services
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $category Parameter description (if any) ...
-	 * @param      integer $completeinfo Parameter description (if any) ...
-	 * @param      integer $active Parameter description (if any) ...
-	 * @param      string $sortby Parameter description (if any) ...
-	 * @param      string $sortdir Parameter description (if any) ...
-	 * @param      string $specialgroup Parameter description (if any) ...
-	 * @param      integer $admin Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   string   $category      Category
+	 * @param   integer  $completeinfo  Get complete info?
+	 * @param   integer  $active        Active?
+	 * @param   string   $sortby        Sort field
+	 * @param   string   $sortdir       Sort direction
+	 * @param   string   $specialgroup  Special group name
+	 * @param   integer  $admin         Is admin?
+	 * @return  array
 	 */
 	public function getServices($category = NULL, $completeinfo = 0, $active = 1, $sortby = 'category', $sortdir = 'ASC', $specialgroup='', $admin = 0)
 	{
 		$services = array();
 
 		$query  = "SELECT s.* ";
-		$query .= $specialgroup ? " , m.gidNumber as ingroup ": "";
+		$query .= $specialgroup ? " , m.gidNumber as ingroup " : "";
 		$query .= "FROM $this->_tbl AS s ";
 
 		// do we have special admin group
-		if ($specialgroup) {
-			$juser 	  = JFactory::getUser();
+		if ($specialgroup) 
+		{
+			$juser = JFactory::getUser();
 
-			$query .= "JOIN #__xgroups AS xg ON xg.cn='".$specialgroup."' ";
-			$query .= " LEFT JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber AND m.uidNumber='".$juser->get('id')."' ";
+			$query .= "JOIN #__xgroups AS xg ON xg.cn=" . $this->_db->quote($specialgroup) . " ";
+			$query .= " LEFT JOIN #__xgroups_members AS m ON xg.gidNumber=m.gidNumber AND m.uidNumber=" . $this->_db->quote($juser->get('id')) . " ";
 		}
 
 		$query .= "WHERE 1=1 ";
-		if ($category) {
-			$query .= "AND s.category ='$category' ";
+		if ($category)
+		{
+			$query .= "AND s.category = " . $this->_db->quote($category) . " ";
 		}
-		if ($active) {
+		if ($active)
+		{
 			$query .= "AND s.status = 1 ";
 		}
-		if (!$admin) {
+		if (!$admin)
+		{
 			$query .= $specialgroup ? "AND (s.restricted = 0 or (s.restricted = 1 AND m.gidNumber IS NOT NULL )) " : " AND s.restricted = 0 ";
 		}
 		$query .= " ORDER BY $sortby $sortdir ";
-		$this->_db->setQuery( $query );
-		$result = $this->_db->loadObjectList();
-		if ($result) {
+
+		$this->_db->setQuery($query);
+		if ($result = $this->_db->loadObjectList())
+		{
 			foreach ($result as $r)
 			{
-				if ($completeinfo) {
+				if ($completeinfo)
+				{
 					$services[] = $r;
-				} else {
+				}
+				else
+				{
 					$services[$r->id] = $r->title;
 				}
-
 			}
 		}
 
@@ -283,54 +159,55 @@ class Service extends JTable
 	}
 
 	/**
-	 * Short description for 'getServiceCost'
+	 * Get the cost for a service
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $id Parameter description (if any) ...
-	 * @param      integer $points Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $id      Service ID
+	 * @param   integer  $points  Load point cost?
+	 * @return  mixed
 	 */
 	public function getServiceCost($id, $points = 0)
 	{
-		if ($id === NULL) {
+		if ($id === NULL)
+		{
 			return false;
 		}
 
-		if ($points) {
-			$this->_db->setQuery( "SELECT pointsprice FROM $this->_tbl WHERE id='$id'" );
-		} else {
-			$this->_db->setQuery( "SELECT unitprice FROM $this->_tbl WHERE id='$id'" );
+		if ($points)
+		{
+			$this->_db->setQuery("SELECT pointsprice FROM $this->_tbl WHERE id=" . $this->_db->quote($id));
+		}
+		else
+		{
+			$this->_db->setQuery("SELECT unitprice FROM $this->_tbl WHERE id=" . $this->_db->quote($id));
 		}
 		return $this->_db->loadResult();
 	}
 
 	/**
-	 * Short description for 'getUserService'
+	 * Load a service for a user
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      unknown $uid Parameter description (if any) ...
-	 * @param      string $field Parameter description (if any) ...
-	 * @param      string $category Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   integer  $uid       User ID
+	 * @param   string   $field     Field name
+	 * @param   string   $category  Category
+	 * @return  mixed
 	 */
-	public function getUserService( $uid = NULL, $field = 'alias', $category = 'jobs')
+	public function getUserService($uid = NULL, $field = 'alias', $category = 'jobs')
 	{
-		if ($uid === NULL) {
+		if ($uid === NULL)
+		{
 			return false;
 		}
 
-		$field = $field ? 's.'.$field : 's.*';
+		$field = $field ? 's.' . $field : 's.*';
 
-		$query  = "SELECT $field  ";
+		$query  = "SELECT $field ";
 		$query .= "FROM $this->_tbl as s ";
 		$query .= "JOIN #__users_points_subscriptions AS y ON s.id=y.serviceid  ";
 
-		$query .= "WHERE s.category = '$category' AND y.uid = '$uid' ";
+		$query .= "WHERE s.category =" . $this->_db->quote($category) . " AND y.uid = " . $this->_db->quote($uid) . " ";
 		$query .= " ORDER BY y.id DESC LIMIT 1 ";
 
-		$this->_db->setQuery( $query );
+		$this->_db->setQuery($query);
 		return $this->_db->loadResult();
 	}
 }
