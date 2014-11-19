@@ -76,10 +76,10 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('COM_GROUPS_SEARCH'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->filters['search']; ?>" placeholder="<?php echo JText::_('COM_GROUPS_SEARCH'); ?>" />
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_GROUPS_SEARCH'); ?>" />
 
 		<label for="filter-type"><?php echo JText::_('COM_GROUPS_TYPE'); ?>:</label>
 		<select name="type" id="filter-type">
@@ -111,7 +111,7 @@ function submitbutton(pressbutton)
 
 		<input type="submit" value="<?php echo JText::_('COM_GROUPS_GO'); ?>" />
 		|
-		<a class="button" href="/administrator/index.php?option=com_groups&amp;controller=manage&amp;type=hub&amp;discoverability=&amp;policy=&amp;approved=&amp;published=&amp;created="><?php echo JText::_('COM_GROUPS_RESET'); ?></a>
+		<a class="button" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=manage&type=hub&discoverability=&policy=&approved=&published=&created='); ?>"><?php echo JText::_('COM_GROUPS_RESET'); ?></a>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -140,11 +140,9 @@ $database = JFactory::getDBO();
 $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
-	$row = &$this->rows[$i];
+	$row =& $this->rows[$i];
 
 	$group = new \Hubzero\User\Group();
-	//$group->gidNumber = $row->gidNumber;
-	//$group->cn = $row->cn;
 	$group->read($row->gidNumber);
 
 	switch ($row->type)
@@ -179,80 +177,80 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->cn ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($row->cn); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($row->gidNumber); ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->cn; ?>">
-						<?php echo $this->escape(stripslashes($row->description)); ?>
-					</a>
-				<?php } else { ?>
-					<span>
-						<?php echo $this->escape(stripslashes($row->description)); ?>
-					</span>
-				<?php } ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->cn); ?>">
+							<?php echo ($row->description ? $this->escape(stripslashes($row->description)) : '<span class="empty-field" style="color:#bbb;">' . JText::_('COM_GROUPS_NONE') . '</span>'); ?>
+						</a>
+					<?php } else { ?>
+						<span>
+							<?php echo ($row->description ? $this->escape(stripslashes($row->description)) : '<span class="empty-field" style="color:#bbb;">' . JText::_('COM_GROUPS_NONE') . '</span>'); ?>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->cn; ?>">
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->cn); ?>">
+							<?php echo $this->escape($row->cn); ?>
+						</a>
+					<?php } else { ?>
 						<?php echo $this->escape($row->cn); ?>
-					</a>
-				<?php } else { ?>
-					<?php echo $this->escape($row->cn); ?>
-				<?php } ?>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $type; ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<?php if ($row->published) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_UNPUBLISH'); ?>">
-						<span class="state publish">
-							<span class="text"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></span>
-						</span>
-					</a>
-					<?php } else { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_PUBLISH'); ?>">
-						<span class="state unpublish">
-							<span class="text"><?php echo JText::_('COM_GROUPS_UNPUBLISHED'); ?></span>
-						</span>
-					</a>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<?php if ($row->published) { ?>
+						<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->cn); ?>" title="<?php echo JText::_('COM_GROUPS_UNPUBLISH'); ?>">
+							<span class="state publish">
+								<span class="text"><?php echo JText::_('COM_GROUPS_PUBLISHED'); ?></span>
+							</span>
+						</a>
+						<?php } else { ?>
+						<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->cn); ?>" title="<?php echo JText::_('COM_GROUPS_PUBLISH'); ?>">
+							<span class="state unpublish">
+								<span class="text"><?php echo JText::_('COM_GROUPS_UNPUBLISHED'); ?></span>
+							</span>
+						</a>
+						<?php } ?>
 					<?php } ?>
-				<?php } ?>
 				</td>
 				<td>
-				<?php if ($canDo->get('core.edit.state')) { ?>
-					<?php if (!$group->get('approved')) { ?>
-					<a class="jgrid state no" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=approve&amp;id=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_APPROVE'); ?>">
-						<span class="not-approved">
-							<span class="text"><?php echo JText::_('COM_GROUPS_APPROVE'); ?></span>
-						</span>
-					</a>
-					<?php } else { ?>
-						<span class="state yes approved">
-							<span class="text"><?php echo JText::_('COM_GROUPS_APPROVED'); ?></span>
-						</span>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<?php if (!$group->get('approved')) { ?>
+						<a class="jgrid state no" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&id=' . $row->cn); ?>" title="<?php echo JText::_('COM_GROUPS_APPROVE'); ?>">
+							<span class="not-approved">
+								<span class="text"><?php echo JText::_('COM_GROUPS_APPROVE'); ?></span>
+							</span>
+						</a>
+						<?php } else { ?>
+							<span class="state yes approved">
+								<span class="text"><?php echo JText::_('COM_GROUPS_APPROVED'); ?></span>
+							</span>
+						<?php } ?>
 					<?php } ?>
-				<?php } ?>
-				</td>
-				<td>
-				<?php if ($canDo->get('core.manage')) { ?>
-					<a class="glyph member hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=membership&amp;gid=<?php echo $row->cn; ?>" title="<?php echo JText::_('COM_GROUPS_MANAGE_MEMBERSHIP') . '::' . $tip; ?>">
-						<?php echo count($members); ?>
-					</a>
-				<?php } else { ?>
-					<span class="glyph member" title="<?php echo JText::_('COM_GROUPS_MANAGE_MEMBERSHIP') . '::' . $tip; ?>">
-						<?php echo count($members); ?>
-					</span>
-				<?php } ?>
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=pages&amp;gid=<?php echo $row->cn; ?>"><?php echo JText::_('COM_GROUPS_PAGES'); ?></a>
+						<a class="glyph member hasTip" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=membership&gid=' . $row->cn); ?>" title="<?php echo JText::_('COM_GROUPS_MANAGE_MEMBERSHIP') . '::' . $tip; ?>">
+							<?php echo count($members); ?>
+						</a>
+					<?php } else { ?>
+						<span class="glyph member" title="<?php echo JText::_('COM_GROUPS_MANAGE_MEMBERSHIP') . '::' . $tip; ?>">
+							<?php echo count($members); ?>
+						</span>
+					<?php } ?>
+				</td>
+				<td>
+					<?php if ($canDo->get('core.manage')) { ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=pages&gid=' . $row->cn); ?>"><?php echo JText::_('COM_GROUPS_PAGES'); ?></a>
 					<?php } ?>
 				</td>
 			</tr>
