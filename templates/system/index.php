@@ -7,4 +7,4 @@
 
 defined('_JEXEC') or die;
 
-include dirname(__FILE__).DIRECTORY_SEPARATOR.'component.php';
+include __DIR__ . DIRECTORY_SEPARATOR . 'component.php';
