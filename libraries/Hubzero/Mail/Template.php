@@ -69,6 +69,15 @@ class Template extends \JDocumentHTML
 			$data = $this->_renderTemplate();
 		}
 
+		if (class_exists('\Pelago\Emogrifier'))
+		{
+			$emogrifier = new \Pelago\Emogrifier();
+			$emogrifier->setHtml($data);
+			//$emogrifier->setCss($css);
+
+			$data = $emogrifier->emogrify();
+		}
+
 		return $data;
 	}
 
