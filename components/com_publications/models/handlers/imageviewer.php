@@ -424,10 +424,10 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$params = new JParameter( $attach->params );
 
 			$html .= '<li>';
-			$html .= ' <a rel="lightbox" href="' . JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . basename($fpath) . '">';
+			$html .= ' <a rel="lightbox" href="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . basename($fpath) . '">';
 			$html .= '<span class="item-image';
 			$html .= $params->get('pubThumb', NULL) && $authorized == 'administrator' ? ' starred' : '';
-			$html .= '"><img src="' . JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&v=' . $pub->version_id) . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></span>';
+			$html .= '"><img src="/publications' . DS . $pub->id . DS . $pub->version_id . '/Image:' . $thumbName . '" alt="' . $title . '" class="thumbima" /></span>';
 			$html .= '<span class="item-title">' . $title . '<span class="details">' . $attach->path . '</span></span>';
 			$html .= '</a>';
 			$html .= '<span class="clear"></span>';
