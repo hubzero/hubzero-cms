@@ -806,7 +806,7 @@ class PublicationVersion extends JTable
 						}
 					}
 				}
-				if(!$found)
+				if (!$found)
 				{
 					$in .= n.$param.'='.$value;
 				}
