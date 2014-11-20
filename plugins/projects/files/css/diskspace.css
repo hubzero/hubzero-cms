@@ -72,8 +72,7 @@
 		background: #f6f7f9;
 	}
 	#disk-usage div.disk-usage-wrapper {
-		position: absolute;
-		width: 70% ;
+		width: 95% ;
 	}
 	#disk-usage #indicator-wrapper {
 		position: static;
