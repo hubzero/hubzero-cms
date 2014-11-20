@@ -256,7 +256,11 @@ jQuery(function($) {
 		$('.search-bar .terms').focus();
 	}
 
-	$('.related').show();
+	$('.result').mouseenter(function(evt) {
+		$(evt.currentTarget).find('.more').show('slow');
+	}).mouseleave(function(evt) {
+		$(evt.currentTarget).find('.more').hide('fast');
+	});
 	$('.related').click(function(evt) {
 		evt.stopPropagation();
 		var btn = $(evt.target);
@@ -371,4 +375,7 @@ jQuery(function($) {
 			cont.replaceWith(tagEl);
 		}
 	});
+
+	$(document.body).append('<style type="text/css">.result:hover .related { visibility: visible !important; }</style>');
+	console.log('...');
 });
