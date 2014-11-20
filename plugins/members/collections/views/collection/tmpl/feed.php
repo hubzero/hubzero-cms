@@ -170,7 +170,7 @@ $this->css()
 			<?php if ($this->following <= 0) { ?>
 				<div class="instructions">
 					<ol>
-						<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP1', JRoute::_('index.php?option=com_collections')); ?></li>
+						<li><?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP1', JRoute::_('index.php?option=com_collections')); ?></li>
 						<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP2'); ?></li>
 						<li><?php echo JText::_('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP3'); ?></li>
 					</ol>
