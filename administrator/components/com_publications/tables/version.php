@@ -304,7 +304,7 @@ class PublicationVersion extends JTable
 		{
 			$query.= " AND state=3 ";
 		}
-		elseif (intval($version))
+		elseif (is_numeric($version))
 		{
 			$query.= " AND version_number='".$version."' ";
 		}
@@ -363,7 +363,7 @@ class PublicationVersion extends JTable
 		{
 			$query.= " AND state=3 ";
 		}
-		elseif (intval($version))
+		elseif (is_numeric($version))
 		{
 			$query.= " AND version_number='".$version."' ";
 		}
@@ -406,7 +406,7 @@ class PublicationVersion extends JTable
 		{
 			$query.= " AND state!=3 ";
 		}
-		elseif (intval($exclude))
+		elseif (is_numeric($exclude))
 		{
 			$query.= " AND version_number!='".$exclude."' ";
 		}
@@ -458,7 +458,7 @@ class PublicationVersion extends JTable
 		{
 			$query.= " AND state=3 ";
 		}
-		elseif (intval($version))
+		elseif (is_numeric($version))
 		{
 			$query.= " AND version_number='".$version."' ";
 		}
@@ -532,7 +532,7 @@ class PublicationVersion extends JTable
 			$result = $this->_db->loadResult();
 			return $result ? true : false;
 		}
-		if (intval($version) > 0)
+		if (is_numeric($version))
 		{
 			$query  = "SELECT id FROM $this->_tbl WHERE publication_id = $pid AND version_number= $version LIMIT 1 ";
 			$this->_db->setQuery( $query );
@@ -638,7 +638,7 @@ class PublicationVersion extends JTable
 	 */
 	public function removeMainFlag( $vid = NULL, $unpublish = 0 )
 	{
-		if ($vid === NULL || intval($vid) == 0)
+		if ($vid === NULL || !is_numeric($vid) || intval($vid) == 0)
 		{
 			return false;
 		}
@@ -658,7 +658,7 @@ class PublicationVersion extends JTable
 	 */
 	public function getDefaultTitle( $projectid = 0, $title = '' )
 	{
-		if (intval($projectid) == 0)
+		if (!is_numeric($projectid) || intval($projectid) == 0)
 		{
 			return false;
 		}
@@ -737,7 +737,7 @@ class PublicationVersion extends JTable
 		{
 			$query.= " AND v.state=3 ";
 		}
-		elseif (intval($version))
+		elseif (is_numeric($version))
 		{
 			$query.= " AND v.version_number='".$version."' ";
 		}
