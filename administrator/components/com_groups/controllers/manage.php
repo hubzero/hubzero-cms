@@ -442,12 +442,12 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		// copy over default template recursively
 		// must have  /. at the end of source path to get all items in that directory
 		// also doesnt overwrite already existing files/folders
-		shell_exec("cp -rn $srcPath $uploadPath");
+		shell_exec(escapeshellcmd("cp -rn $srcPath $uploadPath 2>&1"));
 
 		// make sure files are group read and writable
 		// make sure files are all group owned properly
-		shell_exec("chmod -R 2770 $uploadPath");
-		shell_exec("chgrp -R " . $this->config->get('super_group_file_owner', 'access-content') . " " . $uploadPath);
+		shell_exec(escapeshellcmd("chmod -R 2770 $uploadPath 2>&1"));
+		shell_exec(escapeshellcmd("chgrp -R " . $this->config->get('super_group_file_owner', 'access-content') . " " . $uploadPath) . " 2>&1");
 
 		// get all current users granted permissionss
 		$this->database->setQuery("SHOW GRANTS FOR CURRENT_USER();");
