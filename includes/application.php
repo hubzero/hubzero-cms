@@ -477,7 +477,18 @@ final class JSite extends JApplication
 			$template = $templates[$id];
 		}
 		else {
-			$template = $templates[0];
+			// [!] zooley - Fixing template fallback to always load system template if current one is not found.
+			//     Previous way could cause code to get stuck in a loop and run out of memory.
+			if (isset($templates[0])) {
+				$template = $templates[0];
+			}
+			else {
+				$template = new stdClass;
+				$template->params = new JRegistry;
+				$template->home = 0;
+			}
+			$template->template = 'system';
+			$template->id       = 0;
 		}
 
 		// Allows for overriding the active template from the request
