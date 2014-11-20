@@ -764,26 +764,29 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				'email' => $jconfig->getValue('config.mailfrom')
 			);
 
-			$name  = $objWish->proposer('name', JText::_('COM_WISHLIST_UNKNOWN'));
-			$login = $objWish->proposer('username', JText::_('COM_WISHLIST_UNKNOWN'));
-			if ($objWish->get('anonymous'))
-			{
-				$name  = JText::_('COM_WISHLIST_ANONYMOUS');
-				$login = JText::_('COM_WISHLIST_ANONYMOUS');
-			}
+			$message = array();
 
-			$message  = '----------------------------'."\r\n";
-			$message .= JText::_('COM_WISHLIST_WISH').' #'.$objWish->get('id').', '.$this->_list_title.' '.JText::_('WISHLIST')."\r\n";
-			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($objWish->get('subject'))."\r\n";
-			$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.$objWish->proposed();
-			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
-			$message .= $objWish->get('anonymous') ? '' : '('.$login.')';
-			$message .= "\r\n\r\n";
+			// Plain text email
+			$eview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'wish_plain'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->wish       = $objWish;
+			$eview->wishlist   = $wishlist;
+			$eview->action     = 'assigned';
 
-			$message .= '----------------------------'."\r\n";
-			$url = rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_($objWish->link()), '/');
-			$message  .= JText::_('GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_YOUR_ASSIGNED_WISH').'.';
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
+			// HTML email
+			$eview->setLayout('wish_html');
+
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
+			// Send message
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
 
@@ -1054,23 +1057,27 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				'email' => $jconfig->getValue('config.mailfrom')
 			);
 
-			$message  = '----------------------------'."\r\n";
-			$message .= JText::_('COM_WISHLIST_WISH').' #'.$row->get('id').', '.$this->_list_title.' '.JText::_('COM_WISHLIST_WISHLIST')."\r\n";
-			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($row->get('subject'))."\r\n";
-			$message .= JText::_('COM_WISHLIST_PROPOSED_ON') . ' ' . $row->proposed();
-			$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
-			$message .= $row->get('anonymous') ? '' : '('.$login.')';
-			$message .= "\r\n";
-			$message .= '----------------------------'."\r\n\r\n";
-			if (!$wishid)
-			{
-				$content = html_entity_decode(strip_tags($row->content('raw')), ENT_COMPAT, 'UTF-8');
-				$message .= html_entity_decode($content, ENT_QUOTES, 'UTF-8');
-				$message .= "\r\n\r\n";
-			}
+			$message = array();
 
-			$url = rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_($row->link()), '/');
-			$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH').'.';
+			// Plain text email
+			$eview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'wish_plain'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->wish       = $row;
+			$eview->wishlist   = $wishlist;
+			$eview->action     = 'created';
+
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+			// HTML email
+			$eview->setLayout('wish_html');
+
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
@@ -1233,37 +1240,28 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 					'email' => $jconfig->getValue('config.mailfrom')
 				);
 
-				if ($wish->get('anonymous'))
-				{
-					$name  = JText::_('COM_WISHLIST_ANONYMOUS');
-					$login = JText::_('COM_WISHLIST_ANONYMOUS');
-				}
-				else
-				{
-					$name  = $wish->proposer('name', JText::_('COM_WISHLIST_UNKNOWN'));
-					$login = $wish->proposer('username', JText::_('COM_WISHLIST_UNKNOWN'));
-				}
+				$message = array();
 
-				$message  = '----------------------------'."\r\n";
-				$message .= JText::_('COM_WISHLIST_WISH').' #'.$wish->get('id').', '.$wishlist->get('title').' '.JText::_('COM_WISHLIST')."\r\n";
-				$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($wish->get('subject'))."\r\n";
-				$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '. $wish->proposed();
-				$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
-				$message .= $wish->get('anonymous') ? '' : '('.$login.')';
-				$message .= "\r\n\r\n";
-				$message .= '----------------------------'."\r\n";
-				$as_mes = $message;
-				if ($status!='pending')
-				{
-					$message .= JText::_('COM_WISHLIST_YOUR_WISH').' '.JText::_('COM_WISHLIST_HAS_BEEN').' '.$status.' '.JText::_('COM_WISHLIST_BY_LIST_ADMINS').'.'."\r\n";
-				}
-				else
-				{
-					$message .= JText::_('COM_WISHLIST_MSG_WISH_STATUS_CHANGED_TO').' '.$status.' '.JText::_('COM_WISHLIST_BY_LIST_ADMINS').'.'."\r\n";
-				}
-				$url = rtrim(JURI::base(), '/') . JRoute::_($wish->link());
-				$message .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_YOUR_WISH').'.';
-				$as_mes  .= JText::_('COM_WISHLIST_GO_TO').' '.$url.' '.JText::_('COM_WISHLIST_TO_VIEW_YOUR_ASSIGNED_WISH').'.';
+				// Plain text email
+				$eview = new \Hubzero\Component\View(array(
+					'name'   => 'emails',
+					'layout' => 'wish_plain'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->wish       = $wish;
+				$eview->wishlist   = $wishlist;
+				$eview->action     = 'updated';
+				$eview->status     = $status;
+
+				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+				// HTML email
+				$eview->setLayout('wish_html');
+
+				$message['multipart'] = $eview->loadTemplate();
+				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 			}
 		}
 		// no status change, only information
@@ -1462,16 +1460,29 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 					'email' => $jconfig->getValue('config.mailfrom')
 				);
 
-				$message  = '----------------------------' . "\r\n";
-				$message .= JText::_('COM_WISHLIST_WISH').' #'.$wishid.', '.$newtitle.' '.JText::_('COM_WISHLIST') . "\r\n";
-				$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY').': '.stripslashes($wish->get('subject')) . "\r\n";
-				$message .= JText::_('COM_WISHLIST_PROPOSED_ON').' '.$wish->proposed();
-				$message .= ' '.JText::_('COM_WISHLIST_BY').' '.$name.' ';
-				$message .= $wish->get('anonymous') ? '' : '('.$login.')' . "\r\n";
-				$message .= JText::_('COM_WISHLIST_WISH_TRANSFERRED_FROM_WISHLIST').' "'.$oldtitle.'"';
-				$message .= "\r\n\r\n";
-				$message .= '----------------------------' . "\r\n";
-				$message .= JText::_('COM_WISHLIST_GO_TO').' '. rtrim(JURI::base(), '/') . JRoute::_($wish->link()) .' '.JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH').'.';
+				$message = array();
+
+				// Plain text email
+				$eview = new \Hubzero\Component\View(array(
+					'name'   => 'emails',
+					'layout' => 'wish_plain'
+				));
+				$eview->option     = $this->_option;
+				$eview->controller = $this->_controller;
+				$eview->wish       = $wish;
+				$eview->wishlist   = $newlist;
+				$eview->action     = 'moved';
+				$eview->oldlist    = $oldlist;
+
+				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+				// HTML email
+				$eview->setLayout('wish_html');
+
+				$message['multipart'] = $eview->loadTemplate();
+				$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
+
 
 				JPluginHelper::importPlugin('xmessage');
 				$dispatcher = JDispatcher::getInstance();
@@ -1942,22 +1953,32 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			// for others included in the conversation thread.
 			$subject4 = JText::_(strtoupper($this->_name)).', '.$name.' '.JText::_('COM_WISHLIST_MSG_COMMENTED_AFTER_YOU').' #'.$wishid;
 
-			$message  = JText::_('COM_WISHLIST_WISH') . ' #' . $wishid . ', ' . $wishlist->get('title') . ' ' . JText::_('COM_WISHLIST') . "\r\n";
-			$message .= JText::_('COM_WISHLIST_WISH_DETAILS_SUMMARY') . ': ' . stripslashes($objWish->get('subject')) . "\r\n";
-			$message .= '----------------------------' . "\r\n";
-			$message .= JText::_('COM_WISHLIST_MSG_COMMENT_BY') . ' ' . $name . ' ';
-			$message .= $row->get('anonymous') ? '' : '(' . $login . ')';
-			$message .= ' ' . JText::_('COM_WISHLIST_MSG_POSTED_ON').' '. $row->created() . ':' . "\r\n";
-			$message .= $row->content('clean') . "\r\n";
-			$message .= $row->get('attachment') . "\r\n\r\n";
-			$message .= "\r\n";
-			$message .= '----------------------------' . "\r\n";
-			$message .= JText::_('COM_WISHLIST_GO_TO') . ' ' . rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_($objWish->link()), '/') . ' ' . JText::_('COM_WISHLIST_TO_VIEW_THIS_WISH') . '.';
+			$message = array();
+
+			// Plain text email
+			$eview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'comment_plain'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->wish       = $objWish;
+			$eview->wishlist   = $wishlist;
+			$eview->comment    = $row;
+
+			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
+
+			// HTML email
+			$eview->setLayout('comment_html');
+
+			$message['multipart'] = $eview->loadTemplate();
+			$message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
 			JPluginHelper::importPlugin('xmessage');
 			$dispatcher = JDispatcher::getInstance();
 
-				// collect ids of people who were already emailed
+			// collect ids of people who were already emailed
 			$contacted = array();
 
 			if ($objWish->get('proposed_by') != $row->get('added_by'))
