@@ -156,8 +156,8 @@
 		border: 1px solid #CCC;
 		background: #FFF;
 		z-index: 2000;
-		margin-left: -5.5em;
-		margin-top: 2em;
+		margin-left: -5em;
+		margin-top: 1.8em;
 		-webkit-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
 		-moz-box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
 		box-shadow: 2px 2px 5px 0px rgba(84,84,84,1);
@@ -335,6 +335,9 @@
 	}
 	.menu-wrapper ul li .submenu-wrap {
 		text-align: left;
+	}
+	.menu-wrapper ul li .submenu-wrap .mini {
+		display: none;
 	}
 	.menu-wrapper ul li.sideli {
 		display: none;	
