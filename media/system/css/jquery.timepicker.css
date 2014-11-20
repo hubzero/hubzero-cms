@@ -1,4 +1,7 @@
 /* css for timepicker */
+.ui-datepicker {
+	display: none;
+}
 .ui-timepicker-div .ui-widget-header {
 	margin-bottom: 8px;
 }

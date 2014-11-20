@@ -120,28 +120,49 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					</legend>
 					<label><?php echo JText::_('Start:'); ?> <span class="required">Required</span>
 						<?php
-							$start      = JRequest::getVar('start', '', 'get');
-							$publish_up = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
+							$start           = JRequest::getVar('start', '', 'get');
+							$publish_up      = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
+							$publish_up_date = '';
+							$publish_up_time = '';
 							if ($publish_up != '' && $publish_up != '0000-00-00 00:00:00')
 							{
-								$publish_up = JHTML::_('date', $publish_up, 'm/d/Y @ g:i a');
+								$publish_up_date = JHTML::_('date', $publish_up, 'm/d/Y');
+								$publish_up_time = JHTML::_('date', $publish_up, 'g:i a');
 							}
 						?>
-						<input type="text" name="event[publish_up]" id="event_start_date" value="<?php echo $publish_up; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
+						<div class="input-group">
+							<input type="text" name="event[publish_up]" id="event_start_date" value="<?php echo $publish_up_date; ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
+							<input type="text" name="event[publish_up_time]" id="event_start_time" value="<?php echo $publish_up_time; ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
+						</div>
 					</label>
 
 					<label><?php echo JText::_('End:'); ?> <span class="optional">Optional</span>
 						<?php
-							$end          = JRequest::getVar('end', '', 'get');
-							$publish_down = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
+							$end               = JRequest::getVar('end', '', 'get');
+							$publish_down      = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
+							$publish_down_date = '';
+							$publish_down_time = '';
 							if ($publish_down != '' && $publish_down != '0000-00-00 00:00:00')
 							{
-								$publish_down = JHTML::_('date', $publish_down, 'm/d/Y @ g:i a');
+								$publish_down_date = JHTML::_('date', $publish_down, 'm/d/Y');
+								$publish_down_time = JHTML::_('date', $publish_down, 'g:i a');
 							}
 						?>
-						<input type="text" name="event[publish_down]" id="event_end_date" value="<?php echo $publish_down; ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
+						<div class="input-group">
+							<input type="text" name="event[publish_down]" id="event_end_date" value="<?php echo $publish_down_date; ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
+							<input type="text" name="event[publish_down_time]" id="event_end_time" value="<?php echo $publish_down_time; ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
+						</div>
 					</label>
-
+					<label>
+						<input type="hidden" name="event[allday]" value="0" />
+						<input class="option" type="checkbox" id="event_allday" name="event[allday]" value="1" <?php if ($this->event->get('allday')) { echo 'checked="checked"'; } ?> /> <?php echo JText::_('All day event'); ?>
+						<span class="hint"><?php echo JText::_(' - can span multiple days'); ?></span>
+					</label>
+				</fieldset>
+				<fieldset>
+					<legend>
+						<?php echo JText::_('Timezone Settings'); ?>
+					</legend>
 					<label><?php echo JText::_('Timezone:'); ?> <span class="optional">Optional</span>
 						<?php
 							$timezone = $this->event->get('time_zone');

@@ -111,10 +111,23 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 			}
 		?>
 		<?php if ($allday_event) : ?>
+			
 			<tr>
 				<th class="date"></th>
 				<td width="50%">
-					<?php echo JHTML::_('date', $publish_up, 'l, F d, Y'); ?>
+					<?php
+						// check to see if its a single date all day event
+						$d1 = JHTML::_('date', $publish_up, 'd');
+						$d2 = JHTML::_('date', $publish_down, 'd');
+						if ($d1 == $d2 || $publish_down == '0000-00-00 00:00:00')
+						{
+							echo JHTML::_('date', $publish_up, 'l, F d, Y');
+						}
+						else
+						{
+							echo JHTML::_('date', $publish_up, 'l, F d, Y') . ' - ' . JHTML::_('date', $publish_down, 'l, F d, Y');
+						}
+					?>
 				</td>
 				<th class="time"></th>
 				<td>

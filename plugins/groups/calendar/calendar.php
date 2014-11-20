@@ -589,17 +589,25 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//parse publish up date/time
 		if (isset($event['publish_up']) && $event['publish_up'] != '')
 		{
-			//remove @ symbol
-			$event['publish_up'] = str_replace("@", "", $event['publish_up']);
+			// combine date & time
+			if (isset($event['publish_up_time']))
+			{
+				$event['publish_up'] = $event['publish_up'] . ' ' . $event['publish_up_time'];
+			}
 			$event['publish_up'] = JFactory::getDate($event['publish_up'], $timezone)->format("Y-m-d H:i:s");
+			unset($event['publish_up_time']);
 		}
 
 		//parse publish down date/time
 		if (isset($event['publish_down']) && $event['publish_down'] != '')
 		{
-			//remove @ symbol
-			$event['publish_down'] = str_replace("@", "", $event['publish_down']);
+			// combine date & time
+			if (isset($event['publish_down_time']))
+			{
+				$event['publish_down'] = $event['publish_down'] . ' ' . $event['publish_down_time'];
+			}
 			$event['publish_down'] = JFactory::getDate($event['publish_down'], $timezone)->format("Y-m-d H:i:s");
+			unset($event['publish_down_time']);
 		}
 
 		//parse register by date/time
@@ -646,7 +654,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		//check to make sure end time is greater then start time
 		if (isset($event['publish_down']) && $event['publish_down'] != '0000-00-00 00:00:00' && $event['publish_down'] != '')
 		{
-			if (strtotime($event['publish_up']) >= strtotime($event['publish_down']))
+			$up     = strtotime($event['publish_up']);
+			$down   = strtotime($event['publish_down']);
+			$allday = (isset($event['allday']) && $event['allday'] == 1) ? true : false;
+
+			// make sure up greater then down when not all day
+			// when all day event up can equal down
+			if (($up >= $down && !$allday) || ($allday && $up > $down))
 			{
 				$this->setError('You must an event end date greater than the start date.');
 				$this->event = $eventsModelEvent;

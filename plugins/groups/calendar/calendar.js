@@ -286,17 +286,61 @@ HUB.Plugins.GroupCalendar = {
 		if ($('#event_start_date, #event_end_date').length)
 		{
 			$('#event_start_date, #event_end_date').attr('autocomplete', 'OFF');
-			$('#event_start_date, #event_end_date').datetimepicker({
+			$('#event_start_date').datetimepicker({
 				controlType: 'slider',
 				dateFormat: 'mm/dd/yy',
-				timeFormat: '@ h:mm tt',
+				timeFormat: 'h:mm tt',
+				altField:  '#event_start_time',
 				onClose: function( selectedDate ) {
-					if ($(this).attr('id') == 'event_start_date')
-					{
-						$('#event_end_date').datepicker( "option", "minDate", selectedDate );
-					}
+					$('#event_end_date').datepicker( "option", "minDate", selectedDate );
     			}
 			});
+			$('#event_end_date').datetimepicker({
+				controlType: 'slider',
+				dateFormat: 'mm/dd/yy',
+				timeFormat: 'h:mm tt',
+				altField: '#event_end_time',
+			});
+
+			// toggle time fields
+			if ($('#event_allday').length)
+			{
+				// handle user clicking
+				$('#event_allday').on('click', function(event) {
+					if ($(this).is(':checked'))
+					{
+						// hide timepicker
+						$('#event_start_date').datetimepicker('option', 'showTimepicker', false);
+						$('#event_end_date').datetimepicker('option', 'showTimepicker', false);
+
+						// hide time field
+						$('#event_start_time').attr('disabled', true).hide();
+						$('#event_end_time').attr('disabled', true).hide();
+					} 
+					else
+					{
+						// show timepicker
+						$('#event_start_date').datetimepicker('option', 'showTimepicker', true);
+						$('#event_end_date').datetimepicker('option', 'showTimepicker', true);
+
+						// show time field
+						$('#event_start_time').removeAttr('disabled').show();
+						$('#event_end_time').removeAttr('disabled').show();
+					}
+				});
+
+				// handle all day if intially checked initially checked
+				if ($('#event_allday').is(':checked'))
+				{
+					// hide timepicker
+					$('#event_start_date').datetimepicker('option', 'showTimepicker', false);
+					$('#event_end_date').datetimepicker('option', 'showTimepicker', false);
+
+					// hide time field
+					$('#event_start_time').attr('disabled', true).hide();
+					$('#event_end_time').attr('disabled', true).hide();
+				}
+			}
 		}
 		
 		//show date picker for register by

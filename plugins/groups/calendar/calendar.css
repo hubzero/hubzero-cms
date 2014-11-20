@@ -494,3 +494,12 @@ form[name=importevent] fieldset {
 	border: 3px dashed #aaa;
 	background: #fffff4;
 }
+
+#event_start_date,
+#event_start_time,
+#event_end_date,
+#event_end_time {
+	display: inline-block;
+	width: 49% !important;
+	max-width: 200px;
+}
