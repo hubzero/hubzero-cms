@@ -402,6 +402,7 @@ if (!defined('HG_AJAX')):
 					$timeframe[] = array('id' => $tf, 'title' => $tf);
 				}
 			}
+			$timeframe = isset($_GET['timeframe']) ? array_map(function($t) { return array('id' => $t, 'title' => $t); }, (array)$_GET['timeframe']) : NULL;
 			foreach (array('tags' => 'Tagged', 'contributors' => 'Contributed&nbsp;by', 'groups' => 'In&nbsp;group', 'timeframe' => 'Date') as $key=>$label):
 				$transportKey = $key == 'contributors' ? 'users' : $key;
 				$inReq = isset($_GET[$transportKey]) ? array_flip($_GET[$transportKey]) : array();
