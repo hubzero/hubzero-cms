@@ -85,8 +85,8 @@ class PublicationsModelLog extends \Hubzero\Base\Model
 		$file_handle = fopen($logFile, "r");
 		while (!feof($file_handle))
 		{
-		   	$line = fgets($file_handle);
-		   	$parts = explode("\t", $line);
+			$line = fgets($file_handle);
+			$parts = explode("\t", $line);
 
 			if ((count($parts) == 4) && trim($parts[3]) == $type)
 			{
