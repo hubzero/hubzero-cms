@@ -73,16 +73,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$this->_resourceMap();
 			return;
 		}
-		if (($this->_id || $this->_alias) && !$this->_task)
-		{
-			$this->_task = 'view';
-			$this->viewTask();
-			return;
-		}
-		elseif (!$this->_task)
-		{
-			$this->_task = 'intro';
-		}
 
 		// Set the default task
 		$this->registerTask('__default', 'intro');
@@ -99,6 +89,15 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$this->registerTask('edit', 'contribute');
 		$this->registerTask('start', 'contribute');
 		$this->registerTask('publication', 'contribute');
+
+		if (($this->_id || $this->_alias) && !$this->_task)
+		{
+			$this->_task = 'page';
+		}
+		elseif (!$this->_task)
+		{
+			$this->_task = 'intro';
+		}
 
 		parent::execute();
 	}
@@ -474,6 +473,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	 */
 	public function pageTask()
 	{
+		$this->view->setName('view');
+
 		// Incoming
 		$fsize    = JRequest::getVar( 'fsize', '' );    // A parameter to see file size without formatting
 		$version  = JRequest::getVar( 'v', '' );        // Get version number of a publication
@@ -512,7 +513,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		// Check that version number exists
 		$objV 	 = new PublicationVersion( $this->database );
-		$version = $objV->checkVersion($id, $version) ? $version : 'default';
+		$version = in_array($version, array('dev', 'default')) ? $version : intval($version);
+		$version = $version && $objV->checkVersion($id, $version) ? $version : 'default';
 
 		// Get publication
 		$publication = $objP->getPublication($id, $version, NULL, $alias);
@@ -818,6 +820,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			$layout = $type_alias;
 		}
 
+		$this->view->setLayout($layout);
+
 		$this->view->version 		= $version;
 		$this->view->config 		= $this->config;
 		$this->view->option 		= $this->_option;
@@ -854,9 +858,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Output HTML
-		$this->view->setName('view')
-					->setLayout($layout)
-					->display();
+		$this->view->display();
 
 		// Insert .rdf link in the header
 		ResourceMapGenerator::putRDF($id);
