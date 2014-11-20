@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Pelago\\' => array($vendorDir . '/pelago/emogrifier/Classes'),
     'Monolog\\' => array($vendorDir . '/monolog/monolog/src/Monolog'),
     'Facebook\\' => array($vendorDir . '/facebook/php-sdk-v4/src/Facebook'),
 );
