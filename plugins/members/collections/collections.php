@@ -861,7 +861,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 			'search'      => JRequest::getVar('search', ''),
 			'state'       => 1,
 			'object_id'   => $this->member->get('uidNumber'),
-			'object_type' => 'member'
+			'object_type' => 'member',
+			'access'      => -1
 		);
 
 		// Filters for returning results
