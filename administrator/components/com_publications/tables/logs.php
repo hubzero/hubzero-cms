@@ -183,32 +183,17 @@ class PublicationLog extends JTable
 	}
 
 	/**
-	 * Log user numbers
+	 * Log numbers from parsed text logs
 	 *
 	 * @return     void
 	 */
-	public function logUserAccess ( $pid = NULL, $vid = NULL, $year = NULL, $month = NULL, $count = 0, $type = 'view' )
+	public function logParsed ( $pid = NULL, $vid = NULL, $year = NULL, $month = NULL, $count = 0, $type = 'view', $category = '' )
 	{
 		if (!$pid || !$vid || !$year || !$month || !$count)
 		{
 			return false;
 		}
-
-		$type  = $type == 'primary' ? 'primary' : 'view';
-		$field = 'users_' . $type;
-
-		// Add user count columns to publication log table
-		$prfx = JFactory::getConfig()->get('dbprefix');
-		$fields = $this->_db->getTableFields($prfx . 'publication_logs');
-		if (!array_key_exists($field, $fields[$prfx . 'publication_logs']))
-		{
-			$this->_db->setQuery("ALTER TABLE `#__publication_logs` ADD `$field` int(11) NOT NULL DEFAULT '0'");
-			if (!$this->_db->query())
-			{
-				echo $this->_db->getErrorMsg();
-				return false;
-			}
-		}
+		$field = $type == 'view' ? 'page_views' : 'primary_accesses';
 
 		// Load record to update
 		if (!$this->loadMonthLog( $pid, $vid, $year, $month ))
@@ -218,7 +203,18 @@ class PublicationLog extends JTable
 			$this->year						= $year;
 			$this->month					= $month;
 		}
+		if ($category == 'unique')
+		{
+			$field .= $category ? '_' . $category : '';
+		}
+		elseif (!$category || $category == 'filtered')
+		{
+			// Also save unfiltered
+			$uField = $field . '_unfiltered';
+			$this->$uField = $this->$field;
+		}
 
+		// Save new count
 		if ($this->$field == $count)
 		{
 			return true;
@@ -349,6 +345,32 @@ class PublicationLog extends JTable
 			$this->setError( $this->_db->getErrorMsg() );
 			return false;
 		}
+	}
+
+	/**
+	 * Load log
+	 *
+	 * @param      integer 	$pid		Publication ID
+	 * @param      integer 	$vid		Publication version ID
+	 * @return     void
+	 */
+	public function getMonthLog ( $pid = NULL, $vid = NULL, $yearNum = NULL, $monthNum = NULL )
+	{
+		if (!$pid || !$vid)
+		{
+			return false;
+		}
+
+		$thisYearNum 	= $yearNum ? $yearNum : JFactory::getDate()->format('y');
+		$thisMonthNum 	= $monthNum ? $monthNum : JFactory::getDate()->format('m');
+
+		$query  = "SELECT * FROM $this->_tbl WHERE publication_id=$pid ";
+		$query .= "AND publication_version_id=$vid ";
+		$query .= "AND year='$thisYearNum' AND month='$thisMonthNum' ";
+		$query .= "ORDER BY modified DESC LIMIT 1";
+
+		$this->_db->setQuery( $query );
+		return $this->_db->loadAssoc();
 	}
 
 	/**

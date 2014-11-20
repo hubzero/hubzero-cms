@@ -113,10 +113,6 @@ tooltip: true,
 			$stat->thismonth_views, $stat->threemonth_primary, $stat->twomonth_primary,
 			$stat->lastmonth_primary, $stat->thismonth_primary);
 
-		// Get user data from text log (primary content accesses - get unique users)
-		//$users = $this->helper->getUserLogs($stat, $this->pubconfig, 'primary');
-		//$userViews = $this->helper->getUserLogs($stat, $this->pubconfig, 'view');
-
 		$i++;
 		?>
 			<table class="pubstats-wrap">

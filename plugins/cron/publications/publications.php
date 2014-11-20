@@ -229,16 +229,16 @@ class plgCronPublications extends JPlugin
 		$database = JFactory::getDBO();
 		$pconfig = JComponentHelper::getParams('com_publications');
 
-		$numMonths = 3;
-		$includeCurrent = true;
+		$numMonths = 1;
+		$includeCurrent = false;
 
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_publications' . DS . 'helpers' . DS . 'helper.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'publication.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'logs.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS .'com_publications' . DS . 'models' . DS . 'log.php');
 
-		// Get publication helper
-		$helper = new PublicationHelper($database);
+		// Get log model
+		$modelLog = new PublicationsModelLog();
 
 		$filters = array();
 		$filters['sortby'] = 'date';
@@ -254,8 +254,7 @@ class plgCronPublications extends JPlugin
 		// Compute and store stats for each publication
 		foreach ($pubs as $publication)
 		{
-			$views     = $helper->getUserLogs($publication->id, $pconfig,'view', $numMonths, $includeCurrent);
-			$downloads = $helper->getUserLogs($publication->id, $pconfig,'primary', $numMonths, $includeCurrent);
+			$stats = $modelLog->digestLogs($publication->id, 'all', $numMonths, $includeCurrent);
 		}
 
 		return true;
