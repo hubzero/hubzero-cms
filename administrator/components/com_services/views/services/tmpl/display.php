@@ -30,8 +30,23 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-JToolBarHelper::title(JText::_('COM_SERVICES') . ': ' . JText::_('COM_SERVICES_SERVICES'), 'addedit.png');
+$canDo = ServicesHelperPermissions::getActions('service');
 
+JToolBarHelper::title(JText::_('COM_SERVICES') . ': ' . JText::_('COM_SERVICES_SERVICES'), 'addedit.png');
+if ($canDo->get('core.create'))
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.delete'))
+{
+	JToolBarHelper::deleteList();
+}
+JToolBarHelper::spacer();
+JToolBarHelper::help('services');
 ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
@@ -72,13 +87,23 @@ function submitbutton(pressbutton)
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->id ?>" onclick="isChecked(this.checked);" />
+					<?php if ($canDo->get('core.edit')) { ?>
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked);" />
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<?php echo $this->escape($row->title); ?>
+					<?php if ($canDo->get('core.edit')) { ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+							<span><?php echo $this->escape($row->title); ?></span>
+						</a>
+					<?php } else { ?>
+						<span>
+							<span><?php echo $this->escape($row->title); ?></span>
+						</span>
+					<?php } ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->category); ?>

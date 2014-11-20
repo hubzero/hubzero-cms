@@ -39,7 +39,8 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 }
 
 // Include scripts
-include_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'service.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'service.php');
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'subscription.php');
 
 $controllerName = JRequest::getCmd('controller', 'services');

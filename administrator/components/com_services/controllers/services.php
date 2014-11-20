@@ -183,42 +183,102 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Service
+	 * Edit an entry
 	 *
-	 * @return     void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
+		if (is_object($row))
+		{
+			$this->view->row = $row;
+		}
+		else
+		{
+			$id = JRequest::getVar('id', array(0));
+			if (is_array($id))
+			{
+				$id = (!empty($id) ? intval($id[0]) : 0);
+			}
+
+			// load infor from database
+			$this->view->row = new Service($this->database);
+			$this->view->row->load($id);
+		}
 
 		// Set any errors
 		if ($this->getError())
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($this->getError());
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
-	 * Save service
+	 * Save an entry and show the edit form
 	 *
 	 * @return     void
 	 */
-	public function saveTask()
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
+	 * Saves an entry and redirects to listing
+	 *
+	 * @return	void
+	 */
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-		);
+		// Incoming
+		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = array_map('trim', $fields);
+
+		// Initiate extended database class
+		$row = new Service($this->database);
+		if (!$row->bind($fields))
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		// Store content
+		if (!$row->check())
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		// Store content
+		if (!$row->store())
+		{
+			$this->addComponentMessage($row->getError(), 'error');
+			$this->editTask($row);
+			return;
+		}
+
+		if ($redirect)
+		{
+			// Redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_SERVICES_SAVED'),
+				'message'
+			);
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
