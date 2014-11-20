@@ -224,8 +224,6 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		// Instantiate a helper object
 		$helper = new PublicationHelper($row->id, $database);
 
-		$thumb = $helper->getThumb($row->id, $row->version_id, $config, false, $row->cat_url);
-
 		$juri = JURI::getInstance();
 
 		// Get version authors
@@ -234,7 +232,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 
 		// Start building HTML
 		$html  = "\t" . '<li class="publication">' . "\n";
-		$html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . $thumb . '" alt="" /></span>';
+		$html .= "\t\t" . '<p><span class="pub-thumb"><img src="' . JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb' . '" alt="" /></span>';
 		$html .= '<span class="pub-details"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a>' . "\n";
 		$html .= "\t\t" . '<span class="block details">' . JHTML::_('date', $row->published_up, 'd M Y') . ' <span>|</span> ' . $row->cat_name;
 		if ($authors)
