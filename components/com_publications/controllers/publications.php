@@ -1396,7 +1396,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$xserver = new \Hubzero\Content\Server();
 		$xserver->filename($downloadable['path']);
 		$xserver->disposition($disp);
-		$xserver->acceptranges(false); // @TODO fix byte range support
+		$xserver->acceptranges(true);
 		$xserver->saveas($downloadable['serveas']);
 
 		if (!$xserver->serve())
