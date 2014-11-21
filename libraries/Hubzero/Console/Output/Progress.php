@@ -132,6 +132,10 @@ class Progress extends Output
 		$length = $this->contentLength + $this->initMessageLength;
 
 		// Back up all the way
-		$this->backspace($length);
+		$this->backspace($length, true);
+
+		// In case this gets used again...
+		$this->contentLength     = 0;
+		$this->initMessageLength = 0;
 	}
 }
