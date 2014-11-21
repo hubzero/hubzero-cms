@@ -1172,7 +1172,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		JPluginHelper::importPlugin('xmessage');
 		$dispatcher = JDispatcher::getInstance();
 
-		if (!in_array($authorid, $receivers))
+		if (!in_array($authorid, $receivers) && $question->get('email'))
 		{
 			if (!$dispatcher->trigger('onSendMessage', array('answers_reply_submitted', $subject, $message, $from, array($authorid), $this->_option)))
 			{
