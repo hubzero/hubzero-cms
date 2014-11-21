@@ -55,7 +55,7 @@ JSubMenuHelper::addEntry(
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_ANSWERS_RESPONSES'),
-	'index.php?option=' . $option . '&controller=answers',
+	'index.php?option=' . $option . '&controller=answers&qid=0',
 	($controllerName == 'answers')
 );
 
