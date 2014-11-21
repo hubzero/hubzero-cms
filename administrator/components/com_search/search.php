@@ -80,6 +80,8 @@ if (array_key_exists('search-task', $_POST))
 }
 
 JToolBarHelper::title(JText::_('COM_SEARCH') . ': ' . JText::_('COM_SEARCH_SITEMAP'), 'search.png');
+JToolBarHelper::preferences('com_search', '550');
+JToolBarHelper::spacer();
 JToolBarHelper::help('search');
 
 $app = JFactory::getApplication();
