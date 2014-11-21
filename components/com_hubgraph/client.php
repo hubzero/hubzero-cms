@@ -40,7 +40,15 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 			$conf = Db::scalarQuery($query);
 			if ($conf)
 			{
-				self::$inst = unserialize($conf);
+				if (isset($conf[0]) && $conf[0] != '{')
+				{
+					self::$inst = unserialize($conf);
+				}
+				else
+				{
+					self::$inst = new HubgraphConfiguration;
+					self::$inst->settings = json_decode($conf);
+				}
 			}
 			if (!self::$inst instanceof HubgraphConfiguration)
 			{
@@ -54,7 +62,7 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 
 	public function save()
 	{
-		$params = serialize($this);
+		$params = json_encode($this->settings);
 		if (version_compare(JVERSION, '1.6', 'lt')) {
 			$updateQuery = 'UPDATE jos_components SET params = ? WHERE `option` = \'com_hubgraph\'';
 			$insertQuery = 'INSERT INTO jos_components(name, `option`, params) VALUES (\'HubGraph\', \'com_hubgraph\', ?)';
