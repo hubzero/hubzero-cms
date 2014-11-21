@@ -114,7 +114,7 @@ $this->css()
 					<ul class="entries-menu filter-options">
 						<li>
 							<select name="category" id="filter-type">
-								<option value="" <?php echo (!$this->filters['category']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('All Categories'); ?></a>
+								<option value="" <?php echo (!$this->filters['category']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('All Categories'); ?></option>
 								<?php foreach ($this->categories as $item) { ?>
 									<option value="<?php echo $item->id; ?>"<?php echo ($this->filters['category'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->name)); ?></option>
 								<?php } ?>

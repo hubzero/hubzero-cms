@@ -60,7 +60,7 @@ $this->css('introduction.css', 'system')
 				     ->set('helper', new PublicationHelper($this->database))
 				     ->display();
 				} else {
-				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>');
+				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
 			} ?>
 		</div>
 		<div class="col <?php echo ($this->contributable) ? 'span4' : 'span6 omega';  ?>">
@@ -73,7 +73,7 @@ $this->css('introduction.css', 'system')
 					     ->set('helper', new PublicationHelper($this->database))
 					     ->display();
 			} else {
-				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</a></p>');
+				echo ('<p class="noresults">'.JText::_('COM_PUBLICATIONS_NO_RELEVANT_PUBS_FOUND').'</p>');
 			} ?>
 		</div>
 		<?php if ($this->contributable) { ?>
