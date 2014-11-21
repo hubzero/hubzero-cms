@@ -37,6 +37,13 @@ HUBzero is a registered trademark of Purdue University.
 		</field>
 		<field name="emails" type="textarea" cols="30" rows="10" default="{config.mailfrom}" label="COM_SUPPORT_CONFIG_EMAILS_LABEL" description="COM_SUPPORT_CONFIG_EMAILS_DESC" />
 	</fieldset>
+	<fieldset name="abuse">
+		<field name="abuse_notify" type="list" default="1" label="COM_SUPPORT_CONFIG_ABUSENOTIFY_LABEL" description="COM_SUPPORT_CONFIG_ABUSENOTIFY_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="abuse_emails" type="textarea" cols="30" rows="10" default="{config.mailfrom}" label="COM_SUPPORT_CONFIG_ABUSEEMAILS_LABEL" description="COM_SUPPORT_CONFIG_ABUSEEMAILS_DESC" />
+	</fieldset>
 	<fieldset name="files">
 		<field name="webpath" type="text" menu="hide" default="/site/tickets" label="COM_SUPPORT_CONFIG_WEBPATH_LABEL" description="COM_SUPPORT_CONFIG_WEBPATH_DESC" />
 		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_SUPPORT_CONFIG_MAXALLOWED_LABEL" description="COM_SUPPORT_CONFIG_MAXALLOWED_DESC" />

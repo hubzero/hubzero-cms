@@ -170,8 +170,6 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
-		$email = 0; // turn off
-
 		// Incoming
 		$this->view->cat = JRequest::getVar('category', '');
 		$this->view->refid = JRequest::getInt('referenceid', 0);
@@ -254,35 +252,91 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		));
 
 		// Send notification email
-		if ($email)
+		if ($this->config->get('abuse_notify', 1))
 		{
-			$jconfig = JFactory::getConfig();
+			$reported = new stdClass;
+			$reported->author = 0;
 
-			$from = array();
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_REPORT_ABUSE');
-			$from['email'] = $jconfig->getValue('config.mailfrom');
+			// Get the search result totals
+			$results = $dispatcher->trigger('getReportedItem', array(
+				$this->view->refid,
+				$this->view->cat,
+				0
+			));
 
-			$subject = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_REPORT_ABUSE');
-
-			$message = '';
-
-			$tos = array();
-
-			// Get administration e-mail
-			$tos[] = $jconfig->getValue('config.mailfrom');
-
-			// Get the user's e-mail
-			$tos[] = $juser->get('email');
-
-			foreach ($tos as $to)
+			// Check the results returned for a reported item
+			if ($results)
 			{
-				if (SupportUtilities::checkValidEmail($to))
+				foreach ($results as $result)
 				{
-					if (!SupportUtilities::sendEmail($from, $to, $subject, $message))
+					if ($result)
 					{
-						$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_SEND_EMAIL', $to));
+						$reported = $result[0];
+						break;
 					}
 				}
+			}
+
+			// Get any set emails that should be notified of ticket submission
+			$defs = str_replace("\r", '', $this->config->get('abuse_emails', '{config.mailfrom}'));
+			$defs = explode("\n", $defs);
+
+			$jconfig = JFactory::getConfig();
+
+			$message = new \Hubzero\Mail\Message();
+			$message->setSubject($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_REPORT_ABUSE'))
+					->addFrom(
+						$jconfig->getValue('config.mailfrom'),
+						$jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_option))
+					)
+					->addHeader('X-Component', 'com_support')
+					->addHeader('X-Component-Object', 'abuse_item_report');
+
+			// Plain text email
+			$eview = new \Hubzero\Component\View(array(
+				'name'   => 'emails',
+				'layout' => 'abuse_plain'
+			));
+			$eview->option     = $this->_option;
+			$eview->controller = $this->_controller;
+			$eview->report     = $row;
+			$eview->reported   = $reported;
+
+			$plain = $eview->loadTemplate();
+			$plain = str_replace("\n", "\r\n", $plain);
+
+			$message->addPart($plain, 'text/plain');
+
+			// HTML email
+			$eview->setLayout('abuse_html');
+
+			$html = $eview->loadTemplate();
+			$html = str_replace("\n", "\r\n", $html);
+
+			$message->addPart($html, 'text/html');
+
+			// Loop through the addresses
+			foreach ($defs As $def)
+			{
+				$def = trim($def);
+
+				// Check if the address should come from Joomla config
+				if ($def == '{config.mailfrom}')
+				{
+					$def = $jconfig->getValue('config.mailfrom');
+				}
+
+				// Check for a valid address
+				if (\Hubzero\Utility\Validate::email($def))
+				{
+					$message->addTo($def);
+				}
+			}
+
+			// Send e-mail
+			if (!$message->send())
+			{
+				$this->setError(JText::_('Uh-oh'));
 			}
 		}
 
@@ -308,13 +362,11 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 }
