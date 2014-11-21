@@ -46,7 +46,7 @@ class UsersControllerRemind extends UsersController
 
 			// Go back to the request form.
 			$message = JText::sprintf('COM_USERS_REMIND_REQUEST_FAILED', $model->getError());
-			$this->setRedirect(JRoute::_($route, false), $message, 'notice');
+			$this->setRedirect(JRoute::_($route, false), $message, 'warning');
 			return false;
 		} else {
 			// The request succeeded.
