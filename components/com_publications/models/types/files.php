@@ -240,7 +240,7 @@ class typeFiles extends JObject
 				$mt = new \Hubzero\Content\Mimetypes();
 				$mimetypes = array();
 
-				foreach($selections['files'] as $file)
+				foreach ($selections['files'] as $file)
 				{
 					$mtype = $mt->getMimeType(urldecode($file));
 					$parts = explode('/', $mtype);
@@ -602,7 +602,7 @@ class typeFiles extends JObject
 		}
 
 		$html = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="' . $ext . '" /> ' . ProjectsHtml::shortenFileName($file, 50);
-		if($canedit && $pid) {
+		if ($canedit && $pid) {
 		$html .= '<span class="c-edit"><a href="' . $url . '?vid=' . $vid
 		. '&item=file::'.urlencode($file) . '&move=' . $move . '&action=edititem&role=' . $role . '" class="showinbox">' . ucfirst(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT')) . '</a></span>';
 		}
