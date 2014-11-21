@@ -315,10 +315,11 @@ class Base
 	/**
 	 * Get element params
 	 *
-	 * @param  $option  - (string) com_xyz
-	 * @return (object) - JRegistry of params
+	 * @param  string $option    com_xyz
+	 * @param  bool   $returnRaw whether or not to return jregistry object or raw param string
+	 * @return object|string
 	 **/
-	public function getParams($element)
+	public function getParams($element, $returnRaw=false)
 	{
 		if ($this->baseDb->tableExists('#__components'))
 		{
@@ -351,13 +352,16 @@ class Base
 			$params = $this->baseDb->loadResult();
 		}
 
-		if ($params)
+		if (!$returnRaw)
 		{
-			$params = new \JRegistry($params);
-		}
-		else
-		{
-			$params = new \JRegistry();
+			if ($params)
+			{
+				$params = new \JRegistry($params);
+			}
+			else
+			{
+				$params = new \JRegistry();
+			}
 		}
 
 		return $params;
