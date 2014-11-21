@@ -37,14 +37,12 @@ defined('_JEXEC') or die( 'Restricted access' );
 class plgSearchWiki extends SearchPlugin
 {
 	/**
-	 * Short description for 'onYSearch'
+	 * Return search results for a set of terms
 	 *
-	 * Long description (if any) ...
-	 *
-	 * @param      object $request Parameter description (if any) ...
-	 * @param      object &$results Parameter description (if any) ...
-	 * @param      object $authz Parameter description (if any) ...
-	 * @return     void
+	 * @param   object  $request   Incoming request
+	 * @param   object  &$results  Results to append to
+	 * @param   object  $authz     User auth
+	 * @return  void
 	 */
 	public static function onSearch($request, &$results, $authz)
 	{
@@ -75,15 +73,18 @@ class plgSearchWiki extends SearchPlugin
 
 		// fml
 		$groupAuth = array();
-		if ($authz->is_super_admin()) {
+		if ($authz->is_super_admin())
+		{
 			$groupAuth[] = '1';
 		}
 		else {
 			$groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
-			if (!$authz->is_guest()) {
+			if (!$authz->is_guest())
+			{
 				$groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
-				if ($gids = $authz->get_group_ids()) {
-					$groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN ('.join(',', $gids).'))';
+				if ($gids = $authz->get_group_ids())
+				{
+					$groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . join(',', $gids) . '))';
 				}
 			}
 		}
@@ -93,7 +94,7 @@ class plgSearchWiki extends SearchPlugin
 				wp.title,
 				wv.pagehtml AS description,
 				CASE
-					WHEN wp.group_cn THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
+					WHEN wp.group_cn != '' THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
 					ELSE concat('index.php?option=com_wiki&scope=', wp.scope, '&pagename=', wp.pagename)
 				END AS link,
 				$weight AS weight,
