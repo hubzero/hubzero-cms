@@ -500,7 +500,7 @@ class Publication extends JTable
 				C.alias, V.id as version_id, t.name AS cat_name, t.alias as cat_alias,
 				t.url_alias as cat_url, PP.alias as project_alias, PP.title as project_title,
 				PP.state as project_status, PP.provisioned as project_provisioned, MT.alias as base";
-		$sql .= ", (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 ) AS dev_version_label ";
+		$sql .= ", (SELECT vv.version_label FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.state=3 LIMIT 1) AS dev_version_label ";
 		$sql .= ", (SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
 
 		$sortby  = isset($filters['sortby']) ? $filters['sortby'] : 'title';
@@ -588,7 +588,7 @@ class Publication extends JTable
 				PP.owned_by_group as project_group ";
 
 		$sql .= ",(SELECT vv.version_label FROM #__publication_versions as vv
-				WHERE vv.publication_id=C.id AND (vv.state = 3 OR vv.state = 5)) AS dev_version_label ";
+				WHERE vv.publication_id=C.id AND (vv.state = 3 OR vv.state = 5) LIMIT 1) AS dev_version_label ";
 		$sql .= ",(SELECT vv.state FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.main=1)
 				AS default_version_status ";
 		$sql .= ",(SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";

@@ -1079,6 +1079,12 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				case 3:
 				case 4:
 					$action = 'revert';
+					// New version started - cannot revert!
+					if ($pub->dev_version_label)
+					{
+						echo PublicationsAdminHtml::alert('This publication already has a new draft version started. Please delete the existing draft version before reverting this version to draft status.');
+						exit();
+					}
 					break;
 			}
 
