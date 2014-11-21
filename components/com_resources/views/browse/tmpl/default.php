@@ -131,14 +131,14 @@ $this->css()
 				?>
 				<ul class="entries-menu order-options">
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=title' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_TITLE'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_TITLE'); ?></a>
+						<a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_TITLE'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_TITLE'); ?></a>
 					</li>
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=date' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
+						<a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_PUBLISHED'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
 					</li>
 					<?php if ($this->config->get('show_ranking')) { ?>
 					<li>
-						<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_RANKING'); ?></a>
+						<a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" title="<?php echo JText::_('COM_RESOURCES_SORT_BY_RANKING'); ?>"><?php echo JText::_('COM_RESOURCES_SORT_RANKING'); ?></a>
 					</li>
 					<?php } ?>
 				</ul>
@@ -147,7 +147,7 @@ $this->css()
 					<ul class="entries-menu filter-options">
 						<li>
 							<select name="type" id="filter-type">
-								<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_ALL_TYPES'); ?></a>
+								<option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_RESOURCES_ALL_TYPES'); ?></option>
 								<?php foreach ($this->types as $item) { ?>
 									<?php
 									if ($item->id == 7 && !JComponentHelper::isEnabled('com_tools', true))
