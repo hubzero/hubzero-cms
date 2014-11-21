@@ -92,7 +92,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 			'int'
 		);
 
-		$obj = new CollectionsModel();
+		$obj = new CollectionsModelArchive();
 
 		// Get record count
 		$this->view->filters['count'] = true;

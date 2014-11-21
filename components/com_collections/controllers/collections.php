@@ -93,7 +93,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->view->filters['count'] = false;
 		$this->view->rows = $this->view->collection->posts($this->view->filters);
 
-		$model = CollectionsModel::getInstance();
+		$model = CollectionsModelArchive::getInstance();
 
 		$this->view->collections = $model->collections(array(
 			'count'      => true,
@@ -147,7 +147,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 			$this->view->filters['object_type'] = 'site';
 		}
 
-		$model = CollectionsModel::getInstance();
+		$model = CollectionsModelArchive::getInstance();
 
 		$this->view->filters['count'] = true;
 		$this->view->total = $model->collections($this->view->filters);
@@ -209,7 +209,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\SiteController
 		$this->view->filters['count'] = true;
 		$this->view->total = $this->view->collection->posts($this->view->filters);
 
-		$model = CollectionsModel::getInstance();
+		$model = CollectionsModelArchive::getInstance();
 
 		$this->view->collections = $model->collections(array(
 			'count'  => true,

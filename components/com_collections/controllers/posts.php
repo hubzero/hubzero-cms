@@ -45,7 +45,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 	{
 		//$this->_authorize('collection');
 		//$this->_authorize('item');
-		$this->model = CollectionsModel::getInstance();
+		$this->model = CollectionsModelArchive::getInstance();
 
 		$this->registerTask('comment', 'post');
 
@@ -409,7 +409,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 			return $this->loginTask();
 		}
 
-		$model = new CollectionsModel('member', $this->juser->get('id'));
+		$model = new CollectionsModelArchive('member', $this->juser->get('id'));
 
 		$no_html = JRequest::getInt('no_html', 0);
 

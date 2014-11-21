@@ -34,7 +34,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 JLoader::import('Hubzero.Api.Controller');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
 /**
  * API controller class for support tickets
@@ -259,7 +259,7 @@ class CollectionsControllerApi extends \Hubzero\Component\ApiController
 	{
 		$this->setMessageType(JRequest::getWord('format', 'json'));
 
-		$model = new CollectionsModel();
+		$model = new CollectionsModelArchive();
 
 		$filters = array(
 			'limit'      => JRequest::getInt('limit', 25),

@@ -92,8 +92,8 @@ class plgMembersCollections extends \Hubzero\Plugin\Plugin
 
 		$this->_authorize('collection');
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
-		$this->model = new CollectionsModel('member', $this->member->get('uidNumber'));
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+		$this->model = new CollectionsModelArchive('member', $this->member->get('uidNumber'));
 
 		//are we returning html
 		if ($returnhtml)

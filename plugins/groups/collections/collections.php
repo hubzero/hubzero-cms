@@ -107,9 +107,9 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 		$this->juser    = JFactory::getUser();
 		$this->database = JFactory::getDBO();
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
-		$this->model = new CollectionsModel('group', $this->group->get('gidNumber'));
+		$this->model = new CollectionsModelArchive('group', $this->group->get('gidNumber'));
 
 		//get the plugins params
 		//$p = new \Hubzero\Plugin\Params($this->database);

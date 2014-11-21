@@ -38,7 +38,7 @@ require_once(__DIR__ . DS . 'collection.php');
 /**
  * Collections archive model
  */
-class CollectionsModel extends \Hubzero\Base\Object
+class CollectionsModelArchive extends \Hubzero\Base\Object
 {
 	/**
 	 * Object type [member, group, etc.]
@@ -192,7 +192,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 			$this->_collection = null;
 
 			// If the list of all offerings is available ...
-			if (isset($this->_collections) && $this->_collections instanceof \Hubzero\Base\ItemList)
+			if ($this->_collections instanceof \Hubzero\Base\ItemList)
 			{
 				// Find an offering in the list that matches the ID passed
 				foreach ($this->collections() as $key => $collection)
@@ -283,7 +283,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 		{
 			$tbl = new CollectionsTableFollowing($this->_db);
 
-			if (($results = $tbl->find($filters)))
+			if ($results = $tbl->find($filters))
 			{
 				// Loop through all the items and push assets and tags
 				foreach ($results as $key => $result)
@@ -326,7 +326,7 @@ class CollectionsModel extends \Hubzero\Base\Object
 		{
 			$tbl = new CollectionsTableFollowing($this->_db);
 
-			if (($results = $tbl->find($filters)))
+			if ($results = $tbl->find($filters))
 			{
 				// Loop through all the items and push assets and tags
 				foreach ($results as $key => $result)

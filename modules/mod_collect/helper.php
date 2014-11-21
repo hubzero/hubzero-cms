@@ -32,7 +32,7 @@
 namespace Modules\Collect;
 
 use Hubzero\Module\Module;
-use CollectionsModel;
+use CollectionsModelArchive;
 use CollectionsModelCollection;
 use CollectionsTablePost;
 use JRequest;
@@ -59,9 +59,9 @@ class Helper extends Module
 			return;
 		}
 
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'collections.php');
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
 
-		$this->model = new CollectionsModel('member', $this->juser->get('id'));
+		$this->model = new CollectionsModelArchive('member', $this->juser->get('id'));
 
 		$this->item = $this->model->collectible(JRequest::getCmd('option'));
 		if (!$this->item->canCollect())
