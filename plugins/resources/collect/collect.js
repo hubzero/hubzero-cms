@@ -46,7 +46,7 @@ jQuery(document).ready(function(jq){
 
 						$.post($(this).attr('action'), $(this).serialize(), function(data) {
 							var response = jQuery.parseJSON(data);
-							if (data.code == 1) {
+							if (!response.success) {
 								$('#sbox-content').html('<p class="error" style="margin-left: 1em; margin-right: 1em;">' + response.message + '</p>')
 							} else {
 								$('#sbox-content').html('<p class="passed" style="margin-left: 1em; margin-right: 1em;">' + response.message + '</p>');
