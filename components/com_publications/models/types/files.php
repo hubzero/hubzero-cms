@@ -357,12 +357,7 @@ class typeFiles extends JObject
 		$old  			= $this->__get('old');
 		$secret  		= $this->__get('secret');
 
-		if (empty($selections) || !isset($selections['files']))
-		{
-			return false;
-		}
-
-		if (!in_array(trim($old->path), $selections['files']))
+		if ((empty($selections) || !isset($selections['files'])) || !in_array(trim($old->path), $selections['files']))
 		{
 			$objPA = new PublicationAttachment( $this->_database );
 			$objPA->deleteAttachment($vid, $old->path, $old->type);
