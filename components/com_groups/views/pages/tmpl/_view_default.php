@@ -70,22 +70,22 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 	<h3><?php echo JText::_('COM_GROUPS_OVERVIEW_ABOUT_HEADING'); ?></h3>
 	<?php if ($isMember && $this->privateDesc != '') : ?>
 		<div class="group-content-header-extra">
-			<a id="toggle_description" class="hide" href="#">Show Public Description (+)</a>
+			<a id="toggle_description" class="hide" href="#"><?php echo JText::_('COM_GROUPS_SHOW_PUBLIC_DESCRIPTION'); ?></a>
 		</div>
 	<?php endif; ?>
 </div>
 <div id="description">
 	<?php if ($isMember && $this->privateDesc != '') : ?>
-		<span id="private">
+		<div id="private">
 			<?php echo $this->privateDesc; ?>
-		</span>
-		<span id="public" class="hide">
+		</div>
+		<div id="public" class="hide">
 			<?php echo $this->publicDesc; ?>
-		</span>
+		</div>
 	<?php else : ?>
-		<span id="public">
+		<div id="public">
 			<?php echo $this->publicDesc; ?>
-		</span>
+		</div>
 	<?php endif; ?>
 </div>
 
@@ -107,10 +107,10 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 				$profile = \Hubzero\User\Profile::getInstance($member);
 				if ($counter <= 12 && is_object($profile)) :
 			?>
-				<a href="<?php echo JRoute::_('index.php?option=com_members&id='.$profile->get('uidNumber')); ?>" class="member" title="Go to <?php echo stripslashes($profile->get('name')); ?>'s Profile.">
-					<img src="<?php echo $profile->getPicture(0, true); ?>" alt="<?php echo stripslashes($profile->get('name')); ?>" class="member-border" width="50px" height="50px" />
-					<span class="name"><?php echo stripslashes($profile->get('name')); ?></span>
-					<span class="org"><?php echo stripslashes($profile->get('organization')); ?></span>
+				<a href="<?php echo JRoute::_($profile->getLink()); ?>" class="member" title="<?php echo JText::sprintf('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name'))); ?>">
+					<img src="<?php echo $profile->getPicture(0, true); ?>" alt="<?php echo $this->escape(stripslashes($profile->get('name'))); ?>" class="member-border" width="50px" height="50px" />
+					<span class="name"><?php echo $this->escape(stripslashes($profile->get('name'))); ?></span>
+					<span class="org"><?php echo $this->escape(stripslashes($profile->get('organization'))); ?></span>
 				</a>
 			<?php $counter++; ?>
 			<?php endif; ?>
