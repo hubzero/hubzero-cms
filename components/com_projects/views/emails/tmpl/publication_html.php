@@ -116,10 +116,18 @@ if ($this->config->get('sdata_group', 0) && $this->reviewer == 'sensitive')
 	$comment .= $browseLink . '?reviewer=sensitive' . '</p>';
 }
 
+
 // Project owner
-$owner   = $this->project->owned_by_group
-		 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
-		 : $this->project->fullname;
+if ($this->project->provisioned)
+{
+	$owner = NULL;
+}
+else
+{
+	$owner   = $this->project->owned_by_group
+			 ? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
+			 : $this->project->fullname;
+}
 
 $showThumb = $this->project->provisioned == 1 ? false : $config->get('showthumbemail', 0);
 
@@ -333,10 +341,12 @@ $showThumb = $this->project->provisioned == 1 ? false : $config->get('showthumbe
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo JHTML::_('date', $this->project->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->project->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
+																<?php if ($owner) { ?>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Owner:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $owner; ?></td>
 																</tr>
+																<?php } ?>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">URL:</th>
 																	<td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $projectUrl; ?></a></td>

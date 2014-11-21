@@ -49,12 +49,15 @@ if ($this->project->provisioned == 1)
 }
 
 $message .= ')' . "\n";
+if (!$this->project->provisioned)
+{
 $message .= ucfirst(JText::_('COM_PROJECTS_CREATED')) . ' '
 		 . JHTML::_('date', $this->project->created, 'M d, Y') . ' '
 		 . JText::_('COM_PROJECTS_BY') . ' ';
 $message .= $this->project->owned_by_group
 			? $this->nativegroup->cn . ' ' . JText::_('COM_PROJECTS_GROUP')
 			: $this->project->fullname;
+}
 $message .= "\n";
 
 if ($this->project->private == 0)
