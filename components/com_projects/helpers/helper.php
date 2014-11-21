@@ -318,6 +318,7 @@ class ProjectsHelper extends JObject {
 
 		// Get message body
 		$eview = new \Hubzero\Component\View(array(
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_projects',
 			'name'   => 'emails',
 			'layout' => $layout . '_plain'
 		));
