@@ -12,20 +12,6 @@
 	Project files selector CSS
 	-- -- -- -- -- -- --
 */
-	.select-form ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		font-size: 110%;
-	}
-	.select-form {
-		margin: 0;
-		padding: 0 1em 0 1em;
-	}
-	.select-form fieldset {
-		padding: 0;
-		margin: 0;
-	}
 	.level-1 {
 		margin-left: 2em;
 	}
@@ -106,6 +92,49 @@
 	.quick-uploader select {
 		max-width: 240px;
 	}
+	#abox-content .quick-upload label {
+		margin: 0;
+		padding: 0;
+		background: none;
+		float: right;
+		max-width: 200px;
+		overflow: hidden;
+	}
+	.quick-upload p {
+		margin: 0;
+		padding: 0 1em;
+		color: #708b94;
+		font-size: 85%;
+	}
+	#abox-content .quick-upload input {
+		background: none;
+		margin: 0;
+		padding: 0;	
+	}
+	#abox-content input.upload-file {
+		float: right;
+		margin: 0 1em;
+		background: white;
+		padding: 0.5em 0.91em 0.5em 0.91em;
+		outline: 0;
+		font-size: 0.8em;
+		line-height: 1;
+		font-weight: normal;
+		white-space: nowrap;
+		word-wrap: normal;
+		border: 1px solid #CCC;
+		border-color: #CCC #CCC #AAA #AAA;
+		color: #555;
+		-webkit-border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
+	}
+	.quick-upload {
+		background: #eef8fb;
+		min-height: 30px;
+	}
 	.save-selection {
 		float: right;
 		margin: 0;
@@ -180,33 +209,6 @@
 		position: absolute;
 		margin-left: 0.5em;
 	}
-	#status-box {
-		text-align: right;
-		height: 25px;
-		margin-right: 2em;
-		line-height: 0.8em;
-		width: auto;
-	}
-	#status-box p {
-		margin: 0;
-		padding: 0.2em 1em;
-		line-height: 0.8em;
-		color: #666;
-		font-size: 90%;
-		width: auto;
-		display: inline;
-	}
-	#status-box .status-error {
-		color: red;
-		background: #fae6e5;
-	}
-	#status-box .status-success {
-		color: green;
-		background: #f2fcee;
-	}
-	#status-box .status-loading {
-		color: orange;
-	}
 	.asset-uploader h5 {
 		margin: 0 1em 1em 1em;
 	}
@@ -218,11 +220,6 @@
 
 /* Selectable
 ---------------------------- */
-
-/*
-	#file-selector .ui-selecting { background: #FECA40; }
-  	#file-selector .ui-selected { background: #F39814; color: white; }
-*/
 	#file-selector .selectedfilter,
 	.file-selector .selectedfilter, .file-selector .selectedfilter:hover {
 		background: #ddf4fd;
@@ -266,12 +263,5 @@
 	}
 	#file-selector li.preselected {
 		background: #ebfcec;
-	}
-	
-/* Provisioned projects
----------------------------- */
-	#abox-content {
-		text-align: left;
-	}
-	
+	}	
 	

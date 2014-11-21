@@ -985,7 +985,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Notify project managers
 		$objO = new ProjectOwner($this->_database);
 		$managers = $objO->getIds($this->_project->id, 1, 1);
-		if (!empty($managers))
+		if (!empty($managers) && !$this->_project->provisioned)
 		{
 			$profile = \Hubzero\User\Profile::getInstance($this->_uid);
 			$juri = JURI::getInstance();

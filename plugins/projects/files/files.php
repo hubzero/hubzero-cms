@@ -655,8 +655,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 
 		if (!$ajax)
 		{
-			$document = JFactory::getDocument();
-			$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');
+			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
 		}
 
 		$view->option 		= $this->_option;

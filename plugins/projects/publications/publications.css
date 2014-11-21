@@ -205,24 +205,8 @@
 	}
 
 /* Start */
-	#suggestions ul {
-		list-style: none;
-		margin-top: 2em;
-	}
-	#suggestions ul li {
-		display: block;
-		margin: 0;
-		margin-right: 2em;
-		margin-bottom: 1em;
-		padding: 0;
-		float: left;
-		width: 200px;
-		height: 100px;
-		font-size: 85%;
-		vertical-align: middle;
-	}
-	#suggestions ul a:before {
-		content: "\270D";
+	.suggestions div .block {
+		color: #999;
 	}
 	.welcome  {
 		height: auto;

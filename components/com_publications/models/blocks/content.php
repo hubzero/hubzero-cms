@@ -248,11 +248,10 @@ class PublicationsBlockContent extends PublicationsModelBlock
 		$html = '';
 
 		// Get selector styles
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'files' . DS . 'css' . DS . 'selector.css');
-		$document->addStyleSheet('plugins' . DS . 'projects' . DS . 'publications' . DS
-			. 'css' . DS . 'selector.css');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'files','css/selector');
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases','css/selector');
 
 		// Get block element model
 		$elModel = new PublicationsModelBlockElements($this->_parent->_db);
