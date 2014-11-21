@@ -46,6 +46,21 @@ class CollectionsModelItemForum extends CollectionsModelItem
 	protected $_type = 'forum';
 
 	/**
+	 * Get the item type
+	 *
+	 * @param   string  $as  Return type as?
+	 * @return  string
+	 */
+	public function type($as=null)
+	{
+		if ($as == 'title')
+		{
+			return JText::_('Forum thread');
+		}
+		return parent::type($as);
+	}
+
+	/**
 	 * Chck if we're on a URL where an item can be collected
 	 *
 	 * @return  boolean
@@ -99,6 +114,8 @@ class CollectionsModelItemForum extends CollectionsModelItem
 
 		$this->set('type', $this->_type)
 		     ->set('object_id', $thread->get('id'))
+		     ->set('created', $thread->get('created'))
+		     ->set('created_by', $thread->get('created_by'))
 		     ->set('title', $thread->get('title'))
 		     ->set('description', $thread->content('clean', 200))
 		     ->set('url', $thread->link());

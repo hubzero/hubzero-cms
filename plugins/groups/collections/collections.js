@@ -210,11 +210,13 @@ jQuery(document).ready(function(jq){
 
 		container.find('a.comment').fancybox({
 			type: 'ajax',
-			/*width: 500,
-			height: 'auto',
 			autoSize: false,
-			fitToView: false,*/
+			fitToView: false,
 			titleShow: false,
+			autoCenter: false,
+			width: '100%',
+			height: 'auto',
+			topRatio: 0,
 			tpl: {
 				wrap:'<div class="fancybox-wrap post-modal"><div class="fancybox-skin"><div class="fancybox-outer"><div id="post-content" class="fancybox-inner"></div></div></div></div>'
 			},

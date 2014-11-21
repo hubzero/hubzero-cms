@@ -60,32 +60,36 @@ if (!$no_html) {
 
 			<div class="post full <?php echo $item->type(); ?>" id="p<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&post=' . $this->post->get('id') . '&task=comment'); ?>" data-width="600" data-height="350">
 				<div class="content">
-				<?php if ($this->post->get('created_by') != $item->get('created_by')) { ?>
-					<div class="creator attribution clearfix">
-						<?php
-						$name = $this->escape(stripslashes($item->creator('name')));
+					<div class="creator attribution cf">
+						<?php if ($item->get('type') == 'file' || $item->get('type') == 'collection') { ?>
+							<?php
+							$name = $this->escape(stripslashes($item->creator('name')));
 
-						if ($item->creator('public')) { ?>
-							<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
-								<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
-							</a>
+							if ($item->creator('public')) { ?>
+								<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
+									<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+								</a>
+							<?php } else { ?>
+								<span class="img-link">
+									<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+								</span>
+							<?php } ?>
+							<p>
+								<?php echo JText::sprintf('COM_COLLECTIONS_USER_CREATED_POST', ($item->creator('public') ? '<a href="' . JRoute::_($item->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($item->creator()->get('name'))) . ($item->creator('public') ? '</a>' : '')); ?>
+								<br />
+								<span class="entry-date">
+									<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
+									<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
+									<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
+									<span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
+								</span>
+							</p>
 						<?php } else { ?>
-							<span class="img-link">
-								<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
-							</span>
+							<p class="typeof <?php echo $item->get('type'); ?>">
+								<?php echo $this->escape($item->type('title')); ?>
+							</p>
 						<?php } ?>
-						<p>
-							<?php echo JText::sprintf('COM_COLLECTIONS_USER_CREATED_POST', ($item->creator('public') ? '<a href="' . JRoute::_($item->creator()->getLink()) . '">' : '') . $this->escape(stripslashes($item->creator()->get('name'))) . ($item->creator('public') ? '</a>' : '')); ?>
-							<br />
-							<span class="entry-date">
-								<span class="entry-date-at"><?php echo JText::_('COM_COLLECTIONS_AT'); ?></span>
-								<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
-								<span class="entry-date-on"><?php echo JText::_('COM_COLLECTIONS_ON'); ?></span>
-								<span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
-							</span>
-						</p>
 					</div><!-- / .attribution -->
-				<?php } ?>
 					<?php
 					$this->view('display_' . $item->type(), 'posts')
 					     ->set('actual', true)

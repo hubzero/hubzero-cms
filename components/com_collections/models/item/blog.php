@@ -46,6 +46,21 @@ class CollectionsModelItemBlog extends CollectionsModelItem
 	protected $_type = 'blog';
 
 	/**
+	 * Get the item type
+	 *
+	 * @param   string  $as  Return type as?
+	 * @return  string
+	 */
+	public function type($as=null)
+	{
+		if ($as == 'title')
+		{
+			return JText::_('Blog post');
+		}
+		return parent::type($as);
+	}
+
+	/**
 	 * Chck if we're on a URL where an item can be collected
 	 *
 	 * @return  boolean
@@ -111,6 +126,8 @@ class CollectionsModelItemBlog extends CollectionsModelItem
 
 		$this->set('type', $this->_type)
 		     ->set('object_id', $post->get('id'))
+		     ->set('created', $post->get('created'))
+		     ->set('created_by', $post->get('created_by'))
 		     ->set('title', $post->get('title'))
 		     ->set('description', $post->content('clean', 200))
 		     ->set('url', JRoute::_($post->link()));

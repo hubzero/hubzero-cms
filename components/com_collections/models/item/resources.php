@@ -46,6 +46,21 @@ class CollectionsModelItemResources extends CollectionsModelItem
 	protected $_type = 'resource';
 
 	/**
+	 * Get the item type
+	 *
+	 * @param   string  $as  Return type as?
+	 * @return  string
+	 */
+	public function type($as=null)
+	{
+		if ($as == 'title')
+		{
+			return JText::_('Resource');
+		}
+		return parent::type($as);
+	}
+
+	/**
 	 * Chck if we're on a URL where an item can be collected
 	 *
 	 * @return  boolean
@@ -116,6 +131,8 @@ class CollectionsModelItemResources extends CollectionsModelItem
 
 		$this->set('type', $this->_type)
 		     ->set('object_id', $resource->id)
+		     ->set('created', $resource->created)
+		     ->set('created_by', $resource->created_by)
 		     ->set('title', $resource->title)
 		     ->set('description', $resource->introtext)
 		     ->set('url', JRoute::_('index.php?option=com_resources&id=' . $resource->id));

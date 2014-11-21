@@ -46,6 +46,21 @@ class CollectionsModelItemWiki extends CollectionsModelItem
 	protected $_type = 'wiki';
 
 	/**
+	 * Get the item type
+	 *
+	 * @param   string  $as  Return type as?
+	 * @return  string
+	 */
+	public function type($as=null)
+	{
+		if ($as == 'title')
+		{
+			return JText::_('Wiki page');
+		}
+		return parent::type($as);
+	}
+
+	/**
 	 * Chck if we're on a URL where an item can be collected
 	 *
 	 * @return  boolean
@@ -113,6 +128,8 @@ class CollectionsModelItemWiki extends CollectionsModelItem
 
 		$this->set('type', $this->_type)
 		     ->set('object_id', $page->get('id'))
+		     ->set('created', $page->get('created'))
+		     ->set('created_by', $page->get('created_by'))
 		     ->set('title', $page->get('title'))
 		     ->set('description', $page->revision()->content('clean', 300))
 		     ->set('url', JRoute::_($page->link()));

@@ -46,6 +46,21 @@ class CollectionsModelItemContent extends CollectionsModelItem
 	protected $_type = 'article';
 
 	/**
+	 * Get the item type
+	 *
+	 * @param   string  $as  Return type as?
+	 * @return  string
+	 */
+	public function type($as=null)
+	{
+		if ($as == 'title')
+		{
+			return JText::_('Article');
+		}
+		return parent::type($as);
+	}
+
+	/**
 	 * Chck if we're on a URL where an item can be collected
 	 *
 	 * @return  boolean
@@ -110,6 +125,8 @@ class CollectionsModelItemContent extends CollectionsModelItem
 
 		$this->set('type', $this->_type)
 		     ->set('object_id', $article->id)
+		     ->set('created', $article->created)
+		     ->set('created_by', $article->created_by)
 		     ->set('title', $article->title)
 		     ->set('description', \Hubzero\Utility\String::truncate($text, 300, array('html' => true)))
 		     ->set('url', $url);

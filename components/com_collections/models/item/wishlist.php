@@ -46,6 +46,21 @@ class CollectionsModelItemWishlist extends CollectionsModelItem
 	protected $_type = 'wish';
 
 	/**
+	 * Get the item type
+	 *
+	 * @param   string  $as  Return type as?
+	 * @return  string
+	 */
+	public function type($as=null)
+	{
+		if ($as == 'title')
+		{
+			return JText::_('Wish');
+		}
+		return parent::type($as);
+	}
+
+	/**
 	 * Chck if we're on a URL where an item can be collected
 	 *
 	 * @return  boolean
@@ -99,6 +114,8 @@ class CollectionsModelItemWishlist extends CollectionsModelItem
 
 		$this->set('type', $this->_type)
 		     ->set('object_id', $wish->get('id'))
+		     ->set('created', $wish->get('proposed'))
+		     ->set('created_by', $wish->get('proposed_by'))
 		     ->set('title', $wish->get('subject'))
 		     ->set('description', $wish->content('clean', 200))
 		     ->set('url', JRoute::_($wish->link()));

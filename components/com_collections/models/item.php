@@ -713,16 +713,67 @@ class CollectionsModelItem extends CollectionsModelAbstract
 	/**
 	 * Get the item type
 	 *
+	 * @param   string  $as  Return type as?
 	 * @return  string
 	 */
-	public function type()
+	public function is($type)
 	{
+		if ($type == $this->_type)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Get the item type
+	 *
+	 * @param   string  $as  Return type as?
+	 * @return  string
+	 */
+	public function type($as=null)
+	{
+		static $collectibles;
+
 		if ($this->get('state') == 2)
 		{
 			$this->set('type', 'deleted');
 		}
 
 		$type = $this->get('type');
+
+		if ($as == 'title')
+		{
+			if (!isset($collectibles))
+			{
+				// Include the avilable collectibles
+				foreach (glob(__DIR__ . DS . 'item' . DS . '*.php') as $collectible)
+				{
+					require_once $collectible;
+				}
+
+				// Filter available classes to just our collectibles
+				$collectibles = array_values(array_filter(get_declared_classes(), function($class)
+				{
+					return (in_array('CollectionsModelItem', class_parents($class)));
+				}));
+			}
+
+			// Find a collectible that responds to this type
+			foreach ($collectibles as $key => $collectible)
+			{
+				if (!is_object($collectible))
+				{
+					$collectibles[$key] = new $collectible;
+					$collectible = $collectibles[$key];
+				}
+				if ($collectible->is($type))
+				{
+					return $collectible->type($as);
+				}
+			}
+		}
+
 		if (!in_array($type, array('collection', 'deleted', 'image', 'file', 'text', 'link')))
 		{
 			$type = 'link';

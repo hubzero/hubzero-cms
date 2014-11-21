@@ -40,21 +40,36 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <div class="post full <?php echo $item->type(); ?>" id="b<?php echo $this->post->get('id'); ?>" data-id="<?php echo $this->post->get('id'); ?>" data-closeup-url="<?php echo JRoute::_($base . '&scope=post/' . $this->post->get('id')); ?>" data-width="600" data-height="350">
 	<div class="content">
 		<div class="creator attribution clearfix">
-			<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>" title="<?php echo $this->escape(stripslashes($item->creator('name'))); ?>" class="img-link">
-				<img src="<?php echo $item->creator()->getPicture(); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator('name'))); ?>" />
-			</a>
-			<p>
-				<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>">
-					<?php echo $this->escape(stripslashes($item->creator('name'))); ?>
-				</a> created this post
-				<br />
-				<span class="entry-date">
-					<span class="entry-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
-					<span class="entry-date-on">on</span>
-					<span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
-				</span>
-			</p>
+			<?php if ($item->get('type') == 'file' || $item->get('type') == 'collection') { ?>
+				<?php
+				$name = $this->escape(stripslashes($item->creator('name')));
+
+				if ($item->creator('public')) { ?>
+					<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>" title="<?php echo $name; ?>" class="img-link">
+						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+					</a>
+				<?php } else { ?>
+					<span class="img-link">
+						<img src="<?php echo $item->creator()->getPicture(); ?>" alt="<?php echo JText::_('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+					</span>
+				<?php } ?>
+				<p>
+					<a href="<?php echo JRoute::_($item->creator()->getLink()); ?>">
+						<?php echo $this->escape(stripslashes($item->creator('name'))); ?>
+					</a> created this post
+					<br />
+					<span class="entry-date">
+						<span class="entry-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('time'); ?></time></span>
+						<span class="entry-date-on">on</span>
+						<span class="date"><time datetime="<?php echo $item->created(); ?>"><?php echo $item->created('date'); ?></time></span>
+					</span>
+				</p>
+			<?php } else { ?>
+				<p class="typeof <?php echo $item->get('type'); ?>">
+					<?php echo $this->escape($item->type('title')); ?>
+				</p>
+			<?php } ?>
 		</div><!-- / .attribution -->
 		<?php
 		$this->view('default_' . $item->type(), 'post')
