@@ -170,6 +170,7 @@ class plgContentCollect extends JPlugin
 
 			$b->url         = str_replace('?action=collect', '', $url);
 			$b->url         = str_replace('nohtml=1', '', $b->url);
+			$b->url         = rtrim($b->url, '&');
 			$b->type        = 'article';
 			$b->object_id   = $this->article->id;
 			$b->title       = $this->article->title;
