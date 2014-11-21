@@ -1,0 +1,45 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_mytodos/mod_mytodos.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mytodos
+	-- -- -- -- -- -- --
+
+*/
+
+	div.draggable .expandedlist li.todos {
+		position: relative;
+	}
+	div.draggable .expandedlist li.todos:before {
+		content: "\f08d";
+		font-family: "Fontcons";
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-size: 1.4em;
+		line-height: 1;
+		color: #ccc;
+	}
+	div.draggable .expandedlist li.todos:hover:before {
+		color: #999;
+	}
+	div.draggable .expandedlist li.todos .pending {
+	}
+	div.draggable .expandedlist li.todos .accepted {
+		color: #009900;
+	}
+	div.draggable .expandedlist li.todos .rejected {
+		color: red;
+	}
+	div.draggable .expandedlist li.todos span {
+		color: #fff;
+	}
+	div.draggable .expandedlist li.todos span span {
+		color: #999;
+	}
