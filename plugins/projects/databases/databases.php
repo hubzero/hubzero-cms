@@ -386,6 +386,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		// Set pub assoc and load curation
 		$view->publication->_curationModel->setPubAssoc($view->publication);
 
+		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'databases','css/selector');
 		if (!$ajax)
 		{
 			\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications','css/selector');
@@ -402,6 +403,10 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$view->step 		= $step;
 		$view->props		= $props;
 		$view->filter		= $filter;
+
+		// Get databases to choose from
+		$objPD = new ProjectDatabase($this->_database);
+		$view->items = $objPD->getItems($this->_project->id, array());
 
 		// Get messages	and errors
 		if ($this->getError())
