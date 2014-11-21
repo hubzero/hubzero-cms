@@ -2612,9 +2612,9 @@ class plgProjectsPublications extends JPlugin
 					$newpath = $helper->buildPath($pid, $newid, $base_path, $new->secret, 1);
 
 					// Create new path
-					if (!is_dir( JPATH_ROOT . $newpath ))
+					if (!is_dir( $newpath ))
 					{
-						JFolder::create( JPATH_ROOT . $newpath );
+						JFolder::create( $newpath );
 					}
 
 					// Copy attachments from default to new version
