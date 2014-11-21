@@ -60,7 +60,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $step
 <div class="curation-block">
 	<h4><?php echo $title; ?></h4>
 	<?php if ($noElements) { ?>
-		<div id="<?php echo 'element' . $this->active; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional'; echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated ? ' el-updated' : ''; ?>">
+		<div id="<?php echo 'element' . $this->active; ?>" class="blockelement<?php echo $required ? ' el-required' : ' el-optional'; echo $complete ? ' el-complete' : ' el-incomplete'; echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $curatorStatus->updated && $curatorStatus->status != 2 ? ' el-updated' : ''; ?>">
 		<div class="element_overview">
 			<div class="block-aside"><div class="block-info"><?php echo $about; ?></div>
 			</div>

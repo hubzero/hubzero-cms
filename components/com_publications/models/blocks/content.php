@@ -195,10 +195,19 @@ class PublicationsBlockContent extends PublicationsModelBlock
 
 				if ($this->get('_update'))
 				{
+					$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $pub, $sequence);
+
 					// Record update time
 					$data 				= new stdClass;
 					$data->updated 		= JFactory::getDate()->toSql();
 					$data->updated_by 	= $actor;
+
+					// Unmark as skipped
+					if ($lastRecord && $lastRecord->review_status == 3)
+					{
+						$data->review_status = 0;
+						$data->update = '';
+					}
 					$pub->_curationModel->saveUpdate($data, $id, $this->_name, $pub, $sequence);
 				}
 			}

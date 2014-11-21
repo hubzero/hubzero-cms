@@ -187,6 +187,31 @@ class PublicationCuration extends JTable
 	 * @param      integer 	$vid Publication Version ID
 	 * @return     mixed False if error, Object on success
 	 */
+	public function getRecord( $pid = NULL, $vid = NULL, $block = NULL, $step = 0, $element = NULL )
+	{
+		if (!$pid || !$vid || !$block || !intval($step))
+		{
+			return false;
+		}
+
+		$query = "SELECT * FROM $this->_tbl WHERE publication_id=" . $pid;
+		$query.= " AND publication_version_id=" . $vid;
+		$query.= " AND block='" . $block . "' ";
+		$query.= " AND step=" . $step;
+		$query.= $element ? " AND element='$element' " : " AND (element IS NULL OR element=0)";
+		$query.= " ORDER BY id DESC LIMIT 1";
+		$this->_db->setQuery( $query );
+		$results = $this->_db->loadObjectList();
+		return $results ? $results[0] : NULL;
+	}
+
+	/**
+	 * Load record
+	 *
+	 * @param      integer 	$pid Publication ID
+	 * @param      integer 	$vid Publication Version ID
+	 * @return     mixed False if error, Object on success
+	 */
 	public function loadRecord( $pid = NULL, $vid = NULL, $block = NULL, $step = 0, $element = NULL )
 	{
 		if (!$pid || !$vid || !$block || !intval($step))

@@ -1763,6 +1763,21 @@ class PublicationsCuration extends JObject
 	}
 
 	/**
+	 * Get last
+	 *
+	 * @param   integer  $elementId		Element ID
+	 * @param   string   $name			Block name
+	 * @param   object   $pub			Publication object
+	 * @param   integer  $sequence		Block order in curation
+	 * @return boolean
+	 */
+	public function getLastUpdate( $elementId, $name, $pub, $sequence )
+	{
+		$curation = new PublicationCuration($this->_db);
+		return $curation->getRecord($pub->id, $pub->version_id, $name, $sequence, $elementId);
+	}
+
+	/**
 	 * Save update
 	 *
 	 * @param   object   $data			Data to save
