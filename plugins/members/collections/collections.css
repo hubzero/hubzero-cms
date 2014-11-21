@@ -164,7 +164,8 @@
 		right: 8px;
 		border: 1px solid #ccc;
 	}
-	.full {
+	html.opera .post.full,
+	.post.full {
 		width: auto;
 		margin: 0;
 		position: relative;
@@ -883,6 +884,29 @@
 	}
 	#sbox-content .commnts .comment-submit {
 		width: auto;
+	}
+	a.fancybox-close,
+	.fancybox-close {
+		background: #f1f1f1;
+		-webkit-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		-moz-box-shadow: 0 1px 2px rgba(25, 25, 25, 0.4);
+		-ms-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		-o-box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		box-shadow: 0 1px 3px rgba(25, 25, 25, 0.4);
+		right: 30px;
+		top: -20px;
+		color: #333;
+		line-height: 1.2;
+		font-size: 2em;
+		text-align: center;
+	}
+	a.fancybox-close:before,
+	.fancybox-close:before {
+		content: "\00D7";
+	}
+	a.fancybox-close:hover,
+	.fancybox-close:hover {
+		color: #c00;
 	}
 	.entry-date-at,
 	.entry-date-on {
