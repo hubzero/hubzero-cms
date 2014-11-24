@@ -38,10 +38,9 @@ class Migration20141119180000ComCitations extends Base
 	public function down()
 	{
 		//checks to see if gid field exists and removes it
-		if ($this->db->tableExists('#__citations_secondary') 
+		if ($this->db->tableExists('#__citations_secondary')
 				&& $this->db->tableHasField('#__citations_secondary', 'link1_url'))
 		{
-			
 			$query = "ALTER TABLE `#__citations_secondary`
 			DROP COLUMN `link1_url`,
 			DROP COLUMN `link1_title`,
@@ -49,7 +48,7 @@ class Migration20141119180000ComCitations extends Base
 			DROP COLUMN `link2_title`,
 			DROP COLUMN `link3_url`,
 			DROP COLUMN `link3_tile`;";
-			
+
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
