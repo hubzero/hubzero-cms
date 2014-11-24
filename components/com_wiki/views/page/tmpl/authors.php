@@ -33,17 +33,26 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 if ($this->page->param('mode', 'wiki') == 'knol' && !$this->page->param('hide_authors', 0))
 {
-	$author = ($this->page->creator('name') ? $this->page->creator('name') : JText::_('Unknown'));
+	$author = ($this->page->creator('name') ? $this->escape(stripslashes($this->page->creator('name'))) : JText::_('COM_WIKI_UNKNOWN'));
 
 	$auths = array();
-	$auths[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $this->page->get('created_by')) . '">' . $this->escape(stripslashes($author)) . '</a>';
+	$auths[] = ($this->page->creator('public') ? '<a href="' . JRoute::_($this->page->creator()->getLink()) . '">' . $author . '</a>' : $author);
 	foreach ($this->page->authors() as $auth)
 	{
 		if ($auth->get('user_id') == $this->page->get('created_by'))
 		{
 			continue;
 		}
-		$auths[] = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $auth->get('user_id')) . '">' . $this->escape(stripslashes($auth->get('name'))) . '</a>';
+
+		$name = $this->escape(stripslashes($auth->get('name')));
+
+		$xprofile = \Hubzero\User\Profile::getInstance($auth->get('user_id'));
+		if (is_object($xprofile))
+		{
+			$name = ($xprofile->get('public') ? '<a href="' . JRoute::_($xprofile->getLink()) . '">' . $name . '</a>' : $name);
+		}
+
+		$auths[] = $name;
 	}
 	?>
 	<p class="topic-authors"><?php echo JText::sprintf('COM_WIKI_BY_AUTHORS', implode(', ', $auths)); ?></p>

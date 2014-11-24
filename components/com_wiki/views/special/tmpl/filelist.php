@@ -132,7 +132,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 
 				foreach ($rows as $row)
 				{
-					$fsize = JText::_('(unknown)');
+					$fsize = JText::_('COM_WIKI_UNKNOWN');
 					if (is_file(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename))
 					{
 						$fsize = \Hubzero\Utility\Number::formatBytes(filesize(JPATH_ROOT . DS . trim($this->config->get('filepath', '/site/wiki'), DS) . DS . $row->pageid . DS . $row->filename));
@@ -142,7 +142,8 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
 					$xprofile = \Hubzero\User\Profile::getInstance($row->created_by);
 					if (is_object($xprofile))
 					{
-						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $this->escape(stripslashes($xprofile->get('name'))) . '</a>';
+						$name = $this->escape(stripslashes($xprofile->get('name')));
+						$name = ($xprofile->get('public') ? '<a href="' . JRoute::_($xprofile->getLink()) . '">' . $name . '</a>' : $name);
 					}
 			?>
 				<tr>
