@@ -27,17 +27,16 @@ class Migration20141004111111ComCitations extends Base
 			$this->db->query();
 		}
 	}
-	
+
 	/**
 	 * Down
 	 **/
 	public function down()
 	{
 		//checks to see if gid field exists and removes it
-		if ($this->db->tableExists('#__citations_secondary') 
-				&& $this->db->tableHasField('#__citations_secondary', 'scope'))
+		if ($this->db->tableExists('#__citations_secondary')
+			&& $this->db->tableHasField('#__citations_secondary', 'scope'))
 		{
-			
 			$query = "ALTER TABLE `#__citations_secondary`
 			DROP COLUMN `scope`,
 			DROP COLUMN `scope_id`;";
