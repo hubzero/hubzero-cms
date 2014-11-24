@@ -27,12 +27,11 @@ class Migration20141119180000ComCitations extends Base
 			ADD COLUMN `link3_url` TINYTEXT NULL DEFAULT NULL AFTER `link2_title`,
 			ADD COLUMN `link3_title` VARCHAR(60) NULL DEFAULT NULL AFTER `link3_url`;";
 
-
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
 	}
-	
+
 	/**
 	 * Down
 	 **/
