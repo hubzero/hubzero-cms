@@ -13,44 +13,28 @@
 
 */
 
-	#frontpage .workshop h3 {
-		padding: 0.2em; 
-		padding-left: 23px; 
-		background: url("/modules/mod_randomquote/images/fc-workshop.gif") 0 0em no-repeat;
+	.mod_randomquote {
+		margin-bottom: 2em;
 	}
-	#frontpage .workshop {
-		background: none;
-	}
-	.frontquote h3, 
-	#frontpage h3.notable_quote {
-		background: url("/modules/mod_randomquote/images/quoteopen.gif") 0 0 no-repeat;
-		padding: 0 0 0 1.7em;
-		margin-bottom: 0.5em;
-	}
-	#frontpage blockquote {
-		padding: 0;
+	.mod_randomquote blockquote {
+		padding: 1em;
 		margin: 0;
-		padding: 0.7em 23px;
 		background: none;
 		color: #444444;
 		background: #fefaec;
 		border-right: 1px solid #DFD5AF;
 		border-bottom: 1px solid #DFD5AF;
 	}
-	.frontquote {
-		margin-bottom: 2em;
-	}
-	#frontpage blockquote p {
+	.mod_randomquote blockquote p {
 		padding: 0;
 		margin: 0;
 	}
-	#frontpage cite {
+	.mod_randomquote cite {
 		margin: 0;
+		padding: 0;
 	}
-	#frontpage p.cite {
-		margin: 0.8em 0 0 0;
-		padding: 0 0 0 23px;
-		line-height: 1.2em;
-		color: #87795c;
+	.mod_randomquote p.cite {
+		margin: 1em 0 0 1em;
+		padding: 0;
 		font-size: 85%;
 	}

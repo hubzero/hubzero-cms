@@ -33,12 +33,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $base = rtrim(JURI::getInstance()->base(true), '/');
 
-if ($this->quote) {
+if ($this->quote)
+{
 	?>
-	<h3 class="notable_quote">
-		<?php echo JText::_('MOD_RANDOMQUOTE_NOTABLE'); ?>
-	</h3>
-	<div class="frontquote">
+	<div class="<?php echo $this->module->module; ?>"<?php if ($this->params->get('moduleid')) { echo ' id="' . $this->params->get('moduleid') . '"'; } ?>>
 		<blockquote cite="<?php echo $this->escape(stripslashes($this->quote->fullname)); ?>">
 			<p>
 				<?php
@@ -61,4 +59,5 @@ if ($this->quote) {
 			<span><?php echo JText::sprintf('MOD_RANDOMQUOTE_IN', $base . '/about/quotes'); ?></span>
 		</p>
 	</div>
-<?php } ?>
+	<?php
+}

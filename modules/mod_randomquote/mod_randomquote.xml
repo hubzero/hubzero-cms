@@ -30,9 +30,9 @@ HUBzero is a registered trademark of Purdue University.
 	<name>Random Quote</name>
 	<author>HUBzero</author>
 	<creationDate>Mar 2010</creationDate>
-	<copyright>(C) 2010 HUBzero</copyright>
-	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>alisa@purdue.edu</authorEmail>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.5.0</version>
 	<description>Module to display random featured quote</description>
 	<files>
@@ -48,32 +48,32 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="quotepool" type="radio" default="notable_quotes" label="Quotes Pool" description="Select which quotes to pull from">
-					<option value="flash_rotation">Selected for Rotation</option>
-					<option value="notable_quotes">Selected for NQ Page</option>
-					<option value="all">All</option>
+				<field name="moduleid" type="text" default="" label="MOD_RANDOMQUOTE_PARAM_MODULEID_LABEL" description="MOD_RANDOMQUOTE_PARAM_MODULEID_DESC" />
+				<field name="quotepool" type="radio" default="notable_quotes" label="MOD_RANDOMQUOTE_PARAM_QUOTEPOOL_LABEL" description="MOD_RANDOMQUOTE_PARAM_QUOTEPOOL_DESC">
+					<option value="flash_rotation">MOD_RANDOMQUOTE_PARAM_QUOTEPOOL_ROTATION</option>
+					<option value="notable_quotes">MOD_RANDOMQUOTE_PARAM_QUOTEPOOL_NQPAGE</option>
+					<option value="all">MOD_RANDOMQUOTE_PARAM_QUOTEPOOL_ALL</option>
 				</field>
-				<field name="show_author" type="radio" default="1" label="Show author name" description="Select whether to show author name">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="show_author" type="radio" default="1" label="MOD_RANDOMQUOTE_PARAM_SHOW_AUTHOR_LABEL" description="MOD_RANDOMQUOTE_PARAM_SHOW_AUTHOR_DESC">
+					<option value="1">MOD_RANDOMQUOTE_PARAM_SHOW</option>
+					<option value="0">MOD_RANDOMQUOTE_PARAM_HIDE</option>
 				</field>
-				<field name="show_all_link" type="radio" default="1" label="Show link to all quotes" description="Select whether to show link to all quotes">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="show_all_link" type="radio" default="1" label="MOD_RANDOMQUOTE_PARAM_SHOW_ALL_LABEL" description="MOD_RANDOMQUOTE_PARAM_SHOW_ALL_DESC">
+					<option value="1">MOD_RANDOMQUOTE_PARAM_SHOW</option>
+					<option value="0">MOD_RANDOMQUOTE_PARAM_HIDE</option>
 				</field>
-				<field name="quotesrc" type="radio" default="miniquote" label="Quote source" description="Select whether to show data from miniquote or short quote column">
-					<option value="miniquote">Mini-quote</option>
-					<option value="short_quote">Short quote</option>
+				<field name="quotesrc" type="radio" default="miniquote" label="MOD_RANDOMQUOTE_PARAM_SOURCE_LABEL" description="MOD_RANDOMQUOTE_PARAM_SOURCE_DESC">
+					<option value="miniquote">MOD_RANDOMQUOTE_PARAM_SOURCE_MINI</option>
+					<option value="short_quote">MOD_RANDOMQUOTE_PARAM_SOURCE_SHORT</option>
 				</field>
-				<field name="charlimit" type="text" default="150" label="Character limit" description="Limit of quote characters" />
+				<field name="charlimit" type="text" default="150" label="MOD_RANDOMQUOTE_PARAM_LIMIT_LABEL" description="MOD_RANDOMQUOTE_PARAM_LIMIT_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+				<field name="cache_time" type="text" default="15" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
