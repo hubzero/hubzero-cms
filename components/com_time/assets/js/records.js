@@ -32,6 +32,15 @@ HUB.Plugins.TimeRecords = {
 		var column   = $('#filter-column');
 		var operator = $('#filter-operator');
 
+		if (!!$.prototype.datetimepicker) {
+			$('.hadTimepicker').datetimepicker({
+				step: 15,
+				time24h: true,
+				format: 'Y-m-d H:i',
+				defaultTime: '08:00'
+			});
+		}
+
 		// Show add filters box
 		$('#add-filters').css('display', 'block');
 

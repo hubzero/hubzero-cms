@@ -109,6 +109,11 @@ Class TimeRecords extends JTable
 			return false;
 		}
 
+		if (!$this->end)
+		{
+			$this->end = date('Y-m-d H:i:s', (strtotime($this->date) + ($this->time*3600)));
+		}
+
 		// Everything passed, return true
 		return true;
 	}

@@ -33,22 +33,22 @@ defined('_JEXEC') or die('Restricted access');
 
 $this->css()
      ->css('overview')
-     ->js('overview');
+     ->css('fullcalendar')
+     ->js('overview')
+     ->js('moment.min')
+     ->js('fullcalendar.min');
 
-// Get the Joomla document and add google JS API
-$juser = JFactory::getUser();
-$doc   = JFactory::getDocument();
-$doc->addScript('https://www.google.com/jsapi');
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
+\Hubzero\Document\Assets::addSystemScript('flot/jquery.flot.min');
+\Hubzero\Document\Assets::addSystemScript('flot/jquery.flot.pie.min');
+\Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
 
-// Generate script to draw chart and push to the page
-$column  = ChartsHTML::drawColumn();
-$pieHubs = ChartsHTML::drawPieHubs();
-$pieUser = ChartsHTML::drawPieUser($juser->get('id'));
-$bar     = ChartsHTML::drawBar();
-$doc->addScriptDeclaration($column);
-$doc->addScriptDeclaration($pieHubs);
-$doc->addScriptDeclaration($pieUser);
-$doc->addScriptDeclaration($bar);
+$utc   = JFactory::getDate();
+$now   = JHTML::_('date', $utc, JText::_('g:00a'));
+$then  = JHTML::_('date', strtotime($now . ' + 1 hour'), JText::_('g:00a'));
+$start = JHTML::_('date', $utc, JText::_('G'));
+$end   = JHTML::_('date', strtotime($now . ' + 1 hour'), JText::_('G'));
+
 ?>
 
 <header id="content-header">
@@ -58,25 +58,66 @@ $doc->addScriptDeclaration($bar);
 <div class="com_time_container">
 	<?php $this->view('menu', 'shared')->display(); ?>
 	<section class="com_time_content com_time_overview">
-		<table>
-			<thead>
-				<tr>
-					<td><?php echo JText::_('COM_TIME_OVERVIEW_ACTIVE_HUBS'); ?></td>
-					<td><?php echo JText::_('COM_TIME_OVERVIEW_ACTIVE_TASKS'); ?></td>
-					<td><?php echo JText::_('COM_TIME_OVERVIEW_TOTAL_HOURS'); ?></td>
-				<tr>
-			</thead>
-			<tr class="data">
-				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=hubs'); ?>"><?php echo $this->activeHubs; ?></a></td>
-				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tasks'); ?>"><?php echo $this->activeTasks; ?></td>
-				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=records'); ?>"><?php echo $this->totalHours; ?></td>
-			</tr>
-		</table>
+		<div class="overview-container">
+			<div class="section-header"><h3><?php echo JText::_('COM_TIME_OVERVIEW_TODAY'); ?></h3></div>
+			<div class="calendar"></div>
+			<div class="details">
+				<div class="details-inner">
+					<div class="details-explanation">
+						<p>
+							Drag and select a time-range from the calendar on the left to create a new time entry,
+							or click an existing entry to edit.
+						</p>
+					</div>
+					<form action="<?php echo JRoute::_('/api/time/postRecord'); ?>" class="details-data" method="POST">
+						<div class="grouping" id="hub-group">
+							<label for="hub"><?php echo JText::_('COM_TIME_OVERVIEW_HUB'); ?>:</label>
+							<?php echo TimeHTML::buildSmartHubsList($this->controller); ?>
+						</div>
+						<div class="grouping" id="task-group">
+							<label for="task"><?php echo JText::_('COM_TIME_OVERVIEW_TASK'); ?>:</label>
+							<?php echo TimeHTML::buildSmartTasksList($this->controller); ?>
+						</div>
 
-		<div id="chart_div_pie_hubs"></div>
-		<div id="chart_div_pie_user"></div>
+						<div class="grouping" id="description-group">
+							<label for="description"><?php echo JText::_('COM_TIME_OVERVIEW_DESCRIPTION'); ?>:</label>
+							<textarea name="description" id="description" rows="6" cols="50" tabIndex="3"></textarea>
+						</div>
+
+						<input type="hidden" name="id" class="details-id" value="" />
+						<input type="hidden" name="start" class="details-start" value="" />
+						<input type="hidden" name="end" class="details-end" value="" />
+
+						<p class="submit">
+							<input class="btn btn-success" type="submit" value="<?php echo JText::_('COM_TIME_OVERVIEW_SAVE'); ?>" tabIndex="4" />
+							<a href="#" class="details-cancel">
+								<button type="button" class="btn btn-secondary">
+									<?php echo JText::_('COM_TIME_OVERVIEW_CANCEL'); ?>
+								</button>
+							</a>
+						</p>
+					</form>
+				</div>
+			</div>
+		</div>
 		<div class="clear"></div>
-		<div id="chart_div_bar"></div>
-		<div id="chart_div_column"></div>
+		<div class="plots-container">
+			<div class="hourly-wrap">
+				<div class="section-header"><h3><?php echo JText::_('COM_TIME_OVERVIEW_HOURS_THIS_WEEK'); ?></h3></div>
+				<div class="hourly">
+					<div class="pie-half1">
+					<div class="pie-half2">
+						<div class="inner-pie">
+							<div class="hours">0hrs</div>
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+			<div class="week-overview-wrap">
+				<div class="section-header"><h3><?php echo JText::_('COM_TIME_OVERVIEW_ENTRIES_THIS_WEEK'); ?></h3></div>
+				<div class="week-overview"></div>
+			</div>
+		</div>
 	</section>
 </div>

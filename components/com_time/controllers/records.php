@@ -161,7 +161,7 @@ class TimeControllerRecords extends TimeControllerBase
 			// Set some defaults
 			$this->view->row->user_id = $juser->get('id');
 			$this->view->row->uname   = $juser->get('name');
-			$this->view->row->date    = date('Y-m-d');
+			$this->view->row->date    = JFactory::getDate()->format('Y-m-d H:00');
 		}
 
 		// If viewing a record from a page other than the first, take the user back to that page if they click "all records"
@@ -249,6 +249,7 @@ class TimeControllerRecords extends TimeControllerBase
 
 		// Combine the time entry
 		$record['time'] = $record['htime'] . '.' . $record['mtime'];
+		$record['date'] = JFactory::getDate($record['date'], JFactory::getConfig()->get('offset'))->toSql();
 
 		// Create object and store new content
 		$records = new TimeRecords($this->database);

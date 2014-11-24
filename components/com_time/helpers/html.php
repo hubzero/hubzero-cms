@@ -82,6 +82,51 @@ class TimeHtml
 	}
 
 	/**
+	 * Build a smart hubs list
+	 *
+	 * @param  $tab          - currently active tab (default: none)
+	 * @param  $hub_id       - id of currently selected collection (default: 0 - no active hub)
+	 * @param  $active       - whether to pull all hubs, or only active hubs (default: 1 - only include active hubs)
+	 * @param  $empty_select - whether to make the first select option an empty one - i.e. "No hub selected" (default: 1 - include empty select)
+	 * @param  $limit        - number of records to limit the query to (default: 1000)
+	 * @param  $start        - record number to begin query at (default: 0)
+	 * @return $hlist        - select list of hubs
+	 */
+	public static function buildSmartHubsList($tab, $hub_id=0, $active=1, $empty_select=1, $limit=1000, $start=0)
+	{
+		$db      = JFactory::getDbo();
+		$hlist   = array();
+		$filters = array('limit'=>$limit, 'start'=>$start, 'active'=>$active);
+
+		$hub      = new TimeHubs($db);
+		$hubs     = $hub->getRecords($filters);
+		$selected = '';
+
+		// Add an empty select option first in the list
+		if ($empty_select == 1)
+		{
+			$options[] = JHTML::_('select.option', '', JText::_('COM_TIME_'.strtoupper($tab).'_NO_HUB_SELECTED'), 'value', 'text');
+		}
+		elseif ($empty_select == 2)
+		{
+			$options[] = JHTML::_('select.option', '0', JText::_('COM_TIME_'.strtoupper($tab).'_ALL_HUBS'), 'value', 'text');
+		}
+
+		// Go through all the hubs and add a select option for each
+		foreach ($hubs as $hub)
+		{
+			$options[] = JHTML::_('select.option', $hub->id, JText::_($hub->name), 'value', 'text');
+			if ($hub->id == $hub_id)
+			{
+				$selected = $hub->id;
+			}
+		}
+		$hlist = JHTML::_('select.genericlist', $options, 'hub_id', array('tabindex' => 1), 'value', 'text', $selected, 'hub_id', false, false);
+
+		return $hlist;
+	}
+
+	/**
 	 * Build a select list of tasks
 	 *
 	 * @param  $task_id      - id of currently selected task (default: none)
@@ -91,9 +136,10 @@ class TimeHtml
 	 * @param  $empty_select - whether to make the first select option an empty one - i.e. "No hub selected" (default: 1 - include empty select)
 	 * @param  $limit        - number of records to limit the query to (default: 1000)
 	 * @param  $start        - record number to begin query at (default: 0)
+	 * @param  $include_hub  - whether or not to include the hub name in the text of the list item
 	 * @return $tlist        - select list of tasks
 	 */
-	public static function buildTasksList($task_id, $tab, $hub_id=null, $active=1, $empty_select=1, $limit=1000, $start=0)
+	public static function buildTasksList($task_id, $tab, $hub_id=null, $active=1, $empty_select=1, $limit=1000, $start=0, $include_hub=false)
 	{
 		$db    = JFactory::getDbo();
 		$tlist = array();
@@ -119,7 +165,8 @@ class TimeHtml
 			// Go through all the tasks and add a select option for each
 			foreach ($tasks as $task)
 			{
-				$options[] = JHTML::_('select.option', $task->id, JText::_($task->name), 'value', 'text');
+				$display = (($include_hub) ? $task->hname . ' - ' : '') . $task->name;
+				$options[] = JHTML::_('select.option', $task->id, JText::_($display), 'value', 'text');
 				if ($task->id == $task_id)
 				{
 					$selected = $task->id;
@@ -133,6 +180,64 @@ class TimeHtml
 		}
 
 		$tlist = JHTML::_('select.genericlist', $options, $tab . '[task_id]', array('tabindex' => 5), 'value', 'text', $selected, 'task', false, false);
+
+		return $tlist;
+	}
+
+	/**
+	 * Build a smart tasks list
+	 *
+	 * @param  $tab          - currently selected tab (default: none)
+	 * @param  $task_id      - id of currently selected task (default: none)
+	 * @param  $hub_id       - id of hub to limit tasks list to (default: null)
+	 * @param  $active       - whether or not to limit tasks list should be limited to active tasks (default: 1 - limit to active tasks)
+	 * @param  $empty_select - whether to make the first select option an empty one - i.e. "No hub selected" (default: 1 - include empty select)
+	 * @param  $limit        - number of records to limit the query to (default: 1000)
+	 * @param  $start        - record number to begin query at (default: 0)
+	 * @param  $include_hub  - whether or not to include the hub name in the text of the list item
+	 * @return $tlist        - select list of tasks
+	 */
+	public static function buildSmartTasksList($tab, $task_id=0, $hub_id=null, $active=1, $empty_select=1, $limit=1000, $start=0, $include_hub=false)
+	{
+		$db    = JFactory::getDbo();
+		$tlist = array();
+		$filters = array('limit'=>$limit, 'start'=>$start, 'hub'=>$hub_id, 'active'=>$active);
+
+		$task = new TimeTasks($db);
+		$tasks = $task->getTasks($filters);
+		$selected = '';
+
+		// Add an empty select option first in the list
+		if ($empty_select == 1)
+		{
+			$options[] = JHTML::_('select.option', '', JText::_('COM_TIME_'.strtoupper($tab).'_NO_HUB_SELECTED'), 'value', 'text');
+		}
+		elseif ($empty_select == 2)
+		{
+			$options[] = JHTML::_('select.option', '0', JText::_('COM_TIME_'.strtoupper($tab).'_ALL_TASKS'), 'value', 'text');
+		}
+
+		// Make sure this hub has tasks associated with it
+		if (count($tasks) > 0)
+		{
+			// Go through all the tasks and add a select option for each
+			foreach ($tasks as $task)
+			{
+				$display = (($include_hub) ? $task->hname . ' - ' : '') . $task->name;
+				$options[] = JHTML::_('select.option', $task->id, JText::_($display), 'value', 'text');
+				if ($task->id == $task_id)
+				{
+					$selected = $task->id;
+				}
+			}
+		}
+		else
+		{
+			// No tasks area available for this hub, just add an entry to that effect
+			$options[] = JHTML::_('select.option', '', JText::_('COM_TIME_'.strtoupper($tab).'_NO_TASKS_AVAILABLE'), 'value', 'text');
+		}
+
+		$tlist = JHTML::_('select.genericlist', $options, 'task_id', array('tabindex' => 2), 'value', 'text', $selected, 'task_id', false, false);
 
 		return $tlist;
 	}

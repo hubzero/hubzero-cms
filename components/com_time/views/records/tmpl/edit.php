@@ -32,8 +32,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 \Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
+\Hubzero\Document\Assets::addSystemScript('jquery.datetimepicker');
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect');
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.ui.css');
+\Hubzero\Document\Assets::addSystemStylesheet('jquery.datetimepicker.css');
 
 $this->css()
      ->css('records')
@@ -85,7 +87,7 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 				<div class="grouping clearfix" id="date-group">
 					<label for="date"><?php echo JText::_('COM_TIME_RECORDS_DATE'); ?>:</label>
-					<input type="text" name="records[date]" id="datepicker" class="hadDatepicker" value="<?php echo htmlentities(stripslashes($this->row->date), ENT_QUOTES); ?>" size="10" tabIndex="3" />
+					<input type="text" name="records[date]" id="datepicker" class="hadTimepicker" value="<?php echo JHTML::_('date', $this->row->date, 'Y-m-d H:i'); ?>" tabIndex="3" />
 				</div>
 
 				<div class="grouping" id="hub-group">
