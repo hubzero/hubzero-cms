@@ -29,23 +29,33 @@
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
+
+$name = $this->escape(stripslashes($this->instructor->get('name')));
 ?>
 <div class="course-instructor">
 	<p class="course-instructor-photo">
-		<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->instructor->get('uidNumber')); ?>">
-			<img src="<?php echo $this->instructor->getPicture(); ?>" alt="<?php echo $this->escape(stripslashes($this->instructor->get('name'))); ?>" />
-		</a>
+		<?php if ($this->instructor->get('public')) { ?>
+			<a href="<?php echo JRoute::_($this->instructor->getLink()); ?>">
+				<img src="<?php echo $this->instructor->getPicture(); ?>" alt="<?php echo $name; ?>" />
+			</a>
+		<?php } else { ?>
+			<img src="<?php echo $this->instructor->getPicture(); ?>" alt="<?php echo $name; ?>" />
+		<?php } ?>
 	</p>
 
 	<div class="course-instructor-content cf">
 		<h4>
-			<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->instructor->get('uidNumber')); ?>">
-				<?php echo $this->escape(stripslashes($this->instructor->get('name'))); ?>
-			</a>
+			<?php if ($this->instructor->get('public')) { ?>
+				<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->instructor->get('uidNumber')); ?>">
+					<?php echo $name; ?>
+				</a>
+			<?php } else { ?>
+				<?php echo $name; ?>
+			<?php } ?>
 		</h4>
 		<p class="course-instructor-org">
-			<?php echo $this->escape(stripslashes($this->instructor->get('organization'))); ?>
+			<?php echo $this->escape(stripslashes($this->instructor->get('organization', '--'))); ?>
 		</p>
 	</div><!-- / .course-instructor-content cf -->
 
