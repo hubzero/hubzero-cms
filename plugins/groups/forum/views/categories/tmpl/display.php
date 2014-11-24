@@ -115,7 +115,8 @@ $this->css()
 					$name = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 					if (!$row->get('anonymous'))
 					{
-						$name = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $row->creator('id')) . '">' . $this->escape(stripslashes($row->creator('name'))) . '</a>';
+						$name = $this->escape(stripslashes($row->creator('name')));
+						$name = ($row->creator('public') ? '<a href="' . JRoute::_($row->creator()->getLink()) . '">' . $name . '</a>' : $name);
 					}
 					$cls = array();
 					if ($row->get('closed'))
@@ -158,7 +159,8 @@ $this->css()
 									$lname = JText::_('PLG_GROUPS_FORUM_ANONYMOUS');
 									if (!$lastpost->get('anonymous'))
 									{
-										$lname = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $lastpost->creator('id')) . '">' . $this->escape(stripslashes($lastpost->creator('name'))) . '</a>';
+										$lname = $this->escape(stripslashes($lastpost->creator('name')));
+										$lname = ($lastpost->creator('public') ? '<a href="' . JRoute::_($lastpost->creator()->getLink()) . '">' . $lname . '</a>' : $lname);
 									}
 								?>
 								<span class="entry-date">
