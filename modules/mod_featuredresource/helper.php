@@ -56,16 +56,17 @@ class modFeaturedresource extends \Hubzero\Module\Module
 		$database = JFactory::getDBO();
 
 		//Get the admin configured settings
-		$filters = array();
-		$filters['limit']      = 1;
-		$filters['start']      = 0;
-		$filters['type']       = trim($this->params->get('type'));
-		$filters['sortby']     = 'random';
-		$filters['minranking'] = trim($this->params->get('minranking'));
-		$filters['tag']        = trim($this->params->get('tag'));
-		$filters['access']     = 'public';
-		// Only published tools
-		$filters['toolState'] = 7;
+		$filters = array(
+			'limit'      => 1,
+			'start'      => 0,
+			'type'       => trim($this->params->get('type')),
+			'sortby'     => 'random',
+			'minranking' => trim($this->params->get('minranking')),
+			'tag'        => trim($this->params->get('tag')),
+			'access'     => 'public',
+			// Only published tools
+			'toolState'  => 7
+		);
 
 		$row = null;
 
@@ -91,8 +92,10 @@ class modFeaturedresource extends \Hubzero\Module\Module
 			// Resource
 			$id = $row->id;
 
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'html.php');
+
 			$path = DS . trim($config->get('uploadpath', '/site/resources'), DS);
-			$path = $this->build_path($row->created, $row->id, $path);
+			$path = ResourcesHtml::build_path($row->created, $row->id, $path);
 
 			if ($row->type == 7)
 			{
@@ -219,73 +222,7 @@ class modFeaturedresource extends \Hubzero\Module\Module
 			//$path .= DS.$versionid;
 		}
 
-		$d = @dir(JPATH_ROOT . $path);
-
-		$images = array();
-
-		if ($d)
-		{
-			while (false !== ($entry = $d->read()))
-			{
-				$img_file = $entry;
-				if (is_file(JPATH_ROOT . $path . DS . $img_file)
-				 && substr($entry, 0, 1) != '.'
-				 && strtolower($entry) !== 'index.html')
-				{
-					if (preg_match("#bmp|gif|jpg|png#i", $img_file))
-					{
-						$images[] = $img_file;
-					}
-				}
-			}
-
-			$d->close();
-		}
-
-		$b = 0;
-		if ($images)
-		{
-			foreach ($images as $ima)
-			{
-				$bits = explode('.', $ima);
-				$type = array_pop($bits);
-				$img  = implode('.', $bits);
-
-				if ($img == 'thumb')
-				{
-					return $ima;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Build a path to a resource's files
-	 *
-	 * @param      string  $date Resource date
-	 * @param      integer $id   Resource ID
-	 * @param      string  $base Base path to prepend
-	 * @return     string
-	 */
-	private function build_path($date, $id, $base='')
-	{
-		if ($date && preg_match("#([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})#", $date, $regs))
-		{
-			$date = mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]);
-		}
-		if ($date)
-		{
-			$dir_year  = date('Y', $date);
-			$dir_month = date('m', $date);
-		}
-		else
-		{
-			$dir_year  = date('Y');
-			$dir_month = date('m');
-		}
-		$dir_id = \Hubzero\Utility\String::pad($id);
-
-		return $base . DS . $dir_year . DS . $dir_month . DS . $dir_id;
+		return $this->getImage($path);
 	}
 }
 
