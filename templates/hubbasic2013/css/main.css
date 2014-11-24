@@ -35,7 +35,8 @@
 		background: #ececec url("../images/layout/noise-lite.png");
 		text-rendering: optimizeLegibility;
 	}
-	.ckeditor-body {
+	.ckeditor-body,
+	.cke_panel_container body {
 		padding: 10px;
 		min-width: inherit;
 		background: #FFF !important;
