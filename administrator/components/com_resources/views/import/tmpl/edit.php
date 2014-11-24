@@ -131,7 +131,7 @@ function submitbutton(pressbutton)
 				<label for="field-name">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_POSTPARSEHOOK'); ?>
 				</label><br />
-				<select name="hooks[postparse][]" multiple>
+				<select name="hooks[postparse][]" multiple="multiple" size="4">
 					<?php if (isset($hooks->postparse)) : ?>
 						<?php foreach ($hooks->postparse as $hook) : ?>
 							<?php $importHook = $this->hooks->fetch('id', $hook); ?>
@@ -158,7 +158,7 @@ function submitbutton(pressbutton)
 				<label for="field-hookpostmap">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_POSTMAPHOOK'); ?>
 				</label>
-				<select name="hooks[postmap][]" id="field-hookpostmap" multiple="multiple">
+				<select name="hooks[postmap][]" id="field-hookpostmap" multiple="multiple" size="4">
 					<?php foreach ($hooks->postmap as $hook) : ?>
 						<?php $importHook = $this->hooks->fetch('id', $hook); ?>
 						<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
@@ -183,7 +183,7 @@ function submitbutton(pressbutton)
 				<label for="field-hookpostconvert">
 					<?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELD_POSTCONVERTHOOK'); ?>
 				</label>
-				<select name="hooks[postconvert][]" id="field-hookpostconvert" multiple="multiple">
+				<select name="hooks[postconvert][]" id="field-hookpostconvert" multiple="multiple" size="4">
 					<?php foreach ($hooks->postconvert as $hook) : ?>
 						<?php $importHook = $this->hooks->fetch('id', $hook); ?>
 						<option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>

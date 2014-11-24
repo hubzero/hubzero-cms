@@ -280,8 +280,13 @@ jQuery(document).ready(function(jq){
 			$('.hook-up').on('click', function(event) {
 				event.preventDefault();
 
-				var select = $(this).parents('td').find('select'),
-					selectedOption = select.find('option:selected'),
+				var select = $(this).parents('.input-wrap').find('select');
+				if (select.length == 0)
+				{
+					select = $(this).parents('td').find('select');
+				}
+
+				var selectedOption = select.find('option:selected'),
 					selectedOptionIndex = selectedOption.index();
 
 				if (selectedOptionIndex > 0)
@@ -293,8 +298,13 @@ jQuery(document).ready(function(jq){
 			$('.hook-down').on('click', function(event) {
 				event.preventDefault();
 
-				var select = $(this).parents('td').find('select'),
-					selectedOption = select.find('option:selected'),
+				var select = $(this).parents('.input-wrap').find('select');
+				if (select.length == 0)
+				{
+					select = $(this).parents('td').find('select');
+				}
+
+				var selectedOption = select.find('option:selected'),
 					selectedOptionIndex = selectedOption.index();
 
 				if (selectedOptionIndex < select.find('option').length)
