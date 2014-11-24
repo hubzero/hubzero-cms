@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script registering the plugin
+ * Migration script for adding link columns to #__citations_secondary table
  **/
 class Migration20141119180000ComCitations extends Base
 {
@@ -16,16 +16,15 @@ class Migration20141119180000ComCitations extends Base
 	public function up()
 	{
 		//checks whether table exists and if the 'scope' field already exists
-		if ($this->db->tableExists('#__citations_secondary')
-				&& !$this->db->tableHasField('#__citations_secondary', 'link1_url'))
+		if ($this->db->tableExists('#__citations_secondary') && !$this->db->tableHasField('#__citations_secondary', 'link1_url'))
 		{
-			$query = "ALTER TABLE `#__citations_secondary` 
-			ADD COLUMN `link1_url` TINYTEXT NULL DEFAULT NULL AFTER `search_string`,
-			ADD COLUMN `link1_title` VARCHAR(60) NULL DEFAULT NULL AFTER `link1_url`,
-			ADD COLUMN `link2_url` TINYTEXT NULL DEFAULT NULL AFTER `link1_title`,
-			ADD COLUMN `link2_title` VARCHAR(60) NULL DEFAULT NULL AFTER `link2_url`,
-			ADD COLUMN `link3_url` TINYTEXT NULL DEFAULT NULL AFTER `link2_title`,
-			ADD COLUMN `link3_title` VARCHAR(60) NULL DEFAULT NULL AFTER `link3_url`;";
+			$query = "ALTER TABLE `#__citations_secondary`
+			ADD COLUMN `link1_url` TINYTEXT NULL DEFAULT NULL,
+			ADD COLUMN `link1_title` VARCHAR(60) NULL DEFAULT NULL,
+			ADD COLUMN `link2_url` TINYTEXT NULL DEFAULT NULL,
+			ADD COLUMN `link2_title` VARCHAR(60) NULL DEFAULT NULL,
+			ADD COLUMN `link3_url` TINYTEXT NULL DEFAULT NULL,
+			ADD COLUMN `link3_title` VARCHAR(60) NULL DEFAULT NULL;";
 
 			$this->db->setQuery($query);
 			$this->db->query();
@@ -37,9 +36,8 @@ class Migration20141119180000ComCitations extends Base
 	 **/
 	public function down()
 	{
-		//checks to see if gid field exists and removes it
-		if ($this->db->tableExists('#__citations_secondary')
-				&& $this->db->tableHasField('#__citations_secondary', 'link1_url'))
+		// Checks to see if gid field exists and removes it
+		if ($this->db->tableExists('#__citations_secondary') && $this->db->tableHasField('#__citations_secondary', 'link1_url'))
 		{
 			$query = "ALTER TABLE `#__citations_secondary`
 			DROP COLUMN `link1_url`,

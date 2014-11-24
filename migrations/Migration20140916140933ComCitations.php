@@ -6,7 +6,7 @@ use Hubzero\Content\Migration\Base;
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Migration script registering the plugin
+ * Migration script for adding scope column to #__citations table
  **/
 class Migration20140916140933ComCitations extends Base
 {
@@ -15,11 +15,10 @@ class Migration20140916140933ComCitations extends Base
 	 **/
 	public function up()
 	{
-		//checks whether table exists and if the 'scope' field already exists
-		if ($this->db->tableExists('#__citations')
-			&& !$this->db->tableHasField('#__citations', 'scope'))
+		// Checks whether table exists and if the 'scope' field already exists
+		if ($this->db->tableExists('#__citations') && !$this->db->tableHasField('#__citations', 'scope'))
 		{
-			$query = "ALTER TABLE `#__citations` ADD COLUMN `scope` VARCHAR(45) NULL DEFAULT NULL AFTER `gid`;";
+			$query = "ALTER TABLE `#__citations` ADD COLUMN `scope` VARCHAR(45) NULL DEFAULT NULL;";
 			$this->db->setQuery($query);
 			$this->db->query();
 		}
@@ -30,9 +29,8 @@ class Migration20140916140933ComCitations extends Base
 	 **/
 	public function down()
 	{
-		//checks to see if gid field exists and removes it
-		if ($this->db->tableExists('#__citations')
-				&& $this->db->tableHasField('#__citations', 'scope'))
+		// Checks to see if field exists and removes it
+		if ($this->db->tableExists('#__citations') && $this->db->tableHasField('#__citations', 'scope'))
 		{
 			$query = "ALTER TABLE `#__citations` DROP COLUMN `scope`;";
 			$this->db->setQuery($query);
