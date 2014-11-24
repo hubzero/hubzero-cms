@@ -58,6 +58,96 @@ jQuery(document).ready(function ( jq ) {
 			} else {
 				$('#description').val('');
 			}
+		},
+		graphs = function ( ) {
+			var points = [[0,0], [1,0], [2,0], [3,0], [4,0], [5,0], [6,0]],
+				total  = 0;
+
+			$.ajax({
+				url: "/api/time/week",
+				dataType: "json",
+				cache: false,
+				success: function ( json ) {
+					$.each(json, function ( i, val ) {
+						points[i] = [i, parseInt(val.length, 10)];
+						total += val.reduce(function(a, b) { return parseInt(a, 10) + parseInt(b, 10); }, 0);
+					});
+
+					$('.hours').html(total + 'hr' + ((total != 1) ? 's' : ''));
+
+					var bg1  = '';
+					var bg2  = '';
+					var perc = 0;
+
+					if (total > 0) {
+						perc = total / 40 * 360;
+					}
+
+					if (total > 0 && total < 20) {
+						perc = -90 + perc;
+						bg1 = 'linear-gradient(90deg, transparent 50%, red 50%)';
+						bg2 = 'linear-gradient(' + perc + 'deg, white 50%, transparent 50%)';
+					} else if (total >= 20 && total < 40) {
+						perc = 90 + perc;
+						bg1 = 'linear-gradient(' + perc + 'deg, red 50%, transparent 50%), linear-gradient(90deg, transparent 50%, red 50%)';
+					} else if (total >= 40) {
+						bg1 = 'linear-gradient(90deg, red 50%, transparent 50%), linear-gradient(90deg, transparent 50%, red 50%)';
+					}
+
+					$('.hourly .pie-half1').css(
+						'background-image', bg1
+					);
+					$('.hourly .pie-half2').css(
+						'background-image', bg2
+					);
+
+					var options = {
+						legend : {
+							show : false
+						},
+						yaxis : {
+							tickFormatter : function ( val, axis ) {
+								if (val % 2 === 0) {
+									return parseInt(val, 10);
+								} else {
+									return '';
+								}
+							}
+						},
+						xaxis : {
+							ticks : [
+								[0, 'MON'],
+								[1, 'TUE'],
+								[2, 'WED'],
+								[3, 'THU'],
+								[4, 'FRI'],
+								[5, 'SAT'],
+								[6, 'SUN']
+							]
+						},
+						series : {
+							lines  : {
+								show : true,
+								fill : 0.2
+							},
+							points : {
+								show   : false,
+								radius : 3,
+								symbol : "circle"
+							},
+							shadowSize : 0
+						},
+						grid : {
+							show : true,
+							borderColor : "#FFFFFF",
+							minBorderMargin : 30,
+							color : '#AAAAAA'
+						},
+						colors : ['red']
+					};
+					$.plot(".week-overview", [{data : points}], options);
+				}
+			});
 		};
 
 	fancy('#task_id');
@@ -100,6 +190,9 @@ jQuery(document).ready(function ( jq ) {
 		eventResize : function ( event, delta, revertFunc ) {
 			setData(event);
 			data.submit();
+		},
+		eventAfterAllRender : function ( view ) {
+			graphs();
 		},
 		events : '/api/time/today'
 	});
@@ -162,94 +255,5 @@ jQuery(document).ready(function ( jq ) {
 				fancy('#task_id', true);
 			}
 		});
-	});
-
-	var points = [[0,0], [1,0], [2,0], [3,0], [4,0], [5,0], [6,0]],
-		total  = 0;
-
-	$.ajax({
-		url: "/api/time/week",
-		dataType: "json",
-		cache: false,
-		success: function ( json ) {
-			$.each(json, function ( i, val ) {
-				points[i] = [i, parseInt(val.length, 10)];
-				total += val.reduce(function(a, b) { return parseInt(a, 10) + parseInt(b, 10); }, 0);
-			});
-
-			$('.hours').html(total + 'hr' + ((total != 1) ? 's' : ''));
-
-			var bg1  = '';
-			var bg2  = '';
-			var perc = 0;
-
-			if (total > 0) {
-				perc = total / 40 * 360;
-			}
-
-			if (total > 0 && total < 20) {
-				perc = -90 + perc;
-				bg1 = 'linear-gradient(90deg, transparent 50%, red 50%)';
-				bg2 = 'linear-gradient(' + perc + 'deg, white 50%, transparent 50%)';
-			} else if (total >= 20 && total < 40) {
-				perc = 90 + perc;
-				bg1 = 'linear-gradient(' + perc + 'deg, red 50%, transparent 50%), linear-gradient(90deg, transparent 50%, red 50%)';
-			} else if (total >= 40) {
-				bg1 = 'linear-gradient(90deg, red 50%, transparent 50%), linear-gradient(90deg, transparent 50%, red 50%)';
-			}
-
-			$('.hourly .pie-half1').css(
-				'background-image', bg1
-			);
-			$('.hourly .pie-half2').css(
-				'background-image', bg2
-			);
-
-			var options = {
-				legend : {
-					show : false
-				},
-				yaxis : {
-					tickFormatter : function ( val, axis ) {
-						if (val % 2 === 0) {
-							return parseInt(val, 10);
-						} else {
-							return '';
-						}
-					}
-				},
-				xaxis : {
-					ticks : [
-						[0, 'MON'],
-						[1, 'TUE'],
-						[2, 'WED'],
-						[3, 'THU'],
-						[4, 'FRI'],
-						[5, 'SAT'],
-						[6, 'SUN']
-					]
-				},
-				series : {
-					lines  : {
-						show : true,
-						fill : 0.2
-					},
-					points : {
-						show   : false,
-						radius : 3,
-						symbol : "circle"
-					},
-					shadowSize : 0
-				},
-				grid : {
-					show : true,
-					borderColor : "#FFFFFF",
-					minBorderMargin : 30,
-					color : '#AAAAAA'
-				},
-				colors : ['red']
-			};
-			$.plot(".week-overview", [{data : points}], options);
-		}
 	});
 });
