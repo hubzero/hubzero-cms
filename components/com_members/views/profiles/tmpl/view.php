@@ -160,7 +160,7 @@ if (!$no_html)
 			<ul id="page_options">
 				<?php if ($edit) : ?>
 					<li>
-						<a class="edit tooltips" id="edit-profile" title="<?php echo JText::_('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo JRoute::_('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&task=edit'); ?>">
+						<a class="edit tooltips" id="edit-profile" title="<?php echo JText::_('COM_MEMBERS_EDIT_PROFILE'); ?> :: Edit <?php if ($this->profile->get('uidNumber') == $juser->get("id")) { echo "my"; } else { echo $this->profile->get("name") . "'s"; } ?> profile." href="<?php echo JRoute::_($this->profile->getLink() . '&task=edit'); ?>">
 							<?php echo JText::_('COM_MEMBERS_EDIT_PROFILE'); ?>
 						</a>
 					</li>

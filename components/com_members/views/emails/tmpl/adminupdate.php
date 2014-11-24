@@ -37,4 +37,4 @@ if ($this->xprofile->get('organization')) {
 } ?> (<?php echo $this->xprofile->get('email'); ?>) has updated their account '<?php echo $this->xprofile->get('username'); ?>' on <?php echo $this->sitename; ?>.
 
 Click the following link to review this user's account:
-<?php echo $this->baseURL . JRoute::_('index.php?option=com_members&id=' . $this->xprofile->get('id')); ?>
+<?php echo $this->baseURL . JRoute::_($this->xprofile->getLink()); ?>

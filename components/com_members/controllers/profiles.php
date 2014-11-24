@@ -86,7 +86,7 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		$ia->optOut();
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_members&id=' . $profile->get('uidNumber') . '&active=profile'),
+			JRoute::_($profile->getLink() . '&active=profile'),
 			JText::_('You have been successfully opted out of this promotion.'),
 			'passed'
 		);
