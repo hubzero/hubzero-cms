@@ -152,7 +152,7 @@ class TimeControllerRecords extends TimeControllerBase
 		// Build subordinates list if applicable
 		if (isset($subordinates) && !empty($subordinates))
 		{
-			$this->view->subordinates = TimeHTML::buildSubordinatesList($this->view->row->user_id, $subordinates);
+			$this->view->subordinates = TimeHTML::buildSubordinatesList((isset($this->view->row->user_id) ? $this->view->row->user_id : 0), $subordinates);
 		}
 
 		// Is this a new record?
