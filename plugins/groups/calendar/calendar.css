@@ -19,15 +19,21 @@
 #calendar .fc-loading {
 	margin-top: 5px;
 }
-#calendar .fc-header-left,
-#calendar .fc-header-right {
+#calendar .fc-left,
+#calendar .fc-right {
 	width: 40%;
 }
-#calendar .fc-header-right .fs-dropdown {
-	display: inline-block;
+#calendar .fc-right {
+	
+}
+#calendar .fc-right .fs-dropdown {
+	float: right;
 	text-align: left;
 	max-width: 200px;
-	margin-right: 10px;
+	margin-left: 10px;
+}
+#calendar .fc-today-button {
+	float: right;
 }
 #calendar .fc-loading:before {
 	content: 'Loading Events...';
@@ -39,6 +45,7 @@
 	background-color: #DBDBDB;
 	border-color: #666;
 	color: #333;
+	padding: 1px;
 }
 #calendar .fc-event-time {
 	margin-right: 3px;

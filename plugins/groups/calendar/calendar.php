@@ -289,6 +289,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
 
 		// add full calendar lib
+		\Hubzero\Document\Assets::addSystemScript('moment.min');
 		\Hubzero\Document\Assets::addSystemScript('jquery.fullcalendar.min');
 		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.css');
 		\Hubzero\Document\Assets::addSystemStylesheet('jquery.fullcalendar.print.css', 'text/css', 'print');
@@ -391,26 +392,29 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		// loop through each event to return it
 		foreach ($rawEvents as $rawEvent)
 		{
+			$up   = JFactory::getDate($rawEvent->get('publish_up'));
+			$down = JFactory::getDate($rawEvent->get('publish_down'));
+
 			$event            = new stdClass;
 			$event->id        = $rawEvent->get('id');
 			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
-			$event->start     = JFactory::getDate($rawEvent->get('publish_up'))->toUnix();
+			$event->start     = $up->format("Y-m-d\TH:i:sO");
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-'.$rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$event->end = JFactory::getDate($rawEvent->get('publish_down'))->toUnix();
+				$event->end = $down->format("Y-m-d\TH:i:sO");
 			}
 
 			// add start & end for displaying dates user clicked on
 			// instead of actual event start & end
 			if ($rawEvent->get('repeating_rule') != '')
 			{
-				$event->url .= '?start=' . $event->start;
+				$event->url .= '?start=' . $up->toUnix();
 				if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 				{
-					$event->url .= '&end=' . $event->end;
+					$event->url .= '&end=' . $down->toUnix();
 				}
 			}
 
