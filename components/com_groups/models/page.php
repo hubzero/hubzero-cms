@@ -287,13 +287,17 @@ class GroupsModelPage extends \Hubzero\Base\Model
 	 *
 	 * @return  string
 	 */
-	public function url()
+	public function url($includeBase = true)
 	{
 		// loag group
 		$group = \Hubzero\User\Group::getInstance($this->get('gidNumber'));
 
 		// base link, jroute
-		$pageLink = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn'));
+		$pageLink = '';
+		if ($includeBase)
+		{
+			$pageLink = JRoute::_('index.php?option=com_groups&cn=' . $group->get('cn'));
+		}
 
 		// get our parents
 		$parents = $this->getRecursiveParents($this);
