@@ -1056,7 +1056,7 @@ HUB.Groups = {
 			categoryColorPicker.colpick({
 				layout: 'hex',
 				submit: 0,
-				onChange: function(hsb,hex,rgb,fromSetColor) {
+				onChange: function(hsb,hex,rgb,el,fromSetColor) {
 					if(!fromSetColor)
 						categoryColorPicker.val(hex).css('border-color','#' + hex);
 				}
