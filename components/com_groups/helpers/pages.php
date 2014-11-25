@@ -584,7 +584,7 @@ class GroupsHelperPages
 		if ($group->isSuperGroup())
 		{
 			$base = $group->getBasePath();
-			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template');
+			$view->addTemplatePath(JPATH_ROOT . $base . DS . 'template' . DS . 'pages');
 		}
 
 		// get needed vars
