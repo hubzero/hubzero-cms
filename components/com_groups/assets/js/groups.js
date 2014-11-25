@@ -423,8 +423,8 @@ HUB.Groups = {
 		var toolbartop = $('.group-page-manager .tabs').offset().top;
 
 		// force set width so looks good when position = fixed
-		$('.group-page-manager .toolbar').width($('.group-page-manager .toolbar').width());
-		$('.group-page-manager .tabs').width($('.group-page-manager .tabs').width());
+		$('.group-page-manager .toolbar').width($('.group-page-manager fieldset:visible .toolbar').width());
+		$('.group-page-manager .tabs').width($('.group-page-manager fi.tabs').width());
 
 		// mark pinned after scroll distance
 		$(window).scroll(function()
