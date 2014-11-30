@@ -542,7 +542,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$filters['q'] = array(
 			array('column'=>'user_id', 'o'=>'=',  'value'=>JFactory::getApplication()->getAuthn('user_id')),
 			array('column'=>'date',    'o'=>'>=', 'value'=>JFactory::getDate(strtotime("today-{$today}days"))->toSql()),
-			array('column'=>'date',    'o'=>'<',  'value'=>JFactory::getDate(strtotime("today+" . (7-$today) . 'days'))->toSql())
+			array('column'=>'date',    'o'=>'<',  'value'=>JFactory::getDate(strtotime("today+" . (8-$today) . 'days'))->toSql())
 		);
 
 		// Create object and get records
