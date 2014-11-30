@@ -60,6 +60,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
 
 		// Switch based on task (i.e. "/api/time/xxxxx")
 		switch ($this->segments[0])
@@ -657,23 +658,14 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 			return false;
 		}
 
-		// @FIXME: add parameter for group access
-		$accessgroup = 'time';
+		$permissions = new TimeModelPermissions('com_time');
 
-		// Check if they're a member of the admin group
-		JLoader::import('Hubzero.User.Helper');
-		$ugs = \Hubzero\User\Helper::getGroups($user_id);
-		if ($ugs && count($ugs) > 0)
+		// Make sure action can be performed
+		if (!$permissions->can('api'))
 		{
-			foreach ($ugs as $ug)
-			{
-				if ($ug->cn == $accessgroup)
-				{
-					return true;
-				}
-			}
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 }
