@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/groups/blog.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.5" type="plugin" group="groups">
+	<name>Groups - Citations</name>
+	<author>HUBzero</author>
+	<creationDate>September 2014</creationDate>
+	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>kevinw@purdue.edu</authorEmail>
+	<version>1.5</version>
+	<description>Displays group citations</description>
+	<files>
+		<filename plugin="blog">blog.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_groups_citations.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="plugin_access" type="list" default="members" label="Default Plugin Access" description="Default access level assigned to the blog plugin.">
+					<option value="anyone">Any HUB Visitor</option>
+					<option value="registered">Only Registered HUB Users</option>
+					<option value="members">Only Group Members</option>
+					<option value="nobody">Disabled/Off</option>
+				</field>
+				<field name="display_tab" type="list" default="1" label="Display in Menu" description="Display 'Blog' in group menu.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field type="spacer" />
+				<field name="cleanintro" type="list" default="1" label="Clean Introtext" description="Strip tags from the introtext or show as is in lists of entries.">
+					<option value="0">No</option>
+					<option value="1">Yes</option>
+				</field>
+				<field name="introlength" type="text" default="300" label="Intro Length" description="The length of text the intros should be in lists of entries." />
+				<field type="spacer" />
+				<field name="posting" type="list" default="0" label="Article Posting" description="The default setting for who can post to the blog.">
+					<option value="0">All members</option>
+					<option value="1">Managers only</option>
+				</field>
+				<field name="feeds_enabled" type="list" default="1" label="Feeds" description="Enable/Disable RSS feeds">
+					<option value="0">Disabled</option>
+					<option value="1">Enabled</option>
+				</field>
+				<field name="feed_entries" type="list" default="partial" label="Feed Entries" description="The length of RSS feed entries">
+					<option value="full">Full</option>
+					<option value="partial">Partial</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
