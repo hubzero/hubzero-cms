@@ -510,7 +510,7 @@ class Ldap
 
 		if (!empty($dbinfo))
 		{
-			$query = "SELECT u.username AS memberUid FROM #__xgroups_members AS gm, #__users AS u WHERE gm.gidNumber = " . $db->Quote($dbinfo['gidNumber']) . " AND gm.uidNumber=u.id;";
+			$query = "SELECT DISTINCT(u.username) AS memberUid FROM #__xgroups_members AS gm, #__users AS u WHERE gm.gidNumber = " . $db->Quote($dbinfo['gidNumber']) . " AND gm.uidNumber=u.id;";
 			$db->setQuery($query);
 			$dbinfo['memberUid'] = $db->loadResultArray();
 		}
