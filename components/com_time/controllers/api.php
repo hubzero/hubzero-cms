@@ -537,7 +537,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Get the day of the week
-		$today = \JFactory::getDate()->format('N');
+		$today = \JFactory::getDate()->format('N') - 1;
 
 		// Filters for query
 		$filters['q'] = array(
