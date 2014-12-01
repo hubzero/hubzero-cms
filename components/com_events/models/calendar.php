@@ -343,20 +343,26 @@ class EventsModelCalendar extends \Hubzero\Base\Model
 				$event = new EventsModelEvent();
 			}
 
-			// start & end are already datetime objects
-			$start = $incomingEvent['DTSTART'];
-			$end   = $incomingEvent['DTEND'];
-
 			// set the timezone
 			$tz = new DateTimezone(JFactory::getConfig()->get('offset'));
+
+			// start already datetime objects
+			$start = $incomingEvent['DTSTART'];
 			$start->setTimezone($tz);
-			$end->setTimezone($tz);
 
 			// set publish up/down
 			$publish_up   = $start->toSql();
-			$publish_down = $end->toSql();
+			$publish_down = '0000-00-00 00:00:00';
 			$allday       = (isset($incomingEvent['ALLDAY']) && $incomingEvent['ALLDAY'] == 1) ? 1 : 0;
 			$rrule        = null;
+
+			// handle end
+			if (isset($incomingEvent['DTEND']))
+			{
+				$end = $incomingEvent['DTEND'];
+				$end->setTimezone($tz);
+				$publish_down = $end->toSql();
+			}
 
 			// handle rrule
 			if (isset($incomingEvent['RRULE']))
