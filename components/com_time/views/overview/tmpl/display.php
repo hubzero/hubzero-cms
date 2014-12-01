@@ -34,14 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->css('overview')
      ->css('fullcalendar')
-     ->js('overview')
-     ->js('moment.min')
-     ->js('fullcalendar.min');
+     ->js('overview');
 
 \Hubzero\Document\Assets::addSystemStylesheet('jquery.fancyselect.css');
 \Hubzero\Document\Assets::addSystemScript('flot/jquery.flot.min');
 \Hubzero\Document\Assets::addSystemScript('flot/jquery.flot.pie.min');
 \Hubzero\Document\Assets::addSystemScript('jquery.fancyselect');
+\Hubzero\Document\Assets::addSystemScript('moment.min');
+\Hubzero\Document\Assets::addSystemScript('jquery.fullcalendar.min');
 
 $utc   = JFactory::getDate();
 $now   = JHTML::_('date', $utc, JText::_('g:00a'));
