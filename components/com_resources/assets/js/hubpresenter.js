@@ -249,10 +249,11 @@ HUB.Presenter = {
 		//if the slide is video play video
 		if(slide_child_type == 'VIDEO') {
 			if(!flash) {
-				slide_child.first().get(0).play()
-				//jQ(".slidevideo").get(0).play();
-			} else {
-				//flowplayer("flowplayer_slide_" + slide).play();
+				// get slide video
+				// restart video & play
+				var videoSlide = slide_child.first().get(0);
+				videoSlide.currentTime = 0;
+				videoSlide.play();
 			}
 		}    
 		
@@ -318,6 +319,7 @@ HUB.Presenter = {
 			if(current >= time) {
 				cur_slide.id = id;
 				cur_slide.time = time;
+				cur_slide.type = slide.children().first().get(0).tagName;
 			}
 		});
 		
@@ -327,8 +329,10 @@ HUB.Presenter = {
 		//get the next slides time and if doesnt exist set to arbitrary high value
 		if( jQ('#slide_' + next_slide.id).length ) {
 			next_slide.time = jQ('#slide_' + next_slide.id).attr('time');
+			next_slide.type = jQ('#slide_' + next_slide.id).children().first().get(0).tagName;
 		} else {
 			next_slide.time = 99999999;
+			next_slide.type = 'IMG';
 		}
 		
 		//if the current time is greater then the current slide and less then the next slide and 
@@ -336,6 +340,21 @@ HUB.Presenter = {
 		if(cur_slide.time <= current && next_slide.time > current) {
 			if(HUB.Presenter.activeSlide !== cur_slide.id) {
 				HUB.Presenter.showSlide( cur_slide.id );
+			}
+		}
+
+		// keep slide videos in sync
+		if (cur_slide.type == 'VIDEO')
+		{
+			var videoSlide     = jQ('#slide_' + cur_slide.id).find('.slidevideo').get(0),
+				videoSlideTime = videoSlide.currentTime,
+				shouldBeAtTime = current - cur_slide.time,
+				timeDifference = videoSlideTime - shouldBeAtTime;
+			
+			// only adjust time as needed
+			if (timeDifference > 1 || timeDifference < -1)
+			{
+				videoSlide.currentTime = shouldBeAtTime;
 			}
 		}
 	},
@@ -567,20 +586,37 @@ HUB.Presenter = {
 	      
 	//-----
 	
-	playPause: function( click )
+	playPause: function( clicking )
 	{    
 		var paused = HUB.Presenter.isPaused(), 
 			player = HUB.Presenter.getPlayer();         
 	            	
 		if( paused ) {
 			jQ("#play-pause").css('background','url(/components/com_resources/assets/img/hubpresenter/play.png)');
-			if( click ) 
+			if( clicking ) 
 				player.play();
 		} else {
 			jQ("#play-pause").css('background','url(/components/com_resources/assets/img/hubpresenter/pause.png)'); 
-			if( click )
+			if( clicking )
 				player.pause();
-		}  
+		}
+
+		// pause play slide videos
+		jQ('.slidevideo').each(function(index, element)
+		{
+			// only act when clicking
+			if (clicking)
+			{
+				if (paused)
+				{
+					element.play();
+				}
+				else
+				{
+					element.pause();
+				}
+			}
+		});
 	},
 	
 	//-----
