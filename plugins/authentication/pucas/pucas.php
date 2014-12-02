@@ -248,7 +248,16 @@ class plgAuthenticationPUCAS extends JPlugin
 
 		phpCAS::setNoCasServerValidation();
 
-		if (phpCAS::isAuthenticated())
+		try
+		{
+			$authenticated = phpCAS::isAuthenticated();
+		}
+		catch (CAS_AuthenticationException $e)
+		{
+			throw new Exception("CAS ticket has expired", 400);
+		}
+
+		if ($authenticated)
 		{
 			$username = phpCAS::getUser();
 
