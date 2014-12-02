@@ -62,10 +62,10 @@ if ($attachments)
 }
 ?>
 <div id="abox-content-wrap">
-	<div id="abox-content" class="url-select">
+	<div id="abox-content">
 	<script src="/plugins/projects/publications/js/selector.js"></script>
 		<h3><?php echo JText::_('PLG_PROJECTS_DATABASES_SELECTOR'); ?> 	<span class="abox-controls">
-				<a class="btn btn-success active" id="b-save"><?php echo JText::_('PLG_PROJECTS_DATABASES_SELECTOR_SAVE_SELECTION'); ?></a>
+				<a class="btn btn-success active" id="b-filesave"><?php echo JText::_('PLG_PROJECTS_DATABASES_SELECTOR_SAVE_SELECTION'); ?></a>
 				<?php if ($this->ajax) { ?>
 				<a class="btn btn-cancel" id="cancel-action"><?php echo JText::_('PLG_PROJECTS_DATABASES_CANCEL'); ?></a>
 				<?php } ?>
@@ -86,6 +86,7 @@ if ($attachments)
 				<input type="hidden" name="active" value="publications" />
 				<input type="hidden" name="action" value="apply" />
 				<input type="hidden" name="move" value="continue" />
+				<input type="hidden" id="selecteditems" name="selecteditems" value="" />
 			</fieldset>
 			<?php if ($this->items) { ?>
 			<ul class="pub-selector database-selector" id="pub-selector">

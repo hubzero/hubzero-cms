@@ -61,14 +61,20 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		// Get publications helper
 		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
 
+		$pubconfig = JComponentHelper::getParams( 'com_publications' );
+		$base = $pubconfig->get('webpath');
+
 		// Log path
-		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, '', 'logs', 0);
+		$configs->logPath = $helper->buildPath($pub->id, $pub->version_id, $base, 'logs', 0);
 
-		// replace current attachments?
-		$configs->replace  	= JRequest::getInt( 'replace_current', 0, 'post');
+		// Get publication path
+		$configs->pubBase = $helper->buildPath($pub->id, $pub->version_id, $base, '', 1);
 
-		// Verify file type against allowed before attaching?
-		$configs->check = isset($blockParams->verify_types) ? $blockParams->verify_types : 0;
+		// Get publication path
+		$configs->dataPath = $helper->buildPath($pub->id, $pub->version_id, $base, 'data', 1);
+
+		// Serve path for data files
+		$configs->servePath = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
@@ -180,7 +186,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				// TBD
 			}
 
-			// One launcher for all files
+			// One launcher for all items
 			$label = JText::_('View publication');
 			$class = 'btn btn-primary active icon-next';
 			$class .= $disabled ? ' link_disabled' : '';
@@ -275,14 +281,11 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	 */
 	public function save( $element, $elementId, $pub, $blockParams, $toAttach = array() )
 	{
-		$toAttach   = $toAttach ? $toAttach : JRequest::getVar( 'url', '', 'post', 'array');
-		$titles 	= JRequest::getVar( 'title', '', 'post', 'array');
-		$desc 		= JRequest::getVar( 'desc', '', 'post', 'array');
-
 		// Incoming selections
 		if (empty($toAttach))
 		{
-			$toAttach = array($url);
+			$selections = JRequest::getVar( 'selecteditems', '');
+			$toAttach = explode(',', $selections);
 		}
 
 		// Get configs
@@ -295,17 +298,20 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		}
 
 		// Nothing to change
-		if (empty($toAttach) && !$configs->replace)
+		if (empty($toAttach))
 		{
 			return false;
 		}
 
-		// Get existing attachments for the elemnt
-		$attachments = $pub->_attachments;
-		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
-
-		// Sort out attachments for this element
-		$attachments = $this->_parent->getElementAttachments($elementId, $attachments, $this->_name);
+		// Create new version path
+		if (!is_dir( $configs->dataPath ))
+		{
+			if (!JFolder::create( $configs->dataPath ))
+			{
+				$this->_parent->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_UNABLE_TO_CREATE_PATH') );
+				return false;
+			}
+		}
 
 		// Get actor
 		$juser = JFactory::getUser();
@@ -319,9 +325,6 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$i = 0;
 		$a = 0;
 
-		// Default title for publication
-		$defaultTitle = $pub->_curationModel->_manifest->params->default_title;
-
 		// Attach/refresh each selected item
 		foreach ($toAttach as $identifier)
 		{
@@ -333,30 +336,8 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			$a++;
 			$ordering = $i + 1;
 
-			$title = isset($titles[$i]) ? $titles[$i] : NULL;
-			$desc  = isset($desc[$i]) ? $desc[$i] : NULL;
-
-			if ($this->addAttachment($identifier, $title, $pub, $configs, $uid, $elementId, $element, $ordering))
+			if ($this->addAttachment($identifier, $pub, $configs, $uid, $elementId, $element, $ordering))
 			{
-				// Do we also set draft title and metadata from the link?
-				if ($i == 0 && $title && $element->role == 1
-					&& stripos($pub->title, $defaultTitle) !== false )
-				{
-					// Load publication version
-					$row = new PublicationVersion( $this->_parent->_db );
-					if (!$row->load($pub->version_id))
-					{
-						$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'));
-						return false;
-					}
-
-					$row->title    		= $title;
-					$description	   	= \Hubzero\Utility\Sanitize::clean($desc);
-					$row->description 	= $description;
-					$row->abstract		= \Hubzero\Utility\String::truncate($description, 255);
-					$row->store();
-				}
-
 				$i++;
 			}
 		}
@@ -372,52 +353,98 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	}
 
 	/**
-	 * Add/edit file attachment
+	 * Add/edit attachment
 	 *
 	 *
 	 * @return     boolean or error
 	 */
-	public function addAttachment($path, $title, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
+	public function addAttachment($database_name, $pub, $configs, $uid, $elementId, $element, $ordering = 1)
 	{
-		// Need to check against allowed types
-		$accept = isset($element->typeParams->accept) ? $element->typeParams->accept : NULL;
-		if ($configs->check)
-		{
-			if (!$this->checkAllowed(array($path), $accept))
-			{
-				return false;
-			}
-		}
+		// Get databases plugin
+		JPluginHelper::importPlugin( 'projects', 'databases');
+		$dispatcher = JDispatcher::getInstance();
+
+		// Get database object and load record
+		$objData = new ProjectDatabase($this->_parent->_db);
+		$objData->loadRecord($database_name);
+		$dbVersion = NULL;
 
 		$objPA = new PublicationAttachment( $this->_parent->_db );
-		if ($objPA->loadElementAttachment($pub->version_id, array( 'path' => $path),
+		if ($objPA->loadElementAttachment($pub->version_id, array( 'object_name' => $database_name),
 			$elementId, $this->_name, $element->role))
 		{
-			// Link already attached
-			$this->setError(JText::_('The link is already attached'));
-			return true;
+			// Already attached
+			$new = 0;
+
+			if (!$objData->id)
+			{
+				// Original got deleted, can't do much
+				return true;
+			}
 		}
 		else
 		{
+			if (!$objData->id)
+			{
+				// Original database not found
+				$this->setError( JText::_('Oups! Cannot attach selected database: database not found') );
+				return false;
+			}
 			$objPA->publication_id 			= $pub->id;
 			$objPA->publication_version_id 	= $pub->version_id;
-			$objPA->path 					= $path;
 			$objPA->type 					= $this->_name;
 			$objPA->created_by 				= $uid;
 			$objPA->created 				= JFactory::getDate()->toSql();
 			$objPA->role 					= $element->role;
-			$objPA->title 					= $title;
+			$new = 1;
 
 			// Reflect the update in curation record
 			$this->_parent->set('_update', 1);
 		}
 
-		$objPA->element_id 	= $elementId;
-		$objPA->ordering 	= $ordering;
+		if ($new)
+		{
+			$result = $dispatcher->trigger( 'clone_database', array( $database_name, $pub->_project, $configs->servePath) );
+			$dbVersion = $result && isset($result[0]) ? $result[0] : NULL;
+		}
+		else
+		{
+			$rtime = $objPA->modified ? strtotime($objPA->modified) : NULL;
+			if ($objPA->object_id != $objData->id || strtotime($objData->updated) > $rtime )
+			{
+				// New database instance - need to clone again and get a new version number
+				$result 			= $dispatcher->trigger( 'clone_database', array( $database_name, $pub->_project, $configs->servePath) );
+				$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
+				$objPA->modified_by = $uid;
+				$objPA->modified 	= JFactory::getDate()->toSql();
+			}
+			else
+			{
+				// No changes
+				$dbVersion = $objPA->object_revision;
+			}
+		}
+		// Failed to clone
+		if (!$dbVersion)
+		{
+			$this->_parent->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
+			return false;
+		}
+
+		$objPA->object_id   	= $objData->id;
+		$objPA->object_name 	= $database_name;
+		$objPA->object_revision = $dbVersion;
+		$objPA->element_id 		= $elementId;
+		$objPA->ordering 		= $ordering;
+		$objPA->title 			= $objPA->title ? $objPA->title : $objData->title;
+
+		// Build link path
+		$objPA->path 			= 'dataviewer' . DS . 'view' . DS . 'publication:dsl'
+									. DS . $database_name . DS . '?v=' . $dbVersion;
 
 		if (!$objPA->store())
 		{
-			$this->setError(JText::_('There was a problem attaching the link'));
+			$this->_parent->setError(JText::_('There was a problem attaching the database'));
 			return false;
 		}
 
@@ -514,7 +541,6 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$params		= $element->typeParams;
 		$required	= $element->required;
 		$counter 	= count($attachments);
-		$allowed 	= isset($params->accept) ? $params->accept :  NULL;
 
 		if (!$required)
 		{
@@ -531,7 +557,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			}
 			else
 			{
-				// No files
+				// No Attachments
 				$status->status = 0;
 				return $status;
 			}
@@ -540,52 +566,10 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		{
 			$status->setError( JText::_('Maximum ' . $max . ' attachment(s) allowed') );
 		}
-		// Check allowed formats
-		elseif (!self::checkAllowed($attachments, $allowed))
-		{
-			if ($counter && !empty($accept))
-			{
-				$error = JText::_('Error: unacceptable attachment path');
-				foreach ($params->allowed_ext as $ext)
-				{
-					$error .= ' ' . $ext .',';
-				}
-				$error = substr($error, 0, strlen($error) - 1);
-				$status->setError( $error );
-			}
-		}
 
 		$status->status = $status->getError() ? 0 : 1;
 
 		return $status;
-	}
-
-	/**
-	 * Check for allowed formats
-	 *
-	 * @return  object
-	 */
-	public function checkAllowed( $attachments, $formats = array() )
-	{
-		if (empty($formats))
-		{
-			return true;
-		}
-
-		foreach ($attachments as $attach)
-		{
-			$path = isset($attach->path) ? $attach->path : $attach;
-			foreach ($formats as $f)
-			{
-				if (stripos($path, $f) !== false)
-				{
-					return true;
-				}
-			}
-
-		}
-
-		return false;
 	}
 
 	/**
