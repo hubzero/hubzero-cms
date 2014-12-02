@@ -19,3 +19,13 @@
 	.quote {
 		padding: 1em;
 	}
+	cite span {
+		font-style: italic;
+		display: block;
+		color: #999;
+	}
+	.cite img {
+		float: left;
+		margin-bottom: 2em;
+		margin-right: 1em;
+	}
