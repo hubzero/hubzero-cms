@@ -48,7 +48,8 @@ class plgAuthenticationHubzero extends JPlugin
 	 * @param object $subject The object to observe
 	 * @param array  $config  An array that holds the plugin configuration
 	 */
-	public function plgAuthenticationHubzero(& $subject, $config) {
+	public function plgAuthenticationHubzero(& $subject, $config)
+	{
 		parent::__construct($subject, $config);
 	}
 
@@ -107,7 +108,8 @@ class plgAuthenticationHubzero extends JPlugin
 
 		$query = 'SELECT `id`, `username`, `password`'
 				. ' FROM `#__users`'
-				. $conditions;
+				. $conditions
+				. ' AND `block` != 1';
 
 		$db->setQuery($query);
 
@@ -119,7 +121,7 @@ class plgAuthenticationHubzero extends JPlugin
 			$response->error_message = "We're unable to identify your account via email.  Please login using your username.";
 			return false;
 		}
-		elseif(is_array($result) && isset($result[0]))
+		elseif (is_array($result) && isset($result[0]))
 		{
 			$result = $result[0];
 		}
@@ -139,12 +141,12 @@ class plgAuthenticationHubzero extends JPlugin
 				// Check validity and age of password
 				$password_rules = \Hubzero\Password\Rule::getRules();
 				$msg = \Hubzero\Password\Rule::validate($credentials['password'], $password_rules, $result->username);
-				if(is_array($msg) && !empty($msg[0]))
+				if (is_array($msg) && !empty($msg[0]))
 				{
 					$session = JFactory::getSession();
 					$session->set('badpassword', '1');
 				}
-				if(\Hubzero\User\Password::isPasswordExpired($result->username))
+				if (\Hubzero\User\Password::isPasswordExpired($result->username))
 				{
 					$session = JFactory::getSession();
 					$session->set('expiredpassword', '1');
