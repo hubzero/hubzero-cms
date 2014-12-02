@@ -142,7 +142,7 @@ class plgCronPublications extends JPlugin
 		$from['email']     = $jconfig->getValue('config.mailfrom');
 		$from['multipart'] = md5(date('U'));
 
-		$subject = JText::_('PLG_CRON_PUBLICATIONS_MONTHLY_REPORT');
+		$subject = JText::_('Monthly Publication Usage Report');
 
 		$i = 0;
 		foreach ($authors as $author)
