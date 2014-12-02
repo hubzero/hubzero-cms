@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script for csv time plugin
  **/
-class Migration201412011142000PlgGroupsCitations extends Base
+class Migration20141201142000PlgGroupsCitations extends Base
 {
 	/**
 	 * Up
