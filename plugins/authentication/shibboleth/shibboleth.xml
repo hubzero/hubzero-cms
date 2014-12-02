@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+@package        hubzero-cms
+@file           plugins/authentication/pucas.xml
+@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2011 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="1.7" type="plugin" group="authentication">
+	<name>Authentication - Shibboleth</name>
+	<author>Steven Snyder</author>
+	<creationDate>July 2014</creationDate>
+	<copyright>Copyright (C) 2014 Purdue University.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.5</version>
+	<description>Handles user authentication with Shibboleth/InCommon</description>
+	<files>
+		<filename plugin="pucas">shibboleth.php</filename>
+	</files>
+	<config>	
+		<fields name="params" addfieldpath="/plugins/authentication/shibboleth/fields">
+			<fieldset name="Debug">
+				<field name="testkey" type="text" size="20" label="Testing mode key" description="Enter a key here to hide the plugin unless that key is set in the URL parameters (for example, at https://yourhub.org/login?yourkey). Useful if you would like to test your installation before opening it up to all your users. Clear this field to show the form for everyone." />
+			</fieldset>
+			<fieldset name="Links">
+				<field name="links" type="links" default="[]" />
+			</fieldset>
+			<fieldset name="Institutions">
+				<field name="institutions" type="institutions" default='{"xmlPath": "/etc/shibboleth/shibboleth2.xml", "xmlRead": null, "idps": [], "activeIdps": []}' />
+			</fieldset>
+		</fields>
+	</config>
+</extension>
+

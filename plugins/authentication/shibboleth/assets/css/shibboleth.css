@@ -1,0 +1,112 @@
+.shibboleth.account:hover {
+	box-shadow: 0 0 transparent; 
+}
+.shibboleth.account {
+	padding-left: 9px;
+	height: 86px;
+}
+.shibboleth.account .selectpicker a img, .shibboleth.account .pull-left img {
+	border-radius: 3px;
+	border: 3px solid #fff;
+}
+.shibboleth.account.selectpicked {
+	height: 50px;
+}
+.shibboleth.account.selectpicked .default-icon {
+}
+.shibboleth.account .default-icon {
+	width: 30px;
+	height: 31px;
+	display: inline-block;
+	background: url('../img/incommon-30x30.png') no-repeat center center transparent;
+	margin-top: 8px;
+	margin-right: 2px;
+	border-radius: 3px;
+}
+.shibboleth.account:after, .shibboleth.account .account:after {
+	content: '';
+}
+.shibboleth.account select {
+	margin-top: -32px;
+}
+.shibboleth.account select, .shibboleth.account .dropdown-toggle {
+	display: inline-block;
+	background: transparent;
+	height: 30px;
+	width: 298px;
+	border: 0;
+	font-weight: bold;
+	font-size: 17px;
+	padding-top: 9px;
+	color: #fff;
+	text-shadow: none;
+	line-height: 26px;
+}
+.shibboleth.account button.submit {
+	border-radius: 4px;
+	color: #333;
+	height: 30px;
+	line-height: 20px;
+	margin-bottom: 0;
+	margin-top: -48px;
+	width: 334px;
+}
+.shibboleth.account .bootstrap-select {
+	margin-top: 0;
+	height: 46px;
+	width: 300px !important;
+}
+.shibboleth.account .dropdown-menu {
+	border-top: 0;
+	margin-top: -15px;
+}
+.shibboleth.account .bootstrap-select img {
+	width: 32px;
+}
+.shibboleth.account .dropdown-menu, .incommon-color {
+	background: #007db1 !important; /* color from InCommon branding */
+}
+.shibboleth.account .dropdown-menu a, .incommon-color a {
+	color: #fff;
+}
+.shibboleth.account .bootstrap-select .logo-placeholder {
+	display: inline-block;
+	width: 32px;
+	height: 10px;
+}
+.shibboleth.account button .filter-option {
+	margin-top: -6px;
+}
+.shibboleth.account button .filter-option img {
+	height: 28px;
+}
+.shibboleth.account .bootstrap-select .caret {
+	border-top: 4px solid #fff;
+}
+.shibboleth.account .dropdown-menu li.no-results {
+	font-style: italic;
+	background: transparent;
+}
+.shibboleth.account .dropdown-menu li:after {
+    bottom: 0;
+    color: #ffffff;
+    content: "›";
+    font-family: fontcons;
+    font-size: 14px;
+    font-weight: normal;
+    margin-right: 5px;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: -5px;
+    width: 1em;
+}
+.shibboleth.account .dropdown-menu li.no-results:after {
+	content: '';
+}
+.shibboleth.account .dropdown-menu li a:hover, .shibboleth.account .dropdown-menu li a:focus {
+	color: #333;
+}
+.shibboleth.account .dropdown-menu .glyphicon-ok:before {
+	content: '';
+}

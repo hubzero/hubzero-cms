@@ -1,0 +1,100 @@
+.shibboleth ul {
+	list-style: none;
+	max-height: 600px;
+	overflow: auto;
+}
+.shibboleth ul.metadata {
+	max-height: 400px;
+}
+.shibboleth li {
+	padding: 10px; 
+	background: #f3f3f3;
+	margin-bottom: 1em;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	position: relative;
+}
+.shibboleth li p, .shibboleth .new.idp p, .shibboleth p.xml-source {
+	margin: 0;
+}
+.shibboleth p.info {
+	margin-top: 0;
+	margin-bottom: 2em;
+}
+.shibboleth .new.idp {
+	background: #fff;
+	border: 1px solid #aaa;
+	border-radius: 12px;
+	margin-bottom: 1em;
+}
+.shibboleth .new.idp button {
+	font-size: x-small;
+	margin-left: 86px;
+	height: 28px;
+	padding-right: 16px;
+}
+.shibboleth .new.idp button .add.icon {
+	position: relative;
+	top: 3px;
+	left: 0;
+}
+.shibboleth ul.active li p {
+	position: relative;
+	top: -10px;
+}
+.shibboleth p.warning {
+	margin-top: 0;
+}
+.shibboleth ul.metadata {
+	font-size: x-small;
+}
+.shibboleth ul.metadata li, .shibboleth .new.idp  {
+	padding: 10px;
+}
+.shibboleth li label span, .new.idp label span {
+	display: inline-block;
+	text-align: right;
+	width: 80px;
+	font-style: italic;
+	font-size: x-small;
+	padding-right: 5px;
+}
+.shibboleth .preview {
+	margin-left: 80px;
+	border: 2px solid #ddd;
+	position: absolute;
+	bottom: 20px;
+	left: 200px;
+	width: 28px;
+}
+.shibboleth span.icon {
+	display: inline-block;
+	background-image: url('images/ui-icons_222222_256x240.png');
+	height: 15px;
+	width: 15px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+}
+.shibboleth span.icon.remove {
+	background-position: 223px 47px;
+}
+.shibboleth span.icon.add {
+	background-position: 126px 47px;
+}
+.shibboleth ul.metadata img.preview {
+	bottom: 10px;
+}
+.shibboleth .ui-sortable .ui-icon {
+	cursor: move;
+}
+.shibboleth h4 {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	font-size: small;
+	margin-bottom: 6px;
+	padding: 4px 10px;
+	color: #777;
+}
