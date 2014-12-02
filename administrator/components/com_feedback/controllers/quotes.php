@@ -132,6 +132,10 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
+		// Incoming ID
+		$id = JRequest::getVar('id', array(0));
+		$id = (is_array($id) ? $id[0] : $id);
+
 		if (JRequest::getMethod() == 'POST')
 		{
 			// Check for request forgeries
@@ -145,10 +149,6 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			// Incoming ID
-			$id = JRequest::getVar('id', array(0));
-			$id = (is_array($id) ? $id[0] : $id);
-
 			// Initiate database class and load info
 			$this->view->row = new FeedbackQuotes($this->database);
 			$this->view->row->load($id);
@@ -156,8 +156,9 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			$this->view->id = $id;
 		}
 
+		$this->view->pictures = array();
 		$this->view->path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
-		$path = JPATH_ROOT . $this->view->path . $id . DS;
+		$path = $id ? JPATH_ROOT . $this->view->path . $id . DS : JPATH_ROOT . $this->view->path;
 		if (is_dir($path))
 		{
 			$pictures = scandir($path);
@@ -220,7 +221,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
 
-		$existingPictures = scandir($path . DS);
+		$existingPictures = is_dir($path) ? scandir($path . DS) : array();
 		array_shift($existingPictures);
 		array_shift($existingPictures);
 

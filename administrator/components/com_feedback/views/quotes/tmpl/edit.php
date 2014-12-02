@@ -264,7 +264,6 @@ jQuery(document).ready(function($) {
 	<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="save" />
-	<input type="hidden" name="type" value="<?php echo $this->type ?>" />
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>
