@@ -98,7 +98,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>">
-			<?php if ($this->params->get('access-create-collection') && !JRequest::getInt('no_html', 0)) { ?>
+			<?php if ($this->params->get('access-create-item') && !JRequest::getInt('no_html', 0)) { ?>
 				<div class="post new-post">
 					<a class="icon-add add" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
 						<?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_POST'); ?>
