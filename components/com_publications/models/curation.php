@@ -1485,7 +1485,7 @@ class PublicationsCuration extends JObject
 
 		$status->status 		= $reviewStatus->status;
 		$status->curatornotice 	= $reviewStatus->getError();
-		$status->updated		= $reviewStatus->lastupdate;
+		$status->updated		= $pub->state != 1 ? $reviewStatus->lastupdate : NULL;
 		$status->authornotice 	= $reviewStatus->message;
 
 		if ($status->updated && isset($reviewStatus->updated_by) && $reviewStatus->updated_by)

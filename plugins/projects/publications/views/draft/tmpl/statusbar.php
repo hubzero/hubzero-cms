@@ -75,7 +75,7 @@ $i = 1;
 			$blockname = $block->name;
 			$status    = $block->review && $block->review->status != 2
 						? $block->review->status : $block->status->status;
-			$updated   = $block->review ? $block->review->lastupdate : NULL;
+			$updated   = $block->review && $this->pub->state != 1 ? $block->review->lastupdate : NULL;
 
 			if ($updated && $block->review->status != 2)
 			{
