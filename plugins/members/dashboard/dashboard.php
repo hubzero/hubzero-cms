@@ -176,25 +176,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// load dashboard modules
 		$dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
-		// load member preferences
-		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
-		$preferences = json_decode($membersDashboardModelPreferences->get('preferences'));
-
-		// if user doesnt have preferences, get default & store them
-		if (!isset($preferences) && !is_array($preferences))
-		{
-			$preferences = $this->params->get('defaults', '[]');
-			$preferences = json_encode(json_decode($preferences));
-
-			$dashboardPreferences = new MembersDashboardModelPreferences();
-			$dashboardPreferences->set('uidNumber', $this->juser->get('id'));
-			$dashboardPreferences->set('preferences', $preferences);
-			$dashboardPreferences->set('modified', JFactory::getDate()->toSql());
-			$dashboardPreferences->store();
-
-			// turn back into object for later
-			$preferences = json_decode($preferences);
-		}
+		// load user preferences
+		$preferences = $this->_loadPreferences();
 
 		// var to hold modules
 		$view->modules = array();
@@ -247,9 +230,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// get list of modules
 		$modulesList = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
-		// load member preferences
-		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
-		$preferences = json_decode($membersDashboardModelPreferences->get('preferences'));
+		// load user preferences
+		$preferences = $this->_loadPreferences();
 
 		// get module preferences for moduleid
 		$preference = new stdClass;
@@ -341,9 +323,8 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		// load dashboard modules
 		$view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
-		// load member preferences
-		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
-		$preferences = json_decode($membersDashboardModelPreferences->get('preferences'));
+		// load user preferences
+		$preferences = $this->_loadPreferences();
 
 		// get list of install member modules
 		$view->mymodules = array_map(function($mod) {
@@ -371,10 +352,18 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 			exit();
 		}
 
+		// if we have no modules set to an empty string
+		// this way we can differentiate between a bad default & a user setting to emtpy
+		if ($modules == '[]')
+		{
+			$modules = '';
+		}
+
 		// load member preferences
 		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($this->juser->get('id'));
 
 		// update the user preferences
+		$membersDashboardModelPreferences->set('uidNumber', $this->juser->get('id'));
 		$membersDashboardModelPreferences->set('preferences', $modules);
 		$membersDashboardModelPreferences->set('modified', JFactory::getDate()->toSql());
 
@@ -458,8 +447,11 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
 
 		// get default prefs
-		$preferences = $this->params->get('defaults', '[]');
-		$preferences = json_decode($preferences);
+		$preferences = $this->params->get('defaults', array());
+		if (is_string($preferences))
+		{
+			$preferences = json_decode($preferences);
+		}
 
 		// check to see if which modules to display
 		foreach ($preferences as $preference)
@@ -494,6 +486,9 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	{
 		// get request vars
 		$modules = JRequest::getString('modules', '');
+
+		// save an empty set as an empty string
+		$modules = ($modules == '[]') ? '' : $modules;
 
 		// set our new defaults
 		$this->params->set('defaults', $modules);
@@ -613,8 +608,9 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * [manageDoPushAction description]
-	 * @return [type] [description]
+	 * Push modules to users
+	 * 
+	 * @return void
 	 */
 	public function manageDoPushAction()
 	{
@@ -640,7 +636,11 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		foreach ($memberPreferences as $memberPreference)
 		{
 			// load their member preferences
-			$params = json_decode($memberPreference->preferences);
+			$params = array();
+			if (is_string($memberPreference->preferences) && $memberPreference->preferences !== '')
+			{
+				$params = json_decode($memberPreference->preferences);
+			}
 
 			// get a list of installed modules
 			$modules = array_map(function($param) {
@@ -709,9 +709,10 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * [_loadModules description]
-	 * @param  string $position [description]
-	 * @return [type]           [description]
+	 * Load Modules for position
+	 * 
+	 * @param  string $position Position to look for
+	 * @return array            Array of modules
 	 */
 	private function _loadModules( $position = '' )
 	{
@@ -725,5 +726,49 @@ class plgMembersDashboard extends \Hubzero\Plugin\Plugin
 		$modules = $this->database->loadObjectList('id');
 
 		return $modules;
+	}
+
+	/**
+	 * Load Member Preferences
+	 *
+	 * Will load defaults if not intentionally set to empty & no preferences we found
+	 * 
+	 * @param  int 	 $uidNumber  Profile ID number
+	 * @return array             Array of preferences
+	 */
+	private function _loadPreferences($uidNumber = null)
+	{
+		// use logged in user
+		if ($uidNumber == null)
+		{
+			$uidNumber = $this->juser->get('id');
+		}
+
+		// load member preferences
+		$membersDashboardModelPreferences = MembersDashboardModelPreferences::loadForUser($uidNumber);
+		$preferences = $membersDashboardModelPreferences->get('preferences');
+
+		// no user preferences, use default
+		if ($preferences === NULL)
+		{
+			// get defaults & check if string
+			$preferences = $this->params->get('defaults', '[]');
+			if (is_string($preferences))
+			{
+				$preferences = json_decode($preferences);
+			}
+		}
+		// handle user setting dashboard to empty
+		else if ($preferences === '')
+		{
+			$preferences = array();
+		}
+		// use users settings
+		else
+		{
+			$preferences = json_decode($preferences);
+		}
+
+		return $preferences;
 	}
 }
