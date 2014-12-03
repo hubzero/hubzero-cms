@@ -89,7 +89,8 @@ var KEY = {
 	RIGHT: 39,
 	DOWN: 40,
 	NUMPAD_ENTER: 108,
-	COMMA: 188
+	COMMA: 188,
+	SEMICOLON: 186
 };
 
 // Additional public (exposed) methods
@@ -280,11 +281,12 @@ $.TokenList = function (input, url_or_data, settings) {
 				case KEY.ENTER:
 				case KEY.NUMPAD_ENTER:
 				case KEY.COMMA:
+				case KEY.SEMICOLON:
 					if (selected_dropdown_item && $(selected_dropdown_item).data("tokeninput") !== undefined) {
 						add_token($(selected_dropdown_item).data("tokeninput"));
 						hidden_input.change();
 						return false;
-					} else if (event.keyCode === KEY.ENTER || event.keyCode === KEY.COMMA) {
+					} else if (event.keyCode === KEY.ENTER || event.keyCode === KEY.COMMA || event.keyCode === KEY.SEMICOLON) {
 						var val = $(this).val().replace(/^,|,$/g,'');
 						if (val) {
 							var item = {
