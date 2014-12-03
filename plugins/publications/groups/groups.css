@@ -33,7 +33,7 @@
 	}
 	#group-owner .group-img img {
 		border: 1px solid #ccc;
-		width: 100px;
+		width: auto;
 		max-height: 200px;
 		padding: 0;
 		margin: 0;
