@@ -84,67 +84,21 @@ class Flavor extends Base implements CommandInterface
 				$migration->disableModule('mod_mysessions');
 				$this->output->addLine('Disabling mod_mysessions');
 
+				$defaults = array(
+					'{"module":44,"col":1,"row":1,"size_x":1,"size_y":2}',
+					'{"module":35,"col":1,"row":3,"size_x":1,"size_y":2}',
+					'{"module":38,"col":1,"row":5,"size_x":1,"size_y":2}',
+					'{"module":39,"col":1,"row":7,"size_x":1,"size_y":2}',
+					'{"module":33,"col":2,"row":1,"size_x":1,"size_y":2}',
+					'{"module":42,"col":2,"row":3,"size_x":1,"size_y":2}',
+					'{"module":34,"col":2,"row":5,"size_x":1,"size_y":2}',
+					'{"module":37,"col":3,"row":1,"size_x":1,"size_y":2}'
+				);
+
 				$params = array(
 					"allow_customization" => "1",
 					"position"            => "memberDashboard",
-					"defaults"            => array(
-						array(
-							"module" => 44,
-							"col"    => 1,
-							"row"    => 1,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 35,
-							"col"    => 1,
-							"row"    => 3,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 38,
-							"col"    => 1,
-							"row"    => 5,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 39,
-							"col"    => 1,
-							"row"    => 7,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 33,
-							"col"    => 2,
-							"row"    => 1,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 42,
-							"col"    => 2,
-							"row"    => 3,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 34,
-							"col"    => 2,
-							"row"    => 5,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 37,
-							"col"    => 3,
-							"row"    => 1,
-							"size_x" => 1,
-							"size_y" => 2
-						)
-					)
+					"defaults"            => '[' . implode(',', $defaults) . ']'
 				);
 
 				$migration->savePluginParams('members', 'dashboard', $params);
@@ -183,81 +137,23 @@ class Flavor extends Base implements CommandInterface
 				$migration->enableModule('mod_mysessions');
 				$this->output->addLine('Enabling mod_mysessions');
 
+				$defaults = array(
+					'{"module":44,"col":1,"row":1,"size_x":1,"size_y":2}',
+					'{"module":35,"col":1,"row":3,"size_x":1,"size_y":2}',
+					'{"module":38,"col":1,"row":5,"size_x":1,"size_y":2}',
+					'{"module":39,"col":1,"row":7,"size_x":1,"size_y":2}',
+					'{"module":33,"col":2,"row":1,"size_x":1,"size_y":2}',
+					'{"module":42,"col":2,"row":3,"size_x":1,"size_y":2}',
+					'{"module":34,"col":2,"row":5,"size_x":1,"size_y":2}',
+					'{"module":41,"col":3,"row":1,"size_x":1,"size_y":2}',
+					'{"module":36,"col":3,"row":3,"size_x":1,"size_y":2}',
+					'{"module":37,"col":3,"row":5,"size_x":1,"size_y":2}'
+				);
+
 				$params = array(
 					"allow_customization" => "1",
 					"position"            => "memberDashboard",
-					"defaults"            => array(
-						array(
-							"module" => 44,
-							"col"    => 1,
-							"row"    => 1,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 35,
-							"col"    => 1,
-							"row"    => 3,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 38,
-							"col"    => 1,
-							"row"    => 5,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 39,
-							"col"    => 1,
-							"row"    => 7,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 33,
-							"col"    => 2,
-							"row"    => 1,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 42,
-							"col"    => 2,
-							"row"    => 3,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 34,
-							"col"    => 2,
-							"row"    => 5,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 41,
-							"col"    => 3,
-							"row"    => 1,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 36,
-							"col"    => 3,
-							"row"    => 3,
-							"size_x" => 1,
-							"size_y" => 2
-						),
-						array(
-							"module" => 37,
-							"col"    => 3,
-							"row"    => 5,
-							"size_x" => 1,
-							"size_y" => 2
-						)
-					)
+					"defaults"            => '[' . implode(',', $defaults) . ']'
 				);
 
 				$migration->savePluginParams('members', 'dashboard', $params);
