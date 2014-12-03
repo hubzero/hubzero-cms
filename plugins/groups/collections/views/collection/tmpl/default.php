@@ -107,7 +107,7 @@ $viewas = JRequest::getWord('viewas', $this->collection->get('layout'));
 
 	<?php if ($this->rows->total() > 0) { ?>
 		<div id="posts" data-base="<?php echo rtrim(JURI::base(true), '/'); ?>" data-update="<?php echo JRoute::_('index.php?option=com_collections&controller=posts&task=reorder&' . JUtility::getToken() . '=1'); ?>" class="view-<?php echo $viewas; ?>">
-			<?php if ($this->params->get('access-create-collection') && !JRequest::getInt('no_html', 0)) { ?>
+			<?php if ($this->params->get('access-create-item') && !JRequest::getInt('no_html', 0)) { ?>
 				<div class="post new-post" id="post_0">
 					<a class="icon-add add" href="<?php echo JRoute::_($base . '&scope=post/new&board=' . $this->collection->get('alias')); ?>">
 						<?php echo JText::_('PLG_GROUPS_COLLECTIONS_NEW_POST'); ?>
