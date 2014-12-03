@@ -163,7 +163,7 @@ $this->css()
 					echo $this->pageNav->getListFooter();
 				?>
 				<div class="clearfix"></div>
-				<input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+				<input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
 			</div><!-- / .container -->
 		</div><!-- / .main subject -->
 		<aside class="aside">
