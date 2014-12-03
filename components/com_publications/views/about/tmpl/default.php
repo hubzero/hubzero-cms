@@ -211,7 +211,7 @@ $schema 	= $metaElements->getSchema();
 	}
 ?>
 
-<?php if (($useBlocks || $this->params->get('show_citation')) && $this->publication->state == 1) { ?>
+<?php if (($useBlocks || $this->params->get('show_citation'))) { ?>
 	<?php
 	if ($this->params->get('show_citation') == 1
 	|| $this->params->get('show_citation') == 2)
@@ -219,7 +219,7 @@ $schema 	= $metaElements->getSchema();
 		// Build our citation object
 		$cite = new stdClass();
 		$cite->title = $this->publication->title;
-		$cite->year = JHTML::_('date', $this->publication->published_up, 'Y');
+		$cite->year = $this->publication->published_up && $this->publication->published_up != '0000-00-00 00:00:00' ? JHTML::_('date', $this->publication->published_up, 'Y') : JHTML::_('date', JFactory::getDate()->toSql(), 'Y');
 
 		$cite->location = '';
 		$cite->date = '';
