@@ -145,7 +145,7 @@ class modRapidContact extends \Hubzero\Module\Module
 			if ($this->error == '')
 			{
 				$mySubject = \Hubzero\Utility\Sanitize::clean($this->posted['subject']);
-				$myMessage  = JText::sprintf('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], $jconfig->getValue('config.sitename'));
+				$myMessage  = JText::sprintf('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], JRequest::getVar('HTTP_REFERER', '', 'SERVER'), $jconfig->getValue('config.sitename'));
 				$myMessage .= "\n\n". \Hubzero\Utility\Sanitize::clean($this->posted['message']);
 
 				$this->from_email = $this->posted['email'];
