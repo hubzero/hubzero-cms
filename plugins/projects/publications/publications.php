@@ -3939,10 +3939,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Mark as curated
-			if ($state == 1)
-			{
+			//if ($state == 1)
+			//{
 				$row->saveParam($row->id, 'curated', 1);
-			}
+			//}
 		}
 
 		// OnAfterPublish

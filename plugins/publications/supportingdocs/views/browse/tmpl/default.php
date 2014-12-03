@@ -30,6 +30,8 @@ $useBlocks = $this->config->get('curation', 0);
 
 $this->css('assets/css/supportingdocs.css');
 
+$pubParams = new JParameter( $this->publication->params );
+
 ?>
 <div class="supportingdocs">
 <h3>
@@ -38,7 +40,7 @@ $this->css('assets/css/supportingdocs.css');
 </h3>
 
 <?php
-if ($useBlocks)
+if ($useBlocks && $pubParams->get('curated') != 2)
 {
 	// Get elements in primary and supporting role
 	$prime    = $this->publication->_curationModel->getElements(1);

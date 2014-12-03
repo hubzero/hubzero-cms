@@ -410,9 +410,9 @@ function popratings()
 			<?php } ?>
 		<?php }  ?>
 			<tr>
-				<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ARCHIVAL'); ?></td>
+				<td class="paramlist_key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></td>
 				<td>	<?php if (file_exists($this->archPath)) { ?>
-						<a href="<?php echo str_replace(JPATH_ROOT, '', $this->archPath); ?>" class="archival"><?php echo JText::_('COM_PUBLICATIONS_FIELD_ARCHIVAL'); ?></a> &nbsp;&nbsp;<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>">[<?php echo JText::_('COM_PUBLICATIONS_REPACKAGE'); ?>]</a>
+						<a href="<?php echo str_replace(JPATH_ROOT, '', $this->archPath); ?>" class="archival"><?php echo JText::_('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></a> &nbsp;&nbsp;<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>">[<?php echo JText::_('COM_PUBLICATIONS_REPACKAGE'); ?>]</a>
 					<?php  }  else { ?>
 					<a href="index.php?option=com_publications&amp;task=archive&amp;controller=items&amp;pid=<?php echo $this->row->publication_id; ?>&amp;vid=<?php echo $this->row->id; ?>&amp;version=<?php echo $this->version; ?>" class="archival"><?php echo JText::_('COM_PUBLICATIONS_PRODUCE_ARCHIVAL'); ?></a>
 					<?php } ?>
@@ -445,6 +445,18 @@ function popratings()
 ?>
 	<table class="admintable">
 		<tbody>
+			<?php if ($this->useBlocks)
+			{ ?>
+				<tr>
+					<td class="key"><?php echo JText::_('COM_PUBLICATIONS_FIELD_CURATED'); ?>:</td>
+					<td>
+						<select name="params[curated]">
+							<option value="2" <?php echo ($params->get('curated', 1) != 1) ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_UNCURATED'); ?></option>
+							<option value="1" <?php echo ($params->get('curated', 1) == 1) ? ' selected="selected"':''; ?>><?php echo JText::_('COM_PUBLICATIONS_CURATED'); ?></option>
+						</select>
+					</td>
+				</tr>
+			<?php } ?>
 			<?php
 				foreach ($panels as $panel => $val)
 				{
