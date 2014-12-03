@@ -61,8 +61,8 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 							<p class="cite">
 								<?php
 								$quote->org = str_replace('<br>', '<br />', $quote->org);
-								$user = JFactory::getUser($quote->user_id);
-								$userPicture = \Hubzero\User\Profile::getInstance($quote->user_id)->getPicture();
+								$user = $quote->user_id ? \Hubzero\User\Profile::getInstance($quote->user_id) : new \Hubzero\User\Profile();
+								$userPicture = $user ? $user->getPicture() : $user->getPicture(true);
 								echo '<img src="' . $userPicture . '" alt="' . $user->get('name') . '" width="75" height="75" /><br />';
 								?>
 								<cite><?php echo $this->escape(stripslashes($quote->fullname)); ?></cite>
@@ -73,8 +73,8 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 						<?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
 							<div class="breadcrumbs">
 								<p>
-									<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo JText::_('MOD_QUOTES_NOTABLE_QUOTES'); ?></a> 
-									&rsaquo; 
+									<a href="<?php echo $base; ?>/about/quotes" class="breadcrumbs"><?php echo JText::_('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
+									&rsaquo;
 									<strong><?php echo $this->escape(stripslashes($quote->fullname)); ?></strong>
 								</p>
 							</div>

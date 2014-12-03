@@ -32,6 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $base = rtrim(JURI::getInstance()->base(true), '/');
+
 ?>
 <?php if ($this->params->get('button', 0) == 1) { ?>
 	<div id="content-header-extra">
@@ -88,12 +89,11 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 				</blockquote>
 				<p class="cite">
 					<?php
-					$user = JFactory::getUser($quote->user_id);
-					$userPicture = \Hubzero\User\Profile\Helper::getMemberPhoto($quote->user_id);
-					echo '<img src="' . $userPicture . '" alt="' . $user->get('name') . '" width="30" height="30" />';
+					$user = $quote->user_id ? \Hubzero\User\Profile::getInstance($quote->user_id) : new \Hubzero\User\Profile();
+					$userPicture = $user ? $user->getPicture() : $user->getPicture(true);
+					echo '<img src="' . $userPicture . '" alt="' . $quote->fullname . '" width="40" height="40" />';
 					?>
-					<cite><?php echo $this->escape(stripslashes($quote->fullname)); ?></cite>
-					<br /><?php echo $this->escape(stripslashes($quote->org)); ?>
+					<cite><?php echo $this->escape(stripslashes($quote->fullname)); ?> <span><?php echo $this->escape(stripslashes($quote->org)); ?></span></cite>
 				</p>
 				<?php
 				if (is_dir(JPATH_ROOT . DS .$this->path . $quote->id))
