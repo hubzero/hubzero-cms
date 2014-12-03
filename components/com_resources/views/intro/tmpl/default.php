@@ -146,7 +146,7 @@ if ($this->categories) {
 							</a>
 						</h3>
 						<p>
-							<?php echo $this->escape(strip_tags(stripslashes($category->description))); ?>
+							<?php echo html_entity_decode(strip_tags(stripslashes($this->escape($category->description)))); ?>
 						</p>
 						<p>
 							<a class="read-more" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
