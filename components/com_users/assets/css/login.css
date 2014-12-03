@@ -82,6 +82,7 @@
 .auth img {
 	z-index: 4;
 	position: relative;
+	background: #FFF;
 }
 .auth img.wide {
 	height: 100%;
