@@ -129,13 +129,15 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
+		// Incoming ID
+		$id = JRequest::getVar('id', array(0));
+		$id = (is_array($id) ? $id[0] : $id);
 
 		if (JRequest::getMethod() == 'POST')
 		{
@@ -150,10 +152,6 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		}
 		else
 		{
-			// Incoming ID
-			$id = JRequest::getVar('id', array(0));
-			$id = (is_array($id) ? $id[0] : $id);
-
 			// Initiate database class and load info
 			$this->view->row = new FeedbackQuotes($this->database);
 			$this->view->row->load($id);
@@ -161,8 +159,9 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			$this->view->id = $id;
 		}
 
+		$this->view->pictures = array();
 		$this->view->path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
-		$path = JPATH_ROOT . $this->view->path . $id . DS;
+		$path = $id ? JPATH_ROOT . $this->view->path . $id . DS : JPATH_ROOT . $this->view->path;
 		if (is_dir($path))
 		{
 			$pictures = scandir($path);
@@ -188,22 +187,21 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -213,7 +211,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask($redirect=true)
 	{
@@ -226,7 +224,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
 
-		$existingPictures = scandir(JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id . DS);
+		$existingPictures = is_dir($path) ? scandir($path . DS) : array();
 		array_shift($existingPictures);
 		array_shift($existingPictures);
 
@@ -285,7 +283,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::sprintf('COM_FEEDBACK_QUOTE_SAVED',  $row->fullname)
+				JText::sprintf('COM_FEEDBACK_QUOTE_SAVED', $row->fullname)
 			);
 		}
 
