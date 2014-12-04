@@ -1,0 +1,24 @@
+
+	.item-list li {
+		padding: 1em 1.618em 1em 3.218em;
+		margin: 0;
+		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid rgba(0,0,0,0.1);
+		position: relative;
+		color: #666;
+	}
+	.item-list li:before {
+		position: absolute;
+		bottom: 0.818em;
+		left: 1.218em;
+		content: "";
+		font-family: "Fontcons";
+		color: #bbb;
+		font-size: 1.2em;
+	}
+	.item-list.css li:before {
+		content: "\f0f6";
+	}
+	.item-list.layout li:before {
+		content: "\f081";
+	}
