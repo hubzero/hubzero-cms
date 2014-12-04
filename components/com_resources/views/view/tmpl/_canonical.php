@@ -41,6 +41,12 @@ if ($canonical = $this->model->attribs->get('canonical', ''))
 		$title = $model->resource->title;
 		$url   = JRoute::_('index.php?option=' . $this->option . ($model->resource->alias ? '&alias=' . $model->resource->alias : '&id=' . $model->resource->id));
 	}
+	else if (is_numeric($canonical))
+	{
+		$model = ResourcesModelResource::getInstance(intval($canonical));
+		$title = $model->resource->title;
+		$url   = JRoute::_('index.php?option=' . $this->option . ($model->resource->alias ? '&alias=' . $model->resource->alias : '&id=' . $model->resource->id));
+	}
 
 	if (!preg_match('/^(https?:|mailto:|ftp:|gopher:|news:|file:|rss:)/i', $url))
 	{

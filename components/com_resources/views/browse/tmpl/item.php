@@ -200,6 +200,8 @@ if ($this->config->get('supportedtag'))
 		else if ($this->line->fulltxt)
 		{
 			$content = $this->line->fulltxt;
+			$content = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $content);
+			$content = trim($content);
 		}
 
 		echo \Hubzero\Utility\String::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))), 300);
