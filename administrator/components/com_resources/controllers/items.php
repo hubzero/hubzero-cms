@@ -752,6 +752,8 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		// Is this a standalone resource?
 		if ($this->view->row->standalone == 1)
 		{
+			$this->view->lists['tags'] = '';
+
 			// Get groups
 			$filters = array(
 				'authorized' => 'admin',
@@ -784,6 +786,10 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 						ORDER BY a.ordering";
 				$this->database->setQuery($sql);
 				$authnames = $this->database->loadObjectList();
+
+				// Get the tags on this item
+				$tagger = new ResourcesTags($this->view->row->id);
+				$this->view->lists['tags'] = $tagger->render('string');
 			}
 
 			// Build <select> of contributors
@@ -797,10 +803,6 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$authorslist->roles     = $rt->getRolesForType($this->view->row->type);
 
 			$this->view->lists['authors'] = $authorslist->loadTemplate();
-
-			// Get the tags on this item
-			$rt = new ResourcesTags($this->view->row->id);
-			$this->view->lists['tags'] = $rt->render('string');
 		}
 
 		// Set any errors
