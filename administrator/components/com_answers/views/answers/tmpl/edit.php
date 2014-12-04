@@ -64,12 +64,12 @@ function submitbutton(pressbutton)
 		return;
 	}
 
+	<?php echo JFactory::getEditor()->save('text'); ?>
+
 	// do field validation
 	if (document.getElementById('field-answer').value == ''){
 		alert('<?php echo JText::_('COM_ANSWERS_ERROR_MISSING_ANSWER'); ?>');
 	} else {
-		<?php echo JFactory::getEditor()->save('text'); ?>
-
 		submitform(pressbutton);
 	}
 }
