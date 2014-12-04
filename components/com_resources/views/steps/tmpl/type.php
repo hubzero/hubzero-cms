@@ -96,11 +96,13 @@ $this->css('create.css')
 			{
 				$cls = substr($type->alias, 0, -1);
 			}
+			// Need to do some decoding to ensure escaped characters aren't encoded twice.
+			$type->description = html_entity_decode(str_replace('&amp;', '&', strip_tags(stripslashes($type->description))));
 ?>
 		<div class="col span-third <?php echo $clm; ?>">
 			<div class="type-container <?php echo $cls; ?>">
 				<p class="type-button"><a class="btn icon-<?php echo $cls; ?>" href="<?php echo $url; ?>"><?php echo $this->escape(stripslashes($type->type)); ?></a></p>
-				<p><?php echo $this->escape(strip_tags(stripslashes($type->description))); ?></p>
+				<p><?php echo $this->escape($type->description); ?></p>
 			</div>
 		</div><!-- / .col span-third <?php echo $clm; ?> -->
 <?php
