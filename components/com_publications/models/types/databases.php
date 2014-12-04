@@ -523,7 +523,7 @@ class typeDatabases extends JObject
 
 			// Non expert mode
 			if (!$expert_mode) {
-				$handle = fopen($path . '/' . $file, "r");
+				$handle = fopen($csv, "r");
 				$col_labels = fgetcsv($handle);
 			}
 
