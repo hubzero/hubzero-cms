@@ -43,6 +43,13 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	protected	$_name = 'data';
 
 	/**
+	* Image Helper
+	*
+	* @var
+	*/
+	protected	$_imgHelper = NULL;
+
+	/**
 	 * Get configs
 	 *
 	 * @return  boolean
@@ -57,6 +64,11 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 							&& $blockParams->published_editing == 0
 							&& ($pub->state == 1 || $pub->state == 5)
 							? 1 : 0;
+		// Get project path
+		$config 		= JComponentHelper::getParams( 'com_projects' );
+		$configs->path 	= ProjectsHelper::getProjectPath($pub->_project->alias,
+						$config->get('webpath'),
+						$config->get('offroot', 0));
 
 		// Get publications helper
 		$helper = new PublicationHelper($this->_parent->_db, $pub->version_id, $pub->id);
@@ -74,7 +86,8 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		$configs->dataPath = $helper->buildPath($pub->id, $pub->version_id, $base, 'data', 1);
 
 		// Serve path for data files
-		$configs->servePath = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);
+		/*$configs->servePath = JRoute::_('index.php?option=com_publications&id=' . $pub->id . '&task=serve&v=' . $pub->version_number);*/
+		$configs->servePath = JRoute::_('index.php?option=com_publications' . a . 'id=' . $pub->id) . '/?vid=' . $pub->version_id . a . 'task=serve';
 
 		// Get default title
 		$title = isset($element->title) ? str_replace('{pubtitle}', $pub->title, $element->title) : NULL;
@@ -112,10 +125,10 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				$itemUrl 	= $url . '&a=' . $attach->id;
 				$title 		= $attach->title ? $attach->title : $configs->title;
 				$title 		= $title ? $title : $attach->path;
-				$pop		= JText::_('Browse data') . ' ' . $title;
+				$pop		= JText::_('Browse database') . ' ' . $title;
 
 				$html .= '<li>';
-				$html .= $authorized == 'administrator' ? '[' . $this->_name . '] ' : '';
+				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
 				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blank">' . $title . '</a>';
 				$html .='</li>';
 			}
@@ -213,18 +226,76 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	public function transferData( $elementparams, $elementId, $pub, $blockParams,
 			$attachments, $oldVersion, $newVersion)
 	{
+		// Get databases plugin
+		JPluginHelper::importPlugin( 'projects', 'databases');
+		$dispatcher = JDispatcher::getInstance();
+
+		// Get configs
+		$configs = $this->getConfigs($elementparams, $elementId, $pub, $blockParams);
+
 		$juser = JFactory::getUser();
+
+		$newConfigs = new stdClass;
+		$newConfigs->path = $configs->path;
+		$newConfigs->dataPath = $pub->_helpers->pubHelper->buildPath(
+			$pub->id,
+			$newVersion->id,
+			'',
+			'data',
+			1
+		);
+		$newConfigs->servePath = JRoute::_('index.php?option=com_publications' . a . 'id=' . $pub->id) . '/?vid=' . $newVersion->id . a . 'task=serve';
 
 		// Loop through attachments
 		foreach ($attachments as $att)
 		{
+			if ($att->type != $this->_name)
+			{
+				continue;
+			}
+			// Get database object and load record
+			$objData = new ProjectDatabase($this->_parent->_db);
+			$objData->loadRecord($att->object_name);
+			$dbVersion = NULL;
+
+			if (!$objData->id)
+			{
+				// Original database not found
+				$this->_parent->setError( JText::_('Oups! Cannot attach selected database: database not found') );
+				return false;
+			}
+
 			// Make new attachment record
 			$pAttach = new PublicationAttachment( $this->_parent->_db );
 			if (!$pAttach->copyAttachment($att, $newVersion->id, $elementId, $juser->get('id') ))
 			{
 				continue;
 			}
+
+			// New database instance - need to clone again and get a new version number
+			$result 			= $dispatcher->trigger( 'clone_database', array( $pAttach->object_name, $pub->_project, $newConfigs->servePath) );
+			$dbVersion 			= $result && isset($result[0]) ? $result[0] : NULL;
+
+			// Failed to clone
+			if (!$dbVersion)
+			{
+				$this->_parent->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_FAILED_DB_CLONE') );
+				$pAttach->delete();
+				return false;
+			}
+
+			$pAttach->modified_by = NULL;
+			$pAttach->modified 	= NULL;
+			$pAttach->object_revision = $dbVersion;
+			$pAttach->path = 'dataviewer' . DS . 'view' . DS . 'publication:dsl'
+										. DS . $pAttach->object_name . DS . '?v=' . $dbVersion;
+			$pAttach->store();
 		}
+
+		// Determine accompanying files and copy them in the right location
+		$this->publishDataFiles($objData, $newConfigs);
+
+		return true;
 	}
 
 	/**
@@ -447,6 +518,8 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			$this->_parent->setError(JText::_('There was a problem attaching the database'));
 			return false;
 		}
+		// Determine accompanying files and copy them in the right location
+		$this->publishDataFiles($objData, $configs);
 
 		return true;
 	}
@@ -474,7 +547,23 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 		// Remove link
 		if (!$this->getError())
 		{
+			// Get databases plugin
+			JPluginHelper::importPlugin( 'projects', 'databases');
+			$dispatcher = JDispatcher::getInstance();
+
+			// Get database object and load record
+			$objData = new ProjectDatabase($this->_parent->_db);
+			$objData->loadRecord($row->object_name);
+			if (!$objData->id)
+			{
+				$this->_parent->setError(JText::_('There was a problem deleting the database'));
+				return false;
+			}
+
+			$result = $dispatcher->trigger( 'remove_database', array( $row->object_name, $pub->_project, $row->object_revision) );
+
 			$row->delete();
+
 			$this->set('_message', JText::_('Item removed'));
 
 			// Reflect the update in curation record
@@ -624,7 +713,115 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	public function addToBundle( $zip, $attachments, $element, $elementId,
 		$pub, $blockParams, &$readme, $bundleDir)
 	{
+		if (!$attachments)
+		{
+			return false;
+		}
+
+		// Get configs
+		$configs  = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
+
+		$firstChild = $attachments[0];
+		$db_name 	= $firstChild->object_name;
+		$db_version = $firstChild->object_revision;
+
+		// Add CSV file
+		if ($db_name && $db_version)
+		{
+			$tmpFile 	= $configs->dataPath . DS . 'data.csv';
+			$csv 		= $this->getCsvData($db_name, $db_version, $tmpFile);
+
+			if ($csv && file_exists($tmpFile))
+			{
+				$where = $bundleDir . DS . 'data.csv';
+				if ($zip->addFile($tmpFile, $where))
+				{
+					$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+				}
+			}
+		}
+
+		// Add data files
+		$dataFiles = array();
+		if (is_dir($configs->dataPath))
+		{
+			$dataFiles = JFolder::files($configs->dataPath, '.', true, true);
+		}
+
+		if (!empty($dataFiles))
+		{
+			foreach ($dataFiles as $e)
+			{
+				// Skip thumbnails and CSV
+				if (preg_match("/_tn.gif/", $e) || preg_match("/_medium.gif/", $e) || preg_match("/data.csv/", $e))
+				{
+					continue;
+				}
+
+				$fileinfo = pathinfo($e);
+				$a_dir  = $fileinfo['dirname'];
+				$a_dir	= trim(str_replace($configs->dataPath, '', $a_dir), DS);
+
+				$fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
+				$where = $bundleDir . DS . 'data' . DS . $fPath . basename($e);
+
+				if ($zip->addFile($e, $where))
+				{
+					$readme   .= '>>> ' . str_replace($bundleDir . DS, '', $where) . "\n";
+				}
+			}
+		}
+
 		return false;
+	}
+
+	/**
+	 * Get data as CSV file
+	 *
+	 * @param      string  	$db_name
+	 * @param      integer  	$version
+	 *
+	 * @return     string data
+	 */
+	public function getCsvData($db_name = '', $version = '', $tmpFile = '')
+	{
+		if (!$db_name || !$version)
+		{
+			return false;
+		}
+
+		mb_internal_encoding('UTF-8');
+
+		// component path for "com_dataviewer"
+		$dv_com_path = JPATH_ROOT . DS . 'components' . DS . 'com_dataviewer';
+
+		require_once($dv_com_path . DS . 'dv_config.php');
+		require_once($dv_com_path . DS . 'lib' . DS . 'db.php');
+		require_once($dv_com_path . DS . 'modes' . DS . 'mode_dsl.php');
+		require_once($dv_com_path . DS . 'filter' . DS . 'csv.php');
+
+		$dv_conf = get_conf(NULL);
+		$dd = get_dd(NULL, $db_name, $version);
+		$dd['serverside'] = false;
+
+		$sql = query_gen($dd);
+		$result = get_results($sql, $dd);
+
+		ob_start();
+		filter($result, $dd, true);
+		$csv = ob_get_contents();
+		ob_end_clean();
+
+		if ($csv && $tmpFile)
+		{
+			$handle = fopen($tmpFile, 'w');
+			fwrite($handle, $csv);
+			fclose($handle);
+
+			return true;
+		}
+
+		return $csv;
 	}
 
 	/**
@@ -635,6 +832,160 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 	public function drawPackageList( $attachments, $element, $elementId,
 		$pub, $blockParams, $authorized)
 	{
-		return false;
+		// Get configs
+		$configs = $this->getConfigs($element->params, $elementId, $pub, $blockParams);
+
+		$list = NULL;
+
+		if (!$attachments)
+		{
+			return false;
+		}
+
+		$list .= '<li><img src="' . ProjectsHtml::getFileIcon('csv') . '" alt="" /> data.csv</li>';
+
+		// Add data files
+		$dataFiles = array();
+		if (is_dir($configs->dataPath))
+		{
+			$dataFiles = JFolder::files($configs->dataPath, '.', true, true);
+		}
+		if (!empty($dataFiles))
+		{
+			$list .= '<li><img src="/plugins/projects/files/images/folder.gif" alt="" /> data</li>';
+			foreach ($dataFiles as $e)
+			{
+				// Skip thumbnails and CSV
+				if (preg_match("/_tn.gif/", $e) || preg_match("/_medium.gif/", $e) || preg_match("/data.csv/", $e))
+				{
+					continue;
+				}
+				// Get ext
+				$parts  = explode('.', $e);
+				$ext 	= count($parts) > 1 ? array_pop($parts) : NULL;
+				$ext	= strtolower($ext);
+				$icon   = '<img src="' . ProjectsHtml::getFileIcon($ext) . '" alt="'.$ext.'" />';
+				$fileinfo = pathinfo($e);
+				$a_dir  = $fileinfo['dirname'];
+				$a_dir	= trim(str_replace($configs->dataPath, '', $a_dir), DS);
+
+				$fPath = $a_dir && $a_dir != '.' ? $a_dir . DS : '';
+				$where = 'data' . DS . $fPath . basename($e);
+
+				$list .= '<li class="level2"><span class="item-title">' . $icon . ' ' . trim($where, DS) . '</span></li>';
+			}
+		}
+
+		return $list;
+	}
+
+	/**
+	 * Publish supporting database files
+	 *
+	 * @param      object  	$objPD
+	 *
+	 * @return     boolean or error
+	 */
+	public function publishDataFiles($objPD, $configs)
+	{
+		if (!$objPD->id)
+		{
+			return false;
+		}
+
+		// Get files plugin
+		JPluginHelper::importPlugin( 'projects', 'files');
+		$dispatcher = JDispatcher::getInstance();
+
+		// Get data definition
+		$dd = json_decode($objPD->data_definition, true);
+
+		$files 	 = array();
+		$columns = array();
+
+		foreach ($dd['cols'] as $colname => $col)
+		{
+			if (isset($col['linktype']) && $col['linktype'] == "repofiles")
+			{
+				$dir = '';
+				if (isset($col['linkpath']) && $col['linkpath'] != '')
+				{
+					$dir = $col['linkpath'];
+				}
+				$columns[$col['idx']] = $dir;
+			}
+		}
+
+		// No files to publish
+		if (empty($columns))
+		{
+			return false;
+		}
+
+		$repoPath = $objPD->source_dir ? $configs->path . DS . $objPD->source_dir : $configs->path;
+		$csv = $repoPath . DS . $objPD->source_file;
+
+		if (file_exists($csv) && ($handle = fopen($csv, "r")) !== FALSE)
+		{
+			// Check if expert mode CSV
+			$expert_mode = false;
+			$col_labels = fgetcsv($handle);
+			$col_prop = fgetcsv($handle);
+			$data_start = fgetcsv($handle);
+
+			if (isset($data_start[0]) && $data_start[0] == 'DATASTART')
+			{
+				$expert_mode = true;
+			}
+
+			while ($r = fgetcsv($handle))
+			{
+				for ($i = 0; $i < count($col_labels); $i++)
+				{
+					if (isset($columns[$i]))
+					{
+						if ((isset($r[$i]) && $r[$i] != ''))
+						{
+							$file = $columns[$i] ? $columns[$i] . DS . trim($r[$i]) : trim($r[$i]);
+							if (file_exists( $repoPath . DS . $file))
+							{
+								$files[] = $file;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Copy files from repo to published location
+		if (!empty($files))
+		{
+			foreach ($files as $file)
+			{
+				if (!file_exists( $repoPath . DS . $file))
+				{
+					continue;
+				}
+
+				// If parent dir does not exist, we must create it
+				if (!file_exists(dirname($configs->dataPath . DS . $file)))
+				{
+					JFolder::create(dirname($configs->dataPath . DS . $file));
+				}
+
+				JFile::copy($repoPath . DS . $file, $configs->dataPath . DS . $file);
+
+				// Generate thumbnails for images
+				$thumb 	= PublicationsHtml::createThumbName($file, '_tn', $extension = 'gif');
+				$dispatcher->trigger( 'getFilePreview', array(
+					$file, '', $repoPath, '', NULL, false, $configs->dataPath, $thumb, 180, 180)
+				);
+				// Medium size thumb
+				$medium 	= PublicationsHtml::createThumbName($file, '_medium', $extension = 'gif');
+				$dispatcher->trigger( 'getFilePreview', array(
+					$file, '', $repoPath, '', NULL, true, $configs->dataPath, $medium)
+				);
+			}
+		}
 	}
 }
