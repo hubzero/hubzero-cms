@@ -57,6 +57,15 @@ $params = clone($this->config);
 $rparams = new JRegistry($this->line->params);
 $params->merge($rparams);
 
+if (!$this->line->modified || $this->line->modified == '0000-00-00 00:00:00')
+{
+	$this->line->modified = $this->line->created;
+}
+if (!$this->line->publish_up || $this->line->publish_up == '0000-00-00 00:00:00')
+{
+	$this->line->publish_up = $this->line->created;
+}
+
 // Set the display date
 switch ($params->get('show_date'))
 {
