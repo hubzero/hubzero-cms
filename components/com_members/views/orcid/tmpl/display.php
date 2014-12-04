@@ -148,7 +148,7 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 				</div>
 			<?php } ?>
 		<?php } else { ?>
-			<p class="warning"><?php echo JText::sprintf('This service is currently unavailable and/or not configured correctly. Please contact <a href="%s">support</a> for further assitance.', JRoute::_('index.php?option=com_support')); ?></p>
+			<p class="warning"><?php echo JText::sprintf('This service is currently unavailable and/or not configured correctly. Please contact <a href="%s">support</a> for further assistance.', JRoute::_('index.php?option=com_support')); ?></p>
 		<?php } ?>
 	</form>
 </section>
