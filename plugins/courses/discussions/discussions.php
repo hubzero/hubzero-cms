@@ -1693,7 +1693,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage'),
-				JText::_('PLG_GROUPS_FORUM_MISSING_ID'),
+				JText::_('PLG_COURSES_DISCUSSIONS_MISSING_ID'),
 				'error'
 			);
 			return;
@@ -1705,7 +1705,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		{
 			$this->setRedirect(
 				JRoute::_($this->base . '&unit=manage'),
-				JText::_('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
+				JText::_('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
 				'warning'
 			);
 			return;
@@ -1756,7 +1756,7 @@ class plgCoursesDiscussions extends \Hubzero\Plugin\Plugin
 		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_($this->base . '&unit=manage'),
-			JText::_('PLG_GROUPS_FORUM_SECTION_DELETED'),
+			JText::_('PLG_COURSES_DISCUSSIONS_SECTION_DELETED'),
 			'passed'
 		);
 	}
