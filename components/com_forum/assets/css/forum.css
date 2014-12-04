@@ -89,6 +89,16 @@
 	.entry-details {
 		display: block;
 	}
+	.section-name,
+	.category-name {
+		max-width: 10em;
+		-ms-word-break: break-all;
+		word-wrap: break-word;
+		word-break: break-all;
+		-webkit-hyphens: auto;
+		-moz-hyphens: auto;
+		hyphens: auto;
+	}
 	.entries caption a {
 		float: right;
 	}

@@ -62,14 +62,14 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		if (isset($this->view->section))
 		{
 			$pathway->addItem(
-				stripslashes($this->view->section->get('title')),
+				\Hubzero\Utility\String::truncate(stripslashes($this->view->section->get('title')), 100),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias')
 			);
 		}
 		if (isset($this->view->category))
 		{
 			$pathway->addItem(
-				stripslashes($this->view->category->get('title')),
+				\Hubzero\Utility\String::truncate(stripslashes($this->view->category->get('title')), 100),
 				'index.php?option=' . $this->_option . '&section=' . $this->view->section->get('alias') . '&category=' . $this->view->category->get('alias')
 			);
 		}
@@ -85,11 +85,11 @@ class ForumControllerCategories extends \Hubzero\Component\SiteController
 		$this->_title = JText::_(strtoupper($this->_option));
 		if (isset($this->view->section))
 		{
-			$this->_title .= ': ' . stripslashes($this->view->section->get('title'));
+			$this->_title .= ': ' . \Hubzero\Utility\String::truncate(stripslashes($this->view->section->get('title')), 100);
 		}
 		if (isset($this->view->category))
 		{
-			$this->_title .= ': ' . stripslashes($this->view->category->get('title'));
+			$this->_title .= ': ' . \Hubzero\Utility\String::truncate(stripslashes($this->view->category->get('title')), 100);
 		}
 		$document = JFactory::getDocument();
 		$document->setTitle($this->_title);
