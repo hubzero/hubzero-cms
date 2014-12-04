@@ -183,7 +183,7 @@ defined('_JEXEC') or die('Restricted access');
 			     ->set('option', $this->option)
 			     ->set('group', $this->group)
 			     ->set('comments', $this->comment->get('replies'))
-			     ->set('thread', $this->comment->get('thread'))
+			     ->set('thread', $this->thread)
 			     ->set('parent', $this->comment->get('id'))
 			     ->set('config', $this->config)
 			     ->set('depth', $this->depth)
