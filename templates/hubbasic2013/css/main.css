@@ -394,7 +394,7 @@
 		min-height: 80px;
 		background: transparent url("../images/layout/noise-white.png") 0 0;
 		position: relative;
-		padding: 10px 10px 0 10px;
+		padding: 1em 1em 0 1em;
 	}
 	#splash #system-message {
 		margin: 0;
