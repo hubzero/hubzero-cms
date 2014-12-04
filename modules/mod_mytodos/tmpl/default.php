@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div<?php echo ($this->params->get('moduleclass')) ? ' class="' . $this->params->get('moduleclass') . '"' : ''; ?>>
 	<h4>
-		<a href="<?php echo JRoute::_('index.php?option=com_projects'); ?>"><?php echo JText::_('MOD_MYTODOS_ASSIGNED'); ?></a>
+		<?php echo JText::_('MOD_MYTODOS_ASSIGNED'); ?>
 	</h4>
 	<?php if (count($this->rows) <= 0) { ?>
 		<p><em><?php echo JText::_('MOD_MYTODOS_NO_TODOS'); ?></em></p>
