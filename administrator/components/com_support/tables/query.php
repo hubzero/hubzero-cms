@@ -325,7 +325,7 @@ class SupportQuery extends JTable
 					$nottags[] = $expr->val;
 				}
 			}
-			if (strtolower($expr->fldval) == 'status' && $expr->val == '-1')
+			/*if (strtolower($expr->fldval) == 'status' && $expr->val == '-1')
 			{
 				$condition->expressions[$i]->val = '0';
 
@@ -335,7 +335,7 @@ class SupportQuery extends JTable
 				$exp->opdisp = 'is';
 				$exp->val    = '0';
 				array_push($condition->expressions, $exp);
-			}
+			}*/
 		}
 
 		for ($i = 0; $i < count($condition->expressions); $i++)
@@ -429,7 +429,17 @@ class SupportQuery extends JTable
 						$expr->val = $user->get('id');
 					}
 				}
-				$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
+
+				if (strtolower($expr->fldval) == 'status' && $expr->val == '-1')
+				{
+					$condition->expressions[$i]->val = '0';
+
+					$e[] = '(' . $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val) . ' AND ' . $prfx . '.' . $this->_db->nameQuote('open') . ' = ' . $this->_db->Quote('0') . ')';
+				}
+				else
+				{
+					$e[] = $prfx . '.' . $this->_db->nameQuote($expr->fldval) . ' ' . $expr->opval . ' ' . $this->_db->Quote($expr->val);
+				}
 			}
 		}
 
@@ -458,6 +468,7 @@ class SupportQuery extends JTable
 			{
 				$e[] = '(t.' . $this->_db->nameQuote('tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ' OR t.' . $this->_db->nameQuote('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $tags) . "'", 'IN ($1)') . ')';
 
+				$having  = " GROUP BY f.id ";
 				if (strtoupper($condition->operator) == 'OR')
 				{
 					$h = 1;
@@ -465,8 +476,8 @@ class SupportQuery extends JTable
 				else
 				{
 					$h = (count($tags) - count($nottags));
+					$having .= "HAVING uniques='" . $h . "'";
 				}
-				$having = " GROUP BY f.id HAVING uniques='" . $h . "'";
 			}
 		}
 
