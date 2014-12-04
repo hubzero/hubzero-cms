@@ -79,20 +79,20 @@ $base = $this->offering->alias() . '&active=forum';
 							</td>
 							<!-- <td>
 								<span><?php echo JText::_('Section'); ?></span>
-								<span class="entry-details">
-									<?php echo $this->escape($this->sections[$this->categories[$row->category_id]->section_id]->title); ?>
+								<span class="entry-details section-name">
+									<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->category_id]->section_id]->title, 100, array('exact' => true))); ?>
 								</span>
 							</td> -->
 							<td>
 								<span><?php echo JText::_('Category'); ?></span>
-								<span class="entry-details">
-									<?php echo $this->escape($this->categories[$row->category_id]->title); ?>
+								<span class="entry-details category-name">
+									<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->category_id]->title, 100, array('exact' => true))); ?>
 								</span>
 							</td>
 							<td>
 								<span><?php echo JText::_('Thread'); ?></span>
-								<span class="entry-details">
-									<?php echo $this->escape(stripslashes($thread->title)); ?>
+								<span class="entry-details thread-name">
+									<?php echo $this->escape(\Hubzero\Utility\String::truncate(stripslashes($thread->title), 100, array('exact' => true))); ?>
 								</span>
 							</td>
 						</tr>
