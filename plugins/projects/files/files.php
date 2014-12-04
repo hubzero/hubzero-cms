@@ -4297,9 +4297,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     array or false
 	 */
-	public function getFilePreview( $file, $hash, $path = '', $subdir = '', $remote = NULL, $medium = false )
+	public function getFilePreview( $file, $hash, $path = '', $subdir = '', $remote = NULL, $medium = false, $to_path = NULL, $hashed = NULL, $width = 180, $height = 180 )
 	{
 		$image = NULL;
+		include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects'
+			. DS . 'helpers' . DS . 'imghandler.php' );
 		$ih = new ProjectsImgHandler();
 
 		$rthumb	= NULL;
@@ -4309,38 +4311,39 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		}
 		$hash  	= $hash ? substr($hash, 0, 10) : '';
 
-		$filename = basename($file);
-		$hashed = $hash ? $ih->createThumbName($filename, '-' . $hash, 'png') : NULL;
-
-		// Medium-size preview image
-		if ($medium)
+		if (!$hashed)
 		{
-			$hashed = md5($filename . '-' . $hash) . '.png';
+			$filename = basename($file);
+			$hashed = $hash ? $ih->createThumbName($filename, '-' . $hash, 'png') : NULL;
+			$hashed = $medium ? md5($filename . '-' . $hash) . '.png' : $hashed;
 		}
 
-		$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
-		$to_path = DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
+		if (!$to_path)
+		{
+			$imagepath = trim($this->_config->get('imagepath', '/site/projects'), DS);
+			$to_path = JPATH_ROOT . DS . $imagepath . DS . strtolower($this->_project->alias) . DS . 'preview';
+		}
 
-		$from_path = $this->prefix . $path . DS;
+		$from_path = isset($this->prefix) ? $this->prefix . $path . DS : $path . DS;
 		$from_path = $subdir ? $from_path . $subdir . DS : $from_path;
 
-		$maxWidth 	= $medium == true ? 600 : 180;
-		$maxHeight 	= $medium == true ? 600 : 180;
+		$maxWidth 	= $medium == true ? 600 : $width;
+		$maxHeight 	= $medium == true ? 600 : $height;
 
-		if ($hashed && is_file(JPATH_ROOT. $to_path . DS . $hashed))
+		if ($hashed && is_file($to_path . DS . $hashed))
 		{
 			// First check locally generated thumbnail
-			$image = $to_path . DS . $hashed;
+			$image = str_replace(JPATH_ROOT, '', $to_path . DS . $hashed);
 		}
-		elseif ($rthumb && is_file(JPATH_ROOT. $to_path . DS . $rthumb))
+		elseif ($rthumb && is_file($to_path . DS . $rthumb))
 		{
 			// Check remotely generated thumbnail
-			$image = $to_path . DS . $rthumb;
+			$image = str_replace(JPATH_ROOT, '', $to_path . DS . $rthumb);
 
 			// Copy this over as local thumb
-			if ($hashed && JFile::copy(JPATH_ROOT. $to_path . DS . $rthumb, JPATH_ROOT . $to_path . DS . $hashed))
+			if ($hashed && JFile::copy($to_path . DS . $rthumb, $to_path . DS . $hashed))
 			{
-				JFile::delete(JPATH_ROOT. $to_path . DS . $rthumb);
+				JFile::delete($to_path . DS . $rthumb);
 			}
 		}
 		elseif ($hashed)
@@ -4349,11 +4352,11 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			if (!file_exists( $to_path ))
 			{
 				jimport('joomla.filesystem.folder');
-				JFolder::create( JPATH_ROOT. $to_path );
+				JFolder::create( $to_path );
 			}
 
 			// Get file extention
-			$ext = explode('.', $filename);
+			$ext = explode('.', basename($file));
 			$ext = count($ext) > 1 ? end($ext) : '';
 
 			// Image formats
@@ -4365,7 +4368,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				return false;
 			}
 
-			if (!JFile::copy($from_path. $file, JPATH_ROOT . $to_path . DS . $hashed))
+			if (!JFile::copy($from_path. $file, $to_path . DS . $hashed))
 			{
 				return false;
 			}
@@ -4373,7 +4376,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			// Resize the image if necessary
 			$ih->set('image',$hashed);
 			$ih->set('overwrite',true);
-			$ih->set('path',JPATH_ROOT. $to_path . DS);
+			$ih->set('path', $to_path . DS);
 			$ih->set('maxWidth', $maxWidth);
 			$ih->set('maxHeight', $maxHeight);
 			if ($medium)
@@ -4381,13 +4384,9 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				$ih->set('quality', 50);
 				$ih->set('force', false);
 			}
-			if (!$ih->process())
+			if ($ih->process())
 			{
-				//$this->setError( $ih->getError() );
-			}
-			else
-			{
-				$image = $to_path . DS . $hashed;
+				$image = str_replace(JPATH_ROOT, '', $to_path . DS . $hashed);
 			}
 		}
 
