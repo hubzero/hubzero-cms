@@ -372,7 +372,7 @@ class ProjectsHelper extends JObject {
 	 */
 	public function showGitInfo ($gitpath = '', $path = '', $fhash = '', $file = '', $showstatus = 1)
 	{
-		if (!$gitpath || !$path || !$file)
+		if (!$gitpath || !$path || !is_dir($path) || !$file)
 		{
 			return false;
 		}
