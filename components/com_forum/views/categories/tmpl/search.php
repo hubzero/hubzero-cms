@@ -118,13 +118,13 @@ $juser = JFactory::getUser();
 										<td>
 											<span><?php echo JText::_('COM_FORUM_SECTION'); ?></span>
 											<span class="entry-details section-name">
-												<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100)); ?>
+												<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, array('exact' => true))); ?>
 											</span>
 										</td>
 										<td>
 											<span><?php echo JText::_('COM_FORUM_CATEGORY'); ?></span>
 											<span class="entry-details category-name">
-												<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->get('category_id')]->get('title'), 100)); ?>
+												<?php echo $this->escape(\Hubzero\Utility\String::truncate($this->categories[$row->get('category_id')]->get('title'), 100, array('exact' => true))); ?>
 											</span>
 										</td>
 									</tr>
