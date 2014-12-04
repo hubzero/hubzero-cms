@@ -82,10 +82,14 @@ defined('_JEXEC') or die('Restricted access');
 			<p class="comment-title">
 				<strong><?php echo $name; ?></strong>
 				<a class="permalink" href="<?php echo JRoute::_($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo JText::_('PLG_RESOURCES_REVIEWS_PERMALINK'); ?>">
-					<span class="comment-date-at">@</span>
-					<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
-					<span class="comment-date-on"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ON'); ?></span>
-					<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+					<?php if (!$this->comment->created() || $this->comment->created() == '0000-00-00 00:00:00') { ?>
+						<span class="comment-date-unknown"><?php echo JText::_('PLG_RESOURCES_REVIEWS_UNKNOWN'); ?></span>
+					<?php } else { ?>
+						<span class="comment-date-at">@</span>
+						<span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+						<span class="comment-date-on"><?php echo JText::_('PLG_RESOURCES_REVIEWS_ON'); ?></span>
+						<span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+					<?php } ?>
 				</a>
 			</p>
 			<?php if ($this->comment->get('resource_id')) { ?>

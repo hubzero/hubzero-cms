@@ -617,7 +617,7 @@ class PlgResourcesReviewsHelper extends \Hubzero\Base\Object
 		}
 		$row->comment   = \Hubzero\Utility\Sanitize::clean($row->comment);
 		$row->anonymous = ($row->anonymous == 1 || $row->anonymous == '1') ? $row->anonymous : 0;
-		$row->created   = ($row->created) ? $row->created : JFactory::getDate()->toSql();
+		$row->created   = ($row->created && $row->created != '0000-00-00 00:00:00') ? $row->created : JFactory::getDate()->toSql();
 
 		// Check for missing (required) fields
 		if (!$row->check())

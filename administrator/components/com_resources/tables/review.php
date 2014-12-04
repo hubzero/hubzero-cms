@@ -59,6 +59,20 @@ class ResourcesReview extends JTable
 			$this->setError(JText::_('Your review must have a rating.'));
 			return false;
 		}
+
+		if (!$this->resource_id)
+		{
+			$this->setError(JText::_('Review entry missing Resource ID.'));
+			return false;
+		}
+
+		if (!$this->created || $this->created == '0000-00-00 00:00:00')
+		{
+			$this->created = JFactory::getDate()->toSql();
+		}
+
+		$this->user_id = $this->user_id ?: JFactory::getUser()->get('id');
+
 		return true;
 	}
 
