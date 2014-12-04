@@ -45,16 +45,17 @@ $this->view('default_menu')
      ->display();
 ?>
 <div class="pages-wrap">
-	<div class="pages-content">
 <?php
 if (!$this->page)
 {
 	?>
-	<div id="pages-introduction">
-		<div class="instructions">
-			<p><?php echo JText::_('PLG_COURSES_PAGES_NONE_FOUND'); ?></p>
+	<div class="pages-content">
+		<div id="pages-introduction">
+			<div class="instructions">
+				<p><?php echo JText::_('PLG_COURSES_PAGES_NONE_FOUND'); ?></p>
+			</div>
 		</div>
-	</div>
+	</div><!-- / .pages-content -->
 	<?php
 }
 else
@@ -80,8 +81,8 @@ else
 			$authorized = true;
 		}
 	}
-?>
-<?php if ($authorized) { ?>
+	?>
+	<?php if ($authorized) { ?>
 		<ul class="manager-options">
 			<li>
 				<a class="icon-delete delete" href="<?php echo JRoute::_($base . '&unit=' . $this->page->get('url') . '&b=delete'); ?>" title="<?php echo JText::_('PLG_COURSES_PAGES_DELETE'); ?>">
@@ -94,10 +95,11 @@ else
 				</a>
 			</li>
 		</ul>
-<?php } ?>
-<?php echo $this->page->content('parsed'); ?>
-<?php
+	<?php } ?>
+	<div class="pages-content">
+		<?php echo $this->page->content('parsed'); ?>
+	</div><!-- / .pages-content -->
+	<?php
 }
 ?>
-	</div><!-- / .pages-content -->
 </div><!-- / .pages-wrap -->

@@ -52,7 +52,6 @@
 		position: relative;
 		margin: 0;
 		padding: 0;
-		
 		display: block;
 		float: left;
 		*border-top: 1px solid #e9e9e9;
@@ -63,7 +62,6 @@
 		display: block;
 		background: none;
 		padding: 0.5em 1em;
-
 		border: 1px solid #e9e9e9;
 		border-bottom: none;
 	}
@@ -114,8 +112,14 @@
 		background: #f9f9f9;
 		padding: 20px 20px 5020px 20px;;
 	}
-	.course_pages .pages-content {
+	.course_pages .pages-wrap {
 		position: relative;
+	}
+	.course_pages .pages-content:after {
+		content: "";
+		display: table;
+		line-height: 0;
+		clear: both;
 	}
 	.course_pages .file-path {
 		font-size: 0.85em;
@@ -127,8 +131,8 @@
 		margin: 0;
 		padding: 0;
 		position: absolute;
-		top: -2em;
-		right: 0px;
+		top: 1em;
+		right: 1em;
 	}
 	.course_pages .manager-options li {
 		display: block;
