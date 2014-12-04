@@ -47,7 +47,7 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 				else
 				{
 					self::$inst = new HubgraphConfiguration;
-					self::$inst->settings = json_decode($conf);
+					self::$inst->settings = json_decode($conf, TRUE);
 				}
 			}
 			if (!self::$inst instanceof HubgraphConfiguration)
