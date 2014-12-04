@@ -187,6 +187,14 @@ class JRouterSite extends JRouter
 						if ( ($vars['task'] == 'unconfirmed') || ($vars['task'] == 'change') || ($vars['task'] == 'resend') || ($vars['task'] == 'confirm') )
 						return $vars;
 				}
+				// allow picture to show if not confirmed
+				else if ($vars['option'] == 'com_members'
+					&& (isset($vars['task']) && $vars['task'] == 'download')
+					&& (isset($vars['active']) && strpos($vars['active'], 'Image:') !== false)
+					&& JFactory::getSession()->get('userchangedemail', 0) == 1)
+				{
+					return $vars;
+				}
 
 				$vars = array();
 				$vars['option'] = 'com_members';

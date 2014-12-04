@@ -1517,6 +1517,14 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 				$this->setError(JText::_('COM_MEMBERS_REGISTER_ERROR_CONFIRMING'));
 			}
 
+			// if the user just changed their email & confirmed
+			// reset 'userchangedemail' key
+			$session = JFactory::getSession();
+			if ($session->get('userchangedemail', 0) == 1)
+			{
+				$session->set('userchangedemail', 0);
+			}
+
 			// Redirect
 			if (empty($return))
 			{

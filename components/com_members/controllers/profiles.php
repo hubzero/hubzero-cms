@@ -1558,6 +1558,19 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 				$user = JFactory::getSession()->get('user');
 				$user->set('name', $juser->get('name'));
 			}
+
+			// Update session if email is changing
+			if ($juser->get('email') != JFactory::getSession()->get('user')->get('email'))
+			{
+				$user = JFactory::getSession()->get('user');
+				$user->set('email', $juser->get('email'));
+
+				// add item to session to mark that the user changed emails
+				// this way we can serve profile images for these users but not all
+				// unconfirmed users
+				$session = JFactory::getSession();
+				$session->set('userchangedemail', 1);
+			}
 		}
 
 		// Send a new confirmation code AFTER we've successfully saved the changes to the e-mail address
