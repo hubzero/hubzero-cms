@@ -161,19 +161,17 @@ for ($i=0, $n=count($this->results); $i < $n; $i++)
 					<br /><span>(<?php echo JText::_('COM_ANSWERS_FIELD_ANONYMOUS'); ?></span>
 				<?php } ?>
 				</td>
-			<?php if ($row->comments('count', array('filterby' => 'all', 'replies' => false)) > 0) { ?>
 				<td style="white-space: nowrap;">
+			<?php if ($row->comments('count', array('filterby' => 'all', 'replies' => false)) > 0) { ?>
 					<a class="glyph comment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
 						<span><?php echo JText::sprintf('COM_ANSWERS_NUM_RESPONSES', $row->comments('count')); ?></span>
 					</a>
-				</td>
 			<?php } else { ?>
-				<td>
-					<span class="glyph comment">
+					<a class="glyph comment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=answers&qid=' . $row->get('id')); ?>">
 						<span>0</span>
-					</span>
-				</td>
+					</a>
 			<?php } ?>
+				</td>
 			</tr>
 <?php
 	$k = 1 - $k;
