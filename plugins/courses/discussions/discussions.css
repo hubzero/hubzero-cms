@@ -152,7 +152,6 @@
 	.course_forum .filters h3  {
 		margin: 0 8em 0 0;
 		padding: 0.4em 0 0 0;
-		/*float: left;*/
 		display: block;
 	}
 	.course_forum .filters p {
@@ -168,8 +167,6 @@
 		border-bottom: 1px solid #e9e9e9;
 		position: relative;
 	}
-	.course_forum .filters .filters-inner {
-	}
 
 	.course_forum .below {
 		background: #f9f9f9;
@@ -178,18 +175,18 @@
 		padding: 0 20px 20px 20px;
 	}
 
-	.course_forum .entry-date-at {
+	.course_discussions .entry-date-at {
 		visibility: hidden;
 	}
-	.course_forum .entry-date-on {
+	.course_discussions .entry-date-on {
 		visibility: hidden;
 	}
-	.course_forum .aside .entry-date-at {
+	.course_discussions .aside .entry-date-at {
 		display: none;
 	}
 
-	.course_forum .entries .edit,
-	.course_forum .entries .delete {
+	.course_discussions .entries .edit,
+	.course_discussions .entries .delete {
 		display: inline-block;
 		width: 1em;
 		height: 1em;
@@ -205,15 +202,15 @@
 	ol.comments li .delete {
 		float: right;
 	}
-	.course_forum .entries tfoot {
+	.course_discussions .entries tfoot {
 		text-align: right;
 	}
-	.course_forum .entry-details {
+	.course_discussions .entry-details {
 		display: block;
 	}
-	.course_forum .section-name,
-	.course_forum .category-name,
-	.course_forum .thread-name {
+	.course_discussions .section-name,
+	.course_discussions .category-name,
+	.course_discussions .thread-name {
 		max-width: 10em;
 		-ms-word-break: break-all;
 		word-wrap: break-word;
@@ -222,7 +219,7 @@
 		-moz-hyphens: auto;
 		hyphens: auto;
 	}
-	.course_forum .entry-description {
+	.course_discussions .entry-description {
 		-ms-word-break: break-all;
 		word-wrap: break-word;
 		word-break: break-all;
@@ -230,36 +227,36 @@
 		-moz-hyphens: auto;
 		hyphens: auto;
 	}
-	.course_forum .entries caption a {
+	.course_discussions .entries caption a {
 		float: right;
 	}
 
-	.course_forum .entries .entry-id:before {
+	.course_discussions .entries .entry-id:before {
 		content: "\f086";
 	}
-	.course_forum .entries .closed .entry-id:before {
+	.course_discussions .entries .closed .entry-id:before {
 		content: "\f023";
 	}
-	.course_forum .entries .sticky .entry-id:before {
+	.course_discussions .entries .sticky .entry-id:before {
 		content: "\273D";
 	}
-	.course_forum .categories .entry-id:before {
+	.course_discussions .categories .entry-id:before {
 		content: "\f07b";
 	}
-	.course_forum .categories .closed .entry-id:before {
+	.course_discussions .categories .closed .entry-id:before {
 		content: "\f023";
 	}
 
-	.course_forum .entry-details a {
+	.course_discussions .entry-details a {
 		color: #666;
 		border-bottom: 1px dotted #999;
 	}
-	.course_forum .entries .entry-options {
+	.course_discussions .entries .entry-options {
 		text-align: right;
 		white-space: nowrap;
 	}
 	/* tbody */
-	.course_forum .entries .topic {
+	.course_discussions .entries .topic {
 		font-weight: bold;
 		margin: 0;
 	}
