@@ -68,7 +68,13 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 					<?php if ($xml->description != 'MOD_CUSTOM_XML_DESCRIPTION') : ?>
 						<dt><?php echo JText::_('PLG_MEMBERS_DASHBOARD_ADD_MODULES_MODULE_DESCRIPTION'); ?></dt>
-						<dd><?php echo $xml->description; ?></dd>
+						<dd><?php
+						if (!strstr($xml->description, ' '))
+						{
+							JFactory::getLanguage()->load($module->module, JPATH_SITE);
+							$xml->description = JText::_($xml->description);
+						}
+						echo $xml->description; ?></dd>
 					<?php endif; ?>
 
 					<?php if (count($xml->images->image) > 0) : ?>
