@@ -43,10 +43,7 @@ $juser = JFactory::getUser();
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-	<form action="<?php echo JRoute::_($this->offering->link() . '&active=announcements'); ?>" method="post" id="hubForm">
-		<div class="explaination">
-			<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_HINT'); ?></p>
-		</div><!-- /.aside -->
+	<form action="<?php echo JRoute::_($this->offering->link() . '&active=announcements'); ?>" method="post" id="hubForm" class="full">
 		<fieldset>
 			<legend>
 				<?php if ($this->model->get('id')) { ?>
@@ -65,6 +62,7 @@ $juser = JFactory::getUser();
 
 			<fieldset>
 				<legend><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_FIELD_PUBLISH_WINDOW'); ?></legend>
+				<p><?php echo JText::_('PLG_COURSES_ANNOUNCEMENTS_HINT'); ?></p>
 				<div class="grid">
 					<div class="col span-half">
 						<label for="field-publish_up" id="priority-publish_up">
