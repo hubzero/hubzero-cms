@@ -130,6 +130,13 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 			$filename .= rand(10, 99);
 		}
 
+		//make sure that file is acceptable type
+		if (!in_array(strtolower($ext), explode(',', $this->config->get('file_ext'))))
+		{
+			echo json_encode(array('error' => JText::_('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE')));
+			return;
+		}
+
 		$file = $path . DS . $filename . '.' . $ext;
 
 		if ($stream)
@@ -264,6 +271,14 @@ class SupportControllerMedia extends \Hubzero\Component\SiteController
 		while (file_exists($path . DS . $filename . '.' . $ext))
 		{
 			$filename .= rand(10, 99);
+		}
+
+		//make sure that file is acceptable type
+		if (!in_array($ext, explode(',', $this->config->get('file_ext'))))
+		{
+			$this->setError(JText::_('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
+			echo $this->getError();
+			return;
 		}
 
 		$filename .= '.' . $ext;
