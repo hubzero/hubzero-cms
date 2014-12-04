@@ -156,7 +156,10 @@ class MembersControllerImport extends \Hubzero\Component\AdminController
 		$this->view->params = new JParameter($this->view->import->get('params'));
 
 		// get all files in import filespace
-		$this->view->files = JFolder::files($this->view->import->fileSpacePath(), '.');
+		if ($this->view->import->exists())
+		{
+			$this->view->files = JFolder::files($this->view->import->fileSpacePath(), '.');
+		}
 
 		// get all imports from archive
 		$hooksArchive = \Hubzero\Content\Import\Model\Hook\Archive::getInstance();
