@@ -271,7 +271,7 @@ jQuery(function(jq)
 	$('#tag-sel').submit(function(evt) {
 		evt.preventDefault();
 		var tag = $('#center-node').val().toLowerCase().replace(/[^a-z0-9]/g, '');
-		if ($("input[@name=relationship]:checked").attr('id') === 'implicit')
+		if ($("input[name=relationship]:checked").attr('id') === 'implicit')
 			center(tag);
 		else
 			center_hierarchy(tag);

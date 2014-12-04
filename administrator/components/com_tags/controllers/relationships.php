@@ -150,6 +150,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 				);
 				$follow[$idx + 1] = $row['id'];
 			}
+
 			foreach ($follow as $idx=>$tag_id)
 			{
 				$this->database->setQuery(
@@ -184,8 +185,11 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 						'value'  => $row['count']
 					);
 				}
+
 				foreach ($links as &$link)
+				{
 					$link['value'] /= $max_weight;
+				}
 			}
 		}
 		header('Content-type: application/octet-stream');
@@ -220,11 +224,15 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 		$tagIdMap = array($rv['id'] => 0);
 		$byDepth = array(array($tag));
 
-		for ($depth = 0; $depth < $DEPTH; ++$depth) {
-			if (!$byDepth[$depth]) {
+		for ($depth = 0; $depth < $DEPTH; ++$depth)
+		{
+			if (!isset($byDepth[$depth]))
+			{
 				break;
 			}
-			foreach ($byDepth[$depth] as $tag) {
+
+			foreach ($byDepth[$depth] as $tag)
+			{
 				$parents = 'SELECT DISTINCT t.id, t.tag, t.raw_tag, to1.label, \'in\' AS direction
 					FROM #__tags_object to1
 					INNER JOIN #__tags t ON t.id = to1.tagid
@@ -238,25 +246,36 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 					$tag['type'] == 'child' ? $children :
 					($tag['type'] == 'parent' ? $parents : "$parents UNION $children")
 				);
-				foreach ($this->database->loadAssocList() as $subTag) {
-					if (!array_key_exists($subTag['id'], $tagIdMap)) {
-						if ($subTag['direction'] == 'in' || $subTag['label'] != 'parent') {
+
+				foreach ($this->database->loadAssocList() as $subTag)
+				{
+					if (!array_key_exists($subTag['id'], $tagIdMap))
+					{
+						if ($subTag['direction'] == 'in' || $subTag['label'] != 'parent')
+						{
 							$subTag['type'] = $subTag['label'];
 						}
-						else if ($subTag['label'] == 'parent') {
+						else if ($subTag['label'] == 'parent')
+						{
 							$subTag['type'] = 'child';
 						}
+
 						$nodes[] = $subTag;
 						$tagIdMap[$subTag['id']] = count($nodes) - 1;
-						if ($subTag['label'] == 'parent') {
-							if (!array_key_exists($depth + 1, $byDepth)) {
+						if ($subTag['label'] == 'parent')
+						{
+							if (!array_key_exists($depth + 1, $byDepth))
+							{
 								$byDepth[$depth + 1] = array();
 							}
 							$byDepth[$depth + 1][] = $subTag;
 						}
 					}
-					elseif ($subTag['label'] == 'parent') {
+					elseif ($subTag['label'] == 'parent')
+					{
+
 					}
+
 					$links[] = array(
 						'source' => $tagIdMap[$tag['id']],
 						'target' => $tagIdMap[$subTag['id']]
