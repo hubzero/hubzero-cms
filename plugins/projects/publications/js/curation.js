@@ -44,15 +44,15 @@ HUB.ProjectPublicationsDraft = {
 		// Check block status on each element change
 		HUB.ProjectPublicationsDraft.onElementChange();
 
-		// Enable block actions
-		HUB.ProjectPublicationsDraft.enableBlock();
-
 		// Enable idnividual element controls
 		HUB.ProjectPublicationsDraft.enableElementNav();
 
 		// Set initial completeness
 		HUB.ProjectPublicationsDraft.completeness = $('#complete').length ? $('#complete').val() : 0;
 		HUB.ProjectPublicationsDraft.checkBlockCompleteness();
+
+		// Enable block actions
+		HUB.ProjectPublicationsDraft.enableBlock();
 
 		// Show 'more' link for extensive side text
 		HUB.ProjectPublicationsDraft.showMoreText();
@@ -1010,7 +1010,7 @@ HUB.ProjectPublicationsDraft = {
 	{
 		var $ = this.jQuery;
 
-		var complete 	= 1;
+		var complete 	= $('#license').val() ? 1 : 0;
 		var ltext 		= $('#license-text');
 		var agree 		= $('#agreement');
 		var element 	= $('#licensePick');

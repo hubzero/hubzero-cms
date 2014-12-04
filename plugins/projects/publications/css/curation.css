@@ -314,10 +314,10 @@
 		padding: 0;
 		margin: 0;
 	}
-	.link-type {
+	.link-type, .data-type {
 		padding-left: 20px;
 	}
-	.link-type:before {
+	.link-type:before, .data-type:before {
 		content: "\26D3";
 		width: 16px;
 		height: 16px;
@@ -328,6 +328,10 @@
 		position: absolute;
 		margin-left: -1.2em;
 		margin-right: 0.2em;
+	}
+	.data-type:before {
+		content: "\f001";
+		color: #c6a68d;
 	}
 	.item-title .item-details {
 		margin-left: 1em;
@@ -887,7 +891,8 @@
 	.item-title .item-details {
 		font-size: 100%;
 	}
-	.item-title.link-type .item-details {
+	.item-title.link-type .item-details,
+	.item-title.data-type .item-details {
 		font-size: 85%;
 		margin-left: 0;
 	}
