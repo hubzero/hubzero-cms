@@ -352,9 +352,17 @@ HUB.Presenter = {
 				timeDifference = videoSlideTime - shouldBeAtTime;
 			
 			// only adjust time as needed
-			if (timeDifference > 1 || timeDifference < -1)
+			if (timeDifference > 0.5 || timeDifference < -0.5)
 			{
+				// pause video & then set time
+				videoSlide.pause();
 				videoSlide.currentTime = shouldBeAtTime;
+				
+				//only play if video is playing
+				if (!HUB.Presenter.isPaused())
+				{
+					videoSlide.play();
+				}
 			}
 		}
 	},
