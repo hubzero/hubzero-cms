@@ -905,7 +905,7 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// We do need project file path
-		if (!$this->_path)
+		if (!$this->_path || !is_dir($this->_path))
 		{
 			return false;
 		}
