@@ -496,7 +496,7 @@ class PublicationTags extends TagsHandler
 		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
 		$sql .= "FROM #__tags AS t  ";
 		$sql .= "JOIN " . $tj->getTableName() . " AS tj ON t.id=tj.tagid ";
-		$sql .= " LEFT JOIN #__publication_versions AS V ON V.id=tj.objectid AND tj.tbl='publications' ";
+		$sql .= " LEFT JOIN #__publication_versions AS V ON V.publication_id=tj.objectid AND tj.tbl='publications' ";
 		$sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
 		$sql .= "AND tj.tbl=" . $this->_db->Quote($this->_tbl) . " ";
 		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
