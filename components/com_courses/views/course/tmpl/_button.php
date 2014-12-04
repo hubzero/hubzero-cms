@@ -34,7 +34,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<div class="btn-group-wrap">
 		<div class="btn-group dropdown">
 			<?php if ($this->course->isManager()) { ?>
-				<a class="btn" href="#"><?php echo $this->escape(stripslashes($this->offering->get('title'))); ?></a>
+				<a class="btn" href="<?php echo JRoute::_($this->offering->link('enter')); ?>"><?php echo $this->escape(stripslashes($this->offering->get('title'))); ?></a>
 			<?php } else { ?>
 				<a class="btn" href="<?php echo JRoute::_($this->offering->link('enter')); ?>"><?php echo $this->escape(stripslashes($this->section->get('title'))); ?></a>
 			<?php } ?>
