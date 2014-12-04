@@ -333,8 +333,36 @@ class AnswersControllerAnswers extends \Hubzero\Component\AdminController
 		}
 
 		$ar = new AnswersModelResponse($id[0]);
+		if (!$ar->exists())
+		{
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			);
+			return;
+		}
+
+		if ($publish == 1)
+		{
+			// Unmark all other entries
+			$tbl = new AnswersTableResponse($this->database);
+			if ($results = $tbl->find('list', array('question_id' => $ar->get('question_id'))))
+			{
+				foreach ($results as $result)
+				{
+					$result = new AnswersModelResponse($result);
+					if ($result->get('state') != 0 && $result->get('state') != 1)
+					{
+						continue;
+					}
+					$result->set('state', 0);
+					$result->store(false);
+				}
+			}
+		}
+
+		// Mark this entry
 		$ar->set('state', $publish);
-		if (!$ar->store())
+		if (!$ar->store(false))
 		{
 			$this->setRedirect(
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
