@@ -34,10 +34,10 @@
 		background: #000;
 		background: rgba(0, 0, 0, 0.2);
 		border: 1px solid rgba(255, 255, 255, 0.5);
-		-webkit-border-radius: 0.25em;
-		   -moz-border-radius: 0.25em;
-		    -ms-border-radius: 0.25em;
-		     -o-border-radius: 0.25em;
+		-webkit-border-radius: 0.5em;
+		   -moz-border-radius: 0.5em;
+		    -ms-border-radius: 0.5em;
+		     -o-border-radius: 0.5em;
 		        border-radius: 0.5em;
 		color: #fff;
 		-webkit-box-shadow: none;
