@@ -603,7 +603,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 				'folder'	=>'projects',
 				'element'	=>'publications',
 				'name'		=>'attachments',
-				'layout'	=> 'link'
+				'layout'	=> $this->_name
 			)
 		);
 		$view->data 	= $data;

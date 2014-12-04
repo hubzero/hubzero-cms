@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 $data 		= $this->data;
 $row  		= $this->data->row;
 $title 		= $row->title ? $row->title : $row->path;
-$details 	= $row->title ? $row->path : NULL;
+$details 	= $row->title ? $row->object_name : NULL;
 $viewer 	= $this->data->viewer;
 
 ?>
@@ -36,7 +36,6 @@ $viewer 	= $this->data->viewer;
 		<span class="item-options">
 		<?php if ($viewer == 'edit') { ?>
 			<span>
-				<a href="<?php echo $data->editUrl . '/?action=edititem' . a . 'aid=' . $data->id . a .'p=' . $data->props; ?>" class="showinbox item-edit" title="<?php echo strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')); ?>">&nbsp;</a>
 				<a href="<?php echo $data->editUrl . '/?action=deleteitem' . a . 'aid=' . $data->id . a . '&version=' . $data->version . a . 'p=' . $data->props; ?>" class="item-remove" title="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</a>
 			</span>
 		<?php } ?>
