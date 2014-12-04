@@ -184,7 +184,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 ?>
 
 <div id="presenter-nav-bar">
-	<a href="/about" id="powered" title="Powered by <?php echo JFactory::getConfig()->get('sitename'); ?>">
+	<a target="_blank" href="/about" id="powered" title="Powered by <?php echo JFactory::getConfig()->get('sitename'); ?>">
 		<span>powered by</span> <?php echo JFactory::getConfig()->get('sitename'); ?>
 	</a>
 	
