@@ -497,14 +497,17 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 		$path = ProjectsHelper::getProjectPath($this->_project->alias,
 						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 
-		chdir($path);
-		exec($this->gitpath . ' ls-files --exclude-standard |grep ".csv"', $files);
-
 		// Get project database object
 		$objPD = new ProjectDatabase($this->_database);
 
 		// Get database list
 		$list  = $objPD->getList($this->_project->id);
+
+		if (is_dir($path))
+		{
+			chdir($path);
+			exec($this->gitpath . ' ls-files --exclude-standard |grep ".csv"', $files);
+		}
 
 		$list_u = array();
 		foreach ($list as $l)
