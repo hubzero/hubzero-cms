@@ -375,8 +375,15 @@ jQuery(document).ready(function($){
 				return false;
 			}
 
+			if (_DEBUG) {
+				window.console && console.log('Calling: ' + $(this).attr('href').nohtml());
+			}
+
 			$.get($(this).attr('href').nohtml(), {}, function(response){
-				$('#custom-views').html(response);
+				if (_DEBUG) {
+					window.console && console.log(response);
+				}
+				$('#query-list').html(response);
 			});
 
 			return false;

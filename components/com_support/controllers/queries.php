@@ -175,53 +175,7 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$obj = new SupportTicket($this->database);
-
-			// Get query list
-			$sf = new SupportTableQueryFolder($this->database);
-			$this->view->folders = $sf->find('list', array(
-				'user_id'  => $this->juser->get('id'),
-				'sort'     => 'ordering',
-				'sort_Dir' => 'asc'
-			));
-
-			$sq = new SupportQuery($this->database);
-			$queries = $sq->find('list', array(
-				'user_id'  => $this->juser->get('id'),
-				'sort'     => 'ordering',
-				'sort_Dir' => 'asc'
-			));
-
-			foreach ($queries as $query)
-			{
-				$query->query = $sq->getQuery($query->conditions);
-				$query->count = $obj->getCount($query->query);
-
-				foreach ($this->view->folders as $k => $v)
-				{
-					if (!isset($this->view->folders[$k]->queries))
-					{
-						$this->view->folders[$k]->queries = array();
-					}
-					if ($query->folder_id == $v->id)
-					{
-						$this->view->folders[$k]->queries[] = $query;
-					}
-				}
-			}
-
-			$this->view->show = 0;
-			// Set any errors
-			if ($this->getError())
-			{
-				foreach ($this->getError() as $error)
-				{
-					$this->view->setError($error);
-				}
-			}
-
-			// Output the HTML
-			$this->view->setLayout('list')->display();
+			$this->listTask();
 		}
 	}
 
@@ -264,54 +218,64 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$obj = new SupportTicket($this->database);
-
-			// Get query list
-			$sf = new SupportTableQueryFolder($this->database);
-			$this->view->folders = $sf->find('list', array(
-				'user_id'  => $this->juser->get('id'),
-				'sort'     => 'ordering',
-				'sort_Dir' => 'asc'
-			));
-
-			$sq = new SupportQuery($this->database);
-			$queries = $sq->find('list', array(
-				'user_id'  => $this->juser->get('id'),
-				'sort'     => 'ordering',
-				'sort_Dir' => 'asc'
-			));
-
-			foreach ($queries as $query)
-			{
-				$query->query = $sq->getQuery($query->conditions);
-				$query->count = $obj->getCount($query->query);
-
-				foreach ($this->view->folders as $k => $v)
-				{
-					if (!isset($this->view->folders[$k]->queries))
-					{
-						$this->view->folders[$k]->queries = array();
-					}
-					if ($query->folder_id == $v->id)
-					{
-						$this->view->folders[$k]->queries[] = $query;
-					}
-				}
-			}
-
-			$this->view->show = 0;
-			// Set any errors
-			if ($this->getError())
-			{
-				foreach ($this->getError() as $error)
-				{
-					$this->view->setError($error);
-				}
-			}
-
-			// Output the HTML
-			$this->view->setLayout('list')->display();
+			$this->listTask();
 		}
+	}
+
+	/**
+	 * Build the query list
+	 *
+	 * @return  void
+	 */
+	public function listTask()
+	{
+		$obj = new SupportTicket($this->database);
+
+		// Get query list
+		$sf = new SupportTableQueryFolder($this->database);
+		$this->view->folders = $sf->find('list', array(
+			'user_id'  => $this->juser->get('id'),
+			'sort'     => 'ordering',
+			'sort_Dir' => 'asc'
+		));
+
+		$sq = new SupportQuery($this->database);
+		$queries = $sq->find('list', array(
+			'user_id'  => $this->juser->get('id'),
+			'sort'     => 'ordering',
+			'sort_Dir' => 'asc'
+		));
+
+		foreach ($queries as $query)
+		{
+			$query->query = $sq->getQuery($query->conditions);
+			$query->count = $obj->getCount($query->query);
+
+			foreach ($this->view->folders as $k => $v)
+			{
+				if (!isset($this->view->folders[$k]->queries))
+				{
+					$this->view->folders[$k]->queries = array();
+				}
+				if ($query->folder_id == $v->id)
+				{
+					$this->view->folders[$k]->queries[] = $query;
+				}
+			}
+		}
+
+		$this->view->show = 0;
+
+		// Set any errors
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
+
+		// Output the HTML
+		$this->view
+			->setLayout('list')
+			->display();
 	}
 
 	/**
@@ -463,14 +427,17 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 					JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED')
 				);
+				return;
 			}
 
-			$response->id       = $row->id;
+			/*$response->id       = $row->id;
 			$response->title    = $row->title;
 			$response->ordering = $row->ordering;
 			$response->message  = JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED');
 
 			echo json_encode($response);
+			return;*/
+			$this->listTask();
 			return;
 		}
 
@@ -509,13 +476,15 @@ class SupportControllerQueries extends \Hubzero\Component\SiteController
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED')
 			);
+			return;
 		}
 
-		$response = new stdClass;
+		$this->listTask();
+		/*$response = new stdClass;
 		$response->success = 1;
 		$response->message = JText::_('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED');
 
-		echo json_encode($response);
+		echo json_encode($response);*/
 	}
 
 	/**
