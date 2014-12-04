@@ -573,7 +573,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 			// Redirect
 			$this->setRedirect(
 				JRoute::_('index.php?option='.$this->_option),
-				JText::_('MEMBER_SAVED')
+				JText::_('COM_MEMBERS_MEMBER_SAVED')
 			);
 		}
 		else
