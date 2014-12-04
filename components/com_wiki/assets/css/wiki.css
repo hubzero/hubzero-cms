@@ -243,6 +243,16 @@
 	}
 }
 
+	fieldset.filters {
+		padding: 1em;
+		border: 1px solid #ccc;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+	}
+	fieldset.filters legend {
+		padding-left: 1em;
+		padding-right: 1em;
+	}
+
 	.page-search {
 		position: relative;
 	}

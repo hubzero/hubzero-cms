@@ -1017,6 +1017,17 @@
 		border: none;
 	}
 
+	.group_wiki fieldset.filters {
+		padding: 1em;
+		margin-top: 1em;
+		border: 1px solid #ccc;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+	}
+	.group_wiki fieldset.filters legend {
+		padding-left: 1em;
+		padding-right: 1em;
+	}
+
 	.wikipage .embedded-plugin {
 		background: url("/components/com_wiki/assets/img/checkered.png");
 		text-align: center;

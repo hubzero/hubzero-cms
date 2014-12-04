@@ -97,7 +97,7 @@ $database->setQuery($query);
 $rows = $database->loadObjectList();
 ?>
 	<form method="get" action="<?php echo JRoute::_($this->page->link()); ?>">
-		<fieldset>
+		<fieldset class="filters">
 			<legend><?php echo JText::_('COM_WIKI_FILTER_LIST'); ?></legend>
 
 			<label for="field-namespace">
