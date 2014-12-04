@@ -645,6 +645,10 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 				{
 					// Get comment
 					$c = $objC->getComments(NULL, NULL, $a->id, $this->_project->lastvisit);
+					if (!$c)
+					{
+						continue;
+					}
 
 					// Bring up commented item
 					$needle = array('id' => $c->parent_activity);
