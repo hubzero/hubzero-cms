@@ -328,6 +328,18 @@
 	#small-page table tfoot td {
 		border-bottom: none;
 	}
+	#authors-form select {
+		display: block;
+	}
+	@media only screen and (max-width: 900px) {
+		#authors-form select {
+			display: inline-block;
+		}
+		#small-page .submit {
+			margin: 0;
+			padding: 0;
+		}
+	}
 
 	.fa .fa {
 		margin-left: 2em;
