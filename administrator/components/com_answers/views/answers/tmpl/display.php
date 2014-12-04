@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 $canDo = AnswersHelperPermissions::getActions('answer');
 
 JToolBarHelper::title(JText::_('COM_ANSWERS_TITLE') . ': ' . JText::_('COM_ANSWERS_RESPONSES'), 'answers.png');
-if ($canDo->get('core.create'))
+if ($canDo->get('core.create') && $this->filters['question_id'])
 {
 	JToolBarHelper::addNew();
 }
