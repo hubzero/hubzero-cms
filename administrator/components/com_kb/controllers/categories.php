@@ -204,10 +204,21 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields   = JRequest::getVar('fields', array(), 'post');
+		$articles = null;
 
 		// Initiate extended database class
 		$row = new KbModelCategory($fields['id']);
+
+		// Did the parent category change?
+		if ($row->exists())
+		{
+			if ($fields['section'] != $row->get('section'))
+			{
+				$articles = $row->articles(array('state' => -1));
+			}
+		}
+
 		if (!$row->bind($fields))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -226,6 +237,24 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 			$this->addComponentMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
+		}
+
+		// Update articles if category parent has changed
+		if ($articles)
+		{
+			$sec = $row->get('id');
+			$cat = 0;
+			if ($row->get('section'))
+			{
+				$sec = $row->get('section', 0);
+				$cat = $row->get('id');
+			}
+			foreach ($articles as $article)
+			{
+				$article->set('section', $sec);
+				$article->set('category', $cat);
+				$article->store(false);
+			}
 		}
 
 		if ($redirect)

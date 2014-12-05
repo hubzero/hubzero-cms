@@ -193,9 +193,13 @@ function kbParseRoute($segments)
 			else
 			{
 				$vars['task'] = 'article';
-				if ($vars['alias'])
+				if (isset($vars['alias']) && $vars['alias'])
 				{
 					$vars['category'] = $vars['alias'];
+				}
+				else
+				{
+					$vars['category'] = $segments[0];
 				}
 				$vars['alias'] = urldecode($segments[2]);
 				$vars['alias'] = str_replace(':', '-', $vars['alias']);

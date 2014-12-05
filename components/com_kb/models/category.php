@@ -131,7 +131,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 			}
 			if (!isset($filters['category']))
 			{
-				$filters['category'] = $this->get('category');
+				$filters['category'] = $this->get('id');
 			}
 		}
 		else

@@ -467,7 +467,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 		{
 			$this->set('ccalias', $this->category()->get('alias'));
 		}
-		$link .= ($this->get('ccalias')) ? '&category= '. $this->get('ccalias') : '';
+		$link .= ($this->get('ccalias')) ? '&category=' . $this->get('ccalias') : '';
 		$link .= ($this->get('alias'))   ? '&alias=' . $this->get('alias')      : '&alias=' . $this->get('id');
 
 		// If it doesn't exist or isn't published

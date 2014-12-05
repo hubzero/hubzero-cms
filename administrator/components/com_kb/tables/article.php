@@ -173,15 +173,27 @@ class KbTableArticle extends JTable
 	 */
 	public function loadAlias($oid=NULL, $cat=NULL)
 	{
-		$filters = array(
-			'alias' => $oid
-		);
-		if ($cat)
+		if (is_numeric($cat))
 		{
-			$filters['section'] = $cat;
+			$filters = array(
+				'alias' => $oid
+			);
+			if ($cat)
+			{
+				$filters['section'] = $cat;
+			}
+
+			return parent::load($filters);
 		}
 
-		return parent::load($filters);
+		$this->_db->setQuery("SELECT a.* FROM $this->_tbl AS a INNER JOIN `#__faq_categories` AS c ON c.id=a.section WHERE a.alias=" . $this->_db->quote($oid) . " AND c.alias=" . $this->_db->quote($cat));
+		if ($result = $this->_db->loadAssoc())
+		{
+			return $this->bind($result);
+		}
+
+		$this->setError($this->_db->getErrorMsg());
+		return false;
 	}
 
 	/**
