@@ -81,6 +81,12 @@ function view($dd = false)
 		$dv_conf['settings']['view_url'] .= '?dv_first=1';
 	}
 
+	// Version
+	$version = isset($dd['version']) ? "&v={$dd['version']}" : '';
+	$dv_conf['settings']['data_url'] .= $version;
+	$dv_conf['settings']['view_url'] .= $version;
+
+
 	if ($dd) {
 
 		$dv_conf['settings']['show_filter_options'] = isset($dd['filter_options'])? $dd['filter_options']: true;
