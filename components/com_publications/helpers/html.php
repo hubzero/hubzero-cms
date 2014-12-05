@@ -69,70 +69,121 @@ class PublicationsHtml
 	 *
 	 * @return     string
 	 */
-	public static function showGallery( $shots = array(), $path = '')
+	public static function showGallery( $shots = array(), $path = '', $pid = 0, $vid = 0)
 	{
-		if (empty($shots) || !$path)
+		if (!$path || !$pid || !$vid)
 		{
 			return;
 		}
 
-		$d = @dir(JPATH_ROOT.$path);
+		$d = @dir(JPATH_ROOT . $path);
 		if (!$d)
 		{
 			return;
 		}
 
+		$images = array();
+		$tns = array();
+		$all = array();
+		$ordering = array();
 		$html = '';
+
+		if ($d)
+		{
+			while (false !== ($entry = $d->read()))
+			{
+				$img_file = $entry;
+				if (is_file(JPATH_ROOT . $path . DS . $img_file)
+				 && substr($entry, 0, 1) != '.'
+				 && strtolower($entry) !== 'index.html')
+				{
+					if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file))
+					{
+						$images[] = $img_file;
+					}
+					if (preg_match("/_tn/i", $img_file))
+					{
+						$tns[] = $img_file;
+					}
+					$images = array_diff($images, $tns);
+				}
+			}
+
+			$d->close();
+		}
+		if (empty($images))
+		{
+			return false;
+		}
+
+		$b = 0;
+		foreach ($images as $ima)
+		{
+			$new = array();
+			$new['img'] = $ima;
+			$new['type'] = explode('.', $new['img']);
+
+			// get title and ordering info from the database, if available
+			if (count($shots) > 0)
+			{
+				foreach ($shots as $si)
+				{
+					if ($si->srcfile == $ima)
+					{
+						$new['title'] = stripslashes($si->title);
+						$new['title'] = preg_replace('/"((.)*?)"/i', "&#147;\\1&#148;", $new['title']);
+						$new['ordering'] = $si->ordering;
+					}
+				}
+			}
+
+			$ordering[] = isset($new['ordering']) ? $new['ordering'] : $b;
+			$b++;
+			$all[] = $new;
+		}
+
+		if (count($shots) > 0)
+		{
+			// Sort by ordering
+			array_multisort($ordering, $all);
+		}
+		else
+		{
+			// Sort by name
+			sort($all);
+		}
+		$images = $all;
+
 		$els = '';
-		$i = 0;
 		$k = 0;
 		$g = 0;
 
-		// Get default thumbnail
-		$config = JComponentHelper::getParams( 'com_publications' );
-		$defaultThumb = $config->get('gallery_thumb', '/components/com_publications/assets/img/gallery_thumb.gif');
-
-		// Go through schreenshots
-		foreach ($shots as $shot)
+		for ($i = 0, $n = count($images); $i < $n; $i++)
 		{
-			if (!$shot->srcfile || !is_file(JPATH_ROOT.$path.DS.$shot->srcfile))
-			{
-				continue;
-			}
-			// Get extentsion
-			$ext = explode('.', $shot->srcfile);
-			$ext = strtolower(end($ext));
+			$tn = self::createThumbName($images[$i]['img'], '_tn', $extension = 'png');
+			$els .=  ($i==0 ) ? '<div class="showcase-pane">'."\n" : '';
 
-			// Get thumbnail
-			$thumb = PublicationsHtml::createThumbName($shot->srcfile, '_tn', $extension = 'png');
-			$src = $path.DS.$thumb;
-			if (!is_file(JPATH_ROOT.$src))
+			if (is_file(JPATH_ROOT . $path . DS . $tn))
 			{
-				$src = 	$defaultThumb;
-			}
-
-			if (is_file(JPATH_ROOT.$src))
-			{
-				$els .=  ($i==0 ) ? '<div class="showcase-pane">'."\n" : '';
-				$title = $shot->title ? $shot->title : basename($shot->filename);
-				if ($ext == 'swf' || $ext == 'mov')
+				if (strtolower(end($images[$i]['type'])) == 'swf' || strtolower(end($images[$i]['type'])) == 'mov')
 				{
 					$g++;
-					$els .= ' <a class="video"  href="'.$path.DS.$shot->srcfile.'" title="'.$title.'">';
-					$els .= '<img src="'.$src.'" alt="'.$title.'" /></a>';
+					$title = (isset($images[$i]['title']) && $images[$i]['title']!='') ? $images[$i]['title'] : JText::_('DEMO') . ' #' . $g;
+					$els .= ' <a class="popup" href="/publications' . DS . $pid . DS . $vid . '/Image:' . $images[$i]['img'] . '" title="' . $title . '">';
+					$els .= '<img src="/publications' . DS . $pid . DS . $vid . '/Image:' . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 				}
 				else
 				{
 					$k++;
-					$els .= ' <a rel="lightbox" href="'.$path.DS.$shot->srcfile.'" title="'.$title.'">';
-					$els .= '<img src="'.$src.'" alt="'.$title.'" class="thumbima" /></a>';
+					$title = (isset($images[$i]['title']) && $images[$i]['title']!='')  ? $images[$i]['title']: JText::_('SCREENSHOT') . ' #' . $k;
+					$els .= ' <a rel="lightbox" href="/publications' . DS . $pid . DS . $vid . '/Image:' . $images[$i]['img'] . '" title="' . $title . '">';
+					$els .= '<img src="/publications' . DS . $pid . DS . $vid . '/Image:' . $tn . '" alt="' . $title . '" class="thumbima" /></a>';
 				}
-				$els .=  ($i == (count($shots) - 1)) ? '</div>'."\n" : '';
-				$i++;
 			}
+			$els .=  ($i == ($n - 1)) ? '</div>' . "\n" : '';
 		}
 
-		if ($els && $i > 0)
+		if ($els)
 		{
 			$html .= '<div id="showcase">'."\n" ;
 			$html .= '<div id="showcase-prev" ></div>'."\n";
@@ -155,42 +206,10 @@ class PublicationsHtml
 	 *
 	 * @return     string
 	 */
-	public static function createThumbName( $image=null, $tn='_thumb', $ext = '' )
+	public static function createThumbName( $image=null, $tn='_thumb', $ext = 'png' )
 	{
-		if (!$image)
-		{
-			$this->setError( JText::_('No image set.') );
-			return false;
-		}
-
-		$image = explode('.',$image);
-		$n = count($image);
-		if ($n > 1)
-		{
-			$image[$n-2] .= $tn;
-			$end = array_pop($image);
-			if ($ext)
-			{
-				$image[] = $ext;
-			}
-			else
-			{
-				$image[] = $end;
-			}
-
-			$thumb = implode('.',$image);
-		}
-		else
-		{
-			// No extension
-			$thumb = $image[0];
-			$thumb .= $tn;
-			if ($ext)
-			{
-				$thumb .= '.'.$ext;
-			}
-		}
-		return $thumb;
+		jimport('joomla.filesystem.file');
+		return JFile::stripExt($image) . $tn . '.' . $ext;
 	}
 
 	/**

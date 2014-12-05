@@ -3005,7 +3005,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Get gallery images
 		$pScreenshot = new PublicationScreenshot( $this->_database );
 		$gallery = $pScreenshot->getScreenshots( $pub->version_id );
-		$view->shots = PublicationsHtml::showGallery($gallery, $gallery_path);
+		$view->shots = PublicationsHtml::showGallery($gallery, $gallery_path, $pub->id, $pub->version_id);
 
 		// Get JS
 		\Hubzero\Document\Assets::addComponentScript('com_publications', 'assets/js/publications');
