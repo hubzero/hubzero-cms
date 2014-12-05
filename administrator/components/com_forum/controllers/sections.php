@@ -261,7 +261,7 @@ class ForumControllerSections extends \Hubzero\Component\AdminController
 					// Remove this category
 					if (!$cModel->delete($category->id))
 					{
-						JError::raiseError(500, $category->getError());
+						JError::raiseError(500, $cModel->getError());
 						return;
 					}
 				}
