@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2014 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,33 +32,45 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Plugin for abuse reports on KB comments
+ * Plugin for adding time records from a support ticket
  */
 class plgSupportTime extends \Hubzero\Plugin\Plugin
 {
 	/**
 	 * Affects constructor behavior. If true, language files will be loaded automatically.
 	 *
-	 * @var    boolean
+	 * @var  boolean
 	 */
 	protected $_autoloadLanguage = true;
 
 	/**
 	 * Called on the ticket comment form
 	 *
-	 * @param      object $ticket
-	 * @return     array
+	 * @param   object  $ticket
+	 * @return  string
 	 */
 	public function onTicketComment($ticket)
 	{
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
+
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
+
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'charts.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'html.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
+
+		$permissions = new TimeModelPermissions('com_time');
+		if (!$permissions->can('save', 'records'))
+		{
+			return;
+		}
+
 		$juser = JFactory::getUser();
 		$db = JFactory::getDBO();
-
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'tasks.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'hubs.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'records.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'html.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
 
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -101,20 +113,32 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 	/**
 	 * Called after updating a ticket
 	 *
-	 * @param      object $ticket
-	 * @param      object $comment
-	 * @return     void
+	 * @param   object  $ticket
+	 * @param   object  $comment
+	 * @return  void
 	 */
 	public function onTicketUpdate($ticket, $comment)
 	{
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
+
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
+
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'charts.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'html.php';
+		require_once JPATH_SITE . DS . 'components' . DS . 'com_time' . DS . 'helpers' . DS . 'filters.php';
+
+		$permissions = new TimeModelPermissions('com_time');
+		if (!$permissions->can('save', 'records'))
+		{
+			return;
+		}
+
 		$juser = JFactory::getUser();
 		$db = JFactory::getDBO();
-
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'tasks.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'hubs.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'tables'.DS.'records.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'html.php');
-		require_once(JPATH_ROOT.DS.'plugins'.DS.'time'.DS.'helpers'.DS.'filters.php');
 
 		// Incoming posted data
 		$record = JRequest::getVar('record', array(), 'post');
