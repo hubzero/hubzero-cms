@@ -89,7 +89,7 @@ class SupportUtilities
 							$file = basename($path);
 							$size = getimagesize($path);
 							$width = ($size[0] > 650 ? 650 : $size[0]);
-							$contents['multipart'] = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img width="" src="' . $message->getEmbed($path) . '" alt="" />', $contents['multipart']);
+							$contents['multipart'] = preg_replace('/<a class="img" data\-filename="' . str_replace('.', '\.', $file) . '" href="(.*?)"\>(.*?)<\/a>/i', '<img width="' . $width . '" src="' . $message->getEmbed($path) . '" alt="" />', $contents['multipart']);
 						}
 						else
 						{
