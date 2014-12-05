@@ -220,7 +220,7 @@ class CollectionsControllerItems extends \Hubzero\Component\AdminController
 	 *
 	 * @return  void
 	 */
-	public function deleteTask()
+	public function removeTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
