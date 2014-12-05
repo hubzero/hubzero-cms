@@ -456,6 +456,10 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		{
 			$filters['ticket'] = $this->get('id');
 		}
+		if (!isset($filters['access']))
+		{
+			$filters['access'] = 1; //$this->access('read', 'private_comments');
+		}
 
 		switch (strtolower($rtrn))
 		{
@@ -463,7 +467,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				if (!is_numeric($this->_data->get('comments.count')) || $clear)
 				{
 					$tbl = new SupportComment($this->_db);
-					$this->_data->set('comments.count', $tbl->countComments($this->access('read', 'private_comments'), $this->get('id'))); //count($filters));
+					$this->_data->set('comments.count', $tbl->countComments($filters['access'], $filters['ticket']));
 				}
 				return $this->_data->get('comments.count');
 			break;
@@ -474,7 +478,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				if (!($this->_data->get('comments.list') instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new SupportComment($this->_db);
-					if ($results = $tbl->getComments($this->access('read', 'private_comments'), $this->get('id'))) //find($filters))
+					if ($results = $tbl->getComments($filters['access'], $filters['ticket']))
 					{
 						foreach ($results as $key => $result)
 						{
@@ -1058,7 +1062,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			$user = JFactory::getUser();
 			if (!$user->get('guest') && $this->comments()->total() > 0)
 			{
-				$last = $this->comments('list')->last();
+				$last = $this->comments('list')->last(); //, array('access' => 1), true)->last();
 				$cc = $last->changelog()->get('cc');
 				if (in_array($user->get('username'), $cc) || in_array($user->get('email'), $cc))
 				{

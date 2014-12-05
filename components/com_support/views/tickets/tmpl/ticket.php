@@ -263,6 +263,10 @@ $cc = array();
 		$i = 0;
 		foreach ($this->row->comments() as $comment)
 		{
+			if ($comment->changelog()->format() != 'html')
+			{
+				$cc = $comment->changelog()->get('cc');
+			}
 			// Is the comment private?
 			// If so, does the user have access to read private comments?
 			//   If not, skip it
@@ -296,11 +300,6 @@ $cc = array();
 			}
 
 			$o = ($o == 'odd') ? 'even' : 'odd';
-
-			if ($comment->changelog()->format() != 'html')
-			{
-				$cc = $comment->changelog()->get('cc');
-			}
 			?>
 			<li class="comment <?php echo $access . ' ' . $o; ?>" id="c<?php echo $comment->get('id'); ?>">
 				<p class="comment-member-photo">
@@ -628,6 +627,7 @@ $cc = array();
 			<?php } else { ?>
 				<input type="hidden" name="email_submitter" id="email_submitter" value="1" />
 				<input type="hidden" name="email_owner" id="email_owner" value="1" />
+				<input type="hidden" name="cc" id="acmembers" value="<?php echo implode(', ', $cc); ?>" />
 			<?php } // ACL can create comments (admin) ?>
 
 				<?php echo JHTML::_('form.token'); ?>
