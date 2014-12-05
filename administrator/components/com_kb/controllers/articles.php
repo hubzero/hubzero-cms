@@ -57,7 +57,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		$this->view->filters['category']        = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.category',
 			'category',
-			0,
+			-1,
 			'int'
 		);
 		$this->view->filters['section']        = $app->getUserStateFromRequest(

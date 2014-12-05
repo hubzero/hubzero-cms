@@ -99,7 +99,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 
 		// Get the category
 		$sect = -1;
-		$cat  = 0;
+		$cat  = -1;
 
 		$this->view->category = new KbModelCategory($alias);
 		$this->view->section  = new KbModelCategory($this->view->category->get('section'));
@@ -157,7 +157,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		}
 
 		// Get a record count
-		$this->view->total = $this->view->category->articles('count', $this->view->filters);
+		$this->view->total    = $this->view->category->articles('count', $this->view->filters);
 
 		// Get the records
 		$this->view->articles = $this->view->category->articles('list', $this->view->filters);

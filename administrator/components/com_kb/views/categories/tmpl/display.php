@@ -182,7 +182,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($row->get('articles', 0) > 0) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=articles&' . (isset($this->filters['section']) && $this->filters['section'] ? 'category=' . $row->get('id') . '&section=' . $this->filters['section'] : 'section=' . $row->get('id'))); ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=articles&' . (isset($this->filters['section']) && $this->filters['section'] ? 'category=' . $row->get('id') . '&section=' . $this->filters['section'] : 'section=' . $row->get('id') . '&category=-1')); ?>" title="<?php echo JText::_('COM_KB_VIEW_ARTICLES_FOR_CATEGORY'); ?>">
 						<span><?php echo $row->get('articles', 0) . ' ' . JText::_('COM_KB_ARTICLES'); ?></span>
 					</a>
 				<?php } else { ?>

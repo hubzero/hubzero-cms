@@ -261,7 +261,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		{
 			// Redirect
 			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller,
+				'index.php?option='.$this->_option . '&controller=' . $this->_controller . ($articles ? '&id=0' : ''),
 				JText::_('COM_KB_CATEGORY_SAVED')
 			);
 			return;

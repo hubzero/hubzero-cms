@@ -79,7 +79,7 @@ function submitbutton(pressbutton)
 	<fieldset id="filter-bar">
 		<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
 		<?php
-			if ($this->filters['category']) {
+			if ($this->filters['category'] && $this->filters['category'] >= 0) {
 				echo KbHelperHtml::sectionSelect($this->sections, $this->filters['category'], 'category');
 			} else {
 				echo KbHelperHtml::sectionSelect($this->sections, $this->filters['section'], 'section');
