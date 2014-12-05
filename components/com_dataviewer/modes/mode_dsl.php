@@ -58,13 +58,13 @@ function get_dd($db_id, $dv_id = false, $version = false)
 			'LEFT JOIN #__publication_attachments ON ' .
 				'(#__publication_versions.publication_id=#__publication_attachments.publication_id '.
 				'AND #__publication_versions.id=#__publication_attachments.publication_version_id) '.
-			'WHERE object_name=' . $db->quote($name);
+			'WHERE object_name=' . $db->quote($name) . 'AND object_revision=' . $db->quote($version);
 
 		$db->setQuery($sql);
 		$state = $db->loadResult();
 
+		$dd['version'] = $version;
 		$dd['publication_state'] = $state;
-
 	}
 
 	// Access restrictions for unpublished databases
@@ -84,7 +84,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 	/* Dynamically set processing mode */
 	$link = get_db($dv_conf['db']);
-	$cell_count_threshold = isset($dv_conf['proc_switch_threshold']) ? $dv_conf['proc_switch_threshold'] : 20000;
+	$cell_count_threshold = (isset($dv_conf['proc_switch_threshold']) && $dv_conf['proc_switch_threshold']) != 0 ? $dv_conf['proc_switch_threshold'] : 20000;
 	mysql_query(query_gen_total($dd), $link);
 	$total = mysql_query('SELECT FOUND_ROWS() AS total', $link);
 	$total = mysql_fetch_assoc($total);
