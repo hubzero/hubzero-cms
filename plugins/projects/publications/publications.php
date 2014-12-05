@@ -4793,8 +4793,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$role 		= JRequest::getInt('role', 0);
 
 		$item 		= urldecode(JRequest::getVar( 'item', '' ));
-		$type 		= strtolower(array_shift(explode('::', $item)));
-		$item 		= array_pop(explode('::', $item));
+		$parts = explode('::', $item);
+		$type = array_shift($parts)
+		$type = strtolower($type);
+		$item = array_pop($parts);
 
 		if (!$vid || !$pid || !$item)
 		{
@@ -4876,8 +4878,10 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$move 	= JRequest::getInt('move', 0);
 		$item 	= urldecode(JRequest::getVar( 'item', '' ));
 
-		$type = strtolower(array_shift(explode('::', $item)));
-		$item = array_pop(explode('::', $item));
+		$parts = explode('::', $item);
+		$type = array_shift($parts)
+		$type = strtolower($type);
+		$item = array_pop($parts);
 		$hash = '';
 
 		if (!$type || !$item)
