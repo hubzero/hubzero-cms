@@ -168,7 +168,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 		{
 			$filters['state']   = \Hubzero\Base\Model::APP_STATE_PUBLISHED;
 		}
-		if (!isset($filters['access']))
+		if (!isset($filters['access']) && JFactory::getUser()->get('guest'))
 		{
 			$filters['access']  = 0;
 		}

@@ -143,6 +143,10 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 			'search'   => JRequest::getVar('search',''),
 			'state'    => 1
 		);
+		if ($this->juser->get('guest'))
+		{
+			$this->view->filters['access'] = 0;
+		}
 		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
 		{
 			$this->view->filters['sort'] = 'recent';

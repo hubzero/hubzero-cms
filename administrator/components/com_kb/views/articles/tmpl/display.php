@@ -93,17 +93,18 @@ function submitbutton(pressbutton)
 	<table class="adminlist">
 		<thead>
 			<tr>
- 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
- 				<th><?php echo JHTML::_('grid.sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
- 				<th><?php echo JHTML::_('grid.sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
- 				<th><?php echo JHTML::_('grid.sort', 'COM_KB_CATEGORY', 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
- 				<th><?php echo JText::_('COM_KB_VOTES'); ?></th>
+				<th scope="col"><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows);?>);" /></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_ACCESS', 'a.access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JHTML::_('grid.sort', 'COM_KB_CATEGORY', 'section', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+				<th scope="col"><?php echo JText::_('COM_KB_VOTES'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
- 			<tr>
- 				<td colspan="5"><?php echo $this->pageNav->getListFooter(); ?></td>
- 			</tr>
+			<tr>
+				<td colspan="6"><?php echo $this->pageNav->getListFooter(); ?></td>
+			</tr>
 		</tfoot>
 		<tbody>
 <?php
@@ -129,6 +130,25 @@ foreach ($this->rows as $row)
 			$task = 'publish';
 			$alt = JText::_('JUNPUBLISHED');
 		break;
+	}
+
+	if (!$row->get('access', 0))
+	{
+		$row->set('groupname', 'Public');
+		$color_access = 'public';
+		$task_access  = 'accessregistered';
+	}
+	elseif ($row->get('access', 0) == 1)
+	{
+		$row->set('groupname', 'Registered');
+		$color_access = 'registered';
+		$task_access  = 'accessspecial';
+	}
+	else
+	{
+		$row->set('groupname', 'Special');
+		$color_access = 'special';
+		$task_access  = 'accesspublic';
 	}
 
 	$tags = $row->tags('cloud');
@@ -165,6 +185,17 @@ foreach ($this->rows as $row)
 					<?php } else { ?>
 						<span class="state <?php echo $class; ?>">
 							<span><?php echo $alt; ?></span>
+						</span>
+					<?php } ?>
+				</td>
+				<td>
+					<?php if ($canDo->get('core.edit.state')) { ?>
+						<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>">
+							<?php echo $row->get('groupname'); ?>
+						</a>
+					<?php } else { ?>
+						<span class="access <?php echo $color_access; ?>">
+							<?php echo $row->get('groupname'); ?>
 						</span>
 					<?php } ?>
 				</td>
