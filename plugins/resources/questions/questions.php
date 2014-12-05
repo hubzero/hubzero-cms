@@ -293,6 +293,8 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
+		JFactory::getLanguage()->load('com_answers');
+
 		// Incoming
 		$tags   = JRequest::getVar('tags', '');
 		$funds  = JRequest::getInt('funds', 0);

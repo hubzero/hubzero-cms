@@ -196,20 +196,34 @@ if (!$this->question->get('anonymous'))
 					<?php
 					$tags = $this->question->tags('array', 1);
 					$resource = null;
+
 					foreach ($tags as $tag)
 					{
 						if (preg_match('/^tool:/i', $tag->get('raw_tag')))
 						{
 							$resource = 'alias=' . substr($tag->get('raw_tag'), strlen('tool:'));
 						}
-						else if (preg_match('/^resource:/i', $tag->get('raw_tag')))
+						else if (preg_match('/^resource(\d+)$/i', $tag->get('tag')))
 						{
-							$resource = 'id=' . substr($tag->get('raw_tag'), strlen('resource:'));
+							$resource = 'id=' . substr($tag->get('tag'), strlen('resource'));
 						}
+
 						if ($resource)
 						{
 							?>
 							<p><?php echo JText::sprintf('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . JRoute::_('index.php?option=com_resources&' . $resource) . '">' . JText::_('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
+							<?php
+							break;
+						}
+
+						if (preg_match('/^publication(\d+)$/i', $tag->get('tag')))
+						{
+							$publication = 'id=' . substr($tag->get('tag'), strlen('publication'));
+						}
+						if ($publication)
+						{
+							?>
+							<p><?php echo JText::sprintf('COM_ANSWERS_QUESTION_ASKED_ON', '<a href="' . JRoute::_('index.php?option=com_publications&' . $publication) . '">' . JText::_('COM_ANSWERS_FOLLOWING_RESOURCE') . '</a>'); ?></p>
 							<?php
 							break;
 						}

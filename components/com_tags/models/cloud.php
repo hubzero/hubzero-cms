@@ -319,7 +319,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			return false;
 		}
 
-		foreach ($this->_parse($tags) as $tg)
+		foreach ($this->_parse($tags, 1) as $tg => $raw)
 		{
 			$tag = TagsModelTag::getInstance($tg);
 
@@ -328,7 +328,8 @@ class TagsModelCloud extends \Hubzero\Base\Object
 			{
 				// Create it
 				$tag->set('admin', $admin);
-				$tag->set('raw_tag', $tg);
+				$tag->set('tag', $tg);
+				$tag->set('raw_tag', $raw);
 				$tag->store();
 			}
 
