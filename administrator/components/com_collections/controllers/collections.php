@@ -301,6 +301,9 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	 */
 	public function accessTask($access=0)
 	{
+		// Check for request forgeries
+		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming
 		$id = JRequest::getInt('id', 0);
 

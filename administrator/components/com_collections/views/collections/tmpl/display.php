@@ -187,7 +187,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id')); ?>" title="<?php echo JText::sprintf('COM_COLLECTIONS_SET_TASK', $task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COLLECTIONS_SET_TASK', $task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -198,7 +198,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option , '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" class="access <?php echo $color_access; ?>" title="<?php echo JText::_('COM_COLLECTIONS_CHANGE_ACCESS'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option , '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" class="access <?php echo $color_access; ?>" title="<?php echo JText::_('COM_COLLECTIONS_CHANGE_ACCESS'); ?>">
 						<span><?php echo $row->get('groupname'); ?></span>
 					</a>
 				<?php } else { ?>
