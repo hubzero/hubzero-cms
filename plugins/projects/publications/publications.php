@@ -4794,7 +4794,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		$item 		= urldecode(JRequest::getVar( 'item', '' ));
 		$parts = explode('::', $item);
-		$type = array_shift($parts)
+		$type = array_shift($parts);
 		$type = strtolower($type);
 		$item = array_pop($parts);
 
@@ -4879,7 +4879,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$item 	= urldecode(JRequest::getVar( 'item', '' ));
 
 		$parts = explode('::', $item);
-		$type = array_shift($parts)
+		$type = array_shift($parts);
 		$type = strtolower($type);
 		$item = array_pop($parts);
 		$hash = '';
