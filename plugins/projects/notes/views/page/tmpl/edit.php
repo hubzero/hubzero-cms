@@ -43,7 +43,7 @@ $juser = JFactory::getUser();
 JPluginHelper::importPlugin('hubzero');
 $dispatcher = JDispatcher::getInstance();
 
-$tags = $this->page->tags('string');
+$tags = $this->page->tags('string') ? $this->page->tags('string') : JRequest::getVar('tags', '');
 
 if ($this->page->exists())
 {
