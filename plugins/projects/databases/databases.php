@@ -40,7 +40,7 @@ class plgProjectsDatabases extends JPlugin
 {
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param      object &$subject Event observer
 	 * @param      array  $config   Optional config values
 	 * @return     void
@@ -68,7 +68,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Event call after databases initialized
-	 * 
+	 *
 	 * @return     array   Plugin name and title
 	 */
 	public function onAfterInitialise()
@@ -78,35 +78,35 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Event call to determine if this plugin should return data
-	 * 
+	 *
 	 * @return     array   Plugin name and title
 	 */
 	public function &onProjectAreas()
 	{
 		//default areas returned to nothing
 		$area = array();
-				
+
 		// Check if plugin is restricted to certain projects
 		$projects = $this->_params->get('restricted') ? ProjectsHelper::getParamArray($this->_params->get('restricted')) : array();
-		
+
 		if (!empty($projects))
 		{
 			$alias  = JRequest::getVar( 'alias', '' );
 			$id     = JRequest::getVar( 'id', '' );
-			
+
 			if (!$alias)
 			{
 				$database = JFactory::getDBO();
 				$obj = new Project( $database );
 				$alias = $obj->getAlias( $id );
 			}
-			
+
 			if (!$alias || !in_array($alias, $projects))
 			{
 				return $area;
 			}
 		}
-		
+
 		$area = array(
 			'name' => 'databases',
 			'title' => 'Databases'
@@ -117,9 +117,9 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Event call to return count of items
-	 * 
+	 *
 	 * @param      object  $project 		Project
-	 * @param      integer &$counts 
+	 * @param      integer &$counts
 	 * @return     array   integer
 	 */
 	public function &onProjectCount($project, &$counts)
@@ -136,7 +136,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Event call to return data for a specific project
-	 * 
+	 *
 	 * @param      object  $project 		Project
 	 * @param      string  $option 			Component name
 	 * @param      integer $authorized 		Authorization
@@ -147,8 +147,8 @@ class plgProjectsDatabases extends JPlugin
 	 * @param      string  $areas  			Plugins to return data
 	 * @return     array   Return array of html
 	 */
-	public function onProject ($project, $option, $authorized, 
-		$uid, $msg = '', $error = '', 
+	public function onProject ($project, $option, $authorized,
+		$uid, $msg = '', $error = '',
 		$action = 'view', $areas = null, $case)
 	{
 
@@ -187,7 +187,7 @@ class plgProjectsDatabases extends JPlugin
 			'message'=>'',
 			'error'=>''
 		);
-		
+
 		// Incoming
 		$raw_op = JRequest::getInt('raw_op', 0);
 		$action = $action ? $action : JRequest::getVar('action', 'list');
@@ -196,16 +196,16 @@ class plgProjectsDatabases extends JPlugin
 		$this->_area = $this->onProjectAreas();
 
 		// Check if our area is in the array of areas we want to return results for
-		if (is_array( $areas )) 
+		if (is_array( $areas ))
 		{
-			if (empty($this->_area) || !in_array($this->_area['name'], $areas)) 
-			{				
+			if (empty($this->_area) || !in_array($this->_area['name'], $areas))
+			{
 				return $arr;
 			}
 		}
 
 		// Is the user logged in?
-		if ( !$authorized && !$project->owner ) 
+		if ( !$authorized && !$project->owner )
 		{
 			return $arr;
 		}
@@ -218,7 +218,7 @@ class plgProjectsDatabases extends JPlugin
 		$this->_database 	= JFactory::getDBO();
 		$this->_authorized  = $authorized;
 		$this->_uid = $uid;
-		if (!$this->_uid) 
+		if (!$this->_uid)
 		{
 			$juser = JFactory::getUser();
 			$this->_uid = $juser->get('id');
@@ -227,19 +227,19 @@ class plgProjectsDatabases extends JPlugin
 		// Publishing?
 		if ($action == 'browser')
 		{
-			return $this->browser(); 
+			return $this->browser();
 		}
 
 		$act_func = 'act_' . $action;
 
-		if (!method_exists($this, $act_func)) 
+		if (!method_exists($this, $act_func))
 		{
-			if ($raw_op) 
+			if ($raw_op)
 			{
 				print json_encode(array('status'=>'success', 'data'=>$table));
 				exit();
-			} 
-			else 
+			}
+			else
 			{
 				$act_func = 'act_list';
 			}
@@ -249,11 +249,11 @@ class plgProjectsDatabases extends JPlugin
 		// detect CR as new line
 		ini_set('auto_detect_line_endings', true);
 
-		if ($raw_op) 
+		if ($raw_op)
 		{
 			$this->$act_func(); exit();
-		} 
-		else 
+		}
+		else
 		{
 			$document = JFactory::getDocument();
 
@@ -265,12 +265,12 @@ class plgProjectsDatabases extends JPlugin
 			$document->addScript('/plugins/projects/databases/res/main.js');
 			$document->addStyleSheet('/plugins/projects/databases/res/main.css');
 
-			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.js')) 
+			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.js'))
 			{
 				$document->addScript('/plugins/projects/databases/res/ds.' . $action . '.js');
 			}
 
-			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.css')) 
+			if (file_exists(JPATH_PLUGINS . '/projects/databases/res/ds.' . $action . '.css'))
 			{
 				$document->addStyleSheet('/plugins/projects/databases/res/ds.' . $action . '.css');
 			}
@@ -278,10 +278,10 @@ class plgProjectsDatabases extends JPlugin
 			return $this->$act_func();
 		}
 	}
-	
+
 	/**
 	 * List project databases available for publishing
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function browser()
@@ -290,12 +290,12 @@ class plgProjectsDatabases extends JPlugin
 		$ajax 		= JRequest::getInt('ajax', 0);
 		$primary 	= JRequest::getInt('primary', 1);
 		$versionid  = JRequest::getInt('versionid', 0);
-								
-		if (!$ajax) 
+
+		if (!$ajax)
 		{
 			return false;
 		}
-				
+
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
 			array(
@@ -304,14 +304,14 @@ class plgProjectsDatabases extends JPlugin
 				'name'=>'browser'
 			)
 		);
-		
+
 		// Get current attachments
 		$pContent = new PublicationAttachment( $this->_database );
 		$role 	= $primary ? '1' : '0';
 		$other 	= $primary ? '0' : '1';
-		
+
 		$view->attachments = $pContent->getAttachments($versionid, $filters = array('role' => $role, 'type' => 'data'));
-		
+
 		// Output HTML
 		$view->params 		= new JParameter( $this->_project->params );
 		$view->option 		= $this->_option;
@@ -319,37 +319,37 @@ class plgProjectsDatabases extends JPlugin
 		$view->project 		= $this->_project;
 		$view->authorized 	= $this->_authorized;
 		$view->uid 			= $this->_uid;
-		$view->config 		= $this->_config;	
+		$view->config 		= $this->_config;
 		$view->title		= $this->_area['title'];
 		$view->primary		= $primary;
 		$view->versionid	= $versionid;
-		
-		// Get messages	and errors	
-		if ($this->getError()) 
+
+		// Get messages	and errors
+		if ($this->getError())
 		{
 			$view->setError( $this->getError() );
 		}
 		$html =  $view->loadTemplate();
-		
+
 		$arr = array(
 			'html' => $html,
 			'metadata' => '',
 			'msg' => '',
 			'referer' => ''
 		);
-		
+
 		return $arr;
 	}
 
 	/**
 	 * List project databases
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function act_list()
 	{
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias, 
+		$path = ProjectsHelper::getProjectPath($this->_project->alias,
 						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 
 		chdir($path);
@@ -362,7 +362,7 @@ class plgProjectsDatabases extends JPlugin
 		$list  = $objPD->getList($this->_project->id);
 
 		$list_u = array();
-		foreach ($list as $l) 
+		foreach ($list as $l)
 		{
 			$info = array();
 
@@ -407,7 +407,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Create database
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function act_create()
@@ -416,7 +416,7 @@ class plgProjectsDatabases extends JPlugin
 		$db_id = JRequest::getInt('db_id', false);
 
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias, 
+		$path = ProjectsHelper::getProjectPath($this->_project->alias,
 						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 
 		$list = array();
@@ -438,7 +438,7 @@ class plgProjectsDatabases extends JPlugin
 		$used_files  = $objPD->getUsedItems($this->_project->id);
 
 		$files = array();
-		foreach ($list as $l) 
+		foreach ($list as $l)
 		{
 			$info = array();
 			chdir($path);
@@ -448,7 +448,7 @@ class plgProjectsDatabases extends JPlugin
 
 			$file = pathinfo($l);
 
-			if (!in_array($l, $used_files)) 
+			if (!in_array($l, $used_files))
 			{
 				$files[$file['dirname']][] = array(
 					'name'=>$file['basename'],
@@ -489,7 +489,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Preview data
-	 * 
+	 *
 	 */
 	public function act_preview_data()
 	{
@@ -497,28 +497,28 @@ class plgProjectsDatabases extends JPlugin
 		$file = JRequest::getVar('file', false);
 		$dir = JRequest::getVar('dir', '');
 
-		if (!$file) 
+		if (!$file)
 		{
 			print json_encode(array('status'=>'failed', 'msg'=>'Invalid File'));
 			return;
 		}
 
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias, 
+		$path = ProjectsHelper::getProjectPath($this->_project->alias,
 						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 		$path .= DS;
 
-		if ($dir != '') 
+		if ($dir != '')
 		{
 			$path .= $dir . DS;
 		}
-		
 
-		if (file_exists($path . DS . $file) && ($handle = fopen($path . '/' . $file, "r")) !== FALSE) 
+
+		if (file_exists($path . DS . $file) && ($handle = fopen($path . '/' . $file, "r")) !== FALSE)
 		{
 			$table = array();
 			$dd = array();
-			
+
 			$sub_dirs = array();
 			$list =array();
 			chdir($path);
@@ -529,8 +529,8 @@ class plgProjectsDatabases extends JPlugin
 					$sub_dirs[] = $d;
 				}
 			}
-			
-			
+
+
 			$table['repo'] = array(
 				'prj_alias' => $this->_project->alias,
 				'wd' => trim($dir, '/'),
@@ -543,39 +543,39 @@ class plgProjectsDatabases extends JPlugin
 			$col_labels = fgetcsv($handle);
 			$col_prop = fgetcsv($handle);
 			$data_start = fgetcsv($handle);
-			
-			if (isset($data_start[0]) && $data_start[0] == 'DATASTART') 
+
+			if (isset($data_start[0]) && $data_start[0] == 'DATASTART')
 			{
 				$expert_mode = true;
 			}
-			
+
 			$count = 0;
 			$display_count = 0;
-			$limit = 20;
-			
+			$limit = 100;
+
 			// Non expert mode
-			if (!$expert_mode) 
+			if (!$expert_mode)
 			{
 				$handle = fopen($path . '/' . $file, "r");
 				$col_labels = fgetcsv($handle);
-							
+
 				$type_info = array();
-				while ($r = fgetcsv($handle)) 
+				while ($r = fgetcsv($handle))
 				{
 					$col_vals = array();
 
-					for ($i = 0; $i < count($col_labels); $i++) 
+					for ($i = 0; $i < count($col_labels); $i++)
 					{
 						$val = isset($r[$i]) ? trim($r[$i]) : '';
 
 						$col_vals[] = $val;
 
 						$type_info[$i]['type'] = isset($type_info[$i]['type']) ? $type_info[$i]['type'] : false;
-						if (isset($type_info[$i]['max_len'])) 
+						if (isset($type_info[$i]['max_len']))
 						{
 							$type_info[$i]['max_len'] = $type_info[$i]['max_len'] > strlen($val) ? $type_info[$i]['max_len'] : strlen($val);
-						} 
-						else 
+						}
+						else
 						{
 							$type_info[$i]['max_len'] = strlen($val);
 						}
@@ -583,7 +583,7 @@ class plgProjectsDatabases extends JPlugin
 						$type_info[$i]['type'] = $this->_guess_data_type($val, $type_info[$i]['type'], $type_info[$i]['max_len']);
 					}
 
-					if ($count < $limit) 
+					if ($count < $limit)
 					{
 						$table['data'][] = $col_vals;
 						$display_count++;
@@ -592,16 +592,16 @@ class plgProjectsDatabases extends JPlugin
 					$count++;
 				}
 
-				for ($i = 0; $i < count($col_labels); $i++) 
+				for ($i = 0; $i < count($col_labels); $i++)
 				{
 					$label = trim($col_labels[$i]);
-					if ($label == '') 
+					if ($label == '')
 					{
 						$label = 'Column-' . $i;
 					}
 
 					$dd[$i]['type'] = $type_info[$i]['type'];
-					switch ($dd[$i]['type']) 
+					switch ($dd[$i]['type'])
 					{
 						case 'numeric':
 						case 'float':
@@ -617,34 +617,34 @@ class plgProjectsDatabases extends JPlugin
 					$dd[$i]['label'] = $label;
 					$dd[$i]['idx'] = $i;
 				}
-			} 
-			else 
+			}
+			else
 			{
-				while ($r = fgetcsv($handle)) 
+				while ($r = fgetcsv($handle))
 				{
-					if ($count < $limit) 
+					if ($count < $limit)
 					{
 						$col_vals = array();
 
-						for ($i = 0; $i < count($col_labels); $i++) 
+						for ($i = 0; $i < count($col_labels); $i++)
 						{
 							$val = isset($r[$i]) ? trim($r[$i]) : '';
 
 							$col_vals[] = $val;
 						}
-					
+
 						$table['data'][] = $col_vals;
-						
+
 						$display_count++;
 					}
 
 					$count++;
 				}
-				
-				for ($i = 0; $i < count($col_labels); $i++) 
+
+				for ($i = 0; $i < count($col_labels); $i++)
 				{
 					$label = trim($col_labels[$i]);
-					if ($label == '') 
+					if ($label == '')
 					{
 						$label = 'Column-' . $i;
 					}
@@ -653,9 +653,9 @@ class plgProjectsDatabases extends JPlugin
 					$dd[$i] = json_decode($prop, true);
 					$dd[$i]['type'] = isset($dd[$i]['type']) ? $dd[$i]['type'] : 'text_large';
 
-					if (!isset($dd[$i]['align'])) 
+					if (!isset($dd[$i]['align']))
 					{
-						switch ($dd[$i]['type']) 
+						switch ($dd[$i]['type'])
 						{
 							case 'numeric':
 							case 'float':
@@ -684,82 +684,82 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Guess data type
-	 * 
+	 *
 	 * @param      object  $data
-	 * @param      string  $type 
-	 * @param      integer $max_len 
+	 * @param      string  $type
+	 * @param      integer $max_len
 	 * @return     string
 	 */
 	public function _guess_data_type($data, $type, $max_len)
 	{
 		$data = trim($data);
 
-		if ($type == 'text_large' || $data == '') 
+		if ($type == 'text_large' || $data == '')
 		{
 			return $type;
 		}
 
-		if (!$type) 
+		if (!$type)
 		{
-			if (is_numeric($data)) 
+			if (is_numeric($data))
 			{
-				if (strpos($data, '.') === false) 
+				if (strpos($data, '.') === false)
 				{
 					$type = 'int';
-				} 
-				else 
+				}
+				else
 				{
 					$type = 'float';
 				}
-			} 
-			else 
+			}
+			else
 			{
-				if (filter_var($data, FILTER_VALIDATE_EMAIL) !== false) 
+				if (filter_var($data, FILTER_VALIDATE_EMAIL) !== false)
 				{
 					$type = 'email';
-				} 
-				elseif (filter_var($data, FILTER_VALIDATE_URL) !== false) 
+				}
+				elseif (filter_var($data, FILTER_VALIDATE_URL) !== false)
 				{
 					$type = 'link';
-				} 
-				elseif ($max_len < 50) 
+				}
+				elseif ($max_len < 50)
 				{
 					$type = 'text_small';
-				} 
-				else 
+				}
+				else
 				{
 					$type = 'text_large';
 				}
 			}
-		} 
-		else 
+		}
+		else
 		{
-			if ($type == 'int' || $type == 'float' && is_numeric($data)) 
+			if ($type == 'int' || $type == 'float' && is_numeric($data))
 			{
-				if ($type == 'int' && strpos($data, '.') === false) 
+				if ($type == 'int' && strpos($data, '.') === false)
 				{
 					$type = 'int';
-				} 
-				else 
+				}
+				else
 				{
 					$type = 'float';
 				}
-			} 
-			else 
+			}
+			else
 			{
-				if ($type == 'text_small' && $max_len < 50) 
+				if ($type == 'text_small' && $max_len < 50)
 				{
 					$type = 'text_small';
-				} 
-				elseif (filter_var($data, FILTER_VALIDATE_EMAIL) !== false) 
+				}
+				elseif (filter_var($data, FILTER_VALIDATE_EMAIL) !== false)
 				{
 					$type = 'email';
-				} 
-				elseif (filter_var($data, FILTER_VALIDATE_URL) !== false) 
+				}
+				elseif (filter_var($data, FILTER_VALIDATE_URL) !== false)
 				{
 					$type = 'link';
-				} 
-				else 
+				}
+				else
 				{
 					$type = 'text_large';
 				}
@@ -771,7 +771,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * act_add_new_finish
-	 * 
+	 *
 	 * @return     void
 	 */
 	public function act_create_database()
@@ -784,7 +784,7 @@ class plgProjectsDatabases extends JPlugin
 		$db_id 	= JRequest::getVar('db_id', '');
 		$d 		= JRequest::getVar('dd', false);
 		$d 		= json_decode($d, true);
-			
+
 		$db 	= $this->get_ds_db($this->_project->id);
 		$juser 	=  JFactory::getUser();
 		$table 	= array();
@@ -792,7 +792,7 @@ class plgProjectsDatabases extends JPlugin
 		// Add new or Recreate
 		$recreate = ($db_id != '') ? true : false;
 
-		if (!$file) 
+		if (!$file)
 		{
 			print json_encode(array('status'=>'failed', 'msg'=>'Invalid file'));
 			return;
@@ -801,18 +801,18 @@ class plgProjectsDatabases extends JPlugin
 		$repo_base = '/projects/' . $this->_project->alias . '/files/?action=download&subdir=' . trim($dir, '/');
 
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias, 
+		$path = ProjectsHelper::getProjectPath($this->_project->alias,
 						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 		$path .= DS;
 
-		if ($dir != '') 
+		if ($dir != '')
 		{
 			$path .= $dir . DS;
 		}
 
 		$table['name'] = 'prj_db_' . $this->_project->id . '_' . sha1($dir . DS . $file);
 
-		if ($recreate) 
+		if ($recreate)
 		{
 			$sql = "DROP TABLE `" . $table['name'] . "` ";
 			$db->setQuery($sql);
@@ -823,7 +823,7 @@ class plgProjectsDatabases extends JPlugin
 
 		$table['cols'][] = '__ds_rec_id int(11) NOT NULL AUTO_INCREMENT NOT NULL';
 
-		if (file_exists($path . DS . $file) && ($handle = fopen($path . DS . $file, "r")) !== FALSE) 
+		if (file_exists($path . DS . $file) && ($handle = fopen($path . DS . $file, "r")) !== FALSE)
 		{
 			// Get commit hash
 			chdir($path);
@@ -835,8 +835,8 @@ class plgProjectsDatabases extends JPlugin
 			$col_labels = fgetcsv($handle);
 			$col_prop = fgetcsv($handle);
 			$data_start = fgetcsv($handle);
-			
-			if (isset($data_start[0]) && $data_start[0] == 'DATASTART') 
+
+			if (isset($data_start[0]) && $data_start[0] == 'DATASTART')
 			{
 				$expert_mode = true;
 			}
@@ -849,10 +849,10 @@ class plgProjectsDatabases extends JPlugin
 
 			$dd = array();
 
-			for ($i = 0; $i < count($col_labels); $i++) 
+			for ($i = 0; $i < count($col_labels); $i++)
 			{
 				$label = trim($col_labels[$i]);
-				if ($label == '') 
+				if ($label == '')
 				{
 					$label = 'Column-' . $i;
 				}
@@ -860,7 +860,7 @@ class plgProjectsDatabases extends JPlugin
 				$col_name = strtolower(preg_replace('/\W/', '_', $label));
 				$col_name = substr($col_name, 0, (63 - strlen($i))) . '_' . $i;
 
-				switch ($d[$i]['type']) 
+				switch ($d[$i]['type'])
 				{
 					case 'text_small';
 						$col_type = 'VARCHAR(64)';
@@ -895,13 +895,13 @@ class plgProjectsDatabases extends JPlugin
 				}
 
 				$table['cols'][] ='`' . $col_name . '` ' . $col_type . ' DEFAULT NULL';
-				if (isset($d[$i])) 
+				if (isset($d[$i]))
 				{
 					$dd['cols'][$table['name'] . '.' . $col_name] = $d[$i];
 				}
 			}
 
-			$sql .= '(' . implode(', ', $table['cols']) . ', PRIMARY KEY (`__ds_rec_id`)) 
+			$sql .= '(' . implode(', ', $table['cols']) . ', PRIMARY KEY (`__ds_rec_id`))
 				ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT=' . $db->quote($file);
 			$db->setQuery($sql);
 			$db->query();
@@ -909,10 +909,10 @@ class plgProjectsDatabases extends JPlugin
 			$count = 0;
 			$vals = array();
 
-			while ($r = fgetcsv($handle)) 
+			while ($r = fgetcsv($handle))
 			{
 				$vals = array();
-				for ($i = 0; $i < count($col_labels); $i++) 
+				for ($i = 0; $i < count($col_labels); $i++)
 				{
 					$vals[] = (isset($r[$i]) && $r[$i] != '') ? $db->quote(trim($r[$i])) : 'NULL';
 				}
@@ -988,7 +988,7 @@ class plgProjectsDatabases extends JPlugin
 		}
 
 		$url = str_replace($_SERVER['SCRIPT_URL'], '', $_SERVER['SCRIPT_URI']) . "/projects/" . $this->_project->alias . "/databases/";
-		
+
 		print json_encode(array('status'=>'success', 'data'=>$url));
 
 		// Success message
@@ -1001,8 +1001,8 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Save updated CSV file with headers
-	 * 
-	 * @param    integer  	$id	Database ID	
+	 *
+	 * @param    integer  	$id	Database ID
 	 * @return   void
 	 */
 	public function _save_csv($id)
@@ -1011,9 +1011,9 @@ class plgProjectsDatabases extends JPlugin
 
 		// Get project database object
 		$objPD = new ProjectDatabase($this->_database);
-		
+
 		// Get project path
-		$path = ProjectsHelper::getProjectPath($this->_project->alias, 
+		$path = ProjectsHelper::getProjectPath($this->_project->alias,
 						$this->_config->get('webpath'), $this->_config->get('offroot', 0));
 		$path .= DS;
 
@@ -1066,14 +1066,14 @@ class plgProjectsDatabases extends JPlugin
 
 			// Modified By
 			$profile = \Hubzero\User\Profile::getInstance($this->_uid);
-		
+
 			$name = $profile->get('name');
 			$email = $profile->get('email');
 			$author = escapeshellarg($name . ' <' . $email . '> ');
 
 			chdir($path);
 			exec($this->gitpath . ' add ' . escapeshellarg($file));
-			exec($this->gitpath . ' commit ' . escapeshellarg($file) 
+			exec($this->gitpath . ' commit ' . escapeshellarg($file)
 				. ' -m "' . $commit_message . '"'
 				. ' --author="' . $author . '" 2>&1');
 
@@ -1087,8 +1087,8 @@ class plgProjectsDatabases extends JPlugin
 
 			$prjAct = new ProjectActivity($this->_database);
 			$msg = 'updated file "' . $file . '" in project ';
-			$prjAct->recordActivity($this->_project->id, $this->_uid, str_replace("'", "\'", $msg), $file, 'files', 
-				JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a . 'active=files'), 
+			$prjAct->recordActivity($this->_project->id, $this->_uid, str_replace("'", "\'", $msg), $file, 'files',
+				JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $this->_project->alias . a . 'active=files'),
 				'files', 1 );
 			ob_clean();
 		}
@@ -1096,7 +1096,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Delete database
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function act_delete()
@@ -1113,7 +1113,7 @@ class plgProjectsDatabases extends JPlugin
 			$table = $objPD->database_name;
 			$title = $objPD->title;
 
-			if ($table && $table != ''&& $objPD->project == $this->_project->id) 
+			if ($table && $table != ''&& $objPD->project == $this->_project->id)
 			{
 				// Removing the record for this database
 				$objPD->delete();
@@ -1140,7 +1140,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Update database
-	 * 
+	 *
 	 * @return     array
 	 */
 	public function act_update()
@@ -1165,7 +1165,7 @@ class plgProjectsDatabases extends JPlugin
 				$objPD->description = $description;
 				$objPD->data_definition = json_encode($dd);
 				$objPD->store();
-				
+
 				$this->_message = array('message'=>'Database successfully updated', 'type'=>'success');
 			}
 		}
@@ -1177,7 +1177,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * Making a copy of the database for publications
-	 * 
+	 *
 	 * Function to be called outside of the databases plugin
 	 * @param    integer  	$identifier	Database ID	or name
 	 * @param    object  	$project 	Project object
@@ -1221,7 +1221,7 @@ class plgProjectsDatabases extends JPlugin
 		$dd['table'] = $new_table;
 
 		$new_cols = array();
-		foreach ($dd['cols'] as $col=>$prop) 
+		foreach ($dd['cols'] as $col=>$prop)
 		{
 			$col = explode('.', $col);
 			$new_cols[$new_table . '.' . $col[1]] = $prop;
@@ -1296,13 +1296,13 @@ class plgProjectsDatabases extends JPlugin
 		}
 
 		// Remove record from database versions table
-		$sql = 'DELETE FROM #__project_database_versions WHERE' 
+		$sql = 'DELETE FROM #__project_database_versions WHERE'
 			. ' database_name = ' . $db->quote($objPD->database_name)
 			. ' AND version = ' . $db->quote($version);
 
 		$db->setQuery($sql);
 		$db->query();
-		
+
 		// Remove database table
 		$table_name = $objPD->database_name . '_' . $version;
 		$sql = 'DROP TABLE ' . $table_name;
@@ -1313,7 +1313,7 @@ class plgProjectsDatabases extends JPlugin
 
 	/**
 	 * get_ds_db
-	 * 
+	 *
 	 * @param    string  $id
 	 * @return   object
 	 */

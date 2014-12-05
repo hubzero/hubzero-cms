@@ -133,7 +133,7 @@
 			});
 			$('#prj-db-col-linkpath').html(sub_dirs);
 			
-			$('#prj-db-rec-limit').html('Total number of records: ' + table.rec_total + ' | Displaying ' + table.rec_display + ' records');
+			$('#prj-db-rec-limit').html('Total number of records: ' + table.rec_total + ' | Loaded first ' + table.rec_display + ' records');
 			$('#prj-db-preview-table-wrapper').empty();
 			$('#prj-db-preview-table-wrapper').html('<table id="prj-db-preview-table" class="dv-spreadsheet"></table>');
 
@@ -144,6 +144,7 @@
 				"bAutoWidth": true,
 				"aaData": table.data,
 				"aoColumns": table.header,
+				"sPaginationType": "full_numbers",
 				"bProcessing": true,
 				"fnInitComplete": function() {
 					$('#prj-db-preview-table thead th').append('<div title="Click here to edit column properties" class="col-edit">&nbsp;&nbsp;</div>');
