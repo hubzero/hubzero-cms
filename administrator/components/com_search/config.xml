@@ -34,4 +34,13 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="hubgraph">HUBgraph</option>
 		</field>
 	</fieldset>
+	<fieldset name="hubgraph">
+		<field name="hubgraph.host" type="text" menu="hide" default="unix:///var/run/hubzero-hubgraph/hubgraph-server.sock" label="COM_SEARCH_PARAM_HUBGRAPH_HOST_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_HOST_DESC" />
+		<field name="hubgraph.port" type="text" menu="hide" default="" label="COM_SEARCH_PARAM_HUBGRAPH_PORT_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_PORT_DESC" />
+		<field name="hubgraph.showTagCloud" type="list" default="1" label="COM_SEARCH_PARAM_HUBGRAPH_TAGGCLOUD_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_TAGGCLOUD_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="hubgraph.enabledOptions" type="text" menu="hide" default="" label="COM_SEARCH_PARAM_HUBGRAPH_ENABLEDOPTIONS_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_ENABLEDOPTIONS_DESC" />
+	</fieldset>
 </config>

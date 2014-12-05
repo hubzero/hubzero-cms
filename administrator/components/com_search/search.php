@@ -56,7 +56,7 @@ if (!function_exists('stem'))
 
 foreach (array('plugin', 'request', 'result_set', 'result_types', 'terms', 'authorization') as $mdl)
 {
-	require_once JPATH_COMPONENT_SITE . '/models/' . $mdl . '.php';
+	require_once JPATH_COMPONENT_SITE . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
 }
 
 JPluginHelper::importPlugin('search');

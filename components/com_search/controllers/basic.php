@@ -47,20 +47,20 @@ if (!function_exists('stem'))
 
 foreach (array('plugin', 'request', 'result_set', 'result_types', 'terms', 'authorization') as $mdl)
 {
-	require_once __DIR__ . '/../models/' . $mdl . '.php';
+	require_once dirname(__DIR__) . DS . 'models' . DS . 'basic' . DS . $mdl . '.php';
 }
 
 /**
  * Search controller class
  */
-class SearchControllerSearch extends \Hubzero\Component\SiteController
+class SearchControllerBasic extends \Hubzero\Component\SiteController
 {
 	/**
 	 * Display search form and results (if any)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function displayTask($cachable = false, $urlparams = false)
+	public function displayTask()
 	{
 		JPluginHelper::importPlugin('search');
 
@@ -69,7 +69,7 @@ class SearchControllerSearch extends \Hubzero\Component\SiteController
 		// Set breadcrumbs
 		$pathway = $app->getPathway();
 		$pathway->addItem(
-			'Search',
+			JText::_('COM_SEARCH'),
 			'index.php?option=com_search'
 		);
 

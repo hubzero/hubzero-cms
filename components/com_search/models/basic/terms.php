@@ -33,7 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.model');
 
-include_once __DIR__ . '/document_metadata.php';
+include_once __DIR__ . DS . 'document_metadata.php';
 
 /**
  * Short description for 'class'

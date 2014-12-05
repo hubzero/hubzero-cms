@@ -31,12 +31,17 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'search'));
-if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
+$config = JComponentHelper::getParams('com_search');
+
+$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', $config->get('engine', 'basic')));
+
+$fallback = JFactory::getApplication()->getUserStateFromRequest('com_search.fallback', 'fallback', 0, 'bool');
+
+if ($fallback || !file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
-	$controllerName = 'search';
+	$controllerName = 'basic';
 }
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'SearchController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller
