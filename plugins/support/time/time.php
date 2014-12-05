@@ -147,7 +147,7 @@ class plgSupportTime extends \Hubzero\Plugin\Plugin
 		// Combine the time entry
 		$record['user_id'] = $juser->get('id');
 		$record['time'] = $record['htime'] . '.' . $record['mtime'];
-		$record['description'] = $comment->comment;
+		$record['description'] = $comment->get('comment');
 		// Don't attempt to save a record if no time or task was chosen
 		if (!$record['time'] || !$record['task_id'])
 		{
