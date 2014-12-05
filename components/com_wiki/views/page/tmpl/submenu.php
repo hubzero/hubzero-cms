@@ -32,12 +32,14 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
+$tmpl = JRequest::getWord('tmpl');
 
 if (!isset($this->controller))
 {
 	$this->controller = JRequest::getWord('controller', 'page');
 }
-?>
+
+if ($tmpl != 'component') { ?>
 	<div id="<?php echo ($this->sub) ? 'sub-content-header-extra' : 'content-header-extra'; ?>">
 		<ul id="<?php echo ($this->sub) ? 'page_options' : 'useroptions'; ?>">
 		<?php if (!$juser->get('guest') && $this->page->access('create')) { ?>
@@ -71,6 +73,7 @@ if (!isset($this->controller))
 			</li>
 		</ul>
 	</div><!-- / #content-header-extra -->
+<?php } ?>
 
 	<ul class="sub-menu">
 		<li class="page-text<?php if ($this->controller == 'page' && ($this->task == 'display' || !$this->task)) { echo ' active'; } ?>">
@@ -78,39 +81,41 @@ if (!isset($this->controller))
 				<span><?php echo JText::_('COM_WIKI_TAB_ARTICLE'); ?></span>
 			</a>
 		</li>
-<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->get('namespace') != 'special') { ?>
-	<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
-		<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_($this->page->link('edit')); ?>">
-				<span><?php echo JText::_('COM_WIKI_TAB_EDIT'); ?></span>
-			</a>
-		</li>
-	<?php } ?>
-	<?php if ($this->page->access('view', 'comment')) { ?>
-		<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_($this->page->link('comments')); ?>">
-				<span><?php echo JText::_('COM_WIKI_TAB_COMMENTS'); ?></span>
-			</a>
-		</li>
-	<?php } ?>
-		<li class="page-history<?php if ($this->controller == 'history') { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_($this->page->link('history')); ?>">
-				<span><?php echo JText::_('COM_WIKI_TAB_HISTORY'); ?></span>
-			</a>
-		</li>
-		<li class="page-pdf">
-			<a href="<?php echo JRoute::_($this->page->link('pdf')); ?>">
-				<span><?php echo JText::_('COM_WIKI_TAB_PDF'); ?></span>
-			</a>
-		</li>
-	<?php
-		if (($this->page->isLocked() && $this->page->access('manage', 'page'))
-			|| (!$this->page->isLocked() && $this->page->access('delete', 'page'))) { ?>
-		<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
-			<a href="<?php echo JRoute::_($this->page->link('delete')); ?>">
-				<span><?php echo JText::_('COM_WIKI_DELETE_PAGE'); ?></span>
-			</a>
-		</li>
+<?php if ($tmpl != 'component') { ?>
+	<?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->get('namespace') != 'special') { ?>
+		<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('edit'))) { ?>
+			<li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') { echo ' active'; } ?>">
+				<a href="<?php echo JRoute::_($this->page->link('edit')); ?>">
+					<span><?php echo JText::_('COM_WIKI_TAB_EDIT'); ?></span>
+				</a>
+			</li>
+		<?php } ?>
+		<?php if ($this->page->access('view', 'comment')) { ?>
+			<li class="page-comments<?php if ($this->controller == 'comments') { echo ' active'; } ?>">
+				<a href="<?php echo JRoute::_($this->page->link('comments')); ?>">
+					<span><?php echo JText::_('COM_WIKI_TAB_COMMENTS'); ?></span>
+				</a>
+			</li>
+		<?php } ?>
+			<li class="page-history<?php if ($this->controller == 'history') { echo ' active'; } ?>">
+				<a href="<?php echo JRoute::_($this->page->link('history')); ?>">
+					<span><?php echo JText::_('COM_WIKI_TAB_HISTORY'); ?></span>
+				</a>
+			</li>
+			<li class="page-pdf">
+				<a href="<?php echo JRoute::_($this->page->link('pdf')); ?>">
+					<span><?php echo JText::_('COM_WIKI_TAB_PDF'); ?></span>
+				</a>
+			</li>
+		<?php
+			if (($this->page->isLocked() && $this->page->access('manage', 'page'))
+				|| (!$this->page->isLocked() && $this->page->access('delete', 'page'))) { ?>
+			<li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') { echo ' active'; } ?>">
+				<a href="<?php echo JRoute::_($this->page->link('delete')); ?>">
+					<span><?php echo JText::_('COM_WIKI_DELETE_PAGE'); ?></span>
+				</a>
+			</li>
+		<?php } ?>
 	<?php } ?>
 <?php } ?>
 	</ul>
