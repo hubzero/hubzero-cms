@@ -138,7 +138,7 @@ Joomla.overrider.searchStrings = function(more)
 				}
 				else
 				{
-					$('#more-results').set('style', 'display:none;');
+					$('#more-results').hide();
 				}
 			}
 			$('#results-container').removeClass('overrider-spinner');
