@@ -58,7 +58,7 @@ $this->css()
 						<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 					</fieldset>
 				</div><!-- / .container -->
-	
+
 				<div class="container">
 					<div class="container-block">
 						<h3>Articles</h3>
@@ -70,7 +70,7 @@ $this->css()
 									</a>
 								</h4>
 							<?php
-							$popular = $this->archive->articles('popular', array('limit' => 5));
+							$popular = $this->archive->articles('popular', array('limit' => 5, 'access' => (JFactory::getUser()->get('guest') ? 0 : -1)));
 							if ($popular->total() > 0) { ?>
 								<ul class="articles">
 								<?php foreach ($popular as $row) { ?>
@@ -92,7 +92,7 @@ $this->css()
 									</a>
 								</h4>
 							<?php
-							$recent = $this->archive->articles('recent', array('limit' => 5));
+							$recent = $this->archive->articles('recent', array('limit' => 5, 'access' => (JFactory::getUser()->get('guest') ? 0 : -1)));
 							if ($recent->total() > 0) { ?>
 								<ul class="articles">
 								<?php foreach ($recent as $row) { ?>
@@ -108,18 +108,19 @@ $this->css()
 							<?php } ?>
 							</div><!-- / .col span-half -->
 						</div><!-- / .grid -->
-	
+
 						<h3><?php echo JText::_('COM_KB_CATEGORIES'); ?></h3>
 						<div class="grid">
 						<?php
 							$i = 0;
-							$filters = array();
-							$filters['limit']    = JRequest::getInt('limit', 3);
-							$filters['start']    = JRequest::getInt('limitstart', 0);
-							$filters['order']    = JRequest::getWord('order', 'recent');
-							$filters['category'] = 0;
-							$filters['state']    = 1;
-							$filters['access']   = 0;
+							$filters = array(
+								'limit'    => JRequest::getInt('limit', 3),
+								'start'    => JRequest::getInt('limitstart', 0),
+								'order'    => JRequest::getWord('order', 'recent'),
+								'category' => 0,
+								'state'    => 1,
+								'access'   => (JFactory::getUser()->get('guest') ? 0 : -1)
+							);
 							foreach ($this->archive->categories('list', array('sort' => 'title', 'sort_Dir' => 'ASC')) as $row)
 							{
 								$i++;
@@ -164,7 +165,7 @@ $this->css()
 				</div><!-- / .container -->
 			</form>
 		</div><!-- / .subject -->
-	
+
 		<aside class="aside">
 		<?php if (JComponentHelper::isEnabled('com_answers')) { ?>
 			<div class="container">
