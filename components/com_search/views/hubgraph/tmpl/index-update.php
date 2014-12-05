@@ -1,4 +1,4 @@
-<?php defined('JPATH_BASE') or die(); 
+<?php defined('JPATH_BASE') or die();
 
 $doc = JFactory::getDocument();
 if (!defined('HG_INLINE'))
@@ -30,19 +30,19 @@ if (isset($this->results['js'])): ?>
 				$terms = h($req->getTerms());
 				foreach ($this->results['terms']['autocorrected'] as $k => $v):
 					$terms = preg_replace('#' . preg_quote($k) . '#i', '<strong>' . $v . '</strong>', $terms);
-				endforeach; 
+				endforeach;
 			elseif ($this->results['terms']['suggested']):
 				$terms = h($req->getTerms());
 				$rawTerms = $terms;
 				foreach ($this->results['terms']['suggested'] as $k => $v):
 					$terms    = str_replace($k, '<strong>' . $v . '</strong>', strtolower($terms));
 					$rawTerms = str_replace($k, $v, $rawTerms);
-				endforeach; 
+				endforeach;
 				$link = preg_replace('/\?terms=[^&]*/', 'terms=' . $rawTerms, $_SERVER['QUERY_STRING']);
 				if ($link[0] != '?'):
 					$link = '?' . $link;
 				endif;
-			endif; 
+			endif;
 		?>
 		<ul class="complete">
 			<li class="cat users" title="Contributors"><ul></ul></li>

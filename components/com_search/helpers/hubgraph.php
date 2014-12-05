@@ -1,5 +1,5 @@
 <?php
-defined('JPATH_BASE') or die(); 
+defined('JPATH_BASE') or die();
 
 if (!function_exists('p'))
 {
