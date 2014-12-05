@@ -103,7 +103,7 @@ $this->setTitle($config->getValue('config.sitename') . ' - ' . $this->getTitle()
 											<?php
 											$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 											?>
-											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" width="30" height="30" />
+											<img src="<?php echo $profile->getPicture(); ?>" alt="<?php echo $juser->get('name'); ?>" class="profile-pic thumb" width="30" height="30" />
 											<a class="account-details" href="<?php echo JRoute::_('index.php?option=com_members&id=' . $juser->get('id')); ?>">
 												<?php echo stripslashes($juser->get('name')); ?> 
 												<span class="account-email"><?php echo $juser->get('email'); ?></span>

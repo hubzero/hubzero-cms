@@ -599,7 +599,8 @@ class MembersControllerMedia extends \Hubzero\Component\SiteController
 		}
 
 		//get the file name
-		$uri = JRequest::getVar('REQUEST_URI', '', 'server');
+		// make sure to leave out any query params (ex. ?v={timestamp})
+		$uri = JRequest::getVar('SCRIPT_URL', '', 'server');
 		if (strstr($uri, 'Image:'))
 		{
 			$file = str_replace('Image:', '', strstr($uri, 'Image:'));

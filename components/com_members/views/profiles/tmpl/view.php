@@ -88,7 +88,7 @@ if (!$no_html)
 			<div id="page_identity">
 				<?php $title = ($this->profile->get('uidNumber') == $juser->get('id')) ? JText::_('COM_MEMBERS_GO_TO_MY_DASHBOARD') : JText::sprintf('COM_MEMBERS_GO_TO_MEMBER_PROFILE', $this->profile->get('name')); ?>
 				<a href="<?php echo JRoute::_($this->profile->getLink()); ?>" id="page_identity_link" title="<?php echo $title; ?>">
-					<img src="<?php echo $this->profile->getPicture(0, false); ?>" alt="<?php echo JText::sprintf('COM_MEMBERS_PROFILE_PICTURE_FOR', $this->escape(stripslashes($this->profile->get('name')))); ?>" />
+					<img src="<?php echo $this->profile->getPicture(0, false); ?>" alt="<?php echo JText::sprintf('COM_MEMBERS_PROFILE_PICTURE_FOR', $this->escape(stripslashes($this->profile->get('name')))); ?>" class="profile-pic full" />
 				</a>
 			</div><!-- /#page_identity -->
 			<?php if ($messaging): ?>

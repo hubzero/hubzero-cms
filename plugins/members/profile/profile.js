@@ -488,13 +488,23 @@ HUB.Members.Profile = {
 						event.preventDefault();
 						var form = $("#ajax-upload-container").find("form");
 
+						// save profile picture updates
 						$.post( form.attr("action"), form.serialize(), function(data){
 							var save = jQuery.parseJSON(data);
 							if(save.success)
 							{
-								$.get(window.location.href, function(data) {
-									var new_logo = $(data).find("#page_identity_link img").attr("src") + '?' + new Date().getTime();
-									$("#page_identity_link img").attr("src", new_logo);
+								// load exact page to get results new profile pic sources
+								// not ideal way to do this, save should really return new profile pic
+								$.get(window.location.href, function(data)
+								{
+									var full = $(data).find('.profile-pic.full').first().attr('src'),
+										thumb = $(data).find('.profile-pic.thumb').first().attr('src');
+
+									// update all full & thumb
+									$('.profile-pic.full').attr('src', full + '?' + new Date().getTime());
+									$('.profile-pic.thumb').attr('src', thumb + '?' + new Date().getTime());
+
+									// close fancy box
 									$.fancybox.close();
 								});
 							}
@@ -536,7 +546,7 @@ HUB.Members.Profile = {
 						$("#ajax-upload-right").find("table").show();
 						$("#ajax-upload-right").find("p.warning").remove();
 						
-						$("#picture-src").attr("src", upload.src + "?" + new Date().getTime());
+						$("#picture-src").attr("src", upload.src + "?v=" + new Date().getTime());
 						$("#picture-name").html(upload.name);
 						$("#picture-size").html(upload.size);
 						$("#picture-width").html(upload.width);
