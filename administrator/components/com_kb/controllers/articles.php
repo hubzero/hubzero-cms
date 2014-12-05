@@ -57,7 +57,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		$this->view->filters['category']        = $app->getUserStateFromRequest(
 			$this->_option . '.' . $this->_controller . '.category',
 			'category',
-			-1,
+			0,
 			'int'
 		);
 		$this->view->filters['section']        = $app->getUserStateFromRequest(
@@ -111,15 +111,25 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		);
 
 		// Get the sections
-		$this->view->sections = $a->categories('list');
+		$this->view->sections = $a->categories('list', array(
+			'access' => -1,
+			'state' => -1,
+			'empty' => true
+		));
+		if ($this->view->filters['section'] && $this->view->filters['section'] >= 0)
+		{
+			$this->view->categories = $a->categories('list', array(
+				'section' => $this->view->filters['section'],
+				'access' => -1,
+				'state' => -1,
+				'empty' => true
+			), true);
+		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML

@@ -78,13 +78,12 @@ function submitbutton(pressbutton)
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
-		<?php
-			if ($this->filters['category'] && $this->filters['category'] >= 0) {
-				echo KbHelperHtml::sectionSelect($this->sections, $this->filters['category'], 'category');
-			} else {
-				echo KbHelperHtml::sectionSelect($this->sections, $this->filters['section'], 'section');
-			}
-		?>
+		<?php echo KbHelperHtml::sectionSelect($this->sections, $this->filters['section'], 'section'); ?>
+
+		<?php if (isset($this->categories) && $this->categories->total() > 0) { ?>
+			<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
+			<?php echo KbHelperHtml::sectionSelect($this->categories, $this->filters['category'], 'category'); ?>
+		<?php } ?>
 
 		<input type="submit" value="<?php echo JText::_('COM_KB_GO'); ?>" />
 	</fieldset>
