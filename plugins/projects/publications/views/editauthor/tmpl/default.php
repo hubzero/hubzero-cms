@@ -55,9 +55,11 @@ if (preg_match($regex, $firstname))
 	$firstname = '';
 }
 
+$juser = JFactory::getUser();
+$actor = \Hubzero\User\Profile::getInstance($juser->get('id'));
+
 // Get profile thumb image
 $profile = \Hubzero\User\Profile::getInstance($this->author->user_id);
-$actor   = \Hubzero\User\Profile::getInstance($this->uid);
 $thumb   = $profile ? $profile->getPicture() : $actor->getPicture(true);
 
 ?>
