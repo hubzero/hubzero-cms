@@ -228,7 +228,7 @@ function CoursesParseRoute($segments)
 				$course = CoursesModelCourse::getInstance($vars['gid']);
 				if ($course->exists())
 				{
-					$pages = $course->pages();
+					$pages = $course->pages(array('active' => 1));
 
 					foreach ($pages as $page)
 					{
