@@ -699,7 +699,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 
 			$count = 0;
 			$display_count = 0;
-			$limit = 20;
+			$limit = 100;
 
 			// Non expert mode
 			if (!$expert_mode)
