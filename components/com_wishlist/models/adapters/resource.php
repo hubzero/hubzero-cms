@@ -64,6 +64,7 @@ class WishlistModelAdapterResource extends WishlistModelAdapterAbstract
 		$database = JFactory::getDBO();
 		$this->_item = new ResourcesResource($database);
 		$this->_item->load($this->get('referenceid'));
+		$this->_item->typetitle = $this->_item->getTypeTitle();
 
 		if ($this->_item->standalone != 1 || $this->_item->published != 1)
 		{

@@ -184,7 +184,7 @@ class plgResourcesWishlist extends \Hubzero\Plugin\Plugin
 				$title = ($admin) ?  JText::_('COM_WISHLIST_TITLE_PRIORITIZED') : JText::_('COM_WISHLIST_TITLE_RECENT_WISHES');
 				if (count($wishlist->items) > 0 && $items > $filters['limit'])
 				{
-					$title.= ' (<a href="' . JRoute::_('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . JText::_('PLG_RESOURCES_WISHLIST_VIEW_ALL') . ' ' . $items . '</a>)';
+					$title.= ' (<a href="' . JRoute::_('index.php?option=' . $option . '&task=wishlist&category=' . $wishlist->category . '&rid=' . $wishlist->referenceid) . '">' . JText::_('PLG_RESOURCES_WISHLIST_VIEW_ALL') . '</a>)';
 				}
 				else
 				{

@@ -398,7 +398,7 @@ if ($this->wishlist->exists())
 
 						if ($this->wishlist->get('category') == 'resource')
 						{
-							$html  = '<p>' . JText::sprintf('COM_WISHLIST_THIS_LIST_IS_FOR_RES', strtolower(substr($this->wishlist->item('typetitle'), 0, strlen($this->wishlist->item('typetitle')) - 1)).' '.JText::_('COM_WISHLIST_RESOURCE_ENTITLED').' <a href="'.JRoute::_('index.php?option=com_resources&id=' . $this->wishlist->get('referenceid')).'">'.$this->escape($this->wishlist->item('title')).'</a>') . '.</p>';
+							$html  = '<p>' . JText::sprintf('COM_WISHLIST_THIS_LIST_IS_FOR_RES', '<a href="'.JRoute::_('index.php?option=com_resources&id=' . $this->wishlist->get('referenceid')).'">'.$this->escape($this->wishlist->item('title')).'</a>') . '</p>';
 						}
 						else if ($this->wishlist->get('description'))
 						{
