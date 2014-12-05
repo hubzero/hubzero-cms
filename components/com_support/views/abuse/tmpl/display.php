@@ -76,7 +76,7 @@ if (!$no_html)
 
 							echo ($this->report->href) ? '<a href="' . $this->report->href . '">': '';
 							echo ucfirst($this->cat) . ' by ';
-							echo ($this->report->anon != 0) ? JText::_('COM_SUPPORT_ANONYMOUS') : $name;
+							echo ($this->report->anon != 0) ? JText::_('COM_SUPPORT_REPORT_ABUSE_ANONYMOUS') : $name;
 							echo ($this->report->href) ? '</a>': '';
 						?></h4>
 						<?php echo ($this->report->subject) ? '<p><strong>'.stripslashes($this->report->subject).'</strong></p>' : ''; ?>
