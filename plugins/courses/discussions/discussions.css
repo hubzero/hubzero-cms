@@ -196,7 +196,6 @@
 		border: none;
 		margin: 0 .2em 0 0;
 		padding: 0;
-		float: right;
 	}
 	ol.comments li .edit,
 	ol.comments li .delete {
