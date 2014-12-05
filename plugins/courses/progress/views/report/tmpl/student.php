@@ -109,7 +109,7 @@ foreach ($assets as $asset)
 		}
 
 		// Get the date the grade was entered
-		if (!is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date']))
+		if (isset($grades[$this->member->get('id')]['assets'][$asset->id]) && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date']))
 		{
 			$date = JHTML::_('date', $grades[$this->member->get('id')]['assets'][$asset->id]['date'], 'r');
 		}
