@@ -85,11 +85,11 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 <?php if ($showSidePanel) { ?>
 <ul id="page_options" class="pluginOptions">
 	<li>
-		<a class="icon-add add btn"  href="<?php echo JRoute::_($url . '&action=new'); ?>">
+		<a class="icon-add add btn"  href="<?php echo JRoute::_($url . '&action=new'); ?>" title="<?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
 			<?php echo JText::_('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
 		</a>
 		<?php if (count($parentNotes) < 2) { ?>
-		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $parentScope . '&action=new'); ?>" class="icon-add add btn"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
+		<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&scope=' . $parentScope . '&action=new'); ?>" class="icon-add add btn" title="<?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo JText::_('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
 		<?php } ?>
 	</li>
 </ul>
