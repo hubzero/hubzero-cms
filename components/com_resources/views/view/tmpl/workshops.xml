@@ -28,15 +28,15 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <metadata>
-	<layout title="Standard Workshop Resource Layout">
+	<layout title="Resource (workshop) Layout">
 		<message>
-			<![CDATA[STANDARD WORKSHOP RESOURCE LAYOUT DESC]]>
+			<![CDATA[Resource (workshop) Layout]]>
 		</message>
 	</layout>
-	<state>
-		<name>Standard Workshop Resource Layout</name>
-		<description>STANDARD WORKSHOP RESOURCE LAYOUT DESC</description>
-		<params>
-		</params>
-	</state>
+	<!-- Add fields to the request variables for the layout. -->
+	<fields name="request">
+		<fieldset name="request">
+			<field name="id" type="text" label="Resource ID" description="Enter the ID of a Resource to view" />
+		</fieldset>
+	</fields>
 </metadata>
