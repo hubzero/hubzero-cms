@@ -55,7 +55,7 @@ if ($comment)
 }
 
 // Page title
-$title = $hubShortName . ' ' . JText::_('COM_PUBLICATIONS_PUBLICATIONS');
+$title = $hubShortName . ' ' . JText::_('Publications');
 
 ?>
 
