@@ -62,7 +62,7 @@ class ResourcesTags extends TagsHandler
 	 */
 	public function getTags($id, $tagger_id=0, $strength=0, $admin=0)
 	{
-		$sql = "SELECT DISTINCT t.*, (SELECT COUNT(rtt.id) FROM $this->_obj_tbl AS rtt WHERE rtt.tagid=rt.tagid) as `count` FROM $this->_tag_tbl AS t INNER JOIN $this->_obj_tbl AS rt ON rt.tagid=t.id WHERE ";
+		$sql = "SELECT DISTINCT t.*, rt.label, (SELECT COUNT(rtt.id) FROM $this->_obj_tbl AS rtt WHERE rtt.tagid=rt.tagid) as `count` FROM $this->_tag_tbl AS t INNER JOIN $this->_obj_tbl AS rt ON rt.tagid=t.id WHERE ";
 
 		$where = array();
 		$where[] = "rt.objectid=$id";
