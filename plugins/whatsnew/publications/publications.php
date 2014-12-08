@@ -164,6 +164,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 				// Loop through the results and set each item's HREF
 				foreach ($rows as $key => $row)
 				{
+					$rows[$key]->text = NULL;
 					if ($row->alias)
 					{
 						$rows[$key]->href = JRoute::_('index.php?option=com_publications&alias=' . $row->alias);
@@ -176,9 +177,9 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 					{
 						$rows[$key]->text = $rows[$key]->abstract;
 					}
-					$row->section = NULL;
-					$row->area = $row->cat_name;
-					$row->publish_up = $row->published_up;
+					$rows[$key]->section = NULL;
+					$rows[$key]->area = $row->cat_name;
+					$rows[$key]->publish_up = $row->published_up;
 				}
 			}
 
@@ -251,4 +252,3 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		return $html;
 	}
 }
-
