@@ -199,7 +199,7 @@ class Parser
 		// We'll put this back after other processes
 		$text = $this->strip($text);
 
-		$text = preg_replace('/<p>(\[\[[^\]]+\]\])\n<\/p>/i', "\n$1\n", $text);
+		$text = preg_replace('/<p>\s*?(\[\[[^\]]+\]\])\s*?<\/p>/i', "\n$1\n", $text);
 
 		$text = preg_replace('/<p>(\[\[[^\]]+\]\])\n/i', "$1\n<p>", $text);
 
