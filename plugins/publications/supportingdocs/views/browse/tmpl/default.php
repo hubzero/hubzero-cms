@@ -58,7 +58,7 @@ if ($useBlocks && $pubParams->get('curated') != 2)
 			$this->publication,
 			$this->authorized
 		);
-		echo $list;
+		echo $list ? $list : '<p class="noresults">' . JText::_('PLG_PUBLICATION_SUPPORTINGDOCS_NONE_FOUND') . '</p>';
 	}
 	else
 	{

@@ -122,6 +122,10 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 			// Serve individually
 			foreach ($attachments as $attach)
 			{
+				if ($attach->type == 'data')
+				{
+					continue;
+				}
 				$itemUrl 	= $url . '&a=' . $attach->id;
 				$title 		= $attach->title ? $attach->title : $configs->title;
 				$title 		= $title ? $title : $attach->path;
