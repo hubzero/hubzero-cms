@@ -40,7 +40,7 @@ $route = $prov
 		? 'index.php?option=com_publications&task=submit&pid=' . $this->pub->id
 		: 'index.php?option=com_projects&alias=' . $this->pub->_project->alias;
 $selectUrl   = $prov
-		? JRoute::_( $route) . '?active=publications&action=select'
+		? JRoute::_( $route) . '?active=publications&action=select&p=' . $props . '&vid=' . $this->pub->version_id
 		: JRoute::_( $route . '&active=publications&action=select') .'/?p=' . $props . '&pid='
 		. $this->pub->id . '&vid=' . $this->pub->version_id;
 

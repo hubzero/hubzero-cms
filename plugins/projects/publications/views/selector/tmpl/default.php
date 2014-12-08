@@ -86,6 +86,10 @@ if ($block == 'license')
 		<input type="hidden" name="active" value="publications" />
 		<input type="hidden" name="action" value="apply" />
 		<input type="hidden" name="move" value="continue" />
+		<?php if ($this->project->provisioned == 1) { ?>
+			<input type="hidden" name="task" value="submit" />
+			<input type="hidden" name="ajax" value="0" />
+		<?php }  ?>
 	</fieldset>
 
 	<?php if (!$selections)
