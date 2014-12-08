@@ -129,7 +129,7 @@ class ResourcesElementCheckbox extends ResourcesElement
 		}
 		$html[] = '</fieldset>';
 
-		return implode("\n", $html);
+		return '<span class="field-wrap">' . implode("\n", $html) . '</span>';
 	}
 
 	/**
