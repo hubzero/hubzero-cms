@@ -144,7 +144,7 @@ class plgCronPublications extends JPlugin
 			'multipart' => md5(date('U'))
 		);
 
-		$subject = JText::_('PLG_CRON_PUBLICATIONS_MONTHLY_REPORT');
+		$subject = JText::_('Monthly Publication Usage Report');
 
 		$i = 0;
 		foreach ($authors as $author)
@@ -214,7 +214,6 @@ class plgCronPublications extends JPlugin
 			$mailed[] = $juser->get('email');
 		}
 
-		//print_r($mailed);
 		return true;
 	}
 
@@ -260,4 +259,3 @@ class plgCronPublications extends JPlugin
 		return true;
 	}
 }
-
