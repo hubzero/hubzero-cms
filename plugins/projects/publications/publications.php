@@ -4793,10 +4793,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$role 		= JRequest::getInt('role', 0);
 
 		$item 		= urldecode(JRequest::getVar( 'item', '' ));
-		$parts = explode('::', $item);
-		$type = array_shift($parts);
-		$type = strtolower($type);
-		$item = array_pop($parts);
+		$type 		= JRequest::getVar('type', 'file');
 
 		if (!$vid || !$pid || !$item)
 		{
@@ -4832,7 +4829,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$objPA->publication_version_id 	= $vid;
 			$objPA->path 					= $item;
 			$objPA->type 					= $type;
-			$objPA->vcs_hash 				= $vcs_hash;
+		//	$objPA->vcs_hash 				= $vcs_hash;
 			$objPA->created_by 				= $this->_uid;
 			$objPA->created 				= JFactory::getDate()->toSql();
 			$objPA->title 					= $title ? $title : '';
