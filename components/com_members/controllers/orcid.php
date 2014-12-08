@@ -58,9 +58,9 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	{
 		foreach ($root->children() as $ch)
 		{
-			if ($ch->count() == 0 && !empty($ch))
+			if ($ch->count() == 0) // && !empty($ch))
 			{
-				$fields[$ch->getName()] = $ch;
+				$fields[$ch->getName()] = $ch->__toString(); //$ch;
 			}
 			else
 			{
@@ -415,5 +415,36 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 
 		echo json_encode($output);
 		exit();
+	}
+
+	/**
+	 * Create an api token
+	 *
+	 * @return  void
+	 */
+	public function authorizeTask()
+	{
+		$srv = $this->config->get('orcid_service', 'members');
+
+		$url = 'https://' . $this->_services[$srv] . '/oauth/token';
+
+		$client_id     = JRequest::getVar('client_id');
+		$client_secret = JRequest::getVar('client_secret');
+
+		if (!$client_id && !$client_secret)
+		{
+			throw new JException(JText::_('Missing client ID or secret'), 500);
+		}
+
+		$initedCurl = curl_init($url);
+		curl_setopt($initedCurl, CURLOPT_POST, 1);
+		curl_setopt($initedCurl, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($initedCurl, CURLOPT_MAXREDIRS, 3);
+		curl_setopt($initedCurl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($initedCurl, CURLOPT_POSTFIELDS, "client_id=" . $client_id . "&client_secret=" . $client_secret . "&grant_type=client_credentials&scope=/orcid-profile/create");
+		$curl_response = curl_exec($initedCurl);
+		curl_close($initedCurl);
+
+		print_r($curl_response);
 	}
 }

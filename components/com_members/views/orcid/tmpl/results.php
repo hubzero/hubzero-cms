@@ -37,6 +37,10 @@ defined('_JEXEC') or die( 'Restricted access' );
 			<?php
 			foreach ($this->records as $record)
 			{
+				if (!$record || empty($record))
+				{
+					continue;
+				}
 				$fname     = array_key_exists('given-names', $record) ? $record['given-names'] : '';
 				$lname     = array_key_exists('family-name', $record) ? $record['family-name'] : '';
 				$orcid_uri = array_key_exists('uri', $record)         ? $record['uri'] : '';
