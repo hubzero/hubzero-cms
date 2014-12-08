@@ -118,7 +118,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 					<legend>
 						<?php echo JText::_('Date &amp; Time Settings'); ?>
 					</legend>
-					<label><?php echo JText::_('Start:'); ?> <span class="required">Required</span>
+					<label for="event_start"><?php echo JText::_('Start:'); ?> <span class="required">Required</span>
 						<?php
 							$start           = JRequest::getVar('start', '', 'get');
 							$publish_up      = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
@@ -136,7 +136,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						</div>
 					</label>
 
-					<label><?php echo JText::_('End:'); ?> <span class="optional">Optional</span>
+					<label for="event_end"><?php echo JText::_('End:'); ?> <span class="optional">Optional</span>
 						<?php
 							$end               = JRequest::getVar('end', '', 'get');
 							$publish_down      = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;

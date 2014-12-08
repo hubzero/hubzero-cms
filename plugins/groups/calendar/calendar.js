@@ -291,20 +291,30 @@ HUB.Plugins.GroupCalendar = {
 		if ($('#event_start_date, #event_end_date').length)
 		{
 			$('#event_start_date, #event_end_date').attr('autocomplete', 'OFF');
-			$('#event_start_date').datetimepicker({
-				controlType: 'slider',
+			$('#event_start_time, #event_end_time').attr('autocomplete', 'OFF');
+
+			// date fields
+			$('#event_start_date, #event_end_date').datetimepicker({
 				dateFormat: 'mm/dd/yy',
-				timeFormat: 'h:mm tt',
-				altField:  '#event_start_time',
-				onClose: function( selectedDate ) {
-					$('#event_end_date').datepicker( "option", "minDate", selectedDate );
+				showTimepicker: false,
+				onClose: function(selectedDate, inst)
+    			{
+    				var option = 'minDate',
+    					input  = '#event_end_date';
+
+    				if (inst.id == 'event_end_date')
+    				{
+    					option = 'maxDate';
+    					input  = '#event_start_date';
+    				}
+    				$(input).datetimepicker('option', option, selectedDate);
     			}
 			});
-			$('#event_end_date').datetimepicker({
-				controlType: 'slider',
-				dateFormat: 'mm/dd/yy',
+
+			// time fields
+			$('#event_start_time, #event_end_time').datetimepicker({
 				timeFormat: 'h:mm tt',
-				altField: '#event_end_time',
+				timeOnly: true
 			});
 
 			// toggle time fields

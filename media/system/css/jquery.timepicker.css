@@ -3,7 +3,8 @@
 	display: none;
 }
 .ui-timepicker-div .ui-widget-header {
-	margin-bottom: 8px;
+	position: relative;
+	height: 30px;
 }
 .ui-timepicker-div dl {
 	text-align: left;
