@@ -435,6 +435,14 @@ class Comment extends Model
 		}
 		$link = $this->_base;
 
+		// check for page slug  (remove for now)
+		$slug = '';
+		if (strpos($link, '#') !== false)
+		{
+			list($link, $slug) = explode('#', $link);
+			$slug = "#{$slug}";
+		}
+
 		$s = '&';
 		if (strstr($link, '?') === false)
 		{
@@ -445,15 +453,15 @@ class Comment extends Model
 		switch (strtolower($type))
 		{
 			case 'base':
-
+				$link .= $slug;
 			break;
 
 			case 'edit':
-				$link .= $s . 'commentedit=' . $this->get('id');
+				$link .= $s . 'commentedit=' . $this->get('id') . $slug;
 			break;
 
 			case 'delete':
-				$link .= $s . 'action=commentdelete&comment=' . $this->get('id');
+				$link .= $s . 'action=commentdelete&comment=' . $this->get('id') . $slug;
 			break;
 
 			case 'reply':
