@@ -307,7 +307,7 @@ jQuery(document).ready(function($){
 				<?php echo JText::_('COM_CRON_FIELD_COMMON'); ?>:<br />
 				<select name="fields[recurrence]" id="field-recurrence">
 					<option value=""<?php echo ($this->row->get('recurrence') == '') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_SELECT'); ?></option>
-					<option value="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_COMMON'); ?></option>
+					<option value="custom"<?php echo ($this->row->get('recurrence') == 'custom') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_CUSTOM'); ?></option>
 					<option value="0 0 1 1 *"<?php echo ($this->row->get('recurrence') == '0 0 1 1 *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_ONCE_A_YEAR'); ?></option>
 					<option value="0 0 1 * *"<?php echo ($this->row->get('recurrence') == '0 0 1 * *') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_ONCE_A_MONTH'); ?></option>
 					<option value="0 0 * * 0"<?php echo ($this->row->get('recurrence') == '0 0 * * 0') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_CRON_FIELD_COMMON_OPT_ONCE_A_WEEK'); ?></option>
