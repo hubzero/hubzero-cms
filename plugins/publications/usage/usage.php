@@ -174,8 +174,9 @@ class plgPublicationsUsage extends \Hubzero\Plugin\Plugin
 			if ($stats->users)
 			{
 				$action = $publication->base == 'files' ? '%s download(s)' : '%s view(s)';
-				$arr['metadata'] = '<p class="usage">' . JText::sprintf('%s user(s)',$stats->users)
-					. ' | ' . JText::sprintf($action, $stats->downloads) . '</p>';
+				$arr['metadata'] = '<p class="usage">' . JText::sprintf('%s user(s)',$stats->users);
+				$arr['metadata'].= $stats->downloads ? ' | ' . JText::sprintf($action, $stats->downloads) : '';
+				$arr['metadata'].= '</p>';
 			}
 		}
 
