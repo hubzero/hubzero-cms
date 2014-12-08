@@ -867,6 +867,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 			if ($row && $row->doi)
 			{
 				// Get updated authors
+				$pAuthor = new PublicationAuthor( $this->database );
 				$authors = $pAuthor->getAuthors($row->id);
 
 				// Collect DOI metadata
