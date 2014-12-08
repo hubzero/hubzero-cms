@@ -103,7 +103,7 @@ if (!$no_html) {
 							<p><?php echo $item->tags('render'); ?></p>
 						</div><!-- / .tags-wrap -->
 					<?php } ?>
-					<div class="meta">
+					<div class="meta" data-metadata-url="<?php echo JRoute::_($base . '&task=metadata&post=' . $this->post->get('id')); ?>">
 						<p class="stats">
 							<span class="likes">
 								<?php echo JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>

@@ -105,7 +105,7 @@ $this->css()
 									<?php echo $tags; ?>
 								</div>
 							<?php } ?>
-							<div class="meta">
+							<div class="meta" data-metadata-url="<?php echo JRoute::_('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')); ?>">
 								<p class="stats">
 									<span class="likes">
 										<?php echo JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>

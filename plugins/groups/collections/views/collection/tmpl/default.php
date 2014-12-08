@@ -138,7 +138,7 @@ $viewas = JRequest::getWord('viewas', $this->collection->get('layout'));
 								<?php echo $tags; ?>
 							</div>
 						<?php } ?>
-						<div class="meta">
+						<div class="meta" data-metadata-url="<?php echo JRoute::_('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')); ?>">
 							<p class="stats">
 								<span class="likes">
 									<?php echo JText::sprintf('PLG_GROUPS_COLLECTIONS_POST_LIKES', $item->get('positive', 0)); ?>

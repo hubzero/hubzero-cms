@@ -247,6 +247,15 @@ jQuery(document).ready(function(jq){
 						$.post($(this).attr('action'), $(this).serialize(), function(data) {
 							$('#post-content').html(data);
 							$.fancybox.update();
+
+							var metadata = $(el).parent().parent(); //$('#p' + $(el).attr('data-id')).find('.meta');
+							if (metadata.length) {
+								$.getJSON(metadata.attr('data-metadata-url').nohtml(), function(data) {
+									metadata.find('.likes').text(data.likes);
+									metadata.find('.comments').text(data.comments);
+									metadata.find('.reposts').text(data.reposts);
+								});
+							}
 						});
 					});
 				}

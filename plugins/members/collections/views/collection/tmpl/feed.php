@@ -89,7 +89,7 @@ $this->css()
 							<?php echo $item->tags('render'); ?>
 						</div>
 					<?php } ?>
-					<div class="meta">
+					<div class="meta" data-metadata-url="<?php echo JRoute::_('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')); ?>">
 						<p class="stats">
 							<span class="likes">
 								<?php echo JText::sprintf('PLG_MEMBERS_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>

@@ -550,11 +550,41 @@ class CollectionsControllerPosts extends \Hubzero\Component\SiteController
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 				JText::_('COM_COLLECTIONS_POSTS_REORDERED')
 			);
+			return;
 		}
 
 		$response = new stdClass;
 		$response->success = 1;
 		$response->message = JText::_('COM_COLLECTIONS_POSTS_REORDERED');
+
+		echo json_encode($response);
+	}
+
+	/**
+	 * Get basic metadata for a post
+	 *
+	 * @return  void
+	 */
+	public function metadataTask()
+	{
+		$id = JRequest::getInt('post', 0);
+
+		$post = new CollectionsModelPost($id);
+
+		if (!JRequest::getInt('no_html', 0))
+		{
+			// Output messsage and redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			);
+			return;
+		}
+
+		$response = new stdClass;
+		$response->id       = $id;
+		$response->reposts  = JText::sprintf('COM_COLLECTIONS_NUM_REPOSTS', $post->item()->get('reposts', 0));
+		$response->comments = JText::sprintf('COM_COLLECTIONS_NUM_COMMENTS', $post->item()->get('comments', 0));
+		$response->likes    = JText::sprintf('COM_COLLECTIONS_NUM_LIKES', $post->item()->get('positive', 0));
 
 		echo json_encode($response);
 	}
