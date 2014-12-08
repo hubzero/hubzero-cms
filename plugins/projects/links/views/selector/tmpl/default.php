@@ -101,6 +101,10 @@ $url = $this->project->provisioned ? JRoute::_( $route) : JRoute::_( 'index.php?
 				<input type="hidden" name="move" value="continue" />
 				<input type="hidden" name="parseaction" id="parseaction" value="<?php echo $action; ?>" />
 				<input type="hidden" name="parseurl" id="parseurl" value="<?php echo JRoute::_( $route); ?>" />
+				<?php if ($this->project->provisioned == 1) { ?>
+					<input type="hidden" name="task" value="submit" />
+					<input type="hidden" name="ajax" value="0" />
+				<?php }  ?>
 			</fieldset>
 				<div id="import-link">
 					<label>
