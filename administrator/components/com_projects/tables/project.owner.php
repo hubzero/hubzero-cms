@@ -679,7 +679,7 @@ class ProjectOwner extends JTable
 		{
 			$query.= " LIMIT " . $limitstart . ", " . $limit;
 		}
-		
+
 		$this->_db->setQuery( $query );
 		$owners = $this->_db->loadObjectList();
 
