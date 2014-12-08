@@ -147,19 +147,31 @@ class SefEntry extends JTable
 	 */
 	protected function _buildQuery($filters=array())
 	{
-		$query = "FROM $this->_tbl WHERE ";
+		$query = "FROM $this->_tbl";
+
+		$where = array();
+
 		if ($filters['ViewModeId'] == 1)
 		{
-			$query .= "`dateadd` > '0000-00-00' AND `newurl` = '' ";
+			$where[] = "`dateadd` > '0000-00-00' AND `newurl` = '' ";
 		}
 		elseif ($filters['ViewModeId'] == 2)
 		{
-			$query .= "`dateadd` > '0000-00-00' AND `newurl` != '' ";
+			$where[] = "`dateadd` > '0000-00-00' AND `newurl` != '' ";
 		}
 		else
 		{
-			$query .= "`dateadd` = '0000-00-00'";
+			if (isset($filters['dateadded']))
+			{
+				$where[] = "`dateadd`=" . $this->_db->quote($filters['dateadded']);
+			}
 		}
+
+		if (count($where) > 0)
+		{
+			$query .= " WHERE " . implode(" AND ", $where);
+		}
+
 		$query .= " ORDER BY ";
 		switch ($filters['SortById'])
 		{
