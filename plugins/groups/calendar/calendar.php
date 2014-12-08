@@ -356,13 +356,13 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 		$events = array();
 
 		// get request params
-		$start      = JRequest::getInt('start', 0);
-		$end        = JRequest::getInt('end', 0);
+		$start      = JRequest::getVar('start');
+		$end        = JRequest::getVar('end');
 		$calendarId = JRequest::getInt('calender_id', 'null');
 
 		// format date/times
-		$start = JFactory::getDate($start);
-		$end   = JFactory::getDate($end);
+		$start = JFactory::getDate($start . ' 00:00:00');
+		$end   = JFactory::getDate($end . ' 00:00:00');
 		$end->modify('-1 second');
 
 		// get calendar events
@@ -400,11 +400,11 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			$event->title     = $rawEvent->get('title');
 			$event->allDay    = $rawEvent->get('allday') == 1;
 			$event->url       = $rawEvent->link();
-			$event->start     = $up->format("Y-m-d\TH:i:sO");
+			$event->start     = JHTML::_('date', $rawEvent->get('publish_up'), 'Y-m-d\TH:i:sO');
 			$event->className = ($rawEvent->get('calendar_id')) ? 'calendar-'.$rawEvent->get('calendar_id') : 'calendar-0';
 			if ($rawEvent->get('publish_down') != '0000-00-00 00:00:00')
 			{
-				$event->end = $down->format("Y-m-d\TH:i:sO");
+				$event->end = JHTML::_('date', $rawEvent->get('publish_down'), 'Y-m-d\TH:i:sO');
 			}
 
 			// add start & end for displaying dates user clicked on
