@@ -68,62 +68,62 @@ if ($this->contributors)
 		{
 			$name = $this->escape(stripslashes($contributor->xname));
 		}
+
 		if (!$contributor->org)
 		{
 			$contributor->org = $contributor->xorg;
 		}
 		$contributor->org = $this->escape(stripslashes(trim($contributor->org)));
 
-		//$name = str_replace('"', '&quot;', $name);
+		$link = $name;
 		if ($contributor->id)
 		{
-			$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" rel="contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
+			$profile = \Hubzero\User\Profile::getInstance($contributor->id);
+			if ($profile && $profile->get('public'))
+			{
+				$link = '<a href="' . JRoute::_($profile->getLink()) . '" rel="contributor" title="' . JText::sprintf('View the profile of %s', $name) . '">' . $name . '</a>';
+			}
+		}
+
+		$link .= ($contributor->role) ? ' (' . $contributor->role . ')' : '';
+
+		if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
+		{
+			$orgs[$i-1] = trim($contributor->org);
+			$orgsln    .= $i . '. ' . trim($contributor->org) . ' ';
+			$orgsln_s  .= trim($contributor->org).' ';
+			$k = $i;
+			$i++;
 		}
 		else
 		{
-			$link  = $name;
+			$k = array_search(trim($contributor->org), $orgs) + 1;
 		}
-		$link .= ($contributor->role) ? ' (' . $contributor->role . ')' : '';
+		$link_s = $link;
+		if (trim($contributor->org) != '')
+		{
+			$link .= '<sup>' . $k . '</sup>';
+		}
 
-			if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
-			{
-				$orgs[$i-1] = trim($contributor->org);
-				$orgsln 	.= $i . '. ' . trim($contributor->org) . ' ';
-				$orgsln_s 	.= trim($contributor->org).' ';
-				$k = $i;
-				$i++;
-			}
-			else
-			{
-				$k = array_search(trim($contributor->org), $orgs) + 1;
-			}
-			$link_s = $link;
-			if (trim($contributor->org) != '')
-			{
-				$link .= '<sup>' . $k . '</sup>';
-			}
-			$names_s[] = $link_s;
-
+		$names_s[] = $link_s;
 		$names[] = $link;
 	}
 
+	if (count($names) > 0)
+	{
+		$html = '<p>'.ucfirst(JText::_('By')).' ';
+		//$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
+		$html .= count($this->contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s);
+		$html .= '</p>';
+	}
 
-		if (count($names) > 0)
-		{
-			$html = '<p>'.ucfirst(JText::_('By')).' ';
-			//$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
-			$html .= count($this->contributors) > 1 ? implode(', ', $names) : implode(', ', $names_s);
-			$html .= '</p>';
-		}
-
-		if (count($orgs) > 0)
-		{
-			$html .= '<p class="orgs">';
-			//$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
-			$html .= count($this->contributors) > 1 ? $orgsln : $orgsln_s;
-			$html .= '</p>';
-		}
-
+	if (count($orgs) > 0)
+	{
+		$html .= '<p class="orgs">';
+		//$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
+		$html .= count($this->contributors) > 1 ? $orgsln : $orgsln_s;
+		$html .= '</p>';
+	}
 }
 else
 {

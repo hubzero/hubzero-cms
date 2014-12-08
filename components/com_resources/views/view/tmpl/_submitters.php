@@ -83,13 +83,15 @@ if ($this->contributors)
 		}
 
 		$name = $this->escape(stripslashes($name));
+
+		$link = $name;
 		if ($contributor->id)
 		{
-			$link  = '<a href="' . JRoute::_('index.php?option=com_members&id=' . $contributor->id) . '" rel="contributor" title="View the profile of ' . $name . '">' . $name . '</a>';
-		}
-		else
-		{
-			$link  = $name;
+			$profile = \Hubzero\User\Profile::getInstance($contributor->id);
+			if ($profile && $profile->get('public'))
+			{
+				$link = '<a href="' . JRoute::_($profile->getLink()) . '" rel="contributor" title="' . JText::sprintf('View the profile of %s', $name) . '">' . $name . '</a>';
+			}
 		}
 
 		//if ($newstyle)
@@ -118,8 +120,8 @@ if ($this->contributors)
 			if (trim($contributor->org) != '' && !in_array(trim($contributor->org), $orgs))
 			{
 				$orgs[$i-1] = trim($contributor->org);
-				$orgsln 	.= $i . '. ' . trim($contributor->org) . ' ';
-				$orgsln_s 	.= trim($contributor->org).' ';
+				$orgsln    .= $i . '. ' . trim($contributor->org) . ' ';
+				$orgsln_s  .= trim($contributor->org).' ';
 				$k = $i;
 				$i++;
 			}
@@ -142,20 +144,18 @@ if ($this->contributors)
 		$names[] = $link;
 	}
 
-
-		if (count($names) > 0)
-		{
-			$html  = '<p>';
-			$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
-			$html .= '</p>';
-		}
-		if ($this->showorgs && count($orgs) > 0)
-		{
-			$html .= '<p class="orgs">';
-			$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
-			$html .= '</p>';
-		}
-
+	if (count($names) > 0)
+	{
+		$html  = '<p>';
+		$html .= count($orgs) > 1  ? implode(', ', $names) : implode(', ', $names_s);
+		$html .= '</p>';
+	}
+	if ($this->showorgs && count($orgs) > 0)
+	{
+		$html .= '<p class="orgs">';
+		$html .= count($orgs) > 1 ? $orgsln : $orgsln_s;
+		$html .= '</p>';
+	}
 }
 else
 {
