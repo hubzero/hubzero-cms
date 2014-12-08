@@ -266,12 +266,29 @@ function submitbutton(pressbutton)
 							rv = parseFloat(RegExp.$1);
 						}
 						return (rv == 4);
-					},
+					}
+				}
 
-					addRow: function(id) {
-						var tbody = document.getElementById(id).tBodies[0],
-							counter = tbody.rows.length,
-							newNode = tbody.rows[0].cloneNode(true),
+				jQuery(document).ready(function(jq){
+					var $ = jq,
+						fields = $("#fields");
+
+					if (!fields.length) {
+						return;
+					}
+
+					$('#add-custom-field').on('click', function (e){
+						e.preventDefault();
+
+						if ($.uniform) {
+							$.uniform.restore('select');
+						}
+
+						var id = 'fields';
+						//Fields.addRow('fields');
+						var tbody     = document.getElementById(id).tBodies[0],
+							counter   = tbody.rows.length,
+							newNode   = tbody.rows[0].cloneNode(true),
 							replaceme = null;
 
 						var newField = newNode.childNodes;
@@ -288,8 +305,8 @@ function submitbutton(pressbutton)
 									inputs[k].id = id + '-' + counter + '-' + n.replace(']', '');
 
 									if (Fields.isIE8() && inputs[k].type == 'select-one') {
-										inputs[k].id = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
-										replaceme = id + '-' + counter + '-' + n.replace(']', '')+'-tmp';
+										inputs[k].id = id + '-' + counter + '-' + n.replace(']', '') + '-tmp';
+										replaceme = id + '-' + counter + '-' + n.replace(']', '') + '-tmp';
 									}
 								}
 								var n = id + '[' + counter + '][type]';
@@ -304,7 +321,7 @@ function submitbutton(pressbutton)
 								}
 							}
 							if (newField[i].id) {
-								newField[i].id = 'fields-'+counter+'-options';
+								newField[i].id = 'fields-' + counter + '-options';
 							}
 						}
 
@@ -315,107 +332,72 @@ function submitbutton(pressbutton)
 						// So, when calling onChange, the event gets fired for the clone AND the
 						// original. Cloning the clone seems to fix this.
 						if (replaceme) {
-							var replace = jq(replaceme);
-							var select = jq.clone(replace).appendAfter(replace);
-							jq.remove(replace);
+							var replace = $(replaceme);
+							var select  = $.clone(replace).appendAfter(replace);
+							$.remove(replace);
 						}
 
-						Fields.initSelect();
-
-						//jq('#fields tbody').sortable(); //'enable');
-
-						return false;
-					},
-
-					addOption: function(id) {
-						var tbody = document.getElementById(id).tBodies[0];
-						var counter = tbody.rows.length;
-						var newNode = tbody.rows[0].cloneNode(true);
-
-						var newField = newNode.childNodes;
-						for (var i=0;i<newField.length;i++)
-						{
-							var inputs = newField[i].childNodes;
-							for (var k=0;k<inputs.length;k++)
-							{
-								var theName = inputs[k].name;
-								if (theName) {
-									tokens = theName.split('[');
-									n = tokens[2];
-									inputs[k].name = 'fields['+id+'][' +n+ '[' + counter + '][label]';
-								}
-								if (inputs[k].value) {
-									inputs[k].value = '';
-								}
-							}
+						if ($.uniform) {
+							$('select').uniform();
 						}
 
-						tbody.appendChild(newNode);
-
 						return false;
-					},
+					});
 
-					initOptions: function() {
-						jq('.add-custom-option').each(function(i, el){
-							jq(el)
-								.off('click')
-								.on('click', function(e){
-									e.preventDefault();
-
-									Fields.addOption(jq(this).attr('data-rel'));
-								});
-						});
-					},
-
-					timer: 0,
-
-					clear: function() {
-						Fields.timer = 0;
-					},
-
-					initSelect: function() {
-						jq('#fields select').each(function(i, el){
-							jq(el)
-								.off('change')
-								.on('change', function(){
-									var i = this.name.replace(/^fields\[(\d+)\]\[type\]/g,"$1");
-									jq.get('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type='+this.value+'&name='+i,{}, function (response){
-										jq('#fields-'+i+'-options').html(response);
-										Fields.initOptions();
-									});
-								})
-						});
-					},
-
-					initialise: function() {
-						jq('#add-custom-field').on('click', function (e){
+					fields
+						.on('change', 'select', function (e){
+							var i = $(this).attr('name').replace(/^fields\[(\d+)\]\[type\]/g, "$1");
+							$.get('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type=' + this.value + '&name=' + i, {}, function (response) {
+								$('#fields-' + i + '-options').html(response);
+								//Fields.initOptions();
+							});
+						})
+						.on('click', '.add-custom-option', function (e){
 							e.preventDefault();
 
-							Fields.addRow('fields');
+							var id = $(this).attr('data-rel');
+
+							if (!id) {
+								return;
+							}
+
+							var tbody = document.getElementById(id).tBodies[0],
+								counter = tbody.rows.length,
+								newNode = tbody.rows[0].cloneNode(true),
+								newField = newNode.childNodes;
+
+							for (var i=0; i<newField.length; i++)
+							{
+								var inputs = newField[i].childNodes;
+								for (var k=0;k<inputs.length;k++)
+								{
+									var theName = inputs[k].name;
+									if (theName) {
+										tokens = theName.split('[');
+										n = tokens[2];
+										inputs[k].name = 'fields['+id+'][' +n+ '[' + counter + '][label]';
+									}
+									if (inputs[k].value) {
+										inputs[k].value = '';
+									}
+								}
+							}
+
+							tbody.appendChild(newNode);
+
+							return false;
 						});
-
-						Fields.initSelect();
-						Fields.initOptions();
-
-						jq('#fields tbody').sortable();
-					}
-				}
-
-				jQuery(document).ready(function(jq){
-					var $ = jq;
-
-					Fields.initialise();
 
 					$("#fields tbody").sortable({
 						handle: '.handle',
 						helper: function(e, tr) {
-							var $originals = tr.children();
-							var $helper = tr.clone();
-							$helper.children().each(function(index) {
+							var originals = tr.children();
+							var helper    = tr.clone();
+							helper.children().each(function(index) {
 								// Set helper cell sizes to match the original sizes
-								$(this).width($originals.eq(index).width())
+								$(this).width(originals.eq(index).width())
 							});
-							return $helper;
+							return helper;
 						}
 					});  //.disableSelection();
 				});
