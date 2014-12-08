@@ -377,7 +377,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			$objTD->created_by	= $this->_uid;
 			$objTD->created		= JFactory::getDate()->toSql();
 			$objTD->projectid	= $this->_project->id;
-			$assigned			= $this->_uid; // assign to creator
+			$assigned			= $assigned;
 			$new				= 1;
 		}
 		else

@@ -53,7 +53,7 @@ if ($this->row->isComplete())
 	$diff = strtotime($this->row->get('closed')) - strtotime($this->row->get('created'));
 	$diff = ProjectsHtml::timeDifference ($diff);
 }
-
+$assignee = $this->row->owner('name') ? $this->row->owner('name') : JText::_('PLG_PROJECTS_TODO_NOONE');
 ?>
 <div id="plg-header">
 	<h3 class="todo"><a href="<?php echo JRoute::_($url); ?>"><?php echo $this->title; ?></a>
@@ -77,7 +77,7 @@ if ($this->row->isComplete())
 				<div class="col span4 omega td-details">
 					<p><?php echo JText::_('PLG_PROJECTS_TODO_CREATED') . ' ' . $this->row->created('date') .' '.JText::_('PLG_PROJECTS_TODO_BY') . ' ' . $this->row->creator('name'); ?></p>
 				<?php if (!$this->row->isComplete()) { ?>
-					<p><?php echo JText::_('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $this->row->owner('name') . '</strong>'; ?></p>
+					<p><?php echo JText::_('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $assignee . '</strong>'; ?></p>
 					<p><?php echo JText::_('PLG_PROJECTS_TODO_DUE') . ': <strong>' . $due . '</strong>'; ?></p>
 				<?php } else if ($this->row->isComplete()) { ?>
 						<p><?php echo JText::_('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' '.JText::_('PLG_PROJECTS_TODO_BY') . ' ' . ProjectsHtml::shortenName($this->row->closer('name')); ?></p>
