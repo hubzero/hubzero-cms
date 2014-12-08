@@ -51,7 +51,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param name="whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" description="A comma-separated list of white-listed IP addresses" />
 	</params>
-	<fieldset name="basic">
+	<fieldset name="geodb">
 		<field name="geodb_driver" type="text" default="mysql" label="Geolocation Database type" description="TIPDTATABASETYPE" />
 		<field name="geodb_host" type="text" default="localhost" label="Geolocation DB Hostname" description="TIPDATABASEHOSTNAME" />
 		<field name="geodb_port" type="text" default="" label="Geolocation DB Port" description="TIPDATABASEPORT" />
@@ -59,7 +59,8 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="geodb_password" type="password" default="" label="Geolocation DB Password" description="TIPDATABASEPASSWORD" />
 		<field name="geodb_database" type="text" default="" label="Geolocation DB Schema" description="TIPDATABASENAME" />
 		<field name="geodb_prefix" type="text" default="" label="Geolocation DB Table Prefix" description="TIPDATABASEPREFIX" />
-		<field name="@spacer" type="spacer" default="" label="" description="" />
+	</fieldset>
+	<fieldset name="ldap">
 		<field name="ldap_primary" type="text" default="ldap://localhost" label="LDAP Primary Host URI" description="TIPPRIMARYLDAP" />
 		<field name="ldap_secondary" type="text" default="" label="LDAP Secondary Host URI" description="TIPSECONDARYLDAP" />
 		<field name="ldap_basedn" type="text" default="" label="LDAP Base DN" description="TIPLDAPBASEDN" />
@@ -71,8 +72,9 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</field>
-		<field name="@spacer" type="spacer" default="" label="" description="" />
-		<field name="whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" description="A comma-separated list of white-listed IP addresses" />
+	</fieldset>
+	<fieldset name="api">
+		<field name="Whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" description="A comma-separated list of white-listed IP addresses that can access the API for system reporting." />
 	</fieldset>
 </config>
 
