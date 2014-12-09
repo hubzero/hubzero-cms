@@ -778,6 +778,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					{
 						$this->setError(JText::sprintf('COM_SUPPORT_ERROR_FAILED_TO_MESSAGE', $to['name'] . '(' . $to['role'] . ')'));
 					}
+
+					// Watching should be anonymous
+					if ($to['role'] == 'watcher')
+					{
+						continue;
+					}
 					$rowc->changelog()->notified(
 						$to['role'],
 						$to['name'],
@@ -805,6 +811,11 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 						SupportUtilities::sendEmail($to['email'], $subject, $message, $from);
 					}
 
+					// Watching should be anonymous
+					if ($to['role'] == 'watcher')
+					{
+						continue;
+					}
 					$rowc->changelog()->notified(
 						$to['role'],
 						$to['name'],
