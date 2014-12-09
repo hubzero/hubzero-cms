@@ -182,7 +182,7 @@ class MembersHelperUtility
 	 */
 	public static function validorcid($orcid)
 	{
-		if (preg_match("/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/", $orcid))
+		if (preg_match("/^[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}$/", $orcid))
 		{
 			return(1);
 		}
