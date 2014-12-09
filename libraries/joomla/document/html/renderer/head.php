@@ -78,9 +78,9 @@ class JDocumentRendererHead extends JDocumentRenderer
 					$content .= '; charset=' . $document->getCharset();
 					$buffer .= $tab . '<meta http-equiv="' . $name . '" content="' . htmlspecialchars($content) . '" />' . $lnEnd;
 				}
-				elseif ($type == 'standard' && !empty($content))
+				elseif ($type == 'standard' && !empty($content) && isset($content['content']))
 				{
-					$buffer .= $tab . '<meta name="' . $name . '" content="' . htmlspecialchars($content) . '" />' . $lnEnd;
+					$buffer .= $tab . '<meta name="' . $content['name'] . '" content="' . htmlspecialchars($content['content']) . '" />' . $lnEnd;
 				}
 			}
 		}
