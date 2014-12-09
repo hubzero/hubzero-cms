@@ -41,11 +41,15 @@ $document =  JFactory::getDocument();
 ?>
 
 <script type="text/javascript">
+var sets = <?php echo count($this->sets); ?>;
+
 function addGroup() {
 	sets++;
-	jQuery.post("index.php?option=com_oaipmh",{task:"addset",sets:sets},function(){
+
+	window.location.href = "index.php?option=com_oaipmh&task=addset&sets=" + sets;
+	/*jQuery.post("index.php?option=com_oaipmh",{task:"addset",sets:sets},function(){
 		location.reload();
-	});
+	});*/
 }
 
 function removeGroup(id) {

@@ -92,10 +92,10 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 	 * 
 	 * @return     void
 	 */
-	protected function addsetTask()
+	public function addsetTask()
 	{
 		// increment set number, load a fresh one
-		$sets = JRequest::getVar('sets', '', 'request');
+		$sets = JRequest::getInt('sets', 1);
 
 		$names = array(
 			'resource IDs',
@@ -116,11 +116,21 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 			'language',
 			'source'
 		);
-		for ($i=0; $i<17; $i++)
+		foreach ($names as $name)
 		{
-			$SQL = "INSERT INTO `#__oaipmh_dcspecs` (name, query, display) VALUES (" . $this->database->Quote($names[$i]) . ",''," . $this->database->Quote($sets) . ")";
-			$this->database->Execute($SQL);
+			$SQL = "INSERT INTO `#__oaipmh_dcspecs` (name, query, display) VALUES (" . $this->database->Quote($name) . ",''," . $this->database->Quote($sets) . ")";
+			$this->database->setQuery($SQL);
+			if (!$this->database->query())
+			{
+				$this->setError($this->database->getErrorMsg());
+			}
 		}
+
+		if ($this->getError())
+		{
+			echo $this->getError();
+		}
+
 		// redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option,
