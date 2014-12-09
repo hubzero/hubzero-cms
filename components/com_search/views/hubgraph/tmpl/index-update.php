@@ -27,12 +27,12 @@ if (isset($this->results['js'])): ?>
 		<button class="submit" type="submit"><span>Search</span></button>
 		<?php
 			if ($this->results['terms']['autocorrected']):
-				$terms = h($req->getTerms());
+				$terms = h($this->req->getTerms());
 				foreach ($this->results['terms']['autocorrected'] as $k => $v):
 					$terms = preg_replace('#' . preg_quote($k) . '#i', '<strong>' . $v . '</strong>', $terms);
 				endforeach;
 			elseif ($this->results['terms']['suggested']):
-				$terms = h($req->getTerms());
+				$terms = h($this->req->getTerms());
 				$rawTerms = $terms;
 				foreach ($this->results['terms']['suggested'] as $k => $v):
 					$terms    = str_replace($k, '<strong>' . $v . '</strong>', strtolower($terms));
