@@ -43,10 +43,12 @@ switch ($this->model->params->get('show_date'))
 	case 2: $thedate = $this->model->resource->modified;   break;
 	case 3: $thedate = $this->model->resource->publish_up; break;
 }
+/*
 if ($this->curtool)
 {
 	$thedate = $this->curtool->released;
 }
+*/
 
 $this->model->resource->introtext = stripslashes($this->model->resource->introtext);
 $this->model->resource->fulltxt = stripslashes($this->model->resource->fulltxt);
