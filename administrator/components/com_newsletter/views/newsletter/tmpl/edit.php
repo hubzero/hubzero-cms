@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+$this->js();
+
 //set title
 $text = ($this->task == 'edit' ? JText::_('COM_NEWSLETTER_EDIT') : JText::_('COM_NEWSLETTER_NEW'));
 JToolBarHelper::title(JText::_('COM_NEWSLETTER') . ': ' . $text, 'newsletter.png');
@@ -69,7 +71,7 @@ function submitbutton(pressbutton)
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="index.php" method="post" name="adminForm" id="item-form" class="form-watch-changes">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_DETAILS'); ?></legend>

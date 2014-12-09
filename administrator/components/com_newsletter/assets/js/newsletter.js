@@ -57,6 +57,18 @@ HUB.Administrator.Newsletter = {
 				minDate: 0
 			});
 		}
+
+		if ($('.form-watch-changes').length)
+		{
+			var form = $('.form-watch-changes').serialize();
+		    window.onbeforeunload = function(event)
+		    {
+		    	if (form != $('.form-watch-changes').serialize())
+		    	{
+		    		return 'Your changes have not been saved. Are you sure you want to continue?';
+		    	}
+		    };
+		}
 		
 		HUB.Administrator.Newsletter.locationMap();
 		HUB.Administrator.Newsletter.mailingListAndCount();
