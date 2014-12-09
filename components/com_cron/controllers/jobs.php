@@ -104,10 +104,6 @@ class CronControllerJobs extends \Hubzero\Component\SiteController
 					continue;
 				}
 
-				$job->set('last_run', JHTML::_('date', JFactory::getDate(), 'Y-m-d H:i:s')); //JFactory::getDate()->toSql());
-				$job->set('next_run', $job->nextRun());
-				$job->store();
-
 				// Show related content
 				$job->mark('start_run');
 
@@ -131,6 +127,8 @@ class CronControllerJobs extends \Hubzero\Component\SiteController
 				}
 
 				$job->mark('end_run');
+				$job->set('last_run', JHTML::_('date', JFactory::getDate(), 'Y-m-d H:i:s')); //JFactory::getDate()->toSql());
+				$job->set('next_run', $job->nextRun());
 				$job->store();
 
 				$output->jobs[] = $job->toArray();

@@ -339,10 +339,6 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 				continue;
 			}
 
-			$job->set('last_run', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m-d H:i:s'));
-			$job->set('next_run', $job->nextRun());
-			$job->store();
-
 			// Show related content
 			$results = $dispatcher->trigger($job->get('event'), array($job));
 			if ($results)
@@ -363,6 +359,8 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 				}
 			}
 
+			$job->set('last_run', JHTML::_('date', JFactory::getDate()->toSql(), 'Y-m-d H:i:s'));
+			$job->set('next_run', $job->nextRun());
 			$job->store();
 
 			$output->jobs[] = $job->toArray();
