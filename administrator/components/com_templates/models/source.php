@@ -220,6 +220,9 @@ class TemplatesModelSource extends JModelForm
 			return false;
 		}
 
+		// [!] HUBZERO - Force line endings to be consistent with the server environment
+		$data['source'] = preg_replace('~\R~u', PHP_EOL, $data['source']);
+
 		$return = JFile::write($filePath, $data['source']);
 
 		// Try to make the template file unwriteable.
