@@ -382,6 +382,11 @@ $cc = array();
 				</fieldset><!-- / .ticket-head -->
 
 				<div class="ticket-content">
+					<?php
+						JPluginHelper::importPlugin('support');
+						$results = $dispatcher->trigger('onTicketComment', array($this->row));
+						echo implode("\n", $results);
+					?>
 					<fieldset>
 						<div class="input-wrap">
 							<label for="comment-field-template">
