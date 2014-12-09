@@ -137,7 +137,7 @@ class LanguagesModelOverrides extends JModelList
 		$app = JFactory::getApplication();
 
 		// Use default language of frontend for default filter
-		$default	= JComponentHelper::getParams('com_languages')->get('site').'0';
+		$default	= JComponentHelper::getParams('com_languages')->get('site', 'en-GB').'0';
 
 		$old_language_client	= $app->getUserState('com_languages.overrides.filter.language_client', '');
 		$language_client			= $this->getUserStateFromRequest('com_languages.overrides.filter.language_client', 'filter_language_client', $default, 'cmd');
