@@ -197,17 +197,30 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\SiteController
 		$newsletter = $newsletterNewsletter->getNewsletters( $id );
 
 		//build url to newsletter with no html
-		$newsletterUrl = 'http://' . $_SERVER['HTTP_HOST'] . DS . 'newsletter' . DS . $newsletter->alias . '?no_html=1';
+		$newsletterUrl = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'newsletter' . DS . $newsletter->alias . '?no_html=1';
 
 		//path to newsletter file
 		$newsletterPdfFolder = JPATH_ROOT . DS . 'site' . DS . 'newsletter' . DS . 'pdf';
 		$newsletterPdf = $newsletterPdfFolder . DS . $newsletter->alias . '.pdf';
 
-		//run command to save newsletter as pdf
-		$cmd = '/usr/bin/phantomjs ';
-		$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
-		$finalCommand = $cmd . ' ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
-		exec($finalCommand);
+		// check multiple places for wkhtmltopdf lib
+		// fallback on phantomjs
+		if (file_exists('/usr/bin/wkhtmltopdf'))
+		{
+			$cmd = '/usr/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+		}
+		else if (file_exists('/usr/local/bin/wkhtmltopdf'))
+		{
+			$cmd = '/usr/local/bin/wkhtmltopdf ' . $newsletterUrl . ' ' . $newsletterPdf;
+		}
+		else
+		{
+			$rasterizeFile = JPATH_ROOT . DS . 'components' . DS . 'com_newsletter' . DS . 'assets' . DS . 'js' . DS . 'rasterize.js';
+			$cmd = '/usr/bin/phantomjs --ignore-ssl-errors=true ' . $rasterizeFile . ' ' . $newsletterUrl . ' ' . $newsletterPdf . ' 8.5in*11in';
+		}
+
+		// exec command
+		exec($cmd, $ouput, $status);
 
 		//make sure we have a file to output
 		if (!file_exists($newsletterPdf))
