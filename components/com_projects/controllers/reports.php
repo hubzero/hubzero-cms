@@ -46,6 +46,16 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 		// Incoming
 		$period = JRequest::getVar( 'period', 'alltime');
 
+		// Publishing enabled?
+		$this->_publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
+		if ($this->_publishing)
+		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'publication.php');
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
+				.'com_publications' . DS . 'tables' . DS . 'version.php');
+		}
+
 		// Instantiate a project and related classes
 		$obj   = new Project( $this->database );
 		$objAA = new ProjectActivity ( $this->database );
