@@ -34,47 +34,49 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	/**
 	 * int(11) Primary key
 	 * 
-	 * @var integer
+	 * @var  integer
 	 */
 	protected $hubname;
 
 	/**
 	 * int(11) Primary key
 	 * 
-	 * @var integer
+	 * @var  integer
 	 */
 	protected $gran;
 
 	/**
 	 * int(11) Primary key
 	 * 
-	 * @var integer
+	 * @var  integer
 	 */
 	protected $sets;
 
 	/**
 	 * int(11) Primary key
 	 * 
-	 * @var integer
+	 * @var  integer
 	 */
 	protected $metadata;
 
 	/**
 	 * int(11) Primary key
 	 * 
-	 * @var integer
+	 * @var  integer
 	 */
 	protected $from;
 
 	/**
 	 * int(11) Primary key
 	 * 
-	 * @var integer
+	 * @var  integer
 	 */
 	protected $until;
 
 	/**
 	 * Pull records and build the XML
+	 *
+	 * return  void
 	 */
 	public function displayTask()
 	{
@@ -104,7 +106,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 
 		$max_records     = $this->config->get('max');
 		$repository_name = $this->config->get('repository_name');
-		$this->hubname   = $this->config->get('base_url', str_replace('https', 'http', $juri->base()));
+		$this->hubname   = rtrim($this->config->get('base_url', str_replace('https', 'http', $juri->base())), '/');
 		$allow_ore       = $this->config->get('allow_ore');
 		$this->gran      = $this->config->get('gran');
 
@@ -338,7 +340,14 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		exit;
 	}
 
-	// get record IDs from custom query
+	/**
+	 * get record IDs from custom query
+	 * 
+	 * @param   mixed   $records
+	 * @param   string  $from
+	 * @param   string  $until
+	 * @return  array
+	 */
 	protected function getRecords($records, $from='', $until='')
 	{
 		if (is_array($records))
@@ -353,7 +362,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$SQL  = $this->addDateRange($records->records, $from, $until);
+			$SQL = $this->addDateRange($records->records, $from, $until);
 		}
 		$SQL = trim($SQL);
 		$this->database->setQuery($SQL);
@@ -361,13 +370,13 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	* add date ranges to query
-	* 
-	* @param      string $SQL
-	* @param      string $from
-	* @param      string $until
-	* @return     string
-	*/
+	 * add date ranges to query
+	 * 
+	 * @param   string  $SQL
+	 * @param   string  $from
+	 * @param   string  $until
+	 * @return  string
+	 */
 	protected function addDateRange($SQL, $from, $until)
 	{
 		if (!empty($from))
@@ -384,12 +393,12 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	* nicely form the XML - thanks, Goog 
-	* 
-	* @param      string  $xml
-	* @param      boolean $html_output
-	* @return     string
-	*/
+	 * nicely form the XML - thanks, Goog 
+	 * 
+	 * @param   string   $xml
+	 * @param   boolean  $html_output
+	 * @return  string
+	 */
 	protected function formatXmlString($xml, $html_output=false)
 	{
 		$xml_obj = new SimpleXMLElement($xml);
@@ -430,10 +439,10 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	* check for verb-specific errors
-	* 
-	* @return     string
-	*/
+	 * check for verb-specific errors
+	 * 
+	 * @return  string
+	 */
 	protected function errorCheck()
 	{
 		$error = '';
@@ -499,11 +508,11 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	* build XML for a single record
-	* 
-	* @param      object $result
-	* @return     string
-	*/
+	 * build XML for a single record
+	 * 
+	 * @param   object  $result
+	 * @return  string
+	 */
 	protected function doRecord($result)
 	{
 		if ($this->metadata == 'oai_dc')
@@ -573,11 +582,11 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	* build XML header for a single record
-	* 
-	* @param      object $result
-	* @return     string
-	*/
+	 * build XML header for a single record
+	 * 
+	 * @param   object  $result
+	 * @return  string
+	 */
 	protected function doHeader($result)
 	{
 		$header = '<header>' . "\n";
@@ -600,11 +609,11 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	* build Identifier element 
-	* 
-	* @param      string $id
-	* @return     string
-	*/
+	 * build Identifier element 
+	 * 
+	 * @param   string  $id
+	 * @return  string
+	 */
 	protected function doDoi($id)
 	{
 		if (preg_match("{^10\.}", $id))
@@ -619,13 +628,15 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	* build XML for sets
-	* 
-	* @param      mixed $customs
-	* @return     string
-	*/
+	 * build XML for sets
+	 * 
+	 * @param   mixed   $customs
+	 * @return  string
+	 */
 	protected function doSets($customs)
 	{
+		$setlist = '';
+
 		$total = array();
 		if (is_array($customs))
 		{
