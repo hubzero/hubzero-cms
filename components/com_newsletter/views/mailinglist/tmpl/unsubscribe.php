@@ -102,7 +102,7 @@ $this->css()
 			</fieldset>
 			<?php if (!$this->juser->get('guest') || $this->mailinglist->id != '-1') : ?>
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('COM_NEWSLETTER_UNSUBSCRIBE'); ?>">
+					<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_NEWSLETTER_UNSUBSCRIBE'); ?>">
 				</p>
 			<?php endif; ?>
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

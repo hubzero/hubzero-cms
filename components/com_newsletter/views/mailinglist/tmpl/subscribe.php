@@ -114,7 +114,7 @@ $this->css()
 			<?php endif; ?>
 			<?php if (count($this->mylists) > 0 || count($this->alllists) > 0) : ?>
 				<p class="submit">
-					<input type="submit" value="<?php echo JText::_('COM_NEWSLETTER_MAILINGLISTS_SAVE'); ?>">
+					<input type="submit" class="btn btn-success" value="<?php echo JText::_('COM_NEWSLETTER_MAILINGLISTS_SAVE'); ?>">
 				</p>
 			<?php else: ?>
 				<p class="info">
