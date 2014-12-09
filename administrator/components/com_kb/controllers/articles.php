@@ -39,7 +39,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of articles
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -139,7 +139,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new article
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -147,9 +147,9 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * show a form for editing an entry
+	 * Show a form for editing an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
@@ -217,11 +217,22 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Save an entry and return to edit form
+	 *
+	 * @return  void
+	 */
+	public function applyTask()
+	{
+		$this->saveTask(false);
+	}
+
+	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @param   boolean  $redirect  Redirect after saving?
+	 * @return  void
 	 */
-	public function saveTask()
+	public function saveTask($redirect=true)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -233,7 +244,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		$row = new KbModelArticle($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -261,7 +272,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -274,17 +285,23 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 			$this->juser->get('id')
 		);
 
-		// Set the redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_KB_ARTICLE_SAVED')
-		);
+		if ($redirect)
+		{
+			// Set the redirect
+			$this->setRedirect(
+				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JText::_('COM_KB_ARTICLE_SAVED')
+			);
+			return;
+		}
+
+		$this->editTask($row);
 	}
 
 	/**
 	 * Remove one or more entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -317,7 +334,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Set the access level of an article to 'public'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accesspublicTask()
 	{
@@ -327,7 +344,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Set the access level of an article to 'registered'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessregisteredTask()
 	{
@@ -337,7 +354,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Set the access level of an article to 'special'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function accessspecialTask()
 	{
@@ -347,8 +364,8 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Set the access level of an article
 	 *
-	 * @param      integer $access Access level to set
-	 * @return     void
+	 * @param   integer  $access  Access level to set
+	 * @return  void
 	 */
 	public function accessTask($access=0)
 	{
@@ -390,7 +407,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Calls stateTask to publish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function publishTask()
 	{
@@ -400,7 +417,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Calls stateTask to unpublish entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function unpublishTask()
 	{
@@ -410,8 +427,8 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Sets the state of one or more entries
 	 *
-	 * @param      integer The state to set entries to
-	 * @return     void
+	 * @param   integer  $state  The state to set entries to
+	 * @return  void
 	 */
 	public function stateTask($state=0)
 	{
@@ -465,7 +482,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Cancels a task and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -487,7 +504,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Reset the hit count on an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function resethitsTask()
 	{
@@ -528,7 +545,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	/**
 	 * Reset the vote count on an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function resetvotesTask()
 	{

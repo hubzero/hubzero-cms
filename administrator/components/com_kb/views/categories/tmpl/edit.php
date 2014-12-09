@@ -37,6 +37,7 @@ $text = ($this->task == 'edit' ? JText::_('COM_KB_EDIT') : JText::_('COM_KB_NEW'
 JToolBarHelper::title(JText::_('COM_KB') . ': ' . JText::_('COM_KB_CATEGORY') . ': ' . $text, 'kb.png');
 if ($canDo->get('core.edit'))
 {
+	JToolBarHelper::apply();
 	JToolBarHelper::save();
 }
 JToolBarHelper::cancel();

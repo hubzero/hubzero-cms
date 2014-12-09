@@ -72,6 +72,16 @@ class KbTableCategory extends JTable
 		$this->section     = intval($this->section);
 		$this->state       = intval($this->state);
 
+		if ($this->section)
+		{
+			$this->_db->setQuery("SELECT COUNT(*) FROM `#__faq` WHERE `section`=" . $this->_db->quote($this->section) . " AND `alias`=" . $this->_db->quote($this->alias));
+			if ($result = $this->_db->loadResult())
+			{
+				$this->setError(JText::_('COM_KB_ERROR_ALIAS_IN_USE'));
+				return false;
+			}
+		}
+
 		if (!$this->id)
 		{
 			$this->access = $this->access ? $this->access : 0;

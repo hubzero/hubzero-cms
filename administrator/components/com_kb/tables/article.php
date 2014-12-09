@@ -68,17 +68,27 @@ class KbTableArticle extends JTable
 		}
 		$this->alias = preg_replace("/[^a-zA-Z0-9\-]/", '', $this->alias);
 
+		if ($this->section)
+		{
+			$this->_db->setQuery("SELECT COUNT(*) FROM `#__faq_categories` WHERE `section`=" . $this->_db->quote($this->section) . " AND `alias`=" . $this->_db->quote($this->alias));
+			if ($result = $this->_db->loadResult())
+			{
+				$this->setError(JText::_('COM_KB_ERROR_ALIAS_IN_USE'));
+				return false;
+			}
+		}
+
 		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->access = $this->access ? $this->access : 0;
+			$this->access = $this->access ?: 0;
 
-			$this->created = JFactory::getDate()->toSql();
+			$this->created    = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 		else
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified    = JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 

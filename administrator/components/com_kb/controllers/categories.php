@@ -215,13 +215,13 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		{
 			if ($fields['section'] != $row->get('section'))
 			{
-				$articles = $row->articles(array('state' => -1));
+				$articles = $row->articles('list', array('state' => -1));
 			}
 		}
 
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -234,7 +234,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
