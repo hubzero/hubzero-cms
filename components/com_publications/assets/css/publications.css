@@ -642,7 +642,7 @@
 	}
 	.metadata p:before {
 		font-family: 'Fontcons';
-		font-size: 12px;
+		font-size: 14px;
 		line-height: 12px;
 		margin-right: 0.3em;
 		color: #bbb;
@@ -680,6 +680,12 @@
 	}
 	.metadata p.wishlist:before {
 		content: "\f078";
+	}
+	.metadata p.supported:before {
+		content: "\f04e";
+		color: #E2AA23;
+		font-size: 20px;
+		margin-left: -3px;
 	}
 
 /* Ranking */
