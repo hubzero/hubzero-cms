@@ -83,11 +83,11 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 				<span class="a-desc">
 					<?php
 					// get cleaned article body text
-					$desc = preg_replace( '/<a\s+.*?href="([^"]+)"[^>]*>.*?<\/a>/is', '\2', $item->introtext);
-					$desc = preg_replace( '/<span([^"]+)"[^>]*>.*?<\/span>/is', '\2', $desc);
-					$desc = \Hubzero\Utility\Sanitize::clean($desc);
-
-					echo \Hubzero\Utility\String::truncate($desc, $this->params->get('word_count', 100));
+					$desc = stripslashes($item->introtext);
+					$desc = strip_tags($desc);
+					$desc = str_replace("\n", "", $desc);
+					$desc = str_replace("&nbsp;", "", $desc);
+					echo \Hubzero\Utility\String::truncate($desc, $this->params->get('word_count', 200));
 					?>
 				</span>
 			<?php } ?>
