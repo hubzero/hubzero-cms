@@ -439,7 +439,7 @@ class JDocument extends JObject
 			}
 			else
 			{
-				$this->_metaTags['standard'][$name] = $content;
+				$this->_metaTags['standard'][] = array('name' => $name, 'content' => $content);
 			}
 		}
 
