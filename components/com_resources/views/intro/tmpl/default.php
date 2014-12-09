@@ -138,7 +138,7 @@ if ($this->categories) {
 					$cls = rtrim($category->alias, 's');
 				}
 				// Need to do some decoding to ensure escaped characters aren't encoded twice.
-				$category->description = html_entity_decode(str_replace('&amp;', '&', strip_tags(stripslashes($category->description))));
+				$category->description = html_entity_decode(strip_tags(stripslashes($this->escape($category->description))));
 				?>
 				<div class="col span-third <?php echo $clm; ?>">
 					<div class="resource-type <?php echo $cls; ?>">
@@ -148,7 +148,7 @@ if ($this->categories) {
 							</a>
 						</h3>
 						<p>
-							<?php echo $this->escape($category->description); ?>
+							<?php echo $category->description; ?>
 						</p>
 						<p>
 							<a class="read-more" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
