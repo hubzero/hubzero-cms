@@ -292,7 +292,8 @@ class GroupsControllerPages extends GroupsControllerAbstract
 
 		// update our depth
 		$parent = $this->page->getParent();
-		$this->page->set('depth', $parent->get('depth') + 1);
+		$depth  = ($parent->get('id')) ? $parent->get('depth') + 1 : 0;
+		$this->page->set('depth', $depth);
 
 		// make sure we can create both the page and version
 		if (!$this->page->check() || !$this->version->check())
