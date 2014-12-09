@@ -24,7 +24,7 @@ jQuery(function($) {
 			terms.removeClass('with-autocomplete');
 			return;
 		}
-		$('.complete').css('width', parseInt($('.terms').css('width')) + 5 + 'px');
+		$('.complete').css('width', (parseInt($('.terms').outerWidth()) - 4) + 'px');
 		xhr = $.get(base, {
 			'task': 'complete',
 			'terms': terms.val()
