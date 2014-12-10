@@ -41,73 +41,86 @@
 	background: rgba(234, 206, 41, 0.75);
 	padding: 5px 10px;
 }
+#calendar .fc-event-time {
+	margin-right: 3px;
+}
 #calendar .fc-event {
 	background-color: #DBDBDB;
 	border-color: #666;
+	border-color: rgba(102, 102, 102, 0.5);
+	border-top: 0;
+	border-left: 0;
+	border-right: 0;
 	color: #333;
-	padding: 1px;
-}
-#calendar .fc-event-time {
-	margin-right: 3px;
+	padding: 2px 3px;
 }
 #calendar .fc-event-yellow {
 	background-color: #F5EFCE;
 	border-color: #eace29;
+	border-color: rgba(234, 206, 41, 0.5);
 	color: #333;
 }
 #calendar .fc-event-red {
 	background-color: #EBCACE;
 	border-color: #c52337;
+	border-color: rgba(197, 35, 55, 0.5);
 	color: #333;
 }
 #calendar .fc-event-orange {
 	background-color: #F6D9CA;
 	border-color: #f6651d;
+	border-color: rgba(246, 101, 29, 0.5);
 	color: #333;
 }
 #calendar .fc-event-green {
 	background-color: #D7E9CB;
-	border-color: #58b11b;
+	border-color: #00b43b;
+	border-color: rgba(88, 177, 27, 0.5);
 	color: #333;
 }
 #calendar .fc-event-blue {
 	background-color: #C7DBEA;
 	border-color: #1679c4;
+	border-color: rgba(22, 121, 196, 0.5);
 	color: #333;
 }
 #calendar .fc-event-brown {
 	background-color: #E6D3C9;
 	border-color: #993f0d;
+	border-color: rgba(153, 63, 13, 0.5);
 	color: #333;
 }
 #calendar .fc-event-purple {
 	background-color: #DCCCDD;
 	border-color: #843288;
+	border-color: rgba(132, 50, 136, 0.5);
 	color: #333;
 }
-#calendar .fc-event:hover {
-	background-color: #ccc;
+#calendar .fc-event.active {
+	background-color: #666;
+	color: #FFF;
 }
-#calendar .fc-event-yellow:hover {
-	background-color: #f4eab0;
+#calendar .fc-event-yellow.active {
+	background-color: #eace29;
+	color: #333;
 }
-#calendar .fc-event-green:hover {
-	background-color: #c6e8af;
+#calendar .fc-event-green.active {
+	background-color: #00b43b;
 }
-#calendar .fc-event-blue:hover {
-	background-color: #a8cde8;
+#calendar .fc-event-blue.active {
+	background-color: #1679c4;
 }
-#calendar .fc-event-red:hover {
-	background-color: #eaaab2;
+#calendar .fc-event-red.active {
+	background-color: #c52337;
 }
-#calendar .fc-event-orange:hover {
-	background-color: #f3bfa5;
+#calendar .fc-event-orange.active {
+	background-color: #f6651d;
 }
-#calendar .fc-event-brown:hover {
-	background-color: #e3bba6;
+#calendar .fc-event-brown.active {
+	background-color: #993f0d;
 }
-#calendar .fc-event-purple:hover {
-	background-color: #dab1dd;
+#calendar .fc-event-purple.active {
+	background-color: #843288;
 }
 
 /* Events List */

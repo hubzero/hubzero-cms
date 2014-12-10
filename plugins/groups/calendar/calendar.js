@@ -88,6 +88,14 @@ HUB.Plugins.GroupCalendar = {
 					$('.fc-center').html('');
 				}
 			},
+			eventMouseover: function(event, jsEvent, view)
+			{
+				$('.fc-event[href="'+event.url+'"').addClass('active');
+			},
+			eventMouseout: function(event, jsEvent, view)
+			{
+				$('.fc-event').removeClass('active');
+			},
 			viewRender: function(view, element)
 			{
 				//$calendar.fullCalendar('gotoDate', $year, $month, 0);
@@ -369,7 +377,11 @@ HUB.Plugins.GroupCalendar = {
 			$('#event_registerby').datetimepicker({
 				controlType: 'slider',
 				dateFormat: 'mm/dd/yy',
-				timeFormat: '@ h:mm tt'
+				timeFormat: '@ h:mm tt',
+    			onSelect: function()
+    			{
+    				$(this).datepicker("hide");
+    			}
 			});
 		}
 		
