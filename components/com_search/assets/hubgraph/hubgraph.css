@@ -56,11 +56,10 @@
 	outline: none;
 	font-size: 1em;
 	line-height: 1.61803399em;
-	padding: 7px 5px 8px 5px \9;
 	display: block;
 	float: left;
 	width: 90%;
-
+	padding: 7px 5px 8px 5px \9;
 	*display: inline;
 	*zoom: 1;
 	*padding: 10px 5px 9px 5px;
@@ -85,9 +84,9 @@
 	line-height: 1.61803399em;
 	outline: none;
 	background-color: #f0f0f0;
-	background-image: -moz-linear-gradient(top,#FAFAFA,#e0e0e0);
 	background-image: -webkit-gradient(linear,0 0,0 100%,from(#FAFAFA),to(#e0e0e0));
 	background-image: -webkit-linear-gradient(top,#FAFAFA,#e0e0e0);
+	background-image: -moz-linear-gradient(top,#FAFAFA,#e0e0e0);
 	background-image: -o-linear-gradient(top,#FAFAFA,#e0e0e0);
 	background-image: linear-gradient(to bottom,#FAFAFA,#e0e0e0);
 	background-repeat: repeat-x;
@@ -97,7 +96,6 @@
 	border-left: none;
 	cursor: pointer;
 	text-shadow: 0 1px 1px rgba(255,255,255,0.6);
-
 	display: block;
 	float: left;
 	width: 10%;
@@ -106,16 +104,20 @@
 }
 #search-form .bar .clear {
 	position: absolute;
-	top: 1em;
+	top: 1.4em;
+	right: 13%;
 	text-decoration: none;
 	border: 0;
 	visibility: hidden;
-	color: #900;
-	font-weight: bold;
-	right: 13%;
-	font-size: 1.4em;
+	color: #999;
+	font-family: 'Fontcons';
+	font-weight: normal;
+	font-size: 1.2em;
 	line-height: 1;
 	display: block;
+}
+#search-form .bar .clear:hover {
+	color: #c00;
 }
 #search-form .bar:hover .clear {
 	visibility: visible;
@@ -176,17 +178,20 @@
 	content: '\f068';
 	position: relative;
 	left: -1.5em;
+	font-family: "Fontcons";
 }
 .complete li.cat.tags:before{
 	content: '\f02b';
 	position: relative;
 	left: -1.5em;
 	top: 0.2em;
+	font-family: "Fontcons";
 }
 .complete li.cat.users:before{
 	content: '\f007';
 	position: relative;
 	left: -1.5em;
+	font-family: "Fontcons";
 }
 .complete li.cat.text ul {
 	margin-left: 0;
@@ -315,13 +320,14 @@
 	border: 1px solid #ccc;
 	background: #eee;
 	color: #666;
-	padding: 0 5px;
-	border-radius: 6px;
+	padding: 0 0.4em;
+	border-radius: 0.25em;
 }
 button {
 	cursor: pointer;
 }
-button.current, .current button {
+button.current,
+.current button {
 	cursor: text;
 }
 .domains {
@@ -334,21 +340,25 @@ button.current, .current button {
 	float: left;
 	margin: 0;
 }
-.domains li button, .pages li button {
+.domains li button,
+.pages li button {
 	background: #eee;
 	border: 1px solid #ddd;
 	border-bottom: 1px solid #eee;
-	border-top-left-radius: 6px;
-	border-top-right-radius: 6px;
+	-webkit-border-radius: 0.25em 0.25em 0 0;
+	   -moz-border-radius: 0.25em 0.25em 0 0;
+	        border-radius: 0.25em 0.25em 0 0;
 	color: #666;
 	height: 24px;
 	padding-bottom: 1px;
 	padding-top: 1px;
 }
-.domains li.current, .pages li {
+.domains li.current,
+.pages li {
 	background: transparent;
 }
-.domains li.current button, .pages li.current button {
+.domains li.current button,
+.pages li.current button {
 	background: #f9f9f9;
 	color: #555;
 	height: 25px;
@@ -381,10 +391,9 @@ button.current, .current button {
 	margin: 0;
 }
 .pages li button {
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-	border-bottom-left-radius: 6px;
-	border-bottom-right-radius: 6px;
+	-webkit-border-radius: 0 0 0.25em 0.25em;
+	   -moz-border-radius: 0 0 0.25em 0.25em;
+	        border-radius: 0 0 0.25em 0.25em;
 	border-top: 1px solid #ccc;
 	position: relative;
 	border-bottom: 1px solid #ddd;
@@ -413,8 +422,8 @@ button.current, .current button {
 	content: '';
 }
 input.terms:focus {
-  background-color: #FFFFFF;
-  border-color: #0FA1CA;
+	background-color: #FFFFFF;
+	border-color: #0FA1CA;
 }
 .alt-link {
 	font-size: x-small;
@@ -423,6 +432,8 @@ input.terms:focus {
 .citation.details td {
 	max-width: 33%;
 }
+
+/* Facets */
 .facets {
 	clear: left;
 	border: 0;
@@ -443,11 +454,12 @@ input.terms:focus {
 	padding: 0;
 	line-height: 1em;
 	margin: 0;
-	margin-right: 0 !important; /* neeshub */
+	margin-right: 0 !important;
 	font-size: 110%;
 	float: none !important;
 }
-.facets li button, .facets li a {
+.facets li button,
+.facets li a {
 	font-size: 80% !important;
 	border: 0;
 	color: #0888ab;
@@ -481,7 +493,8 @@ input.terms:focus {
 .facets li:after {
 	content: ', ';
 }
-.facets ol.tags li:after, .facets li:last-child:after {
+.facets ol.tags li:after,
+.facets li:last-child:after {
 	content: '';
 }
 .facets .label {
@@ -523,6 +536,8 @@ input.terms:focus {
 .facets tr:last-child td {
 	border: 0;
 }
+
+
 .throbber {
 	margin-top: 2.5em;
 }
@@ -533,13 +548,12 @@ hr {
 .children {
 	max-height: 10em;
 	overflow-y: auto;
-	font-size: 90%;
 	background: #f3f3f3;
 	border-radius: 4px;
 	font-size: 90%;
 	margin: 0.5em 0 0 2em;
 	max-height: 10em;
-   opacity: 0.8;
+	opacity: 0.8;
 	padding: 4px 8px;
 }
 .children li {

@@ -363,40 +363,41 @@ $end = $begin + count($results['results']) - 1;
 
 if (!defined('HG_AJAX')):
 	if ($req->anyCriteria()):
-?>
-	<div class="count">
-		<ol class="domains">
-			<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo p($results['total'], 'result') . ($results['total'] == 0 ? ':[' : '') ?></button></li>
-			<?php 
-				// nees :[
-				$domains = array();
-				if (!isset($results['domains'])):
-					$results['domains'] = array();
-				endif;
-				foreach ($results['domains'] as $k=>$v):
-					$domains[] = array('title' => $k, 'count' => $v);
-				endforeach;
-				uasort($domains, function($a, $b) {
-					if ($a['title'] == 'projects'):
-						return -1;
+	?>
+		<div class="count">
+			<ol class="domains">
+				<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo p($results['total'], 'result') . ($results['total'] == 0 ? ':[' : '') ?></button></li>
+				<?php 
+					// nees :[
+					$domains = array();
+					if (!isset($results['domains'])):
+						$results['domains'] = array();
 					endif;
-					if ($b['title'] == 'projects'):
-						return 1;
-					endif;
-					if ($a['count'] > $b['count']):
-						return -1;
-					endif;
-					if ($a['count'] < $b['count']):
-						return 1;
-					endif;
-					return strcasecmp($a['title'], $b['title']);
-				});
-				foreach ($domains as $domain):
-			?>
-				<li<?php echo isset($domainMap[$domain['title']]) ? ' class="current subsel"' : '' ?>><button type="submit" name="domain" value="<?php echo isset($domainMap[$domain['title']]) ? '' : a($domain['title']) ?>"><?php echo h(p($domain['count'], Inflect::singularize($domain['title']))) ?></button></li>
-			<?php endforeach; ?>
-		</ol>
+					foreach ($results['domains'] as $k=>$v):
+						$domains[] = array('title' => $k, 'count' => $v);
+					endforeach;
+					uasort($domains, function($a, $b) {
+						if ($a['title'] == 'projects'):
+							return -1;
+						endif;
+						if ($b['title'] == 'projects'):
+							return 1;
+						endif;
+						if ($a['count'] > $b['count']):
+							return -1;
+						endif;
+						if ($a['count'] < $b['count']):
+							return 1;
+						endif;
+						return strcasecmp($a['title'], $b['title']);
+					});
+					foreach ($domains as $domain):
+				?>
+					<li<?php echo isset($domainMap[$domain['title']]) ? ' class="current subsel"' : '' ?>><button type="submit" name="domain" value="<?php echo isset($domainMap[$domain['title']]) ? '' : a($domain['title']) ?>"><?php echo h(p($domain['count'], Inflect::singularize($domain['title']))) ?></button></li>
+				<?php endforeach; ?>
+			</ol>
 		</div>
+
 		<table class="facets">
 			<tbody>
 			<?php
@@ -473,7 +474,7 @@ if (!defined('HG_AJAX')):
 							endif;
 							$used[$item[1]] = TRUE;
 						?>
-							<li><button type="submit" title="<?php echo p($item[1], 'result') ?>" name="<?php echo $transportKey ?>[]" value="<?php echo $id ?>"><?php echo $item[0]; ?></button></li>
+							<li><button type="submit" title="<?php echo p($item[1], 'result') ?>" name="<?php echo $transportKey; ?>[]" value="<?php echo $id; ?>"><?php echo $item[0]; ?></button></li>
 						<?php endforeach; ?>
 					</ol>
 				</td>
@@ -487,9 +488,20 @@ endif;
 
 if (isset($this->terms)):
 	if ($results['terms']['suggested']): ?>
-		<p class="info">(Did you mean <em><a href="<?php echo JURI::base(true); ?>/search<?php echo $link ?>"><?php echo $this->terms ?></a></em>?)</p>
+		<?php
+		$rawTerms = $this->escape($this->req->getTerms());
+		foreach ($this->results['terms']['suggested'] as $k => $v):
+			$terms    = str_replace($k, '<strong>' . $v . '</strong>', strtolower($terms));
+			$rawTerms = str_replace($k, $v, $rawTerms);
+		endforeach;
+		$link = preg_replace('/\?terms=[^&]*/', 'terms=' . $rawTerms, $_SERVER['QUERY_STRING']);
+		if ($link[0] != '?'):
+			$link = '?' . $link;
+		endif;
+		?>
+		<p class="info">(Did you mean <em><a href="<?php echo JURI::base(true); ?>/search<?php echo $link; ?>"><?php echo $this->terms ?></a></em>?)</p>
 	<?php elseif ($results['terms']['autocorrected']): ?>
-		<p class="info">(Showing results for <em><?php echo $this->terms ?></em>)</p> 
+		<p class="info">(Showing results for <em><?php echo $this->terms; ?></em>)</p> 
 	<?php endif;
 endif;
 
