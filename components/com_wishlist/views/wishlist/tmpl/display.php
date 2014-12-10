@@ -358,6 +358,10 @@ if ($this->wishlist->exists())
 						$this->pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 						$this->pageNav->setAdditionalUrlParam('tag', $this->filters['tag']);
 						$this->pageNav->setAdditionalUrlParam('newsearch', 0);
+						if ($this->filters['search'])
+						{
+							$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+						}
 						echo $this->pageNav->getListFooter();
 						?>
 						<div class="clearfix"></div>
