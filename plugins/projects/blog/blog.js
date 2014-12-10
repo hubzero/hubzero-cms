@@ -64,6 +64,7 @@ HUB.ProjectMicroblog = {
 						scrollTop: scrollTo
 					}, 1000);
 				}
+				$(txt).focus();
 			});
 		});
 
@@ -127,12 +128,6 @@ HUB.ProjectMicroblog = {
 		{
 			if ($('#blogentry').val() == '')
 			{
-				/*
-				$('#blogentry')
-					.css('color', '#999')
-					.css('height', '20px')
-					.css('font-size', '100%');
-				*/
 				HUB.ProjectMicroblog.unfocusTextArea($('#blogentry'));
 				$('#blog-submit').addClass('hidden');
 				$('#blog-submitarea').css('height', '0');
@@ -148,7 +143,6 @@ HUB.ProjectMicroblog = {
 			// On click outside
 			if ($('#blog-submitarea')) {
 				$('#blog-submitarea').on('click', function(e) {
-
 						HUB.ProjectMicroblog.unfocusTextArea($('#blogentry'));
 						$('#blog-submit').addClass('hidden');
 						$('#blog-submitarea').css('height', '0');

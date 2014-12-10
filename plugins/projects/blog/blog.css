@@ -363,6 +363,10 @@
 		padding-left: 2em;
 		background: #f4f6f8;
 	}
+	#plg-content .newitem .comments,
+	#plg-content .newitem .addcomment {
+		background: #fff6ef;
+	}
 	#plg-content .comments li,
 	#plg-content .addcomment fieldset {
 		padding-left: 2em;
