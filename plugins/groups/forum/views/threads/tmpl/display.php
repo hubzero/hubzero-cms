@@ -60,7 +60,6 @@ $this->css()
 			<p class="<?php echo $notification['type']; ?>"><?php echo $this->escape($notification['message']); ?></p>
 		<?php } ?>
 
-		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
 			<?php
 			if ($this->thread->posts($this->config->get('threading', 'list'), $this->filters)->total() > 0)
 			{
@@ -87,6 +86,10 @@ $this->css()
 				</ol>
 				<?php
 			}
+			?>
+
+		<form action="<?php echo JRoute::_($this->thread->link()); ?>" method="get">
+			<?php
 			jimport('joomla.html.pagination');
 			$pageNav = new JPagination(
 				$this->thread->posts('count', $this->filters),
