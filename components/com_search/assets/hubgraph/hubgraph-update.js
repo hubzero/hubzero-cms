@@ -2,29 +2,42 @@ jQuery(function($) {
 	var reQuote = function(str) {
 		return str.replace(new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\/-]', 'g'), '\\$&');
 	}
-	var xhr, base = '/search', terms = $('.search .terms'), linkCats = {};
+
+	var xhr,
+		base = '/search',
+		terms = $('.search .terms'),
+		linkCats = {};
+
 	$('.complete .cat').each(function(_, cat) {
 		cat = $(cat);
 		linkCats[cat.attr('class').replace(/^cat\s+/, '')] = $(cat.children('ul'));
 	});
-	$('.bar .clear').click(function(evt) {
+
+	$('.bar .clear').on('click', function (evt) {
 		evt.preventDefault();
-		terms.val('');
+
 		$('.complete').hide();
-		terms.removeClass('with-autocomplete');
-		terms.focus();
+
+		terms
+			.val('')
+			.removeClass('with-autocomplete')
+			.focus();
 	});
+
 	var autocompleter = function() {
 		if (xhr) {
 			xhr.abort();
 		}
+
 		if (terms.val().replace(/\s+/g, '') == '') {
 			$('.complete').hide();
 			$('.autocorrect-notice').show();
 			terms.removeClass('with-autocomplete');
 			return;
 		}
+
 		$('.complete').css('width', (parseInt($('.terms').outerWidth()) - 4) + 'px');
+
 		xhr = $.get(base, {
 			'task': 'complete',
 			'terms': terms.val()
@@ -32,6 +45,7 @@ jQuery(function($) {
 			$('.complete').hide();
 			$('.autocorrect-notice').show();
 			terms.removeClass('with-autocomplete');
+
 			var k;
 			if (!(k in res.links) && res.completions.length == 0) {
 				return;
@@ -55,7 +69,7 @@ jQuery(function($) {
 							.attr('name', k + 's[]')
 							.attr('value', link[0])
 							.html(link[1].replace(re, '<em>$1</em>'))
-							.click(function(evt) {
+							.on('click', function(evt) {
 								var ma = $(this).html().match(/<em.*?>(.*?)<\/em>/);
 								if (ma) {
 									var termAr = terms.val().split(/\s+/);
@@ -63,8 +77,7 @@ jQuery(function($) {
 										terms.val(termAr.splice(0, termAr.length - 1).join(' '));
 									}
 								}
-							})
-							;
+							});
 						linkCats[k + 's'].append($('<li />').append(btn));
 					});
 				}
@@ -80,20 +93,26 @@ jQuery(function($) {
 			terms.addClass('with-autocomplete');
 		});
 	};
+
 	terms
 		.keyup(autocompleter)
 		.focus();
-	
+
 	var origSort = function(a, b) {
 		return $(a).data('idx') > $(b).data('idx') ? 1 : -1;
 	};
+
 	$('.facets tr').each(function(_, tr) {
-		var tds = $(tr).children('td'), list = $(tds[1]).children('ol');
+		var tds = $(tr).children('td'),
+			list = $(tds[1]).children('ol');
+
 		if (list.hasClass('timeframe') || list.hasClass('groups')) {
 			return;
 		}
-		var lis = list.find('li'), strings = {};
-		
+
+		var lis = list.find('li'),
+			strings = {};
+
 		lis.each(function(idx, li) {
 			li = $(li);
 			li.data('idx', idx);
@@ -101,7 +120,9 @@ jQuery(function($) {
 				strings[li.text()] = li;
 			}
 		});
+
 		var inlineSearchTimeout;
+
 		$(tds[0]).append($('<span class="inline search"></span>').append(
 			$('<input />')
 				.keyup(function(evt) {
@@ -142,7 +163,9 @@ jQuery(function($) {
 		));
 	});
 
-	var years = [], firstYear = null;
+	var years = [],
+		firstYear = null;
+
 	$('.facets .timeframe').children('li').each(function(_, li) {
 		li = $(li);
 		var year = li.text();
@@ -156,11 +179,13 @@ jQuery(function($) {
 			}
 		}
 	});
+
 	if (years.length > 1) {
 		var sel = $('<select name="timeframe[]">').append('<option value="">by year...</option>')
 			.change(function() { 
 				$('#search-form').submit();
-		submit	});
+				submit
+			});
 
 		$(years).each(function(_, yr) {
 			sel.append(yr);
@@ -172,7 +197,12 @@ jQuery(function($) {
 	var throbber = new Image();
 	throbber.src = '/components/com_search/assets/hubgraph/throbber.gif';
 	throbber = $(throbber).addClass('throbber');
-	var pageList = $('.pages'), page = pageList.find('.current').text()*1, maxPage = pageList.find('li:last-child').text().replace(/\s/g, '')*1, working = false;
+
+	var pageList = $('.pages'),
+		page = pageList.find('.current').text()*1,
+		maxPage = pageList.find('li:last-child').text().replace(/\s/g, '')*1,
+		working = false;
+
 	$('.results').css('borderBottom', 0);
 
 	pageList
@@ -192,12 +222,15 @@ jQuery(function($) {
 				});
 			}
 		});
-	
+
 	$(document.body).append('<style type="text/css">.result:hover .related { visibility: visible; }</style>');
-	$('.related').click(function(evt) {
+
+	$('.related').on('click', function (evt) {
 		var el = $(evt.target),
-		throbber = $('<img src="/components/com_search/assets/hubgraph/throbber.gif" class="throbber related" />');
+			throbber = $('<img src="/components/com_search/assets/hubgraph/throbber.gif" class="throbber related" />');
+
 		el.replaceWith(throbber);
+
 		$.get('/search?task=getRelated&domain=' + encodeURIComponent(el.data('domain')) + '&id=' + encodeURIComponent(el.data('id')), function(res) {
 			if (!res || !res.length) {
 				throbber.replaceWith('<p>No related results were found.</p>');

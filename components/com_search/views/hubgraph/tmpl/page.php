@@ -366,7 +366,7 @@ if (!defined('HG_AJAX')):
 	?>
 		<div class="count">
 			<ol class="domains">
-				<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo p($results['total'], 'result') . ($results['total'] == 0 ? ':[' : '') ?></button></li>
+				<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo p($results['total'], 'result'); /* . ($results['total'] == 0 ? ':[' : '')*/ ?></button></li>
 				<?php 
 					// nees :[
 					$domains = array();
@@ -406,15 +406,20 @@ if (!defined('HG_AJAX')):
 			{
 				foreach ($_GET['timeframe'] as $tf)
 				{
+					if (!trim($tf))
+					{
+						continue;
+					}
 					$timeframe[] = array('id' => $tf, 'title' => $tf);
 				}
 			}
-			$timeframe = isset($_GET['timeframe']) ? array_map(function($t) { return array('id' => $t, 'title' => $t); }, (array)$_GET['timeframe']) : NULL;
-			foreach (array('tags' => 'Tagged', 'contributors' => 'Contributed&nbsp;by', 'groups' => 'In&nbsp;group', 'timeframe' => 'Date') as $key=>$label):
+			$timeframe = !empty($timeframe) ? $timeframe : null;
+			//$timeframe = isset($_GET['timeframe']) && !empty($_GET['timeframe']) ? array_map(function($t) { return array('id' => $t, 'title' => $t); }, (array)$_GET['timeframe']) : NULL;
+			foreach (array('tags' => 'Tagged', 'contributors' => 'Contributed&nbsp;by', 'groups' => 'In&nbsp;group', 'timeframe' => 'Date') as $key => $label):
 				$transportKey = $key == 'contributors' ? 'users' : $key;
 				$inReq = isset($_GET[$transportKey]) ? array_flip($_GET[$transportKey]) : array();
 				if (!$inReq):
-					if (!$results[$key]):
+					if (!$results[$key] || (is_array($results[$key]) && empty($results[$key]))):
 						continue;
 					else:
 						$explicit = FALSE;
@@ -428,6 +433,10 @@ if (!defined('HG_AJAX')):
 							continue;
 						endif;
 					endif;
+				endif;
+
+				if ($key == 'timeframe' && !$timeframe):
+					continue;
 				endif;
 
 				uasort($results[$key],
@@ -455,7 +464,7 @@ if (!defined('HG_AJAX')):
 			<tr>
 				<td class="label"><?php echo $label ?>:</td>
 				<td>
-					<ol class="<?php echo $key ?>">
+					<ol class="<?php echo $key; ?>">
 						<?php 
 						if (isset($$transportKey)):
 							foreach ((array)$$transportKey as $item):
@@ -491,7 +500,7 @@ if (isset($this->terms)):
 		<?php
 		$rawTerms = $this->escape($this->req->getTerms());
 		foreach ($this->results['terms']['suggested'] as $k => $v):
-			$terms    = str_replace($k, '<strong>' . $v . '</strong>', strtolower($terms));
+			$terms    = str_replace($k, '<strong>' . $v . '</strong>', strtolower($this->req->getTerms()));
 			$rawTerms = str_replace($k, $v, $rawTerms);
 		endforeach;
 		$link = preg_replace('/\?terms=[^&]*/', 'terms=' . $rawTerms, $_SERVER['QUERY_STRING']);
@@ -499,9 +508,9 @@ if (isset($this->terms)):
 			$link = '?' . $link;
 		endif;
 		?>
-		<p class="info">(Did you mean <em><a href="<?php echo JURI::base(true); ?>/search<?php echo $link; ?>"><?php echo $this->terms ?></a></em>?)</p>
+		<p class="info">Did you mean <em><a href="<?php echo JURI::base(true); ?>/search<?php echo $link; ?>"><?php echo $this->terms; ?></a></em>?</p>
 	<?php elseif ($results['terms']['autocorrected']): ?>
-		<p class="info">(Showing results for <em><?php echo $this->terms; ?></em>)</p> 
+		<p class="info">Showing results for <em><?php echo $this->terms; ?></em></p> 
 	<?php endif;
 endif;
 
