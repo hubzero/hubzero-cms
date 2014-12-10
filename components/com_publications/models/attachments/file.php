@@ -304,7 +304,11 @@ class PublicationsModelAttachmentFile extends PublicationsModelAttachment
 		if ($handler)
 		{
 			// Handler will draw list
-			return $handler->drawList($attachments, $configs, $pub, $authorized);
+			$html = $handler->drawList($attachments, $configs, $pub, $authorized);
+			if ($html)
+			{
+				return $html;
+			}
 		}
 		$notice = $authorized ? ' (' . JText::_('unavailable')  . ')' : '';
 

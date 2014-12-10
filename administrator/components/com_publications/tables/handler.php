@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Table class for available publication handlers
  */
-class PublicationHanlder extends JTable
+class PublicationHandler extends JTable
 {
 	/**
 	 * int(11) Primary key

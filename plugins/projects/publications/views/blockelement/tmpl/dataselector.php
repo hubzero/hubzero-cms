@@ -104,11 +104,11 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 	</div>
 	<!-- Active editing -->
 	<div class="element_editing<?php if (!$active) { echo ' hidden'; } ?>">
-		<?php if (count($this->attachments) > 0 && $useHandles)  { ?>
+		<?php if (count($this->attachments) > 0 && $useHandles && $handlerOptions = $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments))  { ?>
 		<div class="handler-aside">
 			<?php
 				// Present handler options
-				echo $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments);
+				echo $handlerOptions;
 			?>
 		</div>
 		<?php } else { ?>

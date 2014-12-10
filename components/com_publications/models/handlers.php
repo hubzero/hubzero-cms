@@ -81,8 +81,7 @@ class PublicationsModelHandlers extends JObject
 	 */
 	public function showHandlers($pub, $elementid, $handlers, $handler, $attachments)
 	{
-		$html = '<div class="handler-controls">';
-
+		$html = '';
 		// We have a handler assigned
 		if ($handler)
 		{
@@ -90,21 +89,47 @@ class PublicationsModelHandlers extends JObject
 			{
 				$handler = $this->ini($handler);
 			}
-
-			$html .= $handler->drawSelectedHandler($pub, $elementid, $attachments);
+			$html = '<div class="handler-controls">';
+			$html .= $this->drawSelectedHandler($handler);
+			$html.= '</div>';
 		}
 		elseif ($handlers)
 		{
-			// Handler choice
-			// TBD
+			// Load needed objects
+			$obj = new PublicationHandler($this->_db);
+			$objAssoc = new PublicationHandler($this->_db);
 
-			if ($handlers == 'auto')
+			// Check if any configured
+			// TBD
+			// Handler choice
+			if (is_array($handlers))
 			{
-				// Look for relevant handlers
+				// TBD
+			}
+			elseif ($handlers == 'auto')
+			{
 				// TBD
 			}
 		}
 
+		return $html;
+	}
+
+	/**
+	 * Side controls for handler
+	 *
+	 * @return  void
+	 */
+	public function drawSelectedHandler($handler)
+	{
+		$configs = $handler->get('_configs');
+		if (!$configs)
+		{
+			$configs = $handler->getConfig();
+		}
+		$html = '<div class="handler-' . $handler->get('_name') . '">';
+		$html.= '<h3>' . JText::_('Presentation') . ': ' . $configs->label . '</h3>';
+		$html.= '<p>' . $configs->about . '</p>';
 		$html.= '</div>';
 
 		return $html;
@@ -182,5 +207,37 @@ class PublicationsModelHandlers extends JObject
 
 		$this->_types[$signature] = new $elementClass($this);
 		return $this->_types[$signature];
+	}
+
+	/**
+	 * Get params for the handler
+	 *
+	 * @return  void
+	 */
+	public function parseConfig($name, $configs = array())
+	{
+		// Load config from db
+		$obj = new PublicationHandler($this->_db);
+		$savedConfig = $obj->getConfig($name);
+
+		if ($savedConfig)
+		{
+			foreach ($configs as $configName => $configValue)
+			{
+				if ($configName == 'params')
+				{
+					foreach ($configValue as $paramName => $paramValue)
+					{
+						$configs['params'][$paramName] = isset($savedConfig['params'][$paramName]) && $savedConfig['params'][$paramName] ? $savedConfig['params'][$paramName] : $paramValue;
+					}
+				}
+				else
+				{
+					$configs[$configName] = isset($savedConfig[$configName]) && $savedConfig[$configName] ? $savedConfig[$configName] : $configValue;
+				}
+			}
+		}
+
+		return $configs;
 	}
 }
