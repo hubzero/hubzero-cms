@@ -333,12 +333,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		//push the group object to the view
 		$view->group = $group;
 
-		//appends view override if this is a supergroup
-		if ($group->isSuperGroup())
-		{
-			$view->addTemplatePath(JPATH_ROOT.'/site/groups/'.$group->gidNumber.'/template/plugins/citations/browse');
-		}
-
 		$view->option = $this->option;
 
 
@@ -371,9 +365,21 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$view->filters = array();
-		//paging filters
-		$view->filters['limit']   = JRequest::getInt('limit', 50, 'request');
-		$view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
+
+		//appends view override if this is a supergroup
+		if ($group->isSuperGroup())
+		{
+			$view->addTemplatePath(JPATH_ROOT.'/site/groups/'.$group->gidNumber.'/template/plugins/citations/browse');
+			//paging filters
+			$view->filters['limit']   = JRequest::getInt('limit', 0, 'request');
+			$view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
+		}
+		else
+		{
+			//paging filters
+			$view->filters['limit']   = JRequest::getInt('limit', 50, 'request');
+			$view->filters['start']   = JRequest::getInt('limitstart', 0, 'get');
+		}
 
 		//search/filtering params
 		$view->filters['id']			  = JRequest::getInt('id', 0);
@@ -488,7 +494,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 
 		// Get records
-		$citations = $obj->getRecords($view->filters, $view->isAdmin, $group_id);
+		$view->filters['group'] =  $group_id;
+		$citations = $obj->getRecords($view->filters, $view->isAdmin);
 		$view->citations = $citations;
 
 
@@ -597,7 +604,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	private function _edit($group)
 	{
-
 		//create view object
 		$view = new \Hubzero\Plugin\View(
 				array(
@@ -871,7 +877,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (!$row->check())
 		{
 			$this->setError($row->getError());
-			$this->_edit();
+			$this->_edit($group);
 			return;
 		}
 
@@ -879,7 +885,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (!$row->store())
 		{
 			$this->setError($row->getError());
-			$this->_edit();
+			$this->_edit($group);
 			return;
 		}
 
@@ -901,8 +907,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				// Delete the row
 				if (!$assoc->delete($a['id']))
 				{
-					var_dump("here-a");
-					die;
 					$this->setError($assoc->getError());
 					$this->_browse();
 					return;
@@ -915,8 +919,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				// bind the data
 				if (!$assoc->bind($a))
 				{
-					var_dump("here-a");
-					;
 					$this->setError($assoc->getError());
 					$this->_browse();
 					return;
@@ -925,8 +927,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				// Check content
 				if (!$assoc->check())
 				{
-					var_dump("here-a");
-					die;
 					$this->setError($assoc->getError());
 					$this->_browse();
 					return;
@@ -935,8 +935,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				// Store new content
 				if (!$assoc->store())
 				{
-					var_dump("Saving successful");
-					die;
 					$this->setError($assoc->getError());
 					$this->_browse();
 					return;
@@ -944,49 +942,16 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			}
 		}
 
-		//are we allowing user to add citation
-		//$this->config = JComponentHelper::getParams('com_citations');
-		//$view->config = $this->config;
+			$ct1 = new CitationTags($row->id);
+			$ct1->setTags($tags, $this->juser->get('id'), 0, 1, '');
 
-		//check if we are allowing tags
-		//if ($this->config->get('citation_allow_tags', 'no') == 'yes')
-		//{
-			//$ct1 = new CitationTags($this->database);
-			$gt = new GroupsModelTags($group->get('gidNumber'));
-			$gt->setTags($tags, $this->juser->get('id'));
-		//}
-
-		//check if we are allowing badges
-		/*if ($this->config->get('citation_allow_badges', 'no') == 'yes')
-		{
-			$ct2 = new CitationTags($this->database);
-			$ct2->tag_object($this->juser->get('id'), $row->id, $badges, 1, false, 'badge');
-		} */
-
-		$this->redirect(
+			$this->redirect(
 			JRoute::_('index.php?option=com_groups' . DS . $this->group->cn . DS .'citations',
 			JText::_('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
 				'warning')
-		);
+			);
+
 		return;
-
-/*
-		// Redirect
-		if ($this->config->get('citation_single_view', 1))
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=view&id=' . $row->id),
-				JText::_('COM_CITATIONS_CITATION_SAVED')
-			);
-		}
-		else
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=browse'),
-				JText::_('COM_CITATIONS_CITATION_SAVED')
-			);
-		} */
-
 	}
 	/**
 	 * Method to build and set the document title

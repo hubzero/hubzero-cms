@@ -551,7 +551,7 @@ class CitationsCitation extends JTable
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     string Return description (if any) ...
 	 */
-	public function buildQuery($filter=array(), $admin=true, $gid=NULL)
+	public function buildQuery($filter=array(), $admin=true)
 	{
 		$query = " WHERE r.published=1";
 
@@ -567,9 +567,13 @@ class CitationsCitation extends JTable
 			//}
 		}
 		// group search
-		if (isset($gid) && $gid != NULL)
+		if (isset($filter['group']) && $filter['group'] != NULL)
 		{
-			$query .= " AND r.gid='".$gid."'";
+			$query .= " AND r.gid='". $filter['group'] ."'";
+		}
+		else
+		{
+			$query .= " AND r.gid is NULL";
 		}
 
 		//tag search
@@ -894,7 +898,7 @@ class CitationsCitation extends JTable
 	{
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username, COUNT(DISTINCT tag.tag) AS uniques
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, CS.link1_title, CS.link1_url, CS.link2_title, CS.link2_url, CS.link3_title, CS.link3_url, u.username, COUNT(DISTINCT tag.tag) AS uniques
 						FROM $this->_tbl AS r
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid
@@ -903,7 +907,7 @@ class CitationsCitation extends JTable
 		}
 		else
 		{
-			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, u.username
+			$query  = "SELECT DISTINCT r.*, CS.sec_cits_cnt AS sec_cnt, CS.search_string, CS.link1_title, CS.link1_url, CS.link2_title, CS.link2_url, CS.link3_title, CS.link3_url, u.username
 						FROM $this->_tbl AS r
 						LEFT JOIN #__users AS u ON u.id = r.uid
 						LEFT JOIN #__citations_secondary as CS ON r.id=CS.cid";
