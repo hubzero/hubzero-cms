@@ -98,7 +98,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->database   = JFactory::getDBO();
 
 		// get plugin access
-		//$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'citations');
+		$access = \Hubzero\User\Group\Helper::getPluginAccess($group, 'citations');
 
 		//if set to nobody make sure cant access
 		//check if guest and force login if plugin access is registered or members
