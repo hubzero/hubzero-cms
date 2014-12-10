@@ -94,12 +94,16 @@ class plgSearchWiki extends SearchPlugin
 				wp.title,
 				wv.pagehtml AS description,
 				CASE
+					WHEN wp.group_cn LIKE 'pr-%' THEN concat('index.php?option=com_projects&scope=', wp.scope, '&pagename=', wp.pagename)
 					WHEN wp.group_cn != '' THEN concat('index.php?option=com_groups&scope=', wp.scope, '&pagename=', wp.pagename)
 					ELSE concat('index.php?option=com_wiki&scope=', wp.scope, '&pagename=', wp.pagename)
 				END AS link,
 				$weight AS weight,
 				wv.created AS date,
-				'Wiki' AS section
+				CASE
+					WHEN wp.group_cn LIKE 'pr-%' THEN 'Project Notes'
+					ELSE 'Wiki'
+				END AS section
 			FROM `#__wiki_version` wv
 			INNER JOIN `#__wiki_page` wp
 				ON wp.id = wv.pageid
@@ -110,7 +114,7 @@ class plgSearchWiki extends SearchPlugin
 				wp.state < 2 AND
 				wv.id = (SELECT MAX(wv2.id) FROM `#__wiki_version` wv2 WHERE wv2.pageid = wv.pageid) " .
 				($addtl_where ? ' AND ' . join(' AND ', $addtl_where) : '') .
-				" AND (xg.gidNumber IS NULL OR (".implode(' OR ', $groupAuth)."))
+				" AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))
 			 ORDER BY $weight DESC"
 		);
 
@@ -120,8 +124,8 @@ class plgSearchWiki extends SearchPlugin
 			{
 				continue;
 			}
-			# rough de-wikifying. probably a bit faster than rendering to html and then stripping the tags, but not perfect
 			$row->set_link(JRoute::_($row->get_raw_link()));
+			// rough de-wikifying. probably a bit faster than rendering to html and then stripping the tags, but not perfect
 			//$row->set_description(preg_replace('/(\[+.*?\]+|\{+.*?\}+|[=*])/', '', $row->get_description()));
 			$row->set_description(strip_tags($row->get_description()));
 			$results->add($row);

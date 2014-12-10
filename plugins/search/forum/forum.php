@@ -81,11 +81,11 @@ class plgSearchForum extends SearchPlugin
 
 			if ($gids)
 			{
-				$addtl_where[] = '(f.access IN (' . $viewlevels . ') OR ((f.access = 4 OR f.access = 5) AND f.scope_id IN (0,' . join(',', $gids) . ')))';
+				$addtl_where[] = '(f.access IN (0,' . $viewlevels . ') OR ((f.access = 4 OR f.access = 5) AND f.scope_id IN (0,' . join(',', $gids) . ')))';
 			}
 			else
 			{
-				$addtl_where[] = '(f.access IN (' . $viewlevels . '))';
+				$addtl_where[] = '(f.access IN (0,' . $viewlevels . '))';
 			}
 		}
 
@@ -122,7 +122,7 @@ class plgSearchForum extends SearchPlugin
 			}
 			if ($row->scope_id)
 			{
-				$row->link .= ($row->sect ? $row->sect : 'defaultsection') . '/';
+				$row->link .= '/' . ($row->sect ? $row->sect : 'defaultsection') . '/';
 				$row->link .= ($row->cat ? $row->cat : 'discussion') . '/';
 				$row->link .= $row->thread;
 			}
