@@ -248,7 +248,7 @@ if ($this->params->get('allow_import', 1) && !$this->event->get('id'))
 						</label>
 						<label for="after">
 							<input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"  <?php if ($repeating['end'] == 'count') { echo 'checked="checked"'; } ?> /> After
-							<input type="text" name="reccurance[ends][count]" placeholder="5" class="after-input event_recurrence_end_count" value="<?php echo $repeating['count']; ?>" /> times
+							<input type="text" name="reccurance[ends][count]" placeholder="x" class="after-input event_recurrence_end_count" value="<?php echo $repeating['count']; ?>" /> times
 						</label>
 						<label for="on">
 							<input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"  <?php if ($repeating['end'] == 'until') { echo 'checked="checked"'; } ?> /> On
