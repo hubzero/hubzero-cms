@@ -308,6 +308,10 @@ HUB.Plugins.GroupCalendar = {
     					input  = '#event_start_date';
     				}
     				$(input).datetimepicker('option', option, selectedDate);
+    			},
+    			onSelect: function()
+    			{
+    				$(this).datepicker("hide");
     			}
 			});
 
