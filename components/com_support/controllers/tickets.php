@@ -2540,7 +2540,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			{
 				$users[] = JHTML::_('select.optgroup', JText::_('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
 				$users = array_merge($users, $gusers);
-				$users[] = JHTML::_('select.optgroup');
+				$users[] = JHTML::_('select.optgroup', JText::_('COM_SUPPORT_CHANGELOG_FIELD_GROUP') . ': ' . $gname);
 			}
 		}
 
