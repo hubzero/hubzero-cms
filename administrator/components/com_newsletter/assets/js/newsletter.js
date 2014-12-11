@@ -58,16 +58,10 @@ HUB.Administrator.Newsletter = {
 			});
 		}
 
-		if ($('.form-watch-changes').length)
+		// stop page refresh if form has changed except on submit
+		if (jQuery().formWatcher)
 		{
-			var form = $('.form-watch-changes').serialize();
-		    window.onbeforeunload = function(event)
-		    {
-		    	if (form != $('.form-watch-changes').serialize())
-		    	{
-		    		return 'Your changes have not been saved. Are you sure you want to continue?';
-		    	}
-		    };
+			$('form').formWatcher();
 		}
 		
 		HUB.Administrator.Newsletter.locationMap();
