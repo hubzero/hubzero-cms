@@ -476,7 +476,7 @@ class CitationsCitation extends JTable
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getCount($filter=array(), $admin=true, $gid = NULL)
+	public function getCount($filter=array(), $admin=true)
 	{
 		$filter['sort'] = '';
 		$filter['limit'] = 0;
@@ -530,7 +530,7 @@ class CitationsCitation extends JTable
 			}
 		}
 
-		$query .= $this->buildQuery($filter, $admin, $gid);
+		$query .= $this->buildQuery($filter, $admin);
 
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{

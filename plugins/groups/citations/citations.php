@@ -294,7 +294,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		foreach ($types as $t)
 		{
-			$view->typestats[$t['type_title']] = $row->getCount(array('type' => $t['id']), false, $group->gidNumber);
+			$view->typestats[$t['type_title']] = $row->getCount(array('type' => $t['id'], 'group' => $group->gidNumber), false);
 		}
 
 		$view->yearlystats = $row->getStats();
@@ -308,7 +308,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			$view->isAdmin = true;
 		}
-
 
 		return $view->loadTemplate();
 
@@ -338,6 +337,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		//grabs the components configuration
 		$this->config = JComponentHelper::getParams('com_citations');
+		$view->config = $this->config;
 		$view->task = $this->_name;
 
 		//permissions for importing or creating new citations
