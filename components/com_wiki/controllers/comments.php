@@ -251,6 +251,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		}
 
 		// Parse the wikitext and set some values
+		$comment->set('chtml', NULL);
 		$comment->set('chtml', $comment->content('parsed'));
 		$comment->set('anonymous', ($comment->get('anonymous') ? 1 : 0));
 		$comment->set('created', ($comment->get('created') ? $comment->get('created') : JFactory::getDate()->toSql()));
@@ -291,7 +292,7 @@ class WikiControllerComments extends \Hubzero\Component\SiteController
 		$cls = 'message';
 
 		// Make sure we have a comment to delete
-		if (($id = JRequest::getInt('id', 0)))
+		if (($id = JRequest::getInt('comment', 0)))
 		{
 			// Make sure they're authorized to delete (must be an author)
 			if ($this->page->access('delete', 'comment'))

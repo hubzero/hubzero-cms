@@ -175,27 +175,34 @@ class WikiModelComment extends \Hubzero\Base\Model
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('chtml', null);
-
-				if ($content === null)
+				if ($this->get('chtml'))
 				{
-					$p = WikiHelperParser::getInstance();
-
-					$wikiconfig = array(
-						'option'   => JRequest::getCmd('option', 'com_wiki'),
-						'scope'    => JRequest::getVar('scope'),
-						'pagename' => JRequest::getVar('pagename'),
-						'pageid'   => $this->get('pageid'),
-						'filepath' => '',
-						'domain'   => JRequest::getVar('group', '')
-					);
-
-					$this->set('chtml', $p->parse(stripslashes($this->get('ctext')), $wikiconfig));
-
-					return $this->content($as, $shorten);
+					return $this->get('chtml');
+				}
+				if ($this->get('parsed'))
+				{
+					return $this->get('parsed');
 				}
 
-				$options['html'] = true;
+				$p = WikiHelperParser::getInstance();
+
+				$wikiconfig = array(
+					'option'   => JRequest::getCmd('option', 'com_wiki'),
+					'scope'    => JRequest::getVar('scope'),
+					'pagename' => JRequest::getVar('pagename'),
+					'pageid'   => $this->get('pageid'),
+					'filepath' => '',
+					'domain'   => JRequest::getVar('group', '')
+				);
+
+				$this->set('parsed', $p->parse(stripslashes($this->get('ctext')), $wikiconfig));
+				if ($shorten)
+				{
+					$content = \Hubzero\Utility\String::truncate($this->get('parsed'), $shorten, array('html' => true));
+					return $content;
+				}
+
+				return $this->get('parsed');
 			break;
 
 			case 'clean':
@@ -241,7 +248,7 @@ class WikiModelComment extends \Hubzero\Base\Model
 			break;
 
 			case 'delete':
-				$link .= '&' . $task . '=removecomment&id=' . $this->get('id');
+				$link .= '&' . $task . '=removecomment&comment=' . $this->get('id');
 			break;
 
 			case 'reply':

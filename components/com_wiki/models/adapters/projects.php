@@ -58,7 +58,12 @@ class WikiModelAdapterProjects extends WikiModelAdapterAbstract
 	public function link($type='', $params=null)
 	{
 		$segments = $this->_segments;
-
+		$project = JRequest::getVar('project', NULL);
+		$segments['scope'] = JRequest::getVar('scope', NULL);
+		if (!$segments['scope'] && is_object($project))
+		{
+			$segments['scope'] = 'projects/' . $project->alias . '/notes';
+		}
 		$anchor = '';
 
 		// If it doesn't exist or isn't published
@@ -110,6 +115,6 @@ class WikiModelAdapterProjects extends WikiModelAdapterAbstract
 
 		$segments = array_merge($segments, (array) $params);
 
-		return $this->_base . '?' . (string) $this->_build($segments) . (string) $anchor;
+		return JRoute::_($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor);
 	}
 }

@@ -271,6 +271,7 @@ class plgProjectsNotes extends JPlugin
 					if ($cid)
 					{
 						JRequest::setVar('id', $cid);
+						JRequest::setVar('comment', $cid);
 					}
 				break;
 

@@ -82,11 +82,11 @@ defined('_JEXEC') or die('Restricted access');
 
 			<p class="comment-options">
 			<?php if ($this->page->access('delete', 'comment')) { // || $juser->get('id') == $this->comment->get('created_by') ?>
-				<?php if ($this->config->get('access-delete-thread')) { ?>
+				<?php //if ($this->config->get('access-delete-thread')) { ?>
 					<a class="icon-delete delete" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
 						--><?php echo JText::_('COM_WIKI_DELETE'); ?><!--
 					--></a>
-				<?php } ?>
+				<?php //} ?>
 				<?php if ($this->page->access('edit', 'comment')) { ?>
 					<a class="icon-edit edit" href="<?php echo JRoute::_($this->comment->link('edit')); ?>"><!--
 						--><?php echo JText::_('COM_WIKI_EDIT'); ?><!--
