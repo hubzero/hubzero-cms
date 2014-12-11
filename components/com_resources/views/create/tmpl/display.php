@@ -204,7 +204,7 @@ if ($categories) {
 			<div class="col span-third <?php echo $clm; ?>">
 				<div class="<?php echo $cls; ?>">
 					<h3><a href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=draft&step=1&type='.$category->id); ?>"><?php echo stripslashes($category->type); ?></a></h3>
-					<p><?php echo $this->escape(stripslashes($category->description)); ?></p>
+					<p><?php echo stripslashes($category->description); ?></p>
 				</div>
 			</div><!-- / .col span-third <?php echo $clm; ?> -->
 			<?php
