@@ -49,8 +49,7 @@ $sharing = array('facebook', 'twitter', 'google', 'pinterest', 'linkedin', 'deli
 
 foreach ($sharing as $shared)
 {
-	if ($this->_params->get('share_' . $shared)) {
-
+	if ($this->_params->get('share_' . $shared, 1) == 1) {
 		// Show activity
 		$link = $this->view('_item')
 	     ->set('option', $this->option)
