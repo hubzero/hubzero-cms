@@ -69,11 +69,11 @@
 		padding-left: 20px;
 	}
 	.page-options li.edit,
-	.page-options li.delete {
+	.page-options li.delete,
+	.comment-options .delete {
 		float: right;
 		margin: 0 0 0 1.5em;
 	}
-
 	.sub-menu li a span:before {
 		font-family: "Fontcons";
 		margin-right: 0.4em;

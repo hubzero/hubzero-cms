@@ -80,7 +80,6 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 
 			<p class="comment-options">
-
 				<?php if ($this->page->access('delete', 'comment')) { ?>
 					<a class="icon-delete delete" href="<?php echo JRoute::_($this->comment->link('delete')); ?>"><!--
 						--><?php echo JText::_('COM_WIKI_DELETE'); ?><!--
