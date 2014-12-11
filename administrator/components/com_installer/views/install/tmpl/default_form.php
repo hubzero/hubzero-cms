@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(pressbutton) {
-		var form = document.getElementById('adminForm');
+		var form = document.getElementById('item-form');
 
 		// do field validation
 		if (form.install_package.value == ""){
@@ -24,7 +24,7 @@ defined('_JEXEC') or die;
 	}
 
 	Joomla.submitbutton3 = function(pressbutton) {
-		var form = document.getElementById('adminForm');
+		var form = document.getElementById('item-form');
 
 		// do field validation
 		if (form.install_directory.value == ""){
@@ -36,7 +36,7 @@ defined('_JEXEC') or die;
 	}
 
 	Joomla.submitbutton4 = function(pressbutton) {
-		var form = document.getElementById('adminForm');
+		var form = document.getElementById('item-form');
 
 		// do field validation
 		if (form.install_url.value == "" || form.install_url.value == "http://"){
