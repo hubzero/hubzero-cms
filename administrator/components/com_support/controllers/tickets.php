@@ -861,6 +861,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			{
 				$users[] = JHTML::_('select.optgroup', JText::_('COM_SUPPORT_GROUP') . ' ' . $nme);
 				$users = array_merge($users, $gusers);
+				$users[] = JHTML::_('select.optgroup');
 			}
 		}
 
