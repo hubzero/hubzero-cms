@@ -128,7 +128,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		switch ($verb)
 		{
 			case 'GetRecord':
-				$response .= "<request verb=\"GetRecord\" identifier=\"$identifier\" metadataPrefix=\"$this->metadata\">http://$this->hubname/oaipmh</request>";
+				$response .= "<request verb=\"GetRecord\" identifier=\"$identifier\" metadataPrefix=\"$this->metadata\">$this->hubname/oaipmh</request>";
 				// check for errors
 				$check = new TablesOaipmhResult($this->database, $customs, $identifier);
 				if ($check->identifier == '')
@@ -157,7 +157,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			break;
 
 			case 'Identify':
-				$response .= "<request verb=\"Identify\">http://$this->hubname/oaipmh</request>";
+				$response .= "<request verb=\"Identify\">$this->hubname/oaipmh</request>";
 				// check for errors
 				if (!empty($this->metadata) || !empty($identifier) || !empty($resumption))
 				{
@@ -193,7 +193,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				{
 					$response .= " identifier=\"$identifier\"";
 				}
-				$response .= ">http://$this->hubname</request><ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat>";
+				$response .= ">$this->hubname</request><ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat>";
 				if ($allow_ore)
 				{
 					$response .= "<metadataFormat><metadataPrefix>oai_ore</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/rdf.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/rdf/</metadataNamespace></metadataFormat>";
@@ -203,7 +203,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 
 			case 'ListIdentifiers':
 			case 'ListRecords':
-				$response .= "<request verb=\"$verb\" metadataPrefix=\"$this->metadata\">http://$this->hubname/oaipmh</request>";
+				$response .= "<request verb=\"$verb\" metadataPrefix=\"$this->metadata\">$this->hubname/oaipmh</request>";
 				// get session
 				$session = JFactory::getSession();
 				$sessionTokenResumptionTemp = $session->get($resumption);
@@ -298,7 +298,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			break;
 
 			case 'ListSets':
-				$response .= "<request verb=\"ListSets\">http://$this->hubname/oaipmh</request>";
+				$response .= "<request verb=\"ListSets\">$this->hubname/oaipmh</request>";
 				// get session
 				$session =  JFactory::getSession();
 				$sessionTokenResumptionTemp = $session->get($resumption);
@@ -315,7 +315,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			break;
 
 			default :
-				$response .= "<request>http://$this->hubname/oaipmh</request><error code=\"badVerb\">" . JText::_('COM_OAIPMH_ILLEGAL_VERB') . "</error>";
+				$response .= "<request>$this->hubname/oaipmh</request><error code=\"badVerb\">" . JText::_('COM_OAIPMH_ILLEGAL_VERB') . "</error>";
 			break;
 		}
 

@@ -68,16 +68,20 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// vars
-		$queries = JRequest::getVar('queries','','post');
-		$qid     = JRequest::getVar('qid','','post');
-		$display = JRequest::getVar('display','','post');
+		$queries = JRequest::getVar('queries', array(), 'post');
+		$qid     = JRequest::getVar('qid', '', 'post');
+		$display = JRequest::getVar('display', '', 'post');
 
 		// update specs
 		$count = count($queries);
 		for ($i=0; $i<=$count-1; $i++)
 		{
 			$SQL = "UPDATE `#__oaipmh_dcspecs` SET query = " . $this->database->Quote($queries[$i]) . " WHERE id = " . $this->database->Quote($qid[$i]);
-			$this->database->Execute($SQL);
+			$this->database->setQuery($SQL);
+			if (!$this->database->query())
+			{
+				$this->setError($this->database->getErrorMsg());
+			}
 		}
 
 		// redirect
@@ -149,7 +153,11 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 		$id = JRequest::getVar('id', '', 'request');
 
 		$SQL = "DELETE FROM `#__oaipmh_dcspecs` WHERE display = " . $this->database->Quote($id) . " LIMIT 17";
-		$this->database->Execute($SQL);
+		$this->database->setQuery($SQL);
+		if (!$this->database->query())
+		{
+			$this->setError($this->database->getErrorMsg());
+		}
 
 		// redirect
 		$this->setRedirect(
