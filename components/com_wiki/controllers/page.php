@@ -469,12 +469,19 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 			// Yes - get the preview so we can parse it and display
 			$this->view->preview = $this->preview;
 
+			$pageid = $this->page->get('id');
+			$lid = JRequest::getInt('lid', 0, 'post');
+			if ($lid != $this->page->get('id'))
+			{
+				$pageid = $lid;
+			}
+
 			// Parse the HTML
 			$wikiconfig = array(
 				'option'   => $this->_option,
 				'scope'    => $this->page->get('scope'),
-				'pagename' => $this->page->get('pagename'),
-				'pageid'   => $this->page->get('id'),
+				'pagename' => ($this->page->exists() ? $this->page->get('pagename') : 'Tmp:' . $pageid),
+				'pageid'   => $pageid,
 				'filepath' => '',
 				'domain'   => $this->_group
 			);

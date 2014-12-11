@@ -109,16 +109,22 @@ class WikiControllerMedia extends \Hubzero\Component\SiteController
 		$this->page = new WikiModelPage($pagename, $scope);
 
 		// Load the page
-		if (!$this->page->exists())
+		if ($this->page->exists())
+		{
+			// Check if the page is group restricted and the user is authorized
+			if ($this->page->get('group_cn') != '' && $this->page->get('access') != 0 && !$this->page->access('view'))
+			{
+				JError::raiseWarning(403, JText::_('COM_WIKI_WARNING_NOT_AUTH'));
+				return;
+			}
+		}
+		else if ($this->page->get('namespace') == 'tmp')
+		{
+			$this->page->set('id', $this->page->denamespaced());
+		}
+		else
 		{
 			JError::raiseError(404, JText::_('COM_WIKI_PAGE_NOT_FOUND'));
-			return;
-		}
-
-		// Check if the page is group restricted and the user is authorized
-		if ($this->page->get('group_cn') != '' && $this->page->get('access') != 0 && !$this->page->access('view'))
-		{
-			JError::raiseWarning(403, JText::_('COM_WIKI_WARNING_NOT_AUTH'));
 			return;
 		}
 
