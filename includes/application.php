@@ -497,7 +497,7 @@ final class JSite extends JApplication
 
 		// Fallback template
 		if (!file_exists(JPATH_THEMES . '/' . $template->template . '/index.php')) {
-			JError::raiseWarning(0, JText::_('JERROR_ALERTNOTEMPLATE'));
+			//JError::raiseWarning(0, JText::_('JERROR_ALERTNOTEMPLATE'));
 			$template->template = 'system';
 			if (!file_exists(JPATH_THEMES . '/system/index.php')) {
 				$template->template = '';
