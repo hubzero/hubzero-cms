@@ -179,6 +179,10 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 					{
 						$action = $bits[0];
 					}
+					else if ($bits[0] == 'unsubscribe')
+					{
+						$action = 'unsubscribe';
+					}
 					else
 					{
 						JRequest::setVar('section', $bits[0]);
@@ -274,6 +278,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 				case 'download':       $arr['html'] .= $this->download();       break;
 				case 'search':         $arr['html'] .= $this->search();         break;
+
+				case 'unsubscribe':    $arr['html'] .= $this->unsubscribe();    break;
 
 				default: $arr['html'] .= $this->sections(); break;
 			}
@@ -1435,6 +1441,11 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 				$subject = ' - ' . $this->group->get('cn') . ' - ' . $posttitle;
 
+				// add unsubscribe link
+				$unsubscribeToken = $encryptor->buildEmailToken(1, 3, $userID, $this->group->get('gidNumber'));
+				$unsubscribeLink = rtrim($juri->base(), DS) . DS . ltrim(JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') .'&active=forum&action=unsubscribe&t=' . $unsubscribeToken), DS);
+				$forum_message  .= "\r\n" . JText::_('Unsubscribe: ') . "\r\n" . $unsubscribeLink;
+
 				$from = array();
 				$from['name']  = $jconfig->getValue('config.sitename') . ' ';
 				$from['email'] = $jconfig->getValue('config.mailfrom');
@@ -1924,6 +1935,73 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$this->redirect(
 			JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'),
 			JText::_('PLG_GROUPS_FORUM_SETTINGS_SAVED')
+		);
+	}
+
+	/**
+	 * Unsubscribe user from forum emails
+	 * 
+	 * @return void
+	 */
+	public function unsubscribe()
+	{
+		// get the token
+		$token = JRequest::getCmd('t', '');
+
+		//token is required
+		if ($token == '')
+		{
+			$this->redirect(
+				JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
+				JText::_('PLG_GROUPS_FORUM_UNSUBSCRIBE_MISSING_TOKEN'),
+				'error'
+			);
+		}
+
+		// get the token lib
+		$encryptor = new \Hubzero\Mail\Token();
+
+		// get token details
+		$tokenDetails = $encryptor->decryptEmailToken($token);
+
+		// make sure token details are good
+		if (empty($tokenDetails) || !isset($tokenDetails[1]) || $this->group->get('gidNumber') != $tokenDetails[1])
+		{
+			$this->redirect(
+				JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
+				JText::_('PLG_GROUPS_FORUM_UNSUBSCRIBE_INVALID_TOKEN'),
+				'error'
+			);
+		}
+
+		// neede member option lib
+		include_once(JPATH_ROOT . DS . 'plugins' . DS . 'groups' . DS . 'memberoptions' . DS . 'memberoption.class.php');
+
+		// Find the user's group settings, do they want to get email (0 or 1)?
+		$groupMemberOption = new GroupsTableMemberoption($this->database);
+		$groupMemberOption->loadRecord(
+			$this->group->get('gidNumber'),
+			$tokenDetails[0],
+			GROUPS_MEMBEROPTION_TYPE_DISCUSSION_NOTIFICIATION
+		);
+
+		// mark that they dont want to be received anymore.
+		$groupMemberOption->optionvalue = 0;
+
+		// attempt to update
+		if (!$groupMemberOption->save($groupMemberOption))
+		{
+			$this->redirect(
+				JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
+				JText::_('PLG_GROUPS_FORUM_UNSUBSCRIBE_UNABLE_TO_UNSUBSCRIBE'),
+				'error'
+			);
+		}
+
+		// success
+		$this->redirect(
+			JRoute::_('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
+			JText::_('PLG_GROUPS_FORUM_UNSUBSCRIBE_SUCCESSFULLY_UNSUBSCRIBED')
 		);
 	}
 }

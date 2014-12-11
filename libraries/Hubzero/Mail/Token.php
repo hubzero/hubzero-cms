@@ -179,6 +179,12 @@ class Token
 		return $rv;
 	}
 
+	/**
+	 * Function to decrypt email token
+	 * 
+	 * @param  string $t Email token
+	 * @return array     Email token details
+	 */
 	public function decryptEmailToken($t)
 	{
 		// returns 3 element array, depending on the context, userid will be first,
