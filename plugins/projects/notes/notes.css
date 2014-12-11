@@ -786,3 +786,8 @@
 		left: 0;
 		right: 0;
 	}
+	.comment-options .delete,
+	.comment-options .edit {
+		float: right;
+		margin: 0 0 0 1.5em;
+	}
