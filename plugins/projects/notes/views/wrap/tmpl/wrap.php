@@ -33,6 +33,8 @@ $url = 'index.php?option='.$this->option . '&alias=' . $this->project->alias . '
 // Com_wiki adds /projects - strip it out
 $this->content = str_replace('projects/projects/', 'projects/', $this->content);
 
+$this->content = str_replace('projects/pr-' . $this->project->alias , 'projects/' . $this->project->alias, $this->content);
+
 // Get the page
 $page = $this->page;
 
