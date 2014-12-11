@@ -186,7 +186,13 @@ class Sanitize
 
 		// strip out any KL_PHP, script, style, HTML comments
 		$string = preg_replace('/{kl_php}(.*?){\/kl_php}/is', '', $string);
-		$string = self::stripScripts($string);
+		$regex =
+			'/(<link[^>]+rel="[^"]*stylesheet"[^>]*>|' .
+			'<script[^>]*>.*?<\/script>|' .
+			'<style[^>]*>.*?<\/style>|' .
+			'<\?php.*?\?>|' .
+			'<!--.*?-->/is';
+		$string = preg_replace($regex, '', $string);
 
 		$string = str_replace(
 			array('&amp;',     '&lt;',     '&gt;'),
