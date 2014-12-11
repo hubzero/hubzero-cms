@@ -178,5 +178,29 @@ class Token
 
 		return $rv;
 	}
+
+	public function decryptEmailToken($t)
+	{
+		// returns 3 element array, depending on the context, userid will be first,
+		// followed by another id (groupid, ticketid, etc) and a timestamp indicating
+		// the age of the token if you want to consider expiring it after a certain age
+
+		// strip the unencrypted version and action bytes at the beginning of the token
+		$rawtoken = substr($t, 4);
+
+		// Convert from hex to bin
+		$encrypted = hex2bin($rawtoken);
+
+		// Do the decryption
+		$cipher = mcrypt_module_open(MCRYPT_RIJNDAEL_128, '', 'cbc', '');
+		mcrypt_generic_init($cipher, $this->_key, $this->_iv);
+		$decrypted = mdecrypt_generic($cipher, $encrypted);
+
+		// unpack the original values, no need to strip padding or hash 
+		// we'll just unpack what we need
+		$arr = unpack("N3", $decrypted);
+		return array($arr[1], $arr[2], $arr[3]);
+	}
+
 }
 
