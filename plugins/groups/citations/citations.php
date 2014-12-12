@@ -117,14 +117,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->filters['state']     = 1;
 		$view->filters['sticky']    = 1;
 		$view->filters['published'] = 1;
-
-		//create new announcement Object
-		$hubzeroAnnouncement = new \Hubzero\Item\Announcement($view->database);
-		$view->total = $hubzeroAnnouncement->count($view->filters);
-		$view->rows  = $hubzeroAnnouncement->find($view->filters);
-
-		//display list of announcements
-		return $view->loadTemplate();
 	}
 
 	/**
@@ -226,6 +218,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				case 'edit':     $arr['html'] .= $this->_edit($group);		break;
 				case 'delete':   $arr['html'] .= $this->_delete();			break;
 				case 'browse':	 $arr['html'] .= $this->_browse($group);	break;
+				case 'import': 	 $arr['html'] .= $this->_import($group); 	break;
 				default:         $arr['html'] .= $this->_dashboard($group);
 			}
 		}
@@ -367,7 +360,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->filters = array();
 
 		//appends view override if this is a supergroup
-		if ($group->isSuperGroup())
+		if ($group->isSuperGroup() && file_exists(JPATH_ROOT.'/site/groups/'.$group->gidNumber.'/template/plugins/citations/browse'))
 		{
 			$view->addTemplatePath(JPATH_ROOT.'/site/groups/'.$group->gidNumber.'/template/plugins/citations/browse');
 			//paging filters
@@ -826,7 +819,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		);
 	}
 
-
 	/**
 	 * Save an entry
 	 *
@@ -1075,6 +1067,18 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 				JText::_('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
 				'warning'
 		);
+		return;
+	}
+
+	/**
+	 * Redirect to citation importer
+	 *
+	 * @return     void
+	 */
+	private function _import($group)
+	{
+		$this->redirect(JRoute::_('index.php?option=com_citations&controller=import&group=' . $group->gidNumber));
+
 		return;
 	}
 

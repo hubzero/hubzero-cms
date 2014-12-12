@@ -270,8 +270,12 @@ if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)): ?
 endif; ?>
 
 <?php
-foreach ($this->messages as $message) {
+if (isset($this->messages))
+{
+	foreach ($this->messages as $message)
+	{
 	echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
+	}
 }
 ?>
 

@@ -232,6 +232,9 @@ $no_show = array("errors","duplicate");
 		</p>
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<?php if (isset($this->group) && $this->group != ''): ?>
+			<input type="hidden" name="group" value="<?php echo $this->group; ?>" />
+		<?php endif; ?>
 		<input type="hidden" name="task" value="import_save" />
 	</form>
 </section><!-- / .section -->

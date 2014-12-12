@@ -315,5 +315,20 @@ class GroupsGroup extends JTable
 
 		return $results;
 	}
+
+	/**
+	 * Get a cn
+	 *
+	 * @param  string gid
+	 * @return object Return cn
+	 */
+	public function getName($id)
+	{
+		$query = "SELECT cn from #__xgroups WHERE gidNumber = " . $id . ";";
+		$this->_db->setQuery($query);
+		$cn = $this->_db->loadResult();
+
+		return $cn;
+	}
 }
 

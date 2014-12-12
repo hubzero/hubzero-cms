@@ -274,10 +274,10 @@ function GroupsParseRoute($segments)
  * Special function that takes all extra query params and prefixes them
  *
  * This is needeed when users use controller & task query string params which
- * conflict with the groups component controller & task query string params. Prefixing 
+ * conflict with the groups component controller & task query string params. Prefixing
  * them and setting the original key to what the GroupsParseRoute method generates. Then
  * the supergroup system plugin rewrites them back after we made it through to the group component.
- * 
+ *
  * @param  [type] $vars [description]
  * @return [type]       [description]
  */

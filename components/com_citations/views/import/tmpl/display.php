@@ -67,6 +67,9 @@ $this->css()
 		</p>
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+		<?php if (isset($this->gid)): ?>
+			<input type="hidden" name="group" value="<?php echo $this->gid; ?>" />
+		<?php endif; ?>
 		<input type="hidden" name="task" value="import_upload" />
 	</form>
 </section><!-- / .section -->

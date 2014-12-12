@@ -61,12 +61,22 @@ if ($label == "none") {
 }
 
 ?>
-<div class="frm" id="browsebox">
 
-					<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-			<a class="btn icon-add" href="<?php echo JRoute::_($base. '&action=add'); ?>">
-				<?php echo JText::_('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
-			</a><?php endif; ?>
+<?php
+if (isset($this->messages))
+{
+	foreach ($this->messages as $message)
+	{
+	echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
+	}
+}
+?>
+
+<div class="frm" id="browsebox">
+	<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
+	<a class="btn icon-add" href="<?php echo JRoute::_($base. '&action=add'); ?>">
+	<?php echo JText::_('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
+	</a><?php endif; ?>
 
 	<form action="<?php echo JRoute::_(JURI::current()); ?>" id="citeform" method="GET" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 		<section class="main section">

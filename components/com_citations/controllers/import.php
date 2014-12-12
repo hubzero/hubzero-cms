@@ -71,6 +71,12 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
+		$gid = JRequest::getVar('group');
+		if (isset($gid) && $gid != '')
+		{
+			$this->view->gid = $gid;
+		}
+
 		//are we allowing importing
 		$importParam = $this->config->get('citation_bulk_import', 1);
 
@@ -188,10 +194,24 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 		$file1 = JFile::write($p1, serialize($citations[0]['attention']));
 		$file2 = JFile::write($p2, serialize($citations[0]['no_attention']));
 
-		// review imported citations
-		$this->setRedirect(
+		//get group ID
+		$group = JRequest::getVar('group');
+
+		if (isset($group) && $group != '')
+		{
+			// review imported citations
+			$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&task=import_review&group=' . $group)
+			);
+		}
+		else
+		{
+			// review imported citations
+			$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&task=import_review')
-		);
+			);
+		}
+
 		return;
 	}
 
@@ -220,17 +240,35 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			$citations_require_no_attention = unserialize(JFile::read($p2));
 		}
 
+		$group = JRequest::getVar('group');
 
-
-		// make sure we have some citations
-		if (!$citations_require_attention && !$citations_require_no_attention)
+		if (isset($group) && $group != '')
 		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&task=import'),
-				JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
-				'error'
-			);
-			return;
+			$this->view->group = $group;
+
+			// make sure we have some citations
+			if (!$citations_require_attention && !$citations_require_no_attention)
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&task=import&group=' . $group),
+					JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+					'error'
+				);
+				return;
+			}
+		}
+		else
+		{
+			// make sure we have some citations
+			if (!$citations_require_attention && !$citations_require_no_attention)
+			{
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option . '&task=import'),
+					JText::_('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
+					'error'
+				);
+				return;
+			}
 		}
 
 		// Set the page title
@@ -361,6 +399,14 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				// remove duplicate flag
 				unset($cra['duplicate']);
 
+				//sets group if set
+				$group = JRequest::getVar('group');
+				if (isset($group) && $group != '')
+				{
+					$cra['gid'] = $group;
+					$cra['scope'] = 'group';
+				}
+
 				// save the citation
 				if (!$cc->save($cra))
 				{
@@ -444,6 +490,14 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 				// remove duplicate flag
 				unset($crna['duplicate']);
 
+				//sets group if set
+				$group = JRequest::getVar('group');
+				if (isset($group) && $group != '')
+				{
+					$crna['gid'] = $group;
+					$crna['scope'] = 'group';
+				}
+
 				// save the citation
 				if (!$cc->save($crna))
 				{
@@ -469,45 +523,59 @@ class CitationsControllerImport extends \Hubzero\Component\SiteController
 			}
 		}
 
-		// success message a redirect
-		$this->addComponentMessage(
-			JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($citations_saved)),
-			'passed'
-		);
-
-		// if we have citations not getting saved
-		if (count($citations_not_saved) > 0)
+		if (isset($group) && $group != '')
 		{
+			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_groups' . DS . 'tables' . DS . 'group.php');
+			$gob = new GroupsGroup($this->database);
+			$cn = $gob->getName($group);
+
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_groups' . DS . $cn . DS . 'citations&action=dashboard')
+				);
+		}
+		else
+		{
+			// success message a redirect
 			$this->addComponentMessage(
-				JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($citations_not_saved)),
-				'warning'
+				JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVED', count($citations_saved)),
+				'passed'
+			);
+
+			// if we have citations not getting saved
+			if (count($citations_not_saved) > 0)
+			{
+				$this->addComponentMessage(
+					JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_NOT_SAVED', count($citations_not_saved)),
+					'warning'
+				);
+			}
+
+			if (count($citations_error) > 0)
+			{
+				$this->addComponentMessage(
+					JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($citations_error)),
+					'error'
+				);
+			}
+
+			//get the session object
+			$session = JFactory::getSession();
+
+			//ids of sessions saved and not saved
+			$session->set('citations_saved', $citations_saved);
+			$session->set('citations_not_saved', $citations_not_saved);
+			$session->set('citations_error', $citations_error);
+
+			//delete the temp files that hold citation data
+			JFile::delete($p1);
+			JFile::delete($p2);
+
+			//redirect
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&task=import_saved')
 			);
 		}
 
-		if (count($citations_error) > 0)
-		{
-			$this->addComponentMessage(
-				JText::sprintf('COM_CITATIONS_IMPORT_RESULTS_SAVE_ERROR', count($citations_error)),
-				'error'
-			);
-		}
-
-		//get the session object
-		$session = JFactory::getSession();
-
-		//ids of sessions saved and not saved
-		$session->set('citations_saved', $citations_saved);
-		$session->set('citations_not_saved', $citations_not_saved);
-		$session->set('citations_error', $citations_error);
-
-		//delete the temp files that hold citation data
-		JFile::delete($p1);
-		JFile::delete($p2);
-
-		//redirect
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&task=import_saved')
-		);
 		return;
 	}
 
