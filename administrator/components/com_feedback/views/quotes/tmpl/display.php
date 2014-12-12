@@ -101,6 +101,19 @@ $k = 0;
 for ($i=0, $n=count($this->rows); $i < $n; $i++)
 {
 	$row = &$this->rows[$i];
+
+	if (!trim($row->quote))
+	{
+		$row->quote = $row->short_quote;
+	}
+	if (!trim($row->quote))
+	{
+		$row->quote = $row->miniquote;
+	}
+	if (!trim($row->quote))
+	{
+		$row->quote = JText::_('COM_FEEDBACK_BLANK');
+	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
@@ -134,7 +147,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</a>
 					<?php } else { ?>
 						<span>
-							<?php echo $this->escape($quotepreview); ?>
+							<?php echo $this->escape(\Hubzero\Utility\String::truncate(strip_tags($row->quote), 100)); ?>
 						</span>
 					<?php } ?>
 				</td>
