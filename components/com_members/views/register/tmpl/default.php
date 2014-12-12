@@ -311,19 +311,19 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					?>
 					<div class="grid">
 						<div class="col span4">
-							<label<?php echo $fieldclass; ?>>
+							<label for="first-name"<?php echo $fieldclass; ?>>
 								<?php echo JText::_('COM_MEMBERS_REGISTER_FIRST_NAME'); ?>: <?php echo $required; ?>
 								<input type="text" name="name[first]" id="first-name" value="<?php echo $this->escape(trim($givenName)); ?>" />
 							</label>
 						</div>
 						<div class="col span4">
-							<label>
+							<label for="middle-name">
 								<?php echo JText::_('COM_MEMBERS_REGISTER_MIDDLE_NAME'); ?>:
 								<input type="text" name="name[middle]" id="middle-name" value="<?php echo $this->escape(trim($middleName)); ?>" />
 							</label>
 						</div>
 						<div class="col span4 omega">
-							<label<?php echo $fieldclass; ?>>
+							<label for="last-name"<?php echo $fieldclass; ?>>
 								<?php echo JText::_('COM_MEMBERS_REGISTER_LAST_NAME'); ?>:
 								<input type="text" name="name[last]" id="last-name" value="<?php echo $this->escape(trim($surname)); ?>" />
 							</label>
@@ -336,7 +336,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 					<div class="grid">
 						<?php if ($this->registrationEmail != REG_HIDE) { ?>
 							<div class="col span6">
-								<label<?php echo (!empty($this->xregistration->_invalid['email']) ? ' class="fieldWithErrors"' : ''); ?>>
+								<label for="email"<?php echo (!empty($this->xregistration->_invalid['email']) ? ' class="fieldWithErrors"' : ''); ?>>
 									<?php echo JText::_('COM_MEMBERS_REGISTER_VALID_EMAIL'); ?>: <?php echo ($this->registrationEmail == REG_REQUIRED ? '<span class="required">' . JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''); ?>
 									<input name="email" id="email" type="text" value="<?php echo $this->escape($this->registration['email']); ?>" />
 									<?php echo (!empty($this->xregistration->_invalid['email']) ? '<span class="error">' . $this->xregistration->_invalid['email'] . '</span>' : ''); ?>
@@ -351,7 +351,7 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 									$this->registration['confirmEmail'] = '';
 								}
 								?>
-								<label<?php echo (!empty($this->xregistration->_invalid['confirmEmail']) ? ' class="fieldWithErrors"' : ''); ?>>
+								<label for="email2"<?php echo (!empty($this->xregistration->_invalid['confirmEmail']) ? ' class="fieldWithErrors"' : ''); ?>>
 									<?php echo JText::_('COM_MEMBERS_REGISTER_CONFIRM_EMAIL'); ?>: <?php echo ($this->registrationConfirmEmail == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?>
 									<input name="email2" id="email2" type="text" value="<?php echo $this->escape($this->registration['confirmEmail']); ?>" />
 									<?php echo (!empty($this->xregistration->_invalid['confirmEmail']) ? '<span class="error">' . $this->xregistration->_invalid['confirmEmail'] . '</span>' : ''); ?>
