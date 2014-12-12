@@ -123,13 +123,13 @@ class GenericRenderer
 	protected function details()
 	{
 		return array(
-			'<table class="details"><tr>',
+			'<table class="details"><tbody><tr>',
 			$this->type(),
 			$this->date(),
 			$this->contributors(),
 			'</tr>',
 			$this->extraDetails(),
-			'</table>'
+			'</tbody></table>'
 		);
 	}
 
@@ -155,17 +155,12 @@ class GenericRenderer
 					$rv[] = array($tid, $t[0], $t[1]);
 				}
 			}
-
-			usort($rv, function($a, $b)
-			{
+			usort($rv, function($a, $b) {
 				return strcasecmp($a[1], $b[1]);
 			});
-
-			$rv = array_map(function($tag)
-			{
+			$rv = array_map(function($tag) {
 				return '<button data-id="' . $tag[0] . '" title="' . p($tag[2], 'result') . '">' . h($tag[1]) . '</button>';
 			}, $rv);
-
 			return $rv ? array('<ol class="tags"><li>', implode('</li><li>', $rv), '</li></ol>') : null;
 		}
 	}
@@ -174,9 +169,9 @@ class GenericRenderer
 	{
 		$links = (array)$this->item['link'];
 		$rv = array(
-			'<' . $h . '>',
-			self::debug($this->item['domain'] . ':' . $this->item['id'] . ' - ' . $this->item['weight'] . ' - '),
-			'<a href="' . a($links[0]) . '">',
+			'<'.$h.'>',
+			self::debug($this->item['domain'].':'.$this->item['id'].' - '.$this->item['weight'].' - '),
+			'<a href="'.a($links[0]).'">',
 			$this->item['title'],
 			'</a>'
 		);
@@ -216,12 +211,12 @@ class GenericRenderer
 
 	public function __toString()
 	{
-		$stringArray = function($r) use(&$stringArray)
+		$stringArray = function($r) use (&$stringArray)
 		{
 			if (is_array($r))
 			{
 				$rv = array();
-				foreach ($r as $k=>$v)
+				foreach ($r as $k => $v)
 				{
 					$rv = array_merge($rv, $stringArray($v));
 				}
@@ -237,6 +232,7 @@ class GenericRenderer
 			}
 			return array($r);
 		};
+
 		return '<li class="result ' . a(str_replace(' ', '-', $this->item['domain'])) . '">' . implode('', $stringArray($this->renderers)) . '</li>';
 	}
 }
@@ -291,11 +287,11 @@ class CitationsRenderer extends GenericRenderer
 		$parts = array();
 		if (isset($this->item['chapter']))
 		{
-			$parts[] = 'ch. ' . $this->item['chapter'];
+			$parts[] = 'ch. '.$this->item['chapter'];
 		}
 		if (isset($this->item['pages']))
 		{
-			$parts[] = 'pp. ' . $this->item['pages'];
+			$parts[] = 'pp. '.$this->item['pages'];
 		}
 		if ($parts)
 		{
@@ -367,10 +363,10 @@ class MembersRenderer extends GenericRenderer
 
 function rmUrl($base, $key, $id)
 {
-	return preg_replace('/[&?]$/', '', preg_replace('/'.$key.'(?:\[\])?='.preg_quote($id).'/i', '', urldecode($base)));
+	return preg_replace('/[&?]$/', '', preg_replace('/' . $key . '(?:\[\])?=' . preg_quote($id) . '/i', '', urldecode($base)));
 }
 $url = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : $_SERVER['REDIRECT_QUERY_STRING'];
-$url = '/search' . ($url ? '?' . $url : '');
+$url = JRoute::_('index.php?option=com_search' . ($url ? '&' . $url : ''));
 
 $req = $this->req;
 $results = $this->results;
@@ -383,9 +379,15 @@ $end = $begin + count($results['results']) - 1;
 if (!defined('HG_AJAX')):
 	if ($req->anyCriteria()):
 	?>
+<section class="panes">
+	<div class="pane-row">
+		<div class="pane pane-filters">
+			<div class="pane-inner">
+
 		<div class="count">
+			<h3><?php echo JText::_('Category'); ?>:</h3>
 			<ol class="domains">
-				<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo p($results['total'], 'result'); /* . ($results['total'] == 0 ? ':[' : '')*/ ?></button></li>
+				<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo JText::_('All results') . ' <span>' . $results['total'] . '</span>'; ?></button></li>
 				<?php 
 				// nees :[
 				$domains = array();
@@ -417,13 +419,12 @@ if (!defined('HG_AJAX')):
 				});
 
 				foreach ($domains as $domain): ?>
-					<li<?php echo isset($domainMap[$domain['title']]) ? ' class="current subsel"' : '' ?>><button type="submit" name="domain" value="<?php echo isset($domainMap[$domain['title']]) ? '' : a($domain['title']) ?>"><?php echo h(p($domain['count'], Inflect::singularize($domain['title']))) ?></button></li>
+					<li<?php echo isset($domainMap[$domain['title']]) ? ' class="current subsel"' : '' ?>><button type="submit" name="domain" value="<?php echo isset($domainMap[$domain['title']]) ? '' : a($domain['title']) ?>"><?php echo $domain['title'] . ' <span>' . $domain['count'] . '</span>'; ?></button></li>
 				<?php endforeach; ?>
 			</ol>
 		</div>
 
-		<table class="facets">
-			<tbody>
+		<div class="facets">
 			<?php
 			$timeframe = array();
 			if (isset($_GET['timeframe']) && is_array($_GET['timeframe']))
@@ -459,9 +460,9 @@ if (!defined('HG_AJAX')):
 					endif;
 				endif;
 
-				if ($key == 'timeframe' && !$timeframe):
+				/*if ($key == 'timeframe' && !$timeframe):
 					continue;
-				endif;
+				endif;*/
 
 				uasort($results[$key],
 					$key == 'timeframe'
@@ -485,9 +486,9 @@ if (!defined('HG_AJAX')):
 				$used = array();
 				$max = NULL;
 			?>
-			<tr>
-				<td class="label"><?php echo $label ?>:</td>
-				<td>
+				<div class="facet">
+					<h3 class="label"><?php echo $label ?>:</h3>
+
 					<ol class="<?php echo $key; ?>">
 						<?php 
 						if (isset($$transportKey)):
@@ -496,7 +497,7 @@ if (!defined('HG_AJAX')):
 							?>
 								<li>
 									<input type="hidden" name="<?php echo $transportKey ?>[]" value="<?php echo a($item['id']) ?>" />
-									<a href="<?php echo rmUrl($url, $transportKey, $item['id']) ?>"><?php echo h($item['title']) ?><span>x</span></a>
+									<a href="<?php echo rmUrl($url, $transportKey, $item['id']) ?>"><?php echo h($item['title']) ?><span>&#x2716;</span></a>
 								</li>
 							<?php
 							endforeach;
@@ -510,11 +511,13 @@ if (!defined('HG_AJAX')):
 							<li><button type="submit" title="<?php echo p($item[1], 'result') ?>" name="<?php echo $transportKey; ?>[]" value="<?php echo $id; ?>"><?php echo $item[0]; ?></button></li>
 						<?php endforeach; ?>
 					</ol>
-				</td>
-			</tr>
+				</div>
 			<?php endforeach; ?>
-			</tbody>
-		</table>
+			</div>
+		</div>
+	</div>
+	<div class="pane pane-results">
+		<div class="pane-inner">
 	<?php
 	endif;
 endif;
@@ -532,8 +535,14 @@ if (isset($this->terms)):
 		?>
 		<p class="info"><?php echo JText::sprintf('COM_SEARCH_HUBGRAPH_DID_YOU_MEAN', '<a href="' . JRoute::_('index.php?option=com_search&' . $link) . '">' . $this->terms . '</a>'); ?></p>
 	<?php elseif ($results['terms']['autocorrected']): ?>
-		<p class="info"><?php echo JText::sprintf('COM_SEARCH_HUBGRAPH_RESULTS_FOR', $this->terms); ?></p> 
+		<p class="info"><?php echo JText::sprintf('COM_SEARCH_HUBGRAPH_RESULTS_FOR', $this->terms); ?></p>
 	<?php endif;
+elseif (!$req->anyCriteria()):
+	?>
+		<div class="instructions">
+			<p class="notification"><?php echo JText::_('Type a keyword or phrase in the box above and click the "Search" button.'); ?></p>
+		</div>
+	<?php
 endif;
 
 if ($results['results']):
@@ -557,19 +566,24 @@ if ($results['results']):
 	endforeach;
 	if (!defined('HG_AJAX')):
 	?>
-	</ul>
-	<div class="pages">
-		<span><?php echo JText::_('COM_SEARCH_HUBGRAPH_PAGE'); ?></span>
-		<ol>
-		<?php 
-			$curDomain = $req->getDomain();
-			for ($start = 0, $page = 1; $start <= ($curDomain ? $results['domains'][$curDomain] : $results['total']); $start += $this->perPage, ++$page):
-		?>
-			<li<?php echo $page == $results['page'] ? ' class="current"' : ''; ?>>
-				<button type="submit" name="page" value="<?php echo $page; ?>"><?php echo $page; ?></button>
-			</li>
-		<?php endfor; ?>
-		</ol>
-	</div>
+		</ul>
+		<div class="pages">
+			<span><?php echo JText::_('COM_SEARCH_HUBGRAPH_PAGE'); ?></span>
+			<ol>
+			<?php 
+				$curDomain = $req->getDomain();
+				for ($start = 0, $page = 1; $start <= ($curDomain ? $results['domains'][$curDomain] : $results['total']); $start += $this->perPage, ++$page):
+			?>
+				<li<?php echo $page == $results['page'] ? ' class="current"' : ''; ?>>
+					<button type="submit" name="page" value="<?php echo $page; ?>"><?php echo $page; ?></button>
+				</li>
+			<?php endfor; ?>
+			</ol>
+		</div><!-- / .pages -->
+
+			</div>
+		</div><!-- / .pane-results -->
+	</div><!-- / .pane-row -->
+</section><!-- / .panes -->
 	<?php endif; ?>
 <?php endif; ?>

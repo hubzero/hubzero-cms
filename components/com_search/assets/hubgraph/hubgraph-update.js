@@ -102,9 +102,9 @@ jQuery(function($) {
 		return $(a).data('idx') > $(b).data('idx') ? 1 : -1;
 	};
 
-	$('.facets tr').each(function(_, tr) {
-		var tds = $(tr).children('td'),
-			list = $(tds[1]).children('ol');
+	$('.facet').each(function(_, tr) {
+		var tds  = $(tr).children('h3'),
+			list = $(tr).children('ol');
 
 		if (list.hasClass('timeframe') || list.hasClass('groups')) {
 			return;
@@ -123,9 +123,11 @@ jQuery(function($) {
 
 		var inlineSearchTimeout;
 
-		$(tds[0]).append($('<span class="inline search"></span>').append(
+		var isearch = $('<span class="inline search"></span>').append(
 			$('<input />')
-				.keyup(function(evt) {
+				.attr('type', 'text')
+				.attr('placeholder', 'Find...')
+				.on('keyup', function(evt) {
 					if (inlineSearchTimeout) {
 						clearInterval(inlineSearchTimeout);
 					}
@@ -157,10 +159,11 @@ jQuery(function($) {
 								return origSort(a, b);
 							});
 						}
-						$(tds[1]).find('ol').append(lis);
+						list.find('ol').append(lis);
 					}, 100);
 				})
-		));
+		);
+		isearch.insertAfter(tds);
 	});
 
 	var years = [],
