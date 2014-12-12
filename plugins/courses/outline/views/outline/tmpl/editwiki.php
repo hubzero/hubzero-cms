@@ -73,6 +73,7 @@ $assets = array();
 									foreach ($ag->assets() as $a) :
 										if ($a->isPublished()) :
 											$assets[] = $a;
+											$a->set('longTitle', $unit->get('title') . ' - ' . $ag->get('title') . ' - ' . $a->get('title'));
 											//echo "<li>" . $a->get('title') . "</li>";
 										endif;
 									endforeach;
@@ -140,10 +141,6 @@ $assets = array();
 		<?php if ($asset->get('id')) : ?>
 			<div class="prerequisites">
 				<?php
-					usort($assets, function($a, $b) {
-						return strnatcasecmp($a->get('title'), $b->get('title'));
-					});
-
 					$this->view('_prerequisites')
 					     ->set('scope', 'asset')
 					     ->set('scope_id', $asset->get('id'))
