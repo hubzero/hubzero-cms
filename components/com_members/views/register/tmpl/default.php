@@ -160,28 +160,24 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 			</div>
 		<?php } ?>
 
-		<?php
-		if (!empty($this->xregistration->_invalid) || !empty($this->xregistration->_missing))
-		{
-			$html .= '<div class="error">Please correct the indicated invalid fields in the form below.';
+		<?php if (!empty($this->xregistration->_invalid) || !empty($this->xregistration->_missing)) : ?>
+			<div class="error">
+				Please correct the indicated invalid fields in the form below.
 
-			if ($this->showMissing && !empty($this->xregistration->_missing))
-			{
-				if ($this->task == 'update') {
-					$html .= '<br />We are missing some vital information regarding your account! Please confirm the information below so we can better serve you. Thank you!';
-				} else {
-					$html .= '<br />Missing required information:';
-				}
-				$html .= '<ul>'."\n";
-				foreach ($this->xregistration->_missing as $miss) {
-					$html .= ' <li>'. $miss .'</li>'."\n";
-				}
-				$html .= '</ul>'."\n";
-			}
-
-			$html .= '</div>'."\n";
-		}
-		?>
+				<?php if ($this->showMissing && !empty($this->xregistration->_missing)) : ?>
+					<?php if ($this->task == 'update') : ?>
+						<br />We are missing some vital information regarding your account! Please confirm the information below so we can better serve you. Thank you!
+					<?php else : ?>
+						<br />Missing required information:';
+					<?php endif; ?>
+					<ul>
+						<?php foreach ($this->xregistration->_missing as $miss) : ?>
+							<li><?php echo $miss; ?></li>
+						<?php endforeach; ?>
+					</ul>
+				<?php endif; ?>
+			</div>
+		<?php endif; ?>
 
 		<?php if ($this->registrationUsername != REG_HIDE || $this->registrationPassword != REG_HIDE) { // Login information ?>
 			<div class="explaination">
