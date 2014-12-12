@@ -145,8 +145,9 @@ class Repository extends Base implements CommandInterface
 			'added'     => 'green',
 			'modified'  => 'yellow',
 			'deleted'   => 'cyan',
-			'untracked' => 'blue',
-			'merged'    => 'red'
+			'untracked' => 'black',
+			'unmerged'  => 'red',
+			'merged'    => 'blue'
 		);
 
 		if (is_array($status) && count($status) > 0)
