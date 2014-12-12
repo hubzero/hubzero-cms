@@ -174,7 +174,7 @@ class JRouterSite extends JRouter
 			{
 				if ($vars['option'] == 'com_users')
 				{
-					if (($vars['view'] == 'logout') || ($vars['task'] == 'logout'))
+					if ((isset($vars['view']) && $vars['view'] == 'logout') || (isset($vars['task']) && $vars['task'] == 'logout'))
 						return $vars;
 				}
 				else if ($uri->getPath() == 'legal/terms')
