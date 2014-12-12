@@ -35,7 +35,7 @@ class GenericRenderer
 			$rv = array('<ol class="children">');
 			foreach ($this->item['children'] as $child)
 			{
-				$class = $child['domain'].'ChildRenderer';
+				$class = $child['domain'] . 'ChildRenderer';
 				$class = class_exists($class) ? $class : 'GenericChildRenderer';
 				$rv[] = (string)new $class($child);
 			}
@@ -78,7 +78,7 @@ class GenericRenderer
 		return array(
 			'<td class="domain">',
 			$this->domain(),
-			$st ? '/'.$st : '',
+			$st ? '/' . $st : '',
 			'</td>'
 		);
 	}
@@ -135,7 +135,7 @@ class GenericRenderer
 
 	protected function related()
 	{
-		return '<a class="related" data-domain="'.a($this->item['domain']).'" data-id="'.a($this->item['id']).'">Show related results</a>';
+		return '<a class="related" data-domain="' . a($this->item['domain']) . '" data-id="' . a($this->item['id']) . '">' . JText::_('COM_SEARCH_HUBGRAPH_SHOW_RELATED') . '</a>';
 	}
 
 	protected function metadata()
@@ -155,12 +155,17 @@ class GenericRenderer
 					$rv[] = array($tid, $t[0], $t[1]);
 				}
 			}
-			usort($rv, function($a, $b) {
+
+			usort($rv, function($a, $b)
+			{
 				return strcasecmp($a[1], $b[1]);
 			});
-			$rv = array_map(function($tag) {
-				return '<button data-id="'.$tag[0].'" title="'.p($tag[2], 'result').'">'.h($tag[1]).'</button>';
+
+			$rv = array_map(function($tag)
+			{
+				return '<button data-id="' . $tag[0] . '" title="' . p($tag[2], 'result') . '">' . h($tag[1]) . '</button>';
 			}, $rv);
+
 			return $rv ? array('<ol class="tags"><li>', implode('</li><li>', $rv), '</li></ol>') : null;
 		}
 	}
@@ -169,13 +174,14 @@ class GenericRenderer
 	{
 		$links = (array)$this->item['link'];
 		$rv = array(
-			'<'.$h.'>',
-			self::debug($this->item['domain'].':'.$this->item['id'].' - '.$this->item['weight'].' - '),
-			'<a href="'.a($links[0]).'">',
+			'<' . $h . '>',
+			self::debug($this->item['domain'] . ':' . $this->item['id'] . ' - ' . $this->item['weight'] . ' - '),
+			'<a href="' . a($links[0]) . '">',
 			$this->item['title'],
 			'</a>'
 		);
-		for ($idx = 1; isset($links[$idx]); ++$idx) {
+		for ($idx = 1; isset($links[$idx]); ++$idx)
+		{
 			$rv[] = '<a class="alt-link" href="'.a($links[$idx]).'">[';
 			$rv[] = $idx + 1;
 			$rv[] = ']</a>';
@@ -186,7 +192,8 @@ class GenericRenderer
 
 	protected function body()
 	{
-		if (isset($this->item['body']) && trim($this->item['body'])) {
+		if (isset($this->item['body']) && trim($this->item['body']))
+		{
 			return array(
 				'<blockquote>',
 				$this->item['body'],
@@ -203,14 +210,16 @@ class GenericRenderer
 			$this->body(),
 			$this->children(),
 			$this->metadata(),
-			$this->debug('<pre>'.print_r($this->item, 1).'</pre>')
+			$this->debug('<pre>' . print_r($this->item, 1) . '</pre>')
 		));
 	}
 
 	public function __toString()
 	{
-		$stringArray = function($r) use(&$stringArray) {
-			if (is_array($r)) {
+		$stringArray = function($r) use(&$stringArray)
+		{
+			if (is_array($r))
+			{
 				$rv = array();
 				foreach ($r as $k=>$v)
 				{
@@ -228,7 +237,7 @@ class GenericRenderer
 			}
 			return array($r);
 		};
-		return '<li class="result '.a(str_replace(' ', '-', $this->item['domain'])).'">'.implode('', $stringArray($this->renderers)).'</li>';;
+		return '<li class="result ' . a(str_replace(' ', '-', $this->item['domain'])) . '">' . implode('', $stringArray($this->renderers)) . '</li>';
 	}
 }
 
@@ -275,25 +284,31 @@ class CitationsRenderer extends GenericRenderer
 	protected function extraDetails()
 	{
 		$rv = array();
-		if (isset($this->item['publication_title']) && trim($this->item['publication_title'])) {
+		if (isset($this->item['publication_title']) && trim($this->item['publication_title']))
+		{
 			$rv[] = array('<td>', h($this->item['publication_title']), '</td>');
 		}
 		$parts = array();
-		if (isset($this->item['chapter'])) {
-			$parts[] = 'ch. '.$this->item['chapter'];
+		if (isset($this->item['chapter']))
+		{
+			$parts[] = 'ch. ' . $this->item['chapter'];
 		}
-		if (isset($this->item['pages'])) {
-			$parts[] = 'pp. '.$this->item['pages'];
+		if (isset($this->item['pages']))
+		{
+			$parts[] = 'pp. ' . $this->item['pages'];
 		}
-		if ($parts) {
+		if ($parts)
+		{
 			$rv[] = '<td>';
 			$rv[] = implode(', ', $parts);
 			$rv[] = '</td>';
 		}
-		if (isset($this->item['publisher'])) {
+		if (isset($this->item['publisher']))
+		{
 			$rv[] = array('<td>', h($this->item['publisher']), '</td>');
 		}
-		if ($rv) {
+		if ($rv)
+		{
 			return array(
 				'<tr>',
 				$rv,
@@ -312,7 +327,11 @@ class EventsRenderer extends GenericRenderer
 		{
 			$now = time();
 		}
-		return str_replace('<td>', '<td>'.(strtotime($this->item['date'] > $now) ? 'happening ' : 'happened '), parent::date());
+		return str_replace(
+			'<td>',
+			'<td>' . (strtotime($this->item['date'] > $now) ? JText::_('COM_SEARCH_HUBGRAPH_HAPPENING') . ' ' : JText::_('COM_SEARCH_HUBGRAPH_HAPPENED') . ' '),
+			parent::date()
+		);
 	}
 }
 
@@ -320,12 +339,12 @@ class MembersRenderer extends GenericRenderer
 {
 	protected function domain()
 	{
-		return ($this->item['count'] ? 'Contributor' : 'Member').($this->item['organization'] ? ', '.h($this->item['organization']) : '');
+		return ($this->item['count'] ? JText::_('COM_SEARCH_HUBGRAPH_CONTRIBUTOR') : JText::_('COM_SEARCH_HUBGRAPH_MEMBER')) . ($this->item['organization'] ? ', ' . h($this->item['organization']) : '');
 	}
 
 	protected function date()
 	{
-		return str_replace('<td>', '<td>since ', parent::date());
+		return str_replace('<td>', '<td>' . JText::_('COM_SEARCH_HUBGRAPH_SINCE') . ' ', parent::date());
 	}
 
 	protected function extraDetails()
@@ -333,15 +352,15 @@ class MembersRenderer extends GenericRenderer
 		if ($this->item['contributions'])
 		{
 			$rv = array();
-			foreach ($this->item['contributions'] as $type=>$num)
+			foreach ($this->item['contributions'] as $type => $num)
 			{
 				if ($type == 'content')
 				{
-					$type = 'content pages';
+					$type = JText::_('COM_SEARCH_HUBGRAPH_CONTENT_PAGES');
 				}
-				$rv[] = $num.' '.($num == 1 ? preg_replace('/e?s$/', '', $type) : $type);
+				$rv[] = $num . ' ' . ($num == 1 ? preg_replace('/e?s$/', '', $type) : $type);
 			}
-			return '<td>'.implode(', ', $rv).'</td>';
+			return '<td>' . implode(', ', $rv) . '</td>';
 		}
 	}
 }
@@ -368,31 +387,36 @@ if (!defined('HG_AJAX')):
 			<ol class="domains">
 				<li<?php echo isset($domainMap['']) ? ' class="current"' : '' ?>><button type="submit" name="domain" value=""><?php echo p($results['total'], 'result'); /* . ($results['total'] == 0 ? ':[' : '')*/ ?></button></li>
 				<?php 
-					// nees :[
-					$domains = array();
-					if (!isset($results['domains'])):
-						$results['domains'] = array();
+				// nees :[
+				$domains = array();
+				if (!isset($results['domains'])):
+					$results['domains'] = array();
+				endif;
+				foreach ($results['domains'] as $k => $v):
+					$domains[] = array(
+						'title' => $k,
+						'count' => $v
+					);
+				endforeach;
+
+				uasort($domains, function($a, $b)
+				{
+					if ($a['title'] == 'projects'):
+						return -1;
 					endif;
-					foreach ($results['domains'] as $k=>$v):
-						$domains[] = array('title' => $k, 'count' => $v);
-					endforeach;
-					uasort($domains, function($a, $b) {
-						if ($a['title'] == 'projects'):
-							return -1;
-						endif;
-						if ($b['title'] == 'projects'):
-							return 1;
-						endif;
-						if ($a['count'] > $b['count']):
-							return -1;
-						endif;
-						if ($a['count'] < $b['count']):
-							return 1;
-						endif;
-						return strcasecmp($a['title'], $b['title']);
-					});
-					foreach ($domains as $domain):
-				?>
+					if ($b['title'] == 'projects'):
+						return 1;
+					endif;
+					if ($a['count'] > $b['count']):
+						return -1;
+					endif;
+					if ($a['count'] < $b['count']):
+						return 1;
+					endif;
+					return strcasecmp($a['title'], $b['title']);
+				});
+
+				foreach ($domains as $domain): ?>
 					<li<?php echo isset($domainMap[$domain['title']]) ? ' class="current subsel"' : '' ?>><button type="submit" name="domain" value="<?php echo isset($domainMap[$domain['title']]) ? '' : a($domain['title']) ?>"><?php echo h(p($domain['count'], Inflect::singularize($domain['title']))) ?></button></li>
 				<?php endforeach; ?>
 			</ol>
@@ -504,13 +528,11 @@ if (isset($this->terms)):
 			$rawTerms = str_replace($k, $v, $rawTerms);
 		endforeach;
 		$link = preg_replace('/\?terms=[^&]*/', 'terms=' . $rawTerms, $_SERVER['QUERY_STRING']);
-		if ($link[0] != '?'):
-			$link = '?' . $link;
-		endif;
+		$link = trim($link, '?');
 		?>
-		<p class="info">Did you mean <em><a href="<?php echo JURI::base(true); ?>/search<?php echo $link; ?>"><?php echo $this->terms; ?></a></em>?</p>
+		<p class="info"><?php echo JText::sprintf('COM_SEARCH_HUBGRAPH_DID_YOU_MEAN', '<a href="' . JRoute::_('index.php?option=com_search&' . $link) . '">' . $this->terms . '</a>'); ?></p>
 	<?php elseif ($results['terms']['autocorrected']): ?>
-		<p class="info">Showing results for <em><?php echo $this->terms; ?></em></p> 
+		<p class="info"><?php echo JText::sprintf('COM_SEARCH_HUBGRAPH_RESULTS_FOR', $this->terms); ?></p> 
 	<?php endif;
 endif;
 
@@ -530,14 +552,14 @@ if ($results['results']):
 			echo $result['html'];
 			continue;
 		endif;
-		$class = str_replace(' ', '', $result['domain']).'Renderer';
+		$class = str_replace(' ', '', $result['domain']) . 'Renderer';
 		echo class_exists($class, FALSE) ? new $class($result) : new GenericRenderer($result);
 	endforeach;
 	if (!defined('HG_AJAX')):
 	?>
 	</ul>
 	<div class="pages">
-		<span>Page</span>
+		<span><?php echo JText::_('COM_SEARCH_HUBGRAPH_PAGE'); ?></span>
 		<ol>
 		<?php 
 			$curDomain = $req->getDomain();
