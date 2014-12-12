@@ -124,7 +124,7 @@ class CoursesTableSectionCode extends JTable
 			return false;
 		}
 
-		$this->redeemed = intval($this->redeemed);
+		$this->redeemed_by = intval($this->redeemed_by);
 
 		if (!$this->id)
 		{

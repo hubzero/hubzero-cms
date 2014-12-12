@@ -150,7 +150,7 @@ foreach ($this->rows as $i => $row)
 				</td>
 			<?php if ($row->get('redeemed')) { ?>
 				<td>
-					<span class="state <?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? 'yes' : 'no'; ?>">
+					<span class="state <?php echo (($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') || $row->get('redeemed_by')) ? 'yes' : 'no'; ?>">
 						<span><?php echo ($row->get('redeemed') && $row->get('redeemed') != '0000-00-00 00:00:00') ? '<time datetime="' . $row->get('redeemed') . '">' . JHTML::_('date', $row->get('redeemed'), JText::_('DATE_FORMAT_HZ1')) . '</time>' : JText::_('JNO'); ?></span>
 					</span>
 				</td>
