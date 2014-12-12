@@ -29,17 +29,18 @@
  */
 // Check to ensure this file is included in Joomla!
 //defined('_JEXEC') or die('Restricted access');
-require_once('/var/www/example/components/com_citations' . DS . 'helpers' . DS . 'format.php');
-require_once('/var/www/example/administrator/components/com_citations' . DS . 'tables' . DS . 'citation.php');
-require_once('/var/www/example/administrator/components/com_citations' . DS . 'tables' . DS . 'association.php');
-require_once('/var/www/example/administrator/components/com_citations' . DS . 'tables' . DS . 'author.php');
-require_once('/var/www/example/administrator/components/com_citations' . DS . 'tables' . DS . 'secondary.php');
-require_once('/var/www/example/administrator/components/com_citations' . DS . 'tables' . DS . 'sponsor.php');
-require_once('/var/www/example/administrator/components/com_citations' . DS . 'tables' . DS . 'tags.php');
-require_once('/var/www/example/administrator/components/com_citations' . DS . 'tables' . DS . 'format.php');
-require_once('/var/www/example/administrator/components/com_citations' . DS . 'tables' . DS . 'type.php');
+
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_citations' . DS . 'helpers' . DS . 'format.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'citation.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'association.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'author.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'secondary.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'sponsor.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'tags.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'format.php');
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_citations' . DS . 'tables' . DS . 'type.php');
 /**
- * Groups Plugin class for blog entries
+ * Groups Plugin class for citations
  */
 class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 {
