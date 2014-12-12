@@ -38,16 +38,38 @@ require_once(__DIR__ . DS . 'db.php');
  */
 class HubgraphConfiguration implements \ArrayAccess, \Iterator
 {
+	/**
+	 * Instance of Hubgraph config
+	 *
+	 * @var  object
+	 */
 	private static $inst;
 
+	/**
+	 * Default values
+	 *
+	 * @var  array
+	 */
 	private static $defaultSettings = array(
-		'host'           => 'unix:///var/run/hubgraph-server.sock',
+		'host'           => 'unix:///var/run/hubzero-hubgraph/hubgraph-server.sock',
 		'port'           => NULL,
 		'showTagCloud'   => TRUE,
 		'enabledOptions' => ''
 	);
 
-	private $settings, $idx;
+	/**
+	 * Current settings
+	 *
+	 * @var  array
+	 */
+	private $settings;
+
+	/**
+	 * Index
+	 *
+	 * @var  integer
+	 */
+	private $idx;
 
 	/**
 	 * Constructor
@@ -71,26 +93,15 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 	{
 		if (!self::$inst)
 		{
-			$query = 'SELECT params FROM `#__extensions` WHERE `type`=\'component\' AND `element` = \'com_hubgraph\'';
+			self::$inst = new HubgraphConfiguration;
+			self::$inst->settings = array();
 
-			$conf = Db::scalarQuery($query);
-			if ($conf)
+			$params = self::$inst->params();
+			foreach (self::$defaultSettings as $k => $v)
 			{
-				if (isset($conf[0]) && $conf[0] != '{')
-				{
-					self::$inst = unserialize($conf);
-				}
-				else
-				{
-					self::$inst = new HubgraphConfiguration;
-					self::$inst->settings = json_decode($conf, TRUE);
-				}
+				self::$inst->settings[$k] = $params->get('hubgraph_' . $k, $v);
 			}
-			if (!self::$inst instanceof HubgraphConfiguration)
-			{
-				self::$inst = new HubgraphConfiguration;
-				self::$inst->save();
-			}
+
 			self::$inst->validate();
 		}
 		return self::$inst;
@@ -103,15 +114,30 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 	 */
 	public function save()
 	{
-		$params = json_encode($this->settings);
+		$params = $this->params();
+		foreach (self::$settings as $k => $v)
+		{
+			$params->set('hubgraph_' . $k, $v);
+		}
+		$params = $params->toString();
 
-		$updateQuery = 'UPDATE `#__extensions` SET params = ? WHERE `type`=\'component\' AND `element` = \'com_hubgraph\'';
-		$insertQuery = 'INSERT INTO `#__extensions` (name, `type`, `element`, params) VALUES (\'HubGraph\', \'component\', \'com_hubgraph\', ?)';
+		$updateQuery = 'UPDATE `#__extensions` SET `params` = ? WHERE `type`=\'component\' AND `element` = \'com_search\'';
+		$insertQuery = 'INSERT INTO `#__extensions` (`name`, `type`, `element`, `params`) VALUES (\'com_search\', \'component\', \'com_search\', ?)';
 
 		if (!Db::update($updateQuery, array($params)))
 		{
 			Db::execute($insertQuery, array($params));
 		}
+	}
+
+	/**
+	 * Get component params
+	 *
+	 * @return  object
+	 */
+	public function params()
+	{
+		return \JComponentHelper::getParams('com_search');
 	}
 
 	/**
@@ -184,7 +210,7 @@ class HubgraphConfiguration implements \ArrayAccess, \Iterator
 	{
 		if (is_null($offset) || !isset($this->settings[$offset]))
 		{
-			throw new \Exception('not supported');
+			throw new \Exception('Not supported');
 		}
 		$this->settings[$offset] = $value;
 	}

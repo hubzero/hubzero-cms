@@ -60,7 +60,7 @@ class SearchControllerHubgraph extends \Hubzero\Component\SiteController
 
 		$this->req  = new HubgraphRequest($_GET);
 		$this->conf = HubgraphConfiguration::instance();
-		$this->perPage = 40;
+		$this->perPage = JFactory::getConfig()->get('list_limit', 50);
 
 		$this->registerTask('page', 'index');
 		$this->registerTask('__default', 'index');
@@ -193,70 +193,5 @@ class SearchControllerHubgraph extends \Hubzero\Component\SiteController
 			->setLayout('index-update')
 			->display();
 	}
-
-	//
-	// Settings should now be managed through the admin 
-	// component options interface.
-	//
-
-	/**
-	 * Display a page of settings
-	 * 
-	 * @return  void
-	 */
-	/*public function settingsTask()
-	{
-		// Only administrators
-		$this->_assertSuperAdmin();
-
-		// Display settings
-		$this->view->display();
-	}*/
-
-	/**
-	 * Update settings and redirect back to settings page
-	 * 
-	 * @return  void
-	 */
-	/*public function updatesettingsTask()
-	{
-		// Only administrators
-		$this->_assertSuperAdmin();
-
-		// Save settings
-		$now = time();
-		if (!isset($_POST['nonce']) || $_POST['nonce'] != $_SESSION['hg_nonce']
-			|| !preg_match('/^\d\d\d\d-\d\d-\d\dT\d\d:\d\d:\d\dZ/', $_POST['nonce'], $ma)
-			|| !($timestamp = strtotime($ma[0]))
-			|| $timestamp > $now
-			|| $timestamp < $now - 60 * 60
-			|| Db::scalarQuery('SELECT stamp FROM `#__oauthp_nonces` WHERE nonce = ?', array($_POST['nonce'])))
-		{
-			// JError::raiseError(405, 'Bad token');
-		}
-		Db::execute('UPDATE `#__oauthp_nonces` SET stamp = 1 WHERE nonce = ?', array($_POST['nonce']));
-		unset($_SESSION['hg_nonce']);
-
-		$this->conf->bind($_POST)->save();
-
-		// Redirect to settings page
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=settings')
-		);
-		return;
-	}*/
-
-	/**
-	 * Determine if user is a super admin or not
-	 * 
-	 * @return  void
-	 */
-	/*private function _assertSuperAdmin()
-	{
-		if (!$this->juser->authorise('core.admin', $this->_option))
-		{
-			throw new JException('Forbidden', 405);
-		}
-	}*/
 }
 
