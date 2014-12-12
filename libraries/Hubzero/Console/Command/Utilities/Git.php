@@ -146,14 +146,15 @@ class Git
 				'modified'  => array(),
 				'deleted'   => array(),
 				'untracked' => array(),
+				'unmerged'  => array(),
 				'merged'    => array()
 			);
 			foreach ($lines as $line)
 			{
 				$line  = trim($line);
-				preg_match('/([A|D|M|?]{1,2})[ ]{1,2}([[:alnum:]_\-\.\/]*)/', $line, $parts);
+				preg_match('/([A|D|M|U|?]{1,2})[ ]{1,2}([[:alnum:]_\-\.\/]*)/', $line, $parts);
 
-				if (strlen($parts[1]) == 2 && $parts[1] != '??')
+				if (strlen($parts[1]) == 2 && $parts[1] != '??' && $parts[1] != 'UU')
 				{
 					$parts[1] = 'merged';
 				}
@@ -168,6 +169,9 @@ class Git
 						break;
 					case 'M':
 						$response['modified'][] = $parts[2];
+						break;
+					case 'UU':
+						$response['unmerged'][] = $parts[2];
 						break;
 					case '??':
 						$response['untracked'][] = $parts[2];
