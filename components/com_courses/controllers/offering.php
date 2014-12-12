@@ -512,6 +512,12 @@ class CoursesControllerOffering extends \Hubzero\Component\SiteController
 			}
 		}
 
+		// If not a manager and either the offering or section is unpublished...
+		if (!$this->course->offering()->access('manage') && (!$this->course->offering()->isPublished() || !$this->course->offering()->section()->isPublished()))
+		{
+			JError::raiseError(403, JText::_('COM_COURSES_ERROR_ASSET_UNAVAILABLE'));
+		}
+
 		if (!$this->course->offering()->access('manage') && !$asset->isAvailable())
 		{
 			// Allow expired forms to pass through (i.e. so students can see their results)
