@@ -148,6 +148,7 @@ $skipped = 0;
 			<?php } ?>
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_UPLOAD'); ?>" class="btn yesbtn" id="b-upload" />
 			<p id="statusmsg"></p>
+			<p class="hint"><?php echo JText::_('COM_PROJECTS_UPLOAD_HINT'); ?></p>
 	<?php //} ?>
 </form>
 
