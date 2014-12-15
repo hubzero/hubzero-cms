@@ -235,7 +235,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		//instantiate announcement object and get count
 		$obj = new CitationsCitation($this->database);
-        $total = $obj->getCount(array('group' => $group->gidNumber), true);
+		$total = $obj->getCount(array('group' => $group->gidNumber), true);
 
 		//set metadata for menu
 		$arr['metadata']['count'] = $total;
@@ -298,7 +298,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->allow_bulk_import = $this->config->get('citation_bulk_import', 1);
 		$view->isAdmin = false;
 
-		if ($this->juser->authorize($this->_name, 'import'))
+		if ($view->authorized -= 'manager')
 		{
 			$view->isAdmin = true;
 		}
