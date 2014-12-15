@@ -222,7 +222,7 @@ class plgWhatsnewPublications extends \Hubzero\Plugin\Plugin
 		$config = JComponentHelper::getParams( 'com_publications' );
 
 		// Instantiate a helper object
-		$helper = new PublicationHelper($row->id, $database);
+		$helper = new PublicationHelper($database);
 
 		$thumb = $helper->getThumb($row->id, $row->version_id, $config, false, $row->cat_url);
 
