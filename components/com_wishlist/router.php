@@ -119,7 +119,7 @@ function WishlistParseRoute($segments)
 		return $vars;
 	}
 
- 	if (!empty($segments[1]))
+	if (!empty($segments[1]))
 	{
 		if (intval($segments[0]))
 		{
@@ -156,6 +156,10 @@ function WishlistParseRoute($segments)
 					return $vars;
 				break;
 				default:
+					if (count($segments) >= 3 && $segments[0] == 'wishlist')
+					{
+						$component = array_shift($segments);
+					}
 					// we got a category
 					$vars['category'] = $segments[0];
 					$vars['rid'] = $segments[1];
