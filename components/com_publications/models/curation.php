@@ -883,7 +883,7 @@ class PublicationsCuration extends JObject
 
 			$k++;
 
-			if ($autoStatus->status > 0 || $reviewStatus->status == 1 || $reviewStatus->lastupdate)
+			if (($autoStatus->status > 0 && $reviewStatus->status != 0) || $reviewStatus->status == 1 || $reviewStatus->lastupdate)
 			{
 				$i++;
 			}
