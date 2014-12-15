@@ -140,7 +140,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 			<?php echo JText::_('COM_WIKI_FIELD_PAGETEXT'); ?>:
 			<span class="required"><?php echo JText::_('COM_WIKI_REQUIRED'); ?></span>
 			<?php
-			echo WikiHelperEditor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '40');
+			echo WikiHelperEditor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), '', '35', '20');
 			?>
 		</label>
 		<p class="ta-right hint">
