@@ -569,11 +569,11 @@ class CitationsCitation extends JTable
 		// group search
 		if (isset($filter['group']) && $filter['group'] != NULL)
 		{
-			$query .= " AND r.gid='". $filter['group'] ."'";
+			$query .= " AND r.scope_id='". $filter['group'] ."'";
 		}
 		else
 		{
-			$query .= " AND r.gid is NULL";
+			$query .= " AND r.scope_id is NULL";
 		}
 
 		//tag search
@@ -894,7 +894,7 @@ class CitationsCitation extends JTable
 	 * @param      boolean $admin Parameter description (if any) ...
 	 * @return     object Return description (if any) ...
 	 */
-	public function getRecords($filter=array(), $admin=true, $gid=NULL)
+	public function getRecords($filter=array(), $admin=true)
 	{
 		if (isset($filter['tag']) && $filter['tag'] != '')
 		{
@@ -943,7 +943,7 @@ class CitationsCitation extends JTable
 			}
 		}
 
-		$query .= $this->buildQuery($filter, $admin, $gid);
+		$query .= $this->buildQuery($filter, $admin);
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();

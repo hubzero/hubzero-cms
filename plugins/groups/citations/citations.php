@@ -474,9 +474,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		$group_id = $group->get('gidNumber');
+		$view->filters['group'] = $group_id;
 
 		// Get a record count
-		$total = $obj->getCount($view->filters, $view->isAdmin, $group_id);
+		$total = $obj->getCount($view->filters, $view->isAdmin);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
