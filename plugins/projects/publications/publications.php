@@ -4148,7 +4148,12 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				}
 				if (checkdate($month, $day, $year))
 				{
-					$pubdate = JFactory::getDate(mktime(0, 0, 0, $month, $day, $year))->toSql();
+					$pubdate = JFactory::getDate(gmmktime(0, 0, 0, $month, $day, $year))->toSql();
+				}
+				// Prevent date before current
+				if ($pubdate < JFactory::getDate()->toSql())
+				{
+					$pubdate = JFactory::getDate()->toSql();
 				}
 			}
 		}
