@@ -846,7 +846,7 @@ class Assets
 				}
 
 				// If no cache file or the root build file is different
-				if (!$cache || ($cache['root'] != $input))
+				if (!$cache || (is_array($cache) && isset($cache['root']) && $cache['root'] != $input))
 				{
 					$cache = $input;
 				}
