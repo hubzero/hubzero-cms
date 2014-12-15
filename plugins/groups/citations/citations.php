@@ -234,8 +234,8 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		);
 
 		//instantiate announcement object and get count
-		$hubzeroAnnouncement = new \Hubzero\Item\Announcement($this->database);
-		$total = $hubzeroAnnouncement->count($filters);
+		$obj = new CitationsCitation($this->database);
+        $total = $obj->getCount(array('group' => $group->gidNumber), true);
 
 		//set metadata for menu
 		$arr['metadata']['count'] = $total;
@@ -345,7 +345,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		$view->config   = $this->config;
 
 		$view->isAdmin = false;
-		if ($this->juser->authorize($this->_name, 'import'))
+		if ($this->authorized == 'manager')
 		{
 			$view->isAdmin = true;
 		}
@@ -627,11 +627,11 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// Check if admin
 		$isAdmin = false;
-		if ($this->juser->authorize($this->_name, 'manage'))
+		if ($this->authorized == 'manager')
 		{
 			$isAdmin = true;
-
 		}
+
 
 		//are we allowing user to add citation
 		$this->config = JComponentHelper::getParams('com_citations');
@@ -1018,7 +1018,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 	 */
 	public function isPubAuthor($assocs)
 	{
-
 		if (!$assocs)
 		{
 			return false;
