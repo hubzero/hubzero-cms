@@ -114,7 +114,7 @@ if ($this->contributors)
 	if (count($names) > 0)
 	{
 		$html = '<p>' . ucfirst(JText::_('By')) . ' ';
-		$html .= count($names) > 1 && count($orgs) > 1  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
+		$html .= count($names) > 1 && count($orgs) > 0  ? implode( ', ', $names ) : implode( ', ', $names_s )  ;
 		$html .= '</p>';
 	}
 	if ($this->showorgs && count($orgs) > 0)
