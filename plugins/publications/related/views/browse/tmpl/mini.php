@@ -52,8 +52,7 @@ $this->css('assets/css/related.css');
 		}
 ?>
 		<li class="<?php echo $line->class; ?>">
-		 	<?php echo ($line->section == 'Series') ? JText::_('PLG_PUBLICATION_RELATED_PART_OF').' ' : ''; ?>
-			<a href="<?php echo $sef; ?>"><?php echo stripslashes($line->title); ?></a>
+			<a href="<?php echo $sef; ?>"><?php echo ($line->section == 'Series') ? JText::_('PLG_PUBLICATION_RELATED_PART_OF').' ' : ''; ?><?php echo stripslashes($line->title); ?></a>
 		</li>
 <?php } ?>
 	</ul>
