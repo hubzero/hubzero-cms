@@ -95,3 +95,7 @@
 	.wiki-button-help {
 		background: url("images/help_purple.png") 50% 50% no-repeat;
 	}
+	.wiki-toolbar-content {
+		transition: none;
+		resize: vertical;
+	}
