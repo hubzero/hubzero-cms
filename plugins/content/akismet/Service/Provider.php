@@ -30,11 +30,10 @@
 
 namespace Plugins\Content\Akismet\Service;
 
-use Plugins\Content\Akismet\Service\SocketWriteRead;
 use Hubzero\Antispam\Adapter\AbstractAdapter;
 use Exception;
 
-require_once __DIR__ . '/SocketWriteRead.php';
+require_once __DIR__ . DS . 'SocketWriteRead.php';
 
 /**
  * Akismet anti-comment spam service
@@ -239,7 +238,7 @@ class Provider extends AbstractAdapter
 		$http_request .= "\r\n";
 		$http_request .= $request;
 
-		$socketWriteRead = new \Plugins\Content\Akismet\Provider\SocketWriteRead($host, $this->apiPort, $http_request);
+		$socketWriteRead = new SocketWriteRead($host, $this->apiPort, $http_request);
 		$socketWriteRead->send();
 
 		return explode("\r\n\r\n", $socketWriteRead->getResponse(), 2);
@@ -306,7 +305,7 @@ class Provider extends AbstractAdapter
 
 		if ($response[1] == 'invalid' && !$this->isKeyValid())
 		{
-			throw new Exception('The Wordpress API key passed to the Akismet adapter is invalid. Please obtain a valid one from http://wordpress.com/api-keys/');
+			throw new Exception('The API key passed to the Akismet adapter is invalid. Please obtain a valid one from http://wordpress.com/api-keys/');
 		}
 
 		return ($response[1] == 'true');

@@ -28,7 +28,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Plugins\Content\Akismet\Provider;
+namespace Plugins\Content\Akismet\Service;
 
 use Exception;
 
