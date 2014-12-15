@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="index.php" method="post" name="adminForm" id="item-form" data-formwatcher-message='You are now leaving this page to add stories and your current changes have not been saved. Click "Stay on Page" and then save the newsletter first before proceeding to add stories.'>
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_DETAILS'); ?></legend>

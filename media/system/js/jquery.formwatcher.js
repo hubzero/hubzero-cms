@@ -19,6 +19,12 @@
         {
             var form = $(this);
 
+            // allow message to be overwritten by data attribute
+            if (form.attr('data-formwatcher-message'))
+            {
+                settings.message = form.attr('data-formwatcher-message');
+            }
+
             // attach original form data to form
             form.data('submitting', false);
             form.data('original_data', form.serialize());
