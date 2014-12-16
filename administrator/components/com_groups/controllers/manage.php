@@ -532,8 +532,14 @@ class GroupsControllerManage extends \Hubzero\Component\AdminController
 		$gitlabKey        = $this->config->get('super_gitlab_key', '');
 
 		// do we have repo management on
-		// make sure we have a url and key
-		if (!$gitlabManagement || $gitlabUrl == '' || $gitlabKey == '')
+		// dont output message
+		if (!$gitlabManagement)
+		{
+			return;
+		}
+
+		// make sure we have a url and key if repot management is on
+		if ($gitlabManagement && ($gitlabUrl == '' || $gitlabKey == ''))
 		{
 			JFactory::getApplication()
 					->enqueueMessage(JText::_('COM_GROUPS_GITLAB_NOT_SETUP'), 'warning');
