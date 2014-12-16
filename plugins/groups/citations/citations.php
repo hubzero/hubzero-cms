@@ -207,7 +207,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		);
 
 		// appends view override if this is a supergroup
-		if (!$this->group->isSuperGroup())
+		if ($this->group->isSuperGroup())
 		{
 			$view->addTemplatePath($this->_superGroupViewOverride('dashboard'));
 		}
@@ -216,10 +216,6 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (!file_exists($this->_superGroupViewOverride('dashboard')))
 		{
 			return $this->_browse();
-		}
-		else
-		{
-			$view->addTemplatePath($this->_superGroupViewOverride('dashboard'));
 		}
 
 		// load citation object
