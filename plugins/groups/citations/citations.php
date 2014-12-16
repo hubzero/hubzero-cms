@@ -56,7 +56,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Get Tab
-	 * 
+	 *
 	 * @return array plugin tab details
 	 */
 	public function &onGroupAreas()
@@ -216,6 +216,10 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		if (!file_exists($this->_superGroupViewOverride('dashboard')))
 		{
 			return $this->_browse();
+		}
+		else
+		{
+			$view->addTemplatePath($this->_superGroupViewOverride('dashboard'));
 		}
 
 		// load citation object
