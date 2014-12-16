@@ -307,7 +307,7 @@ class CoursesControllerMedia extends \Hubzero\Component\AdminController
 						set_time_limit(60);
 						$escaped_file = escapeshellarg($path . DS . $file['name']);
 						// @FIXME: check for symlinks and other potential security concerns
-						if ($result = shell_exec("unzip {$escaped_file} -d " . escapeshellarg($path . DS)))
+						if ($result = shell_exec("unzip -o {$escaped_file} -d " . escapeshellarg($path . DS)))
 						{
 							// Remove original archive
 							JFile::delete($path . DS . $file['name']);

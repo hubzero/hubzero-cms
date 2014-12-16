@@ -85,7 +85,7 @@ class VideoAssetHandler extends FileAssetHandler
 
 				// Exec the command to unzip things
 				// @FIXME: check for symlinks and other potential security concerns
-				if ($result = shell_exec("unzip {$escaped_file} -d {$asset['upload_path']}"))
+				if ($result = shell_exec("unzip -o {$escaped_file} -d {$asset['upload_path']}"))
 				{
 					// Remove original archive
 					JFile::delete($asset['target_path']);
