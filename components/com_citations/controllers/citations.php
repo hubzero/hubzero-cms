@@ -152,6 +152,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$this->view->filters['enduploaddate']   = JRequest::getVar('enduploaddate', '0000-00-00');
 
 		// do we have a group filter
+		$this->view->filters['group'] = '';
 		if ($group = JRequest::getVar('group', ''))
 		{
 			$this->view->filters['scope']    = 'groups';
