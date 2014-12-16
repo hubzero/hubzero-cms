@@ -517,7 +517,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		$eval = function() use ($phpPageContent)
 		{
 			ob_start();
-			eval("?> $phpPageContent <?php ");
+			eval("?>$phpPageContent<?php ");
 			$document = ob_get_clean();
 			return $document;
 		};

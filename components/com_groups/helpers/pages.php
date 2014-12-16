@@ -597,7 +597,7 @@ class GroupsHelperPages
 			{
 				ob_start();
 				unset($this);
-				eval("?> $document <?php ");
+				eval("?>$document<?php ");
 				$document = ob_get_clean();
 				return $document;
 			};
@@ -664,7 +664,7 @@ class GroupsHelperPages
 			{
 				ob_start();
 				unset($this);
-				eval("?> $content <?php ");
+				eval("?>$content<?php ");
 				$content = ob_get_clean();
 				return $content;
 			};
