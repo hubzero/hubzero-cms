@@ -59,98 +59,98 @@ class Provider extends AbstractAdapter
 	 *
 	 * @var string
 	 */
-	private $user_ip = '';
+	public $user_ip = '';
 
 	/**
 	 * Referrer
 	 *
 	 * @var string
 	 */
-	private $referrer = '';
+	public $referrer = '';
 
 	/**
 	 * Permalink
 	 *
 	 * @var string
 	 */
-	private $permalink = '';
+	public $permalink = '';
 
 	/**
 	 * Content author
 	 *
 	 * @var string
 	 */
-	private $comment_author = '';
+	public $comment_author = '';
 
 	/**
 	 * Content author email
 	 *
 	 * @var string
 	 */
-	private $comment_author_email = '';
+	public $comment_author_email = '';
 
 	/**
 	 * Content author URL
 	 *
 	 * @var string
 	 */
-	private $comment_author_url = '';
+	public $comment_author_url = '';
 
 	/**
 	 * Content
 	 *
 	 * @var string
 	 */
-	private $comment_content = '';
+	public $comment_content = '';
 
 	/**
 	 * Script version
 	 *
 	 * @var string
 	 */
-	private $version = '0.4';
+	public $version = '0.4';
 
 	/**
 	 * URL of the site
 	 *
 	 * @var string
 	 */
-	private $url = '';
+	public $url = '';
 
 	/**
 	 * API port
 	 *
 	 * @var integer
 	 */
-	private $apiPort = 0;
+	public $apiPort = 0;
 
 	/**
 	 * API key
 	 *
 	 * @var string
 	 */
-	private $apiKey  = null;
+	public $apiKey  = null;
 
 	/**
 	 * Akismet server
 	 *
 	 * @var string
 	 */
-	private $akismetServer = 'rest.akismet.com';
+	public $akismetServer = 'rest.akismet.com';
 
 	/**
 	 * Akismet version
 	 *
 	 * @var string
 	 */
-	private $akismetVersion = '1.1';
+	public $akismetVersion = '1.1';
 
 	/**
 	 * This prevents some potentially sensitive information from being sent accross the wire.
 	 *
 	 * @var array
 	 */
-	private $_ignore = array(
+	public $_ignore = array(
 		'server' => array(
 			'HTTP_COOKIE',
 			'HTTP_X_FORWARDED_FOR',
