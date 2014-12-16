@@ -151,7 +151,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 						case 'gz':     $cmd = "tar zxvf {$escaped_file} -C {$path}";    break;
 						case 'tar':    $cmd = "tar xvf {$escaped_file} -C {$path}";     break;
 						case 'zip':
-						default:       $cmd = "unzip {$escaped_file} -d {$path}";
+						default:       $cmd = "unzip -o {$escaped_file} -d {$path}";
 					}
 
 					//unzip file
