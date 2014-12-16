@@ -39,63 +39,67 @@ $message .= 'Below is your registration details:';
 $message .= "\n\n" . '-------------------------------------------------------------------' . "\n\n";
 
 $message .= 'Name: '. $this->register['first_name'].' '.$this->register['last_name'] ."\n";
-if (isset($this->register['title']))
+if ($this->params->get('show_title', 1) == 1 && isset($this->register['title']))
 {
 	$message .= 'Title: '. $this->register['title'] ."\n";
 }
-if (isset($this->register['affiliation']))
+if ($this->params->get('show_affiliation', 1) == 1 && isset($this->register['affiliation']))
 {
 	$message .= 'Affiliation: '. $this->register['affiliation'] ."\n";
 }
-if (isset($this->register['email']))
+if ($this->params->get('show_email', 1) == 1 && isset($this->register['email']))
 {
 	$message .= 'Email: '. $this->register['email'] ."\n";
 }
-if (isset($this->register['website']))
+if ($this->params->get('show_website', 1) == 1 && isset($this->register['website']))
 {
 	$message .= 'Website: '. $this->register['website'] ."\n";
 }
-if (isset($this->register['telephone']))
+if ($this->params->get('show_telephone', 1) == 1 && isset($this->register['telephone']))
 {
 	$message .= 'Telephone: '. $this->register['telephone'] ."\n";
 }
-if (isset($this->register['fax']))
+if ($this->params->get('show_fax', 1) == 1 && isset($this->register['fax']))
 {
 	$message .= 'Fax: '. $this->register['fax'] ."\n\n";
 }
+if ($this->params->get('show_address', 1) == 1)
+{
+	if (isset($this->register['city']))
+	{
+		$message .= 'City: '. $this->register['city'] ."\n";
+	}
+	if (isset($this->register['state']))
+	{
+		$message .= 'State/Province: '. $this->register['state'] ."\n";
+	}
+	if (isset($this->register['zip']))
+	{
+		$message .= 'Zip/Postal Code: '. $this->register['zip'] ."\n";
+	}
+	if (isset($this->register['country']))
+	{
+		$message .= 'Country: '. $this->register['country'] ."\n\n";
+	}
+}
 
 
-if (isset($this->register['city']))
-{
-	$message .= 'City: '. $this->register['city'] ."\n";
-}
-if (isset($this->register['state']))
-{
-	$message .= 'State/Province: '. $this->register['state'] ."\n";
-}
-if (isset($this->register['zip']))
-{
-	$message .= 'Zip/Postal Code: '. $this->register['zip'] ."\n";
-}
-if (isset($this->register['country']))
-{
-	$message .= 'Country: '. $this->register['country'] ."\n\n";
-}
 
-
-if (isset($this->register['position']) || isset($this->register['position_other'])) {
+if ($this->params->get('show_position', 1) == 1 && (isset($this->register['position']) || isset($this->register['position_other']))) {
 	$message .= 'Current position: ';
 	$message .= ($this->register['position']) ? $this->register['position'] : $this->register['position_other'];
 	$message .= "\n\n";
 }
-if (isset($this->register['degree'])) {
+if ($this->params->get('show_degree', 1) == 1 && isset($this->register['degree']))
+{
 	$message .= 'Highest degree earned: '. $this->register['degree'] ."\n\n";
 }
-$gender = (isset($this->register['sex'])) ? $this->register['sex'] : '';
-//if (isset($this->register['sex'])) {
-	$message .= 'Gender: '. $gender ."\n\n";
-//}
-if (isset($this->race)) {
+if ($this->params->get('show_gender', 1) == 1 && isset($this->register['sex']))
+{
+	$message .= 'Gender: '. $this->register['sex'] ."\n\n";
+}
+if ($this->params->get('show_race', 1) == 1 && isset($this->race))
+{
 	if (isset($this->race['nativetribe']))
 	{
 		$tribe = $this->race['nativetribe'];
@@ -106,40 +110,61 @@ if (isset($this->race)) {
 	$message .= "\n\n";
 }
 
-if ($this->disability) {
-	$message .= '[X] I have auxiliary aids or services due to a disability. Please contact me.'."\n\n";
-} else {
-	$message .= '[ ] I have auxiliary aids or services due to a disability. Please contact me.'."\n\n";
+if ($this->params->get('show_disability', 1) == 1)
+{
+	if ($this->disability)
+	{
+		$message .= '[X] I have auxiliary aids or services due to a disability. Please contact me.'."\n\n";
+	}
+	else
+	{
+		$message .= '[ ] I have auxiliary aids or services due to a disability. Please contact me.'."\n\n";
+	}
 }
-if (isset($this->dietary['needs']) || (isset($this->dietary['specific']) && $this->dietary['specific'] != '')) {
-	$message .= '[X] I have specific dietary needs.'."\n\n";
-	$message .= '    Specific: '.$this->dietary['specific']."\n\n";
-} else {
-	$message .= '[ ] I have specific dietary needs.'."\n\n";
+if ($this->params->get('show_dietary', 1) == 1)
+{
+	if (isset($this->dietary['needs']) || (isset($this->dietary['specific']) && $this->dietary['specific'] != ''))
+	{
+		$message .= '[X] I have specific dietary needs.'."\n\n";
+		$message .= '    Specific: '.$this->dietary['specific']."\n\n";
+	}
+	else
+	{
+		$message .= '[ ] I have specific dietary needs.'."\n\n";
+	}
 }
 
-if ($this->arrival) {
+if ($this->params->get('show_arrival', 1) == 1 && $this->arrival)
+{
 	$message .= '=== Arrival ==='."\n";
 	$message .= 'Arrival Day: '. $this->arrival['day'] ."\n";
 	$message .= 'Arrival Time: '. $this->arrival['time'] ."\n\n";
 }
-if ($this->departure) {
+if ($this->params->get('show_departure', 1) == 1 && $this->departure)
+{
 	$message .= '=== Departure ==='."\n";
 	$message .= 'Departure Day: '. $this->departure['day'] ."\n";
 	$message .= 'Departure Time: '. $this->departure['time'] ."\n\n";
 }
 
-if ($this->dinner) {
-	$message .= '[x] Attending dinner.'."\n\n";
-} else {
-	$message .= '[ ] Attending dinner.'."\n\n";
+if ($this->params->get('show_dinner', 1) == 1)
+{
+	if ($this->dinner)
+	{
+		$message .= '[x] Attending dinner.'."\n\n";
+	}
+	else
+	{
+		$message .= '[ ] Attending dinner.'."\n\n";
+	}
 }
 
-if (isset($this->register['abstract'])) {
+if ($this->params->get('show_abstract', 1) == 1 && isset($this->register['abstract']))
+{
 	$message .= 'Abstract: '. $this->register['abstract'] ."\n\n";
 }
-
-if (isset($this->register['comment'])) {
+if ($this->params->get('show_comments', 1) == 1 && isset($this->register['comment']))
+{
 	$message .= 'Comments: '. $this->register['comment'] ."\n\n";
 }
 echo $message;
