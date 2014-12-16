@@ -1243,6 +1243,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			);
 			$email->option     = $this->option;
 			$email->group      = $this->group;
+			$email->params     = $params;
 			$email->event      = $eventsEvent;
 			$email->sitename   = JFactory::getConfig()->getValue('config.sitename');
 			$email->register   = $register;
@@ -1287,6 +1288,7 @@ class plgGroupsCalendar extends \Hubzero\Plugin\Plugin
 			);
 			$email->option     = $this->option;
 			$email->group      = $this->group;
+			$email->params     = $params;
 			$email->event      = $eventsEvent;
 			$email->sitename   = JFactory::getConfig()->getValue('config.sitename');
 			$email->siteurl    = JFactory::getConfig()->getValue('config.live_site');
