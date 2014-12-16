@@ -248,17 +248,21 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 
 		$model = new FeedAggregatorModelPosts;
 		$savedURLS = $model->loadURLs();
-
 		try
 		{
-			Guzzle\Http\StaticClient::mount();
-
 			foreach ($feeds as $feed)
 			{
 				if ($feed->enabled == 1 && filter_var($feed->url, FILTER_VALIDATE_URL) == TRUE)
 				{
-					$response = Guzzle::get($feed->url); //fetches URL
-					$page = $response->xml(); //returns response in XML format
+					$ch = curl_init();
+
+					// set URL and other appropriate options
+					curl_setopt($ch, CURLOPT_URL, $feed->url);
+					curl_setopt($ch, CURLOPT_HEADER, 0);
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+					$data = curl_exec($ch);
+					$page = simplexml_load_string(utf8_encode($data));
 
 					if (isset($page->entry) == TRUE)
 					{
