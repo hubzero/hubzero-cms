@@ -183,7 +183,7 @@ class plgTagsCitations extends \Hubzero\Plugin\Plugin
 
 		$database = JFactory::getDBO();
 		$citationsFormat = new CitationsFormat($database);
-		$template = $citationsFormat->getDefaultFormat()->format;
+		$template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
 
 		$formatter = new CitationFormat();
 		$formatter->setTemplate( $template );
