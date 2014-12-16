@@ -109,10 +109,10 @@ $group = JRequest::getVar('group', '');
 				<input type="hidden" name="botcheck" value="" />
 			<?php } ?>
 
-			<?php /*<label>
+			<label for="reporter_login">
 				<?php echo JText::_('COM_SUPPORT_USERNAME'); ?>
 				<input type="text" name="reporter[login]" value="<?php echo (isset($this->reporter['login'])) ? $this->escape($this->reporter['login']) : ''; ?>" id="reporter_login" />
-			</label> */ ?>
+			</label>
 
 			<label for="reporter_name"<?php echo ($this->getError() && $this->reporter['name'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_SUPPORT_NAME'); ?> <span class="required"><?php echo JText::_('COM_SUPPORT_REQUIRED'); ?></span>
@@ -122,11 +122,6 @@ $group = JRequest::getVar('group', '');
 				<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_NAME'); ?></p>
 			<?php } ?>
 
-			<label for="reporter_org">
-				<?php echo JText::_('COM_SUPPORT_ORGANIZATION'); ?>
-				<input type="text" name="reporter[org]" value="<?php echo (isset($this->reporter['org'])) ? $this->escape($this->reporter['org']) : ''; ?>" id="reporter_org" />
-			</label>
-
 			<label for="reporter_email"<?php echo ($this->getError() && $this->reporter['email'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_SUPPORT_EMAIL'); ?> <span class="required"><?php echo JText::_('COM_SUPPORT_REQUIRED'); ?></span>
 				<input type="text" name="reporter[email]" value="<?php echo (isset($this->reporter['email'])) ? $this->escape($this->reporter['email']) : ''; ?>" id="reporter_email" />
@@ -134,6 +129,12 @@ $group = JRequest::getVar('group', '');
 			<?php if ($this->getError() && $this->reporter['email'] == '') { ?>
 				<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>
 			<?php } ?>
+
+			<?php /*<label for="reporter_org">
+				<?php echo JText::_('COM_SUPPORT_ORGANIZATION'); ?>
+				<input type="text" name="reporter[org]" value="<?php echo (isset($this->reporter['org'])) ? $this->escape($this->reporter['org']) : ''; ?>" id="reporter_org" />
+			</label>*/ ?>
+			<input type="hidden" name="reporter[org]" value="<?php echo (isset($this->reporter['org'])) ? $this->escape($this->reporter['org']) : ''; ?>" id="reporter_org" />
 
 			<div class="grid">
 				<div class="col span6">
