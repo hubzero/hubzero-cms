@@ -16,7 +16,8 @@ jQuery(document).ready(function (jq) {
 		$('#field-publish_up, #field-publish_down').datetimepicker({
 			controlType: 'slider',
 			dateFormat: 'yy-mm-dd',
-			timeFormat: 'HH:mm:ss'
+			timeFormat: 'HH:mm:ss',
+			timezone: $('#field-publish_up').attr('data-timezone')
 		});
 	}
 

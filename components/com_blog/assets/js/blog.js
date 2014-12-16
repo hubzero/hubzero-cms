@@ -91,15 +91,10 @@ jQuery(document).ready(function (jq) {
 
 	if ($('#hubForm').length > 0) {
 		$('input.datetime-field').datetimepicker({
-			duration: '',
-			showTime: true,
-			constrainInput: false,
-			stepMinutes: 1,
-			stepHours: 1,
-			altTimeField: '',
-			time24h: true,
+			controlType: 'slider',
 			dateFormat: 'yy-mm-dd',
-			timeFormat: 'hh:mm:00'
+			timeFormat: 'HH:mm:ss',
+			timezone: $('input.datetime-field').attr('data-timezone')
 		});
 	}
 });
