@@ -239,7 +239,7 @@ if ($label == "none") {
 									<?php endif; ?>
 								</tr>
 								<tr>
-									<td <?php if ($label == "none") { echo 'colspan="2"'; } else { echo 'colspan="3"'; } ?> class="citation-details">
+									<td <?php if ($label == "none") { echo 'colspan="3"'; } else { echo 'colspan="4"'; } ?> class="citation-details">
 										<?php
 											$singleCitationView = $this->config->get('citation_single_view', 0);
 											if (!$singleCitationView)
@@ -255,9 +255,6 @@ if ($label == "none") {
 											<?php echo CitationFormat::citationTags($cite, $this->database); ?>
 										<?php endif; ?>
 									</td>
-									<?php if ($this->isAdmin === true) : ?>
-										<td></td>
-									<?php endif; ?>
 								</tr>
 								<?php $counter++; ?>
 							<?php endforeach; ?>
@@ -305,6 +302,16 @@ if ($label == "none") {
 						<?php foreach ($this->types as $t) : ?>
 							<?php $sel = ($this->filters['type'] == $t['id']) ? "selected=\"selected\"" : ""; ?>
 							<option <?php echo $sel; ?> value="<?php echo $t['id']; ?>"><?php echo $t['type_title']; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</label>
+				<label>
+					<?php echo JText::_('COM_CITATIONS_GROUP'); ?>
+					<select name="group" id="group">
+						<option value=""><?php echo JText::_('COM_CITATIONS_ALL'); ?></option>
+						<?php foreach ($this->groups as $group) : ?>
+							<?php $sel = ($this->filters['group'] == $group->gidNumber) ? "selected=\"selected\"" : ""; ?>
+							<option <?php echo $sel; ?> value="<?php echo $group->gidNumber; ?>"><?php echo $group->cn; ?></option>
 						<?php endforeach; ?>
 					</select>
 				</label>

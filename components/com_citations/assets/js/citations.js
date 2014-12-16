@@ -46,10 +46,10 @@ HUB.Citations = {
 		//citation add functionality
 		HUB.Citations.singleimport();
 		
-		//
+		// add rollovers
 		HUB.Citations.rollovers();
 		
-		//
+		// single citation
 		HUB.Citations.singleCitation();
 		//HUB.Citations.singleCitationTabs();
 		
@@ -394,20 +394,22 @@ HUB.Citations = {
 			var $title = $(this).find(".citation-title"),
 				$note = $(this).find(".citation-notes");
 				
-			if($note.length)
+			if ($note.length)
 			{
 				$title
 					.append($note)
-					.tooltip({
-						effect: 'slide',
-						position: 'top center',
-						relative: true,
-						predelay: 500,
-						delay: 200,
-						tip: $note
+					.on('mouseenter', function() {
+						var positionInWindow = $title.offset().top - $('body').scrollTop();
+
+						if (positionInWindow < $note.outerHeight(true) / 2)
+						{
+							$note.addClass('bottom');
+						}
+						
+						$note.fadeIn();
 					})
-					.dynamic({
-						bottom: { direction: 'down' }
+					.on('mouseleave', function() {
+						$note.hide();
 					});
 			}
 		});

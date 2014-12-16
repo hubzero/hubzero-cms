@@ -128,7 +128,8 @@
 		position: absolute;
 		display: none;
 		z-index: 610;
-		top: 0;
+		top: auto;
+		bottom: 60px;
 		left: 0;
 		border: 3px solid #000;
 		-webkit-border-radius: 5px;
@@ -142,6 +143,10 @@
 		-o-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 		box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 		width: 500px;
+	}
+	.citations .citation-notes.bottom {
+		top: 60px;
+		bottom: auto;
 	}
 	.citations .citation-notes p.sponsor {
 		padding: 5px 10px;
@@ -414,7 +419,7 @@
 	}*/
 	
 	.withBatchDownload .aside {
-		padding-top:150px;
+		padding-top: 150px !important;
 	}
 	#download-batch {
 		position:absolute;

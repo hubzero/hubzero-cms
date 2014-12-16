@@ -151,6 +151,16 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$this->view->filters['startuploaddate'] = JRequest::getVar('startuploaddate', '0000-00-00');
 		$this->view->filters['enduploaddate']   = JRequest::getVar('enduploaddate', '0000-00-00');
 
+		// do we have a group filter
+		if ($group = JRequest::getVar('group', ''))
+		{
+			$this->view->filters['scope']    = 'groups';
+			$this->view->filters['scope_id'] = $group;
+
+			// only used so we only have one param on form filters
+			$this->view->filters['group'] = $group;
+		}
+
 		// Affiliation filter
 		$this->view->filter = array(
 			'all'    => JText::_('COM_CITATIONS_ALL'),
@@ -265,8 +275,16 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		$ct = new CitationsType($this->database);
 		$this->view->types = $ct->getType();
 
+		// get groups
+		$this->view->groups = Hubzero\User\Group::find(array(
+			'type'      => array('1','3'),
+			'published' => 1,
+			'approved'  => 1,
+			'fields'    => array('gidNumber', 'cn')
+		));
+
 		//get the users id to make lookup
-		$users_ip = $this->getIP();
+		$users_ip = JRequest::ip();
 
 		//get the param for ip regex to use machine ip
 		$ip_regex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
@@ -492,28 +510,6 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		}
 
 		return $openUrl;
-	}
-
-	/**
-	 * Get user IP
-	 *
-	 * @return     string
-	 */
-	private function getIP()
-	{
-		foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key)
-		{
-			if (array_key_exists($key, $_SERVER) === true)
-			{
-				foreach (explode(',', $_SERVER[$key]) as $ip)
-				{
-					if (filter_var($ip, FILTER_VALIDATE_IP) !== false)
-					{
-						return $ip;
-					}
-				}
-			}
-		}
 	}
 
 	/**
