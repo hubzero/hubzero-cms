@@ -37,12 +37,14 @@ $this->css('citations.css')
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';
 
 //citation params
-
-$label = $this->config->get("citation_label", "number");
+$label    = $this->config->get("citation_label", "number");
 $rollover = $this->config->get("citation_rollover", "no");
 $rollover = ($rollover == "yes") ? 1 : 0;
-$citationsFormat = new CitationsFormat( $this->database );
+
+// citation format
+$citationsFormat = new CitationsFormat($this->database);
 $template = ($citationsFormat->getDefaultFormat()) ? $citationsFormat->getDefaultFormat()->format : null;
+
 //batch downloads
 $batch_download = $this->config->get("citation_batch_download", 1);
 
@@ -50,34 +52,40 @@ $batch_download = $this->config->get("citation_batch_download", 1);
 $coins = $this->config->get("citation_coins", 1);
 
 //do we want to number li items
-if ($label == "none") {
+if ($label == "none")
+{
 	$citations_label_class = "no-label";
-} elseif ($label == "number") {
+}
+elseif ($label == "number")
+{
 	$citations_label_class = "number-label";
-} elseif ($label == "type") {
+}
+elseif ($label == "type")
+{
 	$citations_label_class = "type-label";
-} elseif ($label == "both") {
+}
+elseif ($label == "both")
+{
 	$citations_label_class = "both-label";
 }
 
-?>
-
-<?php
 if (isset($this->messages))
 {
 	foreach ($this->messages as $message)
 	{
-	echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
+		echo "<p class=\"{$message['type']}\">" . $message['message'] . "</p>";
 	}
 }
 ?>
+<div id="content-header-extra">
+	<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
+		<a class="btn icon-add" href="<?php echo JRoute::_($base. '&action=add'); ?>">
+			<?php echo JText::_('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
+		</a>
+	<?php endif; ?>
+</div>
 
 <div class="frm" id="browsebox">
-	<?php if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) : ?>
-	<a class="btn icon-add" href="<?php echo JRoute::_($base. '&action=add'); ?>">
-	<?php echo JText::_('PLG_GROUPS_CITATIONS_SUBMIT_CITATION'); ?>
-	</a><?php endif; ?>
-
 	<form action="<?php echo JRoute::_(JURI::current()); ?>" id="citeform" method="GET" class="<?php if ($batch_download) { echo " withBatchDownload"; } ?>">
 		<section class="main section">
 			<div class="subject">
@@ -85,7 +93,7 @@ if (isset($this->messages))
 					<input class="entry-search-submit" type="submit" value="Search" />
 					<fieldset class="entry-search">
 						<legend><?php echo JText::_('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-						<input type="text" name="search" id="entry-search-field" value="<?php //echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
+						<input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER'); ?>" />
 					</fieldset>
 				</div><!-- /.container .data-entry -->
 				<div class="container">
@@ -124,12 +132,10 @@ if (isset($this->messages))
 
 							// Fixes the counter so it starts counting at the current citation number instead of restarting on 1 at every page
 							$counter = $this->filters['start'] + 1;
-
 							if ($counter == '')
 							{
 								$counter = 1;
 							}
-
 						?>
 						<table class="citations entries">
 							<thead>
@@ -175,7 +181,7 @@ if (isset($this->messages))
 															echo "<span class=\"type\">{$type}</span>";
 															break;
 														case "both":
-															echo "<span class=\"number\">{$counter}.</span>";
+															echo "<span class=\"number\">{$counter}. </span>";
 															echo "<span class=\"type\">{$type}</span>";
 															break;
 													}
@@ -183,7 +189,9 @@ if (isset($this->messages))
 											</td>
 										<?php endif; ?>
 										<td class="citation-container">
-											<div class="identifier"><?php echo $cite->custom3; ?></div>
+											<?php if (isset($cite->custom3)) : ?>
+												<div class="identifier"><?php echo $cite->custom3; ?></div>
+											<?php endif; ?>
 											<?php
 												$formatted = $cite->formatted
 													? $cite->formatted
@@ -236,7 +244,7 @@ if (isset($this->messages))
 										<?php endif; ?>
 									</tr>
 									<tr>
-										<td <?php if ($label == "none") { echo 'colspan="2"'; } else { echo 'colspan="3"'; } ?> class="citation-details">
+										<td <?php if ($label == "none") { echo 'colspan="3"'; } else { echo 'colspan="4"'; } ?> class="citation-details">
 											<?php
 												$singleCitationView = $this->config->get('citation_single_view', 0);
 												if (!$singleCitationView)
@@ -252,9 +260,6 @@ if (isset($this->messages))
 												<?php echo CitationFormat::citationTags($cite, $this->database); ?>
 											<?php endif; ?>
 										</td>
-										<?php if ($this->isAdmin === true) : ?>
-											<td></td>
-										<?php endif; ?>
 									</tr>
 									<?php $counter++; ?>
 								<?php endforeach; ?>

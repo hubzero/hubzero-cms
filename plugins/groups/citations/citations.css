@@ -15,13 +15,25 @@
 .legend table {
 	max-width: 100px;
 }
-
 .legendColorBox {
 	max-width: 14px;
 }
-
-.btn .icon-add{
-	
+.citations .citation-label .type {
+	font-weight: bold;
+}
+.citation-details .badges {
+	float: right;
+}
+.citation-details .badges a {
+	background: #8e6e59 !important;
+	color: #FFF !important;
+}
+.citation-details .badges a:before {
+	border-color: transparent #8e6e59 transparent transparent !important;
+}
+.citation-details .tags li {
+	padding: 0;
+	border: none;
 }
 
 /* Hide the sidebar if the page is too narrow */

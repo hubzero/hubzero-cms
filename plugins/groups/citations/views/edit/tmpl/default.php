@@ -473,32 +473,29 @@ if ($this->getError()) { ?>
 			<fieldset>
 				<legend><?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELDS'); ?></legend>
 				<label for="custom1">
-					<?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_1'); ?>
-					<input type="text" name="custom1" id="custom1" value="<?php echo $this->row->custom1; ?>"/>
+					<?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_1'); ?>:
+					<input type="text" name="custom1" id="custom1" value="<?php echo (isset($this->row->custom1)) ? $this->row->custom1 : ''; ?>"/>
 				</label>
 				<label for="custom2">
-					<?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_2'); ?>
-					<input type="text"  name="custom2" id="custom2" value="<?php echo $this->row->custom2; ?>"/>
+					<?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_2'); ?>:
+					<input type="text"  name="custom2" id="custom2" value="<?php echo (isset($this->row->custom2)) ? $this->row->custom2 : ''; ?>"/>
 				</label>
 				<label for="custom3">
-					<?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_3'); ?>
-					<input type="text"  name="custom3" id="custom3" value="<?php echo $this->row->custom3; ?>"/>
+					<?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_3'); ?>:
+					<input type="text"  name="custom3" id="custom3" value="<?php echo (isset($this->row->custom3)) ? $this->row->custom3 : ''; ?>"/>
 				</label>
 				<label for="custom4">
-					<?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_4'); ?>
-					<input type="text"  name="custom4" id="custom4" value="<?php echo $this->row->custom4; ?>"/>
+					<?php echo JText::_('PLG_GROUPS_CITATIONS_CUSTOM_FIELD_4'); ?>:
+					<input type="text"  name="custom4" id="custom4" value="<?php echo (isset($this->row->custom4)) ? $this->row->custom4 : ''; ?>"/>
 				</label>
-
 				<input type="hidden" name="uid" value="<?php echo $this->row->uid; ?>" />
 				<input type="hidden" name="created" value="<?php echo $this->row->created; ?>" />
 				<input type="hidden" name="id" value="<?php echo $this->row->id; ?>" />
-				<input type="hidden" name="gid" value="<?php echo $this->group->get('gidNumber'); ?>" />
-				<input type="hidden" name="scope" value="group" />
 				<input type="hidden" name="option" value="com_groups" />
-				<input type="hidden" nanme="active" value="citations" />
+				<input type="hidden" name="active" value="citations" />
 				<input type="hidden" name="action" value="save" />
 			</fieldset>
-			<p class="submit"><input type="submit" name="create" value="<?php echo JText::_('PLG_GROUPS_CITATIONS_SAVE'); ?>" /></p>
+			<p class="submit"><input class="btn btn-success" type="submit" name="create" value="<?php echo JText::_('PLG_GROUPS_CITATIONS_SAVE'); ?>" /></p>
 			<div class="clear"></div>
 		</form>
 	<!-- </section> -->

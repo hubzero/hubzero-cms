@@ -566,14 +566,15 @@ class CitationsCitation extends JTable
 			//				OR r.uid = " . $this->_db->Quote($filter['search']);
 			//}
 		}
-		// group search
-		if (isset($filter['group']) && $filter['group'] != NULL)
+
+		// scope & scope Id
+		if (isset($filter['scope']) && $filter['scope'] != '')
 		{
-			$query .= " AND r.scope_id='". $filter['group'] ."'";
+			$query .= " AND r.scope=" . $this->_db->quote($filter['scope']);
 		}
-		else
+		if (isset($filter['scope_id']) && $filter['scope_id'] != NULL)
 		{
-			$query .= " AND r.scope_id is NULL";
+			$query .= " AND r.scope_id=". $this->_db->quote($filter['scope_id']);
 		}
 
 		//tag search
