@@ -1080,6 +1080,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 
 		// Get any set emails that should be notified of ticket submission
 		$defs = str_replace("\r", '', $this->config->get('emails', '{config.mailfrom}'));
+		$defs = str_replace('\n', "\n", $defs);
 		$defs = explode("\n", $defs);
 
 		if ($defs)
@@ -1131,7 +1132,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$message->addPart($html, 'text/html');
 
 			// Loop through the addresses
-			foreach ($defs As $def)
+			foreach ($defs as $def)
 			{
 				$def = trim($def);
 
