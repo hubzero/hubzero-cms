@@ -41,10 +41,10 @@ class plgContentAntispam extends JPlugin
 	 * Article is passed by reference, but after the save, so no changes will be saved.
 	 * Method is called right after the content is saved
 	 *
-	 * @param	string		The context of the content passed to the plugin (added in 1.6)
-	 * @param	object		A JTableContent object
-	 * @param	bool		If the content is just about to be created
-	 * @since   2.5
+	 * @param  string   $context  The context of the content passed to the plugin (added in 1.6)
+	 * @param  object   $article  A JTableContent object
+	 * @param  boolean  $isNew    If the content is just about to be created
+	 * @since  2.5
 	 */
 	public function onContentBeforeSave($context, $article, $isNew)
 	{
@@ -65,7 +65,9 @@ class plgContentAntispam extends JPlugin
 
 		if (!$content) return;
 
-		$service = new \Hubzero\Antispam\Service('simple');
+		include_once(__DIR__ . '/Service/Provider.php');
+
+		$service = new \Hubzero\Antispam\Service(new \Plugins\Content\Antispam\Service\Provider);
 
 		$service->set('linkFrequency', $this->params->get('linkFrequency', 5))
 		        ->set('blacklist', $this->params->get('blacklist'))
@@ -86,7 +88,7 @@ class plgContentAntispam extends JPlugin
 	 * Check if the context provided the content field name as
 	 * it may vary between models.
 	 *
-	 * @param   string $context A dot-notation string
+	 * @param   string  $context  A dot-notation string
 	 * @return  string
 	 */
 	private function _key($context)
