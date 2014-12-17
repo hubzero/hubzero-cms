@@ -191,7 +191,7 @@ class Sanitize
 			'<script[^>]*>.*?<\/script>|' .
 			'<style[^>]*>.*?<\/style>|' .
 			'<\?php.*?\?>|' .
-			'<!--.*?-->/is';
+			'<!--.*?-->)/is';
 		$string = preg_replace($regex, '', $string);
 
 		$string = str_replace(
