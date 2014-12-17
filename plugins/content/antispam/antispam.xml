@@ -49,9 +49,10 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="blacklist" type="textarea" rows="15" cols="40" label="IP Blacklist" default="" description="A comma-separated list of IPs to be blacklisted" />
-				<field name="badwords" type="textarea" rows="15" cols="40" label="Bad words" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="A comma-separated list of spam words" />
-				<field name="linkFrequency" type="text" size="10" default="5" label="Link Frequency" description="How many times a link appears in the text. Spammers will often post dozens of links." />
+				<field name="blacklist" type="textarea" rows="15" cols="40" label="PLG_CONTENT_ANTISPAM_PARAM_BLACKLIST_LABEL" default="" description="PLG_CONTENT_ANTISPAM_PARAM_BLACKLIST_DESC" />
+				<field name="badwords" type="textarea" rows="15" cols="40" label="PLG_CONTENT_ANTISPAM_PARAM_BADWORDS_LABEL" default="viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, texas holdem, fisting" description="PLG_CONTENT_ANTISPAM_PARAM_BADWORDS_DESC" />
+				<field name="linkFrequency" type="text" size="10" default="5" label="PLG_CONTENT_ANTISPAM_PARAM_LINKFREQUENCY_LABEL" description="PLG_CONTENT_ANTISPAM_PARAM_LINKFREQUENCY_DESC" />
+				<field name="message" type="text" size="10" default="The submitted text was detected as possible spam or containing inappropriate content." label="PLG_CONTENT_ANTISPAM_PARAM_MESSAGE_LABEL" description="PLG_CONTENT_ANTISPAM_PARAM_MESSAGE_DESC" />
 			</fieldset>
 		</fields>
 	</config>

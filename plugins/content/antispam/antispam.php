@@ -80,6 +80,10 @@ class plgContentAntispam extends JPlugin
 
 		if ($service->isSpam($content))
 		{
+			if ($message = $this->params->get('message'))
+			{
+				\JFactory::getApplication()->enqueueMessage($message, 'error');
+			}
 			return false;
 		}
 	}
