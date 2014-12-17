@@ -586,7 +586,7 @@ class plgProjectsTeam extends JPlugin
 							$name = $parts[0];
 							$uid = preg_replace('/[)]/', '', $parts[1]);
 						}
-						elseif (intval($cid))
+						elseif (intval($cid) && $validUser = JUser::getInstance( $cid ))
 						{
 							$uid = $cid;
 						}
