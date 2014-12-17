@@ -95,6 +95,9 @@ class PublicationsModelHandlers extends JObject
 		}
 		elseif ($handlers)
 		{
+			// TEMP
+			return false;
+
 			// Load needed objects
 			$obj = new PublicationHandler($this->_db);
 
@@ -110,10 +113,10 @@ class PublicationsModelHandlers extends JObject
 			$html = '<div class="handler-controls">';
 			foreach ($all as $item)
 			{
-				$handler = $this->ini($item->name);
-				if ($handler->isRelevant($item, $pub, $attachments))
+				$handler  = $this->ini($item->name);
+				if ($relevant = self::isRelevant($handler, $attachments) || $item->assigned)
 				{
-					$html .= $this->drawSelectedHandler($handler, $item->assigned);
+					$html .= $this->drawHandlerChoice($handler, $item->assigned, $relevant);
 					$i++;
 				}
 			}
@@ -127,6 +130,111 @@ class PublicationsModelHandlers extends JObject
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Check if handler applies to selection
+	 *
+	 * @return  void
+	 */
+	public function isRelevant( $handler, $attachments )
+	{
+		// Get handler configs
+		$configs = $handler->get('_configs');
+		if (!$configs)
+		{
+			$configs = $handler->getConfig();
+		}
+
+		// Attachments are needed
+		if (!$attachments || empty($attachments))
+		{
+			return false;
+		}
+
+		// Check allowed formats
+		if (!self::checkAllowed($attachments, $configs->params->allowed_ext))
+		{
+			return false;
+		}
+
+		// Check required formats
+		if (!self::checkRequired($attachments, $configs->params->required_ext))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check for allowed formats
+	 *
+	 * @return  object
+	 */
+	public function checkAllowed( $attachments, $formats = array() )
+	{
+		if (empty($attachments))
+		{
+			return true;
+		}
+
+		if (empty($formats))
+		{
+			return true;
+		}
+
+		foreach ($attachments as $attach)
+		{
+			$file = isset($attach->path) ? $attach->path : $attach;
+			$ext = explode('.', $file);
+			$ext = end($ext);
+
+			if ($ext && !in_array(strtolower($ext), $formats))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check for required formats
+	 *
+	 * @return  object
+	 */
+	public function checkRequired( $attachments, $formats = array() )
+	{
+		if (empty($attachments))
+		{
+			return true;
+		}
+
+		if (empty($formats))
+		{
+			return true;
+		}
+
+		$i = 0;
+		foreach ($attachments as $attach)
+		{
+			$file = isset($attach->path) ? $attach->path : $attach;
+			$ext = explode('.', $file);
+			$ext = end($ext);
+
+			if ($ext && in_array(strtolower($ext), $formats))
+			{
+				$i++;
+			}
+		}
+
+		if ($i < count($formats))
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -148,6 +256,26 @@ class PublicationsModelHandlers extends JObject
 
 		return $html;
 	}
+
+	/**
+	 * Side controls for handler
+	 *
+	 * @return  void
+	 */
+	public function drawHandlerChoice($handler, $assigned = NULL, $relevant = true)
+	{
+		$configs = $handler->get('_configs');
+		if (!$configs)
+		{
+			$configs = $handler->getConfig();
+		}
+		$html = '<div class="handlertype-' . $handler->get('_name') . '">';
+		$html.= '<h3>' . $configs->label . '</h3>';
+		$html.= '</div>';
+
+		return $html;
+	}
+
 
 	/**
 	 * Initialize
