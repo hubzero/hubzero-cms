@@ -341,7 +341,7 @@ class PublicationUtilities
 	 * @param      string 	$doi 		DOI handle, e.g. 10.4231/D3F47GT6N
 	 * @return     xml output
 	 */
-	public function getXml( $row, $authors, $metadata, $doi = 0)
+	public static function getXml( $row, $authors, $metadata, $doi = 0)
 	{
 		$datePublished = JHTML::_('date', $row->published_up, 'Y-m-d');
 		$dateAccepted  = date('Y-m-d');
