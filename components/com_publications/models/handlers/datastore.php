@@ -71,6 +71,16 @@ class PublicationsModelHandlerDataStore extends PublicationsModelHandler
 	}
 
 	/**
+	 * Check if handler applies to selection
+	 *
+	 * @return  void
+	 */
+	public function isRelevant( $item, $pub, $attachments )
+	{
+		return false;
+	}
+
+	/**
 	 * Clean-up related files
 	 *
 	 * @return  void

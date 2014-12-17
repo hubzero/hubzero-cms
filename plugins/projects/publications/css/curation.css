@@ -1033,10 +1033,7 @@
 
 /* Handler controls
 --------------------------------------------- */
-	.handler-controls {
-
-	}
-	.handler-controls .handler-type {
+	.handler-controls .handlertype {
 		padding: 1em;
 		background: #e0ebee;
 		margin: 0 0 1.5em 0;
@@ -1044,26 +1041,12 @@
 	.multizip p {
 		padding-left : 50px;
 	}
-	.handler-controls .handler-imageviewer {
-		padding: 1em;
-		background: #e0ebee;
-	}
-	.handler-controls .handler-imageviewer h3 {
-		padding-left: 50px;
-	}
-	.handler-controls .handler-imageviewer h3:before,
 	.multizip p:before {
-		width: 55px;
-		height: 55px;
-		font-size: 55px;
 		font-family: 'Fontcons';
 		color: #5ec1da;
 		border: none;
-		content: "\f08c";
 		position: absolute;
 		margin: 10px 0 0 -60px;
-	}
-	.multizip p:before {
 		content: "\f005";
 		width: 40px;
 		height: 40px;
@@ -1077,21 +1060,47 @@
 		margin-top: 3em;
 		padding-left: 1em;
 	}
-	*[class^="handler-"] h3,
-	*[class*=" handler-"] h3 {
+	*[class^="handlertype-"],
+	*[class*=" handlertype-"] {
+		padding: 1em;
+		background: #e0ebee;
+	}
+	*[class^="handlertype-"] h3,
+	*[class*=" handlertype-"] h3 {
 		font-size: 1.2em;
 		line-height: 1.2em;
 		margin: 0;
+		padding-left: 50px;
 	}
-	*[class^="handler-"] p,
-	*[class*=" handler-"] p {
+	*[class^="handlertype-"] p,
+	*[class*=" handlertype-"] p {
 		line-height: 1.5em;
 		margin: 0;
 	}
-	.handler-type label {
+	[class^="handlertype-"] h3:before, [class*=" handlertype-"] h3:before {
+		font-family: 'Fontcons';
+		color: #5ec1da;
+		border: none;
+		position: absolute;
+		margin: 10px 0 0 -60px;	
+		width: 40px;
+		height: 40px;
+		font-size: 40px;
+		margin-left: -50px;
+	}
+	.handlertype-imageviewer h3:before {
+		content: "\f08c";
+		width: 55px;
+		height: 55px;
+		font-size: 55px;
+	}
+	.handlertype-datastore h3:before {
+		content: "\f00b";
+	}
+	.handlertype label {
 		margin-top: 1em;
 	}
-	.handler-type input {
+	.handlertype input {
 		padding: 0.3em 0.5em;
 		font-size: 85%;
 		color: #666;

@@ -125,7 +125,7 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 
 				?>
 				<div class="handler-controls block">
-					<div class="handler-type multizip">
+					<div class="handlertype multizip">
 						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MULTI_DOWNLOAD'); ?> <a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ZIP_BUNDLE'); ?>.</a>
 						</p>
 						<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>

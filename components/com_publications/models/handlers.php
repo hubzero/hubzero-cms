@@ -82,33 +82,47 @@ class PublicationsModelHandlers extends JObject
 	public function showHandlers($pub, $elementid, $handlers, $handler, $attachments)
 	{
 		$html = '';
-		// We have a handler assigned
+		// We have a forced handler
 		if ($handler)
 		{
 			if (!is_object($handler))
 			{
 				$handler = $this->ini($handler);
 			}
-			$html = '<div class="handler-controls">';
+			$html  = '<div class="handler-controls">';
 			$html .= $this->drawSelectedHandler($handler);
-			$html.= '</div>';
+			$html .= '</div>';
 		}
 		elseif ($handlers)
 		{
 			// Load needed objects
 			$obj = new PublicationHandler($this->_db);
-			$objAssoc = new PublicationHandler($this->_db);
 
-			// Check if any configured
-			// TBD
-			// Handler choice
-			if (is_array($handlers))
+			// Get all available handlers
+			$all = $obj->getHandlers($pub->version_id, $elementid);
+
+			// Get applicable handlers
+			if (!$all)
 			{
-				// TBD
+				return;
 			}
-			elseif ($handlers == 'auto')
+			$i = 0;
+			$html = '<div class="handler-controls">';
+			foreach ($all as $item)
 			{
-				// TBD
+				$handler = $this->ini($item->name);
+				if ($handler->isRelevant($item, $pub, $attachments))
+				{
+					$html .= $this->drawSelectedHandler($handler, $item->assigned);
+					$i++;
+				}
+			}
+			$html.= '</div>';
+
+			// No applicable hanlders?
+			if ($i == 0)
+			{
+				return;
 			}
 		}
 
@@ -120,14 +134,14 @@ class PublicationsModelHandlers extends JObject
 	 *
 	 * @return  void
 	 */
-	public function drawSelectedHandler($handler)
+	public function drawSelectedHandler($handler, $assigned = NULL)
 	{
 		$configs = $handler->get('_configs');
 		if (!$configs)
 		{
 			$configs = $handler->getConfig();
 		}
-		$html = '<div class="handler-' . $handler->get('_name') . '">';
+		$html = '<div class="handlertype-' . $handler->get('_name') . '">';
 		$html.= '<h3>' . JText::_('Presentation') . ': ' . $configs->label . '</h3>';
 		$html.= '<p>' . $configs->about . '</p>';
 		$html.= '</div>';

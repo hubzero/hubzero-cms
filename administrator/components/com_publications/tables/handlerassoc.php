@@ -111,11 +111,10 @@ class PublicationHandlerAssoc extends JTable
 		}
 
 		$query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
-		$query  = " JOIN #__publication_handlers as H ON H.id=A.handler_id";
+		$query .= " JOIN #__publication_handlers as H ON H.id=A.handler_id";
 		$query .= " WHERE A.publication_version_id=" . $vid;
 		$query .= " AND A.element_id=" . $elementid;
-		$this->_db->setQuery( $query );
-		$query.= " ORDER BY A.ordering ASC";
+		$query .= " ORDER BY A.ordering ASC";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
