@@ -200,6 +200,46 @@ class Service
 	}
 
 	/**
+	 * Train the service
+	 *
+	 * @param   string   $value
+	 * @param   boolean  $isSpam
+	 * @return  boolean
+	 * @throws  AdapterNotFoundException
+	 */
+	public function learn($value, $isSpam)
+	{
+		if (!$adapter = $this->getAdapter())
+		{
+			throw new AdapterNotFoundException('An adapter must be set or passed prior to calling isSpam()');
+		}
+
+		$adapter->setValue($value);
+
+		return $adapter->learn($value, $isSpam);
+	}
+
+	/**
+	 * Forget a trained value
+	 *
+	 * @param   string   $value
+	 * @param   boolean  $isSpam
+	 * @return  boolean
+	 * @throws  AdapterNotFoundException
+	 */
+	public function forget($value, $isSpam)
+	{
+		if (!$adapter = $this->getAdapter())
+		{
+			throw new AdapterNotFoundException('An adapter must be set or passed prior to calling isSpam()');
+		}
+
+		$adapter->setValue($value);
+
+		return $adapter->forget($value, $isSpam);
+	}
+
+	/**
 	 * Canonicalize name
 	 *
 	 * @param   string  $name

@@ -74,11 +74,41 @@ abstract class AbstractAdapter extends Object implements AdapterInterface
 	 */
 	public function isSpam($value = null)
 	{
-		if (!$value)
-		{
-			$value = $this->getValue();
-		}
+		$value = $value ?: $this->getValue();
 
 		return false;
+	}
+
+	/**
+	 * Train the service
+	 *
+	 * @param   string   $value
+	 * @param   boolean  $isSpam
+	 * @return  boolean
+	 */
+	public function learn($value, $isSpam)
+	{
+		$value = $value ?: $this->getValue();
+
+		if (!$value)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Forget a trained value
+	 *
+	 * @param   string   $value
+	 * @param   boolean  $isSpam
+	 * @return  boolean
+	 */
+	public function forget($value, $isSpam)
+	{
+		$value = $value ?: $this->getValue();
+
+		return true;
 	}
 }
