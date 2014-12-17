@@ -155,7 +155,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		// Ensure we loaded the tag's info from the database
 		if (empty($tags))
 		{
-			JError::raiseError(404, JText::_('COM_TAGS_NOT_FOUND'));
+			JError::raiseError(404, JText::_('COM_TAGS_TAG_NOT_FOUND'));
 			return;
 		}
 
