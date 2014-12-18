@@ -203,7 +203,7 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 		$filters = array(
 			'scope'    => 'group',
 			'scope_id' => $group->get('gidNumber'),
-			'state'    => 'public'
+			'state'    => 'all'
 		);
 
 		$juser = JFactory::getUser();
