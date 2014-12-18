@@ -68,8 +68,7 @@
         "phpoffice/phpexcel": "1.8.0",
         "symfony/yaml": "2.5.*",
         "simshaun/recurr": "0.3.2",
-        "pelago/emogrifier": "dev-master",
-        "thauex/simple-html-dom": "dev-master"
+        "pelago/emogrifier": "dev-master"
     },
     "autoload": {
 	"psr-0": { "Hubzero": "libraries/" },
