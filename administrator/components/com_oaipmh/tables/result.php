@@ -31,21 +31,21 @@ defined('_JEXEC') or die('Restricted access');
 // get all Dublin Core elements based on custom tables and fields for OAIPMH
 class TablesOaipmhResult
 {
-	var $title;
-	var $creator;
-	var $subject;
-	var $date;
-	var $identifer;
-	var $description;
-	var $type;
-	var $publisher;
-	var $rights;
-	var $contributor;
-	var $relation;
-	var $format;
-	var $coverage;
-	var $language;
-	var $source;
+	public $title;
+	public $creator;
+	public $subject;
+	public $date;
+	public $identifier;
+	public $description;
+	public $type;
+	public $publisher;
+	public $rights;
+	public $contributor;
+	public $relation;
+	public $format;
+	public $coverage;
+	public $language;
+	public $source;
 
 	/**
 	 * Constructor
@@ -61,10 +61,18 @@ class TablesOaipmhResult
 		$db->setQuery("SELECT `name` FROM `#__oaipmh_dcspecs` ORDER BY id LIMIT 15");
 		if ($elements = $db->loadResultArray())
 		{
+			$properties = get_object_vars($this);
+
 			// loop through
 			for ($x=0; $x<15; $x++)
 			{
 				$var = $elements[$x];
+
+				if (!array_key_exists($var, $properties))
+				{
+					continue;
+				}
+
 				// check for hard coded fields
 				if (stristr($customs->$var,"SELECT") === false)
 				{

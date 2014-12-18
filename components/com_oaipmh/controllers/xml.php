@@ -104,11 +104,11 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		// set constants
 		$juri = JURI::getInstance();
 
-		$max_records     = $this->config->get('max');
+		$max_records     = $this->config->get('max', 500);
 		$repository_name = $this->config->get('repository_name');
 		$this->hubname   = rtrim($this->config->get('base_url', str_replace('https', 'http', $juri->base())), '/');
-		$allow_ore       = $this->config->get('allow_ore');
-		$this->gran      = $this->config->get('gran');
+		$allow_ore       = $this->config->get('allow_ore', 0);
+		$this->gran      = $this->config->get('gran', 'c');
 
 		// get query vars
 		$verb           = JRequest::getVar('verb');
@@ -217,9 +217,10 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					$verb == "ListIdentifiers" ? $response .= "<ListIdentifiers>" : $response .= "<ListRecords>";
 					// set flow control vars
 					$begin = 0;
-					$toWrite = 0;
+					$toWrite = 50;
 					$completed = 0;
 					$resumptionToken = 0;
+					$split = false;
 					// check completion
 					if (!empty($resumption))
 					{
