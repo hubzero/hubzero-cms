@@ -116,6 +116,7 @@ $tkn = $this->config->get('orcid_' . $srv . '_token');
 				<div class="grid nobreak">
 					<div class="col span8">
 						<p><?php echo JText::_('If you have created an ORCID or your institution has generated one for you, fill in the fields above and search for your ID from the list.'); ?></p>
+						<p><?php echo JText::_('Note that most ORCID records have the email address marked as private and private information will not be returned in the search results.'); ?></p>
 					</div>
 					<div class="col span4 omega">
 						<p>
