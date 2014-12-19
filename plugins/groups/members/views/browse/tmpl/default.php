@@ -396,9 +396,21 @@ $option = 'com_groups';
 								if (is_object($u) && $juser->get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
 									$html .= "\t\t\t\t".'<td class="message-member"> </td>'."\n";
 								} else {
-									if (!$inviteemail && ($this->authorized == 'manager' || $this->authorized == 'admin') && $this->messages_acl != 'nobody') {
-										$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new&users[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
-									} else {
+									$membersParams = JComponentHelper::getParams('com_members');
+									$userMessaging = $membersParams->get('user_messaging', 1);
+									if (!$inviteemail && $this->messages_acl != 'nobody')
+									{
+										if (in_array($juser->get('id'), $this->group->get('managers')))
+										{
+											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option='.$option.'&cn='.$this->group->cn.'&active=messages&action=new&users[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>'."\n";
+										}
+										else if ($userMessaging == 2 || ($userMessaging == 1 && in_array($juser->get('id'), $this->group->get('members'))))
+										{
+											$html .= "\t\t\t\t".'<td class="message-member"><a class="message tooltips" href="'.JRoute::_('index.php?option=com_members&id='.$juser->get('id').'&active=messages&task=new&to[]='.$guser).'" title="Message :: Send a message to '.$this->escape($u->get('name')).'">'.JText::_('PLG_GROUPS_MEMBERS_MESSAGE').'</a></td>';
+										}
+									}
+									else
+									{
 										$html .= "\t\t\t\t".'<td class="message-member"></td>'."\n";
 									}
 								}
