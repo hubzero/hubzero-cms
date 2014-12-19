@@ -1522,7 +1522,7 @@ class PublicationsCuration extends JObject
 		<?php if ($viewer == 'curator' && !$curatorStatus->updatenotice) { ?>
 		<span class="edit-notice">[<a href="#">edit</a>]</span>
 		<?php } ?>
-		<?php if (($viewer == 'author' && (!$curatorStatus->curatornotice && $curatorStatus->status == 3)) || ($viewer == 'curator' && !$curatorStatus->updatenotice)) { return; }?>
+		<?php if (($viewer == 'author' && (!$curatorStatus->curatornotice && $curatorStatus->status == 3)) || ($viewer == 'curator' && !$curatorStatus->updatenotice && !$curatorStatus->curatornotice)) { return; }?>
 		<div class="status-notice">
 			<span class="update-notice"><?php if ($viewer == 'curator') { echo  $curatorStatus->updatenotice; }
 			elseif ($curatorStatus->status != 3) {
