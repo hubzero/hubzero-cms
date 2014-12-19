@@ -54,6 +54,9 @@ $required 		= $this->manifest->params->required;
 
 $elName = "licensePick";
 
+$defaultText = $this->license ? $this->license->text : NULL;
+$text = $this->pub->license_text ? $this->pub->license_text : $defaultText;
+
 ?>
 
 <!-- Load content selection browser //-->
@@ -70,8 +73,8 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> freezeblock">
 			<?php if ($this->license) { echo '<img src="' . $this->license->icon . '" alt="' . htmlentities($this->license->title) . '" />'; } ?><?php echo $this->license->title; ?>
 					<span class="item-details"><?php echo $info; ?></span>
 				</p>
-				<?php if ($this->license->text) { ?>
-				<pre><?php echo $this->license->text; ?></pre>	
+				<?php if ($text) { ?>
+				<pre><?php echo $text; ?></pre>	
 				<?php } ?>
 			</div>
 
