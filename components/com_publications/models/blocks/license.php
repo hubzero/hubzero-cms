@@ -287,7 +287,7 @@ class PublicationsBlockLicense extends PublicationsModelBlock
 				{
 					// Save agreement
 					$row->saveParam($pub->version_id, 'licenseagreement', 0);
-					//$this->_parent->set('_update', 1);
+					$this->_parent->set('_update', 1);
 				}
 
 				// Only one choice
