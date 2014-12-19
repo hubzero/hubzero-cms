@@ -340,9 +340,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a ticket and comments
 	 *
-	 * @return	void
+	 * @param   mixed  $comment
+	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($comment = null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
@@ -445,6 +446,12 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			}
 		}
 
+		if (!$comment)
+		{
+			$comment = new SupportModelComment();
+		}
+		$this->view->comment = $comment;
+
 		// Set any errors
 		if ($this->getError())
 		{
@@ -452,7 +459,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -489,7 +496,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		$old->set('tags', $old->tags('string'));
 
 		// Trim and addslashes all posted items
-		$_POST = array_map('trim', $_POST);
+		//$_POST = array_map('trim', $_POST);
 
 		// Initiate class and bind posted items to database fields
 		$row = new SupportModelTicket($id);
@@ -497,6 +504,29 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		{
 			JError::raiseError(500, $row->getError());
 			return;
+		}
+
+		$comment = JRequest::getVar('comment', '', 'post', 'none', 2);
+		$rowc = new SupportModelComment();
+		$rowc->set('ticket', $id);
+
+		// Check if changes were made inbetween the time the comment was started and posted
+		if ($id)
+		{
+			$started = JRequest::getVar('started', JFactory::getDate()->toSql(), 'post');
+			$lastcomment = $row->comments('list', array(
+				'sort'     => 'created',
+				'sort_Dir' => 'DESC',
+				'limit'    => 1,
+				'start'    => 0,
+				'ticket'   => $id
+			))->first();
+			if ($lastcomment->created() >= $started)
+			{
+				$rowc->set('comment', $comment);
+				JFactory::getApplication()->enqueueMessage(JText::_('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'), 'error');
+				return $this->editTask($rowc);
+			}
 		}
 
 		if ($id && isset($_POST['status']) && $_POST['status'] == 0)
@@ -627,7 +657,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		}
 
 		// Incoming comment
-		$comment = JRequest::getVar('comment', '', 'post', 'none', 2);
 		if ($comment)
 		{
 			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
@@ -640,7 +669,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// Create a new support comment object and populate it
 		$access = JRequest::getInt('access', 0);
 
-		$rowc = new SupportModelComment();
+		//$rowc = new SupportModelComment();
 		$rowc->set('ticket', $row->get('id'));
 		$rowc->set('comment', nl2br($comment));
 		$rowc->set('created', JFactory::getDate()->toSql());

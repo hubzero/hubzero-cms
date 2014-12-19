@@ -415,7 +415,7 @@ $cc = array();
 
 							<label for="comment-field-content">
 								<span class="label"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_LEGEND_COMMENTS'); ?></span>
-								<textarea name="comment" id="comment-field-comment" cols="75" rows="15"></textarea>
+								<textarea name="comment" id="comment-field-comment" cols="75" rows="15"><?php echo $this->comment->get('comment'); ?></textarea>
 							</label>
 						</div>
 
@@ -577,6 +577,8 @@ $cc = array();
 		<p><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_FORM_EXPLANATION'); ?></p>
 	</div><!-- / .col width-30 -->
 	<div class="clr"></div>
+
+	<input type="hidden" name="started" value="<?php echo JFactory::getDate()->toSql(); ?>" />
 
 	<input type="hidden" name="id" id="ticketid" value="<?php echo $this->row->get('id'); ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

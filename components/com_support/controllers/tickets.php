@@ -1457,9 +1457,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	/**
 	 * Display a ticket and associated comments
 	 *
-	 * @return     void
+	 * @param   mixed  $comment
+	 * @return  void
 	 */
-	public function ticketTask()
+	public function ticketTask($comment = null)
 	{
 		// Get the ticket ID
 		$id = JRequest::getInt('id', 0);
@@ -1473,14 +1474,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Initiate database class and load info
-		$this->view->row = SupportModelTicket::getInstance($id);
-		if (!$this->view->row->exists())
-		{
-			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_TICKET_NOT_FOUND'));
-			return;
-		}
-
 		// Check authorization
 		if ($this->juser->get('guest'))
 		{
@@ -1491,37 +1484,13 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		// Incoming
-		$config = JFactory::getConfig();
-		$app    = JFactory::getApplication();
-
-		$this->view->filters = array();
-		// Paging
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		// Query to filter by
-		$this->view->filters['show'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.show',
-			'show',
-			0,
-			'int'
-		);
-		// Search
-		$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
+		// Initiate database class and load info
+		$this->view->row = SupportModelTicket::getInstance($id);
+		if (!$this->view->row->exists())
+		{
+			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_TICKET_NOT_FOUND'));
+			return;
+		}
 
 		// Ensure the user is authorized to view this ticket
 		if (!$this->view->row->access('read', 'tickets'))
@@ -1529,6 +1498,39 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			JError::raiseError(403, JText::_('COM_SUPPORT_ERROR_NOT_AUTH'));
 			return;
 		}
+
+		// Incoming
+		$config = JFactory::getConfig();
+		$app    = JFactory::getApplication();
+
+		$this->view->filters = array(
+			// Paging
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			// Query to filter by
+			'show' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.show',
+				'show',
+				0,
+				'int'
+			),
+			// Search
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			))
+		);
 
 		if ($watch = JRequest::getWord('watch', ''))
 		{
@@ -1622,15 +1624,19 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			}
 		}
 
-		// Output HTML
-		if ($this->getError())
+		if (!$comment)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$comment = new SupportModelComment();
 		}
-		$this->view->display();
+		$this->view->comment = $comment;
+
+		// Output HTML
+		foreach ($this->getErrors() as $error)
+		{
+			$this->view->setError($error);
+		}
+
+		$this->view->setLayout('ticket')->display();
 	}
 
 	/**
@@ -1661,6 +1667,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		$comment  = JRequest::getVar('comment', '', 'post', 'none', 2);
 		$incoming = JRequest::getVar('ticket', array(), 'post');
 		$incoming = array_map('trim', $incoming);
 
@@ -1676,6 +1683,26 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		$rowc = new SupportModelComment();
+		$rowc->set('ticket', $id);
+
+		// Check if changes were made inbetween the time the comment was started and posted
+		$started = JRequest::getVar('started', JFactory::getDate()->toSql(), 'post');
+		$lastcomment = $row->comments('list', array(
+			'sort'     => 'created',
+			'sort_Dir' => 'DESC',
+			'limit'    => 1,
+			'start'    => 0,
+			'ticket'   => $id
+		))->first();
+		if ($lastcomment->created() >= $started)
+		{
+			$rowc->set('comment', $comment);
+			$this->setError(JText::_('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'));
+			return $this->ticketTask($rowc);
+		}
+
+		// Update ticket status if necessary
 		if ($id && isset($incoming['status']) && $incoming['status'] == 0)
 		{
 			$row->set('open', 0);
@@ -1697,7 +1724,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming comment
-		$comment = JRequest::getVar('comment', '', 'post', 'none', 2);
+		//$comment = JRequest::getVar('comment', '', 'post', 'none', 2);
 		if ($comment)
 		{
 			// If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
@@ -1721,7 +1748,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		// Create a new support comment object and populate it
 		$access = JRequest::getInt('access', 0);
 
-		$rowc = new SupportModelComment();
+		//$rowc = new SupportModelComment();
 		$rowc->set('ticket', $id);
 		$rowc->set('comment', nl2br($comment));
 		$rowc->set('created', JFactory::getDate()->toSql());
