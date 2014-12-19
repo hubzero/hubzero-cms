@@ -84,8 +84,8 @@ $this->css()
 							.' <span class="prominent">' . JHTML::_('date', $row->reviewed, 'M d, Y') . '</span> ';
 
 						$reviewer  = \Hubzero\User\Profile::getInstance($row->reviewed_by);
-						$reviewed .= ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
-							. ' ' . $reviewer->get('name') . '</span>';
+						$reviewed .= $reviewer ? ' <span class="block">' . JText::_('COM_PUBLICATIONS_CURATION_BY')
+							. ' ' . $reviewer->get('name') . '</span>' : NULL;
 					}
 
 					$class = $row->state == 5 ? 'status-pending' : 'status-wip';
