@@ -285,6 +285,10 @@ class ProjectsGitHelper extends JObject
 	 */
 	public function gitLog ($path = '', $file = '', $hash = '', $return = 'date')
 	{
+		if (!is_dir($this->_prefix . $path))
+		{
+			return false;
+		}
 		chdir($this->_prefix . $path);
 		$what = '';
 
