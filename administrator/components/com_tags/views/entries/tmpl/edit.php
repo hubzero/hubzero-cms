@@ -95,7 +95,7 @@ if ($this->getError())
 
 			<div class="input-wrap" data-hint="<?php echo JText::_('COM_TAGS_FIELD_ALIAS_HINT'); ?>">
 				<label for="field-substitutions"><?php echo JText::_('COM_TAGS_FIELD_ALIAS'); ?>:</label><br />
-				<textarea name="fields[substitutions]" id="field-substitutions" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->tag->substitutes('string'))); ?></textarea>
+				<textarea name="fields[substitutions]" id="field-substitutions" cols="50" rows="5"><?php echo $this->escape(stripslashes($this->tag->substitutes('string', array('limit' => 0)))); ?></textarea>
 				<span class="hint"><?php echo JText::_('COM_TAGS_FIELD_ALIAS_HINT'); ?></span>
 			</div>
 
