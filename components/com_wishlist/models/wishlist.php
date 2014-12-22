@@ -674,8 +674,8 @@ class WishlistModelWishlist extends WishlistModelAbstract
 				}
 
 				// Admin
-				$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
-				$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
+				//$this->config()->set('access-admin-' . $assetType, $juser->authorise('core.admin', $asset));
+				//$this->config()->set('access-manage-' . $assetType, $juser->authorise('core.manage', $asset));
 				if ($this->config()->get('access-manage-' . $assetType))
 				{
 					$this->set('admin', 1);
