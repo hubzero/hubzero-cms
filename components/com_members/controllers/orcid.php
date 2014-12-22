@@ -58,6 +58,10 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 	{
 		foreach ($root->children() as $ch)
 		{
+			if ($ch->getName() == 'external-identifiers')
+			{
+				continue;
+			}
 			if ($ch->count() == 0) // && !empty($ch))
 			{
 				$fields[$ch->getName()] = $ch->__toString(); //$ch;
@@ -89,6 +93,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 					{
 						if ($profile->getName() == 'orcid-profile')
 						{
+							$fields = array();
 							$this->_parseXml($profile, $fields);
 							array_push($records, $fields);
 						}
@@ -96,6 +101,7 @@ class MembersControllerOrcid extends \Hubzero\Component\SiteController
 				}
 			}
 		}
+
 		return $records;
 	}
 
