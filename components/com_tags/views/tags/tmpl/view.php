@@ -107,8 +107,8 @@ foreach ($cats as $cat)
 				{
 					$a = ' class="active"';
 
-					$name  = $cat['title'];
-					$total = $cat['total'];
+					$name  = $subcat['title'];
+					$total = $subcat['total'];
 
 					$pathway->addItem($subcat['title'], $here . '&area=' . stripslashes($blob));
 				}
@@ -234,7 +234,7 @@ foreach ($cats as $cat)
 				<?php
 					jimport('joomla.html.pagination');
 					$pageNav = new JPagination(
-						$this->total,
+						$total,
 						$this->filters['start'],
 						$this->filters['limit']
 					);
