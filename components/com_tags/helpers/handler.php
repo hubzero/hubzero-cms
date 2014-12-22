@@ -166,7 +166,13 @@ class TagsHandler extends JObject
 			// Add new tag!
 			$t->tag = $t->normalize($tag);
 			$t->raw_tag = addslashes($tag);
-
+			$t->created = \JFactory::getDate()->toSql();
+			$t->created_by = $tagger_id;
+			if (!$t->check())
+			{
+				$this->setError($t->getError());
+				return false;
+			}
 			if (!$t->store())
 			{
 				$this->setError($t->getError());
