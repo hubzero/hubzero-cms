@@ -184,7 +184,7 @@ class WishlistModelWish extends WishlistModelAbstract
 
 		$this->_db = JFactory::getDBO();
 		$wish = new Wish($this->_db);
-		if ($item = $wish->get_wish($oid))
+		if (is_numeric($oid) && $item = $wish->get_wish($oid))
 		{
 			$this->set('num_votes', $item->num_votes);
 			$this->set('numreplies', $item->numreplies);
