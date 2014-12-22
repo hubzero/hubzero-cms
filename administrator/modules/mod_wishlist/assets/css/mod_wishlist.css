@@ -39,6 +39,11 @@
 		padding: 0;
 		table-layout: fixed;
 	}
+	.mod_wishlist .wishlist-stats-overview tbody tr:hover,
+	.mod_wishlist .wishlist-stats-overview tbody tr:hover td,
+	.mod_wishlist .wishlist-stats-overview tbody tr:hover th {
+		background: transparent;
+	}
 	.mod_wishlist .wishlist-stats-overview tbody tr td,
 	.mod_wishlist .wishlist-stats-overview tbody tr td:first-child {
 		text-align: center;
@@ -56,6 +61,11 @@
 	}
 	.mod_wishlist .wishlist-stats-overview tbody tr td.accepted-items a {
 		color: orange;
+	}
+	.mod_wishlist .wishlist-stats-overview tbody tr td a:hover,
+	.mod_wishlist .wishlist-stats-overview tbody tr td.accepted-items a:hover,
+	.mod_wishlist .wishlist-stats-overview tbody tr td a:hover span {
+		color: #222;
 	}
 
 /* Hero */
@@ -86,4 +96,9 @@
 	}
 	.hero .mod_wishlist:after {
 		clear: left;
+	}
+	.hero .mod_wishlist .wishlist-stats-overview tbody tr td a:hover,
+	.hero .mod_wishlist .wishlist-stats-overview tbody tr td a:hover span {
+		color: #222;
+		text-decoration: none;
 	}

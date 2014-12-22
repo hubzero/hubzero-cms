@@ -143,16 +143,22 @@ JHTML::_('behavior.chart');
 			<tbody>
 				<tr>
 					<td class="major">
-						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[0]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_OPEN_TITLE'); ?>"><?php echo $this->escape($this->topened[0]->count); ?></a>
-						<span><?php echo JText::_('MOD_SUPPORTTICKETS_OPEN'); ?></span>
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[0]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_OPEN_TITLE'); ?>">
+							<?php echo $this->escape($this->topened[0]->count); ?>
+							<span><?php echo JText::_('MOD_SUPPORTTICKETS_OPEN'); ?></span>
+						</a>
 					</td>
 					<td class="critical">
-						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[2]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>"><?php echo $this->escape($this->topened[2]->count); ?></a>
-						<span><?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED'); ?></span>
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[2]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED_TITLE'); ?>">
+							<?php echo $this->escape($this->topened[2]->count); ?>
+							<span><?php echo JText::_('MOD_SUPPORTTICKETS_UNASSIGNED'); ?></span>
+						</a>
 					</td>
 					<td class="newt">
-						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[1]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_NEW_TITLE'); ?>"><?php echo $this->escape($this->topened[1]->count); ?></a>
-						<span><?php echo JText::_('MOD_SUPPORTTICKETS_NEW'); ?></span>
+						<a href="index.php?option=com_support&amp;controller=tickets&amp;show=<?php echo $this->topened[1]->id; ?>" title="<?php echo JText::_('MOD_SUPPORTTICKETS_NEW_TITLE'); ?>">
+							<?php echo $this->escape($this->topened[1]->count); ?>
+							<span><?php echo JText::_('MOD_SUPPORTTICKETS_NEW'); ?></span>
+						</a>
 					</td>
 				</tr>
 			</tbody>

@@ -27,18 +27,29 @@
 		line-height: 1;
 		border: none;
 	}
+	.mod_groups .stats-overview tbody tr:hover,
+	.mod_groups .stats-overview tbody tr:hover td,
+	.mod_groups .stats-overview tbody tr:hover th {
+		background: transparent;
+	}
 	.mod_groups .stats-overview tbody tr td a {
 		color: #666;
 	}
 	.mod_groups .stats-overview tbody tr td.pending a {
 		color: orange;
 	}
-	.mod_groups .stats-overview tbody tr td>span {
+	.mod_groups .stats-overview tbody tr td a>span {
 		font-size: 0.35em;
 		font-weight: 400;
 		display: block;
 		margin: 1em 0 0 0;
 		color: #999;
+	}
+	.mod_groups .stats-overview tbody tr td a:hover,
+	.mod_groups .stats-overview tbody tr td.pending a:hover,
+	.mod_groups .stats-overview tbody tr td a:hover>span {
+		color: #222;
+		text-decoration: none;
 	}
 
 	.mod_groups .stats-overview tbody td.pending:before,

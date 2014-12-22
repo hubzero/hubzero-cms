@@ -36,12 +36,13 @@
 	}
 	.mod_resources .resources-stats-overview {
 		margin: 0.618em 0 0 0;
-		padding: 2.218em 0 0 0;
-		table-layout: fixed;
-	}
-	.mod_resources .resources-stats-overview {
 		padding: 1.218em 0 0 0;
 		table-layout: fixed;
+	}
+	.mod_resources .resources-stats-overview tbody tr:hover,
+	.mod_resources .resources-stats-overview tbody tr:hover td,
+	.mod_resources .resources-stats-overview tbody tr:hover th {
+		background: transparent;
 	}
 	.mod_resources .resources-stats-overview tbody tr td,
 	.mod_resources .resources-stats-overview tbody tr td:first-child {
@@ -63,6 +64,11 @@
 	}
 	.mod_resources .resources-stats-overview tbody tr td.pending-items a {
 		color: orange;
+	}
+	.mod_resources .resources-stats-overview tbody tr td a:hover,
+	.mod_resources .resources-stats-overview tbody tr td.pending-items a:hover,
+	.mod_resources .resources-stats-overview tbody tr td a:hover span {
+		color: #222;
 	}
 
 /* Hero */
@@ -93,4 +99,9 @@
 	}
 	.hero .mod_resources:after {
 		clear: left;
+	}
+	.hero .mod_resources .resources-stats-overview tbody tr td a:hover,
+	.hero .mod_resources .resources-stats-overview tbody tr td a:hover span {
+		color: #222;
+		text-decoration: none;
 	}

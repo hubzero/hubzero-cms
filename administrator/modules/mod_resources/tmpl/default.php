@@ -86,16 +86,22 @@ $this->draft = $this->draftInternal + $this->draftUser;
 			<tbody>
 				<tr>
 					<td>
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=1" title="<?php echo JText::_('MOD_RESOURCES_PUBLISHED_TITLE'); ?>"><?php echo $this->escape($this->published); ?></a>
-						<span><?php echo JText::_('MOD_RESOURCES_PUBLISHED'); ?></span>
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=1" title="<?php echo JText::_('MOD_RESOURCES_PUBLISHED_TITLE'); ?>">
+							<?php echo $this->escape($this->published); ?>
+							<span><?php echo JText::_('MOD_RESOURCES_PUBLISHED'); ?></span>
+						</a>
 					</td>
 					<td class="pending-items">
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('MOD_RESOURCES_PENDING_TITLE'); ?>"><?php echo $this->escape($this->pending); ?></a>
-						<span><?php echo JText::_('MOD_RESOURCES_PENDING'); ?></span>
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('MOD_RESOURCES_PENDING_TITLE'); ?>">
+							<?php echo $this->escape($this->pending); ?>
+							<span><?php echo JText::_('MOD_RESOURCES_PENDING'); ?></span>
+						</a>
 					</td>
 					<td>
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('MOD_RESOURCES_DRAFT_TITLE'); ?>"><?php echo $this->escape($this->draft); ?></a>
-						<span><?php echo JText::_('MOD_RESOURCES_DRAFT'); ?></span>
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('MOD_RESOURCES_DRAFT_TITLE'); ?>">
+							<?php echo $this->escape($this->draft); ?>
+							<span><?php echo JText::_('MOD_RESOURCES_DRAFT'); ?></span>
+						</a>
 					</td>
 				</tr>
 			</tbody>
@@ -105,12 +111,16 @@ $this->draft = $this->draftInternal + $this->draftUser;
 			<tbody>
 				<tr>
 					<td>
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=0" title="<?php echo JText::_('MOD_RESOURCES_UNPUBLISHED_TITLE'); ?>"><?php echo $this->escape($this->unpublished); ?></a>
-						<span><?php echo JText::_('MOD_RESOURCES_UNPUBLISHED'); ?></span>
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=0" title="<?php echo JText::_('MOD_RESOURCES_UNPUBLISHED_TITLE'); ?>">
+							<?php echo $this->escape($this->unpublished); ?>
+							<span><?php echo JText::_('MOD_RESOURCES_UNPUBLISHED'); ?></span>
+						</a>
 					</td>
 					<td>
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=4" title="<?php echo JText::_('MOD_RESOURCES_REMOVED_TITLE'); ?>"><?php echo $this->escape($this->removed); ?></a>
-						<span><?php echo JText::_('MOD_RESOURCES_REMOVED'); ?></span>
+						<a href="index.php?option=com_resources&amp;c=resources&amp;status=4" title="<?php echo JText::_('MOD_RESOURCES_REMOVED_TITLE'); ?>">
+							<?php echo $this->escape($this->removed); ?>
+							<span><?php echo JText::_('MOD_RESOURCES_REMOVED'); ?></span>
+						</a>
 					</td>
 				</tr>
 			</tbody>

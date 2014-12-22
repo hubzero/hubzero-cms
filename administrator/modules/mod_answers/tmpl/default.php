@@ -49,12 +49,16 @@ $total = $this->closed + $this->open;
 			</tr>
 			<tr>
 				<td class="closed">
-					<a href="index.php?option=com_answers&amp;filterby=closed" title="<?php echo JText::_('MOD_ANSWERS_CLOSED_TITLE'); ?>"><?php echo $this->escape($this->closed); ?></a>
-					<span><?php echo JText::_('MOD_ANSWERS_CLOSED'); ?></span>
+					<a href="index.php?option=com_answers&amp;filterby=closed" title="<?php echo JText::_('MOD_ANSWERS_CLOSED_TITLE'); ?>">
+						<?php echo $this->escape($this->closed); ?>
+						<span><?php echo JText::_('MOD_ANSWERS_CLOSED'); ?></span>
+					</a>
 				</td>
 				<td class="asked">
-					<a href="index.php?option=com_answers&amp;filterby=open" title="<?php echo JText::_('MOD_ANSWERS_ASKED_TITLE'); ?>"><?php echo $this->escape($this->open); ?></a>
-					<span><?php echo JText::_('MOD_ANSWERS_ASKED'); ?></span>
+					<a href="index.php?option=com_answers&amp;filterby=open" title="<?php echo JText::_('MOD_ANSWERS_ASKED_TITLE'); ?>">
+						<?php echo $this->escape($this->open); ?>
+						<span><?php echo JText::_('MOD_ANSWERS_ASKED'); ?></span>
+					</a>
 				</td>
 			</tr>
 		</tbody>

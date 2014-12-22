@@ -57,6 +57,12 @@
 		font-weight: 400;
 		display: block;
 		margin: 1em 0 0 0;
+		color: #999;
+	}
+	.hero .mod_supporttickets .breakdown table td a:hover,
+	.hero .mod_supporttickets .breakdown table td a:hover span {
+		color: #222;
+		text-decoration: none;
 	}
 
 /* Chart tip */

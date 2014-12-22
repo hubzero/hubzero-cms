@@ -41,6 +41,9 @@
 		margin: 0;
 		padding: 0;
 	}
+	.mod .overview-container table {
+		font-size: 1.1em;
+	}
 	.mod table thead tr {
 		background-color: #fdfdfd;
 	}

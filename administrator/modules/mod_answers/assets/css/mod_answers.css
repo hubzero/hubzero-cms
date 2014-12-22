@@ -19,6 +19,11 @@
 		margin: 0;
 		padding: 0;
 	}
+	.mod_answers .stats-overview tbody tr:hover,
+	.mod_answers .stats-overview tbody tr:hover td,
+	.mod_answers .stats-overview tbody tr:hover th {
+		background: transparent;
+	}
 	.mod_answers .stats-overview tbody tr td,
 	.mod_answers .stats-overview tbody tr td:first-child,
 	.mod_answers .stats-overview tbody tr td:last-child {
@@ -34,12 +39,18 @@
 	.mod_answers .stats-overview tbody tr td.asked a {
 		color: orange;
 	}
-	.mod_answers .stats-overview tbody tr td>span {
+	.mod_answers .stats-overview tbody tr td a>span {
 		font-size: 0.35em;
 		font-weight: 400;
 		display: block;
 		margin: 1em 0 0 0;
 		color: #999;
+	}
+	.mod_answers .stats-overview tbody tr td a:hover,
+	.mod_answers .stats-overview tbody tr td.accepted-items a:hover,
+	.mod_answers .stats-overview tbody tr td a:hover>span {
+		color: #222;
+		text-decoration: none;
 	}
 
 	/* CSS bar graph */

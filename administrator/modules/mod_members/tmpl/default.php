@@ -49,16 +49,22 @@ $total = $this->confirmed + $this->unconfirmed;
 			</tr>
 			<tr>
 				<td class="confirmed">
-					<a href="index.php?option=com_members&amp;emailConfirmed=1&amp;registerDate=" title="<?php echo JText::_('MOD_MEMBERS_CONFIRMED_TITLE'); ?>"><?php echo $this->escape($this->confirmed); ?></a>
-					<span><?php echo JText::_('MOD_MEMBERS_CONFIRMED'); ?></span>
+					<a href="index.php?option=com_members&amp;emailConfirmed=1&amp;registerDate=" title="<?php echo JText::_('MOD_MEMBERS_CONFIRMED_TITLE'); ?>">
+						<?php echo $this->escape($this->confirmed); ?>
+						<span><?php echo JText::_('MOD_MEMBERS_CONFIRMED'); ?></span>
+					</a>
 				</td>
 				<td class="unconfirmed">
-					<a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>"><?php echo $this->escape($this->unconfirmed); ?></a>
-					<span><?php echo JText::_('MOD_MEMBERS_UNCONFIRMED'); ?></span>
+					<a href="index.php?option=com_members&amp;emailConfirmed=-1&amp;registerDate=" title="<?php echo JText::_('MOD_MEMBERS_UNCONFIRMED_TITLE'); ?>">
+						<?php echo $this->escape($this->unconfirmed); ?>
+						<span><?php echo JText::_('MOD_MEMBERS_UNCONFIRMED'); ?></span>
+					</a>
 				</td>
 				<td class="newest">
-					<a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo gmdate("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('MOD_MEMBERS_NEW_TITLE'); ?>"><?php echo $this->escape($this->pastDay); ?></a>
-					<span><?php echo JText::_('MOD_MEMBERS_NEW'); ?></span>
+					<a href="index.php?option=com_members&amp;emailConfirmed=0&amp;registerDate=<?php echo gmdate("Y-m-d H:i:s", strtotime('-1 day')); ?>" title="<?php echo JText::_('MOD_MEMBERS_NEW_TITLE'); ?>">
+						<?php echo $this->escape($this->pastDay); ?>
+						<span><?php echo JText::_('MOD_MEMBERS_NEW'); ?></span>
+					</a>
 				</td>
 			</tr>
 		</tbody>
