@@ -120,12 +120,16 @@ JHTML::_('behavior.chart');
 			<tbody>
 				<tr>
 					<td class="published-items">
-						<a href="<?php echo JRoute::_('index.php?option=com_courses&state=1'); ?>" title="<?php echo JText::_('MOD_COURSES_PUBLISHED_TITLE'); ?>"><?php echo $this->escape($this->published); ?></a>
-						<span><?php echo JText::_('MOD_COURSES_PUBLISHED'); ?></span>
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&state=1'); ?>" title="<?php echo JText::_('MOD_COURSES_PUBLISHED_TITLE'); ?>">
+							<?php echo $this->escape($this->published); ?>
+							<span><?php echo JText::_('MOD_COURSES_PUBLISHED'); ?></span>
+						</a>
 					</td>
 					<td>
-						<a href="<?php echo JRoute::_('index.php?option=com_courses&state=3'); ?>" title="<?php echo JText::_('MOD_COURSES_DRAFT_TITLE'); ?>"><?php echo $this->escape($this->draft); ?></a>
-						<span><?php echo JText::_('MOD_COURSES_DRAFT'); ?></span>
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&state=3'); ?>" title="<?php echo JText::_('MOD_COURSES_DRAFT_TITLE'); ?>">
+							<?php echo $this->escape($this->draft); ?>
+							<span><?php echo JText::_('MOD_COURSES_DRAFT'); ?></span>
+						</a>
 					</td>
 				</tr>
 			</tbody>
@@ -134,12 +138,16 @@ JHTML::_('behavior.chart');
 			<tbody>
 				<tr>
 					<td>
-						<a href="<?php echo JRoute::_('index.php?option=com_courses&state=0'); ?>" title="<?php echo JText::_('MOD_COURSES_UNPUBLISHED_TITLE'); ?>"><?php echo $this->escape($this->unpublished); ?></a>
-						<span><?php echo JText::_('MOD_COURSES_UNPUBLISHED'); ?></span>
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&state=0'); ?>" title="<?php echo JText::_('MOD_COURSES_UNPUBLISHED_TITLE'); ?>">
+							<?php echo $this->escape($this->unpublished); ?>
+							<span><?php echo JText::_('MOD_COURSES_UNPUBLISHED'); ?></span>
+						</a>
 					</td>
 					<td>
-						<a href="<?php echo JRoute::_('index.php?option=com_courses&state=2'); ?>" title="<?php echo JText::_('MOD_COURSES_ARCHIVED_TITLE'); ?>"><?php echo $this->escape($this->archived); ?></a>
-						<span><?php echo JText::_('MOD_COURSES_ARCHIVED'); ?></span>
+						<a href="<?php echo JRoute::_('index.php?option=com_courses&state=2'); ?>" title="<?php echo JText::_('MOD_COURSES_ARCHIVED_TITLE'); ?>">
+							<?php echo $this->escape($this->archived); ?>
+							<span><?php echo JText::_('MOD_COURSES_ARCHIVED'); ?></span>
+						</a>
 					</td>
 				</tr>
 			</tbody>

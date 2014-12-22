@@ -33,6 +33,11 @@
 		padding: 1.218em 0 0 0;
 		table-layout: fixed;
 	}
+	.mod_courses .courses-stats-overview tbody tr:hover,
+	.mod_courses .courses-stats-overview tbody tr:hover td,
+	.mod_courses .courses-stats-overview tbody tr:hover th {
+		background: transparent;
+	}
 	.mod_courses .courses-stats-overview tbody tr td,
 	.mod_courses .courses-stats-overview tbody tr td:first-child {
 		text-align: center;
@@ -53,6 +58,11 @@
 	}
 	.mod_courses .courses-stats-overview tbody tr td.published-items a {
 		color: orange;
+	}
+	.mod_courses .courses-stats-overview tbody tr td a:hover,
+	.mod_courses .courses-stats-overview tbody tr td.published-items a:hover,
+	.mod_courses .courses-stats-overview tbody tr td a:hover span {
+		color: #222;
 	}
 
 /* Hero */
@@ -80,4 +90,9 @@
 	}
 	.hero .mod_courses:after {
 		clear: left;
+	}
+	.hero .mod_courses .courses-stats-overview tbody tr td a:hover,
+	.hero .mod_courses .courses-stats-overview tbody tr td a:hover span {
+		color: #222;
+		text-decoration: none;
 	}

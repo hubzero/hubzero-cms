@@ -84,38 +84,54 @@ JHTML::_('behavior.chart', 'pie');
 			<tbody>
 				<tr>
 					<td class="tools-registered">
-						<a href="index.php?option=com_tools&amp;status=1"><?php echo $this->escape($this->registered); ?></a>
-						<span><?php echo JText::_('MOD_TOOLS_COL_REGISTERED'); ?></span>
+						<a href="index.php?option=com_tools&amp;status=1">
+							<?php echo $this->escape($this->registered); ?>
+							<span><?php echo JText::_('MOD_TOOLS_COL_REGISTERED'); ?></span>
+						</a>
 					</td>
 					<td class="tools-created">
-						<a href="index.php?option=com_tools&amp;status=2"><?php echo $this->escape($this->created); ?></a>
-						<span><?php echo JText::_('MOD_TOOLS_COL_CREATED'); ?></span>
+						<a href="index.php?option=com_tools&amp;status=2">
+							<?php echo $this->escape($this->created); ?>
+							<span><?php echo JText::_('MOD_TOOLS_COL_CREATED'); ?></span>
+						</a>
 					</td>
 					<td class="tools-uploaded">
-						<a href="index.php?option=com_tools&amp;status=3"><?php echo $this->escape($this->uploaded); ?></a>
-						<span><?php echo JText::_('MOD_TOOLS_COL_UPLOADED'); ?></span>
+						<a href="index.php?option=com_tools&amp;status=3">
+							<?php echo $this->escape($this->uploaded); ?>
+							<span><?php echo JText::_('MOD_TOOLS_COL_UPLOADED'); ?></span>
+						</a>
 					</td>
 					<td class="tools-updated">
-						<a href="index.php?option=com_tools&amp;status=5"><?php echo $this->escape($this->updated); ?></a>
-						<span><?php echo JText::_('MOD_TOOLS_COL_UPDATED'); ?></span>
+						<a href="index.php?option=com_tools&amp;status=5">
+							<?php echo $this->escape($this->updated); ?>
+							<span><?php echo JText::_('MOD_TOOLS_COL_UPDATED'); ?></span>
+						</a>
 					</td>
 				</tr>
 				<tr>
 					<td class="tools-approved">
-						<a href="index.php?option=com_tools&amp;status=6"><?php echo $this->escape($this->approved); ?></a>
-						<span><?php echo JText::_('MOD_TOOLS_COL_APPROVED'); ?></span>
+						<a href="index.php?option=com_tools&amp;status=6">
+							<?php echo $this->escape($this->approved); ?>
+							<span><?php echo JText::_('MOD_TOOLS_COL_APPROVED'); ?></span>
+						</a>
 					</td>
 					<td class="tools-published">
-						<a href="index.php?option=com_tools&amp;status=7"><?php echo $this->escape($this->published); ?></a>
-						<span><?php echo JText::_('MOD_TOOLS_COL_PUBLISHED'); ?></span>
+						<a href="index.php?option=com_tools&amp;status=7">
+							<?php echo $this->escape($this->published); ?>
+							<span><?php echo JText::_('MOD_TOOLS_COL_PUBLISHED'); ?></span>
+						</a>
 					</td>
 					<td class="tools-retired">
-						<a href="index.php?option=com_tools&amp;status=8"><?php echo $this->escape($this->retired); ?></a>
-						<span><?php echo JText::_('MOD_TOOLS_COL_RETIRED'); ?></span>
+						<a href="index.php?option=com_tools&amp;status=8">
+							<?php echo $this->escape($this->retired); ?>
+							<span><?php echo JText::_('MOD_TOOLS_COL_RETIRED'); ?></span>
+						</a>
 					</td>
 					<td class="tools-abandoned">
-						<a href="index.php?option=com_tools&amp;status=9"><?php echo $this->escape($this->abandoned); ?></a>
-						<span><?php echo JText::_('MOD_TOOLS_COL_ABANDONED'); ?></span>
+						<a href="index.php?option=com_tools&amp;status=9">
+							<?php echo $this->escape($this->abandoned); ?>
+							<span><?php echo JText::_('MOD_TOOLS_COL_ABANDONED'); ?></span>
+						</a>
 					</td>
 				</tr>
 			</tbody>

@@ -39,6 +39,11 @@
 		padding: 0;
 		table-layout: fixed;
 	}
+	.mod_tools .tools-stats-overview tbody tr:hover,
+	.mod_tools .tools-stats-overview tbody tr:hover td,
+	.mod_tools .tools-stats-overview tbody tr:hover th {
+		background: transparent;
+	}
 	.mod_tools .tools-stats-overview tbody tr td,
 	.mod_tools .tools-stats-overview tbody tr td:first-child {
 		text-align: center;
@@ -56,6 +61,11 @@
 	}
 	.mod_tools .tools-stats-overview tbody tr td.tools-published a {
 		color: orange;
+	}
+	.mod_tools .tools-stats-overview tbody tr td a:hover,
+	.mod_tools .tools-stats-overview tbody tr td.tools-published a:hover,
+	.mod_tools .tools-stats-overview tbody tr td a:hover span {
+		color: #222;
 	}
 
 /* Hero */
@@ -86,4 +96,9 @@
 	}
 	.hero .mod_tools:after {
 		clear: left;
+	}
+	.mod_tools .tools-stats-overview tbody tr td a:hover,
+	.mod_tools .tools-stats-overview tbody tr td a:hover span {
+		color: #222;
+		text-decoration: none;
 	}
