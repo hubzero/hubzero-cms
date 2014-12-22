@@ -119,15 +119,22 @@ if ($this->getError())
 					<th class="key"><?php echo JText::_('COM_TAGS_FIELD_CREATOR'); ?>:</th>
 					<td>
 						<?php
-						if ($this->tag->get('created_by'))
+						if (!$this->tag->get('created_by') && $this->tag->exists())
 						{
-							$editor = JUser::getInstance($this->tag->get('created_by'));
-							echo $this->escape(stripslashes($editor->get('name')));
+							if ($logs = $this->tag->logs('list'))
+							{
+								foreach ($logs as $log)
+								{
+									if ($log->get('action') == 'tag_created')
+									{
+										$this->tag->set('created_by', $log->get('user_id'));
+										$this->tag->set('created', $log->get('timestamp'));
+										break;
+									}
+								}
+							}
 						}
-						else
-						{
-							echo JText::_('COM_TAGS_UNKNOWN');
-						}
+						echo $this->escape($this->tag->creator('name', JText::_('COM_TAGS_UNKNOWN')));
 						?>
 						<input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->escape($this->tag->get('created_by')); ?>" />
 					</td>

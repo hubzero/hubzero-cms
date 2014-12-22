@@ -330,6 +330,8 @@ class TagsModelCloud extends \Hubzero\Base\Object
 				$tag->set('admin', $admin);
 				$tag->set('tag', $tg);
 				$tag->set('raw_tag', $raw);
+				$tag->set('created', \JFactory::getDate()->toSql());
+				$tag->set('created_by', $tagger);
 				$tag->store();
 			}
 
