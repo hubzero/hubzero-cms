@@ -552,7 +552,12 @@ class CitationsCitation extends JTable
 	 */
 	public function buildQuery($filter=array(), $admin=true)
 	{
-		$query = " WHERE r.published=1";
+		if (!isset($filter['published']))
+		{
+			$filter['published'] = array(1);
+		}
+
+		$query = " WHERE r.published IN (" . implode(',', $filter['published']) . ")";
 
 		//search term match
 		if (isset($filter['search']) && $filter['search'] != '')

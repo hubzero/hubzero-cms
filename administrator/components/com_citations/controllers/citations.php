@@ -75,6 +75,9 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 			''
 		)));
 
+		// add published filter
+		$this->view->filters['published'] = array(0,1);
+
 		$obj = new CitationsCitation($this->database);
 
 		// Get a record count
@@ -227,6 +230,74 @@ class CitationsControllerCitations extends \Hubzero\Component\AdminController
 
 		// Output the HTML
 		$this->view->display();
+	}
+
+	/**
+	 * Publish a citation
+	 * 
+	 * @return void
+	 */
+	public function publishTask()
+	{
+		//get request vars - expecting an array id[]=4232
+		$id = JRequest::getVar('id', array());
+		if (is_array($id))
+		{
+			$id = (!empty($id)) ? $id[0] : 0;
+		}
+
+		//empty citation object
+		$row = new CitationsCitation($this->database);
+		$row->load($id);
+
+		// mark published and save
+		$row->published = 1;
+		if (!$row->save($row))
+		{
+			$this->setError($row->getError());
+			$this->displayTask();
+			return;
+		}
+
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('CITATION_PUBLISHED')
+		);
+	}
+
+	/**
+	 * Unpublish a citation
+	 * 
+	 * @return void
+	 */
+	public function unpublishTask()
+	{
+		//get request vars - expecting an array id[]=4232
+		$id = JRequest::getVar('id', array());
+		if (is_array($id))
+		{
+			$id = (!empty($id)) ? $id[0] : 0;
+		}
+
+		//empty citation object
+		$row = new CitationsCitation($this->database);
+		$row->load($id);
+
+		// mark unpublished and save
+		$row->published = 0;
+		if (!$row->save($row))
+		{
+			$this->setError($row->getError());
+			$this->displayTask();
+			return;
+		}
+
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JText::_('CITATION_UNPUBLISHED')
+		);
 	}
 
 	/**

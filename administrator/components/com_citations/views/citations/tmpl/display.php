@@ -96,6 +96,7 @@ function submitbutton(pressbutton)
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->rows); ?>);" /></th>
 				<th scope="col"><?php echo JText::_('TYPE'); ?></th>
 				<th scope="col"><?php echo JText::_('TITLE'); ?> / <?php echo JText::_('AUTHORS'); ?></th>
+				<th scope="col"><?php echo JText::_('PUBLISHED') ?></th>
 				<th scope="col"><?php echo JText::_('YEAR') ?></th>
 				<th scope="col"><?php echo JText::_('AFFILIATED'); ?></th>
 				<th scope="col"><?php echo JText::_('FUNDED_BY'); ?></th>
@@ -157,6 +158,13 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<small><?php echo $this->escape($author); ?></small>
 						</span>
 					<?php } ?>
+				</td>
+				<td>
+					<?php if ($row->published) : ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $row->id); ?>"><span class="state publish"><span><?php echo JText::_('UNPUBLISH'); ?></span></span></a>
+					<?php else : ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $row->id); ?>"><span class="state unpublish"><span><?php echo JText::_('PUBLISH'); ?></span></span></a>
+					<?php endif; ?>
 				</td>
 				<td><?php echo $this->escape($row->year); ?></td>
 				<td>
