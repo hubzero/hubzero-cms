@@ -283,7 +283,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 		}
 
 		// Remove substitutes
-		foreach ($this->substitutes() as $substitute)
+		foreach ($this->substitutes('list', array('limit' => 0)) as $substitute)
 		{
 			if (!$substitute->delete())
 			{
