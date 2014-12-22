@@ -399,6 +399,13 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// make sure citation is published
+		if (!$this->view->citation->published)
+		{
+			JError::raiseError(404, JText::_('COM_CITATIONS_NOT_PUBLISHED'));
+			return;
+		}
+
 		//load citation associations
 		$assoc = new CitationsAssociation($this->database);
 		$this->view->associations = $assoc->getRecords(array('cid' => $id));
