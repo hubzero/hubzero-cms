@@ -250,6 +250,10 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 				foreach ($this->view->categories as $response)
 				{
 					$this->view->total += $response['total'];
+				}
+				foreach ($this->view->categories as $response)
+				{
+					//$this->view->total += $response['total'];
 
 					if (is_array($response['results']))
 					{
@@ -261,7 +265,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 					{
 						foreach ($response['children'] as $sresponse)
 						{
-							$this->view->total += $sresponse['total'];
+							//$this->view->total += $sresponse['total'];
 
 							if (is_array($sresponse['results']))
 							{
