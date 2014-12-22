@@ -365,7 +365,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		//make sure we have an id
 		if (!$id || $id == 0)
 		{
-			JError::raiseError(500, JText::_('COM_CITATIONS_MUST_HAVE_ID'));
+			JError::raiseError(404, JText::_('COM_CITATIONS_MUST_HAVE_ID'));
 			return;
 		}
 
@@ -376,7 +376,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		//make sure we got a citation
 		if (!isset($this->view->citation->title) || $this->view->citation->title == '')
 		{
-			JError::raiseError(500, JText::_('COM_CITATIONS_NO_CITATION_WITH_ID'));
+			JError::raiseError(404, JText::_('COM_CITATIONS_NO_CITATION_WITH_ID'));
 			return;
 		}
 
