@@ -301,7 +301,7 @@ class ToolsControllerApi extends \Hubzero\Component\ApiController
 			clearstatcache();
 			if (!is_dir($home_directory))
 			{
-				$this->errorMessage(500, 'Unable to find users sessions directory. - ' . $home_directory);
+				$this->errorMessage(404, 'Unable to find users sessions directory. - ' . $home_directory);
 				return;
 			}
 		}
