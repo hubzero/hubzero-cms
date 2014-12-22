@@ -211,7 +211,7 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 					{
 						foreach ($response['children'] as $sresponse)
 						{
-							$this->view->total += $sresponse['total'];
+							//$this->view->total += $sresponse['total'];
 
 							if (is_array($sresponse['sql']))
 							{
