@@ -86,7 +86,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 		</p>
 
 		<div class="container">
-			<p><input type="submit" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
+			<p><input type="submit" class="btn" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
 
 			<table class="entries" id="revisionhistory" summary="<?php echo JText::_('COM_WIKI_HISTORY_TBL_SUMMARY'); ?>">
 				<caption><?php echo JText::_('COM_WIKI_HISTORY_TBL_SUMMARY'); ?></caption>
@@ -145,13 +145,13 @@ foreach ($this->page->revisions('list', array('sortby' => 'version DESC'), true)
 								$cur = $revision->get('version'); ?>
 								( cur )
 							<?php } else { ?>
-								(<a href="<?php echo JRoute::_($this->page->link('compare') . '&oldid=' . $revision->get('version') . '&diff=' . $cur); ?>">
+								(<a href="<?php echo $this->page->link('compare') . '?oldid=' . $revision->get('version') . '&diff=' . $cur; ?>">
 									<?php echo JText::_('COM_WIKI_HISTORY_CURRENT'); ?>
 								</a>)
 							<?php } ?>
 								&nbsp;
 							<?php if (!$this->page->revisions()->isLast()) { ?>
-								(<a href="<?php echo JRoute::_($this->page->link('compare') . '&oldid=' . ($revision->get('version') - 1) . '&diff=' . $revision->get('version')); ?>">
+								(<a href="<?php echo $this->page->link('compare') . '?oldid=' . ($revision->get('version') - 1) . '&diff=' . $revision->get('version'); ?>">
 									<?php echo JText::_('COM_WIKI_HISTORY_LAST'); ?>
 								</a>)
 							<?php } else { ?>
@@ -174,7 +174,7 @@ foreach ($this->page->revisions('list', array('sortby' => 'version DESC'), true)
 							</td>
 						<?php } ?>
 							<td>
-								<a href="<?php echo JRoute::_($this->page->link() . '&version=' . $revision->get('version')); ?>" class="tooltips" title="<?php echo JText::_('COM_WIKI_REVISION_SUMMARY').' :: ' . $summary; ?>">
+								<a href="<?php echo $this->page->link() . '?version=' . $revision->get('version'); ?>" class="tooltips" title="<?php echo JText::_('COM_WIKI_REVISION_SUMMARY').' :: ' . $summary; ?>">
 									<time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape($revision->get('created')); ?></time>
 								</a>
 							</td>
@@ -188,14 +188,14 @@ foreach ($this->page->revisions('list', array('sortby' => 'version DESC'), true)
 								<?php echo $this->escape($status); ?>
 					<?php if (!$revision->get('approved') && $this->page->access('manage')) { ?>
 								<br />
-								<a href="<?php echo JRoute::_($this->page->link('approve') . '&oldid=' . $revision->get('id')); ?>">
+								<a href="<?php echo $this->page->link('approve') . '?oldid=' . $revision->get('id'); ?>">
 									<?php echo JText::_('COM_WIKI_ACTION_APPROVED'); ?>
 								</a>
 					<?php } ?>
 							</td>
 					<?php if (($this->page->isLocked() && $this->page->access('manage')) || (!$this->page->isLocked() && $this->page->access('delete'))) { ?>
 							<td>
-								<a class="delete" href="<?php echo JRoute::_($this->page->link('deleterevision') . '&oldid=' . $revision->get('id')); ?>" title="<?php echo JText::_('COM_WIKI_REVISION_DELETE'); ?>">
+								<a class="delete" href="<?php echo JRoute::_($this->page->link('deleterevision') . '?oldid=' . $revision->get('id')); ?>" title="<?php echo JText::_('COM_WIKI_REVISION_DELETE'); ?>">
 									<?php echo JText::_('DELETE'); ?>
 								</a>
 							</td>
@@ -204,7 +204,7 @@ foreach ($this->page->revisions('list', array('sortby' => 'version DESC'), true)
 <?php } ?>
 					</tbody>
 				</table>
-				<p><input type="submit" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
+				<p><input type="submit" class="btn" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
 			</div><!-- / .container -->
 
 		<div class="clear"></div>
