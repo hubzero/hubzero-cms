@@ -143,7 +143,7 @@ if (!$this->sub)
 							?>
 						</select>
 					</label>
-					<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WIKI_GO'); ?>" /></p>
+					<p class="submit"><input type="submit" class="btn" value="<?php echo JText::_('COM_WIKI_GO'); ?>" /></p>
 				<?php if ($this->sub) { ?>
 					<input type="hidden" name="action" value="comments" />
 					<input type="hidden" name="active" value="<?php echo $this->sub; ?>" />
@@ -215,7 +215,7 @@ if (!$this->sub)
 
 				<?php echo JHTML::_('form.token'); ?>
 
-				<p class="submit"><input type="submit" value="<?php echo JText::_('COM_WIKI_SUBMIT'); ?>" /></p>
+				<p class="submit"><input type="submit" class="btn" value="<?php echo JText::_('COM_WIKI_SUBMIT'); ?>" /></p>
 				<div class="sidenote">
 					<p>
 						<strong><?php echo JText::_('COM_WIKI_COMMENT_KEEP_RELEVANT'); ?></strong>

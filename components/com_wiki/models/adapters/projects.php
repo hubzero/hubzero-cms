@@ -115,6 +115,6 @@ class WikiModelAdapterProjects extends WikiModelAdapterAbstract
 
 		$segments = array_merge($segments, (array) $params);
 
-		return JRoute::_($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor);
+		return JRoute::_($this->_base . '?' . (string) $this->_build($segments) . (string) $anchor) . '?t=1';
 	}
 }

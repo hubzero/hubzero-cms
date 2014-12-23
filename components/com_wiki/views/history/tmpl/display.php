@@ -88,7 +88,7 @@ if (!$this->sub)
 			</p>
 
 			<div class="container">
-				<p><input type="submit" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
+				<p><input type="submit" class="btn" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
 
 				<table class="entries" id="revisionhistory">
 					<caption><?php echo JText::_('COM_WIKI_HISTORY_TBL_SUMMARY'); ?></caption>
@@ -209,7 +209,7 @@ if (!$this->sub)
 					<?php } ?>
 					</tbody>
 				</table>
-				<p><input type="submit" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
+				<p><input type="submit" class="btn" value="<?php echo JText::_('COM_WIKI_HISTORY_COMPARE'); ?>" /></p>
 			</div><!-- / .container -->
 
 			<div class="clear"></div>
