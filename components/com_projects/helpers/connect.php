@@ -1872,7 +1872,7 @@ class ProjectsConnectHelper extends JObject {
 		}
 
 		// Get api
-		$apiService = $this->getAPI($service);
+		$apiService = $this->getAPI($service, $this->_project->owned_by_user);
 
 		if (!$apiService)
 		{
