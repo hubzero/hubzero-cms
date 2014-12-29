@@ -241,6 +241,7 @@ class ProjectsGitHelper extends JObject
 	 */
 	public function gitLogAll ($path = '', $subdir = '')
 	{
+		return NULL; // disable
 		chdir($this->_prefix . $path);
 		$exec = ' log --diff-filter=AMR --pretty=format:">>>%ci||%an||%ae||%H||%s" --name-only ' . $subdir;
 
