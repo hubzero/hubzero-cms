@@ -38,6 +38,7 @@ $total = $this->closed + $this->open;
 <div class="<?php echo $this->module->module; ?>">
 	<table class="stats-overview">
 		<tbody>
+			<?php if ($total) { ?>
 			<tr>
 				<td colspan="2">
 					<div>
@@ -47,6 +48,7 @@ $total = $this->closed + $this->open;
 					</div>
 				</td>
 			</tr>
+			<?php } ?>
 			<tr>
 				<td class="closed">
 					<a href="index.php?option=com_answers&amp;filterby=closed" title="<?php echo JText::_('MOD_ANSWERS_CLOSED_TITLE'); ?>"><?php echo $this->escape($this->closed); ?></a>
