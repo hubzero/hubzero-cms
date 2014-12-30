@@ -43,3 +43,6 @@
 	div.draggable .expandedlist li.wishlist span span {
 		color: #999;
 	}
+	h4.wish-category {
+		padding: 0.3em 0.5em;
+	}
