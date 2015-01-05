@@ -248,6 +248,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 					}
 
 					$comment = $this->get('comment');
+
 					//if (!strstr($comment, '</p>') && !strstr($comment, '<pre class="wiki">'))
 					//{
 						$comment = preg_replace("/<br\s?\/>/i", '', $comment);
@@ -256,6 +257,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 						$comment = str_replace("\t", ' &nbsp; &nbsp;', $comment);
 						$comment = preg_replace('/  /', ' &nbsp;', $comment);
 					//}
+					$comment = preg_replace('/\{ticket#([\d]+)\}/i', '<a href="' . JRoute::_("index.php?option=com_support&task=ticket&id=$1") . '">' . JText::sprintf('ticket #%s', "$1") . '</a>', $comment);
 
 					$comment = preg_replace_callback('/\{attachment#[0-9]*\}/sU', array(&$this,'_getAttachment'), $comment);
 					$this->set('comment.parsed', $comment);
