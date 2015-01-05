@@ -541,7 +541,7 @@ $cc = array();
 							$jconfig = JFactory::getConfig();
 							foreach ($this->lists['messages'] as $message)
 							{
-								$message->message = str_replace('"', '&quot;', $message->message);
+								//$message->message = str_replace('"', '&quot;', $message->message);
 								$message->message = str_replace('&quote;', '&quot;', $message->message);
 								$message->message = str_replace('#XXX', '#' . $this->row->get('id'), $message->message);
 								$message->message = str_replace('{ticket#}', $this->row->get('id'), $message->message);
