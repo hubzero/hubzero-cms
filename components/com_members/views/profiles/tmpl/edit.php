@@ -394,7 +394,7 @@ if ($this->registration->Citizenship != REG_HIDE
 
 	if ($this->registration->Citizenship != REG_HIDE
 	 || $this->registration->Residency != REG_HIDE) {
-		$countries = \Hubzero\Geocode\Geocode::getcountries();
+		$countries = \Hubzero\Geocode\Geocode::countries();
 	}
 
 	if ($this->registration->Citizenship != REG_HIDE) {
@@ -425,11 +425,11 @@ if ($this->registration->Citizenship != REG_HIDE
 		foreach ($countries as $country)
 		{
 			if ($country['code'] != 'US') {
-				$html .= "\t\t\t\t".' <option value="' . $country['code'] . '"';
-				if ($countryorigin == $country['code']) {
+				$html .= "\t\t\t\t".' <option value="' . $country->code . '"';
+				if ($countryorigin == $country->code) {
 					$html .= ' selected="selected"';
 				}
-				$html .= '>' . $this->escape($country['name']) . '</option>'."\n";
+				$html .= '>' . $this->escape($country->name) . '</option>'."\n";
 			}
 		}
 		$html .= "\t\t\t\t".'</select></label>'."\n";
@@ -464,11 +464,11 @@ if ($this->registration->Citizenship != REG_HIDE
 		foreach ($countries as $country)
 		{
 			if (strcasecmp($country['code'],"US") != 0) {
-				$html .= "\t\t\t"."\t\t".'<option value="' . $country['code'] . '"';
-				if (strcasecmp($countryresident,$country['code']) == 0) {
+				$html .= "\t\t\t"."\t\t".'<option value="' . $country->code . '"';
+				if (strcasecmp($countryresident,$country->code) == 0) {
 					$html .= ' selected="selected"';
 				}
-				$html .= '>' . $this->escape($country['name']) . '</option>'."\n";
+				$html .= '>' . $this->escape($country->name) . '</option>'."\n";
 			}
 		}
 		$html .= "\t\t\t\t".'</select></label>'."\n";

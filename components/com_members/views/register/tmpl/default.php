@@ -628,13 +628,13 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 									<option value=""><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_SELECT_FROM_LIST'); ?></option>
 								<?php } ?>
 								<?php
-								$countries = \Hubzero\Geocode\Geocode::getcountries();
+								$countries = \Hubzero\Geocode\Geocode::countries();
 								if ($countries)
 								{
 									foreach ($countries as $country)
 									{
 										?>
-										<option value="<?php echo $country['code']; ?>"<?php if ($this->registration['countryorigin'] == $country['code']) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
+										<option value="<?php echo $country->code; ?>"<?php if ($this->registration['countryorigin'] == $country->code) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
 										<?php
 									}
 								}
@@ -685,14 +685,14 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 								<?php
 								if (!isset($countries) || !$countries)
 								{
-									$countries = \Hubzero\Geocode\Geocode::getcountries();
+									$countries = \Hubzero\Geocode\Geocode::countries();
 								}
 								if ($countries)
 								{
 									foreach ($countries as $country)
 									{
 										?>
-										<option value="<?php echo $country['code']; ?>"<?php if (strcasecmp($this->registration['countryresident'], $country['code']) == 0) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country['name']); ?></option>
+										<option value="<?php echo $country->code; ?>"<?php if (strcasecmp($this->registration['countryresident'], $country->code) == 0) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
 										<?php
 									}
 								}
