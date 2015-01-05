@@ -301,7 +301,6 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 				<input type="hidden" name="params[allow_changes]" value="<?php echo ($this->page->param('allow_changes') == 1) ? '1' : '0'; ?>" />
 				<input type="hidden" name="params[allow_comments]" value="<?php echo ($this->page->param('allow_comments') == 1) ? '1' : '0'; ?>" />
 				<input type="hidden" name="authors" id="params_authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
-				<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
 		<?php } ?>
 
 			<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
@@ -315,7 +314,6 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		</fieldset>
 		<div class="clear"></div>
 <?php } else { ?>
-		<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access')); ?>" />
 		<input type="hidden" name="page[group]" value="<?php echo $this->escape($this->page->get('group_cn')); ?>" />
 		<input type="hidden" name="page[state]" value="<?php echo $this->escape($this->page->get('state'), 0); ?>" />
 		<input type="hidden" name="authors" value="<?php echo $this->escape($this->page->authors('string')); ?>" />
@@ -361,6 +359,7 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 		<input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 		<input type="hidden" name="lid" value="<?php echo $lid; ?>" />
 		<input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+		<input type="hidden" name="page[access]" value="<?php echo $this->escape($this->page->get('access', 0)); ?>" />
 
 		<input type="hidden" name="revision[id]" value="<?php echo $this->escape($this->revision->get('id')); ?>" />
 		<input type="hidden" name="revision[pageid]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
