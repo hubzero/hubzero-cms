@@ -139,6 +139,24 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			$searchquery = $filters['search'];
 			$phrases = $searchquery->searchPhrases;
 		}
+
+		$groupAuth = array();
+		$groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
+		if (!$juser->get('guest'))
+		{
+			$groupAuth[] = 'xg.plugins LIKE \'%wiki=registered%\'';
+			$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+			$gids = array();
+			foreach ($profile->getGroups() as $group)
+			{
+				$gids[] = $group->gidNumber;
+			}
+			if (count($gids) > 0)
+			{
+				$groupAuth[] = '(xg.plugins LIKE \'%wiki=members%\' AND xg.gidNumber IN (' . join(',', $gids) . '))';
+			}
+		}
+
 		if (isset($filters['select']) && $filters['select'] == 'count')
 		{
 			if (isset($filters['tags']))
@@ -155,6 +173,7 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			$query = "SELECT v.pageid AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
 						v.created AS modified, v.created AS publish_up, NULL AS publish_down,
 						CASE
+							WHEN w.group_cn LIKE 'pr-%' THEN concat('index.php?option=com_projects&scope=', w.scope, '&pagename=', w.pagename)
 							WHEN w.group_cn != '' THEN CONCAT('index.php?option=com_groups&scope=', w.scope, '&pagename=', w.pagename)
 							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
 						END AS href,
@@ -165,12 +184,14 @@ class plgTagsWiki extends \Hubzero\Plugin\Plugin
 			}
 			$query .= ", w.params, NULL AS rcount, w.scope AS data1, NULL AS data2, NULL AS data3 ";
 		}
-		$query .= "FROM #__wiki_page AS w, #__wiki_version AS v ";
+		$query .= "FROM #__wiki_page AS w
+					INNER JOIN #__wiki_version AS v ON v.id=w.version_id
+					LEFT JOIN `#__xgroups` xg ON xg.cn = w.group_cn";
 		if (isset($filters['tags']))
 		{
 			$query .= ", #__tags_object AS t ";
 		}
-		$query .= "WHERE w.id=v.pageid AND v.id=w.version_id AND v.approved=1 AND w.state < 2 ";
+		$query .= "WHERE w.id=v.pageid AND v.approved=1 AND w.state < 2 AND (xg.gidNumber IS NULL OR (" . implode(' OR ', $groupAuth) . "))";
 		if (isset($filters['tags']))
 		{
 			$ids = implode(',', $filters['tags']);
