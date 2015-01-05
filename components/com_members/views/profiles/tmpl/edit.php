@@ -131,7 +131,8 @@ if ($this->registration->Fullname != REG_HIDE) {
 	$html .= $message;
 }
 
-if ($this->registration->Email != REG_HIDE || $this->registration->ConfirmEmail != REG_HIDE) {
+if ($this->registration->Email != REG_HIDE || $this->registration->ConfirmEmail != REG_HIDE)
+{
 	$html .= "\t\t".'<div class="group twoup">'."\n";
 
 	// Email
@@ -381,12 +382,11 @@ $html .= "\t".'</fieldset><div class="clear"></div>'."\n";
 
 if ($this->registration->Citizenship != REG_HIDE || $this->registration->Residency != REG_HIDE || $this->registration->Sex != REG_HIDE || $this->registration->Disability != REG_HIDE || $this->registration->Hispanic != REG_HIDE || $this->registration->Race != REG_HIDE)
 {
-	$html .= t.'<fieldset>'."\n";
+	$html .= "\t".'<fieldset>'."\n";
 	$html .= "\t\t".'<legend>'.JText::_('Demographics').'</legend>'."\n";
 
-	if ($this->registration->Citizenship != REG_HIDE
-	 || $this->registration->Residency != REG_HIDE) {
-		$countries = \Hubzero\Geocode\Geocode::getcountries();
+	if ($this->registration->Citizenship != REG_HIDE || $this->registration->Residency != REG_HIDE) {
+		$countries = \Hubzero\Geocode\Geocode::countries();
 	}
 
 	if ($this->registration->Citizenship != REG_HIDE) {
