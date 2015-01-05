@@ -418,7 +418,7 @@ if ($this->registration->Citizenship != REG_HIDE || $this->registration->Residen
 		}
 		foreach ($countries as $country)
 		{
-			if ($country['code'] != 'US') {
+			if ($country->code != 'US') {
 				$html .= "\t\t\t\t".' <option value="' . $country->code . '"';
 				if ($countryorigin == $country->code) {
 					$html .= ' selected="selected"';
@@ -457,7 +457,7 @@ if ($this->registration->Citizenship != REG_HIDE || $this->registration->Residen
 		}
 		foreach ($countries as $country)
 		{
-			if (strcasecmp($country['code'],"US") != 0) {
+			if (strcasecmp($country->code,"US") != 0) {
 				$html .= "\t\t\t"."\t\t".'<option value="' . $country->code . '"';
 				if (strcasecmp($countryresident,$country->code) == 0) {
 					$html .= ' selected="selected"';
