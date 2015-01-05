@@ -82,7 +82,7 @@ class Events extends GroupMacro
 
 		//array of filters
 		$filters = array(
-			'limit' => (isset($args['number'])) ? $args['number'] : 3
+			'limit' => (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 3
 		);
 
 		//get group events
