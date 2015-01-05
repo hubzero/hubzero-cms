@@ -62,7 +62,7 @@ class plgSearchWiki extends SearchPlugin
 		$user = JFactory::getUser();
 		$viewlevels	= implode(',', $user->getAuthorisedViewLevels());
 
-		if (($gids = $authz->get_group_ids()))
+		if ($gids = $authz->get_group_ids())
 		{
 			$authorization = '(wp.access IN (0,' . $viewlevels . ') OR (wp.access = 1 AND xg.gidNumber IN (' . join(',', $gids) . ')))';
 		}
@@ -77,7 +77,8 @@ class plgSearchWiki extends SearchPlugin
 		{
 			$groupAuth[] = '1';
 		}
-		else {
+		else
+		{
 			$groupAuth[] = 'xg.plugins LIKE \'%wiki=anyone%\'';
 			if (!$authz->is_guest())
 			{
