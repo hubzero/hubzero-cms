@@ -654,11 +654,11 @@ class GroupsControllerPages extends GroupsControllerAbstract
 		// output page version
 		if ($escape)
 		{
-			echo '<pre>' . $this->view->escape($pageVersion->get('content')) . '</pre>';
+			echo '<pre>' . utf8_decode($this->view->escape($pageVersion->get('content'))) . '</pre>';
 		}
 		else
 		{
-			echo $pageVersion->get('content');
+			echo utf8_decode($pageVersion->get('content'));
 		}
 		exit();
 	}
