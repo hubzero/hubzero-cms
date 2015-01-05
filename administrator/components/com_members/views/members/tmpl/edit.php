@@ -171,6 +171,56 @@ function submitbutton(pressbutton)
 				<label for="field-organization"><?php echo JText::_('COM_MEMBERS_FIELD_ORGANIZATION'); ?>:</label><br />
 				<input type="text" name="profile[organization]" id="field-organization" value="<?php echo $this->escape(stripslashes($this->profile->get('organization'))); ?>" />
 			</div>
+
+			<div class="col width-50 fltlft">
+				<div class="input-wrap">
+					<label for="field-corigin"><?php echo JText::_('COM_MEMBERS_PROFILE_CITIZEN'); ?>:</label>
+					<select name="profile[countryorigin]" id="field-corigin">
+						<?php if (!$this->profile->get('countryorigin') || $this->profile->get('countryorigin') == 'US') { ?>
+							<option value=""><?php echo JText::_('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'); ?></option>
+						<?php } ?>
+						<?php
+						$countries = \Hubzero\Geocode\Geocode::countries();
+						if ($countries)
+						{
+							foreach ($countries as $country)
+							{
+								?>
+								<option value="<?php echo $country->code; ?>"<?php if ($this->profile->get('countryorigin') == $country->code) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
+								<?php
+							}
+						}
+						?>
+					</select>
+				</div>
+			</div>
+			<div class="col width-50 fltrt">
+				<div class="input-wrap">
+					<label for="field-cresident"><?php echo JText::_('COM_MEMBERS_PROFILE_RESIDENT'); ?>:</label>
+					<select name="profile[countryresident]" id="field-cresident">
+						<?php if (!$this->profile->get('countryresident') || strcasecmp($this->profile->get('countryresident'), 'US') == 0) { ?>
+							<option value=""><?php echo JText::_('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'); ?></option>
+						<?php } ?>
+						<?php
+						if (!isset($countries) || !$countries)
+						{
+							$countries = \Hubzero\Geocode\Geocode::getcountries();
+						}
+						if ($countries)
+						{
+							foreach ($countries as $country)
+							{
+								?>
+								<option value="<?php echo $country->code; ?>"<?php if (strcasecmp($this->profile->get('countryresident'), $country->code) == 0) { echo ' selected="selected"'; } ?>><?php echo $this->escape($country->name); ?></option>
+								<?php
+							}
+						}
+						?>
+					</select>
+				</div>
+			</div>
+			<div class="clr"></div>
+
 			<div class="input-wrap">
 				<label for="field-url"><?php echo JText::_('COM_MEMBERS_FIELD_ORCID'); ?>:</label><br />
 				<input type="text" name="profile[orcid]" id="field-orcid" value="<?php echo $this->escape(stripslashes($this->profile->get('orcid'))); ?>" />
@@ -198,12 +248,12 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<?php
 					$options = array(
-						'-1' => '- Select email option &mdash;',
-						'1'  => 'Yes, send me emails',
-						'0'  => 'No, don\'t send me emails'
+						'-1' => JText::_('COM_MEMBERS_PROFILE_FORM_SELECT_FROM_LIST'),
+						'1'  => JText::_('JYES'),
+						'0'  => JText::_('JNO')
 					);
 				?>
-				<label for="field-mailPreferenceOption">Would you like to receive email updates (newsletters, etc.)?</label>
+				<label for="field-mailPreferenceOption"><?php echo JText::_('COM_MEMBERS_FIELD_MAIL_PREFERENCE'); ?></label>
 				<select name="profile[mailPreferenceOption]" id="field-mailPreferenceOption">
 					<?php foreach ($options as $key => $value) : ?>
 						<?php $sel = ($key == $this->profile->get('mailPreferenceOption')) ? 'selected="selected"' : ''; ?>
