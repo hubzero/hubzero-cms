@@ -546,7 +546,8 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 
 		if (!$view->row->exists())
 		{
-			return $this->_browse();
+			JError::raiseError(404, JText::_('PLG_GROUPS_BLOG_NO_ENTRY_FOUND'));
+			return; // $this->_browse(); Can cause infinite loop
 		}
 
 		// Check authorization
