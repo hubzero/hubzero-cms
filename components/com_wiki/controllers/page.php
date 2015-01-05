@@ -405,6 +405,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		// If an existing page, pull its tags for editing
 		if (!$this->page->exists())
 		{
+			$this->page->set('access', 0);
 			$this->page->set('created_by', $this->juser->get('id'));
 
 			if ($this->_group)
