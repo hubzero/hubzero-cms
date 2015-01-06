@@ -573,16 +573,16 @@ class plgUsageTools extends \Hubzero\Plugin\Plugin
 	{
 		$database = JFactory::getDBO();
 
-		$sql = "SELECT COUNT(datetime) FROM #__stats_topvals WHERE LEFT(datetime,7) = " . $database->Quote($yearmonth) . " AND period = " . $database->Quote($period);
+		$sql = "SELECT COUNT(datetime) FROM `#__stats_topvals` WHERE `datetime`=" . $database->Quote($yearmonth . '-00 00:00:00') . " AND `period`=" . $database->Quote($period);
 		$database->setQuery($sql);
 		$result = $database->loadResult();
 
 		if ($result && $result > 0)
 		{
-			return true ;
+			return true;
 		}
 
-		return false ;
+		return false;
 	}
 
 	/**
