@@ -144,7 +144,8 @@ class UsersControllerUser extends UsersController
 			// If no_html is set, return json response
 			if (JRequest::getInt('no_html', 0))
 			{
-				echo json_encode( array("error" => $result->getMessage(), "freturn" => JRoute::_($return, false)) );
+				$error = ($result) ? $result->getMessage() : 'An unknown error has occurred';
+				echo json_encode( array("error" => $error, "freturn" => JRoute::_($return, false)) );
 				exit;
 			}
 			else
