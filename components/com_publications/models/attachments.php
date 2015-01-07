@@ -241,10 +241,11 @@ class PublicationsModelAttachments extends JObject
 				$authorized
 			);
 		}
+		$output .= $links;
 		$output .= $append;
 		$output .= '</ul>';
 
-		return $links ? $output : false;
+		return trim($links) ? $output : false;
 	}
 
 	/**
