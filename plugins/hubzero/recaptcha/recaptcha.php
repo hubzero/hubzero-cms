@@ -44,23 +44,31 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 	 * @var    boolean
 	 */
 	protected $_autoloadLanguage = true;
-	/**
-	 * API server
-	 * @var    string
-	 */
-	public $apiServer = 'http://www.google.com/recaptcha/api';
 
 	/**
-	 * API secure server
+	 * Path to JS library needed for ReCAPTCHA to display
+	 *
+	 * [!] Must be served over HTTPS
+	 * 
 	 * @var    string
 	 */
-	public $apiSecureServer = 'https://www.google.com/recaptcha/api'; //'https://api-secure.recaptcha.net';
+	private static $_jsUrl = 'https://www.google.com/recaptcha/api.js';
 
 	/**
-	 * API verify server
+	 * Path to JS fallback library needed for ReCAPTCHA to display when JS is disabled
+	 *
+	 * [!] Must be served over HTTPS
+	 * 
 	 * @var    string
 	 */
-	public $apiVerifyServer = 'www.google.com';
+	private static $_jsFallbackUrl = 'https://www.google.com/recaptcha/api/fallback?k=';
+
+	/**
+	 * ReCAPTCHA verification url
+	 * 
+	 * @var    string
+	 */
+	private static $_verifyUrl = 'https://www.google.com/recaptcha/api/siteverify?';
 
 	/**
 	 * Displays either a CAPTCHA image or form field
@@ -69,78 +77,37 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	public function onGetCaptcha($error='')
 	{
-		if (!$this->params->get('public')) 
+		// make sure we have the needed recaptcha API keys
+		if (!$this->params->get('public') || !$this->params->get('private'))
 		{
 			return JText::_('PLG_HUBZERO_RECAPTCHA_API_NEEDED');
 		}
 
-		$use_ssl = true;
-		$server = $this->apiSecureServer;
-		
-		if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off')
-		{
-			$use_ssl = false;
-		}
-		if (!$use_ssl) 
-		{
-			$server = $this->apiServer;
-		}
-
-		$errorpart = '';
-		if ($error) 
-		{
-			$errorpart = '&amp;error=' . $error;
-		}
-
-		$html = '<div class="field-wrap">';
-		if ($this->params->get('ajax', 1)) 
-		{
-			global $recaptcha_ajax_instances;
-			$i = $recaptcha_ajax_instances;
-			$i++;
-			$id = 'recaptcha_ajax_instance_' . $i;
-
-			$html .= '
-					<div id="recaptcha_ajax_instance_' . $i . '"></div>
-					<script type="text/javascript" src="' . $server . '/js/recaptcha_ajax.js"></script>
-					<script type="text/javascript">
-						(function(){
-							function loadRecaptcha() { 
-								Recaptcha.create("' . $this->params->get('public') . '","' . $id . '", {theme: "' . $this->params->get('theme', 'clean') . '"});
-							}
-							if (window.addEvent) {
-								window.addEvent("domready", loadRecaptcha);
-							} else {
-								if (window.addEventListener) {
-									window.addEventListener("load", loadRecaptcha);
-								} else if (window.attachEvent) {
-									window.attachEvent("onload", loadRecaptcha);
-								} else {
-									old = window.onload; 
-									window.onload = function() {
-										if (old && typeof old == "function") {
-											old();
-										}
-										loadRecaptcha();
-									};
-								}
-							}
-						})();
-					</script>
-					';
-		}
-		else
-		{
-			$html .= '<script type="text/javascript"> var RecaptchaOptions = { theme: "' . $this->params->get('theme', 'clean') . '"  }; </script>
-					<script type="text/javascript" src="'. $server . '/challenge?k=' . $this->params->get('public') . $errorpart . '"></script>';
-		}
-
-		$html .= '<noscript>
-					<iframe src="'. $server . '/noscript?k=' . $this->params->get('public') . $errorpart . '" height="300" width="500" frameborder="0"></iframe><br />
-					<textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
-					<input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
-				</noscript>';
-		
+		// recaptcha html structure
+		// this has support for users with js off
+		$html  = '<label class="">&nbsp;</label><div class="field-wrap">';
+		$html .= '<div class="g-recaptcha" data-type="' . $this->params->get('type', 'image') . '" data-theme="' . $this->params->get('theme', 'light') . '" data-sitekey="' . $this->params->get('public') . '"></div>
+				  <noscript>
+					  <div style="width: 302px; height: 352px;">
+					    <div style="width: 302px; height: 352px; position: relative;">
+					      <div style="width: 302px; height: 352px; position: absolute;">
+					        <iframe src="' . static::$_jsFallbackUrl . $this->params->get('public') . '"
+					                frameborder="0" scrolling="no"
+					                style="width: 302px; height:352px; border-style: none;">
+					        </iframe>
+					      </div>
+					      <div style="width: 250px; height: 80px; position: absolute; border-style: none;
+					                  bottom: 21px; left: 25px; margin: 0px; padding: 0px; right: 25px;">
+					        <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+					                  class="g-recaptcha-response"
+					                  style="width: 250px; height: 80px; border: 1px solid #c1c1c1;
+					                         margin: 0px; padding: 0px; resize: none;" value="">
+					        </textarea>
+					      </div>
+					    </div>
+					  </div>
+					</noscript>
+				  <script type="text/javascript" src="' . static::$_jsUrl . '?hl=' . $this->params->get('language', 'en') . '" async defer></script>';
 		$html .= '</div>';
 
 		return $html;
@@ -153,81 +120,49 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 	 */
 	public function onValidateCaptcha()
 	{
-		$resp = $this->_recaptcha_check_answer(
-			$this->params->get('private'),
-			JRequest::getVar('REMOTE_ADDR', '', 'server'),
-			JRequest::getVar('recaptcha_challenge_field'),
-			JRequest::getVar('recaptcha_response_field')
-		);
+		// get request params
+		$response = JRequest::getVar('g-recaptcha-response', null);
+		$remoteIp = JRequest::ip();
 
-		if ($resp->is_valid) 
+		// Discard empty solution submissions
+		if ($response == null || strlen($response) == 0)
 		{
-			return true;
-		} 
-		else 
-		{
-			$this->setError($resp->error);
+			$this->setError('missing-input');
 			return false;
 		}
-		return false;
+
+		// perform a get request to the verify server with the needed data
+		$verificationResponse = $this->_submitHttpGet(static::$_verifyUrl, array(
+			'secret'   => $this->params->get('private'),
+			'remoteip' => $remoteIp,
+			'response' => $response
+		));
+
+		// json decode response
+		$verificationResponse = json_decode($verificationResponse);
+
+		// something went wrong
+		if ($verificationResponse->success !== true)
+		{
+			$this->setError($verificationResponse->{'error-codes'});
+			return false;
+		}
+
+		// success
+		return true;
 	}
 
 	/**
-	  * Calls an HTTP POST function to verify if the user's guess was correct
-	  * @param string $privkey
-	  * @param string $remoteip
-	  * @param string $challenge
-	  * @param string $response
-	  * @param array $extra_params an array of extra variables to post to the server
-	  * @return ReCaptchaResponse
-	  */
-	private function _recaptcha_check_answer($privkey, $remoteip, $challenge, $response, $extra_params = array())
+     * Submits an HTTP GET to a reCAPTCHA server.
+     *
+     * @param string $url url path to recaptcha server.
+     * @param array  $data array of parameters to be sent.
+     *
+     * @return array response
+     */
+	private function _submitHttpGet($url, $data)
 	{
-		if ($privkey == null || $privkey == '') 
-		{
-			$this->setError('PLG_HUBZERO_RECAPTCHA_API_NEEDED');
-			return;
-		}
-
-		if ($remoteip == null || $remoteip == '') 
-		{
-			$this->setError('PLG_HUBZERO_RECAPTCHA_REMOTE_IP_NEEDED');
-			return;
-		}
-
-		//discard spam submissions
-		if ($challenge == null || strlen($challenge) == 0 || $response == null || strlen($response) == 0) 
-		{
-			$recaptcha_response = new ReCaptchaResponse();
-			$recaptcha_response->is_valid = false;
-			$recaptcha_response->error = 'incorrect-captcha-sol';
-			return $recaptcha_response;
-		}
-
-		$response = $this->_recaptcha_http_post(
-			$this->apiVerifyServer, 
-			'/recaptcha/api/verify',
-			array(
-				'privatekey' => $privkey,
-				'remoteip'   => $remoteip,
-				'challenge'  => $challenge,
-				'response'   => $response
-			) + $extra_params
-		);
-
-		$answers = explode("\n", $response [1]);
-		$recaptcha_response = new ReCaptchaResponse();
-
-		if (trim($answers [0]) == 'true') 
-		{
-			$recaptcha_response->is_valid = true;
-		}
-		else 
-		{
-			$recaptcha_response->is_valid = false;
-			$recaptcha_response->error = $answers[1];
-		}
-		return $recaptcha_response;
+		return file_get_contents($url . $this->_encodeQS($data));
 	}
 
 	/**
@@ -236,7 +171,7 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 	 * @param     array $data Array of string elements to be encoded
 	 * @return    string Encoded request
 	 */
-	private function _recaptcha_qsencode($data) 
+	private function _encodeQs($data)
 	{
 		$req = '';
 		foreach ($data as $key => $value)
@@ -248,53 +183,4 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 		$req = substr($req, 0, strlen($req)-1);
 		return $req;
 	}
-
-	/**
-	 * Submits an HTTP POST to a reCAPTCHA server
-	 * 
-	 * @param  string $host
-	 * @param  string $path
-	 * @param  array  $data
-	 * @param  int    $port
-	 * @return array response
-	 */
-	private function _recaptcha_http_post($host, $path, $data, $port = 80) 
-	{
-		$req = $this->_recaptcha_qsencode($data);
-
-		$http_request  = "POST $path HTTP/1.0\r\n";
-		$http_request .= "Host: $host\r\n";
-		$http_request .= "Content-Type: application/x-www-form-urlencoded;\r\n";
-		$http_request .= "Content-Length: " . strlen($req) . "\r\n";
-		$http_request .= "User-Agent: reCAPTCHA/PHP\r\n";
-		$http_request .= "\r\n";
-		$http_request .= $req;
-
-		$response = '';
-		if (false == ($fs = @fsockopen($host, $port, $errno, $errstr, 10))) 
-		{
-			$this->setError('PLG_HUBZERO_RECAPTCHA_COULD_NOT_OPEN_SOCKET');
-			return $response;
-		}
-
-		fwrite($fs, $http_request);
-
-		while (!feof($fs))
-		{
-			$response .= fgets($fs, 1160); // One TCP-IP packet
-		}
-		fclose($fs);
-		$response = explode("\r\n\r\n", $response, 2);
-
-		return $response;
-	}
-}
-
-/**
- * A ReCaptchaResponse is returned from recaptcha_check_answer()
- */
-class ReCaptchaResponse 
-{
-	var $is_valid;
-	var $error;
 }

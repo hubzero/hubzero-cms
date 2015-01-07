@@ -21,17 +21,11 @@
 <extension version="1.7" type="plugin" group="hubzero">
 	<name>Hubzero - Recaptcha</name>
 	<author>HUBzero</author>
-	<creationDate>September 2012</creationDate>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<authorEmail>extension@stefysoft.com</authorEmail>
-	<authorUrl>www.stefysoft.com</authorUrl>
-	<version>1.5.7</version>
 	<description>Display a ReCAPTCHA form</description>
 	<files>
 		<filename plugin="recaptcha">recaptcha.php</filename>
-		<filename>recaptcha/recaptchalib.php</filename>
-		<filename>recaptcha/api.php</filename>
 	</files>
 	<languages folder="lang">
 		<language tag="en-GB">en-GB.plg_hubzero_recaptcha.ini</language>
@@ -42,17 +36,15 @@
 				<field type="text" name="public" default='' label="PLG_HUBZERO_RECAPTCHA_PUBLIC_KEY"  description="PLG_HUBZERO_RECAPTCHA_PUBLIC_KEY_DESC" />
 				<field type="text" name="private" default='' label="PLG_HUBZERO_RECAPTCHA_PRIVATE_KEY" description="PLG_HUBZERO_RECAPTCHA_PRIVATE_KEY_DESC" />
 				<field name="@spacer" type="spacer" />
-				<field name="@spacer2" type="spacer" default="PLG_HUBZERO_RECAPTCHA_CUSTOMISATION"/>
-				<field type="radio" name="ajax" default="1" label="PLG_HUBZERO_RECAPTCHA_TYPE" description="PLG_HUBZERO_RECAPTCHA_TYPE_DESC">
-					<option value="0">PLG_HUBZERO_RECAPTCHA_IFRAME</option>
-					<option value="1">PLG_HUBZERO_RECAPTCHA_AJAX</option>
+				<field type="list" name="theme" default="light" label="PLG_HUBZERO_RECAPTCHA_THEME" description="PLG_HUBZERO_RECAPTCHA_THEME_DESC">
+					<option value="light">PLG_HUBZERO_RECAPTCHA_THEME_LIGHT</option>
+					<option value="dark">PLG_HUBZERO_RECAPTCHA_THEME_DARK</option>
 				</field>
-				<field type="list" name="template" default="clean" label="PLG_HUBZERO_RECAPTCHA_TEMPLATE" description="PLG_HUBZERO_RECAPTCHA_TEMPLATE_DESC">
-					<option value="red">PLG_HUBZERO_RECAPTCHA_RED</option>
-					<option value="white">PLG_HUBZERO_RECAPTCHA_WHITE</option>
-					<option value="blackglass">PLG_HUBZERO_RECAPTCHA_BLACKGLASS</option>
-					<option value="clean">PLG_HUBZERO_RECAPTCHA_CLEAN</option>
+				<field type="list" name="type" default="image" label="PLG_HUBZERO_RECAPTCHA_TYPE" description="PLG_HUBZERO_RECAPTCHA_TYPE_DESC">
+					<option value="image">PLG_HUBZERO_RECAPTCHA_TYPE_IMAGE</option>
+					<option value="audio">PLG_HUBZERO_RECAPTCHA_TYPE_AUDIO</option>
 				</field>
+				<field type="text" name="language" default='en' label="PLG_HUBZERO_RECAPTCHA_LANGUAGE_CODE" description="PLG_HUBZERO_RECAPTCHA_LANGUAGE_CODE_DESC" />
 			</fieldset>
 		</fields>
 	</config>
