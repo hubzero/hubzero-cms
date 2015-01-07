@@ -124,11 +124,19 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 
 		//instantiate new hubzero image mozify object
 		$hubzeroImageMozify = new \Hubzero\Image\Mozify( $config );
-
-		//return
-		$this->code     = $hubzeroImageMozify->mozify();
-		$this->preview  = $hubzeroImageMozify->mosaic();
-		$this->original = $image;
+		if (!$hubzeroImageMozify->getError())
+		{
+			$this->code     = $hubzeroImageMozify->mozify();
+			$this->preview  = $hubzeroImageMozify->mosaic();
+			$this->original = $image;
+		}
+		else
+		{
+			$this->code     = null;
+			$this->preview  = null;
+			$this->original = $image;
+			$this->setError($hubzeroImageMozify->getError());
+		}
 		$this->displayTask();
 		return;
 	}

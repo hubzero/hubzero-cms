@@ -33,7 +33,7 @@ namespace Hubzero\Image;
 /**
  * Helper class for Converting Image to Table Mosaic
  */
-class Mozify
+class Mozify extends \Hubzero\Base\Object
 {
 	private $imageAlt        = null;
 	private $imageUrl        = null;
@@ -130,7 +130,16 @@ class Mozify
 	public function setImageUrl($imageUrl = '')
 	{
 		$this->imageUrl = $imageUrl;
-		list($this->imageWidth, $this->imageHeight) = getimagesize($this->imageUrl);
+		$imageSizes = @getimagesize($this->imageUrl);
+		if ($imageSizes)
+		{
+			list($this->imageWidth, $this->imageHeight) = $imageSizes;
+		}
+		else
+		{
+			$this->setError('Unable to get details of image');
+			return;
+		}
 	}
 
 	/**
