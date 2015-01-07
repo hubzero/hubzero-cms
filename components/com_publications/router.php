@@ -176,6 +176,7 @@ function PublicationsParseRoute($segments)
 		if (!isset($vars['category']))
 		{
 			$vars['alias'] = $segments[0];
+			$vars['task'] = 'view';
 		}
 	}
 
