@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 $useBlocks 	= $this->config->get('curation', 0);
 $webpath 	= $this->config->get('webpath');
 $abstract	= stripslashes($this->publication->abstract);
-$authorized = ($this->restricted && !$this->authorized) ? false : true;
+$authorized = (($this->restricted && !$this->authorized) || $this->publication->state == 0) ? false : true;
 
 // Set the document description
 if ($this->publication->abstract)

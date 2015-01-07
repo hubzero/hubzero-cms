@@ -743,13 +743,14 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$extended = $lastPubRelease && $lastPubRelease->id == $publication->version_id ? true : false;
 
 		// Get sections
+		$unrestrict = (($restricted && !$authorized) || $publication->state == 0) ? false : true;
 		// Trigger the functions that return the areas we'll be using
-		$cats = $dispatcher->trigger( 'onPublicationAreas', array($publication, $version, $extended, $authorized) );
+		$cats = $dispatcher->trigger( 'onPublicationAreas', array($publication, $version, $extended, $unrestrict) );
 
 		// Get the sections
 		$sections = $dispatcher->trigger( 'onPublication',
 			array($publication, $this->_option, array($tab), 'all',
-			$version, $extended, $authorized) );
+			$version, $extended, $unrestrict) );
 
 		$available = array('play');
 		foreach ($cats as $cat)
