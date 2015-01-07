@@ -80,7 +80,7 @@ class plgHubzeroRecaptcha extends \Hubzero\Plugin\Plugin
 		// make sure we have the needed recaptcha API keys
 		if (!$this->params->get('public') || !$this->params->get('private'))
 		{
-			return JText::_('PLG_HUBZERO_RECAPTCHA_API_NEEDED');
+			return '<p class="error">' . JText::_('PLG_HUBZERO_RECAPTCHA_API_NEEDED') . '</p>';
 		}
 
 		// recaptcha html structure
