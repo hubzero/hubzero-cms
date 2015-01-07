@@ -707,9 +707,9 @@ if ($form_redirect = JRequest::getVar('return', '', 'get'))
 						<legend><?php echo JText::_('COM_MEMBERS_REGISTER_FORM_GENDER'); ?>: <?php echo ($this->registrationSex == REG_REQUIRED) ? '<span class="required">'.JText::_('COM_MEMBERS_REGISTER_FORM_REQUIRED').'</span>' : ''; ?></legend>
 						<?php echo (!empty($this->xregistration->_invalid['sex'])) ? '<span class="error">' . $this->xregistration->_invalid['sex'] . '</span>' : ''; ?>
 						<input type="hidden" name="sex" value="unspecified" />
-						<label><input class="option" type="radio" name="sex" valie="male"<?php echo ($this->registration['sex'] == 'male' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_MALE'); ?></label>
-						<label><input class="option" type="radio" name="sex" valie="female"<?php echo ($this->registration['sex'] == 'female' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_FEMALE'); ?></label>
-						<label><input class="option" type="radio" name="sex" valie="refused"<?php echo ($this->registration['sex'] == 'refused' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_REFUSED'); ?></label>
+						<label><input class="option" type="radio" name="sex" value="male"<?php echo ($this->registration['sex'] == 'male' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_MALE'); ?></label>
+						<label><input class="option" type="radio" name="sex" value="female"<?php echo ($this->registration['sex'] == 'female' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_FEMALE'); ?></label>
+						<label><input class="option" type="radio" name="sex" value="refused"<?php echo ($this->registration['sex'] == 'refused' ? ' checked="checked"' : ''); ?> /> <?php echo JText::_('COM_MEMBERS_REGISTER_FORM_REFUSED'); ?></label>
 					</fieldset>
 				<?php } ?>
 
