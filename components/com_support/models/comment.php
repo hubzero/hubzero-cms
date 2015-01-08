@@ -417,7 +417,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 		if (is_numeric($to))
 		{
 			$user = JUser::getInstance($to);
-			if ($user->get('id'))
+			if (is_object($user) && $user->get('id'))
 			{
 				if (isset($this->_cache['recipients.added'][$user->get('email')]))
 				{
@@ -453,7 +453,7 @@ class SupportModelComment extends \Hubzero\Base\Model
 			else
 			{
 				$user = JUser::getInstance($to);
-				if ($user->get('id'))
+				if (is_object($user) && $user->get('id'))
 				{
 					if (isset($this->_cache['recipients.added'][$user->get('email')]))
 					{
