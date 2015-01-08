@@ -36,7 +36,7 @@ $pubParams = new JParameter( $this->publication->params );
 
 		$info = $item->info;
 		if ($item->url) {
-			$info .= ' <a href="'.$item->url.'" rel="external">Read license terms &rsaquo;</a>';
+			$info .= ' <a href="'.$item->url.'" target="_blank">Read license terms &rsaquo;</a>';
 		}
 
 		?>

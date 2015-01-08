@@ -163,7 +163,7 @@ HUB.ProjectPublicationsSelector = {
 
 		$('#pub-selector').selectable({
 			filter: ".allowed",
-			cancel: ".collapsor",
+			cancel: 'a',
 		    selected: function (event, ui)
 			{
 				// Prevent going over maximum
