@@ -678,7 +678,7 @@ class ProjectsGitHelper extends JObject
 				$entry['hash'] 		= $data[3];
 				$entry['message']	= $data[4];
 			}
-			elseif ($line != '' && !isset($collector[$line]))
+			elseif (isset($entry) && $line != '' && !isset($collector[$line]))
 			{
 				$collector[$line] = $entry;
 			}
