@@ -1047,7 +1047,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 							: $row->abstract;
 		$row->description 	= $description ? $description : $row->description;
 		$row->metadata 		= $metadata ? $metadata : $row->metadata;
-		$row->published_up 	= $published_up ? $published_up : $row->published_up;
 		$row->release_notes	= $release_notes;
 		$row->license_text	= trim(JRequest::getVar( 'license_text', '', 'post' ));
 		$row->license_type	= JRequest::getInt( 'license_type', 0, 'post' );
@@ -1059,7 +1058,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 
 		$row->published_up  = $published_up
 							? JFactory::getDate($published_up, JFactory::getConfig()->get('offset'))->toSql()
-							: '0000-00-00 00:00:00';
+							: JFactory::getDate()->toSql();
 		$row->published_down= $published_down && trim($published_down) != 'Never'
 							? JFactory::getDate($published_down, JFactory::getConfig()->get('offset'))->toSql()
 							: '0000-00-00 00:00:00';
@@ -1148,11 +1147,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: JText::_('COM_PUBLICATIONS_MSG_ADMIN_REPUBLISHED');
 
 					$row->published_down = '0000-00-00 00:00:00';
-					if ( $action == 'publish')
-					{
-						$row->published_up 	 = $published_up
-							? $published_up : JFactory::getDate()->toSql();
-					}
 
 					// Collect DOI metadata
 					$metadata = $this->_collectMetadata($row, $objP, $authors);
