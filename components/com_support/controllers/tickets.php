@@ -71,7 +71,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		if (count($pathway->getPathWay()) == 1  && $this->_task)
 		{
 			$task = $this->_task;
-			if ($this->_task == 'ticket' || $this->_task == 'new' || $this->_task == 'display')
+			if (in_array($this->_task, array('ticket', 'new', 'display', 'save')))
 			{
 				$task = 'tickets';
 			}
