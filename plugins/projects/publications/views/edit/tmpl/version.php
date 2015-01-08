@@ -234,6 +234,10 @@ $showCitations = $typeParams->get('show_citations', 0);
 					JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_MISSING');
 					$missing = '';
 					foreach ($this->checked as $key => $value) {
+						if (!in_array($key, $this->required))
+						{
+							continue;
+						}
 						if ($value != 1) {
 							$missing .= ' <a href="'
 							. $this->url . '/?section='. $key . a . 'version=' . $this->version . '">'

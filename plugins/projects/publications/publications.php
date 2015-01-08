@@ -6785,7 +6785,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			if ($value == 'description')
 			{
 				// Check description
-				$checked['description'] = $row->description && $row->abstract ? 1 : 0;
+				$checked['description'] = $row->abstract ? 1 : 0;
 			}
 			elseif ($value == 'content')
 			{
