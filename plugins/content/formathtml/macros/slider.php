@@ -75,20 +75,33 @@ class Slider extends Macro
 		//generate a unique id for the slider
 		$id = uniqid();
 
-		//get the group
-		$cn = \JRequest::getVar('cn');
+		// null base url for now
+		$base_url = '';
 
-		//get the group object based on gid
-		$group = Group::getInstance($cn);
+		// needed objects
+		$db     = \JFactory::getDBO();
+		$option = \JRequest::getCmd('option');
+		$config = \JComponentHelper::getParams($option);
 
-		//check to make sure we have a valid group
-		if (!is_object($group))
+		// define a base url
+		switch ($option)
 		{
-			return;
-		}
+			case 'com_groups':
+				$cn = \JRequest::getVar('cn');
+				$group = Group::getInstance($cn);
 
-		//define a base url
-		$base_url = DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber') . DS . 'uploads';
+				$base_url  = DS . trim($config->get('uploadpath', 'site/groups'), DS) . DS;
+				$base_url .= $group->get('gidNumber') . DS . 'uploads';
+			break;
+
+			case 'com_resources':
+				$row = new \ResourcesResource($db);
+				$row->load($this->pageid);
+
+				$base_url  = DS . trim($config->get('uploadpath', 'site/resources'), DS) . DS;
+				$base_url .= \ResourcesHtml::build_path($row->created, $this->pageid, '') . DS . 'media';
+			break;
+		}
 
 		//seperate image list into array of images
 		$slides = array_map('trim', explode(',', $content));
