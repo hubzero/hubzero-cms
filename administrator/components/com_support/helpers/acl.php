@@ -128,6 +128,11 @@ class SupportACL extends JObject
 			return $permission;
 		}
 
+		if ($this->_juser->authorise('core.admin'))
+		{
+			return 1;
+		}
+
 		if ($aro_foreign_key)
 		{
 			$this->setUser($aro_foreign_key);
