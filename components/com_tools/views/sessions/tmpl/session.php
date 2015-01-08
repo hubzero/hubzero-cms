@@ -104,7 +104,12 @@ if (!$this->app->sess) {
 			$dispatcher = JDispatcher::getInstance();
 
 			$output = $dispatcher->trigger('onToolSessionView', array($this->app, $this->output, $readOnly));
-			echo implode("\n", $output);
+			$output = implode("\n", $output);
+			if (!trim($output))
+			{
+				$output = '<p class="error">' . JText::_('COM_TOOLS_ERROR_NOVIEWER') . '</p>';
+			}
+			echo $output;
 			?>
 		</div><!-- / #app-content -->
 		<div id="app-footer">
