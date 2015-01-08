@@ -1047,7 +1047,7 @@ class GroupsControllerGroups extends GroupsControllerAbstract
 		}
 
 		//only inform site admin if the group wasnt auto-approved
-		if (!$this->config->get('auto_approve', 1))
+		if (!$this->config->get('auto_approve', 1) && $group->get('approved') == 0)
 		{
 			// create approval subject
 			$subject = JText::sprintf('COM_GROUPS_SAVE_WAITING_APPROVAL', $jconfig->getValue('config.sitename'));
