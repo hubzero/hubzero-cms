@@ -96,6 +96,8 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 		{
 			$browsers = array();
 
+			$allowed = str_replace("\r", '', $allowed);
+			$allowed = str_replace('\n', "\n", $allowed);
 			$allowed = explode("\n", $allowed);
 			foreach ($allowed as $allow)
 			{
@@ -125,12 +127,12 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 					continue;
 				}
 
-				if ($minimum->major < $browser->major())
+				if ($minimum->major > $browser->major())
 				{
 					return false;
 				}
 
-				if ($minimum->minor < $browser->minor())
+				if ($minimum->major == $browser->major() && $minimum->minor > $browser->minor())
 				{
 					return false;
 				}
@@ -139,6 +141,8 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 
 		if ($regexes = trim($this->params->get('regexes')))
 		{
+			$regexes = str_replace("\r", '', $regexes);
+			$regexes = str_replace('\n', "\n", $regexes);
 			$regexes = explode("\n", $regexes);
 			foreach ($regexes as $disallow)
 			{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -39,14 +39,7 @@ if (!$this->app->sess)
 }
 else
 {
-	// This allows for touch events to be translated to click events on mobile devices
-	/*\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/jquery.ui.touch-punch.min.js');
-
 	// Invlude NoVNC
-	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/util');
-	\Hubzero\Document\Assets::addComponentScript('com_tools', 'assets/novnc/ui-hubzero');
-	\Hubzero\Document\Assets::addComponentStylesheet('com_tools', 'assets/novnc/base');*/
-
 	$this->css('./novnc/base.css')
 	     ->js('./novnc/jquery.ui.touch-punch.min.js') // This allows for touch events to be translated to click events on mobile devices
 	     ->js('./novnc/util.js')

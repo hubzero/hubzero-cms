@@ -18,7 +18,7 @@ window.onload = function () {
 	//UI.keyboardinputReset();
 };
 
-var INCLUDE_URI = "/components/com_tools/assets/novnc/";
+var INCLUDE_URI = "/plugins/tools/novnc/assets/novnc/";
 
 Util.load_scripts([
 	"webutil.js",
