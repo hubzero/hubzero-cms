@@ -97,7 +97,7 @@ class PublicationsHtml
 				 && substr($entry, 0, 1) != '.'
 				 && strtolower($entry) !== 'index.html')
 				{
-					if (preg_match("#bmp|gif|jpg|png|swf|mov#i", $img_file))
+					if (preg_match("#bmp|gif|jpeg|jpg|png|swf|mov#i", $img_file))
 					{
 						$images[] = $img_file;
 					}
