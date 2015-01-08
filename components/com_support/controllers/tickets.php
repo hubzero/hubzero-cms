@@ -1134,9 +1134,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$jconfig = JFactory::getConfig();
 
 		// Get any set emails that should be notified of ticket submission
-		$defs = str_replace("\r", '', $this->config->get('emails', '{config.mailfrom}'));
-		$defs = str_replace('\n', "\n", $defs);
-		$defs = explode("\n", $defs);
+		$defs = explode(',', $this->config->get('emails', '{config.mailfrom}'));
 
 		if ($defs)
 		{
