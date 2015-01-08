@@ -179,7 +179,7 @@ $flavor = $this->params->get('flavor', false);
 								<h3><?php echo JText::_('TPL_WELCOME_UTILIZE_HEADER'); ?></h3>
 
 								<p><?php echo JText::_('TPL_WELCOME_UTILIZE_BODY'); ?></p>
-								<a href="http://hubzero.org/documenation/current/users" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_UTILIZE_LINK'); ?></a>
+								<a href="http://hubzero.org/documentation/current/users" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_UTILIZE_LINK'); ?></a>
 							</div>
 						</div>
 					</div>
@@ -193,7 +193,7 @@ $flavor = $this->params->get('flavor', false);
 								<h3><?php echo JText::_('TPL_WELCOME_MANAGE_HEADER'); ?></h3>
 
 								<p><?php echo JText::_('TPL_WELCOME_MANAGE_BODY'); ?></p>
-								<a href="http://hubzero.org/documenation/current/managers" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_MANAGE_LINK'); ?></a>
+								<a href="http://hubzero.org/documentation/current/managers" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_MANAGE_LINK'); ?></a>
 							</div>
 							<div class="col spacer">&nbsp;</div>
 							<div class="col icon nomobile">
@@ -212,7 +212,7 @@ $flavor = $this->params->get('flavor', false);
 								<h3><?php echo JText::_('TPL_WELCOME_EXTEND_HEADER'); ?></h3>
 
 								<p><?php echo JText::_('TPL_WELCOME_EXTEND_BODY'); ?></p>
-								<a href="http://hubzero.org/documenation/current/webdevs" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_EXTEND_LINK'); ?></a>
+								<a href="http://hubzero.org/documentation/current/webdevs" class="b" rel="external" target="_blank"><?php echo JText::_('TPL_WELCOME_EXTEND_LINK'); ?></a>
 							</div>
 						</div>
 					</div>
