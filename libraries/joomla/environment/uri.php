@@ -189,7 +189,7 @@ class JURI extends JObject
 				}
 
 				// Extra cleanup to remove invalid chars in the URL to prevent injections through the Host header
-				$_SERVER['REQUEST_URI'] = str_replace(array("'", '"', '<', '>'), array('%27','%22','%3C','%3E'), $_SERVER['REQUEST_URI'])
+				$_SERVER['REQUEST_URI'] = str_replace(array("'", '"', '<', '>'), array('%27','%22','%3C','%3E'), $_SERVER['REQUEST_URI']);
 				$theURI = str_replace(array("'", '"', '<', '>'), array('%27','%22','%3C','%3E'), $theURI);
 			}
 			else
