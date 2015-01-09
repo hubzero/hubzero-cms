@@ -84,6 +84,20 @@ class LanguagesModelOverrides extends JModelList
 			}
 		}
 
+		// search strings
+		if ($search = JRequest::getVar('filter_search', null))
+		{
+			// run callback on each string
+			array_walk($strings, function($value, $key) use (&$strings, $search)
+			{
+				// remove if we dont fine a case insensitive match in either key or value
+				if (!preg_match("/{$search}/ui", $key) && !preg_match("/{$search}/ui", $value))
+				{
+					unset($strings[$key]);
+				}
+			});
+		}
+
 		// Consider the pagination
 		if (!$all && $this->getState('list.limit') && $this->getTotal() > $this->getState('list.limit'))
 		{
@@ -156,6 +170,7 @@ class LanguagesModelOverrides extends JModelList
 		$this->setState('filter.language_client', $language.$client);
 		$this->setState('filter.client', $client ? 'administrator' : 'site');
 		$this->setState('filter.language', $language);
+		$this->setState('filter.search', JRequest::getVar('filter_search', null));
 
 		// Add filters to the session because they won't be stored there
 		// by 'getUserStateFromRequest' if they aren't in the current request
