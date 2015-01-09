@@ -178,7 +178,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		// instantiate citations object and get count
 		$obj = new CitationsCitation($this->database);
 		$total = $obj->getCount(array(
-			'scope'    => 'groups',
+			'scope'    => 'group',
 			'scope_id' => $group->gidNumber
 		), true);
 
@@ -231,7 +231,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		{
 			$view->typestats[$t['type_title']] = $citations->getCount(array(
 				'type'     => $t['id'],
-				'scope'    => 'groups',
+				'scope'    => 'group',
 				'scope_id' => $this->group->gidNumber
 			), false);
 		}
@@ -305,7 +305,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		//search/filtering params
-		$view->filters['scope']           = 'groups';
+		$view->filters['scope']           = 'group';
 		$view->filters['scope_id']        = $this->group->get('gidNumber');
 		$view->filters['id']			  = JRequest::getInt('id', 0);
 		$view->filters['tag']             = trim(JRequest::getVar('tag', '', 'request', 'none', 2));
@@ -691,7 +691,7 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 		}
 
 		// set scope & scope id in save so no one can mess with hidden form inputs
-		$c['scope']    = 'groups';
+		$c['scope']    = 'group';
 		$c['scope_id'] = $this->group->get('gidNumber');
 
 		//get tags
