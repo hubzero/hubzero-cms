@@ -37,7 +37,7 @@ function controller()
 	if (function_exists($task_func)) {
 		$task_func($db_id);
 	} else {
-		JError::raiseError('501', 'Invalid Task', 'Invalid Task');
+		JError::raiseError('404', 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
 	}
 }
 

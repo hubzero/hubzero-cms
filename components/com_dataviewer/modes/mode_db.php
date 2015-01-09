@@ -77,7 +77,7 @@ function get_dd($db_id)
 				$dd = $dd_func();
 			}
 		} else {
-			JError::raiseError('501', 'Invalid Dataview', 'Invalid Dataview');
+			JError::raiseError('404', 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
 			exit;
 		}
 
