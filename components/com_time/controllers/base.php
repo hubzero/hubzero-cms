@@ -83,6 +83,13 @@ class TimeControllerBase extends \Hubzero\Component\SiteController
 
 		// Pass permissions model to our view
 		$this->view->permissions = $this->permissions;
+
+		// Build pathway
+		$this->_buildPathway();
+
+		// Set title
+		$this->view->title = $this->_buildTitle();
+		$this->view->base  = $this->base = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
 	}
 
 	/**
@@ -133,5 +140,15 @@ class TimeControllerBase extends \Hubzero\Component\SiteController
 		$document->setTitle($title);
 
 		return $title;
+	}
+
+	/**
+	 * Build start query param
+	 *
+	 * @return string
+	 **/
+	protected function start($model)
+	{
+		return $model->getState('start') ? '&start=' . $model->getState('start') : '';
 	}
 }

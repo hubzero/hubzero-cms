@@ -4,14 +4,14 @@
 		name="permissions">
 
 		<field
-			name="hubs"
+			name="hub"
 			type="rules"
 			label="COM_TIME_PERMISSIONS_LABEL"
 			class="inputbox"
 			validate="rules"
 			filter="rules"
 			component="com_time"
-			section="hubs" />
+			section="hub" />
 	</fieldset>
 
 	<fieldset>

@@ -37,79 +37,50 @@ defined('_JEXEC') or die('Restricted access');
 class TimeFilters
 {
 	/**
-	 * Get filters from request
+	 * Gets the request filters and returns them
 	 *
-	 * @param  $option     - component name
-	 * @param  $controller - component controller
-	 * @return $filters    - array of filters
-	 */
-	public static function getFilters($option, $controller)
+	 * @param  string $namespace the application state variable namespace
+	 * @return array
+	 **/
+	public static function getFilters($namespace)
 	{
-		$app   = JFactory::getApplication();
-		$juser = JFactory::getUser();
-
-		// Get request variables for filters (use values from state if new ones are defined)
-		$filters['start']    = (JRequest::getInt('start')) ? JRequest::getInt('start') : JRequest::getInt('limitstart', 0);
-		$filters['limit']    = JRequest::getInt('limit',    $app->getUserState("$option.$controller.limit"));
-		$filters['orderby']  = JRequest::getVar('orderby',  $app->getUserState("$option.$controller.orderby"));
-		$filters['orderdir'] = JRequest::getVar('orderdir', $app->getUserState("$option.$controller.orderdir"));
-		$filters['search']   = JRequest::getVar('search',   $app->getUserState("$option.$controller.search"));
+		// Set filters for view
+		$app = JFactory::getApplication();
 
 		// Process query filters
-		$q = $app->getUserState("$option.$controller.q");
-		if (JRequest::getVar('q', NULL))
+		$q = $app->getUserState("{$namespace}.query");
+		if ($incoming = JRequest::getVar('q', false))
 		{
-			$incoming = JRequest::getVar('q', NULL);
-			if (!is_null($incoming['column']) && !is_null($incoming['operator']) && !is_null($incoming['value']))
-			{
-				$q[] = $incoming;
-			}
-			else
-			{
-				$filters['error'] = JText::_('Looks like you may have forgotten to select an option');
-			}
-		}
-
-		// Turn search into array of results, if not already
-		if ($filters['search'] !== NULL && !is_array($filters['search']))
-		{
-			// Explode multiple words into array
-			$filters['search'] = explode(" ", $filters['search']);
-			// Only allow alphabetical characters for search
-			$filters['search'] = preg_replace("/[^a-zA-Z]/", "", $filters['search']);
+			$q[] = $incoming;
 		}
 
 		// Set some defaults for the filters, if not set otherwise
-		$filters['limit']  = (empty($filters['limit'])) ? 10 : $filters['limit'];
-		$filters['search'] = ($filters['search'] === NULL) ? '' : $filters['search'];
 		if (!is_array($q))
 		{
-			if ($controller == 'records')
-			{
-				$q[0]['column']   = 'user_id';
-				$q[0]['operator'] = 'e';
-				$q[0]['value']    = $juser->get('id');
-			}
-			elseif ($controller == 'tasks')
-			{
-				$q[0]['column']   = 'assignee';
-				$q[0]['operator'] = 'e';
-				$q[0]['value']    = $juser->get('id');
-			}
+			$q[0]['column']   = ($namespace == 'com_time.tasks') ? 'assignee_id' : 'user_id';
+			$q[0]['operator'] = 'e';
+			$q[0]['value']    = \JFactory::getUser()->get('id');
 		}
 
 		// Translate operators and augment query filters with human-friendly text
-		$filters['q'] = self::filtersMap($q);
+		$query = self::filtersMap($q);
+
+		// Turn search into array of results, if not already
+		$search = JRequest::getVar('search', $app->getUserState("{$namespace}.search", ''));
+		// If we have a search and it's not an array (i.e. it's coming in fresh with this request)
+		if ($search && !is_array($search))
+		{
+			// Explode multiple words into array
+			$search = explode(" ", $search);
+			// Only allow alphabetical characters for search
+			$search = preg_replace("/[^a-zA-Z]/", "", $search);
+		}
 
 		// Set some values in the session
-		$app->setUserState("$option.$controller.start",    $filters['start']);
-		$app->setUserState("$option.$controller.limit",    $filters['limit']);
-		$app->setUserState("$option.$controller.orderby",  $filters['orderby']);
-		$app->setUserState("$option.$controller.orderdir", $filters['orderdir']);
-		$app->setUserState("$option.$controller.search",   $filters['search']);
-		$app->setUserState("$option.$controller.q",        $filters['q']);
+		$app->setUserState("{$namespace}.search", $search);
+		$app->setUserState("{$namespace}.query",  $query);
 
-		return $filters;
+		return array('search' => $search, 'q' => $query);
 	}
 
 	/**
@@ -153,53 +124,6 @@ class TimeFilters
 	}
 
 	/**
-	 * Highlight search text
-	 *
-	 * @param  object $obj    - object list in which to highlight text
-	 * @param  array $filters - array of filters (search included)
-	 * @return object $obj    - object to return
-	 */
-	public static function highlight($obj, $filters=array())
-	{
-		$is_array = true;
-		if (!is_array($obj))
-		{
-			$is_array = false;
-			$obj = array($obj);
-		}
-
-		// Highlight search words if set
-		if (!empty($filters['search']) && is_array($obj))
-		{
-			foreach ($obj as $o)
-			{
-				foreach ($filters['search'] as $arg)
-				{
-					if (isset($o->name))
-					{
-						$o->name = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $o->name);
-					}
-					if (isset($o->description))
-					{
-						$o->description = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $o->description);
-					}
-					if (isset($o->pname))
-					{
-						$o->pname = str_ireplace($arg, "<span class=\"highlight\">{$arg}</span>", $o->pname);
-					}
-				}
-			}
-		}
-
-		if (!$is_array)
-		{
-			$obj = $obj[0];
-		}
-
-		return $obj;
-	}
-
-	/**
 	 * Build the operators html
 	 *
 	 * @return string $html - html for operators select box
@@ -217,26 +141,6 @@ class TimeFilters
 		$html .= '</select>';
 
 		return $html;
-	}
-
-	/**
-	 * Setup pagination
-	 *
-	 * @param  int $total  - total number of records
-	 * @param  int $start  - start of query
-	 * @param  int $limit  - limit of query
-	 * @return $pagination - Joomla list footer (string)
-	 */
-	public static function getPagination($total, $start, $limit)
-	{
-		// Import pagination
-		jimport('joomla.html.pagination');
-
-		// Instantiate pagination
-		$pageNav    = new JPagination($total, $start, $limit);
-		$pagination = $pageNav->getListFooter();
-
-		return $pagination;
 	}
 
 	/**
@@ -279,9 +183,9 @@ class TimeFilters
 						$filters[]  = $val;
 					}
 					// Augment name information for multiple fields
-					elseif ($val['column'] == 'assignee' || $val['column'] == 'liaison')
+					elseif ($val['column'] == 'assignee_id' || $val['column'] == 'liaison_id')
 					{
-						$val['human_column']   = ucwords($val['column']);
+						$val['human_column']   = ucwords(str_replace('_id', '', $val['column']));
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
 						$val['human_value']    = JFactory::getUser($val['value'])->name;
@@ -295,12 +199,10 @@ class TimeFilters
 					// Augment task_id information
 					elseif ($val['column'] == 'task_id')
 					{
-						$task = new TimeTasks($db);
-						$task->load($val['value']);
 						$val['human_column']   = 'Task';
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
-						$val['human_value']    = $task->name;
+						$val['human_value']    = Task::oneOrFail($val['value'])->name;
 						$filters[]  = $val;
 					}
 					// Augment 'active' column information
@@ -317,9 +219,7 @@ class TimeFilters
 						$val['human_column']   = 'Hub';
 						$val['o']              = self::translateOperator($val['operator']);
 						$val['human_operator'] = self::mapOperator($val['o']);
-						$hub = new TimeHubs($db);
-						$hub->load($val['value']);
-						$val['human_value']    = $hub->name;
+						$val['human_value']    = Hub::oneOrFail($val['value'])->name;
 						$filters[]  = $val;
 					}
 					// All others
@@ -381,7 +281,7 @@ class TimeFilters
 			$x['display'] = $value;
 
 			// Now override at will...
-			if ($column == 'assignee' || $column == 'liaison' || $column == 'user_id')
+			if ($column == 'assignee_id' || $column == 'liaison_id' || $column == 'user_id')
 			{
 				$x['value'] = $value;
 				$x['display'] = JFactory::getUser($value)->get('name');
@@ -393,17 +293,13 @@ class TimeFilters
 			}
 			elseif ($column == 'hub_id')
 			{
-				$hub = new TimeHubs($db);
-				$hub->load($value);
 				$x['value'] = $value;
-				$x['display'] = $hub->name;
+				$x['display'] = Hub::oneOrFail($value)->name;
 			}
 			elseif ($column == 'task_id')
 			{
-				$task = new TimeTasks($db);
-				$task->load($value);
 				$x['value'] = $value;
-				$x['display'] = $task->name;
+				$x['display'] = Task::oneOrFail($value)->name;
 			}
 			elseif ($column == 'active')
 			{

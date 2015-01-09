@@ -43,34 +43,32 @@ class TimeControllerRecords extends TimeControllerBase
 	 */
 	public function displayTask()
 	{
-		// Instantiate records class
-		$records = new TimeRecords($this->database);
+		$filters = TimeFilters::getFilters("{$this->_option}.{$this->_controller}");
+		$records = Record::all();
 
-		// Set filters for view
-		$this->view->filters = TimeFilters::getFilters($this->_option, $this->_controller);
-
-		// Get the total number of records (for pagination)
-		$this->view->total = $records->getCount($this->view->filters);
-
-		// Setup pagination
-		$this->view->pageNav = TimeFilters::getPagination($this->view->total, $this->view->filters['start'], $this->view->filters['limit']);
-
-		// Get the records
-		$this->view->records = $records->getRecords($this->view->filters);
-
-		// Get suborinates of current user
-		$juser = JFactory::getUser();
-		$this->view->subordinates = TimeHTML::getSubordinates($juser->get('id'));
-
-		// Get the column list and operators
-		$this->view->cols      = TimeFilters::getColumnNames('time_records', array("id", "description"));
-		$this->view->operators = TimeFilters::buildSelectOperators();
-
-		// Set a few things for the vew
-		$this->_buildPathway();
-		$this->view->title = $this->_buildTitle();
+		// Take filters and apply them to the tasks
+		if ($filters['search'])
+		{
+			foreach ($filters['search'] as $term)
+			{
+				$records->where('description', 'LIKE', "%{$term}%", 'and', 1);
+				$records->orWhereRelatedHas('task', function($task) use ($term)
+				{
+					$task->where('name', 'LIKE', "%{$term}%");
+				}, 1);
+			}
+		}
+		if ($filters['q'])
+		{
+			foreach ($filters['q'] as $q)
+			{
+				$records->where($q['column'], $q['o'], $q['value']);
+			}
+		}
 
 		// Display
+		$this->view->filters = $filters;
+		$this->view->records = $records->paginated()->ordered()->including('task', 'user');
 		$this->view->display();
 	}
 
@@ -93,96 +91,26 @@ class TimeControllerRecords extends TimeControllerBase
 	 */
 	public function editTask($record=null)
 	{
-		// Get the id if we're editing a record
-		$rid = JRequest::getInt('id');
-
-		// Incoming
-		if (isset($record) && is_object($record))
+		if (!isset($record) || !is_object($record))
 		{
-			// Use the prexisting object (i.e. we had an error when saving)
-			$this->view->row = $record;
-		}
-		else
-		{
-			// Create a new object (i.e. we're coming in clean)
-			$record = new TimeRecords($this->database);
-			$this->view->row = $record->getRecord($rid);
-
-			// Prepopulate the task passed in URL if it's given
-			if ($task = JRequest::getInt('task', NULL))
-			{
-				$this->view->row->task_id = $task;
-			}
+			$record = Record::oneOrNew(JRequest::getInt('id'));
 		}
 
-		$juser = JFactory::getUser();
-		$app   = JFactory::getApplication();
-
-		// Get suborinates of current user
-		$subordinates = TimeHTML::getSubordinates($juser->get('id'));
-
-		// Only allow creator of the record to edit or delete or the manager of the user
-		if (!empty($this->view->row->id) && ($this->view->row->user_id != $juser->get('id') && !in_array($this->view->row->user_id, $subordinates)))
+		// Only allow creator of the record to edit or a proxy of the user
+		if (!$record->isNew() && !$record->isMine() && !$record->iCanProxy())
 		{
 			// Set the redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				JRoute::_($this->base),
 				JText::_('COM_TIME_RECORDS_WARNING_CANT_EDIT_OTHER'),
 				'warning'
 			);
-		}
-
-		// Explode the time
-		if (strstr($this->view->row->time, '.') !== false)
-		{
-			list($hrs, $mins) = explode(".", $this->view->row->time);
-		}
-		else
-		{
-			$hrs = $this->view->row->time;
-			$mins = 0;
-		}
-
-		// Build select lists for edit page
-		$this->view->htimelist = TimeHTML::buildTimeListHours($hrs);
-		$this->view->mtimelist = TimeHTML::buildTimeListMins($mins);
-		$this->view->hubslist  = TimeHTML::buildHubsList($this->_controller, $this->view->row->hid);
-		$this->view->tasklist  = TimeHTML::buildTasksList($this->view->row->task_id, $this->_controller, $this->view->row->hid, $this->view->row->pactive);
-
-		// Build subordinates list if applicable
-		if (isset($subordinates) && !empty($subordinates))
-		{
-			$this->view->subordinates = TimeHTML::buildSubordinatesList((isset($this->view->row->user_id) ? $this->view->row->user_id : 0), $subordinates);
-		}
-
-		// Is this a new record?
-		if (empty($this->view->row->user_id))
-		{
-			// Set some defaults
-			$this->view->row->user_id = $juser->get('id');
-			$this->view->row->uname   = $juser->get('name');
-			$this->view->row->date    = JFactory::getDate()->format('Y-m-d H:00');
-		}
-
-		// If viewing a record from a page other than the first, take the user back to that page if they click "all records"
-		$this->view->start = ($app->getUserState("{$this->_option}.{$this->_controller}.start") != 0)
-			? '&start='.$app->getUserState("{$this->_option}.{$this->_controller}.start")
-			: '';
-
-		// Set a few things for the vew
-		$this->_buildPathway();
-		$this->view->title = $this->_buildTitle();
-
-		// Set a few things for the vew
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			return;
 		}
 
 		// Display
+		$this->view->start = $this->start($record);
+		$this->view->row   = $record;
 		$this->view->display();
 	}
 
@@ -193,30 +121,9 @@ class TimeControllerRecords extends TimeControllerBase
 	 */
 	public function readonlyTask()
 	{
-		// Get the id if we're editing a record
-		$rid = JRequest::getInt('id');
-		$app = JFactory::getApplication();
-
-		// Instantiate classes
-		$record = new TimeRecords($this->database);
-		$juser  = JFactory::getUser();
-
-		// Get suborinates of current user
-		$this->view->subordinates = TimeHTML::getSubordinates($juser->get('id'));
-
-		// Get the records for time and pass them to the view
-		$this->view->row = $record->getRecord($rid);
-
-		// If viewing a record from a page other than the first, take the user back to that page if they click "all records"
-		$this->view->start = ($app->getUserState("{$this->_option}.{$this->_controller}.start") != 0)
-			? '&start='.$app->getUserState("{$this->_option}.{$this->_controller}.start")
-			: '';
-
-		// Set a few things for the vew
-		$this->_buildPathway();
-		$this->view->title = $this->_buildTitle();
-
 		// Display
+		$this->view->row   = Record::oneOrFail(JRequest::getInt('id'));
+		$this->view->start = $this->start($this->view->row);
 		$this->view->display();
 	}
 
@@ -227,55 +134,47 @@ class TimeControllerRecords extends TimeControllerBase
 	 */
 	public function saveTask()
 	{
-		// Incoming posted data
-		$record = JRequest::getVar('records', array(), 'post');
-		$record = array_map('trim', $record);
-		$juser  = JFactory::getUser();
-		$app    = JFactory::getApplication();
+		// Create object
+		$record = Record::oneOrNew(JRequest::getInt('id'))->set(array(
+			'task_id'     => JRequest::getInt('task_id'),
+			'user_id'     => JRequest::getInt('user_id'),
+			'time'        => JRequest::getInt('htime') . '.' . JRequest::getInt('mtime'),
+			'date'        => JFactory::getDate(JRequest::getVar('date'), JFactory::getConfig()->get('offset'))->toSql(),
+			'description' => JRequest::getVar('description')
+		));
 
-		// Get suborinates of current user
-		$subordinates = TimeHTML::getSubordinates($juser->get('id'));
+		// Set end based on start + time length
+		$record->set('end', date('Y-m-d H:i:s', (strtotime($record->date) + ($record->time*3600))));
 
-		// Only create records for yourself or your subordinates
-		if ($record['user_id'] != $juser->get('id') && !in_array($record['user_id'], $subordinates))
+		// Only create records for yourself or your proxies
+		if (!$record->isMine() && !$record->iCanProxy())
 		{
 			// Set the redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				JRoute::_($this->base),
 				JText::_('COM_TIME_RECORDS_WARNING_CANT_EDIT_OTHER'),
 				'warning'
 			);
-		}
-
-		// Combine the time entry
-		$record['time'] = $record['htime'] . '.' . $record['mtime'];
-		$record['date'] = JFactory::getDate($record['date'], JFactory::getConfig()->get('offset'))->toSql();
-
-		// Create object and store new content
-		$records = new TimeRecords($this->database);
-
-		if (!$records->save($record))
-		{
-			// Add a few things to the records object to pass back to the edit view
-			$records->hid     = '';
-			$records->pactive = '';
-			$records->uname   = $juser->get('name');
-
-			$this->setError($records->getError());
-			$this->view->setLayout('edit');
-			$this->view->task = 'edit';
-			$this->editTask($records);
 			return;
 		}
 
-		// If saving a record from a page other than the first, take the user back to that page after saving
-		$start = ($app->getUserState("{$this->_option}.{$this->_controller}.start") != 0)
-			? '&start='.$app->getUserState("{$this->_option}.{$this->_controller}.start")
-			: '';
+		if (!$record->save())
+		{
+			// Something went wrong...return errors
+			foreach ($record->getErrors() as $error)
+			{
+				$this->view->setError($error);
+			}
+
+			$this->view->setLayout('edit');
+			$this->view->task = 'edit';
+			$this->editTask($record);
+			return;
+		}
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $start),
+			JRoute::_($this->base . $this->start($record)),
 			JText::_('COM_TIME_RECORDS_SAVE_SUCCESSFUL'),
 			'passed'
 		);
@@ -288,26 +187,14 @@ class TimeControllerRecords extends TimeControllerBase
 	 */
 	public function deleteTask()
 	{
-		// Incoming posted data
-		$record = JRequest::getInt('id');
-		$juser  = JFactory::getUser();
-		$app    = JFactory::getApplication();
-
-		// If delete a record from a page other than the first, take the user back to that page after deletion
-		$start = ($app->getUserState("{$this->_option}.{$this->_controller}.start") != 0)
-			? '&start='.$app->getUserState("{$this->_option}.{$this->_controller}.start")
-			: '';
-
-		// Create object and store new content
-		$records = new TimeRecords($this->database);
-		$records->load($record);
+		$record = Record::oneOrFail(JRequest::getInt('id'));
 
 		// Only allow creator of the record to edit or delete
-		if ($records->user_id != $juser->get('id'))
+		if (!$record->isMine())
 		{
 			// Set the redirect
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller),
+				JRoute::_($this->base),
 				JText::_('COM_TIME_RECORDS_WARNING_CANT_DELETE_OTHER'),
 				'warning'
 			);
@@ -315,11 +202,11 @@ class TimeControllerRecords extends TimeControllerBase
 		}
 
 		// Delete record
-		$records->delete();
+		$record->destroy();
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $start),
+			JRoute::_($this->base . $this->start($record)),
 			JText::_('COM_TIME_RECORDS_DELETE_SUCCESSFUL'),
 			'passed'
 		);

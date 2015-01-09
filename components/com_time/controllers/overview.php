@@ -43,32 +43,6 @@ class TimeControllerOverview extends TimeControllerBase
 	 */
 	public function displayTask()
 	{
-		$hubs    = new TimeHubs($this->database);
-		$tasks   = new TimeTasks($this->database);
-		$records = new TimeRecords($this->database);
-		$juser   = JFactory::getUser();
-
-		// Set variables for queries
-		$filters['active'] = 1;
-
-		// Get data for the view
-		$this->view->activeHubs  = $hubs->getCount($filters);
-		$this->view->activeTasks = $tasks->getCount($filters);
-		$this->view->totalHours  = $records->getTotalHours();
-
-		$this->_buildPathway();
-		$this->view->title = $this->_buildTitle();
-
-		// Set a few things for the vew
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		// Display
 		$this->view->display();
 	}
 }

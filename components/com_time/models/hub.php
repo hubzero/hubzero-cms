@@ -23,49 +23,129 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @since     Class available since release 1.3.2
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Hubs model for time component
+ * Hubs database model
+ *
+ * @uses \Hubzero\Database\Relational
  */
-class TimeModelHub extends \Hubzero\Base\Model
+class Hub extends \Hubzero\Database\Relational
 {
-
 	/**
-	 * Table name
+	 * The table namespace
 	 *
 	 * @var string
-	 */
-	protected $_tbl_name = 'TimeHubs';
+	 **/
+	protected $namespace = 'time';
 
 	/**
-	 * Model context
+	 * Default order by for model
 	 *
 	 * @var string
-	 */
-	protected $_context = 'com_time.hub.notes';
+	 **/
+	public $orderBy = 'name';
 
 	/**
-	 * Get the content of the entry
+	 * Fields and their validation criteria
 	 *
-	 * @param      string  $as      Format to return state in [text, number]
-	 * @param      integer $shorten Number of characters to shorten text to
-	 * @return     string
+	 * @var array
+	 **/
+	protected $rules = array(
+		'name'    => 'notempty',
+		'liaison' => 'notempty'
+	);
+
+	/**
+	 * Automatically fillable fields
+	 *
+	 * @var array
+	 **/
+	public $always = array(
+		'name_normalized',
+		'asset_id'
+	);
+
+	/**
+	 * Generates automatic owned by field value
+	 *
+	 * @param  array $data the data being saved
+	 * @return int
+	 * @since  1.3.2
+	 **/
+	public function automaticNameNormalized($data)
+	{
+		return strtolower(str_replace(" ", "", $data['name']));
+	}
+
+	/**
+	 * Defines a one to many relationship with tasks
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function tasks()
+	{
+		return $this->oneToMany('Task');
+	}
+
+	/**
+	 * Defines a one to many through relationship with records by way of tasks
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function records()
+	{
+		return $this->oneToManyThrough('Record', 'Task');
+	}
+
+	/**
+	 * Defines a one to many relationship with hub contacts
+	 *
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function contacts()
+	{
+		return $this->oneToMany('Contact');
+	}
+
+	/**
+	 * Returns sum of hours for the hub
+	 *
+	 * @return float
+	 * @since  1.3.2
+	 **/
+	public function helperTotalHours()
+	{
+		$time = $this->records()->select('SUM(time)', 'time')->rows()->first()->time;
+		return $time ? $time : 0;
+	}
+
+	/**
+	 * Gets the content of the notes entry
+	 *
+	 * @param  string  $as      Format to return state in [text, number]
+	 * @param  integer $shorten Number of characters to shorten text to
+	 * @return string
+	 * @since  1.3.2
 	 */
-	public function notes($as='parsed', $shorten=0)
+	public function transformNotes($as='parsed', $shorten=0)
 	{
 		$as = strtolower($as);
 
 		switch ($as)
 		{
 			case 'parsed':
-				$content = $this->get('notes.parsed');
+				$content = isset($this->_notesParsed) ? $this->_notesParsed : null;
 				if (isset($content))
 				{
 					if ($shorten)
@@ -75,48 +155,41 @@ class TimeModelHub extends \Hubzero\Base\Model
 					return $content;
 				}
 
-				$scope  = JHTML::_('date', $this->get('publish_up'), 'Y') . '/';
-				$scope .= JHTML::_('date', $this->get('publish_up'), 'm');
-
 				$config = array(
 					'option'   => 'com_time',
 					'scope'    => 'time',
 					'pagename' => 'hubs',
-					'pageid'   => $this->get('id'),
+					'pageid'   => $this->id,
 					'filepath' => '',
-					'domain'   => $this->get('id')
+					'domain'   => $this->id
 				);
 
-				$content = stripslashes($this->get('notes'));
-				$this->importPlugin('content')->trigger('onContentPrepare', array(
-					$this->_context,
-					&$this,
+				$object  = new \Hubzero\Base\Object;
+				$object->set('notes', stripslashes($this->get('notes')));
+
+				\JPluginHelper::importPlugin('content');
+				\JDispatcher::getInstance()->trigger('onContentPrepare', array(
+					'com_time.hub.notes',
+					&$object,
 					&$config
 				));
 
-				$this->set('notes.parsed', $this->get('notes'));
-				$this->set('notes', $content);
+				$this->_notesParsed = $object->get('notes');
 
 				return $this->notes($as, $shorten);
 			break;
 
-			case 'clean':
-				$content = strip_tags($this->notes('parsed'));
-				if ($shorten)
-				{
-					$content = \Hubzero\Utility\String::truncate($content, $shorten);
-				}
-				return $content;
-			break;
-
 			case 'raw':
 			default:
+				$content = '';
+
 				$content = stripslashes($this->get('notes'));
 				$content = preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
 				if ($shorten)
 				{
 					$content = \Hubzero\Utility\String::truncate($content, $shorten);
 				}
+
 				return $content;
 			break;
 		}

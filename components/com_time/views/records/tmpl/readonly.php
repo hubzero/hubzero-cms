@@ -37,9 +37,6 @@ $this->css()
      ->css('records')
      ->js('records')
      ->js();
-
-$base  = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
-$juser = JFactory::getUser();
 ?>
 
 <div id="dialog-confirm"></div>
@@ -53,25 +50,27 @@ $juser = JFactory::getUser();
 	<section class="com_time_content com_time_records">
 		<div id="content-header-extra">
 			<ul id="useroptions">
-				<?php if ($juser->get('id') == $this->row->user_id || in_array($this->row->user_id, $this->subordinates)) : ?>
+				<?php if ($this->row->isMine() || $this->row->iCanProxy()) : ?>
 					<li>
-						<a class="icon-reply btn" href="<?php echo JRoute::_($base . $this->start); ?>">
+						<a class="icon-reply btn" href="<?php echo JRoute::_($this->base . $this->start); ?>">
 							<?php echo JText::_('COM_TIME_RECORDS_ALL_RECORDS'); ?>
 						</a>
 					</li>
 					<li>
-						<a class="edit icon-edit btn" href="<?php echo JRoute::_($base . '&task=edit&id=' . $this->row->id); ?>">
+						<a class="edit icon-edit btn" href="<?php echo JRoute::_($this->base . '&task=edit&id=' . $this->row->id); ?>">
 							<?php echo JText::_('COM_TIME_RECORDS_EDIT'); ?>
 						</a>
 					</li>
-					<li class="last">
-						<a class="delete icon-delete btn" href="<?php echo JRoute::_($base . '&task=delete&id=' . $this->row->id); ?>">
-							<?php echo JText::_('COM_TIME_RECORDS_DELETE'); ?>
-						</a>
-					</li>
+					<?php if ($this->row->isMine()) : ?>
+						<li class="last">
+							<a class="delete icon-delete btn" href="<?php echo JRoute::_($this->base . '&task=delete&id=' . $this->row->id); ?>">
+								<?php echo JText::_('COM_TIME_RECORDS_DELETE'); ?>
+							</a>
+						</li>
+					<?php endif; ?>
 				<?php else : ?>
 					<li class="last">
-						<a class="icon-reply btn" href="<?php echo JRoute::_($base . $this->start); ?>">
+						<a class="icon-reply btn" href="<?php echo JRoute::_($this->base . $this->start); ?>">
 							<?php echo JText::_('COM_TIME_RECORDS_ALL_RECORDS'); ?>
 						</a>
 					</li>
@@ -81,7 +80,7 @@ $juser = JFactory::getUser();
 		<div class="container readonly">
 			<?php if (count($this->getErrors()) > 0) : ?>
 				<?php foreach ($this->getErrors() as $error) : ?>
-				<p class="error"><?php echo $this->escape($error); ?></p>
+					<p class="error"><?php echo $this->escape($error); ?></p>
 				<?php endforeach; ?>
 			<?php endif; ?>
 			<div class="grid">
@@ -89,22 +88,22 @@ $juser = JFactory::getUser();
 					<h3 class="headings"><?php echo JText::_('COM_TIME_RECORDS_DETAILS'); ?></h3>
 					<div class="grouping uname-group">
 						<label for="uname"><?php echo JText::_('COM_TIME_RECORDS_USER'); ?>:</label>
-						<?php echo htmlentities(stripslashes($this->row->uname), ENT_QUOTES); ?>
+						<?php echo $this->escape($this->row->user->name); ?>
 					</div>
 
 					<div class="grouping hub-group">
 						<label for="hub"><?php echo JText::_('COM_TIME_RECORDS_HUB'); ?>:</label>
-						<?php echo htmlentities(stripslashes($this->row->hname), ENT_QUOTES); ?>
+						<?php echo $this->escape($this->row->task->hub->name); ?>
 					</div>
 
 					<div class="grouping task-group">
 						<label for="task"><?php echo JText::_('COM_TIME_RECORDS_TASK'); ?>:</label>
-						<?php echo htmlentities(stripslashes($this->row->pname), ENT_QUOTES); ?>
+						<?php echo $this->escape($this->row->task->name); ?>
 					</div>
 
 					<div class="grouping time-group">
 						<label for="time"><?php echo JText::_('COM_TIME_RECORDS_TIME'); ?>:</label>
-						<?php echo htmlentities(stripslashes($this->row->time), ENT_QUOTES); ?> hour(s)
+						<?php echo $this->escape($this->row->time); ?> hour(s)
 					</div>
 
 					<div class="grouping date-group">
@@ -115,7 +114,7 @@ $juser = JFactory::getUser();
 
 				<div class="readonly col span-half omega">
 					<h3 class="headings"><?php echo JText::_('COM_TIME_RECORDS_DESCRIPTION'); ?></h3>
-					<?php if (!empty($this->row->description)) : ?>
+					<?php if ($this->row->description) : ?>
 						<div class="hub-notes">
 							<div class="inner">
 								<p>

@@ -53,21 +53,26 @@ foreach (JRequest::get('GET') as $key => $value)
 ?>
 
 <div class="plg_time_csv">
-	<a target="_blank" href="<?php echo JRoute::_($base . '&' . JURI::getInstance()->getQuery() . '&method=download'); ?>">
-		<div class="download btn icon-save">Download</div>
-	</a>
+	<?php if ($this->records->count()) : ?>
+		<a target="_blank" href="<?php echo JRoute::_($base . '&' . JURI::getInstance()->getQuery() . '&method=download'); ?>">
+			<div class="download btn icon-save">Download</div>
+		</a>
+	<?php endif; ?>
 	<div class="filters">
 		<form action="<?php echo JRoute::_($base); ?>">
 			<input type="hidden" name="report_type" value="csv" />
 			<div class="grouping">
 				<label for="hub_id"><?php echo JText::_('PLG_TIME_CSV_HUB_NAME'); ?>: </label>
-				<?php $options[] = JHTML::_('select.option', null, JText::_('PLG_TIME_CSV_NO_HUB_SELECTED')); ?>
-				<?php foreach ($this->hubsList as $hub) : ?>
-					<?php if ($this->permissions->can('view.report', 'hubs', $hub->id)) : ?>
-						<?php $options[] = JHTML::_('select.option', $hub->id, JText::_($hub->name)); ?>
-					<?php endif; ?>
-				<?php endforeach; ?>
-				<?php echo JHTML::_('select.genericlist', $options, 'hub_id', null, 'value', 'text', $this->hub_id); ?>
+				<select name="hub_id" id="hub_id">
+					<option value=""><?php echo JText::_('PLG_TIME_CSV_NO_HUB_SELECTED'); ?></option>
+					<?php foreach (Hub::all()->order('name', 'asc') as $hub) : ?>
+						<?php if ($this->permissions->can('view.report', 'hub', $hub->id)) : ?>
+							<option value="<?php echo $hub->id; ?>" <?php echo ($hub->id == $this->hub_id) ? 'selected="selected"' : ''; ?>>
+								<?php echo $hub->name; ?>
+							</option>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</select>
 			</div>
 			<div class="grouping">
 				<label for="start_date"><?php echo JText::_('PLG_TIME_CSV_START_DATE'); ?>: </label>
@@ -105,7 +110,7 @@ foreach (JRequest::get('GET') as $key => $value)
 			</a>
 		</form>
 	</div>
-	<?php if (count($this->records) > 0) : ?>
+	<?php if ($this->records->count()) : ?>
 		<h3>Preview</h3>
 		<div class="preview">
 			<div class="preview-header">
@@ -141,21 +146,21 @@ foreach (JRequest::get('GET') as $key => $value)
 				<?php endif; ?>
 			</div>
 			<?php foreach ($this->records as $record) : ?>
-				<?php if ($this->permissions->can('view.report', 'hubs', $record->hid)) : ?>
+				<?php if ($this->permissions->can('view.report', 'hub', $record->task->hub_id)) : ?>
 					<div class="preview-row">
 						<?php if ($hub) : ?>
 							<div class="preview-field hname">
-								<?php echo $record->hname; ?>
+								<?php echo $record->task->hub->name; ?>
 							</div>
 						<?php endif; ?>
 						<?php if ($task) : ?>
 							<div class="preview-field pname">
-								<?php echo $record->pname; ?>
+								<?php echo $record->task->name; ?>
 							</div>
 						<?php endif; ?>
 						<?php if ($user) : ?>
 							<div class="preview-field uname">
-								<?php echo $record->uname; ?>
+								<?php echo $record->user->name; ?>
 							</div>
 						<?php endif; ?>
 						<?php if ($date) : ?>

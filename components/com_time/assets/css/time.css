@@ -215,7 +215,7 @@
 /*-------------------------*/
 .com_time_content .container {
 	background: transparent;
-	padding: 20px;
+	padding: 20px 20px 45px 20px;
 }
 .com_time_content .entries caption {
 	text-align: center;

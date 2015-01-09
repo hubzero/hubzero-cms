@@ -39,8 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 $this->css()
      ->js();
 
-$options = array();
-$base    = 'index.php?option=com_time&controller=reports';
+$base = 'index.php?option=com_time&controller=reports';
 ?>
 
 <div class="plg_time_summary">
@@ -49,23 +48,31 @@ $base    = 'index.php?option=com_time&controller=reports';
 			<input type="hidden" name="report_type" value="summary" />
 			<div class="grouping">
 				<label for="hub_id"><?php echo JText::_('PLG_TIME_SUMMARY_HUB_NAME'); ?>: </label>
-				<?php $options[] = JHTML::_('select.option', null, JText::_('PLG_TIME_SUMMARY_NO_HUB_SELECTED')); ?>
-				<?php foreach ($this->hubsList as $hub) : ?>
-					<?php if ($this->permissions->can('view.report', 'hubs', $hub->id)) : ?>
-						<?php $options[] = JHTML::_('select.option', $hub->id, JText::_($hub->name)); ?>
-					<?php endif; ?>
-				<?php endforeach; ?>
-				<?php echo JHTML::_('select.genericlist', $options, 'hub_id', null, 'value', 'text', $this->hub_id); ?>
+				<select name="hub_id" id="hub_id">
+					<option value=""><?php echo JText::_('PLG_TIME_SUMMARY_NO_HUB_SELECTED'); ?></option>
+					<?php foreach (Hub::all()->order('name', 'asc') as $hub) : ?>
+						<?php if ($this->permissions->can('view.report', 'hub', $hub->id)) : ?>
+							<option value="<?php echo $hub->id; ?>" <?php echo ($hub->id == $this->hub_id) ? 'selected="selected"' : ''; ?>>
+								<?php echo $hub->name; ?>
+							</option>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</select>
 			</div>
 			<div class="grouping">
 				<label for="task_id"><?php echo JText::_('PLG_TIME_SUMMARY_TASK_NAME'); ?>: </label>
-				<?php $options = array(JHTML::_('select.option', null, JText::_('PLG_TIME_SUMMARY_NO_TASK_SELECTED'))); ?>
-				<?php foreach ($this->tasksList as $task) : ?>
-					<?php if ($this->permissions->can('view.report', 'hubs', $task->hub_id)) : ?>
-						<?php $options[] = JHTML::_('select.option', $task->id, JText::_($task->name)); ?>
-					<?php endif; ?>
-				<?php endforeach; ?>
-				<?php echo JHTML::_('select.genericlist', $options, 'task_id', null, 'value', 'text', $this->task_id); ?>
+				<select name="task_id" id="task_id">
+					<option value=""><?php echo JText::_('PLG_TIME_SUMMARY_NO_TASK_SELECTED'); ?></option>
+					<?php $tasks = Task::all()->order('name', 'asc'); ?>
+					<?php if ($this->hub_id) $tasks->whereEquals('hub_id', $this->hub_id); ?>
+					<?php foreach ($tasks as $task) : ?>
+						<?php if ($this->permissions->can('view.report', 'hub', $task->hub_id)) : ?>
+							<option value="<?php echo $task->id; ?>" <?php echo ($task->id == $this->task_id) ? 'selected="selected"' : ''; ?>>
+								<?php echo $task->name; ?>
+							</option>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</select>
 			</div>
 			<div class="grouping">
 				<label for="start_date"><?php echo JText::_('PLG_TIME_SUMMARY_START_DATE'); ?>: </label>
@@ -115,8 +122,8 @@ $base    = 'index.php?option=com_time&controller=reports';
 											<?php foreach ($task['records'] as $record) : ?>
 												<div class="report-record">
 													<div class="report-record-name">
-														<?php echo JFactory::getUser($record->user_id)->get('name') . ' - '; ?>
-														<?php echo !empty($record->description) ? $record->description : '[no description available]'; ?>
+														<?php echo $record->user->name . ' - '; ?>
+														<?php echo $record->description ?: '[no description available]'; ?>
 													</div>
 													<div class="report-record-hours"><?php echo $record->time . ' hour' . ($record->time != 1 ? 's' : ''); ?></div>
 													<div class="report-filler">blah</div>

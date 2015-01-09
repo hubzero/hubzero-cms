@@ -37,8 +37,6 @@ $this->css()
      ->css('hubs')
      ->js('hubs')
      ->js();
-
-$base = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 ?>
 
 <div id="dialog-confirm"></div>
@@ -54,17 +52,17 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 		<div id="content-header-extra">
 			<ul id="useroptions">
 				<li>
-					<a class="icon-reply btn" href="<?php echo JRoute::_($base . $this->start); ?>">
+					<a class="icon-reply btn" href="<?php echo JRoute::_($this->base . $this->start); ?>">
 						<?php echo JText::_('COM_TIME_HUBS_ALL_HUBS'); ?>
 					</a>
 				</li>
 				<li>
-					<a class="icon-edit btn" href="<?php echo JRoute::_($base . '&task=edit&id=' . $this->row->id); ?>">
+					<a class="icon-edit btn" href="<?php echo JRoute::_($this->base . '&task=edit&id=' . $this->row->id); ?>">
 						<?php echo JText::_('COM_TIME_HUBS_EDIT'); ?>
 					</a>
 				</li>
 				<li class="last">
-					<a class="delete icon-delete btn" href="<?php echo JRoute::_($base . '&task=delete&id=' . $this->row->id); ?>">
+					<a class="delete icon-delete btn" href="<?php echo JRoute::_($this->base . '&task=delete&id=' . $this->row->id); ?>">
 						<?php echo JText::_('COM_TIME_HUBS_DELETE'); ?>
 					</a>
 				</li>
@@ -101,37 +99,34 @@ $base = 'index.php?option=' . $this->option . '&controller=' . $this->controller
 
 					<div class="grouping tasks-grouping">
 						<label for="active_tasks"><?php echo JText::_('COM_TIME_HUBS_ACTIVE_TASKS'); ?>:</label>
-						<?php echo $this->escape(stripslashes($this->activeTasks)); ?>
+						<?php echo $this->escape(stripslashes($this->row->tasks()->areActive()->count())); ?>
 					</div>
 
 					<div class="grouping hours-grouping">
 						<label for="total_hours"><?php echo JText::_('COM_TIME_HUBS_TOTAL_HOURS'); ?>:</label>
-						<?php echo $this->escape(stripslashes($this->totalHours)); ?>
+						<?php echo $this->escape(stripslashes($this->row->totalHours())); ?>
 					</div>
 				</div>
 
 				<div class="col span-third">
 					<h3 class="headings"><?php echo JText::_('COM_TIME_HUBS_CONTACTS'); ?></h3>
 
-					<?php $i = 0; ?>
-					<?php if (count($this->contacts) > 0) : ?>
-						<?php foreach ($this->contacts as $contact) : ?>
-							<div class="contact-entry">
-								<div class="contact-name"><?php  echo $this->escape(stripslashes($contact->name));  ?></div>
-								<div class="contact-phone"><?php echo $this->escape(stripslashes($contact->phone)); ?></div>
-								<div class="contact-email"><?php echo $this->escape(stripslashes($contact->email)); ?></div>
-								<div class="contact-role"><?php  echo $this->escape(stripslashes($contact->role));  ?></div>
-							</div>
-							<?php $i++; ?>
-						<?php endforeach; ?>
-					<?php else : ?>
+					<?php foreach ($this->row->contacts as $contact) : ?>
+						<div class="contact-entry">
+							<div class="contact-name"><?php  echo $this->escape(stripslashes($contact->name));  ?></div>
+							<div class="contact-phone"><?php echo $this->escape(stripslashes($contact->phone)); ?></div>
+							<div class="contact-email"><?php echo $this->escape(stripslashes($contact->email)); ?></div>
+							<div class="contact-role"><?php  echo $this->escape(stripslashes($contact->role));  ?></div>
+						</div>
+					<?php endforeach; ?>
+					<?php if (!$this->row->contacts->count()) : ?>
 						<p><?php echo JText::_('COM_TIME_HUBS_NO_CONTACTS'); ?></p>
 					<?php endif; ?>
 				</div>
 
 				<div class="col span-third omega">
 					<h3 class="headings"><?php echo JText::_('COM_TIME_HUBS_NOTES'); ?></h3>
-					<?php if (!empty($this->row->notes)) : ?>
+					<?php if ($this->row->notes) : ?>
 						<div class="hub-notes">
 							<div class="inner">
 								<?php echo $this->row->notes; ?>

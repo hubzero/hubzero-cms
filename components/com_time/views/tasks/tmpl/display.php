@@ -40,11 +40,9 @@ $this->css()
 $app = JFactory::getApplication();
 
 // Set some ordering variables
-$start   = ($this->filters['start']) ? '&start=' . $this->filters['start'] : '';
-$sortcol = $app->getUserStateFromRequest("{$this->option}.{$this->controller}.orderby",  'orderby',  'name');
-$dir     = $app->getUserStateFromRequest("{$this->option}.{$this->controller}.orderdir", 'orderdir', 'asc');
+$sortcol = $this->tasks->orderBy;
+$dir     = $this->tasks->orderDir;
 $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
-$base    = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 ?>
 
 <header id="content-header">
@@ -57,7 +55,7 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 		<div id="content-header-extra">
 			<ul id="useroptions">
 				<li class="last">
-					<a class="add icon-add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
+					<a class="add icon-add btn" href="<?php echo JRoute::_($this->base . '&task=new'); ?>">
 						<?php echo JText::_('COM_TIME_TASKS_NEW'); ?>
 					</a>
 				</li>
@@ -69,9 +67,9 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 				<p class="error"><?php echo $this->escape($error); ?></p>
 				<?php endforeach; ?>
 			<?php endif; ?>
-			<form method="get" action="<?php echo JRoute::_($base); ?>">
+			<form method="get" action="<?php echo JRoute::_($this->base); ?>">
 				<div class="search-box">
-					<a href="<?php echo JRoute::_($base . '&search='); ?>">
+					<a href="<?php echo JRoute::_($this->base . '&search='); ?>">
 						<button type="button" class="clear-button btn btn-warning"><?php echo JText::_('COM_TIME_TASKS_CLEAR'); ?></button>
 					</a>
 					<input class="search-submit btn btn-success" type="submit" value="<?php echo JText::_('COM_TIME_TASKS_SEARCH'); ?>" />
@@ -81,15 +79,15 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 					</fieldset>
 				</div>
 			</form>
-			<form method="get" action="<?php echo JRoute::_($base); ?>">
+			<form method="get" action="<?php echo JRoute::_($this->base); ?>">
 				<div id="add-filters">
 					<p>Filter results:
 						<select name="q[column]" id="filter-column">
-							<?php foreach ($this->cols as $c) { ?>
+							<?php foreach (TimeFilters::getColumnNames('time_tasks', array("id", "description")) as $c) : ?>
 								<option value="<?php echo $c['raw']; ?>"><?php echo $c['human']; ?></option>
-							<?php } // end foreach $cols ?>
+							<?php endforeach; ?>
 						</select>
-						<?php echo $this->operators; ?>
+						<?php echo TimeFilters::buildSelectOperators(); ?>
 						<select name="q[value]" id="filter-value">
 						</select>
 						<input class="btn btn-success" id="filter-submit" type="submit" value="<?php echo JText::_('+ Add filter'); ?>" />
@@ -104,7 +102,7 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 						<?php if (!empty($this->filters['q'])) : ?>
 							<?php foreach ($this->filters['q'] as $q) : ?>
 								<li>
-									<a href="<?php echo JRoute::_($base . '&q[column]=' . $q['column'] .
+									<a href="<?php echo JRoute::_($this->base . '&q[column]=' . $q['column'] .
 										'&q[operator]=' . $q['operator'] . '&q[value]=' . $q['value'] . '&q[delete]'); ?>"
 										class="filters-x">x
 									</a>
@@ -114,7 +112,7 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 						<?php endif; ?>
 						<?php if (is_array($this->filters['search']) && !empty($this->filters['search'][0])) : ?>
 							<li>
-								<a href="<?php echo JRoute::_($base . '&search='); ?>" class="filters-x">x</a>
+								<a href="<?php echo JRoute::_($this->base . '&search='); ?>" class="filters-x">x</a>
 								<i>Search</i>: <?php echo implode(" ", $this->filters['search']); ?>
 							</li>
 						<?php endif; ?>
@@ -128,76 +126,75 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 						<td></td>
 						<td>
 							<a <?php if ($sortcol == 'name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=name&orderdir=' . $newdir); ?>">
+								href="<?php echo JRoute::_($this->base . '&orderby=name&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_TASKS_NAME'); ?>
 							</a>
 						</td>
 						<td>
-							<a <?php if ($sortcol == 'hname') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=hname&orderdir=' . $newdir); ?>">
+							<a <?php if ($sortcol == 'hub.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
+								href="<?php echo JRoute::_($this->base . '&orderby=hub.name&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_TASKS_HUB_NAME'); ?>
 							</a>
 						<td>
 							<a <?php if ($sortcol == 'priority') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=priority&orderdir=' . $newdir); ?>">
+								href="<?php echo JRoute::_($this->base . '&orderby=priority&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_TASKS_PRIORITY'); ?>
 							</a>
 						</td>
 						<td>
-							<a <?php if ($sortcol == 'aname') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=aname&orderdir=' . $newdir); ?>">
+							<a <?php if ($sortcol == 'assignee.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
+								href="<?php echo JRoute::_($this->base . '&orderby=assignee.name&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_TASKS_ASSIGNEE_SHORT'); ?>
 							</a>
 						</td>
 						<td>
-							<a <?php if ($sortcol == 'lname') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=lname&orderdir=' . $newdir); ?>">
+							<a <?php if ($sortcol == 'liaison.name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
+								href="<?php echo JRoute::_($this->base . '&orderby=liaison.name&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_TASKS_LIAISON_SHORT'); ?>
 							</a>
 						</td>
 						<td>
 							<a <?php if ($sortcol == 'start_date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=start_date&orderdir=' . $newdir); ?>">
+								href="<?php echo JRoute::_($this->base . '&orderby=start_date&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_TASKS_START_DATE'); ?>
 							</a>
 						</td>
 						<td>
 							<a <?php if ($sortcol == 'end_date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=end_date&orderdir=' . $newdir); ?>">
+								href="<?php echo JRoute::_($this->base . '&orderby=end_date&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_TASKS_END_DATE'); ?>
 							</a>
 						</td>
 					</tr>
 				</thead>
 				<tbody>
-					<?php if (count($this->tasks) > 0) : ?>
-						<?php foreach ($this->tasks as $task) : ?>
+					<?php foreach ($this->tasks as $task) : ?>
 						<tr<?php if ($task->active == 0) { echo ' class="inactive"'; } ?>>
 							<td class="<?php if ($task->active == 0) { echo "in"; } ?>active">
-								<a href="<?php echo JRoute::_($base . '&task=toggleactive&id=' . $task->id); ?>"></a>
+								<a href="<?php echo JRoute::_($this->base . '&task=toggleactive&id=' . $task->id); ?>"></a>
 							</td>
 							<td>
-								<a href="<?php echo JRoute::_($base . '&task=edit&id=' . $task->id); ?>">
-									<?php echo $task->name; ?>
+								<a href="<?php echo JRoute::_($this->base . '&task=edit&id=' . $task->id); ?>">
+									<?php echo \Hubzero\Utility\String::highlight($task->name, $this->filters['search'], array('html' => true)); ?>
 								</a>
 							</td>
-							<td><?php echo $task->hname; ?></td>
+							<td><?php echo $task->hub->name; ?></td>
 							<td style="text-align:center;"><?php echo $task->priority; ?></td>
-							<td><?php echo $task->aname; ?></td>
-							<td><?php echo $task->lname; ?></td>
+							<td><?php echo $task->assignee->name; ?></td>
+							<td><?php echo $task->liaison->name; ?></td>
 							<td><?php echo ($task->start_date != '0000-00-00') ? JHTML::_('date', $task->start_date, 'm/d/y', null) : ''; ?></td>
 							<td><?php echo ($task->end_date != '0000-00-00') ? JHTML::_('date', $task->end_date, 'm/d/y', null) : ''; ?></td>
 						</tr>
-						<?php endforeach; ?>
-					<?php else : ?>
+					<?php endforeach; ?>
+					<?php if (!$this->tasks->count()) : ?>
 						<tr>
 							<td colspan="9" class="no_tasks"><?php echo JText::_('COM_TIME_TASKS_NONE_TO_DISPLAY'); ?></td>
 						</tr>
 					<?php endif; ?>
 				</tbody>
 			</table>
-			<form action="<?php echo JRoute::_($base); ?>">
-				<?php echo $this->pageNav; ?>
+			<form action="<?php echo JRoute::_($this->base); ?>">
+				<?php echo $this->tasks->pagination; ?>
 			</form>
 		</div>
 	</section>

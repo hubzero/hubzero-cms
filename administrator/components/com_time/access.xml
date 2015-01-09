@@ -37,7 +37,7 @@ HUBzero is a registered trademark of Purdue University.
 		<action name="view.permissions" title="COM_TIME_ACTION_VIEWPERMISSIONS" description="COM_TIME_ACTION_VIEWPERMISSIONS_DESC" />
 		<action name="save.permissions" title="COM_TIME_ACTION_SAVEPERMISSIONS" description="COM_TIME_ACTION_SAVEPERMISSIONS_DESC" />
 	</section>
-	<section name="hubs">
+	<section name="hub">
 		<action name="view.report" title="COM_TIME_ACTION_HUBS_VIEW_REPORTS" description="COM_TIME_ACTION_HUBS_VIEW_REPORTS_DESC" />
 	</section>
 </access>

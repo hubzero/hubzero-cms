@@ -53,6 +53,7 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		// Load language
 		JFactory::getLanguage()->load('plg_time_summary', JPATH_ADMINISTRATOR);
 
+		// Create view
 		$view = new \Hubzero\Plugin\View(
 			array(
 				'folder'  => 'time',
@@ -61,85 +62,68 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$database         = JFactory::getDbo();
-		$permissions      = new TimeModelPermissions('com_time');
-		$hubTbl           = new TimeHubs($database);
-		$taskTbl          = new TimeTasks($database);
-		$recordTbl        = new TimeRecords($database);
-		$view->hub_id     = JRequest::getInt('hub_id', null);
-		$view->task_id    = JRequest::getInt('task_id', null);
-		$view->start      = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$view->end        = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
-		$view->tasksList  = $taskTbl->getTasks();
-		$view->hubsList   = $hubTbl->getRecords();
-		$view->hubs       = array();
-		$records          = $recordTbl->getRecords(
-			array(
-				'orderby'  => 'h.name',
-				'orderdir' => 'ASC',
-				'q'        => array(
-					array(
-						'column' => 'date',
-						'o'      => '>=',
-						'value'  => $view->start
-					),
-					array(
-						'column' => 'date',
-						'o'      => '<=',
-						'value'  => $view->end
-					),
-					array(
-						'column' => 'h.id',
-						'o'      => '=',
-						'value'  => (isset($view->hub_id) && $view->hub_id > 0) ? $view->hub_id : null
-					),
-					array(
-						'column' => 'p.id',
-						'o'      => '=',
-						'value'  => (isset($view->task_id) && $view->task_id > 0) ? $view->task_id : null
-					),
-				)
-			)
-		);
+		// Get vars from request
+		$permissions   = new TimeModelPermissions('com_time');
+		$view->hub_id  = JRequest::getInt('hub_id', null);
+		$view->task_id = JRequest::getInt('task_id', null);
+		$view->start   = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$view->end     = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$view->hubs    = array();
 
-		foreach ($records as $record)
+		$records = Record::where('date', '>=', $view->start)
+		                 ->where('date', '<=', $view->end);
+
+		if (isset($view->task_id) && $view->task_id > 0)
 		{
-			if (isset($view->hubs[$record->hid]))
+			$records->whereEquals('task_id', $view->task_id);
+		}
+		else if (isset($view->hub_id) && $view->hub_id > 0)
+		{
+			$hub_id = $view->hub_id;
+			$records->whereRelatedHas('task', function($task) use ($hub_id)
 			{
-				$view->hubs[$record->hid]['total'] += $record->time;
-				if (isset($view->hubs[$record->hid]['tasks'][$record->pid]))
+				$task->whereEquals('hub_id', $hub_id);
+			});
+		}
+
+		foreach ($records->including('task.hub', 'user') as $record)
+		{
+			if (isset($view->hubs[$record->task->hub_id]))
+			{
+				$view->hubs[$record->task->hub_id]['total'] += $record->time;
+				if (isset($view->hubs[$record->task->hub_id]['tasks'][$record->task_id]))
 				{
-					$view->hubs[$record->hid]['tasks'][$record->pid]['total'] += $record->time;
-					$view->hubs[$record->hid]['tasks'][$record->pid]['records'][] = $record;
+					$view->hubs[$record->task->hub_id]['tasks'][$record->task_id]['total'] += $record->time;
+					$view->hubs[$record->task->hub_id]['tasks'][$record->task_id]['records'][] = $record;
 				}
 				else
 				{
-					$view->hubs[$record->hid]['tasks'][$record->pid] = array(
-						'name'    => $record->pname,
+					$view->hubs[$record->task->hub_id]['tasks'][$record->task_id] = [
+						'name'    => $record->task->name,
 						'total'   => $record->time,
 						'records' => array(
 							$record
 						)
-					);
+					];
 				}
 			}
 			else
 			{
-				if ($permissions->can('view.report', 'hubs', $record->hid))
+				if ($permissions->can('view.report', 'hub', $record->task->hub_id))
 				{
-					$view->hubs[$record->hid] = array(
-						'name'  => $record->hname,
+					$view->hubs[$record->task->hub_id] = [
+						'name'  => $record->task->hub->name,
 						'tasks' => array(
-							$record->pid => array(
-								'name'    => $record->pname,
+							$record->task_id => [
+								'name'    => $record->task->name,
 								'total'   => $record->time,
-								'records' => array(
+								'records' => [
 									$record
-								)
-							)
+								]
+							]
 						),
 						'total' => $record->time
-					);
+					];
 				}
 			}
 		}
@@ -157,37 +141,47 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 	 */
 	public static function getTimePerTask()
 	{
-		$database    = JFactory::getDbo();
-		$records     = new TimeRecords($database);
 		$permissions = new TimeModelPermissions('com_time');
 		$hub_id      = JRequest::getInt('hub_id',  null);
 		$task_id     = JRequest::getInt('task_id', null);
 		$start       = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
 		$end         = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
-		$summary     = $records->getSummaryHours(
-			array(
-				'orderby'    => 'hours',
-				'orderdir'   => 'ASC',
-				'hub_id'     => $hub_id,
-				'task_id'    => $task_id,
-				'start_date' => $start,
-				'end_date'   => $end
-			)
-		);
 
-		if ($summary && count($summary) > 0)
+		$tasks   = Task::blank();
+		$records = Record::all();
+		$records = $records->select('SUM(time)', 'hours')
+		                   ->select($records->getQualifiedFieldName('id'))
+		                   ->select('task_id')
+		                   ->select($tasks->getQualifiedFieldName('name'))
+		                   ->join($tasks->getTableName(), 'task_id', $tasks->getQualifiedFieldName('id'))
+		                   ->where('date', '>=', $start)
+		                   ->where('date', '<=', $end)
+		                   ->order('hours', 'asc')
+		                   ->group('task_id');
+
+		if (isset($task_id) && $task_id > 0)
 		{
-			foreach ($summary as $k => $v)
+			$records->whereEquals('task_id', $task_id);
+		}
+		else if (isset($hub_id) && $hub_id > 0)
+		{
+			$records->whereRelatedHas('task', function($task) use ($hub_id)
 			{
-				if (!$permissions->can('view.report', 'hubs', $v->hub_id))
-				{
-					unset($summary[$k]);
-				}
+				$task->whereEquals('hub_id', $hub_id);
+			});
+		}
+
+		$summary = array();
+
+		// Loop through and check permissions and grab raw object from rows
+		foreach ($records->including('task') as $record)
+		{
+			if ($permissions->can('view.report', 'hubs', $record->task->hub_id))
+			{
+				$summary[] = $record->toObject();
 			}
 		}
 
-		// Reindex and encode
-		$summary = array_values($summary);
 		echo json_encode($summary);
 
 		exit();

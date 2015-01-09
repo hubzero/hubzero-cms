@@ -14,7 +14,7 @@ jQuery(document).ready(function( $ ) {
 	if (!!$.prototype.HUBfancyselect) {
 		$('.plg_time_summary select').HUBfancyselect({
 			'showSearch'          : true,
-			'searchPlaceholder'   : 'seach...',
+			'searchPlaceholder'   : 'search...',
 			'maxHeightWithSearch' : 300
 		});
 	}
@@ -47,7 +47,7 @@ jQuery(document).ready(function( $ ) {
 
 				$.each(data, function ( i, val ) {
 					mapped.push([val.hours, i]);
-					ticks.push([i, val.pname]);
+					ticks.push([i, val.name]);
 					if (parseFloat(val.hours, 10) > max) {
 						max = val.hours;
 					}
@@ -112,4 +112,48 @@ jQuery(document).ready(function( $ ) {
 
 		$(window).resize(draw);
 	}
+
+	$('#hub_id').change(function(event) {
+		// First, grab the currently select task
+		var task = $('#task_id').val();
+
+		// Create a ajax call to get the tasks
+		$.ajax({
+			url: "/api/time/indexTasks",
+			data: "hid="+$(this).val()+"&pactive=1",
+			dataType: "json",
+			cache: false,
+			success: function(json){
+				// If success, update the list of tasks based on the chosen hub
+				var options = '';
+
+				if(json.tasks.length > 0) {
+					options = '<option value="">no task selected...</option>';
+					for (var i = 0; i < json.tasks.length; i++) {
+						options += '<option value="';
+						options += json.tasks[i].id;
+						options += '"';
+						if (json.tasks[i].id == task) {
+							options += ' selected="selected"';
+						}
+						options += '>';
+						options += json.tasks[i].name;
+						options += '</option>';
+					}
+				} else {
+					options = '<option value="">No tasks for this hub</option>';
+				}
+				$("#task_id").html(options);
+
+				if (!!$.prototype.HUBfancyselect) {
+					$('#task_id').prev('.fs-dropdown').remove();
+					$('#task_id').HUBfancyselect({
+						'showSearch'          : true,
+						'searchPlaceholder'   : 'search...',
+						'maxHeightWithSearch' : 200
+					});
+				}
+			}
+		});
+	});
 });

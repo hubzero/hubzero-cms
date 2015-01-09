@@ -23,50 +23,48 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Sam Wilson <samwilson@purdue.edu
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * @since     Class available since release 1.3.2
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Time component reports controller
+ * Time liaisons database model
+ *
+ * @uses \Hubzero\Database\Relational
  */
-class TimeControllerReports extends TimeControllerBase
+class Liaison extends \Hubzero\Database\Relational
 {
 	/**
-	 * Default view function
+	 * Runs extra setup code when creating a new model
 	 *
 	 * @return void
-	 */
-	public function displayTask()
+	 * @since  1.3.2
+	 **/
+	public function setup()
 	{
-		\JPluginHelper::importPlugin('time');
-		$this->view->reports = JPluginHelper::getPlugin('time');
+		$this->forwardTo('user');
+	}
 
-		if ($this->view->report_type = JRequest::getCmd('report_type', false))
-		{
-			$className = 'plgTime' . ucfirst($this->view->report_type);
+	/**
+	 * The table namespace
+	 *
+	 * @var string
+	 **/
+	protected $namespace = 'time';
 
-			if (class_exists($className))
-			{
-				if (($method = JRequest::getCmd('method', false)) && in_array($method, $className::$accepts))
-				{
-					if (method_exists($className, $method))
-					{
-						$this->view->content = $className::$method();
-					}
-				}
-				elseif (method_exists($className, 'render'))
-				{
-					$this->view->content = $className::render();
-				}
-			}
-		}
-
-		// Display
-		$this->view->display();
+	/**
+	 * Defines a one to one relationship between time proxies and hub user
+	 *
+	 * @return \Hubzero\Database\Relationship\oneToOne
+	 * @since  1.3.2
+	 **/
+	public function user()
+	{
+		return $this->oneToOne('Hubzero\User\User');
 	}
 }

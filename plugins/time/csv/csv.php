@@ -61,40 +61,23 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 			)
 		);
 
-		$database        = JFactory::getDbo();
-		$permissions     = new TimeModelPermissions('com_time');
-		$recordTbl       = new TimeRecords($database);
-		$hubTbl          = new TimeHubs($database);
-		$view->hub_id    = JRequest::getInt('hub_id', null);
-		$view->start     = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
-		$view->end       = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
-		$view->hubsList  = $hubTbl->getRecords();
-		$view->records   = $recordTbl->getRecords(
-			array(
-				'orderby'  => 'h.name',
-				'orderdir' => 'ASC',
-				'q'        => array(
-					array(
-						'column' => 'date',
-						'o'      => '>=',
-						'value'  => $view->start
-					),
-					array(
-						'column' => 'date',
-						'o'      => '<=',
-						'value'  => $view->end
-					),
-					array(
-						'column' => 'h.id',
-						'o'      => '=',
-						'value'  => (isset($view->hub_id) && $view->hub_id > 0) ? $view->hub_id : null
-					)
-				)
-			)
-		);
+		$view->hub_id = JRequest::getInt('hub_id', null);
+		$view->start  = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
+		$view->end    = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
+		$records      = Record::all()->where('date', '>=', $view->start)
+		                              ->where('date', '<=', $view->end);
+		                              // @FIXME: order by non-native field
+		                              //->order('h.name', 'asc');
+
+		if (isset($view->hub_id) && $view->hub_id > 0)
+		{
+			// @FIXME: is there a better way to do this?
+			$records->whereIn('task_id', Task::select('id')->whereEquals('hub_id', $view->hub_id)->rows()->fieldsByKey('id'));
+		}
 
 		// Pass permissions to view
-		$view->permissions = $permissions;
+		$view->permissions = new TimeModelPermissions('com_time');
+		$view->records     = $records->including('task.hub', 'user');
 
 		return $view->loadTemplate();
 	}
@@ -109,34 +92,20 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 		// Load language
 		JFactory::getLanguage()->load('plg_time_csv', JPATH_ADMINISTRATOR);
 
-		$database  = JFactory::getDbo();
-		$recordTbl = new TimeRecords($database);
 		$hub_id    = JRequest::getInt('hub_id', null);
 		$start     = JRequest::getCmd('start_date', JFactory::getDate(strtotime('today - 1 month'))->format('Y-m-d'));
 		$end       = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
-		$records   = $recordTbl->getRecords(
-			array(
-				'orderby'  => 'h.name',
-				'orderdir' => 'ASC',
-				'q'        => array(
-					array(
-						'column' => 'date',
-						'o'      => '>=',
-						'value'  => $start
-					),
-					array(
-						'column' => 'date',
-						'o'      => '<=',
-						'value'  => $end
-					),
-					array(
-						'column' => 'h.id',
-						'o'      => '=',
-						'value'  => (isset($hub_id) && $hub_id > 0) ? $hub_id : null
-					)
-				)
-			)
-		);
+		$records    = Record::all()->where('date', '>=', $start)
+		                           ->where('date', '<=', $end);
+		                           // @FIXME: order by non-native field
+		                           //->order('h.name', 'asc');
+
+		if (isset($hub_id) && $hub_id > 0)
+		{
+			// @FIXME: is there a better way to do this?
+			$records->whereIn('task_id', Task::select('id')->whereEquals('hub_id', $hub_id)->rows()->fieldsByKey('id'));
+			$hubname = Hub::oneOrFail($hub_id)->name_normalized;
+		}
 
 		$all  = true;
 		foreach (JRequest::get('GET') as $key => $value)
@@ -144,16 +113,6 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 			if (strpos($key, 'fields-') !== false)
 			{
 				$all = false;
-			}
-		}
-
-		if (isset($hub_id))
-		{
-			$hub = new TimeHubs($database);
-			$hub->load($hub_id);
-			if ($hub->get('name_normalized'))
-			{
-				$hubname = $hub->get('name_normalized');
 			}
 		}
 
@@ -198,23 +157,23 @@ class plgTimeCsv extends \Hubzero\Plugin\Plugin
 
 		$permissions = new TimeModelPermissions('com_time');
 
-		foreach ($records as $record)
+		foreach ($records->including('task.hub', 'user') as $record)
 		{
-			if ($permissions->can('view.report', 'hubs', $record->hid))
+			if ($permissions->can('view.report', 'hub', $record->task->hub_id))
 			{
 				$output = fopen('php://output','w');
 				$row    = array();
 				if ($hub)
 				{
-					$row[] = $record->hname;
+					$row[] = $record->task->hub->name;
 				}
 				if ($task)
 				{
-					$row[] = $record->pname;
+					$row[] = $record->task->name;
 				}
 				if ($user)
 				{
-					$row[] = $record->uname;
+					$row[] = $record->user->name;
 				}
 				if ($date)
 				{

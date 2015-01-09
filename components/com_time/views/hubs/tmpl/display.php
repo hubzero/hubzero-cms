@@ -35,14 +35,10 @@ $this->css()
      ->css('hubs')
      ->js('hubs');
 
-$app = JFactory::getApplication();
-
 // Set some ordering variables
-$start   = ($this->filters['start']) ? '&start=' . $this->filters['start'] : '';
-$sortcol = $app->getUserStateFromRequest("{$this->option}.{$this->controller}.orderby",  'orderby',  'name');
-$dir     = $app->getUserStateFromRequest("{$this->option}.{$this->controller}.orderdir", 'orderdir', 'asc');
+$sortcol = $this->rows->orderBy;
+$dir     = $this->rows->orderDir;
 $newdir  = ($dir == 'asc') ? 'desc' : 'asc';
-$base    = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
 ?>
 
 <header id="content-header">
@@ -55,7 +51,7 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 		<div id="content-header-extra">
 			<ul id="useroptions">
 				<li class="last">
-					<a class="add icon-add btn" href="<?php echo JRoute::_($base . '&task=new'); ?>">
+					<a class="add icon-add btn" href="<?php echo JRoute::_($this->base . '&task=new'); ?>">
 						<?php echo JText::_('COM_TIME_HUBS_NEW'); ?>
 					</a>
 				</li>
@@ -73,53 +69,52 @@ $base    = 'index.php?option=' . $this->option . '&controller=' . $this->control
 					<tr>
 						<td>
 							<a <?php if ($sortcol == 'name') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=name&orderdir=' . $newdir); ?>">
+								href="<?php echo JRoute::_($this->base . '&orderby=name&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_HUBS_NAME'); ?>
 							</a>
 						</td>
 						<td>
 							<a <?php if ($sortcol == 'liaison') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=liaison&orderdir=' . $newdir); ?>">
+								href="<?php echo JRoute::_($this->base . '&orderby=liaison&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_HUBS_LIAISON'); ?>
 							</a>
 						</td>
 						<td>
 							<a <?php if ($sortcol == 'anniversary_date') { echo ($dir == 'asc') ? 'class="sort_asc num"' : 'class="sort_desc num"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=anniversary_date&orderdir=' . $newdir); ?>">
+								href="<?php echo JRoute::_($this->base . '&orderby=anniversary_date&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_HUBS_ANNIVERSARY_DATE'); ?>
 							</a>
 						</td>
 						<td>
 							<a <?php if ($sortcol == 'support_level') { echo ($dir == 'asc') ? 'class="sort_asc alph"' : 'class="sort_desc alph"'; } ?>
-								href="<?php echo JRoute::_($base . '&orderby=support_level&orderdir=' . $newdir); ?>">
+								href="<?php echo JRoute::_($this->base . '&orderby=support_level&orderdir=' . $newdir); ?>">
 									<?php echo JText::_('COM_TIME_HUBS_SUPPORT_LEVEL'); ?>
 							</a>
 						</td>
 					</tr>
 				</thead>
 				<tbody>
-					<?php if (count($this->hubs) > 0) : ?>
-						<?php foreach ($this->hubs as $hub) : ?>
-						<tr>
-							<td>
-								<a class="view" id="<?php echo $hub->id; ?>" href="<?php echo JRoute::_($base . '&task=readonly&id=' . $hub->id); ?>">
-									<?php echo $hub->name; ?>
-								</a>
-							</td>
-							<td><?php echo $hub->liaison; ?></td>
-							<td><?php echo ($hub->anniversary_date != '0000-00-00') ? JHTML::_('date', $hub->anniversary_date, 'm/d/y', null) : ''; ?></td>
-							<td><?php echo $hub->support_level; ?></td>
-						</tr>
-						<?php endforeach; ?>
-					<?php else : ?>
+					<?php foreach ($this->rows as $hub) : ?>
+					<tr>
+						<td>
+							<a class="view" id="<?php echo $hub->id; ?>" href="<?php echo JRoute::_($this->base . '&task=readonly&id=' . $hub->id); ?>">
+								<?php echo $hub->name; ?>
+							</a>
+						</td>
+						<td><?php echo $hub->liaison; ?></td>
+						<td><?php echo ($hub->anniversary_date != '0000-00-00') ? JHTML::_('date', $hub->anniversary_date, 'm/d/y', null) : ''; ?></td>
+						<td><?php echo $hub->support_level; ?></td>
+					</tr>
+					<?php endforeach; ?>
+					<?php if (!$this->rows->count()) : ?>
 						<tr>
 							<td colspan="7" class="no_hubs"><?php echo JText::_('COM_TIME_HUBS_NONE_TO_DISPLAY'); ?></td>
 						</tr>
 					<?php endif; ?>
 				</tbody>
 			</table>
-			<form action="<?php echo JRoute::_($base); ?>">
-				<?php echo $this->pageNav; ?>
+			<form action="<?php echo JRoute::_($this->base); ?>">
+				<?php echo $this->rows->pagination; ?>
 			</form>
 		</div>
 	</section>

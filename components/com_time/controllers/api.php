@@ -56,11 +56,13 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		$this->db = JFactory::getDBO();
 
 		// Import time JTable libraries
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'tasks.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'hubs.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'records.php';
-		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'tables' . DS . 'contacts.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'hub.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'task.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'record.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'contact.php';
 		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'permissions.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'proxy.php';
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_time' . DS . 'models' . DS . 'liaison.php';
 
 		// Switch based on task (i.e. "/api/time/xxxxx")
 		switch ($this->segments[0])
@@ -93,7 +95,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 	/**
 	 * Get time records
 	 *
-	 * @return array of records objects
+	 * @return void
 	 */
 	private function indexRecords()
 	{
@@ -107,33 +109,37 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		// Incoming posted data
-		$tid       = JRequest::getInt('tid', NULL);
-		$startdate = JRequest::getVar('startdate', '2000-01-01');
-		$enddate   = JRequest::getVar('enddate', '2100-01-01');
-		$limit     = JRequest::getInt('limit', 1000);
-		$start     = JRequest::getInt('start', 0);
-		$orderby   = JRequest::getCmd('orderby', 'uname');
-		$orderdir  = JRequest::getCmd('orderdir', 'ASC');
+		$record = Record::all();
 
-		// Filters for query
-		$filters['limit']     = $limit;
-		$filters['start']     = $start;
-		$filters['orderby']   = $orderby;
-		$filters['orderdir']  = $orderdir;
-		$filters['q']         = array(
-			array('column'=>'task_id', 'o'=>'=',  'value'=>$tid),
-			array('column'=>'date',    'o'=>'>=', 'value'=>$startdate),
-			array('column'=>'date',    'o'=>'<=', 'value'=>$enddate)
-		);
-
-		// Create object and get records
-		$record  = new TimeRecords($this->db);
-		$records = $record->getRecords($filters);
+		if ($task_id = JRequest::getInt('tid', false))
+		{
+			$record->whereEquals('task_id', $task_id);
+		}
+		if ($start_date = JRequest::getVar('startdate', false))
+		{
+			$record->where('date', '>=', $start_date);
+		}
+		if ($end_date = JRequest::getVar('enddate', false))
+		{
+			$record->where('date', '<=', $end_date);
+		}
+		if ($limit = JRequest::getInt('limit', 20))
+		{
+			$record->limit($limit);
+		}
+		if ($start = JRequest::getInt('start', 0))
+		{
+			$record->start($start);
+		}
+		if (($orderby  = JRequest::getCmd('orderby', 'id'))
+		 && ($orderdir = JRequest::getCmd('orderdir', 'asc')))
+		{
+			$record->order($orderby, $orderdir);
+		}
 
 		// Create object with records property
 		$obj = new stdClass();
-		$obj->records = $records;
+		$obj->records = $record->rows()->toObject();
 
 		// Return object
 		$this->setMessage($obj, 200, 'OK');
@@ -142,7 +148,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 	/**
 	 * Save a time record
 	 *
-	 * @return 201 created on success
+	 * @return void
 	 */
 	private function saveRecord()
 	{
@@ -157,20 +163,19 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Incoming posted data (grab individually for added security)
-		$record = array();
-		$record['task_id']     = JRequest::getInt('task_id');
-		$record['time']        = JRequest::getCmd('time');
-		$record['date']        = JRequest::getCmd('date');
-		$record['description'] = JRequest::getString('description');
+		$r = [];
+		$r['task_id']     = JRequest::getInt('task_id');
+		$r['date']        = JFactory::getDate(JRequest::getVar('date'))->toSql();
+		$r['description'] = JRequest::getVar('description');
+		$r['time']        = JRequest::getVar('time');
+		$r['user_id']     = JFactory::getApplication()->getAuthn('user_id');
+		$r['end']         = date('Y-m-d H:i:s', (strtotime($r['date']) + ($r['time']*3600)));
 
-		$record = array_map('trim', $record);
+		// Create object and store content
+		$record = Record::oneOrNew(JRequest::getInt('id'))->set($r);
 
-		// Add user_id to array based on token
-		$record['user_id'] = JFactory::getApplication()->getAuthn('user_id');
-
-		// Create object and store new content
-		$records = new TimeRecords($this->db);
-		if (!$records->save($record))
+		// Do the actual save
+		if (!$record->save())
 		{
 			$this->setMessage('Record creation failed', 500, 'Internal server error');
 			return;
@@ -187,7 +192,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 	/**
 	 * Get time tasks
 	 *
-	 * @return array of tasks objects
+	 * @return void
 	 */
 	private function indexTasks()
 	{
@@ -201,29 +206,33 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		// Incoming data
-		$hub_id  = JRequest::getInt('hid', NULL);
-		$active  = JRequest::getInt('pactive', NULL);
-		$limit   = JRequest::getInt('limit', 1000);
-		$start   = JRequest::getInt('start', 0);
+		$task = Task::all();
 
-		// Filters for the query
-		$filters = array(
-						'limit'=>$limit,
-						'start'=>$start,
-						'q'=>array(
-							array('column'=>'hub_id', 'o'=>'=', 'value'=>$hub_id),
-							array('column'=>'active', 'o'=>'=', 'value'=>$active)
-						)
-					);
-
-		// Get list of tasks
-		$taskObj = new TimeTasks($this->db);
-		$tasks   = $taskObj->getTasks($filters);
+		if ($hub_id = JRequest::getInt('hid', false))
+		{
+			$task->whereEquals('hub_id', $hub_id);
+		}
+		if ($active = JRequest::getInt('pactive', false))
+		{
+			$task->whereEquals('active', $active);
+		}
+		if ($limit = JRequest::getInt('limit', 20))
+		{
+			$task->limit($limit);
+		}
+		if ($start = JRequest::getInt('start', 0))
+		{
+			$task->start($start);
+		}
+		if (($orderby  = JRequest::getCmd('orderby', 'name'))
+		 && ($orderdir = JRequest::getCmd('orderdir', 'asc')))
+		{
+			$task->order($orderby, $orderdir);
+		}
 
 		// Create object with tasks property
 		$obj = new stdClass();
-		$obj->tasks = $tasks;
+		$obj->tasks = $task->rows()->toObject();
 
 		// Return object
 		$this->setMessage($obj, 200, 'OK');
@@ -250,21 +259,29 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		// Incoming posted data
-		$active = JRequest::getInt('active', 1);
-		$limit  = JRequest::getInt('limit', 100);
-		$start  = JRequest::getInt('start', 0);
+		$hub = Hub::all();
 
-		// Filters for the query
-		$filters = array('limit'=>$limit, 'start'=>$start, 'active'=>$active);
-
-		// Get list of hubs
-		$hub  = new TimeHubs($this->db);
-		$hubs = $hub->getRecords($filters);
+		if ($active = JRequest::getInt('active', 1))
+		{
+			$hub->whereEquals('active', $active);
+		}
+		if ($limit = JRequest::getInt('limit', 100))
+		{
+			$hub->limit($limit);
+		}
+		if ($start = JRequest::getInt('start', 0))
+		{
+			$hub->start($start);
+		}
+		if (($orderby  = JRequest::getCmd('orderby', 'id'))
+		 && ($orderdir = JRequest::getCmd('orderdir', 'asc')))
+		{
+			$hub->order($orderby, $orderdir);
+		}
 
 		// Create object with tasks property
 		$obj = new stdClass();
-		$obj->hubs = $hubs;
+		$obj->hubs = $hub->rows()->toObject();
 
 		// Return object
 		$this->setMessage($obj, 200, 'OK');
@@ -297,30 +314,28 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		// Create a 'hub' object
-		$hub = new TimeHubs($this->db);
-
-		// Load the specific hub
-		if (!$hub->load($id))
+		try
 		{
-			$this->setMessage('Load hub failed', 500, 'Internal server error');
+			$hub = Hub::oneOrFail($id);
+		}
+		catch (Hubzero\Error\Exception\RuntimeException $e)
+		{
+			$this->setMessage('Hub not found', 404, 'Not found');
 			return;
 		}
-		else
-		{
-			$result = new stdClass();
-			$result->hname = $hub->name;
-			$result->hliaison = $hub->liaison;
-			$result->hanniversarydate = $hub->anniversary_date;
-			$result->hsupportlevel = $hub->support_level;
 
-			// Create object with specific hub properties
-			$obj = new stdClass();
-			$obj->hub = $result;
+		$result = new stdClass();
+		$result->hname = $hub->name;
+		$result->hliaison = $hub->liaison;
+		$result->hanniversarydate = $hub->anniversary_date;
+		$result->hsupportlevel = $hub->support_level;
 
-			// Return object
-			$this->setMessage($obj, 200, 'OK');
-		}
+		// Create object with specific hub properties
+		$obj = new stdClass();
+		$obj->hub = $result;
+
+		// Return object
+		$this->setMessage($obj, 200, 'OK');
 	}
 
 	//--------------------------
@@ -345,25 +360,23 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Incoming posted data (grab individually for added security)
-		$contact = array();
-		$contact['name']     = JRequest::getString('name');
-		$contact['phone']    = JRequest::getString('phone');
-		$contact['email']    = JRequest::getString('email');
-		$contact['role']     = JRequest::getString('role');
-		$contact['hub_id']   = JRequest::getInt('hid');
-
-		$contact = array_map('trim', $contact);
+		$c = array();
+		$c['name']   = JRequest::getString('name');
+		$c['phone']  = JRequest::getString('phone');
+		$c['email']  = JRequest::getString('email');
+		$c['role']   = JRequest::getString('role');
+		$c['hub_id'] = JRequest::getInt('hid');
 
 		// Create object and store new content
-		$contacts = new TimeContacts($this->db);
-		if (!$contacts->save($contact))
+		$contact = Contact::blank()->set($c);
+		if (!$contact->save())
 		{
 			$this->setMessage('Contact creation failed', 500, 'Internal server error');
 			return;
 		}
 
 		// Return message (include $contact object for use again by the javascript)
-		$this->setMessage($contacts->id, 201, 'Created');
+		$this->setMessage($contact->id, 201, 'Created');
 	}
 
 	/**
@@ -473,46 +486,26 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 			return;
 		}
 
-		// Filters for query
-		$filters['q'] = array(
-			array('column'=>'user_id', 'o'=>'=',  'value'=>JFactory::getApplication()->getAuthn('user_id')),
-			array('column'=>'date',    'o'=>'>=', 'value'=>JFactory::getDate(strtotime('today'))->toSql()),
-			array('column'=>'date',    'o'=>'<',  'value'=>JFactory::getDate(strtotime('today+1day'))->toSql())
-		);
-
 		// Create object and get records
-		$record  = new TimeRecords($this->db);
-		$records = $record->getRecords($filters);
+		$records = Record::whereEquals('user_id', JFactory::getApplication()->getAuthn('user_id'))
+                         ->where('date', '>=', JFactory::getDate(strtotime('today'))->toSql())
+                         ->where('date', '<', JFactory::getDate(strtotime('today+1day'))->toSql());
 
 		$results = array();
 
 		// Restructure results into the format that the calendar plugin expects
-		if ($records && count($records) > 0)
+		foreach ($records as $r)
 		{
-			$colors = array(
-				'#AA3939',
-				'#AA6C39',
-				'#226666',
-				'#2D882D',
+			$results[] = array(
+				'id'          => $r->id,
+				'title'       => $r->task->name,
+				'start'       => \JHtml::_('date', $r->date, DATE_RFC2822),
+				'end'         => \JHtml::_('date', $r->end, DATE_RFC2822),
+				'description' => $r->description,
+				'task_id'     => $r->task->id,
+				'hub_id'      => $r->task->hub->id,
+				'color'       => 'red'
 			);
-
-			$i = 0;
-
-			foreach ($records as $r)
-			{
-				$results[] = array(
-					'id'          => $r->id,
-					'title'       => $r->pname,
-					'start'       => \JHtml::_('date', $r->date, DATE_RFC2822),
-					'end'         => \JHtml::_('date', $r->end, DATE_RFC2822),
-					'description' => $r->description,
-					'task_id'     => $r->pid,
-					'hub_id'      => $r->hid,
-					'color'       => 'red'
-				);
-
-				++$i;
-			}
 		}
 
 		// Return object
@@ -539,27 +532,18 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		// Get the day of the week
 		$today = \JFactory::getDate()->format('N') - 1;
 
-		// Filters for query
-		$filters['q'] = array(
-			array('column'=>'user_id', 'o'=>'=',  'value'=>JFactory::getApplication()->getAuthn('user_id')),
-			array('column'=>'date',    'o'=>'>=', 'value'=>JFactory::getDate(strtotime("today-{$today}days"))->toSql()),
-			array('column'=>'date',    'o'=>'<',  'value'=>JFactory::getDate(strtotime("today+" . (8-$today) . 'days'))->toSql())
-		);
-
 		// Create object and get records
-		$record  = new TimeRecords($this->db);
-		$records = $record->getRecords($filters);
+		$records = Record::whereEquals('user_id', JFactory::getApplication()->getAuthn('user_id'))
+                         ->where('date', '>=',    JFactory::getDate(strtotime("today-{$today}days"))->toSql())
+                         ->where('date', '<',     JFactory::getDate(strtotime("today+" . (8-$today) . 'days'))->toSql());
 
 		$results = array();
 
 		// Restructure results into the format that the calendar plugin expects
-		if ($records && count($records) > 0)
+		foreach ($records as $r)
 		{
-			foreach ($records as $r)
-			{
-				$dayOfWeek = \JFactory::getDate($r->date)->format('N') - 1;
-				$results[$dayOfWeek][] = $r->time;
-			}
+			$dayOfWeek = \JFactory::getDate($r->date)->format('N') - 1;
+			$results[$dayOfWeek][] = $r->time;
 		}
 
 		// Return object
@@ -584,31 +568,23 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Incoming posted data (grab individually for added security)
-		$record = array();
-		$record['task_id']     = JRequest::getInt('task_id');
-		$record['date']        = JFactory::getDate(JRequest::getVar('start'))->toSql();
-		$record['end']         = JFactory::getDate(JRequest::getVar('end'))->toSql();
-		$record['description'] = JRequest::getVar('description');
-
-		$record = array_map('trim', $record);
-
-		// Compute time/duration
-		$record['time'] = (strtotime($record['end']) - strtotime($record['date'])) / 3600;
-
-		// Add user_id to array based on token
-		$record['user_id'] = JFactory::getApplication()->getAuthn('user_id');
+		$r = [];
+		$r['task_id']     = JRequest::getInt('task_id');
+		$r['date']        = JFactory::getDate(JRequest::getVar('start'))->toSql();
+		$r['end']         = JFactory::getDate(JRequest::getVar('end'))->toSql();
+		$r['description'] = JRequest::getVar('description');
+		$r['time']        = (strtotime($r['end']) - strtotime($r['date'])) / 3600;
+		$r['user_id']     = JFactory::getApplication()->getAuthn('user_id');
 
 		// Create object and store content
-		$records = new TimeRecords($this->db);
-		$update  = false;
+		$record = Record::oneOrNew(JRequest::getInt('id'))->set($r);
+		$update = false;
 
 		// See if we have an incoming id, indicating update
-		if ($id = JRequest::getInt('id', false))
+		if (!$record->isNew())
 		{
-			$records->load($id);
-
 			// Make sure updater is the owner of the record
-			if ($records->user_id != $record['user_id'])
+			if (!$record->isMine())
 			{
 				$this->setMessage('You are only allowed to update your own records', 401, 'Unauthorized');
 				return;
@@ -618,7 +594,7 @@ class TimeControllerApi extends \Hubzero\Component\ApiController
 		}
 
 		// Do the actual save
-		if (!$records->save($record))
+		if (!$record->save())
 		{
 			$this->setMessage('Record creation failed', 500, 'Internal server error');
 			return;

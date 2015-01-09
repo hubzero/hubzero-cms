@@ -44,7 +44,7 @@ class TimeControllerPermissions extends TimeControllerBase
 	public function displayTask()
 	{
 		// Get scope
-		$this->view->scope    = JRequest::getWord('scope', 'hubs');
+		$this->view->scope    = JRequest::getWord('scope', 'Hub');
 		$this->view->scope_id = JRequest::getInt('scope_id', 0);
 
 		// Get permissions
@@ -53,7 +53,7 @@ class TimeControllerPermissions extends TimeControllerBase
 
 		// Bind existing rules if applicable
 		$asset = new \JTableAsset($this->database);
-		$name  = 'com_time.' . $this->view->scope . '.' . $this->view->scope_id;
+		$name  = 'com_time.' . strtolower($this->view->scope) . '.' . $this->view->scope_id;
 		$asset->loadByName($name);
 
 		if ($asset->get('id'))
@@ -61,7 +61,7 @@ class TimeControllerPermissions extends TimeControllerBase
 			$access->setValue('asset_id', null, $asset->get('id'));
 		}
 
-		$this->view->permissions = $access->getField($this->view->scope);
+		$this->view->permissions = $access->getField(strtolower($this->view->scope));
 
 		// Display
 		$this->view->display();
@@ -84,7 +84,7 @@ class TimeControllerPermissions extends TimeControllerBase
 		}
 
 		// Process Rules
-		$data  = JRequest::getVar($scope);
+		$data  = JRequest::getVar(strtolower($scope));
 		$rules = array();
 
 		if ($data && count($data) > 0)
@@ -106,11 +106,9 @@ class TimeControllerPermissions extends TimeControllerBase
 			}
 		}
 
-		$class = 'Time' . ucfirst($scope);
-		$table = new $class($this->database);
-		$table->load($scope_id);
-		$table->setRules($rules);
-		$table->store();
+		$model = $scope::oneOrFail($scope_id);
+		$model->assetRules = new \JAccessRules($rules);
+		$model->save();
 
 		echo json_encode(array('success'=>true));
 		exit();

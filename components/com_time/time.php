@@ -33,16 +33,14 @@ defined('_JEXEC') or die('Restricted access');
 
 require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'base.php';
 
-require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'contacts.php';
-require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'hubs.php';
-require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'records.php';
-require_once JPATH_COMPONENT_SITE . DS . 'tables'      . DS . 'tasks.php';
-
 require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'hub.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'task.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'record.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'contact.php';
 require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'permissions.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'proxy.php';
+require_once JPATH_COMPONENT_SITE . DS . 'models'      . DS . 'liaison.php';
 
-require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'charts.php';
-require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'html.php';
 require_once JPATH_COMPONENT_SITE . DS . 'helpers'     . DS . 'filters.php';
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'overview'));

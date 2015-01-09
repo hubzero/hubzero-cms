@@ -71,12 +71,29 @@ $end   = JHTML::_('date', strtotime($now . ' + 1 hour'), JText::_('G'));
 					</div>
 					<form action="<?php echo JRoute::_('/api/time/postRecord'); ?>" class="details-data" method="POST">
 						<div class="grouping" id="hub-group">
-							<label for="hub"><?php echo JText::_('COM_TIME_OVERVIEW_HUB'); ?>:</label>
-							<?php echo TimeHTML::buildSmartHubsList($this->controller); ?>
+							<label for="hub_id"><?php echo JText::_('COM_TIME_OVERVIEW_HUB'); ?>:</label>
+							<select name="hub_id" id="hub_id" tabindex="1">
+								<option value=""><?php echo JText::_('COM_TIME_NO_HUB'); ?></option>
+								<?php foreach (Hub::all()->ordered() as $hub) : ?>
+									<option value="<?php echo $hub->id; ?>">
+										<?php echo $hub->name; ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
 						</div>
 						<div class="grouping" id="task-group">
 							<label for="task"><?php echo JText::_('COM_TIME_OVERVIEW_TASK'); ?>:</label>
-							<?php echo TimeHTML::buildSmartTasksList($this->controller); ?>
+							<select name="task_id" id="task_id" tabindex="2">
+								<option value=""><?php echo JText::_('COM_TIME_RECORDS_NO_HUB_SELECTED'); ?></option>
+								<?php foreach ($tasks = Task::all()->ordered() as $task) : ?>
+									<option value="<?php echo $task->id; ?>">
+										<?php echo $task->name; ?>
+									</option>
+								<?php endforeach; ?>
+								<?php if (!$tasks->count()) : ?>
+									<option value=""><?php echo JText::_('COM_TIME_RECORDS_NO_TASKS_AVAILABLE'); ?></option>
+								<?php endif; ?>
+							</select>
 						</div>
 
 						<div class="grouping" id="description-group">
