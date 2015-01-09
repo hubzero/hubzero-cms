@@ -52,7 +52,7 @@ class View extends AbstractView
 	 * @param   array  $config  A named configuration array for object construction.
 	 * @return  void
 	 */
-	public function __construct($config = [])
+	public function __construct($config = array())
 	{
 		// create new mail template, loading email.php 
 		// in active template falling back to system email.php
