@@ -103,7 +103,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 					if (preg_match('/Comment submitted via email from (.+)/i', $item, $matches))
 					{
 						$obj = array(
-							'role'    => 'commentor',
+							'role'    => 'commenter',
 							'name'    => JText::_('COM_SUPPORT_NONE'),
 							'address' => trim($matches[1])
 						);
