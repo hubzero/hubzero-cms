@@ -524,7 +524,8 @@ class plgProjectsLinks extends \Hubzero\Plugin\Plugin
 				$c->doi				= $doi;
 
 				// Try getting more metadata
-				$data = self::getDoiMetadata($doi, false, $url = '');
+				$url = '';
+				$data = self::getDoiMetadata($doi, false, $url);
 
 				// Save available data
 				if ($data)
