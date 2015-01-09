@@ -120,6 +120,19 @@ class Flavor extends Base implements CommandInterface
 				$database->query();
 				$this->output->addLine('Setting amazon flavor flag in welcome template');
 
+				// Delete tools resource type
+				$query = "DELETE FROM `#__resource_types` WHERE `alias` = 'tools'";
+				$database->setQuery($query);
+				$database->query();
+				$this->output->addLine('Deleting tools resource type');
+
+				// Update default content page(s)
+				$query  = "UPDATE `#__content` SET `introtext` = '{xhub:include type=\"stylesheet\" filename=\"pages/discover.css\"}\r\n<div class=\"grid\">\r\n    <div class=\"col span-quarter\">\r\n        <h2>Do More</h2>\r\n    </div>\r\n\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"presentation\">\r\n            <h3><a href=\"/resources\">Resources</a></h3>\r\n            <p>Find the latest cutting-edge research in our <a href=\"/resources\">resources</a>.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"quote\">\r\n            <h3><a href=\"/citations\">Citations</a></h3>\r\n            <p>See who has <a href=\"/citations\">cited</a> our content in their work.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter omega\">\r\n        <div class=\"tag\">\r\n            <h3><a href=\"/tags\">Tags</a></h3>\r\n            <p>Explore all our content through <a href=\"/tags\">tags</a> or even tag content yourself.</p>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"grid below\">\r\n    <div class=\"col span-quarter offset-quarter\">\r\n        <div class=\"blog\">\r\n            <h3><a href=\"/blog\">Blog</a></h3>\r\n            <p>Read the <a href=\"/blog\">latest entry</a> or browse the archive for articles of interest.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"wiki\">\r\n            <h3><a href=\"/wiki\">Wiki</a></h3>\r\n            <p>Browse our user-generated <a href=\"/wiki\">wiki pages</a> or write your own.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter omega\">\r\n        <div class=\"feedback\">\r\n            <h3><a href=\"/feedback\">Feedback</a></h3>\r\n            <p>Like something? Having trouble? <a href=\"/feedback\">Let us know what you think!</a></p>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"grid\">\r\n    <div class=\"col span-quarter\">\r\n        <h2>Services</h2>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"contribute\">\r\n            <h3><a href=\"/resources/new\">Upload</a></h3>\r\n            <p><a href=\"/resources/new\">Publish</a> your own tools, seminars, and other content on this site.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"cart\">\r\n            <h3><a href=\"/store\">Store</a></h3>\r\n            <p><a href=\"/store\">Purchase items</a> such as t-shirts using points you earn by helping out.</p>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"grid\">\r\n    <div class=\"col span-quarter\">\r\n        <h2>What\'s Happening</h2>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"event\">\r\n            <h3><a href=\"/events\">Events</a></h3>\r\n            <p>Find information about the many upcoming <a href=\"/events\">public meetings and scientific symposia</a>.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"new\">\r\n            <h3><a href=\"/whatsnew\">What\'s New</a></h3>\r\n            <p>Find the latest content posted on the site with our <a href=\"/whatsnew\">What\'s New</a> section.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter omega\">\r\n        <div class=\"poll\">\r\n            <h3><a href=\"/poll\">Poll</a></h3>\r\n            <p>Respond to our poll questions and <a href=\"/poll\">see what everyone else is thinking</a>.</p>\r\n        </div>\r\n    </div>\r\n</div>'";
+				$query .= " WHERE `id` = '22' AND `alias` = 'discover'";
+				$database->setQuery($query);
+				$database->query();
+				$this->output->addLine('Updating default content pages');
+
 				break;
 
 			case 'default':
@@ -174,6 +187,27 @@ class Flavor extends Base implements CommandInterface
 				$database->setQuery($query);
 				$database->query();
 				$this->output->addLine('Unsetting flavor flag in welcome template');
+
+				// Add back tools resource type
+				$query = "SELECT * FROM `#__resource_types` WHERE `alias` = 'tools'";
+				$database->setQuery($query);
+				if (!$database->loadObjectList())
+				{
+					$query  = "INSERT INTO `#__resource_types` VALUES ('7', 'tools', 'Tools', '27',";
+					$query .= "'Simulation and modeling tools that can be accessed via a web browser.', '1',";
+					$query .= "'poweredby=Powered by=textarea=0\ncredits=Credits=textarea=0\nsponsoredby=Sponsored by=textarea=0\nreferences=References=textarea=0',";
+					$query .= "'plg_citations=1\nplg_questions=1\nplg_recommendations=1\nplg_related=1\nplg_reviews=1\nplg_usage=1\nplg_versions=1\nplg_favorite=1\nplg_share=1\nplg_wishlist=1\nplg_supportingdocs=1\nplg_about=0\nplg_abouttool=1')";
+					$database->setQuery($query);
+					$database->query();
+					$this->output->addLine('Adding tools resource type');
+				}
+
+				// Update default content page(s)
+				$query  = "UPDATE `#__content` SET `introtext` = '{xhub:include type=\"stylesheet\" filename=\"pages/discover.css\"}\r\n<div class=\"grid\">\r\n    <div class=\"col span-quarter\">\r\n        <h2>Do More</h2>\r\n    </div>\r\n\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"presentation\">\r\n            <h3><a href=\"/resources\">Resources</a></h3>\r\n            <p>Find the latest cutting-edge research in our <a href=\"/resources\">resources</a>.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"quote\">\r\n            <h3><a href=\"/citations\">Citations</a></h3>\r\n            <p>See who has <a href=\"/citations\">cited</a> our content in their work.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter omega\">\r\n        <div class=\"tag\">\r\n            <h3><a href=\"/tags\">Tags</a></h3>\r\n            <p>Explore all our content through <a href=\"/tags\">tags</a> or even tag content yourself.</p>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"grid below\">\r\n    <div class=\"col span-quarter offset-quarter\">\r\n        <div class=\"blog\">\r\n            <h3><a href=\"/blog\">Blog</a></h3>\r\n            <p>Read the <a href=\"/blog\">latest entry</a> or browse the archive for articles of interest.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"wiki\">\r\n            <h3><a href=\"/wiki\">Wiki</a></h3>\r\n            <p>Browse our user-generated <a href=\"/wiki\">wiki pages</a> or write your own.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter omega\">\r\n        <div class=\"feedback\">\r\n            <h3><a href=\"/feedback\">Feedback</a></h3>\r\n            <p>Like something? Having trouble? <a href=\"/feedback\">Let us know what you think!</a></p>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"grid\">\r\n    <div class=\"col span-quarter\">\r\n        <h2>Services</h2>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"contribute\">\r\n            <h3><a href=\"/resources/new\">Upload</a></h3>\r\n            <p><a href=\"/resources/new\">Publish</a> your own tools, seminars, and other content on this site.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"tool\">\r\n            <h3><a href=\"/tools\">Tool Forge</a></h3>\r\n            <p>The <a href=\"/tools\">development area</a> for simulation tools. Sign up and manage your own software project!</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter omega\">\r\n        <div class=\"cart\">\r\n            <h3><a href=\"/store\">Store</a></h3>\r\n            <p><a href=\"/store\">Purchase items</a> such as t-shirts using points you earn by helping out.</p>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"grid\">\r\n    <div class=\"col span-quarter\">\r\n        <h2>What\'s Happening</h2>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"event\">\r\n            <h3><a href=\"/events\">Events</a></h3>\r\n            <p>Find information about the many upcoming <a href=\"/events\">public meetings and scientific symposia</a>.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter\">\r\n        <div class=\"new\">\r\n            <h3><a href=\"/whatsnew\">What\'s New</a></h3>\r\n            <p>Find the latest content posted on the site with our <a href=\"/whatsnew\">What\'s New</a> section.</p>\r\n        </div>\r\n    </div>\r\n    <div class=\"col span-quarter omega\">\r\n        <div class=\"poll\">\r\n            <h3><a href=\"/poll\">Poll</a></h3>\r\n            <p>Respond to our poll questions and <a href=\"/poll\">see what everyone else is thinking</a>.</p>\r\n        </div>\r\n    </div>\r\n</div>'";
+				$query .= " WHERE `id` = '22' AND `alias` = 'discover'";
+				$database->setQuery($query);
+				$database->query();
+				$this->output->addLine('Updating default content pages');
 
 				break;
 
