@@ -50,7 +50,7 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 	 */
 	function execute()
 	{
-		switch($this->segments[0])
+		switch ($this->segments[0])
 		{
 			case 'request_token':
 				$this->request_token();
@@ -135,9 +135,9 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 
 		$callback_url = JRequest::getVar('oauth_callback','');
 
-        $token = sha1(OAuthProvider::generateToken(20,false));
-        $token_secret = sha1(OAuthProvider::generateToken(20,false));
-        $verifier = sha1(OAuthProvider::generateToken(20,false));
+		$token = sha1(OAuthProvider::generateToken(20,false));
+		$token_secret = sha1(OAuthProvider::generateToken(20,false));
+		$verifier = sha1(OAuthProvider::generateToken(20,false));
 
 		$db = JFactory::getDBO();
 
@@ -430,12 +430,12 @@ class OauthControllerApi extends \Hubzero\Component\ApiController
 				}
 
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-				$this->_response->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret);
+				$this->_response->setMessage("oauth_token=".$token."&oauth_token_secret=".$token_secret,200,"OK");
 			}
 			else
 			{
 				$this->_response->setResponseProvides('application/x-www-form-urlencoded,text/html;q=0.9');
-				$this->_response->setMessage("oauth_token=".$result->token."&oauth_token_secret=".$result->token_secret);
+				$this->_response->setMessage("oauth_token=".$result->token."&oauth_token_secret=".$result->token_secret,200,"OK");
 			}
 
 			return;

@@ -1271,7 +1271,7 @@ class Response
 	 * @param      unknown $reason Parameter description (if any) ...
 	 * @return     void
 	 */
-	function setMessage($message = null, $status = null, $reason = null)
+	function setMessage($message = null, $status = 200, $reason = null)
 	{
 		if ($status != null)
 		{
@@ -1309,7 +1309,7 @@ class Response
 	 * @param      unknown $message Parameter description (if any) ...
 	 * @return     unknown Return description (if any) ...
 	 */
-	function setErrorMessage($status = null, $reason = null, $message = null)
+	function setErrorMessage($status = 500, $reason = null, $message = null)
 	{
 		return $this->setMessage($message,$status,$reason);
 	}
