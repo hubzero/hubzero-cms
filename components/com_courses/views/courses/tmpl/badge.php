@@ -88,7 +88,7 @@ switch ($this->action)
 	case 'validation':
 		if (!$this->token)
 		{
-			JError::raiseError(421, JText::_('COM_COURSES_INVALID_REQUEST'));
+			JError::raiseError(404, JText::_('COM_COURSES_INVALID_REQUEST'));
 		}
 
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_courses' . DS . 'tables' . DS . 'member.badge.php';
@@ -102,7 +102,7 @@ switch ($this->action)
 
 		if (!$memberBadge->get('id'))
 		{
-			JError::raiseError(421, JText::_('COM_COURSES_INVALID_REQUEST'));
+			JError::raiseError(404, JText::_('COM_COURSES_INVALID_REQUEST'));
 		}
 
 		$memberTbl = new CoursesTableMember($db);
@@ -123,7 +123,7 @@ switch ($this->action)
 	break;
 
 	default:
-		JError::raiseError(421, JText::_('COM_COURSES_INVALID_REQUEST'));
+		JError::raiseError(404, JText::_('COM_COURSES_INVALID_REQUEST'));
 	break;
 }
 ?>
