@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('COM_PUBLICATIONS_PUBLICATIONS') . ': [' . JText::_('COM_PUBLICATIONS_LICENSES') . ']', 'addedit.png');
 JToolBarHelper::addNew();
 JToolBarHelper::editList();
-JToolBarHelper::publishList('makedefault', JText::_('COM_PUBLICATIONS_MAKE_DEFAULT'));
+JToolBarHelper::save('makedefault', JText::_('COM_PUBLICATIONS_MAKE_DEFAULT'));
 JToolBarHelper::publishList('changestatus', JText::_('COM_PUBLICATIONS_PUBLISH_UNPUBLISH'));
 
 ?>
@@ -95,7 +95,7 @@ for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
 				</td>
 				<td class="centeralign">
 					<?php if ($row->main == 1) { ?>
-					<span class="state yes">
+					<span class="state default">
 						<span><?php echo JText::_('JYES'); ?></span>
 					</span>
 					<?php } ?>
