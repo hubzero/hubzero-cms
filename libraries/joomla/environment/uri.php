@@ -188,17 +188,9 @@ class JURI extends JObject
 					}
 				}
 
-				/* Check for quotes in the URL and uri encode them to prevent injections through the Host header */
-				$_SERVER['REQUEST_URI'] = str_replace(array("'", '"', '<', '>'), array('%27','%22','%3C','%3E'), $_SERVER['REQUEST_URI'], $count1);
-				$theURI = str_replace(array("'", '"', '<', '>'), array('%27','%22','%3C','%3E'), $theURI, $count2);
-
-				/*
-				// Check for quotes in the URL to prevent injections through the Host header
-				if ($theURI !== str_replace(array("'", '"', '<', '>'), '', $theURI))
-				{
-					throw new InvalidArgumentException('Invalid URI detected.');
-				}
-				*/
+				// Extra cleanup to remove invalid chars in the URL to prevent injections through the Host header
+				$_SERVER['REQUEST_URI'] = str_replace(array("'", '"', '<', '>'), array('%27','%22','%3C','%3E'), $_SERVER['REQUEST_URI']);
+				$theURI = str_replace(array("'", '"', '<', '>'), array('%27','%22','%3C','%3E'), $theURI);
 			}
 			else
 			{
