@@ -252,7 +252,7 @@ $this->css()
 						<table class="wish-priority" id="priority">
 							<caption>
 								<?php echo JText::_('COM_WISHLIST_PRIORITY'); ?>: <strong><?php echo $this->wish->get('ranking'); ?></strong>
-								<span>(<?php echo $this->wish->get('num_votes', 0).' '.JText::_('COM_WISHLIST_NOTICE_OUT_OF').' '.$voters.' '.JText::_('COM_WISHLIST_VOTES'); ?>)</span>
+								<span>(<?php echo $this->wish->rankings('count') . ' '.JText::_('COM_WISHLIST_NOTICE_OUT_OF').' '.$voters.' '.JText::_('COM_WISHLIST_VOTES'); ?>)</span>
 							</caption>
 							<thead>
 								<tr>
