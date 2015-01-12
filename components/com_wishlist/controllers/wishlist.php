@@ -408,7 +408,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				$votes = $wish->rankings(); //$objR->get_votes($wish->get('id'));
 
 				// first consider votes by list owners
-				if ($votes)
+				if ($votes && count($votes) > 0)
 				{
 					$imp 		= 0;
 					$divisor 	= 0;
