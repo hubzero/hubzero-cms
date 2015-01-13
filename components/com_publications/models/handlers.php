@@ -33,6 +33,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 include_once(dirname(__FILE__) . DS . 'attachment.php');
 include_once(dirname(__FILE__) . DS . 'handler.php');
+include_once(dirname(__FILE__) . DS . 'editor.php');
 
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
 	. DS . 'com_publications' . DS . 'tables' . DS . 'handler.php');
@@ -58,9 +59,23 @@ class PublicationsModelHandlers extends JObject
 	protected $_types 	= array();
 
 	/**
-	* @var    array  Directories, where attachment types can be stored
+	* @var    array  Directories, where handlers can be stored
 	*/
 	protected $_path 	= array();
+
+	/**
+	* Configs
+	*
+	* @var
+	*/
+	protected	$_configs 	= NULL;
+
+	/**
+	* Editor
+	*
+	* @var
+	*/
+	public	$editor = NULL;
 
 	/**
 	 * Constructor
@@ -79,9 +94,13 @@ class PublicationsModelHandlers extends JObject
 	 *
 	 * @return object
 	 */
-	public function showHandlers($pub, $elementid, $handlers, $handler, $attachments)
+	public function showHandlers($pub, $elementid, $handlers, $handler, $attachments, $props = NULL)
 	{
 		$html = '';
+
+		// TBD - Get handler configs from pub/type manifest
+		$this->_configs = isset($pub->_curationModel->handlers) ? $pub->_curationModel->handlers : NULL;
+
 		// We have a forced handler
 		if ($handler)
 		{
@@ -110,17 +129,42 @@ class PublicationsModelHandlers extends JObject
 				return;
 			}
 			$i = 0;
-			$html = '<div class="handler-controls">';
+
+			// Header
+			$view = new \Hubzero\Component\View(array(
+				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+				'name'   => 'handlers',
+				'layout' => '_header',
+			));
+			$html = $view->loadTemplate();
+
+			// Go through available handlers and find those that apply
 			foreach ($all as $item)
 			{
 				$handler  = $this->ini($item->name);
 				if ($relevant = self::isRelevant($handler, $attachments) || $item->assigned)
 				{
-					$html .= $this->drawHandlerChoice($handler, $item->assigned, $relevant);
+					$hview = new \Hubzero\Component\View(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+						'name'   => 'handlers',
+						'layout' => '_choice',
+					));
+					$configs = $handler->get('_configs');
+					if (!$configs)
+					{
+						$saved = $obj->getConfig($item->name, $item);
+						$configs = $handler->getConfig($saved);
+					}
+					$hview->handler  	= $handler;
+					$hview->configs  	= $configs;
+					$hview->item	 	= $item;
+					$hview->publication = $pub;
+					$hview->props 		= $props;
+					$hview->relevant	= $relevant;
+					$html .= $hview->loadTemplate();
 					$i++;
 				}
 			}
-			$html.= '</div>';
 
 			// No applicable hanlders?
 			if ($i == 0)
@@ -133,9 +177,74 @@ class PublicationsModelHandlers extends JObject
 	}
 
 	/**
-	 * Check if handler applies to selection
+	 * Update handler status / perform handler action
 	 *
 	 * @return  void
+	 */
+	public function update( $handler, $pub, $elementId = 0, $action = '' )
+	{
+		if (!$action)
+		{
+			return false;
+		}
+		// TBD
+		return;
+	}
+
+	/**
+	 * Load content editor for handler
+	 *
+	 * @return  void
+	 */
+	public function loadEditor( $handler, $pub, $elementId = 0 )
+	{
+		// Get handler configs
+		$configs = $handler->get('_configs');
+		if (!$configs)
+		{
+			$configs = $handler->getConfig();
+		}
+
+		// Start editor
+		$editor = new PublicationsModelEditor($handler, $configs);
+
+		// Make sure we have attachments
+		if (!isset($pub->_attachments))
+		{
+			// Get attachments
+			$pContent = new PublicationAttachment( $this->_parent->_db );
+			$pub->_attachments = $pContent->sortAttachments ( $pub->version_id );
+		}
+
+		// Sort out attachments for this element
+		$attachments = $pub->_attachments;
+		$attachments = isset($attachments['elements'][$elementId]) ? $attachments['elements'][$elementId] : NULL;
+
+		// Set editor properties
+		$editor->set('pub', $pub);
+		$editor->set('attachments', $attachments);
+		$editor->set('elementId', $elementId);
+
+		// Check if assigned and get association record
+		$objAssoc = new PublicationHandlerAssoc($this->_db);
+		$association = $objAssoc->getAssociation($pub->version_id, $elementId, $handler->get('_name'));
+		$editor->set('assoc', $association);
+
+		// Check status
+		$editor->set('configured', $association && $association->params ? true : false );
+		$editor->set('assigned', $association ? true : false);
+		$editor->set('relevant', self::isRelevant($handler, $attachments));
+
+		// Check for changes
+		// TBD
+
+		return $editor;
+	}
+
+	/**
+	 * Check if handler applies to selection
+	 *
+	 * @return  boolean
 	 */
 	public function isRelevant( $handler, $attachments )
 	{
@@ -151,15 +260,18 @@ class PublicationsModelHandlers extends JObject
 		{
 			return false;
 		}
-
 		// Check allowed formats
-		if (!self::checkAllowed($attachments, $configs->params->allowed_ext))
+		if (!self::checkAllowed($attachments, $configs->params))
 		{
 			return false;
 		}
-
 		// Check required formats
-		if (!self::checkRequired($attachments, $configs->params->required_ext))
+		if (!self::checkRequired($attachments, $configs->params))
+		{
+			return false;
+		}
+		// Any additional custom checks
+		if (!$handler->checkRequired($attachments))
 		{
 			return false;
 		}
@@ -170,46 +282,67 @@ class PublicationsModelHandlers extends JObject
 	/**
 	 * Check for allowed formats
 	 *
-	 * @return  object
+	 * @return  boolean
 	 */
-	public function checkAllowed( $attachments, $formats = array() )
+	public function checkAllowed( $attachments, $params )
 	{
 		if (empty($attachments))
 		{
 			return true;
 		}
+		$formats 	= $params->allowed_ext;
+		$min 		= $params->min_allowed;
+		$max 		= $params->max_allowed;
+		$min		= $min ? $min : 1;
+		$enforced   = isset($params->enforced) ? $params->enforced : 0;
 
 		if (empty($formats))
 		{
 			return true;
 		}
 
+		$i = 0;
+		$b = 0;
 		foreach ($attachments as $attach)
 		{
+			// Skip non-file attachments
+			if ($attach->type != 'file')
+			{
+				continue;
+			}
 			$file = isset($attach->path) ? $attach->path : $attach;
 			$ext = explode('.', $file);
 			$ext = end($ext);
 
-			if ($ext && !in_array(strtolower($ext), $formats))
+			if ($ext && in_array(strtolower($ext), $formats))
 			{
-				return false;
+				$i++;
+			}
+			else
+			{
+				$b++;
 			}
 		}
+		if ($enforced == 1 && $b > 0)
+		{
+			return false;
+		}
 
-		return true;
+		return ($i >= $min && ($max && $i <= $max)) ? true : false;
 	}
 
 	/**
 	 * Check for required formats
 	 *
-	 * @return  object
+	 * @return  boolean
 	 */
-	public function checkRequired( $attachments, $formats = array() )
+	public function checkRequired( $attachments, $params )
 	{
 		if (empty($attachments))
 		{
 			return true;
 		}
+		$formats 	= $params->required_ext;
 
 		if (empty($formats))
 		{
@@ -240,7 +373,7 @@ class PublicationsModelHandlers extends JObject
 	/**
 	 * Side controls for handler
 	 *
-	 * @return  void
+	 * @return  string HTML
 	 */
 	public function drawSelectedHandler($handler, $assigned = NULL)
 	{
@@ -249,33 +382,17 @@ class PublicationsModelHandlers extends JObject
 		{
 			$configs = $handler->getConfig();
 		}
-		$html = '<div class="handlertype-' . $handler->get('_name') . '">';
-		$html.= '<h3>' . JText::_('Presentation') . ': ' . $configs->label . '</h3>';
-		$html.= '<p>' . $configs->about . '</p>';
-		$html.= '</div>';
 
-		return $html;
+		$view = new \Hubzero\Component\View(array(
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+			'name'   => 'handlers',
+			'layout' => '_selected',
+		));
+		$view->handler  = $handler;
+		$view->configs  = $configs;
+		$view->assigned = $assigned;
+		return $view->loadTemplate();
 	}
-
-	/**
-	 * Side controls for handler
-	 *
-	 * @return  void
-	 */
-	public function drawHandlerChoice($handler, $assigned = NULL, $relevant = true)
-	{
-		$configs = $handler->get('_configs');
-		if (!$configs)
-		{
-			$configs = $handler->getConfig();
-		}
-		$html = '<div class="handlertype-' . $handler->get('_name') . '">';
-		$html.= '<h3>' . $configs->label . '</h3>';
-		$html.= '</div>';
-
-		return $html;
-	}
-
 
 	/**
 	 * Initialize
@@ -292,11 +409,7 @@ class PublicationsModelHandlers extends JObject
 			return false;
 		}
 
-		// Load config
-		$handler->getConfig();
-
 		return $handler;
-
 	}
 
 	/**
@@ -356,13 +469,17 @@ class PublicationsModelHandlers extends JObject
 	 *
 	 * @return  void
 	 */
-	public function parseConfig($name, $configs = array())
+	public function parseConfig($name, $configs = array(), $savedConfig = array())
 	{
-		// Load config from db
-		$obj = new PublicationHandler($this->_db);
-		$savedConfig = $obj->getConfig($name);
+		// Get custom config from db
+		if (!$savedConfig  || empty($savedConfig))
+		{
+			$obj = new PublicationHandler($this->_db);
+			$savedConfig = $obj->getConfig($name);
+		}
 
-		if ($savedConfig)
+		// Overwrite default config with custom
+		if ($savedConfig && !empty($savedConfig))
 		{
 			foreach ($configs as $configName => $configValue)
 			{

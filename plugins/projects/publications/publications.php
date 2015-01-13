@@ -330,7 +330,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				break;
 
 			case 'saveparam':
-				$arr['html'] = $this->saveparam();
+				$arr['html'] = $this->saveParam();
 				break;
 
 			// Change publication state
@@ -379,6 +379,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$arr['html'] = $this->_suggestLicense();
 				break;
 
+			// Show all publication versions
 			case 'versions':
 				$arr['html'] = $this->versions();
 				break;
@@ -388,8 +389,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$arr['html'] = $this->suggestTags();
 				break;
 
+			// Unpublish/delete
 			case 'cancel':
-				$arr['html'] = $this->_unpublish();
+				$arr['html'] = $this->cancelDraft();
 				break;
 
 			// Contribute process outside of projects
@@ -404,6 +406,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 			case 'diskspace':
 				$arr['html'] = $this->pubDiskSpace($option, $project, $this->_task, $this->_config);
+				break;
+
+			// Handlers
+			case 'handler':
+				$arr['html'] = $this->handler();
 				break;
 
 			/* OLD draft flow */
@@ -441,6 +448,129 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Handler manager
+	 *
+	 * @return     string
+	 */
+	public function handler()
+	{
+		// Incoming
+		$props  = JRequest::getVar( 'p', '' );
+		$ajax   = JRequest::getInt( 'ajax', 0 );
+		$pid    = JRequest::getInt( 'pid', 0 );
+		$vid    = JRequest::getInt( 'vid', 0 );
+		$handler= trim(JRequest::getVar( 'h', '' ));
+		$action = trim(JRequest::getVar( 'do', '' ));
+
+		// Parse props for curation
+		$parts   = explode('-', $props);
+		$block   = (isset($parts[0])) ? $parts[0] : 'content';
+		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
+		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
+
+		// Output HTML
+		$view = new \Hubzero\Component\View(array(
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+			'name'   => 'handlers',
+			'layout' => 'editor',
+		));
+
+		// Load classes
+		$objP  			= new Publication( $this->_database );
+		$view->version 	= new PublicationVersion( $this->_database );
+
+		// Load publication version
+		$view->version->load($vid);
+		if (!$view->version->id)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
+		}
+
+		// Get publication
+		$view->publication = $objP->getPublication($view->version->publication_id,
+			$view->version->version_number, $this->_project->id);
+
+		if (!$view->publication)
+		{
+			$this->setError(JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
+		}
+
+		// On error
+		if ($this->getError())
+		{
+			// Output error
+			$view = new \Hubzero\Plugin\View(
+				array(
+					'folder'	=>'projects',
+					'element'	=>'files',
+					'name'		=>'error'
+				)
+			);
+
+			$view->title  = '';
+			$view->option = $this->_option;
+			$view->setError( $this->getError() );
+			return $view->loadTemplate();
+		}
+
+		// Load master type
+		$mt   							= new PublicationMasterType( $this->_database );
+		$view->publication->_type   	= $mt->getType($view->publication->base);
+		$view->publication->_project	= $this->_project;
+
+		// Get curation model
+		$view->publication->_curationModel = new PublicationsCuration($this->_database,
+			$view->publication->_type->curation);
+
+		// Set block
+		if (!$view->publication->_curationModel->setBlock( $block, $step ))
+		{
+			$view->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_LOADING_CONTENT') );
+		}
+
+		// Set pub assoc and load curation
+		$view->publication->_curationModel->setPubAssoc($view->publication);
+
+		// Load handler
+		$modelHandler = new PublicationsModelHandlers($this->_database);
+		$view->handler = $modelHandler->ini($handler);
+		if (!$view->handler)
+		{
+			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_ERROR_LOADING_HANDLER') );
+		}
+		else
+		{
+			// Perform request
+			if ($action)
+			{
+				$modelHandler->update($view->handler, $view->publication, $element, $action);
+			}
+
+			// Load editor
+			$view->editor = $modelHandler->loadEditor($view->handler, $view->publication, $element);
+		}
+
+		$view->option 		= $this->_option;
+		$view->database 	= $this->_database;
+		$view->uid 			= $this->_uid;
+		$view->ajax			= $ajax;
+		$view->task			= $this->_task;
+		$view->element		= $element;
+		$view->block		= $block;
+		$view->step 		= $step;
+		$view->props		= $props;
+		$view->config		= $this->_pubconfig;
+
+		// Get messages	and errors
+		$view->msg = $this->_msg;
+		if ($this->getError())
+		{
+			$view->setError( $this->getError() );
+		}
+		return $view->loadTemplate();
+	}
+
+	/**
 	 * View for selecting items (currently used for license selection)
 	 *
 	 * @return     string
@@ -459,9 +589,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$block   = (isset($parts[0])) ? $parts[0] : 'content';
 		$step    = (isset($parts[1]) && is_numeric($parts[1]) && $parts[1] > 0) ? $parts[1] : 1;
 		$element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
-
-		// Provisioned project?
-		$prov   = $this->_project->provisioned == 1 ? 1 : 0;
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -571,7 +698,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	public function saveparam()
+	public function saveParam()
 	{
 		// Incoming
 		$pid  	= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
@@ -1719,6 +1846,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * First screen in publication process, adding content
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	public function add()
@@ -1925,6 +2053,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Edit a publication
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	public function edit()
@@ -2516,6 +2645,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Start/save a new version
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	protected function _newVersion()
@@ -2851,6 +2981,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Review publication
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	public function review()
@@ -3058,6 +3189,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save publication
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	public function save()
@@ -3939,10 +4071,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			}
 
 			// Mark as curated
-			//if ($state == 1)
-			//{
-				$row->saveParam($row->id, 'curated', 1);
-			//}
+			$row->saveParam($row->id, 'curated', 1);
 		}
 
 		// OnAfterPublish
@@ -4164,6 +4293,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Change publication status
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	protected function _publish()
@@ -4471,7 +4601,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	 *
 	 * @return     string
 	 */
-	protected function _unpublish()
+	public function cancelDraft()
 	{
 		// Incoming
 		$pid 		= $this->_pid ? $this->_pid : JRequest::getInt('pid', 0);
@@ -4714,6 +4844,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Edit content
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	protected function _editContent()
@@ -4783,6 +4914,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save content
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	protected function _saveContent()
@@ -4834,7 +4966,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 			$objPA->publication_version_id 	= $vid;
 			$objPA->path 					= $item;
 			$objPA->type 					= $type;
-		//	$objPA->vcs_hash 				= $vcs_hash;
 			$objPA->created_by 				= $this->_uid;
 			$objPA->created 				= JFactory::getDate()->toSql();
 			$objPA->title 					= $title ? $title : '';
@@ -4869,6 +5000,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show content item full info (AJAX)
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	protected function _loadContentItem()
@@ -4935,6 +5067,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show content options (AJAX)
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	protected function _showOptions()
@@ -5044,6 +5177,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Process content
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      integer  	$pid
 	 * @param      integer  	$vid
 	 * @param      array  		$selections
@@ -5120,6 +5254,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Publish attachments
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      object  		$row
 	 * @param      string  		$which
 	 *
@@ -5176,6 +5311,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Process authors
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      integer  	$vid
 	 * @param      array  		$selections
 	 *
@@ -5259,6 +5395,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show author (AJAX)
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string (html)
 	 */
 	protected function _showAuthor()
@@ -5303,6 +5440,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Edit author view
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	protected function _editAuthor()
@@ -5448,6 +5586,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save author info
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return   void (redirect)
 	 */
 	protected function _saveAuthor()
@@ -5725,6 +5864,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Process metadata
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      integer  	$rtype
 	 *
 	 * @return     string
@@ -5774,6 +5914,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Process audience
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      integer  	$pid
 	 * @param      integer  	$vid
 	 *
@@ -5827,6 +5968,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Show audience
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string (html)
 	 */
 	protected function _showAudience()
@@ -5879,6 +6021,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Process gallery
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      integer  	$pid
 	 * @param      integer  	$vid
 	 * @param      array		$selections
@@ -5983,6 +6126,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Edit screenshot
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string (html)
 	 */
 	protected function _editScreenshot()
@@ -6073,6 +6217,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Load screenshot
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string (html)
 	 */
 	protected function _loadScreenshot()
@@ -6180,6 +6325,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Create screenshot
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      string  		$ima
 	 * @param      string 		$hash
 	 * @param      string		$from_path
@@ -6287,6 +6433,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Save screenshot
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     void (redirect)
 	 */
 	protected function _saveScreenshot()
@@ -6454,6 +6601,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Suggest tags (AJAX)
 	 *
+	 * Marked for re-write
 	 * @return   string (html)
 	 */
 	public function suggestTags()
@@ -6675,6 +6823,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get panels
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return    void
 	 */
 	protected function _getPanels( $required = false, $base = NULL)
@@ -6736,6 +6885,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check if publication may be published
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      array 		$checked
 	 *
 	 * @return     boolean
@@ -6759,6 +6909,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Check what's missing in draft
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      string  		$type master type
 	 * @param      object 		$row
 	 * @param      string		$version
@@ -6854,6 +7005,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get current position in pub contribution process
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      object  		$row
 	 * @param      string 		$lastpane
 	 * @param      string		$current
@@ -7109,6 +7261,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get data as CSV file
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      integer  	$db_name
 	 * @param      integer  	$version
 	 *
@@ -7226,6 +7379,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Archive data in a publication and package
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @param      object  	$pub	Publication object
 	 * @param      object  	$row	Version object
 	 *
@@ -7513,6 +7667,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 	/**
 	 * Get supported master types applicable to individual project
 	 *
+	 * OLD FLOW - Marked for deprecation
 	 * @return     string
 	 */
 	private function _getAllowedTypes($tChoices)

@@ -59,7 +59,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 	 *
 	 * @return  void
 	 */
-	public function getConfig()
+	public function getConfig($savedConfig = array())
 	{
 		// Defaults
 		$configs = array(
@@ -78,11 +78,12 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 				'thumbHeight' 		=> '60',
 				'masterWidth' 		=> '600',
 				'masterHeight' 		=> '400',
-				'defaultThumb'		=> '/components/com_publications/assets/img/resource_thumb.gif'
+				'defaultThumb'		=> '/components/com_publications/assets/img/resource_thumb.gif',
+				'enforced'			=> 0
 			)
 		);
 
-		$this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs)), FALSE);
+		$this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs, $savedConfig)), FALSE);
 		return $this->_config;
 	}
 
@@ -222,6 +223,12 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			return false;
 		}
 
+		// Make sure we got config
+		if (!$this->_config)
+		{
+			$this->getConfig();
+		}
+
 		// Show first element
 		$element = $elements[0];
 
@@ -314,7 +321,6 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		return $html;
 
 	}
-
 
 	/**
 	 * Draw list of included files
@@ -515,5 +521,62 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 		}
 
 		return $fpath;
+	}
+
+	/**
+	 * Draw handler status in editor
+	 *
+	 * @return  object
+	 */
+	public function drawStatus($editor)
+	{
+		return;
+	}
+
+	/**
+	 * Draw handler editor content
+	 *
+	 * @return  object
+	 */
+	public function drawEditor($editor)
+	{
+		// Incoming
+		$active = trim(JRequest::getVar( 'o', NULL )); // Requested image
+
+		$database = JFactory::getDBO();
+
+		$attachments = $editor->get('attachments');
+
+		// Get attachment model
+		$modelAttach = new PublicationsModelAttachments($database);
+
+		// Get image files
+		$images = array();
+
+		// Get metadata
+		$meta = array();
+		if ($editor->get('configured'))
+		{
+			// Do we have a metadata file?
+			// If file found, load metadata from file
+		}
+
+		// Draw images
+		$view = new \Hubzero\Component\View(array(
+			'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_publications',
+			'name'   => 'handlers',
+			'layout' => 'imagegallery',
+		));
+		return $view->loadTemplate();
+	}
+
+	/**
+	 * Check against handler-specific requirements
+	 *
+	 * @return  object
+	 */
+	public function checkRequired( $attachments )
+	{
+		return true;
 	}
 }

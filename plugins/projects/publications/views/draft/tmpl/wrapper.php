@@ -126,7 +126,7 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 			<input type="hidden" name="p" id="props" value="" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" value="dispute" />
-			<h5 id="notice-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_TITLE'); ?></h5>
+			<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_TITLE'); ?></h5>
 			<label>
 				<span class="block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_DISPUTE_LABEL'); ?></span>
 				<textarea name="review" id="notice-review" rows="5" cols="10"></textarea>
@@ -148,7 +148,7 @@ $isFirst = $this->pub->_curationModel->getFirstBlock() == $step ? true : false;
 			<input type="hidden" name="p" id="skip-props" value="" />
 			<input type="hidden" name="active" value="publications" />
 			<input type="hidden" name="action" value="skip" />
-			<h5 id="notice-title"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_TITLE'); ?></h5>
+			<h5><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_TITLE'); ?></h5>
 			<label>
 				<span class="block"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_CURATION_SKIP_LABEL'); ?></span>
 				<textarea name="review" id="skip-notice-review" rows="5" cols="10"></textarea>

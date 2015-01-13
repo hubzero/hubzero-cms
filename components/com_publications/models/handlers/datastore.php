@@ -1,7 +1,7 @@
 <?php
 /**
  * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
+ * @author		Alissa Nedossekina <alisa@purdue.edu>
  * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
@@ -24,7 +24,6 @@
 
 // Check to ensure this file is within the rest of the framework
 defined('_JEXEC') or die('Restricted access');
-
 
 /**
  * DataStore Lite Handler
@@ -50,7 +49,7 @@ class PublicationsModelHandlerDataStore extends PublicationsModelHandler
 	 *
 	 * @return  void
 	 */
-	public function getConfig()
+	public function getConfig($savedConfig = array())
 	{
 		// Defaults
 		$configs = array(
@@ -62,11 +61,12 @@ class PublicationsModelHandlerDataStore extends PublicationsModelHandler
 				'allowed_ext' 		=> array('csv'),
 				'required_ext' 		=> array('csv'),
 				'min_allowed' 		=> 1,
-				'max_allowed' 		=> 1
+				'max_allowed' 		=> 1,
+				'enforced'			=> 0
 			)
 		);
 
-		$this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs)), FALSE);
+		$this->_config = json_decode(json_encode($this->_parent->parseConfig($this->_name, $configs, $savedConfig)), FALSE);
 		return $this->_config;
 	}
 
@@ -106,5 +106,47 @@ class PublicationsModelHandlerDataStore extends PublicationsModelHandler
 	{
 		// No special treatment for this handler
 		return;
+	}
+
+	/**
+	 * Check for changed selections etc
+	 *
+	 * @return  object
+	 */
+	public function getStatus( $attachments )
+	{
+		// Start status
+		$status = new PublicationsModelStatus();
+		return $status;
+	}
+
+	/**
+	 * Draw handler status in editor
+	 *
+	 * @return  object
+	 */
+	public function drawStatus($editor)
+	{
+		return;
+	}
+
+	/**
+	 * Draw handler editor content
+	 *
+	 * @return  object
+	 */
+	public function drawEditor($editor)
+	{
+		return;
+	}
+
+	/**
+	 * Check against handler-specific requirements
+	 *
+	 * @return  object
+	 */
+	public function checkRequired( $attachments )
+	{
+		return true;
 	}
 }

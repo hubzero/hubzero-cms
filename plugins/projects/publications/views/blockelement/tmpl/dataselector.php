@@ -61,8 +61,6 @@ $this->editUrl = $prov ? JRoute::_($route) : JRoute::_($route . '&active=publica
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->master->sequence, $this->elementId, 'author');
 
-//print_r($curatorStatus);
-
 // Get attachment model
 $modelAttach = new PublicationsModelAttachments($this->database);
 
@@ -88,79 +86,25 @@ $multiZip 		= (isset($this->manifest->params->typeParams->multiZip)
 
 $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
 $updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
+
+$handlerOptions = count($this->attachments) > 0 && $useHandles ? $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments, $props) : NULL;
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement <?php echo $required ? ' el-required' : ' el-optional';
 echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo ' el-coming'; } ?> <?php echo $curatorStatus->status == 1 ? ' el-passed' : ''; echo $curatorStatus->status == 0 ? ' el-failed' : ''; echo $updated ? ' el-updated' : ''; echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : ''; ?> ">
 	<!-- Showing status only -->
 	<div class="element_overview<?php if ($active) { echo ' hidden'; } ?>">
-		<div class="block-aside"></div>
-		<div class="block-subject">
+		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
 			<h5 class="element-title"><?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; } ?>
-			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&el=' . $this->elementId . '#' . $elName; ?>"><?php echo JText::_('[edit]'); ?></a></span>
+			<span class="element-options"><a href="<?php echo $this->pub->url . '?version=' . $this->pub->version . '&amp;el=' . $this->elementId . '#' . $elName; ?>"><?php echo JText::_('[edit]'); ?></a></span>
 			</h5>
 		</div>
+		<div class="block-aside-omega"></div>
 	</div>
 	<!-- Active editing -->
 	<div class="element_editing<?php if (!$active) { echo ' hidden'; } ?>">
-		<?php if (count($this->attachments) > 0 && $useHandles && $handlerOptions = $modelHandler->showHandlers($this->pub, $this->elementId, $handlers, $handler, $this->attachments))  { ?>
-		<div class="handler-aside">
-			<?php
-				// Present handler options
-				echo $handlerOptions;
-			?>
-		</div>
-		<?php } else { ?>
-		<div class="block-aside">
-			<?php if (count($this->attachments) > 1 && $multiZip && $this->type == 'file')
-			{  // Default handler for multiple files - zip together
-
-				$versionParams 	= new JParameter( $this->pub->params );
-				$bundleName		= $versionParams->get($elName . 'bundlename', 'bundle');
-
-				$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
-							. $this->pub->id . '&v=' . $this->pub->version_number )
-							. '?el=' . $this->elementId . '&download=1';
-
-				?>
-				<div class="handler-controls block">
-					<div class="handlertype multizip">
-						<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MULTI_DOWNLOAD'); ?> <a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ZIP_BUNDLE'); ?>.</a>
-						</p>
-						<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
-							<input type="text" name="elt[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
-							<span class="save-param-status"></span>
-							<span class="save-param-wrap"><a href="<?php echo $prov ? JRoute::_( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : JRoute::_( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
-						</label>
-					</div>
-				</div>
-			<?php }
-			?>
-			<div class="block-info">
-			<?php
-				$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
-
-				if ($shorten)
-				{
-					$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
-					$about.= ' <a href="#more-' . $elName . '" class="more-content">'
-								. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
-					$about.= ' <div class="hidden">';
-					$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
-					$about.= ' </div>';
-				}
-				else
-				{
-					$about = $aboutText;
-				}
-
-				echo $about;
-		?>
-		</div></div>
-		<?php } ?>
-
-		<div class="block-subject">
+		<div class="block-subject withhandler">
 			<span class="checker">&nbsp;</span>
 			<label id="<?php echo $elName; ?>-lbl"> <?php if ($required) { ?><span class="required"><?php echo JText::_('Required'); ?></span><?php } ?><?php if (!$required) { ?><span class="optional"><?php echo JText::_('Optional'); ?></span><?php } ?>
 				<?php echo $this->manifest->label; ?> <?php if (count($this->attachments)) { echo '(' . count($this->attachments) .')'; }?>
@@ -203,18 +147,78 @@ echo $complete ? ' el-complete' : ' el-incomplete'; ?> <?php if ($coming) { echo
 					     ->display();
 				} ?>
 			</div>
+
 			<?php if ($curatorStatus->status == 3 && !$complete) { ?>
 				<p class="warning"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM'); echo $curatorStatus->authornotice ? ' ' . JText::_('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $curatorStatus->authornotice . '"' : ''; ?></p>
 			<?php } ?>
-			<?php if ($active && $this->collapse) { ?>
-				<p class="element-move">
-				<?php // display error
-				 if ($error) { echo '<span class="element-error">' . $error . '</span>'; } ?>
-					<span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
-					<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
-					</span>
-				</p>
-			<?php } ?>
 		</div>
+		<?php if ($handlerOptions)  { ?>
+		<div class="handler-aside">
+			<?php
+				// Present handler options
+				echo $handlerOptions;
+			?>
+		</div>
+		<?php } else { ?>
+			<div class="block-aside-omega">
+				<?php if (count($this->attachments) > 1 && $multiZip && $this->type == 'file')
+				{  // Default handler for multiple files - zip together
+
+					$versionParams 	= new JParameter( $this->pub->params );
+					$bundleName		= $versionParams->get($elName . 'bundlename', 'bundle');
+
+					$bundleUrl = JRoute::_('index.php?option=com_publications&task=serve&id='
+								. $this->pub->id . '&amp;v=' . $this->pub->version_number )
+								. '?el=' . $this->elementId . '&download=1';
+
+					?>
+					<div class="handler-controls block">
+						<div class="handlertype multizip">
+							<p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_MULTI_DOWNLOAD'); ?> <a href="<?php echo $bundleUrl; ?>" title="<?php echo $bundleName; ?>"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ZIP_BUNDLE'); ?>.</a>
+							</p>
+							<label><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_BUNDLE_NAME'); ?>
+								<input type="text" name="elt[<?php echo $this->elementId; ?>][bundlename]" id="<?php echo $elName . 'bundlename'; ?>" value="<?php echo $bundleName; ?>">
+								<span class="save-param-status"></span>
+								<span class="save-param-wrap"><a href="<?php echo $prov ? JRoute::_( $route ) . '?action=saveparam&vid=' . $this->pub->version_id : JRoute::_( $route . '&active=publications&pid=' . $this->pub->id ) . '?action=saveparam&amp;vid=' . $this->pub->version_id; ?>" class="btn save-param"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?></a></span>
+							</label>
+						</div>
+					</div>
+				<?php }
+				?>
+				<div class="block-info">
+				<?php
+					$shorten = ($aboutText && strlen($aboutText) > 200) ? 1 : 0;
+
+					if ($shorten)
+					{
+						$about = \Hubzero\Utility\String::truncate($aboutText, 200, array('html' => true));
+						$about.= ' <a href="#more-' . $elName . '" class="more-content">'
+									. JText::_('PLG_PROJECTS_PUBLICATIONS_READ_MORE') . '</a>';
+						$about.= ' <div class="hidden">';
+						$about.= ' 	<div class="full-content" id="more-' . $elName . '">' . $aboutText . '</div>';
+						$about.= ' </div>';
+					}
+					else
+					{
+						$about = $aboutText;
+					}
+
+					echo $about;
+			?>
+			</div>
+		</div>	
+		<?php } ?>
+		<?php if ($active && $this->collapse) { ?>
+		<div class="clear"></div>
+		<div class="withhandler">
+			<p class="element-move">
+			<?php // display error
+			 if ($error) { echo '<span class="element-error">' . $error . '</span>'; } ?>
+				<span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
+				<input type="button" value="<?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>" id="<?php echo $elName; ?>-apply" class="save-element btn icon-next"/>
+				</span>
+			</p>
+		</div>
+		<?php } ?>
 	</div>
 </div>

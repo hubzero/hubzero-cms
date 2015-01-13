@@ -1053,48 +1053,48 @@
 		font-size: 40px;
 		margin-left: -50px;
 	}
-	.handler-aside {
-		float: right;
-		width: 190px;
-		padding: 0 0 0 30px;
-		margin-top: 3em;
-		padding-left: 1em;
-	}
 	*[class^="handlertype-"],
 	*[class*=" handlertype-"] {
 		padding: 1em;
 		background: #e0ebee;
+		padding-left: 60px;
+	}
+	*[class^="handlertype-"].unassigned,
+	*[class*=" handlertype-"].unassigned {
+		background: #efefef;
 	}
 	*[class^="handlertype-"] h3,
 	*[class*=" handlertype-"] h3 {
 		font-size: 1.2em;
 		line-height: 1.2em;
 		margin: 0;
-		padding-left: 50px;
+		padding: 0;
 	}
 	*[class^="handlertype-"] p,
 	*[class*=" handlertype-"] p {
 		line-height: 1.5em;
-		margin: 0;
+		margin: -1em 0 0 0;
 	}
-	[class^="handlertype-"] h3:before, [class*=" handlertype-"] h3:before {
+	[class^="handlertype-"]:before, [class*=" handlertype-"]:before {
 		font-family: 'Fontcons';
 		color: #5ec1da;
 		border: none;
-		position: absolute;
-		margin: 10px 0 0 -60px;	
+		margin: 10px 0 0 -50px;	
 		width: 40px;
 		height: 40px;
 		font-size: 40px;
-		margin-left: -50px;
+		position: absolute;
 	}
-	.handlertype-imageviewer h3:before {
+	[class^="handlertype-"].unassigned:before, [class*=" handlertype-"].unassigned:before {
+		color: #CCC;
+	}
+	.handlertype-imageviewer:before {
 		content: "\f08c";
-		width: 55px;
-		height: 55px;
-		font-size: 55px;
+		width: 50px;
+		height: 50px;
+		font-size: 50px;
 	}
-	.handlertype-datastore h3:before {
+	.handlertype-datastore:before {
 		content: "\f00b";
 	}
 	.handlertype label {
@@ -1105,6 +1105,21 @@
 		font-size: 85%;
 		color: #666;
 	}
+	.handler-controls h6  {
+		font-size: 90%;
+		color: #000;
+	}
+	.handler-controls .hint {
+		padding: 0 0 1em 0;
+	}
+	.handler-controls .pub-info-pop {
+		margin-top: -2em;
+		float: none;
+		margin-left: -0.5em;
+	}
+	.handler-controls h6 {
+		margin-top: 0;
+	}
 	.save-param-wrap {
 		display: block;
 		text-align: right;
@@ -1114,14 +1129,56 @@
 		border: none;
 		background: none;
 	}
+	.block-subject.withhandler {
+		float: left;
+		margin: 0;
+		padding: 0;
+		width: 60%;
+		padding-left: 40px;
+	}
+	.withhandler {
+		margin: 0;
+		padding: 0;
+		width: 60%;
+		padding-left: 40px;
+	}
+	.block-subject.nohandler {
+		width: 60%;
+	}
+	.handler-aside,
+	.block-aside-omega {
+		float: left;
+		width: 27%;
+		margin: 0;
+		margin-right: -1em;
+		padding: 0 0 0 30px;
+		margin-top: 3em;
+		margin-left: 1em;
+		overflow: hidden;
+	}
 	@media all and (max-width: 1024px) {
-		.block-aside,
-		.handler-aside {
+		.block-aside {
 			display: none;
 		}
 		.block-subject,
 		.submit-area  {
 			margin-right: 40px;
+		}
+		.block-subject.withhandler {
+			margin: 0;
+			width: 90%;
+			float: none;
+		}
+		.withhandler {
+			width: 90%;
+		}
+		.handler-aside,
+		.block-aside-omega {
+			width: 90%;
+			float: none;
+		}
+		.handler-controls:before {
+			display: none;
 		}
 	}
 	.btn.disabled {
@@ -1136,4 +1193,17 @@
 	.disabled .button-wrapper.bw-previous:before {
 		color: #333;
 	}
-	
+/* Handler Editor */
+	.handler-wrap {
+	}
+	.handler-status {
+		min-height: 30px;
+		padding: 0.5em 1em;
+		background: #f9fbfa;
+		margin: 1em 0;
+	}
+	.handler-content {
+		border-top: 4px solid #CCC;
+		min-height: 400px;
+		background: #ecf7f8;
+	}

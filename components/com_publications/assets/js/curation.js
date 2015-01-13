@@ -280,7 +280,6 @@ HUB.PublicationsCuration = {
 								else
 								{										
 									HUB.PublicationsCuration.markChecker(element, 'fail');
-									
 									var note 	 = $(element).parent().find('.notice-text')[0];
 									$(note).html(response.notice);
 																		
