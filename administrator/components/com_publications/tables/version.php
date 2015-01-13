@@ -267,6 +267,13 @@ class PublicationVersion extends JTable
 	var $curation					= NULL;
 
 	/**
+	 * Assigned curator
+	 *
+	 * @var text
+	 */
+	var $curator					= NULL;
+
+	/**
 	 * Constructor
 	 *
 	 * @param      object &$db JDatabase
