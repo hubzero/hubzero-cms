@@ -414,8 +414,7 @@ class Query
 		// Check cache for results first
 		if ($noCache || !isset(self::$cache[$key]))
 		{
-			$this->connection->setQuery($query);
-			self::$cache[$key] = $this->connection->loadObjectList();
+			self::$cache[$key] = $this->query($query);
 		}
 
 		// Clear elements
@@ -441,10 +440,7 @@ class Query
 		// Set values
 		$this->values($data);
 
-		// Build and execute query
-		$query = $this->buildQuery('insert');
-		$this->connection->setQuery($query);
-		$result = $this->connection->query();
+		$result = $this->query($this->buildQuery('insert'));
 
 		// Clear elements
 		$this->reset();
@@ -474,10 +470,7 @@ class Query
 		// Where primary key is...
 		$this->whereEquals($pkField, $pkValue);
 
-		// Build and execute query
-		$query = $this->buildQuery('update');
-		$this->connection->setQuery($query);
-		$result = $this->connection->query();
+		$result = $this->query($this->buildQuery('update'));
 
 		// Clear elements
 		$this->reset();
@@ -507,16 +500,32 @@ class Query
 		$this->addElement('delete', null);
 		$this->whereEquals($pkField, $pkValue);
 
-		// Build and execute query
-		$query = $this->buildQuery('delete');
-		$this->connection->setQuery($query);
-		$result = $this->connection->query();
+		$result = $this->query($this->buildQuery('delete'));
 
 		// Clear elements
 		$this->reset();
 
 		// Return result of the query
 		return $result;
+	}
+
+	/**
+	 * Performs the actual query and returns the results
+	 *
+	 * @param  string $query the query to perform
+	 * @return mixed
+	 * @since  1.3.2
+	 **/
+	public function query($query)
+	{
+		// Check the type of query to decide what to return
+		list($type) = explode(' ', $query);
+
+		if (\Hubzero\Plugin\Plugin::getParams('debug', 'system')->get('log-database-queries', false)) Log::add($query);
+
+		$this->connection->setQuery($query);
+
+		return (strtolower($type) == 'select') ? $this->connection->loadObjectList() : $this->connection->query();
 	}
 
 	/**
