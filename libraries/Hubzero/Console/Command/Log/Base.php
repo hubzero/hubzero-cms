@@ -46,7 +46,7 @@ class Base
 	protected static $fields = array();
 
 	/**
-	 * If dates/times are present, how are they format
+	 * If dates/times are present, how are they formatted
 	 *
 	 * @var string
 	 **/
@@ -215,7 +215,7 @@ class Base
 	 **/
 	public static function parse($line, $output, $settings)
 	{
-		$bits     = explode(' ', $line);
+		$bits     = explode(' ', $line, count(static::$fields));
 		$index    = 0;
 		$i_used   = 0;
 		$style    = null;
