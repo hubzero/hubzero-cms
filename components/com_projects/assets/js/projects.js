@@ -134,7 +134,7 @@ HUB.Projects = {
 			$(item).attr('href', href);	
 			
 			// TEX compiler view
-			if ($(item).hasClass('tex-menu'))
+			if ($(item).hasClass('tex-menu') || $(item).hasClass('box-expanded'))
 			{
 				bWidth = 800;
 			}
