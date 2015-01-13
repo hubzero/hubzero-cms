@@ -139,11 +139,11 @@ class PublicationHandler extends JTable
 		}
 
 		$query  = "SELECT H.*, IFNULL(A.id, 0) as assigned, IFNULL(A.ordering, 0) as ordering,
-				A.params as assigned_params  FROM $this->_tbl as H ";
+				A.params as assigned_params, A.status as active  FROM $this->_tbl as H ";
 		$query .= "LEFT JOIN #__publication_handler_assoc as A ON H.id=A.handler_id ";
 		$query .= " AND A.publication_version_id=" . $vid . " AND A.element_id=" . $elementid;
 		$query .= " WHERE H.status = 1";
-		$query .= " ORDER BY A.ordering ASC";
+		$query .= " ORDER BY assigned DESC, A.ordering ASC";
 
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
@@ -156,25 +156,29 @@ class PublicationHandler extends JTable
 	 *
 	 * @return     mixed False if error, Object on success
 	 */
-	public function getConfig( $name = NULL )
+	public function getConfig( $name = NULL, $entry = NULL )
 	{
-		if ($name === NULL)
+		if ($name === NULL && $entry === NULL)
 		{
 			return false;
 		}
 
-		$query = "SELECT * FROM $this->_tbl WHERE name='" . $name . "'";
-		$query.= " LIMIT 1";
+		if (!$entry || !is_object($entry))
+		{
+			$query = "SELECT * FROM $this->_tbl WHERE name='" . $name . "'";
+			$query.= " LIMIT 1";
 
-		$this->_db->setQuery( $query );
-		$result = $this->_db->loadObjectList();
+			$this->_db->setQuery( $query );
+			$result = $this->_db->loadObjectList();
+			$entry = $result ? $result[0] : NULL;
+		}
 
 		// Parse configs
-		if ($result)
+		if ($entry)
 		{
 			$output = array();
 			$output['params'] = array();
-			foreach ($result[0] as $field => $value)
+			foreach ($entry as $field => $value)
 			{
 				if ($field == 'params')
 				{

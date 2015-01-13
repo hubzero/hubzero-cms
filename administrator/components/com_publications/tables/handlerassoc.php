@@ -119,4 +119,32 @@ class PublicationHandlerAssoc extends JTable
 		$this->_db->setQuery( $query );
 		return $this->_db->loadObjectList();
 	}
+
+	/**
+	 * Load associated handler
+	 *
+	 * @param      integer 	$vid 		Publication Version ID
+	 * @param      integer 	$elementid  Element ID
+	 * @param      string 	$handler    Handler name
+	 *
+	 * @return     mixed False if error, Object on success
+	 */
+	public function getAssociation( $vid = NULL, $elementid = NULL, $handler = NULL )
+	{
+		if (!intval($vid) || !intval($elementid) || !$handler)
+		{
+			return false;
+		}
+
+		$query  = "SELECT H.*, A.params as configs, A.status, A.ordering FROM $this->_tbl as A ";
+		$query .= " JOIN #__publication_handlers as H ON H.id=A.handler_id";
+		$query .= " WHERE A.publication_version_id=" . $vid;
+		$query .= " AND A.element_id=" . $elementid;
+		$query .= " AND H.name=" . $this->_db->quote($handler);
+		$query .= " LIMIT 1";
+
+		$this->_db->setQuery( $query );
+		$result = $this->_db->loadObjectList();
+		return $result ? $result[0] : NULL;
+	}
 }
