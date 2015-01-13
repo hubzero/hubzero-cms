@@ -85,6 +85,14 @@
 .hubzero:before { content: "\f001"; }
 .hubzero { background: #999; }
 
+.auth .certificate:before {
+	content: "\f040";
+	font-family: "fontcons";
+	font-size: 30px;
+	left: 5px;
+}
+.certificate { background: #999; }
+
 .alt-account {
 	display: inline-block;
 	background: transparent;
