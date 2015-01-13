@@ -199,7 +199,6 @@ class PublicationVersion extends JTable
 	 * 3 - dev
 	 * 4 - ready
 	 * 5 - pending approval
-	 * 6 - dark archive
 	 */
 	var $state  					= NULL;
 
