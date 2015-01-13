@@ -52,15 +52,26 @@ $this->commentor = JFactory::getUser($this->reported->author);
 
 $message  = '----------------------------' . "\n";
 $message .= strtoupper(JText::_('Case #')) . ': ' . $this->report->id . "\n";
+$message .= strtoupper(JText::_('Reason')) . ': ' . $this->report->subject . "\n";
 $message .= strtoupper(JText::_('Reported')) . ': ' . $this->report->created . "\n";
+if (!$this->author)
+{
+	$reporter = JFactory::getUser($this->report->created_by);
+
+	$message .= strtoupper(JText::_('Reported by')) . ': ' . $this->escape($reporter->get('name')) . '(' . $this->escape($reporter->get('username')) . ')' . "\n";
+	$message .= strtoupper(JText::_('Comments')) . ': "' . $this->escape($this->report->report) . '"' . "\n";
+}
 $message .= strtoupper(JText::_('Reviewed')) . ': ' . $this->report->reviewed . "\n";
 $message .= strtoupper(JText::_('Status')) . ': removed' . "\n";
-if ($this->report->note)
+if ($this->report->note && !$this->author)
 {
 	$message .= strtoupper(JText::_('Note')) . ': ' . $this->report->note . "\n";
 }
-$message .= strtoupper(JText::_('Status')) . ': removed' . "\n";
+//$message .= strtoupper(JText::_('Status')) . ': removed' . "\n";
+if ($this->author)
+{
 $message .= strtoupper(JText::_('Dispute')) . ': ' . JText::_('The content marked as inappropriate is presented below in its entirety. If you wish to dispute the report, please file a ticket with our support center and reference the case #.') . "\n";
+}
 $message .= '----------------------------'."\n\n";
 
 $message .= JText::_('Created by') . ': ' . stripslashes($this->commentor->get('name')) . ' (' . $this->commentor->get('username') . ')' . "\n";

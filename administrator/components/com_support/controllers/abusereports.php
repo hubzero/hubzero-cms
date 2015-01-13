@@ -364,6 +364,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			$eview->controller = $this->_controller;
 			$eview->reported   = $reported;
 			$eview->report     = $report;
+			$eview->author     = $juser;
 
 			$plain = $eview->loadTemplate();
 			$plain = str_replace("\n", "\r\n", $plain);
