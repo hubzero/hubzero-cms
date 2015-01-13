@@ -167,7 +167,7 @@ $this->commentor = JFactory::getUser($this->reported->author);
 														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
 													</td>
 													<td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
-														Support Center
+														<?php echo JText::_('COM_SUPPORT_CENTER'); ?>
 													</td>
 												</tr>
 											</tbody>
@@ -208,7 +208,7 @@ $this->commentor = JFactory::getUser($this->reported->author);
 											<thead>
 												<tr>
 													<th style="font-weight: normal; border-bottom: 1px solid #e9bcbc; padding: 16px 30px; text-align: center; font-size: 1.5em; color: #e96c6c;" align="left">
-														Submitted content has been reported as inappropriate.
+														<?php echo JText::_('COM_SUPPORT_REPORT_ABUSE_CONTENT_REPORTED'); ?>
 													</th>
 												</tr>
 											</thead>
@@ -222,23 +222,42 @@ $this->commentor = JFactory::getUser($this->reported->author);
 														<table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
 															<tbody>
 																<tr>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reason:</th>
+																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left"><?php echo $this->escape($this->report->subject); ?></td>
+																</tr>
+																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reported:</th>
 																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->created, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->report->created, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
+															<?php if (!$this->author) { ?>
+																<?php $reporter = JFactory::getUser($this->report->created_by); ?>
+																<tr>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reported by:</th>
+																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left"><?php echo $this->escape($reporter->get('name')); ?> (<?php echo $this->escape($reporter->get('username')); ?>)</td>
+																</tr>
+																<tr>
+																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Comments:</th>
+																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left"><?php echo $this->escape($this->report->report); ?></td>
+																</tr>
+															<?php } ?>
+															<?php if ($this->report->reviewed && $this->report->reviewed != '0000-00-00 00:00:00') { ?>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Reviewed:</th>
 																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">@ <?php echo JHTML::_('date', $this->report->reviewed, JText::_('TIME_FORMAT_HZ1')); ?> on <?php echo JHTML::_('date', $this->report->reviewed, JText::_('DATE_FORMAT_HZ1')); ?></td>
 																</tr>
-															<?php if ($this->report->note) { ?>
+															<?php } ?>
+															<?php if ($this->report->note && !$this->author) { ?>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Note:</th>
 																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left"><?php echo $this->report->note; ?></td>
 																</tr>
 															<?php } ?>
+															<?php if ($this->author) { ?>
 																<tr>
 																	<th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Dispute:</th>
 																	<td style="text-align: left; padding: 0 0.5em; vertical-align: top;" align="left">The content marked as inappropriate is presented below in its entirety. If you wish to dispute the report, please file a ticket with our <a href="<?php echo $link; ?>">support center</a> and reference case #<?php echo $this->report->id; ?>.</td>
 																</tr>
+															<?php } ?>
 															</tbody>
 														</table>
 													</td>
@@ -283,7 +302,7 @@ $this->commentor = JFactory::getUser($this->reported->author);
 											<tbody>
 												<tr>
 													<td align="left" valign="bottom" style="line-height: 1; padding: 5px 0 0 0; ">
-														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were listed as the creator of the reported content on <a href="<?php echo $base; ?>"><?php echo $base; ?></a>. Visit our <a href="<?php echo $base; ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $base; ?>/support">Support Center</a> if you have any questions.</span>
+														<span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?php echo $jconfig->getValue('config.sitename'); ?> sent this email because you were you were added to the list of recipients on <a href="<?php echo $base; ?>"><?php echo $base; ?></a>. Visit our <a href="<?php echo $base; ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $base; ?>/support">Support Center</a> if you have any questions.</span>
 													</td>
 												</tr>
 											</tbody>

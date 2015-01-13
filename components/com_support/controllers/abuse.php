@@ -65,7 +65,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title  = JText::_(strtoupper($this->_option));
 		$this->_title .= ': ' . JText::_(strtoupper('COM_SUPPORT_REPORT_ABUSE'));
 
 		$document = JFactory::getDocument();
@@ -89,26 +89,23 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 			return;
 		}
 
-		$this->view->setLayout('display');
-		$this->view->juser = $this->juser;
+		$this->view->juser    = $this->juser;
 
 		// Incoming
-		$this->view->refid = JRequest::getInt('id', 0);
+		$this->view->refid    = JRequest::getInt('id', 0);
 		$this->view->parentid = JRequest::getInt('parent', 0);
-		$this->view->cat = JRequest::getVar('category', '');
+		$this->view->cat      = JRequest::getVar('category', '');
 
 		// Check for a reference ID
 		if (!$this->view->refid)
 		{
-			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_REFERENCE_ID_NOT_FOUND'));
-			return;
+			throw new JException(JText::_('COM_SUPPORT_ERROR_REFERENCE_ID_NOT_FOUND'), 404);
 		}
 
 		// Check for a category
 		if (!$this->view->cat)
 		{
-			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_CATEGORY_NOT_FOUND'));
-			return;
+			throw new JException(JText::_('COM_SUPPORT_ERROR_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		// Load plugins
@@ -150,14 +147,14 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
+
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -279,12 +276,14 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 
 			// Get any set emails that should be notified of ticket submission
 			$defs = str_replace("\r", '', $this->config->get('abuse_emails', '{config.mailfrom}'));
+			$defs = str_replace('\n', "\n", $defs); 
 			$defs = explode("\n", $defs);
+			$defs = array_map('trim', $defs);
 
 			$jconfig = JFactory::getConfig();
 
 			$message = new \Hubzero\Mail\Message();
-			$message->setSubject($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_REPORT_ABUSE'))
+			$message->setSubject($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT_ABUSE_REPORT'))
 					->addFrom(
 						$jconfig->getValue('config.mailfrom'),
 						$jconfig->getValue('config.sitename') . ' ' . JText::_(strtoupper($this->_option))
@@ -301,6 +300,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 			$eview->controller = $this->_controller;
 			$eview->report     = $row;
 			$eview->reported   = $reported;
+			$eview->author     = null;
 
 			$plain = $eview->loadTemplate();
 			$plain = str_replace("\n", "\r\n", $plain);
@@ -318,8 +318,6 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 			// Loop through the addresses
 			foreach ($defs As $def)
 			{
-				$def = trim($def);
-
 				// Check if the address should come from Joomla config
 				if ($def == '{config.mailfrom}')
 				{
