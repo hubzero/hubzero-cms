@@ -281,6 +281,24 @@ class JRouterSite extends JRouter
 				JRequest::set($vars, 'get', true ); // overwrite existing
 			}
 		}
+
+		// Call system plugins for parsing routes
+		if ($responses = JDispatcher::getInstance()->trigger('onParseRoute', array($vars)))
+		{
+			// We're assuming here that if a plugin returns vars, we'll take them wholesale.
+			// This also means that plugins need to be ordered in terms of priority, as we'll
+			// return the first response that isn't empty.
+			foreach ($responses as $response)
+			{
+				if (is_array($response) && !empty($response))
+				{
+					$this->setVars($response);
+					JRequest::set($response, 'get', true);
+					return $response;
+				}
+			}
+		}
+
 		/* END: HUBzero Extensions Follow to force registration and email confirmation */
 
 		return $vars;
