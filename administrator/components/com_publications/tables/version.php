@@ -162,13 +162,6 @@ class PublicationVersion extends JTable
 	var $doi						= NULL;
 
 	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $ark						= NULL;
-
-	/**
 	 * int(11)
 	 *
 	 * @var integer

@@ -36,7 +36,6 @@ $class = ($this->version == 'default' || $this->row->state == 1) ? 'maypublish' 
 
 // Posting or publishing?
 $post = $this->task == 'post' ? 1 : 0;
-$archive = $this->task == 'archive' ? 1 : 0;
 $republish = $this->task == 'republish' ? 1 : 0;
 
 $txt = '';
@@ -56,11 +55,6 @@ switch ($this->task)
 		$class .= ' posting';
 		$doi_txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_POST_NO_DOI');
 		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_SAVE_IT');
-		break;
-	case 'archive':
-		$class .= ' darkarchive';
-		$txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_ARCHIVE_IT');
-		$doi_txt = JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_ARCHIVE_NO_DOI');
 		break;
 }
 

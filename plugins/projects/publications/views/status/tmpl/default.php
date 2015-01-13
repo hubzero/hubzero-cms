@@ -168,14 +168,6 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 							</td>
 						</tr>
 						<?php } ?>
-						<?php if (($this->pubconfig->get('issue_arch') && $this->pub->state == 6) || $this->pub->ark) { ?>
-						<tr>
-							<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ARCH'); ?>:</td>
-							<td class="tbl-input"><?php echo $this->pub->ark ? $this->pub->ark : JText::_('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
-							<?php if ($this->pub->ark) { echo ' <a href="' . $this->pubconfig->get('doi_verify', 'http://n2t.net/ezid/id/') . 'ark:' . $this->pub->ark . '" rel="external">[&rarr;]</a>'; } ?>
-							</td>
-						</tr>
-						<?php } ?>
 						<?php if ($this->pub->state == 1 || $this->pub->state == 0) {  ?>
 						<?php
 							if ($this->pub->submitted && $this->pub->submitted != '0000-00-00 00:00:00')  { ?>
@@ -206,10 +198,6 @@ if ($revertAllowed && $this->pub->accepted && $this->pub->accepted != '0000-00-0
 							elseif ($this->pub->state == 4)
 							{
 								$show_action = JText::_('PLG_PROJECTS_PUBLICATIONS_FINALIZED');
-							}
-							elseif ($this->pub->state == 6)
-							{
-								$show_action = JText::_('PLG_PROJECTS_PUBLICATIONS_ARCHIVED');
 							}
 							else {
 								$show_action = JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED');

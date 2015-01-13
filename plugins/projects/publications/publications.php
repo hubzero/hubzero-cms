@@ -2735,7 +2735,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				$new->state 		= 3;
 				$new->version_label = $label;
 				$new->doi 			= '';
-				$new->ark 			= '';
 				$new->secret 		= strtolower(ProjectsHtml::generateCode(10, 10, 0, 1, 1));
 				$new->version_number= $pub->versions + 1;
 				$new->main 			= 0;
@@ -3431,7 +3430,7 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 				return;
 			}
 			// Disable editing for some DOI-related info, if published
-			$canedit = ($row->state == 1 || $row->state == 0 || $row->state == 6) ? 0 : 1;
+			$canedit = ($row->state == 1 || $row->state == 0) ? 0 : 1;
 
 			// Areas required for publication
 			$required = $this->_getPanels( true );

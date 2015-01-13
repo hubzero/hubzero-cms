@@ -990,19 +990,6 @@ class PublicationsHtml
 					}
 					$class = 'pending';
 					break;
-				case 6:
-					$text .= ' ('.strtolower(JText::_('COM_PUBLICATIONS_DARK_ARCHIVE')).')';
-					$text .= '<span class="block">';
-					$text .= ($publication->published_up > $now)
-						? JText::_('COM_PUBLICATIONS_TO_BE_RELEASED')
-						: JText::_('COM_PUBLICATIONS_RELEASED');
-
-					$text .= ' ' . JText::_('COM_PUBLICATIONS_ON') . ' '
-						. JHTML::_('date', $publication->published_up, $dateFormat, $tz);
-					$text .= '</span>';
-					$text .= $publication->ark ? '<span class="archid">'.JText::_('ark').':'.$publication->ark.'</span>' : '';
-					$class = 'archived';
-					break;
 				case 0:
 					$text .= ' ('.strtolower(JText::_('COM_PUBLICATIONS_UNPUBLISHED')).')';
 					$text .= '<span class="block">'.JText::_('COM_PUBLICATIONS_RELEASED').' ';
@@ -1135,9 +1122,6 @@ class PublicationsHtml
 					$msg .= $publication->versions
 						 ? JText::_('COM_PUBLICATIONS_STATUS_MSG_PENDING')
 						 : JText::_('COM_PUBLICATIONS_STATUS_MSG_PENDING_VERSION');
-					break;
-				case 6:
-					$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_DARK_ARCHIVE');
 					break;
 				case 7:
 					$msg .= JText::_('COM_PUBLICATIONS_STATUS_MSG_WIP');

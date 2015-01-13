@@ -62,7 +62,7 @@ function submitbutton(pressbutton)
 				<th class="tdmini"><?php echo JText::_('COM_PUBLICATIONS_VERSION'); ?></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_TITLE'); ?></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_STATUS'); ?></th>
-				<th><?php echo JText::_('COM_PUBLICATIONS_DOI').'/'.JText::_('COM_PUBLICATIONS_ARK'); ?></th>
+				<th><?php echo JText::_('COM_PUBLICATIONS_DOI'); ?></th>
 				<th><?php echo ucfirst(JText::_('COM_PUBLICATIONS_OPTIONS')); ?></th>
 			</tr>
 		 </thead>
@@ -72,15 +72,7 @@ $k = 0;
 	foreach ($this->versions as $v) {
 	// Get DOI
 	$doi = $v->doi ? 'doi:'.$v->doi : '';
-	$ark = $v->ark ? 'ark:'.$v->ark : '';
-	if ($ark || $doi)
-	{
-		$doi_notice = $doi ? $doi : $ark;
-	}
-	else
-	{
-		$doi_notice = JText::_('COM_PUBLICATIONS_NA');
-	}
+	$doi_notice = $doi ? $doi : JText::_('COM_PUBLICATIONS_NA');
 
 	// Version status
 	$status = PublicationsAdminHtml::getPubStateProperty($v, 'status');

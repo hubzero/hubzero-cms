@@ -695,14 +695,6 @@ class PublicationHelper extends JObject
 					.' ' . JHTML::_('date', $row->submitted, $dateFormat);
 				break;
 
-			case 6:
-				$class  = 'archived';
-				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_DARKARCHIVE');
-				$date   = $row->published_up > $now ? JText::_('to be') . ' ' : '';
-				$date  .= strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
-					.' ' . JHTML::_('date', $row->published_up, $dateFormat);
-				break;
-
 			case 7:
 				$class  = 'wip';
 				$status = JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_WIP');

@@ -707,11 +707,6 @@ class PublicationsAdminHtml
 				$task = 'publish';
 				break;
 
-			case 6:
-				$class  = 'archived';
-				$status = JText::_('COM_PUBLICATIONS_VERSION_DARKARCHIVE');
-				break;
-
 			case 10:
 				$class	= 'preserving';
 				$status = JText::_('COM_PUBLICATIONS_VERSION_PRESERVING');

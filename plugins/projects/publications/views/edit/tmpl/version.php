@@ -148,14 +148,6 @@ $showCitations = $typeParams->get('show_citations', 0);
 						</td>
 					</tr>
 					<?php } ?>
-					<?php if (($this->pubconfig->get('issue_arch') && $this->pub->state == 6) || $this->row->ark) { ?>
-					<tr>
-						<td class="tbl-lbl"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_ARCH'); ?>:</td>
-						<td class="tbl-input"><?php echo $this->row->ark ? $this->row->ark : JText::_('PLG_PROJECTS_PUBLICATIONS_NA') ; ?>
-						<?php if ($this->row->ark) { echo ' <a href="' . $this->pubconfig->get('doi_verify', 'http://n2t.net/ezid/id/') . 'ark:' . $this->row->ark . '" rel="external">[&rarr;]</a>'; } ?>
-						</td>
-					</tr>
-					<?php } ?>
 					<?php if ($this->pub->state == 1 || $this->pub->state == 0) { ?>
 					<?php
 						if ($this->row->published_up > $now && $this->row->submitted != '0000-00-00 00:00:00')  { ?>
@@ -262,10 +254,7 @@ $showCitations = $typeParams->get('show_citations', 0);
 				<?php } ?>
 				<li id="next-cancel"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEED_TO_CANCEL').' <a href="'.$this->url.'/?action=cancel' . a . 'version='.$this->version.'">'.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CANCEL').'</a> '.JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_CANCEL_BEFORE');  ?></p></li>
 			<?php } ?>
-			<?php if ($this->row->state == 6) { ?>
-					<li id="next-archive"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DARKARCHIVE_NO_OPTIONS'); ?> <?php if ($this->row->ark) { echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DARKARCHIVE_ARK') . ' <span class="prominent">ark:' . $this->row->ark . '</span>'; } ?></p></li>
-			<?php } ?>
-			<?php if ($this->row->state == 1 || $this->row->state == 6 || $this->row->state == 0) { // new version allowed ?>
+			<?php if ($this->row->state == 1 || $this->row->state == 0) { // new version allowed ?>
 				<?php if ($this->pub->dev_version_label && $this->pub->dev_version_label != $this->pub->version_label) { ?>
 				<li id="next-draft"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_VERSION_STARTED')
 				.' (<strong>v.'
