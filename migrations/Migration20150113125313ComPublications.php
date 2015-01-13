@@ -26,7 +26,7 @@ class Migration20150113125313ComPublications extends Base
 			  `ordering` int(11) NOT NULL DEFAULT '1',
 			  `status` tinyint(11) NOT NULL DEFAULT '0',
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;";
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 			$this->db->setQuery($query);
 			$this->db->query();
