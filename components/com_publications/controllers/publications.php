@@ -529,8 +529,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			}
 			else
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-				$this->introTask();
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option),
+					JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+					'error'
+				);
 				return;
 			}
 		}
@@ -600,8 +603,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			if ($restricted)
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-				$this->introTask();
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option),
+					JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+					'error'
+				);
 				return;
 			}
 		}
@@ -611,16 +617,22 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		if (!$authorized && $publication->published_up > $now)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				'error'
+			);
 			return;
 		}
 
 		// Deleted resource?
 		if ($publication->state == 2)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_DELETED') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_DELETED'),
+				'error'
+			);
 			return;
 		}
 
@@ -1138,8 +1150,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$objPV 	  = new PublicationVersion( $this->database );
 		if ($vid && !$objPV->load($vid))
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
 			return;
 		}
 		elseif ($vid)
@@ -1165,8 +1180,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Unpublished / deleted
 		if ($publication->state == 0 || $publication->state == 2)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				'error'
+			);
 			return;
 		}
 
@@ -1440,8 +1458,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$objPV 		 = new PublicationVersion( $this->database );
 		if (!$objPV->load($vid))
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
 			return;
 		}
 
@@ -1452,8 +1473,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
 			return;
 		}
 
@@ -1803,8 +1827,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
 			return;
 		}
 
@@ -2287,17 +2314,23 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
-			return true;
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
+			return;
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
 		if ($publication->access == 1 && $this->juser->get('guest'))
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-			$this->introTask();
-			return true;
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				'error'
+			);
+			return;
 		}
 
 		// Check authorization
@@ -2308,9 +2341,12 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			if (!$authorized && $restricted = $this->_checkGroupAccess($publication, $version))
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-				$this->introTask();
-				return true;
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option),
+					JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+					'error'
+				);
+				return;
 			}
 		}
 
@@ -2352,8 +2388,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 		else
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				'error'
+			);
 			return;
 		}
 	}
