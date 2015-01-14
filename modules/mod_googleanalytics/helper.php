@@ -29,25 +29,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\GoogleAnalytics;
+
+use Hubzero\Module\Module;
+use JFactory;
 
 /**
- * Module class for displaying current system environment
+ * Module class for adding Google Analytics script to a page
  */
-class modGoogleAnalytics extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
-		$config = JFactory::getConfig();
-		$this->environment = $config->getValue('config.application_env', 'production');
-
-		if (strtolower($this->environment) != 'production')
+		if (strtolower(JFactory::getConfig()->get('application_env', 'production')) != 'production')
 		{
 			return;
 		}
@@ -57,6 +56,6 @@ class modGoogleAnalytics extends \Hubzero\Module\Module
 			return;
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }

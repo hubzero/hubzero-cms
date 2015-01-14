@@ -1,11 +1,11 @@
 <?php
 /**
- * @package		HUBzero CMS
- * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
- * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
+ * @package    HUBzero CMS
+ * @author     Shawn Rice <zooley@purdue.edu>
+ * @copyright  Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @license    http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\GoogleAnalytics;
 
-// Include the logic only once
-require_once (dirname(__FILE__) . DS . 'helper.php');
+require_once __DIR__ . DS . 'helper.php';
 
-$modgoogleanalytics = new modGoogleAnalytics($params, $module);
-$modgoogleanalytics->display();
+with(new Helper($params, $module))->display();
