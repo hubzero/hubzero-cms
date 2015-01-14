@@ -2,10 +2,10 @@
 /**
  * @package		HUBzero CMS
  * @author		Shawn Rice <zooley@purdue.edu>
- * @copyright	Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906
+ * @copyright	Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906
  * @license		http://www.gnu.org/licenses/gpl-2.0.html GPLv2
  *
- * Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ * Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 ?>
 <div id="hubzilla"<?php if ($reveal == 'eastereggs') { echo ' class="revealed"'; } ?> style="top: <?php echo $this->params->get('posTop', 'auto'); ?>; right: <?php echo $this->params->get('posRight', '5px'); ?>; bottom: <?php echo $this->params->get('posBottom', '5px'); ?>; left: <?php echo $this->params->get('posLeft', 'auto'); ?>;">
 	<audio preload="auto" id="hubzilla-roar">
-		<source src="<?php echo $base; ?>/modules/mod_hubzilla/sounds/roar.ogg" type="audio/ogg" />
-		<source src="<?php echo $base; ?>/modules/mod_hubzilla/sounds/roar.mp3" type="audio/mp3" />
+		<source src="<?php echo $base; ?>/modules/mod_hubzilla/assets/sounds/roar.ogg" type="audio/ogg" />
+		<source src="<?php echo $base; ?>/modules/mod_hubzilla/assets/sounds/roar.mp3" type="audio/mp3" />
 	</audio>
 </div>

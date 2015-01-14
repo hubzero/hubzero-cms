@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -22,36 +22,36 @@
 	<name>Hubzilla</name>
 	<author>HUBzero</author>
 	<creationDate>August 2012</creationDate>
-	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>zooley@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.5.0</version>
-	<description>Hubzilla attack!</description>
+	<description>MOD_HUBZILLA_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_hubzilla">mod_hubzilla.php</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>index.html</filename>
-		<filename>mod_hubzilla.css</filename>
-		<filename>mod_hubzilla.js</filename>
-		<filename>sounds/roar.mp3</filename>
-		<filename>sounds/roar.ogg</filename>
-		<filename>sounds/roar.wav</filename>
+		<filename>assets/css/mod_hubzilla.css</filename>
+		<filename>assets/js/mod_hubzilla.js</filename>
+		<filename>assets/sounds/roar.mp3</filename>
+		<filename>assets/sounds/roar.ogg</filename>
+		<filename>assets/sounds/roar.wav</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="posLeft" type="text" default="auto" label="Left" description="Left position" />
-				<field name="posRight" type="text" default="5px" label="Right" description="Right position" />
-				<field name="posTop" type="text" default="auto" label="Top" description="Top position" />
-				<field name="posBottom" type="text" default="5px" label="Bottom" description="Bottom position" />
+				<field name="posLeft" type="text" default="auto" label="MOD_HUBZILLA_PARAM_LEFT_LABEL" description="MOD_HUBZILLA_PARAM_LEFT_DESC" />
+				<field name="posRight" type="text" default="5px" label="MOD_HUBZILLA_PARAM_RIGHT_LABEL" description="MOD_HUBZILLA_PARAM_RIGHT_DESC" />
+				<field name="posTop" type="text" default="auto" label="MOD_HUBZILLA_PARAM_TOP_LABEL" description="MOD_HUBZILLA_PARAM_TOP_DESC" />
+				<field name="posBottom" type="text" default="5px" label="MOD_HUBZILLA_PARAM_BOTTOM_LABEL" description="MOD_HUBZILLA_PARAM_BOTTOM_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="MOD_HUBZILLA_PARAM_CACHE_LABEL" description="MOD_HUBZILLA_PARAM_CACHE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
+				<field name="cache_time" type="text" default="15" label="MOD_HUBZILLA_PARAM_CACHETIME_LABEL" description="MOD_HUBZILLA_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
