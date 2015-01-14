@@ -1,52 +1,69 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_search
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ * All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<form action="<?php echo JRoute::_('index.php');?>" method="post">
-	<div class="search<?php echo $moduleclass_sfx ?>">
+<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get" id="searchform" <?php if ($moduleclass_sfx) { echo ' class="' . $moduleclass_sfx . '"'; } ?>>
+	<fieldset>
+		<legend><?php echo $text; ?></legend>
+
 		<?php
-			$output = '<label for="mod-search-searchword">'.$label.'</label><input name="searchword" id="mod-search-searchword" maxlength="'.$maxlength.'"  class="inputbox'.$moduleclass_sfx.'" type="text" size="'.$width.'" value="'.$text.'"  onblur="if (this.value==\'\') this.value=\''.$text.'\';" onfocus="if (this.value==\''.$text.'\') this.value=\'\';" />';
+			$output  = '<label for="searchword" id="searchword-label">' . $label . '</label>';
+			$output .= '<input type="text" name="searchword" id="searchword" size="' . $width . '" placeholder="' . $text . '" />';
 
 			if ($button) :
-				if ($imagebutton) :
-					$button = '<input type="image" value="'.$button_text.'" class="button'.$moduleclass_sfx.'" src="'.$img.'" onclick="this.form.searchword.focus();"/>';
-				else :
-					$button = '<input type="submit" value="'.$button_text.'" class="button'.$moduleclass_sfx.'" onclick="this.form.searchword.focus();"/>';
-				endif;
+				$button = '<input type="submit" value="' . $button_text . '" />';
 			endif;
 
 			switch ($button_pos) :
 				case 'top' :
-					$button = $button.'<br />';
-					$output = $button.$output;
+					$output = $button . '<br />' . $output;
 					break;
 
 				case 'bottom' :
-					$button = '<br />'.$button;
-					$output = $output.$button;
+					$output = $output . '<br />' . $button;
 					break;
 
 				case 'right' :
-					$output = $output.$button;
+					$output = $output . $button;
 					break;
 
 				case 'left' :
 				default :
-					$output = $button.$output;
+					$output = $button . $output;
 					break;
 			endswitch;
 
 			echo $output;
 		?>
-	<input type="hidden" name="task" value="search" />
-	<input type="hidden" name="option" value="com_search" />
-	<input type="hidden" name="Itemid" value="<?php echo $mitemid; ?>" />
-	</div>
+	</fieldset>
 </form>
