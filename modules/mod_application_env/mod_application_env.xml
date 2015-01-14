@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -22,11 +22,11 @@
 	<name>Application Environment</name>
 	<author>HUBzero</author>
 	<creationDate>April 2012</creationDate>
-	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>zooley@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.5.0</version>
-	<description>This module displays the current application environment (production, stage, testing, development)</description>
+	<description>MOD_APPLICATION_ENV_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_application_env">mod_application_env.php</filename>
 		<filename>tmpl/default.php</filename>
@@ -35,12 +35,6 @@
 		<filename>mod_application_env.css</filename>
 	</files>
 	<config>
-		<fields name="params">
-			<fieldset name="basic">
-				<field name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed" />
-			</fieldset>
-		</fields>
 	</config>
 	<languages>
 		<language tag="en-GB">en-GB.mod_application_env.ini</language>
