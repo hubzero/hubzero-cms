@@ -10,7 +10,7 @@
 db = {};
 var db_back_link = '/administrator/index.php?option=com_dataviewer';
 
-db.dbJQ = jQuery.noConflict();
+db.dbJQ = jQuery;
 
 (function($) {
 
