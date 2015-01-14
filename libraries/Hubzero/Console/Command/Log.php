@@ -352,9 +352,9 @@ class Log extends Base implements CommandInterface
 								{
 									// Parse threshold array
 									$printable = array();
-									foreach ($threshold as $key => $value)
+									foreach ($threshold as $t)
 									{
-										$printable[] = $key . ':' . $value;
+										$printable[] = $t['key'] . $t['operator'] . $t['value'];
 									}
 									$this->output->addString('Threshold is currently set to ' . implode(', ', $printable) . '. ');
 								}
@@ -363,7 +363,7 @@ class Log extends Base implements CommandInterface
 									$this->output->addString('No thresholds are currently set. ');
 								}
 
-								$this->output->addLine('You can set thresholds using the format: "threshold field:value[,field:value]"');
+								$this->output->addLine('You can set thresholds using the format: "threshold field>value[,field=value]"');
 							}
 
 							$this->output->addString('input mode >>> ');
@@ -433,10 +433,18 @@ class Log extends Base implements CommandInterface
 		$threshold = array();
 		foreach ($thresholds as $t)
 		{
-			$params = explode(':', $t);
-			if ($log::isField(trim($params[0])))
+			preg_match('/([[:alpha:]]+)[\s]*([=|>|<])[\s]*([[:alnum:]]+)/', $t, $params);
+
+			if (isset($params[1])
+			 && isset($params[2])
+			 && isset($params[3])
+			 && $log::isField(trim($params[1])))
 			{
-				$threshold[trim($params[0])] = trim($params[1]);
+				$threshold[trim($params[1])] = [
+					'key'      => $params[1],
+					'operator' => $params[2],
+					'value'    => $params[3]
+				];
 			}
 		}
 

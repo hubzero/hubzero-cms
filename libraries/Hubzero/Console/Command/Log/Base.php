@@ -226,9 +226,30 @@ class Base
 		{
 			foreach (static::$fields as $field => $show)
 			{
-				if (isset($settings['threshold'][$field]) && trim($bits[$index]) > $settings['threshold'][$field])
+				if (isset($settings['threshold'][$field]))
 				{
-					$exceeded[] = $field;
+					$operator = $settings['threshold'][$field]['operator'];
+					$value    = $settings['threshold'][$field]['value'];
+					switch ($operator)
+					{
+						case '=':
+							$statement = (trim($bits[$index]) == $value);
+							break;
+
+						case '<':
+							$statement = (trim($bits[$index]) < $value);
+							break;
+
+						case '>':
+						default:
+							$statement = (trim($bits[$index]) > $value);
+							break;
+					}
+
+					if ($statement)
+					{
+						$exceeded[] = $field;
+					}
 				}
 
 				$index++;
