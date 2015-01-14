@@ -22,11 +22,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Announcements;
 
-// Include the logic only once
-require_once(dirname(__FILE__) . DS . 'helper.php');
+require_once __DIR__ . DS . 'helper.php';
 
-$modannouncements = new modAnnouncementsHelper($params, $module);
-$modannouncements->display();
+with(new Helper($params, $module))->display();

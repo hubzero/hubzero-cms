@@ -22,18 +22,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Announcements;
+
+use Hubzero\Module\Module;
+use JFactory;
+use JText;
 
 /**
  * Module class for displaying announcements
  */
-class modAnnouncementsHelper extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get a list of content pages
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _getList()
 	{
@@ -44,8 +47,7 @@ class modAnnouncementsHelper extends \Hubzero\Module\Module
 		$limit   = (int) $this->params->get('numitems', 0);
 		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
-		$date = JFactory::getDate();
-		$now = $date->toMySQL();
+		$now = JFactory::getDate()->toMySQL();
 
 		$nullDate = $db->getNullDate();
 
@@ -71,31 +73,31 @@ class modAnnouncementsHelper extends \Hubzero\Module\Module
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
 		//check if cache diretory is writable as cache files will be created for the announcements
 		if ($this->params->get('cache', 1) && !is_writable(JPATH_BASE . DS . 'cache'))
 		{
-			echo '<p class="warning">' . JText::_('Please make cache directory writable.') . '</p>';
+			echo '<p class="warning">' . JText::_('MOD_ANNOUNCEMENTS_ERROR_CACHE_DIR_WRITEABLE') . '</p>';
 			return;
 		}
 
 		//check if category has been set
 		if (!intval($this->params->get('catid', 0)))
 		{
-			echo '<p class="warning">' . JText::_('No category specified.') . '</p>';
+			echo '<p class="warning">' . JText::_('MOD_ANNOUNCEMENTS_ERROR_NO_CATEGORY') . '</p>';
 			return;
 		}
 
 		// Push some CSS to the template
 		$this->css();
 
-		$this->content = $this->_getList();
-		$this->cid = (int) $this->params->get('catid', 0);
+		$this->content   = $this->_getList();
+		$this->cid       = (int) $this->params->get('catid', 0);
 		$this->container = $this->params->get('container', 'block-announcements');
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }

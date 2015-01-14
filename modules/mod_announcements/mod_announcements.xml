@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-@package		hubzero-cms
-@file		   modules/mod_rapid_contact/mod_rapid_contact.xml
-@copyright	  Copyright 2005-2011 Purdue University. All rights reserved.
-@license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+@package     hubzero-cms
+@file        modules/mod_announcements/mod_announcements.xml
+@copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+@license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -32,59 +32,59 @@ HUBzero is a registered trademark of Purdue University.
 	<author>HUBzero</author>
 	<creationDate>May 2010</creationDate>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<authorEmail>alisa@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.0.0</version>
-	<description>This module allows the display of announcements</description>
+	<description>MOD_ANNOUNCEMENTS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_announcements">mod_announcements.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="catid" type="category" default="0" label="Category" description="A content category" extension="com_content" />
-				<field name="container" type="text" default="" label="Content Container" description="A CSS ID for a content container" />
+				<field name="catid" type="category" default="0" label="MOD_ANNOUNCEMENTS_PARAM_CATID_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_CATID_DESC" extension="com_content" />
+				<field name="container" type="text" default="" label="MOD_ANNOUNCEMENTS_PARAM_CONTAINER_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_CONTAINER_DESC" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="numitems" type="text" default="5" label="Items" description="Enter number of news items to display" />
-				<field name="show_image" type="radio" default="0" label="Item image" description="Show images associated with announcements">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="numitems" type="text" default="5" label="MOD_ANNOUNCEMENTS_PARAM_NUMITEMS_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_NUMITEMS_DESC" />
+				<field name="show_image" type="radio" default="0" label="MOD_ANNOUNCEMENTS_PARAM_SHOWIMAGE_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SHOWIMAGE_DESC">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
-				<field name="show_desc" type="radio" default="0" label="Item description" description="Show announcement descriptions">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="show_desc" type="radio" default="0" label="MOD_ANNOUNCEMENTS_PARAM_SHOWDESC_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SHOWDESC_DESC">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
-				<field name="show_morelink" type="radio" default="0" label="More link" description="Show 'read more' link for each announcement">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="show_morelink" type="radio" default="0" label="MOD_ANNOUNCEMENTS_PARAM_SHOWMORE_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SHOWMORE_DESC">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
-				<field name="show_viewall" type="radio" default="0" label="View all link" description="Show 'view all' link for all announcements">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="show_viewall" type="radio" default="0" label="MOD_ANNOUNCEMENTS_PARAM_SHOWVIEWALL_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SHOWVIEWALL_DESC">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
-				<field name="show_search" type="radio" default="0" label="Item search" description="Show a search box for announcements">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="show_search" type="radio" default="0" label="MOD_ANNOUNCEMENTS_PARAM_SHOWSEARCH_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SHOWSEARCH_DESC">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
-				<field name="show_date" type="radio" default="0" label="Article date" description="Show date of announcement article">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="show_date" type="radio" default="0" label="MOD_ANNOUNCEMENTS_PARAM_SHOWDATE_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SHOWDATE_DESC">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
-				<field name="show_subscribe" type="radio" default="0" label="Subscribtion option" description="Show an option to subscribe to feed/maillist">
-					<option value="1">Show</option>
-					<option value="0">Hide</option>
+				<field name="show_subscribe" type="radio" default="0" label="MOD_ANNOUNCEMENTS_PARAM_SHOWSUBSCRIBE_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SHOWSUBSCRIBE_DESC">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
-				<field name="word_count" type="text" size="6" default="100" label="Word Count" description="Limit characters in item description" />
-				<field name="webpath" type="text" size="50" default="/site/announcements" label="Image path" description="Enter the path to item images" />
-				<field name="default_image" type="text" size="50" default="" label="Default image" description="Enter full path to the default image" />
-				<field name="subscribe_path" type="text" size="50" default="" label="Path to subscription page" description="Enter the url of rss feed or maillist subscription page" />
-				<field name="subscribe_label" type="text" size="50" default="Subscribe" label="Label for subscribe link" description="Enter the text for the subscription link" />
+				<field name="word_count" type="text" size="6" default="100" label="MOD_ANNOUNCEMENTS_PARAM_WORDCOUNT_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_WORDCOUNT_DESC" />
+				<field name="webpath" type="text" size="50" default="/site/announcements" label="MOD_ANNOUNCEMENTS_PARAM_WEBPATH_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_WEBPATH_DESC" />
+				<field name="default_image" type="text" size="50" default="" label="MOD_ANNOUNCEMENTS_PARAM_DEFAULTIMAGE_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_DEFAULTIMAGE_DESC" />
+				<field name="subscribe_path" type="text" size="50" default="" label="MOD_ANNOUNCEMENTS_PARAM_SUBSCRIBEPATH_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SUBSCRIBEPATH_DESC" />
+				<field name="subscribe_label" type="text" size="50" default="Subscribe" label="MOD_ANNOUNCEMENTS_PARAM_SUBSCRIBELABEL_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_SUBSCRIBELABEL_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="0" label="MOD_ANNOUNCEMENTS_PARAM_CACHE_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_CACHE_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
+				<field name="cache_time" type="text" default="15" label="MOD_ANNOUNCEMENTS_PARAM_CACHETIME_LABEL" description="MOD_ANNOUNCEMENTS_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>

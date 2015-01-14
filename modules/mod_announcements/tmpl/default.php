@@ -62,7 +62,7 @@ $subscribelink = $this->params->get('show_subscribe', '') &&  $this->params->get
 			preg_match('/<img\s+.*?src="(.*?)"/is', $item->introtext , $match);
 			$img = count($match) > 1
 			     ? trim(stripslashes($match[1]))
-			     : $this->params->get('default_image', 'modules/mod_announcements/default.gif');
+			     : $this->params->get('default_image', 'modules/mod_announcements/assets/img/default.gif');
 		?>
 		<li>
 		<?php if ($this->params->get('show_image', '')) { ?>
