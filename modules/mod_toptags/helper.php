@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,22 +25,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Toptags;
+
+use Hubzero\Module\Module;
+use JFactory;
+use TagsTableTag;
+use JModuleHelper;
 
 /**
  * Module class for displaying a tag cloud of most used tags
  */
-class modTopTags extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
@@ -48,24 +52,17 @@ class modTopTags extends \Hubzero\Module\Module
 
 		$database = JFactory::getDBO();
 
-		// Get some initial parameters
-		$numtags = $this->params->get('numtags', 25);
-		$this->message = $this->params->get('message');
-		$this->sortby  = $this->params->get('sortby');
-		$this->morelnk = $this->params->get('morelnk');
-		$this->exclude = $this->params->get('exclude');
-
 		$obj = new TagsTableTag($database);
 
-		$this->tags = $obj->getTopTags($numtags);
+		$this->tags = $obj->getTopTags($this->params->get('numtags', 25));
 
-		require(JModuleHelper::getLayoutPath('mod_toptags'));
+		require(JModuleHelper::getLayoutPath($this->module->module));
 	}
 
 	/**
 	 * Display module
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{

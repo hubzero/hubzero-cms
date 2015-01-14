@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,7 +32,8 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 $tags = $this->tags;
-$exclude = explode(',', $this->exclude);
+
+$exclude = explode(',', $this->params->get('exclude', ''));
 $exclude = array_map('trim', $exclude);
 
 $tl = array();
@@ -43,22 +44,22 @@ if (count($tags) > 0)
 	{
 		if (!in_array($tag->raw_tag, $exclude))
 		{
-			$tl[$tag->tag] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_tags&tag='.$this->escape($tag->tag)) . '">' . $this->escape($tag->raw_tag) . '</a></li>'; // <span>' . $tag->tcount . '</span>
+			$tl[$tag->tag] = "\t" . '<li><a href="' . JRoute::_('index.php?option=com_tags&tag=' . $this->escape($tag->tag)) . '">' . $this->escape($tag->raw_tag) . '</a></li>';
 		}
 	}
-	if ($this->sortby == 'alphabeta')
+	if ($this->params->get('sortby') == 'alphabeta')
 	{
 		ksort($tl);
 	}
 	$html .= implode("\n", $tl);
 	$html .= '</ol>' . "\n";
-	if ($this->morelnk)
+	if ($this->params->get('morelnk'))
 	{
 		$html .= '<p class="more"><a href="'.JRoute::_('index.php?option=com_tags') . '">' . JText::_('MOD_TOPTAGS_MORE') . '</a></p>' . "\n";
 	}
 }
 else
 {
-	$html  = '<p>' . $this->message . '</p>' . "\n";
+	$html  = '<p>' . $this->params->get('message', 'No tags found.') . '</p>' . "\n";
 }
 echo $html;

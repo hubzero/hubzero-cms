@@ -30,9 +30,9 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.5.0" client="site" type="module">
 	<name>Top Tags</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows a a list of the top used tags.</description>
+	<description>MOD_TOPTAGS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_toptags">mod_toptags.php</filename>
 		<filename>tmpl/default.php</filename>
@@ -43,24 +43,24 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="numtags" type="text" default="25" label="Number of tags" description="The number of tags to display." />
-				<field name="exclude" type="textarea" rows="3" cols="40" default="" label="Excluded Tags" description="List of tags to exclude from popular tags list." />
-				<field name="message" type="textarea" rows="3" cols="40" default="" label="Message" description="The message to be displayed if no tags are found" />
-				<field name="sortby" type="list" default="alphabeta" label="Sort by" description="The sort order for tags found">
-					<option value="alphabeta">Alphabetically</option>
-					<option value="popularity">By Popularity</option>
+				<field name="numtags" type="text" default="25" label="MOD_TOPTAGS_PARAM_NUMTAGS_LABEL" description="MOD_TOPTAGS_PARAM_NUMTAGS_DESC" />
+				<field name="exclude" type="textarea" rows="3" cols="40" default="" label="MOD_TOPTAGS_PARAM_EXCLUDED_LABEL" description="MOD_TOPTAGS_PARAM_EXCLUDED_DESC" />
+				<field name="message" type="textarea" rows="3" cols="40" default="No tags found." label="MOD_TOPTAGS_PARAM_MESSAGE_LABEL" description="MOD_TOPTAGS_PARAM_MESSAGE_DESC" />
+				<field name="sortby" type="list" default="alphabeta" label="MOD_TOPTAGS_PARAM_SORT_LABEL" description="MOD_TOPTAGS_PARAM_SORT_DESC">
+					<option value="alphabeta">MOD_TOPTAGS_PARAM_SORT_ALPHA</option>
+					<option value="popularity">MOD_TOPTAGS_PARAM_SORT_POPULARITY</option>
 				</field>
-				<field name="morelnk" type="radio" default="0" label="More links" description="Display a link to more tags">
-					<option value="0">Hide</option>
-					<option value="1">Show</option>
+				<field name="morelnk" type="radio" default="0" label="MOD_TOPTAGS_PARAM_MORE_LABEL" description="MOD_TOPTAGS_PARAM_MORE_DESC">
+					<option value="0">MOD_TOPTAGS_PARAM_MORE_HIDE</option>
+					<option value="1">MOD_TOPTAGS_PARAM_MORE_SHOW</option>
 				</field>
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="0" label="MOD_TOPTAGS_PARAM_CACHE_LABEL" description="MOD_TOPTAGS_PARAM_CACHE_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
-				<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
+				<field name="cache_time" type="text" default="900" label="MOD_TOPTAGS_PARAM_CACHETIME_LABEL" description="MOD_TOPTAGS_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
