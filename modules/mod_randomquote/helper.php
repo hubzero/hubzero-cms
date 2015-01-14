@@ -29,13 +29,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\RandomQuote;
+
+use Hubzero\Module\Module;
+use FeedbackQuotes;
+use JFactory;
 
 /**
  * Module class for displaying a random quote
  */
-class modRandomQuote extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get module contents
@@ -75,7 +78,7 @@ class modRandomQuote extends \Hubzero\Module\Module
 		}
 		$this->quote = $quote;
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 
 	/**

@@ -44,7 +44,8 @@ if ($this->quote)
 				$text = substr($text, 0, $this->charlimit);
 				$text = substr($text, 0, strrpos($text, ' '));
 
-				echo $text;	 ?>
+				echo $text;
+				?>
 				<?php if (strlen($this->quote->quote) > $this->charlimit) { ?>
 					<a href="<?php echo $base; ?>/about/quotes/?quoteid=<?php echo $this->quote->id; ?>" title="<?php echo JText::sprintf('MOD_RANDOMQUOTE_VIEW_FULL', $this->escape(stripslashes($this->quote->fullname))); ?>" class="showfullquote">
 						<?php echo JText::_('MOD_RANDOMQUOTE_VIEW'); ?>
