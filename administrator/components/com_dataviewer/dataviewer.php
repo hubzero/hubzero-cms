@@ -37,11 +37,9 @@ $document =  JFactory::getDocument();
 // CSRF token
 $document->addCustomTag('<meta name="csrf-token" content="' . DB_RID . '" />');
 
-$document->addStyleSheet(DB_PATH . '/html/jquery-ui/smoothness/jquery-ui.css');
+$document->addStyleSheet(DB_PATH . '/html/smoothness/jquery-ui.css');
 $document->addStyleSheet(DB_PATH . '/html/main.css');
 
-$document->addScript(DB_PATH . '/html/jquery.js');
-$document->addScript(DB_PATH . '/html/jquery-ui/jquery-ui.js');
 $document->addScript(DB_PATH . '/html/' . 'main.js');
 
 $document->setTitle($conf['app_title']);
