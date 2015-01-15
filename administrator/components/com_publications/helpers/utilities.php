@@ -498,4 +498,51 @@ class PublicationUtilities
 
 		return $metadata;
 	}
+
+	/**
+	 * Run mkAIP
+	 *
+	 * @param      object $row      Publication version object
+	 * @return     void
+	 */
+	public static function mkAip($row)
+	{
+		$mkaip = JPATH_BASE . '/../cli/mkaip/bin/mkaip';
+
+		// Create OAIS Archival Information Package
+		if (file_exists($mkaip))
+		{
+			$mkaipOutput =
+				'mkaip-'
+				. str_replace(
+					'/',
+					'__',
+					$row->doi
+				)
+				. '.out';
+
+			// "fire and forget" mkaip --
+			// must use proc_open / proc_close()
+			// or we cannot run mkaip in the
+			// background on:
+			//     Debian GNU/Linux 6.0.7 (squeeze)
+			// [ Mark Leighton Fisher, 2014-04-28 ]
+			$handles = array();
+			$pipes	 = array();
+			proc_close(
+				proc_open(
+					'( /usr/bin/nohup '
+					. '/usr/bin/php -q '
+					. $mkaip . ' ' . $row->doi . ' '
+					. '2>&1 > '
+					. "/www/tmp/$mkaipOutput & ) &",
+					$handles,
+					$pipes
+				)
+			);
+			return true;
+		}
+
+		return false;
+	}
 }

@@ -1127,18 +1127,6 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 				case 'publish':
 				case 'republish':
 
-					// Need '/..' because we are an administrator component
-					$mkaip = JPATH_BASE . '/../cli/mkaip/bin/mkaip';
-
-					if (file_exists($mkaip))
-					{
-						$row->state = 10;	// preserving (generating AIP)
-					}
-					else
-					{
-						$row->state = 1;	// published
-					}
-
 					$activity = $action == 'publish'
 						? JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_PUBLISHED')
 						: JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_REPUBLISHED');
@@ -1147,6 +1135,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 						: JText::_('COM_PUBLICATIONS_MSG_ADMIN_REPUBLISHED');
 
 					$row->published_down = '0000-00-00 00:00:00';
+					$row->state = 1;
 
 					// Collect DOI metadata
 					$metadata = $this->_collectMetadata($row, $objP, $authors);
@@ -1212,42 +1201,14 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 							// Store curation manifest
 							$row->curation = json_encode($pub->_curationModel->_manifest);
 						}
+						// Run mkAIP
+						if (!$this->getError() && PublicationUtilities::mkAip($row))
+						{
+							$row->state = 10; // preserving
+						}
 					}
 					$row->modified = JFactory::getDate()->toSql();
 					$row->modified_by = $this->juser->get('id');
-
-					// Create OAIS Archival Information Package
-					if (!$this->getError() && file_exists($mkaip))
-					{
-						$mkaipOutput =
-							'mkaip-'
-							. str_replace(
-								'/',
-								'__',
-								$row->doi
-							)
-							. '.out';
-
-						// "fire and forget" mkaip --
-						// must use proc_open / proc_close()
-						// or we cannot run mkaip in the
-						// background on:
-						//     Debian GNU/Linux 6.0.7 (squeeze)
-						// [ Mark Leighton Fisher, 2014-04-28 ]
-						$handles = array();
-						$pipes	 = array();
-						proc_close(
-							proc_open(
-								'( /usr/bin/nohup '
-								. '/usr/bin/php -q '
-								. $mkaip . ' ' . $row->doi . ' '
-								. '2>&1 > '
-								. "/www/tmp/$mkaipOutput & ) &",
-								$handles,
-								$pipes
-							)
-						);
-					}
 
 					if (!$this->getError())
 					{
@@ -1259,7 +1220,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					break;
 
 				case 'revert':
-					$row->state 		 	= $state ? $state : 4;
+					$row->state = $state ? $state : 4;
 					$activity = JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_REVERTED');
 					$subject .= JText::_('COM_PUBLICATIONS_MSG_ADMIN_REVERTED');
 					$output .= ' '.JText::_('COM_PUBLICATIONS_ITEM').' ';
@@ -1267,7 +1228,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					break;
 
 				case 'unpublish':
-					$row->state 		 	= 0;
+					$row->state = 0;
 					$row->published_down    = JFactory::getDate()->toSql();
 					$activity = JText::_('COM_PUBLICATIONS_ACTIVITY_ADMIN_UNPUBLISHED');
 					$subject .= JText::_('COM_PUBLICATIONS_MSG_ADMIN_UNPUBLISHED');
