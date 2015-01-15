@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,22 +25,27 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Quotes;
+
+use Hubzero\Module\Module;
+use FeedbackQuotes;
+use JFactory;
+use JRequest;
+use JComponentHelper;
 
 /**
  * Module class for displaying quotes
  */
-class modQuotes extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
@@ -62,13 +67,13 @@ class modQuotes extends \Hubzero\Module\Module
 		$feedbackConfig = JComponentHelper::getParams('com_feedback');
 		$this->path = trim($feedbackConfig->get('uploadpath', '/site/quotes'), DS) . DS;
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath($this->module->module);
 	}
 
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{

@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_quotes/mod_quotes.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,50 +30,51 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.5.0" client="site" type="module">
 	<name>Quotes</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module compliments the Feedback component. It is used to display selected quotes on Notable Quotes page.</description>
+	<description>MOD_QUOTES_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_quotes">mod_quotes.php</filename>
 		<filename>mod_quotes.xml</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-				<field name="maxquotes" type="list" default="" label="Maximum Number of Quotes" description="Define max number of quotes to display on the page">
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_QUOTES_PARAM_MODULECLASS_LABEL" description="MOD_QUOTES_PARAM_MODULECLASS_DESC" />
+				<field name="maxquotes" type="list" default="" label="MOD_QUOTES_PARAM_MAXQUOTES_LABEL" description="MOD_QUOTES_PARAM_MAXQUOTES_DESC">
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
 					<option value="5">5</option>
 					<option value="10">10</option>
 					<option value="15">15</option>
-					<option value="">All</option>
+					<option value="">JALL</option>
 				</field>
-				<field name="button" type="radio" default="0" label="Show Add Button" description="Determine whether or not to show the Add Your Success Story button">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="button" type="radio" default="0" label="MOD_QUOTES_PARAM_BUTTON_LABEL" description="MOD_QUOTES_PARAM_BUTTON_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cycle" type="radio" default="0" label="Cycle Quotes" description="Determine whether or not the quote cycle">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cycle" type="radio" default="0" label="MOD_QUOTES_PARAM_CYCLE_LABEL" description="MOD_QUOTES_PARAM_CYCLE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cycle_fx" type="list" default="fade" label="Cycle Effect" description="Determine which effect to use">
-					<option value="fade">Fade</option>
-					<option value="scrollUp">Scroll Up</option>
-					<option value="scrollHorizontal">Scroll Horizontal</option>
+				<field name="cycle_fx" type="list" default="fade" label="MOD_QUOTES_PARAM_CYCLEFX_LABEL" description="MOD_QUOTES_PARAM_CYCLEFX_DESC">
+					<option value="fade">MOD_QUOTES_PARAM_CYCLEFX_FADE</option>
+					<option value="scrollUp">MOD_QUOTES_PARAM_CYCLEFX_SCROLLUP</option>
+					<option value="scrollHorizontal">MOD_QUOTES_PARAM_CYCLEFX_SCROLLHORI</option>
 				</field>
-				<field name="cycle_speed" type="text" default="1000" label="Cycle Speed (milliseconds)" description="Determine the time between cycles (milliseconds)" />
+				<field name="cycle_speed" type="text" default="1000" label="MOD_QUOTES_PARAM_CYCLESPEED_LABEL" description="MOD_QUOTES_PARAM_CYCLESPEED_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="MOD_QUOTES_PARAM_CACHE_LABEL" description="MOD_QUOTES_PARAM_CACHE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+				<field name="cache_time" type="text" default="15" label="MOD_QUOTES_PARAM_CACHETIME_LABEL" description="MOD_QUOTES_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
