@@ -321,6 +321,9 @@
 		padding: 0.4em 2em 0.4em 3.5em;
 		border: none;
 	}
+	#page_menu li .page {
+		padding-left: 20px;
+	}
 	#page_menu li a:before,
 	#page_menu li a:after,
 	#page_menu li span:before,

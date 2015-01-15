@@ -281,7 +281,7 @@ class GroupsHelperView
 				if (($pageAccess == 'registered' && $juser->get('guest')) ||
 				  ($pageAccess == 'members' && !in_array($juser->get("id"), $group->get('members'))))
 				{
-					$out .= "<li class=\"protected\"><span class=\"page\">{$title}</span></li>";
+					$out .= "<li class=\"protected\"><span class=\"page\">" . $page->get('title') . "</span></li>";
 				}
 				else
 				{
