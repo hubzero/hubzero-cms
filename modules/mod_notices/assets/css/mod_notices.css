@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_reportproblems/mod_reportproblems.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        modules/mod_notices/assets/css/mod_notices.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -137,16 +137,16 @@
 /* [!] HACKS - Firefox 3.4 and older */
 @-moz-document url-prefix() {
 	html.firefox3 .modnotices.low { 
-		background: #84A7DB url("/modules/mod_notices/images/information.png") 0.71803399em 0.71803399em no-repeat;
+		background: #84A7DB url("/modules/mod_notices/assets/img/information.png") 0.71803399em 0.71803399em no-repeat;
 	}
 	html.firefox3 .modnotices.medium { 
-		background: #cea638 url("/modules/mod_notices/images/warning.png") 0.71803399em 0.71803399em no-repeat;
+		background: #cea638 url("/modules/mod_notices/assets/img/warning.png") 0.71803399em 0.71803399em no-repeat;
 	}
 	html.firefox3 .modnotices.high { 
-		background: #ba4a3b url("/modules/mod_notices/images/error.png") 0.71803399em 0.71803399em no-repeat; 
+		background: #ba4a3b url("/modules/mod_notices/assets/img/error.png") 0.71803399em 0.71803399em no-repeat; 
 	}
 	html.firefox3 .modnotices .close {
-		background: url("/modules/mod_notices/images/delete.png") 0 0 no-repeat;
+		background: url("/modules/mod_notices/assets/img/delete.png") 0 0 no-repeat;
 		text-indent: 5em;
 	}
 }

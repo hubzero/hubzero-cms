@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,36 +25,41 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Notices;
+
+use Hubzero\Module\Module;
+use JModuleHelper;
+use JFactory;
+use JRequest;
+use JText;
 
 /**
  * Module class for displaying site wide notices
  */
-class modNotices extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Calculate the time left from a date time
 	 *
-	 * @param      integer $year   Year
-	 * @param      integer $month  Month
-	 * @param      integer $day    Day
-	 * @param      integer $hour   Hour
-	 * @param      integer $minute Minute
-	 * @return     array
+	 * @param   integer  $year    Year
+	 * @param   integer  $month   Month
+	 * @param   integer  $day     Day
+	 * @param   integer  $hour    Hour
+	 * @param   integer  $minute  Minute
+	 * @return  array
 	 */
 	private function _countdown($year, $month, $day, $hour, $minute)
 	{
 		$config = JFactory::getConfig();
 
-		// make a unix timestamp for the given date
+		// Make a unix timestamp for the given date
 		$the_countdown_date = mktime($hour, $minute, 0, $month, $day, $year, -1);
 
-		// get current unix timestamp
+		// Get current unix timestamp
 		$now = time() + ($config->getValue('config.offset') * 60 * 60);
 
 		$difference = $the_countdown_date - $now;
@@ -63,8 +68,8 @@ class modNotices extends \Hubzero\Module\Module
 			$difference = 0;
 		}
 
-		$days_left = floor($difference/60/60/24);
-		$hours_left = floor(($difference - $days_left*60*60*24)/60/60);
+		$days_left    = floor($difference/60/60/24);
+		$hours_left   = floor(($difference - $days_left*60*60*24)/60/60);
 		$minutes_left = floor(($difference - $days_left*60*60*24 - $hours_left*60*60)/60);
 
 		$left = array($days_left, $hours_left, $minutes_left);
@@ -74,8 +79,8 @@ class modNotices extends \Hubzero\Module\Module
 	/**
 	 * Turn datetime 0000-00-00 00:00:00 to time
 	 *
-	 * @param      string $stime Datetime to convert
-	 * @return     integer
+	 * @param   string   $stime  Datetime to convert
+	 * @return  integer
 	 */
 	private function _mkt($stime)
 	{
@@ -89,8 +94,8 @@ class modNotices extends \Hubzero\Module\Module
 	/**
 	 * Break a timestamp into its parts
 	 *
-	 * @param      integer $stime Timestamp
-	 * @return     array
+	 * @param   integer  $stime  Timestamp
+	 * @return  array
 	 */
 	private function _convert($stime)
 	{
@@ -105,10 +110,10 @@ class modNotices extends \Hubzero\Module\Module
 	}
 
 	/**
-	 * Show the amoutn of time left
+	 * Show the amount of time left
 	 *
-	 * @param      array $stime Timestamp
-	 * @return     string
+	 * @param   array   $stime  Timestamp
+	 * @return  string
 	 */
 	private function _timeto($stime)
 	{
@@ -128,25 +133,26 @@ class modNotices extends \Hubzero\Module\Module
 
 	/**
 	 * Auto Link Text
-	 * @param  [type] $text [description]
-	 * @return [type]       [description]
+	 *
+	 * @param   string  $text  Text to look for links
+	 * @return  string
 	 */
 	private static function _autoLinkText($text)
 	{
-		//replace email links
+		// Replace email links
 		$text = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})/', '<a href="mailto:$1">$1</a>', $text);
 
-		//replace url links
+		// Replace url links
 		$text = preg_replace('#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#', '<a class="ext-link" rel="external" href="$1">$1</a>', $text);
 
-		//return auto-linked text
+		// Return auto-linked text
 		return $text;
 	}
 
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{

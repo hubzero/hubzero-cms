@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_notices/mod_notices.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,11 +30,17 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.5.0" client="site" type="module">
 	<name>Notices Module</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows a notice (when site will be down, etc.) box for site visitors.</description>
+	<description>MOD_NOTICES_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_notices">mod_notices.php</filename>
+		<filename>assets/css/mod_notices.css</filename>
+		<filename>assets/js/mod_notices.js</filename>
+		<filename>assets/img/delete.png</filename>
+		<filename>assets/img/error.png</filename>
+		<filename>assets/img/information.png</filename>
+		<filename>assets/img/warning.png</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>index.html</filename>
@@ -42,20 +48,20 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="alertlevel" type="list" default="low" label="Alert level" description="The alert level the notice field will take. Determines color.">
-					<option value="low">Low</option>
-					<option value="medium">Medium</option>
-					<option value="high">High</option>
+				<field name="alertlevel" type="list" default="low" label="MOD_NOTICES_PARAM_ALERTLEVEL_LABEL" description="MOD_NOTICES_PARAM_ALERTLEVEL_DESC">
+					<option value="low">MOD_NOTICES_PARAM_ALERTLEVEL_LOW</option>
+					<option value="medium">MOD_NOTICES_PARAM_ALERTLEVEL_MEDIUM</option>
+					<option value="high">MOD_NOTICES_PARAM_ALERTLEVEL_HIGH</option>
 				</field>
-				<field name="moduleid" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="message" type="textarea" rows="5" cols="40" default="" label="Message" description="The message to be displayed." />
-				<field name="allowClose" type="radio" default="0" label="Allow closing" description="Allow the notice to be closed by the user">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="moduleid" type="text" default="" label="MOD_NOTICES_PARAM_MODULEID_LABEL" description="MOD_NOTICES_PARAM_MODULEID_DESC" />
+				<field name="message" type="textarea" rows="5" cols="40" default="" label="MOD_NOTICES_PARAM_MESSAGE_LABEL" description="MOD_NOTICES_PARAM_MESSAGE_DESC" />
+				<field name="allowClose" type="radio" default="0" label="MOD_NOTICES_PARAM_ALLOWCLOSING_LABEL" description="MOD_NOTICES_PARAM_ALLOWCLOSING_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
-				<field name="autolink" type="radio" default="1" label="Autolink message" description="Autolink urls &amp; email addresses in notice content.">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="autolink" type="radio" default="1" label="MOD_NOTICES_PARAM_AUTOLINK_LABEL" description="MOD_NOTICES_PARAM_AUTOLINK_DESC">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
 				</field>
 			</fieldset>
 		</fields>
