@@ -29,9 +29,37 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
-?>
-<div class="custom<?php echo $moduleclass_sfx ?>" <?php if ($params->get('backgroundimage')): ?> style="background-image:url(<?php echo $params->get('backgroundimage');?>)"<?php endif;?> >
-	<?php echo $module->content; ?>
-</div>
+namespace Modules\Custom;
+
+use Hubzero\Module\Module;
+use JPluginHelper;
+use JModuleHelper;
+use JHtml;
+
+/**
+ * Module class for displaying custom HTML
+ */
+class Helper extends Module
+{
+	/**
+	 * Display module
+	 *
+	 * @return  void
+	 */
+	public function display()
+	{
+		// Legacy compatibility for older view overrides
+		$params = $this->params;
+		$module = $this->module;
+
+		if ($params->def('prepare_content', 1))
+		{
+			JPluginHelper::importPlugin('content');
+			$module->content = JHtml::_('content.prepare', $module->content, '', 'mod_custom.content');
+		}
+
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
+		require JModuleHelper::getLayoutPath('mod_custom', $params->get('layout', 'default'));
+	}
+}
