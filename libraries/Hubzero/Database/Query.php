@@ -53,6 +53,13 @@ class Query
 	private $elements = array();
 
 	/**
+	 * The debug state of the union
+	 *
+	 * @var bool
+	 **/
+	private static $debug = null;
+
+	/**
 	 * The query results cache
 	 *
 	 * This is a key value dictionary of query md5 hash and query results.
@@ -135,6 +142,9 @@ class Query
 	public function __construct($connection=null)
 	{
 		$this->connection = $connection ?: \JFactory::getDbo();
+		self::$debug      = (isset(self::$debug))
+							? self::$debug
+							: \Hubzero\Plugin\Plugin::getParams('debug', 'system')->get('log-database-queries', false);
 	}
 
 	/**
@@ -521,11 +531,13 @@ class Query
 		// Check the type of query to decide what to return
 		list($type) = explode(' ', $query);
 
-		if (\Hubzero\Plugin\Plugin::getParams('debug', 'system')->get('log-database-queries', false)) Log::add($query);
-
 		$this->connection->setQuery($query);
 
-		return (strtolower($type) == 'select') ? $this->connection->loadObjectList() : $this->connection->query();
+		$result = (strtolower($type) == 'select') ? $this->connection->loadObjectList() : $this->connection->query();
+
+		if (self::$debug) Log::add($query, $this->connection->timer);
+
+		return $result;
 	}
 
 	/**

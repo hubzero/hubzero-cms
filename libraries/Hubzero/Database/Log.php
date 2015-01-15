@@ -43,15 +43,16 @@ class Log
 	 * Logs queries to hubzero sql log
 	 *
 	 * @param  string $query the query to log
+	 * @param  int    $time  the query time
 	 * @return void
 	 * @since  1.3.2
 	 **/
-	public static function add($query)
+	public static function add($query, $time=0)
 	{
 		list($file, $line) = self::parseBacktrace();
 		list($type)        = explode(' ', $query, 2);
 
-		self::write("$file $line " . strtoupper($type) . ' ' . str_replace("\n", ' ', $query));
+		self::write("$file $line " . strtoupper($type) . " {$time} " . str_replace("\n", ' ', $query));
 	}
 
 	/**
@@ -81,6 +82,9 @@ class Log
 	 **/
 	public static function parseBacktrace()
 	{
+		$file = '';
+		$line = 0;
+
 		// Loop through the backtrace items
 		foreach (self::getBacktrace() as $item)
 		{
@@ -91,8 +95,9 @@ class Log
 			 ||  $item['class'] == 'Hubzero\Database\Relationship\Relationship'
 			 ||  $item['class'] == 'Hubzero\Database\Rows'))
 			{
-				$file = str_replace(JPATH_ROOT, '', $item['file']);
-				$line = $item['line'];
+
+				$file = (isset($item['file'])) ? str_replace(JPATH_ROOT, '', $item['file']) : $file;
+				$line = (isset($item['line'])) ? $item['line'] : $line;
 			}
 		}
 

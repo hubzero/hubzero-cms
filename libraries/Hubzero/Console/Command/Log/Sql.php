@@ -48,6 +48,7 @@ class Sql extends Base
 		'file'          => true,
 		'line'          => true,
 		'type'          => true,
+		'time'          => true,
 		'query'         => true
 	);
 
