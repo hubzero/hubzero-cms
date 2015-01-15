@@ -1953,6 +1953,15 @@ body.group-page-preview {
 	margin-right: -1px;
 	margin-left: -1px;
 }
+.mozilla .version-jumpto {
+	-webkit-appearance: normal;
+	-moz-appearance: normal;
+	appearance: normal;
+	padding: 0.5em 0.91em;
+}
+.mozilla .version-jumpto-container:after {
+	display: none;
+}
 .toolbar .version-jumpto-container {
 	position: relative;
 	display: inline-block;
