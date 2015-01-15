@@ -433,7 +433,7 @@ class Log extends Base implements CommandInterface
 		$threshold = array();
 		foreach ($thresholds as $t)
 		{
-			preg_match('/([[:alpha:]]+)[\s]*([=|>|<])[\s]*([[:alnum:]]+)/', $t, $params);
+			preg_match('/([[:alpha:]]+)[\s]*([=|>|<])[\s]*([[:alnum:]\.]+)/', $t, $params);
 
 			if (isset($params[1])
 			 && isset($params[2])
