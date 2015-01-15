@@ -1914,6 +1914,12 @@
 		max-width: 11em;
 		margin-bottom: 0;
 	}
+	fieldset#filter-bar select {
+		max-width: 15em;
+	}
+	.com_languages fieldset#filter-bar select {
+		max-width: 25em;
+	}
 	fieldset#filter #filter_search,
 	fieldset#filter-bar #filter_search {
 		background-image: url("../images/icons/search.png");
