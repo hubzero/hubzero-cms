@@ -256,6 +256,14 @@ class Publication extends JTable
 					$query .= $coauthor ? " AND 2=1" : " AND C.created_by=".intval($filters['mine']);
 				}
 			}
+			// Individual assigned curator?
+			if (isset($filters['curator']))
+			{
+				if (!$filters['curator'])
+				{
+					$query .=" AND V.curator = " . $juser->get('id');
+				}
+			}
 		}
 		else
 		{
@@ -573,7 +581,6 @@ class Publication extends JTable
 			return false;
 		}
 
-		$juser = JFactory::getUser();
 		$now = JFactory::getDate()->toSql();
 		$alias = str_replace( ':', '-', $alias );
 
@@ -583,7 +590,7 @@ class Publication extends JTable
 				C.ranking as master_ranking, C.times_rated as master_times_rated,
 				C.alias, V.id as version_id, C.group_owner,
 				t.name AS cat_name, t.alias as cat_alias, t.url_alias as cat_url,
-				MT.alias as base, PP.alias as project_alias,
+				MT.alias as base, MT.curatorgroup, PP.alias as project_alias,
 				PP.title as project_title, PP.state as project_status,
 				PP.provisioned as project_provisioned,
 				PP.private as project_private,

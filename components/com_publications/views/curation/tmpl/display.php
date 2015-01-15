@@ -48,8 +48,8 @@ $this->css()
 	<h2><?php echo $this->title; ?></h2>
 </div><!-- / #content-header -->
 <div class="main section curation">
-<?php if (count($this->rows) > 0 ) { ?>
 	<p><?php echo JText::_('COM_PUBLICATIONS_CURATION_LIST_INSTRUCT'); ?></p>
+<?php if (count($this->rows) > 0 ) { ?>
 <div class="publist">
 	<table class="listing">
 		<thead>
@@ -61,6 +61,7 @@ $this->css()
 				<th class="thtype<?php if ($this->filters['sortby'] == 'type') { echo ' activesort'; } ?>"><a href="<?php echo JRoute::_($route) . '/?t_sortby=type'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . JText::_('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?></a></th>
 				<th><?php echo JText::_('COM_PUBLICATIONS_CURATION_SUBMITTED'); ?></th>
 				<th<?php if ($this->filters['sortby'] == 'status') { echo ' class="activesort"'; } ?>><a href="<?php echo JRoute::_($route) . '/?t_sortby=status'.a.'t_sortdir='.$sortbyDir; ?>" class="re_sort" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . JText::_('COM_PUBLICATIONS_CURATION_STATUS'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_STATUS'); ?></a></th>
+				<th></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -105,7 +106,20 @@ $this->css()
 							<?php } ?>
 						</td>
 						<td><span class="status-icon <?php echo $class; ?>"></span> <span class="status-label"><?php echo $row->state == 5 ? JText::_('COM_PUBLICATIONS_CURATION_STATUS_PENDING') : JText::_('COM_PUBLICATIONS_CURATION_PENDING_AUTHOR_CHANGES'); ?></span></td>
-						<td><?php if ($row->state == 5) { ?><a href="<?php echo JRoute::_($route . '&id=' . $row->id); ?>" class="btn icon-next btn-secondary btn-primary" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_OVER_REVIEW'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_REVIEW'); ?></a><?php } ?>
+						<td><?php
+							$owner = $row->curator ? \Hubzero\User\Profile::getInstance($row->curator) : NULL;
+							if ($owner)
+							{ ?>
+								<?php echo JText::_('COM_PUBLICATIONS_CURATION_ASSIGNED_TO') ?> <?php if ($this->authorized) { ?><a href="<?php echo JRoute::_($route . '&id=' . $row->id . '&task=assign&vid=' . $row->version_id) . '?ajax=1&no_html=1'; ?>" class="fancybox" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_CHANGE_ASSIGNMENT'); ?>"><?php } ?><?php echo $owner->get('name'); ?><?php if ($this->authorized) { ?></a><?php } ?>
+							<?php }
+							elseif ($this->authorized)
+							{
+								?>
+								<a href="<?php echo JRoute::_($route . '&id=' . $row->id . '&task=assign&vid=' . $row->version_id) . '?ajax=1&no_html=1'; ?>" class="btn icon-assign btn-secondary fancybox" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_ASSIGN'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_ASSIGN'); ?></a>
+						<?php	}
+						?>
+						</td>
+						<td class="nowrap"><?php if ($row->state == 5) { ?><a href="<?php echo JRoute::_($route . '&id=' . $row->id); ?>" class="btn icon-next btn-secondary btn-primary" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_OVER_REVIEW'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_REVIEW'); ?></a><?php } ?>
 							<?php if ($row->state == 7) { echo $reviewed; } ?>
 							<a href="<?php echo JRoute::_($route . '&id=' . $row->id . '&task=history') . '?ajax=1&no_html=1'; ?>" class="btn btn-secondary icon-history fancybox" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_OVER_HISTORY'); ?>"><?php echo JText::_('COM_PUBLICATIONS_CURATION_HISTORY'); ?></a>
 							<a href="<?php echo JRoute::_('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo JText::_('COM_PUBLICATIONS_CURATION_VIEW_PUB_PAGE'); ?>">&nbsp;</a>

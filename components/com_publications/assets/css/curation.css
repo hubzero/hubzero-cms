@@ -92,13 +92,16 @@
 		width: 50%;
 		text-align: right;
 	}
-	.icon-apply:before    { 
+	.icon-apply:before    {
 		content: "\2714";
-		color: white !important;		
+		color: white !important;
 	}
-	.icon-kickback:before    { 
+	.icon-kickback:before    {
 		content: "\21BB";
-		color: white !important;		
+		color: white !important;
+	}
+	.icon-assign:before    {
+		content: "\f08d";
 	}
 	span.pubimage {
 		float: left;
@@ -113,7 +116,7 @@
 	}
 
 /* Browse
-------------------------------- */	
+------------------------------- */
 	.status-icon:before {
 		width: 32px;
 		height: 32px;
@@ -132,16 +135,16 @@
 		display: block;
 	}
 	.status-pending:before {
-		content: "\2611";		
+		content: "\2611";
 	}
 	.status-wip:before {
 		content: "\f110";
 	}
 
 /*
-------------------------------- */	
+------------------------------- */
 	.block-subject {
-		
+
 	}
 	.block-check {
 		position: absolute;
@@ -187,16 +190,16 @@
 	.curation-block h4 {
 		margin-bottom: 1.5em;
 	}
-	
+
 /* Checker
-------------------------------- */	
+------------------------------- */
 
 	.block-checker span {
 		position: absolute;
-		margin: 0 -2.5em;	
+		margin: 0 -2.5em;
 	}
 	.block-checker a {
-		border: none;	
+		border: none;
 	}
 	.checker-pass a:before,
 	.checker-fail a:before {
@@ -242,9 +245,9 @@
 	.block-checker .picked.updated a:hover {
 		cursor: pointer;
 	}
-	
+
 /*
-------------------------------- */	
+------------------------------- */
 	.el-incomplete input,
 	.el-incomplete textarea,
 	.el-optional input,
@@ -253,7 +256,7 @@
 	.el-complete textarea {
 		border: 1px solid #E2E2E2;
 	}
-	
+
 	h5.element-title, h5.element-title:hover {
 		font-size: 1em;
 		border-bottom: 4px solid #d4e0e2;
@@ -264,13 +267,13 @@
 	.el-required.el-incomplete p.nocontent {
 		background: #fef5f1;
 		color: red;
-	}	
-	.el-incomplete h5.element-title, 
+	}
+	.el-incomplete h5.element-title,
 	.el-incomplete h5.element-title:hover {
 		background: #fef5f1 !important;
 		border-bottom: 4px solid #f7e4db;
 	}
-	.el-optional h5.element-title, 
+	.el-optional h5.element-title,
 	.el-optional h5.element-title:hover {
 		background: #e0f0f3 !important;
 		border-bottom: 4px solid #d4e0e2;
@@ -280,12 +283,12 @@
 		background: #fef5f1 !important;
 		border-bottom: 4px solid #f7e4db;
 	}
-	.el-passed h5.element-title, 
+	.el-passed h5.element-title,
 	.el-passed h5.element-title:hover {
 		background: #f2fcf1 !important;
 		border-bottom: 4px solid #d8f1d0;
 	}
-	.el-updated h5.element-title, 
+	.el-updated h5.element-title,
 	.el-updated h5.element-title:hover {
 		background: #fff6e4 !important;
 		border-bottom: 4px solid #f7d79a;
@@ -349,7 +352,7 @@
 	}
 	.el-failed .status-notice:before {
 		color: red;
-	}	
+	}
 	.el-updated .status-notice:before {
 		color: orange;
 	}
@@ -436,7 +439,7 @@
 		padding: 0.3em 0.8em;
 	}
 	.addnotice label {
-		text-align: left !important;	
+		text-align: left !important;
 	}
 	.addnotice input[type="text"], .addnotice textarea {
 		display: block;
@@ -449,7 +452,7 @@
 	.addnotice .submitarea {
 		text-align: center;
 	}
-	
+
 /* Curation Listing
 --------------------------------------------- */
 
@@ -507,7 +510,7 @@
 	.block {
 		display: block;
 	}
-	
+
 /* Misc
 --------------------------------------------- */
 	#abox-content {
@@ -579,3 +582,6 @@
 		padding-top: 0.3em;
 		position: absolute;
 	}
+/* Assignment
+--------------------------------------------- */
+

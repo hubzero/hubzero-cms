@@ -524,13 +524,16 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			if ($alias)
 			{
-				$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+				$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
 				return;
 			}
 			else
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-				$this->introTask();
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option),
+					JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+					'error'
+				);
 				return;
 			}
 		}
@@ -551,7 +554,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$lastPubRelease = $objV->getLastPubRelease($id);
 
 		// Check authorization
-		$authorized = $this->_authorize($publication->project_id);
+		$curatorgroups = $publication->curatorgroup ? array($publication->curatorgroup) : array();
+		$authorized = $this->_authorize($publication->project_id, $curatorgroups, $publication->curator);
 
 		// Dev version/pending/posted/dark archive resource? Must be project owner
 		if ($publication->state != 1)
@@ -600,8 +604,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			if ($restricted)
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-				$this->introTask();
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option),
+					JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+					'error'
+				);
 				return;
 			}
 		}
@@ -611,16 +618,22 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 		if (!$authorized && $publication->published_up > $now)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				'error'
+			);
 			return;
 		}
 
 		// Deleted resource?
 		if ($publication->state == 2)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_DELETED') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_DELETED'),
+				'error'
+			);
 			return;
 		}
 
@@ -1138,8 +1151,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$objPV 	  = new PublicationVersion( $this->database );
 		if ($vid && !$objPV->load($vid))
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
 			return;
 		}
 		elseif ($vid)
@@ -1165,8 +1181,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Unpublished / deleted
 		if ($publication->state == 0 || $publication->state == 2)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				'error'
+			);
 			return;
 		}
 
@@ -1440,8 +1459,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$objPV 		 = new PublicationVersion( $this->database );
 		if (!$objPV->load($vid))
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
 			return;
 		}
 
@@ -1452,8 +1474,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
 			return;
 		}
 
@@ -1803,8 +1828,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
 			return;
 		}
 
@@ -2287,36 +2315,46 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		// Make sure we got a result from the database
 		if (!$publication)
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND') );
-			$this->introTask();
-			return true;
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NOT_FOUND'),
+				'error'
+			);
+			return;
 		}
 
 		// Check if the resource is for logged-in users only and the user is logged-in
 		if ($publication->access == 1 && $this->juser->get('guest'))
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-			$this->introTask();
-			return true;
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				'error'
+			);
+			return;
 		}
 
 		// Check authorization
-		$authorized = $this->_authorize($publication->project_id);
+		$curatorgroups = $publication->curatorgroup ? array($publication->curatorgroup) : array();
+		$authorized = $this->_authorize($publication->project_id, $curatorgroups, $publication->curator);
 
 		// Extra authorization for restricted publications
 		if ($publication->access == 3 || $publication->access == 2)
 		{
 			if (!$authorized && $restricted = $this->_checkGroupAccess($publication, $version))
 			{
-				$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-				$this->introTask();
-				return true;
+				$this->setRedirect(
+					JRoute::_('index.php?option=' . $this->_option),
+					JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+					'error'
+				);
+				return;
 			}
 		}
 
-		// Dev version/pending/posted/dark archive resource? Must be project owner
+		// Dev/pending resource? Must be project owner or curator or site admin
 		if (($version == 'dev' || $publication->state == 4 || $publication->state == 3
-			|| $publication->state == 5 || $publication->state == 6) && !$authorized)
+			|| $publication->state == 5 || $publication->state == 7) && !$authorized)
 		{
 			$this->_blockAccess($publication);
 			return true;
@@ -2352,8 +2390,11 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 		else
 		{
-			$this->setError(JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS') );
-			$this->introTask();
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option),
+				JText::_('COM_PUBLICATIONS_RESOURCE_NO_ACCESS'),
+				'error'
+			);
 			return;
 		}
 	}
@@ -2364,7 +2405,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	 * @param      integer $project_id
 	 * @return     mixed False if no access, string if has access
 	 */
-	protected function _authorize( $project_id = 0, $curatorgroup = NULL )
+	protected function _authorize( $project_id = 0, $curatorgroups = array(), $curator = NULL )
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
@@ -2379,22 +2420,37 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$authorized = 'admin';
 		}
-
-		// Check if they are curator
-		$curatorgroup = $curatorgroup ? $curatorgroup : $this->config->get('curatorgroup', '');
-		if ($curatorgroup)
+		// Assigned curator?
+		if ($curator == $this->juser->get('id'))
 		{
-			if ($group = \Hubzero\User\Group::getInstance($curatorgroup))
+			$authorized = 'curator';
+		}
+		else
+		{
+			// Check if they are in curator group(s)
+			$curatorgroup = $this->config->get('curatorgroup', '');
+			if ($curatorgroup)
 			{
-				// Check if they're a member of this group
-				$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-				if ($ugs && count($ugs) > 0)
+				$curatorgroups[] = $curatorgroup;
+			}
+
+			if (!empty($curatorgroups))
+			{
+				foreach ($curatorgroups as $curatorgroup)
 				{
-					foreach ($ugs as $ug)
+					if ($group = \Hubzero\User\Group::getInstance($curatorgroup))
 					{
-						if ($group && $ug->cn == $group->get('cn'))
+						// Check if they're a member of this group
+						$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+						if ($ugs && count($ugs) > 0)
 						{
-							$authorized = 'curator';
+							foreach ($ugs as $ug)
+							{
+								if ($group && $ug->cn == $group->get('cn'))
+								{
+									$authorized = 'curator';
+								}
+							}
 						}
 					}
 				}

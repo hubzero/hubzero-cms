@@ -80,28 +80,23 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		// Get all uer groups
+		// Must be logged in to be a curator
+		if ($this->juser->get('guest'))
+		{
+			$this->_msg = JText::_('COM_PUBLICATIONS_CURATION_LOGIN');
+			$this->_login();
+			return;
+		}
+
+		// Get all user groups
 		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
 
 		// Check authorization
 		$mt  = new PublicationMasterType( $this->database );
-		$authorized   = $this->_authorize($mt->getCuratorGroups());
+		$authorized = $this->_authorize($mt->getCuratorGroups());
 
 		// Get all authorized types
 		$authtypes = $mt->getAuthTypes($usergroups, $this->config->get('curatorgroup', ''), $authorized);
-
-		if (!$authorized || ($authorized == 'curator' && (!$authtypes || empty($authtypes))))
-		{
-			if ($this->juser->get('guest'))
-			{
-				$this->_msg = JText::_('COM_PUBLICATIONS_CURATION_LOGIN');
-				$this->_login();
-				return;
-			}
-
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
-			return;
-		}
 
 		// Build query
 		$filters = array();
@@ -113,6 +108,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$filters['master_type']     = $authtypes;
 		$filters['dev']   	 		= 1; // get dev versions
 		$filters['status']   	 	= array(5, 7); // submitted/pending
+		$filters['curator']   		= $authorized;
 
 		$this->view->filters		= $filters;
 
@@ -142,7 +138,6 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		//push the stylesheet to the view
 		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications');
-		\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'css/curation.css');
 
 		if ($this->getError())
 		{
@@ -156,6 +151,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->view->database 	= $this->database;
 		$this->view->config		= $this->config;
 		$this->view->title 		= $this->_title;
+		$this->view->authorized = $authorized;
 		$this->view->display();
 	}
 
@@ -266,7 +262,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Check authorization
-		$authorized   = $this->_authorize(array($pub->_type->curatorgroup));
+		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
 
 		if (!$authorized)
 		{
@@ -343,6 +339,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->view->option 		= $this->_option;
 		$this->view->database 		= $this->database;
 		$this->view->config			= $this->config;
+		$this->view->authorized		= $authorized;
 		$this->view->display();
 	}
 
@@ -356,6 +353,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Incoming
 		$pid 		= $this->_id ? $this->_id : JRequest::getInt('id', 0);
 		$version 	= JRequest::getVar( 'version', '' );
+		$ajax 		= JRequest::getInt( 'ajax', 0 );
 
 		if (!$pid)
 		{
@@ -376,7 +374,15 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		if (!$pub)
 		{
-			JError::raiseError( 404, JText::_('Error loading publication') );
+			if ($ajax)
+			{
+				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view->error  = JText::_('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
+				$this->view->title = $this->title;
+				$this->view->display();
+				return;
+			}
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_CURATION_ERROR_LOAD') );
 			return;
 		}
 
@@ -385,17 +391,19 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Check authorization
-		$authorized   = $this->_authorize(array($pub->_type->curatorgroup));
+		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
 
 		if (!$authorized)
 		{
-			if ($this->juser->get('guest'))
+			if ($ajax)
 			{
-				$this->_msg = JText::_('COM_PUBLICATIONS_CURATION_LOGIN');
-				$this->_login();
+				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view->error  = JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
+				$this->view->title = $this->title;
+				$this->view->display();
 				return;
 			}
-			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'));
+			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED') );
 			return;
 		}
 
@@ -410,7 +418,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
 
-		if (!JRequest::getInt( 'ajax', 0 ))
+		if (!$ajax)
 		{
 			// Set page title
 			$this->_buildTitle();
@@ -427,8 +435,152 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$this->view->option 		= $this->_option;
 		$this->view->database 		= $this->database;
 		$this->view->config			= $this->config;
-		$this->view->ajax			= JRequest::getInt( 'ajax', 0 );
+		$this->view->ajax			= $ajax;
 		$this->view->display();
+	}
+
+	/**
+	 * Assign curation
+	 *
+	 * @return     void
+	 */
+	public function assignTask()
+	{
+		// Incoming
+		$pid 		= $this->_id ? $this->_id : JRequest::getInt('id', 0);
+		$vid 		= JRequest::getInt( 'vid', 0 );
+		$owner 		= JRequest::getInt( 'owner', 0 );
+		$confirm 	= JRequest::getInt( 'confirm', 0 );
+		$ajax 		= JRequest::getInt( 'ajax', 0 );
+
+		// Load publication & version classes
+		$objP  = new Publication( $this->database );
+		$row  = new PublicationVersion( $this->database );
+		if (!$vid || !$row->load($vid) || $row->publication_id != $pid || !$objP->load($pid))
+		{
+			if ($ajax)
+			{
+				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view->error  = JText::_('COM_PUBLICATIONS_CURATION_ERROR_LOAD');
+				$this->view->title = $this->title;
+				$this->view->display();
+				return;
+			}
+			JError::raiseError( 404, JText::_('COM_PUBLICATIONS_CURATION_ERROR_LOAD') );
+			return;
+		}
+
+		// Get all user groups
+		$usergroups = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+
+		// Check authorization
+		$mt  = new PublicationMasterType( $this->database );
+		$authorized = $this->_authorize($mt->getCuratorGroups());
+
+		// Get all authorized types
+		$authtypes = $mt->getAuthTypes($usergroups, $this->config->get('curatorgroup', ''), $authorized);
+
+		if (!$authorized || ($authorized == 'curator' && (!$authtypes || empty($authtypes))))
+		{
+			if ($ajax)
+			{
+				$this->view = new \Hubzero\Component\View( array('name'=>'error', 'layout' =>'restricted') );
+				$this->view->error  = JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED');
+				$this->view->title = $this->title;
+				$this->view->display();
+				return;
+			}
+			JError::raiseError( 403, JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED') );
+			return;
+		}
+
+		// Perform assignment
+		if ($confirm)
+		{
+			$previousOwner = $row->curator;
+			$selected = JRequest::getInt( 'selected', 0 );
+
+			// Make sure owner profile exists
+			if ($owner)
+			{
+				$ownerProfile  = \Hubzero\User\Profile::getInstance($owner);
+				if (!$ownerProfile)
+				{
+					$this->setError(JText::_('COM_PUBLICATIONS_CURATION_ERROR_ASSIGN_PROFILE'));
+				}
+			}
+			elseif ($selected && JRequest::getVar( 'owner', ''))
+			{
+				$owner = $selected;
+			}
+
+			// Assign
+			if (!$this->getError())
+			{
+				$row->curator = $owner;
+				if (!$row->store())
+				{
+					$this->setError(JText::_('COM_PUBLICATIONS_CURATION_ASSIGN_FAILED'));
+				}
+				// Notify curator
+				if ($owner && $owner != $previousOwner)
+				{
+					$juri 	 = JURI::getInstance();
+					$sef	 = 'publications' . DS . $row->publication_id . DS . $row->version_number;
+					$link 	 = rtrim($juri->base(), DS) . DS . trim($sef, DS);
+
+					$item  =  '"' . html_entity_decode($row->title).'"';
+					$item .= ' v.' . $row->version_label . ' ';
+					$item  = htmlentities($item, ENT_QUOTES, "UTF-8");
+
+					$message = JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
+					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . $link . "\n" . "\n";
+					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim($juri->base(), DS) . '/publications/curation/' . $row->publication_id;
+
+					PublicationHelper::notify(
+						$this->config,
+						$pub,
+						array($owner),
+						JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
+						$message
+					);
+				}
+			}
+		}
+		else
+		{
+			if (!$ajax)
+			{
+				// Set page title
+				$this->_buildTitle();
+
+				// Set the pathway
+				$this->_buildPathway();
+
+				// Add plugin style
+				\Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'css/curation.css');
+			}
+			$this->view->row 		    = $row;
+			$this->view->title  		= $this->_title;
+			$this->view->option 		= $this->_option;
+			$this->view->database 		= $this->database;
+			$this->view->config			= $this->config;
+			$this->view->ajax			= $ajax;
+			$this->view->display();
+			return;
+		}
+
+		$message = $this->getError() ? $this->getError() : JText::_('COM_PUBLICATIONS_CURATION_SUCCESS_ASSIGNED');
+		$class   = $this->getError() ? 'error' : 'success';
+
+		// Redirect to main listing
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=curation'),
+			$message,
+			$class
+		);
+
+		return;
 	}
 
 	/**
@@ -468,7 +620,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Check authorization
-		$authorized   = $this->_authorize(array($pub->_type->curatorgroup));
+		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
 
 		if (!$authorized)
 		{
@@ -583,7 +735,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Check authorization
-		$authorized   = $this->_authorize(array($pub->_type->curatorgroup));
+		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
 
 		if (!$authorized)
 		{
@@ -689,7 +841,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$pub->_type    	= $mt->getType($pub->base);
 
 		// Check authorization
-		$authorized   = $this->_authorize(array($pub->_type->curatorgroup));
+		$authorized   = $this->_authorize(array($pub->_type->curatorgroup), $pub->curator);
 		if (!$authorized)
 		{
 			echo json_encode(array('success' => 0, 'error' => JText::_('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED')));
@@ -848,7 +1000,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 	 * @param      array $curatorgroups
 	 * @return     mixed False if no access, string if has access
 	 */
-	protected function _authorize( $curatorgroups = array() )
+	protected function _authorize( $curatorgroups = array(), $curator = 0 )
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
@@ -862,6 +1014,11 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		if ($this->juser->authorize($this->_option, 'manage'))
 		{
 			$authorized = 'admin';
+		}
+		if ($curator && $curator == $this->juser->get('id'))
+		{
+			$authorized = 'owner';
+			return $authorized;
 		}
 
 		$curatorgroup = $this->config->get('curatorgroup', '');
