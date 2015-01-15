@@ -43,36 +43,36 @@ class Module extends Object
 	/**
      * Callback for escaping.
      *
-     * @var string
+     * @var  string
      */
 	protected $_escape = 'htmlspecialchars';
 
 	 /**
      * Charset to use in escaping mechanisms; defaults to urf8 (UTF-8)
      *
-     * @var string
+     * @var  string
      */
 	protected $_charset = 'UTF-8';
 
 	/**
 	 * JRegistry
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $params = null;
 
 	/**
 	 * Database row
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	public $module = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @param   object $params JParameter/JRegistry
-	 * @param   object $module Database row
+	 * @param   object  $params  JParameter/JRegistry
+	 * @param   object  $module  Database row
 	 * @return  void
 	 */
 	public function __construct($params, $module)
@@ -87,8 +87,8 @@ class Module extends Object
      * If escaping mechanism is one of htmlspecialchars or htmlentities, uses
      * {@link $_encoding} setting.
      *
-     * @param   mixed $var The output to escape.
-     * @return  mixed The escaped value.
+     * @param   mixed  $var  The output to escape.
+     * @return  mixed  The escaped value.
      */
 	public function escape($var)
 	{
@@ -103,11 +103,14 @@ class Module extends Object
 	/**
      * Sets the _escape() callback.
      *
-     * @param  mixed $spec The callback for _escape() to use.
+     * @param   mixed   $spec  The callback for _escape() to use.
+     * @return  object
      */
 	public function setEscape($spec)
 	{
 		$this->_escape = $spec;
+
+		return $this;
 	}
 
 	/**
@@ -117,7 +120,18 @@ class Module extends Object
 	 */
 	public function display()
 	{
-		require(\JModuleHelper::getLayoutPath($this->module->module, $this->params->get('layout', 'default')));
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
+	}
+
+	/**
+	 * Get the path of a layout for this module
+	 *
+	 * @param   string  $layout  The layout name
+	 * @return  string
+	 */
+	public function getLayoutPath($layout='default')
+	{
+		return \JModuleHelper::getLayoutPath($this->module->module, $layout);
 	}
 }
 
