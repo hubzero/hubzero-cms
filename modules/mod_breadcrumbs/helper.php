@@ -31,7 +31,6 @@
 namespace Modules\BreadCrumbs;
 
 use Hubzero\Module\Module;
-use JModuleHelper;
 use JFactory;
 use JHtml;
 use JRoute;
@@ -62,7 +61,7 @@ class Helper extends Module
 		$separator = $this->setSeparator($this->params->get('separator'));
 		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx'));
 
-		require JModuleHelper::getLayoutPath($this->module->module, $this->params->get('layout', 'default'));
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 
 	/**

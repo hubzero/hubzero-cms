@@ -33,7 +33,6 @@ namespace Modules\Custom;
 
 use Hubzero\Module\Module;
 use JPluginHelper;
-use JModuleHelper;
 use JHtml;
 
 /**
@@ -60,6 +59,6 @@ class Helper extends Module
 
 		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
-		require JModuleHelper::getLayoutPath('mod_custom', $params->get('layout', 'default'));
+		require $this->getLayoutPath($params->get('layout', 'default'));
 	}
 }

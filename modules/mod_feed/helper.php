@@ -32,7 +32,6 @@
 namespace Modules\Feed;
 
 use Hubzero\Module\Module;
-use JModuleHelper;
 use JFactory;
 use stdClass;
 use JText;
@@ -119,6 +118,6 @@ class Helper extends Module
 		$feed = $this->getFeed();
 		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
 
-		require JModuleHelper::getLayoutPath($module->module, $params->get('layout', 'default'));
+		require $this->getLayoutPath($params->get('layout', 'default'));
 	}
 }

@@ -33,7 +33,6 @@ namespace Modules\Search;
 
 use Hubzero\Module\Module;
 use JFactory;
-use JModuleHelper;
 use JURI;
 use JText;
 use JRequest;
@@ -64,7 +63,7 @@ class Helper extends Module
 		}
 
 		//$upper_limit = JFactory::getLanguage()->getUpperLimitSearchWord();
-		//$maxlength = $upper_limit;
+		//$maxlength   = $upper_limit;
 
 		$params          = $this->params;
 		$button          = $this->params->get('button', '');
@@ -75,6 +74,6 @@ class Helper extends Module
 		$label           = htmlspecialchars($this->params->get('label', JText::_('MOD_SEARCH_LABEL_TEXT')));
 		$moduleclass_sfx = htmlspecialchars($this->params->get('moduleclass_sfx'));
 
-		require JModuleHelper::getLayoutPath('mod_search', $this->params->get('layout', 'default'));
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 }

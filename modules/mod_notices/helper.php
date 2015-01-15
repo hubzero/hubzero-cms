@@ -285,7 +285,7 @@ class Helper extends Module
 
 			$this->message = $message;
 
-			require(JModuleHelper::getLayoutPath($this->module->module));
+			require $this->getLayoutPath();
 		}
 	}
 }
