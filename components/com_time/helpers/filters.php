@@ -271,6 +271,12 @@ class TimeFilters
 		$db     = JFactory::getDbo();
 		$return = array();
 
+		if ($column == 'task_id')
+		{
+			$ids   = array_map(function($task) { return $task->val; }, $vals);
+			$tasks = Task::whereIn('id', $ids)->rows();
+		}
+
 		foreach ($vals as $val)
 		{
 			// Just so I don't have to keep writing $val->val
@@ -283,7 +289,7 @@ class TimeFilters
 			// Now override at will...
 			if ($column == 'assignee_id' || $column == 'liaison_id' || $column == 'user_id')
 			{
-				$x['value'] = $value;
+				$x['value']   = $value;
 				$x['display'] = JFactory::getUser($value)->get('name');
 
 				if ($value == 0)
@@ -293,17 +299,17 @@ class TimeFilters
 			}
 			elseif ($column == 'hub_id')
 			{
-				$x['value'] = $value;
+				$x['value']   = $value;
 				$x['display'] = Hub::oneOrFail($value)->name;
 			}
 			elseif ($column == 'task_id')
 			{
-				$x['value'] = $value;
-				$x['display'] = Task::oneOrFail($value)->name;
+				$x['value']   = $value;
+				$x['display'] = $tasks->seek($value)->name;
 			}
 			elseif ($column == 'active')
 			{
-				$x['value'] = $value;
+				$x['value']   = $value;
 				$x['display'] = ($value) ? 'Yes' : 'No';
 			}
 
