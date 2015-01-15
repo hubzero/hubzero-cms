@@ -129,7 +129,7 @@ class plgCoursesGuide extends \Hubzero\Plugin\Plugin
 			$this->view->controller = JRequest::getWord('controller', 'course');
 			$this->view->course     = $course;
 			$this->view->offering   = $offering;
-			$this->view->config     = $config;
+			$this->view->config     = $this->params;
 			$this->view->juser      = JFactory::getUser();
 			$this->view->plugin     = $this->_name;
 
