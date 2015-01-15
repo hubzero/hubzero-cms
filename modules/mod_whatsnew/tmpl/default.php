@@ -32,15 +32,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 // Output HTML
-$html  = '<div';
-$html .= ($this->cssId) ? ' id="' . $this->cssId . '"' : '';
-$html .= '>' . "\n";
+$html  = '<div class="' . $this->module->module . '"' . ($this->cssId ? ' id="' . $this->cssId . '"' : '') . '>' . "\n";
 
 if ($this->feed)
 {
-	$html .= "\t" . '<ul class="module-nav">'; // . $this->escape($this->module->title);
+	$html .= '<ul class="module-nav">';
 	$html .= '<li><a class="newsfeed" href="' . $this->feedlink . '" title="' . JText::_('MOD_WHATSNEW_SUBSCRIBE') . '">' . JText::_('MOD_WHATSNEW_NEWS_FEED') . '</a></li>';
-	$html .= '</ul>' . "\n";
+	$html .= '</ul>';
 }
 
 if (!$this->tagged)
@@ -92,9 +90,9 @@ else
 	}
 	else
 	{
-		$html .= "\t\t" . '<span class="configure">[<a href="' . JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile#profile-interests') . '">' . JText::_('MOD_WHATSNEW_ADD_INTERESTS').'</a>]</span>' . "\n";
+		$html .= "\t\t" . '<span class="configure">[<a href="' . JRoute::_('index.php?option=com_members&id=' . $juser->get('id') . '&active=profile#profile-interests') . '">' . JText::_('MOD_WHATSNEW_ADD_INTERESTS') . '</a>]</span>' . "\n";
 	}
-	$html .= "\t\t" . '<span class="q">'.JText::_('MOD_WHATSNEW_MY_INTERESTS') . ': ' . $this->formatTags($this->tags) . '</span>' . "\n";
+	$html .= "\t\t" . '<span class="q">' . JText::_('MOD_WHATSNEW_MY_INTERESTS') . ': ' . $this->formatTags($this->tags) . '</span>' . "\n";
 	$html .= "\t" . '</p>' . "\n";
 	if (count($rows2) > 0)
 	{
@@ -130,7 +128,7 @@ else
 		$html .= "\t" . '<p>' . JText::_('MOD_WHATSNEW_NO_RESULTS') . '</p>' . "\n";
 	}
 }
-$html .= "\t" . '<p class="more"><a href="'.JRoute::_('index.php?option=com_whatsnew&period=' . $this->area . ':' . $this->period) . '">' . ($this->area ? JText::sprintf('MOD_WHATSNEW_VIEW_MORE_OF', $this->escape($this->area)) : JText::_('MOD_WHATSNEW_VIEW_MORE')) . '</a></p>' . "\n";
+$html .= "\t" . '<p class="more"><a href="' . JRoute::_('index.php?option=com_whatsnew&period=' . $this->area . ':' . $this->period) . '">' . ($this->area ? JText::sprintf('MOD_WHATSNEW_VIEW_MORE_OF', $this->escape($this->area)) : JText::_('MOD_WHATSNEW_VIEW_MORE')) . '</a></p>' . "\n";
 $html .= '</div>' . "\n";
 
 echo $html;

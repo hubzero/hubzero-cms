@@ -13,8 +13,18 @@
 
 */
 	div.draggable .expandedlist li.new,
-	#mod-whatsnew li {
-		background: url("/modules/mod_whatsnew/new.png") 0.7em 0.7em no-repeat;
+	.mod_whatsnew li.new {
+		position: relative;
+	}
+	div.draggable .expandedlist li.new:before,
+	.mod_whatsnew li.new:before {
+		content: "New";
+		text-transform: uppercase;
+		color: orange;
+		font-size: 0.75em;
+		position: absolute;
+		top: 0.65em;
+		left: 0.5em;
 	}
 	#mod-whatsnew ul {
 		list-style: none;
@@ -22,7 +32,6 @@
 		padding: 0 0.5em;
 	}
 	#mod-whatsnew li {
-		background-position: 0 0.2em;
 		padding: 0 0 0 20px;
 		margin: 0 0 0.5em 0;
 	}
@@ -47,7 +56,7 @@
 		color: #77735c;
 		border-top: 1px dotted #CCC;
 		border-bottom: 1px dotted #CCC;
-		overflow: hidden;		
+		overflow: hidden;
 	}
 	div.draggable div.body .q,
 	div.draggable div.body .taggi {

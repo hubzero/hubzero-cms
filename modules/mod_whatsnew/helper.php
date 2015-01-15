@@ -29,18 +29,26 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\WhatsNew;
+
+use Hubzero\Module\Module;
+use JURI;
+use JFactory;
+use JRoute;
+use JPluginHelper;
+use JDispatcher;
+use WhatsnewPeriod;
+use MembersModelTags;
 
 /**
  * Module class for displaying what's new in a category of content
  */
-class modWhatsNew extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get the categories for What's New
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	private function _getAreas()
 	{
@@ -60,7 +68,7 @@ class modWhatsNew extends \Hubzero\Module\Module
 			// Build an array of the areas
 			foreach ($searchareas as $area)
 			{
-				$areas = array_merge( $areas, $area );
+				$areas = array_merge($areas, $area);
 			}
 
 			// Save the array for use elsewhere
@@ -74,10 +82,10 @@ class modWhatsNew extends \Hubzero\Module\Module
 	/**
 	 * Fromat tags for display
 	 *
-	 * @param      array   $tags Tags to format
-	 * @param      integer $num  Number of tags to display
-	 * @param      integer $max  Max characters for a tag
-	 * @return     string HTML
+	 * @param   array    $tags  Tags to format
+	 * @param   integer  $num   Number of tags to display
+	 * @param   integer  $max   Max characters for a tag
+	 * @return  string   HTML
 	 */
 	public function formatTags($tags=array(), $num=3, $max=25)
 	{
@@ -98,7 +106,7 @@ class modWhatsNew extends \Hubzero\Module\Module
 				if ($i < $num)
 				{
 					// display tag
-					$out .= "\t" . '<a href="'.JRoute::_($tag->link()) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a> ' . "\n";
+					$out .= "\t" . '<a href="' . JRoute::_($tag->link()) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . '</a> ' . "\n";
 				}
 			}
 			if ($i > $num)
@@ -114,7 +122,7 @@ class modWhatsNew extends \Hubzero\Module\Module
 	/**
 	 * Get module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
@@ -275,13 +283,13 @@ class modWhatsNew extends \Hubzero\Module\Module
 			}
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{

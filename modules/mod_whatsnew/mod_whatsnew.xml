@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_whatsnew/mod_whatsnew.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,17 +30,17 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.5.0" client="site" type="module">
 	<name>What's New</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Lists the newest resources and events on the site.</description>
+	<description>MOD_WHATSNEW_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_whatsnew">mod_whatsnew.php</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>mod_whatsnew.xml</filename>
-		<filename>mod_whatsnew.css</filename>
+		<filename>assets/css/mod_whatsnew.css</filename>
 		<filename>index.html</filename>
-		<filename>new.png</filename>
+		<filename>helper.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.mod_whatsnew.ini</language>
@@ -48,24 +48,24 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="cssId" type="text" default="" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="limit" type="text" default="5" label="Number of entries" description="The number of entries to display." />
-				<field name="feed" type="list" default="1" label="Feed link" description="Select whether to display a feed link">
-					<option value="1">Display link</option>
-					<option value="0">Hide link</option>
+				<field name="cssId" type="text" default="" label="MOD_WHATSNEW_PARAM_CSSID_LABEL" description="MOD_WHATSNEW_PARAM_CSSID_DESC" />
+				<field name="limit" type="text" default="5" label="MOD_WHATSNEW_PARAM_LIMIT_LABEL" description="MOD_WHATSNEW_PARAM_LIMIT_DESC" />
+				<field name="feed" type="list" default="1" label="MOD_WHATSNEW_PARAM_FEED_LABEL" description="MOD_WHATSNEW_PARAM_FEED_DESC">
+					<option value="1">JSHOW</option>
+					<option value="0">JHIDE</option>
 				</field>
-				<field name="period" type="text" default="resources:month" label="category:period" description="Time period and category to pull results for." />
-				<field name="tagged" type="radio" default="0" label="Show My Interests" description="Display whats new by the tags the user has listed as their interests.">
-					<option value="0">Hide</option>
-					<option value="1">Show</option>
+				<field name="period" type="text" default="resources:month" label="MOD_WHATSNEW_PARAM_CATEGORY_LABEL" description="MOD_WHATSNEW_PARAM_CATEGORY_DESC" />
+				<field name="tagged" type="radio" default="0" label="MOD_WHATSNEW_PARAM_TAGGED_LABEL" description="MOD_WHATSNEW_PARAM_TAGGED_DESC">
+					<option value="0">JHIDE</option>
+					<option value="1">JSHOW</option>
 				</field>
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="MOD_WHATSNEW_PARAM_CACHE_LABEL" description="MOD_WHATSNEW_PARAM_CACHE_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+				<field name="cache_time" type="text" default="15" label="MOD_WHATSNEW_PARAM_CACHETIME_LABEL" description="MOD_WHATSNEW_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
