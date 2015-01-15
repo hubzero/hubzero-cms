@@ -840,6 +840,7 @@ class ResourcesHtml
 					break;
 
 					case 'newwindow':
+					case 'external':
 						$mesg = JText::_('COM_RESOURCES_VIEW_RESOURCE');
 						//$class = 'popup';
 						$action = 'rel="external"';
