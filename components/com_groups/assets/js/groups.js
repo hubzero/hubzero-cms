@@ -929,7 +929,7 @@ HUB.Groups = {
 		var $ = this.jQuery;
 		
 		// switch to source
-		$('.version-source').on('click', function(){
+		$('.version-source').on('click', function(event){
 			event.preventDefault();
 			$(this).toggleClass('active');
 			$('.version-content').toggle();
@@ -938,7 +938,7 @@ HUB.Groups = {
 			HUB.Groups.pageVersionMangerResize();
 		});
 
-		$('.version-meta').on('click', function(){
+		$('.version-meta').on('click', function(event){
 			event.preventDefault();
 			$(this).toggleClass('active');
 			$('.version-metadata').slideToggle(function(){
