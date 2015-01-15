@@ -212,6 +212,7 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 
 		// Incoming
 		$layout = JRequest::getVar('l', $defaultView) == 'pinboard' ? 'pinboard' : 'list';
+		$mine = isset($this->_mine) ? $this->_mine : JRequest::getInt('mine', 0);
 
 		// Output HTML
 		$view = new \Hubzero\Plugin\View(
@@ -230,8 +231,8 @@ class plgProjectsTodo extends \Hubzero\Plugin\Plugin
 			'start'		 => JRequest::getInt('limitstart', 0),
 			'todolist'	 => JRequest::getVar('list', ''),
 			'state'		 => isset($this->_state) ? $this->_state : JRequest::getVar('state', 0),
-			'mine'		 => isset($this->_mine) ? $this->_mine : JRequest::getInt('mine', 0),
-			'assignedto' => isset($this->_mine) && $this->_mine == 1  ? $this->_uid : 0,
+			'mine'		 => $mine,
+			'assignedto' => $mine == 1  ? $this->_uid : 0,
 			'sortby'	 => JRequest::getVar('sortby', 'priority'),
 			'sortdir'	 => JRequest::getVar('sortdir', 'ASC'),
 			'layout'	 => $layout
