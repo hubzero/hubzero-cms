@@ -40,27 +40,27 @@ defined('_JEXEC') or die;
 			$output  = '<label for="searchword" id="searchword-label">' . $label . '</label>';
 			$output .= '<input type="text" name="searchword" id="searchword" size="' . $width . '" placeholder="' . $text . '" />';
 
-			if ($button) :
-				$button = '<input type="submit" value="' . $button_text . '" />';
+			if ($button):
+				$button = '<input type="submit" id="submitquery" value="' . $button_text . '" />';
 			endif;
 
-			switch ($button_pos) :
-				case 'top' :
+			switch ($button_pos):
+				case 'top':
 					$output = $button . '<br />' . $output;
-					break;
+				break;
 
-				case 'bottom' :
+				case 'bottom':
 					$output = $output . '<br />' . $button;
-					break;
+				break;
 
-				case 'right' :
+				case 'right':
 					$output = $output . $button;
-					break;
+				break;
 
-				case 'left' :
-				default :
+				case 'left':
+				default:
 					$output = $button . $output;
-					break;
+				break;
 			endswitch;
 
 			echo $output;
