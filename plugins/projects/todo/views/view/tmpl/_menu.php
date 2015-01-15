@@ -75,13 +75,13 @@ shuffle($unused);
 	<?php } ?>
 	</ul>
 	<ul class="entries-menu view-options">
-		<li class="view-pinboard<?php if ($this->filters['layout'] == 'pinboard') { echo ' active'; } ?>"><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=pinboard' . $sortAppend . '&sortby=' . $this->filters['sortby']); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_LIST_VIEW_PINBOARD'); ?>">&nbsp;</a></li>
-		<li class="view-list<?php if ($this->filters['layout'] == 'list') { echo ' active'; } ?>"><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=list' . $sortAppend . '&sortby=' . $this->filters['sortby']); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_LIST_VIEW_LIST'); ?>">&nbsp;</a></li>
+		<li class="view-pinboard<?php if ($this->filters['layout'] == 'pinboard') { echo ' active'; } ?>"><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=pinboard&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby']); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_LIST_VIEW_PINBOARD'); ?>">&nbsp;</a></li>
+		<li class="view-list<?php if ($this->filters['layout'] == 'list') { echo ' active'; } ?>"><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=list&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby']); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_LIST_VIEW_LIST'); ?>">&nbsp;</a></li>
 	</ul>
 	<ul class="entries-menu filter-options">
-		<li><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=' . $this->filters['layout'] . '&sortdir=' . urlencode($sortbyDir) . '&sortby=' . $this->filters['sortby'] . '&mine=0&state=0'); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?>" class="filter-active<?php if (!$this->filters['mine'] && !$this->filters['state']) { echo ' active'; } ?>"><?php echo JText::_('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?></a></li>
-		<li><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=' . $this->filters['layout'] . '&sortdir=' . urlencode($sortbyDir) . '&sortby=' . $this->filters['sortby'] . '&mine=1'); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_FILTER_MINE'); ?>" class="filter-mine<?php if ($this->filters['mine'] == 1) { echo ' active'; } ?>"><?php echo JText::_('PLG_PROJECTS_TODO_FILTER_MINE'); ?></a></li>
-		<li><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=' . $this->filters['layout'] . '&sortdir=' . urlencode($sortbyDir) . '&sortby=' . $this->filters['sortby'] . '&state=1'); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?>" class="filter-complete<?php if ($this->filters['state'] == 1) { echo ' active'; } ?>"><?php echo JText::_('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?></a></li>
+		<li><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=' . $this->filters['layout'] . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=0&state=0'); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?>" class="filter-active<?php if (!$this->filters['mine'] && !$this->filters['state']) { echo ' active'; } ?>"><?php echo JText::_('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?></a></li>
+		<li><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=' . $this->filters['layout'] . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1'); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_FILTER_MINE'); ?>" class="filter-mine<?php if ($this->filters['mine'] == 1) { echo ' active'; } ?>"><?php echo JText::_('PLG_PROJECTS_TODO_FILTER_MINE'); ?></a></li>
+		<li><a href="<?php echo JRoute::_($url . '&list=' . $this->filters['todolist'] . '&l=' . $this->filters['layout'] . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1'); ?>" title="<?php echo JText::_('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?>" class="filter-complete<?php if ($this->filters['state'] == 1) { echo ' active'; } ?>"><?php echo JText::_('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?></a></li>
 	</ul>
 	<?php if (!$this->filters['todolist']) {  ?>
 	<div class="list-selector" id="list-selector">
@@ -92,7 +92,7 @@ shuffle($unused);
 					$class = $list->color ? 'pin_' . $list->color : 'pin_grey';
 				?>
 					<li>
-						<span class="<?php echo $class; ?>"><a href="<?php echo JRoute::_($url . '&list=' . $list->color . '&l=' . $this->filters['layout'] . '&sortby=' . $this->filters['sortby'] . $sortAppend); ?>"><?php echo stripslashes($list->todolist); ?></a></span>
+						<span class="<?php echo $class; ?>"><a href="<?php echo JRoute::_($url . '&list=' . $list->color . '&l=' . $this->filters['layout'] . '&sortby=' . $this->filters['sortby'] . '&sortdir=' . $this->filters['sortdir']); ?>"><?php echo stripslashes($list->todolist); ?></a></span>
 						</label>
 					</li>
 				<?php } ?>
