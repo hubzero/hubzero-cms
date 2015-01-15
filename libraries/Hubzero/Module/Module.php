@@ -265,7 +265,7 @@ class Module extends Object
 	 */
 	public function display()
 	{
-		require(\JModuleHelper::getLayoutPath($this->module->module));
+		require(\JModuleHelper::getLayoutPath($this->module->module, $this->params->get('layout', 'default')));
 	}
 }
 
