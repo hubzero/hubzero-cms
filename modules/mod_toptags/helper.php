@@ -34,7 +34,6 @@ namespace Modules\Toptags;
 use Hubzero\Module\Module;
 use JFactory;
 use TagsTableTag;
-use JModuleHelper;
 
 /**
  * Module class for displaying a tag cloud of most used tags
@@ -48,7 +47,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'helpers' . DS . 'handler.php');
+		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tags' . DS . 'models' . DS . 'cloud.php');
 
 		$database = JFactory::getDBO();
 
@@ -56,7 +55,7 @@ class Helper extends Module
 
 		$this->tags = $obj->getTopTags($this->params->get('numtags', 25));
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 
 	/**
