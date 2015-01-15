@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,22 +25,29 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\RapidContact;
+
+use Hubzero\Module\Module;
+use Hubzero\Utility\Sanitize;
+use Hubzero\Mail\Message;
+use JFactory;
+use JRequest;
+use JText;
+use JURI;
 
 /**
  * Module class for displaying a quick contact form
  */
-class modRapidContact extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -144,14 +151,14 @@ class modRapidContact extends \Hubzero\Module\Module
 
 			if ($this->error == '')
 			{
-				$mySubject = \Hubzero\Utility\Sanitize::clean($this->posted['subject']);
+				$mySubject  = Sanitize::clean($this->posted['subject']);
 				$myMessage  = JText::sprintf('MOD_RAPID_CONTACT_MESSAGE_FROM', $this->posted['name'], $this->posted['email'], JRequest::getVar('HTTP_REFERER', '', 'SERVER'), $jconfig->getValue('config.sitename'));
-				$myMessage .= "\n\n". \Hubzero\Utility\Sanitize::clean($this->posted['message']);
+				$myMessage .= "\n\n". Sanitize::clean($this->posted['message']);
 
 				$this->from_email = $this->posted['email'];
-				$this->from_name  = (isset($this->posted['name']) && \Hubzero\Utility\Sanitize::clean($this->posted['name'])) ? \Hubzero\Utility\Sanitize::clean($this->posted['name']) : $this->posted['email'];
+				$this->from_name  = (isset($this->posted['name']) && Sanitize::clean($this->posted['name'])) ? Sanitize::clean($this->posted['name']) : $this->posted['email'];
 
-				$mailSender = new \Hubzero\Mail\Message();
+				$mailSender = new Message();
 				$mailSender->setSubject($mySubject)
 				           ->addFrom($this->from_email, $this->from_name)
 				           ->addTo($this->recipient)
@@ -169,6 +176,6 @@ class modRapidContact extends \Hubzero\Module\Module
 			}
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		parent::display();
 	}
 }
