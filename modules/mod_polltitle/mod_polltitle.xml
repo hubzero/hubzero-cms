@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_polltitle/mod_polltitle.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -30,26 +30,27 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.5.0" client="site" type="module">
 	<name>Poll Title</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<description>MOD_POLLTITLE_DESCPOLL</description>
 	<files>
 		<filename module="mod_polltitle">mod_polltitle.php</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="message" type="text" default="Tell us what you think." label="Message" description="Default message in case there are no active polls to display" />
+				<field name="message" type="text" default="Tell us what you think." label="MOD_POLLTITLE_PARAM_MESSAGE_LABEL" description="MOD_POLLTITLE_PARAM_MESSAGE_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="MOD_POLLTITLE_PARAM_CACHE_LABEL" description="MOD_POLLTITLE_PARAM_CACHE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+				<field name="cache_time" type="text" default="15" label="MOD_POLLTITLE_PARAM_CACHETIME_LABEL" description="MOD_POLLTITLE_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
