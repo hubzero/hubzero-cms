@@ -556,7 +556,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					$obj = new PublicationCurationHistory($this->database);
 					if (isset($ownerProfile) && $ownerProfile)
 					{
-						$changelog = '<p>Curation assigned to ' . $ownerProfile->get('name') . '</p>';
+						$changelog = '<p>Curation assigned to ' . $ownerProfile->get('name') . ' (' . $ownerProfile->get('username') . ')</p>';
 					}
 					else
 					{

@@ -77,6 +77,9 @@ $by 	 = ' ' . JText::_('COM_PUBLICATIONS_CURATION_BY') . ' ' . $profile->get('na
 	<p class="instruct">
 		<span class="pubimage"><img src="<?php echo JRoute::_('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_id) . '/Image:thumb'; ?>" alt="" /></span>
 		<strong class="block"><?php echo $this->pub->reviewed ? JText::_('COM_PUBLICATIONS_CURATION_RESUBMITTED') : JText::_('COM_PUBLICATIONS_CURATION_SUBMITTED'); echo ' ' . JHTML::_('date', $this->pub->submitted, 'M d, Y') . $by; ?></strong>
+		<?php if ($this->pub->curator && $ownerProfile  = \Hubzero\User\Profile::getInstance($this->pub->curator)) { ?>
+		<span class="block"><?php echo JText::_('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $ownerProfile->get('name') . ' (' . $ownerProfile->get('username') . ')</strong>';  ?></span>
+		<?php } ?>
 	<?php echo JText::_('COM_PUBLICATIONS_CURATION_REVIEW_AND_ACT'); ?>
 	<span class="legend">
 		<span class="legend-checker-none"><?php echo JText::_('COM_PUBLICATIONS_CURATION_LEGEND_NONE'); ?></span>
