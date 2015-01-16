@@ -131,6 +131,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				$response .= "<request verb=\"GetRecord\" identifier=\"$identifier\" metadataPrefix=\"$this->metadata\">$this->hubname/oaipmh</request>";
 				// check for errors
 				$check = new TablesOaipmhResult($this->database, $customs, $identifier);
+				$badID = false;
 				if ($check->identifier == '')
 				{
 					$badID = true;
