@@ -1,11 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,26 +22,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\RecentQuestions;
+
+use Hubzero\Module\Module;
+use JFactory;
+use JRequest;
+use AnswersModelQuestion;
 
 /**
  * Module class for displaying recent questions
  */
-class modRecentQuestions extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get module contents
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
 		$this->database = JFactory::getDBO();
 
-		$this->cssId = $this->params->get('cssId');
+		$this->cssId    = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
 
 		$state = $this->params->get('state', 'open');
@@ -58,7 +64,7 @@ class modRecentQuestions extends \Hubzero\Module\Module
 			default:       $st = ""; break;
 		}
 
-		$this->tag = JRequest::getVar('tag', '', 'get');
+		$this->tag   = JRequest::getVar('tag', '', 'get');
 		$this->style = JRequest::getVar('style', '', 'get');
 
 		if ($this->tag)
@@ -89,19 +95,20 @@ class modRecentQuestions extends \Hubzero\Module\Module
 		if ($this->rows)
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+
 			foreach ($this->rows as $k => $row)
 			{
 				$this->rows[$k] = new AnswersModelQuestion($row);
 			}
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 
 	/**
 	 * Display module content
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{

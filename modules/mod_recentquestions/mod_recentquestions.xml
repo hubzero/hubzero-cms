@@ -30,9 +30,9 @@ HUBzero is a registered trademark of Purdue University.
 <extension version="1.5.0" client="site" type="module">
 	<name>Latest Questions</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows the latest questions added to the Answers component.</description>
+	<description>MOD_RECENTQUESTIONS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_recentquestions">mod_recentquestions.php</filename>
 		<filename>mod_recentquestions.xml</filename>
@@ -43,25 +43,25 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
-				<field name="cssId" type="text" default="" label="CSS ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="cssClass" type="text" default="" label="CSS Class" description="A CSS class to be applied to the module container, this allows individual module styling" />
-				<field name="state" type="list" default="both" label="Question state" description="The state (open or closed) of questions to be displayed">
-					<option value="open">Open</option>
-					<option value="closed">Closed</option>
-					<option value="both">Open and Closed</option>
+				<field name="limit" type="text" default="5" label="MOD_RECENTQUESTIONS_PARAM_LIMIT_LABEL" description="MOD_RECENTQUESTIONS_PARAM_LIMIT_DESC" />
+				<field name="cssId" type="text" default="" label="MOD_RECENTQUESTIONS_PARAM_CSSID_LABEL" description="MOD_RECENTQUESTIONS_PARAM_CSSID_DESC" />
+				<field name="cssClass" type="text" default="" label="MOD_RECENTQUESTIONS_PARAM_CSSCLASS_LABEL" description="MOD_RECENTQUESTIONS_PARAM_CSSCLASS_DESC" />
+				<field name="state" type="list" default="both" label="MOD_RECENTQUESTIONS_PARAM_STATE_LABEL" description="MOD_RECENTQUESTIONS_PARAM_STATE_DESC">
+					<option value="open">MOD_RECENTQUESTIONS_PARAM_STATE_OPEN</option>
+					<option value="closed">MOD_RECENTQUESTIONS_PARAM_STATE_CLOSED</option>
+					<option value="both">MOD_RECENTQUESTIONS_PARAM_STATE_BOTH</option>
 				</field>
-				<field name="feedlink" type="list" default="yes" label="Feed Link" description="Include Feed Link">
-					<option value="no">no</option>
-					<option value="yes">Yes</option>
+				<field name="feedlink" type="list" default="yes" label="MOD_RECENTQUESTIONS_PARAM_FEEDLINK_LABEL" description="MOD_RECENTQUESTIONS_PARAM_FEEDLINK_DESC">
+					<option value="no">JNo</option>
+					<option value="yes">JYes</option>
 				</field>
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="MOD_RECENTQUESTIONS_PARAM_CACHE_LABEL" description="MOD_RECENTQUESTIONS_PARAM_CACHE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+				<field name="cache_time" type="text" default="15" label="MOD_RECENTQUESTIONS_PARAM_CACHETIME_LABEL" description="MOD_RECENTQUESTIONS_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
