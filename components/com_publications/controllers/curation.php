@@ -537,13 +537,41 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . $link . "\n" . "\n";
 					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim($juri->base(), DS) . '/publications/curation/' . $row->publication_id;
 
-					PublicationHelper::notify(
-						$this->config,
-						$pub,
-						array($owner),
-						JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
-						$message
-					);
+					// Instantiate project publication
+					$pub = $objP->getPublication($row->publication_id, $row->version_number);
+					if ($pub)
+					{
+						PublicationHelper::notify(
+							$this->config,
+							$pub,
+							array($owner),
+							JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_SUBJECT'),
+							$message
+						);
+					}
+				}
+				// Log assignment in history
+				if (!$this->getError() && $owner != $previousOwner)
+				{
+					$obj = new PublicationCurationHistory($this->database);
+					if (isset($ownerProfile) && $ownerProfile)
+					{
+						$changelog = '<p>Curation assigned to ' . $ownerProfile->get('name') . '</p>';
+					}
+					else
+					{
+						$changelog = '<p>Curator assignment was removed</p>';
+					}
+
+					// Create new record
+					$obj->publication_version_id 	= $row->id;
+					$obj->created 					= JFactory::getDate()->toSql();
+					$obj->created_by				= $this->juser->get('id');
+					$obj->changelog					= $changelog;
+					$obj->curator					= 1;
+					$obj->newstatus					= $row->state;
+					$obj->oldstatus					= $row->state;
+					$obj->store();
 				}
 			}
 		}
