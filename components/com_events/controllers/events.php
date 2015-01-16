@@ -1576,8 +1576,12 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$times['registerby_pm'] = $registerby_pm;
 
 		// Get tags on this event
-		$rt = new EventsModelTags($row->id);
-		$lists['tags'] = $rt->render('string');
+		$lists['tags'] = '';
+		if ($row->id)
+		{
+			$rt = new EventsModelTags($row->id);
+			$lists['tags'] = $rt->render('string');
+		}
 
 		// get tags passed from failed save
 		if (isset($this->tags))
