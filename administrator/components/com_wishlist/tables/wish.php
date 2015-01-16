@@ -257,7 +257,7 @@ class Wish extends JTable
 
 		$sql = "SELECT ws.id FROM #__wishlist_item AS ws ";
 
-		if ($filters['tag'])
+		if (isset($filters['tag']) && $filters['tag'])
 		{
 			$sql .= "\n LEFT JOIN #__tags_object AS RTA ON RTA.objectid=ws.id AND RTA.tbl='wishlist' ";
 			$sql .= "\n LEFT JOIN #__tags AS TA ON RTA.tagid=TA.id ";
@@ -322,7 +322,7 @@ class Wish extends JTable
 			$sql .="\n AND ws.private='0'";
 		}
 
-		if ($filters['tag'])
+		if (isset($filters['tag']) && $filters['tag'])
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'tags.php');
 
