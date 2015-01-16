@@ -273,5 +273,85 @@ class plgGroupsWishlist extends \Hubzero\Plugin\Plugin
 		}
 		return $arr;
 	}
+
+	/**
+	 * Return count of items that will be deleted when group is deleted
+	 * 
+	 * @param      object $group Group being deleted
+	 * @return     string
+	 */
+	public function onGroupDeleteCount($group)
+	{
+		// include com_wishlist files
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
+
+		// Load some objects
+		$database = JFactory::getDBO();
+		$wishlist = new Wishlist($database);
+		$wish     = new Wish($database);
+
+		// Get wishlist id
+		$id = $wishlist->get_wishlistID($group->get('gidNumber'), 'group');
+
+		// no id means no list
+		if (!$id)
+		{
+			return JText::sprintf('PLG_GROUPS_WISHLIST_LOG', 0);
+		}
+
+		// get wishes count
+		$wishes = $wish->get_count($id, array(
+			'filterby' => 'all'
+		), 1);
+
+		// return message
+		return JText::sprintf('PLG_GROUPS_WISHLIST_LOG', $wishes);
+	}
+
+	/**
+	 * Delete any associated wishes & lists when group is deleted
+	 * 
+	 * @param      object $group Group being deleted
+	 * @return     string Log of items removed
+	 */
+	public function onGroupDelete($group)
+	{
+		// include com_wishlist files
+		require_once JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php';
+
+		// Load some objects
+		$database = JFactory::getDBO();
+		$wishlist = new Wishlist($database);
+		$wish     = new Wish($database);
+
+		// Get wishlist id
+		$id = $wishlist->get_wishlistID($group->get('gidNumber'), 'group');
+
+		// no id means no list
+		if (!$id)
+		{
+			return '';
+		}
+
+		// Get wishes
+		$wishes = $wish->get_wishes($id, array(
+			'filterby' => 'all',
+			'sortby'   => ''
+		), 1);
+
+		// delete each wish
+		foreach ($wishes as $item)
+		{
+			$wish->load($item->id);
+			$wish->delete();
+		}
+
+		// delete wishlist
+		$wishlist->load($id);
+		$wishlist->delete();
+
+		// return message
+		return JText::sprintf('PLG_GROUPS_WISHLIST_LOG', count($wishes));
+	}
 }
 
