@@ -134,6 +134,13 @@ class PublicationVersion extends JTable
 	var $accepted					= NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 *
+	 * @var string
+	 */
+	var $archived					= NULL;
+
+	/**
 	 * varchar(100)
 	 *
 	 * @var string
