@@ -472,6 +472,20 @@
 	.publist thead tr a {
 		border: none;
 	}
+	.publist tbody tr td:last-child {
+		padding-right: 2em;
+	}
+	.activesort a {
+		color: #666;
+	}
+	.activesort a:after {
+		content: "\2193";
+		margin-left: 0.5em;
+		width: 10px;
+		height: 10px;
+		font-size: 10px;
+		position: absolute;
+	}
 
 /* Submitter comment
 --------------------------------------------- */

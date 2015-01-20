@@ -95,21 +95,26 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$mt  = new PublicationMasterType( $this->database );
 		$authorized = $this->_authorize($mt->getCuratorGroups());
 
-		// Get all authorized types
-		$authtypes = $mt->getAuthTypes($usergroups, $this->config->get('curatorgroup', ''), $authorized);
+		// Incoming
+		$assigned = JRequest::getInt('assigned', 0);
 
 		// Build query
 		$filters = array();
 		$filters['limit'] 	 		= JRequest::getInt('limit', 25);
 		$filters['start'] 	 		= JRequest::getInt('limitstart', 0);
-		$filters['sortby']   		= JRequest::getVar( 't_sortby', 'status');
-		$filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'ASC');
+		$filters['sortby']   		= JRequest::getVar( 't_sortby', 'submitted');
+		$filters['sortdir']  		= JRequest::getVar( 't_sortdir', 'DESC');
 		$filters['ignore_access']   = 1;
-		$filters['master_type']     = $authtypes;
+
+		// Only get types for which authorized
+		if ($authorized == 'limited')
+		{
+			$filters['master_type'] = $mt->getAuthTypes($usergroups, $authorized);
+		}
+
 		$filters['dev']   	 		= 1; // get dev versions
 		$filters['status']   	 	= array(5, 7); // submitted/pending
-		$filters['curator']   		= $authorized;
-
+		$filters['curator']   		= $assigned || $authorized == false ? 'owner' : NULL;
 		$this->view->filters		= $filters;
 
 		// Instantiate project publication
@@ -478,7 +483,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$authorized = $this->_authorize($mt->getCuratorGroups());
 
 		// Get all authorized types
-		$authtypes = $mt->getAuthTypes($usergroups, $this->config->get('curatorgroup', ''), $authorized);
+		$authtypes = $mt->getAuthTypes($usergroups, $authorized);
 
 		if (!$authorized || ($authorized == 'curator' && (!$authtypes || empty($authtypes))))
 		{
@@ -1069,8 +1074,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 						{
 							if ($group && $ug->cn == $group->get('cn'))
 							{
-								$authorized = 'curator';
-								return $authorized;
+								$authorized = $ug->cn == $curatorgroup ? 'curator' : 'limited';
 							}
 						}
 					}
