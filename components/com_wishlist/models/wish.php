@@ -414,6 +414,20 @@ class WishlistModelWish extends WishlistModelAbstract
 	}
 
 	/**
+	 * Determine if wish was deleted
+	 *
+	 * @return  boolean
+	 */
+	public function isDeleted()
+	{
+		if ($this->get('status') == static::WISH_STATE_DELETED)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Determine if wish was granted
 	 *
 	 * @return  boolean
