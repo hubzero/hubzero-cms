@@ -120,7 +120,7 @@ $this->css()
 		<div class="aside">
 		</div>
 	</section><!-- / .main section -->
-		<?php } else if (!$this->wish->get('admin') && $this->wish->isWithdrawn()) { ?>
+		<?php } else if ($this->wish->isDeleted() || (!$this->wish->get('admin') && $this->wish->isWithdrawn())) { ?>
 			<p class="warning"><?php echo JText::_('COM_WISHLIST_NOTICE_WISH_WITHDRAWN'); ?></p>
 		</div><!-- / .subject -->
 		<div class="aside">
