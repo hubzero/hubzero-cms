@@ -83,6 +83,7 @@ class TablesOaipmhResult
 				else
 				{
 					$SQL = $customs->$var;
+
 					// check for empty SQL 
 					if (!empty($SQL))
 					{
@@ -95,7 +96,15 @@ class TablesOaipmhResult
 							$id = $db->loadResult();
 						}
 
-						eval("\$SQL = \"$SQL\";");
+						if (strpos($SQL, '$id'))
+						{
+							$SQL = str_replace('\'$id\'', '$id', $SQL);
+							$SQL = str_replace('$id', $db->quote($id), $SQL);
+						}
+						else
+						{
+							eval("\$SQL = \"$SQL\";");
+						}
 
 						$db->setQuery($SQL);
 						$db->query();
