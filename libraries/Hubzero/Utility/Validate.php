@@ -294,7 +294,7 @@ class Validate
 	 */
 	static public function group($cn, $allowDashes = false)
 	{
-		$pattern = '/^[0-9a-z]+[' . ($allowDashes ? '-' : '') . '_0-9a-z]*$/i';
+		$pattern = '/^[0-9a-z]+[' . ($allowDashes ? '-' : '') . '_0-9a-z]*$/';
 
 		if (!preg_match($pattern, $cn))
 		{
