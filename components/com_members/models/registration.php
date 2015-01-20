@@ -749,15 +749,28 @@ class MembersModelRegistration
 			$uid = JUserHelper::getUserId($login);
 
 			if ($uid && $uid != $id)
+			{
 				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
+			}
 
 			if (\Hubzero\Utility\Validate::reserved('username', $login))
+			{
 				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
+			}
 
+			// system username check
 			$puser = posix_getpwnam($login);
-
 			if (!empty($puser) && $uid && $uid != $puser['uid'])
-				$this->_invalid['login'] = 'The user login "'. htmlentities($login) .'" already exists. Please try another.';
+			{
+				// sync user to LDAP and check again
+				Hubzero\Utility\Ldap::syncUser($uid);
+				$puser = posix_getpwnam($login);
+				if (!empty($puser) && $uid && $uid != $puser['uid'])
+				{
+					\JFactory::getLogger()->error('System username/userid does not match DB username/password for user: ' . $uid);
+					$this->_invalid['login'] = 'Username mismatch error, please contact system administrator to fix your account.';
+				}
+			}
 		}
 
 		if ($registrationPassword == REG_REQUIRED)

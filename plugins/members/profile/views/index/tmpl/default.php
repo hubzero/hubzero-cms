@@ -59,6 +59,12 @@ if (isset($this->registration_update))
 	$update_missing = $this->registration_update->_missing;
 }
 
+$invalid = array();
+if (isset($this->registration_update))
+{
+	$invalid = $this->registration_update->_invalid;
+}
+
 //incremental registration
 require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/awards.php';
 require_once JPATH_BASE . '/administrator/components/com_members/tables/incremental/groups.php';
@@ -90,6 +96,17 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 				</ul>
 			</div>
 		<?php endif; ?>
+	<?php endif; ?>
+
+	<?php if (count($invalid) > 0) : ?>
+		<div class="error member-update-missing">
+			<strong><?php echo JText::_('PLG_MEMBERS_PROFILE_USER_INVALID'); ?></strong>
+			<ul>
+				<?php foreach ($invalid as $i) : ?>
+					<li><?php echo $i; ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 	<?php endif; ?>
 
 	<?php if ($isUser) : ?>
