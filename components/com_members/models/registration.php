@@ -762,14 +762,9 @@ class MembersModelRegistration
 			$puser = posix_getpwnam($login);
 			if (!empty($puser) && $uid && $uid != $puser['uid'])
 			{
-				// sync user to LDAP and check again
-				Hubzero\Utility\Ldap::syncUser($uid);
-				$puser = posix_getpwnam($login);
-				if (!empty($puser) && $uid && $uid != $puser['uid'])
-				{
-					\JFactory::getLogger()->error('System username/userid does not match DB username/password for user: ' . $uid);
-					$this->_invalid['login'] = 'Username mismatch error, please contact system administrator to fix your account.';
-				}
+				// log error and display error to user
+				\JFactory::getLogger()->error('System username/userid does not match DB username/password for user: ' . $uid);
+				$this->_invalid['login'] = 'Username mismatch error, please contact system administrator to fix your account.';
 			}
 		}
 
