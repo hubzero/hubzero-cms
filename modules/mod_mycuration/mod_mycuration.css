@@ -1,0 +1,40 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_mycuration/mod_mycuration.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mycuration
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable .expandedlist li.curation-task {
+		position: relative;
+		word-wrap: break-word;
+		padding-right: 0.6em;
+		padding-left: 1em;
+		clear: both;
+		min-height: 30px;
+	}
+	div.draggable .expandedlist li.curation-task a {
+		word-wrap: break-word;
+	}
+	div.draggable .expandedlist li.curation-task span a {
+		color: #CC6633;
+	}
+	div.draggable .expandedlist li.status-pending,
+	div.draggable .expandedlist li.status-pending a {
+		color: black;
+		background-color: #FFFDEF;
+	}
+	div.draggable .expandedlist li.curation-task img {
+		width: 30px;
+		height: 30px;
+		padding: 0 0.5em 1.2em 0.5em;
+		float: left;
+		margin-right: 0.5em;
+	}
