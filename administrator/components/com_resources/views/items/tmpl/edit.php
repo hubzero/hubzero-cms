@@ -194,13 +194,13 @@ function popratings()
 				<input type="text" name="attrib[canonical]" id="attrib-canonical" maxlength="250" value="<?php echo $this->attribs->get('canonical', ''); ?>" />
 				<span class="hint"><?php echo JText::_('COM_RESOURCES_FIELD_CANONICAL_HINT'); ?></span>
 			</div>
-			<input type="hidden" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
-			<input type="hidden" name="type" id="type" maxlength="250" value="7" />
+			<input type="hidden" name="title" id="field-title" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+			<input type="hidden" name="type" id="type" value="7" />
 	<?php } else { ?>
 
 			<div class="input-wrap">
 				<label for="field-title"><?php echo JText::_('COM_RESOURCES_FIELD_TITLE'); ?>: <span class="required"><?php echo JText::_('JOPTION_REQUIRED'); ?></span></label><br />
-				<input type="text" name="title" id="type" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
+				<input type="text" name="title" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title)); ?>" />
 			</div>
 
 			<div class="input-wrap">
