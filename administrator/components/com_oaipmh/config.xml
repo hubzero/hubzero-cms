@@ -45,7 +45,7 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="persistent">COM_OAIPMH_DEL_PERSISTENT</option>
 		</field>
 		<field name="gran" type="list" default="c" label="COM_OAIPMH_GRAN_LABEL" description="COM_OAIPMH_GRAN_DESC">
-			<option value="c">YYYY-MM-DDThh:mm:ssZ</option>
+			<option value="Y-m-d\Th:i:s\Z">YYYY-MM-DDThh:mm:ssZ</option>
 			<option value="Y-m-d">YYYY-MM-DD</option>
 		</field>
 	</fieldset>
