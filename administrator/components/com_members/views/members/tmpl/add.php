@@ -56,6 +56,10 @@ JToolBarHelper::cancel();
 </script>
 
 <form action="index.php" method="post" name="adminForm" id="item-form">
+	<?php if ($this->getError()) { ?>
+		<p class="error"><?php echo implode('<br />', (array)$this->getError()); ?></p>
+	<?php } ?>
+
 	<div class="col width-100 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('MEMBERS_PROFILE'); ?></span></legend>

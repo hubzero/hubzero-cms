@@ -261,11 +261,11 @@ class Validate
 	public static function username($x)
 	{
 		// Does it contain invalid characters?
-		if (!preg_match("/^[0-9a-zA-Z]+[_0-9a-zA-Z]*$/i", $x))
+		if (!preg_match("/^[0-9a-z]+[_0-9a-z]*$/", $x))
 		{
 			return false;
 		}
-
+		die('assed');
 		// Is it a positive integer?
 		if (self::nonNegativeInteger($x))
 		{
@@ -294,7 +294,7 @@ class Validate
 	 */
 	static public function group($cn, $allowDashes = false)
 	{
-		$pattern = '/^[0-9a-zA-Z]+[' . ($allowDashes ? '-' : '') . '_0-9a-zA-Z]*$/i';
+		$pattern = '/^[0-9a-z]+[' . ($allowDashes ? '-' : '') . '_0-9a-z]*$/i';
 
 		if (!preg_match($pattern, $cn))
 		{
