@@ -161,6 +161,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
+		$this->view->setLayout('add');
 		$this->view->display();
 	}
 
@@ -190,6 +191,22 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 				->where('title = "Registered"');
 			$db->setQuery($query);
 			$newUsertype = $db->loadResult();
+		}
+
+		// check that username & password are filled
+		if (!\Hubzero\Utility\Validate::username($p['username']))
+		{
+			$this->setError(JText::_('COM_MEMBERS_MEMBER_USERNAME_INVALID'));
+			$this->addTask(1);
+			return;
+		}
+
+		// check email is valid
+		if (!\Hubzero\Utility\Validate::email($p['email']))
+		{
+			$this->setError(JText::_('COM_MEMBERS_MEMBER_EMAIL_INVALID'));
+			$this->addTask(1);
+			return;
 		}
 
 		$name  = trim($p['givenName']).' ';
