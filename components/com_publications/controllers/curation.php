@@ -539,8 +539,8 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 					$item  = htmlentities($item, ENT_QUOTES, "UTF-8");
 
 					$message = JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED') . ' ' . $item . "\n" . "\n";
-					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . $link . "\n" . "\n";
-					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim($juri->base(), DS) . '/publications/curation/' . $row->publication_id;
+					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_CURATE') . ' ' . rtrim($juri->base(), DS) . '/publications/curation/' . $row->publication_id . "\n" . "\n";
+					$message.= JText::_('COM_PUBLICATIONS_CURATION_EMAIL_ASSIGNED_PREVIEW') . ' ' . $link;
 
 					// Instantiate project publication
 					$pub = $objP->getPublication($row->publication_id, $row->version_number);
