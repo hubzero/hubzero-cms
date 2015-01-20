@@ -40,9 +40,9 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="email" type="text" default="" label="COM_OAIPMH_EMAIL_LABEL" description="COM_OAIPMH_EMAIL_DESC" />
 		<field name="edate" type="text" default="2012-02-12 00:00:00" label="COM_OAIPMH_EDATE_LABEL" description="COM_OAIPMH_EDATE_DESC" />
 		<field name="del" type="list" default="No" label="COM_OAIPMH_DEL_LABEL" description="COM_OAIPMH_DEL_DESC">
-			<option value="No">JNO</option>
-			<option value="Transient">COM_OAIPMH_DEL_TRANSIENT</option>
-			<option value="Persistent">COM_OAIPMH_DEL_PERSISTENT</option>
+			<option value="no">JNO</option>
+			<option value="transient">COM_OAIPMH_DEL_TRANSIENT</option>
+			<option value="persistent">COM_OAIPMH_DEL_PERSISTENT</option>
 		</field>
 		<field name="gran" type="list" default="c" label="COM_OAIPMH_GRAN_LABEL" description="COM_OAIPMH_GRAN_DESC">
 			<option value="c">YYYY-MM-DDThh:mm:ssZ</option>
