@@ -239,28 +239,29 @@ class PublicationsBlockDescription extends PublicationsModelBlock
 				{
 					$missed++;
 				}
-				else
+				if ($row->$field != $value)
 				{
-					if ($row->$field != $value)
+					$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $pub, $sequence);
+					$changed++;
+
+					// Record update time
+					$data 				= new stdClass;
+					$data->updated 		= JFactory::getDate()->toSql();
+					$data->updated_by 	= $actor;
+
+					// Unmark as skipped
+					if ($lastRecord && $lastRecord->review_status == 3)
 					{
-						$lastRecord = $pub->_curationModel->getLastUpdate($id, $this->_name, $pub, $sequence);
-						$changed++;
-
-						// Record update time
-						$data 				= new stdClass;
-						$data->updated 		= JFactory::getDate()->toSql();
-						$data->updated_by 	= $actor;
-
-						// Unmark as skipped
-						if ($lastRecord && $lastRecord->review_status == 3)
-						{
-							$data->review_status = 0;
-							$data->update = '';
-						}
-						$pub->_curationModel->saveUpdate($data, $id, $this->_name, $pub, $sequence);
+						$data->review_status = 0;
+						$data->update = '';
 					}
-					$row->$field = $value;
+					if ($value)
+					{
+						$data->update = ''; // remove dispute message if requirement satisfied
+					}
+					$pub->_curationModel->saveUpdate($data, $id, $this->_name, $pub, $sequence);
 				}
+				$row->$field = $value;
 			}
 		}
 

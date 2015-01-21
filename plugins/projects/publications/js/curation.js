@@ -682,7 +682,10 @@ HUB.ProjectPublicationsDraft = {
 				{
 					var editorArea = $(item).find('textarea');
 					var editorId = editorArea.attr('id');
-
+					if ($(item).hasClass('el-passed') && $(item).hasClass('el-reviewed'))
+					{
+						return;
+					}
 					if (CKEDITOR.instances[editorId])
 					{
 						var timer = setInterval(function()

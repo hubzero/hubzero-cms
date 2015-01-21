@@ -328,6 +328,9 @@
 	.el-failed .edit-notice {
 		display: block;
 	}
+	.el-updated .edit-notice {
+		display: none;
+	}
 	.el-failed .fail-notice {
 		display: inline;
 		font-weight: bold;
@@ -350,7 +353,8 @@
 	.el-failed .status-notice:before {
 		color: red;
 	}	
-	.el-updated .status-notice:before {
+	.el-updated .status-notice:before,
+	.el-skipped .status-notice:before {
 		color: orange;
 	}
 	.el-updated .update-notice {
