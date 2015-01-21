@@ -79,7 +79,10 @@ abstract class JHtmlIcons
 		$html[] = (empty($button['onclick']) ? '' : (' onclick="' . $button['onclick'] . '"'));
 		$html[] = (empty($button['title']) ? '' : (' title="' . htmlspecialchars($button['title']) . '"'));
 		$html[] = '>';
-		$html[] = JHtml::_('image', empty($button['image']) ? '' : $button['image'], empty($button['alt']) ? null : htmlspecialchars($button['alt']), null, true);
+		if (isset($button['image']) && $button['image'])
+		{
+			$html[] = JHtml::_('image', empty($button['image']) ? '' : $button['image'], empty($button['alt']) ? null : htmlspecialchars($button['alt']), null, true);
+		}
 		$html[] = (empty($button['text'])) ? '' : ('<span>' . $button['text'] . '</span>');
 		$html[] = '</a>';
 		$html[] = '</div>';
