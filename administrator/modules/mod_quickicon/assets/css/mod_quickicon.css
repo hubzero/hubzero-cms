@@ -1,0 +1,169 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/modules/mod_quickicon/assets/css/mod_quickicon.css
+ * @copyright   Copyright 2005-2014 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/* Default styles */
+	.mod_quickicon {
+		margin: 1.618em 2.218em;
+	}
+	.mod_quickicon:before,
+	.mod_quickicon:after {
+		content: "";
+		display: table;
+		line-height: 0;
+	}
+	.mod_quickicon:after {
+		clear: left;
+	}
+
+	.mod_quickicon .icon-wrapper {
+		margin: 0;
+		padding: 0;
+	}
+	.mod_quickicon .icon {
+		margin-bottom: 1.61803399em;
+		float: left;
+		display: block;
+		position: relative;
+		margin: 0.618em;
+		padding: 0;
+	}
+	.mod_quickicon .icon a {
+		width: 5.6em;
+		height: 5.6em;
+		display: block;
+		text-align: center;
+		-webkit-border-radius: 0.27em;
+		   -moz-border-radius: 0.27em;
+		        border-radius: 0.27em;
+		-webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.4);
+		   -moz-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.4);
+		        box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.4);
+		-webkit-transition: all ease-in-out 0.2s;
+		   -moz-transition: all ease-in-out 0.2s;
+		        transition: all ease-in-out 0.2s;
+	}
+	.mod_quickicon .icon a:before {
+		content: "\f009";
+		font-family: "Fontcons";
+		font-size: 4em;
+		line-height: 1.4;
+		color: #999;
+		position: absolute;
+		left: 50%;
+		top: 0;
+		margin-left: -0.5em;
+	}
+	.mod_quickicon .icon a:after {
+		content: "";
+		font-family: "Fontcons";
+		font-size: 2em;
+		line-height: 1;
+		position: absolute;
+		right: 0.5em;
+		bottom: 0.5em;
+	}
+	.mod_quickicon #icon-article-add a:before {
+		content: "\f0f5";
+	}
+	.mod_quickicon #icon-article-add a:after {
+		content: "\2295";
+	}
+	.mod_quickicon #icon-article a:before {
+		content: "\f036";
+	}
+	.mod_quickicon #icon-category a:before {
+		content: "\f07c";
+	}
+	.mod_quickicon #icon-media a:before {
+		content: "\f08c";
+	}
+	.mod_quickicon #icon-menumgr a:before {
+		content: "\f071";
+	}
+	.mod_quickicon #icon-user a:before {
+		content: "\f042";
+	}
+	.mod_quickicon #icon-module a:before {
+		content: "\f00a";
+	}
+	.mod_quickicon #icon-extension a:before {
+		content: "\f06f";
+	}
+	.mod_quickicon #icon-language a:before {
+		content: "\f075";
+	}
+	.mod_quickicon #icon-config a:before {
+		content: "\f085";
+	}
+	.mod_quickicon #icon-themes a:before {
+		content: "\f081";
+	}
+	.mod_quickicon #icon-user-profile a:before {
+		content: "\f007";
+	}
+	.mod_quickicon #plg_quickicon_joomlaupdate a:before {
+		content: "\f06f";
+	}
+	.mod_quickicon #plg_quickicon_extensionupdate a:before {
+		content: "\f06f";
+	}
+	.mod_quickicon #plg_quickicon_extensionupdate a:after {
+		content: "\f021";
+	}
+	.mod_quickicon .icon a img {
+		margin: 1em 0 0 0;
+		padding: 0;
+		border: none;
+	}
+	.mod_quickicon .icon a span {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 82.5%;
+		font-size: 85%;
+		line-height: 1.3em;
+		padding: .618em 10%;
+		background: rgba(74, 67, 67, 0.92);
+		-webkit-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
+		   -moz-box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
+		        box-shadow: inset 0 0 0 0.27em rgba(0, 0, 0, 0.1);
+		-webkit-border-radius: 0 0 0.27em 0.27em;
+		   -moz-border-radius: 0 0 0.27em 0.27em;
+		       border-radius: 0 0 0.27em 0.27em;
+		filter: alpha(opacity=@opacity * 100);
+		-webkit-opacity: 0;
+		   -moz-opacity: 0;
+		        opacity: 0;
+		-webkit-transition: all ease-in-out 0.2s;
+		   -moz-transition: all ease-in-out 0.2s;
+		        transition: all ease-in-out 0.2s;
+		color: #fff;
+		text-shadow: 0 1px 0 #1d1212;
+	}
+	.mod_quickicon .icon a span {
+		color: #fff;
+	}
+	.mod_quickicon .icon a:hover span {
+		filter: alpha(opacity=@opacity * 100);
+		-webkit-opacity: 1;
+		  -moz-opacity: 1;
+		       opacity: 1;
+	}
+
+	.mod_quickicon .icon a:hover {
+		-webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4),0 0 0 0.618em rgba(0, 0, 0, 0.035);
+		   -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4),0 0 0 0.618em rgba(0, 0, 0, 0.035);
+		        box-shadow: 0 0 2px rgba(0, 0, 0, 0.4),0 0 0 0.618em rgba(0, 0, 0, 0.035);
+		border: none;
+		text-decoration: none;
+		background: #fff;
+	}
+
+/* Hero styles */
+	.hero .mod_quickicon {
+		margin: 0 2.218em;
+	}
