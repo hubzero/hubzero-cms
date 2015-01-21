@@ -107,20 +107,34 @@ else
 		var hPadding = 5;
 
 		UI.normalStateAchieved = function() {
-			var app = $('#noVNC_canvas');
+			var app = $('#noVNC_canvas'),
+				appfooter = $('#app-footer'),
+				appcontent = $('#app-content'),
+				appcontainer = $('#noVNC_container'),
+				footermenu = $('<ul></ul>');
+
+			if (!app.hasClass('no-refresh')) {
+				var li = $('<li></li>');
+				$('<a class="refresh" id="app-btn-refresh" alt="Refresh Window" title="Refresh Window"><span>Refresh Window</span></a>')
+					.on('click', function(event) {
+						//UI.requestRefresh();
+						var w = parseFloat(appcontent.width()),
+							h = parseFloat(appcontent.height());
+						appcontent.trigger("resize");
+						doResize(w, h + 1);
+						doResize(w, h);
+					})
+					.appendTo(li);
+				li.appendTo(footermenu);
+			}
+
+			footermenu.appendTo(appfooter);
 
 			if (!app.hasClass('no-resize') && !$('#app-btn-resizehandle').length) {
-				var appfooter = $('#app-footer'),
-					appcontent = $('#app-content'),
-					appcontainer = $('#noVNC_container'),
-					footermenu = $('<ul></ul>'),
-					li = $('<li></li>');
-
+				var li = $('<li></li>');
 				$('<a class="resize" id="app-btn-resizehandle" alt="Resize" title="Resize"><span id="app-size">' + app.attr('width').toString() + ' x ' + app.attr('height').toString() + '</span></a>')
 					.appendTo(li);
 				li.appendTo(footermenu);
-
-				footermenu.appendTo(appfooter);
 
 				appcontent.resizable({
 					minHeight: 200,
