@@ -78,6 +78,7 @@ function submitbutton(pressbutton)
 						<select name="curation[blocks][<?php echo $sequence; ?>][elements][<?php echo $elementId; ?>][params][<?php echo $paramname; ?>]">
 							<option value="file" <?php echo $paramvalue == 'file' ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPE_FILE'); ?></option>
 							<option value="link" <?php echo $paramvalue == 'link' ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPE_LINK'); ?></option>
+							<option value="data" <?php echo $paramvalue == 'data' ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PUBLICATIONS_TYPE_DATA'); ?></option>
 						</select>
 						<?php }
 						elseif ($paramname == 'required') {
