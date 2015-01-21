@@ -331,6 +331,9 @@
 	.el-failed .edit-notice {
 		display: block;
 	}
+	.el-updated .edit-notice {
+		display: none;
+	}
 	.el-failed .fail-notice {
 		display: inline;
 		font-weight: bold;

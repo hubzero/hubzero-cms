@@ -858,7 +858,7 @@ class PublicationsCuration extends JObject
 			$autoStatus 		= self::getStatus($block->name, $this->_pub, $sequence);
 			$reviewStatus		= self::getReviewStatus($block->name, $this->_pub, $sequence);
 
-			$result->blocks->$sequence = new stdClass();
+			$result->blocks->$sequence 				= new stdClass();
 			$result->blocks->$sequence->name 		= $block->name;
 			$result->blocks->$sequence->manifest 	= $block;
 			$result->blocks->$sequence->firstElement= self::getFirstElement($block->name, $this->_pub, $sequence);
@@ -866,19 +866,6 @@ class PublicationsCuration extends JObject
 			if ($autoStatus->status > 0)
 			{
 				$result->lastBlock = $sequence;
-			}
-
-			if (!$result->firstBlock)
-			{
-				if (($reviewStatus && $reviewStatus->status == 0
-					&& !$reviewStatus->lastupdate) || $autoStatus->status == 0)
-				{
-					$result->firstBlock = $sequence;
-				}
-				elseif (!$reviewStatus && $autoStatus->status == 0)
-				{
-					$result->firstBlock = $sequence;
-				}
 			}
 
 			$k++;
@@ -891,18 +878,35 @@ class PublicationsCuration extends JObject
 			// Look at both auto and review status to determine if complete
 			if ($reviewStatus)
 			{
-				foreach ($block->elements as $elementId => $element)
+				if ($block->elements)
 				{
-					if ($autoStatus->elements->$elementId->status == 0 && $reviewStatus->elements->$elementId->status == 2)
+					foreach ($block->elements as $elementId => $element)
 					{
-						$i--;
-						$reviewStatus->status = 2;
+						if ($autoStatus->elements->$elementId->status == 0 && $reviewStatus->elements->$elementId->status == 2)
+						{
+							$i--;
+							$reviewStatus->status = 2;
+						}
 					}
 				}
 			}
+			// Spot a problem
+			if (!$result->firstBlock)
+			{
+				if ($reviewStatus->status == 0 && !$reviewStatus->lastupdate)
+				{
+					$result->firstBlock = $sequence;
+				}
+				elseif ($reviewStatus->status == 2 && !$reviewStatus->lastupdate && $autoStatus->status == 0)
+				{
+					$result->firstBlock = $sequence;
+				}
+			}
+
 			$result->blocks->$sequence->status 		= $autoStatus;
 			$result->blocks->$sequence->review      = $reviewStatus;
 		}
+		$result->firstBlock = $result->firstBlock ? $result->firstBlock : $sequence;
 
 		// Are all sections complete for submission?
 		$result->complete  = $i == $k ? 1 : 0;
@@ -1348,6 +1352,7 @@ class PublicationsCuration extends JObject
 			foreach ($manifest->elements as $elementId => $element)
 			{
 				$props = $block . '-' . $sequence . '-' . $elementId;
+
 				if (!isset($status->elements))
 				{
 					$status->elements = new stdClass();
@@ -1384,7 +1389,8 @@ class PublicationsCuration extends JObject
 			// Determine block status based on element status
 			$passed 	    	= ($success == $i || $pub->state == 1) ? 1 : 0;
 			$status->status 	= $failed > 0 ? 0 : $passed;
-			$status->status 	= $incomplete == $i ? 2 : $status->status; // unreviewed
+			$status->status 	= ($incomplete  && !$failed) ? 2 : $status->status; // unreviewed
+			$status->status 	= ($skipped > 0 && ($skipped + $incomplete) == $i) ? 3 : $status->status; // skipped
 			$status->lastupdate = ($pending > 0 || $skipped > 0) && $passed == 1 ? true : NULL;
 		}
 		else
@@ -1442,10 +1448,15 @@ class PublicationsCuration extends JObject
 			$status->lastupdate = $record->updated;
 			$status->updated_by = $record->updated_by;
 		}
-	//	if ($record->update && $record->updated > $record->reviewed)
-	//	{
+		if ($status->status == 3)
+		{
+			$status->lastupdate = $record->updated;
+			$status->updated_by = $record->updated_by;
+		}
+		if ($record->review_status == 3 || ($record->reviewed && $record->update && strtotime($record->updated) > strtotime($record->reviewed)))
+		{
 			$status->message = $record->update;
-	//	}
+		}
 
 		return $status;
 	}
@@ -1519,7 +1530,7 @@ class PublicationsCuration extends JObject
 	public function drawCurationNotice( $curatorStatus, $props, $viewer = 'author', $elName = '' )
 	{
 		?>
-		<?php if ($viewer == 'curator' && !$curatorStatus->updatenotice) { ?>
+		<?php if ($viewer == 'curator') { ?>
 		<span class="edit-notice">[<a href="#">edit</a>]</span>
 		<?php } ?>
 		<?php if (($viewer == 'author' && (!$curatorStatus->curatornotice && $curatorStatus->status == 3)) ) { return; } ?>

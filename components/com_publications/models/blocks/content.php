@@ -201,6 +201,7 @@ class PublicationsBlockContent extends PublicationsModelBlock
 					$data 				= new stdClass;
 					$data->updated 		= JFactory::getDate()->toSql();
 					$data->updated_by 	= $actor;
+					$data->update 		= ''; // remove dispute
 
 					// Unmark as skipped
 					if ($lastRecord && $lastRecord->review_status == 3)

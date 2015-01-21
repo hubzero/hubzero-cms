@@ -138,16 +138,15 @@ class PublicationsModelBlockElements
 			if (!$lastIncomplete)
 			{
 				// Curator review?
-				if (($review && $review->elements
-					&& isset($review->elements->$elId))
-					&& $el->status != 0)
+				if ($review && $review->elements
+					&& isset($review->elements->$elId) && $review->elements->$elId->status != 2)
 				{
 					$reviewStatus = $review->elements->$elId;
 					if ($reviewStatus->status == 0 && !$reviewStatus->lastupdate)
 					{
 						$lastIncomplete = $i;
 					}
-					if ($reviewStatus->status >= 1)
+					if ($reviewStatus->status == 1)
 					{
 						$lastComplete = $i;
 					}
