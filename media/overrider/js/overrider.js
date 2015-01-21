@@ -213,7 +213,7 @@ Joomla.overrider.insertResults = function(results)
 	}
 
 	// Finally insert the container afore the more link and reveal it
-	results_div.prependTo($('#more-results'));
+	results_div.insertBefore($('#more-results'));
 
 	$('#language-results' + Joomla.overrider.states.counter).show();
 };
