@@ -52,8 +52,8 @@ foreach ($this->rows as $row)
 	<table class="whosonline-summary">
 		<thead>
 			<tr>
-				<th scope="col" width="50%"><?php echo JText::_('Site'); ?></th>
-				<th scope="col"><?php echo JText::_('Administrator'); ?></th>
+				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_SITE'); ?></th>
+				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_ADMIN'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -67,9 +67,9 @@ foreach ($this->rows as $row)
 	<table class="adminlist whosonline-list">
 		<thead>
 			<tr>
-				<th scope="col"><?php echo JText::_('User'); ?></td>
-				<th scope="col"><?php echo JText::_('Location'); ?></th>
-				<th scope="col"><?php echo JText::_('Last Activity'); ?></th>
+				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_USER'); ?></td>
+				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_LOCATION'); ?></th>
+				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_ACTIVITY'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -79,17 +79,13 @@ foreach ($this->rows as $row)
 						<tr>
 							<td>
 								<?php
-									//are we authorized to edit users
-									$editAuthorized = $this->juser->authorize('com_users', 'manage');
-
-									//get user object
+									// Get user object
 									$juser = JUser::getInstance($row->username);
 
-									//display link if we are authorized
-									if ($editAuthorized)
+									// Display link if we are authorized
+									if ($this->juser->authorize('com_users', 'manage'))
 									{
-										$editLink = 'index.php?option=com_users&amp;task=edit&amp;cid[]='. $row->userid;
-										echo '<a href="' . $editLink . '" title="' . JText::_('Edit User') . '">' . $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']' . '</a>';
+										echo '<a href="' . JRoute::_('index.php?option=com_users&task=edit&cid[]='. $row->userid) . '" title="' . JText::_('MOD_WHOSONLINE_EDIT_USER') . '">' . $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']' . '</a>';
 									}
 									else
 									{
@@ -104,20 +100,20 @@ foreach ($this->rows as $row)
 								?>
 							</td>
 							<td>
-								<?php echo JText::sprintf('%.1f hours ago', (time() - $row->time)/3600.0); ?>
+								<?php echo JText::sprintf('MOD_WHOSONLINE_HOURS_AGO', (time() - $row->time)/3600.0); ?>
 							</td>
 						</tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<tr>
 					<td colspan="3" class="view-all">
-						<a href="index.php?option=com_members&amp;controller=whosonline">&lsaquo; View all &rsaquo;</a>
+						<a href="<?php echo JRoute::_('index.php?option=com_members&controller=whosonline'); ?>"><?php echo JText::_('MOD_WHOSONLINE_VIEW_ALL'); ?></a>
 					</td>
 				</tr>
 			<?php else : ?>
 				<tr>
 					<td colspan="3">
-						<?php echo JText::_('Currently there are no users online.'); ?>
+						<?php echo JText::_('MOD_WHOSONLINE_NO_RESULTS'); ?>
 					</td>
 				</tr>
 			<?php endif; ?>

@@ -28,12 +28,13 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Modules\Wishlist;
+namespace Modules\Title;
 
 use Hubzero\Module\Module;
+use JFactory;
 
 /**
- * Module class for com_wishlist data
+ * Module class for displaying component title
  */
 class Helper extends Module
 {
@@ -44,35 +45,10 @@ class Helper extends Module
 	 */
 	public function display()
 	{
-		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
-
-		$wishlist = intval($this->params->get('wishlist', 0));
-		if (!$wishlist)
+		// Get the component title div
+		if (isset(JFactory::getApplication()->JComponentTitle))
 		{
-			$model = \WishlistModelWishlist::getInstance(1, 'general');
-			if (!$model->exists())
-			{
-				return false;
-			}
-			$wishlist = $model->get('id');
-		}
-		$this->wishlist = $wishlist;
-
-		$queries = array(
-			'granted'   => 1,
-			'pending'   => "0 AND accepted=0",
-			'accepted'  => "0 AND accepted=1",
-			'rejected'  => 3,
-			'withdrawn' => 4,
-			'removed'   => 2
-		);
-
-		$database = \JFactory::getDBO();
-
-		foreach ($queries as $key => $state)
-		{
-			$database->setQuery("SELECT COUNT(*) FROM `#__wishlist_item` WHERE wishlist=" . $database->quote($wishlist) . " AND status=" . $state);
-			$this->$key = $database->loadResult();
+			$this->title = JFactory::getApplication()->JComponentTitle;
 		}
 
 		// Get the view

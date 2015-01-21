@@ -27,27 +27,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5" client="administrator">
-	<name>Support Tickets</name>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+<extension type="module" version="2.5" client="administrator">
+	<name>mod_supporttickets</name>
+	<author>HUBzero</author>
+	<creationDate>January 2015</creationDate>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>1.2.0</version>
 	<description>MOD_SUPPORTTICKETS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_supporttickets">mod_supporttickets.php</filename>
-		<filename>supporttickets.css</filename>
+		<filename>assets/css/supporttickets.css</filename>
 		<filename>index.html</filename>
-		<filename>images/abuse.gif</filename>
-		<filename>images/barbg.gif</filename>
+		<filename>helper.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="cache" type="list" default="1" label="MOD_RESOURCES_CACHE_LABEL" description="MOD_RESOURCES_CACHE_DESC">
-					<option value="1">MOD_RESOURCES_CACHE_GLOBAL</option>
-					<option value="0">MOD_RESOURCES_CACHE_NONE</option>
+				<field name="cache" type="list" default="1" label="MOD_SUPPORTTICKETS_CACHE_LABEL" description="MOD_SUPPORTTICKETS_CACHE_DESC">
+					<option value="1">MOD_SUPPORTTICKETS_CACHE_GLOBAL</option>
+					<option value="0">MOD_SUPPORTTICKETS_CACHE_NONE</option>
 				</field>
 			</fieldset>
 		</fields>
 	</config>
-</install>
-
+</extension>

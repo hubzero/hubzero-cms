@@ -27,11 +27,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<install type="module" version="1.5" client="administrator">
-	<name>Resources</name>
-	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
+<extension type="module" version="1.5" client="administrator">
+	<name>mod_resources</name>
+	<author>HUBzero</author>
+	<creationDate>January 2015</creationDate>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows on the Admin area Home Page and displays items that administrator needs to watch for.</description>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>1.2.0</version>
+	<description>MOD_RESOURCES_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_resources">mod_resources.php</filename>
 		<filename>resources.css</filename>
@@ -55,4 +60,4 @@ HUBzero is a registered trademark of Purdue University.
 			</fieldset>
 		</fields>
 	</config>
-</install>
+</extension>

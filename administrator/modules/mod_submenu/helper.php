@@ -1,35 +1,58 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+namespace Modules\Submenu;
+
+use Hubzero\Module\Module;
+use JToolBar;
 
 /**
- * @package		Joomla.Administrator
- * @subpackage	mod_submenu
- * @since		1.6
+ * Module class for rendering a submenu
  */
-abstract class modSubmenuHelper
+class Helper extends Module
 {
 	/**
-	 * Get the member items of the submenu.
+	 * Get the items of the submenu and display them.
 	 *
-	 * @return	mixed	An arry of menu items, or false on error.
+	 * @return  void
 	 */
-	public static function getItems()
+	public function display()
 	{
 		// Initialise variables.
-		$menu = JToolBar::getInstance('submenu');
+		$list = JToolBar::getInstance('submenu')->getItems();
 
-		$list = $menu->getItems();
-
-		if (!is_array($list) || !count($list)) {
-			return false;
+		if (!is_array($list) || !count($list))
+		{
+			return;
 		}
 
-		return $list;
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 }
