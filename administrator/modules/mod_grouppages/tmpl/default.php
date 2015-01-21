@@ -58,15 +58,9 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 	<table class="adminlist grouppages-list">
 		<thead>
 			<tr>
-				<td class="title" width="60%">
-					<strong><?php echo JText::_('MOD_GROUPPAGES_COL_GROUP'); ?></strong>
-				</td>
-				<td class="title">
-					<strong><?php echo JText::_('MOD_GROUPPAGES_COL_PAGES'); ?></strong>
-				</td>
-				<td class="title">
-					<strong><?php echo JText::_('MOD_GROUPPAGES_COL_MODULES'); ?></strong>
-				</td>
+				<th scope="col"><?php echo JText::_('MOD_GROUPPAGES_COL_GROUP'); ?></th>
+				<th scope="col"><?php echo JText::_('MOD_GROUPPAGES_COL_PAGES'); ?></th>
+				<th scope="col"><?php echo JText::_('MOD_GROUPPAGES_COL_MODULES'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -80,12 +74,12 @@ foreach ($this->unapprovedModules as $unapprovedModule)
 							?>
 						</td>
 						<td>
-							<a class="page" href="index.php?option=com_groups&amp;gid=<?php echo $group->get('cn'); ?>&amp;controller=pages">
+							<a class="page" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn') . '&controller=pages'); ?>">
 								<?php echo (isset($row['pages'])) ? $row['pages'] : 0; ?>
 							</a>
 						</td>
 						<td>
-							<a class="module" href="index.php?option=com_groups&amp;gid=<?php echo $group->get('cn'); ?>&amp;controller=modules">
+							<a class="module" href="<?php echo JRoute::_('index.php?option=com_groups&gid=' . $group->get('cn') . '&controller=modules'); ?>">
 								<?php echo (isset($row['modules'])) ? $row['modules'] : 0; ?>
 							</a>
 						</td>

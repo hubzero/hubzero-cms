@@ -94,6 +94,12 @@ class Helper extends Module
 		parent::display();
 	}
 
+	/**
+	 * Pad a number with zeros
+	 *
+	 * @param   integer  $d  Number to pad
+	 * @return  string
+	 */
 	private function pad($d)
 	{
 		if ($d < 10)

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,11 +24,11 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Modules\Activityfeed;
+namespace Modules\SupportActivity;
 
 use Hubzero\Module\Module;
 
@@ -40,7 +40,7 @@ class Helper extends Module
 	/**
 	 * Display module contents
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -68,7 +68,7 @@ class Helper extends Module
 			ob_clean();
 			foreach ($this->results as $result)
 			{
-				require \JModuleHelper::getLayoutPath($this->module->module, 'default_item');
+				require $this->getLayoutPath('default_item');
 			}
 			exit();
 		}
