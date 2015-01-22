@@ -256,6 +256,13 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 							for ($i=$begin; $i<($begin + $toWrite); $i++)
 							{
 								$result = new TablesOaipmhResult($this->database, $custom, $ids[$i]);
+
+								// move on if no identifier
+								if (!$result->identifier)
+								{
+									continue;
+								}
+
 								// record or just header?
 								if ($verb == "ListIdentifiers")
 								{
