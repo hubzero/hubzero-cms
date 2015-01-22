@@ -672,6 +672,15 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 		$row->reviewed 		= JFactory::getDate()->toSql();
 		$row->reviewed_by 	= $this->juser->get('id');
 
+		// Archive (mkAIP) if no grace period and not previously archived
+		if (!$this->getError() && !$this->config->get('graceperiod', 0)
+			&& $row->doi && PublicationUtilities::mkAip($row)
+			&& (!$row->archived || $row->archived == '0000-00-00 00:00:00')
+		)
+		{
+			$row->archived = JFactory::getDate()->toSql();
+		}
+
 		// Get manifest from either version record (published) or master type
 		$manifest   = $pub->curation
 					? $pub->curation
