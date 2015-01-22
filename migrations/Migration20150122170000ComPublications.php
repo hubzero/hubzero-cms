@@ -8,7 +8,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Migration script to add 'curator' column to #__publication_versions
  **/
-class Migration20150113130000ComPublications extends Base
+class Migration20150122170000ComPublications extends Base
 {
 	/**
 	 * Up
