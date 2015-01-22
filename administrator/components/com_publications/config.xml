@@ -20,104 +20,103 @@
 
 <config>
 	<fieldset name="basic">
-		<field name="enabled" type="list" default="0" label="Component ON/OFF" description="Enable Publications component, or redirect to Resources component">
-			<option value="0">OFF</option>
-			<option value="1">ON</option>
+		<field name="enabled" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_COMPONENT_ON" description="COM_PUBLICATIONS_CONFIG_COMPONENT_ON_DESC">
+			<option value="0">JOFF</option>
+			<option value="1">JON</option>
 		</field>
-		<field name="contribute" type="list" default="1" label="Allow User Contributions" description="Allow users to work on drafts from within Publications component">
+		<field name="contribute" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_ALLOW_CONTRIB" description="COM_PUBLICATIONS_CONFIG_ALLOW_CONTRIB_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="autoapprove" type="list" default="0" label="Auto-approve" description="Automatically approve new submissions">
+		<field name="autoapprove" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_AUTO_APPROVE" description="COM_PUBLICATIONS_CONFIG_AUTO_APPROVE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="autoapproved_users" label="Auto-approved Users" type="textarea" rows="8" cols="40" default="" description="A comma-separated list of usernames to be auto-approved" />
-		<field name="email" type="list" default="0" label="Messaging" description="Allow component to send out emails">
-			<option value="0">ON</option>
-			<option value="1">OFF</option>
+		<field name="autoapproved_users" label="COM_PUBLICATIONS_CONFIG_AUTO_APPROVED_USERS" type="textarea" rows="8" cols="40" default="" description="COM_PUBLICATIONS_CONFIG_AUTO_APPROVED_USERS_DESC" />
+		<field name="email" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_MESSAGING" description="COM_PUBLICATIONS_CONFIG_MESSAGING_DESC">
+			<option value="0">JON</option>
+			<option value="1">JOFF</option>
 		</field>
-		<field name="default_category" type="text" menu="hide" default="dataset" label="Default category" description="Optionally set the category of newly created publications to the specified value if exists" />
-		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="Default picture" description="Default placeholder image for all publications" />
-		<field name="toolpic" type="text" menu="hide" default="/components/com_publications/assets/img/tool_thumb.gif" label="Default tool picture" description="Default placeholder image for tool publications" />
-		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="Default video file thumbnail" description="Default placeholder thumbnail image for video-type files in publication gallery" />
-		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="Default image file thumbnail" description="Default placeholder thumbnail image for image-type files in publication gallery" />
-		<field name="email_image" type="text" menu="hide" default="" label="Email header image (http://)" description="Default image for HTML email header - use full address starting with http://" />
-		<field name="masterimage" type="text" menu="hide" default="" label="Default master image" description="Default image for publication page cover" />
-		<field name="webpath" type="text" menu="hide" default="/site/publications" label="Publication file path" description="Master path for storing published data" />
-		<field name="documentation" type="text" menu="hide" default="" label="URL to  documentation" description="URL to a page with information on publications and contribution process" />
-		<field name="deposit_terms" type="text" menu="hide" default="" label="URL to  Terms of Deposit" description="URL to a page with information on Terms of Deposit" />
+		<field name="default_category" type="text" menu="hide" default="dataset" label="COM_PUBLICATIONS_CONFIG_DEFAULT_CAT" description="COM_PUBLICATIONS_CONFIG_DEFAULT_CAT_DESC" />
+		<field name="defaultpic" type="text" menu="hide" default="/components/com_publications/assets/img/resource_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_PICTURE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_PICTURE_DESC" />
+		<field name="video_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/video_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_VIDEO_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_VIDEO_THUMB_DESC" />
+		<field name="gallery_thumb" type="text" menu="hide" default="/components/com_publications/assets/img/gallery_thumb.gif" label="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB" description="COM_PUBLICATIONS_CONFIG_DEFAULT_IMAGE_THUMB_DESC" />
+		<field name="email_image" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_EMAIL_IMAGE_HEADER" description="COM_PUBLICATIONS_CONFIG_EMAIL_IMAGE_HEADER_DESC" />
+		<field name="masterimage" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE" description="COM_PUBLICATIONS_CONFIG_DEFAULT_MASTER_IMAGE_DESC" />
+		<field name="webpath" type="text" menu="hide" default="/site/publications" label="COM_PUBLICATIONS_CONFIG_FILE_PATH" description="COM_PUBLICATIONS_CONFIG_FILE_PATH_DESC" />
+		<field name="documentation" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH" description="COM_PUBLICATIONS_CONFIG_DOCUMENTATION_PATH_DESC" />
+		<field name="deposit_terms" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_TERMS_URL" description="COM_PUBLICATIONS_CONFIG_TERMS_URL_DESC" />
 	</fieldset>
 	<fieldset name="CURATION">
-		<field name="curation" type="list" default="0" label="Curation" description="Use curation flow for all publications.">
-			<option value="0">OFF</option>
-			<option value="1">ON</option>
+		<field name="curation" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_CURATION" description="COM_PUBLICATIONS_CONFIG_CURATION_DESC">
+			<option value="0">JOFF</option>
+			<option value="1">JON</option>
 		</field>
-		<field name="curatorgroup" type="text" menu="hide" default="" label="Name of group of curators" description="Group of members authorized to perform pre-publication curation (all publication types)." />
-		<field name="graceperiod" type="list" default="0" label="Grace period for changes" description="Allow authors to make changes to a published resource within the grace period after approval">
-			<option value="0">None</option>
-			<option value="1">1 month</option>
+		<field name="curatorgroup" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_CURATOR_GROUP" description="COM_PUBLICATIONS_CONFIG_CURATOR_GROUP_DESC" />
+		<field name="graceperiod" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_GRACE_PERIOD" description="COM_PUBLICATIONS_CONFIG_GRACE_PERIOD_DESC">
+			<option value="0">JNONE</option>
+			<option value="1">COM_PUBLICATIONS_CONFIG_ONE_MONTH</option>
 		</field>
 	</fieldset>
 	<fieldset name="DOI">
-		<field name="aboutdoi" type="text" menu="hide" default="" label="About DOI link" description="A link to an explanation of what Digital Object Identifiers (DOI) are [optional]" />
-		<field name="doi_shoulder" type="text" menu="hide" default="" label="DOI shoulder" description="Shoulder for issuing DOIs (what goes after doi:)" />
-		<field name="doi_prefix" type="text" menu="hide" default="" label="DOI handle prefix" description="Prefix for DOI handles if required" />
-		<field name="doi_service" type="text" menu="hide" default="" label="DOI service" description="DOI service address" />
-		<field name="doi_userpw" type="text" menu="hide" default="" label="DOI Service User/Password" description="DOI Service User/Password" />
-		<field name="doi_xmlschema" type="text" menu="hide" default="" label="DOI XML Schema" description="URL of XML schema to validate against" />
-		<field name="doi_publisher" type="text" menu="hide" default="" label="DOI publisher" description="Publisher name (may use full HUB name) for DOI service" />
-		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="DOI resolve url" description="URL for resolving DOIs" />
-		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="DOI verify url" description="URL for verifying DOIs" />
+		<field name="aboutdoi" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_ABOUT_DOI" description="COM_PUBLICATIONS_CONFIG_ABOUT_DOI_DESC" />
+		<field name="doi_shoulder" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_START" description="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_START_DESC" />
+		<field name="doi_prefix" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_END" description="COM_PUBLICATIONS_CONFIG_DOI_NAMESPACE_END_DESC" />
+		<field name="doi_service" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_SERVICE" description="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_DESC" />
+		<field name="doi_userpw" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_USERPASS" description="COM_PUBLICATIONS_CONFIG_DOI_SERVICE_USERPASS_DESC" />
+		<field name="doi_xmlschema" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA" description="COM_PUBLICATIONS_CONFIG_DOI_XML_SCHEMA_DESC" />
+		<field name="doi_publisher" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER" description="COM_PUBLICATIONS_CONFIG_DOI_PUBLISHER_DESC" />
+		<field name="doi_resolve" type="text" menu="hide" default="http://dx.doi.org/" label="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE" description="COM_PUBLICATIONS_CONFIG_DOI_RESOLVE_DESC" />
+		<field name="doi_verify" type="text" menu="hide" default="http://n2t.net/ezid/id/" label="COM_PUBLICATIONS_CONFIG_DOI_VERIFY" description="COM_PUBLICATIONS_CONFIG_DOI_VERIFY_DESC" />
 	</fieldset>
 	<fieldset name="SECTIONS">
-		<field name="show_authors" type="list" default="1" label="Contributors" description="Show/Hide the list of authors on publication page">
+		<field name="show_authors" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_SECTION_CONTRIBUTORS" description="COM_PUBLICATIONS_CONFIG_SECTION_CONTRIBUTORS_DESC">
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-		<field name="format_authors" type="list" default="0" label="Format author display" description="Format list of authors on publication page">
-			<option value="0">Unformatted</option>
-			<option value="1">APA format</option>
+		<field name="format_authors" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_AUTHOR_FORMAT" description="COM_PUBLICATIONS_CONFIG_AUTHOR_FORMAT_DESC">
+			<option value="0">COM_PUBLICATIONS_CONFIG_AUTHOR_FORMAT_UNFORMATTED</option>
+			<option value="1">COM_PUBLICATIONS_CONFIG_AUTHOR_FORMAT_APA</option>
 		</field>
-		<field name="show_ranking" type="list" default="0" label="Ranking" description="Show/Hide the ranking">
+		<field name="show_ranking" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_RANKING" description="COM_PUBLICATIONS_CONFIG_RANKING_DESC">
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-		<field name="show_rating" type="list" default="0" label="Rating" description="Show/Hide the rating">
+		<field name="show_rating" type="list" default="0" label="COM_PUBLICATIONS_CONFIG_RATING" description="COM_PUBLICATIONS_CONFIG_RATING_DESC">
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-		<field name="show_date" type="list" default="3" label="Date" description="Show/Hide publication date on publication page">
+		<field name="show_date" type="list" default="3" label="COM_PUBLICATIONS_CONFIG_DATE" description="COM_PUBLICATIONS_CONFIG_DATE_DESC">
 			<option value="0">JHIDE</option>
-			<option value="3">Published</option>
+			<option value="3">COM_PUBLICATIONS_CONFIG_PUBLISHED</option>
 		</field>
-		<field name="show_linked_data" type="list" default="1" label="Linked Data" description="Show/Hide a link to an OAI-ORE compliant linked data representation in the HTML source for each publication">
+		<field name="show_linked_data" type="list" default="1" label="COM_PUBLICATIONS_CONFIG_LINKED_DATA" description="COM_PUBLICATIONS_CONFIG_LINKED_DATA_DESC">
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-		<field name="show_citation" type="list" default="1" label="Citation" description="Show example/instructions for citing publication">
-			<option value="0">Hide All</option>
-			<option value="1">Manual And Auto</option>
-			<option value="2">Auto Generated</option>
-			<option value="3">Manually Inputed</option>
+		<field name="show_citation" type="list" default="1" label="COM_PUBLICATIONS_SHOW_CITATION_LABEL" description="COM_PUBLICATIONS_SHOW_CITATION_DESC">
+			<option value="0">COM_PUBLICATIONS_SHOW_CITATION_HIDE</option>
+			<option value="1">COM_PUBLICATIONS_SHOW_CITATION_MANUAL_AUTO</option>
+			<option value="2">COM_PUBLICATIONS_SHOW_CITATION_AUTO</option>
+			<option value="3">COM_PUBLICATIONS_SHOW_CITATION_MANUAL</option>
 		</field>
-		<field name="suggest_licence" type="list" default="0" label="Suggest license" description="Allow users to suggest licenses">
+		<field name="suggest_licence" type="list" default="0" label="COM_PUBLICATIONS_SUGGEST_LICENSE" description="COM_PUBLICATIONS_SUGGEST_LICENSE_DESC">
 			<option value="1">JYES</option>
 			<option value="0">JNO</option>
 		</field>
-		<field name="citation_format" type="list" default="apa" label="Citation format" description="Choose format for citations">
+		<field name="citation_format" type="list" default="apa" label="COM_PUBLICATIONS_CITATION_FORMAT" description="COM_PUBLICATIONS_CITATION_FORMAT_DESC">
 			<option value="apa">APA</option>
 			<option value="ieee">IEEE</option>
 		</field>
-		<field name="supportedtag" type="text" menu="hide" default="" label="Supported Tag" description="A tag to indicate organization-supported tools" />
-		<field name="supportedlink" type="text" menu="hide" default="" label="Supported Link" description="A link to describe organization-supported tools" />
-		<field name="audiencelink" type="text" menu="hide" default="" label="Audience Link" description="URL to a page describing audience levels" />
+		<field name="supportedtag" type="text" menu="hide" default="" label="COM_PUBLICATIONS_SUPPORTEDTAG_LABEL" description="COM_PUBLICATIONS_SUPPORTEDTAG_DESC" />
+		<field name="supportedlink" type="text" menu="hide" default="" label="COM_PUBLICATIONS_SUPPORTEDLINK_LABEL" description="COM_PUBLICATIONS_SUPPORTEDLINK_DESC" />
+		<field name="audiencelink" type="text" menu="hide" default="" label="COM_PUBLICATIONS_AUDIENCE_LINK_LABEL" description="COM_PUBLICATIONS_AUDIENCE_LINK_DESC" />
 	</fieldset>
 	<fieldset name="AIP">
-		<field name="repository" type="list" default="0" label="Trusted Digital Repository" description="Trusted Digital Repository">
+		<field name="repository" type="list" default="0" label="COM_PUBLICATIONS_TRUSTED" description="COM_PUBLICATIONS_TRUSTED_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="aip_path" type="text" menu="hide" default="/srv/AIP" label="AIP path" description="AIP path (for trusted digital repos)" />
+		<field name="aip_path" type="text" menu="hide" default="/srv/AIP" label="COM_PUBLICATIONS_AIP_PATH" description="COM_PUBLICATIONS_AIP_PATH_DESC" />
 	</fieldset>
 </config>
