@@ -81,7 +81,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		// check for multiple query sets
-		$query = "SELECT DISTINCT display FROM `#__oaipmh_dcspecs`";
+		$query = "SELECT DISTINCT display FROM `#__oaipmh_dcspecs` ORDER BY display";
 		$this->database->setQuery($query);
 		$qsets = $this->database->loadResultArray();
 
@@ -129,6 +129,10 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		{
 			case 'GetRecord':
 				$response .= "<request verb=\"GetRecord\" identifier=\"$identifier\" metadataPrefix=\"$this->metadata\">$this->hubname/oaipmh</request>";
+
+				// remove url from identifier
+				$identifier = $this->stripResourcesUrl($identifier);
+
 				// check for errors
 				$check = new TablesOaipmhResult($this->database, $customs, $identifier);
 				if ($check->identifier == '')
@@ -358,15 +362,15 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	 */
 	protected function getRecords($records, $from='', $until='')
 	{
+		$SQL = '';
 		if (is_array($records))
 		{
-			$SQL = '';
+			$SQL_PIECES = array();
 			for ($i=0;$i<count($records); $i++)
 			{
-				$SQL .= $this->addDateRange($records[$i]->records, $from, $until) . " UNION ";
-				$i++;
-				$SQL .= $this->addDateRange($records[$i]->records, $from, $until) . " ";
+				$SQL_PIECES[] = $this->addDateRange($records[$i]->records, $from, $until);
 			}
+			$SQL = implode(' UNION ', $SQL_PIECES);
 		}
 		else
 		{
@@ -645,6 +649,25 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			$url = rtrim($this->hubname, DS) . DS . ltrim(JRoute::_('index.php?option=com_resources&id=' . $id), DS);
 		}
 		return '<identifier>' . $url . '</identifier>';
+	}
+
+	/**
+	 * Remove hub url from identifier.
+	 * 
+	 * @param  [type] $identifier [description]
+	 * @return [type]             [description]
+	 */
+	protected function stripResourcesUrl($identifier)
+	{
+		// return identifiers that dont contain the hubs url
+		if (strpos($identifier, $this->hubname) === false)
+		{
+			return $identifier;
+		}
+
+		// return last part of array
+		$parts = explode(DS, $identifier);
+		return array_pop($parts);
 	}
 
 	/**
