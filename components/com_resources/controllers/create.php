@@ -1208,6 +1208,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 			{
 				// Set status to published
 				$resource->published = 1;
+				$resource->publish_up = JFactory::getDate()->toSql();
 			}
 			else
 			{
@@ -1219,6 +1220,7 @@ class ResourcesControllerCreate extends \Hubzero\Component\SiteController
 				{
 					// Set status to published
 					$resource->published = 1;
+					$resource->publish_up = JFactory::getDate()->toSql();
 				}
 				else
 				{
