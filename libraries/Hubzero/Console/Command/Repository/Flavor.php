@@ -120,6 +120,15 @@ class Flavor extends Base implements CommandInterface
 				$database->query();
 				$this->output->addLine('Setting amazon flavor flag in welcome template');
 
+				// Set amazon template as home
+				$this->output->addLine('Setting amazon template for welcome page');
+				$query  = "UPDATE `#__template_styles` SET `home` = 1 where `template` = 'welcome' and `client_id` = 0";
+				$database->setQuery($query);
+				$database->query();
+				$query  = "UPDATE `#__template_styles` SET `home` = 0 where `template` != 'welcome' and `client_id` = 0";
+				$database->setQuery($query);
+				$database->query();
+
 				// Delete tools resource type
 				$query = "DELETE FROM `#__resource_types` WHERE `alias` = 'tools'";
 				$database->setQuery($query);
@@ -139,6 +148,14 @@ class Flavor extends Base implements CommandInterface
 				$query .= " WHERE `id` = '32' AND `alias` = 'gettingstarted'";
 				$database->setQuery($query);
 				$database->query();
+
+				// disable components
+				$this->output->addLine('Disabling com_usage');
+				$migration->disableComponent('com_usage');
+
+				$this->output->addLine('Disabling com_store');
+				$migration->disableComponent('com_store');
+
 
 				break;
 
@@ -195,6 +212,16 @@ class Flavor extends Base implements CommandInterface
 				$database->query();
 				$this->output->addLine('Unsetting flavor flag in welcome template');
 
+				// Set amazon template as default
+				$this->output->addLine('Setting amazon template for welcome page');
+				$query  = "UPDATE `#__template_styles` SET `home` = 1 where template = 'hubbasic2013' and `client_id` = 0";
+				$database->setQuery($query);
+				$database->query();
+				$query  = "UPDATE `#__template_styles` SET `home` = 0 where template != hubbasic2013' and `client_id` = 0";
+				$database->setQuery($query);
+				$database->query();
+
+
 				// Add back tools resource type
 				$query = "SELECT * FROM `#__resource_types` WHERE `alias` = 'tools'";
 				$database->setQuery($query);
@@ -222,6 +249,13 @@ class Flavor extends Base implements CommandInterface
 				$query .= " WHERE `id` = '32' AND `alias` = 'gettingstarted'";
 				$database->setQuery($query);
 				$database->query();
+
+				// disable/enable components
+				$this->output->addLine('Enabling com_usage');
+				$migration->enableComponent('com_usage');
+
+				$this->output->addLine('Enabling com_store');
+				$migration->enableComponent('com_store');
 
 				break;
 
