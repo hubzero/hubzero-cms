@@ -500,6 +500,32 @@ class PublicationUtilities
 	}
 
 	/**
+	 * Returns mkAIP script path
+	 *
+	 * @return     string
+	 */
+	public static function getMkAipBase()
+	{
+		return JPATH_BASE . '/../cli/mkaip/bin/mkaip';
+	}
+
+	/**
+	 * Checks if mkAIP is used
+	 *
+	 * @return   boolean
+	 */
+	public static function archiveOn()
+	{
+		$mkaip = self::getMkAipBase();
+		if (file_exists($mkaip))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Run mkAIP
 	 *
 	 * @param      object $row      Publication version object
@@ -507,7 +533,7 @@ class PublicationUtilities
 	 */
 	public static function mkAip($row)
 	{
-		$mkaip = JPATH_BASE . '/../cli/mkaip/bin/mkaip';
+		$mkaip = self::getMkAipBase();
 
 		// Create OAIS Archival Information Package
 		if (file_exists($mkaip))
