@@ -210,6 +210,10 @@ $juser = JFactory::getUser();
 							}
 							$messaging = true;
 						}
+						if (!JPluginHelper::isEnabled('members', 'messages'))
+						{
+							$messaging = false;
+						}
 
 						foreach ($this->rows as $row)
 						{
