@@ -60,6 +60,11 @@ class plgCronPublications extends JPlugin
 				'name'   => 'rollUserStats',
 				'label'  => JText::_('PLG_CRON_PUBLICATIONS_ROLL_STATS'),
 				'params' => ''
+			),
+			array(
+				'name'   => 'runMkAip',
+				'label'  => JText::_('PLG_CRON_PUBLICATIONS_ARCHIVE'),
+				'params' => ''
 			)
 		);
 
@@ -257,5 +262,82 @@ class plgCronPublications extends JPlugin
 		}
 
 		return true;
+	}
+
+	/**
+	 * Archive publications beyond grace period
+	 *
+	 * @param   object   $job  CronModelJob
+	 * @return  boolean
+	 */
+	public function runMkAip(CronModelJob $job)
+	{
+		$database = JFactory::getDBO();
+		$config = JComponentHelper::getParams('com_publications');
+
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
+			. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+
+		// Check that mkAIP script exists
+		if (!PublicationUtilities::archiveOn())
+		{
+			return;
+		}
+		// Check for grace period
+		$gracePeriod = $config->get('graceperiod', 0);
+		if (!$gracePeriod)
+		{
+			// If no grace period, this cron is unnecessary (archived as approval)
+			return;
+		}
+
+		$aipBasePath = $config->get('aip_path', NULL);
+		$aipBasePath = $aipBasePath && is_dir($aipBasePath) ? $aipBasePath : NULL;
+
+		// Get all unarchived publication versions
+		$query  = "SELECT V.*, C.id as id, V.id as version_id ";
+		$query .= " FROM #__publication_versions as V, #__publications as C ";
+		$query .= " WHERE C.id=V.publication_id AND V.state=1 ";
+		$query .= " AND V.doi IS NOT NULL ";
+		$query .= " AND V.accepted IS NOT NULL AND V.accepted !='0000-00-00 00:00:00' ";
+		$query .= " AND (V.archived IS NULL OR V.archived ='0000-00-00 00:00:00') ";
+		$database->setQuery( $query );
+		if (!($rows = $database->loadObjectList()))
+		{
+			return true;
+		}
+		foreach ($rows as $row)
+		{
+			$doiParts = explode('/', $row->doi);
+			$aipName = count($doiParts) > 1 ? $doiParts[0] . '__' . $doiParts[1] : '';
+			if ($aipBasePath && $aipName && is_dir($aipBasePath . DS . $aipName))
+			{
+				// Do not overwrite existing archives !!
+				continue;
+			}
+			// Grace period unexpired?
+			$monthFrom = JFactory::getDate($row->accepted . '+1 month')->toSql();
+			if (strtotime($monthFrom) > strtotime(JFactory::getDate()))
+			{
+				continue;
+			}
+			// Load version
+			$pv = new PublicationVersion($database);
+			if (!$pr->load($row->version_id))
+			{
+				continue;
+			}
+
+			// Run mkAIP and save archived date
+			if (PublicationUtilities::mkAip($row))
+			{
+				$pv->archived = JFactory::getDate()->toSql();
+				$pv->store();
+			}
+
+			// All done
+			return true;
+		}
 	}
 }
