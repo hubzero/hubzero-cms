@@ -145,6 +145,11 @@ $flavor = $this->params->get('flavor', false);
 									<h3><?php echo JText::_('TPL_WELCOME_ADMIN_PASS_HEADER_' . strtoupper($flavor)); ?></h3>
 
 									<p><?php echo JText::_('TPL_WELCOME_ADMIN_PASS_BODY_' . strtoupper($flavor)); ?></p>
+
+<?php echo JText::sprintf('TPL_WELCOME_ADMIN_PASS_SITE_URL', $_SERVER['SERVER_NAME'] ); ?>
+<br/><br/>
+<?php echo JText::sprintf('TPL_WELCOME_ADMIN_PASS_ADMIN_URL', $_SERVER['SERVER_NAME'] ); ?>
+
 								</div>
 							</div>
 						</div>
