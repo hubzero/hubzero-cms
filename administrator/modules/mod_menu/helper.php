@@ -1,29 +1,80 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+namespace Modules\Menu;
+
+use Hubzero\Module\Module;
+use JFactory;
+use JRequest;
+use JArrayHelper;
+use JText;
 
 /**
- * @package		Joomla.Administrator
- * @subpackage	mod_menu
- * @since		1.5
+ * Module class for displaying the admin menu
  */
-abstract class ModMenuHelper
+class Helper extends Module
 {
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
+	public function display()
+	{
+		// Include the module helper classes.
+		if (!class_exists('\\Modules\\Menu\\Tree'))
+		{
+			require __DIR__ . DS . 'tree.php';
+		}
+
+		// Initialise variables.
+		$lang    = JFactory::getLanguage();
+		$user    = JFactory::getUser();
+		$menu    = new Tree();
+		$enabled = JRequest::getInt('hidemainmenu') ? false : true;
+
+		$params  = $this->params;
+
+		// Render the module layout
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
+	}
+
 	/**
 	 * Get a list of the available menus.
 	 *
-	 * @return	array	An array of the available menus (from the menu types table).
-	 * @since	1.6
+	 * @return  array  An array of the available menus (from the menu types table).
 	 */
 	public static function getMenus()
 	{
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
 
 		$query->select('a.*, SUM(b.home) AS home');
 		$query->from('#__menu_types AS a');
@@ -34,33 +85,30 @@ abstract class ModMenuHelper
 		$query->select('l.sef');
 		$query->select('l.title_native');
 		$query->where('(b.client_id = 0 OR b.client_id IS NULL)');
-		//sqlsrv change
+
+		// sqlsrv change
 		$query->group('a.id, a.menutype, a.description, a.title, b.menutype,b.language,l.image,l.sef,l.title_native');
 
 		$db->setQuery($query);
 
-		$result = $db->loadObjectList();
-
-		return $result;
+		return $db->loadObjectList();
 	}
 
 	/**
 	 * Get a list of the authorised, non-special components to display in the components menu.
 	 *
-	 * @param	boolean	$authCheck	An optional switch to turn off the auth check (to support custom layouts 'grey out' behaviour).
-	 *
-	 * @return	array	A nest array of component objects and submenus
-	 * @since	1.6
+	 * @param   boolean  $authCheck  An optional switch to turn off the auth check (to support custom layouts 'grey out' behaviour).
+	 * @return  array    A nest array of component objects and submenus
 	 */
 	public static function getComponents($authCheck = true)
 	{
 		// Initialise variables.
-		$lang	= JFactory::getLanguage();
-		$user	= JFactory::getUser();
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
-		$result	= array();
-		$langs	= array();
+		$lang   = JFactory::getLanguage();
+		$user   = JFactory::getUser();
+		$db     = JFactory::getDbo();
+		$query  = $db->getQuery(true);
+		$result = array();
+		$langs  = array();
 
 		// Prepare the query.
 		$query->select('m.id, m.title, m.alias, m.link, m.parent_id, m.img, e.element');
@@ -76,43 +124,56 @@ abstract class ModMenuHelper
 		$query->order('m.lft');
 
 		$db->setQuery($query);
-		// component list
+
+		// Component list
 		$components	= $db->loadObjectList();
 
 		// Parse the list of extensions.
-		foreach ($components as &$component) {
+		foreach ($components as &$component)
+		{
 			// Trim the menu link.
 			$component->link = trim($component->link);
 
-			if ($component->parent_id == 1) {
+			if ($component->parent_id == 1)
+			{
 				// Only add this top level if it is authorised and enabled.
-				if ($authCheck == false || ($authCheck && $user->authorise('core.manage', $component->element))) {
+				if ($authCheck == false || ($authCheck && $user->authorise('core.manage', $component->element)))
+				{
 					// Root level.
 					$result[$component->id] = $component;
-					if (!isset($result[$component->id]->submenu)) {
+					if (!isset($result[$component->id]->submenu))
+					{
 						$result[$component->id]->submenu = array();
 					}
 
 					// If the root menu link is empty, add it in.
-					if (empty($component->link)) {
-						$component->link = 'index.php?option='.$component->element;
+					if (empty($component->link))
+					{
+						$component->link = 'index.php?option=' . $component->element;
 					}
 
-					if (!empty($component->element)) {
+					if (!empty($component->element))
+					{
 						// Load the core file then
 						// Load extension-local file.
-						$lang->load($component->element . '.sys', JPATH_BASE, null, false, true)
-					||	$lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, null, false, true);
+						$lang->load($component->element . '.sys', JPATH_BASE, null, false, false)
+						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, null, false, false)
+						|| $lang->load($component->element . '.sys', JPATH_BASE, $lang->getDefault(), false, false)
+						|| $lang->load($component->element . '.sys', JPATH_ADMINISTRATOR . '/components/' . $component->element, $lang->getDefault(), false, false);
 					}
 					$component->text = $lang->hasKey($component->title) ? JText::_($component->title) : $component->alias;
 				}
-			} else {
+			}
+			else
+			{
 				// Sub-menu level.
-				if (isset($result[$component->parent_id])) {
+				if (isset($result[$component->parent_id]))
+				{
 					// Add the submenu link if it is defined.
-					if (isset($result[$component->parent_id]->submenu) && !empty($component->link)) {
+					if (isset($result[$component->parent_id]->submenu) && !empty($component->link))
+					{
 						$component->text = $lang->hasKey($component->title) ? JText::_($component->title) : $component->alias;
-						$result[$component->parent_id]->submenu[] = &$component;
+						$result[$component->parent_id]->submenu[] =& $component;
 					}
 				}
 			}

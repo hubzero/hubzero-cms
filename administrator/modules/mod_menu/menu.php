@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
+ * @copyright	Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -21,18 +21,18 @@ class JAdminCssMenu extends JTree
 	 */
 	protected $_css = null;
 
-	function __construct()
+	public function __construct()
 	{
 		$this->_root = new JMenuNode('ROOT');
 		$this->_current = & $this->_root;
 	}
 
-	function addSeparator()
+	public function addSeparator()
 	{
 		$this->addChild(new JMenuNode(null, null, 'separator', false));
 	}
 
-	function renderMenu($id = 'menu', $class = '')
+	public function renderMenu($id = 'menu', $class = '')
 	{
 		$depth = 1;
 
@@ -65,7 +65,7 @@ class JAdminCssMenu extends JTree
 		}
 	}
 
-	function renderLevel($depth)
+	public function renderLevel($depth)
 	{
 		/*
 		 * Build the CSS class suffix
@@ -144,7 +144,7 @@ class JAdminCssMenu extends JTree
 	 * @return	string	CSS class name
 	 * @since	1.5
 	 */
-	function getIconClass($identifier)
+	public function getIconClass($identifier)
 	{
 		static $classes;
 

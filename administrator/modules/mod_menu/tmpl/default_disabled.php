@@ -1,26 +1,47 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	mod_menu
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access.
 defined('_JEXEC') or die;
 
-$showhelp 	= $params->get('showhelp', 1);
 //
 // Site SubMenu
 //
-$menu->addChild(new JMenuNode(JText::_('JSITE'), null, 'disabled'));
+$menu->addChild(new \Modules\Menu\Node(JText::_('JSITE'), null, 'disabled'));
 
 //
 // Users Submenu
 //
 if ($user->authorise('core.manage', 'com_users'))
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_USERS'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_COM_USERS'), null, 'disabled'));
 }
 
 //
@@ -28,7 +49,7 @@ if ($user->authorise('core.manage', 'com_users'))
 //
 if ($user->authorise('core.manage', 'com_menus'))
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_MENUS'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_MENUS'), null, 'disabled'));
 }
 
 //
@@ -36,19 +57,17 @@ if ($user->authorise('core.manage', 'com_menus'))
 //
 if ($user->authorise('core.manage', 'com_content'))
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COM_CONTENT'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_COM_CONTENT'), null, 'disabled'));
 }
 
 //
 // Components Submenu
 //
-
 // Get the authorised components and sub-menus.
-$components = ModMenuHelper::getComponents( true );
-
 // Check if there are any components, otherwise, don't display the components menu item
-if ($components) {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_COMPONENTS'),  null, 'disabled'));
+if ($components = $this->getComponents(true))
+{
+	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_COMPONENTS'), null, 'disabled'));
 }
 
 //
@@ -62,12 +81,13 @@ $lm = $user->authorise('core.manage', 'com_languages');
 
 if ($im || $mm || $pm || $tm || $lm)
 {
-	$menu->addChild(new JMenuNode(JText::_('MOD_MENU_EXTENSIONS_EXTENSIONS'), null, 'disabled'));
+	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_EXTENSIONS_EXTENSIONS'), null, 'disabled'));
 }
 
 //
 // Help Submenu
 //
-if ($showhelp == 1) {
-$menu->addChild(new JMenuNode(JText::_('MOD_MENU_HELP'), null, 'disabled'));
+if ($params->get('showhelp', 0) == 1)
+{
+	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_HELP'), null, 'disabled'));
 }

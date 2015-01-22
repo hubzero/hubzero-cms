@@ -30,6 +30,82 @@
 
 namespace Modules\Menu;
 
-require_once __DIR__ . DS . 'helper.php';
+use JFilterOutput;
+use JURI;
 
-with(new Helper($params, $module))->display();
+/**
+ * Menu node class
+ */
+class Node extends \JNode
+{
+	/**
+	 * Node Title
+	 *
+	 * @var  string
+	 */
+	public $title = null;
+
+	/**
+	 * Node Id
+	 *
+	 * @var  string
+	 */
+	public $id = null;
+
+	/**
+	 * Node Link
+	 *
+	 * @var  string
+	 */
+	public $link = null;
+
+	/**
+	 * Link Target
+	 *
+	 * @var  string
+	 */
+	public $target = null;
+
+	/**
+	 * CSS Class for node
+	 *
+	 * @var  string
+	 */
+	public $class = null;
+
+	/**
+	 * Active Node?
+	 *
+	 * @var  boolean
+	 */
+	public $active = false;
+
+	/**
+	 * Constructor
+	 *
+	 * @return  void
+	 */
+	public function __construct($title, $link = null, $class = null, $active = false, $target = null, $titleicon = null)
+	{
+		$this->title  = $titleicon ? $title . $titleicon : $title;
+		$this->link   = JFilterOutput::ampReplace($link);
+		$this->class  = $class;
+		$this->active = $active;
+
+		$this->id = null;
+		if (!empty($link) && $link !== '#')
+		{
+			$params = with(new JURI($link))->getQuery(true);
+
+			$parts = array();
+			foreach ($params as $name => $value)
+			{
+				$parts[] = str_replace(array('.', '_'), '-', $value);
+			}
+
+			$this->id = implode('-', $parts);
+		}
+
+		$this->target = $target;
+	}
+}
