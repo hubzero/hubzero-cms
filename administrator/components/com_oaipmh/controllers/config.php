@@ -44,7 +44,7 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 		$this->view->dcs = $this->database->loadRowList();
 
 		// get query groups
-		$query = "SELECT DISTINCT display FROM `#__oaipmh_dcspecs`";
+		$query = "SELECT DISTINCT display FROM `#__oaipmh_dcspecs` ORDER BY display";
 		$this->database->setQuery($query);
 		$this->view->sets = $this->database->loadResultArray();
 
