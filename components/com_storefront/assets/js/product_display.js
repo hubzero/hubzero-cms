@@ -38,6 +38,10 @@ $(document).ready(function(){
 		SF.PRODUCT.updatePriceQty();
     });
 
+	$('.product-options li').click(function() {
+		$(this).find('input').prop("checked", true).trigger("change");
+	});
+
 });
 
 /* ---------------------------------------------------------------------------------------------------------------------------*/
@@ -166,6 +170,8 @@ $(document).ready(function(){
 			if(optionsNeeded != SF.PRODUCT.selectedOptions.length) {
 				skuMatch = false;
 			}
+
+			//console.log(skuMatch + ' -- ' +  matchKey);
 			SF.PRODUCT._updateQty(skuMatch, matchKey);
 		},
 		
@@ -176,23 +182,34 @@ $(document).ready(function(){
 			
 			// find out if the current selection identifies the SKU
 			if(skuMatch) {
-				// check if dropdown exist
-				if($("#qty").length == 0) {
-					// create a new drop-down
-					var dropDown = $('<select />', {
-						id: 'qty',
-						name: 'qty'
-					});
-					$('#qtyWrap').append(dropDown);
+				if(SF.OPTIONS.skuInventory[key] > 1) {
+					// check if dropdown exist
+					if ($("#qty").length == 0) {
+						// create a new drop-down
+						var dropDown = $('<select />', {
+							id: 'qty',
+							name: 'qty'
+						});
+
+						var inner = $('<div class="inner" />');
+
+						inner.append('<label>Quantity </label>');
+						inner.append(dropDown);
+
+						$('#qtyWrap').append(inner);
+					}
+					// populate dropdown
+					var dropDown = $('#qty');
+					dropDown.html('');
+
+					for (var i = 1; i <= SF.OPTIONS.skuInventory[key]; i++) {
+						dropDown.append('<option value="' + i + '">' + i + '</option>')
+					}
 				}
-				// populate dropdown
-				var dropDown = $('#qty');
-				dropDown.html('');
-				
-				for(var i = 1; i <= SF.OPTIONS.skuInventory[key]; i++) {
-					dropDown.append('<option value="' + i + '">' + i + '</option>')
+				else {
+					$("#qty").remove();
 				}
-				
+
 				// enable 'add to cart' button
 				$('#addToCart').removeClass('disabled').addClass('enabled');
 				

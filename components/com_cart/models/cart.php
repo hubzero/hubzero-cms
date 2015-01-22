@@ -47,22 +47,26 @@ class CartModelCart
 	// Syncing enabled?
 	var $sync = true;
 
-	// Debug moode
+	// Debug mode
 	var $debug = false;
 
-	// Move to config (TODO)
+	// Static mode
+	var $staticMode = false;
+
+	// TODO: Move to config
 	// Transaction time to live: TTL -- transaction active
 	var $transactionTTL = 60;	// 1 hour
-	// Transaction kill age -- age at which trancaction gets deleted forever
+	// Transaction kill age -- age at which transaction gets deleted forever
 	var $transactionKillAge = 43200; // 30 days
 	var $securitySalt = 'ERDCVcvk$sad!ccsso====++!w';
 
 	/**
 	 * Cart constructor
 	 *
-	 * @param int 	Cart ID -- optional. If not provided will try to locate an existing cart based either on user ID, session, or cookie -- otherwise it will create a new cart.
+	 * @param int 	Cart ID -- optional. If not provided will try to locate an existing cart based either
+	 * 				on user ID, session, or cookie -- otherwise it will create a new cart.
 	 *				If crtId is provided it will attempt to load the cart requested.
-	 * @param bool 	Wheter the cart is loaded in static mode
+	 * @param bool 	Whether the cart is loaded in static mode
 	 * @return void
 	 */
 	public function __construct($crtId = NULL, $staticMode = false)
@@ -73,13 +77,17 @@ class CartModelCart
 		// Load language file
 		JFactory::getLanguage()->load('com_cart');
 
+		$this->cart = new stdClass();
+
 		// Load current user cart, no specific cart requested
 		if (!$crtId && !$staticMode)
 		{
 			// Get user
 			$juser = JFactory::getUser();
 
-			// get cart from session
+			/* Check if there is a session or cookie cart */
+
+			// Get cart from session
 			$cart = $this->liftSessionCart();
 
 			// If no session cart, try to locate a cookie cart (only for not logged in users)
@@ -88,7 +96,6 @@ class CartModelCart
 				$cart = $this->liftCookie();
 			}
 
-			// Check if there is a session or cookie cart
 			if ($cart)
 			{
 				// If cart found and user is logged in, verify if the cart is linked to the user cart in the DB
@@ -104,32 +111,38 @@ class CartModelCart
 						}
 					}
 				}
-				// Make sure cart is marked as unlinked
+				// Make sure cart is marked as unlinked is the user is not logged in
 				else
 				{
 					$this->cart->linked = false;
 				}
 			}
-			// If no session, but user is logged in
+			// If no session & cookie cart found, but user is logged in
 			elseif (!$juser->get('guest'))
 			{
-				// lookup the saved cart in the DB and if found lift the cart
+				// Try to get the saved cart in the DB
 				if (!$this->liftUserCart($juser->id))
 				{
-					// No session, no DB cart -- create new cart
+					// If no session, no cookie, no DB cart -- create a brand new cart
 					$this->createCart();
 				}
 			}
-			// No session, no cookie, no user -- create new cart
+			// No session, no cookie -- create new cart
 			else
 			{
 				$this->createCart();
 			}
 		}
-		// Load specific cart
-		elseif (!empty($crtId))
+		// Load specific cart (static mode)
+		elseif (!empty($crtId) && $staticMode)
 		{
+			$this->staticMode = true;
+			// Sync must be always off the static mode
+			$this->setSync(false);
 			$this->setCart($crtId);
+		}
+		else {
+			throw new Exception('Bad cart initialization');
 		}
 
 	}
@@ -176,7 +189,7 @@ class CartModelCart
 	}
 
 	/**
-	 * Add SKU to cart
+	 * Delete SKU from cart
 	 *
 	 * @param SKU ID
 	 * @param int Quantity
@@ -193,11 +206,16 @@ class CartModelCart
 	/**
 	 * Get session info about cart
 	 *
-	 * @param bool $updateDb Flag whether the sessinon cart should be synced with DB first
+	 * @param bool $updateDb Flag whether the session cart should be synced with DB first
 	 * @return array of items in the cart
 	 */
 	public function getCartInfo($sync = false)
 	{
+		if ($this->staticMode)
+		{
+			throw new Exception('Method not allowed in static mode');
+		}
+
 		if ($sync)
 		{
 			// Enable syncing just in case, since this is an explicit call to get a synced cart
@@ -209,21 +227,23 @@ class CartModelCart
 	}
 
 	/**
-	 * Check if there are any changes to cart items' inventory or pricing since last visit
-	 * @param false
+	 * Check if the cart is empty
+	 *
+	 * @param void
 	 * @return bool
 	 */
-	public function cartChanged()
+	public function isEmpty()
 	{
-		return(!empty($this->cart->hasChanges) && $this->cart->hasChanges);
+		return(empty($this->getCartInfo()->items));
 	}
 
 	/**
-	 * Get any changes to cart items' inventory or pricing since last visit -- works like a flash variable -- gets messages once and then resets the state
+	 * Get any changes to cart items' inventory or pricing since last visit.
+	 * Works like a flash variable -- gets messages once and then resets the state
 	 * @param false
 	 * @return array of change messages
 	 */
-	public function getCartChanges()
+	private function getCartChanges()
 	{
 		// Load cart items info
 		$sql = "SELECT * FROM `#__cart_cart_items` crti WHERE crti.`crtId` = {$this->crtId}";
@@ -286,12 +306,12 @@ class CartModelCart
 		// Reset all messages
 		if (!empty($changes))
 		{
-			// - delete zero inventory items and unavailable skus
+			// Delete zero inventory items and unavailable SKUs
 			$sql = "DELETE FROM `#__cart_cart_items` WHERE (`crtiQty` = 0  OR `crtiAvailable` = 0) AND `crtId` = {$this->crtId}";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 
-			// clear old info since the message has already been displayed
+			// Clear old info since the message has already been displayed
 			$sql = "UPDATE `#__cart_cart_items` SET `crtiOldQty` = NULL, `crtiOldPrice` = NULL WHERE `crtId` = {$this->crtId}";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
@@ -301,6 +321,54 @@ class CartModelCart
 		}
 
 		return false;
+	}
+
+	/**
+	 * Check if there are any changes to cart items' inventory or pricing since last visit
+	 * @param false
+	 * @return bool
+	 */
+	private function cartChanged()
+	{
+		return(!empty($this->cart->hasChanges) && $this->cart->hasChanges);
+	}
+
+	/**
+	 * Check if there are any messages to display
+	 * @param false
+	 * @return bool
+	 */
+	public function hasMessages()
+	{
+		return(	(!empty($this->cart->hasMessages) && $this->cart->hasMessages) ||
+				$this->cartChanged()
+		);
+	}
+
+	public function getMessages()
+	{
+		if (!$this->hasMessages())
+		{
+			return false;
+		}
+
+		// Reset changes flag
+		$this->cart->hasMessages = false;
+
+		// Get messages
+		$messages = $this->cart->messages;
+		// Erase messages
+		unset($this->cart->messages);
+
+		// Get cart changes
+		$changes = array();
+		if ($this->cartChanged())
+		{
+			$changes = $this->getCartChanges();
+		}
+
+		$messages = array_merge($messages, $changes);
+		return $messages;
 	}
 
 	// Debug function
@@ -460,6 +528,7 @@ class CartModelCart
 		}
 
 		// Can be purchased -- get transaction items
+		$transaction = new stdClass();
 		$transaction->items = $this->getTransactionItems($this->cart->tId);
 		//print_r($transaction->items); die('^^');
 
@@ -502,6 +571,7 @@ class CartModelCart
 		}
 
 		// Can be purchased -- get transaction items
+		$transaction = new stdClass();
 		$transaction->items = $items;
 
 		/*
@@ -599,6 +669,9 @@ class CartModelCart
 		{
 			$errors[] = JText::_('COM_CART_INCORRECT_ZIP');
 		}
+
+		// Init return object
+		$ret = new stdClass();
 
 		if (empty($errors))
 		{
@@ -799,13 +872,12 @@ class CartModelCart
 		$tId = $tInfo->info->tId;
 		$crtId = $tInfo->info->crtId;
 
+		// Extract transaction items
 		$transactionItems = unserialize($tInfo->info->tiItems);
 
-		//print_r($transactionItems); die;
-
-		// Handle all actions for each item
 		include_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'ProductHandler.php');
 
+		// Handle each item in the transaction
 		foreach ($transactionItems as $sId => $item)
 		{
 			$productHandler = new Cart_ProductHandler($item, $crtId);
@@ -1162,7 +1234,6 @@ class CartModelCart
 	{
 		$sql = "SELECT cnId FROM `#__cart_coupons` WHERE `crtId` = {$this->crtId} AND crtCnStatus = 'active' ORDER BY `crtCnAdded`";
 		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql; die;
 		$cnIds = $this->_db->loadResultArray();
 
 		//print_r($cnIds); die;
@@ -1427,6 +1498,7 @@ class CartModelCart
 			elseif ($couponObjectType != 'shipping') {
 				// Initialize the perk
 				unset($perk);
+				$perk = new stdClass();
 				$perk->name = $cn->cnDescription;
 				$perk->couponId = $cn->cnId;
 
@@ -1449,7 +1521,7 @@ class CartModelCart
 
 					/*
 					TODO see if there is a limit of same products this can be applied to.
-					Also ssee a note about figuring out the most expensive items if there is a limit.
+					Also see a note about figuring out the most expensive items if there is a limit.
 					*/
 
 					// Calculate discount
@@ -1485,6 +1557,7 @@ class CartModelCart
 			{
 				// Initialize the perk
 				unset($perk);
+				$perk = new stdClass();
 				$perk->name = $cn->cnDescription;
 				$perk->couponId = $cn->cnId;
 
@@ -1518,6 +1591,7 @@ class CartModelCart
 			}
 		}
 
+		$perksInfo = new stdClass();
 		$perksInfo->itemsDiscountsTotal = $itemsDiscountsTotal;
 		$perksInfo->genericDiscountsTotal = $genericDiscountsTotal;
 		$perksInfo->discountsTotal = $itemsDiscountsTotal + $genericDiscountsTotal;
@@ -1568,12 +1642,6 @@ class CartModelCart
 	{
 		$cartInfo = $this->getCartInfo();
 
-		/*
-		echo "Cart info: \n";
-		print_r($cartInfo);
-		echo "\n============== \n\n";
-		*/
-
 		$cartItems = $cartInfo->items;
 		//print_r($cartItems); die;
 
@@ -1595,7 +1663,7 @@ class CartModelCart
 				$membershipSIdInfo = $ms->getNewExpirationInfo($this->crtId, $item);
 
 				/*
-				// If membership lookup existing membership (if any)
+				// If membership, lookup existing membership (if any)
 				$membershipInfo = $ms->getMembershipInfo($this->crtId, $item['info']->pId);
 
 				// Calculate correct TTL for one SKU
@@ -1710,6 +1778,11 @@ class CartModelCart
 	 */
 	private function getItems()
 	{
+		if ($this->staticMode)
+		{
+			throw new Exception('Method not allowed in static mode');
+		}
+
 		// Just in case check if current cart exists. If not -- delete session cart and create a new one
 		if (!$this->cartExists($this->crtId))
 		{
@@ -1722,7 +1795,7 @@ class CartModelCart
 	}
 
 	/**
-	 * Update cart based on current availability (and pricing TODO) and return all items in the cart, update cart's 'lastUpdated' field
+	 * Update cart based on current availability (and pricing) and return all items in the cart, update cart's 'lastUpdated' field
 	 *
 	 * @param void
 	 * @return array of items in the cart
@@ -1737,11 +1810,10 @@ class CartModelCart
 		$sql = "SELECT `sId`, `crtiQty`, `crtiPrice` FROM `#__cart_cart_items` crti WHERE crti.`crtId` = {$this->crtId}";
 		$this->_db->setQuery($sql);
 		$allSkuInfo = $this->_db->loadObjectList('sId');
-		// Get just skuId's
+		// Get just sku IDs
 		$skus = $this->_db->loadResultArray();
 
 		//print_r($skus); die;
-
 
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
@@ -1770,6 +1842,8 @@ class CartModelCart
 			$cartItems[$sId] = $skuInfo[$sId];
 
 			$updated = false;
+
+			$cartInfo = new stdClass();
 
 			// Check if there is enough inventory
 			if ($inf->sTrackInventory && ($inf->sInventory < $sku->crtiQty))
@@ -1813,6 +1887,12 @@ class CartModelCart
 			$cartItems[$sId]['cartInfo'] = $cartInfo;
 
 			unset($cartInfo);
+		}
+
+		// Static mode -- return result, no messing with session or last updated
+		if ($this->staticMode)
+		{
+			return($cartItems);
 		}
 
 		$this->updateSession();
@@ -1859,7 +1939,7 @@ class CartModelCart
 		$session = JFactory::getSession();
 		$cart = $session->get('cart');
 
-		if ($cart)
+		if ($cart && !empty($cart->crtId))
 		{
 			$this->cart = $cart;
 			$this->crtId = $cart->crtId;
@@ -1918,25 +1998,35 @@ class CartModelCart
 	}
 
 	/**
-	 * Update session with instance cart info (no product syncing though
+	 * Update session with instance cart info (no product syncing though)
 	 *
 	 * @param void
 	 * @return void
 	 */
 	private function updateSession()
 	{
+		if ($this->staticMode)
+		{
+			throw new Exception('Method not allowed in static mode');
+		}
+
 		$session = JFactory::getSession();
 		$session->set('cart', $this->cart);
 	}
 
 	/**
-	 * Update session cart with the latest info from DB
+	 * Clear session cart
 	 *
 	 * @param void
 	 * @return void
 	 */
 	private function clearSessionCart()
 	{
+		if ($this->staticMode)
+		{
+			throw new Exception('Method not allowed in static mode');
+		}
+
 		$session = JFactory::getSession();
 		$session->clear('cart');
 	}
@@ -1949,6 +2039,11 @@ class CartModelCart
 	 */
 	private function liftCookie()
 	{
+		if ($this->staticMode)
+		{
+			throw new Exception('Method not allowed in static mode');
+		}
+
 		if ($this->debug)
 		{
 			echo "<br>Lifting cookie cart";
@@ -2063,6 +2158,7 @@ class CartModelCart
 		$juser = JFactory::getUser();
 
 		$uId = 'NULL';
+		$cart = new stdClass();
 		if (!$juser->get('guest'))
 		{
 			$uId = $juser->id;
@@ -2130,7 +2226,8 @@ class CartModelCart
 	}
 
 	/**
-	 * Link a session cart with user's cart. If these carts are different -- merge them. If there is only a session cart -- make it user's cart
+	 * Link a session cart with user's cart. If these carts are different -- merge them.
+	 * If there is only a session cart -- make it the user's cart
 	 *
 	 * @param void
 	 * @return bool
@@ -2161,19 +2258,43 @@ class CartModelCart
 		// Get user's cart
 		$userCartId = $this->getUserCartId($juser->id);
 
-		// If no user cart -- make the session cart a user's cart
-
 		// Get coupons
 		$coupons = $this->getCoupons();
 
+		// If no user cart -- make the session cart a user's cart. Easy.
 		if (!$userCartId)
 		{
 			$sql = "UPDATE `#__cart_carts` SET `uidNumber` = {$juser->id} WHERE `crtId` = {$this->crtId}";
 			$existingCnIds = array();
 		}
-		// Merge session and user carts
+		// Merge session and user carts. Not so easy.
 		else
 		{
+			// Get a static instance of the users' cart
+			$userCart = new CartModelCart($userCartId, true);
+			// Get items from the user's cart to see if it is empty or nor
+			$userCartItems = $userCart->getCartItems();
+
+			// If both session and user carts are not empty notify the user that items are being combined
+			if (!$this->isEmpty() && !empty($userCartItems)) {
+				$this->cart->messages[] = 'Looks like you had some items in your old cart. We attempted to combine them with your current selection.';
+				$this->cart->hasMessages = true;
+			}
+
+			if (!$this->isEmpty())
+			{
+				$sessionCartItems = $this->getCartItems();
+
+				// Go through all session cart items (if any) and add them to the user's cart
+				foreach ($sessionCartItems as $item) {
+					try {
+						$userCart->add($item['info']->sId, $item['cartInfo']->qty);
+					} catch (Exception $e) {
+						$this->cart->messages[] = $e->getMessage();
+					}
+				}
+			}
+
 			// need to apply each coupon (mark as used) before merging
 			$cnSql = '0';
 			$allCouponsIds = array();
@@ -2184,18 +2305,12 @@ class CartModelCart
 			}
 
 			// Find all coupons in the user's cart that are already applied and don't need to be reapplied
-			$sql = "SELECT `cnId` FROM `#__cart_coupons` WHERE `crtId` = " . $this->_db->quote($userCartId) . " AND `cnId` IN (" . $cnSql . ") AND `crtCnStatus` = 'active'";
+			$sql = "SELECT `cnId` FROM `#__cart_coupons`
+					WHERE `crtId` = " . $this->_db->quote($userCartId) . "
+					AND `cnId` IN (" . $cnSql . ") AND `crtCnStatus` = 'active'";
 			$this->_db->setQuery($sql);
 			$this->_db->query();
 			$existingCnIds = $this->_db->loadResultArray();
-
-			// merge items -- simply add all session cart items to user cart
-			$sql = "INSERT INTO `#__cart_cart_items` (`crtId`, `sId`, `crtiQty`)
-					SELECT {$userCartId}, `sId`, `crtiQty` FROM `#__cart_cart_items` ii WHERE ii.crtId = {$this->crtId}
-					ON DUPLICATE KEY UPDATE `#__cart_cart_items`.`crtiQty` = `#__cart_cart_items`.`crtiQty` + ii.`crtiQty`";
-			$this->_db->setQuery($sql);
-			//echo $this->_db->_sql; die;
-			$this->_db->query();
 
 			// merge coupons
 			$couponsIdsToMerge = array_diff($allCouponsIds, $existingCnIds);
@@ -2205,10 +2320,25 @@ class CartModelCart
 				$mergeSql .= ',' . $cnId;
 			}
 			$sql = "INSERT INTO `#__cart_coupons` (`crtId`, `cnId`, `crtCnAdded`, `crtCnStatus`)
-					SELECT {$userCartId}, `cnId`, `crtCnAdded`, 'active' FROM `#__cart_coupons` cc WHERE cc.crtId = {$this->crtId} AND `cnId` IN (" . $mergeSql . ")";
+					SELECT {$userCartId}, `cnId`, `crtCnAdded`, 'active' FROM `#__cart_coupons` cc
+					WHERE cc.crtId = {$this->crtId} AND `cnId` IN (" . $mergeSql . ")";
 			$this->_db->setQuery($sql);
 			//echo $this->_db->_sql; die;
 			$this->_db->query();
+
+			/*
+			// Merge items -- simply add all session cart items to user cart
+			// But: skip the merge for SKUs that do not allow multiple quantities (just leave the user cart value)
+			$sql = "INSERT INTO `#__cart_cart_items` (`crtId`, `sId`, `crtiQty`)
+					(SELECT {$userCartId}, ii.`sId`, `crtiQty` FROM `#__cart_cart_items` ii
+					LEFT JOIN `#__storefront_skus` s ON s.`sId` = ii.`sId`
+					WHERE ii.`crtId` = {$this->crtId})
+					ON DUPLICATE KEY UPDATE `#__cart_cart_items`.`crtiQty` =
+					IF(s.sAllowMultiple = 1, `#__cart_cart_items`.`crtiQty` + ii.`crtiQty`, `jos_cart_cart_items`.`crtiQty`)";
+			$this->_db->setQuery($sql);
+			//echo $this->_db->replacePrefix( (string) $sql );die;
+			$this->_db->query();
+			*/
 
 			// kill old cart
 			$this->kill($this->crtId);
@@ -2220,7 +2350,8 @@ class CartModelCart
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Coupons.php');
 		$storefrontCoupons = new StorefrontModelCoupons;
 
-		// go through each coupon and apply all that are not applied (if merging, or all if making the session cart a user's cart)
+		// Go through each coupon and apply all that are not applied
+		// (if merging, or all if making the session cart a user's cart)
 		foreach ($coupons as $coupon)
 		{
 			if (!in_array($coupon->cnId, $existingCnIds))
@@ -2257,7 +2388,7 @@ class CartModelCart
 	 * @param SKU ID
 	 * @param mode Update Method: add - adds to the existing quantity, set - ignores existing quantity and sets a new value, sync - simply checks/updates inventory and pricing
 	 * @param int Quantity
-	 * @param bool Retain old value -- flag determening whether the old qty should be saved (only when it goes down); price get saved in either case
+	 * @param bool Retain old value -- flag determining whether the old qty should be saved (only when it goes down); price get saved in either case
 	 * @return void
 	 */
 	private function doItem($sId, $mode = 'add', $qty = 1, $retainOldValue = false)
@@ -2290,6 +2421,7 @@ class CartModelCart
 		// If not adding, but setting, ignore cart value
 		else
 		{
+			$skuCartInfo = new stdClass();
 			$skuCartInfo->crtiQty = 0;
 		}
 
@@ -2297,6 +2429,11 @@ class CartModelCart
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
 		$warehouse = new StorefrontModelWarehouse();
 		$allSkuInfo = $warehouse->getSkusInfo(array($sId));
+
+		if (empty($allSkuInfo))
+		{
+			throw new Exception(JText::_('COM_STOREFRONT_SKU_NOT_FOUND'));
+		}
 
 		$skuInfo = $allSkuInfo[$sId]['info'];
 		$skuName = $skuInfo->pName;
@@ -2311,12 +2448,37 @@ class CartModelCart
 		// Check inventory rules (sync mode doesn't check inventory level, just pricing)
 		if ($mode != 'sync')
 		{
-			// Don't allow purchasing multiple products for those that are not allowed
+			// Don't allow purchasing multiple SKUs for those that are not allowed
 			if (!$skuInfo->sAllowMultiple && ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))) {
 				throw new Exception(JText::_('COM_CART_NO_MULTIPLE_ITEMS'));
 			}
+			// Also don't allow purchasing multiple products (different SKUs) for those that are not allowed
+			if (!$skuInfo->pAllowMultiple) {
+				// Just in case check this SKU qty one more time (same as above if statement)
+				if ((!empty($skuCartInfo->crtiQty) && $skuCartInfo->crtiQty > 0) || ($qty > 1))
+				{
+					throw new Exception(JText::_('COM_CART_NO_MULTIPLE_ITEMS'));
+				}
+				// Check if there is this project already in the cart (different SKU)
+				$allSkus = $warehouse->getProductSkus($skuInfo->pId);
+				foreach ($allSkus as $skuId)
+				{
+					// Skip the current SKU, look only at other SKUs
+					if ($skuId != $sId)
+					{
+						$otherSkuInfo = $this->getCartItem($skuId);
+						// Error if there is already another SKU of the same product in the cart
+						if (!empty($otherSkuInfo->crtiQty) && $otherSkuInfo->crtiQty > 0)
+						{
+							throw new Exception(JText::_('COM_CART_NO_MULTIPLE_ITEMS'));
+						}
+					}
+
+				}
+			}
+
 			// Make sure there is enough inventory
-			elseif ($skuInfo->sTrackInventory)
+			if ($skuInfo->sTrackInventory)
 			{
 				// See if qty can be added
 				if ($qty > $skuInfo->sInventory)
@@ -2573,6 +2735,7 @@ class CartModelCart
 		// Update skuInfo with transaction info
 		foreach ($skuInfo as $sId => $sku)
 		{
+			$transactionInfo = new stdClass();
 			$transactionInfo->qty = $allSkuInfo[$sId]->tiQty;
 			$transactionInfo->tiPrice = $allSkuInfo[$sId]->tiPrice;
 			$skuInfo[$sId]['transactionInfo'] = $transactionInfo;

@@ -37,12 +37,12 @@ jimport('joomla.application.component.view');
 
 //require needed files
 //require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'tags.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'helper.php');
 //require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'warehouse.php');
 //require_once(JPATH_COMPONENT . DS . 'models' . DS . 'course.php');
 
 // require base component controller
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'component.php');
+//require_once(JPATH_COMPONENT . DS . 'controllers' . DS . 'component.php');
 
 //build controller path and name
 $controllerName = JRequest::getCmd('controller', '');
@@ -52,17 +52,17 @@ if (empty($controllerName))
 	// Load default controller if no controller provided
 	$controllerName = 'storefront';
 }
-elseif (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+elseif (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	JError::raiseError(404, JText::_('Page Not Found'));
 }
 
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'StorefrontController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute
 $controller = new $controllerName();
-$controller->disableDefaultTask();
+//$controller->disableDefaultTask();
 $controller->execute();
 $controller->redirect();
 

@@ -24,42 +24,57 @@
  *
  * @package   hubzero-cms
  * @author    Ilya Shunko <ishunko@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2012 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-?>
-
-<div class="section">
-
-	<h2>Shipping info</h2>
-
-<?php
-
-	if (!empty($this->transactionInfo))
+/**
+ * AJAX actions controller class (TODO, not yet implemented)
+ */
+class CartControllerDo extends ComponentController
+{
+	/**
+	 * Execute a task
+	 *
+	 * @return     void
+	 */
+	public function execute()
 	{
-		echo '<p>';
-		echo $this->transactionInfo->tiShippingToFirst;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingToLast;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingAddress;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingCity;
-		echo ', ';
-		echo $this->transactionInfo->tiShippingState;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingZip;
-		echo '</p>';
+		// Get the task
+		$this->_task  = JRequest::getVar('task', '');
+
+		if (empty($this->_task))
+		{
+			$this->_task = 'home';
+			$this->registerTask('__default', $this->_task);
+		}
+
+		parent::execute();
 	}
 
-	echo '<a href="';
-	echo JRoute::_('index.php?option=com_cart/checkout/shipping');
-	echo '">Change</a>';
+	/**
+	 * Default task
+	 *
+	 * @return     void
+	 */
+	public function homeTask()
+	{
+		die('no direct access');
+	}
 
-?>
+	/**
+	 * Default task
+	 *
+	 * @return     void
+	 */
+	public function deleteTask()
+	{
+		$sId = $this->getParams('sId');
 
-</div>
+	}
+
+}
+

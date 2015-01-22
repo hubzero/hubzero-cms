@@ -127,7 +127,7 @@ class CartControllerTest extends ComponentController
 			return;
 		}
 
-		if (1)
+		if (0)
 		{
 			// CREATE NEW COURSE
 			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Course.php');
@@ -178,7 +178,7 @@ class CartControllerTest extends ComponentController
 		}
 
 		if (0) {
-			// UPDATE COURSE by recreatiing it
+			// UPDATE COURSE by recreating it
 			include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'StorefrontModelCourse.php');
 			$course = new StorefrontModelCourse();
 			$course->setName('Operations Management 104');
@@ -333,6 +333,7 @@ class CartControllerTest extends ComponentController
 		$passport = $badges->getProvider();
 
 		// Set credentials and settings (outh in not secured at this point)
+		$credentials = new stdClass();
 		$credentials->clientId = 43;
 		$credentials->issuerId = 17;
 		// These are not used so far, but have some value
@@ -351,6 +352,7 @@ class CartControllerTest extends ComponentController
 		}
 
 		// Set badges details
+		$badge = new stdClass();
 		$badge->id = 83;
 		$badge->evidenceUrl = 'http://hubzero.org';
 
@@ -400,7 +402,7 @@ class CartControllerTest extends ComponentController
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/x-www-form-urlencoded", "Content-Length: " . strlen($req)));
 			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_VERBOSE, 1);
+			curl_setopt($ch, CURLOPT_VERBOSE, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 
@@ -408,7 +410,7 @@ class CartControllerTest extends ComponentController
 			$curl_err = curl_error($ch);
 			curl_close($ch);
 
-			//print_r($curl_result); die;
+			//print_r($req); print_r($curl_err); die;
 
 			// Redirect to confirmation page
 			$redirect_url  = JURI::root() . 'cart/order/complete?' . $req;
@@ -420,5 +422,14 @@ class CartControllerTest extends ComponentController
 
 	}
 
+	/**
+	 * Test express add to cart task
+	 *
+	 * @return     void
+	 */
+	public function addTask()
+	{
+		$this->view->display();
+	}
 }
 

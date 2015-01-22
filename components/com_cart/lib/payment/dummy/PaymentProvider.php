@@ -93,6 +93,8 @@ class PaymentProvider
 	 */
 	public function verifyPayment($tInfo)
 	{
+		// This is where the amount received is verified against amount expected, etc.
+
 		return true;
 	}
 

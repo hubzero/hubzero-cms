@@ -81,6 +81,7 @@ class StorefrontModelCoupons
 		// rearrange coupons in the order of applied within coupon types time keeping the item coupons on top (so that it is ordered by itemCoupon, dateAdded)
 
 		// Initialize temp storage arrays
+		$temp = new stdClass();
 		$temp->itemCoupons = array();
 		$temp->genericCoupons = array();
 

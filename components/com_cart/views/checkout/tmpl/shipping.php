@@ -56,49 +56,54 @@ $this->css();
 			<div class="col span6">
 				<h2>Shipping address</h2>
 
-				<form name="cartShippingInfo" id="cartShippingInfo" method="post" class="hubForm">
-					<label for="shippingToFirst">First name:
-						<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo JRequest::getVar('shippingToFirst', false, 'post'); ?>" />
-					</label>
+				<form name="cartShippingInfo" class="cartShippingInfo full" method="post" id="hubForm">
+					<fieldset>
+						<label for="shippingToFirst">First name:
+							<input type="text" name="shippingToFirst" id="shippingToFirst" value="<?php echo JRequest::getVar('shippingToFirst', false, 'post'); ?>" />
+						</label>
 
-					<label for="shippingToLast">Last name:
-						<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo JRequest::getVar('shippingToLast', false, 'post'); ?>" />
-					</label>
+						<label for="shippingToLast">Last name:
+							<input type="text" name="shippingToLast" id="shippingToLast" value="<?php echo JRequest::getVar('shippingToLast', false, 'post'); ?>" />
+						</label>
 
-					<label for="shippingAddress">Shipping address:
-						<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo JRequest::getVar('shippingAddress', false, 'post'); ?>" />
-					</label>
+						<label for="shippingAddress">Shipping address:
+							<input type="text" name="shippingAddress" id="shippingAddress" value="<?php echo JRequest::getVar('shippingAddress', false, 'post'); ?>" />
+						</label>
 
-					<label for="shippingCity">City:
-						<input type="text" name="shippingCity" id="shippingCity" value="<?php echo JRequest::getVar('shippingCity', false, 'post'); ?>" />
-					</label>
+						<label for="shippingCity">City:
+							<input type="text" name="shippingCity" id="shippingCity" value="<?php echo JRequest::getVar('shippingCity', false, 'post'); ?>" />
+						</label>
 
-					<label for="shippingZip">Zip:
-						<input type="text" name="shippingZip" id="shippingZip" value="<?php echo JRequest::getVar('shippingZip', false, 'post'); ?>" />
-					</label>
+						<label for="shippingZip">Zip:
+							<input type="text" name="shippingZip" id="shippingZip" value="<?php echo JRequest::getVar('shippingZip', false, 'post'); ?>" />
+						</label>
 
-					<label for="shippingState">State:
-						<select name="shippingState" id="shippingState">
-							<option value=""> -- please select -- </option>
-							<?php
-								foreach ($states as $abbr => $state)
-								{
-									echo '<option value="' . $abbr . '"';
-									if (JRequest::getVar('shippingState', false, 'post') == $abbr)
+						<label for="shippingState">State:
+							<select name="shippingState" id="shippingState">
+								<option value=""> -- please select -- </option>
+								<?php
+									foreach ($states as $abbr => $state)
 									{
-										echo ' selected';
+										echo '<option value="' . $abbr . '"';
+										if (JRequest::getVar('shippingState', false, 'post') == $abbr)
+										{
+											echo ' selected';
+										}
+										echo '>' . $state . '</option>';
 									}
-									echo '>' . $state . '</option>';
-								}
-							?>
-						</select>
-					</label>
+								?>
+							</select>
+						</label>
 
-					<label for="saveAddress"><input type="checkbox" name="saveAddress" id="saveAddress" /> Save this address?</label>
+						<fieldset>
+							<legend>Save this address</legend>
+							<label for="saveAddress"><input type="checkbox" class="option" name="saveAddress" id="saveAddress" /> Save this address for future use</label>
+						</fieldset>
 
-					<p class="submit">
-						<input type="submit" value="Next" name="submitShippingInfo" id="submitShippingInfo" class="btn" />
-					</p>
+						<p class="submit">
+							<input type="submit" value="Next" name="submitShippingInfo" id="submitShippingInfo" class="btn" />
+						</p>
+					</fieldset>
 				</form>
 			</div>
 			<div class="col span6 omega">

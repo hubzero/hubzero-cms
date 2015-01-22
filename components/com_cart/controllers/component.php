@@ -39,7 +39,7 @@ class ComponentController extends \Hubzero\Component\SiteController
 	/**
 	 * Parse the URL parameters and map each parameter (in order) to the given array of names
 	 *
-	 * @param		array varNames: Array of names to map the URL parameters to
+	 * @param		mixed (array of strings or string): Array of names anr single name to map the URL parameter(s) to
 	 * @return		object: Object with properties named after var names mapped to URL parameters
 	 */
 	protected function getParams($varNames)
@@ -49,6 +49,11 @@ class ComponentController extends \Hubzero\Component\SiteController
 		$strictProcessing = false;
 		$params = false;
 
+		if (!is_array($varNames))
+		{
+			$varNames = array($varNames);
+		}
+
 		// check if there are more parameters than needed
 		$extraParameter = JRequest::getVar('p' . count($varNames), '');
 		if ($strictProcessing && !empty($extraParameter))
@@ -57,6 +62,8 @@ class ComponentController extends \Hubzero\Component\SiteController
 			//throw new Exception('Too many parameters');
 			JError::raiseError(404, JText::_('Page Not Found'));
 		}
+
+		$params = new stdClass();
 
 		// Go through each var name and assign a sequential URL parameter's value to it
 		foreach ($varNames as $varName)

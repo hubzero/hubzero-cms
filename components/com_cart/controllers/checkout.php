@@ -75,14 +75,16 @@ class CartControllerCheckout extends ComponentController
 		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
 		$cart = new CartModelCart();
 
-		// This is a starting point in checkout process. All existing transactinos for this user have to be removed and a new one has to be created.
+		// This is a starting point in checkout process. All existing transactions for this user
+		// have to be removed and a new one has to be created.
 		// Do the final check of the cart
 
-		// Get the latest synced cart info, it will also enable cart syncing that was turned off before (this should also kill old transaction info)
+		// Get the latest synced cart info, it will also enable cart syncing that was turned off before
+		// (this should also kill old transaction info)
 		$cart->getCartInfo(true);
 
-		// Check if there are changes to display
-		if ($cart->cartChanged())
+		// Check if there are messages to display
+		if ($cart->hasMessages())
 		{
 			// redirect back to cart to display all messages
 			$redirect_url = JRoute::_('index.php?option=' . 'com_cart');

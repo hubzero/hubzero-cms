@@ -31,35 +31,25 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-?>
-
-<div class="section">
-
-	<h2>Shipping info</h2>
-
-<?php
-
-	if (!empty($this->transactionInfo))
-	{
-		echo '<p>';
-		echo $this->transactionInfo->tiShippingToFirst;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingToLast;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingAddress;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingCity;
-		echo ', ';
-		echo $this->transactionInfo->tiShippingState;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingZip;
-		echo '</p>';
-	}
-
-	echo '<a href="';
-	echo JRoute::_('index.php?option=com_cart/checkout/shipping');
-	echo '">Change</a>';
+setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 ?>
 
-</div>
+<header id="content-header">
+    <h2>Express add</h2>
+</header>
+
+<section class="main section">
+    <div class="section-inner">
+        <p>Add straight to the cart</p>
+
+        <form action="<?php echo JURI::root() . 'cart'; ?>" id="frm" method="post">
+
+            <input type="hidden" name="updateCart" value="true">
+            <input type="hidden" name="skus" value="8">
+            <input type="hidden" name="expressCheckout" value="true">
+
+            <input type="submit" value="Pay">
+        </form>
+    </div>
+</section>

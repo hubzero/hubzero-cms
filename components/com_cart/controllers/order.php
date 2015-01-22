@@ -111,7 +111,7 @@ class CartControllerOrder extends ComponentController
 		// Get transaction info
 		$tInfo = $cart->getTransactionFacts($tId);
 		//print_r($tId); die;
-		//print_r($tInfo);
+		//print_r($tInfo);die;
 
 		if(empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed') {
 			die('Error processing your order.');
@@ -192,42 +192,52 @@ class CartControllerOrder extends ComponentController
 	}
 
 	/**
-	 * Payment gateway postback make sure everything checks out and complete transaction
+	 * Payment gateway postback: make sure everything checks out and complete transaction
 	 *
 	 * @return     void
 	 */
 	public function postbackTask()
 	{
+		$test = false;
+		// TESTING ***********************
+		if ($test) {
+			$postBackTransactionId = 34;
+		}
+
 		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
 
-		if (empty($_POST))
+		if (empty($_POST) && !$test)
 		{
 			JError::raiseError(404, JText::_('Page not found'));
 		}
 
+		// Initialize logger
+		$logger = new CartMessenger('Payment Postback');
+
 		// Get payment provider
-		$paymentGatewayProivder = $params->get('paymentProvider');
+		if (!$test) {
+			$paymentGatewayProivder = $params->get('paymentProvider');
 
-		include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
-		$paymentDispatcher = new PaymentDispatcher($paymentGatewayProivder);
-		$pay = $paymentDispatcher->getPaymentProvider();
+			include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'payment' . DS . 'PaymentDispatcher.php');
+			$paymentDispatcher = new PaymentDispatcher($paymentGatewayProivder);
+			$pay = $paymentDispatcher->getPaymentProvider();
 
-		$postBackTransactionId = $pay->setPostBack($_POST);
+			// Extract the transaction id from postback information
+			$postBackTransactionId = $pay->setPostBack($_POST);
 
-		if (!$postBackTransactionId)
-		{
-			// error postback not verified (TO DO)
-			die('not verified');
+			if (!$postBackTransactionId) {
+				// Transaction id couldn't be extracted
+				$error = 'Postback did not have proper transaction ID ';
+
+				$logger->setMessage($error);
+				$logger->setPostback($_POST);
+				$logger->log(LoggingLevel::ERROR);
+				return false;
+			}
 		}
-
-		// TESTING ***********************
-		//$postBackTransactionId = 1;
 
 		// Initialize static cart
 		$cart = new CartModelCart(NULL, true);
-
-		// Initialize logger
-		$logger = new CartMessenger('Payment Postback');
 
 		// Get transaction info
 		$tInfo = $cart->getTransactionFacts($postBackTransactionId);
@@ -243,10 +253,9 @@ class CartControllerOrder extends ComponentController
 			$logger->setPostback($_POST);
 			$logger->log(LoggingLevel::ERROR);
 			return false;
-
 		}
 
-		// Check if it can be processed
+		// Check if the transaction can be processed (it can only be processed if the transaction is awaiting payment)
 		if ($tInfo->info->tStatus != 'awaiting payment')
 		{
 			// Transaction cannot be processed, log error
@@ -259,9 +268,9 @@ class CartControllerOrder extends ComponentController
 		}
 
 		// verify payment
-		if (!$pay->verifyPayment($tInfo))
+		if (!$test && !$pay->verifyPayment($tInfo))
 		{
-			// Since payment has not been verified get error.
+			// Payment has not been verified, get verification error
 			$error = $pay->getError()->msg;
 
 			$error .= ' Transaction ID: ' . $postBackTransactionId;
@@ -277,14 +286,17 @@ class CartControllerOrder extends ComponentController
 			return false;
 		}
 
-		// No error -- mark the transaction as paid
+		// No error
 		$message = 'Transaction completed';
 		$message .= ' Transaction ID: ' . $postBackTransactionId;
 
-		$logger->setMessage($message);
-		$logger->setPostback($_POST);
-		$logger->log(LoggingLevel::INFO);
-
+		// Log info
+		if (!$test) {
+			$logger->setMessage($message);
+			$logger->setPostback($_POST);
+			$logger->log(LoggingLevel::INFO);
+		}
+		// Finalize order -- whatever needs to be done
 		return($this->completeOrder($tInfo));
 
 	}
@@ -305,6 +317,7 @@ class CartControllerOrder extends ComponentController
 		// Send emails to customer and admin
 		$logger->emailOrderComplete($tInfo->info);
 
+		// Handle transaction according to items handlers
 		return $cart->completeTransaction($tInfo);
 	}
 

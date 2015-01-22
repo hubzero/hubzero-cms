@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import needed joomla libs
+//import needed Joomla! libs
 jimport('joomla.filesystem.folder');
 jimport('joomla.application.component.view');
 

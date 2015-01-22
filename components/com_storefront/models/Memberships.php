@@ -111,7 +111,7 @@ class StorefrontModelMemberships
 	}
 
 	/**
-	 * Calculate new and return old expiration info for a product
+	 * Calculate new and return new & old expiration info for a product
 	 *
 	 * @param  string		TTL
 	 * @return void
@@ -121,8 +121,10 @@ class StorefrontModelMemberships
 		// Get current membership (if any)
 		$membershipInfo = $this->getMembershipInfo($crtId, $item['info']->pId);
 
-		// Calculate correct TTL for one SKU (sku tll * qty)
+		// Calculate correct TTL for the SKU (sku tll * qty)
 		$ttl = $this->_getTtl($item['meta']['ttl'], $item['cartInfo']->qty);
+
+		$membershipSIdInfo = new stdClass();
 
 		// Calculate the new expiration date
 		if ($membershipInfo && $membershipInfo['crtmActive'])

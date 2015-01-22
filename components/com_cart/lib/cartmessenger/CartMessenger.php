@@ -67,43 +67,44 @@ class CartMessenger
 		$this->postback = $postback;
 	}
 
-	public function setMessage($msg)
+	public function setMessage($msg = '')
 	{
 		$this->message = $msg;
 	}
 
 	public function log($loggingLevel = 2)
 	{
-		if (!empty($this->postback))
+		if (is_writable($this->logFile))
 		{
-			$message = $this->message . "\n" . "Postback info: " . serialize($this->postback) . "\n";
-		}
+			$message = 'Log info: ';
+			if (!empty($this->postback)) {
+				$message = $this->message . "\n" . "Postback info: " . serialize($this->postback) . "\n";
+			}
 
-		$message .= "\n";
+			$message .= "\n";
 
-		$hzl = new \Hubzero\Log\Writer(
-			new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
-			\JDispatcher::getInstance()
-		);
-		$hzl->useFiles($this->logFile);
+			$hzl = new \Hubzero\Log\Writer(
+				new \Monolog\Logger(\JFactory::getConfig()->getValue('config.application_env')),
+				\JDispatcher::getInstance()
+			);
+			$hzl->useFiles($this->logFile);
 
-		if ($loggingLevel == 0)
-		{
-			$hzl->error($this->caller . ': ' . $message);
-		}
-		elseif ($loggingLevel == 1)
-		{
-			$log = $hzl->warning($this->caller . ': ' . $message);
-			return $log;
-		}
-		elseif ($loggingLevel == 2)
-		{
-			$log = $hzl->info($this->caller . ': ' . $message);
-			return $log;
-		}
+			if ($loggingLevel == 0) {
+				$hzl->error($this->caller . ': ' . $message);
+			} elseif ($loggingLevel == 1) {
+				$log = $hzl->warning($this->caller . ': ' . $message);
+				return $log;
+			} elseif ($loggingLevel == 2) {
+				$log = $hzl->info($this->caller . ': ' . $message);
+				return $log;
+			}
 
-		// If error, needs to send email to admin
-		$this->emailError($this->message, 'POSTBACK');
+			// If error, needs to send email to admin
+			$this->emailError($this->message, 'POSTBACK');
+		}
+		else {
+			$this->emailError($this->logFile, 'LOG');
+		}
 	}
 
 	public function emailOrderComplete($transactionInfo)
@@ -135,7 +136,7 @@ class CartMessenger
 		{
 			$transactionInfo->tiTax = 0;
 		}
-		if ($transactionInfo->tiDiscounts > 0 || $transactionInfo->tiShippingDiscount)
+		if ($transactionInfo->tiDiscounts > 0 || $transactionInfo->tiShippingDiscount > 0)
 		{
 			$summary .= 'Discounts: ' . money_format('%n', $transactionInfo->tiDiscounts + $transactionInfo->tiShippingDiscount) . "\n";
 		}
@@ -151,7 +152,7 @@ class CartMessenger
 			$summary .= "\n--------------------\n";
 			$summary .= $transactionInfo->tiShippingToFirst . ' ' . $transactionInfo->tiShippingToLast . "\n";
 			$summary .= $transactionInfo->tiShippingAddress . "\n";
-			$summary .= $transactionInfo->tiShippingCity . '. ' . $transactionInfo->tiShippingState . ' ' . $transactionInfo->tiShippingZip . "\n";
+			$summary .= $transactionInfo->tiShippingCity . ', ' . $transactionInfo->tiShippingState . ' ' . $transactionInfo->tiShippingZip . "\n";
 		}
 
 		$summary .= "\n\nItems ordered:";
@@ -162,7 +163,7 @@ class CartMessenger
 			$itemInfo = $item['info'];
 			$cartInfo = $item['cartInfo'];
 
-			// If course
+			// If course, generate a link to the course
 			$action = false;
 			if ($itemInfo->ptId == 20)
 			{
@@ -251,10 +252,15 @@ class CartMessenger
 
 		$mailMessage = JFactory::getDate() . "\n";
 
-		if	($errorType == 'POSTBACK')
+		if ($errorType == 'POSTBACK')
 		{
 			$mailSubject = ': Error processing postback payment.';
 			$mailMessage = 'There was an error processing payment postback:' . "\n\n";
+		}
+		elseif ($errorType == 'LOG')
+		{
+			$mailSubject = ': Error logging payment postback information.';
+			$mailMessage = 'Log file is not writable.' . "\n\n";
 		}
 		else
 		{
@@ -263,7 +269,9 @@ class CartMessenger
 
 		$mailMessage .= $error;
 
-		$mailMessage .= "\n\n" . 'Please see log for details';
+		if ($errorType != 'LOG') {
+			$mailMessage .= "\n\n" . 'Please see log for details';
+		}
 
 		// Send emails
 		$dispatcher->trigger('onSendMessage', array('store_notifications', $mailSubject, $mailMessage, $from, $adminId, '', null, '', 0, true));

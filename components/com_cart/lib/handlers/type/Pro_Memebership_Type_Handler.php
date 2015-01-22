@@ -22,44 +22,33 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
+ * @package   Hubzero
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+class Pro_Memebership_Type_Handler extends Type_Handler
+{
+    /**
+     * Constructor
+     *
+     * @param 	void
+     * @return 	void
+     */
+    public function __construct($item, $crtId)
+    {
+        parent::__construct($item, $crtId);
+    }
 
-?>
+    public function handle()
+    {
+        include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
+        $ms = new StorefrontModelMemberships();
 
-<div class="section">
+        // Get current registration
+        $membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
+        $expiration = $membership['crtmExpires'];
 
-	<h2>Shipping info</h2>
-
-<?php
-
-	if (!empty($this->transactionInfo))
-	{
-		echo '<p>';
-		echo $this->transactionInfo->tiShippingToFirst;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingToLast;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingAddress;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingCity;
-		echo ', ';
-		echo $this->transactionInfo->tiShippingState;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingZip;
-		echo '</p>';
-	}
-
-	echo '<a href="';
-	echo JRoute::_('index.php?option=com_cart/checkout/shipping');
-	echo '">Change</a>';
-
-?>
-
-</div>
+        mail('ilya@shunko.com', 'PRO member purchase', serialize($membership));
+    }
+}

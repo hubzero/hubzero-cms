@@ -62,6 +62,12 @@ function StorefrontParseRoute($segments)
 	if (!empty($segments[1]))
 	{
 		$vars['task'] = $segments[1];
+
+		if ($segments[0] == 'product')
+		{
+			$vars['task'] = 'display';
+			$vars['product'] = $segments[1];
+		}
 	}
 
 	foreach ($segments as $index => $value)

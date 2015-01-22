@@ -22,44 +22,35 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
+ * @package   Hubzero
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-?>
 
-<div class="section">
+/**
+ * Product type handler. Parent class for all type handlers.
+ */
+class Type_Handler
+{
+    // Database instance
+    var $db = NULL;
 
-	<h2>Shipping info</h2>
+    // Item info
+    var $item;
 
-<?php
+    var $crtId;
 
-	if (!empty($this->transactionInfo))
-	{
-		echo '<p>';
-		echo $this->transactionInfo->tiShippingToFirst;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingToLast;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingAddress;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingCity;
-		echo ', ';
-		echo $this->transactionInfo->tiShippingState;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingZip;
-		echo '</p>';
-	}
-
-	echo '<a href="';
-	echo JRoute::_('index.php?option=com_cart/checkout/shipping');
-	echo '">Change</a>';
-
-?>
-
-</div>
+    /**
+     * Constructor
+     *
+     */
+    public function __construct($item, $crtId)
+    {
+        $this->item = $item;
+        $this->crtId = $crtId;
+    }
+}

@@ -22,44 +22,33 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
+ * @package   Hubzero
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+class Membership_Model_Handler extends Model_Handler
+{
+    /**
+     * Constructor
+     *
+     * @param 	void
+     * @return 	void
+     */
+    public function __construct($item, $crtId)
+    {
+        parent::__construct($item, $crtId);
+    }
 
-?>
+    public function handle()
+    {
+        include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
+        $ms = new StorefrontModelMemberships();
 
-<div class="section">
+        // Get new expiration date
+        $productMembership = $ms->getNewExpirationInfo($this->crtId, $this->item);
 
-	<h2>Shipping info</h2>
-
-<?php
-
-	if (!empty($this->transactionInfo))
-	{
-		echo '<p>';
-		echo $this->transactionInfo->tiShippingToFirst;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingToLast;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingAddress;
-		echo '<br>';
-		echo $this->transactionInfo->tiShippingCity;
-		echo ', ';
-		echo $this->transactionInfo->tiShippingState;
-		echo ' ';
-		echo $this->transactionInfo->tiShippingZip;
-		echo '</p>';
-	}
-
-	echo '<a href="';
-	echo JRoute::_('index.php?option=com_cart/checkout/shipping');
-	echo '">Change</a>';
-
-?>
-
-</div>
+        // Update/Create membership expiration date with new value
+        $ms->setMembershipExpiration($this->crtId, $this->item['info']->pId, $productMembership->newExpires);
+    }
+}

@@ -1,9 +1,13 @@
+.col > h2 {
+	margin-top: 0;
+}
+
 .cartWrap {
 	margin: 0 0 2em 0;
 }
 
 #cartItems input[type=number] {
-	width: 25px;
+	width: 4em;
 	padding: 5px;
 }
 
@@ -109,6 +113,13 @@
 	font-size: 0.7em;
 	font-weight: normal;
 	color: #666;
+}
+
+.deleteItem {
+	display: inline;
+	padding: 0;
+	border: 0;
+	background: none;
 }
 
 #cartContents td {
