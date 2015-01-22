@@ -255,6 +255,10 @@ if (count($this->rows) > 0)
 		}
 		$messaging = true;
 	}
+	if (!JPluginHelper::isEnabled('members', 'messages'))
+	{
+		$messaging = false;
+	}
 
 	foreach ($this->rows as $row)
 	{

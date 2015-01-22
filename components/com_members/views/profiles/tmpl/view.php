@@ -31,7 +31,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 $juser = JFactory::getUser();
 $no_html = JRequest::getInt( 'no_html', 0 );
-$user_messaging = $this->config->get('user_messaging', 0);
+$user_messaging = (JPluginHelper::isEnabled('members', 'messages') ? $this->config->get('user_messaging', 0) : 0);
 
 $prefix = $this->profile->get("name")."'s";
 $edit = false;
@@ -45,7 +45,7 @@ $tab_name = "Dashboard";
 switch( $user_messaging )
 {
 	case 0:
-		$mssaging = false;
+		$messaging = false;
 		break;
 	case 1:
 		$common = \Hubzero\User\Helper::getCommonGroups( $juser->get("id"), $this->profile->get('uidNumber') );
