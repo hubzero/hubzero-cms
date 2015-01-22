@@ -38,7 +38,7 @@ $base = rtrim(JURI::getInstance()->base(true), '/');
 
 $database = JFactory::getDBO();
 $sql = "SELECT status
-		FROM #__support_tickets
+		FROM `#__support_tickets`
 		WHERE open=0
 		AND type='{$this->type}' ";
 		if ($this->group == '_none_')
@@ -68,7 +68,7 @@ foreach ($resolutions as $resolution)
 }
 
 $sql = "SELECT severity
-		FROM #__support_tickets
+		FROM `#__support_tickets`
 		WHERE type='{$this->type}' ";
 		if ($this->group == '_none_')
 		{
@@ -295,7 +295,7 @@ function getMonthName($month)
 							xaxis: { mode: "time", tickLength: 0, tickDecimals: 0, <?php if (count($o) <= 12) { echo 'ticks: ' . count($o) . ','; } ?>
 								tickFormatter: function (val, axis) {
 									var d = new Date(val);
-									return month_short[d.getUTCMonth()] + ' ' + d.getFullYear();
+									return month_short[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
 								}
 							},
 							yaxis: { min: 0 }
@@ -530,7 +530,7 @@ function getMonthName($month)
 								hoverable: false
 							}
 						});
-				    });
+					});
 				}
 				</script>
 			</div><!-- / .col span-half omega -->
@@ -652,7 +652,7 @@ function getMonthName($month)
 								xaxis: { mode: "time", tickLength: 0, tickDecimals: 0,
 									tickFormatter: function (val, axis) {
 										var d = new Date(val);
-										return month_short[d.getUTCMonth()] + ' \'' + d.getFullYear().toString().substring(2);
+										return month_short[d.getUTCMonth()] + ' \'' + d.getUTCFullYear().toString().substring(2);
 									}
 								},
 								yaxis: { min: 0, max: <?php echo $top; ?> }
