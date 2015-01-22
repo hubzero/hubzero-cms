@@ -1201,10 +1201,24 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 							// Store curation manifest
 							$row->curation = json_encode($pub->_curationModel->_manifest);
 						}
-						// Run mkAIP
-						if (!$this->getError() && PublicationUtilities::mkAip($row))
+
+						// Check if publication is within grace period (published status)
+						$gracePeriod = $this->config->get('graceperiod', 0);
+						$allowArchive = $gracePeriod ? false : true;
+						if ($allowArchive && $pub->accepted && $pub->accepted != '0000-00-00 00:00:00')
 						{
-							$row->state = 10; // preserving
+							$monthFrom = JFactory::getDate($pub->accepted . '+1 month')->toSql();
+							if (strtotime($monthFrom) < strtotime(JFactory::getDate()))
+							{
+								$allowArchive = true;
+							}
+						}
+
+						// Run mkAIP if no grace period set or passed
+						if (!$this->getError() && $row->doi && $allowArchive == true && (!$row->archived || $row->archived == '0000-00-00 00:00:00') && PublicationUtilities::mkAip($row))
+						{
+						//	$row->state = 10; // preserving
+							$row->archived = JFactory::getDate()->toSql();
 						}
 					}
 					$row->modified = JFactory::getDate()->toSql();
