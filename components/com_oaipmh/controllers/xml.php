@@ -566,6 +566,11 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					{
 						$return .= $this->doDoi($result->identifier);
 					}
+					elseif ($dcs[$i] == "date")
+					{
+						$date = JFactory::getDate($result->date)->format($this->gran);
+						$return .= "<dc:date>" . $date . "</dc:date>";
+					}
 					else
 					{
 						$res = html_entity_decode($result->$dcs[$i]);
@@ -597,6 +602,13 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			$header .= $this->doDoi($result->identifier);
 		}
 		$datestamp = strtotime($result->date);
+
+		// we want the "T" & "Z" strings in the output NOT the UTC offset (-400)
+		if ($this->gran == 'c')
+		{
+			$this->gran = 'Y-m-d\Th:i:s\Z';
+		}
+
 		$datestamp = date($this->gran, $datestamp);
 		if (!empty($datestamp))
 		{
@@ -713,10 +725,30 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			foreach ($total as $set)
 			{
 				$setlist .= "<set>";
+
+				// must always have a <setSpec> tag
+				$spec = '';
 				if (!empty($set[0]))
 				{
-					$setlist .= "<setSpec>{$set[0]}</setSpec>";
+					$spec = $set[0];
 				}
+				elseif (empty($set[0]) && !empty($set[1]))
+				{
+					$spec = strtolower($set[1]);
+					$spec = str_replace(' ', '_', $spec);
+				}
+
+				// organize by set
+				if (isset($set[3]) && !empty($set[3]))
+				{
+					$spec = $set[3] . ':' . $spec;
+				}
+
+				if ($spec)
+				{
+					$setlist .= "<setSpec>{$spec}</setSpec>";
+				}
+
 				if (!empty($set[1]))
 				{
 					$setlist .= "<setName>{$set[1]}</setName>";
