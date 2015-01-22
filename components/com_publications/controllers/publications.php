@@ -524,7 +524,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			if ($alias)
 			{
-				$this->_redirect = JRoute::_('index.php?option='.$this->_option);
+				$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
 				return;
 			}
 			else
@@ -554,7 +554,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		$lastPubRelease = $objV->getLastPubRelease($id);
 
 		// Check authorization
-		$authorized = $this->_authorize($publication->project_id);
+		$curatorgroups = $publication->curatorgroup ? array($publication->curatorgroup) : array();
+		$authorized = $this->_authorize($publication->project_id, $curatorgroups, $publication->curator);
 
 		// Dev version/pending/posted/dark archive resource? Must be project owner
 		if ($publication->state != 1)
@@ -2334,7 +2335,8 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		}
 
 		// Check authorization
-		$authorized = $this->_authorize($publication->project_id);
+		$curatorgroups = $publication->curatorgroup ? array($publication->curatorgroup) : array();
+		$authorized = $this->_authorize($publication->project_id, $curatorgroups, $publication->curator);
 
 		// Extra authorization for restricted publications
 		if ($publication->access == 3 || $publication->access == 2)
@@ -2350,9 +2352,9 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			}
 		}
 
-		// Dev version/pending/posted/dark archive resource? Must be project owner
+		// Dev/pending resource? Must be project owner or curator or site admin
 		if (($version == 'dev' || $publication->state == 4 || $publication->state == 3
-			|| $publication->state == 5 || $publication->state == 6) && !$authorized)
+			|| $publication->state == 5 || $publication->state == 7) && !$authorized)
 		{
 			$this->_blockAccess($publication);
 			return true;
@@ -2403,7 +2405,7 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 	 * @param      integer $project_id
 	 * @return     mixed False if no access, string if has access
 	 */
-	protected function _authorize( $project_id = 0, $curatorgroup = NULL )
+	protected function _authorize( $project_id = 0, $curatorgroups = array(), $curator = NULL )
 	{
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
@@ -2418,22 +2420,37 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 		{
 			$authorized = 'admin';
 		}
-
-		// Check if they are curator
-		$curatorgroup = $curatorgroup ? $curatorgroup : $this->config->get('curatorgroup', '');
-		if ($curatorgroup)
+		// Assigned curator?
+		if ($curator == $this->juser->get('id'))
 		{
-			if ($group = \Hubzero\User\Group::getInstance($curatorgroup))
+			$authorized = 'curator';
+		}
+		else
+		{
+			// Check if they are in curator group(s)
+			$curatorgroup = $this->config->get('curatorgroup', '');
+			if ($curatorgroup)
 			{
-				// Check if they're a member of this group
-				$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-				if ($ugs && count($ugs) > 0)
+				$curatorgroups[] = $curatorgroup;
+			}
+
+			if (!empty($curatorgroups))
+			{
+				foreach ($curatorgroups as $curatorgroup)
 				{
-					foreach ($ugs as $ug)
+					if ($group = \Hubzero\User\Group::getInstance($curatorgroup))
 					{
-						if ($group && $ug->cn == $group->get('cn'))
+						// Check if they're a member of this group
+						$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+						if ($ugs && count($ugs) > 0)
 						{
-							$authorized = 'curator';
+							foreach ($ugs as $ug)
+							{
+								if ($group && $ug->cn == $group->get('cn'))
+								{
+									$authorized = 'curator';
+								}
+							}
 						}
 					}
 				}

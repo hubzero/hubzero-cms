@@ -134,6 +134,13 @@ class PublicationVersion extends JTable
 	var $accepted					= NULL;
 
 	/**
+	 * datetime(0000-00-00 00:00:00)
+	 *
+	 * @var string
+	 */
+	var $archived					= NULL;
+
+	/**
 	 * varchar(100)
 	 *
 	 * @var string
@@ -265,6 +272,13 @@ class PublicationVersion extends JTable
 	 * @var text
 	 */
 	var $curation					= NULL;
+
+	/**
+	 * Assigned curator
+	 *
+	 * @var text
+	 */
+	var $curator					= NULL;
 
 	/**
 	 * Constructor

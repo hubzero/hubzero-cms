@@ -221,7 +221,7 @@ class PublicationMasterType extends JTable
 	 *
 	 * @return     array
 	 */
-	public function getAuthTypes( $usergroups = array(), $curatorgroup = '', $authorized = false )
+	public function getAuthTypes( $usergroups = array(), $authorized = false )
 	{
 		$types = array();
 
@@ -229,9 +229,9 @@ class PublicationMasterType extends JTable
 		{
 			return false;
 		}
-		if ($authorized == 'admin' || ($curatorgroup && $group = \Hubzero\User\Group::getInstance($curatorgroup)))
+		if ($authorized == 'admin' || $authorized == 'curator')
 		{
-			// Authorized access to all types
+			// Access to all types
 			$query = "SELECT id FROM $this->_tbl WHERE contributable=1";
 		}
 		else
