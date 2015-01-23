@@ -117,7 +117,7 @@ $this->css('introduction.css', 'system')
 			{
 				$cache = JFactory::getCache('tags', 'callback');
 				$cache->setCaching(1);
-				$cache->setLifeTime(intval($this->config->get('cache_time', 15)) * 60);
+				$cache->setLifeTime(intval($this->config->get('cache_time', 15)));
 
 				$cloud = $cache->call(
 					array($this->cloud, 'render'),
