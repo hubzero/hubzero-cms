@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,58 +25,60 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Newsletter;
+
+use Hubzero\Module\Module;
+use JFactory;
 
 /**
- * Module class for displaying current system environment
+ * Module class for displaying Newsletter Mailing List Sign up
  */
-class modNewsletter extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
-		//instantiate database object
+		// Instantiate database object
 		$this->database = JFactory::getDBO();
 
-		//instantiate user object
+		// Instantiate user object
 		$this->juser = JFactory::getUser();
 
-		//get mailing list details that we are wanting users to sign up for
-		$sql = "SELECT * FROM #__newsletter_mailinglists WHERE deleted=0 AND private=0 AND id=" . $this->database->quote( $this->params->get('mailinglist', 0) );
-		$this->database->setQuery( $sql );
+		// Get mailing list details that we are wanting users to sign up for
+		$sql = "SELECT * FROM `#__newsletter_mailinglists` WHERE deleted=0 AND private=0 AND id=" . $this->database->quote($this->params->get('mailinglist', 0));
+		$this->database->setQuery($sql);
 		$this->mailinglist = $this->database->loadObject();
 
-		//get mailing list subscription if not guest
+		// Get mailing list subscription if not guest
 		$this->subscription   = null;
 		$this->subscriptionId = null;
 		if (!$this->juser->get('guest'))
 		{
-			$sql = "SELECT * FROM #__newsletter_mailinglist_emails WHERE mid=" . $this->database->quote( $this->params->get('mailinglist', 0) ) . " AND email=" . $this->database->quote( $this->juser->get('email'));
-			$this->database->setQuery( $sql );
+			$sql = "SELECT * FROM `#__newsletter_mailinglist_emails` WHERE mid=" . $this->database->quote($this->params->get('mailinglist', 0)) . " AND email=" . $this->database->quote($this->juser->get('email'));
+			$this->database->setQuery($sql);
 			$this->subscription = $this->database->loadObject();
 		}
 
-		//if we are unsubscribed
+		// If we are unsubscribed...
 		if (is_object($this->subscription) && $this->subscription->status == 'unsubscribed')
 		{
 			$this->subscriptionId = $this->subscription->id;
 			$this->subscription   = null;
 		}
 
-		//add stylesheets and scripts
-		$this->css();
-		$this->js();
+		// Add stylesheets and scripts
+		$this->css()
+		     ->js();
 
-		//display module
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		// Display module
+		require $this->getLayoutPath();
 	}
 }

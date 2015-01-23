@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
- Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.
+ Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.
  All rights reserved.
 
  This program is free software; you can redistribute it and/or
@@ -19,31 +19,30 @@
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Newsletter</name>
+	<name>mod_newsletter</name>
 	<author>HUBzero</author>
 	<creationDate>August 2012</creationDate>
-	<copyright>Copyright 2005-2009 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>csmoak@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.0.0</version>
-	<description>Newsletter Mailing List Sign up</description>
+	<description>MOD_NEWSLETTER_XML_DESCRIPTION</description>
 	<files>
-		<filename>helper.php</filename>
-		<filename>mod_newsletter.css</filename>
-		<filename>mod_newsletter.jquery.js</filename>
-		<filename>mod_newsletter.js</filename>
 		<filename module="mod_newsletter">mod_newsletter.php</filename>
+		<filename>helper.php</filename>
+		<filename>assets/css/mod_newsletter.css</filename>
+		<filename>assets/js/mod_newsletter.js</filename>
 		<filename>tmpl/default.php</filename>
-		<filename>tmpl/default.xml</filename>
 		<filename>tmpl/index.html</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="mailinglist" label="Mailing List" description="Mailing list you would like users to sign up for!" type="sql" query="SELECT * FROM jos_newsletter_mailinglists WHERE deleted=0 AND private=0" key_field="id" value_field="name" />
+				<field name="mailinglist" label="MOD_NEWSLETTER_PARAM_MAILINGLIST_LABEL" description="MOD_NEWSLETTER_PARAM_MAILINGLIST_DESC" type="sql" query="SELECT * FROM jos_newsletter_mailinglists WHERE deleted=0 AND private=0" key_field="id" value_field="name" />
 			</fieldset>
 		</fields>
 	</config>
 	<languages>
+		<language tag="en-GB">en-GB.mod_newsletter.ini</language>
 	</languages>
 </extension>
