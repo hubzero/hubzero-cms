@@ -36,16 +36,19 @@ defined('JPATH_BASE') or die;
 class plgUserMiddleware extends JPlugin
 {
 	/**
-	 * @param   string   $context  The context for the data
-	 * @param   integer  $data     The user id
-	 * @param   object
-	 * @return  boolean
+	 * Utility method to act on a user after it has been saved.
+	 *
+	 * @param   array    $user     Holds the new user data.
+	 * @param   boolean  $isnew    True if a new user is stored.
+	 * @param   boolean  $success  True if user was succesfully stored in the database.
+	 * @param   string   $msg      Message.
+	 * @return  void
 	 */
-	public function onUserAfterSave($data, $isNew, $result, $error)
+	public function onUserAfterSave($user, $isnew, $success, $msg)
 	{
-		$userId = JArrayHelper::getValue($data, 'id', 0, 'int');
+		$userId = JArrayHelper::getValue($user, 'id', 0, 'int');
 
-		if ($userId && $result)
+		if ($userId && $success)
 		{
 			try
 			{
@@ -62,7 +65,7 @@ class plgUserMiddleware extends JPlugin
 				$row = new UsersQuotas($db);
 
 				// Check for an existing quota record
-				$db->setQuery("SELECT * FROM `#__user_quotas` WHERE `user_id`=" . $userId);
+				$db->setQuery("SELECT * FROM `#__users_quotas` WHERE `user_id`=" . $userId);
 				if ($quota = $db->loadObject())
 				{
 					$row->bind($quota);
@@ -78,14 +81,19 @@ class plgUserMiddleware extends JPlugin
 						'soft_blocks' => 0
 					);
 
-					$db->setQuery("SELECT c.* FROM `#__user_quotas_classes` AS c LEFT JOIN `#__user_quotas_classes_groups` AS g ON g.`class_id`=c.`id` WHERE g.`group_id` IN (" . implode(',', $gids) . ")");
+					$db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c LEFT JOIN `#__users_quotas_classes_groups` AS g ON g.`class_id`=c.`id` WHERE g.`group_id` IN (" . implode(',', $gids) . ")");
 					if ($cids = $db->loadObjectList())
 					{
 						// Loop through each usergroup and find the highest quota values
 						foreach ($cids as $cls);
 						{
-							$val['hard_files']  = ($val['hard_files']  > $cls->hard_files  ?: $cls->hard_files);
-							$val['soft_files']  = ($val['soft_files']  > $cls->soft_files  ?: $cls->soft_files);
+							if ($cls->hard_blocks > $val['hard_blocks']
+							 && $cls->soft_blocks > $val['soft_blocks'])
+							{
+								$row->class_id = $cls->id;
+							}
+							//$val['hard_files']  = ($val['hard_files']  > $cls->hard_files  ?: $cls->hard_files);
+							//$val['soft_files']  = ($val['soft_files']  > $cls->soft_files  ?: $cls->soft_files);
 							$val['hard_blocks'] = ($val['hard_blocks'] > $cls->hard_blocks ?: $cls->hard_blocks);
 							$val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks ?: $cls->soft_blocks);
 						}
