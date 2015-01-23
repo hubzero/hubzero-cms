@@ -324,12 +324,53 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Publish billboards
+	 *
+	 * @return void
+	 */
+	public function publishTask()
+	{
+		$this->toggle(1);
+	}
+
+	/**
+	 * Unpublish billboards
+	 *
+	 * @return void
+	 */
+	public function unpublishTask()
+	{
+		$this->toggle(0);
+	}
+
+	/**
+	 * Cancels out of the billboard edit view, makes sure to check the billboard back in for other people to edit
+	 *
+	 * @return void
+	 */
+	public function cancelTask()
+	{
+		// Incoming - we need an id so that we can check it back in
+		$billboard = JRequest::getVar('billboard', array(), 'post');
+
+		// Check the billboard back in
+		$row = new BillboardsBillboard($this->database);
+		$row->bind($billboard);
+		$row->checkin();
+
+		// Redirect
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+		);
+	}
+
+	/**
 	 * Toggle a billboard between published and unpublished.  We're looking for an array of ID's to publish/unpublish
 	 *
 	 * @param  $publish: 1 to publish and 0 for unpublish
 	 * @return void
 	 */
-	public function publishTask($publish=1)
+	protected function toggle($publish=1)
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
@@ -369,27 +410,6 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 				return;
 			}
 		}
-
-		// Redirect
-		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-		);
-	}
-
-	/**
-	 * Cancels out of the billboard edit view, makes sure to check the billboard back in for other people to edit
-	 *
-	 * @return void
-	 */
-	public function cancelTask()
-	{
-		// Incoming - we need an id so that we can check it back in
-		$billboard = JRequest::getVar('billboard', array(), 'post');
-
-		// Check the billboard back in
-		$row = new BillboardsBillboard($this->database);
-		$row->bind($billboard);
-		$row->checkin();
 
 		// Redirect
 		$this->setRedirect(
