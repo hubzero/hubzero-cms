@@ -111,20 +111,20 @@
 	.input-username:hover,
 	.input-password:hover,
 	textarea:hover, 
-	input[type="text"]:hover, 
-	input[type="password"]:hover, 
-	input[type="file"]:hover { 
+	input[type="text"]:hover,
+	input[type="password"]:hover,
+	input[type="file"]:hover {
 		border-color: #c9c9c9;
 	}
 	.input-text:focus,
 	.input-username:focus,
 	.input-password:focus,
 	textarea:focus, 
-	input[type="text"]:focus, 
-	input[type="password"]:focus, 
-	input[type="file"]:focus { 
-		background-color: #fff; 
-		border-color: #777; 
+	input[type="text"]:focus,
+	input[type="password"]:focus,
+	input[type="file"]:focus {
+		background-color: #fff;
+		border-color: #777;
 	}
 	.input-username,
 	input[type="text"] {
@@ -153,6 +153,7 @@
 	html.j25 .button-holder {
 		margin-top: -3.3em;
 	}
+
 /* Header */
 	#header {
 		width: 300px;
@@ -251,9 +252,6 @@
 	}
 
 /* Forms */
-	form {
-		
-	}
 	form fieldset legend {
 		display: none;
 	}
@@ -263,15 +261,9 @@
 		background: none;
 		border: none;
 		margin: 0;
-		padding: 0;
-	}
-	form .button1 {
-		background: none;
-		border: none;
-		margin: 0;
 		padding: 1em 0 0 0;
 	}
-	fieldset.loginform {
+	form fieldset {
 		margin-bottom: 0;
 	}
 	#form-login-lang {
@@ -289,6 +281,8 @@
 
 /* Buttons */
 	input[type=submit],
+	.button_holder input,
+	.button-holder input,
 	.button_holder a,
 	.button-holder a {
 		padding: 0.25em 1em;
@@ -326,15 +320,9 @@
 		zoom: 1;
 		cursor: pointer;
 	}
-	input[type=submit] {
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
-	fieldset input[type=submit] {
-		display: inline-block;
-	}
 	input[type=submit]:hover,
+	.button_holder input:hover,
+	.button-holder input:hover,
 	.button_holder a:hover,
 	.button-holder a:hover {
 		color: #fff;
@@ -349,6 +337,8 @@
 		text-decoration: none;
 	}
 	input[type=submit]:active,
+	.button_holder input:active,
+	.button-holder input:active,
 	.button_holder a:active,
 	.button-holder a:active {
 		top: 1px;
@@ -361,9 +351,4 @@
 		background: -o-linear-gradient(#000, #444);
 		filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#000000,endColorstr=#444444);
 		-ms-filter:"progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#000000, endColorstr=#444444)";
-	}
-	.button_holder a,
-	.button-holder a,
-	input[type=submit] {
-		padding: .25em 1em;
 	}
