@@ -220,7 +220,8 @@
 
 /* Status */
 	#noVNC_status_bar {
-	position: absolute;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;;
+		position: absolute;
 		top: -2.5em;
 		right: 18em;
 		z-index: 2;
