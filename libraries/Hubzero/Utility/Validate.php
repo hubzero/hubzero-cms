@@ -265,7 +265,7 @@ class Validate
 		{
 			return false;
 		}
-		die('assed');
+
 		// Is it a positive integer?
 		if (self::nonNegativeInteger($x))
 		{
