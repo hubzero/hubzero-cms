@@ -221,12 +221,15 @@ class MembersQuotasClasses extends JTable
 
 		$groups = array();
 
-		require_once __DIR__ . '/quotas_classes_groups.php';
-
-		$qcGroups = new MembersQuotasClassesGroups($this->_db);
-		foreach ($qcGroups->find('list', array('class_id' => $id)) as $group)
+		if ($id)
 		{
-			$groups[] = $group->group_id;
+			require_once __DIR__ . '/quotas_classes_groups.php';
+
+			$qcGroups = new MembersQuotasClassesGroups($this->_db);
+			foreach ($qcGroups->find('list', array('class_id' => $id)) as $group)
+			{
+				$groups[] = $group->group_id;
+			}
 		}
 
 		return $groups;
