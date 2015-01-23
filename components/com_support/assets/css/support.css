@@ -554,14 +554,17 @@
 		color: transparent;
 		margin: 0;
 		padding: 0.85em .41803399em;
-		width: 1.8em;
+		width: 2.7em;
 		line-height: 1;
-		height: 1em;
+		height: 2.7em;
 		font-size: 1.2em;
 		overflow: hidden;
 		font-weight: normal;
 		cursor: pointer;
 		white-space: nowrap;
+		-webkit-box-sizing: border-box; 
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
 	}
 	@-moz-document url-prefix() {
 		.sort-options span {
