@@ -115,7 +115,7 @@ $this->css('introduction.css', 'system')
 
 			if ($this->config->get('cache', 1))
 			{
-				$cache = JFactory::getCache('callback');
+				$cache = JFactory::getCache('tags', 'callback');
 				$cache->setCaching(1);
 				$cache->setLifeTime(intval($this->config->get('cache_time', 15)) * 60);
 
