@@ -870,6 +870,8 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 			$tag->delete();
 		}
 
+		$this->cleancacheTask(false);
+
 		// Get the browse filters so we can go back to previous view
 		$search = JRequest::getVar('search', '');
 		$sortby = JRequest::getVar('sortby', '');
@@ -880,6 +882,34 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		// Redirect back to browse mode
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&task=browse&search=' . $search . '&sortby=' . $sortby . '&limit=' . $limit . '&limitstart=' . $start . '#count' . $count)
+		);
+	}
+
+	/**
+	 * Clean cached tags data
+	 *
+	 * @param   boolean  $redirect  Redirect after?
+	 * @return  void
+	 */
+	public function cleancacheTask($redirect=true)
+	{
+		$conf = JFactory::getConfig();
+
+		$cache = JCache::getInstance('', array(
+			'defaultgroup' => '',
+			'storage'      => $conf->get('cache_handler', ''),
+			'caching'      => true,
+			'cachebase'    => $conf->get('cache_path', JPATH_SITE . '/cache')
+		));
+		$cache->clean('tags');
+
+		if (!$redirect)
+		{
+			return true;
+		}
+
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&task=browse')
 		);
 	}
 
