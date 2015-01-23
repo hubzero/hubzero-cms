@@ -321,7 +321,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 
 		foreach ($this->_parse($tags, 1) as $tg => $raw)
 		{
-			$tag = TagsModelTag::getInstance($tg);
+			$tag = TagsModelTag::getInstance((string) $tg);
 
 			// Does the tag already exist?
 			if (!$tag->exists())
@@ -369,7 +369,7 @@ class TagsModelCloud extends \Hubzero\Base\Object
 
 		foreach ($this->_parse($tags) as $tg)
 		{
-			$tag = TagsModelTag::getInstance($tg);
+			$tag = TagsModelTag::getInstance((string) $tg);
 
 			// Does the tag exist?
 			if (!$tag->exists())
