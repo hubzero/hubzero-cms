@@ -1,56 +1,77 @@
 <?php
 /**
-* @version		$Id: helper.php 14401 2010-01-26 14:10:00Z louis $
-* @package		Joomla
-* @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
-* @license		GNU/GPL, see LICENSE.php
-* Joomla! is free software. This version may have been modified pursuant
-* to the GNU General Public License, and as distributed it includes or
-* is derivative of works licensed under the GNU General Public License or
-* other free or open source software licenses.
-* See COPYRIGHT.php for copyright notices and details.
-*/
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Poll;
+
+use Hubzero\Module\Module;
+use JException;
+use JFactory;
 
 /**
  * Module class for displaying a poll
  */
-class modPoll extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get poll data
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function getPoll($id)
 	{
-		$db		= JFactory::getDBO();
-		$result	= null;
+		$db     = JFactory::getDBO();
+		$result = null;
 
 		if ($id)
 		{
 			$query = 'SELECT id, title,'
-				.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug '
-				.' FROM #__polls'
-				.' WHERE id = '.(int) $id
-				.' AND published = 1'
+				. ' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug '
+				. ' FROM #__polls'
+				. ' WHERE id = '.(int) $id
+				. ' AND published = 1'
 				;
 		}
 		else
 		{
 			$query = 'SELECT id, title,'
-				.' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug '
-				.' FROM #__polls'
-				.' WHERE published = 1 AND open = 1 ORDER BY id DESC Limit 1'
+				. ' CASE WHEN CHAR_LENGTH(alias) THEN CONCAT_WS(\':\', id, alias) ELSE id END as slug '
+				. ' FROM #__polls'
+				. ' WHERE published = 1 AND open = 1 ORDER BY id DESC Limit 1'
 				;
 		}
 		$db->setQuery($query);
 		$result = $db->loadObject();
 
-		if ($db->getErrorNum()) {
-			JError::raiseWarning( 500, $db->stderr() );
+		if ($db->getErrorNum())
+		{
+			throw new JException($db->stderr(), 500);
 		}
 
 		return $result;
@@ -59,11 +80,11 @@ class modPoll extends \Hubzero\Module\Module
 	/**
 	 * Get poll options
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function getPollOptions($id)
 	{
-		$db	= JFactory::getDBO();
+		$db = JFactory::getDBO();
 
 		$query = 'SELECT id, text' .
 			' FROM #__poll_data' .
@@ -84,34 +105,24 @@ class modPoll extends \Hubzero\Module\Module
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
-		$this->run();
-	}
-
-	/**
-	 * Build module contents
-	 *
-	 * @return     void
-	 */
-	public function run()
-	{
 		$tabclass_arr = array('sectiontableentry2', 'sectiontableentry1');
 
-		$menu 	= JFactory::getApplication()->getMenu();
-		$items	= $menu->getItems('link', 'index.php?option=com_poll&view=poll');
+		$menu   = JFactory::getApplication()->getMenu();
+		$items  = $menu->getItems('link', 'index.php?option=com_poll&view=poll');
 		$itemid = isset($items[0]) ? '&Itemid=' . $items[0]->id : '';
 
 		$poll   = $this->getPoll($this->params->get( 'id', 0 ));
 
 		if ($poll && $poll->id)
 		{
-			$tabcnt = 0;
+			$tabcnt  = 0;
 			$options = $this->getPollOptions($poll->id);
 
-			require(JModuleHelper::getLayoutPath($this->module->module));
+			require $this->getLayoutPath();
 		}
 	}
 }

@@ -19,15 +19,15 @@
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Poll</name>
+	<name>mod_poll</name>
 	<author>HUBzero</author>
 	<creationDate>July 2009</creationDate>
-	<copyright>Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<authorUrl>hubzero.org</authorUrl>
-	<version>1.5.0</version>
-	<description>DESCPOLL</description>
+	<version>1.0.0</version>
+	<description>MOD_POLL_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_poll">mod_poll.php</filename>
 	</files>
@@ -38,11 +38,11 @@
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="list" default="0" label="MOD_POLL_PARAM_CACHE_LABEL" description="MOD_POLL_PARAM_CACHE_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
+				<field name="cache_time" type="text" default="15" label="MOD_POLL_PARAM_CACHETIME_LABEL" description="MOD_POLL_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
