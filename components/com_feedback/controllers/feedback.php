@@ -272,6 +272,22 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			$this->storyTask($row);
 			return;
 		}
+		
+		// Check for an author
+		if (!$row->fullname)
+		{
+			$this->setError(JText::_('COM_FEEDBACK_ERROR_MISSING_AUTHOR'));
+			$this->storyTask($row);
+			return;
+		}
+		
+		// Check for an organization
+		if (!$row->org)
+		{
+			$this->setError(JText::_('COM_FEEDBACK_ERROR_MISSING_ORGANIZATION'));
+			$this->storyTask($row);
+			return;
+		}
 
 		// Code cleaner for xhtml transitional compliance
 		$row->quote = \Hubzero\Utility\Sanitize::stripAll($row->quote);

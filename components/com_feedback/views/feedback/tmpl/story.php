@@ -76,7 +76,7 @@ $jconfig = JFactory::getConfig();
 				</label>
 
 				<label for="field-org">
-					<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?>
+					<?php echo JText::_('COM_FEEDBACK_ORGANIZATION'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
 					<input type="text" name="fields[org]" id="field-org" value="<?php echo $this->escape($this->row->org); ?>" size="30" />
 				</label>
 				<fieldset>
