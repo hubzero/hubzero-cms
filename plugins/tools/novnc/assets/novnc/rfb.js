@@ -1098,6 +1098,10 @@ var RFB;
                     this._sock.rQshiftBytes(3); // Padding
                     var strLen = this._sock.rQshift32();
                     var url = this._sock.rQshiftStr(strLen);
+                    if (url.substr(0, 4) == 'url ')
+                    {
+                        url = url.substr(4);
+                    }
 
                     Util.Debug('ClientAction url: ' + url);
 
