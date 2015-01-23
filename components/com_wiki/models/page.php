@@ -1055,6 +1055,16 @@ class WikiModelPage extends \Hubzero\Base\Model
 
 		$this->log('page_deleted');
 
+		// Clear cached data
+		$conf = JFactory::getConfig();
+		$cache = JCache::getInstance('', array(
+			'defaultgroup' => '',
+			'storage'      => $conf->get('cache_handler', ''),
+			'caching'      => true,
+			'cachebase'    => $conf->get('cache_path', JPATH_SITE . '/cache')
+		));
+		$cache->clean('wiki');
+
 		// Hey, no errors!
 		return true;
 	}

@@ -291,7 +291,7 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 		{
 			// Caching
 			// Default time is 15 minutes
-			$cache = JFactory::getCache('callback');
+			$cache = JFactory::getCache('wiki', 'callback');
 			$cache->setCaching(1);
 			$cache->setLifeTime(intval($this->book->config('cache_time', 15)));
 
@@ -801,8 +801,8 @@ class WikiControllerPage extends \Hubzero\Component\SiteController
 					$this->setError(JText::_('COM_WIKI_UNABLE_TO_DELETE'));
 				}
 
-				$cache = JFactory::getCache('callback');
-				$cache->clean('callback');
+				$cache = JFactory::getCache('wiki', 'callback');
+				$cache->clean('wiki');
 			break;
 
 			default:
