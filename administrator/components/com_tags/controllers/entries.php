@@ -304,9 +304,9 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		));
 		$cache->clean('tags');
 
-		if ($redirect)
+		if (!$redirect)
 		{
-			return;
+			return true;
 		}
 
 		$this->setRedirect(
