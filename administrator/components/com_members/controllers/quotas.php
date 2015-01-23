@@ -418,6 +418,13 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 		$quotas = new UsersQuotas($this->database);
 		$this->view->user_count = count($quotas->getRecords(array('class_id'=>$id)));
 
+		/*$this->view->groups = array();
+		$qcGroups = new MembersQuotasClassesGroups($this->database);
+		foreach ($qcGroups->find('list', array('class_id' => $id)) as $group)
+		{
+			$this->view->groups[] = $group->group_id
+		}*/
+
 		// Set any errors
 		foreach ($this->getErrors() as $error)
 		{
@@ -465,6 +472,18 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			$this->setError($row->getError());
 			$this->editClassTask($row->id);
 			return;
+		}
+
+		// Save class/access-group association
+		if (isset($fields['groups']))
+		{
+			if (!$row->setGroupIds($fields['groups']))
+			{
+				$this->view->task = 'editClass';
+				$this->setError($row->getError());
+				$this->editClassTask($row->id);
+				return;
+			}
 		}
 
 		// If changing, update members referencing this class
