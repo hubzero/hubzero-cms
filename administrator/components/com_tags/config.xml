@@ -40,4 +40,11 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="focus_area_09" type="text" menu="hide" default="" label="COM_TAGS_FOCUS_AREA9" description="COM_TAGS_FOCUS_AREA_DESC" />
 		<field name="focus_area_10" type="text" menu="hide" default="" label="COM_TAGS_FOCUS_AREA10" description="COM_TAGS_FOCUS_AREA_DESC" />
 	</fieldset>
+	<fieldset name="cache">
+		<field name="cache" type="list" menu="hide" default="1" label="COM_TAGS_PARAM_CACHE_LABEL" description="COM_TAGS_PARAM_CACHE_DESC">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
+		</field>
+		<field name="cache_time" type="text" menu="hide" default="15" label="COM_TAGS_PARAM_CACHETIME_LABEL" description="COM_TAGS_PARAM_CACHETIME_DESC" />
+	</fieldset>
 </config>
