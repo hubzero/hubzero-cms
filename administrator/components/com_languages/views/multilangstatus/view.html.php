@@ -25,7 +25,6 @@ class LanguagesViewMultilangstatus extends JViewLegacy
 		$this->homes			= multilangstatusHelper::getHomes();
 		$this->language_filter	= JLanguageMultilang::isEnabled();
 		$this->switchers		= multilangstatusHelper::getLangswitchers();
-		$this->listUsersError	= multilangstatusHelper::getContacts();
 		$this->contentlangs		= multilangstatusHelper::getContentlangs();
 		$this->site_langs		= multilangstatusHelper::getSitelangs();
 		$this->statuses			= multilangstatusHelper::getStatus();
