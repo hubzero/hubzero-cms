@@ -28,16 +28,14 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Modules\Login;
+namespace Modules\Custom;
 
 use Hubzero\Module\Module;
-use JLanguageHelper;
-use JFactory;
+use JPluginHelper;
 use JHtml;
-use JText;
 
 /**
- * Module class for displaying a login form
+ * Module class for com_wishlist data
  */
 class Helper extends Module
 {
@@ -50,42 +48,15 @@ class Helper extends Module
 	{
 		// [!] Legacy compatibility
 		$params = $this->params;
+		$module = $this->module;
 
-		$langs  = self::getLanguageList();
-		$return = self::getReturnURI();
-
-		require $this->getLayoutPath($params->get('layout', 'default'));
-	}
-
-	/**
-	 * Get an HTML select list of the available languages.
-	 *
-	 * @return  string
-	 */
-	public static function getLanguageList()
-	{
-		$languages = array();
-		$languages = JLanguageHelper::createLanguageList(null, JPATH_ADMINISTRATOR, false, true);
-		array_unshift($languages, JHtml::_('select.option', '', JText::_('JDEFAULT')));
-
-		return JHtml::_('select.genericlist', $languages, 'lang', ' class="inputbox"', 'value', 'text', null);
-	}
-
-	/**
-	 * Get the redirect URI after login.
-	 *
-	 * @return  string
-	 */
-	public static function getReturnURI()
-	{
-		$return = 'index.php' . JFactory::getURI()->toString(array('query'));
-		if ($return != 'index.php?option=com_login')
+		if ($params->def('prepare_content', 1))
 		{
-			return base64_encode($return);
+			JPluginHelper::importPlugin('content');
+			$module->content = JHtml::_('content.prepare', $module->content, '', 'mod_custom.content');
 		}
-		else
-		{
-			return base64_encode('index.php');
-		}
+
+		// Get the view
+		parent::display();
 	}
 }
