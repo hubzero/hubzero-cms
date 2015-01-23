@@ -28,19 +28,15 @@
 # HUBzero is a registered trademark of Purdue University.
 #
 
-if [ -f /usr/bin/maxwell ] ; then
 cd /
+if [ -f /usr/bin/maxwell ] ; then
 exec /usr/bin/maxwell $*
 elif [ -f /usr/lib/hubzero/bin/maxwell ] ; then
-cd /var/lib/hubzero
 exec /usr/lib/hubzero/bin/maxwell $*
 elif [ -f /usr/lib/mw/bin/maxwell ] ; then
-cd /var/lib/mw
 exec /usr/lib/mw/bin/maxwell $*
 elif [ -f /opt/mw/bin/maxwell ] ; then
-cd /var/lib/mw
 exec /opt/mw/bin/maxwell $*
 else
-cd /var/lib/narwhal
 exec /opt/narwhal/narwhal $*
 fi
