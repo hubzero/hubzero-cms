@@ -95,7 +95,7 @@ class TagsModelTag extends \Hubzero\Base\Model
 		{
 			$this->_tbl->loadTag($oid);
 		}
-		else if (is_numeric($oid))
+		else if (is_int($oid))
 		{
 			$this->_tbl->load($oid);
 		}
