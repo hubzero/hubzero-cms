@@ -278,9 +278,39 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 			$tag->delete();
 		}
 
+		$this->cleancacheTask(false);
+
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
 			JText::_('COM_TAGS_TAG_REMOVED')
+		);
+	}
+
+	/**
+	 * Clean cached tags data
+	 *
+	 * @param   boolean  $redirect  Redirect after?
+	 * @return  void
+	 */
+	public function cleancacheTask($redirect=true)
+	{
+		$conf = JFactory::getConfig();
+
+		$cache = JCache::getInstance('', array(
+			'defaultgroup' => '',
+			'storage'      => $conf->get('cache_handler', ''),
+			'caching'      => true,
+			'cachebase'    => $conf->get('cache_path', JPATH_SITE . '/cache')
+		));
+		$cache->clean('tags');
+
+		if ($redirect)
+		{
+			return;
+		}
+
+		$this->setRedirect(
+			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
 		);
 	}
 
