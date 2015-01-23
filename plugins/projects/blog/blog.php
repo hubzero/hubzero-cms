@@ -258,31 +258,34 @@ class plgProjectsBlog extends \Hubzero\Plugin\Plugin
 		}
 
 		// Get Publications
-		$objP = new Publication( $database );
-		$pubs = $objP->getRecords($filters = array(
-			'sortby' => 'random', 'limit' => $limit, 'project' => $project->id,
-			'ignore_access' => 1, 'dev' => 1
-		));
-
-		if ($pubs && count($pubs) > 0)
+		if (JPluginHelper::isEnabled('projects', 'publications'))
 		{
-			// Get language file
-			$lang = JFactory::getLanguage();
-			$lang->load('plg_projects_publications');
+			$objP = new Publication( $database );
+			$pubs = $objP->getRecords($filters = array(
+				'sortby' => 'random', 'limit' => $limit, 'project' => $project->id,
+				'ignore_access' => 1, 'dev' => 1
+			));
 
-			// Publications side module
-			$view = new \Hubzero\Plugin\View(
-				array(
-					'folder'  => 'projects',
-					'element' => 'blog',
-					'name'    => 'modules',
-					'layout'  => 'publications'
-				)
-			);
-			$view->option 	= $option;
-			$view->items 	= $pubs;
-			$view->project 	= $project;
-			$html 	   		.= $view->loadTemplate();
+			if ($pubs && count($pubs) > 0)
+			{
+				// Get language file
+				$lang = JFactory::getLanguage();
+				$lang->load('plg_projects_publications');
+
+				// Publications side module
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'  => 'projects',
+						'element' => 'blog',
+						'name'    => 'modules',
+						'layout'  => 'publications'
+					)
+				);
+				$view->option 	= $option;
+				$view->items 	= $pubs;
+				$view->project 	= $project;
+				$html 	   		.= $view->loadTemplate();
+			}
 		}
 
 		return $html;
