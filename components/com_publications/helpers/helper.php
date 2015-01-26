@@ -683,9 +683,19 @@ class PublicationHelper extends JObject
 
 			case 4:
 				$class   = 'ready';
-				$status .= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_READY');
-				$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
-					.' ' . JHTML::_('date', $row->published_up, $dateFormat);
+				if ($row->accepted != '0000-00-00 00:00:00' )
+				{
+					$status .= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_REVERTED');
+					$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_ACCEPTED'))
+						.' ' . JHTML::_('date', $row->accepted, $dateFormat);
+				}
+				else
+				{
+					$status .= JText::_('PLG_PROJECTS_PUBLICATIONS_VERSION_READY');
+					$date = strtolower(JText::_('PLG_PROJECTS_PUBLICATIONS_RELEASED'))
+						.' ' . JHTML::_('date', $row->published_up, $dateFormat);
+				}
+
 				break;
 
 			case 5:

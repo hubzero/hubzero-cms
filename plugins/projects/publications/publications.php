@@ -3910,9 +3910,20 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Is draft complete?
 		$complete = $pub->_curationModel->_progress->complete;
-		if (!$complete && !$revertAllowed)
+		if (!$complete && $this->_task != 'revert')
 		{
 			$this->setError( JText::_('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_ALLOWED') );
+		}
+
+		// Is revert allowed?
+		$revertAllowed = $this->_pubconfig->get('graceperiod', 0);
+		if ($revertAllowed && $row->state == 1 && $row->accepted && $row->accepted != '0000-00-00 00:00:00')
+		{
+			$monthFrom = JFactory::getDate($row->accepted . '+1 month')->toSql();
+			if (strtotime($monthFrom) < strtotime(JFactory::getDate()))
+			{
+				$revertAllowed = 0;
+			}
 		}
 
 		// Require DOI?
@@ -3939,17 +3950,6 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 
 		// Save version before changes
 		$originalStatus = $row->state;
-
-		// Is revert allowed?
-		$revertAllowed = $this->_pubconfig->get('graceperiod', 0);
-		if ($revertAllowed && $row->state == 1 && $row->accepted && $row->accepted != '0000-00-00 00:00:00')
-		{
-			$monthFrom = JFactory::getDate($row->accepted . '+1 month')->toSql();
-			if (strtotime($monthFrom) < strtotime(JFactory::getDate()))
-			{
-				$revertAllowed = 0;
-			}
-		}
 
 		// Checks
 		if ($this->_task == 'republish' && $row->state != 0)
@@ -4016,10 +4016,13 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Save state
 		$row->state 			= $state;
 		$row->main 				= $main;
-		$row->rating 			= '0.0';
-		$row->published_up  	= $this->_task == 'republish' ? $row->published_up : JFactory::getDate()->toSql();
-		$row->published_up  	= $pubdate ? $pubdate : $row->published_up;
-		$row->published_down 	= '';
+		if ($this->_task != 'revert')
+		{
+			$row->rating 			= '0.0';
+			$row->published_up  	= $this->_task == 'republish' ? $row->published_up : JFactory::getDate()->toSql();
+			$row->published_up  	= $pubdate ? $pubdate : $row->published_up;
+			$row->published_down 	= '';
+		}
 		$row->modified 			= JFactory::getDate()->toSql();
 		$row->modified_by 		= $this->_uid;
 
