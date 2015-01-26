@@ -324,11 +324,11 @@ class WishlistModelAdapterGroup extends WishlistModelAdapterAbstract
 			);
 			$pathway->addItem(
 				stripslashes($this->_item->get('description')),
-				'index.php?option=' . $this->get('option') . '&cn=' . $this->_segments['cn']
+				'index.php?option=com_groups&cn=' . $this->_segments['cn']
 			);
 			$pathway->addItem(
 				JText::_('Wishlist'),
-				'index.php?option=' . $this->get('option') . '&active=wishlist&category=' . $this->get('category') . '&rid=' . $this->get('referenceid')
+				'index.php?option=com_groups&cn=' . $this->_segments['cn'] . '&active=wishlist'
 			);
 		}
 		else
