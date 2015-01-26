@@ -46,8 +46,8 @@ if ($this->getError()) {
 				<img src="/plugins/projects/files/images/folder.gif" alt="" />
 				<input type="text" name="newdir" maxlength="100" value="untitled" />
 			</label>
-			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_SAVE'); ?>" />
-			<input type="reset" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
+			<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE'); ?>" />
+			<input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />
 		</fieldset>
 	</form>
 </div>
