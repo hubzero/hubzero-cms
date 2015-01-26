@@ -51,7 +51,12 @@ class HubgraphRequest
 			$rv = array();
 			if (isset($this->form['users']) && is_array($this->form['users'])) {
 				$order = array_flip($this->form['users']);
-				foreach (Db::query('SELECT name, uidNumber FROM jos_xprofiles WHERE uidNumber IN ('.implode(', ', array_fill(0, count($this->form['users']), '?')).')', $this->form['users']) as $row) {
+				$idList = implode(', ', array_fill(0, count($this->form['users']), '?'));
+				foreach (Db::query(
+					'SELECT name, uidNumber FROM jos_xprofiles WHERE uidNumber IN ('.$idList.')
+					UNION
+					SELECT name, authorid AS uidNumber FROM jos_author_assoc WHERE authorid IN ('.$idList.')
+					LIMIT 1', array_merge($this->form['users'], $this->form['users'])) as $row) {
 					$rv[] = array('id' => $row['uidNumber'], 'title' => $row['name']);
 				}
 				usort($rv, function($a, $b) use($order) {

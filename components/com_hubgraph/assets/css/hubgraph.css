@@ -245,7 +245,7 @@
 .results ol.tags, .facets ol.tags {
 	margin: 0;	
 	padding: 0;
-	max-height: 4.7em;
+	max-height: 10em;
 	overflow: auto;
 }
 .results ol.tags li {
@@ -387,7 +387,7 @@ input.terms:focus {
 	list-style: none;
 	margin: 0;
 	line-height: 1em;
-	max-height: 3.4em;
+	max-height: 10em;
 	overflow: auto;
 }
 .facets ol.timeframe {
