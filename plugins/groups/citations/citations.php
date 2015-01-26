@@ -404,9 +404,28 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 			return;
 		}
 
-		// Get record count & items
+		// Get record count
 		$view->total     = $citations->getCount($view->filters, $view->isAdmin);
+
+		// check to see if super group has any additional filters
+		if ($this->group->isSuperGroup() && file_exists($this->_superGroupHelper()))
+		{
+			// load helper
+			require_once($this->_superGroupHelper());
+
+			// build helper name
+			$helperClass =  $this->_name . 'SuperGroupHelper';
+
+			// instantiate the helper class
+			$helper = new $helperClass($this->database);
+
+			//override sortings
+			$view->filters['sort'] = $helper->getCustomSort();
+
+		}
+
 		$view->citations = $citations->getRecords($view->filters, $view->isAdmin);
+
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
@@ -872,6 +891,26 @@ class plgGroupsCitations extends \Hubzero\Plugin\Plugin
 
 		// return path
 		return $base . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'plugins' . DS . $this->_name . DS . $name;
+	}
+
+
+	/**
+	 * Return a path to super group helper
+	 * @param  [type] NULL [description]
+	 * @return [type]       [description]
+	 */
+	public function _superGroupHelper()
+	{
+		// get groups config
+		$groupsConfig = JComponentHelper::getParams('com_groups');
+
+		// build base path
+		$base = JPATH_ROOT . DS . trim($groupsConfig->get('uploadpath', '/site/groups'), DS);
+
+		// build helper path
+		$helperPath =  $base . DS . $this->group->get('gidNumber') . DS . 'libraries' . DS . $this->_name . DS . 'helper.php';
+
+		return $helperPath;
 	}
 
 	/**
