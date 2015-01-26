@@ -71,11 +71,15 @@ $end   = JHTML::_('date', strtotime($now . ' + 1 hour'), JText::_('G'));
 					</div>
 					<form action="<?php echo JRoute::_('/api/time/postRecord'); ?>" class="details-data" method="POST">
 						<div class="grouping" id="hub-group">
-							<label for="hub"><?php echo JText::_('COM_TIME_OVERVIEW_HUB'); ?>:</label>
+							<label for="hub"><?php echo JText::_('COM_TIME_OVERVIEW_HUB'); ?>:
+								<span class="hub-error error-message"><?php echo JText::_('COM_TIME_OVERVIEW_PLEASE_SELECT_HUB'); ?></span>
+							</label>
 							<?php echo TimeHTML::buildSmartHubsList($this->controller); ?>
 						</div>
 						<div class="grouping" id="task-group">
-							<label for="task"><?php echo JText::_('COM_TIME_OVERVIEW_TASK'); ?>:</label>
+							<label for="task"><?php echo JText::_('COM_TIME_OVERVIEW_TASK'); ?>:
+								<span class="task-error error-message"><?php echo JText::_('COM_TIME_OVERVIEW_PLEASE_SELECT_TASK'); ?></span>
+							</label>
 							<?php echo TimeHTML::buildSmartTasksList($this->controller); ?>
 						</div>
 
