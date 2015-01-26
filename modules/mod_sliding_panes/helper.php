@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,18 +24,41 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\SlidingPanes;
+
+use Hubzero\Module\Module;
+use JFactory;
 
 /**
  * Module class for displaying sliding panes of content
  */
-class modSlidingPanes extends \Hubzero\Module\Module
+class Helper extends Module
 {
+	/**
+	 * The number of module instances
+	 *
+	 * @var  integer
+	 */
+	static $instances = 0;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   object  $params  JParameter/JRegistry
+	 * @param   object  $module  Database row
+	 * @return  void
+	 */
+	public function __construct($params, $module)
+	{
+		parent::__construct($params, $module);
+
+		$this->instances++;
+	}
+
 	/**
 	 * Get a list of content articles
 	 *
@@ -52,13 +75,13 @@ class modSlidingPanes extends \Hubzero\Module\Module
 		$limitby = $limit ? ' LIMIT 0,' . $limit : '';
 
 		$date = JFactory::getDate();
-		$now = $date->toMySQL();
+		$now  = $date->toMySQL();
 
 		$nullDate = $db->getNullDate();
 
 		// query to determine article count
-		$query = 'SELECT a.* FROM #__content AS a' .
-			' INNER JOIN #__categories AS cc ON cc.id = a.catid' .
+		$query = 'SELECT a.* FROM `#__content` AS a' .
+			' INNER JOIN `#__categories` AS cc ON cc.id = a.catid' .
 			' WHERE a.state = 1 ' .
 			' AND (a.publish_up = ' . $db->Quote($nullDate) . ' OR a.publish_up <= ' . $db->Quote($now) . ' ) ' .
 			' AND (a.publish_down = ' . $db->Quote($nullDate) . ' OR a.publish_down >= ' . $db->Quote($now) . ' )' .
@@ -81,21 +104,20 @@ class modSlidingPanes extends \Hubzero\Module\Module
 
 		// Check if we have multiple instances of the module running
 		// If so, we only want to push the CSS and JS to the template once
-		if (!$this->multiple_instances)
+		if ($this->instances <= 1)
 		{
 			// Push some CSS to the template
-			$this->css($type . '.css');
-			$this->js();
+			$this->css($type . '.css')
+			     ->js();
 		}
 
 		$id = rand();
 
-		$this->content = $this->_getList();
-
+		$this->content   = $this->_getList();
 		$this->container = $this->params->get('container', 'pane-sliders');
 
 		$this->js("jQuery(document).ready(function($){ $('#" . $this->container . " .panes-content').jSlidingPanes(); });");
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

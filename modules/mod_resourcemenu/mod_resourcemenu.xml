@@ -28,26 +28,28 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>HUB Resource Menu</name>
+	<name>mod_resourcemenu</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows any extra navigation or content in a pop-up style menu. Supports {xhub:module position="" style=""} tags.</description>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<description>MOD_RESOURCESMENU_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_resourcemenu">mod_resourcemenu.php</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
-		<filename>mod_resourcemenu.js</filename>
-		<filename>mod_resourcemenu.css</filename>
+		<filename>assets/js/mod_resourcemenu.js</filename>
+		<filename>assets/css/mod_resourcemenu.css</filename>
 		<filename>mod_resourcemenu.xml</filename>
 		<filename>index.html</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleid" type="text" default="resources-menu" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="moduleclass" type="text" default="off" label="Module Class" description="A CSS class to be applied to the module container, this allows individual module styling" />
-				<field name="content" type="textarea" rows="15" cols="40" default="&lt;div class=&quot;threecolumn farleft&quot;&gt;&lt;h3&gt;Online Simulation&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/browse/tools/&quot;&gt;Tools&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;And More&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/browse/animations/&quot;&gt;Animations&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/courses/&quot;&gt;Courses&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/downloads/&quot;&gt;Downloads&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/learningmodules/&quot;&gt;Learning Modules&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/notes/&quot;&gt;Notes&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/onlinepresentations/&quot;&gt;Online Presentations&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/publications/&quot;&gt;Publications&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/series/&quot;&gt;Series&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/teachingmaterials/&quot;&gt;Teaching Materials&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/workshops/&quot;&gt;Workshops&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div class=&quot;threecolumn middle&quot;&gt;{xhub:module position=&quot;toptags&quot; style=&quot;-2&quot;}  &lt;/div&gt;&lt;div class=&quot;threecolumn farright&quot;&gt;&lt;h3&gt;Other&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/citations/&quot;&gt;Citations&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/contribute/&quot;&gt;Contribute Content&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/kb/&quot;&gt;Knowledgebase&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/feedback/&quot;&gt;Give us Feedback&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/whatsnew/&quot;&gt;What's New&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/groups/&quot;&gt;Groups&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/podcast&quot;&gt;Podcasts&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" label="Content" description="The content to be displayed" />
+				<field name="moduleid" type="text" default="resources-menu" label="MOD_RESOURCESMENU_PARAM_CSSID_LABEL" description="MOD_RESOURCESMENU_PARAM_CSSID_DESC" />
+				<field name="moduleclass" type="text" default="off" label="MOD_RESOURCESMENU_PARAM_CSSCLASS_LABEL" description="MOD_RESOURCESMENU_PARAM_CSSCLASS_DESC" />
+				<field name="content" type="textarea" rows="15" cols="40" default="&lt;div class=&quot;threecolumn farleft&quot;&gt;&lt;h3&gt;Online Simulation&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/browse/tools/&quot;&gt;Tools&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;And More&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/browse/animations/&quot;&gt;Animations&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/courses/&quot;&gt;Courses&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/downloads/&quot;&gt;Downloads&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/learningmodules/&quot;&gt;Learning Modules&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/notes/&quot;&gt;Notes&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/onlinepresentations/&quot;&gt;Online Presentations&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/publications/&quot;&gt;Publications&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/series/&quot;&gt;Series&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/teachingmaterials/&quot;&gt;Teaching Materials&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/browse/workshops/&quot;&gt;Workshops&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;div class=&quot;threecolumn middle&quot;&gt;{xhub:module position=&quot;toptags&quot; style=&quot;-2&quot;}  &lt;/div&gt;&lt;div class=&quot;threecolumn farright&quot;&gt;&lt;h3&gt;Other&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;/citations/&quot;&gt;Citations&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/contribute/&quot;&gt;Contribute Content&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/kb/&quot;&gt;Knowledgebase&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/feedback/&quot;&gt;Give us Feedback&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/whatsnew/&quot;&gt;What's New&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/groups/&quot;&gt;Groups&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;/podcast&quot;&gt;Podcasts&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;" label="MOD_RESOURCESMENU_PARAM_CONTENT_LABEL" description="MOD_RESOURCESMENU_PARAM_CONTENT_DESC" />
 			</fieldset>
 		</fields>
 	</config>

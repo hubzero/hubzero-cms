@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,22 +25,28 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\ReportProblems;
+
+use Hubzero\Module\Module;
+use Hubzero\User\Profile;
+use Hubzero\Browser\Detector;
+use JComponentHelper;
+use JFactory;
+use JRequest;
 
 /**
  * Module class for displaying a report problems form
  */
-class modReportProblems extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -49,7 +55,7 @@ class modReportProblems extends \Hubzero\Module\Module
 		$this->verified = 0;
 		if (!$this->juser->get('guest'))
 		{
-			$profile = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+			$profile = Profile::getInstance($this->juser->get('id'));
 			if ($profile->get('emailConfirmed') == 1 || $profile->get('emailConfirmed') == 3)
 			{
 				$this->verified = 1;
@@ -68,22 +74,20 @@ class modReportProblems extends \Hubzero\Module\Module
 
 		$this->referrer = JRequest::getVar('REQUEST_URI','','server');
 		$this->referrer = str_replace('&amp;', '&', $this->referrer);
-		//$this->referrer = str_replace('&', '&amp;', $this->referrer);
 		$this->referrer = base64_encode($this->referrer);
 
-		$browser = new \Hubzero\Browser\Detector();
-
-		$this->os = $browser->platform();
-		$this->os_version = $browser->platformVersion();
-		$this->browser = $browser->name();
+		$browser = new Detector();
+		$this->os          = $browser->platform();
+		$this->os_version  = $browser->platformVersion();
+		$this->browser     = $browser->name();
 		$this->browser_ver = $browser->version();
 
-		$this->css();
-		$this->js();
-		$this->js('jQuery(document).ready(function(jq) { HUB.Modules.ReportProblems.initialize("' . $this->params->get('trigger', '#tab') . '"); });');
+		$this->css()
+		     ->js()
+		     ->js('jQuery(document).ready(function(jq) { HUB.Modules.ReportProblems.initialize("' . $this->params->get('trigger', '#tab') . '"); });');
 
 		$this->supportParams = JComponentHelper::getParams('com_support');
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

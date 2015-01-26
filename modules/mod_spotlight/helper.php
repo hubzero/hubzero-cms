@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,22 +24,28 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Spotlight;
+
+use Hubzero\Module\Module;
+use JComponentHelper;
+use JFactory;
+use JRoute;
+use JText;
+use JFile;
 
 /**
  * Module class for showing content spotlight
  */
-class modSpotlight extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -61,7 +67,7 @@ class modSpotlight extends \Hubzero\Module\Module
 	/**
 	 * Get module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
@@ -103,7 +109,7 @@ class modSpotlight extends \Hubzero\Module\Module
 		$txtLength = trim($this->params->get('txt_length'));
 
 		$start = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 00:00:00';
-		$end = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 23:59:59';
+		$end   = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 23:59:59';
 
 		$this->html = '';
 		$k = 1;
@@ -134,7 +140,7 @@ class modSpotlight extends \Hubzero\Module\Module
 			{
 				case 'resources':
 					// Initiate a resource object
-					$rr = new ResourcesResource($this->database);
+					$rr = new \ResourcesResource($this->database);
 					$filters['start'] = 0;
 					$filters['type'] = $spot;
 					$filters['sortby'] = 'random';
@@ -156,7 +162,7 @@ class modSpotlight extends \Hubzero\Module\Module
 					$filters['contributions'] = trim($this->params->get('min_contributions'));
 					$filters['show'] = trim($this->params->get('show'));
 
-					$mp = new MembersProfile($this->database);
+					$mp = new \MembersProfile($this->database);
 
 					// Get records
 					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $mp->getRecords($filters, false);
@@ -193,7 +199,7 @@ class modSpotlight extends \Hubzero\Module\Module
 
 				case 'itunes':
 					// Initiate a resource object
-					$rr = new ResourcesResource($this->database);
+					$rr = new \ResourcesResource($this->database);
 					$filters['start'] = 0;
 					$filters['sortby'] = 'random';
 					$filters['tag'] = trim($this->params->get('itunes_tag'));
@@ -225,7 +231,7 @@ class modSpotlight extends \Hubzero\Module\Module
 					$filters['group_id'] = 0;
 					$filters['authorized'] = false;
 					$filters['sql'] = '';
-					$mp = new BlogTableEntry($this->database);
+					$mp = new \BlogTableEntry($this->database);
 					$entry = $mp->getRecords($filters);
 
 					$rows[$spot] = (isset($rows[$spot])) ? $rows[$spot] : $entry;
@@ -261,7 +267,7 @@ class modSpotlight extends \Hubzero\Module\Module
 		}
 
 		// Output HTML
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 
 	/**
@@ -306,7 +312,11 @@ class modSpotlight extends \Hubzero\Module\Module
 			break;
 
 			case 'blog':
-				$thumb = trim($this->params->get('default_blogpic', '/modules/mod_spotlight/default.gif'));
+				$thumb = trim($this->params->get('default_blogpic', '/modules/mod_spotlight/assets/img/default.gif'));
+				if ($thumb == '/modules/mod_spotlight/default.gif')
+				{
+					$thumb = '/modules/mod_spotlight/assets/img/default.gif';
+				}
 
 				$profile = \Hubzero\User\Profile::getInstance($row->created_by);
 
@@ -320,9 +330,9 @@ class modSpotlight extends \Hubzero\Module\Module
 				}
 				else
 				{
-					$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, $yearFormat) . '/'.JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
-					$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by.'&active=blog&task='.JHTML::_('date',$row->publish_up, $yearFormat) . '/'.JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '">' . $row->title.'</a></span> ';
-					$out .=  ' by <a href="'. JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $profile->get('name') . '</a> - '.JText::_('in Blogs')."\n";
+					$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat) . '/' . JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '"><img width="30" height="30" src="' . $thumb . '" alt="' . htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+					$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by . '&active=blog&task=' . JHTML::_('date', $row->publish_up, $yearFormat) . '/' . JHTML::_('date',$row->publish_up, $monthFormat) . '/' . $row->alias) . '">' . $row->title . '</a></span> ';
+					$out .=  ' by <a href="' . JRoute::_('index.php?option=com_members&id=' . $row->created_by) . '">' . $profile->get('name') . '</a> - ' . JText::_('in Blogs') . "\n";
 					$out .= '<div class="clear"></div>'."\n";
 				}
 			break;
@@ -334,10 +344,15 @@ class modSpotlight extends \Hubzero\Module\Module
 				}
 				$url = ($row->group_cn && $row->scope) ? 'groups' . DS . $row->scope . DS . $row->pagename : 'topics' . DS . $row->pagename;
 
-				$thumb = trim($this->params->get('default_topicpic', '/modules/mod_spotlight/default.gif'));
-				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_topics&pagename=' . $row->pagename) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
-				$out .= '<span class="spotlight-item"><a href="' . $url.'">'.stripslashes($row->title) . '</a></span> ';
-				$out .=  ' - '.JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_topics') . '">'.JText::_('Topics') . '</a>'."\n";
+				$thumb = trim($this->params->get('default_topicpic', '/modules/mod_spotlight/assets/img/default.gif'));
+				if ($thumb == '/modules/mod_spotlight/default.gif')
+				{
+					$thumb = '/modules/mod_spotlight/assets/img/default.gif';
+				}
+
+				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_topics&pagename=' . $row->pagename) . '"><img width="30" height="30" src="' . $thumb . '" alt="'.htmlentities(stripslashes($row->title)) . '" /></a></span>'."\n";
+				$out .= '<span class="spotlight-item"><a href="' . $url . '">'.stripslashes($row->title) . '</a></span> ';
+				$out .=  ' - ' . JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_topics') . '">' . JText::_('Topics') . '</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
 			break;
 
@@ -346,7 +361,11 @@ class modSpotlight extends \Hubzero\Module\Module
 				{
 					return $row->id;
 				}
-				$thumb = trim($this->params->get('default_questionpic', '/modules/mod_spotlight/default.gif'));
+				$thumb = trim($this->params->get('default_questionpic', '/modules/mod_spotlight/assets/img/default.gif'));
+				if ($thumb == '/modules/mod_spotlight/default.gif')
+				{
+					$thumb = '/modules/mod_spotlight/assets/img/default.gif';
+				}
 
 				$name = JText::_('Anonymous');
 				if ($row->anonymous == 0)
@@ -357,9 +376,9 @@ class modSpotlight extends \Hubzero\Module\Module
 						$name = $juser->get('name');
 					}
 				}
-				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . $thumb.'" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
-				$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id) . '">'.stripslashes($row->subject) . '</a></span> ';
-				$out .=  ' - '.JText::_('asked by') . ' ' . $name.', '.JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_answers') . '">'.JText::_('Answers') . '</a>'."\n";
+				$out .= '<span class="spotlight-img"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id) . '"><img width="30" height="30" src="' . $thumb . '" alt="'.htmlentities(stripslashes($row->subject)) . '" /></a></span>'."\n";
+				$out .= '<span class="spotlight-item"><a href="' . JRoute::_('index.php?option=com_answers&task=question&id=' . $row->id) . '">' . stripslashes($row->subject) . '</a></span> ';
+				$out .=  ' - ' . JText::_('asked by') . ' ' . $name . ', ' . JText::_('in') . ' <a href="' . JRoute::_('index.php?option=com_answers') . '">' . JText::_('Answers') . '</a>'."\n";
 				$out .= '<div class="clear"></div>'."\n";
 			break;
 
@@ -371,7 +390,11 @@ class modSpotlight extends \Hubzero\Module\Module
 
 				if ($tbl == 'itunes')
 				{
-					$thumb = trim($this->params->get('default_itunespic', '/modules/mod_spotlight/default.gif'));
+					$thumb = trim($this->params->get('default_itunespic', '/modules/mod_spotlight/assets/img/default.gif'));
+					if ($thumb == '/modules/mod_spotlight/default.gif')
+					{
+						$thumb = '/modules/mod_spotlight/assets/img/default.gif';
+					}
 				}
 				else
 				{
@@ -391,7 +414,7 @@ class modSpotlight extends \Hubzero\Module\Module
 					{
 						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'version.php');
 
-						$tv = new ToolVersion($this->database);
+						$tv = new \ToolVersion($this->database);
 
 						$versionid = $tv->getVersionIdFromResource($row->id, 'current');
 
@@ -406,7 +429,11 @@ class modSpotlight extends \Hubzero\Module\Module
 
 					if (!is_file(JPATH_ROOT . $thumb) or !$picture)
 					{
-						$thumb = DS . trim($rconfig->get('defaultpic', '/modules/mod_spotlight/default.gif'), DS);
+						$thumb = DS . trim($rconfig->get('defaultpic', '/modules/mod_spotlight/assets/img/default.gif'), DS);
+						if ($thumb == '/modules/mod_spotlight/default.gif')
+						{
+							$thumb = '/modules/mod_spotlight/assets/img/default.gif';
+						}
 					}
 				}
 
@@ -442,11 +469,11 @@ class modSpotlight extends \Hubzero\Module\Module
 					// Show bit of description for tools
 					if ($row->introtext)
 					{
-						$out .= ': '.\Hubzero\Utility\String::truncate($this->_encodeHtml(strip_tags($row->introtext)), $txtLength);
+						$out .= ': ' . \Hubzero\Utility\String::truncate($this->_encodeHtml(strip_tags($row->introtext)), $txtLength);
 					}
 					else
 					{
-						$out .= ': '.\Hubzero\Utility\String::truncate($this->_encodeHtml(strip_tags($row->fulltxt)), $txtLength);
+						$out .= ': ' . \Hubzero\Utility\String::truncate($this->_encodeHtml(strip_tags($row->fulltxt)), $txtLength);
 					}
 				}
 				if ($tbl == 'itunes')
@@ -502,7 +529,7 @@ class modSpotlight extends \Hubzero\Module\Module
 			 return 0;
 		}
 
-		$this->database->setQuery('SELECT total_count FROM #__contributors_view WHERE uidNumber = ' . $uid);
+		$this->database->setQuery('SELECT total_count FROM `#__contributors_view` WHERE uidNumber = ' . $uid);
 		return $this->database->loadResult();
 	}
 

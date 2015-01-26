@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_sliding_panes/mod_sliding_panes.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        modules/mod_sliding_panes/assets/css/mod_sliding_panes.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -35,10 +35,9 @@
 		position: absolute;
 		top: 10px;
 		right: 50px;
-		/* Rounded corders */
-		-moz-border-radius: 10px;
 		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;
+		-moz-border-radius: 10px;
+		-ms-border-radius: 10px;
 		border-radius: 10px;
 	}
 	.panes-headings ul {
@@ -80,10 +79,10 @@
 		overflow: hidden;
 	}
 	.panes-headings .pane-next {
-		background: transparent url("/modules/mod_sliding_panes/images/pane-next.png") 3px 0.4em no-repeat;
+		background: transparent url("/modules/mod_sliding_panes/assets/img/pane-next.png") 3px 0.4em no-repeat;
 	}
 	.panes-headings .pane-prev {
-		background: transparent url("/modules/mod_sliding_panes/images/pane-prev.png") 3px 0.4em no-repeat;
+		background: transparent url("/modules/mod_sliding_panes/assets/img/pane-prev.png") 3px 0.4em no-repeat;
 	}
 	.panes-headings .pane-next:hover,
 	.panes-headings .pane-prev:hover {
@@ -103,12 +102,12 @@
 		color: #fff;
 		width: 10px;
 		overflow: hidden;
-		background: transparent url("/modules/mod_sliding_panes/images/pane-pause.png") 3px -19px no-repeat;
+		background: transparent url("/modules/mod_sliding_panes/assets/img/pane-pause.png") 3px -19px no-repeat;
 		opacity: 0.5;
 	}
 	.pane-play {
 		right: 10px;
-		background: transparent url("/modules/mod_sliding_panes/images/pane-next.png") 3px -19px no-repeat;
+		background: transparent url("/modules/mod_sliding_panes/assets/img/pane-next.png") 3px -19px no-repeat;
 	}
 	.pane-play:hover,
 	.pane-pause:hover {
@@ -147,12 +146,6 @@
 	html>body .pane-play:hover,
 	html>body .pane-pause:hover {
 		*filter: alpha(opacity = 80);
-	}
-/* IE 6 Hacks */
-	* html .panes-headings,
-	* html .pane-play,
-	* html .pane-pause {
-		display: none;
 	}
 /* Individual pane styling */
 	#pane-sliders-pane1 .pane-wrap {

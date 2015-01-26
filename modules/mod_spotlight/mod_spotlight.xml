@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_spotlight/mod_spotlight.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,11 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Spotlight</name>
+	<name>mod_spotlight</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module randomly displays featured items.</description>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<description>MOD_SPOTLIGHT_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_spotlight">mod_spotlight.php</filename>
 		<filename>mod_spotlight.xml</filename>
@@ -43,71 +45,71 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="spotone" type="radio" default="tools" label="Spot 1 Content" description="Select content type for the first featured item.">
-					<option value="tools">Tools</option>
-					<option value="nontools">Non-tools</option>
-					<option value="members">Members</option>
-					<option value="topics">Topics</option>
-					<option value="itunes">iTunes</option>
-					<option value="answers">Question</option>
-					<option value="blog">Blog</option>
+				<field name="spotone" type="radio" default="tools" label="MOD_SPOTLIGHT_PARAM_SPOT1_LABEL" description="MOD_SPOTLIGHT_PARAM_SPOT_DESC">
+					<option value="tools">MOD_SPOTLIGHT_PARAM_SPOT_TOOLS</option>
+					<option value="nontools">MOD_SPOTLIGHT_PARAM_SPOT_NONTOOLS</option>
+					<option value="members">MOD_SPOTLIGHT_PARAM_SPOT_MEMBERS</option>
+					<option value="topics">MOD_SPOTLIGHT_PARAM_SPOT_TOPICS</option>
+					<option value="itunes">MOD_SPOTLIGHT_PARAM_SPOT_ITUNES</option>
+					<option value="answers">MOD_SPOTLIGHT_PARAM_SPOT_ANSWERS</option>
+					<option value="blog">MOD_SPOTLIGHT_PARAM_SPOT_BLOG</option>
 				</field>
-				<field name="spottwo" type="radio" default="nontools" label="Spot 2 Content" description="Select content type for the second featured item.">
-					<option value="tools">Tools</option>
-					<option value="nontools">Non-tools</option>
-					<option value="members">Members</option>
-					<option value="topics">Topics</option>
-					<option value="itunes">iTunes</option>
-					<option value="answers">Question</option>
-					<option value="blog">Blog</option>
+				<field name="spottwo" type="radio" default="nontools" label="MOD_SPOTLIGHT_PARAM_SPOT2_LABEL" description="MOD_SPOTLIGHT_PARAM_SPOT_DESC">
+					<option value="tools">MOD_SPOTLIGHT_PARAM_SPOT_TOOLS</option>
+					<option value="nontools">MOD_SPOTLIGHT_PARAM_SPOT_NONTOOLS</option>
+					<option value="members">MOD_SPOTLIGHT_PARAM_SPOT_MEMBERS</option>
+					<option value="topics">MOD_SPOTLIGHT_PARAM_SPOT_TOPICS</option>
+					<option value="itunes">MOD_SPOTLIGHT_PARAM_SPOT_ITUNES</option>
+					<option value="answers">MOD_SPOTLIGHT_PARAM_SPOT_ANSWERS</option>
+					<option value="blog">MOD_SPOTLIGHT_PARAM_SPOT_BLOG</option>
 				</field>
-				<field name="spotthree" type="radio" default="contributors" label="Spot 3 Content" description="Select content type for the third featured item.">
-					<option value="tools">Tools</option>
-					<option value="nontools">Non-tools</option>
-					<option value="members">Members</option>
-					<option value="topics">Topics</option>
-					<option value="itunes">iTunes</option>
-					<option value="answers">Question</option>
-					<option value="blog">Blog</option>
+				<field name="spotthree" type="radio" default="contributors" label="MOD_SPOTLIGHT_PARAM_SPOT3_LABEL" description="MOD_SPOTLIGHT_PARAM_SPOT_DESC">
+					<option value="tools">MOD_SPOTLIGHT_PARAM_SPOT_TOOLS</option>
+					<option value="nontools">MOD_SPOTLIGHT_PARAM_SPOT_NONTOOLS</option>
+					<option value="members">MOD_SPOTLIGHT_PARAM_SPOT_MEMBERS</option>
+					<option value="topics">MOD_SPOTLIGHT_PARAM_SPOT_TOPICS</option>
+					<option value="itunes">MOD_SPOTLIGHT_PARAM_SPOT_ITUNES</option>
+					<option value="answers">MOD_SPOTLIGHT_PARAM_SPOT_ANSWERS</option>
+					<option value="blog">MOD_SPOTLIGHT_PARAM_SPOT_BLOG</option>
 				</field>
-				<field name="spotfour" type="radio" default="topics" label="Spot 4 Content" description="Select content type for the fourth featured item.">
-					<option value="tools">Tools</option>
-					<option value="nontools">Non-tools</option>
-					<option value="members">Members</option>
-					<option value="topics">Topics</option>
-					<option value="itunes">iTunes</option>
-					<option value="answers">Question</option>
-					<option value="blog">Blog</option>
+				<field name="spotfour" type="radio" default="topics" label="MOD_SPOTLIGHT_PARAM_SPOT4_LABEL" description="MOD_SPOTLIGHT_PARAM_SPOT_DESC">
+					<option value="tools">MOD_SPOTLIGHT_PARAM_SPOT_TOOLS</option>
+					<option value="nontools">MOD_SPOTLIGHT_PARAM_SPOT_NONTOOLS</option>
+					<option value="members">MOD_SPOTLIGHT_PARAM_SPOT_MEMBERS</option>
+					<option value="topics">MOD_SPOTLIGHT_PARAM_SPOT_TOPICS</option>
+					<option value="itunes">MOD_SPOTLIGHT_PARAM_SPOT_ITUNES</option>
+					<option value="answers">MOD_SPOTLIGHT_PARAM_SPOT_ANSWERS</option>
+					<option value="blog">MOD_SPOTLIGHT_PARAM_SPOT_BLOG</option>
 				</field>
-				<field name="spotfive" type="radio" default="" label="Spot 5 Content" description="Select content type for the fifth featured item.">
-					<option value="tools">Tools</option>
-					<option value="nontools">Non-tools</option>
-					<option value="members">Members</option>
-					<option value="topics">Topics</option>
-					<option value="itunes">iTunes</option>
-					<option value="answers">Question</option>
-					<option value="blog">Blog</option>
+				<field name="spotfive" type="radio" default="" label="MOD_SPOTLIGHT_PARAM_SPOT5_LABEL" description="MOD_SPOTLIGHT_PARAM_SPOT_DESC">
+					<option value="tools">MOD_SPOTLIGHT_PARAM_SPOT_TOOLS</option>
+					<option value="nontools">MOD_SPOTLIGHT_PARAM_SPOT_NONTOOLS</option>
+					<option value="members">MOD_SPOTLIGHT_PARAM_SPOT_MEMBERS</option>
+					<option value="topics">MOD_SPOTLIGHT_PARAM_SPOT_TOPICS</option>
+					<option value="itunes">MOD_SPOTLIGHT_PARAM_SPOT_ITUNES</option>
+					<option value="answers">MOD_SPOTLIGHT_PARAM_SPOT_ANSWERS</option>
+					<option value="blog">MOD_SPOTLIGHT_PARAM_SPOT_BLOG</option>
 				</field>
-				<field name="spotsix" type="radio" default="" label="Spot 6 Content" description="Select content type for the sixth featured item.">
-					<option value="tools">Tools</option>
-					<option value="nontools">Non-tools</option>
-					<option value="members">Members</option>
-					<option value="topics">Topics</option>
-					<option value="itunes">iTunes</option>
-					<option value="answers">Question</option>
-					<option value="blog">Blog</option>
+				<field name="spotsix" type="radio" default="" label="MOD_SPOTLIGHT_PARAM_SPOT6_LABEL" description="MOD_SPOTLIGHT_PARAM_SPOT_DESC">
+					<option value="tools">MOD_SPOTLIGHT_PARAM_SPOT_TOOLS</option>
+					<option value="nontools">MOD_SPOTLIGHT_PARAM_SPOT_NONTOOLS</option>
+					<option value="members">MOD_SPOTLIGHT_PARAM_SPOT_MEMBERS</option>
+					<option value="topics">MOD_SPOTLIGHT_PARAM_SPOT_TOPICS</option>
+					<option value="itunes">MOD_SPOTLIGHT_PARAM_SPOT_ITUNES</option>
+					<option value="answers">MOD_SPOTLIGHT_PARAM_SPOT_ANSWERS</option>
+					<option value="blog">MOD_SPOTLIGHT_PARAM_SPOT_BLOG</option>
 				</field>
-				<field name="spotseven" type="radio" default="" label="Spot 7 Content" description="Select content type for the seventh featured item.">
-					<option value="tools">Tools</option>
-					<option value="nontools">Non-tools</option>
-					<option value="members">Members</option>
-					<option value="topics">Topics</option>
-					<option value="itunes">iTunes</option>
-					<option value="answers">Question</option>
-					<option value="blog">Blog</option>
+				<field name="spotseven" type="radio" default="" label="MOD_SPOTLIGHT_PARAM_SPOT7_LABEL" description="MOD_SPOTLIGHT_PARAM_SPOT_DESC">
+					<option value="tools">MOD_SPOTLIGHT_PARAM_SPOT_TOOLS</option>
+					<option value="nontools">MOD_SPOTLIGHT_PARAM_SPOT_NONTOOLS</option>
+					<option value="members">MOD_SPOTLIGHT_PARAM_SPOT_MEMBERS</option>
+					<option value="topics">MOD_SPOTLIGHT_PARAM_SPOT_TOPICS</option>
+					<option value="itunes">MOD_SPOTLIGHT_PARAM_SPOT_ITUNES</option>
+					<option value="answers">MOD_SPOTLIGHT_PARAM_SPOT_ANSWERS</option>
+					<option value="blog">MOD_SPOTLIGHT_PARAM_SPOT_BLOG</option>
 				</field>
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="numspots" type="radio" default="3" label="Number of Spots" description="How many features to display">
+				<field name="numspots" type="radio" default="3" label="MOD_SPOTLIGHT_PARAM_NUMSPOTS_LABEL" description="MOD_SPOTLIGHT_PARAM_NUMSPOTS_DESC">
 					<option value="1">1</option>
 					<option value="2">2</option>
 					<option value="3">3</option>
@@ -116,34 +118,28 @@ HUBzero is a registered trademark of Purdue University.
 					<option value="6">6</option>
 					<option value="7">7</option>
 				</field>
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-				<field name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="minranking" type="text" default="6.0" label="Minimum Ranking" description="A minimum ranking for resources that can be selected" />
-				<field name="tag" type="text" default="" label="Tag" description="A tag to be the pool that resources entries are drawn from" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="show" type="radio" default="contributors" label="Select from" description="Select random entries from either all members or contributors only">
-					<option value="">All members</option>
-					<option value="contributors">Contributors only</option>
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_SPOTLIGHT_PARAM_CLASS_LABEL" description="MOD_SPOTLIGHT_PARAM_CLASS_DESC" />
+				<field name="txt_length" type="text" default="200" label="MOD_SPOTLIGHT_PARAM_TXTLENGTH_LABEL" description="MOD_SPOTLIGHT_PARAM_TXTLENGTH_DESC" />
+				<field name="minranking" type="text" default="6.0" label="MOD_SPOTLIGHT_PARAM_MINRANKING_LABEL" description="MOD_SPOTLIGHT_PARAM_MINRANKING_DESC" />
+				<field name="tag" type="text" default="" label="MOD_SPOTLIGHT_PARAM_TAG_LABEL" description="MOD_SPOTLIGHT_PARAM_TAG_DESC" />
+				<field name="show" type="radio" default="contributors" label="MOD_SPOTLIGHT_PARAM_SHOW_LABEL" description="MOD_SPOTLIGHT_PARAM_SHOW_DESC">
+					<option value="">MOD_SPOTLIGHT_PARAM_SHOW_ALL</option>
+					<option value="contributors">MOD_SPOTLIGHT_PARAM_SHOW_CONTRIBUTORS</option>
 				</field>
-				<field name="min_contributions" type="text" default="0" label="Min. # Contributions" description="The minimum number of contributions a profile must have to be selected" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="itunes_tag" type="text" default="" label="iTunes Tag" description="A tag to be the pool that iTunes content entries are drawn from" />
-				<field name="default_itunespic" type="text" default="" label="Default iTunes Picture" description="URL to default picture for featured iTunes content" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="topics_tag" type="text" default="" label="Topics Tag" description="A tag to be the pool that Topics entries are drawn from" />
-				<field name="default_topicpic" type="text" default="" label="Default Topics Picture" description="URL to default picture for featured topics" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="default_questionpic" type="text" default="" label="Default Question Picture" description="URL to default picture for featured question" />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="default_blogpic" type="text" default="" label="Default Blog Picture" description="URL to default picture for featured blog" />
+				<field name="min_contributions" type="text" default="0" label="MOD_SPOTLIGHT_PARAM_MIN_CONTRIBUTIONS_LABEL" description="MOD_SPOTLIGHT_PARAM_MIN_CONTRIBUTIONS_DESC" />
+				<field name="itunes_tag" type="text" default="" label="MOD_SPOTLIGHT_PARAM_ITUNESTAG_LABEL" description="MOD_SPOTLIGHT_PARAM_ITUNESTAG_DESC" />
+				<field name="default_itunespic" type="text" default="" label="MOD_SPOTLIGHT_PARAM_ITUNESPIC_LABEL" description="MOD_SPOTLIGHT_PARAM_ITUNESPIC_DESC" />
+				<field name="topics_tag" type="text" default="" label="MOD_SPOTLIGHT_PARAM_TOPICSTAG_LABEL" description="MOD_SPOTLIGHT_PARAM_TOPICSTAG_DESC" />
+				<field name="default_topicpic" type="text" default="" label="MOD_SPOTLIGHT_PARAM_TOPICSPIC_LABEL" description="MOD_SPOTLIGHT_PARAM_TOPICSPIC_DESC" />
+				<field name="default_questionpic" type="text" default="" label="MOD_SPOTLIGHT_PARAM_QUESTIONPIC_LABEL" description="MOD_SPOTLIGHT_PARAM_QUESTIONPIC_DESC" />
+				<field name="default_blogpic" type="text" default="" label="MOD_SPOTLIGHT_PARAM_BLOGPIC_LABEL" description="MOD_SPOTLIGHT_PARAM_BLOGPIC_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="MOD_RECENTQUESTIONS_PARAM_CACHE_LABEL" description="MOD_RECENTQUESTIONS_PARAM_CACHE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is re-cached" />
+				<field name="cache_time" type="text" default="15" label="MOD_RECENTQUESTIONS_PARAM_CACHETIME_LABEL" description="MOD_RECENTQUESTIONS_PARAM_CACHETIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>

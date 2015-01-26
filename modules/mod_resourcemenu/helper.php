@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,22 +25,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\ResourceMenu;
+
+use Hubzero\Module\Module;
+use stdClass;
+use JPluginHelper;
+use JDispatcher;
 
 /**
  * Module class for displaying a megamenu
  */
-class modResourceMenu extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -49,7 +53,7 @@ class modResourceMenu extends \Hubzero\Module\Module
 
 		// Build the HTML
 		$obj = new stdClass;
-		$obj->text = $this->_xHubTags($this->params->get('content'));
+		$obj->text = $this->params->get('content');
 
 		JPluginHelper::importPlugin('content', 'xhubtags');
 		$dispatcher = JDispatcher::getInstance();
@@ -67,9 +71,9 @@ class modResourceMenu extends \Hubzero\Module\Module
 		$this->html = $obj->text;
 
 		// Push some CSS to the tmeplate
-		$this->css();
-		$this->js();
+		$this->css()
+		     ->js();
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

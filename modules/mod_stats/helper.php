@@ -1,67 +1,118 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_stats
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+namespace Modules\Stats;
+
+use Hubzero\Module\Module;
+use JFactory;
+use JHtml;
+use JText;
 
 /**
- * @package		Joomla.Site
- * @subpackage	mod_stats
- * @since		1.5
+ * Module helper class for displaying stats
  */
-class modStatsHelper
+class Helper extends Module
 {
-	static function &getList(&$params)
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
+	public function display()
 	{
-		$app	= JFactory::getApplication();
-		$db		= JFactory::getDbo();
-		$rows	= array();
-		$query	= $db->getQuery(true);
+		// [!] Legacy comptibility
+		$params = $this->params;
 
 		$serverinfo = $params->get('serverinfo');
-		$siteinfo	= $params->get('siteinfo');
-		$counter	= $params->get('counter');
-		$increase	= $params->get('increase');
+		$siteinfo   = $params->get('siteinfo');
+
+		$list = self::getList($params);
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
+		require $this->getLayoutPath($params->get('layout', 'default'));
+	}
+
+	/**
+	 * Get a list of stats
+	 *
+	 * @param   object  $params  JRegistry
+	 * @return  array
+	 */
+	static function &getList(&$params)
+	{
+		$app   = JFactory::getApplication();
+		$db    = JFactory::getDbo();
+		$rows  = array();
+		$query = $db->getQuery(true);
+
+		$serverinfo = $params->get('serverinfo');
+		$siteinfo   = $params->get('siteinfo');
+		$counter    = $params->get('counter');
+		$increase   = $params->get('increase');
 
 		$i = 0;
-		if ($serverinfo) {
+		if ($serverinfo)
+		{
 			$rows[$i] = new stdClass;
-			$rows[$i]->title	= JText::_('MOD_STATS_OS');
-			$rows[$i]->data		= substr(php_uname(), 0, 7);
+			$rows[$i]->title = JText::_('MOD_STATS_OS');
+			$rows[$i]->data  = substr(php_uname(), 0, 7);
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title	= JText::_('MOD_STATS_PHP');
-			$rows[$i]->data	= phpversion();
+			$rows[$i]->title = JText::_('MOD_STATS_PHP');
+			$rows[$i]->data  = phpversion();
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title	= JText::_('MOD_STATS_MYSQL');
-			$rows[$i]->data	= $db->getVersion();
+			$rows[$i]->title = JText::_('MOD_STATS_MYSQL');
+			$rows[$i]->data  = $db->getVersion();
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title	= JTEXT::_('MOD_STATS_TIME');
-			$rows[$i]->data	= JHtml::_('date', 'now', 'H:i');
+			$rows[$i]->title = JText::_('MOD_STATS_TIME');
+			$rows[$i]->data  = JHtml::_('date', 'now', 'H:i');
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title	= JText::_('MOD_STATS_CACHING');
-			$rows[$i]->data	= $app->getCfg('caching') ? JText::_('JENABLED'):JText::_('JDISABLED');
+			$rows[$i]->title = JText::_('MOD_STATS_CACHING');
+			$rows[$i]->data  = $app->getCfg('caching') ? JText::_('JENABLED') : JText::_('JDISABLED');
 			$i++;
 
 			$rows[$i] = new stdClass;
-			$rows[$i]->title	= JText::_('MOD_STATS_GZIP');
-			$rows[$i]->data	= $app->getCfg('gzip') ? JText::_('JENABLED'):JText::_('JDISABLED');
+			$rows[$i]->title = JText::_('MOD_STATS_GZIP');
+			$rows[$i]->data  = $app->getCfg('gzip') ? JText::_('JENABLED') : JText::_('JDISABLED');
 			$i++;
 		}
 
-		if ($siteinfo) {
+		if ($siteinfo)
+		{
 			$query->select('COUNT(id) AS count_users');
 			$query->from('#__users');
 			$db->setQuery($query);
@@ -81,29 +132,33 @@ class modStatsHelper
 			$db->setQuery($query);
 			$links = $db->loadResult();
 
-			if ($users) {
+			if ($users)
+			{
 				$rows[$i] = new stdClass;
-				$rows[$i]->title	= JText::_('MOD_STATS_USERS');
-				$rows[$i]->data	= $users;
+				$rows[$i]->title = JText::_('MOD_STATS_USERS');
+				$rows[$i]->data  = $users;
 				$i++;
 			}
 
-			if ($items) {
+			if ($items)
+			{
 				$rows[$i] = new stdClass;
-				$rows[$i]->title	= JText::_('MOD_STATS_ARTICLES');
-				$rows[$i]->data	= $items;
+				$rows[$i]->title = JText::_('MOD_STATS_ARTICLES');
+				$rows[$i]->data  = $items;
 				$i++;
 			}
 
-			if ($links) {
+			if ($links)
+			{
 				$rows[$i] = new stdClass;
-				$rows[$i]->title	= JText::_('MOD_STATS_WEBLINKS');
-				$rows[$i]->data	= $links;
+				$rows[$i]->title = JText::_('MOD_STATS_WEBLINKS');
+				$rows[$i]->data  = $links;
 				$i++;
 			}
 		}
 
-		if ($counter) {
+		if ($counter)
+		{
 			$query->clear();
 			$query->select('SUM(hits) AS count_hits');
 			$query->from('#__content');
@@ -111,10 +166,11 @@ class modStatsHelper
 			$db->setQuery($query);
 			$hits = $db->loadResult();
 
-			if ($hits) {
+			if ($hits)
+			{
 				$rows[$i] = new stdClass;
-				$rows[$i]->title	= JText::_('MOD_STATS_ARTICLES_VIEW_HITS');
-				$rows[$i]->data	= $hits + $increase;
+				$rows[$i]->title = JText::_('MOD_STATS_ARTICLES_VIEW_HITS');
+				$rows[$i]->data  = $hits + $increase;
 				$i++;
 			}
 		}
