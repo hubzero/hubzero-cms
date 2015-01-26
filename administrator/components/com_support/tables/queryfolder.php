@@ -240,8 +240,8 @@ class SupportTableQueryFolder extends JTable
 				$stq->store();
 			}
 
-			// If the folder is "common", get its ID
-			if ($folder->alias == 'common')
+			// If the folder is "custom", get its ID
+			if ($folder->alias == 'custom')
 			{
 				$fid = $stqf->get('id');
 			}
