@@ -71,7 +71,10 @@ $end   = JHTML::_('date', strtotime($now . ' + 1 hour'), JText::_('G'));
 					</div>
 					<form action="<?php echo JRoute::_('/api/time/postRecord'); ?>" class="details-data" method="POST">
 						<div class="grouping" id="hub-group">
-							<label for="hub_id"><?php echo JText::_('COM_TIME_OVERVIEW_HUB'); ?>:</label>
+							<label for="hub_id">
+								<?php echo JText::_('COM_TIME_OVERVIEW_HUB'); ?>:
+								<span class="hub-error error-message"><?php echo JText::_('COM_TIME_OVERVIEW_PLEASE_SELECT_HUB'); ?></span>
+							</label>
 							<select name="hub_id" id="hub_id" tabindex="1">
 								<option value=""><?php echo JText::_('COM_TIME_NO_HUB'); ?></option>
 								<?php foreach (Hub::all()->ordered() as $hub) : ?>
@@ -82,7 +85,10 @@ $end   = JHTML::_('date', strtotime($now . ' + 1 hour'), JText::_('G'));
 							</select>
 						</div>
 						<div class="grouping" id="task-group">
-							<label for="task"><?php echo JText::_('COM_TIME_OVERVIEW_TASK'); ?>:</label>
+							<label for="task">
+								<?php echo JText::_('COM_TIME_OVERVIEW_TASK'); ?>:
+								<span class="task-error error-message"><?php echo JText::_('COM_TIME_OVERVIEW_PLEASE_SELECT_TASK'); ?></span>
+							</label>
 							<select name="task_id" id="task_id" tabindex="2">
 								<option value=""><?php echo JText::_('COM_TIME_RECORDS_NO_HUB_SELECTED'); ?></option>
 								<?php foreach ($tasks = Task::all()->ordered() as $task) : ?>

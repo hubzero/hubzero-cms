@@ -201,24 +201,34 @@ jQuery(document).ready(function ( jq ) {
 		e.preventDefault();
 		hideDetails();
 		calendar.fullCalendar( 'unselect' );
+		$('.error-message').fadeOut();
 	});
 
 	data.submit(function ( e ) {
 		e.preventDefault();
 		var form = $(this);
 
-		$.ajax({
-			url      : form.attr('action'),
-			data     : form.serializeArray(),
-			method   : 'POST',
-			dataType : "json",
-			cache    : false,
-			success  : function ( json ) {
-				calendar.fullCalendar( 'unselect' );
-				calendar.fullCalendar( 'refetchEvents' );
-				hideDetails();
-			}
-		});
+		if (!$('#hub_id').val()) {
+			$('.hub-error').fadeIn();
+			$('.task-error').fadeOut();
+		} else if (!$('#task_id').val()) {
+			$('.task-error').fadeIn();
+			$('.hub-error').fadeOut();
+		} else {
+			$('.error-message').fadeOut();
+			$.ajax({
+				url      : form.attr('action'),
+				data     : form.serializeArray(),
+				method   : 'POST',
+				dataType : "json",
+				cache    : false,
+				success  : function ( json ) {
+					calendar.fullCalendar( 'unselect' );
+					calendar.fullCalendar( 'refetchEvents' );
+					hideDetails();
+				}
+			});
+		}
 	});
 
 	// Add change event to hub select box (filter tasks list by selected hub)

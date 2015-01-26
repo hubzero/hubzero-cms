@@ -108,3 +108,8 @@
 .com_time_overview p {
 	margin: 0;
 }
+.com_time_overview .error-message {
+	display: none;
+	color: red;
+	font-style: italic;
+}
