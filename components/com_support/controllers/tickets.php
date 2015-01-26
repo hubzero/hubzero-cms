@@ -1472,6 +1472,14 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Initiate database class and load info
+		$this->view->row = SupportModelTicket::getInstance($id);
+		if (!$this->view->row->exists())
+		{
+			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_TICKET_NOT_FOUND'));
+			return;
+		}
+
 		// Check authorization
 		if ($this->juser->get('guest'))
 		{
@@ -1479,14 +1487,6 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$this->setRedirect(
 				JRoute::_('index.php?option=com_users&view=login&return=' . $return, false)
 			);
-			return;
-		}
-
-		// Initiate database class and load info
-		$this->view->row = SupportModelTicket::getInstance($id);
-		if (!$this->view->row->exists())
-		{
-			JError::raiseError(404, JText::_('COM_SUPPORT_ERROR_TICKET_NOT_FOUND'));
 			return;
 		}
 
