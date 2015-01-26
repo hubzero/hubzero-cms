@@ -94,9 +94,9 @@ if ($user->authorise('core.manage', 'com_users'))
 
 	if ($createUser)
 	{
-		$menu->addChild(
+		/*$menu->addChild(
 			new JMenuNode(JText::_('MOD_MENU_COM_USERS_ADD_USER'), 'index.php?option=com_users&task=user.add', 'class:newarticle')
-		);
+		);*/
 		$menu->getParent();
 	}
 
