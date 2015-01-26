@@ -53,7 +53,7 @@ class UsersViewUsers extends JViewLegacy
 		JToolBarHelper::title(JText::_('COM_USERS_VIEW_USERS_TITLE'), 'user');
 
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('user.add');
+			//JToolBarHelper::addNew('user.add');
 		}
 		if ($canDo->get('core.edit')) {
 			JToolBarHelper::editList('user.edit');
