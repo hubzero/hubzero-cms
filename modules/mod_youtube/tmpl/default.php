@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,8 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Christopher Smoak <csmoak@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,8 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="youtube_feed_<?php echo $this->id; ?>" class="youtube_<?php echo $this->params->get('layout') . ' ' . $this->params->get('moduleclass_sfx'); ?>">
 	<?php if ($this->lazy) { ?>
-		Loading Youtube Feed....
-		<noscript><p class="error">Javascript is required to view the Youtube feed.</p></noscript>
+		<?php echo JText::_('MOD_YOUTUBE_LOADING_FEED'); ?>
+		<noscript><p class="error"><?php echo JText::_('MOD_YOUTUBE_ERROR_JAVASCRIPT_REQUIRED'); ?></p></noscript>
 	<?php } else { ?>
 		<?php echo $this->html; ?>
 	<?php } ?>

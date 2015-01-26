@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,23 +23,28 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\WishVoters;
+
+use Hubzero\Module\Module;
+use Wishlist;
+use JFactory;
+use JRequest;
+use JText;
 
 /**
  * Module class for displaying top wish voters
  */
-class modWishVoters extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -57,21 +61,21 @@ class modWishVoters extends \Hubzero\Module\Module
 
 		$objWishlist = new Wishlist($database);
 
-		// which list is being viewed?
+		// Which list is being viewed?
 		$listid   = JRequest::getInt('id', 0);
 		$refid    = JRequest::getInt('rid', 0);
 		$category = JRequest::getVar('category', '');
 
-		// figure list id
+		// Figure list id
 		if ($category && $refid)
 		{
 			$listid = $objWishlist->get_wishlistID($refid, $category);
 		}
 
-		// cannot rank a wish if list/wish is not found
+		// Cannot rank a wish if list/wish is not found
 		if (!$listid)
 		{
-			echo JText::_('Cannot locate a wish or a wish list');
+			echo '<p class="warning">' . JText::_('MOD_WISHVOTERS_ERROR_LOADING') . '</p>';
 			return;
 		}
 
@@ -84,12 +88,12 @@ class modWishVoters extends \Hubzero\Module\Module
 		if ($database->getErrorNum())
 		{
 			$this->setError($database->stderr());
-			return JText::_('Error occurred retrieving wish voters');
+			return '<p class="error">' . JText::_('MOD_WISHVOTERS_ERROR_RETRIEVING') . '</p>';
 		}
 
 		// Push the module CSS to the template
 		$this->css();
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

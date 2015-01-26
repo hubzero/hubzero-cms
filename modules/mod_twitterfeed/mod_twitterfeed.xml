@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           modules/mod_toptags/mod_toptags.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           modules/mod_twitterfeed/mod_twitterfeed.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,17 +28,19 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Twitter Feed</name>
+	<name>mod_twitterfeed</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<authorEmail>csmoak@purdue.edu</authorEmail>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
 	<version>1.0.0</version>
-	<description>Loads the Twitter feed of the specified Twitter ID</description>
+	<description>MOD_TWITTERFEED_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_twitterfeed">mod_twitterfeed.php</filename>
-		<filename>mod_twitterfeed.css</filename>
+		<filename>assets/css/mod_twitterfeed.css</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
 	</files>
@@ -48,16 +50,16 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleTitle" type="text" default="" label="Module Title Text" description="The title of the module block." />
-				<field name="twitterID" type="text" default="" label="Twitter ID" description="The Twitter ID of the Twitter account to be displayed." />
-				<field name="tweetcount" type="text" default="3" label="Tweet Count" description="The number of latest Tweets to display." />
-				<field name="displayHeader" type="list" default="yes" label="Display Header" description="Display Twitter Widget Header.">
-					<option value="yes">Yes</option>
-					<option value="no">No</option>
+				<field name="moduleTitle" type="text" default="" label="MOD_TWITTERFEED_PARAM_TITLE_LABEL" description="MOD_TWITTERFEED_PARAM_TITLE_DESC" />
+				<field name="twitterID" type="text" default="" label="MOD_TWITTERFEED_PARAM_TWITTERID_LABEL" description="MOD_TWITTERFEED_PARAM_TWITTERID_DESC" />
+				<field name="tweetcount" type="text" default="3" label="MOD_TWITTERFEED_PARAM_TWEETCOUNT_LABEL" description="MOD_TWITTERFEED_PARAM_TWEETCOUNT_DESC" />
+				<field name="displayHeader" type="list" default="yes" label="MOD_TWITTERFEED_PARAM_DISPLAYHEADER_LABEL" description="MOD_TWITTERFEED_PARAM_DISPLAYHEADER_DESC">
+					<option value="yes">JYes</option>
+					<option value="no">JNo</option>
 				</field>
-				<field name="displayFooter" type="list" default="yes" label="Display Footer" description="Display Twitter Widget Footer.">
-					<option value="yes">Yes</option>
-					<option value="no">No</option>
+				<field name="displayFooter" type="list" default="yes" label="MOD_TWITTERFEED_PARAM_DISPLAYFOOTER_LABEL" description="MOD_TWITTERFEED_PARAM_DISPLAYFOOTER_DESC">
+					<option value="yes">JYes</option>
+					<option value="no">JNo</option>
 				</field>
 			</fieldset>
 		</fields>

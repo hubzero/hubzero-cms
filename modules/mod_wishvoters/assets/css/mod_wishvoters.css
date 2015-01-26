@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_wishvoters/mod_wishvoters.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        modules/mod_wishvoters/assets/css/mod_wishvoters.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -12,7 +12,7 @@
 	-- -- -- -- -- -- --
 
 */
-	
+
 	ul.voterslist {
 		margin: 0;
 		margin-top: 0.5em;

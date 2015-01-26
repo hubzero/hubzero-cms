@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_wishvoters/mod_wishvoters.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,23 +28,26 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Wish Voters</name>
+	<name>mod_wishvoters</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module will display a list of most active wish voters</description>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<version>1.0.0</version>
+	<description>MOD_WISHVOTERS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_wishvoters">mod_wishvoters.php</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
-		<filename>mod_wishvoters.css</filename>
+		<filename>assets/css/mod_wishvoters.css</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
+				<field name="moduleclass" type="text" default="" label="MOD_WISHVOTERS_PARAM_CLASS_LABEL" description="MOD_WISHVOTERS_PARAM_CLASS_DESC" />
+				<field name="limit" type="text" default="5" label="MOD_WISHVOTERS_PARAM_LIMIT_LABEL" description="MOD_WISHVOTERS_PARAM_LIMIT_DESC" />
 			</fieldset>
 		</fields>
 	</config>

@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/groups/messages.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           modules/mod_youtube/mod_youtube.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,74 +28,74 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>YouTube</name>
+	<name>mod_youtube</name>
 	<author>HUBzero</author>
 	<creationDate>March 2011</creationDate>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<authorEmail>csmoak@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.0.0</version>
-	<description>This module allows to display a youtube feed</description>
+	<description>MOD_YOUTUBE_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_youtube">mod_youtube.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_YOUTUBE_PARAM_CLASS_LABEL" description="PARAMMODULECLASSSUFFIX" />
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="lazy" type="radio" default="1" label="Lazy Loading" description="Use javascript to dynamically load the Youtube feed to the page. Displays no content without javascript. Otherwise use normal PHP method and using caching to improve performance.">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
-				</field>
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="type" type="list" default="user" label="Youtube Feed Type" description="Select the type of Youtube Feed (Playlist, User Channel, or by Search Term)">
-					<option value="playlists">Playlist</option>
-					<option value="users">User Channel</option>
-					<option value="videos">Video Search</option>
-				</field>
-				<field name="q" type="text" size="50" default="" label=" Playlist ID, User Channel, or Search Term" description="Enter either a Youtube playlist id, Youtube user channel, or a search term that you would like to be parsed." />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="title" type="radio" default="1" label="Show Feed Title" description="Display feed title.">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
-				</field>
-				<field name="alttitle" type="text" size="50" default="" label="Alternative Title" description="Title to be displayed instead of the Youtube parsed title." />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="desc" type="radio" default="1" label="Show Feed Description" description="Display feed description.">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
-				</field>
-				<field name="altdesc" type="textarea" rows="10" cols="40" default="" label="Alternative Description" description="Description to be displayed instead of the Youtube parsed description." />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="image" type="radio" default="1" label="YouTube Logo" description="Show the YouTube Logo">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
-				</field>
-				<field name="altimage" type="text" size="50" default="" label="Alternative Logo" description="Logo to be displayed instead of the Youtube logo." />
-				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="videos" type="text" default="3" label="Number of Videos" description="Enter number of videos to display." />
-				<field name="random" type="radio" default="0" label="Randomize Videos" description="Randomize the selection of videos.">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
-				</field>
-				<field name="layout" type="radio" default="vertical" label="Layout Orientation" description="Display items vertically or horizontally.">
-					<option value="vertical">Vertical</option>
-					<option value="horizontal">Horizontal</option>
+				<field name="lazy" type="radio" default="1" label="MOD_YOUTUBE_PARAM_LAZY_LABEL" description="MOD_YOUTUBE_PARAM_LAZY_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
 				<field name="@spacer" type="spacer" default="" label="" description="" />
-				<field name="link" type="radio" default="1" label="Show View More link" description="Show the link to all videos">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="type" type="list" default="user" label="MOD_YOUTUBE_PARAM_FEEDTYPE_LABEL" description="MOD_YOUTUBE_PARAM_FEEDTYPE_DESC">
+					<option value="playlists">MOD_YOUTUBE_PARAM_FEEDTYPE_PLAYLIST</option>
+					<option value="users">MOD_YOUTUBE_PARAM_FEEDTYPE_USER</option>
+					<option value="videos">MOD_YOUTUBE_PARAM_FEEDTYPE_SEARCH</option>
 				</field>
-				<field name="altlink" type="text" default="" size="50" label="Alternative Link" description="Link to be displayed instead of the Youtube parsed link." />
+				<field name="q" type="text" size="50" default="" label="MOD_YOUTUBE_PARAM_Q_LABEL" description="MOD_YOUTUBE_PARAM_Q_DESC" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="title" type="radio" default="1" label="MOD_YOUTUBE_PARAM_TITLE_LABEL" description="MOD_YOUTUBE_PARAM_TITLE_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field name="alttitle" type="text" size="50" default="" label="MOD_YOUTUBE_PARAM_ALTTITLE_LABEL" description="MOD_YOUTUBE_PARAM_ALTTITLE_DESC" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="desc" type="radio" default="1" label="MOD_YOUTUBE_PARAM_DESC_LABEL" description="MOD_YOUTUBE_PARAM_DESC_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field name="altdesc" type="textarea" rows="10" cols="40" default="" label="MOD_YOUTUBE_PARAM_ALTDESC_LABEL" description="MOD_YOUTUBE_PARAM_ALTDESC_DESC" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="image" type="radio" default="1" label="MOD_YOUTUBE_PARAM_IMAGE_LABEL" description="MOD_YOUTUBE_PARAM_IMAGE_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field name="altimage" type="text" size="50" default="" label="MOD_YOUTUBE_PARAM_ALTIMAGE_LABEL" description="MOD_YOUTUBE_PARAM_ALTIMAGE_DESC" />
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="videos" type="text" default="3" label="MOD_YOUTUBE_PARAM_VIDEOS_LABEL" description="MOD_YOUTUBE_PARAM_VIDEOS_DESC" />
+				<field name="random" type="radio" default="0" label="MOD_YOUTUBE_PARAM_RANDOM_LABEL" description="MOD_YOUTUBE_PARAM_RANDOM_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field name="layout" type="radio" default="vertical" label="MOD_YOUTUBE_PARAM_LAYOUT_LABEL" description="MOD_YOUTUBE_PARAM_LAYOUT_DESC">
+					<option value="vertical">MOD_YOUTUBE_PARAM_LAYOUT_VERT</option>
+					<option value="horizontal">MOD_YOUTUBE_PARAM_LAYOUT_HORI</option>
+				</field>
+				<field name="@spacer" type="spacer" default="" label="" description="" />
+				<field name="link" type="radio" default="1" label="MOD_YOUTUBE_PARAM_LINK_LABEL" description="MOD_YOUTUBE_PARAM_LINK_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
+				</field>
+				<field name="altlink" type="text" default="" size="50" label="MOD_YOUTUBE_PARAM_ALTLINK_LABEL" description="MOD_YOUTUBE_PARAM_ALTLINK_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="list" default="0" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time in minutes before the module is re-cached." />
+				<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>

@@ -1,38 +1,22 @@
 /*
  * @package     hubzero-cms
- * @file        modules/mod_youtube/mod_youtube.js
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        modules/mod_youtube/assets/js/mod_youtube.js
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
- Author:
- -----------------		
- Christopher Smoak <csmoak@purdue.edu>
-
- Created:
- -----------------
- April 2011
-
- Requires:
- -----------------
- Mootools 1.1
-
-*/
-
-if(!HUB) {
+if (!HUB) {
 	var HUB = {};
 }
 
-//----------------------
-
 var youtube_feed = 0;
 
-//----------------------
 
 (function($){
 	$.fn.youtube = function(options) {
 		//options set by call to class
 		var settings = $.extend( {
-		    type: "playlist",
+			type: "playlist",
 			search: "",
 			count: 3,
 			random: false,
@@ -47,7 +31,7 @@ var youtube_feed = 0;
 				altLink: ""
 			}
 		}, options);
-		
+
 		//base Youtube API URL
 		var youtube_base_url = "https://gdata.youtube.com/feeds/api/";
 
@@ -87,7 +71,7 @@ var youtube_feed = 0;
 		});
 
 		//format json data into tweets
-		function Format( json ) {
+		function Format(json) {
 			var html = "",
 				feed = json.feed,
 				videos = feed.entry;
@@ -109,7 +93,7 @@ var youtube_feed = 0;
 					var title = item['title']['$t'];
 					var id = item.media$group.yt$videoid.$t; //item['id']['$t'];
 					var thumb = item.media$group.media$thumbnail[0].url;
-					
+
 					html += "<li>";
 					html += "<a class=\"entry-thumb\" rel=\"external\" title=\"" + title + "\" href=\"http://youtube.com/watch?v=" + id + "\"><img src=\"" + thumb.replace('http://','https://') + "\" alt=\"" + title + "\" width=\"80\" /></a>";
 					html += "<a class=\"entry-title\" rel=\"external\" title=\"" + title + "\" href=\"http://youtube.com/watch?v=" + id + "\">" + title + "</a>";
@@ -120,75 +104,75 @@ var youtube_feed = 0;
 			html += "</ul>";
 
 			//build the feed link
-			html += FeedLink( feed );
+			html += FeedLink(feed);
 
 			return html;
 		}
-		
-		function FeedDetails( feed ) {
+
+		function FeedDetails(feed) {
 			var topHTML = "";
 			var title, description, logo;
 			var details = settings.details;
 
-			//if we have no details return nothing
-			if(!details)
+			// if we have no details return nothing
+			if (!details)
 				return "";
 
-			//set title based on if we have an alternative title
-			if(details.altTitle && details.altTitle != "") {
+			// set title based on if we have an alternative title
+			if (details.altTitle && details.altTitle != "") {
 				title = details.altTitle;
 			} else {
 				title = feed.title.$t;
 			}
 
-			//set description based on if we have an alternative desc
-			if(details.altDesc && details.altDesc != "") {
+			// set description based on if we have an alternative desc
+			if (details.altDesc && details.altDesc != "") {
 				description = details.altDesc;
 			} else {
 				description = (feed.media$group && feed.media$group.media$description) ? feed.media$group.media$description.$t : '';
 			}
 
-			//set the logo based on if we have an alternative image
-			if(details.altLogo && details.altLogo != "") {
+			// set the logo based on if we have an alternative image
+			if (details.altLogo && details.altLogo != "") {
 				logo = details.altLogo;
 			} else {
 				logo = "https://www.youtube.com/img/pic_youtubelogo_123x63.gif";
 			}
 
-			//do we want to show the title
-			if(details.showTitle) {
+			// do we want to show the title
+			if (details.showTitle) {
 				topHTML += "<h3>" + title + "</h3>";
 			}
 
-			//do we want to show the description
-			if(details.showDesc) {
+			// do we want to show the description
+			if (details.showDesc) {
 				topHTML += "<p class=\"description\">" + description + "</p>";
 			}
 
 			//do we want to show the logo
-			if(details.showLogo) {
+			if (details.showLogo) {
 				topHTML += "<img class=\"logo\" src=\"" + logo + "\" alt=\"Youtube Feed\" />";
 			}
 
-			//return html for feed details
+			// return html for feed details
 			return topHTML;
 		}
 
-		function FeedLink( feed ) {
+		function FeedLink(feed) {
 			var bottomHTML = "";
 			var link;
 			var details = settings.details;
 
 			//if we have no details return nothing
-			if(!details)
+			if (!details) {
 				return "";
+			}
 
 			//set link based on if we have an alternative link
-			if(details.altLink != "" && details.altLink) {
+			if (details.altLink != "" && details.altLink) {
 				link = details.altLink;
 			} else {
-				switch(settings.type)
-				{
+				switch (settings.type) {
 					case 'playlists':
 						link = "http://www.youtube.com/view_play_list?p=" + settings.search;
 						break;
@@ -201,22 +185,22 @@ var youtube_feed = 0;
 				}
 			}
 
-			//do we want to show the link
-			if(details.showLink) {
+			// Do we want to show the link
+			if (details.showLink) {
 				bottomHTML += '<p class="more"><a href="' + link + '" rel="external">More Videos &rsaquo;</a></p>';
 			}
 
-			//return the html for the bottom link
+			// Return the html for the bottom link
 			return bottomHTML;
 		}
 
 		function Duration(seconds) {
-			minutes = Math.floor(seconds/60); 	
+			minutes = Math.floor(seconds/60);
 			seconds = seconds % 60;
-			if(seconds < 10) {
+			if (seconds < 10) {
 				seconds = "0" + seconds;
 			}
 			return "<span>" + minutes + ":" + seconds + "</span>";
 		}
 	}
-})( jQuery );
+})(jQuery);

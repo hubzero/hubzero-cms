@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,22 +24,27 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Youtube;
+
+use Hubzero\Module\Module;
+use JFactory;
+use JFile;
+use JFolder;
+use JText;
 
 /**
  * Module class for displaying a YouTube feed
  */
-class modYoutubeHelper extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -138,8 +143,8 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 			$feed = $this->_feed($youtube_url, $this->params);
 			if (!$feed)
 			{
-				$this->html = '<p class="error">' . JText::_('An Error occurred while trying to parse the Youtube Feed.') . '</p>';
-				require(JModuleHelper::getLayoutPath($this->module->module));
+				$this->html = '<p class="error">' . JText::_('MOD_YOUTUBE_ERROR_PARSING_FEED') . '</p>';
+				require $this->getLayoutPath();
 				return;
 			}
 
@@ -228,7 +233,7 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 			{
 				if ($alt_link != '')
 				{
-					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$alt_link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
+					$html .= "<p class=\"more\"><a rel=\"external\" title=\"" . JText::_('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$alt_link}\">" . JText::_('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
 				}
 				else
 				{
@@ -244,22 +249,22 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 							$link = "http://www.youtube.com/results?search_query=" . $content;
 						break;
 					}
-					$html .= "<p class=\"more\"><a rel=\"external\" title=\"More on Youtube\" href=\"{$link}\">More Videos &rsaquo;</a></p><br class=\"clear\" />";
+					$html .= "<p class=\"more\"><a rel=\"external\" title=\"" . JText::_('MOD_YOUTUBE_MORE_ON_YOUTUBE') . "\" href=\"{$link}\">" . JText::_('MOD_YOUTUBE_MORE_VIDEOS') . "</a></p><br class=\"clear\" />";
 				}
 			}
 
 			$this->html = $html;
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 
 	/**
 	 * Get feed info
 	 *
-	 * @param      string  $url
-	 * @param      object  $params
-	 * @return     object
+	 * @param   string  $url
+	 * @param   object  $params
+	 * @return  object
 	 */
 	private function _feed($url, $params)
 	{
@@ -311,8 +316,8 @@ class modYoutubeHelper extends \Hubzero\Module\Module
 	/**
 	 * Format a time
 	 *
-	 * @param      integer $seconds Time to format
-	 * @return     string
+	 * @param   integer  $seconds  Time to format
+	 * @return  string
 	 */
 	private function _formatTime($seconds)
 	{

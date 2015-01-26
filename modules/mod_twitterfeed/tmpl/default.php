@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,24 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-//get tweet count
+// Get tweet count
 $count = $this->params->get('tweetcount', 5);
 if (!is_numeric($count) || $count > 20 || $count < 1)
 {
 	$count = 5;
 }
 
-//get screen name
+// Get screen name
 $screenName = ltrim($this->params->get('twitterID'), '@');
 
-//get settings
+// Get settings
 $widgetSettings  = '';
 $widgetSettings .= ($this->params->get('displayHeader') == 'no') ? ' noheader' : '';
 $widgetSettings .= ($this->params->get('displayFooter') == 'no') ? ' nofooter' : '';
@@ -54,11 +54,5 @@ $widgetSettings .= ($this->params->get('displayBorders') == 'no') ? ' noborders'
 	</h3>
 <?php endif; ?>
 
-<a class="twitter-timeline"
-	href="https://twitter.com/"
-	data-widget-id="346714310770302976"
-	data-screen-name="<?php echo $screenName; ?>"
-	data-tweet-limit="<?php echo $count; ?>"
-	data-chrome="<?php echo trim($widgetSettings); ?>"
-	>Loading Tweets...</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<a class="twitter-timeline" href="https://twitter.com/" data-widget-id="346714310770302976" data-screen-name="<?php echo $screenName; ?>" data-tweet-limit="<?php echo $count; ?>" data-chrome="<?php echo trim($widgetSettings); ?>"><?php echo JText::_('MOD_TWITTERFEED_LOADING'); ?></a>
+<script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

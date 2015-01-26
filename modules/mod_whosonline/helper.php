@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,31 +24,37 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Whosonline;
 
+use Hubzero\Module\Module;
 use Hubzero\Session\Helper as SessionHelper;
+use Hubzero\User\Profile;
 
-class modWhosonlineHelper extends \Hubzero\Module\Module
+class Helper extends Module
 {
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
 	public function display()
 	{
-		//get all sessions
+		// Get all sessions
 		$sessions = SessionHelper::getAllSessions(array(
 			'distinct' => 1,
 			'client'   => 0
 		));
 
-		// vars to hold guests & logged in members
-		$this->guestCount   = 0;
+		// Vars to hold guests & logged in members
+		$this->guestCount    = 0;
 		$this->loggedInCount = 0;
 		$this->loggedInList  = array();
 
-		// get guest and logged in counts/list
+		// Get guest and logged in counts/list
 		foreach ($sessions as $session)
 		{
 			if ($session->guest == 1)
@@ -58,7 +64,7 @@ class modWhosonlineHelper extends \Hubzero\Module\Module
 			else
 			{
 				$this->loggedInCount++;
-				$profile = Hubzero\User\Profile::getInstance($session->userid);
+				$profile = Profile::getInstance($session->userid);
 				if ($profile)
 				{
 					$this->loggedInList[] = $profile;
@@ -66,7 +72,7 @@ class modWhosonlineHelper extends \Hubzero\Module\Module
 			}
 		}
 
-		// render view
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		// Render view
+		require $this->getLayoutPath();
 	}
 }
