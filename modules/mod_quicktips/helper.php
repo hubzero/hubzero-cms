@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,22 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\QuickTips;
+
+use Hubzero\Module\Module;
+use JFactory;
 
 /**
  * Module class for displaying tips
  */
-class modQuickTips extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -50,16 +51,33 @@ class modQuickTips extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;
 		}
 
+		$this->run();
+	}
+
+	/**
+	 * Build module content
+	 *
+	 * @return  void
+	 */
+	public function run()
+	{
 		$database = JFactory::getDBO();
 
-		$catid = trim($this->params->get('catid'));
-		$secid = trim($this->params->get('secid'));
+		$catid  = trim($this->params->get('catid'));
+		$secid  = trim($this->params->get('secid'));
 		$method = trim($this->params->get('method'));
 
 		$now = JFactory::getDate();
@@ -68,7 +86,7 @@ class modQuickTips extends \Hubzero\Module\Module
 		{
 			$order = "RAND()";
 		}
-		elseif($method == 'ordering')
+		elseif ($method == 'ordering')
 		{
 			$order = "a.ordering ASC";
 		}
@@ -78,16 +96,16 @@ class modQuickTips extends \Hubzero\Module\Module
 		}
 
 		$query = "SELECT a.id, a.title, a.introtext, a.created"
-				. "\n FROM #__content AS a"
-				. "\n WHERE (a.state = '1' AND a.checked_out = '0' AND a.sectionid > '0')"
-				. "\n AND (a.publish_up = '0000-00-00 00:00:00' OR a.publish_up <= '$now')"
-				. "\n AND (a.publish_down = '0000-00-00 00:00:00' OR a.publish_down >= '$now')"
+				. " FROM `#__content` AS a"
+				. " WHERE (a.state = '1' AND a.checked_out = '0' AND a.sectionid > '0')"
+				. " AND (a.publish_up = '0000-00-00 00:00:00' OR a.publish_up <= '$now')"
+				. " AND (a.publish_down = '0000-00-00 00:00:00' OR a.publish_down >= '$now')"
 				. ($catid ? "\n AND (a.catid IN (" . $catid . "))" : '')
 				. ($secid ? "\n AND (a.sectionid IN (" . $secid . "))" : '')
-				. "\n ORDER BY $order LIMIT 1";
+				. " ORDER BY $order LIMIT 1";
 		$database->setQuery($query);
 		$this->rows = $database->loadObjectList();
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

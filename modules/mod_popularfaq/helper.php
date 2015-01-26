@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,43 +24,46 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\PopularFaq;
+
+use Hubzero\Module\Module;
+use KbModelArchive;
+use JFactory;
 
 /**
  * Module class for displaying popular KB articles
  */
-class modPopularFaq extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
-		$database = JFactory::getDBO();
-
-		$limit = intval($this->params->get('limit', 5));
-		$this->cssId = $this->params->get('cssId');
-		$this->cssClass = $this->params->get('cssClass');
-
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'archive.php');
 
 		$a = new KbModelArchive();
-		$this->rows = $a->articles('popular', array('limit' => $limit));
+		$this->rows = $a->articles(
+			'popular',
+			array('limit' => intval($this->params->get('limit', 5)))
+		);
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		$this->cssId    = $this->params->get('cssId');
+		$this->cssClass = $this->params->get('cssClass');
+
+		require $this->getLayoutPath();
 	}
 
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -71,7 +73,14 @@ class modPopularFaq extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;

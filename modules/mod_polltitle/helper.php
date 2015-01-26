@@ -71,7 +71,14 @@ class Helper extends Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;

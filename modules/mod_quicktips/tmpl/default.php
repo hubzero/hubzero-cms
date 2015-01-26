@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,14 +32,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 if ($this->rows) { ?>
-	<div class="<?php echo $this->$this->params->get('moduleclass_sfx'); ?>">
-<?php foreach ($this->rows as $row) { ?>
-		<p><?php echo stripslashes($row->introtext); ?></p>
-		<p class="more">
-			<a href="<?php echo JRoute::_( 'index.php?option=com_content&task=view&id=' . $row->id); ?>">
-				<?php echo JText::_('MOD_QUICKTIPS_LEARN_MORE'); ?>
-			</a>
-		</p>
-<?php } ?>
+	<div class="<?php echo $this->params->get('moduleclass_sfx'); ?>">
+		<?php foreach ($this->rows as $row) { ?>
+			<p><?php echo stripslashes($row->introtext); ?></p>
+			<p class="more">
+				<a href="<?php echo JRoute::_( 'index.php?option=com_content&task=view&id=' . $row->id); ?>">
+					<?php echo JText::_('MOD_QUICKTIPS_LEARN_MORE'); ?>
+				</a>
+			</p>
+		<?php } ?>
 	</div>
 <?php } ?>

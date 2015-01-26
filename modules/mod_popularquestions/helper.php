@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,28 +24,32 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\PopularQuestions;
+
+use Hubzero\Module\Module;
+use AnswersModelQuestion;
+use JFactory;
+use JRequest;
 
 /**
  * Module class for displaying popular questions
  */
-class modPopularQuestions extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
 		$this->database = JFactory::getDBO();
 
-		$this->cssId = $this->params->get('cssId');
+		$this->cssId    = $this->params->get('cssId');
 		$this->cssClass = $this->params->get('cssClass');
 
 		$state = $this->params->get('state', 'open');
@@ -54,7 +57,7 @@ class modPopularQuestions extends \Hubzero\Module\Module
 
 		switch ($state)
 		{
-			case 'open': $st = "a.state=0"; break;
+			case 'open':   $st = "a.state=0"; break;
 			case 'closed': $st = "a.state=1"; break;
 			case 'both':
 			default: $st = ""; break;
@@ -66,13 +69,13 @@ class modPopularQuestions extends \Hubzero\Module\Module
 		if ($this->tag)
 		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous "
-				." FROM #__answers_questions AS a, #__tags_object AS t, #__tags AS tg, #__answers_responses AS r"
+				." FROM `#__answers_questions` AS a, `#__tags_object` AS t, `#__tags` AS tg, `#__answers_responses` AS r"
 				." WHERE r.qid=a.id AND a.id=t.objectid AND tg.id=t.tagid AND t.tbl='answers' AND (tg.tag=" . $this->database->quote($this->tag) . " OR tg.raw_tag=" . $this->database->quote($this->tag) . ")";
 		}
 		else
 		{
 			$query = "SELECT a.id, a.subject, a.question, a.state, a.created, a.created_by, a.anonymous "
-				." FROM #__answers_questions AS a, #__answers_responses AS r"
+				." FROM `#__answers_questions` AS a, `#__answers_responses` AS r"
 				." WHERE r.qid=a.id";
 		}
 		if ($st)
@@ -88,19 +91,20 @@ class modPopularQuestions extends \Hubzero\Module\Module
 		if ($this->rows)
 		{
 			require_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'models' . DS . 'question.php');
+
 			foreach ($this->rows as $k => $row)
 			{
 				$this->rows[$k] = new AnswersModelQuestion($row);
 			}
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -113,7 +117,14 @@ class modPopularQuestions extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;

@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_popularquestions/mod_popularquestions.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,11 +28,13 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Popular Questions</name>
+	<name>mod_popularquestions</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
-	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module shows questions with the most popular (helpful) responses added to the Answers component.</description>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<description>MOD_POPULARQUESTIONS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_popularquestions">mod_popularquestions.php</filename>
 		<filename>index.html</filename>
@@ -43,21 +45,21 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." />
-				<field name="cssId" type="text" default="" label="CSS ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="cssClass" type="text" default="" label="CSS Class" description="A CSS class to be applied to the module container, this allows individual module styling" />
-				<field name="state" type="list" default="both" label="Question state" description="The state (open or closed) of questions to be displayed">
-					<option value="open">Open</option>
-					<option value="closed">Closed</option>
-					<option value="both">Open and Closed</option>
+				<field name="limit" type="text" default="5" label="MOD_POPULARQUESTIONS_PARAM_LIMIT_LABEL" description="MOD_POPULARQUESTIONS_PARAM_LIMIT_DESC" />
+				<field name="cssId" type="text" default="" label="MOD_POPULARQUESTIONS_PARAM_CSSID_LABEL" description="MOD_POPULARQUESTIONS_PARAM_CSSID_DESC" />
+				<field name="cssClass" type="text" default="" label="MOD_POPULARQUESTIONS_PARAM_CSSCLASS_LABEL" description="MOD_POPULARQUESTIONS_PARAM_CSSCLASS_DESC" />
+				<field name="state" type="list" default="both" label="MOD_POPULARQUESTIONS_PARAM_STATE_LABEL" description="MOD_POPULARQUESTIONS_PARAM_STATE_DESC">
+					<option value="open">MOD_POPULARQUESTIONS_PARAM_STATE_OPEN</option>
+					<option value="closed">MOD_POPULARQUESTIONS_PARAM_STATE_CLOSED</option>
+					<option value="both">MOD_POPULARQUESTIONS_PARAM_STATE_BOTH</option>
 				</field>
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is re-cached" />
+				<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>
