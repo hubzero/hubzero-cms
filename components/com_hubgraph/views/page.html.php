@@ -62,6 +62,11 @@ class GenericRenderer
 
 	protected function date()
 	{
+		if (isset($this->item['publicationyear'])) 
+		{
+			return array('<td>', h($this->item['publicationyear']), '</td>');
+		}
+
 		if (isset($this->item['date']))
 		{
 			if (preg_match('/^\s*(\d{4})\/01\/01\s*00:00:00/', $this->item['date'], $ma))
@@ -82,6 +87,24 @@ class GenericRenderer
 			'</td>'
 		);
 	}
+
+	protected function isbn() {
+		if (isset($this->item['isbn'])) {
+			return array('<td>ISBN: ', $this->item['isbn'], '</td>');
+		}
+	}
+
+	protected function publicationDetails() {
+		if (isset($this->item['publisher'])) {
+			return array(
+				'<td>',
+				(isset($this->item['placeofpublication']) ? h($this->item['placeofpublication']) . ' ' : ''),
+				h($this->item['publisher']),
+				'</td>'
+			);
+		}
+	}
+
 	protected function subtype()
 	{
 		foreach (array('type', 'section', 'category') as $subtype)
@@ -116,17 +139,33 @@ class GenericRenderer
 		}
 	}
 
-	protected function extraDetails()
-	{
+	protected function extraDetails() {
+		$rv = array();
+		$nums = array();
+		foreach (array('totalnoofpages', 'volumeno', 'issuenomonth', 'pagenumbers') as $k) {
+			if (isset($this->item[$k])) {
+				$nums[] = $k == 'issuenomonth' ? '('.$this->item[$k].')' : $this->item[$k];
+			}
+		}
+		foreach (array('publication_title', 'booktitle', 'journaltitle', $this->item['type'] == 'Books' ? 'title' : '') as $k) {
+			if (isset($this->item[$k]) && trim($this->item[$k])) {
+				$rv[] = array(
+					'<td>', 
+					$this->item[$k], $nums ? ', '.str_replace(', (', '(', implode(', ', $nums)) : NULL,  
+					'</td>'
+				);
+				break;
+			}
+		}
+		return $rv ? array('<tr>', $rv, '</tr>') : NULL;
 	}
 
 	protected function details()
 	{
 		return array(
 			'<table class="details"><tr>',
-			$this->type(),
-			$this->date(),
 			$this->contributors(),
+			$this->date(),
 			'</tr>',
 			$this->extraDetails(),
 			'</table>'
@@ -138,9 +177,38 @@ class GenericRenderer
 		return '<a class="related" data-domain="'.a($this->item['domain']).'" data-id="'.a($this->item['id']).'">Show related results</a>';
 	}
 
+	protected function language() {
+		$lang = array();
+		if (isset($this->item['language'])) {
+			$lang[] = $this->item['language'];
+		}
+		if (isset($this->item['additionallanguage']) && trim($this->item['additionallanguage'])) {
+			$lang[] = implode(', ', preg_split('/[^-\w]+/', $this->item['additionallanguage']));
+		}
+		if ($lang) {
+			return array('<td>', implode(', ', $lang), '</td>');
+		}
+	}
+	
+	protected function doi() {
+		if (isset($this->item['doi']) && $this->item['doi']) {
+			return array('<td><a href="http://dx.doi.org/', $this->item['doi'], '">DOI: ', $this->item['doi'], '</a></td>');
+		}
+	}
+
 	protected function metadata()
 	{
-		return array($this->tags(), $this->related());
+		return array(
+			'<table class="details"><tr>',
+			$this->publicationDetails(),
+			$this->isbn(),
+			$this->type(),
+			$this->language(),
+			$this->doi(),
+			'</tr></table>',
+			$this->tags(), 
+			$this->related()
+		);
 	}
 
 	protected function tags()
@@ -275,8 +343,11 @@ class CitationsRenderer extends GenericRenderer
 	protected function extraDetails()
 	{
 		$rv = array();
-		if (isset($this->item['publication_title']) && trim($this->item['publication_title'])) {
-			$rv[] = array('<td>', h($this->item['publication_title']), '</td>');
+		foreach (array('publication_title', 'booktitle') as $k) {
+			if (isset($this->item[$k]) && trim($this->item[$k])) {
+				$rv[] = array('<td>', h($this->item[$k]), '</td>');
+				break;
+			}
 		}
 		$parts = array();
 		if (isset($this->item['chapter'])) {
@@ -453,12 +524,14 @@ if (!defined('HG_AJAX')):
 						if (isset($$transportKey)):
 							foreach ((array)$$transportKey as $item):
 								$inReq[$item['id']] = TRUE;
+								if ($item['title']):
 							?>
 								<li>
 									<input type="hidden" name="<?php echo $transportKey ?>[]" value="<?php echo a($item['id']) ?>" />
 									<a href="<?php echo rmUrl($url, $transportKey, $item['id']) ?>"><?php echo h($item['title']) ?><span>x</span></a>
 								</li>
 							<?php
+								endif;
 							endforeach;
 						endif;
 						foreach ($results[$key] as $id=>$item):

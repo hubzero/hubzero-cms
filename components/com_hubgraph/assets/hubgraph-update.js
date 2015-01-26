@@ -160,7 +160,7 @@ jQuery(function($) {
 		var sel = $('<select name="timeframe[]">').append('<option value="">by year...</option>')
 			.change(function() { 
 				$('#search-form').submit();
-		submit	});
+			});
 
 		$(years).each(function(_, yr) {
 			sel.append(yr);
