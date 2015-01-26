@@ -50,6 +50,12 @@
 	.required, .optional {
 		font-size: 9px !important;
 	}
+	.version-title {
+		display: block;
+		margin-top: 0.3em;
+		font-size: 85%;
+		color: #666;
+	}
 
 /* Metadata panel
 --------------------------------------------- */
@@ -1624,15 +1630,15 @@
 		padding: 0 2em 0.5em 3em;
 	}
 	ul.next-options li:before {
-		width: 35px;
-		height: 35px;
-		font-size: 35px;
+		width: 32px;
+		height: 32px;
+		font-size: 32px;
 		font-family: 'Fontcons';
 		color: #d1dcd9;
 		border: none;
 		content: "\2192";
 		position: absolute;
-		margin-left: -1em;
+		margin-left: -1.2em;
 		margin-top: 0.2em;
 	}
 	ul.next-options li#next-cancel:before {
@@ -1657,6 +1663,10 @@
 	ul.next-options li#next-pending:before {
 		content: "\231B";
 		color: #b3d0e0;
+	}
+	ul.next-options li#next-archive:before {
+		content: "\f005";
+		color: #666;
 	}
 	ul.next-options li#next-newversion:before {
 		content: "\271A";
@@ -1942,6 +1952,9 @@
 		float: right;
 		font-size: 0.7em;
 		margin-right: 0.5em;
+	}
+	.highlighted {
+		color: yellow;
 	}
 
 /* Display messages
