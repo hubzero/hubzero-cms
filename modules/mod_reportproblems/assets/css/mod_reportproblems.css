@@ -1,0 +1,361 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_reportproblems/mod_reportproblems.css
+ * @copyright   Copyright 2005-2013 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_reportproblems
+	-- -- -- -- -- -- --
+
+*/
+
+/* Help Pane */
+	#help-pane {
+		background: #000;
+		overflow: hidden; 
+		clear: both; 
+		position: relative;
+		text-align: center;
+		width: 100%;
+		height: 0px;
+		margin: 0;
+		padding: 0;
+	}
+	#help-container {
+		margin: 0;
+		padding: 0 30px;
+		border: 8px solid #000;
+		text-align: left;
+		color: #aaa;
+		background: #151515;
+	}
+	#help-container h1 {
+		display: none;
+	}
+	#help-container a { 
+		color: #D0C7B1; 
+		border-bottom: 1px solid #726545; 
+	}
+	#help-container a:hover { 
+		color: #DAC887; 
+		border-bottom: 1px solid #D0C7B1; 
+	}
+	#help-container h2 { 
+		color: #fff; 
+		padding-bottom: 3px; 
+		font-size: 1.25em; 
+		border-bottom: 1px solid #333; 
+		text-shadow: none; 
+		position: relative;
+	}
+	#help-container .columns {
+		border: none;
+		background: transparent;
+		margin-bottom: 1em;
+	}
+
+	#help-container ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	#help-container li {
+		margin: 0;
+		padding: 0.7em 0em 0.7em 3em;
+		border-bottom: 1px solid #222;
+		list-style: none;
+		position: relative;
+	}
+	#help-container li h3 {
+		padding: 0;
+		border: none;
+		margin: 0;
+	}
+	#help-container li:before,
+	#help-container li:after {
+		content: "";
+		display: block;
+		margin: 0;
+		padding: 0;
+		width: 32px;
+		height: 32px;
+		font-family: 'Fontcons';
+		font-size: 32px;
+		line-height: 32px;
+		border: none;
+		position: absolute;
+		top: 5px;
+		left: 0;
+		z-index: 100;
+		color: #D0C7B1;
+		text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.6);
+	}
+	#help-container li.help-kb:before {
+		content: "\f072";
+	}
+	#help-container li.help-qa:before {
+		content: "\f086";
+	}
+	#help-container li.help-wish:before {
+		content: "\f078";
+	}
+	#help-container li.help-tickets:before {
+		content: "\f055";
+	}
+	#help-container li p {
+		margin: 0;
+	}
+
+	#help-container form {
+		margin: 0;
+		padding: 0;
+		text-align: right;
+	}
+	#help-container fieldset {
+		background: transparent;
+		margin: 0;
+		padding: 0;
+		border: none;
+		text-align: left;
+		float: right;
+		width: 52%;
+		color: #aaa;
+	}
+	#help-container fieldset.reporter {
+		margin: 0;
+		padding: 0;
+		float: left;
+		width: 45%;
+	}
+	#help-container .required,
+	#help-container .optional {
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		font-size: 80%;
+	}
+	#help-container .required {
+		color: #AD6456;
+	}
+	#help-container .optional {
+		color: #888;
+	}
+	#help-container label {
+		padding-top: 1.2em;
+		position: relative;
+		display: inline-block;
+		margin: 0;
+		width: 100%;
+	}
+	#help-container label span.required,
+	#help-container label span.optional {
+		position: absolute;
+		top: 1.5em;
+		right: 0;
+	}
+	#help-container label span.info-block {
+		display: block;
+		border: 1px solid #555;
+		padding: 0.2em;
+		background-color: #333;
+	}
+	#help-container input, 
+	#help-container select, 
+	#help-container textarea {
+		margin-top: 0.25em;
+		width: 100%;
+	}
+	#help-container textarea {
+		height: 126px;
+	}
+	#help-container textarea.long {
+		height: 166px;
+	}
+	#trUpload {
+		
+	}
+	#help-container .submit {
+		clear: both;
+		margin: 0.5em -0.5em 0.5em 0;
+		padding: 0.2em 0 0 0;
+		text-align: right;
+		border-top: 1px solid #333; 
+	}
+	#help-container .submit input,
+	#help-container .option {
+		width: auto;
+	}
+
+	#trSuccess strong,
+	#trSuccess h3 {
+		color: #fff;
+	}
+	#trSuccess div {
+		text-align: center;
+		float: right;
+		width: 20%;
+		margin-top: 1em;
+	}
+	#trSuccess div p {
+		margin-top: 0;
+		padding-top: 0;
+	}
+	#trSuccess div span {
+		display: block;
+		font-size: 2em;
+		color: #FAF196;
+		margin: 1em 0 1em 0;
+	}
+	#trSuccess div span a {
+		color: #FAF196;
+		border: none;
+	}
+	#trSuccess div span a:hover {
+		color: #fff;
+		border: none;
+	}
+
+	#trSending {
+		text-align: center;
+		position: relative;
+	}
+	#trSending p {
+		text-align: center;
+		font-size: 1.5em;
+		width: 10em;
+		margin: 0 auto;
+		padding: 3em 0 0 0;
+		*padding-left: 0.5em;
+		*background: url("/modules/mod_reportproblems/assets/img/circling-ball-black.gif") 0 3.2em no-repeat;
+	}
+	@-webkit-keyframes spin {
+		from {
+			-webkit-transform: rotate(0deg);
+		}
+		to { 
+			-webkit-transform: rotate(360deg);
+		}
+	}
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to { 
+			transform: rotate(360deg);
+		}
+	}
+	/* Loading animation container */
+	.rp-loading {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 28px;
+		height: 28px;
+		margin: -14px 0 0 -14px;
+	}
+	/* Spinning circle (inner circle) */
+	.rp-loading .rp-masked-circle {
+		width: 20px;
+		height: 20px;
+		border-radius: 12px;
+		border: 3px solid white;
+	}
+	/* Spinning circle mask */
+	.rp-loading .rp-mask {
+		width: 12px;
+		height: 12px;
+		overflow: hidden;
+	}
+	/* Spinner */
+	.rp-loading .rp-spinner {
+		position: absolute;
+		left: 1px;
+		top: 1px;
+		width: 26px;
+		height: 26px;
+		-webkit-animation: spin 1s infinite linear;
+		animation: spin 1s infinite linear;
+	}
+
+	#trSending,
+	#trSuccess {
+		display: none;
+	}
+	#help-container label#trBotcheck-label {
+		display: none;
+	}
+	#help-btn-close {
+		position: absolute;
+		width: 30px;
+		height: 30px;
+		right: 40px;
+		top: 15px;
+		border: none;
+		overflow: hidden;
+		cursor: pointer;
+		color: #ccc;
+	}
+	#help-btn-close:before {
+		content: "\f057";
+		font-family: "Fontcons";
+		margin-right: 5em;
+		font-size: 30px;
+		line-height: 1;
+	}
+	#help-btn-close:hover {
+		color: #fff;
+	}
+	.filetypes {
+		color: #aaa;
+		font-size: 0.9em;
+		display: inline-block;
+		margin-bottom: 1.5em;
+	}
+/* Help Tab */
+	#tab {
+		display: block;
+		position: absolute;
+		top: 76px;
+		right: 30px;
+		width: 5em;
+		height: 3em;
+		text-align: right;
+		margin: 0;
+		line-height: 1.2em;
+		font-size: 90%;
+	}
+	#tab.active {
+		background: #000;
+	}
+	#tab a { 
+		padding: 0;
+		color: #fff;
+		height: 3em;
+		display: block;
+		border: none;
+	}
+	#tab a span { 
+		padding: 1em 0 0 0;
+		color: #fff;
+		height: 2em;
+		display: block;
+		border: none;
+		/* [!] IE 7 */
+		*zoom:expression(this.runtimeStyle['zoom']='1', this.innerHTML='<small class="tab-before">&#xf059;&nbsp;</small>' + this.innerHTML);
+	}
+	#tab small.tab-before,
+	#tab a span:before {
+		content: "\f059";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+	}
+	#tab a:hover {
+		color: #d7c2ef;
+		background: #616161;
+	}
+	#tab a:hover span {
+		color: #d7c2ef;
+	}
