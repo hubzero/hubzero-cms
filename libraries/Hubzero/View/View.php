@@ -40,6 +40,8 @@ use Hubzero\View\Exception\InvalidLayoutException;
  */
 class View extends Object
 {
+	use \Hubzero\Base\Traits\Escapable;
+
 	/**
 	 * The name of the view
 	 *
@@ -98,20 +100,6 @@ class View extends Object
 	 * @var string
 	 */
 	protected $_output = null;
-
-	/**
-	 * Callback for escaping.
-	 *
-	 * @var string
-	 */
-	protected $_escape = 'htmlspecialchars';
-
-	/**
-	 * Charset to use in escaping mechanisms; defaults to urf8 (UTF-8)
-	 *
-	 * @var string
-	 */
-	protected $_charset = 'UTF-8';
 
 	/**
 	 * The registered helpers.
@@ -304,25 +292,6 @@ class View extends Object
 	}
 
 	/**
-	 * Escapes a value for output in a view script.
-	 *
-	 * If escaping mechanism is either htmlspecialchars or htmlentities, uses
-	 * {@link $_encoding} setting.
-	 *
-	 * @param   mixed  $var  The output to escape.
-	 * @return  mixed  The escaped value.
-	 */
-	public function escape($var)
-	{
-		if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities')))
-		{
-			return call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
-		}
-
-		return call_user_func($this->_escape, $var);
-	}
-
-	/**
 	 * Get the layout.
 	 *
 	 * @return  string  The layout name
@@ -445,18 +414,6 @@ class View extends Object
 			$this->_layoutExt = $value;
 		}
 
-		return $this;
-	}
-
-	/**
-	 * Sets the _escape() callback.
-	 *
-	 * @param   mixed  $spec  The callback for _escape() to use.
-	 * @return  void
-	 */
-	public function setEscape($spec)
-	{
-		$this->_escape = $spec;
 		return $this;
 	}
 

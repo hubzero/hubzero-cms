@@ -32,21 +32,9 @@ defined('_JEXEC') or die('Restricted access');
 /*
  * Support model class for query conditions
  */
-class SupportModelConditions extends JObject
+class SupportModelConditions extends \Hubzero\Base\Object
 {
-	/**
-	 * Callback for escaping.
-	 *
-	 * @var string
-	 */
-	private $_escape = 'htmlspecialchars';
-
-	 /**
-	 * Charset to use in escaping mechanisms; defaults to urf8 (UTF-8)
-	 *
-	 * @var string
-	 */
-	private $_charset = 'UTF-8';
+	use \Hubzero\Base\Traits\Escapable;
 
 	/**
 	 * JDatabase
@@ -99,6 +87,12 @@ class SupportModelConditions extends JObject
 		{
 			$this->record = $record;
 		}
+		else
+		{
+			throw new InvalidArgumentException(JText::_(__METHOD__ . '; Record must be JSON encoded string or object.'), 500);
+		}
+
+		return $this;
 	}
 
 	/**
@@ -376,24 +370,5 @@ class SupportModelConditions extends JObject
 	private function _value($val='=', $label='is', $sel=false)
 	{
 		return $this->_operator($val, $label, $sel);
-	}
-
-	/**
-	 * Escapes a value for output in a view script.
-	 *
-	 * If escaping mechanism is one of htmlspecialchars or htmlentities, uses
-	 * {@link $_encoding} setting.
-	 *
-	 * @param  mixed $var The output to escape.
-	 * @return mixed The escaped value.
-	 */
-	public function escape($var)
-	{
-		if (in_array($this->_escape, array('htmlspecialchars', 'htmlentities')))
-		{
-			return call_user_func($this->_escape, $var, ENT_COMPAT, $this->_charset);
-		}
-
-		return call_user_func($this->_escape, $var);
 	}
 }
