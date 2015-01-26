@@ -523,6 +523,16 @@ class Hubzero_API extends JApplication
 			// tool session authentication
 			$toolSessionId    = JRequest::getInt('sessionnum', null, 'POST');
 			$toolSessionToken = JRequest::getCmd('sesiontoken', null, 'POST');
+
+			// use request headers as backup method to post vars
+			if (!$toolSessionId && !$toolSessionToken)
+			{
+				$headers          = apache_request_headers();
+				$toolSessionId    = (isset($headers['sessionnum'])) ? $headers['sessionnum'] : null;
+				$toolSessionToken = (isset($headers['sesiontoken'])) ? $headers['sesiontoken'] : null;
+			}
+
+			// if we have a session id & token lets use those to authenticate
 			if ($toolSessionId && $toolSessionToken)
 			{
 				// include neede libs
