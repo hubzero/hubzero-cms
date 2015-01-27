@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_billboards/mod_billboards.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,15 +28,19 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Billboards</name>
+	<name>mod_billboards</name>
 	<author>HUBzero</author>
 	<creationDate>November 2011</creationDate>
+	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
 	<version>1.0</version>
-	<description>Rotate through billboards of content</description>
+	<description>MOD_BILLBOARDS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_billboards">mod_billboards.php</filename>
-		<filename>mod_billboards.js</filename>
-		<filename>mod_billboards.css</filename>
+		<filename>assets/js/mod_billboards.js</filename>
+		<filename>assets/css/mod_billboards.css</filename>
 		<filename>helper.php</filename>
 		<filename>mod_billboards.xml</filename>
 		<filename>index.html</filename>
@@ -46,24 +50,24 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="collection" type="sql" default="1" label="Billboard Collection" description="Select the billboard collection to use" query="SELECT id AS value, name AS collection FROM #__billboard_collection" />
-				<field name="transition" type="list" default="scrollHorz" label="Slide Transition Style" description="Select the effect used to transition between slides">
-					<option value="scrollHorz">Scroll Horizontal</option>
-					<option value="scrollVert">Scroll Vertical</option>
-					<option value="fade">Fade</option>
-					<option value="shuffle">Shuffle</option>
-					<option value="zoom">Zoom</option>
-					<option value="turnLeft">Turn Left</option>
+				<field name="collection" type="sql" default="1" label="MOD_BILLBOARDS_PARAM_COLLECTION_LABEL" description="MOD_BILLBOARDS_PARAM_COLLECTION_DESC" query="SELECT id AS value, name AS collection FROM #__billboard_collection" />
+				<field name="transition" type="list" default="scrollHorz" label="MOD_BILLBOARDS_PARAM_TRANSITION_LABEL" description="MOD_BILLBOARDS_PARAM_TRANSITION_DESC">
+					<option value="scrollHorz">MOD_BILLBOARDS_PARAM_TRANSITION_SCROLLHORZ</option>
+					<option value="scrollVert">MOD_BILLBOARDS_PARAM_TRANSITION_SCROLLVERT</option>
+					<option value="fade">MOD_BILLBOARDS_PARAM_TRANSITION_FADE</option>
+					<option value="shuffle">MOD_BILLBOARDS_PARAM_TRANSITION_SHUFFLE</option>
+					<option value="zoom">MOD_BILLBOARDS_PARAM_TRANSITION_ZOOM</option>
+					<option value="turnLeft">MOD_BILLBOARDS_PARAM_TRANSITION_TURNLEFT</option>
 				</field>
-				<field name="random" type="radio" default="0" label="Random" description="Randomly order billboards?">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="random" type="radio" default="0" label="MOD_BILLBOARDS_PARAM_RANDOM_LABEL" description="MOD_BILLBOARDS_PARAM_RANDOM_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="timeout" type="text" default="5" label="Slide Time" description="Time length of each slide (in seconds)" />
-				<field name="speed" type="text" default="1" label="Transition Speed" description="Time length of slide transitions (in seconds)" />
-				<field name="pager" type="list" default="pager" label="Display Pager" description="Display the billboard pager?">
-					<option value="null">No</option>
-					<option value="pager">Yes</option>
+				<field name="timeout" type="text" default="5" label="MOD_BILLBOARDS_PARAM_TIMEOUT_LABEL" description="MOD_BILLBOARDS_PARAM_TIMEOUT_DESC" />
+				<field name="speed" type="text" default="1" label="MOD_BILLBOARDS_PARAM_SPEED_LABEL" description="MOD_BILLBOARDS_PARAM_SPEED_DESC" />
+				<field name="pager" type="list" default="pager" label="MOD_BILLBOARDS_PARAM_PAGER_LABEL" description="MOD_BILLBOARDS_PARAM_PAGER_DESC">
+					<option value="null">JNo</option>
+					<option value="pager">JYes</option>
 				</field>
 			</fieldset>
 		</fields>

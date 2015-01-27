@@ -1,84 +1,35 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_articles_category
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+namespace Modules\ArticlesCategory;
 
-// Include the helper functions only once
-require_once dirname(__FILE__).'/helper.php';
+require_once __DIR__ . DS . 'helper.php';
 
-		// Prep for Normal or Dynamic Modes
-		$mode = $params->get('mode', 'normal');
-		$idbase = null;
-		switch($mode)
-		{
-			case 'dynamic':
-				$option = JRequest::getCmd('option');
-				$view = JRequest::getCmd('view');
-				if ($option === 'com_content') {
-					switch($view)
-					{
-						case 'category':
-							$idbase = JRequest::getInt('id');
-							break;
-						case 'categories':
-							$idbase = JRequest::getInt('id');
-							break;
-						case 'article':
-							if ($params->get('show_on_article_page', 1)) {
-								$idbase = JRequest::getInt('catid');
-							}
-							break;
-					}
-				}
-				break;
-			case 'normal':
-			default:
-				$idbase = $params->get('catid');
-				break;
-		}
-
-
-
-$cacheid = md5(serialize(array ($idbase, $module->module)));
-
-$cacheparams = new stdClass;
-$cacheparams->cachemode = 'id';
-$cacheparams->class = 'modArticlesCategoryHelper';
-$cacheparams->method = 'getList';
-$cacheparams->methodparams = $params;
-$cacheparams->modeparams = $cacheid;
-
-$list = JModuleHelper::moduleCache ($module, $params, $cacheparams);
-
-
-if (!empty($list)) {
-	$grouped = false;
-	$article_grouping = $params->get('article_grouping', 'none');
-	$article_grouping_direction = $params->get('article_grouping_direction', 'ksort');
-	$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
-	$item_heading = $params->get('item_heading');
-
-	if ($article_grouping !== 'none') {
-		$grouped = true;
-		switch($article_grouping)
-		{
-			case 'year':
-			case 'month_year':
-				$list = modArticlesCategoryHelper::groupByDate($list, $article_grouping, $article_grouping_direction, $params->get('month_year_format', 'F Y'));
-				break;
-			case 'author':
-			case 'category_title':
-				$list = modArticlesCategoryHelper::groupBy($list, $article_grouping, $article_grouping_direction);
-				break;
-			default:
-				break;
-		}
-	}
-    require JModuleHelper::getLayoutPath('mod_articles_category', $params->get('layout', 'default'));
-}
+with(new Helper($params, $module))->display();

@@ -1,23 +1,152 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_articles_category
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Modules\ArticlesCategory;
 
-$com_path = JPATH_SITE.'/components/com_content/';
-require_once $com_path.'router.php';
-require_once $com_path.'helpers/route.php';
+use Hubzero\Module\Module;
+use ContentHelperRoute;
+use JComponentHelper;
+use JModuleHelper;
+use JModelLegacy;
+use JArrayHelper;
+use JFactory;
+use JRequest;
+use JAccess;
+use JRoute;
+use JString;
+use JHtml;
+use JDate;
+use stdClass;
 
-JModelLegacy::addIncludePath($com_path . '/models', 'ContentModel');
-
-abstract class modArticlesCategoryHelper
+/**
+ * Module class for displaying articles in a category
+ */
+class Helper extends Module
 {
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
+	public function display()
+	{
+		// [!] Legacy compatibility
+		$params = $this->params;
+		$module = $this->module;
+
+		// Prep for Normal or Dynamic Modes
+		$mode = $params->get('mode', 'normal');
+		$idbase = null;
+		switch ($mode)
+		{
+			case 'dynamic':
+				$option = JRequest::getCmd('option');
+				$view   = JRequest::getCmd('view');
+				if ($option === 'com_content')
+				{
+					switch ($view)
+					{
+						case 'category':
+							$idbase = JRequest::getInt('id');
+							break;
+						case 'categories':
+							$idbase = JRequest::getInt('id');
+							break;
+						case 'article':
+							if ($params->get('show_on_article_page', 1))
+							{
+								$idbase = JRequest::getInt('catid');
+							}
+							break;
+					}
+				}
+				break;
+			case 'normal':
+			default:
+				$idbase = $params->get('catid');
+				break;
+		}
+
+		$cacheid = md5(serialize(array($idbase, $module->module)));
+
+		$cacheparams = new stdClass;
+		$cacheparams->cachemode    = 'id';
+		$cacheparams->class        = '\Modules\ArticlesCategory\Helper';
+		$cacheparams->method       = 'getList';
+		$cacheparams->methodparams = $params;
+		$cacheparams->modeparams   = $cacheid;
+
+		$list = JModuleHelper::moduleCache($module, $params, $cacheparams);
+
+		if (!empty($list))
+		{
+			$grouped = false;
+			$article_grouping = $params->get('article_grouping', 'none');
+			$article_grouping_direction = $params->get('article_grouping_direction', 'ksort');
+			$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+			$item_heading = $params->get('item_heading');
+
+			if ($article_grouping !== 'none')
+			{
+				$grouped = true;
+				switch ($article_grouping)
+				{
+					case 'year':
+					case 'month_year':
+						$list = self::groupByDate($list, $article_grouping, $article_grouping_direction, $params->get('month_year_format', 'F Y'));
+						break;
+					case 'author':
+					case 'category_title':
+						$list = self::groupBy($list, $article_grouping, $article_grouping_direction);
+						break;
+					default:
+						break;
+				}
+			}
+			require $this->getLayoutPath($params->get('layout', 'default'));
+		}
+	}
+
+	/**
+	 * Display module contents
+	 *
+	 * @param   object  $params  JRegistry
+	 * @return  array
+	 */
 	public static function getList(&$params)
 	{
+		require_once JPATH_SITE . '/components/com_content/router.php';
+		require_once JPATH_SITE . '/components/com_content/helpers/route.php';
+
+		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
+
 		// Get an instance of the generic articles model
 		$articles = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
 
@@ -42,8 +171,9 @@ abstract class modArticlesCategoryHelper
 		{
 			case 'dynamic':
 				$option = JRequest::getCmd('option');
-				$view = JRequest::getCmd('view');
-				if ($option === 'com_content') {
+				$view   = JRequest::getCmd('view');
+				if ($option === 'com_content')
+				{
 					switch($view)
 					{
 						case 'category':
@@ -53,11 +183,13 @@ abstract class modArticlesCategoryHelper
 							$catids = array(JRequest::getInt('id'));
 							break;
 						case 'article':
-							if ($params->get('show_on_article_page', 1)) {
+							if ($params->get('show_on_article_page', 1))
+							{
 								$article_id = JRequest::getInt('id');
-								$catid = JRequest::getInt('catid');
+								$catid      = JRequest::getInt('catid');
 
-								if (!$catid) {
+								if (!$catid)
+								{
 									// Get an instance of the generic article model
 									$article = JModelLegacy::getInstance('Article', 'ContentModel', array('ignore_request' => true));
 
@@ -68,11 +200,13 @@ abstract class modArticlesCategoryHelper
 
 									$catids = array($item->catid);
 								}
-								else {
+								else
+								{
 									$catids = array($catid);
 								}
 							}
-							else {
+							else
+							{
 								// Return right away if show_on_article_page option is off
 								return;
 							}
@@ -84,7 +218,8 @@ abstract class modArticlesCategoryHelper
 							return;
 					}
 				}
-				else {
+				else
+				{
 					// Return right away if not on a com_content page
 					return;
 				}
@@ -99,8 +234,10 @@ abstract class modArticlesCategoryHelper
 		}
 
 		// Category filter
-		if ($catids) {
-			if ($params->get('show_child_category_articles', 0) && (int) $params->get('levels', 0) > 0) {
+		if ($catids)
+		{
+			if ($params->get('show_child_category_articles', 0) && (int) $params->get('levels', 0) > 0)
+			{
 				// Get an instance of the generic categories model
 				$categories = JModelLegacy::getInstance('Categories', 'ContentModel', array('ignore_request' => true));
 				$categories->setState('params', $appParams);
@@ -110,7 +247,7 @@ abstract class modArticlesCategoryHelper
 				$categories->setState('filter.access', $access);
 				$additional_catids = array();
 
-				foreach($catids as $catid)
+				foreach ($catids as $catid)
 				{
 					$categories->setState('filter.parentId', $catid);
 					$recursive = true;
@@ -118,13 +255,13 @@ abstract class modArticlesCategoryHelper
 
 					if ($items)
 					{
-						foreach($items as $category)
+						foreach ($items as $category)
 						{
 							$condition = (($category->level - $categories->getParent()->level) <= $levels);
-							if ($condition) {
+							if ($condition)
+							{
 								$additional_catids[] = $category->id;
 							}
-
 						}
 					}
 				}
@@ -147,14 +284,16 @@ abstract class modArticlesCategoryHelper
 		$articles->setState('filter.author_alias.include', $params->get('author_alias_filtering_type', 1));
 		$excluded_articles = $params->get('excluded_articles', '');
 
-		if ($excluded_articles) {
+		if ($excluded_articles)
+		{
 			$excluded_articles = explode("\r\n", $excluded_articles);
 			$articles->setState('filter.article_id', $excluded_articles);
 			$articles->setState('filter.article_id.include', false); // Exclude
 		}
 
 		$date_filtering = $params->get('date_filtering', 'off');
-		if ($date_filtering !== 'off') {
+		if ($date_filtering !== 'off')
+		{
 			$articles->setState('filter.date_filtering', $date_filtering);
 			$articles->setState('filter.date_field', $params->get('date_field', 'a.created'));
 			$articles->setState('filter.start_date_range', $params->get('start_date_range', '1000-01-01 00:00:00'));
@@ -168,80 +307,97 @@ abstract class modArticlesCategoryHelper
 		$items = $articles->getItems();
 
 		// Display options
-		$show_date = $params->get('show_date', 0);
-		$show_date_field = $params->get('show_date_field', 'created');
+		$show_date        = $params->get('show_date', 0);
+		$show_date_field  = $params->get('show_date_field', 'created');
 		$show_date_format = $params->get('show_date_format', 'Y-m-d H:i:s');
-		$show_category = $params->get('show_category', 0);
-		$show_hits = $params->get('show_hits', 0);
-		$show_author = $params->get('show_author', 0);
-		$show_introtext = $params->get('show_introtext', 0);
-		$introtext_limit = $params->get('introtext_limit', 100);
+		$show_category    = $params->get('show_category', 0);
+		$show_hits        = $params->get('show_hits', 0);
+		$show_author      = $params->get('show_author', 0);
+		$show_introtext   = $params->get('show_introtext', 0);
+		$introtext_limit  = $params->get('introtext_limit', 100);
 
 		// Find current Article ID if on an article page
 		$option = JRequest::getCmd('option');
-		$view = JRequest::getCmd('view');
+		$view   = JRequest::getCmd('view');
 
-		if ($option === 'com_content' && $view === 'article') {
+		if ($option === 'com_content' && $view === 'article')
+		{
 			$active_article_id = JRequest::getInt('id');
 		}
-		else {
+		else
+		{
 			$active_article_id = 0;
 		}
 
 		// Prepare data for display using display options
 		foreach ($items as &$item)
 		{
-			$item->slug = $item->id.':'.$item->alias;
-			$item->catslug = $item->catid ? $item->catid .':'.$item->category_alias : $item->catid;
+			$item->slug    = $item->id . ':' . $item->alias;
+			$item->catslug = $item->catid ? $item->catid . ':' . $item->category_alias : $item->catid;
 
-			if ($access || in_array($item->access, $authorised)) {
+			if ($access || in_array($item->access, $authorised))
+			{
 				// We know that user has the privilege to view the article
 				$item->link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language));
 			}
-			 else {
+			else
+			{
 				// Angie Fixed Routing
-				$app	= JFactory::getApplication();
-				$menu	= $app->getMenu();
-				$menuitems	= $menu->getItems('link', 'index.php?option=com_users&view=login');
-			if(isset($menuitems[0])) {
+				$app  = JFactory::getApplication();
+				$menu = $app->getMenu();
+				$menuitems = $menu->getItems('link', 'index.php?option=com_users&view=login');
+				if (isset($menuitems[0]))
+				{
 					$Itemid = $menuitems[0]->id;
-				} elseif (JRequest::getInt('Itemid') > 0) { //use Itemid from requesting page only if there is no existing menu
+				}
+				elseif (JRequest::getInt('Itemid') > 0)
+				{
+					// Use Itemid from requesting page only if there is no existing menu
 					$Itemid = JRequest::getInt('Itemid');
 				}
 
-				$item->link = JRoute::_('index.php?option=com_users&view=login&Itemid='.$Itemid);
-				}
+				$item->link = JRoute::_('index.php?option=com_users&view=login&Itemid=' . $Itemid);
+			}
 
 			// Used for styling the active article
 			$item->active = $item->id == $active_article_id ? 'active' : '';
 
 			$item->displayDate = '';
-			if ($show_date) {
+			if ($show_date)
+			{
 				$item->displayDate = JHTML::_('date', $item->$show_date_field, $show_date_format);
 			}
 
-			if ($item->catid) {
-				$item->displayCategoryLink = JRoute::_(ContentHelperRoute::getCategoryRoute($item->catid));
-				$item->displayCategoryTitle = $show_category ? '<a href="'.$item->displayCategoryLink.'">'.$item->category_title.'</a>' : '';
+			if ($item->catid)
+			{
+				$item->displayCategoryLink  = JRoute::_(ContentHelperRoute::getCategoryRoute($item->catid));
+				$item->displayCategoryTitle = $show_category ? '<a href="' . $item->displayCategoryLink . '">' . $item->category_title . '</a>' : '';
 			}
-			else {
+			else
+			{
 				$item->displayCategoryTitle = $show_category ? $item->category_title : '';
 			}
 
 			$item->displayHits = $show_hits ? $item->hits : '';
 			$item->displayAuthorName = $show_author ? $item->author : '';
-			if ($show_introtext) {
+			if ($show_introtext)
+			{
 				$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'mod_articles_category.content');
 				$item->introtext = self::_cleanIntrotext($item->introtext);
 			}
 			$item->displayIntrotext = $show_introtext ? self::truncate($item->introtext, $introtext_limit) : '';
-			$item->displayReadmore = $item->alternative_readmore;
-
+			$item->displayReadmore  = $item->alternative_readmore;
 		}
 
 		return $items;
 	}
 
+	/**
+	 * Clean some unwanted tags out of string
+	 *
+	 * @param   string  $introtext
+	 * @return  string
+	 */
 	public static function _cleanIntrotext($introtext)
 	{
 		$introtext = str_replace('<p>', ' ', $introtext);
@@ -259,10 +415,9 @@ abstract class modArticlesCategoryHelper
 	* The goal is to get the proper length plain text string with as much of
 	* the html intact as possible with all tags properly closed.
 	*
-	* @param string   $html       The content of the introtext to be truncated
-	* @param integer  $maxLength  The maximum number of charactes to render
-	*
-	* @return  string  The truncated string
+	* @param   string   $html       The content of the introtext to be truncated
+	* @param   integer  $maxLength  The maximum number of charactes to render
+	* @return  string   The truncated string
 	*/
 	public static function truncate($html, $maxLength = 0)
 	{
@@ -298,28 +453,42 @@ abstract class modArticlesCategoryHelper
 		return $html;
 	}
 
+	/**
+	 * Group items
+	 *
+	 * @param   array   $list
+	 * @param   string  $fieldName
+	 * @param   string  $article_grouping_direction
+	 * @param   string  $fieldNameToKeep
+	 * @return  array
+	 */
 	public static function groupBy($list, $fieldName, $article_grouping_direction, $fieldNameToKeep = null)
 	{
 		$grouped = array();
 
-		if (!is_array($list)) {
-			if ($list == '') {
+		if (!is_array($list))
+		{
+			if ($list == '')
+			{
 				return $grouped;
 			}
 
 			$list = array($list);
 		}
 
-		foreach($list as $key => $item)
+		foreach ($list as $key => $item)
 		{
-			if (!isset($grouped[$item->$fieldName])) {
+			if (!isset($grouped[$item->$fieldName]))
+			{
 				$grouped[$item->$fieldName] = array();
 			}
 
-			if (is_null($fieldNameToKeep)) {
+			if (is_null($fieldNameToKeep))
+			{
 				$grouped[$item->$fieldName][$key] = $item;
 			}
-			else {
+			else
+			{
 				$grouped[$item->$fieldName][$key] = $item->$fieldNameToKeep;
 			}
 
@@ -331,26 +500,38 @@ abstract class modArticlesCategoryHelper
 		return $grouped;
 	}
 
+	/**
+	 * Group items by date
+	 *
+	 * @param   array   $list
+	 * @param   string  $type
+	 * @param   string  $article_grouping_direction
+	 * @param   string  $month_year_format
+	 * @return  array
+	 */
 	public static function groupByDate($list, $type = 'year', $article_grouping_direction, $month_year_format = 'F Y')
 	{
 		$grouped = array();
 
-		if (!is_array($list)) {
-			if ($list == '') {
+		if (!is_array($list))
+		{
+			if ($list == '')
+			{
 				return $grouped;
 			}
 
 			$list = array($list);
 		}
 
-		foreach($list as $key => $item)
+		foreach ($list as $key => $item)
 		{
-			switch($type)
+			switch ($type)
 			{
 				case 'month_year':
 					$month_year = JString::substr($item->created, 0, 7);
 
-					if (!isset($grouped[$month_year])) {
+					if (!isset($grouped[$month_year]))
+					{
 						$grouped[$month_year] = array();
 					}
 
@@ -361,7 +542,8 @@ abstract class modArticlesCategoryHelper
 				default:
 					$year = JString::substr($item->created, 0, 4);
 
-					if (!isset($grouped[$year])) {
+					if (!isset($grouped[$year]))
+					{
 						$grouped[$year] = array();
 					}
 
@@ -374,7 +556,8 @@ abstract class modArticlesCategoryHelper
 
 		$article_grouping_direction($grouped);
 
-		if ($type === 'month_year') {
+		if ($type === 'month_year')
+		{
 			foreach($grouped as $group => $items)
 			{
 				$date = new JDate($group);

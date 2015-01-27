@@ -1,23 +1,80 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_articles_news
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Modules\ArticlesNews;
 
-require_once JPATH_SITE.'/components/com_content/helpers/route.php';
+use Hubzero\Module\Module;
+use ContentHelperRoute;
+use JComponentHelper;
+use JModelLegacy;
+use JFactory;
+use JAccess;
+use JRoute;
+use JText;
+use JHtml;
 
-JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_content/models', 'ContentModel');
-
-abstract class modArticlesNewsHelper
+/**
+ * Module class for displaying news articles
+ */
+class Helper extends Module
 {
+	/**
+	 * Display module contents
+	 *
+	 * @return  void
+	 */
+	public function display()
+	{
+		// [!] Legacy compatibility
+		$params = $this->params;
+
+		$list = self::getList($params);
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
+		require $this->getLayoutPath($params->get('layout', 'default'));
+	}
+
+	/**
+	 * Display module contents
+	 *
+	 * @param   object  $params  JRegistry
+	 * @return  array
+	 */
 	public static function getList(&$params)
 	{
-		$app	= JFactory::getApplication();
-		$db		= JFactory::getDbo();
+		require_once JPATH_SITE . '/components/com_content/helpers/route.php';
+
+		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_content/models', 'ContentModel');
+
+		$app = JFactory::getApplication();
+		$db  = JFactory::getDbo();
 
 		// Get an instance of the generic articles model
 		$model = JModelLegacy::getInstance('Articles', 'ContentModel', array('ignore_request' => true));
@@ -58,10 +115,11 @@ abstract class modArticlesNewsHelper
 		//	Retrieve Content
 		$items = $model->getItems();
 
-		foreach ($items as &$item) {
+		foreach ($items as &$item)
+		{
 			$item->readmore = strlen(trim($item->fulltext));
-			$item->slug = $item->id.':'.$item->alias;
-			$item->catslug = $item->catid.':'.$item->category_alias;
+			$item->slug     = $item->id . ':' . $item->alias;
+			$item->catslug  = $item->catid . ':' . $item->category_alias;
 
 			if ($access || in_array($item->access, $authorised))
 			{
@@ -69,15 +127,16 @@ abstract class modArticlesNewsHelper
 				$item->link = JRoute::_(ContentHelperRoute::getArticleRoute($item->slug, $item->catid, $item->language));
 				$item->linkText = JText::_('MOD_ARTICLES_NEWS_READMORE');
 			}
-			else {
+			else
+			{
 				$item->link = JRoute::_('index.php?option=com_users&view=login');
 				$item->linkText = JText::_('MOD_ARTICLES_NEWS_READMORE_REGISTER');
 			}
 
 			$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'mod_articles_news.content');
 
-			//new
-			if (!$params->get('image')) {
+			if (!$params->get('image'))
+			{
 				$item->introtext = preg_replace('/<img[^>]*>/', '', $item->introtext);
 			}
 

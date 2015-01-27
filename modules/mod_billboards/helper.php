@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,22 +24,32 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Billboards;
+
+use Hubzero\Module\Module;
+use JComponentHelper;
+use JFactory;
 
 /**
- * Mod_Billboards helper class, used to query for billboards and contains the display method
+ * Module helper class, used to query for billboards and contains the display method
  */
-class modBillboards extends \Hubzero\Module\Module
+class Helper extends Module
 {
+	/**
+	 * Tracker for number of instances
+	 *
+	 * @var  integer
+	 */
+	public static $multiple_instances = 0;
+
 	/**
 	 * Get the list of billboads in the selected collection
 	 *
-	 * @return retrieved rows
+	 * @return  array  Retrieved rows
 	 */
 	private function _getList()
 	{
@@ -66,7 +76,7 @@ class modBillboards extends \Hubzero\Module\Module
 	 * Display method
 	 * Used to add CSS for each slide as well as the javascript file(s) and the parameterized function
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -80,6 +90,7 @@ class modBillboards extends \Hubzero\Module\Module
 			$this->css();
 			$this->js();
 		}
+		$this->multiple_instances++;
 
 		// Get the billboard slides
 		$this->slides = $this->_getList();
@@ -150,5 +161,7 @@ class modBillboards extends \Hubzero\Module\Module
 			});';
 
 		$this->js($js);
+
+		require $this->getLayoutPath();
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_billboards/mod_billboards.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        modules/mod_billboards/assets/css/mod_billboards.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -15,40 +15,41 @@
 
 /* Container Styling */
 	.slider {
-		position:relative;
-		}
-	.banner, .slide {
-		height:230px;
-		width:100%;
-		overflow:hidden;
-		}
+		position: relative;
+	}
+	.banner,
+	.slide {
+		height: 230px;
+		width: 100%;
+		overflow: hidden;
+	}
 	.banner div {
-		width:100%;
-		}
+		width: 100%;
+	}
 
 /* Standard Pager Styling */
 	.slider .pager {
-		z-index:500;
-		position:absolute;
-		top:20px;
-		right:20px;
-		}
+		z-index: 500;
+		position: absolute;
+		top: 20px;
+		right: 20px;
+	}
 	.slider .pager a {
-		float:left;
-		text-indent:-555em;
-		background:#FFF;
-		width:9px;
-		height:9px;
-		-webkit-border-radius:4px;
-		-moz-border-radius:4px;
-		border-radius:4px;
-		opacity:0.5;
-		margin-right:4px;
-		}
+		float: left;
+		text-indent: -555em;
+		background: #FFF;
+		width: 9px;
+		height: 9px;
+		-webkit-border-radius: 4px;
+		   -moz-border-radius: 4px;
+		        border-radius: 4px;
+		opacity: 0.5;
+		margin-right: 4px;
+	}
 	.slider .pager a:hover {
-		border:none;
-		opacity:0.7;
-		}
+		border: none;
+		opacity: 0.7;
+	}
 
 /* Standard billboard styling (could override here, or on a per-billboard basis) */
 	.slide h3 {
@@ -59,53 +60,53 @@
 		text-shadow: #000 0px 2px 2px;
 		font-size: 2em;
 		margin-top: 1em;
-		}
+	}
 	.slide p {
 		font-size: 1.2em;
 		color: #aaa;
 		text-shadow: #000 0px 1px 2px;
-		}
+	}
 
 /* Standard Learn more link styling */
 	.slide a.learnmore {
-		background:#555;
-		color:#fff;
-		padding:5px 15px;
-		-webkit-border-radius:10px;
-		-moz-border-radius:10px;
-		border-radius:10px;
-		text-shadow:none;
-		}
+		background: #555;
+		color: #fff;
+		padding: 5px 15px;
+		-webkit-border-radius: 10px;
+		   -moz-border-radius: 10px;
+		        border-radius: 10px;
+		text-shadow: none;
+	}
 	.slide a:hover.learnmore {
-		border-bottom:none;    
-		background:#777;  
-		}
+		border-bottom: none;
+		background: #777;
+	}
 	.slide div .learnmore {
 		font-size: 1em;
-		}
+	}
 	.slide .relative {
 		margin-top: 15px;
 		font-size: 1em;
-		}
+	}
 	.slide .bottomright {
 		position: absolute;
 		right: 15px;
 		bottom: 15px;
 		width: 100px;
-		}
+	}
 	.slide .bottomleft {
 		position: absolute;
 		left: 15px;
 		bottom: 15px;
-		}
+	}
 	.slide .topright {
 		position: absolute;
 		right: 15px;
 		top: 15px;
 		width: 100px;
-		}
+	}
 	.slide .topleft {
 		position: absolute;
 		left: 15px;
 		top: 15px;
-		}
+	}
