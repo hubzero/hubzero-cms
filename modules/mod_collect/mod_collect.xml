@@ -28,7 +28,7 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension type="module" version="2.5" client="site">
-	<name>Collect</name>
+	<name>mod_collect</name>
 	<author>HUBzero</author>
 	<copyright>Copyright 2005-2014 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>

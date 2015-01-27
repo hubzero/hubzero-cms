@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -45,7 +45,7 @@ else if ($this->row)
 	<div class="<?php echo $this->cls; ?>">
 		<p class="featured-img">
 			<a href="<?php echo JRoute::_($row->link()); ?>">
-				<img width="50" height="50" src="<?php echo $base; ?>/modules/mod_featuredblog/images/blog_thumb.gif" alt="<?php echo $this->escape(stripslashes($row->get('title'))); ?>" />
+				<img width="50" height="50" src="<?php echo $base; ?>/modules/mod_featuredblog/assets/img/blog_thumb.gif" alt="<?php echo $this->escape(stripslashes($row->get('title'))); ?>" />
 			</a>
 		</p>
 		<p>

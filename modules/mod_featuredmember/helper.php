@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,22 +24,28 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\Featuredmember;
+
+use Hubzero\Module\Module;
+use Hubzero\User\Profile;
+use MembersProfile;
+use JComponentHelper;
+use JFactory;
+use JRegistry;
 
 /**
  * Module class for displaying featured members
  */
-class modFeaturedmember extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Generate module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
@@ -52,14 +57,15 @@ class modFeaturedmember extends \Hubzero\Module\Module
 		$this->profile = null;
 
 		// Randomly choose one
-		$filters = array();
-		$filters['limit'] = 1;
-		$filters['show']  = trim($this->params->get('show'));
-		$filters['start']      = 0;
-		$filters['sortby']     = "RAND()";
-		$filters['search']     = '';
-		$filters['authorized'] = false;
-		$filters['show']       = trim($this->params->get('show'));
+		$filters = array(
+			'limit'      => 1,
+			'show'       => trim($this->params->get('show')),
+			'start'      => 0,
+			'sortby'     => "RAND()",
+			'search'     => '',
+			'authorized' => false,
+			'show'       => trim($this->params->get('show'))
+		);
 		if ($min = $this->params->get('min_contributions'))
 		{
 			$filters['contributions'] = $min;
@@ -74,7 +80,7 @@ class modFeaturedmember extends \Hubzero\Module\Module
 		}
 
 		// Load their bio
-		$this->profile = \Hubzero\User\Profile::getInstance($this->row->uidNumber);
+		$this->profile = Profile::getInstance($this->row->uidNumber);
 
 		if (trim(strip_tags($this->profile->get('bio'))) == '')
 		{
@@ -115,14 +121,14 @@ class modFeaturedmember extends \Hubzero\Module\Module
 			$this->thumb   = $this->profile->getPicture();
 			$this->filters = $filters;
 
-			require(JModuleHelper::getLayoutPath($this->module->module));
+			require $this->getLayoutPath();
 		}
 	}
 
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -132,7 +138,14 @@ class modFeaturedmember extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 15)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;

@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,22 +24,27 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\EventsCalendar;
+
+use Hubzero\Module\Module;
+use EventsHtml;
+use JFactory;
+use JRoute;
+use JText;
 
 /**
  * Class for events calendar module
  */
-class modEventsCalendar extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module utput
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -52,7 +56,14 @@ class modEventsCalendar extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;
@@ -64,7 +75,7 @@ class modEventsCalendar extends \Hubzero\Module\Module
 	/**
 	 * Gnerate events calendar
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
@@ -76,7 +87,9 @@ class modEventsCalendar extends \Hubzero\Module\Module
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'html.php');
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'date.php');
 			//include_once(JPATH_ROOT . DS . 'components' . DS . 'com_events' . DS . 'helpers' . DS . 'repeat.php');
-		} else {
+		}
+		else
+		{
 			$this->setError(JText::_('MOD_EVENTS_LATEST_COMPONENT_REQUIRED'));
 			return;
 		}
@@ -187,7 +200,7 @@ class modEventsCalendar extends \Hubzero\Module\Module
 			$this->content .= $this->_calendar($timeWithOffset, $startday, mktime(0, 0, 0, date("n") + 1, 1, date("Y")), JText::_('_CAL_LANG_NEXT_MONTH'), $day_name, $disp_nextMonth == 2);
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 
 	/**
@@ -220,12 +233,12 @@ class modEventsCalendar extends \Hubzero\Module\Module
 		$content .= ' <caption>'."\n";
 		if ($this->params->get('show_nav_prev_month'))
 		{
-			$content .= ' <a class="prev month" href="'.JRoute::_('index.php?option=com_events&year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&month='.($cal_month == 1 ? 12 : $cal_month - 1)).'">'.EventsHtml::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
+			$content .= ' <a class="prev month" href="' . JRoute::_('index.php?option=com_events&year='.($cal_month == 1 ? $cal_year - 1 : $cal_year).'&month='.($cal_month == 1 ? 12 : $cal_month - 1)) . '">'.EventsHtml::getMonthName(($cal_month == 1 ? 12 : $cal_month - 1)).'</a>'."\n";
 		}
-		$content .= ' <a class="current month" href="'.JRoute::_('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month).'">'.EventsHtml::getMonthName($cal_month).'</a>'."\n";
+		$content .= ' <a class="current month" href="' . JRoute::_('index.php?option=com_events&year='.$cal_year.'&month='.$cal_month) . '">' . EventsHtml::getMonthName($cal_month) . '</a>'."\n";
 		if ($this->params->get('show_nav_next_month'))
 		{
-			$content .= ' <a class="next month" href="'.JRoute::_('index.php?option=com_events&year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&month='.($cal_month == 12 ? 1 : $cal_month + 1)).'">'.EventsHtml::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
+			$content .= ' <a class="next month" href="' . JRoute::_('index.php?option=com_events&year='.($cal_month == 12 ? $cal_year + 1 : $cal_year).'&month='.($cal_month == 12 ? 1 : $cal_month + 1)) . '">'.EventsHtml::getMonthName(($cal_month == 12 ? 1 : $cal_month + 1)).'</a>'."\n";
 		}
 		$content .= ' </caption>'."\n";
 		$content .= ' <thead>'."\n";
@@ -260,13 +273,13 @@ class modEventsCalendar extends \Hubzero\Module\Module
 			$do = ($d<10) ? "0$d" : "$d";
 			$selected_date = "$cal_year-$cal_month-$do";
 
-			$sql = "SELECT #__events.* FROM #__events, #__categories as b"
-				. "\n WHERE #__events.catid = b.id " // AND b.access <= $gid AND #__events.access <= $gid"
-				. "\n AND ((publish_up >= '$selected_date 00:00:00' AND publish_up <= '$selected_date 23:59:59')"
-				. "\n OR (publish_down >= '$selected_date 00:00:00' AND publish_down <= '$selected_date 23:59:59')"
-				. "\n OR (publish_up <= '$selected_date 00:00:00' AND publish_down >= '$selected_date 23:59:59')) AND state='1'"
-				. "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
-				. "\n ORDER BY publish_up ASC";
+			$sql = "SELECT `#__events`.* FROM `#__events`, `#__categories` as b"
+				. " WHERE #__events.catid = b.id " // AND b.access <= $gid AND #__events.access <= $gid"
+				. " AND ((publish_up >= '$selected_date 00:00:00' AND publish_up <= '$selected_date 23:59:59')"
+				. " OR (publish_down >= '$selected_date 00:00:00' AND publish_down <= '$selected_date 23:59:59')"
+				. " OR (publish_up <= '$selected_date 00:00:00' AND publish_down >= '$selected_date 23:59:59')) AND state='1'"
+				. " AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
+				. " ORDER BY publish_up ASC";
 
 			$database->setQuery($sql);
 			$rows = $database->loadObjectList();

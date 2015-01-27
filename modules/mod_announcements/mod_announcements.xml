@@ -28,7 +28,7 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Announcements Display</name>
+	<name>mod_announcements</name>
 	<author>HUBzero</author>
 	<creationDate>May 2010</creationDate>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>

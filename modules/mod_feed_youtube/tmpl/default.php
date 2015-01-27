@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 if ($this->feed)
 {
-	// image handling
+	// Image handling
 	$iTitle = isset($this->feed->image->title) ? $this->feed->image->title : null;
 
 	// Get layout
@@ -52,7 +52,7 @@ if ($this->feed)
 	// Link to more videos
 	$morelink =  $this->params->get('moreurl') ? str_replace('&', '&amp', $this->params->get('moreurl')) : str_replace('&', '&amp', $this->feed->link);
 
-	// feed image & title
+	// Feed image & title
 	if ((!is_null($this->feed->title) or $this->params->get('feedtitle', '')) && $this->params->get('rsstitle', 1)) { ?>
 		<h3 class="feed_title">
 			<?php if ((!is_null($this->feed->title) or $this->params->get('feedtitle', '')) && $this->params->get('rsstitle', 1)) { ?>
@@ -90,13 +90,12 @@ if ($this->feed)
 		for ($j = 0; $j < $totalItems; $j ++)
 		{
 			$currItem = & $this->feed->items[$j];
-			// item title
 		?>
 		<li>
 			<?php
 			if (!is_null($currItem->get_link()))
 			{
-				// get video id
+				// Get video id
 				$match = array();
 				$vid = 0;
 				preg_match("/youtube\.com\/watch\?v=(.*)/", $currItem->get_link() , $match);
@@ -105,7 +104,7 @@ if ($this->feed)
 					$vid = substr($match[1], 0, 11);
 				}
 
-				// copy thumbnail to server
+				// Copy thumbnail to server
 				if ($vid && $isDir)
 				{
 					$img_src = 'http://img.youtube.com/vi/' . $vid . '/default.jpg';
@@ -121,7 +120,7 @@ if ($this->feed)
 					}
 				}
 
-				// display with thumbnails
+				// Display with thumbnails
 				if ($vid) { ?>
 					<a href="<?php echo $currItem->get_link(); ?>" rel="external">
 						<img src="<?php echo $thumb; ?>" alt="" />
@@ -134,7 +133,7 @@ if ($this->feed)
 						<span><?php echo $currItem->get_title(); ?></span>
 					</a>
 				<?php
-				} // end if no vid, simple display
+				}
 			}
 			?>
 		</li>

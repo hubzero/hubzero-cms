@@ -19,7 +19,7 @@
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Hubzilla</name>
+	<name>mod_hubzilla</name>
 	<author>HUBzero</author>
 	<creationDate>August 2012</creationDate>
 	<copyright>Copyright 2005-2015 by Purdue Research Foundation, West Lafayette, IN 47906.</copyright>

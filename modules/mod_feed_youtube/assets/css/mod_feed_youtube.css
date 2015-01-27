@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_feed_youtube/mod_feed_youtube.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        modules/mod_feed_youtube/assets/img/mod_feed_youtube.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -14,7 +14,7 @@
 */
 
 	.youtubefeed {
- 		padding-left: 1.7em;
+		padding-left: 1.7em;
 	}
 	.youtubefeed img {
 		width: 80px;
@@ -24,8 +24,6 @@
 		border-bottom: 2px solid #ccc;
 		float: left;
 		margin-right: 20px;
-	}
-	.youtubefeed a {
 	}
 	.youtubefeed p {
 		color: #666666;
@@ -42,7 +40,7 @@
 	.youtubefeed li {
 		min-height: 60px;
 		border-bottom: 1px solid #cccccc;
-		background: #f7f7f7 url("/modules/mod_feed_youtube/images/libg.gif") 0 -20px repeat-x;
+		background: #f7f7f7 url("/modules/mod_feed_youtube/assets/img/libg.gif") 0 -20px repeat-x;
 		padding: 1em 0.5em;
 		margin: 0;
 	}
@@ -64,19 +62,19 @@
 		font-size: 110%;
 		text-transform: uppercase;
 	}
-	.feed_title a, 
+	.feed_title a,
 	.youtubefeed h3 a {
 		color: #000000;
 	}
-	.feed_title a:hover, 
+	.feed_title a:hover,
 	.youtubefeed h3 a:hover {
 		color: #FF0000;
 		border: none;
 	}
 	.youtubefeed h3 {
-		background: url("/modules/mod_feed_youtube/images/fc-tv.gif") 0 2px no-repeat;
+		background: url("/modules/mod_feed_youtube/assets/img/fc-tv.gif") 0 2px no-repeat;
 		padding:0.3em 0;
-		padding-left: 23px;	
+		padding-left: 23px;
 	}
 /* horizontal layout */
 	.youtubefeed ul.layout_horizontal li {

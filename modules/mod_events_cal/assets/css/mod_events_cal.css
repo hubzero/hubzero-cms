@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        modules/mod_events_cal/mod_events_cal.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        modules/mod_events_cal/assets/css/mod_events_cal.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -16,34 +16,34 @@
 /* Calendar */
 	.mod_events_calendar {
 		margin: 0 0 2em 0;
-		}
+	}
 	.mod_events_calendar td {
 		border-bottom: 1px solid #fff;
-		}
+	}
 	.mod_events_calendar .todaynoevents,
 	.mod_events_calendar .todaywithevents {
 		background-color: rgba(23,139,193,0.1);
-		}
+	}
 	.mod_events_calendar .daywithevents {
 		background-color: transparent;
-		}
+	}
 /* Upcoming Events */
 	.upcoming-events {
 		margin: 1em 0;
 		padding: 0;
 		list-style: none;
-		}
+	}
 	.upcoming-events li {
 		clear:both;
 		margin: 0;
 		list-style: none;
 		border: 1px solid #F2F2EE;
-		}
+	}
 	.upcoming-events p {
 		margin: 0 0 1.5em 45px;
 		border-left: 1px solid #bbb;
 		padding: 0 10px 0 10px;
-		}
+	}
 	.upcoming-events p.date {
 		float: left;
 		text-align: center;
@@ -52,21 +52,21 @@
 		height: 37px;
 		color: #999;
 		border-left: none;
-		}
+	}
 	.upcoming-events .month {
 		float: left;
 		width: 23px;
 		font-size: 0.9em;
-		text-transform:uppercase;
-		}
+		text-transform: uppercase;
+	}
 	.upcoming-events .day {
 		float: left;
 		width: 23px;
 		font-size: 1.5em;
 		margin-top: -0.2em;
-		}
+	}
 	.upcoming-events small {
 		color: #aaa;
 		font-size: 90%;
-		}
+	}
 

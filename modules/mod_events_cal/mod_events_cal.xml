@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_events_cal/mod_events_cal.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,54 +28,55 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Events Calendar</name>
+	<name>mod_events_cal</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Displays a calendar with days that have events linked. Requires events component.</description>
+	<description>MOD_EVENTS_CAL_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_events_cal">mod_events_cal.php</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
-		<filename>mod_events_cal.css</filename>
+		<filename>assets/css/mod_events_cal.css</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
-				<field name="show_nav_prev_month" type="radio" default="0" label="Display previous month navigation" description="Display a link for the previous month">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_EVENTS_CAL_PARAM_CLASS_LABEL" description="MOD_EVENTS_CAL_PARAM_CLASS_DESC" />
+				<field name="show_nav_prev_month" type="radio" default="0" label="MOD_EVENTS_CAL_PARAM_SHOWNAVPREVMONTH_LABEL" description="MOD_EVENTS_CAL_PARAM_SHOWNAVPREVMONTH_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
-				<field name="start_day" type="text" default="0" label="Start day" description="The day (number) the calendar should start on" />
-				<field name="display_last_month" type="list" default="NO" label="Display last month" description="Display the calendar for the previous month">
-					<option value="YES_stop">Yes</option>
-					<option value="YES_stop_events">Yes (events)</option>
-					<option value="ALWAYS">Always</option>
-					<option value="ALWAYS_events">Always (events)</option>
-					<option value="NO">No</option>
+				<field name="start_day" type="text" default="0" label="MOD_EVENTS_CAL_PARAM_STARTDAY_LABEL" description="MOD_EVENTS_CAL_PARAM_STARTDAY_DESC" />
+				<field name="display_last_month" type="list" default="NO" label="MOD_EVENTS_CAL_PARAM_DISPLAYLASTMONTH_LABEL" description="MOD_EVENTS_CAL_PARAM_DISPLAYLASTMONTH_DESC">
+					<option value="YES_stop">JYes</option>
+					<option value="YES_stop_events">MOD_EVENTS_CAL_PARAM_YESEVENTS</option>
+					<option value="ALWAYS">MOD_EVENTS_CAL_PARAM_ALWAYS</option>
+					<option value="ALWAYS_events">MOD_EVENTS_CAL_PARAM_ALWAYSEVENTS</option>
+					<option value="NO">JNo</option>
 				</field>
-				<field name="display_last_month_days" type="text" default="0" label="Display last month days" description="Display last month days" />
-				<field name="show_nav_next_month" type="radio" default="0" label="Display next month navigation" description="Display a link for the next month">
-					<option value="1">Yes</option>
-					<option value="0">No</option>
+				<field name="display_last_month_days" type="text" default="0" label="MOD_EVENTS_CAL_PARAM_DISPLAYLASTMONTHDAYS_LABEL" description="MOD_EVENTS_CAL_PARAM_DISPLAYLASTMONTHDAYS_DESC" />
+				<field name="show_nav_next_month" type="radio" default="0" label="MOD_EVENTS_CAL_PARAM_SHOWNAVNEXTMONTH_LABEL" description="MOD_EVENTS_CAL_PARAM_SHOWNAVNEXTMONTH_DESC">
+					<option value="1">JYes</option>
+					<option value="0">JNo</option>
 				</field>
-				<field name="display_next_month" type="list" default="NO" label="Display next month" description="Display the calendar for the next month">
-					<option value="YES_stop">Yes</option>
-					<option value="YES_stop_events">Yes (events)</option>
-					<option value="ALWAYS">Always</option>
-					<option value="ALWAYS_events">Always (events)</option>
-					<option value="NO">No</option>
+				<field name="display_next_month" type="list" default="NO" label="MOD_EVENTS_CAL_PARAM_DISPLAYNEXTMONTH_LABEL" description="MOD_EVENTS_CAL_PARAM_DISPLAYNEXTMONTH_DESC">
+					<option value="YES_stop">JYes</option>
+					<option value="YES_stop_events">MOD_EVENTS_CAL_PARAM_YESEVENTS</option>
+					<option value="ALWAYS">MOD_EVENTS_CAL_PARAM_ALWAYS</option>
+					<option value="ALWAYS_events">MOD_EVENTS_CAL_PARAM_ALWAYSEVENTS</option>
+					<option value="NO">JNo</option>
 				</field>
-				<field name="display_next_month_days" type="text" default="0" label="Display next month days" description="Display next month days" />
+				<field name="display_next_month_days" type="text" default="0" label="MOD_EVENTS_CAL_PARAM_DISPLAYNEXTMONTHDAYS_LABEL" description="MOD_EVENTS_CAL_PARAM_DISPLAYNEXTMONTHDAYS_DESC" />
 			</fieldset>
-			<fieldset group="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
+				<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>

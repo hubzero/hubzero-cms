@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,29 +24,33 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Modules\FeedYoutube;
+
+use Hubzero\Module\Module;
+use stdclass;
+use JFactory;
+use JText;
 
 /**
  * Module class for displaying a YouTube feed
  */
-class modFeedYoutubeHelper extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
-		// module params
+		// Module params
 		$limit = (int) $this->params->get('rssitems', 5);
 
-		//  get RSS parsed object
+		// Get RSS parsed object
 		$options = array(
 			'rssUrl'     => $this->params->get('rssurl', ''),
 			'cache_time' => null
@@ -64,23 +68,23 @@ class modFeedYoutubeHelper extends \Hubzero\Module\Module
 
 		if ($rssDoc != false)
 		{
-			// channel header and link
+			// Channel header and link
 			$this->feed->title        = $rssDoc->get_title();
 			$this->feed->link         = $rssDoc->get_link();
 			$this->feed->description  = $rssDoc->get_description();
 
-			// channel image if exists
+			// Channel image if exists
 			$this->feed->image        = new stdClass();
 			$this->feed->image->url   = $rssDoc->get_image_url();
 			$this->feed->image->title = $rssDoc->get_image_title();
 
-			// items
+			// Items
 			$items = $rssDoc->get_items();
 
-			// feed elements
+			// Feed elements
 			if ($this->params->get('pick_random', 0))
 			{
-				// randomize items
+				// Randomize items
 				shuffle($items);
 			}
 			$this->feed->items = array_slice($items, 0, $limit);
@@ -90,6 +94,6 @@ class modFeedYoutubeHelper extends \Hubzero\Module\Module
 			$this->feed = false;
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

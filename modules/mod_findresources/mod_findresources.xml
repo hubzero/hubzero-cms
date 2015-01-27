@@ -2,10 +2,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_findresources/mod_findresources.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -27,18 +27,19 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Find Resources</name>
+	<name>mod_findresources</name>
 	<author>HUBzero</author>
 	<creationDate>Sep 2009</creationDate>
 	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>alisa@purdue.edu</authorEmail>
+	<authorEmail>support@hubzero.org</authorEmail>
 	<version>1.5.0</version>
-	<description>Module to display resources search, popular tags and categories.</description>
+	<description>MOD_FINDRESOURCES_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_findresources">mod_findresources.php</filename>
 		<filename>tmpl/default.php</filename>
 		<filename>tmpl/index.html</filename>
+		<filename>helper.php</filename>
 		<filename>mod_findresources.xml</filename>
 		<filename>index.html</filename>
 	</files>
@@ -48,15 +49,15 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="cssId" type="text" default="findresources" label="Module ID" description="An ID to be applied to the css of the module container, this allows individual module styling" />
-				<field name="limit" type="text" default="25" label="Number of Tags" description="The number of tags to display." />
+				<field name="cssId" type="text" default="findresources" label="MOD_FINDRESOURCES_PARAM_CSSID_LABEL" description="MOD_FINDRESOURCES_PARAM_CSSID_DESC" />
+				<field name="limit" type="text" default="25" label="MOD_FINDRESOURCES_PARAM_LIMIT_LABEL" description="MOD_FINDRESOURCES_PARAM_LIMIT_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="15" label="Cache Time" description="The time before the module is recached" />
+				<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>

@@ -1,0 +1,58 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_events_latest/assets/css/mod_events_latest.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_events_latest
+	-- -- -- -- -- -- --
+
+*/
+
+/* Search results */
+	table.latest_events_tbl {
+		border: none;
+	}
+	table.latest_events_tbl tr.odd,
+	table.latest_events_tbl tr.even {
+		background: transparent;
+	}
+	table.latest_events_tbl td {
+		border-top: 1px solid #eee;
+	}
+	.event-date {
+		text-align: center;
+		float: left;
+		width: 3em;
+		display: block;
+		margin-left: 0;
+	}
+	.event-date span {
+		display: block;
+		float: left;
+		width: 100%;
+	}
+	.event-date span.month {
+		background: #D51007;
+		border: 1px solid #D51007;
+		color: #fff;
+		text-transform: uppercase;
+		line-height: 1.1em;
+		font-size: 85%;
+		font-weight: bold;
+		text-align: center;
+	}
+	.event-date span.day {
+		background: #fff;
+		border: 1px solid #ccc;
+		border-top: none;
+		color: #000;
+		font-size: 120%;
+		line-height: 1.4em;
+		font-weight: bold;
+		letter-spacing: -0.1em;
+	}

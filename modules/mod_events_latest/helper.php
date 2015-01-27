@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
@@ -25,49 +25,48 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\EventsLatest;
 
-// Parameters:
-// ===========
-//
-// maxEvents = max. no. of events to display in the module (1 to 10, default is 5)
-//
-// mode:
-// = 0  (default) display events for current week and following week only up to 'maxEvents'.
-//
-// = 1  same as 'mode'=0 except some past events for the current week will also be
-//      displayed if num of future events is less than $maxEvents.
-//
-// = 2  display events for +'days' range relative to current day up to $maxEvents.
-//
-// = 3  same as mode 2 except if there are < 'maxEvents' in the range,
-//      then display past events within -'days' range.
-//
-// = 4  display events for current month up to 'maxEvents'.
-//
-// days: (default=7) range of days relative to current day to display events for mode 1 or 3.
-//
-// displayLinks = 1 (default is 0) display event titles as links to the 'view_detail' com_events
-//                   task which will display details of the event.
-//
-// displayYear = 1 (default is 0) display year when displaying dates in the non-customized event's listing.
+use Hubzero\Module\Module;
+use JFactory;
+use JText;
 
 /**
- * Short description for 'modEventsLatest'
+ * Parameters:
+ * ===========
  *
- * Long description (if any) ...
+ * maxEvents = max. no. of events to display in the module (1 to 10, default is 5)
+ *
+ * mode:
+ * = 0  (default) display events for current week and following week only up to 'maxEvents'.
+ *
+ * = 1  same as 'mode'=0 except some past events for the current week will also be
+ *      displayed if num of future events is less than $maxEvents.
+ *
+ * = 2  display events for +'days' range relative to current day up to $maxEvents.
+ *
+ * = 3  same as mode 2 except if there are < 'maxEvents' in the range,
+ *      then display past events within -'days' range.
+ *
+ * = 4  display events for current month up to 'maxEvents'.
+ *
+ * days: (default=7) range of days relative to current day to display events for mode 1 or 3.
+ *
+ * displayLinks = 1 (default is 0) display event titles as links to the 'view_detail' com_events
+ *                   task which will display details of the event.
+ *
+ * displayYear = 1 (default is 0) display year when displaying dates in the non-customized event's listing.
  */
-class modEventsLatest extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module output
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -79,7 +78,14 @@ class modEventsLatest extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;
@@ -91,7 +97,7 @@ class modEventsLatest extends \Hubzero\Module\Module
 	/**
 	 * Generate module output
 	 *
-	 * @return     voif
+	 * @return  voif
 	 */
 	public function run()
 	{
@@ -114,9 +120,9 @@ class modEventsLatest extends \Hubzero\Module\Module
 	/**
 	 * This custom sort compare function compares the start times of events that are refernced by the a & b vars
 	 *
-	 * @param      object &$a Parameter description (if any) ...
-	 * @param      object &$b Parameter description (if any) ...
-	 * @return     integer Return description (if any) ...
+	 * @param   object   &$a  Parameter description (if any) ...
+	 * @param   object   &$b  Parameter description (if any) ...
+	 * @return  integer  Return description (if any) ...
 	 */
 	public function cmpByStartTime(&$a, &$b)
 	{
@@ -135,10 +141,10 @@ class modEventsLatest extends \Hubzero\Module\Module
 	 * $rows within the $rows (ie events) input array which occur on the input '$date'.  This
 	 * is determined by the complicated com_event algorithm according to the event's repeatting type.
 	 *
-	 * @param      array &$rows Parameter description (if any) ...
-	 * @param      unknown $date Parameter description (if any) ...
-	 * @param      array &$seenThisEvent Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   array    &$rows           Parameter description (if any) ...
+	 * @param   unknown  $date            Parameter description (if any) ...
+	 * @param   array    &$seenThisEvent  Parameter description (if any) ...
+	 * @return  array    Return description (if any) ...
 	 */
 	private function _getEventsByDate(&$rows, $date, &$seenThisEvent)
 	{
@@ -163,7 +169,7 @@ class modEventsLatest extends \Hubzero\Module\Module
 				$new_rows_events[] =& $rows[$r];
 			}
 
-			usort($new_rows_events, array('modEventsLatest','cmpByStartTime'));
+			usort($new_rows_events, array($this, 'cmpByStartTime'));
 		}
 
 		return $new_rows_events;
@@ -174,7 +180,7 @@ class modEventsLatest extends \Hubzero\Module\Module
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _displayLatestEvents()
 	{
@@ -257,15 +263,15 @@ class modEventsLatest extends \Hubzero\Module\Module
 		}
 
 		// Display events
-		$query = "SELECT #__events.* FROM #__events, #__categories as b"
-			. "\nWHERE #__events.catid = b.id "
-			. "\n   AND #__events.state='1'"
-			. "\n	AND ((publish_up <= '$todayBegin%' AND publish_down >= '$todayBegin%')"
-			. "\n	OR (publish_up <= '$endDate%' AND publish_down >= '$endDate%')"
-			. "\n   OR (publish_up <= '$endDate%' AND publish_up >= '$todayBegin%')"
-			. "\n   OR (publish_down <= '$endDate%' AND publish_down >= '$todayBegin%'))"
-			. "\n   AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
-			. "\nORDER BY publish_up ASC LIMIT $maxEvents";
+		$query = "SELECT `#__events`.* FROM `#__events`, `#__categories` as b"
+			. " WHERE #__events.catid = b.id "
+			. " AND #__events.state='1'"
+			. " AND ((publish_up <= '$todayBegin%' AND publish_down >= '$todayBegin%')"
+			. " OR (publish_up <= '$endDate%' AND publish_down >= '$endDate%')"
+			. " OR (publish_up <= '$endDate%' AND publish_up >= '$todayBegin%')"
+			. " OR (publish_down <= '$endDate%' AND publish_down >= '$todayBegin%'))"
+			. " AND (#__events.scope IS NULL OR #__events.scope=" . $database->quote('event') . ")"
+			. " ORDER BY publish_up ASC LIMIT $maxEvents";
 
 		// Retrieve the list of returned records as an array of objects
 		$database->setQuery($query);
@@ -370,7 +376,7 @@ class modEventsLatest extends \Hubzero\Module\Module
 		// 	$this->eventsByRelDay = null;
 		// }
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }
 

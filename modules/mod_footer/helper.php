@@ -3,6 +3,7 @@
  * HUBzero CMS
  *
  * Copyright 2005-2015 Purdue University. All rights reserved.
+ * All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -28,8 +29,54 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Modules\Featuredmember;
+namespace Modules\Footer;
 
-require_once __DIR__ . DS . 'helper.php';
+use Hubzero\Module\Module;
+use JFactory;
+use JString;
+use JText;
 
-with(new Helper($params, $module))->display();
+/**
+ * Module class for diplaying site footer
+ */
+class Helper extends Module
+{
+	/**
+	 * Display module
+	 *
+	 * @return  void
+	 */
+	public function display()
+	{
+		// [!] Legacy compatibility
+		$params = $this->params;
+
+		$app  = JFactory::getApplication();
+		$date = JFactory::getDate();
+
+		$cur_year   = $date->format('Y');
+		$csite_name = $app->getCfg('sitename');
+
+		if (is_int(JString::strpos(JText::_('MOD_FOOTER_LINE1'), '%date%')))
+		{
+			$line1 = str_replace('%date%', $cur_year, JText::_('MOD_FOOTER_LINE1'));
+		}
+		else
+		{
+			$line1 = JText::_('MOD_FOOTER_LINE1');
+		}
+
+		if (is_int(JString::strpos($line1, '%sitename%')))
+		{
+			$lineone = str_replace('%sitename%', $csite_name, $line1);
+		}
+		else
+		{
+			$lineone = $line1;
+		}
+
+		$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+
+		require $this->getLayoutPath($params->get('layout', 'default'));
+	}
+}

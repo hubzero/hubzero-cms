@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_featuredmember/mod_featuredmember.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,11 +28,11 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Featured Member</name>
+	<name>mod_featuredmember</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module randomly displays a featured member or contributor.</description>
+	<description>MOD_FEATUREDMEMBER_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_featuredmember">mod_featuredmember.php</filename>
 		<filename>mod_featuredmember.xml</filename>
@@ -43,20 +43,20 @@ HUBzero is a registered trademark of Purdue University.
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-				<field name="txt_length" type="text" default="200" label="Text Length" description="Length of the bio text to show" />
-				<field name="show" type="radio" default="contributors" label="Select from" description="Select random entries from either all members or contributors only">
-					<option value="">All members</option>
-					<option value="contributors">Contributors only</option>
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_FEATUREDMEMBER_PARAM_CLASS_LABEL" description="MOD_FEATUREDMEMBER_PARAM_CLASS_DESC" />
+				<field name="txt_length" type="text" default="200" label="MOD_FEATUREDMEMBER_PARAM_TXTLENGTH_LABEL" description="MOD_FEATUREDMEMBER_PARAM_TXTLENGTH_DESC" />
+				<field name="show" type="radio" default="contributors" label="MOD_FEATUREDMEMBER_PARAM_SHOW_LABEL" description="MOD_FEATUREDMEMBER_PARAM_SHOW_DESC">
+					<option value="">MOD_FEATUREDMEMBER_PARAM_SHOW_ALL</option>
+					<option value="contributors">MOD_FEATUREDMEMBER_PARAM_SHOW_CONTRIBUTORS</option>
 				</field>
-				<field name="min_contributions" type="text" default="0" label="Min. # Contributions" description="The minimum number of contributions a profile must have to be selected" />
+				<field name="min_contributions" type="text" default="0" label="MOD_FEATUREDMEMBER_PARAM_MINCONTRIBUTIONS_LABEL" description="MOD_FEATUREDMEMBER_PARAM_MINCONTRIBUTIONS_DESC" />
 			</fieldset>
 			<fieldset name="advanced">
-				<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-					<option value="1">Use global</option>
-					<option value="0">No caching</option>
+				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
 				</field>
-				<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
+				<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
 		</fields>
 	</config>

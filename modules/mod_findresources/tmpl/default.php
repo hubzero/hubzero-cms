@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,7 +32,7 @@
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
 <div<?php echo ($this->params->get('cssId')) ? ' id="' . $this->params->get('cssId') . '"' : ''; ?>>
-	<form action="/search/" method="get" class="search">
+	<form action="<?php echo JRoute::_('index.php?option=com_search'); ?>" method="get" class="search">
 		<fieldset>
 			<p>
 				<label for="rsearchword"><?php echo JText::_('MOD_FINDRESOURCES_SEARCH_LABEL'); ?></label>
@@ -46,7 +46,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 	<ol class="tags">
 		<li><?php echo JText::_('MOD_FINDRESOURCES_POPULAR_TAGS'); ?></li>
 	<?php foreach ($this->tags as $tag) { ?>
-		<li><a href="<?php echo JRoute::_('index.php?option=com_tags&tag='.$tag->tag); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a></li>
+		<li><a href="<?php echo JRoute::_('index.php?option=com_tags&tag=' . $tag->tag); ?>"><?php echo $this->escape(stripslashes($tag->raw_tag)); ?></a></li>
 	<?php } ?>
 		<li><a href="<?php echo JRoute::_('index.php?option=com_tags'); ?>" class="showmore"><?php echo JText::_('MOD_FINDRESOURCES_MORE_TAGS'); ?></a></li>
 	</ol>
@@ -69,7 +69,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 			$cls = substr($normalized, 0, -1);
 		}
 ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_resources&type='.$normalized); ?>"><?php echo $this->escape(stripslashes($category->type)); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
+		<a href="<?php echo JRoute::_('index.php?option=com_resources&type=' . $normalized); ?>"><?php echo $this->escape(stripslashes($category->type)); ?></a><?php echo ($i == count($this->categories)) ? '...' : ', '; ?>
 <?php
 	}
 ?>
