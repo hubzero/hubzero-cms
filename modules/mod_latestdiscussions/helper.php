@@ -1,12 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @author      Shawn Rice <zooley@purdue.edu>
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,20 +21,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\LatestDiscussions;
+
+use Hubzero\Module\Module;
+use ForumModel;
+use JFactory;
 
 /**
  * Module class for displaying the latest forum posts
  */
-class modLatestDiscussions extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module contents
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function run()
 	{
@@ -177,13 +181,13 @@ class modLatestDiscussions extends \Hubzero\Module\Module
 		//$this->posts = $posts;
 		$this->categories = $categories;
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 
 	/**
 	 * Display module
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -196,7 +200,14 @@ class modLatestDiscussions extends \Hubzero\Module\Module
 		{
 			$cache = JFactory::getCache('callback');
 			$cache->setCaching(1);
-			$cache->setLifeTime(intval($this->params->get('cache_time', 900)));
+
+			// Module time is in seconds, setLifeTime() is in minutes
+			// Some module times may have been set in minutes so we
+			// need to account for that.
+			$ct = intval($this->params->get('cache_time', 900));
+			$ct = (!$ct || $ct == 15 ?: $ct / 60);
+			$cache->setLifeTime($ct);
+
 			$cache->call(array($this, 'run'));
 			echo '<!-- cached ' . JFactory::getDate() . ' -->';
 			return;

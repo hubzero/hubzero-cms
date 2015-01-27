@@ -1,16 +1,53 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_login
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Sam Wilson <samwilson@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+namespace Modules\Login;
 
-class modLoginHelper
+use Hubzero\Module\Module;
+use JPluginHelper;
+use JFactory;
+use JRegistry;
+use JURI;
+
+/**
+ * Module class for displaying a login form
+ */
+class Helper extends Module
 {
+	/**
+	 * Get the redirect URL
+	 *
+	 * @param   object  $params  JRegistry The module options.
+	 * @param   string  $type    Type
+	 * @return  string
+	 */
 	static function getReturnURL($params, $type)
 	{
 		$app    = JFactory::getApplication();
@@ -27,21 +64,26 @@ class modLoginHelper
 			$query->where($db->quoteName('id') . '=' . $db->quote($itemid));
 
 			$db->setQuery($query);
-			if ($link = $db->loadResult()) {
-				if ($router->getMode() == JROUTER_MODE_SEF) {
-					$url = 'index.php?Itemid='.$itemid;
+			if ($link = $db->loadResult())
+			{
+				if ($router->getMode() == JROUTER_MODE_SEF)
+				{
+					$url = 'index.php?Itemid=' . $itemid;
 				}
-				else {
-					$url = $link.'&Itemid='.$itemid;
+				else
+				{
+					$url = $link . '&Itemid=' . $itemid;
 				}
 			}
 		}
+
 		if (!$url)
 		{
 			// stay on the same page
 			$uri = clone JFactory::getURI();
 			$vars = $router->parse($uri);
 			unset($vars['lang']);
+
 			if ($router->getMode() == JROUTER_MODE_SEF)
 			{
 				if (isset($vars['Itemid']))
@@ -50,27 +92,34 @@ class modLoginHelper
 					$menu = $app->getMenu();
 					$item = $menu->getItem($itemid);
 					unset($vars['Itemid']);
-					if (isset($item) && $vars == $item->query) {
-						$url = 'index.php?Itemid='.$itemid;
+					if (isset($item) && $vars == $item->query)
+					{
+						$url = 'index.php?Itemid=' . $itemid;
 					}
-					else {
-						$url = 'index.php?'.JURI::buildQuery($vars).'&Itemid='.$itemid;
+					else
+					{
+						$url = 'index.php?' . JURI::buildQuery($vars) . '&Itemid=' . $itemid;
 					}
 				}
 				else
 				{
-					$url = 'index.php?'.JURI::buildQuery($vars);
+					$url = 'index.php?' . JURI::buildQuery($vars);
 				}
 			}
 			else
 			{
-				$url = 'index.php?'.JURI::buildQuery($vars);
+				$url = 'index.php?' . JURI::buildQuery($vars);
 			}
 		}
 
 		return base64_encode($url);
 	}
 
+	/**
+	 * Get type
+	 *
+	 * @return  string
+	 */
 	static function getType()
 	{
 		$user = JFactory::getUser();
@@ -80,10 +129,14 @@ class modLoginHelper
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	static function display($params, $module)
+	public function display()
 	{
+		// [!] Legacy compatibility for older view overrides
+		$params = $this->params;
+		$module = $this->module;
+
 		$app      = JFactory::getApplication();
 		$document = JFactory::getDocument();
 
@@ -157,6 +210,6 @@ class modLoginHelper
 		// Set the return if we have it...
 		$returnQueryString = ($return) ? "&return={$return}" : '';
 
-		require(JModuleHelper::getLayoutPath($module->module));
+		require $this->getLayoutPath();
 	}
 }

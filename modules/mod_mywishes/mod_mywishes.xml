@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_mywishes/mod_mywishes.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,24 +28,25 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>My Wishes</name>
+	<name>mod_mywishes</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module will display a list of open wishes submitted by/ assigned to the user</description>
+	<description>MOD_MYWISHES_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mywishes">mod_mywishes.php</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
-		<filename>mod_mywishes.css</filename>
+		<filename>assets/css/mod_mywishes.css</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." member_dashboard="1" />
-				<field name="button_show_add" type="list" default="1" label="Show New Wish Button" description="Select wether to show the link to the create wish form.">
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYWISHES_PARAM_CLASS_LABEL" description="MOD_MYWISHES_PARAM_CLASS_DESC" />
+				<field name="limit" type="text" default="5" label="MOD_MYWISHES_PARAM_LIMIT_LABEL" description="MOD_MYWISHES_PARAM_LIMIT_DESC" member_dashboard="1" />
+				<field name="button_show_add" type="list" default="1" label="MOD_MYWISHES_PARAM_BUTTON_SHOW_LABEL" description="MOD_MYWISHES_PARAM_BUTTON_SHOW_DESC">
 					<option value="1">JYES</option>
 					<option value="0">JNO</option>
 				</field>

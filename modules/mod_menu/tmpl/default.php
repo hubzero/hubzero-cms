@@ -1,9 +1,31 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	mod_menu
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access.
@@ -12,72 +34,85 @@ defined('_JEXEC') or die;
 // Note. It is important to remove spaces between elements.
 ?>
 
-<ul class="menu<?php echo $class_sfx;?>"<?php
+<ul class="menu<?php echo $class_sfx; ?>"<?php
 	$tag = '';
-	if ($params->get('tag_id')!=NULL) {
+	if ($params->get('tag_id')!=NULL)
+	{
 		$tag = $params->get('tag_id').'';
-		echo ' id="'.$tag.'"';
+		echo ' id="' . $tag . '"';
 	}
 ?>>
-<?php
-foreach ($list as $i => &$item) :
-	$class = 'item-'.$item->id;
-	if ($item->id == $active_id) {
-		$class .= ' current';
-	}
+	<?php
+	foreach ($list as $i => &$item) :
+		$class = 'item-' . $item->id;
+		if ($item->id == $active_id)
+		{
+			$class .= ' current';
+		}
 
-	if (in_array($item->id, $path)) {
-		$class .= ' active';
-	}
-	elseif ($item->type == 'alias') {
-		$aliasToId = $item->params->get('aliasoptions');
-		if (count($path) > 0 && $aliasToId == $path[count($path)-1]) {
+		if (in_array($item->id, $path))
+		{
 			$class .= ' active';
 		}
-		elseif (in_array($aliasToId, $path)) {
-			$class .= ' alias-parent-active';
+		elseif ($item->type == 'alias')
+		{
+			$aliasToId = $item->params->get('aliasoptions');
+			if (count($path) > 0 && $aliasToId == $path[count($path)-1])
+			{
+				$class .= ' active';
+			}
+			elseif (in_array($aliasToId, $path))
+			{
+				$class .= ' alias-parent-active';
+			}
 		}
-	}
 
-	if ($item->deeper) {
-		$class .= ' deeper';
-	}
+		if ($item->deeper)
+		{
+			$class .= ' deeper';
+		}
 
-	if ($item->parent) {
-		$class .= ' parent';
-	}
+		if ($item->parent)
+		{
+			$class .= ' parent';
+		}
 
-	if (!empty($class)) {
-		$class = ' class="'.trim($class) .'"';
-	}
+		if (!empty($class))
+		{
+			$class = ' class="' . trim($class) . '"';
+		}
 
-	echo '<li'.$class.'>';
+		echo '<li' . $class . '>';
 
-	// Render the menu item.
-	switch ($item->type) :
-		case 'separator':
-		case 'url':
-		case 'component':
-			require JModuleHelper::getLayoutPath('mod_menu', 'default_'.$item->type);
+		// Render the menu item.
+		switch ($item->type) :
+			case 'separator':
+			case 'url':
+			case 'component':
+				require $this->getLayoutPath('default_' . $item->type);
 			break;
 
-		default:
-			require JModuleHelper::getLayoutPath('mod_menu', 'default_url');
+			default:
+				require $this->getLayoutPath('default_url');
 			break;
-	endswitch;
+		endswitch;
 
-	// The next item is deeper.
-	if ($item->deeper) {
-		echo '<ul>';
-	}
-	// The next item is shallower.
-	elseif ($item->shallower) {
-		echo '</li>';
-		echo str_repeat('</ul></li>', $item->level_diff);
-	}
-	// The next item is on the same level.
-	else {
-		echo '</li>';
-	}
-endforeach;
-?></ul>
+		// The next item is deeper.
+		if ($item->deeper)
+		{
+			echo '<ul>';
+		}
+		// The next item is shallower.
+		elseif ($item->shallower)
+		{
+			echo '</li>';
+			echo str_repeat('</ul></li>', $item->level_diff);
+		}
+		// The next item is on the same level.
+		else
+		{
+			echo '</li>';
+		}
+	endforeach;
+	?>
+</ul>

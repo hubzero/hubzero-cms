@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_latestusage/mod_latestusage.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,30 +28,31 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>Latest Usage</name>
+	<name>mod_latestusage</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module displays the latest usage numbers.</description>
+	<description>MOD_LATESTUSAGE_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_latestusage">mod_latestusage.php</filename>
 		<filename>mod_latestusage.xml</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_LATESTUSAGE_PARAM_CLASS_LABEL" description="MOD_LATESTUSAGE_PARAM_CLASS_DESC" />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="radio" default="0" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+				<field name="cache_time" type="text" default="900" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 			</fieldset>
 		</fields>
-		<fieldset name="advanced">
-			<field name="cache" type="list" default="1" label="Caching" description="Select whether to cache the content of this module">
-				<option value="1">Use global</option>
-				<option value="0">No caching</option>
-			</field>
-			<field name="cache_time" type="text" default="900" label="Cache Time" description="The time before the module is recached" />
-		</fieldset>
 	</config>
 </extension>
