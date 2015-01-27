@@ -47,6 +47,37 @@ class ResourceMediaTracking extends JTable
 	}
 
 	/**
+	 * Check method used to verify data on save
+	 * 
+	 * @return bool Validation check result
+	 */
+	public function check()
+	{
+		// session id check
+		if (trim($this->session_id) == '')
+		{
+			$this->setError('Missing required session identifier.');
+			return false;
+		}
+
+		// IP check
+		if (trim($this->ip_address) == '')
+		{
+			$this->setError('Missing required session identifier.');
+			return false;
+		}
+
+		// object id/type check
+		if (trim($this->object_id) == '' || trim($this->object_type) == '')
+		{
+			$this->setError('Missing required object id or object type.');
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Get tracking info for a specific user/resource combination
 	 *
 	 * @param   string  $user_id      User ID
