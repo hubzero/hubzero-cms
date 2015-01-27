@@ -318,7 +318,7 @@ class Helper
 							$html .= "<ol class=\"tags\">";
 								foreach ($group->matches as $t)
 								{
-									$html .= '<li><a href="' . JRoute::_($gt->tag($t)->link()) . '">' . $t . '</a></li>';
+									$html .= '<li><a href="' . \JRoute::_($gt->tag($t)->link()) . '">' . $t . '</a></li>';
 								}
 							$html .= "</ol>";
 						}
