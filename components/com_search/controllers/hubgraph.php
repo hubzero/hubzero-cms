@@ -81,11 +81,13 @@ class SearchControllerHubgraph extends \Hubzero\Component\SiteController
 			// If not displaying inline...
 			if (!defined('HG_INLINE'))
 			{
+				JFactory::getSession()->set('searchfallback', time() + 60);
+
 				// Redirect back to this component wil the fallback flag set
 				// so it knows to load the default, basic controller.
 				$terms = JRequest::getVar('terms', '', 'get');
 				$this->setRedirect(
-					JRoute::_('index.php?option=' . $this->_option . '&fallback=true' . ($terms ? '&terms=' . $terms : ''), false),
+					JRoute::_('index.php?option=' . $this->_option . ($terms ? '&terms=' . $terms : ''), false),
 					(JDEBUG ? $ex->getMessage() : null),
 					(JDEBUG ? 'error' : null)
 				);

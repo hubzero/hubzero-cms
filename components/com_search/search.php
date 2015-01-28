@@ -35,7 +35,20 @@ $config = JComponentHelper::getParams('com_search');
 
 $controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', $config->get('engine', 'basic')));
 
-$fallback = JFactory::getApplication()->getUserStateFromRequest('com_search.fallback', 'fallback', 0, 'bool');
+// Are we falling back to the default engine?
+$fallback = JFactory::getSession()->get('searchfallback');
+if ($fallback && intval($fallback) <= time())
+{
+	// Don't fallback if the time limit has expired
+	$fallback = null;
+}
+
+// Are we explicitely forcing the engine?
+if ($force = JRequest::getCmd('engine'))
+{
+	$fallback = null;
+	$controllerName = $force;
+}
 
 if ($fallback || !file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
