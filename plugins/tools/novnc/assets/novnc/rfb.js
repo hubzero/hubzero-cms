@@ -1109,8 +1109,11 @@ var RFB;
                     $.fancybox({
                         type: 'iframe',
                         href: url,
-                        width: '100%',
-                        height: '100%'
+                        width: 500,
+                        height: 'auto',
+                        //autoSize: false,
+                        //fitToView: false,
+                        titleShow: false
                     });
                     return true;
 
