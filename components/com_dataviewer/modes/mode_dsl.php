@@ -42,6 +42,7 @@ function get_dd($db_id, $dv_id = false, $version = false)
 
 
 	// Curators
+	$curator = '';
 	$curator_groups = array();
 
 	if (!$version) {
@@ -57,14 +58,16 @@ function get_dd($db_id, $dv_id = false, $version = false)
 		$dd = json_decode($ver['data_definition'], true);
 
 		// Check publication state
-		$sql = 'SELECT state FROM #__publication_versions ' .
+		$sql = 'SELECT state, curator FROM #__publication_versions ' .
 			'LEFT JOIN #__publication_attachments ON ' .
 				'(#__publication_versions.publication_id=#__publication_attachments.publication_id '.
 				'AND #__publication_versions.id=#__publication_attachments.publication_version_id) '.
 			'WHERE object_name=' . $db->quote($name) . 'AND object_revision=' . $db->quote($version);
 
 		$db->setQuery($sql);
-		$state = $db->loadResult();
+		$pub_version = $db->loadAssoc();
+
+		$state = $pub_version['state'];
 
 		$dd['version'] = $version;
 		$dd['publication_state'] = $state;
@@ -88,6 +91,11 @@ function get_dd($db_id, $dv_id = false, $version = false)
 			if ($curation_enabled && $dsl_curators != '') {
 				$curator_groups[] = $dsl_curators;
 			}
+
+			if ($curation_enabled && $curator != '') {
+				$curator = $pub_version['curator'];
+				$curator = JFactory::getUser($curator)->get('username');
+			}
 		}
 	}
 
@@ -104,6 +112,10 @@ function get_dd($db_id, $dv_id = false, $version = false)
 		// Curators
 		if (isset($dd['publication_state'])) {
 			$dd['acl']['allowed_groups'] = $curator_groups;
+
+			if (isset($dd['acl']['allowed_users']) && is_array($dd['acl']['allowed_users'])) {
+				$dd['acl']['allowed_users'][] = $curator;
+			}
 		}
 	} elseif (isset($dd['publication_state']) && $dd['publication_state'] == 1) {
 		$dd['acl']['allowed_users'] = false;
