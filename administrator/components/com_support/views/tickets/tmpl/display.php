@@ -73,7 +73,7 @@ $this->css();
 								<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
 									<?php foreach ($folder->queries as $query) { ?>
 										<li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
-											<a class="query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=' : '')); ?>">
+											<a class="query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
 												<?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
 											</a>
 											<span class="query-options">
