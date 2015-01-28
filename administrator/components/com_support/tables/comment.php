@@ -144,9 +144,11 @@ class SupportComment extends JTable
 	 *
 	 * @param      integer $authorized Administrator access?
 	 * @param      integer $ticket     Ticket ID
+	 * @param      string  $sort       Field to sort by
+	 * @param      string  $dir        Direction to sort
 	 * @return     array
 	 */
-	public function getComments($authorized, $ticket=NULL)
+	public function getComments($authorized, $ticket=NULL, $sort='id', $dir='ASC')
 	{
 		if (!$ticket)
 		{
@@ -160,7 +162,12 @@ class SupportComment extends JTable
 		{
 			$sqladmin = "AND access=0";
 		}
-		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin ORDER BY id ASC";
+		$dir = strtoupper($dir);
+		if (!in_array($dir, array('ASC', 'DESC')))
+		{
+			$dir = 'ASC';
+		}
+		$sql = "SELECT * FROM $this->_tbl WHERE ticket=" . $this->_db->Quote($ticket) . " $sqladmin ORDER BY " . $sort . " " . $dir;
 
 		$this->_db->setQuery($sql);
 		return $this->_db->loadObjectList();
