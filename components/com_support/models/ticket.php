@@ -460,6 +460,14 @@ class SupportModelTicket extends \Hubzero\Base\Model
 		{
 			$filters['access'] = 1; //$this->access('read', 'private_comments');
 		}
+		if (!isset($filters['sort']))
+		{
+			$filters['sort'] = 'id';
+		}
+		if (!isset($filters['sort_Dir']))
+		{
+			$filters['sort_Dir'] = 'ASC';
+		}
 
 		switch (strtolower($rtrn))
 		{
@@ -478,7 +486,7 @@ class SupportModelTicket extends \Hubzero\Base\Model
 				if (!($this->_data->get('comments.list') instanceof \Hubzero\Base\ItemList) || $clear)
 				{
 					$tbl = new SupportComment($this->_db);
-					if ($results = $tbl->getComments($filters['access'], $filters['ticket']))
+					if ($results = $tbl->getComments($filters['access'], $filters['ticket'], $filters['sort'], $filters['sort_Dir']))
 					{
 						foreach ($results as $key => $result)
 						{

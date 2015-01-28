@@ -1693,7 +1693,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			'start'    => 0,
 			'ticket'   => $id
 		))->first();
-		if ($lastcomment && $lastcomment->created() >= $started)
+		if ($lastcomment && $lastcomment->created() > $started)
 		{
 			$rowc->set('comment', $comment);
 			$this->setError(JText::_('Changes were made to this ticket in the time since you began commenting/making changes. Please review your changes before submitting.'));
