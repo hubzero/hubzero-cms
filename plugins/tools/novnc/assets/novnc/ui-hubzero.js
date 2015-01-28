@@ -50,6 +50,7 @@ var UI = {
 		var html = '';
 
 		UI.rfb = new RFB({
+			'focusContainer': $D('noVNC_canvas'),
 			'target':        $D('noVNC_canvas'),
 			'encrypt':       encrypt,
 			'true_color':    true,
@@ -109,6 +110,12 @@ var UI = {
 		UI.setViewClip(UI.clipSetting);
 		Util.addEvent(window, 'resize', UI.setViewClip);
 
+		//Util.addEvent(document, 'keyup', UI.checkFocusBounds);
+		//Util.addEvent(document, 'keydown', UI.checkFocusBounds);
+		//Util.addEvent(document, 'keypress', UI.checkFocusBounds);
+		Util.addEvent(document, 'click', UI.checkFocusBounds);
+		UI.rfb._focusContainer.focus();
+
 		/*Util.addEvent(window, 'beforeunload', function () {
 			if (UI.rfb_state === 'normal') {
 				return "You are currently connected.";
@@ -117,6 +124,19 @@ var UI = {
 
 		//Finally, connect with globals
 		UI.rfb.connect(host, port, password, connectPath);
+	},
+
+	checkFocusBounds: function(e) {
+		var evt = (e ? e : window.event),
+			c = UI.rfb._focusContainer;
+
+		var pos = Util.getEventPosition(e, c, UI.rfb.get_mouse()._scale);
+
+		if ((pos.realx >= 0) && (pos.realy >= 0) &&
+			(pos.realx < c.offsetWidth) &&
+			(pos.realy < c.offsetHeight)) {
+			c.focus();
+		}
 	},
 
 	resizeContainers: function(w, h) {
