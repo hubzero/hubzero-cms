@@ -791,6 +791,15 @@ class ProjectsHtml
 			$ih = new ProjectsImgHandler();
 			$thumb = $ih->createThumbName($picture);
 			$src = $thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) ? $path . DS . $thumb :  NULL;
+			// Rename to thumb.png
+			if ($thumb && file_exists( JPATH_ROOT . $path . DS . $thumb ) && !file_exists( JPATH_ROOT . $path . DS . 'thumb.png' ))
+			{
+				jimport('joomla.filesystem.file');
+				if (JFile::copy(JPATH_ROOT . $path . DS . $thumb, JPATH_ROOT . $path . DS . 'thumb.png'))
+				{
+					return $path . DS . 'thumb.png';
+				}
+			}
 		}
 		if (!$src)
 		{
