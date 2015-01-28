@@ -1071,7 +1071,7 @@
 		border: 1px dashed #63c465;
 		background: #f4fff4;
 	}
-	.thumb {
+	.com_jobs .thumb, .aboutme .thumb {
 		float: left;
 		width: 70px;
 	}
