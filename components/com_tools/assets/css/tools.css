@@ -1,7 +1,7 @@
 /**
  * @package     hubzero-cms
- * @file        components/com_tools/tools.css
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
+ * @file        components/com_tools/assets/css/tools.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
  * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -61,14 +61,14 @@
 		margin: 0;
 		padding: 0.3em;
 	}
-	#small-page #filepath li.home a, 
+	#small-page #filepath li.home a,
 	#small-page #filepath li.home span {
 		background: url("/components/com_tools/assets/img/home.gif") 0 0 no-repeat;
 		padding-left: 25px; 
 		padding-top: 0.2em;
 		padding-bottom: 0.2em;
 	}
-	#small-page #filepath li.folder a, 
+	#small-page #filepath li.folder a,
 	#small-page #filepath li.folder span {
 		background: url("/components/com_tools/assets/img/folder.gif") 0 0 no-repeat;
 		padding-left: 20px; 
@@ -96,20 +96,24 @@
 		position: relative;
 		background: #000;
 		-webkit-border-radius: 0.27em;
-		-moz-border-radius: 0.27em;
-		-ms-border-radius: 0.27em;
-		-o-border-radius: 0.27em;
-		border-radius: 0.27em;
-		-webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 0 0 0.618em rgba(0, 0, 0, 0.035);
-		-moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 0 0 0.618em rgba(0, 0, 0, 0.035);
-		-ms-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 0 0 0.618em rgba(0, 0, 0, 0.035);
-		-o-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 0 0 0.618em rgba(0, 0, 0, 0.035);
-		box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
+		   -moz-border-radius: 0.27em;
+		    -ms-border-radius: 0.27em;
+		     -o-border-radius: 0.27em;
+		        border-radius: 0.27em;
+		-webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
+		   -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
+		    -ms-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
+		     -o-box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
+		        box-shadow: 0 0 2px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, .1);
 	}
 	#app-content {
 		position: relative;
 		/* [!] HACKS - IE 7 */
 		*z-index: 2;
+	}
+	#app-content .warning,
+	#app-content .error {
+		margin: 0;
 	}
 	.readonly-warning {
 		margin:30px 30px 30px 30px;
@@ -136,17 +140,16 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#474747,endColorstr=#2b2b2b);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#474747, endColorstr=#2b2b2b)";
 		-webkit-border-radius: 0.27em 0.27em 0 0;
-		-moz-border-radius: 0.27em 0.27em 0 0;
-		-ms-border-radius: 0.27em 0.27em 0 0;
-		-o-border-radius: 0.27em 0.27em 0 0;
-		border-radius: 0.27em 0.27em 0 0;
+		   -moz-border-radius: 0.27em 0.27em 0 0;
+		    -ms-border-radius: 0.27em 0.27em 0 0;
+		     -o-border-radius: 0.27em 0.27em 0 0;
+		        border-radius: 0.27em 0.27em 0 0;
 		position: relative;
-		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		-ms-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		-o-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		-webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		   -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		    -ms-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		     -o-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		        box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
 		color: #696969;
 		text-shadow: 0 1px 1px #111111;
 		border-bottom: 1px solid #2d2e2e;
@@ -161,9 +164,6 @@
 	#app-header ul {
 		border-left: 1px solid rgba(0, 0, 0, 0.1);
 		border-right: none;
-		/*width: 40%;
-		float: right;*/
-		
 		width: auto;
 		float: none;
 		position: absolute;
@@ -188,14 +188,13 @@
 		border: none;
 	}
 	#app-header h2 {
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-weight: bold;
 		font-size: 1em;
 		line-height: 1.2em;
 		float: left;
 		margin: 0;
-		/*padding: 8px 20px 8px 20px;*/
-		font-weight: bold;
 		width: 45%;
-		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 		padding: 10px 20px 10px 20px;
 	}
 	#app-header ul li a:hover,
@@ -208,7 +207,7 @@
 		background: -o-linear-gradient(#4e5052, #7f8284);
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#4e5052,endColorstr=#7f8284);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#4e5052, endColorstr=#7f8284)";
-		border-bottom:none;
+		border-bottom: none;
 		color: #eee;
 		cursor: pointer;
 	}
@@ -230,16 +229,20 @@
 	#app-header ul:first-child li {
 		float: left;
 		-webkit-border-radius: 0.27em 0 0 0;
-		-moz-border-radius: 0.27em 0 0 0;
-		border-radius: 0.27em 0 0 0;
+		   -moz-border-radius: 0.27em 0 0 0;
+		    -ms-border-radius: 0.27em 0 0 0;
+		     -o-border-radius: 0.27em 0 0 0;
+		        border-radius: 0.27em 0 0 0;
 	}
 	#app-header ul li:last-child {
 
 	}
 	#app-header ul li:first-child a {
 		-webkit-border-radius: 0 0.27em 0 0;
-		-moz-border-radius: 0 0.27em 0 0;
-		border-radius: 0 0.27em 0 0;
+		   -moz-border-radius: 0 0.27em 0 0;
+		    -ms-border-radius: 0 0.27em 0 0;
+		     -o-border-radius: 0 0.27em 0 0;
+		        border-radius: 0 0.27em 0 0;
 	}
 	/*#app-header form {
 		border: 1px solid #c00;
@@ -268,13 +271,16 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#474747,endColorstr=#2b2b2b);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#474747, endColorstr=#2b2b2b)";
 		-webkit-border-radius: 0 0 0.27em 0.27em;
-		-moz-border-radius: 0 0 0.27em 0.27em;
-		border-radius: 0 0 0.27em 0.27em;
+		   -moz-border-radius: 0 0 0.27em 0.27em;
+		    -ms-border-radius: 0 0 0.27em 0.27em;
+		     -o-border-radius: 0 0 0.27em 0.27em;
+		        border-radius: 0 0 0.27em 0.27em;
 		position: relative;
-		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		-webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		   -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		    -ms-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		     -o-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
+		        box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.085);
 		color: #999a9b;
 		text-shadow: 0 -1px 1px #111111;
 		border-bottom: 1px solid #2d2e2e;
@@ -323,22 +329,25 @@
 		border-bottom: none;
 		color: #fff;
 	}
-	#app-footer ul li:last-child {
-	}
 	#app-footer ul li:first-child a {
 		-webkit-border-radius: 0 0.27em 0 0;
-		-moz-border-radius: 0 0.27em 0 0;
-		-ms-border-radius: 0 0.27em 0 0;
-		-o-border-radius: 0 0.27em 0 0;
-		border-radius: 0 0.27em 0 0;
+		   -moz-border-radius: 0 0.27em 0 0;
+		    -ms-border-radius: 0 0.27em 0 0;
+		     -o-border-radius: 0 0.27em 0 0;
+		        border-radius: 0 0.27em 0 0;
 	}
 	.ui-resizable-handle {
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
 		position: absolute;
 		right: 0;
 		bottom: -3.2em; /* -37px */
 		display: block;
 		height: 3em;
-		width: 5.3em;
+		width: 8.3em;
 		padding: 0 0 0 30px;
 		background-image: none;
 		border: 1px solid transparent;
@@ -348,14 +357,16 @@
 		*z-index: 50;
 		/* IE 7 Needs a background of some sort to allow areas directly above text to be used as drag handles. 
 		So we then make it near invisible to keep it looking OK. */
-		*background: #fff;  
+		*background: #fff;
 		*filter: alpha(opacity = 1);
 	}
 	#app-zone {
 		background: #4e5052;
 		-webkit-border-radius: 0 0 0.27em 0.27em;
-		-moz-border-radius: 0 0 0.27em 0.27em;
-		border-radius: 0 0 0.27em 0.27em;
+		   -moz-border-radius: 0 0 0.27em 0.27em;
+		    -ms-border-radius: 0 0 0.27em 0.27em;
+		     -o-border-radius: 0 0 0.27em 0.27em;
+		        border-radius: 0 0 0.27em 0.27em;
 		padding: 1em;
 		color: #999a9b;
 	}
@@ -370,8 +381,10 @@
 		margin: 0 1em 0 0;
 		padding: 0;
 		-webkit-border-radius: 0.27em;
-		-moz-border-radius: 0.27em;
-		border-radius: 0.27em;
+		   -moz-border-radius: 0.27em;
+		    -ms-border-radius: 0.27em;
+		     -o-border-radius: 0.27em;
+		        border-radius: 0.27em;
 		float: left;
 	}
 	#app-zone form {
@@ -379,8 +392,10 @@
 		padding: 0.5em;
 		border: 1px solid #666;
 		-webkit-border-radius: 0.27em;
-		-moz-border-radius: 0.27em;
-		border-radius: 0.27em;
+		   -moz-border-radius: 0.27em;
+		    -ms-border-radius: 0.27em;
+		     -o-border-radius: 0.27em;
+		        border-radius: 0.27em;
 		font-size: 90%;
 	}
 	/*#app-zone form select {
@@ -407,14 +422,14 @@
 		float: left;
 		position: relative; /* IE is dumb */
 		display: inline-block;
-		/*height: 14px;*/
 		height: 1.4em; 
 		margin: 0.71803399em 1.218em 0 0;
 		padding: 0 0 0 0;
-		-moz-border-radius: 10px;
 		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;	
-		border-radius: 10px;
+		   -moz-border-radius: 10px;
+		    -ms-border-radius: 10px;
+		     -o-border-radius: 10px;
+		        border-radius: 10px;
 		background: #272727;
 		background: -webkit-gradient(linear, left top, left bottom, from(#0b0b0b), to(#272727));
 		background: -webkit-linear-gradient(#0b0b0b, #272727);
@@ -443,21 +458,20 @@
 		padding: 0;
 		position: relative; 
 		background: #c9d9c0;
-		/*margin: 2px 0 0 2px;
-		height: 10px; */
 		margin: .2em 0 0 .2em;
 		height: 1em; 
 		width: 75%; 
 		text-align:right; 
-		/* Rounded corners */
-		-moz-border-radius: 10px;
 		-webkit-border-radius: 10px;
-		-khtml-border-radius: 10px;	
-		border-radius: 10px;
-		/* Shadows */
-		box-shadow: 0px 0px 2px #444;
-		-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5); /* length length length color */
-		-moz-box-shadow: #444 0px 0px 2px; /* color length length length */
+		   -moz-border-radius: 10px;
+		    -ms-border-radius: 10px;
+		     -o-border-radius: 10px;
+		        border-radius: 10px;
+		-webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+		   -moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+		    -ms-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+		     -o-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
+		        box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 	}
 	#diskusage #du-amount div {
 		background: #ccc; 
@@ -517,7 +531,7 @@
 	#app-header a.keep:hover span {
 		background-position: 8px -326px;
 	}
-	
+
 	#app-header a.about span,
 	#app-footer a.refresh span,
 	#app-footer a.popout span {
@@ -561,8 +575,10 @@
 		margin: 2em 0 0 0;
 		padding: 25px;
 		-webkit-border-radius: 0 0 0.27em 0.27em;
-		-moz-border-radius: 0 0 0.27em 0.27em;
-		border-radius: 0 0 0.27em 0.27em;
+		   -moz-border-radius: 0 0 0.27em 0.27em;
+		    -ms-border-radius: 0 0 0.27em 0.27em;
+		     -o-border-radius: 0 0 0.27em 0.27em;
+		        border-radius: 0 0 0.27em 0.27em;
 		background: #f4f4f4;
 		color: #999;
 	}
@@ -619,14 +635,8 @@
 		position: relative;
 		display: block;
 	}
-	/*#app-share label span {
-		position: absolute;
-		top: 1.5em;
-		right: 0;
-		display: none;
-	}*/
-	#app-share input, 
-	#app-share select, 
+	#app-share input,
+	#app-share select,
 	#app-share textarea {
 		margin-top: 0.25em;
 		width: 100%;
@@ -648,7 +658,7 @@
 	#app-share #readonly-label {
 		width: 70%;
 	}
-	
+
 	#app-share table {
 		border: 2px solid #e9e9e9;
 		border-top: none;
@@ -773,8 +783,7 @@
 	.hidden { 
 		display: none;
 	}
-	
-/* disk usage */
+
 /* Error Message */
 	#error-wrap {
 		margin: 0;
@@ -791,15 +800,15 @@
 		color: #CC0000;
 		background: #FFF2EF url("/components/com_tools/assets/img/error-large.png") 10px 10px no-repeat;
 		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		-ms-border-radius: 10px;
-		-o-border-radius: 10px;
-		border-radius: 10px;
+		   -moz-border-radius: 10px;
+		    -ms-border-radius: 10px;
+		     -o-border-radius: 10px;
+		        border-radius: 10px;
 		-webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-		-moz-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-		-ms-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-		-o-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+		   -moz-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+		    -ms-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+		     -o-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+		        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
 	}
 	#error-box.code-403 {
 		border-color: #fbd894;
@@ -835,10 +844,10 @@
 		background-color: #fff;
 		border: 1px solid #ddd;
 		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		-ms-border-radius: 10px;
-		-o-border-radius: 10px;
-		border-radius: 10px;
+		   -moz-border-radius: 10px;
+		    -ms-border-radius: 10px;
+		     -o-border-radius: 10px;
+		        border-radius: 10px;
 	}
 	.com_tools #app-manager {
 		margin: 0;

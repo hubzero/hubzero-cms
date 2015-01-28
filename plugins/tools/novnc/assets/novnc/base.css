@@ -5,6 +5,9 @@
  * noVNC is licensed under the MPL 2.0 (see LICENSE.txt)
  * This file is licensed under the 2-Clause BSD license (see LICENSE.txt).
  */
+/* body {
+ 	font-family: Verdana,Geneva,sans-serif !important;
+ }*/
 
 	#noVNC_controls ul {
 		list-style: none;
@@ -155,8 +158,10 @@
 		background: #eee; /* default background for browsers without gradient support */
 		border: 2px solid #E0E0E0;
 		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
+		   -moz-border-radius: 10px;
+		    -ms-border-radius: 10px;
+		     -o-border-radius: 10px;
+		        border-radius: 10px;
 	}
 	#noVNC_popup_status_panel {
 		display: none;
@@ -172,8 +177,10 @@
 		color: #fff;
 		background: rgba(0,0,0,0.65);
 		-webkit-border-radius: 10px;
-		-moz-border-radius: 10px;
-		border-radius: 10px;
+		   -moz-border-radius: 10px;
+		    -ms-border-radius: 10px;
+		     -o-border-radius: 10px;
+		        border-radius: 10px;
 	}
 
 	#noVNC_xvp {
@@ -217,15 +224,20 @@
 		width: auto;
 		z-index: 200;
 	}
+	.hidden {
+		visibility: hidden;
+	}
 
 /* Status */
 	#noVNC_status_bar {
 		-webkit-box-sizing: border-box; 
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
 		position: absolute;
 		top: -2.5em;
-		right: 18em;
+		right: 19em;
 		z-index: 2;
 		width: 2em;
 		height: 2em;
@@ -235,16 +247,15 @@
 		border: 1px solid #999;
 		border: 1px solid rgba(255, 255, 255, 0.2);
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 		text-align: left;
 	}
 	#noVNC_status_bar:before {
 		content: "\f021";
 		font-family: "Fontcons";
-		margin-right: 0.4em;
 		font-weight: normal;
 	}
 	#noVNC_status_bar.noVNC_status_normal:before {
@@ -269,10 +280,10 @@
 		background: #222;
 		border-color: 1px solid #111;
 		-webkit-border-radius: 0.25em;
-		-moz-border-radius: 0.25em;
-		-ms-border-radius: 0.25em;
-		-o-border-radius: 0.25em;
-		border-radius: 0.25em;
+		   -moz-border-radius: 0.25em;
+		    -ms-border-radius: 0.25em;
+		     -o-border-radius: 0.25em;
+		        border-radius: 0.25em;
 	}
 	#noVNC_status_bar:hover #noVNC_status {
 		display: block;
@@ -309,12 +320,16 @@
 		filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#676767,endColorstr=#4b4b4b);
 		-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#676767, endColorstr=#4b4b4b)";
 		-webkit-border-radius: 0.27em;
-		-moz-border-radius: 0.27em;
-		border-radius: 0.27em;
+		   -moz-border-radius: 0.27em;
+		    -ms-border-radius: 0.27em;
+		     -o-border-radius: 0.27em;
+		        border-radius: 0.27em;
 		border: 1px solid #111;
 		-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-		box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		   -moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		    -ms-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		     -o-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+		        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
 	}
 	.noVNC_status_button:hover {
 		background: #6b6b6b;
@@ -334,6 +349,8 @@
 		border: 1px solid #4366a9;
 		-webkit-border-radius: 6px;
 		   -moz-border-radius: 6px;
+		    -ms-border-radius: 6px;
+		     -o-border-radius: 6px;
 		        border-radius: 6px;
 		background: #779ced; /* Old browsers */
 		background: -moz-linear-gradient(top, #779ced 0%, #3970e0 49%, #2160dd 51%, #2463df 100%); /* FF3.6+ */
@@ -354,6 +371,8 @@
 		background: #fff;
 		-webkit-border-radius: 10px;
 		   -moz-border-radius: 10px;
+		    -ms-border-radius: 10px;
+		     -o-border-radius: 10px;
 		        border-radius: 10px;
 		color: #000;
 		border: 2px solid #E0E0E0;
@@ -361,11 +380,11 @@
 	.triangle-right:after {
 		content:"";
 		position:absolute;
-		bottom:-20px; /* value = - border-top-width - border-bottom-width */
-		left:50px; /* controls horizontal position */
-		border-width:20px 0 0 20px; /* vary these values to change the angle of the vertex */
-		border-style:solid;
-		border-color:#E0E0E0 transparent;
+		bottom: -20px; /* value = - border-top-width - border-bottom-width */
+		left: 50px; /* controls horizontal position */
+		border-width: 20px 0 0 20px; /* vary these values to change the angle of the vertex */
+		border-style: solid;
+		border-color: #E0E0E0 transparent;
 		display: block;
 		width:0;
 	}
