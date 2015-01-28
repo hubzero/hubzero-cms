@@ -318,23 +318,19 @@ class JobSeeker extends JTable
 		$this->_db->setQuery($query);
 		$seekers = $this->_db->loadObjectList();
 
-		// Exclude duplicates
-		if ($filters['filterby'] == 'applied')
+		$uids = array();
+		foreach ($seekers as $i => $seeker)
 		{
-			$uids = array();
-			foreach ($seekers as $i => $seeker)
+			if (!in_array($seeker->uid, $uids))
 			{
-				if (!in_array($seeker->uid, $uids))
-				{
-					$uids[] = $seeker->uid;
-				}
-				else
-				{
-					unset($seekers[$i]);
-				}
+				$uids[] = $seeker->uid;
 			}
-			$seekers = array_values($seekers);
+			else
+			{
+				unset($seekers[$i]);
+			}
 		}
+		$seekers = array_values($seekers);
 		return $seekers;
 	}
 
