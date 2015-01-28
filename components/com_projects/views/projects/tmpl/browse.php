@@ -128,7 +128,7 @@ $setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
 				continue; // owner group has been deleted
 			}
 			// Make sure thumb.png exists
-			$source = ProjectsHtml::getProjectImageSrc( $row->alias, $row->picture, $this->config );
+			$source = ProjectsHtml::getThumbSrc( $row->alias, $row->picture, $this->config );
 
 			$html .= t.t.t.'<tr class="mline" id="tr_'.$row->id.'">'.n;
 			$html .= t.t.t.t.'<td class="th_image">';
