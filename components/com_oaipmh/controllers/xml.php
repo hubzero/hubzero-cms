@@ -574,7 +574,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					//check for DOI
 					if ($dcs[$i] == "identifier")
 					{
-						$return .= $this->doDoi($result->identifier);
+						$return .= $this->doDoi($result->identifier, 'dc:');
 					}
 					elseif ($dcs[$i] == "date")
 					{
@@ -638,7 +638,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 	 * @param   string  $id
 	 * @return  string
 	 */
-	protected function doDoi($id)
+	protected function doDoi($id, $prefix = '')
 	{
 		if (preg_match("{^10\.}", $id))
 		{
@@ -648,7 +648,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		{
 			$url = rtrim($this->hubname, DS) . DS . ltrim(JRoute::_('index.php?option=com_resources&id=' . $id), DS);
 		}
-		return '<identifier>' . $url . '</identifier>';
+		return '<'.$prefix.'identifier>' . $url . '</'.$prefix.'identifier>';
 	}
 
 	/**

@@ -29,4 +29,4 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 header("Content-type: text/xml");
-echo $this->xml;
+echo trim($this->xml);
