@@ -93,11 +93,24 @@ defined('_JEXEC') or die( 'Restricted access' );
 				?>
 				<li>
 				<?php
-				$out = $dispatcher->trigger( 'showSeeker', array($seeker, $emp, $admin, 'com_members', $list=1) );  // show seeker info
-				if (count($out) > 0)
-				{
-					echo $out[0];
-				}
+				$view = new \Hubzero\Plugin\View(
+					array(
+						'folder'  => 'members',
+						'element' => 'resume',
+						'name'    => 'resume',
+						'layout'  => 'seeker'
+					)
+				);
+				$plugin = JPluginHelper::getPlugin( 'members', 'resume' );
+				$params = new JParameter( $plugin->params );
+
+				$view->seeker   = $seeker;
+				$view->emp   	= $emp;
+				$view->option   = 'com_members';
+				$view->admin   	= $admin;
+				$view->params   = $params;
+				$view->list   	= 1;
+				echo $view->loadTemplate();
 				?>
 				</li>
 				<?php

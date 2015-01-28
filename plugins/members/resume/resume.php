@@ -653,7 +653,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 
 		if ($oid)
 		{
-			$this->_shortlist($oid, $ajax=1);
+			$this->shortlist($oid, $ajax=1);
 		}
 	}
 
@@ -664,7 +664,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 	 * @param      integer $ajax Being displayed via AJAX?
 	 * @return     void
 	 */
-	protected function _shortlist($oid, $ajax=0)
+	public function shortlist($oid, $ajax=0)
 	{
 		$juser = JFactory::getUser();
 		if (!$juser->get('guest'))
@@ -764,7 +764,7 @@ class plgMembersResume extends \Hubzero\Plugin\Plugin
 		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
 		$lengths = array('60', '60', '24', '7', '4.35', '12', '10');
 
-		$now = time();
+		$now = strtotime(JFactory::getDate());
 		$unix_date = strtotime($date);
 
 		// check validity of date
