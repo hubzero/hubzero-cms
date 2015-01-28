@@ -73,50 +73,60 @@ class TablesOaipmhResult
 					continue;
 				}
 
-				// check for hard coded fields
-				if (stristr($customs->$var,"SELECT") === false)
+				// make sure we have an array before looping through
+				if (!is_array($customs))
 				{
-					$hard = $customs->$var;
-					eval("\$hard = \"$hard\";");
-					$this->$var = $hard;
+					$customs = array($customs);
 				}
-				else
+
+				// must loop through customs if array
+				foreach ($customs as $custom)
 				{
-					$SQL = $customs->$var;
-
-					// check for empty SQL 
-					if (!empty($SQL))
+					// check for hard coded fields
+					if (stristr($custom->$var,"SELECT") === false)
 					{
-						// check for DOI as ID
-						// TODO: make generic !!
-						if (preg_match("{^10\.}", $id))
-						{
-							$SQL2 = "SELECT publication_id FROM `#__publication_versions` WHERE doi = '$id' AND state = 1";
-							$db->setQuery($SQL2);
-							$id = $db->loadResult();
-						}
+						$hard = $custom->$var;
+						eval("\$hard = \"$hard\";");
+						$this->$var = $hard;
+					}
+					else
+					{
+						$SQL = $custom->$var;
 
-						if (strpos($SQL, '$id'))
+						// check for empty SQL 
+						if (!empty($SQL))
 						{
-							$SQL = str_replace('\'$id\'', '$id', $SQL);
-							$SQL = str_replace('$id', $db->quote($id), $SQL);
-						}
-						else
-						{
-							eval("\$SQL = \"$SQL\";");
-						}
+							// check for DOI as ID
+							// TODO: make generic !!
+							if (preg_match("{^10\.}", $id))
+							{
+								$SQL2 = "SELECT publication_id FROM `#__publication_versions` WHERE doi = '$id' AND state = 1";
+								$db->setQuery($SQL2);
+								$id = $db->loadResult();
+							}
 
-						$db->setQuery($SQL);
-						$db->query();
-						$count = $db->getNumRows();
-						// check for repeatable entries
-						if ($count > 1)
-						{
-							$this->$var = $db->loadResultArray();
-						}
-						else
-						{
-							$this->$var = $db->loadResult();
+							if (strpos($SQL, '$id'))
+							{
+								$SQL = str_replace('\'$id\'', '$id', $SQL);
+								$SQL = str_replace('$id', $db->quote($id), $SQL);
+							}
+							else
+							{
+								eval("\$SQL = \"$SQL\";");
+							}
+
+							$db->setQuery($SQL);
+							$db->query();
+							$count = $db->getNumRows();
+							// check for repeatable entries
+							if ($count > 1)
+							{
+								$this->$var = $db->loadResultArray();
+							}
+							else
+							{
+								$this->$var = $db->loadResult();
+							}
 						}
 					}
 				}
