@@ -142,7 +142,7 @@ $this->css('jobs', 'com_jobs');
 
 					<div class="submitblock">
 						<span class="selectgroup">
-							<input type="submit" value="<?php echo $this->editpref == 1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
+							<input type="submit" class="btn" value="<?php echo $this->editpref == 1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 							<span class="cancelaction">
 								<a href="<?php echo JRoute::_($this->member->getLink() . '&active=resume'); ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
 							</span>
@@ -205,7 +205,7 @@ $this->css('jobs', 'com_jobs');
 									<label class="resume">
 										<input type="text" name="title" value="<?php echo $this->escape($title); ?>" class="gettitle" maxlength="40" />
 										<input type="hidden" name="author" value="<?php echo $this->member->get('uidNumber'); ?>" />
-										<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
+										<input type="submit" class="btn" value="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
 									</label>
 								</fieldset>
 							</form>
@@ -252,7 +252,7 @@ $this->css('jobs', 'com_jobs');
 					<input type="hidden" name="action" value="uploadresume" />
 					<input type="hidden" name="path" value="<?php echo $this->escape($this->path); ?>" />
 					<input type="hidden" name="emp" value="<?php echo $this->escape($this->emp); ?>" />
-					<input type="submit" value="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_UPLOAD'); ?>" />
+					<input type="submit" class="btn" value="<?php echo JText::_('PLG_MEMBERS_RESUME_ACTION_UPLOAD'); ?>" />
 				</fieldset>
 			</form>
 		<?php } ?>
