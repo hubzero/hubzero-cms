@@ -1122,11 +1122,11 @@ class WishlistModelWish extends WishlistModelAbstract
 			$tbl->load_vote(JFactory::getUser()->get('id'), $this->get('id'));
 
 			$this->set('myranking', $tbl);
-			// Not ranked?
-			if (!$this->get('myranking')->id)
-			{
-				return NULL;
-			}
+		}
+		// Not ranked?
+		if (!$this->get('myranking')->id)
+		{
+			return NULL;
 		}
 
 		return $this->get('myranking')->$rtrn;
