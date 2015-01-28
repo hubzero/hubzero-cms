@@ -86,13 +86,15 @@ HUB.Jobs = {
 		}
 
 		// save to shortlist
-		$('.favvit').on('click', function(e) {
-			e.preventDefault();
-			var oid = $($(item).parent()).attr('id').replace('o','');
-			var profilebox = $($(item).parent().parent().parent());
+		$(".favvit").each(function(i, item) {
+			$(item).on('click', function(e) {
+				e.preventDefault();
+				var oid = $($(item).parent()).attr('id').replace('o','');
+				var profilebox = $($(item).parent().parent().parent());
 				
-			$.get('index.php?option=com_jobs&task=plugin&trigger=onMembersShortlist&no_html=1&oid='+oid,{}, function(data){
-				$(profilebox).html(data);
+				$.get('index.php?option=com_jobs&task=plugin&trigger=onMembersShortlist&no_html=1&oid='+oid,{}, function(data){
+					$(profilebox).html(data);
+				});
 			});
 		});
 

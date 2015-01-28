@@ -143,8 +143,8 @@ $this->css('jobs', 'com_jobs');
 					<div class="submitblock">
 						<span class="selectgroup">
 							<input type="submit" class="btn" value="<?php echo $this->editpref == 1 ? JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : JText::_('PLG_MEMBERS_RESUME_ACTION_SAVE'); ?>" />
-							<span class="cancelaction">
-								<a href="<?php echo JRoute::_($this->member->getLink() . '&active=resume'); ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
+							<span>
+								<a href="<?php echo JRoute::_($this->member->getLink() . '&active=resume'); ?>" class="btn"><?php echo JText::_('PLG_MEMBERS_RESUME_CANCEL'); ?></a>
 							</span>
 						</span>
 					</div>
