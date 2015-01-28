@@ -85,7 +85,7 @@ else
 		</div>
 
 		<div id="noVNC_container">
-			<canvas tabindex="1" id="noVNC_canvas" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>"><?php echo JText::_('PLG_TOOLS_NOVNC_ERROR_NO_CANVAS'); ?></canvas>
+			<canvas id="noVNC_canvas" width="<?php echo $this->output->width; ?>" height="<?php echo $this->output->height; ?>"><?php echo JText::_('PLG_TOOLS_NOVNC_ERROR_NO_CANVAS'); ?></canvas>
 		</div>
 	</div>
 

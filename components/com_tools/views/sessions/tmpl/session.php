@@ -91,7 +91,7 @@ if (!$this->app->sess) {
 		<?php } ?>
 		</div><!-- #app-header -->
 
-		<div id="app-content" class="<?php if ($readOnly) { echo 'view-only'; } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
+		<div id="app-content" tabindex="1" class="<?php if ($readOnly) { echo 'view-only'; } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
 			<noscript>
 				<p class="warning">
 					<?php echo JText::_('COM_TOOLS_ERROR_NOSCRIPT'); ?>

@@ -50,7 +50,7 @@ var UI = {
 		var html = '';
 
 		UI.rfb = new RFB({
-			'focusContainer': $D('noVNC_canvas'),
+			'focusContainer': $D('app-content'),
 			'target':        $D('noVNC_canvas'),
 			'encrypt':       encrypt,
 			'true_color':    true,
