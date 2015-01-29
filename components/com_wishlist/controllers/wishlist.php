@@ -767,7 +767,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$message = array();
 
 			// Plain text email
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
 				'layout' => 'wish_plain'
 			));
@@ -777,7 +777,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$eview->wishlist   = $wishlist;
 			$eview->action     = 'assigned';
 
-			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = $eview->loadTemplate(false);
 			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 			// HTML email
@@ -1060,7 +1060,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$message = array();
 
 			// Plain text email
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
 				'layout' => 'wish_plain'
 			));
@@ -1070,7 +1070,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$eview->wishlist   = $wishlist;
 			$eview->action     = 'created';
 
-			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = $eview->loadTemplate(false);
 			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 			// HTML email
@@ -1243,7 +1243,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				$message = array();
 
 				// Plain text email
-				$eview = new \Hubzero\Component\View(array(
+				$eview = new \Hubzero\Mail\View(array(
 					'name'   => 'emails',
 					'layout' => 'wish_plain'
 				));
@@ -1254,7 +1254,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				$eview->action     = 'updated';
 				$eview->status     = $status;
 
-				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = $eview->loadTemplate(false);
 				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email
@@ -1463,7 +1463,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				$message = array();
 
 				// Plain text email
-				$eview = new \Hubzero\Component\View(array(
+				$eview = new \Hubzero\Mail\View(array(
 					'name'   => 'emails',
 					'layout' => 'wish_plain'
 				));
@@ -1474,7 +1474,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 				$eview->action     = 'moved';
 				$eview->oldlist    = $oldlist;
 
-				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = $eview->loadTemplate(false);
 				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email
@@ -1956,7 +1956,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$message = array();
 
 			// Plain text email
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
 				'layout' => 'comment_plain'
 			));
@@ -1966,7 +1966,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 			$eview->wishlist   = $wishlist;
 			$eview->comment    = $row;
 
-			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = $eview->loadTemplate(false);
 			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 			// HTML email
