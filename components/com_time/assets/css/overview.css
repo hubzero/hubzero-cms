@@ -47,9 +47,6 @@
 	-moz-box-sizing: border-radius;
 	box-sizing: border-radius;
 }
-.com_time_overview .pie-half2 {
-	border: 2px solid white;
-}
 .com_time_overview .hours {
 	font-size: 40px;
 	line-height: 40px;
