@@ -87,13 +87,13 @@ $this->css('jobs', 'com_jobs');
 					<label>
 						<?php echo JText::_('PLG_MEMBERS_RESUME_WEBSITE');?>
 						<span class="selectgroup">
-							<input type="text" class="inputtxt" maxlength="190" name="url" value="<?php echo ($this->js->url ? $this->js->url : $this->member->get('url')); ?>" />
+							<input type="text" class="inputtxt" maxlength="190" name="url" value="<?php echo ($this->js->url ? $this->js->url : $this->member->get('url')); ?>" placeholder="http://" />
 						</span>
 					</label>
 					<label>
 						<?php echo JText::_('PLG_MEMBERS_RESUME_LINKEDIN'); ?>
 						<span class="selectgroup">
-							<input type="text" class="inputtxt" maxlength="190" name="linkedin" value="<?php echo $this->js->linkedin; ?>" />
+							<input type="text" class="inputtxt" maxlength="190" name="linkedin" value="<?php echo $this->js->linkedin; ?>" placeholder="http://" />
 						</span>
 					</label>
 					<label class="cats">
