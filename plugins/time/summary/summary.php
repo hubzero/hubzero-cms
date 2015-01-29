@@ -70,8 +70,8 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		$view->end     = JRequest::getCmd('end_date', JFactory::getDate()->format('Y-m-d'));
 		$view->hubs    = array();
 
-		$records = Record::where('date', '>=', $view->start)
-		                 ->where('date', '<=', $view->end);
+		$records = Record::where('date', '>=', JFactory::getDate($view->start . ' 00:00:00', JFactory::getConfig()->get('offset'))->toSql())
+		                 ->where('date', '<=', JFactory::getDate($view->end   . ' 23:59:59', JFactory::getConfig()->get('offset'))->toSql());
 
 		if (isset($view->task_id) && $view->task_id > 0)
 		{
@@ -154,8 +154,8 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 		                   ->select('task_id')
 		                   ->select($tasks->getQualifiedFieldName('name'))
 		                   ->join($tasks->getTableName(), 'task_id', $tasks->getQualifiedFieldName('id'))
-		                   ->where('date', '>=', $start)
-		                   ->where('date', '<=', $end)
+		                   ->where('date', '>=', JFactory::getDate($start . ' 00:00:00', JFactory::getConfig()->get('offset'))->toSql())
+		                   ->where('date', '<=', JFactory::getDate($end   . ' 23:59:59', JFactory::getConfig()->get('offset'))->toSql())
 		                   ->order('hours', 'asc')
 		                   ->group('task_id');
 
