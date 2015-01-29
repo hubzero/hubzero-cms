@@ -875,7 +875,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			$message = array();
 
 			// Plain text message
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
 				'layout' => 'question_plaintext'
 			));
@@ -887,7 +887,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 			$eview->id       = $row->get('id', 0);
 			$eview->boundary = $from['multipart'];
 
-			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = $eview->loadTemplate(false);
 			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 			// HTML message
@@ -992,7 +992,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 				$message = array();
 
 				// Plain text message
-				$eview = new \Hubzero\Component\View(array(
+				$eview = new \Hubzero\Mail\View(array(
 					'name'   => 'emails',
 					'layout' => 'removed_plaintext'
 				));
@@ -1004,7 +1004,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 				$eview->id       = $question->get('id');
 				$eview->boundary = $from['multipart'];
 
-				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = $eview->loadTemplate(false);
 				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML message
@@ -1093,7 +1093,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		$message = array();
 
 		// Plain text message
-		$eview = new \Hubzero\Component\View(array(
+		$eview = new \Hubzero\Mail\View(array(
 			'name'   => 'emails',
 			'layout' => 'response_plaintext'
 		));
@@ -1106,7 +1106,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\SiteController
 		$eview->id       = $response['question_id'];
 		$eview->boundary = $from['multipart'];
 
-		$message['plaintext'] = $eview->loadTemplate();
+		$message['plaintext'] = $eview->loadTemplate(false);
 		$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 		// HTML message

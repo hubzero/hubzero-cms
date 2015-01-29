@@ -431,7 +431,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			// Build the message
 			$juser = JFactory::getUser();
 
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_answers',
 				'name'      => 'emails',
 				'layout'    => 'question_plaintext'
@@ -444,7 +444,7 @@ class plgResourcesQuestions extends \Hubzero\Plugin\Plugin
 			$eview->id       = $row->get('id', 0);
 			$eview->boundary = $from['multipart'];
 
-			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = $eview->loadTemplate(false);
 			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 			// HTML message
