@@ -799,7 +799,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						// Notify the user
 						$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-						$eview = new \Hubzero\Component\View(array(
+						$eview = new \Hubzero\Mail\View(array(
 							'name'   => 'emails',
 							'layout' => 'create'
 						));
@@ -816,7 +816,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
 						    ->addHeader('X-Component', $this->_option);
 
-						$message = $eview->loadTemplate();
+						$message = $eview->loadTemplate(false);
 						$message = str_replace("\n", "\r\n", $message);
 
 						$msg->addPart($message, 'text/plain');
@@ -1219,7 +1219,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 			$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
 				'layout' => 'confirm'
 			));
@@ -1238,7 +1238,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 			    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
 			    ->addHeader('X-Component', $this->_option);
 
-			$message = $eview->loadTemplate();
+			$message = $eview->loadTemplate(false);
 			$message = str_replace("\n", "\r\n", $message);
 
 			$msg->addPart($message, 'text/plain');
@@ -1374,7 +1374,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 
 						$subject  = $this->jconfig->getValue('config.sitename').' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION');
 
-						$eview = new \Hubzero\Component\View(array(
+						$eview = new \Hubzero\Mail\View(array(
 							'name'   => 'emails',
 							'layout' => 'confirm'
 						));
@@ -1393,7 +1393,7 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 						    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
 						    ->addHeader('X-Component', $this->_option);
 
-						$message = $eview->loadTemplate();
+						$message = $eview->loadTemplate(false);
 						$message = str_replace("\n", "\r\n", $message);
 
 						$msg->addPart($message, 'text/plain');
