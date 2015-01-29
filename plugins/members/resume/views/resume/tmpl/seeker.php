@@ -109,10 +109,12 @@ defined('_JEXEC') or die('Restricted access');
 				<?php echo ucfirst(JText::_('PLG_MEMBERS_RESUME_RESUME')); ?>
 			</a>
 			<span class="mini"><?php echo JText::_('PLG_MEMBERS_RESUME_LAST_UPDATE'); ?>: <?php echo plgMembersResume::nicetime($this->seeker->created); ?></span>
-			<?php if ($this->seeker->url) { ?>
+			<?php if ($this->seeker->url) {
+				$url = (strpos($this->seeker->url, "http://") === false && strpos($this->seeker->url, "https://") === false) ? "http://" . $this->seeker->url : $this->seeker->url;
+				?>
 				<span class="mini"> | </span>
 				<span class="mini">
-					<a href="<?php echo $this->seeker->url; ?>" class="web" rel="external" title="<?php echo JText::_('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url; ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_WEBSITE'); ?></a>
+					<a href="<?php echo $url; ?>" class="web" rel="external" title="<?php echo JText::_('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url; ?>"><?php echo JText::_('PLG_MEMBERS_RESUME_WEBSITE'); ?></a>
 				</span>
 			<?php } ?>
 			<?php if ($this->seeker->linkedin) { ?>
