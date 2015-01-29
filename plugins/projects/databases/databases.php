@@ -524,9 +524,19 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			}
 
 			exec($this->gitpath . ' log --pretty=format:%f"|#|"%H"|#|"%cr%n -- "' . $file . '"|head -1', $info);
-			$info = explode('|#|', $info[0]);
-			$l['source_revision_curr'] = $info[1];
-			$l['source_revision_date'] = $info[2];
+
+			if (isset($info[0]))
+			{
+				$info = explode('|#|', $info[0]);
+				$l['source_revision_curr'] = $info[1];
+				$l['source_revision_date'] = $info[2];
+			}
+			else
+			{
+				$l['source_revision_curr'] = '';
+				$l['source_revision_date'] = '';
+			}
+
 			$l['source_available'] = file_exists($path . DS . $file) ? true : false;
 
 			if ($l['created_by'] == $this->_uid)
@@ -1229,7 +1239,7 @@ class plgProjectsDatabases extends \Hubzero\Plugin\Plugin
 			// Update source_revision with the current commit hash
 			chdir($path);
 			exec($this->gitpath . ' log --pretty=format:%H ' . escapeshellarg($file) . '|head -1', $hash);
-			$hash = $hash[0];
+			$hash = isset($hash[0]) ? $hash[0] : 0;
 			$objPD->source_revision = $hash;
 			$objPD->store();
 
