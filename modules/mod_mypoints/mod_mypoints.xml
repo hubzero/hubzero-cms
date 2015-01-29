@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_mypoints/mod_mypoints.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,26 +28,27 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>My Points</name>
+	<name>mod_mypoints</name>
 	<author>HUBzero</author>
 	<creationDate>October 2009</creationDate>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>zooley@purdue.edu</authorEmail>
-	<version>1</version>
-	<description>This module will display a point total and list of most recent point transactions.</description>
+	<version>1.2.0</version>
+	<description>MOD_MYPOINTS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mypoints">mod_mypoints.php</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
-		<filename>mod_mypoints.css</filename>
+		<filename>assets/css/mod_mypoints.css</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." member_dashboard="1" />
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYPOINTS_PARAM_CLASS_LABEL" description="MOD_MYPOINTS_PARAM_CLASS_DESC" />
+				<field name="limit" type="text" default="5" label="MOD_MYPOINTS_PARAM_LIMIT_LABEL" description="MOD_MYPOINTS_PARAM_LIMIT_DESC" member_dashboard="1" />
 			</fieldset>
 		</fields>
 	</config>

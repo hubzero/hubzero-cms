@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,17 +24,19 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyContributions;
+
+use Hubzero\Module\Module;
+use JFactory;
 
 /**
  * Module class for displaying contributions in progress
  */
-class modMyContributions extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get a list of contributions
@@ -47,47 +48,14 @@ class modMyContributions extends \Hubzero\Module\Module
 		$database = JFactory::getDBO();
 		$juser = JFactory::getUser();
 
-		// Container for the various types of contributions
-		//$contributions = array();
-		// Get "published" contributions
-		/*$query1 = "SELECT COUNT(*)"
-			. " FROM #__resources AS R, #__author_assoc AS AA"
-			. " WHERE AA.authorid='". $juser->get('id') ."'"
-			. " AND R.id=AA.subid AND AA.subtable='resources' AND R.standalone='1' AND R.published=1";
-		$database->setQuery($query1);
-		$contributions['published'] = $database->loadResult();
-		*/
-
-		// Get "in progress" contributions
-		/*$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype,
-							AA.subtable, R.created, R.created_by, R.published, R.publish_up, R.standalone,
-							R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
-		$query .= "FROM #__author_assoc AS AA, #__resource_types AS rt, #__resources AS R ";
-		$query .= "LEFT JOIN #__resource_types AS t ON R.logical_type=t.id ";
-		$query .= "WHERE AA.authorid = ". $juser->get('id') ." ";
-		$query .= "AND R.id = AA.subid ";
-		$query .= "AND AA.subtable = 'resources' ";
-		$query .= "AND R.standalone=1 AND R.type=rt.id AND (R.published=2 OR R.published=3) AND R.type!=7 ";
-		$query .= "ORDER BY published ASC, title ASC";*/
-
 		$query  = "SELECT DISTINCT R.id, R.title, R.type, R.logical_type AS logicaltype, R.created, R.created_by, R.published, R.publish_up, R.standalone, R.rating, R.times_rated, R.alias, R.ranking, rt.type AS typetitle ";
-		$query .= "FROM #__resource_types AS rt, #__resources AS R ";
-		$query .= "LEFT JOIN #__author_assoc AS aa ON aa.subid=R.id AND aa.subtable='resources' ";
+		$query .= "FROM `#__resource_types` AS rt, `#__resources` AS R ";
+		$query .= "LEFT JOIN `#__author_assoc` AS aa ON aa.subid=R.id AND aa.subtable='resources' ";
 		$query .= "WHERE (aa.authorid='" . $juser->get('id') . "' OR R.created_by=" . $juser->get('id') . ") ";
 		$query .= "AND R.standalone=1 AND R.type=rt.id AND (R.published=2 OR R.published=3) AND R.type!=7 ";
 		$query .= "ORDER BY published ASC, title ASC";
 
 		$database->setQuery($query);
-		//$contributions['inprogress'] = $database->loadObjectList(); // not include tools
-		// Get "pending" contributions
-		/*
-		$query3 = "SELECT COUNT(*)"
-			. " FROM #__resources AS R, #__author_assoc AS AA"
-			. " WHERE AA.authorid='". $juser->get('id') ."'"
-			. " AND R.id=AA.subid AND AA.subtable='resources' AND R.standalone='1' AND R.published=3";
-		$database->setQuery($query3);
-		$contributions['pending'] = $database->loadResult();
-		*/
 
 		return $database->loadObjectList();
 	}
@@ -95,11 +63,11 @@ class modMyContributions extends \Hubzero\Module\Module
 	/**
 	 * Get a list of tools
 	 *
-	 * @param      integer $show_questions Show question count for tool
-	 * @param      integer $show_wishes    Show wish count for tool
-	 * @param      integer $show_tickets   Show ticket count for tool
-	 * @param      string  $limit_tools    Number of records to pull
-	 * @return     mixed False if error, otherwise array
+	 * @param   integer  $show_questions  Show question count for tool
+	 * @param   integer  $show_wishes     Show wish count for tool
+	 * @param   integer  $show_tickets    Show ticket count for tool
+	 * @param   string   $limit_tools     Number of records to pull
+	 * @return  mixed    False if error, otherwise array
 	 */
 	private function _getToollist($show_questions, $show_wishes, $show_tickets, $limit_tools='40')
 	{
@@ -115,33 +83,36 @@ class modMyContributions extends \Hubzero\Module\Module
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' . DS . 'tool.php');
 
 		// Create a Tool object
-		$rows = ToolsModelTool::getTools($filters, false);
+		$rows = \ToolsModelTool::getTools($filters, false);
 		$limit = 100000;
 
 		if ($rows)
 		{
 			for ($i=0; $i < count($rows); $i++)
 			{
-				// what is resource id?
-				$rid = ToolsModelTool::getResourceId($rows[$i]->id);
+				// What is resource id?
+				$rid = \ToolsModelTool::getResourceId($rows[$i]->id);
 				$rows[$i]->rid = $rid;
 
-				// get questions, wishes and tickets on published tools
+				// Get questions, wishes and tickets on published tools
 				if ($rows[$i]->published == 1 && $i <= $limit_tools)
 				{
 					if ($show_questions)
 					{
-						// get open questions
+						// Get open questions
 						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'question.php');
 						require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'response.php');
-						$aq = new AnswersTableQuestion($database);
-						$filters = array();
-						$filters['limit']    = $limit;
-						$filters['start']    = 0;
-						$filters['filterby'] = 'open';
-						$filters['sortby']   = 'date';
-						$filters['mine']     = 0;
-						$filters['tag']      = 'tool' . $rows[$i]->toolname;
+						$aq = new \AnswersTableQuestion($database);
+
+						$filters = array(
+							'limit'    => $limit,
+							'start'    => 0,
+							'filterby' => 'open',
+							'sortby'   => 'date',
+							'mine'     => 0,
+							'tag'      => 'tool' . $rows[$i]->toolname
+						);
+
 						$results = $aq->getResults($filters);
 						$unanswered = 0;
 						if ($results)
@@ -161,18 +132,12 @@ class modMyContributions extends \Hubzero\Module\Module
 
 					if ($show_wishes)
 					{
-						// get open wishes
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.php');
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.plan.php');
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.php');
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wishlist.owner.group.php');
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.php');
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.rank.php');
-						include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_wishlist' . DS . 'tables' . DS . 'wish.attachment.php');
+						// Get open wishes
+						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'models' . DS . 'wishlist.php');
 						require_once(JPATH_ROOT . DS . 'components' . DS . 'com_wishlist' . DS . 'controllers' . DS . 'wishlist.php');
 
-						$objWishlist = new Wishlist($database);
-						$objWish = new Wish($database);
+						$objWishlist = new \Wishlist($database);
+						$objWish = new \Wish($database);
 						$listid = $objWishlist->get_wishlistID($rid, 'resource');
 
 						$rows[$i]->w = 0;
@@ -180,7 +145,7 @@ class modMyContributions extends \Hubzero\Module\Module
 
 						if ($listid)
 						{
-							$controller = new WishlistControllerWishlist();
+							$controller = new \WishlistControllerWishlist();
 							$filters = $controller->getFilters(1);
 							$wishes = $objWish->get_wishes($listid, $filters, 1, $juser);
 							$unranked = 0;
@@ -202,13 +167,14 @@ class modMyContributions extends \Hubzero\Module\Module
 
 					if ($show_tickets)
 					{
-						// get open tickets
+						// Get open tickets
 						$group = $rows[$i]->devgroup;
 
 						// Find support tickets on the user's contributions
-						$database->setQuery("SELECT id, summary, category, status, severity, owner, created, login, name,
-							 (SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-							 FROM #__support_tickets as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group='$group'
+						$database->setQuery(
+							"SELECT id, summary, category, status, severity, owner, created, login, name,
+							 (SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
+							 FROM `#__support_tickets` as st WHERE (st.status=0 OR st.status=1) AND type=0 AND st.group='$group'
 							 ORDER BY created DESC
 							 LIMIT $limit"
 						);
@@ -243,8 +209,8 @@ class modMyContributions extends \Hubzero\Module\Module
 	/**
 	 * Get tool status text
 	 *
-	 * @param      integer $int Tool status
-	 * @return     string
+	 * @param   integer  $int  Tool status
+	 * @return  string
 	 */
 	public function getState($int)
 	{
@@ -266,8 +232,8 @@ class modMyContributions extends \Hubzero\Module\Module
 	/**
 	 * Get resource type title
 	 *
-	 * @param      integer $int Resource type
-	 * @return     string
+	 * @param   integer  $int  Resource type
+	 * @return  string
 	 */
 	public function getType($int)
 	{
@@ -291,8 +257,8 @@ class modMyContributions extends \Hubzero\Module\Module
 	public function display()
 	{
 		// Get the user's profile
-		$xprofile = \Hubzero\User\Profile::getInstance(JFactory::getUser()->get('id'));
 		$juser = JFactory::getUser();
+		$xprofile = \Hubzero\User\Profile::getInstance($juser->get('id'));
 		$session_quota = $xprofile->get('jobsAllowed');
 		$administrator = in_array('middleware', $xprofile->get('admin'));
 
@@ -323,7 +289,7 @@ class modMyContributions extends \Hubzero\Module\Module
 		// Other cotnributions
 		$this->contributions = $this->_getContributions();
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }
 

@@ -1,0 +1,44 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_mypoints/assets/css/mod_mypoints.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mypoints
+	-- -- -- -- -- -- --
+
+*/
+	.point-balance {
+		margin: 0;
+		background: #F7F4F2;
+		border-top: 1px solid #E7DFD8;
+		border-bottom: 1px solid #E7DFD8;
+		text-align: center;
+		color: #333;
+		font-weight: bold;
+		font-size: 1.5em;
+		padding: 0.5em;
+	}
+	.point-balance span {
+		display: none;
+	}
+	.point-balance small {
+		color: #888;
+	}
+	.transactions .withdraw {
+		color: red;
+	}
+	.transactions .deposit {
+		color: green;
+	}
+	.transactions .textual-data {
+		text-align: left;
+	}
+	.transactions .numerical-data {
+		text-align: right;
+	}
+

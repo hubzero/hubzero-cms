@@ -1,0 +1,136 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_mytools/assets/css/mod_mytools.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mytools
+	-- -- -- -- -- -- --
+
+*/
+	.sortable .tab_panel {
+		display: none;
+		position: relative;
+		padding: 0;
+		margin: 0;
+	}
+	.sortable .tab_panel ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		background: #fff;
+	}
+	.sortable #alltools ul {
+		overflow: auto;
+		position: relative; /* fix IE 6,7 - quirky support for overflow:auto, this line fixes it */
+		border-top: 1px solid #ddd;
+		border-bottom: 1px solid #ddd;
+	}
+	.sortable .tab_panel li {
+		border: none;
+		border-bottom: 1px solid #ddd;
+		margin: 0;
+		padding: 0.6em 3em 0.6em 0.7em;
+		position: relative;
+		background-image: none;
+	}
+	.sortable .tab_panel li.supported {
+		background: url("/modules/mod_mytools/assets/img/award_star_gold_1.png") 0.5em 0.7em no-repeat;
+		padding-left: 2em;
+	}
+	.sortable .tab_panel p {
+		margin: 0.5em;
+		padding: 0;
+		font-size: 90%;
+		color: #999;
+	}
+	.sortable .tab_panel.active {
+		display: block;
+	}
+	.sortable .tab_titles {
+		list-style-image: none;
+		list-style-type: none;
+		margin: 0px;
+		padding: 4px 0 0 4px;
+		height: 24px;
+		background: #333;
+	}
+	.sortable .tab_titles li {
+		float: left;
+		background-color: #656565;
+		padding: 4px 0 0 0;
+		margin-right: 1%;
+		cursor: pointer;
+		height: 20px;
+		width: 32%;
+		text-align: center;
+		color: #fff;
+		font-weight: bold;
+		background-image: none;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.sortable .tab_titles li.active {
+		background-color: #fff;
+		color: #333;
+	}
+	.sortable .fav,
+	.sortable .launchtool {
+		display: block;
+		width: 16px;
+		height: 16px;
+		overflow: hidden;
+		position: absolute;
+		top: 0.6em;
+		text-indent: -55em;
+		border: none;
+	}	
+	.sortable .fav {
+		right: 50px;
+		background: url("/modules/mod_mytools/assets/img/fav_heart.gif") 0 0 no-repeat;
+	}
+	.sortable .launchtool {
+		right: 10px;
+		background: url("/modules/mod_mytools/assets/img/app_go.gif") 0 0 no-repeat;
+	}
+	.sortable .fav:hover,
+	.sortable .launchtool:hover {
+		background-position: 0 -16px;
+	}
+	.sortable #recenttools .fav,
+	.sortable #favtools .fav {
+		display: none;
+	}
+	.sortable .favd {
+		background-color: #FFFFEB;
+	}
+	.sortable .favd .fav {
+		background: url("/modules/mod_mytools/assets/img/heart.png") 0 0 no-repeat;
+	}
+	.sortable #alltools li {
+		padding-right: 60px;
+	}
+
+	#filter-mytools {
+		padding: 5px 10px;
+		background: #efefef;
+	}
+	#filter-mytools input {
+		border-radius: 20px;
+		box-shadow: inset 0 1px 2px #555;
+		width: 100%;
+		border: 1px solid #DDD;
+		padding: 5px 5%;
+		font-size: 12px;
+		line-height: 14px;
+		background: #FFF;
+		-webkit-box-sizing: border-box;
+		   -moz-box-sizing: border-box;
+		    -ms-box-sizing: border-box;
+		     -o-box-sizing: border-box;
+		        box-sizing: border-box;
+	}

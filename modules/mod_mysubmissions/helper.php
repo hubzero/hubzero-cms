@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,23 +24,30 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MySubmissions;
+
+use Hubzero\Module\Module;
+use ResourcesAssoc;
+use ResourcesTags;
+use ResourcesContributor;
+use ResourcesType;
+use ResourcesResource;
+use JFactory;
 
 /**
  * Module class for displaying a user's submissions and their progress
  */
-class modMySubmissions extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Check if the type selection step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean True if step completed
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  True if step completed
 	 */
 	public function step_type_check($id)
 	{
@@ -51,8 +57,8 @@ class modMySubmissions extends \Hubzero\Module\Module
 	/**
 	 * Check if the compose step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean True if step completed
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  True if step completed
 	 */
 	public function step_compose_check($id)
 	{
@@ -62,8 +68,8 @@ class modMySubmissions extends \Hubzero\Module\Module
 	/**
 	 * Check if the attach step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean True if step completed
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  True if step completed
 	 */
 	public function step_attach_check($id)
 	{
@@ -83,8 +89,8 @@ class modMySubmissions extends \Hubzero\Module\Module
 	/**
 	 * Check if the authors step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean True if step completed
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  True if step completed
 	 */
 	public function step_authors_check($id)
 	{
@@ -105,8 +111,8 @@ class modMySubmissions extends \Hubzero\Module\Module
 	/**
 	 * Check if the tags step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean True if step completed
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  True if step completed
 	 */
 	public function step_tags_check($id)
 	{
@@ -126,8 +132,8 @@ class modMySubmissions extends \Hubzero\Module\Module
 	/**
 	 * Check if the review step is completed
 	 *
-	 * @param      integer $id Resource ID
-	 * @return     boolean True if step completed
+	 * @param   integer  $id  Resource ID
+	 * @return  boolean  True if step completed
 	 */
 	public function step_review_check($id)
 	{
@@ -137,7 +143,7 @@ class modMySubmissions extends \Hubzero\Module\Module
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -171,7 +177,7 @@ class modMySubmissions extends \Hubzero\Module\Module
 			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_resources' . DS . 'helpers' . DS . 'tags.php');
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }
 

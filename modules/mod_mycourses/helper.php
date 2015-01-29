@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,24 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyCourses;
+
+use Hubzero\Module\Module;
+use JFactory;
 
 /**
- * Module class for displaying a list of groups for a user
+ * Module class for displaying a list of courses for a user
  */
-class modMyCourses extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
-	 * Get groups for a user
+	 * Get courses for a user
 	 *
-	 * @param      integer $uid  User ID
-	 * @param      string  $type Membership type to return groups for
-	 * @return     array
+	 * @param   integer  $uid   User ID
+	 * @param   string   $type  Membership type to return courses for
+	 * @return  array
 	 */
 	private function _getCourses($uid, $type='all')
 	{
@@ -57,57 +58,6 @@ class modMyCourses extends \Hubzero\Module\Module
 					LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
 					WHERE c.state IN (1, 3)
 					AND m.user_id=" . $db->quote($uid);
-
-		/*$query2 = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default
-					FROM #__courses AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND m.student=0 AND r.alias='manager'";
-
-		$query3 = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default
-					FROM #__courses AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND m.student=0 AND r.alias='instructor'";
-
-		$query4 = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default
-					FROM #__courses AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND m.student=1 AND c.state=1";
-
-		$query5 = "SELECT c.id, c.state, c.alias, c.title, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default
-					FROM #__courses AS c
-					JOIN #__courses_members AS m ON m.course_id=c.id
-					LEFT JOIN #__courses_offerings AS o ON o.id=m.offering_id
-					LEFT JOIN #__courses_offering_sections AS s on s.id=m.section_id
-					LEFT JOIN #__courses_roles AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $uid . " AND m.student=0 AND r.alias='ta'";
-
-		switch ($type)
-		{
-			case 'all':
-				$query = "( $query2 ) UNION ( $query3 ) UNION ( $query4 ) UNION ( $query5 ) ORDER BY title ASC"; //( $query1 ) UNION
-			break;
-			case 'manager':
-				$query = $query2; //"( $query1 ) UNION ( $query2 )";
-			break;
-			case 'instructor':
-				$query = $query3;
-			break;
-			case 'student':
-				$query = $query4;
-			break;
-			case 'ta':
-				$query = $query5;
-			break;
-		}*/
 
 		$now = JFactory::getDate()->toSql();
 
@@ -147,7 +97,7 @@ class modMyCourses extends \Hubzero\Module\Module
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -163,7 +113,7 @@ class modMyCourses extends \Hubzero\Module\Module
 		// Push the module CSS to the template
 		$this->css();
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }
 

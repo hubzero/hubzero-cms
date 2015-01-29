@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,103 +24,102 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyTools;
 
 /**
  * This class holds information about one application.
  * It may be either a running session or an app that can be invoked.
  */
-class MwModApp
+class App
 {
 	/**
 	 * Tool name
 	 *
 	 * @var string
 	 */
-	var $name;
+	public $name;
 
 	/**
 	 * Tool caption
 	 *
 	 * @var string
 	 */
-	var $caption;
+	public $caption;
 
 	/**
 	 * Tool description
 	 *
 	 * @var string
 	 */
-	var $desc;
+	public $desc;
 
 	/**
 	 * which environment to run in
 	 *
 	 * @var string
 	 */
-	var $middleware;
+	public $middleware;
 
 	/**
 	 * sessionid of application
 	 *
 	 * @var integer
 	 */
-	var $session;
+	public $session;
 
 	/**
 	 * owner of a running session
 	 *
 	 * @var integer
 	 */
-	var $owner;
+	public $owner;
 
 	/**
 	 * Nth occurrence of this application in a list
 	 *
 	 * @var integer
 	 */
-	var $num;
+	public $num;
 
 	/**
 	 * is this tool public?
 	 *
 	 * @var integer
 	 */
-	var $public;
+	public $public;
 
 	/**
 	 * what license is in use?
 	 *
 	 * @var string
 	 */
-	var $revision;
+	public $revision;
 
 	/**
 	 * Tool name
 	 *
 	 * @var string
 	 */
-	var $toolname;
+	public $toolname;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      string  $n   Name
-	 * @param      string  $c   Caption
-	 * @param      string  $d   Description
-	 * @param      string  $m   sessionid of application
-	 * @param      integer $s   sessionid of application
-	 * @param      integer $o   Parameter description (if any) ...
-	 * @param      integer $num Nth occurrence of this application in a list
-	 * @param      integer $p   is this tool public?
-	 * @param      string  $r   what license is in use?
-	 * @param      string  $tn  Tool name
-	 * @return     void
+	 * @param   string   $n    Name
+	 * @param   string   $c    Caption
+	 * @param   string   $d    Description
+	 * @param   string   $m    sessionid of application
+	 * @param   integer  $s    sessionid of application
+	 * @param   integer  $o    Parameter description (if any) ...
+	 * @param   integer  $num  Nth occurrence of this application in a list
+	 * @param   integer  $p    is this tool public?
+	 * @param   string   $r    what license is in use?
+	 * @param   string   $tn   Tool name
+	 * @return  void
 	 */
 	public function __construct($n, $c, $d, $m, $s, $o, $num, $p, $r, $tn)
 	{

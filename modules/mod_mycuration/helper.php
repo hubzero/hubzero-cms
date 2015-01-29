@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,28 +24,32 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyCuration;
+
+use Hubzero\Module\Module;
+use Publication;
+use JComponentHelper;
+use JFactory;
 
 /**
  * Module class for displaying a user's publication curation tasks
  */
-class modMyCuration extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
-		$juser = JFactory::getUser();
+		$juser    = JFactory::getUser();
 		$database = JFactory::getDBO();
-		$config = JComponentHelper::getParams( 'com_publications' );
+		$config   = JComponentHelper::getParams('com_publications');
 
 		// Get some classes we need
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_publications' . DS . 'tables' . DS . 'publication.php');
@@ -55,25 +58,26 @@ class modMyCuration extends \Hubzero\Module\Module
 		$this->moduleclass = $this->params->get('moduleclass');
 
 		// Build query
-		$filters = array();
-		$filters['limit'] 	 		= intval($this->params->get('limit', 10));
-		$filters['start'] 	 		= 0;
-		$filters['sortby']   		= 'title';
-		$filters['sortdir']  		= 'ASC';
-		$filters['ignore_access']   = 1;
-		$filters['curator']   		= 'owner';
-		$filters['dev']   	 		= 1; // get dev versions
-		$filters['status']   	 	= array(5, 7); // submitted/pending
+		$filters = array(
+			'limit'         => intval($this->params->get('limit', 10)),
+			'start'         => 0,
+			'sortby'        => 'title',
+			'sortdir'       => 'ASC',
+			'ignore_access' => 1,
+			'curator'       => 'owner',
+			'dev'           => 1, // get dev versions
+			'status'        => array(5, 7) // submitted/pending
+		);
 
 		// Instantiate
-		$objP = new Publication( $database );
+		$objP = new Publication($database);
 
 		// Assigned curation
-		$this->rows  = $objP->getRecords($filters);
+		$this->rows = $objP->getRecords($filters);
 
 		// Push the module CSS to the template
 		$this->css();
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

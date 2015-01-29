@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,24 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyGroups;
+
+use Hubzero\Module\Module;
+use JFactory;
 
 /**
  * Module class for displaying a list of groups for a user
  */
-class modMyGroups extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get groups for a user
 	 *
-	 * @param      integer $uid  User ID
-	 * @param      string  $type Membership type to return groups for
-	 * @return     array
+	 * @param   integer  $uid   User ID
+	 * @param   string   $type  Membership type to return groups for
+	 * @return  array
 	 */
 	private function _getGroups($uid, $type='all')
 	{
@@ -50,23 +51,23 @@ class modMyGroups extends \Hubzero\Module\Module
 
 		// Get all groups the user is a member of
 		$query1 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '0' AS regconfirmed, '0' AS manager
-				   FROM #__xgroups AS g, #__xgroups_applicants AS m
+				   FROM `#__xgroups` AS g, `#__xgroups_applicants` AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		$query2 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '0' AS manager
-				   FROM #__xgroups AS g, #__xgroups_members AS m
+				   FROM `#__xgroups` AS g, `#__xgroups_members` AS m
 				   WHERE (g.type='1' || g.type='3') AND m.uidNumber NOT IN
 						(SELECT uidNumber
-						 FROM #__xgroups_managers AS manager
+						 FROM `#__xgroups_managers` AS manager
 						 WHERE manager.gidNumber = m.gidNumber)
 				   AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		$query3 = "SELECT g.published, g.approved, g.description, g.cn, '1' AS registered, '1' AS regconfirmed, '1' AS manager
-				   FROM #__xgroups AS g, #__xgroups_managers AS m
+				   FROM `#__xgroups` AS g, `#__xgroups_managers` AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		$query4 = "SELECT g.published, g.approved, g.description, g.cn, '0' AS registered, '1' AS regconfirmed, '0' AS manager
-				   FROM #__xgroups AS g, #__xgroups_invitees AS m
+				   FROM `#__xgroups` AS g, `#__xgroups_invitees` AS m
 				   WHERE (g.type='1' || g.type='3') AND m.gidNumber=g.gidNumber AND m.uidNumber=" . $uid;
 
 		switch ($type)
@@ -104,8 +105,8 @@ class modMyGroups extends \Hubzero\Module\Module
 	/**
 	 * Get the user's status in the gorup
 	 *
-	 * @param      object $group Group to check status in
-	 * @return     string
+	 * @param   object  $group  Group to check status in
+	 * @return  string
 	 */
 	public function getStatus($group)
 	{
@@ -144,7 +145,7 @@ class modMyGroups extends \Hubzero\Module\Module
 	/**
 	 * Display module contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -167,7 +168,7 @@ class modMyGroups extends \Hubzero\Module\Module
 		// Push the module CSS to the template
 		$this->css();
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }
 

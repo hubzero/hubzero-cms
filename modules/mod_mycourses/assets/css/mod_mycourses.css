@@ -1,0 +1,89 @@
+/**
+ * @package     hubzero-cms
+ * @file        modules/mod_mycourses/assets/css/mod_mycourses.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+/*
+
+	-- -- -- -- -- -- --
+	mod_mycourses
+	-- -- -- -- -- -- --
+
+*/
+	div.draggable .compactlist li span {
+		margin-left: 0;
+	}
+	div.draggable .compactlist li.course {
+		position: relative;
+		word-wrap: break-word;
+		padding-right: 0.6em;
+	}
+	div.draggable .compactlist li.course a {
+		margin-right: 0;
+	}
+	div.draggable .compactlist li.course small {
+		display: block;
+		color: #aaa;
+	}
+	div.draggable .compactlist li.course span span.status {
+		top: auto;
+		bottom: 0.6em;
+	}
+	div.draggable .compactlist li.course span span.student {
+		color: #66AA00;
+	}
+	div.draggable .compactlist li.course span span.manager {
+		color: #ff1177;
+	}
+	div.draggable .compactlist li.course span span.instructor {
+		color: green;
+	}
+	div.draggable .compactlist li.course span span.ta {
+		color: #aaaaaa;
+	}
+	div.draggable .compactlist li.course .actions {
+		text-align: left;
+		display: block;
+		padding-right: 1em;
+		margin:0;
+	}
+	div.draggable .compactlist li.course .actions a {
+		font-size: 90%;
+		border: none;
+		padding: 0.2em 0.5em;
+		background-color: #777;
+		color: #fff;
+		-webkit-border-radius: 5px;
+		   -moz-border-radius: 5px;
+		    -ms-border-radius: 5px;
+		     -o-border-radius: 5px;
+		        border-radius: 5px;
+		margin: 0;
+	}
+	div.draggable .compactlist li.course .actions a:hover {
+		border: none;
+	}
+	div.draggable .compactlist li.course .actions a.action-accept:hover {
+		background-color: #66AA00;
+	}
+	div.draggable .compactlist li.course .actions a.action-cancel:hover {
+		background-color: #c30;
+	}
+	div.draggable .compactlist li.course:after { 
+		content: "\f09c";
+		font-size: 1.4em;
+		line-height: 1;
+		display: block;
+		width: 1em;
+		height: 1em;
+		position: absolute;
+		top: 0.6em;
+		left: 0.6em;
+		font-family: "Fontcons";
+		color: #ccc;
+	}
+	div.draggable .compactlist li.course:hover:after {
+		color: #999;
+	}

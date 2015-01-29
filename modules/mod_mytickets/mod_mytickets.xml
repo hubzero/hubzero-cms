@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_mytickets/mod_mytickets.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,24 +28,24 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension type="module" version="1.5">
-	<name>My Tickets</name>
+	<name>mod_mytickets</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>This module will display a list of active support tickets submitted by the user</description>
+	<description>MOD_MYTICKETS_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_mytickets">mod_mytickets.php</filename>
 		<filename>index.html</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
-		<filename>mod_mytickets.css</filename>
-		<filename>images/page_white_text.png</filename>
+		<filename>assets/css/mod_mytickets.css</filename>
+		<filename>helper.php</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module class" description="A CSS class to be applied to the module, this allows individual module styling" />
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display." member_dashboard="1" />
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYTICKETS_PARAM_CLASS_LABEL" description="MOD_MYTICKETS_PARAM_CLASS_DESC" />
+				<field name="limit" type="text" default="5" label="MOD_MYTICKETS_PARAM_LIMIT_LABEL" description="MOD_MYTICKETS_PARAM_LIMIT_DESC" member_dashboard="1" />
 			</fieldset>
 		</fields>
 	</config>

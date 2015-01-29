@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,22 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyProjects;
+
+use Hubzero\Module\Module;
+use JComponentHelper;
+use JFactory;
+use Project;
 
 /**
  * Module class for displaying a user's projects
  */
-class modMyProjects extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module content
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -61,13 +64,14 @@ class modMyProjects extends \Hubzero\Module\Module
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php');
 
 		// Set filters
-		$filters = array();
-		$filters['mine']     = 1;
-		$filters['limit']    = $limit;
-		$filters['start']    = 0;
-		$filters['updates']  = 1;
-		$filters['sortby']   = 'myprojects';
-		$filters['getowner'] = 1;
+		$filters = array(
+			'mine'     => 1,
+			'limit'    => $limit,
+			'start'    => 0,
+			'updates'  => 1,
+			'sortby'   => 'myprojects',
+			'getowner' => 1
+		);
 
 		$setup_complete = $config->get('confirm_step', 0) ? 3 : 2;
 		$this->filters  = $filters;
@@ -86,7 +90,7 @@ class modMyProjects extends \Hubzero\Module\Module
 		// Push the module CSS to the template
 		$this->css();
 
-		require(JModuleHelper::getLayoutPath('mod_myprojects'));
+		require $this->getLayoutPath();
 	}
 }
 

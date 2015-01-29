@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,22 +24,25 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyTickets;
+
+use Hubzero\Module\Module;
+use Hubzero\User\Profile;
+use JFactory;
 
 /**
  * Module class for displaying a user's support tickets
  */
-class modMyTickets extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Display module content
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
@@ -98,7 +100,7 @@ class modMyTickets extends \Hubzero\Module\Module
 		$this->rows1 = $rows1;
 		$this->rows2 = $rows2;
 
-		$profile = \Hubzero\User\Profile::getInstance($juser->get('id'));
+		$profile = Profile::getInstance($juser->get('id'));
 		$xgroups = $profile->getGroups('members');
 
 		$groups = '';
@@ -118,8 +120,8 @@ class modMyTickets extends \Hubzero\Module\Module
 			// Find support tickets on the user's contributions
 			$database->setQuery(
 				"SELECT id, summary, category, open, status, severity, owner, created, login, name,
-				 	(SELECT COUNT(*) FROM #__support_comments as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
-				 FROM #__support_tickets as st
+				 	(SELECT COUNT(*) FROM `#__support_comments` as sc WHERE sc.ticket=st.id AND sc.access=0) as comments
+				 FROM `#__support_tickets` as st
 				 WHERE st.open=1 AND type=0 AND st.group IN ('$groups')
 				 ORDER BY created DESC
 				 LIMIT $limit"
@@ -135,6 +137,6 @@ class modMyTickets extends \Hubzero\Module\Module
 		// Push the module CSS to the template
 		$this->css();
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

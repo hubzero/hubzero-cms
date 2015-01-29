@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -57,12 +57,12 @@ defined('_JEXEC') or die('Restricted access');
 					}
 					else
 					{
-						$resumeLink = JRoute::_('index.php?option=com_tools&task=session&sess='.$session->sessnum.'&app='.$appname);
+						$resumeLink = JRoute::_('index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname);
 					}
 
 					//terminate & disconnect links
-					$terminateLink = JRoute::_('index.php?option=com_tools&task=stop&sess='.$session->sessnum.'&app='.$appname);
-					$disconnectLink = JRoute::_('index.php?option=com_tools&task=unshare&sess='.$session->sessnum.'&app='.$appname);
+					$terminateLink  = JRoute::_('index.php?option=com_tools&task=stop&sess=' . $session->sessnum . '&app=' . $appname);
+					$disconnectLink = JRoute::_('index.php?option=com_tools&task=unshare&sess=' . $session->sessnum . '&app=' . $appname);
 
 					//get snapshot
 					$snapshot = DS . 'api' . DS . 'tools' . DS . 'screenshot?sessionid=' . $session->sessnum . '&notfound=1';
@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 					<div class="session-title-bar">
 						<?php if ($this->params->get('show_screenshots', 1)) : ?>
 							<?php if ($this->params->get('quick_launch', 1)) : ?>
-								<a class="session-title-quicklaunch tooltips" title="Quick Launch :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
+								<a class="session-title-quicklaunch tooltips" title="<?php echo JText::_('MOD_MYSESSIONS_QUICK_LAUNCH'); ?> :: <?php echo JText::_('MOD_MYSESSIONS_RESUME_TITLE'); ?>" href="<?php echo $resumeLink; ?>">
 									<img class="snapshot" data-src="<?php echo $snapshot; ?>" />
 								</a>
 							<?php else : ?>
@@ -101,16 +101,25 @@ defined('_JEXEC') or die('Restricted access');
 						<?php endif; ?>
 						<div class="session-details-right">
 							<div class="session-accesstime">
-								<span>Last Accessed:</span>
+								<span><?php echo JText::_('MOD_MYSESSIONS_LAST_ACCESSED'); ?></span>
 								<?php echo date("F d, Y @ g:ia", strtotime($session->accesstime)); ?>
 							</div>
 
 							<?php if ($this->juser->get('username') != $session->username) : ?>
 								<div class="session-sharing">
-									<span>Session Owner:</span>
+									<span><?php echo JText::_('MOD_MYSESSIONS_SESSION_OWNER'); ?></span>
 									<?php
-										$user = JUser::getInstance($session->username);
-										echo '<a href="/members/' . $user->get('id') . '" title="Go to ' . $user->get('name') . '\'s Profile">' . $user->get('name') . '</a>';
+										$name = $session->username;
+										$user = \Hubzero\User\Profile::getInstance($session->username);
+										if ($user)
+										{
+											$name = $user->get('name');
+											if ($user->get('public'))
+											{
+												$name = '<a href="' . JRoute::_($user->getLink()) . '">' . $name . '</a>';
+											}
+										}
+										echo $name;
 									?>
 								</div>
 							<?php endif; ?>
@@ -149,28 +158,28 @@ defined('_JEXEC') or die('Restricted access');
 			$diskUsage = ToolsHelperUtils::getDiskUsage($this->juser->get('username'));
 			if (!is_array($diskUsage) || !isset($diskUsage['space']))
 			{
-				echo "<p class=\"error\">" . JText::_('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE') . "</p></div>";
+				echo '<p class="error">' . JText::_('MOD_MYSESSIONS_ERROR_RETRIEVING_STORAGE') . '</p></div>';
 				return;
 			}
 			else if (isset($diskUsage['softspace']) && $diskUsage['softspace'] == 0)
 			{
-				echo "<p class=\"info\">" . JText::_('MOD_MYSESSIONS_NO_QUOTA') . "</p></div>";
+				echo '<p class="info">' . JText::_('MOD_MYSESSIONS_NO_QUOTA') . '</p></div>';
 				return;
 			}
 			else
 			{
 				// Calculate the percentage of spaced used
 				bcscale(6);
-				$total 		= $diskUsage['softspace'] / 1024000000;
-				$val 		= ($diskUsage['softspace'] > 0) ? bcdiv($diskUsage['space'], $diskUsage['softspace']) : 0;
-				$percent 	= round( $val * 100 );
-				$percent 	= ($percent > 100) ? 100: $percent;
+				$total   = $diskUsage['softspace'] / 1024000000;
+				$val     = ($diskUsage['softspace'] > 0) ? bcdiv($diskUsage['space'], $diskUsage['softspace']) : 0;
+				$percent = round( $val * 100 );
+				$percent = ($percent > 100) ? 100: $percent;
 
 				// Amount can only have a max of 100 due to some display restrictions
-				$amount  	= ($percent > 100) ? 100 : $percent;
+				$amount = ($percent > 100) ? 100 : $percent;
 
 				//show different colored bar
-				$cls 		= ($percent < 50) ? 'storage-low' : 'storage-high';
+				$cls = ($percent < 50) ? 'storage-low' : 'storage-high';
 			}
 		?>
 

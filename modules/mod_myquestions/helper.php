@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,27 +23,32 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Alissa Nedossekina <alisa@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyQuestions;
+
+use Hubzero\Module\Module;
+use JComponentHelper;
+use JFactory;
+use JRoute;
+use JText;
 
 /**
  * Module class for displaying a user's questions
  * Requires com_answers component
  */
-class modMyQuestions extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Format the tags
 	 *
-	 * @param      string  $string String of comma-separated tags
-	 * @param      number  $num    Number of tags to display
-	 * @param      integer $max    Max character length
-	 * @return     string HTML
+	 * @param   string   $string  String of comma-separated tags
+	 * @param   number   $num     Number of tags to display
+	 * @param   integer  $max     Max character length
+	 * @return  string   HTML
 	 */
 	private function _formatTags($string='', $num=3, $max=25)
 	{
@@ -68,7 +72,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 					// display tag
 					$normalized = preg_replace("/[^a-zA-Z0-9]/", '', $tags[$i]);
 					$normalized = strtolower($normalized);
-					$out .= "\t" . '<a href="'.JRoute::_('index.php?option=com_tags&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
+					$out .= "\t" . '<a href="' . JRoute::_('index.php?option=com_tags&tag=' . $normalized) . '">' . stripslashes($tags[$i]) . '</a> ' . "\n";
 				}
 			}
 			if ($i > $num)
@@ -84,8 +88,8 @@ class modMyQuestions extends \Hubzero\Module\Module
 	/**
 	 * Looks up a user's interests (tags)
 	 *
-	 * @param      integer $cloud Output as tagcloud (defaults to no)
-	 * @return     string  List of tags as either a tagcloud or comma-delimitated string
+	 * @param   integer  $cloud  Output as tagcloud (defaults to no)
+	 * @return  string   List of tags as either a tagcloud or comma-delimitated string
 	 */
 	private function _getInterests($cloud=0)
 	{
@@ -95,7 +99,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_members' . DS . 'models' . DS . 'tags.php');
 
 		// Get tags of interest
-		$mt = new MembersModelTags($juser->get('id'));
+		$mt = new \MembersModelTags($juser->get('id'));
 		if ($cloud)
 		{
 			$tags = $mt->render();
@@ -111,9 +115,9 @@ class modMyQuestions extends \Hubzero\Module\Module
 	/**
 	 * Retrieves a user's questions
 	 *
-	 * @param      string $kind The kind of results to retrieve
-	 * @param      array  $interests Array of tags
-	 * @return     array  Database results
+	 * @param   string  $kind       The kind of results to retrieve
+	 * @param   array   $interests  Array of tags
+	 * @return  array   Database results
 	 */
 	private function _getQuestions($kind='open', $interests=array())
 	{
@@ -127,24 +131,25 @@ class modMyQuestions extends \Hubzero\Module\Module
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_answers' . DS . 'tables' . DS . 'questionslog.php');
 		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_answers' . DS . 'helpers' . DS . 'economy.php');
 
-		$aq = new AnswersTableQuestion($database);
+		$aq = new \AnswersTableQuestion($database);
 		if ($this->banking)
 		{
-			$AE = new AnswersEconomy($database);
+			$AE = new \AnswersEconomy($database);
 			$BT = new \Hubzero\Bank\Transaction($database);
 		}
 
 		$params =& $this->params;
 		$moduleclass = $params->get('moduleclass');
-		$limit = intval($params->get('limit'));
+		$limit = intval($params->get('limit', 10));
 		$limit = ($limit) ? $limit : 10;
 
-		$filters = array();
-		$filters['limit']    = $limit;
-		$filters['start']    = 0;
-		$filters['tag']		 = '';
-		$filters['filterby'] = 'open';
-		$filters['sortby']   = 'date';
+		$filters = array(
+			'limit'    => $limit,
+			'start'    => 0,
+			'tag'      => '',
+			'filterby' => 'open',
+			'sortby'   => 'date'
+		);
 
 		switch ($kind)
 		{
@@ -157,7 +162,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 				$filters['mine'] = 0;
 				require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'author.php');
 
-				$TA = new ToolAuthor($database);
+				$TA = new \ToolAuthor($database);
 				$tools = $TA->getToolContributions($juser->get('id'));
 				if ($tools)
 				{
@@ -203,7 +208,7 @@ class modMyQuestions extends \Hubzero\Module\Module
 
 		foreach ($results as $k => $result)
 		{
-			$results[$k] = new AnswersModelQuestion($result);
+			$results[$k] = new \AnswersModelQuestion($result);
 		}
 
 		return $results;
@@ -212,14 +217,13 @@ class modMyQuestions extends \Hubzero\Module\Module
 	/**
 	 * Queries the database for user's questions and preps any data for display
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function display()
 	{
 		$upconfig = JComponentHelper::getParams('com_members');
 		$this->banking = $upconfig->get('bankAccounts');
 
-		//$juser = JFactory::getUser();
 		// Push the module CSS to the template
 		$this->css();
 
@@ -278,11 +282,11 @@ class modMyQuestions extends \Hubzero\Module\Module
 		$totalq = $opencount + $assignedcount + $othercount;
 		$limit_mine = $max;
 		$breaker = $max/$c;
-		$this->limit_mine = ($totalq - $opencount) >= $breaker * ($c-1) ? $breaker : $max - ($totalq - $opencount);
+		$this->limit_mine     = ($totalq - $opencount) >= $breaker * ($c-1)     ? $breaker : $max - ($totalq - $opencount);
 		$this->limit_assigned = ($totalq - $assignedcount) >= $breaker * ($c-1) ? $breaker : $max - ($totalq - $assignedcount);
-		$this->limit_interest = ($totalq - $othercount) >= $breaker * ($c-1) ? $breaker : $max - ($totalq - $othercount);
+		$this->limit_interest = ($totalq - $othercount) >= $breaker * ($c-1)    ? $breaker : $max - ($totalq - $othercount);
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }
 

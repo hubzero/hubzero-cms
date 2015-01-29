@@ -2,8 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
- * All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -25,23 +24,33 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Modules\MyTools;
+
+use Hubzero\Module\Module;
+use ToolsModelVersion;
+use ToolsModelTool;
+use RecentTool;
+use ResourcesTags;
+use JRequest;
+use JFactory;
+use JComponentHelper;
+use JText;
+use JRoute;
 
 /**
  * Module class for displaying a user's recently used/favorite tools
  */
-class modToolList extends \Hubzero\Module\Module
+class Helper extends Module
 {
 	/**
 	 * Get a list of applications that the user might invoke.
 	 *
-	 * @param      array $lst Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   array  $lst  Parameter description (if any) ...
+	 * @return  array  List of tools
 	 */
 	private function _getToollist($lst=NULL)
 	{
@@ -69,13 +78,7 @@ class modToolList extends \Hubzero\Module\Module
 						$rev = (is_array($bits) && count($bits > 1)) ? array_pop($bits) : '';
 						$item = trim(implode('_r', $bits));
 					}
-					/*$thistool = ToolsModelVersion::getVersionInfo('', 'current', $item, '');
 
-					if (is_array($thistool) && isset($thistool[0]))
-					{
-						$t = $thistool[0];
-						$tools[] = $t;
-					}*/
 					$items[] = $item;
 				}
 				$tools = ToolsModelVersion::getVersionInfo('', 'current', $items, '');
@@ -99,7 +102,7 @@ class modToolList extends \Hubzero\Module\Module
 			if (!in_array(strtolower($tool->toolname), $toolnames))
 			{
 				// include only one version
-				$toollist[strtolower($tool->instance)] = new MwModApp(
+				$toollist[strtolower($tool->instance)] = new App(
 					$tool->instance,
 					$tool->title,
 					$tool->description,
@@ -119,8 +122,8 @@ class modToolList extends \Hubzero\Module\Module
 	/**
 	 * Convert quote marks
 	 *
-	 * @param      string $txt Text to convert quotes in
-	 * @return     string
+	 * @param   string  $txt  Text to convert quotes in
+	 * @return  string
 	 */
 	private function _prepText($txt)
 	{
@@ -132,9 +135,9 @@ class modToolList extends \Hubzero\Module\Module
 	/**
 	 * Build the HTML for a list of tools
 	 *
-	 * @param      array  &$toollist List of tools to format
-	 * @param      string $type      Type of list being formatted
-	 * @return     string HTML
+	 * @param   array   &$toollist  List of tools to format
+	 * @param   string  $type       Type of list being formatted
+	 * @return  string  HTML
 	 */
 	public function buildList($toollist, $type='all')
 	{
@@ -186,12 +189,12 @@ class modToolList extends \Hubzero\Module\Module
 					}
 					else
 					{
-						$url = JRoute::_('index.php?option=com_tools&controller=sessions&task=invoke&app='.$tool->toolname.'&version='.$tool->revision);
+						$url = JRoute::_('index.php?option=com_tools&controller=sessions&task=invoke&app=' . $tool->toolname . '&version=' . $tool->revision);
 					}
 
 					$cls = '';
 					// Build the HTML
-					$html .= "\t\t" . ' <li id="'.$tool->name.'"';
+					$html .= "\t\t" . ' <li id="' . $tool->name . '"';
 					// If we're in the 'all tools' pane ...
 					if ($type == 'all')
 					{
@@ -208,16 +211,16 @@ class modToolList extends \Hubzero\Module\Module
 							$cls .= ($cls) ? ' supported' : 'supported';
 						}
 					}
-					$html .= ($cls) ? ' class="'.$cls.'"' : '';
+					$html .= ($cls) ? ' class="' . $cls . '"' : '';
 					$html .= '>' . "\n";
 
 					// Tool info link
-					$html .= "\t\t\t" . ' <a href="'.JRoute::_('index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname).'" class="tooltips" title="'.$tool->caption.' :: '.$tool->desc.'">'.$tool->caption.'</a>' . "\n";
+					$html .= "\t\t\t" . ' <a href="' . JRoute::_('index.php?option=com_tools&controller=pipeline&app=' . $tool->toolname) . '" class="tooltips" title="' . $tool->caption . ' :: ' . $tool->desc . '">' . $tool->caption . '</a>' . "\n";
 
 					// Only add the "favorites" button to the all tools list
 					if ($type == 'all')
 					{
-						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="'.JText::sprintf('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption).'">'.$tool->caption.'</a>' . "\n";
+						$html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="' . JText::sprintf('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption) . '">' . $tool->caption . '</a>' . "\n";
 					}
 
 					// Launch tool link
@@ -225,7 +228,7 @@ class modToolList extends \Hubzero\Module\Module
 					{
 
 
-						$html .= "\t\t\t" . ' <a href="'.$url.'" class="launchtool" title="'.JText::sprintf('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption).'">'.JText::sprintf('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption).'</a>' . "\n";
+						$html .= "\t\t\t" . ' <a href="' . $url . '" class="launchtool" title="' . JText::sprintf('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '">' . JText::sprintf('MOD_MYTOOLS_LAUNCH_TOOL', $tool->caption) . '</a>' . "\n";
 					}
 					$html .= "\t\t" . ' </li>' . "\n";
 				}
@@ -335,6 +338,6 @@ class modToolList extends \Hubzero\Module\Module
 			$this->alltools = $this->_getToollist();
 		}
 
-		require(JModuleHelper::getLayoutPath($this->module->module));
+		require $this->getLayoutPath();
 	}
 }

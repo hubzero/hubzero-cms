@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           modules/mod_myresources/mod_myresources.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,34 +28,31 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension version="1.5.0" client="site" type="module">
-	<name>My Resources</name>
+	<name>mod_myresources</name>
 	<author>HUBzero</author>
 	<creationDate>January 2011</creationDate>
-	<copyright>(C) 2011 HUBzero</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<version>1</version>
-	<description>This module will display a list of publications (resources, wiki pages, etc.)</description>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<version>1.2.0</version>
+	<description>MOD_MYRESOURCES_XML_DESCRIPTION</description>
 	<files>
 		<filename module="mod_myresources">mod_myresources.php</filename>
 		<filename>index.html</filename>
+		<filename>helper.php</filename>
 		<filename>tmpl/index.html</filename>
 		<filename>tmpl/default.php</filename>
+		<filename>assets/css/mod_myresources.css</filename>
 	</files>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />
-				<field name="limit" type="text" default="5" label="# to display" description="The number of items to display."  member_dashboard="1" />
-				<field name="sort" type="list" default="publish_up" label="Sort" description="The default sort for items."  member_dashboard="1">
-					<option value="publish_up">Published</option>
-					<option value="title">Title</option>
-					<option value="usage">Usage</option>
-				</field>
-			</fieldset>
-			<fieldset name="advanced">
-				<field name="cache" type="radio" default="0" label="Enable Cache" description="Select whether to cache the content of this module">
-					<option value="0">No</option>
-					<option value="1">Yes</option>
+				<field name="moduleclass_sfx" type="text" default="" label="MOD_MYRESOURCES_PARAM_CLASS_LABEL" description="MOD_MYRESOURCES_PARAM_CLASS_DESC" />
+				<field name="limit" type="text" default="5" label="MOD_MYRESOURCES_PARAM_LIMIT_LABEL" description="MOD_MYRESOURCES_PARAM_LIMIT_DESC"  member_dashboard="1" />
+				<field name="sort" type="list" default="publish_up" label="MOD_MYRESOURCES_PARAM_SORT_LABEL" description="MOD_MYRESOURCES_PARAM_SORT_DESC"  member_dashboard="1">
+					<option value="publish_up">MOD_MYRESOURCES_PARAM_SORT_PUBLISHUP</option>
+					<option value="title">MOD_MYRESOURCES_PARAM_SORT_TITLE</option>
+					<option value="usage">MOD_MYRESOURCES_PARAM_SORT_USAGE</option>
 				</field>
 			</fieldset>
 		</fields>
