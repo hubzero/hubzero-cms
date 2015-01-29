@@ -81,12 +81,12 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 					array(
 						'column' => 'date',
 						'o'      => '>=',
-						'value'  => $view->start
+						'value'  => JFactory::getDate($view->start . ' 00:00:00', JFactory::getConfig()->get('offset'))->toSql()
 					),
 					array(
 						'column' => 'date',
 						'o'      => '<=',
-						'value'  => $view->end
+						'value'  => JFactory::getDate($view->end . ' 23:59:59', JFactory::getConfig()->get('offset'))->toSql()
 					),
 					array(
 						'column' => 'h.id',
@@ -170,8 +170,8 @@ class plgTimeSummary extends \Hubzero\Plugin\Plugin
 				'orderdir'   => 'ASC',
 				'hub_id'     => $hub_id,
 				'task_id'    => $task_id,
-				'start_date' => $start,
-				'end_date'   => $end
+				'start_date' => JFactory::getDate($start . ' 00:00:00', JFactory::getConfig()->get('offset'))->toSql(),
+				'end_date'   => JFactory::getDate($end   . ' 23:59:59', JFactory::getConfig()->get('offset'))->toSql()
 			)
 		);
 
