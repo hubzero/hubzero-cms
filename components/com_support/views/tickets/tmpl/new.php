@@ -64,6 +64,8 @@ $oses = array(
 	'Linux' => 'Linux',
 	'Unix' => 'Unix',
 	'Google Chrome OS' => 'Google Chrome OS',
+	'Android' => 'Android',
+	'iOS' => 'iOS',
 	'Other' => 'Other'
 );
 
