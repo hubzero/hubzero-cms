@@ -292,7 +292,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 					->addHeader('X-Component-Object', 'abuse_item_report');
 
 			// Plain text email
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
 				'layout' => 'abuse_plain'
 			));
@@ -302,7 +302,7 @@ class SupportControllerAbuse extends \Hubzero\Component\SiteController
 			$eview->reported   = $reported;
 			$eview->author     = null;
 
-			$plain = $eview->loadTemplate();
+			$plain = $eview->loadTemplate(false);
 			$plain = str_replace("\n", "\r\n", $plain);
 
 			$message->addPart($plain, 'text/plain');

@@ -229,7 +229,7 @@ $tblColor = '#ffffff';
 		</style>
 		<![endif]-->
 
-		<jdoc:include type="head" />
+		<jdoc:include type="head" name="email" />
 	</head>
 	<body bgcolor="<?php echo $bgColor; ?>">
 		<!-- Start Body Wrapper Table -->

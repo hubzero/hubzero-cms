@@ -50,7 +50,17 @@ class Template extends \JDocumentHTML
 	{
 		if (!isset($params['template']))
 		{
-			$params['template'] = \JFactory::getApplication()->getTemplate();
+			if (\JFactory::getApplication()->isAdmin())
+			{
+				$db = \JFactory::getDBO();
+				$db->setQuery("SELECT template FROM `#__template_styles` WHERE client_id=0 AND home=1");
+				$params['template'] = $db->loadResult();
+				$params['directory'] = JPATH_SITE . DS . 'templates';
+			}
+			else
+			{
+				$params['template'] = \JFactory::getApplication()->getTemplate();
+			}
 		}
 		if (!isset($params['file']))
 		{
@@ -69,7 +79,7 @@ class Template extends \JDocumentHTML
 			$data = $this->_renderTemplate();
 		}
 
-		if (class_exists('\Pelago\Emogrifier'))
+		if (class_exists('\Pelago\Emogrifier') && $data)
 		{
 			$emogrifier = new \Pelago\Emogrifier();
 			$emogrifier->setHtml($data);

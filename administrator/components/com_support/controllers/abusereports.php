@@ -355,7 +355,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			$subject = JText::sprintf('COM_SUPPORT_REPORT_ABUSE_EMAIL_SUBJECT', $jconfig->getValue('config.sitename'));
 
 			// Plain text
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails',
 				'layout'    => 'abuse_plain'
@@ -366,7 +366,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 			$eview->report     = $report;
 			$eview->author     = $juser;
 
-			$plain = $eview->loadTemplate();
+			$plain = $eview->loadTemplate(false);
 			$plain = str_replace("\n", "\r\n", $plain);
 
 			// HTML

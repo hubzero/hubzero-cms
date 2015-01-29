@@ -1146,7 +1146,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			);
 
 			// Plain text email
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'name'   => 'emails',
 				'layout' => 'ticket_plain'
 			));
@@ -1155,7 +1155,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			$eview->ticket     = $row;
 			$eview->delimiter  = '';
 
-			$plain = $eview->loadTemplate();
+			$plain = $eview->loadTemplate(false);
 			$plain = str_replace("\n", "\r\n", $plain);
 
 			$message->addPart($plain, 'text/plain');
@@ -1274,7 +1274,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$message = array();
 
 				// Plain text email
-				$eview = new \Hubzero\Component\View(array(
+				$eview = new \Hubzero\Mail\View(array(
 					'name'   => 'emails',
 					'layout' => 'comment_plain'
 				));
@@ -1284,7 +1284,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$eview->ticket     = $row;
 				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
-				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = $eview->loadTemplate(false);
 				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email
@@ -1858,7 +1858,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$message = array();
 
 				// Plain text email
-				$eview = new \Hubzero\Component\View(array(
+				$eview = new \Hubzero\Mail\View(array(
 					'name'   => 'emails',
 					'layout' => 'comment_plain'
 				));
@@ -1868,7 +1868,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$eview->ticket     = $row;
 				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
-				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = $eview->loadTemplate(false);
 				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email

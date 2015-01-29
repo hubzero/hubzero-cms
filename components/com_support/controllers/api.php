@@ -809,7 +809,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 			$message = array();
 
 			// Plain text email
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'base_path' => JPATH_ROOT . '/components/com_support',
 				'name'      => 'emails',
 				'layout'    => 'comment_plain'
@@ -820,7 +820,7 @@ class SupportControllerApi extends \Hubzero\Component\ApiController
 			$eview->ticket     = $ticket;
 			$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
-			$message['plaintext'] = $eview->loadTemplate();
+			$message['plaintext'] = $eview->loadTemplate(false);
 			$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 			// HTML email

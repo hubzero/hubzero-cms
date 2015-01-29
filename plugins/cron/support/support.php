@@ -432,7 +432,7 @@ class plgCronSupport extends JPlugin
 			}
 
 			// Plain text
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails',
 				'layout'    => 'tickets_plain'
@@ -443,7 +443,7 @@ class plgCronSupport extends JPlugin
 			$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
 			$eview->tickets    = $usertickets;
 
-			$plain = $eview->loadTemplate();
+			$plain = $eview->loadTemplate(false);
 			$plain = str_replace("\n", "\r\n", $plain);
 
 			// HTML
@@ -840,7 +840,7 @@ class plgCronSupport extends JPlugin
 				continue;
 			}
 
-			$eview = new \Hubzero\Component\View(array(
+			$eview = new \Hubzero\Mail\View(array(
 				'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
 				'name'      => 'emails',
 				'layout'    => 'ticketlist_plain'
@@ -851,7 +851,7 @@ class plgCronSupport extends JPlugin
 			$eview->boundary   = $from['multipart'];
 			$eview->tickets    = $results;
 
-			$plain = $eview->loadTemplate();
+			$plain = $eview->loadTemplate(false);
 			$plain = str_replace("\n", "\r\n", $plain);
 
 			// HTML

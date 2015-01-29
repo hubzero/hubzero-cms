@@ -601,7 +601,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				);
 
 				// Plain text email
-				$eview = new \Hubzero\Component\View(array(
+				$eview = new \Hubzero\Mail\View(array(
 					'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
 					'name'      => 'emails',
 					'layout'    => 'ticket_plain'
@@ -611,7 +611,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				$eview->ticket     = $row;
 				$eview->delimiter  = '';
 
-				$plain = $eview->loadTemplate();
+				$plain = $eview->loadTemplate(false);
 				$plain = str_replace("\n", "\r\n", $plain);
 
 				$msg->addPart($plain, 'text/plain');
@@ -767,7 +767,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				);
 
 				// Plain text email
-				$eview = new \Hubzero\Component\View(array(
+				$eview = new \Hubzero\Mail\View(array(
 					'base_path' => JPATH_ROOT . DS . 'components' . DS . $this->_option,
 					'name'      => 'emails',
 					'layout'    => 'comment_plain'
@@ -778,7 +778,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				$eview->ticket     = $row;
 				$eview->delimiter  = ($allowEmailResponses ? '~!~!~!~!~!~!~!~!~!~!' : '');
 
-				$message['plaintext'] = $eview->loadTemplate();
+				$message['plaintext'] = $eview->loadTemplate(false);
 				$message['plaintext'] = str_replace("\n", "\r\n", $message['plaintext']);
 
 				// HTML email
@@ -890,12 +890,11 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($filters ? '&' . $filters : ''),
 				JText::sprintf('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $row->get('id'))
 			);
+			return;
 		}
-		else
-		{
-			$this->view->setLayout('edit');
-			$this->editTask();
-		}
+
+		$this->view->setLayout('edit');
+		$this->editTask();
 	}
 
 	/**
