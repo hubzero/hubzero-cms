@@ -38,7 +38,7 @@ use JFactory;
 /**
  * Module class for displaying point total and recent transactions
  */
-class Helper extends Module;
+class Helper extends Module
 {
 	/**
 	 * Display module content
