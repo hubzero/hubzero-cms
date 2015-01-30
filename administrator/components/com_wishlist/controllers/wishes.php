@@ -534,7 +534,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 	 *
 	 * @return     void
 	 */
-	public function publishTask()
+	public function grantTask()
 	{
 		$this->stateTask(1);
 	}
@@ -544,7 +544,7 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 	 *
 	 * @return     void
 	 */
-	public function unpublishTask()
+	public function pendingTask()
 	{
 		$this->stateTask(0);
 	}
@@ -591,13 +591,13 @@ class WishlistControllerWishes extends \Hubzero\Component\AdminController
 		switch ($state)
 		{
 			case '-1':
-				$message = JText::sprintf('COM_WISHLIST_ARCHIVED', count($ids));
+				$message = JText::sprintf('COM_WISHLIST_TRASHED', count($ids));
 			break;
 			case '1':
-				$message = JText::sprintf('COM_WISHLIST_PUBLISHED', count($ids));
+				$message = JText::sprintf('COM_WISHLIST_ITEMS_GRANTED', count($ids));
 			break;
 			case '0':
-				$message = JText::sprintf('COM_WISHLIST_UNPUBLISHED', count($ids));
+				$message = JText::sprintf('COM_WISHLIST_ITEMS_PENDING', count($ids));
 			break;
 		}
 

@@ -1,0 +1,22 @@
+/* Status */
+	.state.pending:before {
+		content: "\f078";
+		color: #ccc;
+	}
+	.state.withdrawn:before {
+		content: "\2298";
+		color: #ccc;
+	}
+	.state.granted:before {
+		content: "\2714";
+	}
+	.state.rejected:before {
+		content: "\2716";
+	}
+	.state.accepted:before {
+		content: "\f078";
+		color: orange;
+	}
+	.state.flagged:before {
+		content: "\2691";
+	}
