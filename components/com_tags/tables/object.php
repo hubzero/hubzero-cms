@@ -482,7 +482,7 @@ class TagsTableObject extends JTable
 	 */
 	public function find($filters=array())
 	{
-		$query = "SELECT * " . $this->_buildQuery($filters);
+		$query = "SELECT *, o.id AS taggedid " . $this->_buildQuery($filters);
 
 		if (!isset($filters['sort']) || $filters['sort'] == '')
 		{
@@ -509,6 +509,36 @@ class TagsTableObject extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get a list of object types for a specified tag
+	 *
+	 * @param   integer  $tagid    Tag ID
+	 * @param   array    $filters  Filters to determien hwo to build query
+	 * @return  array
+	 */
+	public function getTblsForTag($tagid, $filters=array())
+	{
+		if ($tagid)
+		{
+			$filters['tagid'] = $tagid;
+		}
+
+		$query  = "SELECT DISTINCT o.tbl " . $this->_buildQuery($filters);
+		$query .= " ORDER BY tbl ASC";
+
+		if (isset($filters['limit']) && $filters['limit'] != 0  && $filters['limit'] != 'all')
+		{
+			if (!isset($filters['start']))
+			{
+				$filters['start'] = 0;
+			}
+			$query .= " LIMIT " . $filters['start'] . "," . $filters['limit'];
+		}
+
+		$this->_db->setQuery($query);
+		return $this->_db->loadResultArray();
 	}
 }
 

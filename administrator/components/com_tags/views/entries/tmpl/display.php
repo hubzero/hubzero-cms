@@ -158,7 +158,9 @@ foreach ($this->rows as $row)
 					</span>
 				</td>
 				<td>
-					<?php echo $row->get('total'); ?>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tagged&tag=' . $row->get('id')); ?>">
+						<?php echo $row->get('total'); ?>
+					</a>
 				</td>
 				<td>
 					<?php echo $row->get('substitutes'); ?>
