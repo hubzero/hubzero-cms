@@ -42,8 +42,6 @@ HUBzero is a registered trademark of Purdue University.
 		<filename>assets/css/mod_collect.css</filename>
 		<filename>assets/js/mod_collect.js</filename>
 	</files>
-	<config>
-	</config>
 	<languages>
 		<language tag="en-GB">en-GB.mod_collect.ini</language>
 	</languages>
