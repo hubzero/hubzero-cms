@@ -44,7 +44,7 @@ if ($canDo->get('core.edit'))
 }
 JToolBarHelper::cancel();
 JToolBarHelper::spacer();
-JToolBarHelper::help('edit');
+JToolBarHelper::help('edittagged');
 
 JHTML::_('behavior.framework');
 ?>
