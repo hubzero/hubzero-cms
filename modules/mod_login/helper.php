@@ -35,6 +35,7 @@ use JPluginHelper;
 use JFactory;
 use JRegistry;
 use JURI;
+use JRequest;
 
 /**
  * Module class for displaying a login form
