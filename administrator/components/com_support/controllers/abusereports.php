@@ -41,35 +41,35 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a list of records
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get configuration
 		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				JFactory::getConfig()->get('list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'state' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				0,
+				'int'
+			),
+			'sortby' => JRequest::getVar('sortby', 'a.created DESC')
 		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['state']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.state',
-			'state',
-			0,
-			'int'
-		);
-		$this->view->filters['sortby'] = JRequest::getVar('sortby', 'a.created DESC');
 
 		$model = new ReportAbuse($this->database);
 
@@ -253,11 +253,22 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Mark record as spam
+	 *
+	 * @return  void
+	 */
+	public function spamTask()
+	{
+		$this->removeTask(true);
+	}
+
+	/**
 	 * Delete a record
 	 *
-	 * @return	void
+	 * @param   boolean  $isSpam
+	 * @return  void
 	 */
-	public function removeTask()
+	public function removeTask($isSpam=false)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -328,6 +339,15 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 					$message .= $result;
 				}
 			}
+		}
+
+		if ($isSpam)
+		{
+			JPluginHelper::importPlugin('antispam');
+			$results = $dispatcher->trigger('onAntispamTrain', array(
+				$reported->text,
+				$isSpam
+			));
 		}
 
 		// Mark abuse report as deleted
@@ -417,7 +437,7 @@ class SupportControllerAbusereports extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JTexT::_('COM_SUPPORT_ITEM_TAKEN_DOWN')
+			JTexT::_('COM_SUPPORT_REPORT_ITEM_TAKEN_DOWN')
 		);
 	}
 
