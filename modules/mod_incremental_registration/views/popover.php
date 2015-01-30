@@ -320,9 +320,11 @@ $defaultCountries = array(
 					<select id="org" name="org">
 						<option value="">(select from list or enter other)</option>
 						<?php
-						$dbh->setQuery('SELECT organization FROM #__xorganizations ORDER BY organization');
+						$dbh->setQuery('SELECT organization FROM `#__xorganizations` ORDER BY organization');
 						foreach ($dbh->loadAssocList() as $org)
+						{
 							echo '<option value="'.$org['organization'].'"'.(isset($_POST['org']) && $_POST['org'] === $org['organization'] ? ' selected="selected"' : '').'>'.$org['organization'].'</option>';
+						}
 						?>
 					</select>
 					<br />

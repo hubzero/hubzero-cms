@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,12 +33,16 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="overlay"></div>
 <div id="questions">
-	<p>Thank you!
-	<?php if ($award): ?>
-		You have been awarded <strong><?php echo $award; ?></strong> for your participation.
-	<?php endif; ?>
-	 You will be directed back where you were in a few seconds.</p>
-	<a href="<?php echo JRequest::getVar('REQUEST_URI', JRequest::getVar('REDIRECT_REQUEST_URI', '', 'server'), 'server'); ?>">Click here if you are not redirected</a>
+	<p>
+		<?php echo JText::_('MOD_INCREMENTAL_REGISTRATION_THANK_YOU'); ?>
+		<?php if ($award): ?>
+			<?php echo JText::sprintf('MOD_INCREMENTAL_REGISTRATION_AWARDS_EARNED', $award); ?>
+		<?php endif; ?>
+		<?php echo JText::_('MOD_INCREMENTAL_REGISTRATION_REDIRECTED_SOON'); ?>
+	</p>
+
+	<a href="<?php echo JRequest::getVar('REQUEST_URI', JRequest::getVar('REDIRECT_REQUEST_URI', '', 'server'), 'server'); ?>"><?php echo JText::_('MOD_INCREMENTAL_REGISTRATION_CLICK_IF_NOT_REDIRECTED'); ?></a>
+
 	<script type="text/javascript">
 		setTimeout(function() {
 			var divs = ['overlay', 'questions'];
@@ -48,5 +52,4 @@ defined('_JEXEC') or die('Restricted access');
 			}
 		}, 4000);
 	</script>
-</div>
 </div>

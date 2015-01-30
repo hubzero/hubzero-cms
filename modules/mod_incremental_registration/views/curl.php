@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Steve Snyder
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -33,6 +33,6 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="curl">
 	<a href="<?php echo JRoute::_('index.php?option=com_members&id=' . $uid . '&active=profile'); ?>" class="whole">
-		<img id="curl-img" data-img-small="<?php echo $media->get('/images/smallcurl.png'); ?>" data-img-big="<?php echo $media->get('/images/bigcurl.png'); ?>" src="<?php echo $media->get('/images/smallcurl.png'); ?>" class="small" title="Get rewards for completing your profile" />
+		<img id="curl-img" data-img-small="<?php echo $this->media('/img/smallcurl.png'); ?>" data-img-big="<?php echo $this->media('/img/bigcurl.png'); ?>" src="<?php echo $this->media('/img/smallcurl.png'); ?>" class="small" title="<?php echo JText::_('MOD_INCREMENTAL_REGISTRATION_EARN_AWARDS'); ?>" />
 	</a>
 </div>
