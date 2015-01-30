@@ -46,8 +46,8 @@ defined('_JEXEC') or die('Restricted access');
 				//$when = JHTML::_('date.relative', $row->proposed);
 				?>
 				<li class="todos">
-					<a href="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $row->alias . '&active=todo/view/?todoid=' . $row->id); ?>"><?php echo $this->escape($row->content); ?></a><br />
-					<?php echo JText::_('MOD_MYTODOS_PROJECT'); ?>: <a href="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $row->alias . '&active=todo'); ?>"><?php echo $this->escape($row->title); ?></a>
+					<a href="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $row->alias . '&active=todo/view/?todoid=' . $row->id); ?>"><?php echo $this->escape(stripslashes($row->content)); ?></a><br />
+					<?php echo JText::_('MOD_MYTODOS_PROJECT'); ?>: <a href="<?php echo JRoute::_('index.php?option=com_projects&alias=' . $row->alias . '&active=todo'); ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a>
 					<span></span>
 				</li>
 				<?php
