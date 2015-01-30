@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_collections/config.xml
+@file           administrator/components/com_poll/config.xml
 @copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -28,11 +28,7 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<fieldset name="component">
-		<field name="filepath" type="text" menu="hide" default="/site/collections" label="COM_COLLECTIONS_CONFIG_FILEPATH_LABEL" description="COM_COLLECTIONS_CONFIG_FILEPATH_DESC" />
-		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_COLLECTIONS_CONFIG_FILESIZE_LABEL" description="COM_COLLECTIONS_CONFIG_FILESIZE_DESC" />
-	</fieldset>
 	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
-		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_collections" section="component" />
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_poll" section="component" />
 	</fieldset>
 </config>

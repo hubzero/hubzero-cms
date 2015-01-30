@@ -120,4 +120,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="super_gitlab_url" type="text" default="" label="COM_GROUPS_SUPER_REPO_URL" description="COM_GROUPS_SUPER_REPO_URL_DESC" />
 		<field name="super_gitlab_key" type="text" default="" label="COM_GROUPS_SUPER_REPO_KEY" description="COM_GROUPS_SUPER_REPO_KEY_DESC" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_groups" section="component" />
+	</fieldset>
 </config>

@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_support/config.xml
+@file           administrator/components/com_cron/config.xml
 @copyright      Copyright 2005-2011 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -29,6 +29,9 @@ HUBzero is a registered trademark of Purdue University.
 
 <config>
 	<fieldset name="basic">
-		<field name="whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" label="COM_CRON_CONFIG_WHITELIST_LABEL" description="A comma-separated list of white-listed IP addresses" />
+		<field name="whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" label="COM_CRON_CONFIG_WHITELIST_LABEL" description="COM_CRON_CONFIG_WHITELIST_DESC" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_cron" section="component" />
 	</fieldset>
 </config>

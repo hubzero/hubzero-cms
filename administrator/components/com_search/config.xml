@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           administrator/components/com_search/config.xml
-@copyright      Copyright 2005-2014 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2014 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -42,5 +42,11 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">JYES</option>
 		</field>
 		<field name="hubgraph_enabledOptions" type="text" menu="hide" default="" label="COM_SEARCH_PARAM_HUBGRAPH_ENABLEDOPTIONS_LABEL" description="COM_SEARCH_PARAM_HUBGRAPH_ENABLEDOPTIONS_DESC" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_search" section="component">
+			<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+			<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		</field>
 	</fieldset>
 </config>

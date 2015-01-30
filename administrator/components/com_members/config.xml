@@ -122,4 +122,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="registrationAddress"          type="text" menu="hide" default="--OO" label="Address" description="" />
 		<field name="registrationORCID"            type="text" menu="hide" default="HHHH" label="ORCID" description="" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_members" section="component" />
+	</fieldset>
 </config>

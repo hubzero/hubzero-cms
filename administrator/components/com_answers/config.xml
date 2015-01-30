@@ -32,4 +32,7 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="infolink" type="text" menu="hide" default="/kb/points" label="COM_ANSWERS_CONFIG_POINTS_LABEL" description="COM_ANSWERS_CONFIG_POINTS_DESC" />
 		<field name="notify_users" label="COM_ANSWERS_CONFIG_NOTIFY_LABEL" type="textarea" rows="8" cols="40" default="" description="COM_ANSWERS_CONFIG_NOTIFY_DESC" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_answers" section="component" />
+	</fieldset>
 </config>

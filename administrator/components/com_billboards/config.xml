@@ -31,4 +31,7 @@ HUBzero is a registered trademark of Purdue University.
 	<fieldset name="basic">
 		<field name="image_location" type="text" size="50" menu="hide" default="/site/media/images/billboards/" label="COM_BILLBOARDS_CONFIG_IMG_LOCATION_LABEL" description="COM_BILLBOARDS_CONFIG_IMG_LOCATION_DESC" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_billboards" section="component" />
+	</fieldset>
 </config>

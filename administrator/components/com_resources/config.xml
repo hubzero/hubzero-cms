@@ -127,5 +127,8 @@ HUBzero is a registered trademark of Purdue University.
 	<fieldset name="import">
 		<field name="import_uploadpath" type="text" menu="hide" default="/site/resources/import" label="COM_RESOURCES_IMPORT_PATH_LABEL" description="COM_RESOURCES_IMPORT_PATH_DESC" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_resources" section="component" />
+	</fieldset>
 </config>
 

@@ -25,7 +25,6 @@
 			<option value="1">JYES</option>
 		</field>
 		<field type="spacer" />
-
 		<field name="citation_label" type="list" default="number" label="COM_CITATIONS_CONFIG_LABEL_LABEL" description="COM_CITATIONS_CONFIG_LABEL_DESC">
 			<option value="number">COM_CITATIONS_CONFIG_LABEL_NUMBER</option>
 			<option value="type">COM_CITATIONS_CONFIG_LABEL_TYPE</option>
@@ -40,67 +39,30 @@
 			<option value="no">JNO</option>
 			<option value="yes">JYES</option>
 		</field>
-
 		<field type="spacer" />
-
-		<field name="citation_import" type="list" default="1" label="COM_CITATIONS_CONFIG_SINGLE_UPLOAD_LABEL" description="COM_CITATIONS_CONFIG_SINGLE_UPLOAD_DESC">
-			<option value="0">COM_CITATIONS_CONFIG_UPLOAD_NOT_ALLOWED</option>
-			<option value="1">COM_CITATIONS_CONFIG_UPLOAD_ALL_USERS</option>
-			<option value="2">COM_CITATIONS_CONFIG_UPLOAD_ADMINS_ONLY</option>
-		</field>
-
-		<field name="citation_bulk_import" type="list" default="1" label="COM_CITATIONS_CONFIG_BULK_UPLOAD_LABEL" description="COM_CITATIONS_CONFIG_BULK_UPLOAD_DESC">
-			<option value="0">COM_CITATIONS_CONFIG_UPLOAD_NOT_ALLOWED</option>
-			<option value="1">COM_CITATIONS_CONFIG_UPLOAD_ALL_USERS</option>
-			<option value="2">COM_CITATIONS_CONFIG_UPLOAD_ADMINS_ONLY</option>
-		</field>
-
-		<field type="spacer" />
-
-		<field name="citation_download" type="list" default="1" label="COM_CITATIONS_CONFIG_SINGLE_EXPORT_LABEL" description="COM_CITATIONS_CONFIG_SINGLE_EXPORT_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-
-		<field name="citation_batch_download" type="list" default="1" label="COM_CITATIONS_CONFIG_BULK_EXPORT_LABEL" description="COM_CITATIONS_CONFIG_BULK_EXPORT_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="citation_download_exclude" type="textarea" rows="5" cols="50" default="" label="COM_CITATIONS_CONFIG_EXCLUDE_EXPORT_LABEL" description="COM_CITATIONS_CONFIG_EXCLUDE_EXPORT_DESC" />
-
-		<field type="spacer" />
-
 		<field name="citation_coins" type="list" default="1" label="COM_CITATIONS_CONFIG_COINS_LABEL" description="COM_CITATIONS_CONFIG_COINS_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
 		<field name="citation_openurl" type="list" default="1" label="COM_CITATIONS_CONFIG_OPENURL_LABEL" description="COM_CITATIONS_CONFIG_OPENURL_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<!--<field name="citation_openurl_ip" type="text" default="10.x.x.x" label="Open URL Lookup IP" description="Uses HUB's IP to lookup Resolver when users ip matches these formats" />-->
-
 		<field type="spacer" />
-
 		<field name="citation_url" type="list" default="url" label="COM_CITATIONS_CONFIG_LINK_TYPE_LABEL" description="COM_CITATIONS_CONFIG_LINK_TYPE_DESC">
 			<option value="url">COM_CITATIONS_CONFIG_LINK_TYPE_URL</option>
 			<option value="custom">COM_CITATIONS_CONFIG_LINK_TYPE_CUSTOM_URL</option>
 		</field>
-
 		<field name="citation_custom_url" type="text" default="" label="COM_CITATIONS_CONFIG_LINK_URL_LABEL" description="COM_CITATIONS_CONFIG_LINK_URL_DESC" size="80" />
-
 		<field type="spacer" />
-
 		<field name="citation_cited" type="list" default="0" label="COM_CITATIONS_CONFIG_CITED_LABEL" description="COM_CITATIONS_CONFIG_CITED_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="citation_cited_single" type="text" default="" label="COM_CITATIONS_CONFIG_SINGLE_CITED_LABEL" description="COM_CITATIONS_CONFIG_SINGLE_CITED_DESC" size="80" />
 		<field name="citation_cited_multiple" type="text" default="" label="COM_CITATIONS_CONFIG_MULTIPLE_CITED_LABEL" description="COM_CITATIONS_CONFIG_MULTIPLE_CITED_DESC" size="80" />
-
 		<field type="spacer" />
-
 		<field name="citation_show_tags" type="list" default="no" label="COM_CITATIONS_CONFIG_SHOW_TAGS_LABEL" description="COM_CITATIONS_CONFIG_SHOW_TAGS_DESC">
 			<option value="no">JNO</option>
 			<option value="yes">JYES</option>
@@ -109,7 +71,6 @@
 			<option value="no">JNO</option>
 			<option value="yes">JYES</option>
 		</field>
-
 		<field name="citation_show_badges" type="list" default="no" label="COM_CITATIONS_CONFIG_SHOW_BADGES_LABEL" description="COM_CITATIONS_CONFIG_SHOW_BADGES_DESC">
 			<option value="no">JNO</option>
 			<option value="yes">JYES</option>
@@ -119,5 +80,30 @@
 			<option value="yes">JYES</option>
 		</field>
 		<field type="spacer" />
+	</fieldset>
+	<fieldset name="importexport" label="COM_CITATIONS_CONFIG_IMPORTEXPORT_LABEL">
+		<field name="citation_import" type="list" default="1" label="COM_CITATIONS_CONFIG_SINGLE_UPLOAD_LABEL" description="COM_CITATIONS_CONFIG_SINGLE_UPLOAD_DESC">
+			<option value="0">COM_CITATIONS_CONFIG_UPLOAD_NOT_ALLOWED</option>
+			<option value="1">COM_CITATIONS_CONFIG_UPLOAD_ALL_USERS</option>
+			<option value="2">COM_CITATIONS_CONFIG_UPLOAD_ADMINS_ONLY</option>
+		</field>
+		<field name="citation_bulk_import" type="list" default="1" label="COM_CITATIONS_CONFIG_BULK_UPLOAD_LABEL" description="COM_CITATIONS_CONFIG_BULK_UPLOAD_DESC">
+			<option value="0">COM_CITATIONS_CONFIG_UPLOAD_NOT_ALLOWED</option>
+			<option value="1">COM_CITATIONS_CONFIG_UPLOAD_ALL_USERS</option>
+			<option value="2">COM_CITATIONS_CONFIG_UPLOAD_ADMINS_ONLY</option>
+		</field>
+		<field type="spacer" />
+		<field name="citation_download" type="list" default="1" label="COM_CITATIONS_CONFIG_SINGLE_EXPORT_LABEL" description="COM_CITATIONS_CONFIG_SINGLE_EXPORT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="citation_batch_download" type="list" default="1" label="COM_CITATIONS_CONFIG_BULK_EXPORT_LABEL" description="COM_CITATIONS_CONFIG_BULK_EXPORT_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="citation_download_exclude" type="textarea" rows="5" cols="50" default="" label="COM_CITATIONS_CONFIG_EXCLUDE_EXPORT_LABEL" description="COM_CITATIONS_CONFIG_EXCLUDE_EXPORT_DESC" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_citations" section="component" />
 	</fieldset>
 </config>

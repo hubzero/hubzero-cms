@@ -5,6 +5,11 @@
 	$canDo = PollHelperPermissions::getActions('component');
 
 	JToolBarHelper::title(JText::_('COM_POLL'), 'poll.png');
+	if ($canDo->get('core.admin'))
+	{
+		JToolBarHelper::preferences('com_poll', '550');
+		JToolBarHelper::spacer();
+	}
 	if ($canDo->get('core.edit.state'))
 	{
 		JToolBarHelper::publishList();

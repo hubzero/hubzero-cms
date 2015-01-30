@@ -43,4 +43,10 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="plots_path" type="text" menu="hide" label="COM_USAGE_PATH_PLOTS_LABEL" default="/site/usage/plots" description="COM_USAGE_PATH_PLOTS_DESC" />
 		<field name="charts_path" type="text" menu="hide" label="COM_USAGE_PATH_CHARTS_LABEL" default="/site/usage/charts" description="COM_USAGE_PATH_CHARTS_DESC" />
 	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" validate="rules" component="com_usage" section="component">
+			<action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
+			<action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
+		</field>
+	</fieldset>
 </config>

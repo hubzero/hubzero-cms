@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           administrator/components/com_wishlist/config.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -55,5 +55,8 @@ HUBzero is a registered trademark of Purdue University.
 		<field name="webpath" type="text" menu="hide" default="/site/wishlist" label="COM_WISHLIST_WEBPATH_LABEL" description="COM_WISHLIST_WEBPATH_DESC" />
 		<field name="maxAllowed" type="text" menu="hide" default="40000000" label="COM_WISHLIST_MAXALLOWED_LABEL" description="COM_WISHLIST_MAXALLOWED_DESC" />
 		<field name="file_ext" type="textarea" rows="10" cols="30" menu="hide" label="COM_WISHLIST_FILE_EXT_LABEL" default="jpg,jpeg,jpe,bmp,tif,tiff,png,gif,pdf,zip,mpg,mpeg,avi,mov,wmv,asf,asx,ra,rm,txt,rtf,doc,xsl,html,js,wav,mp3,eps,ppt,pps,swf,tar,tex,gz" description="COM_WISHLIST_FILE_EXT_DESC" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_wishlist" section="component" />
 	</fieldset>
 </config>

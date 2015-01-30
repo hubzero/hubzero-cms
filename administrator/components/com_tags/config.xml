@@ -3,10 +3,10 @@
 <!--
 @package        hubzero-cms
 @file           administrator/components/com_tags/config.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -46,5 +46,8 @@ HUBzero is a registered trademark of Purdue University.
 			<option value="1">JYes</option>
 		</field>
 		<field name="cache_time" type="text" menu="hide" default="15" label="COM_TAGS_PARAM_CACHETIME_LABEL" description="COM_TAGS_PARAM_CACHETIME_DESC" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox" validate="rules" filter="rules" component="com_tags" section="component" />
 	</fieldset>
 </config>
