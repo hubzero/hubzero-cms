@@ -70,6 +70,7 @@ foreach ($this->rows as $row)
 				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_USER'); ?></td>
 				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_LOCATION'); ?></th>
 				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_ACTIVITY'); ?></th>
+				<th scope="col"><?php echo JText::_('MOD_WHOSONLINE_COL_LOGOUT'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -102,17 +103,24 @@ foreach ($this->rows as $row)
 							<td>
 								<?php echo JText::sprintf('MOD_WHOSONLINE_HOURS_AGO', (time() - $row->time)/3600.0); ?>
 							</td>
+							<td>
+								<?php if ($editAuthorized) { ?>
+									<a class="force-logout" href="<?php echo JRoute::_('index.php?option=com_login&task=logout&uid=' . $row->userid .'&'. JSession::getFormToken() .'=1'); ?>">
+										<?php echo JHtml::_('image', 'mod_logged/icon-16-logout.png', JText::_('JLOGOUT'), null, true);?>
+									</a>
+								<?php } ?>
+							</td>
 						</tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<tr>
-					<td colspan="3" class="view-all">
+					<td colspan="4" class="view-all">
 						<a href="<?php echo JRoute::_('index.php?option=com_members&controller=whosonline'); ?>"><?php echo JText::_('MOD_WHOSONLINE_VIEW_ALL'); ?></a>
 					</td>
 				</tr>
 			<?php else : ?>
 				<tr>
-					<td colspan="3">
+					<td colspan="4">
 						<?php echo JText::_('MOD_WHOSONLINE_NO_RESULTS'); ?>
 					</td>
 				</tr>
