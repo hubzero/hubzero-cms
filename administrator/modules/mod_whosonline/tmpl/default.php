@@ -70,6 +70,7 @@ foreach ($this->rows as $row)
 				<th scope="col"><?php echo JText::_('User'); ?></td>
 				<th scope="col"><?php echo JText::_('Location'); ?></th>
 				<th scope="col"><?php echo JText::_('Last Activity'); ?></th>
+				<th scope="col"><?php echo JText::_('Logout'); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -106,17 +107,24 @@ foreach ($this->rows as $row)
 							<td>
 								<?php echo JText::sprintf('%.1f hours ago', (time() - $row->time)/3600.0); ?>
 							</td>
+							<td>
+								<?php if ($editAuthorized) { ?>
+									<a class="force-logout" href="<?php echo JRoute::_('index.php?option=com_login&task=logout&uid=' . $row->userid .'&'. JSession::getFormToken() .'=1'); ?>">
+										<?php echo JHtml::_('image', 'mod_logged/icon-16-logout.png', JText::_('JLOGOUT'), null, true);?>
+									</a>
+								<?php } ?>
+							</td>
 						</tr>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				<tr>
-					<td colspan="3" class="view-all">
+					<td colspan="4" class="view-all">
 						<a href="index.php?option=com_members&amp;controller=whosonline">&lsaquo; View all &rsaquo;</a>
 					</td>
 				</tr>
 			<?php else : ?>
 				<tr>
-					<td colspan="3">
+					<td colspan="4">
 						<?php echo JText::_('Currently there are no users online.'); ?>
 					</td>
 				</tr>
