@@ -51,6 +51,71 @@ class plgGroupsCollections extends \Hubzero\Plugin\Plugin
 	protected $_params = null;
 
 	/**
+	 * Remove any associated data when group is deleted
+	 *
+	 * @param   object  $group  Group being deleted
+	 * @return  string  Log of items removed
+	 */
+	public function onGroupDelete($group)
+	{
+		// Import needed libraries
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+
+		// Get all the IDs for collections
+		$database = JFactory::getDBO();
+		$database->setQuery("SELECT id FROM `#__collections` WHERE `object_type`='group' AND `object_id`=" . $database->quote($group->get('gidNumber')));
+		$entries = $database->loadResultArray();
+
+		// Start the log text
+		$log = JText::_('PLG_GROUPS_COLLECTIONS_LOG') . ': ';
+
+		if (count($entries) > 0)
+		{
+			$entries = array_map('intval', $entries);
+
+			// Get a list of IDs for posts created by this group
+			$database->setQuery("SELECT i.id FROM `#__collections_items` AS i LEFT JOIN `#__collections_posts` AS p ON p.`item_id`=i.`id` WHERE p.`original`=1 AND p.`collection_id` IN (" . implode(',', $entries) . ")");
+			$ids = $database->loadResultArray();
+
+			if ($ids && count($ids))
+			{
+				// Mark all posts as "trashed"
+				$database->setQuery("UPDATE `#__collections_items` SET `state`=2 WHERE `id` IN (" . implode(',', $ids) . ")");
+				$database->query();
+			}
+
+			// Mark all collections as "trashed"
+			$database->setQuery("UPDATE `#__collections` SET `state`=2 WHERE `id` IN (" . implode(',', $entries) . ")");
+			$database->query();
+
+			$log .= implode(" \n", $entries);
+		}
+		else
+		{
+			$log .= JText::_('PLG_GROUPS_BLOG_NO_RESULTS_FOUND') . "\n";
+		}
+
+		// Return the log
+		return $log;
+	}
+
+	/**
+	 * Return a count of items that will be removed when group is deleted
+	 *
+	 * @param   object  $group  Group to delete
+	 * @return  string
+	 */
+	public function onGroupDeleteCount($group)
+	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_collections' . DS . 'models' . DS . 'archive.php');
+
+		$database = JFactory::getDBO();
+		$database->setQuery("SELECT COUNT(*) FROM `#__collections` WHERE `object_type`=" . $database->quote('group') . " AND `object_id`=" . $database->quote($group->get('gidNumber')));
+
+		return JText::_('PLG_GROUPS_COLLECTIONS_LOG') . ': ' . intval($database->loadResult());
+	}
+
+	/**
 	 * Return the alias and name for this category of content
 	 *
 	 * @return     array

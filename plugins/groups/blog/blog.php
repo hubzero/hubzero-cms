@@ -228,6 +228,82 @@ class plgGroupsBlog extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
+	 * Remove any associated data when group is deleted
+	 *
+	 * @param   object  $group  Group being deleted
+	 * @return  string  Log of items removed
+	 */
+	public function onGroupDelete($group)
+	{
+		// Import needed libraries
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+
+		$database = JFactory::getDBO();
+
+		$tbl = new BlogTableEntry($database);
+
+		// Get all the IDs for entries associated with this group
+		$entries = $tbl->find(
+			'list',
+			array(
+				'scope' => 'group',
+				'scope_id' => $group->get('gidNumber')
+			),
+			array('m.id')
+		);
+
+		// Start the log text
+		$log = JText::_('PLG_GROUPS_BLOG_LOG') . ': ';
+
+		if (count($entries) > 0)
+		{
+			// Loop through all the IDs for pages associated with this group
+			foreach ($entries as $entry)
+			{
+				$tbl->id = $entry->id;
+				$tbl->state = '-1';
+				$tbl->store();
+
+				// Add the ID to the log
+				$log .= $entry->id . ' ' . "\n";
+			}
+		}
+		else
+		{
+			$log .= JText::_('PLG_GROUPS_BLOG_NO_RESULTS_FOUND') . "\n";
+		}
+
+		// Return the log
+		return $log;
+	}
+
+	/**
+	 * Return a count of items that will be removed when group is deleted
+	 *
+	 * @param   object  $group  Group to delete
+	 * @return  string
+	 */
+	public function onGroupDeleteCount($group)
+	{
+		include_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'archive.php');
+
+		$database = JFactory::getDBO();
+
+		$tbl = new BlogTableEntry($database);
+
+		// Get all the IDs for entries associated with this group
+		$entries = $tbl->find(
+			'count',
+			array(
+				'scope' => 'group',
+				'scope_id' => $group->get('gidNumber')
+			)
+		);
+
+		return JText::_('PLG_GROUPS_BLOG_LOG') . ': ' . $entries;
+	}
+
+	/**
 	 * Parse an SEF URL into its component bits
 	 * stripping out the path leading up to the blog plugin
 	 *
