@@ -155,12 +155,11 @@ $editurl = JRoute::_($route . '&pid=' . $this->publication->id) . '?version=' . 
 <?php // Show status for authorized users
 if ($this->contributable)
 {
-	echo PublicationsHtml::showAccessMessage(
-		$this->publication,
-		$this->option,
-		$this->authorized,
-		$this->restricted,
-		$editurl
-	);
+	// Build pub url
+	$route = $this->publication->project_provisioned == 1
+				? 'index.php?option=com_publications&task=submit'
+				: 'index.php?option=com_projects&alias=' . $this->publication->project_alias . '&active=publications';
+	$editurl = JRoute::_($route . '&pid=' . $this->publication->id).'?version='.$this->version;
+	echo PublicationsHtml::showAccessMessage( $this->publication, $this->option, $this->authorized, $this->restricted, $editurl );
 } ?>
 </div>
