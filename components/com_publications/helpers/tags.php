@@ -480,9 +480,7 @@ class PublicationTags extends TagsHandler
 	 */
 	public function getTopTagCloud($limit, $tagstring='')
 	{
-		$t = new TagsTableTag($this->_db);
-		$tags = $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
-
+		$tags = $this->getTopTags($limit);
 		return $this->buildTopCloud($tags, 'alpha', 0, $tagstring);
 	}
 
@@ -496,8 +494,21 @@ class PublicationTags extends TagsHandler
 	 */
 	public function getTopTags($limit)
 	{
-		$t = new TagsTableTag($this->_db);
-		return $t->getTopTags($limit, $this->_tbl, 'tcount DESC', 0);
+		$sql  = "SELECT t.tag, t.raw_tag, t.admin, tj.tagid, tj.objectid, COUNT(tj.tagid) AS tcount ";
+		$sql .= "FROM #__tags AS t  ";
+		$sql .= "JOIN #__tags_object AS tj ON t.id=tj.tagid ";
+		$sql .= "LEFT JOIN #__publication_versions AS V ON V.publication_id=tj.objectid AND tj.tbl='publications' ";
+		$sql .= "WHERE t.id=tj.tagid AND t.admin=0 ";
+		$sql .= "AND tj.tbl=" . $this->_db->Quote($this->_tbl) . " ";
+		$sql .= "AND V.state=1 AND V.main=1 AND V.access!=4 ";
+		$sql .= "AND V.published_up < " . $this->_db->Quote(JFactory::getDate()->toSql()) . " ";
+		$sql .= "AND (V.published_down = '0000-00-00 00:00:00' OR V.published_down > " . $this->_db->Quote(JFactory::getDate()->toSql()) . ") ";
+		$sql .= "GROUP BY tagid ";
+		$sql .= "ORDER BY tcount DESC ";
+		$sql .= "LIMIT $limit";
+
+		$this->_db->setQuery($sql);
+		return $this->_db->loadObjectList();
 	}
 
 	/**
