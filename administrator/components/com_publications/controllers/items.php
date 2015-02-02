@@ -1184,7 +1184,7 @@ class PublicationsControllerItems extends \Hubzero\Component\AdminController
 					// Save date accepted
 					if ($action == 'publish')
 					{
-						$row->accepted = $row->accepted && $row->accepted != '0000-00-00 00:00:00' ? $row->accepted : JFactory::getDate()->toSql();
+						$row->accepted = JFactory::getDate()->toSql();
 
 						if ($useBlocks)
 						{
