@@ -28,35 +28,31 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+namespace Components\Cpanel\Controllers;
 
-// Set toolbar items for the page
-JToolBarHelper::title(JText::_('COM_CPANEL'), 'cpanel.png');
-JToolBarHelper::help('cpanel');
+use Hubzero\Component\AdminController;
 
-echo JHtml::_('sliders.start', 'panel-sliders', array('useCookie' => '1'));
-
-foreach ($this->modules as $module)
+/**
+ * Cpanel Controller
+ */
+class Cpanel extends AdminController
 {
-	$output = JModuleHelper::renderModule($module);
+	/**
+	 * Display admin control panel
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		// Set the template - this will display cpanel.php
+		// from the selected admin template.
+		\JRequest::setVar('tmpl', 'cpanel');
 
-	$params = new JRegistry;
-	$params->loadString($module->params);
+		// Display the cpanel modules
+		$this->view->modules = \JModuleHelper::getModules('cpanel');
 
-	if ($params->get('automatic_title', '0') == '0')
-	{
-		echo JHtml::_('sliders.panel', $module->title, 'cpanel-panel-' . $module->name);
+		$this->view
+			->setLayout('default')  // Preserve potential view overrides
+			->display();
 	}
-	elseif (method_exists('mod' . $module->name . 'Helper', 'getTitle'))
-	{
-		echo JHtml::_('sliders.panel', call_user_func_array(array('mod' . $module->name . 'Helper', 'getTitle'), array($params)), 'cpanel-panel-' . $module->name);
-	}
-	else
-	{
-		echo JHtml::_('sliders.panel', JText::_('MOD_' . $module->name . '_TITLE'), 'cpanel-panel-' . $module->name);
-	}
-	echo $output;
 }
-
-echo JHtml::_('sliders.end');
