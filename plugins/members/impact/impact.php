@@ -108,7 +108,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 		{
 			// Check if user has any publications
 			$pubLog = new PublicationLog($this->_database);
-			$this->_stats = $pubLog->getAuthorStats($user->get('id'), 0, false );
+			$this->_stats = $pubLog->getAuthorStats($member->get('uidNumber'), 0, false );
 
 			if ($this->_stats)
 			{
@@ -192,7 +192,7 @@ class plgMembersImpact extends \Hubzero\Plugin\Plugin
 
 		// Get pub stats for each publication
 		$pubLog = new PublicationLog($this->_database);
-		$view->pubstats = $pubLog->getAuthorStats($uid, 0, false);
+		$view->pubstats = $this->_stats ? $this->_stats : $pubLog->getAuthorStats($uid, 0, false);
 
 		// Get date of first log
 		$view->firstlog = $pubLog->getFirstLogDate();
