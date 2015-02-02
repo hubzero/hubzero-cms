@@ -260,7 +260,7 @@ class ProjectPubStamp extends JTable
 		$stamp 		= ProjectsHtml::generateCode(20, 20, 0, 1, 1);
 
 		$query = "INSERT INTO $this->_tbl (stamp, projectid, listed, type, reference, expires, created, created_by)
-				 VALUES ('$stamp', $projectid, $listed, '$type', '$reference', '$expires' , '$created', '$created_by' )";
+				 VALUES ('$stamp', $projectid, '$listed', '$type', '$reference', '$expires' , '$created', '$created_by' )";
 
 		$this->_db->setQuery( $query );
 		if (!$this->_db->query())
