@@ -537,6 +537,15 @@ class MembersControllerProfiles extends \Hubzero\Component\SiteController
 		// Check if the profile is public/private and the user has access
 		if ($profile->get('public') != 1 && !$this->view->authorized)
 		{
+			// Check if they're logged in
+			if ($this->juser->get('guest'))
+			{
+				$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task . '&id=' . $profile->get('uidNumber')), 'server');
+				$this->setRedirect(
+					JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn))
+				);
+				return;
+			}
 			$pathway->addItem(
 				JText::_(strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
