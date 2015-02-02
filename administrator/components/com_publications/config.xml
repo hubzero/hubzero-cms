@@ -118,5 +118,6 @@
 			<option value="1">JYES</option>
 		</field>
 		<field name="aip_path" type="text" menu="hide" default="/srv/AIP" label="COM_PUBLICATIONS_AIP_PATH" description="COM_PUBLICATIONS_AIP_PATH_DESC" />
+		<field name="aip_group" type="text" menu="hide" default="" label="COM_PUBLICATIONS_CONFIG_AIP_GROUP" description="COM_PUBLICATIONS_CONFIG_AIP_GROUP_DESC" />
 	</fieldset>
 </config>
