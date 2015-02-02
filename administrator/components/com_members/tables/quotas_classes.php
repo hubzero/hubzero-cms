@@ -42,7 +42,7 @@ class MembersQuotasClasses extends JTable
 	 * @param   object  &$db  JDatabase
 	 * @return  void
 	 */
-	public function __construct( &$db )
+	public function __construct(&$db)
 	{
 		parent::__construct('#__users_quotas_classes', 'id', $db);
 	}
@@ -204,5 +204,74 @@ class MembersQuotasClasses extends JTable
 
 		$this->_db->setQuery($query);
 		return $this->_db->loadObjectList();
+	}
+
+	/**
+	 * Get the an object list of quotas classes
+	 *
+	 * @param   array  $filters  Start and limit, needed for pagination
+	 * @return  array  Return password rule records
+	 */
+	public function getGroupIds($id=null)
+	{
+		if (is_null($id))
+		{
+			$id = $this->id;
+		}
+
+		$groups = array();
+
+		if ($id)
+		{
+			require_once __DIR__ . '/quotas_classes_groups.php';
+
+			$qcGroups = new MembersQuotasClassesGroups($this->_db);
+			foreach ($qcGroups->find('list', array('class_id' => $id)) as $group)
+			{
+				$groups[] = $group->group_id;
+			}
+		}
+
+		return $groups;
+	}
+
+	/**
+	 * Get the an object list of quotas classes
+	 *
+	 * @param   array  $filters  Start and limit, needed for pagination
+	 * @return  array  Return password rule records
+	 */
+	public function setGroupIds($groups=array())
+	{
+		if (!is_array($groups))
+		{
+			$groups = array($groups);
+		}
+		$groups = array_map('intval', $groups);
+
+		require_once __DIR__ . '/quotas_classes_groups.php';
+
+		$qcGroups = new MembersQuotasClassesGroups($this->_db);
+		$qcGroups->class_id = $this->id;
+
+		// Clear old records
+		if (!$qcGroups->deleteByClassId($this->id))
+		{
+			$this->setError($qcGroups->getError());
+			return false;
+		}
+
+		foreach ($groups as $group)
+		{
+			$qcGroups->id       = null;
+			$qcGroups->group_id = $group;
+			if (!$qcGroups->store())
+			{
+				$this->setError($qcGroups->getError());
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

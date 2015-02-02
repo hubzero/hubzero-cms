@@ -88,6 +88,17 @@ function submitbutton(pressbutton)
 				<input type="text" name="fields[hard_files]" id="field-hard_files" value="<?php echo $this->escape(stripslashes($this->row->hard_files)); ?>" />
 			</div>
 		</fieldset>
+		<fieldset class="adminform">
+			<legend><span><?php echo JText::_('COM_MEMBERS_QUOTA_CLASS_USERGROUPS_LEGEND'); ?></span></legend>
+			<p><?php echo JText::_('COM_MEMBERS_QUOTA_CLASS_USERGROUPS_DESC'); ?></p>
+			<?php
+			// Include the component HTML helpers.
+			JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_users/helpers/html');
+			?>
+			<div class="input-wrap">
+				<?php echo JHtml::_('access.usergroups', 'fields[groups]', $this->row->getGroupIds(), true); ?>
+			</div>
+		</fieldset>
 	</div>
 	<div class="col width-40 fltrt">
 		<table class="meta">
