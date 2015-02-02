@@ -2286,7 +2286,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\SiteController
 			}
 		}
 
-		return $row->id;
+		return $row->get('id');
 	}
 
 	/**
