@@ -65,26 +65,51 @@ class plgContentAntispam extends JPlugin
 
 		if (!$content) return;
 
-		include_once(__DIR__ . '/Service/Provider.php');
+		// Get the detector manager
+		$service = new \Hubzero\Spam\Checker();
 
-		$service = new \Hubzero\Antispam\Service(new \Plugins\Content\Antispam\Service\Provider);
+		JPluginHelper::importPlugin('antispam');
+		$dispatcher = JDispatcher::getInstance();
 
-		$service->set('linkFrequency', $this->params->get('linkFrequency', 5))
-		        ->set('blacklist', $this->params->get('blacklist'))
-		        ->set('badwords', $this->params->get('badwords', 'viagra, pharmacy, xanax, phentermine, dating, ringtones, tramadol, hydrocodone, levitra, '
-				. 'ambien, vicodin, fioricet, diazepam, cash advance, free online, online gambling, online prescriptions, '
-				. 'debt consolidation, baccarat, loan, slots, credit, mortgage, casino, slot, texas holdem, teen nude, '
-				. 'orgasm, gay, fuck, crap, shit, asshole, cunt, fucker, fuckers, motherfucker, fucking, milf, cocksucker, '
-				. 'porno, videosex, sperm, hentai, internet gambling, kasino, kasinos, poker, lottery, texas hold em, '
-				. 'texas holdem, fisting'));
-
-		if ($service->isSpam($content))
+		foreach ($dispatcher->trigger('onAntispamDetector') as $detector)
 		{
+			if (!$detector) continue;
+
+			$service->registerDetector($detector);
+		}
+
+		// Check content
+		$result = $service->check($content);
+
+		// If the content was detected as spam...
+		if ($service->check($content)->isSpam())
+		{
+			// Learn from it?
+			if ($this->params->get('learn_spam', 1))
+			{
+				$dispatcher->trigger('onAntispamTrain', array(
+					$content,
+					true
+				));
+			}
+
+			// If a message was set...
 			if ($message = $this->params->get('message'))
 			{
 				\JFactory::getApplication()->enqueueMessage($message, 'error');
 			}
+
 			return false;
+		}
+
+		// Content was not spam.
+		// Learn from it?
+		if ($this->params->get('learn_ham', 0))
+		{
+			$dispatcher->trigger('onAntispamTrain', array(
+				$content,
+				false
+			));
 		}
 	}
 

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+@package        hubzero-cms
+@file           plugins/antispam/spamassassin/spamassassin.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
+@license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+
+Copyright 2005-2015 Purdue University. All rights reserved.
+
+This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+
+The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+software: you can redistribute it and/or modify it under the terms of
+the GNU Lesser General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+HUBzero is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+HUBzero is a registered trademark of Purdue University.
+-->
+
+<extension version="2.5" type="plugin" group="antispam">
+	<name>plg_antispam_spamassassin</name>
+	<author>HUBzero</author>
+	<creationDate>January 2015</creationDate>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>hubzero.org</authorUrl>
+	<version>2.5.0</version>
+	<description>PLG_ANTISPAM_SPAMASSASSIN_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="spamassassin">spamassassin.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_antispam_spamassassin.ini</language>
+		<language tag="en-GB">en-GB.plg_antispam_spamassassin.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="client" type="list" default="local" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_CLIENT_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_CLIENT_DESC">
+					<option value="local">PLG_ANTISPAM_SPAMASSASSIN_PARAM_CLIENT_LOCAL</option>
+					<option value="remote">PLG_ANTISPAM_SPAMASSASSIN_PARAM_CLIENT_REMOTE</option>
+				</field>
+			</fieldset>
+			<fieldset name="local">
+				<field name="hostname" type="text" size="10" default="localhost" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_HOSTNAME_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_HOSTNAME_DESC" />
+				<field name="port" type="text" size="10" default="783" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_PORT_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_PORT_DESC" />
+				<field name="protocolVersion" type="text" size="10" default="1.5" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_PROTOCOLVERSION_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_PROTOCOLVERSION_DESC" />
+				<field name="socket" type="text" size="10" default="" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_SOCKET_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_SOCKET_DESC" />
+				<field name="socketPath" type="text" size="10" default="" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_SOCKETPATH_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_SOCKETPATH_DESC" />
+				<field name="enableZlib" type="list" default="0" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_ENABLEZLIB_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_ENABLEZLIB_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+			</fieldset>
+			<fieldset name="remote">
+				<field name="server" type="text" size="10" default="http://spamcheck.postmarkapp.com/filter" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_SERVER_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_SERVER_DESC" />
+				<field name="verbose" type="list" default="0" label="PLG_ANTISPAM_SPAMASSASSIN_PARAM_VERBOSE_LABEL" description="PLG_ANTISPAM_SPAMASSASSIN_PARAM_VERBOSE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

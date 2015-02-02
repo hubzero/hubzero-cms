@@ -2,7 +2,7 @@
 
 <!--
 @package        hubzero-cms
-@file           plugins/content/antispam/antispam.xml
+@file           plugins/antispam/bayesian/bayesian.xml
 @copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
@@ -27,33 +27,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 HUBzero is a registered trademark of Purdue University.
 -->
 
-<extension version="2.5" type="plugin" group="content">
-	<name>plg_content_antispam</name>
+<extension version="2.5" type="plugin" group="antispam">
+	<name>plg_antispam_bayesian</name>
 	<author>HUBzero</author>
 	<creationDate>January 2015</creationDate>
 	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
 	<authorEmail>support@hubzero.org</authorEmail>
 	<authorUrl>hubzero.org</authorUrl>
-	<version>2.0.0</version>
-	<description>PLG_CONTENT_ANTISPAM_XML_DESCRIPTION</description>
+	<version>1.0.0</version>
+	<description>PLG_ANTISPAM_BAYESIAN_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="antispam">antispam.php</filename>
+		<filename plugin="bayesian">bayesian.php</filename>
 		<filename>index.html</filename>
+		<filename>Detector.php</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">en-GB.plg_content_antispam.ini</language>
-		<language tag="en-GB">en-GB.plg_content_antispam.sys.ini</language>
+		<language tag="en-GB">en-GB.plg_antispam_bayesian.ini</language>
+		<language tag="en-GB">en-GB.plg_antispam_bayesian.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="message" type="text" size="10" default="The submitted text was detected as possible spam or containing inappropriate content." label="PLG_CONTENT_ANTISPAM_PARAM_MESSAGE_LABEL" description="PLG_CONTENT_ANTISPAM_PARAM_MESSAGE_DESC" />
-				<field name="learn_spam" type="list" default="1" label="PLG_CONTENT_ANTISPAM_PARAM_LEARNSPAM_LABEL" description="PLG_CONTENT_ANTISPAM_PARAM_LEARNSPAM_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="learn_ham" type="list" default="1" label="PLG_CONTENT_ANTISPAM_PARAM_LEARNHAM_LABEL" description="PLG_CONTENT_ANTISPAM_PARAM_LEARNHAM_DESC">
+				<field name="threshold" type="text" size="10" default="0.95" label="PLG_ANTISPAM_BAYESIAN_PARAM_THRESHOLD_LABEL" description="PLG_ANTISPAM_BAYESIAN_PARAM_THRESHOLD_DESC" />
+				<field name="learn" type="list" default="1" label="PLG_ANTISPAM_BAYESIAN_PARAM_LEARN_LABEL" description="PLG_ANTISPAM_BAYESIAN_PARAM_LEARN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
