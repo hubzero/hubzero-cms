@@ -1,15 +1,48 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_checkin
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // no direct access
 defined('_JEXEC') or die;
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+
+JToolBarHelper::title(JText::_('COM_CHECKIN_GLOBAL_CHECK_IN'), 'checkin.png');
+if (JFactory::getUser()->authorise('core.admin', 'com_checkin'))
+{
+	JToolBarHelper::custom('checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
+	JToolBarHelper::divider();
+	JToolBarHelper::preferences('com_checkin');
+	JToolBarHelper::divider();
+}
+JToolBarHelper::help('checkin');
+
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_checkin');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
@@ -26,33 +59,33 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<table id="global-checkin" class="adminlist">
 		<thead>
 			<tr>
-				<th width="1%">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
-				</th>
-				<th class="left"><?php echo JHtml::_('grid.sort', 'COM_CHECKIN_DATABASE_TABLE', 'table', $listDirn, $listOrder); ?></th>
-				<th><?php echo JHtml::_('grid.sort', 'COM_CHECKIN_ITEMS_TO_CHECK_IN', 'count', $listDirn, $listOrder); ?></th>
+				<th scope="col"><input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" /></th>
+				<th scope="col"><?php echo JHtml::_('grid.sort', 'COM_CHECKIN_DATABASE_TABLE', 'table', $listDirn, $listOrder); ?></th>
+				<th scope="col"><?php echo JHtml::_('grid.sort', 'COM_CHECKIN_ITEMS_TO_CHECK_IN', 'count', $listDirn, $listOrder); ?></th>
 			</tr>
 		</thead>
 		<tbody>
-		<?php foreach ($this->items as $table => $count): $i=0;?>
-			<tr class="row<?php echo $i%2; ?>">
-				<td class="center"><?php echo JHtml::_('grid.id', $i, $table); ?></td>
-				<td><?php echo JText::sprintf('COM_CHECKIN_TABLE', $table); ?></td>
-				<td width="200" class="center"><?php echo $count; ?></td>
-			</tr>
-		<?php endforeach;?>
+			<?php foreach ($this->items as $table => $count): $i=0; ?>
+				<tr class="row<?php echo $i%2; ?>">
+					<td><?php echo JHtml::_('grid.id', $i, $table); ?></td>
+					<td><?php echo JText::sprintf('COM_CHECKIN_TABLE', $table); ?></td>
+					<td><?php echo $count; ?></td>
+				</tr>
+			<?php endforeach; ?>
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="15">
+				<td colspan="3">
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
 		</tfoot>
 	</table>
+
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+
 	<?php echo JHtml::_('form.token'); ?>
 </form>

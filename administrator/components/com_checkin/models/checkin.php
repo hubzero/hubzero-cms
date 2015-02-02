@@ -1,32 +1,67 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_checkin
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Components\Checkin\Models;
+
+use JFactory;
+use JModelList;
 
 jimport('joomla.application.component.modellist');
 
 /**
  * Checkin Model
- *
- * @package		Joomla.Administrator
- * @subpackage	com_checkin
- * @since		1.6
  */
-class CheckinModelCheckin extends JModelList
+class Checkin extends JModelList
 {
+	/**
+	 * Total items
+	 *
+	 * @var  integer
+	 */
 	protected $total;
+
+	/**
+	 * List of tables
+	 *
+	 * @var  array
+	 */
 	protected $tables;
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @param   string  $ordering
+	 * @param   string  $direction
+	 * @return  unknown
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -37,35 +72,39 @@ class CheckinModelCheckin extends JModelList
 		// List state information.
 		parent::populateState('table', 'asc');
 	}
+
 	/**
 	 * Checks in requested tables
 	 *
-	 * @param	array	An array of table names. Optional.
-	 * @return	int		Checked in item count
-	 * @since	1.6
+	 * @param   array    $ids  An array of table names. Optional.
+	 * @return  integer  Checked in item count
 	 */
 	public function checkin($ids = array())
 	{
-		$app		= JFactory::getApplication();
-		$db			= $this->_db;
-		$nullDate	= $db->getNullDate();
+		$app      = JFactory::getApplication();
+		$db       = $this->_db;
+		$nullDate = $db->getNullDate();
 
-		if (!is_array($ids)) {
+		if (!is_array($ids))
+		{
 			return;
 		}
 
 		// this int will hold the checked item count
 		$results = 0;
 
-		foreach ($ids as $tn) {
+		foreach ($ids as $tn)
+		{
 			// make sure we get the right tables based on prefix
-			if (stripos($tn, $app->getCfg('dbprefix')) !== 0) {
+			if (stripos($tn, $app->getCfg('dbprefix')) !== 0)
+			{
 				continue;
 			}
 
 			$fields = $db->getTableColumns($tn);
 
-			if (!(isset($fields['checked_out']) && isset($fields['checked_out_time']))) {
+			if (!(isset($fields['checked_out']) && isset($fields['checked_out_time'])))
+			{
 				continue;
 			}
 
@@ -74,12 +113,14 @@ class CheckinModelCheckin extends JModelList
 				->set('checked_out = 0')
 				->set('checked_out_time = '.$db->Quote($nullDate))
 				->where('checked_out > 0');
-			if (isset($fields[$tn]['editor'])) {
+			if (isset($fields[$tn]['editor']))
+			{
 				$query->set('editor = NULL');
 			}
 
 			$db->setQuery($query);
-			if ($db->query()) {
+			if ($db->query())
+			{
 				$results = $results + $db->getAffectedRows();
 			}
 		}
@@ -89,8 +130,7 @@ class CheckinModelCheckin extends JModelList
 	/**
 	 * Get total of tables
 	 *
-	 * @return	int	Total to check-in tables
-	 * @since	1.6
+	 * @return  integer  Total to check-in tables
 	 */
 	public function getTotal()
 	{
@@ -100,20 +140,20 @@ class CheckinModelCheckin extends JModelList
 		}
 		return $this->total;
 	}
+
 	/**
 	 * Get tables
 	 *
-	 * @return	array	Checked in table names as keys and checked in item count as values
-	 * @since	1.6
+	 * @return  array  Checked in table names as keys and checked in item count as values
 	 */
 	public function getItems()
 	{
 		if (!isset($this->items))
 		{
-			$app		= JFactory::getApplication();
-			$db			= $this->_db;
-			$nullDate	= $db->getNullDate();
-			$tables 	= $db->getTableList();
+			$app      = JFactory::getApplication();
+			$db       = $this->_db;
+			$nullDate = $db->getNullDate();
+			$tables   = $db->getTableList();
 
 			// this array will hold table name as key and checked in item count as value
 			$results = array();
@@ -141,36 +181,46 @@ class CheckinModelCheckin extends JModelList
 					continue;
 				}
 			}
+
 			foreach ($tables as $tn)
 			{
-				$query=$db->getQuery(true)
+				$query = $db->getQuery(true)
 					->select('COUNT(*)')
 					->from($db->quoteName($tn))
 					->where('checked_out > 0');
 
 				$db->setQuery($query);
-				if ($db->query()) {
+				if ($db->query())
+				{
 					$results[$tn] = $db->loadResult();
-				} else {
+				}
+				else
+				{
 					continue;
 				}
 			}
+
 			$this->total = count($results);
-			if ($this->getState('list.ordering')=='table')
+
+			if ($this->getState('list.ordering') == 'table')
 			{
-				if ($this->getState('list.direction')=='asc') {
+				if ($this->getState('list.direction') == 'asc')
+				{
 					ksort($results);
 				}
-				else {
+				else
+				{
 					krsort($results);
 				}
 			}
 			else
 			{
-				if ($this->getState('list.direction')=='asc') {
+				if ($this->getState('list.direction') == 'asc')
+				{
 					asort($results);
 				}
-				else {
+				else
+				{
 					arsort($results);
 				}
 			}
