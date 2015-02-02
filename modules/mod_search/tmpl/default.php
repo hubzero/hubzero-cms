@@ -38,7 +38,7 @@ defined('_JEXEC') or die;
 
 		<?php
 			$output  = '<label for="searchword" id="searchword-label">' . $label . '</label>';
-			$output .= '<input type="text" name="searchword" id="searchword" size="' . $width . '" placeholder="' . $text . '" />';
+			$output .= '<input type="text" name="terms" id="searchword" size="' . $width . '" placeholder="' . $text . '" />';
 
 			if ($button):
 				$button = '<input type="submit" id="submitquery" value="' . $button_text . '" />';
