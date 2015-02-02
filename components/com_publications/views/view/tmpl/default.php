@@ -45,7 +45,7 @@ if ($this->config->get('launcher_layout', 0))
 	     ->set('license', $this->license)
 	     ->set('sections', $this->sections)
 	     ->set('cats', $this->cats)
-	     ->set('params', $params)
+	     ->set('params', $this->params)
 	     ->display();
 }
 else
