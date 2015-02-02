@@ -115,6 +115,7 @@ class CronControllerJobs extends \Hubzero\Component\SiteController
 						// Set it as active in case there were multiple plugins called on
 						// the event. This is to ensure ALL processes finished.
 						$job->set('active', 1);
+						$job->store();
 
 						foreach ($results as $result)
 						{
