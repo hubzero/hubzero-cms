@@ -274,10 +274,13 @@ class plgCronPublications extends JPlugin
 	{
 		$database = JFactory::getDBO();
 		$config = JComponentHelper::getParams('com_publications');
+		$jconfig = JFactory::getConfig();
 
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
 			. 'com_publications' . DS . 'helpers' . DS . 'utilities.php');
 		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS .'com_publications' . DS . 'tables' . DS . 'version.php');
+		require_once(JPATH_ROOT . DS . 'components'. DS
+			. 'com_projects' . DS . 'helpers' . DS . 'helper.php');
 
 		// Check that mkAIP script exists
 		if (!PublicationUtilities::archiveOn())
@@ -307,6 +310,13 @@ class plgCronPublications extends JPlugin
 		{
 			return true;
 		}
+
+		// Start email message
+		$subject 	= JText::_('Update on recently archived publications');
+		$body 		= JText::_('The following publications passed the grace period and were archived:') . "\n";
+		$aipGroup 	= $config->get('aip_group');
+		$counter 	= 0;
+
 		foreach ($rows as $row)
 		{
 			$doiParts = explode('/', $row->doi);
@@ -324,7 +334,7 @@ class plgCronPublications extends JPlugin
 			}
 			// Load version
 			$pv = new PublicationVersion($database);
-			if (!$pr->load($row->version_id))
+			if (!$pv->load($row->version_id))
 			{
 				continue;
 			}
@@ -334,10 +344,48 @@ class plgCronPublications extends JPlugin
 			{
 				$pv->archived = JFactory::getDate()->toSql();
 				$pv->store();
+				$counter++;
+				$body .= $row->title . ' v.' . $row->version_label . ' (id #' . $row->id . ')' . "\n";
 			}
-
-			// All done
-			return true;
 		}
+
+		// Email update to admins
+		if ($counter > 0 && $aipGroup)
+		{
+			// Set email config
+			$from = array(
+				'name'      => $jconfig->getValue('config.fromname') . ' ' . JText::_('Publications'),
+				'email'     => $jconfig->getValue('config.mailfrom'),
+				'multipart' => md5(date('U'))
+			);
+
+			$admins = ProjectsHelper::getGroupMembers($aipGroup);
+
+			// Build message
+			if (!empty($admins))
+			{
+				foreach ($admins as $admin)
+				{
+					// Get the user's account
+					$juser = JUser::getInstance($admin);
+					if (!$juser->get('id'))
+					{
+						continue;
+					}
+					$message = new \Hubzero\Mail\Message();
+					$message->setSubject($subject)
+					        ->addFrom($from['email'], $from['name'])
+					        ->addTo($juser->get('email'), $juser->get('name'))
+					        ->addHeader('X-Component', 'com_publications')
+					        ->addHeader('X-Component-Object', 'publications');
+
+					$message->addPart($body, 'text/plain');
+					$message->send();
+				}
+			}
+		}
+
+		// All done
+		return true;
 	}
 }
