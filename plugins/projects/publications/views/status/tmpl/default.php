@@ -315,7 +315,6 @@ $archiveDate  = $this->pub->accepted && $this->pub->accepted != '0000-00-00 00:0
 						// Draft
 						case 3:
 						default: ?>
-						<?php if ($revertAllowed && $allowArchive && $archiveDate) { echo '<li id="next-archive"><p class="info">' . JText::_('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED') . ' <strong class="highlighted">' . JHTML::_('date', $archiveDate, $dateFormat) . '</strong>, ' . JText::_('PLG_PROJECTS_PUBLICATIONS_WILL_BE_ARCHIVED_NO_CHANGE') . '</p></li>'; } ?>
 						<?php if ($complete) { ?>
 						<li id="next-publish"><p><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISH_READY');  ?></p>
 							<p class="centeralign"><a href="<?php echo $this->url.'/?action=review'. a . 'version='.$this->pub->version; ?>" class="btn btn-success active"><?php echo JText::_('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW'); ?></a></p></li>
