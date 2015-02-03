@@ -47,7 +47,6 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_poll' . DS . 'tables' . DS . 'poll.php');
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_poll' . DS . 'models' . DS . 'poll.php');
 
 		$model = new PollModelPoll();

@@ -28,57 +28,40 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Poll\Helpers;
+?>
+<form action="">
+	<fieldset>
+		<div class="configuration">
+			<?php echo JText::_('COM_POLL_PREVIEV'); ?>
+		</div>
+	</fieldset>
 
-use JFactory;
-use JObject;
+	<br /><br />
 
-/**
- * Permissions helper
- */
-class Permissions
-{
-	/**
-	 * Name of the component
-	 *
-	 * @var string
-	 */
-	public static $extension = 'com_poll';
-
-	/**
-	 * Gets a list of the actions that can be performed.
-	 *
-	 * @param   string   $extension  The extension.
-	 * @param   integer  $assetId    The asset ID.
-	 * @return  object   JObject
-	 */
-	public static function getActions($assetType='component', $assetId = 0)
-	{
-		$assetName  = self::$extension;
-		$assetName .= '.' . $assetType;
-		if ($assetId)
-		{
-			$assetName .= '.' . (int) $assetId;
-		}
-
-		$user = JFactory::getUser();
-		$result = new JObject;
-
-		$actions = array(
-			'core.admin',
-			'core.manage',
-			'core.create',
-			'core.edit',
-			'core.edit.state',
-			'core.delete'
-		);
-
-		foreach ($actions as $action)
-		{
-			$result->set($action, $user->authorise($action, $assetName));
-		}
-
-		return $result;
-	}
-}
-
+	<table>
+		<caption><?php echo $this->poll->title; ?></caption>
+		<tfoot>
+			<tr>
+				<td colspan="2">
+					<input type="button" name="submit" value="<?php echo JText::_('COM_POLL_VOTE'); ?>">&nbsp;&nbsp;
+					<input type="button" name="result" value="<?php echo JText::_('COM_POLL_RESULTS'); ?>">
+				</td>
+			</tr>
+		</tfoot>
+		<tbody>
+			<?php foreach ($this->options as $option)
+			{
+				if ($option->text <> "")
+				{
+					?>
+					<tr>
+						<td valign="top" height="30"><input type="radio" name="poll" value="<?php echo $this->escape($option->text); ?>"></td>
+						<td class="poll" width="100%" valign="top"><?php echo $option->text; ?></td>
+					</tr>
+					<?php
+				}
+			}
+			?>
+		</tbody>
+	</table>
+</form>

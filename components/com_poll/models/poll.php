@@ -17,6 +17,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
+require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_poll' . DS . 'tables' . DS . 'poll.php');
+
 /**
 * @package		Joomla
 * @subpackage	Polls
@@ -76,7 +78,7 @@ class PollModelPoll extends JModel
 			JError::raiseWarning( 500, $db->stderr() );
 		}
 
-		$poll = JTable::getInstance('poll', 'Table');
+		$poll = new \Components\Poll\Tables\Poll($db);
 		$poll->load($result);
 
 		return $poll;

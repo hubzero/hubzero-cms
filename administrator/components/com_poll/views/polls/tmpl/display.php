@@ -1,39 +1,69 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php
+/**
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
 
-	JHTML::_('behavior.tooltip');
+defined('_JEXEC') or die('Restricted access');
 
-	$canDo = PollHelperPermissions::getActions('component');
+JHTML::_('behavior.tooltip');
 
-	JToolBarHelper::title(JText::_('COM_POLL'), 'poll.png');
-	if ($canDo->get('core.admin'))
-	{
-		JToolBarHelper::preferences('com_poll', '550');
-		JToolBarHelper::spacer();
-	}
-	if ($canDo->get('core.edit.state'))
-	{
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::spacer();
-	}
-	if ($canDo->get('core.delete'))
-	{
-		JToolBarHelper::deleteList();
-		JToolBarHelper::spacer();
-	}
-	if ($canDo->get('core.edit'))
-	{
-		JToolBarHelper::editListX();
-	}
-	if ($canDo->get('core.create'))
-	{
-		JToolBarHelper::addNewX();
-	}
+$canDo = \Components\Poll\Helpers\Permissions::getActions('component');
+
+JToolBarHelper::title(JText::_('COM_POLL'), 'poll.png');
+if ($canDo->get('core.admin'))
+{
+	JToolBarHelper::preferences('com_poll', '550');
 	JToolBarHelper::spacer();
-	JToolBarHelper::help('polls');
+}
+if ($canDo->get('core.edit.state'))
+{
+	JToolBarHelper::publishList();
+	JToolBarHelper::unpublishList();
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.delete'))
+{
+	JToolBarHelper::deleteList();
+	JToolBarHelper::spacer();
+}
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::editListX();
+}
+if ($canDo->get('core.create'))
+{
+	JToolBarHelper::addNewX();
+}
+JToolBarHelper::spacer();
+JToolBarHelper::help('polls');
 ?>
 
-<form action="index.php?option=com_poll" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
@@ -51,31 +81,31 @@
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th>
+				<th scope="col">
 					<?php echo JText::_('COM_POLL_COL_NUM'); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
 				</th>
-				<th class="title">
+				<th scope="col" class="title">
 					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_TITLE', 'm.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_PUBLISHED', 'm.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_OPEN', 'm.open', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_VOTES', 'm.voters', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_OPTIONS', 'numoptions', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_LAG', 'm.lag', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
-				<th>
+				<th scope="col">
 					<?php echo JHTML::_('grid.sort', 'COM_POLL_COL_ID', 'm.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 				</th>
 			</tr>
@@ -94,7 +124,7 @@
 		{
 			$row = &$this->items[$i];
 
-			$link = JRoute::_('index.php?option=com_poll&view=poll&task=edit&cid='. $row->id);
+			$link = JRoute::_('index.php?option=' . $this->option . '&view=poll&task=edit&cid='. $row->id);
 
 			//$checked 	= JHTML::_('grid.checkedout',   $row, $i );
 			//$published 	= JHTML::_('grid.published', $row, $i );
@@ -115,7 +145,7 @@
 					<?php if (($row->checked_out && $row->checked_out != $this->user->get('id')) || !$canDo->get('core.edit')) { ?>
 						<span> </span>
 					<?php } else { ?>
-						<input type="checkbox" name="cid[]" id="cb<?php echo $i;?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
+						<input type="checkbox" name="cid[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" onclick="isChecked(this.checked, this);" />
 					<?php } ?>
 				</td>
 				<td>
@@ -131,7 +161,7 @@
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class;?>" href="index.php?option=com_poll&amp;task=<?php echo $task; ?>&amp;cid=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task); ?>">
+						<a class="state <?php echo $class;?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=' . $task . '&cid=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } else { ?>
@@ -142,7 +172,7 @@
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit.state')) { ?>
-						<a class="state <?php echo $class2; ?>" href="index.php?option=com_poll&amp;task=<?php echo $task2; ?>&amp;cid=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task2); ?>">
+						<a class="state <?php echo $class2; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=' . $task2 . '&cid=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_POLL_SET_TO', $task2); ?>">
 							<span><?php echo $alt2; ?></span>
 						</a>
 					<?php } else { ?>
@@ -171,11 +201,11 @@
 		</tbody>
 	</table>
 
-	<input type="hidden" name="option" value="com_poll" />
+	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->lists['order']; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->lists['order_Dir']; ?>" />
 
-	<?php echo JHTML::_( 'form.token' ); ?>
+	<?php echo JHTML::_('form.token'); ?>
 </form>

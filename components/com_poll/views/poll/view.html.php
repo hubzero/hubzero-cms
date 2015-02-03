@@ -37,7 +37,7 @@ class PollViewPoll extends JView
 
 		$poll_id = JRequest::getVar('id', 0, '', 'int');
 
-		$poll = JTable::getInstance('poll', 'Table');
+		$poll = new \Components\Poll\Tables\Poll($db);
 		$poll->load($poll_id);
 
 		// if id value is passed and poll not published then exit
