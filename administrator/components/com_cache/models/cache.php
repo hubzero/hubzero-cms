@@ -1,43 +1,67 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_cache
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// no direct access
-defined('_JEXEC') or die;
+namespace Components\Cache\Models;
+
+use JApplicationHelper;
+use JModelList;
+use JPagination;
+use JArrayHelper;
+use JFactory;
+use JCache;
 
 jimport('joomla.application.component.modellist');
 
 /**
  * Cache Model
- *
- * @package		Joomla.Administrator
- * @subpackage	com_cache
- * @since		1.6
  */
-class CacheModelCache extends JModelList
+class Cache extends JModelList
 {
 	/**
 	 * An Array of CacheItems indexed by cache group ID
 	 *
-	 * @var Array
+	 * @var  Array
 	 */
 	protected $_data = array();
 
 	/**
 	 * Group total
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	protected $_total = null;
 
 	/**
 	 * Pagination object
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	protected $_pagination = null;
 
@@ -46,16 +70,18 @@ class CacheModelCache extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @param   string   $ordering
+	 * @param   string   $direction
+	 * @return  unknown
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
 
-		$clientId = $this->getUserStateFromRequest($this->context.'.filter.client_id', 'filter_client_id', 0, 'int');
+		$clientId = $this->getUserStateFromRequest($this->context . '.filter.client_id', 'filter_client_id', 0, 'int');
 		$this->setState('clientId', $clientId == 1 ? 1 : 0);
 
-		$client	= JApplicationHelper::getClientInfo($clientId);
+		$client = JApplicationHelper::getClientInfo($clientId);
 		$this->setState('client', $client);
 
 		parent::populateState('group', 'asc');
@@ -65,32 +91,38 @@ class CacheModelCache extends JModelList
 	/**
 	 * Method to get cache data
 	 *
-	 * @return array
+	 * @return  array
 	 */
 	public function getData()
 	{
-		if (empty($this->_data)) {
-		    $cache 	= $this->getCache();
-			$data 	= $cache->getAll();
+		if (empty($this->_data))
+		{
+			$cache = $this->getCache();
+			$data  = $cache->getAll();
 
-			if ($data != false) {
+			if ($data != false)
+			{
 				$this->_data = $data;
 				$this->_total = count($data);
 
-				if ($this->_total) {
+				if ($this->_total)
+				{
 					// Apply custom ordering
-					$ordering 	= $this->getState('list.ordering');
-					$direction 	= ($this->getState('list.direction') == 'asc') ? 1 : -1;
+					$ordering  = $this->getState('list.ordering');
+					$direction = ($this->getState('list.direction') == 'asc') ? 1 : -1;
 
 					jimport('joomla.utilities.arrayhelper');
 					$this->_data = JArrayHelper::sortObjects($data, $ordering, $direction);
 
 					// Apply custom pagination
-					if ($this->_total > $this->getState('list.limit') && $this->getState('list.limit')) {
+					if ($this->_total > $this->getState('list.limit') && $this->getState('list.limit'))
+					{
 						$this->_data = array_slice($this->_data, $this->getState('list.start'), $this->getState('list.limit'));
 					}
 				}
-			} else {
+			}
+			else
+			{
 				$this->_data = array();
 			}
 		}
@@ -109,10 +141,10 @@ class CacheModelCache extends JModelList
 		$conf = JFactory::getConfig();
 
 		$options = array(
-			'defaultgroup'	=> '',
-			'storage' 		=> $conf->get('cache_handler', ''),
-			'caching'		=> true,
-			'cachebase'		=> ($this->getState('clientId') == 1) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache')
+			'defaultgroup' => '',
+			'storage'      => $conf->get('cache_handler', ''),
+			'caching'      => true,
+			'cachebase'    => ($this->getState('clientId') == 1) ? JPATH_ADMINISTRATOR . '/cache' : $conf->get('cache_path', JPATH_SITE . '/cache')
 		);
 
 		$cache = JCache::getInstance('', $options);
@@ -123,7 +155,7 @@ class CacheModelCache extends JModelList
 	/**
 	 * Method to get client data
 	 *
-	 * @return array
+	 * @return  array
 	 */
 	public function getClient()
 	{
@@ -133,11 +165,12 @@ class CacheModelCache extends JModelList
 	/**
 	 * Get the number of current Cache Groups
 	 *
-	 * @return int
+	 * @return  integer
 	 */
 	public function getTotal()
 	{
-		if (empty($this->_total)) {
+		if (empty($this->_total))
+		{
 			$this->_total = count($this->getData());
 		}
 
@@ -147,13 +180,18 @@ class CacheModelCache extends JModelList
 	/**
 	 * Method to get a pagination object for the cache
 	 *
-	 * @return integer
+	 * @return  integer
 	 */
 	public function getPagination()
 	{
-		if (empty($this->_pagination)) {
+		if (empty($this->_pagination))
+		{
 			jimport('joomla.html.pagination');
-			$this->_pagination = new JPagination($this->getTotal(), $this->getState('list.start'), $this->getState('list.limit'));
+			$this->_pagination = new JPagination(
+				$this->getTotal(),
+				$this->getState('list.start'),
+				$this->getState('list.limit')
+			);
 		}
 
 		return $this->_pagination;
@@ -163,24 +201,35 @@ class CacheModelCache extends JModelList
 	 * Clean out a cache group as named by param.
 	 * If no param is passed clean all cache groups.
 	 *
-	 * @param String $group
+	 * @param   string  $group
+	 * @return  void
 	 */
 	public function clean($group = '')
 	{
-		$cache = $this->getCache();
-		$cache->clean($group);
+		$this->getCache()->clean($group);
 	}
 
+	/**
+	 * Clean an array
+	 *
+	 * @param   array  $array
+	 * @return  void
+	 */
 	public function cleanlist($array)
 	{
-		foreach ($array as $group) {
+		foreach ($array as $group)
+		{
 			$this->clean($group);
 		}
 	}
 
+	/**
+	 * Purge cache
+	 *
+	 * @return  boolean
+	 */
 	public function purge()
 	{
-		$cache = JFactory::getCache('');
-		return $cache->gc();
+		return JFactory::getCache('')->gc();
 	}
 }
