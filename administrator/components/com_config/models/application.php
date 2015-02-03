@@ -1,30 +1,65 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_config
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Components\Config\Models;
+
+use JComponentHelper;
+use JArrayHelper;
+use JModelForm;
+use JAccessRules;
+use JAccess;
+use JFactory;
+use JConfig;
+use JError;
+use JPath;
+use JText;
+use JTable;
+use JRegistry;
+use JFile;
+use JClientHelper;
+use JFilterOutput;
 
 jimport('joomla.application.component.modelform');
 
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_config
+ * Model class for Application config
  */
-class ConfigModelApplication extends JModelForm
+class Application extends JModelForm
 {
 	/**
 	 * Method to get a form object.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 *
-	 * @return	mixed	A JForm object on success, false on failure
-	 *
-	 * @since	1.6
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @return  mixed    A JForm object on success, false on failure
+	 * @since   1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
@@ -45,15 +80,14 @@ class ConfigModelApplication extends JModelForm
 	 * JConfig. If configuration data has been saved in the session, that
 	 * data will be merged into the original data, overwriting it.
 	 *
-	 * @return	array		An array containg all global config data.
-	 *
-	 * @since	1.6
+	 * @return  array  An array containg all global config data.
+	 * @since   1.6
 	 */
 	public function getData()
 	{
 		// Get the config data.
-		$config	= new JConfig();
-		$data	= JArrayHelper::fromObject($config);
+		$config = new JConfig();
+		$data = JArrayHelper::fromObject($config);
 
 		// Prime the asset_id for the rules.
 		$data['asset_id'] = 1;
@@ -84,18 +118,16 @@ class ConfigModelApplication extends JModelForm
 	/**
 	 * Method to save the configuration data.
 	 *
-	 * @param	array	An array containing all global config data.
-	 *
-	 * @return	bool	True on success, false on failure.
-	 *
-	 * @since	1.6
+	 * @param   array  An array containing all global config data.
+	 * @return  bool   True on success, false on failure.
+	 * @since   1.6
 	 */
 	public function save($data)
 	{
 		// Save the rules
 		if (isset($data['rules']))
 		{
-			$rules	= new JAccessRules($data['rules']);
+			$rules = new JAccessRules($data['rules']);
 
 			// Check that we aren't removing our Super User permission
 			// Need to get groups from database, since they might have changed
@@ -159,9 +191,7 @@ class ConfigModelApplication extends JModelForm
 		// Merge the new data in. We do this to preserve values that were not in the form.
 		$data = array_merge($prev, $data);
 
-		/*
-		 * Perform miscellaneous options based on configuration settings/changes.
-		 */
+		// Perform miscellaneous options based on configuration settings/changes.
 		// Escape the offline message if present.
 		if (isset($data['offline_message']))
 		{
@@ -183,8 +213,7 @@ class ConfigModelApplication extends JModelForm
 		// Clean the cache if disabled but previously enabled.
 		if (!$data['caching'] && $prev['caching'])
 		{
-			$cache = JFactory::getCache();
-			$cache->clean();
+			JFactory::getCache()->clean();
 		}
 
 		// Create the new configuration object.
@@ -213,9 +242,10 @@ class ConfigModelApplication extends JModelForm
 	 * This method will load the global configuration data straight from
 	 * JConfig and remove the root_user value for security, then save the configuration.
 	 *
-	 * @since	1.6
+	 * @return  boolean
+	 * @since   1.6
 	 */
-	function removeroot()
+	public function removeroot()
 	{
 		// Get the previous configuration.
 		$prev = new JConfig();
@@ -228,18 +258,14 @@ class ConfigModelApplication extends JModelForm
 
 		// Write the configuration file.
 		return $this->writeConfigFile($config);
-
-		return true;
 	}
 
 	/**
 	 * Method to write the configuration to a file.
 	 *
-	 * @param	JRegistry  $config	A JRegistry object containing all global config data.
-	 *
-	 * @return	bool	   True on success, false on failure.
-	 *
-	 * @since	2.5.4
+	 * @param   object  $config  A JRegistry object containing all global config data.
+	 * @return  bool    True on success, false on failure.
+	 * @since   2.5.4
 	 */
 	private function writeConfigFile(JRegistry $config)
 	{

@@ -1,21 +1,41 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_config
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Config\Models;
 
 jimport('joomla.application.component.modelform');
 
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_config
+ * Model class for Component config
  */
-class ConfigModelComponent extends JModelForm
+class Component extends \JModelForm
 {
 	/**
 	 * The event to trigger before saving the data.
@@ -38,19 +58,20 @@ class ConfigModelComponent extends JModelForm
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @return	void
-	 * @since	1.6
+	 * @return  void
+	 * @since   1.6
 	 */
 	protected function populateState()
 	{
 		// Set the component (option) we are dealing with.
-		$component = JRequest::getCmd('component');
+		$component = \JRequest::getCmd('component');
 		$this->setState('component.option', $component);
 
 		// Set an alternative path for the configuration file.
-		if ($path = JRequest::getString('path')) {
-			$path = JPath::clean(JPATH_SITE . '/' . $path);
-			JPath::check($path);
+		if ($path = \JRequest::getString('path'))
+		{
+			$path = \JPath::clean(JPATH_SITE . '/' . $path);
+			\JPath::check($path);
 			$this->setState('component.path', $path);
 		}
 	}
@@ -58,31 +79,32 @@ class ConfigModelComponent extends JModelForm
 	/**
 	 * Method to get a form object.
 	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 *
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @return  mixed    A JForm object on success, false on failure
+	 * @since   1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		if ($path = $this->getState('component.path')) {
+		if ($path = $this->getState('component.path'))
+		{
 			// Add the search path for the admin component config.xml file.
-			JForm::addFormPath($path);
+			\JForm::addFormPath($path);
 		}
-		else {
+		else
+		{
 			// Add the search path for the admin component config.xml file.
-			JForm::addFormPath(JPATH_ADMINISTRATOR.'/components/'.$this->getState('component.option'));
+			\JForm::addFormPath(JPATH_ADMINISTRATOR . '/components/' . $this->getState('component.option'));
 		}
 
 		// Get the form.
 		$form = $this->loadForm(
-				'com_config.component',
-				'config',
-				array('control' => 'jform', 'load_data' => $loadData),
-				false,
-				'/config'
-			);
+			'com_config.component',
+			'config',
+			array('control' => 'jform', 'load_data' => $loadData),
+			false,
+			'/config'
+		);
 
 		if (empty($form))
 		{
@@ -95,47 +117,44 @@ class ConfigModelComponent extends JModelForm
 	/**
 	 * Get the component information.
 	 *
-	 * @return	object
-	 * @since	1.6
+	 * @return  object
+	 * @since   1.6
 	 */
-	function getComponent()
+	public function getComponent()
 	{
 		// Initialise variables.
 		$option = $this->getState('component.option');
 
 		// Load common and local language files.
-		$lang = JFactory::getLanguage();
-			$lang->load($option, JPATH_BASE, null, false, true)
-		||	$lang->load($option, JPATH_BASE . "/components/$option", null, false, true);
+		$lang = \JFactory::getLanguage();
+		$lang->load($option, JPATH_BASE, null, false, true)
+		|| $lang->load($option, JPATH_BASE . "/components/$option", null, false, true);
 
-		$result = JComponentHelper::getComponent($option);
-
-		return $result;
+		return \JComponentHelper::getComponent($option);
 	}
 
 	/**
 	 * Method to save the configuration data.
 	 *
-	 * @param	array	An array containing all global config data.
-	 *
-	 * @return	bool	True on success, false on failure.
-	 * @since	1.6
+	 * @param   array  An array containing all global config data.
+	 * @return  bool   True on success, false on failure.
+	 * @since   1.6
 	 */
 	public function save($data)
 	{
-		$dispatcher = JDispatcher::getInstance();
-		$table	= JTable::getInstance('extension');
+		$dispatcher = \JDispatcher::getInstance();
+		$table = \JTable::getInstance('extension');
 		$isNew = true;
 
 		// Save the rules.
 		if (isset($data['params']) && isset($data['params']['rules']))
 		{
-			$rules	= new JAccessRules($data['params']['rules']);
-			$asset	= JTable::getInstance('asset');
+			$rules = new \JAccessRules($data['params']['rules']);
+			$asset = \JTable::getInstance('asset');
 
 			if (!$asset->loadByName($data['option']))
 			{
-				$root	= JTable::getInstance('asset');
+				$root = \JTable::getInstance('asset');
 				$root->loadByName('root.1');
 				$asset->name = $data['option'];
 				$asset->title = $data['option'];

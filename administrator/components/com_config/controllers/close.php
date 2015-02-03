@@ -28,22 +28,25 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access
-defined('_JEXEC') or die;
-?>
-<div class="width-100">
-	<fieldset class="adminform">
-		<legend><span><?php echo JText::_('COM_CONFIG_SERVER_SETTINGS'); ?></span></legend>
+namespace Components\Config\Controllers;
 
-		<?php
-		foreach ($this->form->getFieldset('server') as $field):
-		?>
-			<div class="input-wrap">
-				<?php echo $field->label; ?>
-				<?php echo $field->input; ?>
-			</div>
-		<?php
-		endforeach;
-		?>
-	</fieldset>
-</div>
+use Hubzero\Component\AdminController;
+
+/**
+ * Controller class for closing the config
+ */
+class Close extends AdminController
+{
+	/**
+	 * Close the configuration and redirect
+	 *
+	 * @return  void
+	 */
+	public function displayTask()
+	{
+		\JFactory::getDocument()->addScriptDeclaration('
+			window.parent.location.href=window.parent.location.href;
+			window.parent.$.fancybox.close();
+		');
+	}
+}

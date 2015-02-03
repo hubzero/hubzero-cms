@@ -1,9 +1,31 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_config
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access
@@ -23,56 +45,50 @@ JHtml::_('behavior.formvalidation');
 		}
 	}
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_config');?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate">
 	<fieldset>
 		<div class="fltrt">
-			<button type="button" onclick="Joomla.submitform('component.apply', this.form);">
-				<?php echo JText::_('JAPPLY');?></button>
-			<button type="button" onclick="Joomla.submitform('component.save', this.form);">
-				<?php echo JText::_('JSAVE');?></button>
-			<button type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.$.fancybox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+			<button type="button" onclick="Joomla.submitform('component.apply', this.form);"><?php echo JText::_('JAPPLY');?></button>
+			<button type="button" onclick="Joomla.submitform('component.save', this.form);"><?php echo JText::_('JSAVE');?></button>
+			<button type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>window.parent.$.fancybox.close();"><?php echo JText::_('JCANCEL');?></button>
 		</div>
-		<div class="configuration" >
-			<?php echo JText::_($this->component->option.'_configuration') ?>
+		<div class="configuration">
+			<?php echo JText::_($this->component->option . '_configuration'); ?>
 		</div>
 	</fieldset>
 
 	<?php
-	echo JHtml::_('tabs.start', 'config-tabs-'.$this->component->option.'_configuration', array('useCookie'=>1));
+	echo JHtml::_('tabs.start', 'config-tabs-' . $this->component->option . '_configuration', array('useCookie' => 1));
+
 		$fieldSets = $this->form->getFieldsets();
+
 		foreach ($fieldSets as $name => $fieldSet) :
-			$label = empty($fieldSet->label) ? 'COM_CONFIG_'.$name.'_FIELDSET_LABEL' : $fieldSet->label;
+			$label = empty($fieldSet->label) ? 'COM_CONFIG_' . $name . '_FIELDSET_LABEL' : $fieldSet->label;
 			echo JHtml::_('tabs.panel', JText::_($label), 'publishing-details');
 			if (isset($fieldSet->description) && !empty($fieldSet->description)) :
 				echo '<p class="tab-description">'.JText::_($fieldSet->description).'</p>';
 			endif;
-	?>
+			?>
 			<ul class="config-option-list">
-			<?php
-			foreach ($this->form->getFieldset($name) as $field):
-			?>
-				<li>
-				<?php if (!$field->hidden) : ?>
-				<?php echo $field->label; ?>
-				<?php endif; ?>
-				<?php echo $field->input; ?>
-				</li>
-			<?php
-			endforeach;
-			?>
+				<?php foreach ($this->form->getFieldset($name) as $field): ?>
+					<li>
+						<?php if (!$field->hidden) : ?>
+							<?php echo $field->label; ?>
+						<?php endif; ?>
+						<?php echo $field->input; ?>
+					</li>
+				<?php endforeach; ?>
 			</ul>
-
-
-	<div class="clr"></div>
-	<?php
+			<div class="clr"></div>
+			<?php
 		endforeach;
+
 	echo JHtml::_('tabs.end');
 	?>
-	<div>
-		<input type="hidden" name="id" value="<?php echo $this->component->id;?>" />
-		<input type="hidden" name="component" value="<?php echo $this->component->option;?>" />
-		<input type="hidden" name="task" value="" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+
+	<input type="hidden" name="id" value="<?php echo $this->component->id; ?>" />
+	<input type="hidden" name="component" value="<?php echo $this->component->option; ?>" />
+	<input type="hidden" name="task" value="" />
+
+	<?php echo JHtml::_('form.token'); ?>
 </form>
