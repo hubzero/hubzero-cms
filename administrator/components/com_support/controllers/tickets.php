@@ -347,7 +347,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
+		$layout = 'edit';
 
 		// Incoming
 		$id = JRequest::getInt('id', 0);
@@ -358,7 +358,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		// Editing or creating a ticket?
 		if (!$row->exists())
 		{
-			$this->view->setLayout('add');
+			$layout = 'add';
 
 			// Creating a new ticket
 			$row->set('severity', 'normal');
@@ -459,7 +459,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view->setLayout($layout)->display();
 	}
 
 	/**
