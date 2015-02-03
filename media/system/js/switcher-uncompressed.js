@@ -56,7 +56,10 @@
 				self.display(jQuery(this).attr('id'));
 			});
 
-			var first = jQuery(this.togglers[0]).attr('id'); //[Cookie.read(this.options.cookieName), this.togglers[0].id].pick();
+			var first = document.location.hash.substring(1);
+			if (!first) {
+				first = jQuery(this.togglers[0]).attr('id');
+			}
 			this.display(first);
 		},
 
@@ -77,11 +80,12 @@
 			toggler.addClass('active');
 
 			this.current = toggler.attr('id');
-			//Cookie.write(this.options.cookieName, this.current);
+
+			document.location.hash = this.current;
+			jQuery(window).scrollTop(0);
 		},
 
 		hide: function(element) {
-			//this.fireEvent('hide', element);
 			element.hide();
 			this.options.onHide();
 		},
@@ -92,7 +96,6 @@
 		},
 
 		show: function (element) {
-			//this.fireEvent('show', element);
 			element.show();
 			this.options.onShow();
 		}
