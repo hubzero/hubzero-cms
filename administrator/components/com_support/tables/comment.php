@@ -152,7 +152,7 @@ class SupportComment extends JTable
 	{
 		if (!$ticket)
 		{
-			$ticket = $this->_ticket;
+			$ticket = $this->id;
 		}
 		if ($authorized)
 		{

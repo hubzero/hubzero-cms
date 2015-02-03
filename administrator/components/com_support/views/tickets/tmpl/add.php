@@ -122,11 +122,11 @@ function submitbutton(pressbutton)
 				<div class="input-wrap">
 					<label for="field-severity"><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?></label>
 					<select name="severity" id="field-severity">
-						<option value="critical"><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_CRITICAL'); ?></option>
-						<option value="major"><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_MAJOR'); ?></option>
-						<option value="normal"><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_NORMAL'); ?></option>
-						<option value="minor"><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_MINOR'); ?></option>
-						<option value="trivial"><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_TRIVIAL'); ?></option>
+						<option value="critical"<?php if ($this->row->get('severity') == 'critical') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_CRITICAL'); ?></option>
+						<option value="major"<?php if ($this->row->get('severity') == 'major') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_MAJOR'); ?></option>
+						<option value="normal"<?php if ($this->row->get('severity') == 'normal') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_NORMAL'); ?></option>
+						<option value="minor"<?php if ($this->row->get('severity') == 'minor') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_MINOR'); ?></option>
+						<option value="trivial"<?php if ($this->row->get('severity') == 'trivial') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_TRIVIAL'); ?></option>
 					</select>
 				</div>
 			</div>
