@@ -365,6 +365,9 @@ class plgCronSupport extends JPlugin
 
 				$mailed = array();
 
+				$message->message = str_replace('{sitename}', $jconfig->getValue('config.sitename'), $message->message);
+				$message->message = str_replace('{siteemail}', $jconfig->getValue('config.mailfrom'), $message->message);
+
 				$comment = new SupportModelComment();
 				$comment->set('created', JFactory::getDate()->toSql());
 				$comment->set('created_by', 0);
@@ -407,6 +410,9 @@ class plgCronSupport extends JPlugin
 
 					$row = clone $old;
 					$row->set('open', 0);
+
+					$comment->set('comment', str_replace('#XXX', '#' . $row->get('id'), $comment->get('comment')));
+					$comment->set('comment', str_replace('{ticket#}', $row->get('id'), $comment->get('comment')));
 
 					// Compare fields to find out what has changed for this ticket and build a changelog
 					$comment->changelog()->diff($old, $row);
