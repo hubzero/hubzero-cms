@@ -149,7 +149,7 @@ class PublicationsCuration extends JObject
 	/**
 	 * Get blocks in order
 	 *
-	 * @param   string  $manifest     Pup type manifest to parse
+	 * @param   string  $manifest     Pub type manifest to parse
 	 * @return  boolean
 	 */
 	public function setBlocks($manifest = NULL)
@@ -2045,6 +2045,151 @@ class PublicationsCuration extends JObject
 		{
 		    return false;
 		}
+
+		return true;
+	}
+
+	/**
+	 * Conversion for publications created in a non-curated flow
+	 *
+	 * @param   object $pub
+	 * @return  boolean
+	 */
+	public function convertToCuration( $pub = NULL, $uid = 0 )
+	{
+		$pub = $pub ? $pub : $this->_pub;
+		$oldFlow = false;
+
+		if (!isset($pub->_attachments)
+			|| !isset($pub->_attachments['elements'])
+			|| empty($pub->_attachments['elements']))
+		{
+			// Nothing to convert
+			return false;
+		}
+
+		// Get attachment type model
+		$attModel = new PublicationsModelAttachments($this->_db);
+		$fileAttach = $attModel->loadAttach('file');
+
+		// Get supporting docs element element manifest
+		$sElements = self::getElements(2);
+		$sElement  = $sElements ? $sElements[0] : NULL;
+
+		// Loop through attachments
+		foreach ($pub->_attachments['elements'] as $elementId => $elementAttachments)
+		{
+			if (empty($elementAttachments))
+			{
+				continue;
+			}
+			// Check if any attachments are missing element id
+			foreach ($elementAttachments as $elAttach)
+			{
+				if ($elAttach->element_id == 0)
+				{
+					$oldFlow = true; // will need to make further checks
+
+					// Save elementid
+					$row = new PublicationAttachment( $this->_db );
+					if ($row->load($elAttach->id))
+					{
+						$markId = $elAttach->role != 1 && $sElement ? $sElement->id : $elementId;
+						$row->element_id = $markId;
+						$row->store();
+					}
+				}
+			}
+		}
+
+		if ($oldFlow == false)
+		{
+			// Nothing to convert
+			return false;
+		}
+
+		// Get gallery element manifest
+		$elements = self::getElements(3);
+		$element = $elements ? $elements[0] : NULL;
+
+		// Retrieve screenshots
+		$pScreenshot = new PublicationScreenshot( $this->_db );
+		$shots = $pScreenshot->getScreenshots( $pub->version_id );
+
+		// Transfer gallery files to the right location
+		if ($element && $shots && isset($pub->_helpers))
+		{
+			// Set configs
+			$configs  = $fileAttach->getConfigs(
+				$element->manifest->params,
+				$element->id,
+				$pub,
+				$element->block
+			);
+
+			// Get gallery path
+			$galleryPath 	= $pub->_helpers->pubHelper->buildPath(
+				$pub->id,
+				$pub->version_id,
+				'',
+				'gallery',
+				1
+			);
+
+			if (is_dir($galleryPath))
+			{
+				$objPA = new PublicationAttachment( $this->_db );
+				foreach ($shots as $shot)
+				{
+					if (is_file($galleryPath . DS . $shot->srcfile)
+					&& !$objPA->loadElementAttachment($pub->version_id, array( 'path' => $shot->filename),
+						$element->id, 'file', $element->manifest->params->role))
+					{
+						$objPA = new PublicationAttachment( $this->_db );
+						$objPA->publication_id 			= $pub->id;
+						$objPA->publication_version_id 	= $pub->version_id;
+						$objPA->path 					= $shot->filename;
+						$objPA->type 					= 'file';
+						$objPA->created_by 				= $uid;
+						$objPA->created 				= JFactory::getDate()->toSql();
+						$objPA->role 					= $element->manifest->params->role;
+						$objPA->element_id 				= $element->id;
+						$objPA->ordering 				= $shot->ordering;
+						if (!$objPA->store())
+						{
+							continue;
+						}
+						// Check if names is already used
+						$suffix = $fileAttach->checkForDuplicate(
+							$configs->path . DS . $objPA->path,
+							$objPA,
+							$configs
+						);
+						// Save params if applicable
+						if ($suffix)
+						{
+							$pa = new PublicationAttachment( $this->_db );
+							$pa->saveParam($objPA, 'suffix', $suffix);
+						}
+						// Copy file into the right spot
+						$fileAttach->publishAttachment($objPA, $pub, $configs);
+					}
+				}
+			}
+		}
+
+		// Check if published version has curation manifest saved
+		$row = new PublicationVersion( $this->_db );
+		if ($pub->state == 1 && !$pub->curation)
+		{
+			if ($row->load($pub->version_id))
+			{
+				$row->curation = json_encode($this->_manifest);
+				$row->store();
+			}
+		}
+		// Mark as curated
+		$row->saveParam($row->id, 'curated', 1);
 
 		return true;
 	}

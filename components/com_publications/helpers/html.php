@@ -1330,6 +1330,14 @@ class PublicationsHtml
 				return '<p class="error statusmsg">'.JText::_('COM_PUBLICATIONS_ERROR_CONTENT_UNAVAILABLE').'</p>';
 			}
 		}
+		if ($content['primary'][0]->type == 'link' )
+		{
+			$serveas = 'external';
+		}
+		if ($content['primary'][0]->type == 'tool' )
+		{
+			$serveas = 'invoke';
+		}
 
 		$primary = $content['primary'][0];
 		switch ($serveas)

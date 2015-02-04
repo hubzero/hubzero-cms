@@ -1359,6 +1359,9 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		// Set pub assoc and load curation
 		$pub->_curationModel->setPubAssoc($pub);
 
+		// For publications created in a non-curated flow - convert
+		$pub->_curationModel->convertToCuration($pub, $this->_uid);
+
 		// Go to last incomplete section
 		if ($this->_task == 'continue')
 		{

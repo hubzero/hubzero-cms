@@ -1912,3 +1912,23 @@
 		color: #000;
 		border-bottom: 1px dotted #000 !important;
 	}
+/* Attachment type icons */
+	.link-type, .data-type {
+		padding-left: 20px;
+	}
+	.link-type:before, .data-type:before {
+		content: "\26D3";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #5ec1da;
+		border: none;
+		position: absolute;
+		margin-left: -1.2em;
+		margin-right: 0.2em;
+	}
+	.data-type:before {
+		content: "\f001";
+		color: #c6a68d;
+	}

@@ -109,8 +109,8 @@ class PublicationsModelAttachmentLink extends PublicationsModelAttachment
 				$pop		= JText::_('View link') . ' ' . $title;
 
 				$html .= '<li>';
-				$html .= $authorized == 'administrator' ? '[' . $this->_name . '] ' : '';
-				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blank">' . $title . '</a>';
+				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
+				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blank" class="link-type">' . $title . '</a>';
 				$html .='</li>';
 			}
 		}
