@@ -434,6 +434,7 @@ class PublicationsModelHandlerImageViewer extends PublicationsModelHandler
 			$this->_imgHelper->set('path', $configs->pubPath . DS);
 			$this->_imgHelper->set('maxWidth', $this->_config->params->thumbWidth);
 			$this->_imgHelper->set('maxHeight', $this->_config->params->thumbHeight);
+			$this->_imgHelper->set('cropratio', NULL);
 			if (!$this->_imgHelper->process())
 			{
 				return false;
