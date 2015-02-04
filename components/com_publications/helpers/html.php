@@ -1007,6 +1007,19 @@ class PublicationsHtml
 			$text .= ' - <span><a href="'. JRoute::_('index.php?option='.$option.'&id='.
 			$publication->id.'&active=about'). '#citethis">'.JText::_('cite this').'</a></span></span>'."\n";
 		}
+		// Show archival status (mkAIP)
+		if ($config->get('repository', 0))
+		{
+			if ($publication->doi && $publication->archived != '0000-00-00 00:00:00')
+			{
+				$text .= "\t\t".'<span class="archival-notice archived">'. JText::_('COM_PUBLICATIONS_VERSION_ARCHIVED_ON_DATE') . ' ' . JHTML::_('date', $publication->archived, $dateFormat, $tz) . "\n";
+			}
+			else
+			{
+				$archiveDate  = $publication->accepted && $publication->accepted != '0000-00-00 00:00:00' ? JFactory::getDate($publication->accepted . '+1 month')->toSql() : NULL;
+				$text .= $archiveDate ? "\t\t".'<span class="archival-notice unarchived">'. JText::_('COM_PUBLICATIONS_VERSION_TO_BE_ARCHIVED') . ' ' . JHTML::_('date', $archiveDate, $dateFormat) . "\n" : '';
+			}
+		}
 
 		// Show current release information
 		if ($lastPubRelease && $lastPubRelease->id != $publication->version_id)

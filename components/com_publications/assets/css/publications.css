@@ -1873,6 +1873,28 @@
 		padding: 0.3em 0;
 		border-bottom: 1px dotted #CCC;
 	}
+	.archival-notice {
+		display: block;
+		font-size: 90%;
+		color: #666;
+		line-height: 1.5em;
+		margin: 1em 0.2em;
+		font-style: italic;
+	}
+	.archival-notice:before {
+		content: "\f058";
+		width: 16px;
+		height: 16px;
+		font-size: 16px;
+		font-family: 'Fontcons';
+		color: #666;
+		border: none;
+		margin-right: 0.2em;
+		font-style: normal;
+	}
+	.archival-notice.unarchived:before {
+		content: "\26A0";
+	}
 /* Footer */
 	.pub-footer {
 		margin: 2em 1em;
