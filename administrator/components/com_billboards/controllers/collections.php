@@ -90,6 +90,16 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Create a billboard
+	 *
+	 * @return void
+	 */
+	public function addTask()
+	{
+		$this->editTask();
+	}
+
+	/**
 	 * Edit a billboards collection
 	 *
 	 * @return void
@@ -118,7 +128,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
