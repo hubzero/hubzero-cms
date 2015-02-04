@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 // Menu items
 JToolBarHelper::title(JText::_('COM_SYSTEM_APC_HOST'), 'config.png');
 
+$this->css('apc.css');
+
 $time = $this->time;
 
 ?>
@@ -54,10 +56,10 @@ jQuery(document).ready(function($){
 </script>
 
 <div id="clearcache">
-	<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=clrcache">Clear <?php echo $this->cache_mode; ?> cache</a>
+	<a class="button" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=clrcache'); ?>">Clear <?php echo $this->cache_mode; ?> cache</a>
 </div>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<div class="col width-50 fltlft">
 		<table class="adminlist">
 			<thead>
@@ -196,8 +198,8 @@ jQuery(document).ready(function($){
 			<?php $size = 'width=' . (GRAPH_SIZE+50) . ' height=' . (GRAPH_SIZE+10); ?>
 			<?php if ($this->graphics_avail) : ?>
 				<tr class="row0">
-					<td><img alt="" <?php echo $size; ?> src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=mkimage&amp;IMG=1&amp;time=<?php echo $time; ?>" /></td>
-					<td><img alt="" <?php echo $size; ?> src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=mkimage&amp;IMG=2&amp;time=<?php echo $time; ?>" /></td>
+					<td><img alt="" <?php echo $size; ?> src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=mkimage&IMG=1&time=' . $time); ?>" /></td>
+					<td><img alt="" <?php echo $size; ?> src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=mkimage&IMG=2&time=' . $time); ?>" /></td>
 				</tr>
 			<?php endif; ?>
 				<tr class="row0">
@@ -257,7 +259,7 @@ jQuery(document).ready(function($){
 
 					if ($freeseg > 1)
 					{
-						$frag = sprintf("%.2f%% (%s out of %s in %d fragments)", ($fragsize/$freetotal)*100, SystemHtml::bsize($fragsize), SystemHtml::bsize($freetotal), $freeseg);
+						$frag = sprintf("%.2f%% (%s out of %s in %d fragments)", ($fragsize/$freetotal)*100, \Components\System\Helpers\Html::bsize($fragsize), \Components\System\Helpers\Html::bsize($freetotal), $freeseg);
 					}
 					else
 					{

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,32 +24,30 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\System\Controllers;
+
+use Hubzero\Component\AdminController;
 
 /**
- * Controller class for Geo DB config
+ * System controller class for info
  */
-class SystemControllerGeodb extends \Hubzero\Component\AdminController
+class Geodb extends AdminController
 {
 	/**
 	 * Default view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -59,7 +57,7 @@ class SystemControllerGeodb extends \Hubzero\Component\AdminController
 	/**
 	 * Import the hub configuration
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function importHubconfigTask()
 	{
@@ -68,12 +66,15 @@ class SystemControllerGeodb extends \Hubzero\Component\AdminController
 			include_once(JPATH_ROOT . DS . 'hubconfiguration.php');
 		}
 
-		$table = new JTableExtension($this->database);
-		$table->load($table->find(array('element' => $this->_option, 'type' => 'component')));
+		$table = new \JTableExtension($this->database);
+		$table->load($table->find(array(
+			'element' => $this->_option,
+			'type'    => 'component'
+		)));
 
 		if (class_exists('HubConfig'))
 		{
-			$hub_config = new HubConfig();
+			$hub_config = new \HubConfig();
 
 			$this->config->set('geodb_driver', $hub_config->ipDBDriver);
 			$this->config->set('geodb_host', $hub_config->ipDBHost);
@@ -90,7 +91,7 @@ class SystemControllerGeodb extends \Hubzero\Component\AdminController
 
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SYSTEM_GEO_IMPORT_COMPLETE')
+			\JText::_('COM_SYSTEM_GEO_IMPORT_COMPLETE')
 		);
 	}
 }

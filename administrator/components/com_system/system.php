@@ -28,49 +28,48 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\System;
 
 $option = 'com_system';
 
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', $option))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'system.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = JRequest::getCmd('controller', JRequest::getCmd('view', 'info'));
+$controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'info'));
 if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'info';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('COM_SYSTEM_LDAP'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SYSTEM_LDAP'),
 	'index.php?option=' . $option . '&controller=ldap',
 	$controllerName == 'ldap'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SYSTEM_GEO'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SYSTEM_GEO'),
 	'index.php?option=' . $option . '&controller=geodb',
 	$controllerName == 'geodb'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SYSTEM_APC'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SYSTEM_APC'),
 	'index.php?option=' . $option . '&controller=apc',
 	$controllerName == 'apc'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_SYSTEM_ROUTES'),
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_SYSTEM_ROUTES'),
 	'index.php?option=' . $option . '&controller=routes',
 	$controllerName == 'routes'
 );
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'SystemController' . ucfirst($controllerName);
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();

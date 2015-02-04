@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,18 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\System\Controllers;
+
+use Hubzero\Component\AdminController;
 
 /**
  * Primary controller for the APC component
  */
-class SystemControllerApc extends \Hubzero\Component\AdminController
+class Apc extends AdminController
 {
 	/**
 	 * Controller execute method, used for selecting the correct function based on task.
@@ -45,7 +46,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	public function execute()
 	{
 		// Get the task
-		$this->_task = JRequest::getVar('task', '');
+		$this->_task = \JRequest::getVar('task', '');
 
 		// Set the version id
 		$this->VERSION = '$Id: apc.php 271315 2008-12-16 07:15:07Z shire $';
@@ -85,7 +86,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		define('OB_VERSION_CHECK',9);
 
 		// Check validity of input variables
-		$vardom=array(
+		$vardom = array(
 			'OB'         => '/^\d+$/',               // operational mode switch
 			'CC'         => '/^[01]$/',              // clear cache requested
 			'DU'         => '/^.*$/',                // Delete User Key
@@ -150,10 +151,10 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		}
 
 		// Check parameter sematics
-		if (empty($MYREQUEST['SCOPE'])) $MYREQUEST['SCOPE'] = "A";
-		if (empty($MYREQUEST['SORT1'])) $MYREQUEST['SORT1'] = "H";
-		if (empty($MYREQUEST['SORT2'])) $MYREQUEST['SORT2'] = "D";
-		if (empty($MYREQUEST['OB']))	$MYREQUEST['OB'] = OB_HOST_STATS;
+		if (empty($MYREQUEST['SCOPE']))  $MYREQUEST['SCOPE'] = "A";
+		if (empty($MYREQUEST['SORT1']))  $MYREQUEST['SORT1'] = "H";
+		if (empty($MYREQUEST['SORT2']))  $MYREQUEST['SORT2'] = "D";
+		if (empty($MYREQUEST['OB']))     $MYREQUEST['OB']    = OB_HOST_STATS;
 		if (!isset($MYREQUEST['COUNT'])) $MYREQUEST['COUNT'] = 20;
 		if (!isset($this->scope_list[$MYREQUEST['SCOPE']])) $MYREQUEST['SCOPE'] = 'A';
 
@@ -187,8 +188,8 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 		if (!function_exists('apc_cache_info') || !($this->cache = @apc_cache_info($cache_mode)))
 		{
-			$this->setError(JText::_('No cache info available.  APC does not appear to be running.'));
-			JRequest::setVar('task', 'error');
+			$this->setError(\JText::_('No cache info available.  APC does not appear to be running.'));
+			\JRequest::setVar('task', 'error');
 			parent::execute();
 			return;
 		}
@@ -212,19 +213,16 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * View host stats
+	 * View errors
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function errorTask()
 	{
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -234,14 +232,10 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	/**
 	 * View host stats
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function hostTask()
 	{
-		// Add stylesheet
-		$doc = JFactory::getDocument();
-		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
-
 		// A few variables to grab from outside (to compute other values)
 		$cache      = $this->cache;
 		$cache_user = $this->cache_user;
@@ -279,12 +273,9 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		$this->view->cache_mode       = $this->cache_mode;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -294,14 +285,10 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	/**
 	 * View system cache entries
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function systemTask()
 	{
-		// Add stylesheet
-		$doc = JFactory::getDocument();
-		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
-
 		// Instantiate a new view
 		$this->view->MYREQUEST       = $this->MYREQUEST;
 		$this->view->MY_SELF         = $this->MY_SELF;
@@ -310,12 +297,9 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		$this->view->scope_list      = $this->scope_list;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -329,17 +313,10 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	 */
 	public function versionTask()
 	{
-		// Add stylesheet
-		$doc = JFactory::getDocument();
-		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
-
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -353,10 +330,6 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	 */
 	public function userTask()
 	{
-		// Add stylesheet
-		$doc = JFactory::getDocument();
-		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
-
 		$this->view->MYREQUEST       = $this->MYREQUEST;
 		$this->view->MY_SELF         = $this->MY_SELF;
 		$this->view->MY_SELF_WO_SORT = $this->MY_SELF_WO_SORT;
@@ -364,12 +337,9 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		$this->view->scope_list      = $this->scope_list;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -383,10 +353,6 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	 */
 	public function dircacheTask()
 	{
-		// Add stylesheet
-		$doc = JFactory::getDocument();
-		$doc->addStyleSheet('components' . DS . $this->_option . DS . 'assets' . DS . 'css' . DS . 'apc.css');
-
 		$this->view->MYREQUEST       = $this->MYREQUEST;
 		$this->view->MY_SELF         = $this->MY_SELF;
 		$this->view->MY_SELF_WO_SORT = $this->MY_SELF_WO_SORT;
@@ -394,12 +360,9 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		$this->view->scope_list      = $this->scope_list;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -409,7 +372,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	/**
 	 * Clear cache
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function clrcacheTask()
 	{
@@ -423,9 +386,9 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * define if not defined
+	 * Define if not defined
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	private function _defaults($d, $v)
 	{
@@ -435,8 +398,8 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	/**
 	 * Pretty printer for byte values
 	 *
-	 * @param    integer $s Byte value
-	 * @return   string
+	 * @param   integer  $s  Byte value
+	 * @return  string
 	 */
 	private function _bsize($s)
 	{
@@ -445,7 +408,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 			if ($s < 1024) break;
 			$s/=1024;
 		}
-		return sprintf("%5.1f %sBytes",$s,$k);
+		return sprintf("%5.1f %sBytes", $s, $k);
 	}
 
 	/**
@@ -464,15 +427,15 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		$hours = (int)(($rem)/3600) - $days*24 - $weeks*7*24;
 		$mins  = (int)(($rem)/60) - $hours*60 - $days*24*60 - $weeks*7*24*60;
 		$str   = '';
-		if ($years==1) $str .= "$years year, ";
-		if ($years>1) $str .= "$years years, ";
-		if ($weeks==1) $str .= "$weeks week, ";
-		if ($weeks>1) $str .= "$weeks weeks, ";
-		if ($days==1) $str .= "$days day,";
-		if ($days>1) $str .= "$days days,";
+		if ($years == 1) $str .= "$years year, ";
+		if ($years > 1)  $str .= "$years years, ";
+		if ($weeks == 1) $str .= "$weeks week, ";
+		if ($weeks > 1)  $str .= "$weeks weeks, ";
+		if ($days == 1)  $str .= "$days day,";
+		if ($days > 1)   $str .= "$days days,";
 		if ($hours == 1) $str .= " $hours hour and";
-		if ($hours>1) $str .= " $hours hours and";
-		if ($mins == 1) $str .= " 1 minute";
+		if ($hours > 1)  $str .= " $hours hours and";
+		if ($mins == 1)  $str .= " 1 minute";
 		else $str .= " $mins minutes";
 
 		return $str;
@@ -481,7 +444,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	/**
 	 * Check if GD extension is loaded
 	 *
-	 * @return boolean
+	 * @return  boolean
 	 */
 	private function graphics_avail()
 	{
@@ -491,7 +454,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 	/**
 	 * Create graphics
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function mkimageTask()
 	{
@@ -515,7 +478,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		function fill_arc($im, $centerX, $centerY, $diameter, $start, $end, $color1, $color2, $text='', $placeindex=0)
 		{
 			$r = $diameter/2;
-			$w=deg2rad((360+$start+($end-$start)/2)%360);
+			$w = deg2rad((360+$start+($end-$start)/2)%360);
 
 			if (function_exists("imagefilledarc"))
 			{
@@ -566,21 +529,28 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 		function fill_box($im, $x, $y, $w, $h, $color1, $color2,$text='',$placeindex='')
 		{
 			global $col_black;
-			$x1=$x+$w-1;
-			$y1=$y+$h-1;
+
+			$x1 = $x+$w-1;
+			$y1 = $y+$h-1;
 
 			imagerectangle($im, $x, $y1, $x1+1, $y+1, $col_black);
-			if($y1>$y) imagefilledrectangle($im, $x, $y, $x1, $y1, $color2);
-			else imagefilledrectangle($im, $x, $y1, $x1, $y, $color2);
+			if ($y1 > $y)
+			{
+				imagefilledrectangle($im, $x, $y, $x1, $y1, $color2);
+			}
+			else
+			{
+				imagefilledrectangle($im, $x, $y1, $x1, $y, $color2);
+			}
 			imagerectangle($im, $x, $y1, $x1, $y, $color1);
 			if ($text)
 			{
-				if ($placeindex>0)
+				if ($placeindex > 0)
 				{
-					if ($placeindex<16)
+					if ($placeindex < 16)
 					{
-						$px=5;
-						$py=$placeindex*12+6;
+						$px = 5;
+						$py = $placeindex*12+6;
 						imagefilledrectangle($im, $px+90, $py+3, $px+90-4, $py-3, $color2);
 						imageline($im,$x,$y+$h/2,$px+90,$py,$color2);
 						imagestring($im,2,$px,$py-6,$text,$color1);
@@ -589,13 +559,13 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 					{
 						if ($placeindex<31)
 						{
-							$px=$x+40*2;
-							$py=($placeindex-15)*12+6;
+							$px = $x+40*2;
+							$py = ($placeindex-15)*12+6;
 						}
 						else
 						{
-							$px=$x+40*2+100*intval(($placeindex-15)/15);
-							$py=($placeindex%15)*12+6;
+							$px = $x+40*2+100*intval(($placeindex-15)/15);
+							$py = ($placeindex%15)*12+6;
 						}
 						imagefilledrectangle($im, $px, $py+3, $px-4, $py-3, $color2);
 						imageline($im,$x+$w,$y+$h/2,$px,$py,$color2);
@@ -615,15 +585,19 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 		$size = GRAPH_SIZE; // image size
 		if ($MYREQUEST['IMG']==3)
+		{
 			$image = imagecreate(2*$size+150, $size+10);
+		}
 		else
+		{
 			$image = imagecreate($size+50, $size+10);
+		}
 
 		$col_white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
 		$col_red   = imagecolorallocate($image, 0xD0, 0x60,  0x30);
 		$col_green = imagecolorallocate($image, 0x60, 0xF0, 0x60);
 		$col_black = imagecolorallocate($image,   0,   0,   0);
-		imagecolortransparent($image,$col_white);
+		imagecolortransparent($image, $col_white);
 
 		switch ($MYREQUEST['IMG'])
 		{
@@ -637,17 +611,18 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 				// would expect because we try to visualize any memory fragmentation as well.
 				$angle_from = 0;
 				$string_placement=array();
-				for($i=0; $i<$mem['num_seg']; $i++)
+				for ($i=0; $i<$mem['num_seg']; $i++)
 				{
 					$ptr = 0;
 					$free = $mem['block_lists'][$i];
 					uasort($free, 'block_sort');
-					foreach($free as $block) {
-						if($block['offset']!=$ptr)
+					foreach ($free as $block)
+					{
+						if ($block['offset']!=$ptr)
 						{
 							$angle_to = $angle_from+($block['offset']-$ptr)/$s;
-							if(($angle_to+$fuzz)>1) $angle_to = 1;
-							if( ($angle_to*360) - ($angle_from*360) >= 1)
+							if (($angle_to+$fuzz) > 1) $angle_to = 1;
+							if (($angle_to*360) - ($angle_from*360) >= 1)
 							{
 								fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_red);
 								if (($angle_to-$angle_from)>0.05)
@@ -658,8 +633,8 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 							$angle_from = $angle_to;
 						}
 						$angle_to = $angle_from+($block['size'])/$s;
-						if(($angle_to+$fuzz)>1) $angle_to = 1;
-						if( ($angle_to*360) - ($angle_from*360) >= 1)
+						if (($angle_to+$fuzz) > 1) $angle_to = 1;
+						if (($angle_to*360) - ($angle_from*360) >= 1)
 						{
 							fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_green);
 							if (($angle_to-$angle_from)>0.05)
@@ -673,7 +648,7 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 					if ($ptr < $mem['seg_size'])
 					{
 						$angle_to = $angle_from + ($mem['seg_size'] - $ptr)/$s;
-						if(($angle_to+$fuzz)>1) $angle_to = 1;
+						if (($angle_to+$fuzz) > 1) $angle_to = 1;
 						fill_arc($image,$x,$y,$size,$angle_from*360,$angle_to*360,$col_black,$col_red);
 						if (($angle_to-$angle_from)>0.05)
 						{
@@ -688,8 +663,8 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 				break;
 
 			case 2:
-				$s=$cache['num_hits']+$cache['num_misses'];
-				$a=$cache['num_hits'];
+				$s = $cache['num_hits']+$cache['num_misses'];
+				$a = $cache['num_hits'];
 
 				fill_box($image, 30,$size,50,-$a*($size-21)/$s,$col_black,$col_green,sprintf("%.1f%%",$cache['num_hits']*100/$s));
 				fill_box($image,130,$size,50,-max(4,($s-$a)*($size-21)/$s),$col_black,$col_red,sprintf("%.1f%%",$cache['num_misses']*100/$s));
@@ -704,29 +679,29 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 
 				// This block of code creates the bar chart.  It is a lot more complex than you
 				// would expect because we try to visualize any memory fragmentation as well.
-				for($i=0; $i<$mem['num_seg']; $i++)
+				for ($i=0; $i<$mem['num_seg']; $i++)
 				{
 					$ptr = 0;
 					$free = $mem['block_lists'][$i];
 					uasort($free, 'block_sort');
-					foreach($free as $block)
+					foreach ($free as $block)
 					{
-						if($block['offset']!=$ptr)
+						if ($block['offset']!=$ptr)
 						{
-							$h=(GRAPH_SIZE-5)*($block['offset']-$ptr)/$s;
+							$h = (GRAPH_SIZE-5)*($block['offset']-$ptr)/$s;
 							if ($h>0)
 							{
 								$j++;
-								if($j<75) fill_box($image,$x,$y,50,$h,$col_black,$col_red,$this->_bsize($block['offset']-$ptr),$j);
+								if ($j<75) fill_box($image,$x,$y,50,$h,$col_black,$col_red,$this->_bsize($block['offset']-$ptr),$j);
 								else fill_box($image,$x,$y,50,$h,$col_black,$col_red);
 							}
 							$y+=$h;
 						}
-						$h=(GRAPH_SIZE-5)*($block['size'])/$s;
+						$h = (GRAPH_SIZE-5)*($block['size'])/$s;
 						if ($h>0)
 						{
 							$j++;
-							if($j<75) fill_box($image,$x,$y,50,$h,$col_black,$col_green,$this->_bsize($block['size']),$j);
+							if ($j<75) fill_box($image,$x,$y,50,$h,$col_black,$col_green,$this->_bsize($block['size']),$j);
 							else fill_box($image,$x,$y,50,$h,$col_black,$col_green);
 						}
 						$y+=$h;
@@ -737,15 +712,15 @@ class SystemControllerApc extends \Hubzero\Component\AdminController
 						$h = (GRAPH_SIZE-5) * ($mem['seg_size'] - $ptr) / $s;
 						if ($h > 0)
 						{
-							fill_box($image,$x,$y,50,$h,$col_black,$col_red,_bsize($mem['seg_size']-$ptr),$j++);
+							fill_box($image,$x,$y,50,$h,$col_black,$col_red,$this->_bsize($mem['seg_size']-$ptr),$j++);
 						}
 					}
 				}
 				break;
 
 			case 4:
-				$s=$cache['num_hits']+$cache['num_misses'];
-				$a=$cache['num_hits'];
+				$s = $cache['num_hits']+$cache['num_misses'];
+				$a = $cache['num_hits'];
 
 				fill_box($image, 30,$size,50,-$a*($size-21)/$s,$col_black,$col_green,sprintf("%.1f%%",$cache['num_hits']*100/$s));
 				fill_box($image,130,$size,50,-max(4,($s-$a)*($size-21)/$s),$col_black,$col_red,sprintf("%.1f%%",$cache['num_misses']*100/$s));

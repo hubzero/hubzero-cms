@@ -32,13 +32,15 @@ defined('_JEXEC') or die('Restricted access');
 
 // Menu items
 JToolBarHelper::title(JText::_('COM_SYSTEM_APC_VERSION'), 'config.png');
+
+$this->css('apc.css');
 ?>
 
 <?php
 	$this->view('_submenu')->display();
 ?>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="information">
 		<h2>APC Version Information</h2>
 <?php

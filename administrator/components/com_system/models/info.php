@@ -28,12 +28,12 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Components\System\Models;
 
 /**
  * Model class for getting system information
  */
-class SystemModelInfo extends \JModelLegacy
+class Info extends \JModelLegacy
 {
 	/**
 	 * @var  array  some php settings

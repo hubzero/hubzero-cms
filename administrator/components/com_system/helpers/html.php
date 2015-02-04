@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,35 +24,27 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\System\Helpers;
 
 /**
  * HTML helper for system
  */
-class SystemHtml
+class Html
 {
-	//public static $MY_SELF_WO_SORT = '';
-
-	//public static $MYREQUEST = array();
-
 	/**
 	 * Sortable table header in "scripts for this host" view
 	 *
-	 * @param	string $key   Sort key
-	 * @param	string $name  Link name
-	 * @param	string $extra Extra data to append to URL
-	 * @param	string
+	 * @param  string  $key    Sort key
+	 * @param  string  $name   Link name
+	 * @param  string  $extra  Extra data to append to URL
+	 * @param  string
 	 */
 	public static function sortheader($MYREQUEST, $MY_SELF_WO_SORT, $key, $name, $extra='')
 	{
-		//$MYREQUEST = self::$MYREQUEST;
-		//$MY_SELF_WO_SORT = self::$MY_SELF_WO_SORT;
-
 		if ($MYREQUEST['SORT1'] == $key)
 		{
 			$MYREQUEST['SORT2'] = $MYREQUEST['SORT2']=='A' ? 'D' : 'A';
@@ -64,8 +56,8 @@ class SystemHtml
 	/**
 	 * Pretty printer for byte values
 	 *
-	 * @param	integer $s Byte value
-	 * @param	string
+	 * @param   integer  $s  Byte value
+	 * @return  string
 	 */
 	public static function bsize($s)
 	{

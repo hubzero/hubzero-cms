@@ -33,6 +33,8 @@ defined('_JEXEC') or die('Restricted access');
 // Menu items
 JToolBarHelper::title(JText::_('COM_SYSTEM_APC_SYSTEM'), 'config.png');
 
+$this->css('apc.css');
+
 //$this->MYREQUEST = $this->MYREQUEST;
 $this->MYREQUEST = str_replace('&amp;', '&', $this->MYREQUEST);
 $this->MYREQUEST = str_replace('&', '&amp;', $this->MYREQUEST);
@@ -48,7 +50,7 @@ $cache     = $this->cache;
 	$this->view('_submenu')->display();
 ?>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 <?php
 	if (!isset($fieldname))
 	{
@@ -170,22 +172,22 @@ $cache     = $this->cache;
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S',$fieldheading,   "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Hits',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Size',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Last accessed', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M','Last modified', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Created at',    "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'S',$fieldheading,   "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'H','Hits',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'Z','Size',          "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'A','Last accessed', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'M','Last modified', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'C','Created at',    "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 <?php
 		if ($fieldname=='info')
 		{
 			$cols+=1;
 ?>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Timeout', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'T','Timeout', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 <?php
 		}
 ?>
-				<th><?php echo SystemHtml::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D','Deleted at', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
+				<th><?php echo \Components\System\Helpers\Html::sortheader($this->MYREQUEST, $this->MY_SELF_WO_SORT, 'D','Deleted at', "&amp;OB=" . $this->MYREQUEST['OB']); ?></th>
 			</tr>
 		</thead>
 		<tbody>

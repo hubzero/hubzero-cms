@@ -28,12 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-include_once(JPATH_COMPONENT. DS . 'models' . DS . 'info.php');
+namespace Components\System\Controllers;
+
+use Components\System\Models\Info as KnowItAll;
+use Hubzero\Component\AdminController;
 
 /**
  * System controller class for info
  */
-class SystemControllerInfo extends \Hubzero\Component\AdminController
+class Info extends AdminController
 {
 	/**
 	 * Outputs a list of available scripts
@@ -44,10 +47,12 @@ class SystemControllerInfo extends \Hubzero\Component\AdminController
 	{
 		if (!$this->juser->authorise('core.admin'))
 		{
-			return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+			return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-		$model = new SystemModelInfo();
+		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'info.php');
+
+		$model = new KnowItAll();
 
 		$this->view
 			->set('php_settings', $model->getPhpSettings())

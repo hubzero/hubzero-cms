@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-@package		hubzero-cms
-@file		   administrator/components/com_system/kb.xml
-@copyright	  Copyright 2005-2011 Purdue University. All rights reserved.
-@license		http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+@package    hubzero-cms
+@file       administrator/components/com_system/system.xml
+@copyright  Copyright 2005-2015 Purdue University. All rights reserved.
+@license    http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,11 +28,11 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <extension type="component" version="1.5">
-	<name>System</name>
+	<name>com_system</name>
 	<author>HUBzero</author>
-	<copyright>Copyright 2005-2011 Purdue University. All rights reserved.</copyright>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
-	<description>Manage a system configurations</description>
+	<description>COM_SYSTEM_XML_DESCRIPTION</description>
 	<languages>
 		<language tag="en-GB">en-GB.com_system.ini</language>
 	</languages>

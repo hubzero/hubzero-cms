@@ -28,58 +28,61 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\System\Controllers;
 
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'entry.php');
+use Components\System\Tables\Redirection;
+use Hubzero\Component\AdminController;
+
+require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'redirection.php');
 
 /**
  * System controller class for custom routes
  */
-class SystemControllerRoutes extends \Hubzero\Component\AdminController
+class Routes extends AdminController
 {
 	/**
 	 * Display a list of entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Get Joomla configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['catid']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.catid',
-			'catid',
-			0,
-			'int'
-		);
-		$this->view->filters['ViewModeId']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.viewmode',
-			'viewmode',
-			0,
-			'int'
-		);
-		$this->view->filters['SortById']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortby',
-			'sortby',
-			0,
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start'  => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'catid'  => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.catid',
+				'catid',
+				0,
+				'int'
+			),
+			'ViewModeId' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.viewmode',
+				'viewmode',
+				0,
+				'int'
+			),
+			'SortById'  => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortby',
+				'sortby',
+				0,
+				'int'
+			)
 		);
 
 		// Determine the mode
@@ -93,50 +96,47 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 		// Make the select list for the filter
 		$viewmode = array();
-		$viewmode[] = JHTML::_('select.option', '0', JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_SEF'), 'value', 'text');
-		$viewmode[] = JHTML::_('select.option', '1', JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_404'), 'value', 'text');
-		$viewmode[] = JHTML::_('select.option', '2', JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_REDIRECTS'), 'value', 'text');
+		$viewmode[] = \JHTML::_('select.option', '0', \JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_SEF'), 'value', 'text');
+		$viewmode[] = \JHTML::_('select.option', '1', \JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_404'), 'value', 'text');
+		$viewmode[] = \JHTML::_('select.option', '2', \JText::_('COM_SYSTEM_ROUTES_VIEW_MODE_REDIRECTS'), 'value', 'text');
 
-		$this->view->lists['viewmode'] = JHTML::_('select.genericlist', $viewmode, 'viewmode', '', 'value', 'text', $this->view->filters['ViewModeId'], false, false);
+		$this->view->lists['viewmode'] = \JHTML::_('select.genericlist', $viewmode, 'viewmode', '', 'value', 'text', $this->view->filters['ViewModeId'], false, false);
 
 		// Make the select list for the filter
 		$orderby = array();
-		$orderby[] = JHTML::_('select.option', '0', JText::_('COM_SYSTEM_ROUTES_SORT_BY_SEF_ASC'), 'value', 'text');
-		$orderby[] = JHTML::_('select.option', '1', JText::_('COM_SYSTEM_ROUTES_SORT_BY_SEF_DESC'), 'value', 'text');
+		$orderby[] = \JHTML::_('select.option', '0', \JText::_('COM_SYSTEM_ROUTES_SORT_BY_SEF_ASC'), 'value', 'text');
+		$orderby[] = \JHTML::_('select.option', '1', \JText::_('COM_SYSTEM_ROUTES_SORT_BY_SEF_DESC'), 'value', 'text');
 		if ($this->view->is404mode != true)
 		{
-			$orderby[] = JHTML::_('select.option', '2', JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_ASC'), 'value', 'text');
-			$orderby[] = JHTML::_('select.option', '3', JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_DESC'), 'value', 'text');
+			$orderby[] = \JHTML::_('select.option', '2', \JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_ASC'), 'value', 'text');
+			$orderby[] = \JHTML::_('select.option', '3', \JText::_('COM_SYSTEM_ROUTES_SORT_BY_REAL_DESC'), 'value', 'text');
 		}
-		$orderby[] = JHTML::_('select.option', '4', JText::_('COM_SYSTEM_ROUTES_SORT_BY_HITS_ASC'), 'value', 'text');
-		$orderby[] = JHTML::_('select.option', '5', JText::_('COM_SYSTEM_ROUTES_SORT_BY_HITS_DESC'), 'value', 'text');
+		$orderby[] = \JHTML::_('select.option', '4', \JText::_('COM_SYSTEM_ROUTES_SORT_BY_HITS_ASC'), 'value', 'text');
+		$orderby[] = \JHTML::_('select.option', '5', \JText::_('COM_SYSTEM_ROUTES_SORT_BY_HITS_DESC'), 'value', 'text');
 
-		$this->view->lists['sortby'] = JHTML::_('select.genericlist', $orderby, 'sortby', '', 'value', 'text', $this->view->filters['SortById'], false, false);
+		$this->view->lists['sortby'] = \JHTML::_('select.genericlist', $orderby, 'sortby', '', 'value', 'text', $this->view->filters['SortById'], false, false);
 
-		// Instantiate a new SefEntry
-		$s = new SefEntry($this->database);
+		// Instantiate a new record
+		$s = new Redirection($this->database);
 
 		// Record count
-		$this->view->total = $s->getCount($this->view->filters);
+		$this->view->total = $s->find('count', $this->view->filters);
 
 		// Get records
-		$this->view->rows = $s->getRecords($this->view->filters);
+		$this->view->rows = $s->find('list', $this->view->filters);
 
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
+		$this->view->pageNav = new \JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
 			$this->view->filters['limit']
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -146,7 +146,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 	/**
 	 * Show a form for adding an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -156,20 +156,20 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 	/**
 	 * Show a form for editing an entry
 	 *
-	 * @param      object $row SefEntry
-	 * @return     void
+	 * @param   object  $row  Redirection
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
+		$this->view->row = $row;
 
 		// Load a tag object if one doesn't already exist
-		if (!is_object($row))
+		if (!is_object($this->view->row))
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$ids = \JRequest::getVar('id', array());
 			if (!is_array($ids))
 			{
 				$ids = array();
@@ -177,37 +177,30 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 
 			$id = (!empty($ids)) ? $ids[0] : 0;
 
-			$this->view->row = new SefEntry($this->database);
+			$this->view->row = new Redirection($this->database);
 			$this->view->row->load($id);
 
 			if (!$id)
 			{
 				// do stuff for new records
-				$this->view->row->dateadd = JFactory::getDate()->toSql();
+				$this->view->row->dateadd = \JFactory::getDate()->toSql();
 			}
-		}
-		else
-		{
-			$this->view->row = $row;
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
 	 * Cancel a task and redirect
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -219,15 +212,15 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Load the tag object and bind the incoming data to it
-		$row = new SefEntry($this->database);
+		$row = new Redirection($this->database);
 		if (!$row->bind($_POST))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
@@ -254,21 +247,21 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SYSTEM_ROUTES_ITEM_SAVED')
+			\JText::_('COM_SYSTEM_ROUTES_ITEM_SAVED')
 		);
 	}
 
 	/**
 	 * Remove one or more entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		if (!is_array($ids))
 		{
 			$ids = array();
@@ -284,7 +277,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		}
 
 		// Load some needed objects
-		$sef = new SefEntry($this->database);
+		$sef = new Redirection($this->database);
 
 		foreach ($ids as $id)
 		{
@@ -295,7 +288,7 @@ class SystemControllerRoutes extends \Hubzero\Component\AdminController
 		// Redirect
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SYSTEM_ROUTES_ITEM_REMOVED')
+			\JText::_('COM_SYSTEM_ROUTES_ITEM_REMOVED')
 		);
 	}
 }

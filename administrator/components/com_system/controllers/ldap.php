@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,32 +24,30 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\System\Controllers;
+
+use Hubzero\Component\AdminController;
 
 /**
  * Controller class for system config
  */
-class SystemControllerLdap extends \Hubzero\Component\AdminController
+class Ldap extends AdminController
 {
 	/**
 	 * Default view
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -59,7 +57,7 @@ class SystemControllerLdap extends \Hubzero\Component\AdminController
 	/**
 	 * Import the hub configuration
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function importHubconfigTask()
 	{
@@ -68,12 +66,15 @@ class SystemControllerLdap extends \Hubzero\Component\AdminController
 			include_once(JPATH_ROOT . DS . 'hubconfiguration.php');
 		}
 
-		$table = new JTableExtension($this->database);
-		$table->load($table->find(array('element' => $this->_option, 'type' => 'component')));
+		$table = new \JTableExtension($this->database);
+		$table->load($table->find(array(
+			'element' => $this->_option,
+			'type'    => 'component'
+		)));
 
 		if (class_exists('HubConfig'))
 		{
-			$hub_config = new HubConfig();
+			$hub_config = new \HubConfig();
 
 			$this->config->set('ldap_basedn', $hub_config->hubLDAPBaseDN);
 			$this->config->set('ldap_primary', $hub_config->hubLDAPMasterHost);
@@ -105,22 +106,22 @@ class SystemControllerLdap extends \Hubzero\Component\AdminController
 		$result = \Hubzero\Utility\Ldap::deleteAllGroups();
 
 		$messageType = 'info';
-		$message     = JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
+		$message     = \JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
 			$messageType = 'error';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
 			$messageType = 'warning';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
 		}
 		elseif (isset($result['success']))
 		{
 			$messageType = 'passed';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_GROUP_ENTRIES_DELETED', $result['deleted']);
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_GROUP_ENTRIES_DELETED', $result['deleted']);
 		}
 
 		$this->setRedirect(
@@ -133,29 +134,29 @@ class SystemControllerLdap extends \Hubzero\Component\AdminController
 	/**
 	 * Delete LDAP user entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deleteUsersTask()
 	{
 		$result = \Hubzero\Utility\Ldap::deleteAllUsers();
 
 		$messageType = 'info';
-		$message     = JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
+		$message     = \JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
 			$messageType = 'error';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
 			$messageType = 'warning';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
 		}
 		elseif (isset($result['success']))
 		{
 			$messageType = 'passed';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']);
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']);
 		}
 
 		$this->setRedirect(
@@ -168,29 +169,29 @@ class SystemControllerLdap extends \Hubzero\Component\AdminController
 	/**
 	 * Export all groups to LDAP
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function exportGroupsTask()
 	{
 		$result = \Hubzero\Utility\Ldap::syncAllGroups();
 
 		$messageType = 'info';
-		$message     = JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
+		$message     = \JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
 			$messageType = 'error';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
 			$messageType = 'warning';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
 		}
 		elseif (isset($result['success']))
 		{
 			$messageType = 'passed';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']);
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']);
 		}
 
 		$this->setRedirect(
@@ -203,29 +204,29 @@ class SystemControllerLdap extends \Hubzero\Component\AdminController
 	/**
 	 * Delete LDAP user entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function exportUsersTask()
 	{
 		$result = \Hubzero\Utility\Ldap::syncAllUsers();
 
 		$messageType = 'info';
-		$message     = JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
+		$message     = \JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
 			$messageType = 'error';
-			$message     =  JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
 			$messageType = 'warning';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
 		}
 		elseif (isset($result['success']))
 		{
 			$messageType = 'passed';
-			$message     = JText::sprintf('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']);
+			$message     = \JText::sprintf('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']);
 		}
 
 		$this->setRedirect(

@@ -2,11 +2,11 @@
 
 <!--
 @package        hubzero-cms
-@file           administrator/components/com_kb/config.xml
-@copyright      Copyright 2005-2011 Purdue University. All rights reserved.
+@file           administrator/components/com_system/config.xml
+@copyright      Copyright 2005-2015 Purdue University. All rights reserved.
 @license        http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
 
-Copyright 2005-2011 Purdue University. All rights reserved.
+Copyright 2005-2015 Purdue University. All rights reserved.
 
 This file is part of: The HUBzero(R) Platform for Scientific Collaboration
 
@@ -28,53 +28,30 @@ HUBzero is a registered trademark of Purdue University.
 -->
 
 <config>
-	<params>
-		<param name="geodb_driver" type="text" default="mysql" label="Geolocation Database type" description="TIPDTATABASETYPE" />
-		<param name="geodb_host" type="text" default="localhost" label="Geolocation DB Hostname" description="TIPDATABASEHOSTNAME" />
-		<param name="geodb_port" type="text" default="" label="Geolocation DB Port" description="TIPDATABASEPORT" />
-		<param name="geodb_user" type="text" default="" label="Geolocation DB Username" description="TIPDATABASEUSERNAME" />
-		<param name="geodb_password" type="password" default="" label="Geolocation DB Password" description="TIPDATABASEPASSWORD" />
-		<param name="geodb_database" type="text" default="" label="Geolocation DB Schema" description="TIPDATABASENAME" />
-		<param name="geodb_prefix" type="text" default="" label="Geolocation DB Table Prefix" description="TIPDATABASEPREFIX" />
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="ldap_primary" type="text" default="ldap://localhost" label="LDAP Primary Host URI" description="TIPPRIMARYLDAP" />
-		<param name="ldap_secondary" type="text" default="" label="LDAP Secondary Host URI" description="TIPSECONDARYLDAP" />
-		<param name="ldap_basedn" type="text" default="" label="LDAP Base DN" description="TIPLDAPBASEDN" />
-		<param name="ldap_searchdn" type="text" default="" label="LDAP Search DN" description="TIPLDAPSEARCHDN" />
-		<param name="ldap_searchpw" type="password" default="" label="LDAP Search Password" description="TIPLDAPSEARCHPASSWORD" />
-		<param name="ldap_managerdn" type="text" default="" label="LDAP Manager DN" description="TIPLDAPMANAGERDN" />
-		<param name="ldap_managerpw" type="password" default="" label="LDAP Manager Password" description="TIPLDAPMANAGERPASSWORD" />
-		<param name="ldap_tls" type="radio" default="0" label="Use LDAP TLS" description="TIPLDAPTLS">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
-		</param>
-		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param name="whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" description="A comma-separated list of white-listed IP addresses" />
-	</params>
 	<fieldset name="geodb">
-		<field name="geodb_driver" type="text" default="mysql" label="Geolocation Database type" description="TIPDTATABASETYPE" />
-		<field name="geodb_host" type="text" default="localhost" label="Geolocation DB Hostname" description="TIPDATABASEHOSTNAME" />
-		<field name="geodb_port" type="text" default="" label="Geolocation DB Port" description="TIPDATABASEPORT" />
-		<field name="geodb_user" type="text" default="" label="Geolocation DB Username" description="TIPDATABASEUSERNAME" />
-		<field name="geodb_password" type="password" default="" label="Geolocation DB Password" description="TIPDATABASEPASSWORD" />
-		<field name="geodb_database" type="text" default="" label="Geolocation DB Schema" description="TIPDATABASENAME" />
-		<field name="geodb_prefix" type="text" default="" label="Geolocation DB Table Prefix" description="TIPDATABASEPREFIX" />
+		<field name="geodb_driver" type="text" default="mysql" label="COM_SYSTEM_PARAM_GEODB_DRIVER_LABEL" description="TIPDTATABASETYPE" />
+		<field name="geodb_host" type="text" default="localhost" label="COM_SYSTEM_PARAM_GEODB_HOST_LABEL" description="TIPDATABASEHOSTNAME" />
+		<field name="geodb_port" type="text" default="" label="COM_SYSTEM_PARAM_GEODB_PORT_LABEL" description="TIPDATABASEPORT" />
+		<field name="geodb_user" type="text" default="" label="COM_SYSTEM_PARAM_GEODB_USER_LABEL" description="TIPDATABASEUSERNAME" />
+		<field name="geodb_password" type="password" default="" label="COM_SYSTEM_PARAM_GEODB_PASS_LABEL" description="TIPDATABASEPASSWORD" />
+		<field name="geodb_database" type="text" default="" label="COM_SYSTEM_PARAM_GEODB_DB_LABEL" description="TIPDATABASENAME" />
+		<field name="geodb_prefix" type="text" default="" label="COM_SYSTEM_PARAM_GEODB_PREFIX_LABEL" description="TIPDATABASEPREFIX" />
 	</fieldset>
 	<fieldset name="ldap">
-		<field name="ldap_primary" type="text" default="ldap://localhost" label="LDAP Primary Host URI" description="TIPPRIMARYLDAP" />
-		<field name="ldap_secondary" type="text" default="" label="LDAP Secondary Host URI" description="TIPSECONDARYLDAP" />
-		<field name="ldap_basedn" type="text" default="" label="LDAP Base DN" description="TIPLDAPBASEDN" />
-		<field name="ldap_searchdn" type="text" default="" label="LDAP Search DN" description="TIPLDAPSEARCHDN" />
-		<field name="ldap_searchpw" type="password" default="" label="LDAP Search Password" description="TIPLDAPSEARCHPASSWORD" />
-		<field name="ldap_managerdn" type="text" default="" label="LDAP Manager DN" description="TIPLDAPMANAGERDN" />
-		<field name="ldap_managerpw" type="password" default="" label="LDAP Manager Password" description="TIPLDAPMANAGERPASSWORD" />
-		<field name="ldap_tls" type="radio" default="0" label="Use LDAP TLS" description="TIPLDAPTLS">
-			<option value="0">No</option>
-			<option value="1">Yes</option>
+		<field name="ldap_primary" type="text" default="ldap://localhost" label="COM_SYSTEM_PARAM_LDAP_PRIMARY_LABEL" description="TIPPRIMARYLDAP" />
+		<field name="ldap_secondary" type="text" default="" label="COM_SYSTEM_PARAM_LDAP_SECONDARY_LABEL" description="TIPSECONDARYLDAP" />
+		<field name="ldap_basedn" type="text" default="" label="COM_SYSTEM_PARAM_LDAP_BASEDN_LABEL" description="TIPLDAPBASEDN" />
+		<field name="ldap_searchdn" type="text" default="" label="COM_SYSTEM_PARAM_LDAP_SEARCHDN_LABEL" description="TIPLDAPSEARCHDN" />
+		<field name="ldap_searchpw" type="password" default="" label="COM_SYSTEM_PARAM_LDAP_SEARCHPW_LABEL" description="TIPLDAPSEARCHPASSWORD" />
+		<field name="ldap_managerdn" type="text" default="" label="COM_SYSTEM_PARAM_LDAP_MANAGERDN_LABEL" description="TIPLDAPMANAGERDN" />
+		<field name="ldap_managerpw" type="password" default="" label="COM_SYSTEM_PARAM_LDAP_MANAGERPW_LABEL" description="TIPLDAPMANAGERPASSWORD" />
+		<field name="ldap_tls" type="radio" default="0" label="COM_SYSTEM_PARAM_LDAP_TLS_LABEL" description="TIPLDAPTLS">
+			<option value="0">JNo</option>
+			<option value="1">JYes</option>
 		</field>
 	</fieldset>
 	<fieldset name="api">
-		<field name="Whitelist" type="textarea" rows="15" cols="40" default="127.0.0.1" description="A comma-separated list of white-listed IP addresses that can access the API for system reporting." />
+		<field name="COM_SYSTEM_PARAM_WHITELIST_LABEL" type="textarea" rows="15" cols="40" default="127.0.0.1" description="COM_SYSTEM_PARAM_WHITELIST_DESC" />
 	</fieldset>
 </config>
 

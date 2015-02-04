@@ -32,6 +32,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('COM_SYSTEM_APC'), 'config.png');
 
+$this->css('apc.css');
+
 if ($this->getError()) { ?>
 <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
