@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,41 +24,40 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
 ?>
-<a name="help-top"></a>
-<div class="help-header">
+<div class="help-header" id="help-top">
 	<?php if ($this->page != 'index') : ?>
-		<button id="back" class="back" onclick="window.history.back();" title="Go Back!">Go Back</button>
+		<button id="back" class="back" onclick="window.history.back();" title="<?php echo JText::_('COM_HELP_GO_BACK'); ?>"><?php echo JText::_('COM_HELP_GO_BACK'); ?></button>
 	<?php endif; ?>
 </div>
 
 <?php echo $this->content; ?>
 
 <div class="help-footer">
-	<a class="top" href="#help-top">Back to Top</a>
+	<a class="top" href="#help-top"><?php echo JText::_('COM_HELP_BACK_TO_TOP'); ?></a>
 	<?php if ($this->page != 'index') : ?>
-		<a class="index" href="<?php echo 'index.php?option=com_help&component=' . $this->component . '&page=index'; ?>">
-			Index
+		<a class="index" href="<?php echo JRoute::_('index.php?option=com_help&component=' . $this->component . '&page=index'); ?>">
+			<?php echo JText::_('COM_HELP_INDEX'); ?>
 		</a>
 	<?php endif; ?>
 	<p class="modified">
-		Last Modified: <?php echo date('l, F d, Y @ g:ia', $this->modified); ?>
+		<?php echo JText::sprintf('COM_HELP_LAST_MODIFIED', date('l, F d, Y @ g:ia', $this->modified)); ?>
 	</p>
 </div>
 
-<script>
+<script type="text/javascript">
 window.onload = function() {
 	var history = window.history,
 		back    = document.getElementById('back');
 
-	if (history.length > 1 && back !== null)
-	{
+	if (history.length > 1 && back !== null) {
 		back.style.display = "block";
 	}
 };

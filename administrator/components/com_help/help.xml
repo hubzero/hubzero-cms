@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+	<name>com_help</name>
+	<author>HUBzero</author>
+	<creationDate>February 2015</creationDate>
+	<copyright>Copyright 2005-2015 Purdue University. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3</license>
+	<authorEmail>support@hubzero.org</authorEmail>
+	<authorUrl>http://hubzero.org</authorUrl>
+	<version>1.0.0</version>
+	<description>COM_HELP_XML_DESCRIPTION</description>
+	<administration>
+		<files folder="admin">
+			<filename>help.php</filename>
+			<filename>controllers/help.php</filename>
+			<filename>index.html</filename>
+			<folder>controllers</folder>
+			<folder>views</folder>
+		</files>
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB.com_help.ini</language>
+		</languages>
+	</administration>
+</extension>
