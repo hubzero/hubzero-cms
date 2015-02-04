@@ -133,7 +133,7 @@ class PublicationsModelAttachmentData extends PublicationsModelAttachment
 
 				$html .= '<li>';
 				$html .= $authorized === 'administrator' ? '[' . $this->_name . '] ' : '';
-				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blank">' . $title . '</a>';
+				$html .= '<a href="' . $itemUrl . '" title="' . $pop . '" target="_blank" class="data-type">' . $title . '</a>';
 				$html .='</li>';
 			}
 		}

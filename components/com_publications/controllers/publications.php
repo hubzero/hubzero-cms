@@ -715,6 +715,16 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 
 			// Set pub assoc and load curation
 			$publication->_curationModel->setPubAssoc($publication);
+
+			// For publications created in a non-curated flow - convert and refresh page
+			if ($publication->_curationModel->convertToCuration($publication, $this->juser->get('id')) == true)
+			{
+				$return = JRequest::getVar('REQUEST_URI',
+					JRoute::_('index.php?option=' . $this->_option
+					. '&amp;id=' . $publication->id), 'server');
+				$this->_redirect = $return;
+				return;
+			}
 		}
 
 		// Build publication path (to access attachments)
