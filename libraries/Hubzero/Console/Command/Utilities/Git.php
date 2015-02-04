@@ -371,23 +371,24 @@ class Git
 			$response  = trim($response);
 			$return    = array();
 
-			if (empty($response))
-			{
-				$return['status'] = 'success';
-			}
-			else if (stripos($response, 'fatal') !== false)
+			if (substr($response, 0, 5) == 'fatal')
 			{
 				$return['status']  = 'fatal';
 				$return['message'] = trim(substr($response, stripos($response, 'fatal') + 6));
 			}
-			else if (stripos($response, 'error') !== false)
+			else if (substr($response, 0, 5) == 'error')
 			{
 				$return['status']  = 'fatal';
 				$return['message'] = trim(substr($response, stripos($response, 'error') + 6));
 			}
+			else if (stripos($response, 'automatic merge failed') !== false)
+			{
+				$return['status']  = 'fatal';
+				$return['message'] = $response;
+			}
 			else
 			{
-				$return['status'] = 'unknown';
+				$return['status'] = 'success';
 			}
 
 			// Include the raw return for all calls
@@ -511,7 +512,7 @@ class Git
 		$tagname = 'cmsrollbackpoint-'.$rollbackPoint;
 
 		// Make sure the tag exists first
-		if (stripos($this->call('show', array($tagname)), 'fatal'))
+		if (substr($this->call('show', array($tagname)), 0, 5 == 'fatal'))
 		{
 			return false;
 		}
