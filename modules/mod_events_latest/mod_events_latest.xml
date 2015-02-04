@@ -44,7 +44,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
 		<param name="startday" type="text" default="0" label="Start day" description="The day (number) the calendar should start on" />
 		<param name="max_events" type="text" default="10" label="Max events" description="The maximum number of events to display" />
-		<param name="mode" type="radio" default="2" label="Display last month" description="Display the calendar for the previous month">
+		<param name="mode" type="radio" default="2" label="Display mode" description="Display events for the selected mode">
 			<option value="0">Display events for current week and following week only</option>
 			<option value="1">Display events for current week and following week, including past events</option>
 			<option value="2">Display events for +'days' range</option>
@@ -92,7 +92,7 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
 				<field name="startday" type="text" default="0" label="Start day" description="The day (number) the calendar should start on" />
 				<field name="max_events" type="text" default="10" label="Max events" description="The maximum number of events to display" />
-				<field name="mode" type="radio" default="2" label="Display last month" description="Display the calendar for the previous month">
+				<field name="mode" type="radio" default="2" label="Display mode" description="Display events for the selected mode">
 					<option value="0">Display events for current week and following week only</option>
 					<option value="1">Display events for current week and following week, including past events</option>
 					<option value="2">Display events for +'days' range</option>
