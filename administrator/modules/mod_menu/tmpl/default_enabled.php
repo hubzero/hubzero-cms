@@ -99,7 +99,7 @@ $menu->addSeparator();
 if ($user->authorise('core.admin'))
 {
 	$menu->addChild(
-		new \Modules\Menu\Node(JText::_('MOD_MENU_SYSTEM_INFORMATION'), 'index.php?option=com_admin&view=sysinfo', 'class:info')
+		new \Modules\Menu\Node(JText::_('MOD_MENU_SYSTEM_INFORMATION'), 'index.php?option=com_system&controller=info', 'class:info')
 	);
 	$menu->addSeparator();
 }
