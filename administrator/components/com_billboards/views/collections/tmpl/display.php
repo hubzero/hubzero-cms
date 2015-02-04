@@ -32,10 +32,10 @@ defined('_JEXEC') or die('Restricted access');
 
 // Add the toolbar items
 JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . JText::_('COM_BILLBOARDS_COLLECTIONS'), 'addedit.png');
-JToolBarHelper::addNew('newcollection');
-JToolBarHelper::editList('editcollection');
+JToolBarHelper::addNew();
+JToolBarHelper::editList();
 JToolBarHelper::spacer();
-JToolBarHelper::deleteList(JText::_('COM_BILLBOARDS_CONFIRM_DELETE'), 'deletecollection');
+JToolBarHelper::deleteList(JText::_('COM_BILLBOARDS_CONFIRM_DELETE'));
 JToolBarHelper::spacer();
 JToolBarHelper::help('collections');
 ?>

@@ -90,6 +90,16 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 	}
 
 	/**
+	 * Create a billboard
+	 *
+	 * @return void
+	 */
+	public function addTask()
+	{
+		$this->editTask();
+	}
+
+	/**
 	 * Edit a billboard
 	 *
 	 * @return void
@@ -179,7 +189,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -435,11 +445,11 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		{
 			if ($neworder)
 			{
-				$text = JText::_('descNewItemsFirst');
+				$text = JText::_('COM_BILLBOARDS_DESC');
 			}
 			else
 			{
-				$text = JText::_('descNewItemsLast');
+				$text = JText::_('COM_BILLBOARDS_ASC');
 			}
 			$ordering = '<input type="hidden" name="billboard[ordering]" value="' . $row->ordering . '" />' . $text;
 		}
