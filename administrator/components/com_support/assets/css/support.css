@@ -762,12 +762,12 @@
 		-moz-appearance: none;
 		border-radius: 0;
 	}
-	.com_support .sub-navigation li a.active small.fontcon-before,
+	/*.com_support .sub-navigation li a.active small.fontcon-before,
 	.com_support .sub-navigation li a.active small.fontcon-after,
 	.sub-navigation li:first-child a.active:before,
 	.sub-navigation li:first-child a.active:after {
 		border-color: transparent transparent #272727 transparent;
-	}
+	}*/
 	#ticketForm fieldset#filter #filter_search:focus, 
 	#ticketForm fieldset#filter-bar #filter_search:focus {
 		color: #333;
@@ -827,7 +827,7 @@
 		padding: 0;
 		width: 15em;
 		min-width: 15em;
-		background: #2c2c2c;
+		background: #ebebeb;
 		color: #999;
 	}
 	.pane-queries .pane-inner {
@@ -836,8 +836,9 @@
 		min-width: 15em;
 	}
 
-	/*.pane-list {
-		background: rgba(0, 0, 0, 0.04);
+	.pane-list {
+		background: #ececec;
+		background: rgba(0, 0, 0, 0.07);
 		border-left: 1px solid #e0e0e0;
 	}
 	.pane-list .pane-inner {
@@ -846,7 +847,7 @@
 		background: #f9f9f9;
 	}
 
-	.pane-item {
+	/*.pane-item {
 		width: 50%;
 		min-width: 50%;
 		background: rgba(0, 0, 0, 0.025);
@@ -970,7 +971,7 @@
 		margin-right: 0.5em;
 	}
 	.icon-folder:before {
-		content: "\f114";
+		content: "\f07b";
 	}
 	.icon-list:before {
 		content: "\f036";
@@ -995,7 +996,7 @@
 		content: "";
 		width: 1px;
 		background: #999;
-		background: rgba(255, 255, 255, 0.15);
+		background: rgba(0, 0, 0, 0.15);
 		position: absolute;
 		top: 0;
 		left: -1em;
@@ -1006,26 +1007,26 @@
 		width: 0.8em;
 		height: 1px;
 		background: #999;
-		background: rgba(255, 255, 255, 0.15);
+		background: rgba(0, 0, 0, 0.15);
 		position: absolute;
 		top: 0.9em;
 		left: -1em;
 	}
 	.pane-queries .folder {
-		color: #fff;
+		color: #222;
 		cursor: pointer;
 	}
 	.pane-queries .open .icon-folder:before {
-		content: "\f115";
+		content: "\f07c";
 	}
 	.pane-queries .open ul {
 		display: block;
 	}
 	.pane-queries li a {
-		color: #999;
+		color: #777;
 	}
 	.pane-queries li a:hover {
-		color: #fff;
+		color: #444;
 	}
 	.pane-queries li a.query {
 		display: block;
@@ -1065,7 +1066,8 @@
 		content: '\f060';
 	}
 	.pane-queries li.active>a.query {
-		color: #fff;
+		color: #111;
+		font-weight: bold;
 	}
 	.pane-queries li a span {
 		font-size: 90%;
@@ -1075,13 +1077,14 @@
 		right: 0;
 		line-height: 1;
 		padding: 0.3em 0.4em;
-		background: #444;
+		background: #e1e1e1;
+		background: rgba(0, 0, 0, 0.08);
 		-webkit-border-radius: 0.25em;
 		   -moz-border-radius: 0.25em;
 		    -ms-border-radius: 0.25em;
 		     -o-border-radius: 0.25em;
 		        border-radius: 0.25em;
-		color: #999;
+		color: #777;
 		font-weight: normal;
 	}
 
@@ -1109,9 +1112,9 @@
 		bottom: 50%;
 		margin: 0 0.5em -0.75em 0;
 		visibility: hidden\9;
-		background-color: #eee;
+		background-color: #fff;
 		color: #222;
-		text-shadow: 0 -1px 0px #fff;
+		z-index: 666;
 	}
 	.query-options:before {
 		position: absolute;
@@ -1122,7 +1125,7 @@
 		margin-bottom: -6px;
 		background: transparent;
 		border: 6px solid transparent;
-		border-color: transparent transparent transparent #eee;
+		border-color: transparent transparent transparent #fff;
 		box-shadow: none;
 		display: block;
 		width: 0;
@@ -1141,7 +1144,7 @@
 		display: none;
 	}
 	.pane-queries .folder-options a:hover {
-		color: #fff;
+		color: #111;
 	}
 	.pane-queries li:hover .folder-options {
 		display: block;
@@ -1157,7 +1160,7 @@
 		background: rgba(0, 0, 0, 0.2);
 		padding: 0 30px;
 		margin: 0*/
-		border-top: 1px solid rgba(255, 255, 255, 0.2);
+		border-top: 1px solid rgba(0, 0, 0, 0.2);
 		margin: 30px 0 0 0;
 		padding: 30px 0 0 0;
 	}
@@ -1201,12 +1204,12 @@
 		position: absolute;
 		bottom: 0.2em;
 		right: 0;
-		background: #222;
+		background: #ebebeb;
 		text-align: center;
 		border-radius: 50%;
 	}
 	.pane-queries ul.controls li a:hover {
-		color: #fff;
+		color: #222;
 		border: none;
 		text-decoration: none;
 	}
@@ -1224,9 +1227,19 @@
 	.icon-watch:before {
 		content: "\f06e";
 		font-family: 'Fontcons';
+		margin-right: 0.5em;
+	}
+	#watch-list>li {
+		margin: 0;
+	}
+	#watch-list>li>ul,
+	#watch-list>li>ul li:last-child {
+		margin-bottom: 0;
 	}
 	#watch-list {
+		padding-bottom: 30px;
 		margin-bottom: 30px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 	}
 
 /* Ticket list */

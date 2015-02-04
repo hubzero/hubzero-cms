@@ -196,81 +196,18 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			$this->view->rows = $obj->getRecords($query->query, $this->view->filters);
 		}
 
-		// Get query list
-		/*$sq = new SupportQuery($this->database);
-		$this->view->queries = array(
-			'common' => $sq->getCommon(),
-			'mine'   => $sq->getMine(),
-			'custom' => $sq->getCustom($this->juser->get('id'))
-		);
-		if (!$this->view->queries['common'] || count($this->view->queries['common']) <= 0)
-		{
-			$this->view->queries['common'] = $sq->populateDefaults('common');
-		}
-		if (!$this->view->queries['mine'] || count($this->view->queries['mine']) <= 0)
-		{
-			$this->view->queries['mine'] = $sq->populateDefaults('mine');
-		}
-		// If no query is set, default to the first one in the list
-		if (!$this->view->filters['show'])
-		{
-			$this->view->filters['show'] = $this->view->queries['common'][0]->id;
-		}
-		// Loop through each grouping
-		foreach ($this->view->queries as $key => $queries)
-		{
-			// Loop through each query in a group
-			foreach ($queries as $k => $query)
-			{
-				// Build the query from the condition set
-				//if (!$query->query)
-				//{
-					$query->query = $sq->getQuery($query->conditions);
-				//}
-				$filters = $this->view->filters;
-				if ($query->id != $this->view->filters['show'])
-				{
-					$filters['search'] = '';
-				}
-				// Get a record count
-				$this->view->queries[$key][$k]->count = $obj->getCount($query->query, $filters);
-				// The query is the current active query
-				// get records
-				if ($query->id == $this->view->filters['show'])
-				{
-					// Search
-					$this->view->filters['search']       = urldecode($app->getUserStateFromRequest(
-						$this->_option . '.' . $this->_controller . '.search',
-						'search',
-						''
-					));
-					// Set the total for the pagination
-					$this->view->total = ($this->view->filters['search']) ? $obj->getCount($query->query, $this->view->filters) : $this->view->queries[$key][$k]->count;
-
-					// Incoming sort
-					$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-						$this->_option . '.' . $this->_controller . '.sort',
-						'filter_order',
-						$query->sort
-					));
-					$this->view->filters['sortdir']     = trim($app->getUserStateFromRequest(
-						$this->_option . '.' . $this->_controller . '.sortdir',
-						'filter_order_Dir',
-						$query->sort_dir
-					));
-					//$this->view->filters['sort']    = $query->sort;
-					//$this->view->filters['sortdir'] = $query->sort_dir;
-					// Get the records
-					$this->view->rows  = $obj->getRecords($query->query, $this->view->filters);
-				}
-			}
-		}*/
-
 		$watching = new SupportTableWatching($this->database);
-		$this->view->watchcount = $watching->count(array(
-			'user_id'   => $this->juser->get('id')
-		));
-		if ($this->view->filters['show'] == -1)
+		$this->view->watch = array(
+			'open' => $watching->count(array(
+				'user_id' => $this->juser->get('id'),
+				'open'    => 1
+			)),
+			'closed' => $watching->count(array(
+				'user_id' => $this->juser->get('id'),
+				'open'    => 0
+			))
+		);
+		if ($this->view->filters['show'] < 0)
 		{
 			if (!isset($this->view->filters['sort']) || !$this->view->filters['sort'])
 			{
@@ -289,7 +226,8 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				));
 			}
 			$records = $watching->find(array(
-				'user_id'   => $this->juser->get('id')
+				'user_id' => $this->juser->get('id'),
+				'open'    => ($this->view->filters['show'] == -1 ? 1 : 0)
 			));
 			if (count($records))
 			{
@@ -300,10 +238,6 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				}
 				$this->view->rows = $obj->getRecords("(f.id IN ('" . implode("','", $ids) . "'))", $this->view->filters);
 			}
-			/*else
-			{
-				$this->view->rows = array();
-			}*/
 		}
 
 		// Initiate paging

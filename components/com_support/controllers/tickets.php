@@ -711,13 +711,21 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		}
 
 		$watching = new SupportTableWatching($this->database);
-		$this->view->watchcount = $watching->count(array(
-			'user_id'   => $this->juser->get('id')
-		));
-		if ($this->view->filters['show'] == -1)
+		$this->view->watch = array(
+			'open' => $watching->count(array(
+				'user_id' => $this->juser->get('id'),
+				'open'    => 1
+			)),
+			'closed' => $watching->count(array(
+				'user_id' => $this->juser->get('id'),
+				'open'    => 0
+			))
+		);
+		if ($this->view->filters['show'] < 0)
 		{
 			$records = $watching->find(array(
-				'user_id'   => $this->juser->get('id')
+				'user_id' => $this->juser->get('id'),
+				'open'    => ($this->view->filters['show'] == -1 ? 1 : 0)
 			));
 			if (count($records))
 			{

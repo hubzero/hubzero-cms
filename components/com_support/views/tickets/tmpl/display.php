@@ -68,10 +68,20 @@ $this->css()
 
 				<?php if ($this->acl->check('read', 'tickets')) { ?>
 					<ul id="watch-list">
-						<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
-							<a class="icon-watch aquery" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
-								<?php echo $this->escape(JText::_('COM_SUPPORT_WATCH_LIST')); ?> <span><?php echo $this->watchcount; ?></span>
-							</a>
+						<li id="folder_watching" class="open">
+							<span class="icon-watch folder"><?php echo JText::_('COM_SUPPORT_WATCH_LIST'); ?></span>
+							<ul id="queries_watching" class="queries">
+								<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
+									<a class="aquery" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
+										<?php echo $this->escape(JText::_('COM_SUPPORT_WATCH_LIST_OPEN')); ?> <span><?php echo $this->watch['open']; ?></span>
+									</a>
+								</li>
+								<li<?php if (intval($this->filters['show']) == -2) { echo ' class="active"'; }?>>
+									<a class="aquery" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-2&limitstart=0' . (intval($this->filters['show']) != -2 ? '&search=' : '')); ?>">
+										<?php echo $this->escape(JText::_('COM_SUPPORT_WATCH_LIST_CLOSED')); ?> <span><?php echo $this->watch['closed']; ?></span>
+									</a>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				<?php } ?>

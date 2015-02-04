@@ -144,6 +144,12 @@ class SupportTableWatching extends JTable
 		{
 			$where[] = "w.user_id=" . $this->_db->Quote($filters['user_id']);
 		}
+		if (isset($filters['open']))
+		{
+			$query .= " INNER JOIN `#__support_tickets` AS t ON t.id=w.ticket_id";
+
+			$where[] = "t.open=" . $this->_db->Quote($filters['open']);
+		}
 
 		if (count($where) > 0)
 		{

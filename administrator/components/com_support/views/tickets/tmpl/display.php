@@ -50,10 +50,20 @@ $this->css();
 			<div class="pane-inner">
 
 				<ul id="watch-list">
-					<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
-						<a class="icon-watch query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
-							<?php echo $this->escape(JText::_('COM_SUPPORT_QUERIES_WATCHING')); ?> <span><?php echo $this->watchcount; ?></span>
-						</a>
+					<li id="folder_watching" class="open">
+						<span class="icon-watch folder"><?php echo JText::_('COM_SUPPORT_QUERIES_WATCHING'); ?></span>
+						<ul id="queries_watching" class="queries">
+							<li<?php if (intval($this->filters['show']) == -1) { echo ' class="active"'; }?>>
+								<a class="query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
+									<?php echo $this->escape(JText::_('COM_SUPPORT_QUERIES_WATCHING_OPEN')); ?> <span><?php echo $this->watch['open']; ?></span>
+								</a>
+							</li>
+							<li<?php if (intval($this->filters['show']) == -2) { echo ' class="active"'; }?>>
+								<a class="query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-2&limitstart=0' . (intval($this->filters['show']) != -2 ? '&search=' : '')); ?>">
+									<?php echo $this->escape(JText::_('COM_SUPPORT_QUERIES_WATCHING_CLOSED')); ?> <span><?php echo $this->watch['closed']; ?></span>
+								</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 

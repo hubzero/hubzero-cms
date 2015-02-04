@@ -310,6 +310,7 @@
 	}
 	.pane-queries li.active>a.aquery {
 		color: #222;
+		font-weight: bold;
 	}
 	.pane-queries li a span {
 		font-size: 90%;
@@ -475,9 +476,19 @@
 	.icon-watch:before {
 		content: "\f06e";
 		font-family: 'Fontcons';
+		margin-right: 0.5em;
+	}
+	#watch-list>li {
+		margin: 0;
+	}
+	#watch-list>li>ul,
+	#watch-list>li>ul li:last-child {
+		margin-bottom: 0;
 	}
 	#watch-list {
+		padding-bottom: 30px;
 		margin-bottom: 30px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 	}
 
 	#ticketForm {
