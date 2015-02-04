@@ -467,7 +467,7 @@ class PublicationsAdminHtml
 			$list  = $attModel->listItems(
 				$prime,
 				$pub,
-				true
+				'administrator'
 			);
 			$html .= $list ? $list : '<p class="notice">' . JText::_('COM_PUBLICATIONS_NO_CONTENT') . '</p>';
 
