@@ -128,7 +128,8 @@ class plgCronSupport extends JPlugin
 
 		$database = JFactory::getDBO();
 
-		$sql = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(JFactory::getDate()->toSql());
+		$slc = "SELECT id, login, email, name FROM `#__support_tickets` AS t";
+		$upd = "UPDATE `#__support_tickets` AS t SET t.`open`=0, t.`status`=0, t.`closed`=" . $database->quote(JFactory::getDate()->toSql());
 
 		$where = array();
 
@@ -211,7 +212,7 @@ class plgCronSupport extends JPlugin
 				$where[] = "t.`login` IN (" . implode(", ", $usernames) . ")";
 			}
 
-			if ($tags = $params->get('support_ticketpending_excludeTags', 'fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate'))
+			if ($tags = $params->get('support_ticketpending_excludeTags', ''))
 			{
 				$tags = explode(',', $tags);
 				$tags = array_map('trim', $tags);
@@ -230,7 +231,7 @@ class plgCronSupport extends JPlugin
 						)";
 			}
 
-			if ($tags = $params->get('support_ticketpending_includeTags', 'pendingreview'))
+			if ($tags = $params->get('support_ticketpending_includeTags', ''))
 			{
 				$tags = explode(',', $tags);
 				$tags = array_map('trim', $tags);
@@ -309,14 +310,151 @@ class plgCronSupport extends JPlugin
 
 		if (count($where)  > 0)
 		{
-			$sql .= " WHERE " . implode(" AND ", $where);
+			$slc .= " WHERE " . implode(" AND ", $where);
+			$upd .= " WHERE " . implode(" AND ", $where);
 		}
-		//echo $sql;
-		$database->setQuery($sql);
+
+		$message_id = $params->get('support_ticketpending_message');
+
+		// Get a list of tickets before we update them
+		$tickets = array();
+		if ($message_id)
+		{
+			$database->setQuery($slc);
+			$tickets = $database->loadObjectList();
+		}
+
+		// Update the tickets
+		$database->setQuery($upd);
 		if (!$database->query())
 		{
 			$logger = \JFactory::getLogger();
 			$logger->logError('CRON query failed: ' . $database->getErrorMsg());
+		}
+		// If we're sending a message...
+		else if ($message_id && !empty($tickets))
+		{
+			$lang = JFactory::getLanguage();
+			$lang->load('com_support');
+			$lang->load('com_support', JPATH_BASE);
+
+			include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_support' . DS . 'tables' . DS . 'message.php');
+			include_once(JPATH_ROOT . DS . 'components' . DS . 'com_support' . DS . 'models' . DS . 'ticket.php');
+
+			$message = new SupportMessage($database);
+			$message->load($message_id);
+
+			// Make sure we have a message to send
+			if ($message->message)
+			{
+				$jconfig = JFactory::getConfig();
+
+				$from = array(
+					'name'      => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SUPPORT'),
+					'email'     => $jconfig->getValue('config.mailfrom'),
+					'multipart' => md5(date('U'))
+				);
+
+				// Set mail additional args (mail return path - used for bounces)
+				if ($host = JRequest::getVar('HTTP_HOST', '', 'server'))
+				{
+					$args = '-f hubmail-bounces@' . $host;
+				}
+
+				$subject = JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TICKETS');
+
+				$mailed = array();
+
+				$comment = new SupportModelComment();
+				$comment->set('created', JFactory::getDate()->toSql());
+				$comment->set('created_by', 0);
+				$comment->set('access', 0);
+				$comment->set('comment', $message->message);
+
+				foreach ($tickets as $submitter)
+				{
+					$name  = null;
+					$email = null;
+
+					if ($submitter->login)
+					{
+						// Get the user's account
+						$juser = JUser::getInstance($submitter->login);
+						if (is_object($juser) && $juser->get('id'))
+						{
+							$name  = $juser->get('name');
+							$email = $juser->get('email');
+						}
+					}
+
+					$email = $email ?: $submitter->email;
+					$name  = $name  ?: $submitter->name;
+					$name  = $name  ?: $email;
+
+					if (!$email)
+					{
+						continue;
+					}
+
+					// Try to ensure no duplicates
+					if (in_array($email, $mailed))
+					{
+						continue;
+					}
+
+					$old = new SupportModelTicket($submitter->id);
+					$old->set('open', 1);
+
+					$row = clone $old;
+					$row->set('open', 0);
+
+					// Compare fields to find out what has changed for this ticket and build a changelog
+					$comment->changelog()->diff($old, $row);
+					$comment->set('ticket', $row->get('id'));
+
+					$eview = new \Hubzero\Component\View(array(
+						'base_path' => JPATH_ROOT . DS . 'components' . DS . 'com_support',
+						'name'      => 'emails',
+						'layout'    => 'comment_plain'
+					));
+					$eview->option     = 'com_support';
+					$eview->controller = 'tickets';
+					$eview->delimiter  = '~!~!~!~!~!~!~!~!~!~!';
+					$eview->boundary   = $from['multipart'];
+					$eview->comment    = $comment;
+					$eview->ticket     = $row;
+
+					$plain = $eview->loadTemplate();
+					$plain = str_replace("\n", "\r\n", $plain);
+
+					// HTML
+					$eview->setLayout('comment_html');
+
+					$html = $eview->loadTemplate();
+					$html = str_replace("\n", "\r\n", $html);
+
+					// Build message
+					$message = new \Hubzero\Mail\Message();
+					$message->setSubject($subject)
+					        ->addFrom($from['email'], $from['name'])
+					        ->addTo($email, $name)
+					        ->addHeader('X-Component', 'com_support')
+					        ->addHeader('X-Component-Object', 'support_ticket_comment');
+
+					$message->addPart($plain, 'text/plain');
+
+					$message->addPart($html, 'text/html');
+
+					// Send mail
+					if (!$message->send())
+					{
+						echo 'CRON email failed: ' . JText::sprintf('Failed to mail %s', $email);
+						//$this->setError(JText::sprintf('Failed to mail %s', $fullEmailAddress));
+						\JFactory::getLogger()->error('CRON email failed: ' . JText::sprintf('Failed to mail %s', $email));
+					}
+					$mailed[] = $email;
+				}
+			}
 		}
 
 		return true;

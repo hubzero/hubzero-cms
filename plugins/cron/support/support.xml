@@ -80,8 +80,9 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="support_ticketpending_owners" type="textarea" cols="30" rows="3" default="" label="Owned by" description="A comma-separated list of usernames." />
 				<field name="support_ticketpending_submitters" type="textarea" cols="30" rows="3" default="" label="Submitted by" description="A comma-separated list of usernames." />
 				<field name="support_ticketpending_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="Who to notify" description="A comma-separated list of usernames or email addresses." />
-				<field name="support_ticketpending_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
-				<field name="support_ticketpending_includeTags" type="textarea" cols="30" rows="3" default="pendingreview" label="Include tickets tagged with" description="A comma-separated list of tags." />
+				<field name="support_ticketpending_excludeTags" type="textarea" cols="30" rows="3" default="" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
+				<field name="support_ticketpending_includeTags" type="textarea" cols="30" rows="3" default="" label="Include tickets tagged with" description="A comma-separated list of tags." />
+				<field name="support_ticketpending_message" type="ticketmessage" default="0" label="Email message" description="A message to send upon closing the ticket." />
 			</fieldset>
 			<fieldset group="ticketreminder">
 				<field name="support_ticketreminder_severity" type="list" default="all" label="Tickets with severity" description="Ticket severity to message users about.">
@@ -139,7 +140,7 @@ HUBzero is a registered trademark of Purdue University.
 				<field name="support_ticketlist_owners" type="textarea" cols="30" rows="3" default="" label="Owned by" description="A comma-separated list of usernames." />
 				<field name="support_ticketlist_submitters" type="textarea" cols="30" rows="3" default="" label="Submitted by" description="A comma-separated list of usernames." />
 				<field name="support_ticketlist_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="Who to notify" description="A comma-separated list of usernames or email addresses." />
-				<field name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
+				<field name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="" label="Exclude tickets tagged with" description="A comma-separated list of tags." />
 				<field name="support_ticketlist_includeTags" type="textarea" cols="30" rows="3" default="" label="Include tickets tagged with" description="A comma-separated list of tags." />
 			</fieldset>
 			<fieldset group="tickettemp">
@@ -184,8 +185,9 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="support_ticketpending_owners" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETPENDING_OWNERS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_OWNERS_DESC" />
 		<param name="support_ticketpending_submitters" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETPENDING_SUBMITTERS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_SUBMITTERS_DESC" />
 		<param name="support_ticketpending_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="PLG_CRON_SUPPORT_TICKETPENDING_NOTIFY_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_NOTIFY_DESC" />
-		<param name="support_ticketpending_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="PLG_CRON_SUPPORT_TICKETPENDING_EXCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_EXCLUDETAGS_DESC" />
-		<param name="support_ticketpending_includeTags" type="textarea" cols="30" rows="3" default="pendingreview" label="PLG_CRON_SUPPORT_TICKETPENDING_INCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_INCLUDETAGS_DESC" />
+		<param name="support_ticketpending_excludeTags" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETPENDING_EXCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_EXCLUDETAGS_DESC" />
+		<param name="support_ticketpending_includeTags" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETPENDING_INCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETPENDING_INCLUDETAGS_DESC" />
+		<param name="support_ticketpending_message" type="ticketmessage" default="0" label="Email message" description="A message to send upon closing the ticket." />
 	</params>
 	<params group="ticketreminder">
 		<param name="support_ticketreminder_severity" type="list" default="all" label="PLG_CRON_SUPPORT_TICKETREMINDER_SEVERITY_LABEL" description="PLG_CRON_SUPPORT_TICKETREMINDER_SEVERITY_DESC">
@@ -245,7 +247,7 @@ HUBzero is a registered trademark of Purdue University.
 		<param name="support_ticketlist_owners" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETLIST_OWNERS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_OWNERS_DESC" />
 		<param name="support_ticketlist_submitters" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETLIST_SUBMITTERS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_SUBMITTERS_DESC" />
 		<param name="support_ticketlist_notify" type="textarea" cols="30" rows="3" default="{config.mailfrom}" label="PLG_CRON_SUPPORT_TICKETLIST_NOTIFY_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_NOTIFY_DESC" />
-		<param name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="fixedinstable, fixedinmaster, pendingdevpush, pendingcorepush, pendingupdate" label="PLG_CRON_SUPPORT_TICKETLIST_EXCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_EXCLUDETAGS_DESC" />
+		<param name="support_ticketlist_excludeTags" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETLIST_EXCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_EXCLUDETAGS_DESC" />
 		<param name="support_ticketlist_includeTags" type="textarea" cols="30" rows="3" default="" label="PLG_CRON_SUPPORT_TICKETLIST_INCLUDETAGS_LABEL" description="PLG_CRON_SUPPORT_TICKETLIST_INCLUDETAGS_DESC" />
 	</params>
 	<params group="tickettemp">
