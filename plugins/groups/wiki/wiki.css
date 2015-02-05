@@ -915,13 +915,19 @@
 	}
 
 	/* Links */
-	.wikipage a.ext-link {
-		background: url("/components/com_wiki/assets/img/extlink.gif") 0 0.4em no-repeat;
-		padding-left: 15px;
+	.wikipage a.ext-link:before {
+		content: "\f08e";
+		font-family: "Fontcons";
+		margin-right: 0.3em;
+		color: #bbb;
+		font-size: 0.85em;
 	}
-	.wikipage a.missing {
-		background: url("/components/com_wiki/assets/img/missinglink.gif") 0 0.4em no-repeat;
-		padding-left: 7px;
+	.wikipage a.missing:before {
+		content: "?";
+		font-family: "Fontcons";
+		margin-right: 0.2em;
+		color: #bbb;
+		font-size: 0.85em;
 	}
 
 	.wikipage .mbox-content {
