@@ -65,7 +65,13 @@ $logStatus = 'all';
 					<?php else : ?>
 						<div class="alert"></div>
 						<div class="status-message">
-							<p>The repository is behind by <span class="emphasize"><?php echo count($this->upcoming); ?></span> items.</p>
+							<?php if (!empty($this->upcoming)) : ?>
+								<?php $logStatus = 'upcoming'; ?>
+								<p>The repository is behind by <span class="emphasize"><?php echo count($this->upcoming); ?></span> items.</p>
+							<?php else : ?>
+								<?php $logStatus = 'installed'; ?>
+								<p>The repository is up-to-date.</p>
+							<?php endif; ?>
 							<p>The repository has the following divergence.</p>
 						</div>
 						<div class="status-items">
