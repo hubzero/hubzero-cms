@@ -173,7 +173,7 @@ function submitbutton(pressbutton)
 					$k = 1 - $k;
 				}
 			} else { ?>
-				<tr><td colspan="8"><?php echo JText::_('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
+				<tr><td colspan="9"><?php echo JText::_('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
 		<?php } ?>
 		</tbody>
 	</table>
