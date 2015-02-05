@@ -129,7 +129,7 @@ class plgTagsPublications extends \Hubzero\Plugin\Plugin
 			$response['total'] += $response['children'][$k]['total'];
 		}
 
-		if ($areas && ($areas == $response['name']) || isset($response['children'][$areas]))
+		if ($areas && ($areas == $response['name'] || isset($response['children'][$areas])))
 		{
 			$filters['select']     = 'records';
 			$filters['limit']      = $limit;
