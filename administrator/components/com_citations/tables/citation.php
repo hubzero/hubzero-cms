@@ -538,8 +538,8 @@ class CitationsCitation extends JTable
 		}
 
 		$this->_db->setQuery($query);
-
 		return $this->_db->loadResult();
+
 	}
 
 	/**
@@ -570,25 +570,6 @@ class CitationsCitation extends JTable
 			//	$query .= " OR LOWER(u.username) = " . $this->_db->Quote(strtolower($filter['search'])) . "
 			//				OR r.uid = " . $this->_db->Quote($filter['search']);
 			//}
-		}
-
-		// scope & scope Id
-		if (isset($filter['scope']) && $filter['scope'] != '')
-		{
-			$query .= " AND r.scope=" . $this->_db->quote($filter['scope']);
-		}
-		else
-		{
-			$query .= " AND r.scope is NULL OR r.scope=''";
-		}
-
-		if (isset($filter['scope_id']) && $filter['scope_id'] != NULL)
-		{
-			$query .= " AND r.scope_id=". $this->_db->quote($filter['scope_id']);
-		}
-		else
-		{
-			$query .= " AND r.scope_id is NULL OR r.scope_id=''";
 		}
 
 		//tag search
@@ -878,6 +859,25 @@ class CitationsCitation extends JTable
 			$query .= " ORDER BY MATCH(r.title, r.isbn, r.doi, r.abstract, r.author, r.publisher) AGAINST (" . $this->_db->quote($filter['search']) . " IN BOOLEAN MODE) DESC";
 		}
 
+		// scope & scope Id
+		if (isset($filter['scope']) && $filter['scope'] != '')
+		{
+			$query .= " AND r.scope=" . $this->_db->quote($filter['scope']);
+		}
+		else
+		{
+			$query .= " AND r.scope is NULL OR r.scope=''";
+		}
+
+		if (isset($filter['scope_id']) && $filter['scope_id'] != NULL)
+		{
+			$query .= " AND r.scope_id=". $this->_db->quote($filter['scope_id']);
+		}
+		else
+		{
+			$query .= " AND r.scope_id is NULL OR r.scope_id=''";
+		}
+
 		//sort filter
 		if (isset($filter['sort']) && $filter['sort'] != '')
 		{
@@ -979,10 +979,10 @@ class CitationsCitation extends JTable
 		{
 			$stats[$i] = array();
 
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=1");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=1 AND scope != 'group' ");
 			$stats[$i]['affiliate'] = $this->_db->loadResult();
 
-			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=0");
+			$this->_db->setQuery("SELECT COUNT(*) FROM $this->_tbl WHERE published=1 AND year=" . $this->_db->Quote($i) . " AND affiliated=0 AND scope != 'group'");
 			$stats[$i]['non-affiliate'] = $this->_db->loadResult();
 		}
 
