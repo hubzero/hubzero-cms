@@ -65,7 +65,8 @@ $logStatus = 'all';
 					<?php else : ?>
 						<div class="alert"></div>
 						<div class="status-message">
-							<p>The repository has the following divergence</p>
+							<p>The repository is behind by <span class="emphasize"><?php echo count($this->upcoming); ?></span> items.</p>
+							<p>The repository has the following divergence.</p>
 						</div>
 						<div class="status-items">
 							<?php foreach ($this->status as $key => $items) : ?>
