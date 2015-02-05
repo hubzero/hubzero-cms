@@ -114,7 +114,7 @@ class Repository extends Base implements CommandInterface
 		}
 		else
 		{
-			$this->check();
+			$this->status();
 		}
 	}
 
@@ -244,33 +244,6 @@ class Repository extends Base implements CommandInterface
 	}
 
 	/**
-	 * Check and report whether or not the repository is eligible for upgrade/update
-	 *
-	 * @return void
-	 **/
-	public function check()
-	{
-		if ($this->mechanism->isEligibleForUpdate())
-		{
-			$this->output->addLine(
-				'The repository can be updated. Run \'muse repository update\' to proceed',
-				array(
-					'color' => 'green'
-				)
-			);
-		}
-		else
-		{
-			$this->output->addLine(
-				'The repository is currently ineligible for update. Run \'muse repository status\' for the likely cause',
-				array(
-					'color' => 'red'
-				)
-			);
-		}
-	}
-
-	/**
 	 * Update the repository
 	 *
 	 * @return void
@@ -278,102 +251,102 @@ class Repository extends Base implements CommandInterface
 	public function update()
 	{
 		$mode = $this->output->getMode();
-		if ($this->mechanism->isEligibleForUpdate())
+
+		if ($this->arguments->getOpt('f'))
 		{
-			if ($this->arguments->getOpt('f'))
+			if ($mode != 'minimal')
+			{
+				$this->output->addLine(
+					'Updating the repository...',
+					array(
+						'color' => 'blue'
+					),
+					false
+				);
+			}
+
+			// Check status and stash as needed
+			if (!$this->mechanism->isClean())
+			{
+				$this->mechanism->stash();
+			}
+
+			// Create rollback point first
+			$this->mechanism->createRollbackPoint();
+
+			// Check whether or not we're allowing fast forward pulls only
+			$allowNonFf = $this->arguments->getOpt('allow-non-ff');
+
+			// Now do the update
+			$response = $this->mechanism->update(false, $allowNonFf);
+			if ($response['status'] == 'success')
 			{
 				if ($mode != 'minimal')
 				{
 					$this->output->addLine(
-						'Updating the repository...',
+						'complete',
 						array(
-							'color' => 'blue'
-						),
-						false
-					);
-				}
-
-				// Create rollback point first
-				$this->mechanism->createRollbackPoint();
-
-				// Check whether or not we're allowing fast forward pulls only
-				$allowNonFf = $this->arguments->getOpt('allow-non-ff');
-
-				// Now do the update
-				$response = $this->mechanism->update(false, $allowNonFf);
-				if ($response['status'] == 'success')
-				{
-					if ($mode != 'minimal')
-					{
-						$this->output->addLine(
-							'complete',
-							array(
-								'color' => 'green'
-							)
-						);
-					}
-				}
-				else if ($response['status'] == 'fatal')
-				{
-					$this->output->addLine(
-						strtolower($response['message']),
-						array(
-							'color' => 'red'
+							'color' => 'green'
 						)
 					);
 				}
-				else
-				{
-					$this->output->addSpacer();
-					$this->output->addRaw($response['raw']);
-				}
+			}
+			else if ($response['status'] == 'fatal')
+			{
+				$this->output->addLine(
+					strtolower($response['message']),
+					array(
+						'color' => 'red'
+					)
+				);
 			}
 			else
 			{
-				$response = $this->mechanism->update();
-
-				if (!empty($response))
-				{
-					if ($mode != 'minimal')
-					{
-						$this->output->addLine('The repository is behind by ' . count($response) . ' update(s):');
-					}
-					$logs = array();
-					foreach ($response as $log)
-					{
-						if ($mode == 'minimal')
-						{
-							$this->output->addLine($log);
-						}
-						else
-						{
-							$logs[] = array(
-								'message' => $log,
-								'type' => array(
-									'indentation' => 2,
-									'color'       => 'blue'
-								)
-							);
-						}
-					}
-
-					if ($mode != 'minimal')
-					{
-						$this->output->addLinesFromArray($logs);
-					}
-				}
-				else
-				{
-					if ($mode != 'minimal')
-					{
-						$this->output->addLine('The repository is already up-to-date');
-					}
-				}
+				$this->output->addSpacer();
+				$this->output->addRaw($response['raw']);
 			}
 		}
 		else
 		{
-			$this->output->error('The repository is currently ineligible for update. Run \'muse repository status\' for the likely cause');
+			$response = $this->mechanism->update();
+
+			if (!empty($response))
+			{
+				if ($mode != 'minimal')
+				{
+					$this->output->addLine('The repository is behind by ' . count($response) . ' update(s):');
+				}
+				$logs = array();
+				foreach ($response as $log)
+				{
+					if ($mode == 'minimal')
+					{
+						$this->output->addLine($log);
+					}
+					else
+					{
+						$logs[] = array(
+							'message' => $log,
+							'type' => array(
+								'indentation' => 2,
+								'color'       => 'blue'
+							)
+						);
+					}
+				}
+
+				if ($mode != 'minimal')
+				{
+					$this->output->addLinesFromArray($logs);
+				}
+			}
+			else
+			{
+				if ($mode != 'minimal')
+				{
+					$this->output->addLine('The repository is already up-to-date');
+				}
+			}
 		}
 	}
 

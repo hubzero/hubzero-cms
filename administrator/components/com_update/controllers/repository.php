@@ -147,7 +147,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 		$message    = 'Update complete!';
 		$type       = 'success';
 
-		if (!empty($response))
+		if (!empty($response) && stripos($response, 'fix conflicts and then commit the result') === false)
 		{
 			$type    = 'error';
 			$message = ucfirst($response);
@@ -157,7 +157,7 @@ class UpdateControllerRepository extends \Hubzero\Component\AdminController
 			// Also check status again to make sure it's clean (merge conflicts will show up here)
 			$status = json_decode(cli::status());
 
-			if (!empty($status) && is_array($status))
+			if (!empty($status))
 			{
 				foreach ($status as $type => $files)
 				{
