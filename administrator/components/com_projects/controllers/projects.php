@@ -649,28 +649,31 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		}
 
 		// Erase all files, remove files repository
-		JPluginHelper::importPlugin( 'projects', 'files' );
-		$dispatcher = JDispatcher::getInstance();
-		$dispatcher->trigger( 'eraseRepo', array($identifier) );
-
-		// Delete base dir for .git repos
-		$dir 		= $alias;
-		$prefix 	= $this->config->get('offroot', 0) ? '' : JPATH_ROOT ;
-		$repodir 	= DS . trim($this->config->get('webpath'), DS);
-		$path 		= $prefix . $repodir . DS . $dir;
-
-		if (is_dir($path))
+		if ($alias)
 		{
-			JFolder::delete($path);
-		}
+			JPluginHelper::importPlugin( 'projects', 'files' );
+			$dispatcher = JDispatcher::getInstance();
+			$dispatcher->trigger( 'eraseRepo', array($alias) );
 
-		// Delete images/preview directories
-		$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
-		$webpath = JPATH_ROOT . $webdir . DS . $dir;
+			// Delete base dir for .git repos
+			$dir 		= $alias;
+			$prefix 	= $this->config->get('offroot', 0) ? '' : JPATH_ROOT ;
+			$repodir 	= DS . trim($this->config->get('webpath'), DS);
+			$path 		= $prefix . $repodir . DS . $dir;
 
-		if (is_dir($webpath))
-		{
-			JFolder::delete($webpath);
+			if (is_dir($path))
+			{
+				JFolder::delete($path);
+			}
+
+			// Delete images/preview directories
+			$webdir = DS . trim($this->config->get('imagepath', '/site/projects'), DS);
+			$webpath = JPATH_ROOT . $webdir . DS . $dir;
+
+			if (is_dir($webpath))
+			{
+				JFolder::delete($webpath);
+			}
 		}
 
 		// Erase all publications
