@@ -8617,7 +8617,7 @@ class SimplePie_Cache
 	 * @static
 	 * @access public
 	 */
-	function create($location, $filename, $extension)
+	public static function create($location, $filename, $extension)
 	{
 		$location_iri = new SimplePie_IRI($location);
 		switch ($location_iri->get_scheme())
@@ -9070,7 +9070,7 @@ class SimplePie_Cache_MySQL extends SimplePie_Cache_DB
 
 class SimplePie_Misc
 {
-	function time_hms($seconds)
+	public static function time_hms($seconds)
 	{
 		$time = '';
 
@@ -9104,7 +9104,7 @@ class SimplePie_Misc
 		return $iri->get_iri();
 	}
 
-	function remove_dot_segments($input)
+	public static function remove_dot_segments($input)
 	{
 		$output = '';
 		while (strpos($input, './') !== false || strpos($input, '/.') !== false || $input === '.' || $input === '..')
@@ -9195,7 +9195,7 @@ class SimplePie_Misc
 		return $return;
 	}
 
-	static function element_implode($element)
+	public static function element_implode($element)
 	{
 		$full = "<$element[tag]";
 		foreach ($element['attribs'] as $key => $value)
@@ -9214,7 +9214,7 @@ class SimplePie_Misc
 		return $full;
 	}
 
-	function error($message, $level, $file, $line)
+	public static function error($message, $level, $file, $line)
 	{
 		if ((ini_get('error_reporting') & $level) > 0)
 		{
@@ -9260,7 +9260,7 @@ class SimplePie_Misc
 	 * @param str $cache_name_function Obsolete. Exists for backwards
 	 * compatibility reasons only.
 	 */
-	function display_cached_file($identifier_url, $cache_location = './cache', $cache_extension = 'spc', $cache_class = 'SimplePie_Cache', $cache_name_function = 'md5')
+	public static function display_cached_file($identifier_url, $cache_location = './cache', $cache_extension = 'spc', $cache_class = 'SimplePie_Cache', $cache_name_function = 'md5')
 	{
 		$cache = call_user_func(array($cache_class, 'create'), $cache_location, $identifier_url, $cache_extension);
 
@@ -9326,7 +9326,7 @@ class SimplePie_Misc
 		);
 	}
 
-	function compress_parse_url($scheme = '', $authority = '', $path = '', $query = '', $fragment = '')
+	public static function compress_parse_url($scheme = '', $authority = '', $path = '', $query = '', $fragment = '')
 	{
 		$iri = new SimplePie_IRI('');
 		$iri->set_scheme($scheme);
@@ -9343,7 +9343,7 @@ class SimplePie_Misc
 		return $iri->get_iri();
 	}
 
-	function percent_encoding_normalization($match)
+	public static function percent_encoding_normalization($match)
 	{
 		$integer = hexdec($match[1]);
 		if ($integer >= 0x41 && $integer <= 0x5A || $integer >= 0x61 && $integer <= 0x7A || $integer >= 0x30 && $integer <= 0x39 || $integer === 0x2D || $integer === 0x2E || $integer === 0x5F || $integer === 0x7E)
@@ -9367,7 +9367,7 @@ class SimplePie_Misc
 	 * @param string $str String to remove bad UTF-8 bytes from
 	 * @return string UTF-8 string
 	 */
-	function utf8_bad_replace($str)
+	public static function utf8_bad_replace($str)
 	{
 		if (function_exists('iconv') && ($return = @iconv('UTF-8', 'UTF-8//IGNORE', $str)))
 		{
@@ -9399,7 +9399,7 @@ class SimplePie_Misc
 	 * @param string $string Windows-1252 encoded string
 	 * @return string UTF-8 encoded string
 	 */
-	function windows_1252_to_utf8($string)
+	public static function windows_1252_to_utf8($string)
 	{
 		static $convert_table = array("\x80" => "\xE2\x82\xAC", "\x81" => "\xEF\xBF\xBD", "\x82" => "\xE2\x80\x9A", "\x83" => "\xC6\x92", "\x84" => "\xE2\x80\x9E", "\x85" => "\xE2\x80\xA6", "\x86" => "\xE2\x80\xA0", "\x87" => "\xE2\x80\xA1", "\x88" => "\xCB\x86", "\x89" => "\xE2\x80\xB0", "\x8A" => "\xC5\xA0", "\x8B" => "\xE2\x80\xB9", "\x8C" => "\xC5\x92", "\x8D" => "\xEF\xBF\xBD", "\x8E" => "\xC5\xBD", "\x8F" => "\xEF\xBF\xBD", "\x90" => "\xEF\xBF\xBD", "\x91" => "\xE2\x80\x98", "\x92" => "\xE2\x80\x99", "\x93" => "\xE2\x80\x9C", "\x94" => "\xE2\x80\x9D", "\x95" => "\xE2\x80\xA2", "\x96" => "\xE2\x80\x93", "\x97" => "\xE2\x80\x94", "\x98" => "\xCB\x9C", "\x99" => "\xE2\x84\xA2", "\x9A" => "\xC5\xA1", "\x9B" => "\xE2\x80\xBA", "\x9C" => "\xC5\x93", "\x9D" => "\xEF\xBF\xBD", "\x9E" => "\xC5\xBE", "\x9F" => "\xC5\xB8", "\xA0" => "\xC2\xA0", "\xA1" => "\xC2\xA1", "\xA2" => "\xC2\xA2", "\xA3" => "\xC2\xA3", "\xA4" => "\xC2\xA4", "\xA5" => "\xC2\xA5", "\xA6" => "\xC2\xA6", "\xA7" => "\xC2\xA7", "\xA8" => "\xC2\xA8", "\xA9" => "\xC2\xA9", "\xAA" => "\xC2\xAA", "\xAB" => "\xC2\xAB", "\xAC" => "\xC2\xAC", "\xAD" => "\xC2\xAD", "\xAE" => "\xC2\xAE", "\xAF" => "\xC2\xAF", "\xB0" => "\xC2\xB0", "\xB1" => "\xC2\xB1", "\xB2" => "\xC2\xB2", "\xB3" => "\xC2\xB3", "\xB4" => "\xC2\xB4", "\xB5" => "\xC2\xB5", "\xB6" => "\xC2\xB6", "\xB7" => "\xC2\xB7", "\xB8" => "\xC2\xB8", "\xB9" => "\xC2\xB9", "\xBA" => "\xC2\xBA", "\xBB" => "\xC2\xBB", "\xBC" => "\xC2\xBC", "\xBD" => "\xC2\xBD", "\xBE" => "\xC2\xBE", "\xBF" => "\xC2\xBF", "\xC0" => "\xC3\x80", "\xC1" => "\xC3\x81", "\xC2" => "\xC3\x82", "\xC3" => "\xC3\x83", "\xC4" => "\xC3\x84", "\xC5" => "\xC3\x85", "\xC6" => "\xC3\x86", "\xC7" => "\xC3\x87", "\xC8" => "\xC3\x88", "\xC9" => "\xC3\x89", "\xCA" => "\xC3\x8A", "\xCB" => "\xC3\x8B", "\xCC" => "\xC3\x8C", "\xCD" => "\xC3\x8D", "\xCE" => "\xC3\x8E", "\xCF" => "\xC3\x8F", "\xD0" => "\xC3\x90", "\xD1" => "\xC3\x91", "\xD2" => "\xC3\x92", "\xD3" => "\xC3\x93", "\xD4" => "\xC3\x94", "\xD5" => "\xC3\x95", "\xD6" => "\xC3\x96", "\xD7" => "\xC3\x97", "\xD8" => "\xC3\x98", "\xD9" => "\xC3\x99", "\xDA" => "\xC3\x9A", "\xDB" => "\xC3\x9B", "\xDC" => "\xC3\x9C", "\xDD" => "\xC3\x9D", "\xDE" => "\xC3\x9E", "\xDF" => "\xC3\x9F", "\xE0" => "\xC3\xA0", "\xE1" => "\xC3\xA1", "\xE2" => "\xC3\xA2", "\xE3" => "\xC3\xA3", "\xE4" => "\xC3\xA4", "\xE5" => "\xC3\xA5", "\xE6" => "\xC3\xA6", "\xE7" => "\xC3\xA7", "\xE8" => "\xC3\xA8", "\xE9" => "\xC3\xA9", "\xEA" => "\xC3\xAA", "\xEB" => "\xC3\xAB", "\xEC" => "\xC3\xAC", "\xED" => "\xC3\xAD", "\xEE" => "\xC3\xAE", "\xEF" => "\xC3\xAF", "\xF0" => "\xC3\xB0", "\xF1" => "\xC3\xB1", "\xF2" => "\xC3\xB2", "\xF3" => "\xC3\xB3", "\xF4" => "\xC3\xB4", "\xF5" => "\xC3\xB5", "\xF6" => "\xC3\xB6", "\xF7" => "\xC3\xB7", "\xF8" => "\xC3\xB8", "\xF9" => "\xC3\xB9", "\xFA" => "\xC3\xBA", "\xFB" => "\xC3\xBB", "\xFC" => "\xC3\xBC", "\xFD" => "\xC3\xBD", "\xFE" => "\xC3\xBE", "\xFF" => "\xC3\xBF");
 
@@ -10784,7 +10784,7 @@ class SimplePie_Misc
 		return $curl;
 	}
 
-	function is_subclass_of($class1, $class2)
+	public static function is_subclass_of($class1, $class2)
 	{
 		if (func_num_args() !== 2)
 		{
@@ -10825,7 +10825,7 @@ class SimplePie_Misc
 	 * @param string $data Data to strip comments from
 	 * @return string Comment stripped string
 	 */
-	function strip_comments($data)
+	public static function strip_comments($data)
 	{
 		$output = '';
 		while (($start = strpos($data, '<!--')) !== false)
@@ -10843,7 +10843,7 @@ class SimplePie_Misc
 		return $output . $data;
 	}
 
-	function parse_date($dt)
+	public static function parse_date($dt)
 	{
 		$parser = SimplePie_Parse_Date::get();
 		return $parser->parse($dt);
@@ -10857,7 +10857,7 @@ class SimplePie_Misc
 	 * @param string $data Input data
 	 * @return string Output data
 	 */
-	static function entities_decode($data)
+	public static function entities_decode($data)
 	{
 		$decoder = new SimplePie_Decode_HTML_Entities($data);
 		return $decoder->parse();
@@ -10870,7 +10870,7 @@ class SimplePie_Misc
 	 * @param string $data Data to strip comments from
 	 * @return string Comment stripped string
 	 */
-	function uncomment_rfc822($string)
+	public static function uncomment_rfc822($string)
 	{
 		$string = (string) $string;
 		$position = 0;
@@ -10924,7 +10924,7 @@ class SimplePie_Misc
 		return $output;
 	}
 
-	function parse_mime($mime)
+	public static function parse_mime($mime)
 	{
 		if (($pos = strpos($mime, ';')) === false)
 		{
@@ -10936,7 +10936,7 @@ class SimplePie_Misc
 		}
 	}
 
-	function htmlspecialchars_decode($string, $quote_style)
+	public static function htmlspecialchars_decode($string, $quote_style)
 	{
 		if (function_exists('htmlspecialchars_decode'))
 		{
@@ -10948,7 +10948,7 @@ class SimplePie_Misc
 		}
 	}
 
-	static function atom_03_construct_type($attribs)
+	public static function atom_03_construct_type($attribs)
 	{
 		if (isset($attribs['']['mode']) && strtolower(trim($attribs['']['mode']) === 'base64'))
 		{
@@ -10984,7 +10984,7 @@ class SimplePie_Misc
 		}
 	}
 
-	static function atom_10_construct_type($attribs)
+	public static function atom_10_construct_type($attribs)
 	{
 		if (isset($attribs['']['type']))
 		{
@@ -11006,7 +11006,7 @@ class SimplePie_Misc
 		return SIMPLEPIE_CONSTRUCT_TEXT;
 	}
 
-	static function atom_10_content_construct_type($attribs)
+	public static function atom_10_content_construct_type($attribs)
 	{
 		if (isset($attribs['']['type']))
 		{
@@ -11042,7 +11042,7 @@ class SimplePie_Misc
 		return (bool) preg_match('/^([A-Za-z0-9\-._~\x{A0}-\x{D7FF}\x{F900}-\x{FDCF}\x{FDF0}-\x{FFEF}\x{10000}-\x{1FFFD}\x{20000}-\x{2FFFD}\x{30000}-\x{3FFFD}\x{40000}-\x{4FFFD}\x{50000}-\x{5FFFD}\x{60000}-\x{6FFFD}\x{70000}-\x{7FFFD}\x{80000}-\x{8FFFD}\x{90000}-\x{9FFFD}\x{A0000}-\x{AFFFD}\x{B0000}-\x{BFFFD}\x{C0000}-\x{CFFFD}\x{D0000}-\x{DFFFD}\x{E1000}-\x{EFFFD}!$&\'()*+,;=@]|(%[0-9ABCDEF]{2}))+$/u', $string);
 	}
 
-	function space_seperated_tokens($string)
+	public static function space_seperated_tokens($string)
 	{
 		$space_characters = "\x20\x09\x0A\x0B\x0C\x0D";
 		$string_length = strlen($string);
@@ -11061,7 +11061,7 @@ class SimplePie_Misc
 		return $tokens;
 	}
 
-	static function array_unique($array)
+	public static function array_unique($array)
 	{
 		if (version_compare(PHP_VERSION, '5.2', '>='))
 		{
@@ -11111,7 +11111,7 @@ class SimplePie_Misc
 	 * @param int $codepoint Unicode codepoint
 	 * @return string UTF-8 character
 	 */
-	function codepoint_to_utf8($codepoint)
+	public static function codepoint_to_utf8($codepoint)
 	{
 		$codepoint = (int) $codepoint;
 		if ($codepoint < 0)
@@ -11158,7 +11158,7 @@ class SimplePie_Misc
 	 *     relative to the beginning of haystack.
 	 * @return bool If needle is not found, stripos() will return boolean false.
 	 */
-	function stripos($haystack, $needle, $offset = 0)
+	public static function stripos($haystack, $needle, $offset = 0)
 	{
 		if (function_exists('stripos'))
 		{
@@ -11195,7 +11195,7 @@ class SimplePie_Misc
 	 * @param string $str The input string.
 	 * @return array
 	 */
-	function parse_str($str)
+	public static function parse_str($str)
 	{
 		$return = array();
 		$str = explode('&', $str);
@@ -11323,7 +11323,7 @@ class SimplePie_Misc
 		return $encoding;
 	}
 
-	function output_javascript()
+	public static function output_javascript()
 	{
 		if (function_exists('ob_gzhandler'))
 		{
