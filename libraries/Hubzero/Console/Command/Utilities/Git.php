@@ -317,8 +317,6 @@ class Git
 	/**
 	 * Pull the latest updates
 	 *
-	 * You should probably call isEligibleForUpdate beforehand, althought it isn't required.
-	 *
 	 * @param  (bool)   $dryRun     - whether or not to do the run, or just check what's incoming
 	 * @param  (bool)   $allowNonFf - whether or not to allow non fast forward pulls (i.e. merges)
 	 * @param  (string) $source     - where this repository should pull from (this should be a valid git remote/branch)
@@ -540,11 +538,11 @@ class Git
 	}
 
 	/**
-	 * Check to see if the repo is clear and eligible for an update
+	 * Check to see if the repo is clean, at least as far as this mechanism is concerned
 	 *
 	 * @return boolean
 	 **/
-	public function isEligibleForUpdate()
+	public function isClean()
 	{
 		$status   = $this->status();
 		$eligible = true;
@@ -562,6 +560,18 @@ class Git
 		}
 
 		return $eligible;
+	}
+
+	/**
+	 * Stash local changes
+	 *
+	 * @return boolean
+	 **/
+	public function stash()
+	{
+		$this->call('stash');
+
+		return true;
 	}
 
 	/**
