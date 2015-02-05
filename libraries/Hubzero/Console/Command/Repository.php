@@ -419,16 +419,35 @@ class Repository extends Base implements CommandInterface
 				$performed++;
 			}
 
-			$this->output->addLine("Clean up complete. Performed ({$performed}/1) cleanup operations available.");
+			$proceed = $this->output->getResponse('Do you want to purge all stashed changes? [y|n]');
+
+			if ($proceed == 'y' || $proceed == 'yes')
+			{
+				$this->mechanism->purgeStash();
+				$this->output->addLine('Purging repository stash.');
+				$performed++;
+			}
+
+			$this->output->addLine("Clean up complete. Performed ({$performed}/2) cleanup operations available.");
 		}
 		else
 		{
+			$didSomething = false;
 			if ($this->arguments->getOpt('purge-rollback-points'))
 			{
 				$this->mechanism->purgeRollbackPoints();
 				$this->output->addLine('Purging rollback points.');
+				$didSomething = true;
 			}
-			else
+
+			if ($this->arguments->getOpt('purge-stash'))
+			{
+				$this->mechanism->purgeStash();
+				$this->output->addLine('Purging repository stash.');
+				$didSomething = true;
+			}
+
+			if (!$didSomething)
 			{
 				$this->output->addLine('Please specify which cleanup operations to perform');
 			}
