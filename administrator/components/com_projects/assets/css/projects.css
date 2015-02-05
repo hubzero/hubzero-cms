@@ -37,3 +37,9 @@
 	.maxitd {
 		width: 50%;
 	}
+	span.private {
+		color: red;
+	}
+	span.public {
+		color: green;
+	}

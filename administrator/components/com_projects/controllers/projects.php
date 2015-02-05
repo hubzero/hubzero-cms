@@ -96,6 +96,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
 
+		// Get quotas
+		$this->view->defaultQuota = ProjectsHtml::convertSize(floatval($this->config->get('defaultQuota', 1)), 'GB', 'b');
+		$this->view->premiumQuota = ProjectsHtml::convertSize(floatval($this->config->get('premiumQuota', 30)), 'GB', 'b');
+
 		// Get filters
 		$this->view->filters = array();
 		$this->view->filters['search'] 		= urldecode($app->getUserStateFromRequest($this->_option
@@ -109,23 +113,74 @@ class ProjectsControllerProjects extends \Hubzero\Component\AdminController
 		$this->view->filters['authorized'] 	= true;
 		$this->view->filters['getowner'] 		= 1;
 		$this->view->filters['activity'] 		= 1;
+		$this->view->filters['quota'] 			= JRequest::getVar('quota', 'all', 'post');
 
 		// Get paging variables
 		$this->view->filters['limit'] = $app->getUserStateFromRequest($this->_option.'.limit', 'limit',
 								  $config->getValue('config.list_limit'), 'int');
 		$this->view->filters['start'] = JRequest::getInt('limitstart', 0);
 
-		$obj = new Project( $this->database );
+		$limit = $this->view->filters['limit'];
+		$start = $this->view->filters['start'];
 
-		// Get a record count
-		$this->view->total = $obj->getCount( $this->view->filters, true, 0, 1 );
+		// Retrieve all records when filtering by quota (no paging)
+		if ($this->view->filters['quota'] != 'all')
+		{
+			$this->view->filters['limit'] = 'all';
+			$this->view->filters['start'] = 0;
+		}
+
+		$obj = new Project( $this->database );
 
 		// Get records
 		$this->view->rows = $obj->getRecords( $this->view->filters, true, 0, 1 );
 
+		// Get a record count
+		$this->view->total = $obj->getCount( $this->view->filters, true, 0, 1 );
+
+		// Filtering by quota
+		if ($this->view->filters['quota'] != 'all' && $this->view->rows)
+		{
+			$counter = $this->view->total;
+			$rows = $this->view->rows;
+
+			for ($i=0, $n=count( $rows ); $i < $n; $i++)
+			{
+				$params = new JParameter( $rows[$i]->params );
+				$quota = $params->get('quota', 0);
+				if (($this->view->filters['quota'] == 'premium' && $quota < $this->view->premiumQuota )
+					|| ($this->view->filters['quota'] == 'regular' && $quota > $this->view->defaultQuota))
+				{
+					$counter--;
+					unset($rows[$i]);
+				}
+			}
+
+			$rows = array_values($rows);
+			$this->view->total = $counter > 0 ? $counter : 0;
+
+			// Fix up paging after filter
+			if (count($rows) > $limit)
+			{
+				$k = 0;
+
+				for ($i=0, $n=count( $rows ); $i < $n; $i++)
+				{
+					if ($k < $start || $k >= ($limit + $start))
+					{
+						unset($rows[$i]);
+					}
+
+					$k++;
+				}
+			}
+
+			$this->view->rows = array_values($rows);
+		}
+
 		// Initiate paging
 		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination( $this->view->total, $this->view->filters['start'], $this->view->filters['limit'] );
+		$this->view->pageNav = new JPagination( $this->view->total, $start, $limit );
 
 		// Set any errors
 		if ($this->getError())
