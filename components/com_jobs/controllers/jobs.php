@@ -327,11 +327,11 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 	public function view()
 	{
 		// Push some styles to the template
-		$this->_getStyles('', 'introduction.css', true); // component, stylesheet name, look in media system dir
-		$this->_getStyles();
+		$this->css('introduction.css', 'system'); // component, stylesheet name, look in media system dir
+		$this->css();
 
 		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
+		$this->js();
 
 		// Set page title
 		$this->_buildTitle();
@@ -432,10 +432,10 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 	public function resumes()
 	{
 		// Push some styles to the template
-		$this->_getStyles();
+		$this->css();
 
 		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
+		$this->js();
 
 		// Login required
 		if ($this->juser->get('guest'))
@@ -567,10 +567,10 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Push some styles to the template
-		$this->_getStyles();
+		$this->csss();
 
 		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
+		$this->js();
 
 		// Get the member's info
 		$profile = new \Hubzero\User\Profile();
@@ -1014,10 +1014,10 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$activejobs = $job->countMyActiveOpenings($uid, 1, $admin);
 
 		// Push some styles to the template
-		$this->_getStyles();
+		$this->css();
 
 		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
+		$this->js();
 
 		// Set page title
 		$this->_buildTitle();
@@ -1066,7 +1066,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Push some styles to the template
-		$this->_getStyles();
+		$this->css();
 
 		// Output HTML
 		$view = new JView(array('name'=>'introemp'));
@@ -1154,7 +1154,7 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Push some styles to the template
-		$this->_getStyles();
+		$this->css();
 
 		// Login required
 		if ($juser->get('guest'))
@@ -1300,10 +1300,10 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		$job = $obj->get_opening (0, $juser->get('id'), $this->_masteradmin, $code);
 
 		// Push some styles to the template
-		$this->_getStyles();
+		$this->css();
 
 		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
+		$this->js();
 
 		if (!$job)
 		{
@@ -1713,10 +1713,10 @@ class JobsControllerJobs extends \Hubzero\Component\SiteController
 		}
 
 		// Push some styles to the template
-		$this->_getStyles();
+		$this->css();
 
 		// Push some scripts to the template
-		$this->_getScripts('assets/js/' . $this->_name);
+		$this->js();
 
 		// Push some styles to the tmeplate
 		$document = JFactory::getDocument();
