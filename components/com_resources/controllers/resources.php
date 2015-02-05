@@ -1669,7 +1669,7 @@ class ResourcesControllerResources extends \Hubzero\Component\SiteController
 						$categories[] = str_replace('itunes:', '', $tag->get('raw_tag'));
 					}
 				}
-				elseif ($tag['admin'] == 0)
+				elseif ($tag->get('admin') == 0)
 				{
 					$tagarray[] = $tag->get('raw_tag');
 				}
