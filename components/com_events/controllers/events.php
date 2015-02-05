@@ -276,7 +276,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 
 	/**
 	 * Default Task
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function displayTask()
@@ -1739,7 +1739,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$start_time = JRequest::getVar('start_time', '08:00', 'post');
-		$state_time = ($start_time) ? $start_time : '08:00';
+		$start_time = ($start_time) ? $start_time : '08:00';
 		$start_pm   = JRequest::getInt('start_pm', 0, 'post');
 		$end_time   = JRequest::getVar('end_time', '17:00', 'post');
 		$end_time   = ($end_time) ? $end_time : '17:00';
