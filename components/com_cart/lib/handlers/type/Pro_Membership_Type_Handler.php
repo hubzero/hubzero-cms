@@ -27,7 +27,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-class Pro_Memebership_Type_Handler extends Type_Handler
+class Pro_Membership_Type_Handler extends Type_Handler
 {
     /**
      * Constructor
@@ -48,6 +48,8 @@ class Pro_Memebership_Type_Handler extends Type_Handler
         // Get current registration
         $membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
         $expiration = $membership['crtmExpires'];
+
+        // Here also set the user group membership in the future (user group can be pulled from the meta)...
 
         mail('ilya@shunko.com', 'PRO member purchase', serialize($membership));
     }

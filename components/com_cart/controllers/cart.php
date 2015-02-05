@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'CurrentCart.php');
+
 /**
  * Cart controller class
  */
@@ -62,9 +64,7 @@ class CartControllerCart extends ComponentController
 	 */
 	public function homeTask()
 	{
-		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
-
-		$cart = new CartModelCart();
+		$cart = new CartModelCurrentCart();
 		//print_r($cart); die;
 
 		// Initialize errors array
@@ -119,14 +119,13 @@ class CartControllerCart extends ComponentController
 				}
 				catch (Exception $e)
 				{
-					$errors[] = $e->getMessage();
-					//print_r($updateErrors); die;
+					$cart->setMessage($e->getMessage(), 'error');
 				}
 			}
 
 			// set flag to redirect
 			$redirect = true;
-			if (!empty($errors))
+			if ($cart->hasMessages())
 			{
 				$redirect = false;
 			}
@@ -153,7 +152,7 @@ class CartControllerCart extends ComponentController
 						}
 						catch (Exception $e)
 						{
-							$errors[] = $e->getMessage();
+							$cart->setMessage($e->getMessage(), 'error');
 							$redirect = false;
 						}
 					}
@@ -177,12 +176,12 @@ class CartControllerCart extends ComponentController
 			}
 			catch (Exception $e)
 			{
-				$errors[] = $e->getMessage();
+				$cart->setMessage($e->getMessage(), 'error');
 			}
 
 			// set flag to redirect
 			$redirect = true;
-			if (!empty($errors))
+			if ($cart->hasMessages())
 			{
 				$redirect = false;
 			}
@@ -211,9 +210,6 @@ class CartControllerCart extends ComponentController
 			$app->redirect($redirect_url);
 		}
 
-		// Set errors
-		$this->view->setError($errors);
-
 		// Get the latest synced cart info, it will also enable cart syncing that was turned off before
 		$cartInfo = $cart->getCartInfo(true);
 		$this->view->cartInfo = $cartInfo;
@@ -232,7 +228,7 @@ class CartControllerCart extends ComponentController
 		if ($cart->hasMessages())
 		{
 			$cartMessages = $cart->getMessages();
-			$this->view->setError($cartMessages);
+			$this->view->notifications = $cartMessages;
 		}
 
 		$this->view->display();

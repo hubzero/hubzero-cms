@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Product handler. Handles purchased products/items. Runs a popper handler on each purchased item.
+ * Product handler. Handles purchased products/items. Runs a proper handler on each purchased item.
  */
 class Cart_ProductHandler
 {
@@ -50,8 +50,6 @@ class Cart_ProductHandler
 	{
 		$this->item = $item;
 		$this->crtId = $crtId;
-
-		//print_r($crtId);;
 	}
 
 	/**
@@ -76,7 +74,7 @@ class Cart_ProductHandler
 		// MODEL HANDLER
 		$handlersPath = JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'lib' . DS . 'handlers';
 		$modelHandlerClass = str_replace(' ', '_', ucwords(strtolower($ptIdTypeInfo['ptModel']))) . '_Model_Handler';
-		if (file_exists($handlersPath . DS . 'model' . DS .$modelHandlerClass . '.php'))
+		if (file_exists($handlersPath . DS . 'model' . DS . $modelHandlerClass . '.php'))
 		{
 			// Include the parent class
 			include_once($handlersPath . DS . 'ModelHandler.php');

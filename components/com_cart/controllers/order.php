@@ -32,7 +32,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 include_once(JPATH_COMPONENT . DS . 'lib' . DS . 'cartmessenger' . DS . 'CartMessenger.php');
-include_once(JPATH_COMPONENT . DS . 'models' . DS . 'cart.php');
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'CurrentCart.php');
 
 /**
  * Cart order controller class
@@ -99,22 +99,21 @@ class CartControllerOrder extends ComponentController
 		}
 		//print_r($tId); die;
 
-		// Lookup the order
-		$cart = new CartModelCart(NULL, true);
+		/* Lookup the order */
 
 		// Verify token
-		if (!$token || !$cart->verifyToken($token, $tId))
+		if (!$token || !CartModelCart::verifySecurityToken($token, $tId))
 		{
 			die('Error processing your order. Failed to verify security token.');
 		}
 
 		// Get transaction info
-		$tInfo = $cart->getTransactionFacts($tId);
+		$tInfo = CartModelCart::getTransactionFacts($tId);
 		//print_r($tId); die;
 		//print_r($tInfo);die;
 
 		if(empty($tInfo->info->tStatus) || $tInfo->info->tiCustomerStatus != 'unconfirmed' || $tInfo->info->tStatus != 'completed') {
-			die('Error processing your order.');
+			die('Error processing your order...');
 			//JError::raiseError(404, JText::_('Error processing transaction.'));
 			$redirect_url  = JRoute::_('index.php?option=' . 'com_cart');
 			$app  =  JFactory::getApplication();
@@ -201,7 +200,7 @@ class CartControllerOrder extends ComponentController
 		$test = false;
 		// TESTING ***********************
 		if ($test) {
-			$postBackTransactionId = 34;
+			$postBackTransactionId = 96;
 		}
 
 		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
@@ -236,11 +235,8 @@ class CartControllerOrder extends ComponentController
 			}
 		}
 
-		// Initialize static cart
-		$cart = new CartModelCart(NULL, true);
-
 		// Get transaction info
-		$tInfo = $cart->getTransactionFacts($postBackTransactionId);
+		$tInfo = CartModelCart::getTransactionFacts($postBackTransactionId);
 		//print_r($tInfo); die;
 
 		// Check if it exists
@@ -309,7 +305,6 @@ class CartControllerOrder extends ComponentController
 	private function completeOrder($tInfo)
 	{
 		// Initialize static cart
-		$cart = new CartModelCart(NULL, true);
 
 		// Initialize logger
 		$logger = new CartMessenger('Complete order');
@@ -318,7 +313,7 @@ class CartControllerOrder extends ComponentController
 		$logger->emailOrderComplete($tInfo->info);
 
 		// Handle transaction according to items handlers
-		return $cart->completeTransaction($tInfo);
+		return CartModelCart::completeTransaction($tInfo);
 	}
 
 }

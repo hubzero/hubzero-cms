@@ -121,7 +121,7 @@ class StorefrontModelCoupons
 	 */
 	public function getCouponInfo($cnId, $returnObjects = true, $returnConditions = true, $returnAction = true, $returnInfo = false)
 	{
-		$couponInfo = null;
+		$couponInfo = new stdClass();
 
 		// Get objects
 		if ($returnObjects)

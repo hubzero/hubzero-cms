@@ -47,13 +47,13 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	/**
 	 * array Product categories to look at (to define scope)
 	 */
-	var $lookupCollections		= NULL;
+	var $lookupCollections = NULL;
 
 	// Database instance
 	var $db = NULL;
 
 	/**
-	 * Contructor method
+	 * Constructor method
 	 *
 	 * @param  void
 	 * @return void
@@ -82,7 +82,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Raset instance lookup scope
+	 * Reset instance lookup scope
 	 *
 	 * @param  void
 	 * @return void
@@ -111,7 +111,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 * Check if collection exists
 	 *
 	 * @param  $c -- collection ID (+ alias in the future)
-	 * @return int cId on sucess, false if no match found
+	 * @return int cId on success, false if no match found
 	 */
 	public function collectionExists($c)
 	{
@@ -141,7 +141,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 			$lookupField = 'pAlias';
 		}
 
-		$sql = "SELECT `pId` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = '{$product}'";
+		$sql = "SELECT `pId` FROM `#__storefront_products` p WHERE p.`{$lookupField}` = " . $this->_db->quote($product);
 		if (!$showInactive)
 		{
 			$sql .= " AND p.`pActive` = 1";
@@ -177,7 +177,8 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 */
 	public function getProducts()
 	{
-		$sql = "SELECT DISTINCT p.* FROM `#__storefront_products` p JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
+		$sql = "SELECT DISTINCT p.* FROM `#__storefront_products` p
+				JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`";
 		$sql .= " WHERE p.`pActive` = 1";
 
 		foreach	($this->lookupCollections as $cId)
@@ -186,14 +187,13 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		}
 
 		$this->_db->setQuery($sql);
-		//echo $this->_db->_sql; die;
 		$products = $this->_db->loadObjectList();
 
 		return $products;
 	}
 
 	/**
-	 * Get product inforamtion
+	 * Get product information
 	 *
 	 * @param	int			Product ID
 	 * @param  	bool		Flag whether to show inactive product info
@@ -477,26 +477,6 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * TODO: delete
-	 * Get basic info for a single SKU provided
-	 *
-	 * @param SKU ID
-	 * @return object
-	 */
-	public function _DELETE_getSkuInfo($sId)
-	{
-		$sql = "SELECT s.`sAllowMultiple`, s.`sInventory`, s.`sTrackInventory`, s.`sPrice` FROM `#__storefront_skus` s WHERE s.`sId` = {$sId}";
-		$this->_db->setQuery($sql);
-		$skuInventoryInfo = $this->_db->loadObject();
-
-		if ($skuInventoryInfo)
-		{
-			return $skuInventoryInfo;
-		}
-		return false;
-	}
-
-	/**
 	 * Get product SKU IDs
 	 *
 	 * @param	int			product id
@@ -512,7 +492,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	}
 
 	/**
-	 * Update SKU inventory
+	 * Update SKU inventory if the item is tracking inventory
 	 *
 	 * @param int SKU ID
 	 * @param qty quantity
@@ -777,7 +757,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		// check if this is a product
 		if (!($product instanceof StorefrontModelProduct))
 		{
-			throw new Exception(JText::_('Bad product. Unable to nable to .'));
+			throw new Exception(JText::_('Bad product.'));
 		}
 
 		if ($action == 'update')
@@ -1007,8 +987,10 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 	 */
 	public function getCoupon($code)
 	{
-		// Create a StorefrontModelCoupon
+		// Seems like unused code
+		throw new Exception('Not sure if this is ever used. Warehouse.php');
 
+		// Create a StorefrontModelCoupon
 		if ($productType == 'product')
 		{
 			$product = new StorefrontModelProduct();
@@ -1191,7 +1173,6 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		}
 
 		$this->_db->setQuery($sql);
-		//echo '<br>'; echo $this->_db->_sql; die;
 		$this->_db->query();
 		if (empty($cnId))
 		{

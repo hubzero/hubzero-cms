@@ -40,6 +40,17 @@ $this->css();
 	<h2>Checkout: shipping information</h2>
 </header>
 
+<?php
+
+if (!empty($this->notifications))
+{
+	$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'notifications'));
+	$view->notifications = $this->notifications;
+	$view->display();
+}
+
+?>
+
 <section class="main section">
 	<div class="section-inner">
 		<?php

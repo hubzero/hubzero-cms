@@ -42,6 +42,14 @@ $(document).ready(function(){
 		$(this).find('input').prop("checked", true).trigger("change");
 	});
 
+	// Auto-select single product options (https://freedcamp.com/wl_14B/Shopping_Cart_Tk2/todos/2197226/)
+	$('#productOptions .product-options').each(function(index) {
+		var inputs = $(this).find('input');
+		if(inputs.length == 1) {
+			inputs.prop("checked", true).trigger("change");
+		}
+	});
+
 });
 
 /* ---------------------------------------------------------------------------------------------------------------------------*/
@@ -207,7 +215,7 @@ $(document).ready(function(){
 					}
 				}
 				else {
-					$("#qty").remove();
+					$('#qtyWrap').html('');
 				}
 
 				// enable 'add to cart' button
@@ -314,7 +322,7 @@ $(document).ready(function(){
 			return(returnArray);
 		}
 		
-    }	
+    }
  
 })(jQuery);
 

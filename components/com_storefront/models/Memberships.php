@@ -174,4 +174,32 @@ class StorefrontModelMemberships
 		$ttl = implode(' ', $ttlParts);
 		return $ttl;
 	}
+
+	/* ****************************** Static Functions *********************************/
+
+	/**
+	 * Find the proper Product Type Subscription Object and return it
+	 * @param	String 	Product type
+	 * @param 	Object  Product ID
+	 * @return 	Void
+	 */
+	public static function getSubscriptionObject($type, $pId, $uId)
+	{
+		// Find if there is a corresponding object
+		$lookupPath  = JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes';
+		$lookupPath .= DS . 'Subscriptions';
+
+		$objectClass = str_replace(' ', '_', ucwords(strtolower($type))) . '_Subscription';
+		if (file_exists($lookupPath . DS . $objectClass . '.php'))
+		{
+			// Include the class file
+			require_once($lookupPath . DS . $objectClass . '.php');
+			return new $objectClass($pId, $uId);
+		}
+		else
+		{
+			require_once($lookupPath . DS . 'BaseSubscription.php');
+			return new BaseSubscription($pId, $uId);
+		}
+	}
 }

@@ -42,7 +42,7 @@ class Course_Type_Handler extends Type_Handler
 
     public function handle()
     {
-        include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
+        require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
         $ms = new StorefrontModelMemberships();
 
         // Get current registration
@@ -52,17 +52,14 @@ class Course_Type_Handler extends Type_Handler
         // Get course ID
         $courseId = $this->item['meta']['courseId'];
 
-        // Initialize static cart
-        include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-        $cart = new CartModelCart(NULL, true);
-
-        // Get user id
-        $userId = $cart->getCartUser($this->crtId);
+        // Get user ID for the cart
+        require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+        $userId = CartModelCart::getCartUser($this->crtId);
 
         // Load courses model and register
         // registerForCourse($userId, $courseId, $expiration);
 
-        include_once(JPATH_BASE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
+        require_once(JPATH_BASE . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
         $course = CoursesModelCourse::getInstance($this->item['meta']['courseId']);
 

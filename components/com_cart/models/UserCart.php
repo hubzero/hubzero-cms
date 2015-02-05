@@ -22,8 +22,7 @@
  *
  * HUBzero is a registered trademark of Purdue University.
  *
- * @package   hubzero-cms
- * @author    Ilya Shunko <ishunko@purdue.edu>
+ * @package   Ilya Shunko <ishunko@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,33 +30,45 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//import needed Joomla! libs
-jimport('joomla.filesystem.folder');
-jimport('joomla.application.component.view');
+require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
 
-// require base component controller
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . 'component.php');
-
-//build controller path and name
-$controllerName = JRequest::getCmd('controller', '');
-
-if (empty($controllerName))
+/**
+ * User shopping cart
+ */
+class CartModelUserCart extends CartModelCart
 {
-	// Load default controller if no controller provided
-	$controllerName = 'cart';
+    /**
+     * Cart constructor
+     *
+     * @param int    Cart ID to locate the specific cart
+     * @return void
+     */
+    public function __construct($crtId)
+    {
+        // Cart ID is always an integer
+        if (empty($crtId) || !is_numeric($crtId) || $crtId < 1) {
+            throw new Exception('Bad cart initialization');
+        }
+
+        parent::__construct();
+
+        $this->crtId = $crtId;
+        if (!$this->exists())
+        {
+            throw new Exception(COM_CART_NO_CART_FOUND);
+        }
+    }
+
+    /**
+     * Get SKUs from the database
+     *
+     * @param void
+     * @return array of SKU IDs in the cart
+     */
+    public function getCartItems()
+    {
+        $items = parent::getCartItems();
+        // Return SKUs only
+        return $items->skus;
+    }
 }
-
-elseif (!file_exists(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	JError::raiseError(404, JText::_('Page Not Found'));
-}
-
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_cart' . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'CartController' . ucfirst(strtolower($controllerName));
-
-// Instantiate controller and execute
-$controller = new $controllerName();
-$controller->disableDefaultTask();
-$controller->execute();
-$controller->redirect();
-

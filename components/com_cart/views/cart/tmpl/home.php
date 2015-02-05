@@ -43,6 +43,17 @@ $this->css()
 
 <?php
 
+if (!empty($this->notifications))
+{
+	$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'notifications'));
+	$view->notifications = $this->notifications;
+	$view->display();
+}
+
+?>
+
+<?php
+/*
 $errors = $this->getError();
 if (!empty($errors))
 {
@@ -55,7 +66,7 @@ if (!empty($errors))
 		echo '</section>';
 	echo '</section>';
 }
-
+*/
 ?>
 
 <section class="main section">

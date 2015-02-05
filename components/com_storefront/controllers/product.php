@@ -43,7 +43,7 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
+		require_once(JPATH_COMPONENT . DS . 'models' . DS . 'Warehouse.php');
 		$this->warehouse = new StorefrontModelWarehouse();
 
 		parent::execute();
@@ -63,10 +63,18 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			JError::raiseError(404, JText::_('COM_STOREFRONT_PRODUCT_NOT_FOUND'));
 		}
 
-		//$view = new \Hubzero\Component\View( array('name'=>'product', 'layout' => 'display') );
 		$this->view->pId = $pId;
 		$this->view->css();
 		$this->view->js('product_display.js');
+
+		// A flag whether the item is available for purchase (for any reason, used by the auditors)
+		$productAvailable = true;
+
+		$pageMessages = array();
+
+		// Get the cart
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		$cart = new CartModelCurrentCart();
 
 		// POST add to cart request
 		$addToCartRequest = JRequest::getVar('addToCart', false, 'post');
@@ -82,14 +90,12 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 			try
 			{
 				$sku = $this->warehouse->mapSku($pId, $options);
-
-				include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-				$cart = new CartModelCart();
 				$cart->add($sku, $qty);
 			}
 			catch (Exception $e)
 			{
 				$errors[] = $e->getMessage();
+				$pageMessages[] = array($e->getMessage(), 'error');
 			}
 
 			if (!empty($errors))
@@ -109,7 +115,25 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		$product = $this->warehouse->getProductInfo($pId);
 		$this->view->product = $product;
 
-		//print_r($product); die;
+		// Run the auditor
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
+		$auditor = Audit::getAuditor($product, $cart->getCartInfo()->crtId);
+		$auditorResponse = $auditor->audit();
+
+		//print_r($auditor); die;
+
+		if ($auditorResponse->status != 'ok')
+		{
+			if ($auditorResponse->status == 'error')
+			{
+				// Product is not available for purchase
+				$productAvailable = false;
+				foreach ($auditorResponse->notices as $notice)
+				{
+					$pageMessages[] = array($notice, 'warning');
+				}
+			}
+		}
 
 		// Get option groups with options and SKUs
 		$data = $this->warehouse->getProductOptions($pId);
@@ -162,10 +186,10 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 				$qtyDropDownMaxVal = $qtyDropDownMaxValLimit;
 			}
 
-			// If the SKU doesn't allow multiple items, reset the dropdown
+			// If the SKU doesn't allow multiple items, set the dropdown to 1
 			if (!$sku['info']->sAllowMultiple)
 			{
-				$qtyDropDownMaxVal = 0;
+				$qtyDropDownMaxVal = 1;
 			}
 		}
 
@@ -186,15 +210,22 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		}
 		$this->view->price = $priceRange;
 
+		//print_r($data); die;
+
 		// Add custom page JS
-		if ($data && count($data->skus) > 1) {
+		if ($data && count($data->options) > 1) {
 			$js = $this->getDisplayJs($data->options, $data->skus);
 			$doc =& JFactory::getDocument();
 			$doc->addScriptDeclaration($js);
 		}
 
+		$this->view->productAvailable = $productAvailable;
+
 		//build pathway
 		$this->_buildPathway($product->pName);
+
+		// Set notifications
+		$this->view->notifications = $pageMessages;
 
 		$this->view->display();
 	}

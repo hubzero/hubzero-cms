@@ -41,17 +41,11 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 <?php
 
-$errors = $this->getError();
-if (!empty($errors))
+if (!empty($this->notifications))
 {
-	echo '<section class="section messages errors">';
-	echo '<div class="section-inner">';
-	foreach ($errors as $error)
-	{
-		echo '<p class="error">' . $error . '</p>';
-	}
-	echo '</section>';
-	echo '</section>';
+	$view = new \Hubzero\Component\View(array('name'=>'shared', 'layout' => 'notifications'));
+	$view->notifications = $this->notifications;
+	$view->display();
 }
 
 ?>
@@ -148,7 +142,7 @@ if (!empty($errors))
 				</div>
 
 				<?php
-				if($this->inStock)
+				if($this->inStock && $this->productAvailable)
 				{
 				?>
 					<p class="submit">

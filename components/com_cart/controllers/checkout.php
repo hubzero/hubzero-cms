@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once(JPATH_COMPONENT . DS . 'models' . DS . 'CurrentCart.php');
+
 /**
  * Courses controller class
  */
@@ -52,10 +54,10 @@ class CartControllerCheckout extends ComponentController
 			$this->registerTask('__default', $this->_task);
 		}
 
-		$juser = JFactory::getUser();
+		$this->juser = JFactory::getUser();
 
 		// Check if they're logged in
-		if ($juser->get('guest'))
+		if ($this->juser->get('guest'))
 		{
 			$this->login('Please login to continue');
 			return;
@@ -72,8 +74,7 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function checkoutTask()
 	{
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart();
+		$cart = new CartModelCurrentCart();
 
 		// This is a starting point in checkout process. All existing transactions for this user
 		// have to be removed and a new one has to be created.
@@ -115,9 +116,8 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function continueTask()
 	{
-		// Decide where to go next
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart();
+		/* Decide where to go next */
+		$cart = new CartModelCurrentCart();
 
 		// Check/create/update transaction here
 		$transactionInfo = $cart->getTransaction();
@@ -130,7 +130,6 @@ class CartControllerCheckout extends ComponentController
 
 		// Redirect to the next step
 		$nextStep = $cart->getNextCheckoutStep();
-		//echo $nextStep; die;
 		$cart->redirect($nextStep);
 	}
 
@@ -141,13 +140,15 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function shippingTask()
 	{
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart();;
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		$cart = new CartModelCurrentCart();
 
 		// initialize address set var
 		$addressSet = false;
 
 		$params = $this->getParams(array('action', 'saId'));
+
+		$errors = array();
 
 		if (!empty($params) && !empty($params->action) && !empty($params->saId) && $params->action == 'select')
 		{
@@ -158,12 +159,11 @@ class CartControllerCheckout extends ComponentController
 			}
 			catch (Exception $e)
 			{
-				$error = $e->getMessage();
+				$errors[] = array($e->getMessage(), 'error');
 			}
 		}
 
 		$transaction = $cart->liftTransaction();
-		//print_r($transaction); die;
 
 		if (!$transaction)
 		{
@@ -184,7 +184,10 @@ class CartControllerCheckout extends ComponentController
 			}
 			else
 			{
-				$error = $res->errors;
+				foreach ($res->errors as $error)
+				{
+					$errors[] = array($error, 'error');
+				}
 			}
 		}
 
@@ -201,12 +204,12 @@ class CartControllerCheckout extends ComponentController
 			$cart->redirect($nextStep);
 		}
 
-		if (!empty($error))
+		if (!empty($errors))
 		{
-			$this->view->setError($error);
+			$this->view->notifications = $errors;
 		}
 
-		$savedShippingAddresses = $cart->getSavedShippingAddresses();
+		$savedShippingAddresses = $cart->getSavedShippingAddresses($this->juser->id);
 		$this->view->savedShippingAddresses = $savedShippingAddresses;
 		$this->view->display();
 	}
@@ -220,10 +223,6 @@ class CartControllerCheckout extends ComponentController
 	{
 		// ajax vs non-ajax
 		$cart->setSavedShippingAddress($saId);
-
-		// Non ajax
-		//$nextStep = $cart->getNextCheckoutStep();
-		//$cart->redirect($nextStep);
 	}
 
 	/**
@@ -233,11 +232,10 @@ class CartControllerCheckout extends ComponentController
 	 */
 	public function summaryTask()
 	{
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart();
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		$cart = new CartModelCurrentCart();
 
 		$transaction = $cart->liftTransaction();
-		//print_r($transaction); die;
 
 		if (!$transaction)
 		{
@@ -246,8 +244,6 @@ class CartControllerCheckout extends ComponentController
 
 		// Generate security token
 		$token = $cart->getToken();
-
-		//print_r($transaction->info); die;
 
 		// Check if there are any steps missing. Redirect if needed
 		$nextStep = $cart->getNextCheckoutStep();
@@ -266,14 +262,14 @@ class CartControllerCheckout extends ComponentController
 	}
 
 	/**
-	 * Confirm step of the checkout. Should be a passthrough page for JS-enabled browsers, requires a form submission to the payment gateway
+	 * Confirm step of the checkout. Should be a pass-through page for JS-enabled browsers, requires a form submission to the payment gateway
 	 *
 	 * @return     void
 	 */
 	public function confirmTask()
 	{
-		include_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'cart.php');
-		$cart = new CartModelCart();
+		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'CurrentCart.php');
+		$cart = new CartModelCurrentCart();
 
 		$transaction = $cart->liftTransaction();
 		if (!$transaction)
@@ -293,7 +289,7 @@ class CartControllerCheckout extends ComponentController
 		}
 
 		// Final step here before payment
-		$cart->updateTransactionStatus('awaiting payment');
+		CartModelCart::updateTransactionStatus('awaiting payment', $transaction->info->tId);
 
 		// Generate payment code
 		$params =  JComponentHelper::getParams(JRequest::getVar('option'));

@@ -240,7 +240,7 @@ class StorefrontModelSku
 	/*
 	 * Set time to live
 	 *
-	 * @param	strng		expected MySQL formatted interval values like 1 DAY, 2 MONTH, 3 YEAR
+	 * @param	string		expected MySQL formatted interval values like 1 DAY, 2 MONTH, 3 YEAR
 	 * @return	bool		SKU status
 	*/
 	public function setTimeToLive($ttl)

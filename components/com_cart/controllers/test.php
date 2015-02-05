@@ -87,7 +87,7 @@ class CartControllerTest extends ComponentController
 			{
 				// Constructor take the coupon code
 				$coupon = new StorefrontModelCoupon('hui');
-				// Couponn description (shows up in the cart)
+				// Coupon description (shows up in the cart)
 				$coupon->setDescription('Test coupon, 10% off product with ID 3');
 				// Expiration date
 				$coupon->setExpiration('Feb 22, 2022');
