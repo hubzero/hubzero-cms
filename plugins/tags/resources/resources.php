@@ -129,7 +129,7 @@ class plgTagsResources extends \Hubzero\Plugin\Plugin
 			$response['total'] += $response['children'][$k]['total'];
 		}
 
-		if ($areas && ($areas == $response['name']) || isset($response['children'][$areas]))
+		if ($areas && ($areas == $response['name'] || isset($response['children'][$areas])))
 		{
 			// Push some CSS and JS to the tmeplate that may be needed
 			\Hubzero\Document\Assets::addComponentStylesheet('com_resources');
