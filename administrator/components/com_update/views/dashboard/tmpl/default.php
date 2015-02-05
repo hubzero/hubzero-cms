@@ -65,7 +65,7 @@ $logStatus = 'all';
 					<?php else : ?>
 						<div class="alert"></div>
 						<div class="status-message">
-							<p>The repository has the following divergence (and cannot be updated)</p>
+							<p>The repository has the following divergence</p>
 						</div>
 						<div class="status-items">
 							<?php foreach ($this->status as $key => $items) : ?>

@@ -542,9 +542,22 @@ class Git
 	 **/
 	public function isEligibleForUpdate()
 	{
-		$status = $this->status();
+		$status   = $this->status();
+		$eligible = true;
 
-		return (empty($status)) ? true : false;
+		if (!empty($status) && is_array($status))
+		{
+			foreach ($status as $type => $files)
+			{
+				if ($type != 'untracked' && !empty($files))
+				{
+					$eligible = false;
+					break;
+				}
+			}
+		}
+
+		return $eligible;
 	}
 
 	/**
