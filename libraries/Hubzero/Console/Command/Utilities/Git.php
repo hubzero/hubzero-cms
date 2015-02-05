@@ -504,6 +504,16 @@ class Git
 	}
 
 	/**
+	 * Purge stashed changes
+	 *
+	 * @return void
+	 **/
+	public function purgeStash()
+	{
+		$this->call('stash', array('clear'));
+	}
+
+	/**
 	 * Perform rollback
 	 *
 	 * @param  (string) $rollbackPoint - tagname of rollback point
