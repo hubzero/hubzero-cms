@@ -65,11 +65,17 @@ function submitbutton(pressbutton)
 			<p class="error"><?php echo $this->getError(); ?></p>
 		<?php } ?>
 
-		<span><?php echo JText::_('Total projects'); ?>: <strong><?php echo $this->total; ?></strong></span> &nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
-		<label for="filter_search"><?php echo JText::_('Search'); ?>:</label>
-		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('Search...'); ?>" />
+		<label for="filter_search"><?php echo JText::_('COM_PROJECTS_SEARCH'); ?>:</label>
+		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_PROJECTS_SEARCH'); ?>" />
 
-		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('Go'); ?>" />
+		<label for="quota"><?php echo JText::_('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
+		<select name="quota" id="quota">
+			<option value="all"<?php echo ($this->filters['quota'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PROJECTS_QUOTA_ALL'); ?></option>
+			<option value="regular"<?php echo ($this->filters['quota'] == 'regular') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PROJECTS_QUOTA_REGULAR'); ?></option>
+			<option value="premium"<?php echo ($this->filters['quota'] == 'premium') ? ' selected="selected"' : ''; ?>><?php echo JText::_('COM_PROJECTS_QUOTA_PREMIUM'); ?></option>
+		</select>
+
+		<input type="submit" name="filter_submit" id="filter_submit" value="<?php echo JText::_('COM_PROJECTS_GO'); ?>" />
 	</fieldset>
 
 	<table class="adminlist" id="projects-admin">
@@ -82,6 +88,7 @@ function submitbutton(pressbutton)
 				<th scope="col" colspan="2"><?php echo JHTML::_('grid.sort', 'Owner', 'owner', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Status', 'status', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
 				<th scope="col"><?php echo JHTML::_('grid.sort', 'Privacy', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby'] ); ?></th>
+				<th><?php echo JText::_('COM_PROJECTS_QUOTA'); ?></th>
 			</tr>
 		</thead>
 		<tfoot>
@@ -100,65 +107,74 @@ function submitbutton(pressbutton)
 			$database = JFactory::getDBO();
 			$pt = new ProjectTags($database);
 
-			for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+			if ($this->rows)
 			{
-				$row = $this->rows[$i];
+				for ($i=0, $n=count( $this->rows ); $i < $n; $i++)
+				{
+					$row = $this->rows[$i];
 
-				if ($row->owned_by_group && !$row->groupcn)
-				{
-					$row->groupname = '<span class="italic pale">'.JText::_('COM_PROJECTS_INFO_DELETED_GROUP').'</span>';
-				}
-				$owner = ($row->owned_by_group) ? $row->groupname.'<span class="block  prominent">'.$row->groupcn.'</span>' : $row->authorname;
-				$ownerclass = ($row->owned_by_group) ? '<span class="i_group">&nbsp;</span>' : '<span class="i_user">&nbsp;</span>';
+					if ($row->owned_by_group && !$row->groupcn)
+					{
+						$row->groupname = '<span class="italic pale">'.JText::_('COM_PROJECTS_INFO_DELETED_GROUP').'</span>';
+					}
+					$owner = ($row->owned_by_group) ? $row->groupname.'<span class="block  prominent">'.$row->groupcn.'</span>' : $row->authorname;
+					$ownerclass = ($row->owned_by_group) ? '<span class="i_group">&nbsp;</span>' : '<span class="i_user">&nbsp;</span>';
 
-				// Determine status
-				$status = '';
-				if ($row->state == 1 && $row->setup_stage >= $setup_complete)
-				{
-					$status = '<span class="active">'.JText::_('Active').'</span> '.JText::_('since').' '.JHTML::_('date', $row->created, 'd M. Y');
-				}
-				else if ($row->state == 2)
-				{
-					$status  = '<span class="deleted">'.JText::_('Deleted').'</span> ';
-				}
-				else if ($row->setup_stage < $setup_complete)
-				{
-					$status = '<span class="setup">'.JText::_('Setup').'</span> '.JText::_('in progress');
-				}
-				else if ($row->state == 0)
-				{
-					$status = '<span class="faded italic">'.JText::_('Inactive/Suspended').'</span> ';
-				}
-				else if ($row->state == 5)
-				{
-					$status = '<span class="inactive">'.JText::_('Pending approval').'</span> ';
-				}
+					// Determine status
+					$status = '';
+					if ($row->state == 1 && $row->setup_stage >= $setup_complete)
+					{
+						$status = '<span class="active">'.JText::_('Active').'</span> '.JText::_('since').' '.JHTML::_('date', $row->created, 'd M. Y');
+					}
+					else if ($row->state == 2)
+					{
+						$status  = '<span class="deleted">'.JText::_('Deleted').'</span> ';
+					}
+					else if ($row->setup_stage < $setup_complete)
+					{
+						$status = '<span class="setup">'.JText::_('Setup').'</span> '.JText::_('in progress');
+					}
+					else if ($row->state == 0)
+					{
+						$status = '<span class="faded italic">'.JText::_('Inactive/Suspended').'</span> ';
+					}
+					else if ($row->state == 5)
+					{
+						$status = '<span class="inactive">'.JText::_('Pending approval').'</span> ';
+					}
 
-				$tags = $pt->get_tag_cloud(3, 1, $row->id);
-				$thumb 	= rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media';
-			?>
-			<tr class="<?php echo "row$k"; ?>">
-				<td><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>
-				<td><?php echo $row->id; ?></td>
-				<td><?php echo '<img src="'.$thumb.'" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
-				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>"><?php echo stripslashes($row->title); ?></a><br />
-					<strong><?php echo stripslashes($row->alias); ?></strong>
-					<?php if ($tags) { ?>
-						<span class="project-tags block">
-							<?php echo $tags; ?>
-						</span>
-					<?php } ?>
-				</td>
-				<td><?php echo $ownerclass; ?></td>
-				<td><?php echo $owner; ?></td>
-				<td><?php echo $status; ?></td>
-				<td><?php echo ($row->private == 1) ? '<span class="private">&nbsp;</span>' : ''; ?></td>
-			</tr>
-			<?php
-				$k = 1 - $k;
-			}
-			?>
+					$tags = $pt->get_tag_cloud(3, 1, $row->id);
+					$thumb 	= rtrim($base, DS) . DS . 'projects' . DS . $row->alias . '/media';
+
+					$params = new JParameter( $row->params );
+					$quota  = $params->get('quota', $this->defaultQuota);
+					$quota  = ProjectsHtml::convertSize($quota, 'b', 'GB', 2);
+				?>
+				<tr class="<?php echo "row$k"; ?>">
+					<td><?php echo JHTML::_('grid.id', $i, $row->id, false, 'id' ); ?></td>
+					<td><?php echo $row->id; ?></td>
+					<td><?php echo '<img src="'.$thumb.'" width="30" height="30" alt="' . $this->escape($row->alias) . '" />'; ?></td>
+					<td>
+						<a href="index.php?option=<?php echo $this->option ?>&amp;task=edit&amp;id[]=<?php echo $row->id;  echo $filterstring; ?>"><?php echo stripslashes($row->title); ?></a><br />
+						<strong><?php echo stripslashes($row->alias); ?></strong>
+						<?php if ($tags) { ?>
+							<span class="project-tags block">
+								<?php echo $tags; ?>
+							</span>
+						<?php } ?>
+					</td>
+					<td><?php echo $ownerclass; ?></td>
+					<td><?php echo $owner; ?></td>
+					<td><?php echo $status; ?></td>
+					<td><?php echo ($row->private == 1) ? '<span class="private">' . JText::_('COM_PROJECTS_FLAG_PRIVATE') . '</span>' : '<span class="public">' . JText::_('COM_PROJECTS_FLAG_PUBLIC') . '</span>'; ?></td>
+					<td><?php echo $quota . 'GB'; ?></td>
+				</tr>
+				<?php
+					$k = 1 - $k;
+				}
+			} else { ?>
+				<tr><td colspan="8"><?php echo JText::_('COM_PROJECTS_NO_RESULTS'); ?></td></tr>
+		<?php } ?>
 		</tbody>
 	</table>
 
