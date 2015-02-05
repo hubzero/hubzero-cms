@@ -569,7 +569,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		//are we allowing user to add citation
 		$allowImport = $this->config->get('citation_import', 1);
 		if ($allowImport == 0
-		 || ($allowImport == 2 && $this->juser->get('usertype') != 'Super Administrator'))
+		|| ($allowImport == 2 && $this->juser->get('usertype') == 'Super Administrator'))
 		{
 			// Redirect
 			$this->setRedirect(
