@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -145,7 +145,7 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Constructor
 	 *
-	 * @param   array $config Optional configurations to be used
+	 * @param   array  $config  Optional configurations to be used
 	 * @return  void
 	 */
 	public function __construct($config=array())
@@ -252,8 +252,8 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Method to set an overloaded variable to the component
 	 *
-	 * @param   string $property Name of overloaded variable to add
-	 * @param   mixed  $value    Value of the overloaded variable
+	 * @param   string  $property  Name of overloaded variable to add
+	 * @param   mixed   $value     Value of the overloaded variable
 	 * @return  void
 	 */
 	public function __set($property, $value)
@@ -264,8 +264,8 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Method to get an overloaded variable of the component
 	 *
-	 * @param   string $property Name of overloaded variable to retrieve
-	 * @return  mixed  Value of the overloaded variable
+	 * @param   string  $property  Name of overloaded variable to retrieve
+	 * @return  mixed   Value of the overloaded variable
 	 */
 	public function __get($property)
 	{
@@ -278,7 +278,7 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Method to check if a poperty is set
 	 *
-	 * @param   string  $property Name of overloaded variable to add
+	 * @param   string  $property  Name of overloaded variable to add
 	 * @return  boolean
 	 */
 	public function __isset($property)
@@ -289,7 +289,7 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -364,9 +364,9 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Reset the view object
 	 *
-	 * @param	string	The name of the view
-	 * @param	string	The name of the layout (optional)
-	 * @return	void
+	 * @param   string  $name    The name of the view
+	 * @param   string  $layout  The name of the layout (optional)
+	 * @return  void
 	 */
 	public function setView($name, $layout=null)
 	{
@@ -386,11 +386,21 @@ class SiteController extends Object implements ControllerInterface
 	}
 
 	/**
+	 * Get the last task that is being performed or was most recently performed.
+	 *
+	 * @return  string  The task that is being performed or was most recently performed.
+	 */
+	public function getTask()
+	{
+		return $this->_task;
+	}
+
+	/**
 	 * Register (map) a task to a method in the class.
 	 *
-	 * @param	string	The task.
-	 * @param	string	The name of the method in the derived class to perform for this task.
-	 * @return	void
+	 * @param   string  $task    The task.
+	 * @param   string  $method  The name of the method in the derived class to perform for this task.
+	 * @return  void
 	 */
 	public function registerTask($task, $method)
 	{
@@ -403,17 +413,39 @@ class SiteController extends Object implements ControllerInterface
 	}
 
 	/**
+	 * Unregister (unmap) a task in the class.
+	 *
+	 * @param   string  $task  The task.
+	 * @return  object  This object to support chaining.
+	 */
+	public function unregisterTask($task)
+	{
+		unset($this->taskMap[strtolower($task)]);
+
+		return $this;
+	}
+
+	/**
+	 * Register the default task to perform if a mapping is not found.
+	 *
+	 * @param   string  $method  The name of the method in the derived class to perform if a named task is not found.
+	 * @return  object  A JController object to support chaining.
+	 */
+	public function registerDefaultTask($method)
+	{
+		return $this->registerTask('__default', $method);
+	}
+
+	/**
 	 * Disable default task, remove __default from the taskmap
 	 *
 	 * When default task disabled the controller will give a 404 error if the method called doesn't exist
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function disableDefaultTask()
 	{
-		unset($this->_taskMap['__default']);
-
-		return $this;
+		return $this->unregisterTask('__default');
 	}
 
 	/**
@@ -440,21 +472,53 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Set a URL for browser redirection.
 	 *
-	 * @param	string URL to redirect to.
-	 * @param	string	Message to display on redirect. Optional, defaults to
-	 * 			value set internally by controller, if any.
-	 * @param	string	Message type. Optional, defaults to 'message'.
-	 * @return	void
+	 * @param   string  $url   URL to redirect to.
+	 * @param   string  $msg   Message to display on redirect. Optional, defaults to
+	 *                         value set internally by controller, if any.
+	 * @param   string  $type  Message type. Optional, defaults to 'message'.
+	 * @return  object
 	 */
-	public function setRedirect($url, $msg=null, $type='message')
+	public function setRedirect($url, $msg=null, $type=null)
 	{
 		$this->_redirect = $url;
 		if ($msg !== null)
 		{
 			// controller may have set this directly
-			$this->_message	= $msg;
+			$this->_message = $msg;
 		}
-		$this->_messageType	= $type;
+
+		// Ensure the type is not overwritten by a previous call to setMessage.
+		if (empty($type))
+		{
+			if (empty($this->_messageType))
+			{
+				$this->_messageType = 'message';
+			}
+		}
+		// If the type is explicitly set, set it.
+		else
+		{
+			$this->_messageType = $type;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Set a URL for browser redirection.
+	 *
+	 * @param   string  $msg   Message to display on redirect. Optional, defaults to
+	 *                         value set internally by controller, if any.
+	 * @param   string  $type  Message type. Optional, defaults to 'message'.
+	 * @return  object
+	 */
+	public function setMessage($msg, $type='message')
+	{
+		// controller may have set this directly
+		$this->_message     = $msg;
+		$this->_messageType = $type;
+
+		return $this;
 	}
 
 	/**
@@ -493,7 +557,7 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Method to get component messages
 	 *
-	 * @return	array
+	 * @return  array
 	 */
 	public function getComponentMessage()
 	{
@@ -522,7 +586,7 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Clear the component message queue
 	 *
-	 * @return	object
+	 * @return  object
 	 */
 	public function clearComponentMessage()
 	{
@@ -532,47 +596,9 @@ class SiteController extends Object implements ControllerInterface
 	}
 
 	/**
-	 * Method to add stylesheets to the document.
-	 * Defaults to current component and stylesheet name the same as component.
-	 *
-	 * @param   string  $option Component name to load stylesheet from
-	 * @param   string  $script Name of the stylesheet to load
-	 * @param   boolean $system Pull contents from shared /media/system folder
-	 * @return  object
-	 */
-	protected function _getStyles($option='', $stylesheet='', $system=false)
-	{
-		if ($system)
-		{
-			$option = 'system';
-		}
-
-		return $this->css($stylesheet, $option);
-	}
-
-	/**
-	 * Method to add scripts to the document.
-	 * Defaults to current component and script name the same as component.
-	 *
-	 * @param   string  $script Name of the script to load
-	 * @param   string  $option Component name to load script from
-	 * @param   boolean $system Pull contents from shared /media/system folder
-	 * @return  object
-	 */
-	protected function _getScripts($script='', $option='', $system=false)
-	{
-		if ($system)
-		{
-			$option = 'system';
-		}
-
-		return $this->js($script, $option);
-	}
-
-	/**
 	 * Method to check admin access permission
 	 *
-	 * @return boolean True on success
+	 * @return  boolean  True on success
 	 */
 	protected function _authorize()
 	{
@@ -593,9 +619,8 @@ class SiteController extends Object implements ControllerInterface
 	/**
 	 * Perform before actually calling the given task
 	 *
-	 * @return void
-	 * @author 
-	 **/
+	 * @return  void
+	 */
 	protected function _onBeforeDoTask()
 	{
 		// Do nothing - override in subclass
