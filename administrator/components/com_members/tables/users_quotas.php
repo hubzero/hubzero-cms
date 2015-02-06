@@ -188,7 +188,17 @@ class UsersQuotas extends JTable
 		$query .= " WHERE uq.id = " . $this->_db->quote((int) $id);
 
 		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
+		if ($obj = $this->_db->loadObject())
+		{
+			return $obj;
+		}
+
+		$obj = new self($this->_db);
+		$obj->username = '';
+		$obj->name = '';
+		$obj->class_alias = '';
+
+		return $obj;
 	}
 
 	/**
