@@ -294,7 +294,7 @@ class SiteController extends Object implements ControllerInterface
 	public function execute()
 	{
 		// Incoming task
-		$this->_task = strtolower(\JRequest::getWord('task', \JRequest::getWord('layout', '')));
+		$this->_task = strtolower(\JRequest::getCmd('task', \JRequest::getWord('layout', '')));
 
 		// Check if the task is in the taskMap
 		if (isset($this->_taskMap[$this->_task]))
