@@ -537,6 +537,10 @@ class SupportTicket extends JTable
 			$sql .= " LEFT JOIN #__tags_object AS st on st.objectid=f.id AND st.tbl='support'
 					LEFT JOIN #__tags AS t ON st.tagid=t.id";
 		}
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			$sql .= " LEFT JOIN #__support_comments AS w ON w.ticket=f.id";
+		}
 
 		$sql .= $this->parseFind($filters) . " AND " . $query;
 		if (isset($filters['search']) && $filters['search'] != '')
@@ -545,7 +549,8 @@ class SupportTicket extends JTable
 			$sql .= "(
 						LOWER(f.report) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
 						OR LOWER(f.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-						OR LOWER(f.login) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
+						OR LOWER(f.login) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(w.comment) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR id=" . $filters['search'];
@@ -596,6 +601,10 @@ class SupportTicket extends JTable
 			$sql .= " LEFT JOIN #__tags_object AS st on st.objectid=f.id AND st.tbl='support'
 					LEFT JOIN #__tags AS t ON st.tagid=t.id";
 		}
+		if (isset($filters['search']) && $filters['search'] != '')
+		{
+			$sql .= " LEFT JOIN #__support_comments AS w ON w.ticket=f.id";
+		}
 		$sql .= $this->parseFind($filters) . " AND " . $query;
 		if (isset($filters['search']) && $filters['search'] != '')
 		{
@@ -603,7 +612,8 @@ class SupportTicket extends JTable
 			$sql .= "(
 						LOWER(f.report) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
 						OR LOWER(f.name) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
-						OR LOWER(f.login) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
+						OR LOWER(f.login) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%') . "
+						OR LOWER(w.comment) LIKE " . $this->_db->quote('%' . strtolower($filters['search']) . '%');
 			if (is_numeric($filters['search']))
 			{
 				$sql .= " OR id=" . $filters['search'];
