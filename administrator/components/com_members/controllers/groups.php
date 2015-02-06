@@ -39,7 +39,7 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 	/**
 	 * Add a member to a group
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -93,45 +93,34 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 	/**
 	 * Display all the groups a member is apart of
 	 *
-	 * @param      integer $id Member ID to lookup
-	 * @return     void
+	 * @param   integer  $id  Member ID to lookup
+	 * @return  void
 	 */
 	public function displayTask($id=0)
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
-		if (!$id)
-		{
-			$id = JRequest::getInt('id', 0);
-		}
-
-		$this->view->id = $id;
+		$this->view->id = $id ? $id : JRequest::getInt('id', 0);
 
 		// Get a list of all groups
-		$filters = array(
-			'type'   => array('all'),
-			'limit'  => 'all',
-			'search' => '',
-			'fields' => array('cn', 'description', 'published', 'gidNumber', 'type'),
-			'sortby' => 'title',
+		$this->view->rows = \Hubzero\User\Group::find(array(
+			'type'       => array('all'),
+			'limit'      => 'all',
+			'search'     => '',
+			'fields'     => array('cn', 'description', 'published', 'gidNumber', 'type'),
+			'sortby'     => 'title',
 			'authorized' => 'admin'
-		);
-
-		// Get a list of all groups
-		$this->view->rows = \Hubzero\User\Group::find($filters);
+		));
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 
