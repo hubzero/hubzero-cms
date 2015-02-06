@@ -898,7 +898,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$this->view->category->set('created_by', $this->juser->get('id'));
 			$this->view->category->set('section_id', $this->view->section->get('id'));
 		}
-		elseif ($this->view->category->get('created_by') != $this->juser->get('id') && !$this->config->get('access-create-category'))
+		elseif ($this->view->category->get('created_by') != $this->juser->get('id') && !$this->params->get('access-create-category'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option)
