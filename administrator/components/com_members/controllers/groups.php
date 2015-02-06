@@ -109,13 +109,14 @@ class MembersControllerGroups extends \Hubzero\Component\AdminController
 		$this->view->id = $id;
 
 		// Get a list of all groups
-		$filters = array();
-		$filters['type']   = array('all');
-		$filters['limit']  = 'all';
-		$filters['search'] = '';
-		$filters['limit']  = 'all';
-		$filters['fields'] = array('cn', 'description', 'published', 'gidNumber', 'type');
-		$filters['sortby'] = 'title';
+		$filters = array(
+			'type'   => array('all'),
+			'limit'  => 'all',
+			'search' => '',
+			'fields' => array('cn', 'description', 'published', 'gidNumber', 'type'),
+			'sortby' => 'title',
+			'authorized' => 'admin'
+		);
 
 		// Get a list of all groups
 		$this->view->rows = \Hubzero\User\Group::find($filters);
