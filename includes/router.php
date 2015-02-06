@@ -687,17 +687,16 @@ class JRouterSite extends JRouter
 			if (!isset($vars['option'])) {
 				jimport('joomla.juri');
 				$db = JFactory::getDBO();
-				$sql = "SELECT * FROM #__redirection WHERE oldurl=" . $db->Quote($route);
-				$db->setQuery($sql);
+				$db->setQuery("SELECT * FROM `#__redirect_links` WHERE `old_url`=" . $db->Quote($uri->current()));
 				$row = $db->loadObject();
 
 				if (!empty($row))
 				{
-					$myuri = JURI::getInstance( $row->newurl );
+					$myuri = JURI::getInstance($row->new_url);
 					$vars = $myuri->getQuery(true);
 
-					if ( isset($vars['Itemid']) ) {
-						$menu->setActive(  $vars['Itemid'] );
+					if (isset($vars['Itemid'])) {
+						$menu->setActive($vars['Itemid']);
 					}
 				}
 			}

@@ -1,25 +1,96 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_redirect
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // No direct access.
 defined('_JEXEC') or die;
 
+$canDo = \Components\Redirect\Helpers\Redirect::getActions();
+
+JToolBarHelper::title(JText::_('COM_REDIRECT_MANAGER_LINKS'), 'redirect');
+if ($canDo->get('core.create'))
+{
+	JToolBarHelper::addNew();
+}
+if ($canDo->get('core.edit'))
+{
+	JToolBarHelper::editList();
+}
+if ($canDo->get('core.edit.state'))
+{
+	if ($this->state->get('filter.state') != 2)
+	{
+		JToolBarHelper::divider();
+		JToolBarHelper::publish('publish', 'JTOOLBAR_ENABLE', true);
+		JToolBarHelper::unpublish('unpublish', 'JTOOLBAR_DISABLE', true);
+	}
+	if ($this->state->get('filter.state') != -1 )
+	{
+		JToolBarHelper::divider();
+		if ($this->state->get('filter.state') != 2)
+		{
+			JToolBarHelper::archiveList('archive');
+		}
+		elseif ($this->state->get('filter.state') == 2)
+		{
+			JToolBarHelper::unarchiveList('publish', 'JTOOLBAR_UNARCHIVE');
+		}
+	}
+}
+if ($this->state->get('filter.state') == -2 && $canDo->get('core.delete'))
+{
+	JToolBarHelper::deleteList('', 'delete', 'JTOOLBAR_EMPTY_TRASH');
+	JToolBarHelper::divider();
+}
+elseif ($canDo->get('core.edit.state'))
+{
+	JToolBarHelper::trash('trash');
+	JToolBarHelper::divider();
+}
+if ($canDo->get('core.admin'))
+{
+	JToolBarHelper::preferences('com_redirect');
+	JToolBarHelper::divider();
+}
+JToolBarHelper::help('links');
+
 // Include the component HTML helpers.
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 
-$user		= JFactory::getUser();
-$listOrder	= $this->escape($this->state->get('list.ordering'));
-$listDirn	= $this->escape($this->state->get('list.direction'));
+$user = JFactory::getUser();
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_redirect&view=links'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&view=links'); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -30,7 +101,7 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		<div class="col width-50 fltrt">
 			<select name="filter_state" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
-				<?php echo JHtml::_('select.options', RedirectHelper::publishedOptions(), 'value', 'text', $this->state->get('filter.state'), true);?>
+				<?php echo JHtml::_('select.options', \Components\Redirect\Helpers\Redirect::publishedOptions(), 'value', 'text', $this->state->get('filter.state'), true);?>
 			</select>
 		</div>
 	</fieldset>
@@ -39,28 +110,28 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<table class="adminlist">
 		<thead>
 			<tr>
-				<th width="20">
+				<th scope="col">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
-				<th class="title">
+				<th scope="col" class="title">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_OLD_URL', 'a.old_url', $listDirn, $listOrder); ?>
 				</th>
-				<th width="28%">
+				<th scope="col">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_NEW_URL', 'a.new_url', $listDirn, $listOrder); ?>
 				</th>
-				<th width="28%">
+				<th scope="col">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_REFERRER', 'a.referer', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th scope="col">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_CREATED_DATE', 'a.created_date', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
+				<th scope="col">
 					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
-				<th width="10%">
+				<th scope="col">
 					<?php echo JHtml::_('grid.sort', 'COM_REDIRECT_HEADING_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th>
-				<th width="1%" class="nowrap">
+				<th scope="col" class="nowrap">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
@@ -85,9 +156,9 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canCreate	= $user->authorise('core.create',		'com_redirect');
-			$canEdit	= $user->authorise('core.edit',			'com_redirect');
-			$canChange	= $user->authorise('core.edit.state',	'com_redirect');
+			$canCreate = $user->authorise('core.create', $this->option);
+			$canEdit   = $user->authorise('core.edit', $this->option);
+			$canChange = $user->authorise('core.edit.state', $this->option);
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="center">
@@ -95,10 +166,11 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 				</td>
 				<td>
 					<?php if ($canEdit) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_redirect&task=link.edit&id='.$item->id);?>" title="<?php echo $this->escape($item->old_url); ?>">
-							<?php echo $this->escape(str_replace(JURI::root(), '', $item->old_url)); ?></a>
-					<?php else : ?>
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $item->id);?>" title="<?php echo $this->escape($item->old_url); ?>">
 							<?php echo $this->escape(str_replace(JURI::root(), '', $item->old_url)); ?>
+						</a>
+					<?php else : ?>
+						<?php echo $this->escape(str_replace(JURI::root(), '', $item->old_url)); ?>
 					<?php endif; ?>
 				</td>
 				<td>
@@ -132,5 +204,6 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 	<input type="hidden" name="boxchecked" value="0" />
 	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+
 	<?php echo JHtml::_('form.token'); ?>
 </form>

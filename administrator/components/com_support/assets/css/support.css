@@ -717,7 +717,7 @@
 /* Stats */
 	#ticketForm {
 		position: relative;
-		overflow: hidden;
+		/*overflow: hidden;*/
 		height: 100%;
 	}
 	#ticketForm .list-options {
@@ -847,7 +847,7 @@
 		background: #f9f9f9;
 	}
 
-	/*.pane-item {
+	.pane-item {
 		width: 50%;
 		min-width: 50%;
 		background: rgba(0, 0, 0, 0.025);
@@ -858,7 +858,7 @@
 		border-left: 1px solid #e0e0e0;
 		background: #fff;
 	}
-	@media (max-width: 1025px) {*/
+	@media (max-width: 1025px) {
 		.pane-list {
 			width: 100%;
 			min-width: 100%;
@@ -866,7 +866,7 @@
 		.pane-item {
 			display: none;
 		}
-	/*}*/
+	}
 	.pane-item .submit {
 		margin-left: 75px;
 	}
@@ -879,7 +879,7 @@
 		display: none;
 	}
 	.pane-item .ticket-info {
-		background: #fff;
+		background: #e9e9e9;
 		border-bottom: 1px solid #ddd;
 	}
 	.pane-item .ticket-info:after {
@@ -906,7 +906,10 @@
 	/*.pane-item .ticket-info .open {
 		color: green;
 	}*/
-	.pane-item .ticket-info.major,
+	.pane-item .ticket-info.major {
+		background: #ebc250;
+		color: #fff;
+	}
 	.pane-item .ticket-info.critical {
 		background: #dd4a38;
 		color: #fff;

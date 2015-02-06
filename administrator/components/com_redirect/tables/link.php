@@ -1,29 +1,45 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_redirect
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-defined('_JEXEC') or die;
+namespace Components\Redirect\Tables;
 
 /**
  * Link Table for Redirect.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_redirect
- * @version		1.6
  */
-class RedirectTableLink extends JTable
+class Link extends \JTable
 {
 	/**
 	 * Constructor
 	 *
-	 * @param	object	Database object
-	 *
-	 * @return	void
-	 * @since	1.6
+	 * @param   object  $db  Database object
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -33,8 +49,7 @@ class RedirectTableLink extends JTable
 	/**
 	 * Overloaded check function
 	 *
-	 * @return boolean
-	 * @since	1.6
+	 * @return  boolean
 	 */
 	public function check()
 	{
@@ -42,33 +57,37 @@ class RedirectTableLink extends JTable
 		$this->new_url = trim($this->new_url);
 
 		// Check for valid name.
-		if (empty($this->old_url)) {
-			$this->setError(JText::_('COM_REDIRECT_ERROR_SOURCE_URL_REQUIRED'));
+		if (empty($this->old_url))
+		{
+			$this->setError(\JText::_('COM_REDIRECT_ERROR_SOURCE_URL_REQUIRED'));
 			return false;
 		}
 
 		// Check for valid name.
-		if (empty($this->new_url)) {
-			$this->setError(JText::_('COM_REDIRECT_ERROR_DESTINATION_URL_REQUIRED'));
+		if (empty($this->new_url))
+		{
+			$this->setError(\JText::_('COM_REDIRECT_ERROR_DESTINATION_URL_REQUIRED'));
 			return false;
 		}
 
 		// Check for duplicates
-		if ($this->old_url == $this->new_url) {
-			$this->setError(JText::_('COM_REDIRECT_ERROR_DUPLICATE_URLS'));
+		if ($this->old_url == $this->new_url)
+		{
+			$this->setError(\JText::_('COM_REDIRECT_ERROR_DUPLICATE_URLS'));
 			return false;
 		}
 
 		$db = $this->getDbo();
 
 		// Check for existing name
-		$query = 'SELECT id FROM #__redirect_links WHERE old_url ='.$db->Quote($this->old_url);
+		$query = 'SELECT id FROM `#__redirect_links` WHERE `old_url`=' . $db->Quote($this->old_url);
 		$db->setQuery($query);
 
 		$xid = intval($db->loadResult());
 
-		if ($xid && $xid != intval($this->id)) {
-			$this->setError(JText::_('COM_REDIRECT_ERROR_DUPLICATE_OLD_URL'));
+		if ($xid && $xid != intval($this->id))
+		{
+			$this->setError(\JText::_('COM_REDIRECT_ERROR_DUPLICATE_OLD_URL'));
 			return false;
 		}
 
@@ -78,21 +97,21 @@ class RedirectTableLink extends JTable
 	/**
 	 * Overriden store method to set dates.
 	 *
-	 * @param	boolean	True to update fields even if they are null.
-	 *
-	 * @return	boolean	True on success.
-	 * @see		JTable::store
-	 * @since	1.6
+	 * @param   boolean  $updateNulls  True to update fields even if they are null.
+	 * @return  boolean  True on success.
 	 */
 	public function store($updateNulls = false)
 	{
 		// Initialise variables.
-		$date = JFactory::getDate()->toSql();
+		$date = \JFactory::getDate()->toSql();
 
-		if ($this->id) {
+		if ($this->id)
+		{
 			// Existing item
 			$this->modified_date = $date;
-		} else {
+		}
+		else
+		{
 			// New record.
 			$this->created_date = $date;
 		}

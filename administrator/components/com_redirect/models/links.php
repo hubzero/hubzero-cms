@@ -1,43 +1,67 @@
 <?php
 /**
- * @package		Joomla.Administrator
- * @subpackage	com_redirect
- * @copyright	Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// No direct access.
-defined('_JEXEC') or die;
+namespace Components\Redirect\Models;
 
 jimport('joomla.application.component.modellist');
 
 /**
  * Methods supporting a list of redirect links.
- *
- * @package		Joomla.Administrator
- * @subpackage	com_redirect
- * @since		1.6
  */
-class RedirectModelLinks extends JModelList
+class Links extends \JModelList
 {
 	/**
 	 * Constructor.
 	 *
-	 * @param	array	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @return  void
 	 */
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields'])) {
+		if (empty($config['filter_fields']))
+		{
 			$config['filter_fields'] = array(
-				'id', 'a.id',
-				'old_url', 'a.old_url',
-				'new_url', 'a.new_url',
-				'referer', 'a.referer',
-				'hits', 'a.hits',
-				'created_date', 'a.created_date',
-				'published', 'a.published',
+				'id',
+				'a.id',
+				'old_url',
+				'a.old_url',
+				'new_url',
+				'a.new_url',
+				'referer',
+				'a.referer',
+				'hits',
+				'a.hits',
+				'created_date',
+				'a.created_date',
+				'published',
+				'a.published',
 			);
 		}
 
@@ -49,22 +73,24 @@ class RedirectModelLinks extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @since	1.6
+	 * @param   string  $ordering
+	 * @param   string  $direction
+	 * @return  void
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = \JFactory::getApplication('administrator');
 
 		// Load the filter state.
-		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$state = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
+		$state = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $state);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_redirect');
+		$params = \JComponentHelper::getParams('com_redirect');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -78,16 +104,14 @@ class RedirectModelLinks extends JModelList
 	 * different modules that might need different sets of data or different
 	 * ordering requirements.
 	 *
-	 * @param	string	A prefix for the store id.
-	 *
-	 * @return	string	A store id.
-	 * @since	1.6
+	 * @param   string  A prefix for the store id.
+	 * @return  string  A store id.
 	 */
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':'.$this->getState('filter.search');
-		$id	.= ':'.$this->getState('filter.state');
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.state');
 
 		return parent::getStoreId($id);
 	}
@@ -95,14 +119,13 @@ class RedirectModelLinks extends JModelList
 	/**
 	 * Build an SQL query to load the list data.
 	 *
-	 * @return	JDatabaseQuery
-	 * @since	1.6
+	 * @return  object  JDatabaseQuery
 	 */
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
 		$query->select(
@@ -111,34 +134,41 @@ class RedirectModelLinks extends JModelList
 				'a.*'
 			)
 		);
-		$query->from($db->quoteName('#__redirect_links').' AS a');
+		$query->from($db->quoteName('#__redirect_links') . ' AS a');
 
 		// Filter by published state
 		$state = $this->getState('filter.state');
-		if (is_numeric($state)) {
-			$query->where('a.published = '.(int) $state);
-		} elseif ($state === '') {
+		if (is_numeric($state))
+		{
+			$query->where('a.published = ' . (int) $state);
+		}
+		elseif ($state === '')
+		{
 			$query->where('(a.published IN (0,1,2))');
 		}
 
 		// Filter the items over the search string if set.
 		$search = $this->getState('filter.search');
-		if (!empty($search)) {
-			if (stripos($search, 'id:') === 0) {
-				$query->where('a.id = '.(int) substr($search, 3));
-			} else {
-				$search = $db->Quote('%'.$db->escape($search, true).'%');
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('a.id = ' . (int) substr($search, 3));
+			}
+			else
+			{
+				$search = $db->Quote('%' . $db->escape($search, true).'%');
 				$query->where(
-					'('.$db->quoteName('old_url').' LIKE '.$search .
-					' OR '.$db->quoteName('new_url').' LIKE '.$search .
-					' OR '.$db->quoteName('comment').' LIKE '.$search .
-					' OR '.$db->quoteName('referer').' LIKE '.$search.')'
+					'(' . $db->quoteName('old_url') . ' LIKE ' . $search .
+					' OR ' . $db->quoteName('new_url') . ' LIKE ' . $search .
+					' OR ' . $db->quoteName('comment') . ' LIKE ' . $search .
+					' OR ' . $db->quoteName('referer') . ' LIKE ' . $search . ')'
 				);
 			}
 		}
 
 		// Add the list ordering clause.
-		$query->order($db->escape($this->getState('list.ordering', 'a.old_url')).' '.$db->escape($this->getState('list.direction', 'ASC')));
+		$query->order($db->escape($this->getState('list.ordering', 'a.old_url')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 
 		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;

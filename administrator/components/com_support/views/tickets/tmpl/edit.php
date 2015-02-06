@@ -30,15 +30,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
-
-JToolBarHelper::title(JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TICKET') . ': ' . $text, 'support.png');
-JToolBarHelper::save();
-JToolBarHelper::apply();
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
-JToolBarHelper::help('ticket');
-
 $juser = JFactory::getUser();
 
 $user = new \Hubzero\User\Profile();
@@ -93,29 +84,57 @@ if ($this->row->comments()->total() > 0)
 	$this->row->comments()->rewind();
 }
 
-JHTML::_('behavior.tooltip');
-$this->css();
-
 JPluginHelper::importPlugin('hubzero');
 $dispatcher = JDispatcher::getInstance();
 
 $cc = array();
+
+$no_html = JRequest::getInt('no_html', 0);
+if (!$no_html)
+{
+	$text = ($this->task == 'edit' ? JText::_('JACTION_EDIT') : JText::_('JACTION_CREATE'));
+
+	JToolBarHelper::title(JText::_('COM_SUPPORT') . ': ' . JText::_('COM_SUPPORT_TICKET') . ': ' . $text, 'support.png');
+	JToolBarHelper::save();
+	JToolBarHelper::apply();
+	JToolBarHelper::cancel();
+	JToolBarHelper::spacer();
+	JToolBarHelper::help('ticket');
+
+	JHTML::_('behavior.tooltip');
+	$this->css();
+}
 ?>
-<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="index.php" method="post" name="adminForm" id="<?php echo (!$no_html ? 'item' : 'ajax'); ?>-form" enctype="multipart/form-data">
+	<?php if (!$no_html) { ?>
 	<div class="col width-70 fltlft">
 		<fieldset>
 			<legend><span><?php echo JText::_('COM_SUPPORT_TICKET'); echo ($this->row->get('id')) ? ' #' . $this->row->get('id') : ''; ?></span></legend>
-
-			<div class="ticket" id="t<?php echo $this->row->get('id'); ?>">
+	<?php } else { ?>
+				<dl class="ticket-info <?php echo $this->row->get('severity'); ?>">
+					<dt>#</dt>
+					<dd><?php echo $this->row->get('id'); ?></dd>
+					<dt>Type:</dt>
+					<dd>Issue</dd>
+					<dt><?php echo JText::_('COM_SUPPORT_TICKET_STATUS'); ?>:</dt>
+					<dd class="ticket-status <?php if (!$this->row->isOpen()) { echo 'closed'; } else { echo 'open'; } ?>"><?php echo (!$this->row->isOpen()) ? JText::_('COM_SUPPORT_TICKET_STATUS_CLOSED') : JText::_('COM_SUPPORT_TICKET_STATUS_OPEN'); ?></dd>
+					<dt><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?>:</dt>
+					<dd class="ticket-severity <?php echo $this->row->get('severity'); ?>"><?php echo JText::_('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity'))); ?></dd>
+				</dl>
+			<!-- <dl class="ticket-status <?php if (!$this->row->isOpen()) { echo 'closed'; } else { echo 'open'; } ?>">
+				<dt><?php echo JText::_('COM_SUPPORT_TICKET_STATUS'); ?></dt>
+				<dd><?php echo (!$this->row->isOpen()) ? JText::_('COM_SUPPORT_TICKET_STATUS_CLOSED') : JText::_('COM_SUPPORT_TICKET_STATUS_OPEN'); ?></dd>
+			</dl> -->
+	<?php } ?>
+			<div class="ticket<?php echo ($no_html ? '-body' : ''); ?>" id="t<?php echo $this->row->get('id'); ?>">
 				<p class="ticket-member-photo">
-					<span class="ticket-anchor"></span>
 					<img src="<?php echo $this->row->submitter()->getPicture($unknown); ?>" alt="" />
 				</p>
 				<div class="ticket-head">
 					<strong>
 						<?php echo $name; ?>
 					</strong>
-					<a class="permalink" href="index.php?option=com_support&amp;controller=tickets&amp;task=edit&amp;id=<?php echo $this->row->get('id'); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">
+					<a class="permalink" href="<?php echo JRoute::_('index.php?option=com_support&controller=tickets&task=edit&id=' . $this->row->get('id')); ?>" title="<?php echo JText::_('COM_SUPPORT_PERMALINK'); ?>">
 						<span class="time-at"><?php echo JText::_('COM_SUPPORT_AT'); ?></span>
 						<span class="time"><time datetime="<?php echo $this->row->created(); ?>"><?php echo $this->row->created('time'); ?></time></span>
 						<span class="date-on"><?php echo JText::_('COM_SUPPORT_ON'); ?></span>
@@ -192,6 +211,7 @@ $cc = array();
 					</table>
 				</div><!-- / .ticket-details -->
 			</div><!-- / .ticket -->
+	<?php if (!$no_html) { ?>
 		</fieldset>
 	</div><!-- / .col width-70 fltlft -->
 	<div class="col width-30 fltrt">
@@ -213,7 +233,7 @@ $cc = array();
 					{
 						if ($this->row->owner('id'))
 						{
-							echo '<a rel="profile" href="index.php?option=com_members&amp;task=edit&amp;id[]=' . $this->row->owner('id') . '">' . $this->escape(stripslashes($this->row->owner('name'))) . '</a>';
+							echo '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&task=edit&id=' . $this->row->owner('id')) . '">' . $this->escape(stripslashes($this->row->owner('name'))) . '</a>';
 						}
 						else
 						{
@@ -234,21 +254,28 @@ $cc = array();
 		</table>
 
 		<div class="ticket-watch">
-		<?php if ($this->row->isWatching()) { ?>
-			<div id="watching">
-				<p><?php echo JText::_('COM_SUPPORT_WATCH_TICKET_IN_LIST'); ?></p>
-				<p><a class="stop-watching btn" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $this->row->get('id'); ?>&amp;watch=stop"><?php echo JText::_('COM_SUPPORT_WATCH_TICKET_STOP_WATCHING'); ?></a></p>
-			</div>
-		<?php } else { ?>
-			<p><a class="start-watching btn" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $this->row->get('id'); ?>&amp;watch=start"><?php echo JText::_('COM_SUPPORT_WATCH_TICKET_START_WATCHING'); ?></a></p>
-		<?php } ?>
+			<?php if ($this->row->isWatching()) { ?>
+				<div id="watching">
+					<p><?php echo JText::_('COM_SUPPORT_WATCH_TICKET_IN_LIST'); ?></p>
+					<p><a class="stop-watching btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->get('id') . '&watch=stop'); ?>"><?php echo JText::_('COM_SUPPORT_WATCH_TICKET_STOP_WATCHING'); ?></a></p>
+				</div>
+			<?php } else { ?>
+				<p><a class="start-watching btn" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->get('id') . '&watch=start'); ?>"><?php echo JText::_('COM_SUPPORT_WATCH_TICKET_START_WATCHING'); ?></a></p>
+			<?php } ?>
 			<p><?php echo JText::_('COM_SUPPORT_WATCH_TICKET_ABOUT'); ?></p>
 		</div>
 	</div><!-- / .col width-30 fltlft -->
 	<div class="clr"></div>
+	<?php } ?>
+
+	<?php if ($no_html) { ?>
+	<div class="ticket-comments">
+	<?php } ?>
 
 	<?php if ($this->row->comments()->total() > 0) { ?>
+		<?php if (!$no_html) { ?>
 		<div class="col width-70 fltlft">
+		<?php } ?>
 			<fieldset>
 				<legend><span><?php echo JText::_('COM_SUPPORT_TICKET_COMMENTS'); ?></span></legend>
 
@@ -343,6 +370,7 @@ $cc = array();
 				?>
 				</ol>
 			</fieldset>
+		<?php if (!$no_html) { ?>
 		</div><!-- / .col width-70 -->
 		<div class="col width-30 fltrt">
 			<p>
@@ -350,9 +378,12 @@ $cc = array();
 			</p>
 		</div><!-- / .col width-30 -->
 		<div class="clr"></div>
+		<?php } ?>
 	<?php } // end if (count($comments) > 0) ?>
 
+	<?php if (!$no_html) { ?>
 	<div class="col width-70 fltlft">
+	<?php } ?>
 		<fieldset id="commentform">
 			<legend><span><?php echo JText::_('COM_SUPPORT_TICKET_DETAILS'); ?></span></legend>
 
@@ -364,7 +395,7 @@ $cc = array();
 
 				<fieldset class="ticket-head">
 					<strong>
-						<a rel="profile" href="index.php?option=com_members&amp;task=edit&amp;id[]=<?php echo $this->escape($user->get('id')); ?>">
+						<a rel="profile" href="<?php echo JRoute::_('index.php?option=com_members&task=edit&id=' . $this->escape($user->get('id'))); ?>">
 							<?php echo $this->escape($user->get('name')); ?> (<?php echo $this->escape($user->get('username')); ?>)
 						</a>
 					</strong>
@@ -572,11 +603,13 @@ $cc = array();
 				</fieldset><!-- / .ticket-details -->
 			</div>
 		</fieldset>
+	<?php if (!$no_html) { ?>
 	</div><!-- / .col width-70 -->
 	<div class="col width-30 fltrt">
 		<p><?php echo JText::_('COM_SUPPORT_TICKET_COMMENT_FORM_EXPLANATION'); ?></p>
 	</div><!-- / .col width-30 -->
 	<div class="clr"></div>
+	<?php } ?>
 
 	<input type="hidden" name="started" value="<?php echo JFactory::getDate()->toSql(); ?>" />
 
@@ -584,10 +617,19 @@ $cc = array();
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="username" value="<?php echo $juser->get('username'); ?>" />
-	<input type="hidden" name="task" value="save" />
+
+	<?php if ($no_html) { ?>
+		<p class="submit"><input type="submit" value="<?php echo JText::_('Save'); ?>" /></p>
+		<input type="hidden" name="no_html" value="1" />
+		<input type="hidden" name="task" value="apply" />
+	</div>
+	<?php } else { ?>
+		<input type="hidden" name="task" value="save" />
+	<?php } ?>
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>
+<?php if (!$no_html) { ?>
 <script type="text/javascript">
 function submitbutton(pressbutton)
 {
@@ -629,3 +671,4 @@ if ($('#comment-field-access').length) {
 	});
 }
 </script>
+<?php } ?>

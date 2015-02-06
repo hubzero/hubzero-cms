@@ -25,7 +25,7 @@ defined('_JEXEC') or die;
 		</div>
 		<div class="col width-30 fltrt">
 			<div class="input-wrap">
-				<button type="button" onclick="this.form.task.value='links.activate';this.form.submit();"><?php echo JText::_('COM_REDIRECT_BUTTON_UPDATE_LINKS'); ?></button>
+				<button type="button" onclick="this.form.task.value='activate';this.form.submit();"><?php echo JText::_('COM_REDIRECT_BUTTON_UPDATE_LINKS'); ?></button>
 			</div>
 		</div>
 	</fieldset>

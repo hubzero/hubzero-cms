@@ -90,7 +90,7 @@ if ($chm || $cam)
 	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_SYS_GEO'), 'index.php?option=com_system&controller=geodb', 'class:geo'));
 	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_SYS_APC'), 'index.php?option=com_system&controller=apc', 'class:apc'));
 	//$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_SYS_SCRIPTS'), 'index.php?option=com_system&controller=scripts', 'class:scripts'));
-	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_SYS_ROUTES'), 'index.php?option=com_system&controller=routes', 'class:routes'));
+	$menu->addChild(new \Modules\Menu\Node(JText::_('MOD_MENU_SYS_ROUTES'), 'index.php?option=com_redirect', 'class:routes'));
 
 	$menu->getParent();
 }

@@ -62,11 +62,6 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 	'index.php?option=' . $option . '&controller=apc',
 	$controllerName == 'apc'
 );
-\JSubMenuHelper::addEntry(
-	\JText::_('COM_SYSTEM_ROUTES'),
-	'index.php?option=' . $option . '&controller=routes',
-	$controllerName == 'routes'
-);
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);

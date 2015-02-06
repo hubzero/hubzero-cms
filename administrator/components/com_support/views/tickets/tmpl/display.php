@@ -313,6 +313,12 @@ $this->css();
 			</div><!-- / .pane-inner -->
 		</div><!-- / .pane -->
 
+		<div class="pane pane-item">
+			<div class="pane-inner" id="ticket">
+				<p class="instructions"><?php echo JText::_('Select a ticket from the list to view details.'); ?></p>
+			</div><!-- / .pane-inner -->
+		</div><!-- / .pane -->
+
 	</div><!-- / .panel-row -->
 </div><!-- / .panel -->
 
@@ -331,6 +337,10 @@ var _DEBUG = 0;
 
 jQuery(document).ready(function($){
 	var panes = $('#panes');
+
+	var top = panes.offset().top,
+		h = $(window).height();
+	$('.pane').height(h - top);
 
 	_DEBUG = $('#system-debug').length;
 
@@ -458,6 +468,69 @@ jQuery(document).ready(function($){
 		}
 	});*/
 
+	// Ticket
+	var ticket = $('#ticket');
+
+	$('.ticket-content').on('click', function(e) {
+		if ($('.pane-item').css('display') != 'none') {
+			e.preventDefault();
+
+			//id = $(this).closest('li').attr('data-id');
+
+			//$(this).closest('li').find('input').prop('checked', true);
+
+			$.get($(this).attr('href').nohtml(), function(response) {
+				ticket.html($(response).hide().fadeIn());
+			});
+		}
+	});
+
+	ticket
+		.on('submit', '#ajax-form', function(e) {
+			e.preventDefault();
+
+			var id = $('#ticketid').val();
+
+			$.post($(this).attr('action'), $(this).serialize(), function(response){
+				ticket.html($(response).hide().fadeIn());
+
+				$.get('index.php?option=com_support&controller=tickets&ticket=' + id, function(data){
+					var queries = $(data).find('#query-list');
+					var tickets = $(data).find('#tktlist');
+
+					if (!tickets.html().replace(/\s/g, '')) {
+						$('#' + id).remove();
+					} else {
+						document.getElementById('query-list').innerHTML = queries.html();
+						$('#ticket-' + id).html(tickets.html());
+					}
+				});
+			});
+		})
+		.on('change', '#comment-field-template', function(e) {
+			var co = $('#comment-field-comment');
+
+			if ($(this).val() != 'mc') {
+				var hi = $('#' + $(this).val()).val();
+				co.val(hi);
+			} else {
+				co.val('');
+			}
+		})
+		.on('click', '#comment-field-access', function(e) {
+			var es = $('#email_submitter');
+
+			if ($(this).prop('checked')) {
+				if (es.prop('checked') == true) {
+					es.prop('checked', false);
+					es.prop('disabled', true);
+				}
+			} else {
+				es.prop('disabled', false);
+			}
+		});
+
+	// Search
 	var clear = $('#clear-search'),
 		sinput = $('#filter_search');
 
