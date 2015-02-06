@@ -1181,7 +1181,7 @@ body.group-page-preview {
 .member_browser {
 	overflow: hidden;
 }
-.member_browser a {
+.member_browser .member {
 	float: left;
 	width: 27%;
 	padding: 10px 1.5%;
@@ -1194,11 +1194,11 @@ body.group-page-preview {
 	-ms-transition: all 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
 }
-.member_browser a:hover {
+.member_browser .member:hover {
 	border: none;
 	background: #f8f8f8;
 }
-.member_browser a img {
+.member_browser .member img {
 	float: left;
 	border: 1px solid #ccc;
 	padding: 1px;
@@ -1206,30 +1206,30 @@ body.group-page-preview {
 	background: #FFF;
 	width: 50px;
 }
-.member_browser a .name {
+.member_browser .member .name {
 	font-size: 1.2em;
 }
-.member_browser a .org {
+.member_browser .member .org {
 	display: block;
 	font-size: 0.9em;
 	color: #777;
 }
 @media screen and (min-width:1500px) {
-	.member_browser a {
+	.member_browser .member {
 		width: 20%;
 		padding: 10px 1.5%;
 		margin-right: 2%;
 	} 
 }
 @media screen and (min-width:750px) and (max-width:1300px) {
-	.member_browser a {
+	.member_browser .member {
 		width: 42%;
 		padding: 10px 1.5%;
 		margin-right: 5%;
 	}
 }
 @media screen and (max-width:750px) {
-	.member_browser a {
+	.member_browser .member {
 		width: 95%;
 		padding: 10px 2.5%;
 		margin-right: 0;
