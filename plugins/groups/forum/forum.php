@@ -1335,6 +1335,9 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$category = new ForumTableCategory($this->database);
 		$category->load(intval($model->category_id));
 
+		$sectionTbl = new ForumTableSection($this->database);
+		$sectionTbl->load(intval($category->section_id));
+
 		$tags = JRequest::getVar('tags', '', 'post');
 		$tagger = new ForumModelTags($model->id);
 		$tagger->setTags($tags, $this->juser->get('id'));
@@ -1373,12 +1376,16 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 			$thread = $model->id;
 		}
 
+		$threadTbl = new ForumTablePost($this->database);
+		$threadTbl->load(intval($thread));
+
 		// Build outgoing email message
 		$juser = JFactory::getUser();
 		$prependtext = "~!~!~!~!~!~!~!~!~!~!\r\n";
 		$prependtext .= "You can reply to this message, but be sure to include your reply text above this area.\r\n\r\n" ;
 		$prependtext .= ($model->anonymous) ? "Anonymous" : $juser->name . " (". $juser->username . ")";
-		$prependtext .= " wrote:";
+		$prependtext .= " wrote";
+		$prependtext .= " (in {$this->group->get('description')}: {$sectionTbl->title} - {$category->title} - {$threadTbl->title}):";
 
 		$output = html_entity_decode(strip_tags($model->comment), ENT_COMPAT, 'UTF-8');
 		$output = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $output);
