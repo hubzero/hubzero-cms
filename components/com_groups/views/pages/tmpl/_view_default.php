@@ -107,11 +107,19 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
 				$profile = \Hubzero\User\Profile::getInstance($member);
 				if ($counter <= 12 && is_object($profile)) :
 			?>
+				<?php if ($profile->get('public')) { ?>
 				<a href="<?php echo JRoute::_($profile->getLink()); ?>" class="member" title="<?php echo JText::sprintf('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name'))); ?>">
+				<?php } else { ?>
+				<div class="member">
+				<?php } ?>
 					<img src="<?php echo $profile->getPicture(0, true); ?>" alt="<?php echo $this->escape(stripslashes($profile->get('name'))); ?>" class="member-border" width="50px" height="50px" />
 					<span class="name"><?php echo $this->escape(stripslashes($profile->get('name'))); ?></span>
 					<span class="org"><?php echo $this->escape(stripslashes($profile->get('organization'))); ?></span>
+				<?php if ($profile->get('public')) { ?>
 				</a>
+				<?php } else { ?>
+				</div>
+				<?php } ?>
 			<?php $counter++; ?>
 			<?php endif; ?>
 		<?php endforeach; ?>
