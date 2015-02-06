@@ -278,9 +278,9 @@ $option = 'com_groups';
 									<span class="status"><?php echo JText::_('PLG_GROUPS_MEMBERS_INVITE_SENT_TO_EMAIL'); ?></span><br />
 								<?php } else { ?>
 									<span class="name">
-										<a href="<?php echo JRoute::_($u->getLink()); ?>">
+										<?php if ($u->get('public')) { ?><a href="<?php echo JRoute::_($u->getLink()); ?>"><?php } ?>
 											<?php echo $this->escape(stripslashes($u->get('surname')) . ', ' . stripslashes($u->get('givenName'))); ?>
-										</a>
+										<?php if ($u->get('public')) { ?></a><?php } ?>
 									</span>
 									<span class="status"><?php echo $status; ?></span><br />
 
