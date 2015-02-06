@@ -114,76 +114,6 @@ class Helper extends Module
 			return;
 		}
 
-		$this->_displayLatestEvents();
-	}
-
-	/**
-	 * This custom sort compare function compares the start times of events that are refernced by the a & b vars
-	 *
-	 * @param   object   &$a  Parameter description (if any) ...
-	 * @param   object   &$b  Parameter description (if any) ...
-	 * @return  integer  Return description (if any) ...
-	 */
-	public function cmpByStartTime(&$a, &$b)
-	{
-		list($date, $aStrtTime) = preg_split('# #', $a->publish_up);
-		list($date, $bStrtTime) = preg_split('# #', $b->publish_up);
-		if ($aStrtTime == $bStrtTime)
-		{
-			return 0;
-		}
-		return ($aStrtTime > $bStrtTime) ? -1 : 1;
-	}
-
-	/**
-	 * The function below is essentially the 'ShowEventsByDate' function in the com_events module,
-	 * except no actual output is performed.  Rather this function returns an array of references to
-	 * $rows within the $rows (ie events) input array which occur on the input '$date'.  This
-	 * is determined by the complicated com_event algorithm according to the event's repeatting type.
-	 *
-	 * @param   array    &$rows           Parameter description (if any) ...
-	 * @param   unknown  $date            Parameter description (if any) ...
-	 * @param   array    &$seenThisEvent  Parameter description (if any) ...
-	 * @return  array    Return description (if any) ...
-	 */
-	private function _getEventsByDate(&$rows, $date, &$seenThisEvent)
-	{
-		$num_events = count($rows);
-		$new_rows_events = array();
-
-		if ($num_events > 0)
-		{
-			$year  = date('Y', $date);
-			$month = date('m', $date);
-			$day   = date('d', $date);
-
-			for ($r = 0; $r < count($rows); $r++)
-			{
-				$row = $rows[$r];
-				if (isset($seenThisEvent[$row->id]))
-				{
-					continue;
-				}
-
-				$seenThisEvent[$row->id] = 1;
-				$new_rows_events[] =& $rows[$r];
-			}
-
-			usort($new_rows_events, array($this, 'cmpByStartTime'));
-		}
-
-		return $new_rows_events;
-	}
-
-	/**
-	 * Short description for '_displayLatestEvents'
-	 *
-	 * Long description (if any) ...
-	 *
-	 * @return  void
-	 */
-	private function _displayLatestEvents()
-	{
 		$database = JFactory::getDBO();
 
 		// Get the user GID (used in some queries)
@@ -256,9 +186,10 @@ class Helper extends Module
 				//start today
 				$beginDate = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d'), date('Y'))) . ' 00:00:00';
 				// end of this month
-				//$endDate = date('Y-m-d', mktime(0,0,0,date('m')+1,0, date('Y')))." 23:59:59";
+				//$endDate = date('Y-m-d', mktime(0,0,0,date('m')+1,0, date('Y'))) . ' 23:59:59';
 				// end of this year
-				$endDate = date('Y-m-d', mktime(0, 0, 0, date('m'), 0, date('Y') + 1)) . ' 23:59:59';
+				//$endDate = date('Y-m-d', mktime(0, 0, 0, date('m'), 0, date('Y') + 1)) . ' 23:59:59';
+				$endDate = gmdate('Y-m-d', mktime(0, 0, 0, gmdate('m')+1, 0, gmdate('Y'))) . ' 23:59:59';
 				break;
 		}
 
@@ -377,6 +308,64 @@ class Helper extends Module
 		// }
 
 		require $this->getLayoutPath();
+	}
+
+	/**
+	 * This custom sort compare function compares the start times of events that are refernced by the a & b vars
+	 *
+	 * @param   object   &$a  Parameter description (if any) ...
+	 * @param   object   &$b  Parameter description (if any) ...
+	 * @return  integer  Return description (if any) ...
+	 */
+	public function cmpByStartTime(&$a, &$b)
+	{
+		list($date, $aStrtTime) = preg_split('# #', $a->publish_up);
+		list($date, $bStrtTime) = preg_split('# #', $b->publish_up);
+		if ($aStrtTime == $bStrtTime)
+		{
+			return 0;
+		}
+		return ($aStrtTime > $bStrtTime) ? -1 : 1;
+	}
+
+	/**
+	 * The function below is essentially the 'ShowEventsByDate' function in the com_events module,
+	 * except no actual output is performed.  Rather this function returns an array of references to
+	 * $rows within the $rows (ie events) input array which occur on the input '$date'.  This
+	 * is determined by the complicated com_event algorithm according to the event's repeatting type.
+	 *
+	 * @param   array    &$rows           Parameter description (if any) ...
+	 * @param   unknown  $date            Parameter description (if any) ...
+	 * @param   array    &$seenThisEvent  Parameter description (if any) ...
+	 * @return  array    Return description (if any) ...
+	 */
+	private function _getEventsByDate(&$rows, $date, &$seenThisEvent)
+	{
+		$num_events = count($rows);
+		$new_rows_events = array();
+
+		if ($num_events > 0)
+		{
+			$year  = date('Y', $date);
+			$month = date('m', $date);
+			$day   = date('d', $date);
+
+			for ($r = 0; $r < count($rows); $r++)
+			{
+				$row = $rows[$r];
+				if (isset($seenThisEvent[$row->id]))
+				{
+					continue;
+				}
+
+				$seenThisEvent[$row->id] = 1;
+				$new_rows_events[] =& $rows[$r];
+			}
+
+			usort($new_rows_events, array($this, 'cmpByStartTime'));
+		}
+
+		return $new_rows_events;
 	}
 }
 
