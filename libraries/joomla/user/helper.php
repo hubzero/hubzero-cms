@@ -51,13 +51,13 @@ abstract class JUserHelper
 			// Check for a database error.
 			if ($db->getErrorNum())
 			{
-				return new Exception($db->getErrorMsg());
+				throw new Exception($db->getErrorMsg());
 			}
 
 			// If the group does not exist, return an exception.
 			if (!$title)
 			{
-				return new Exception(JText::_('JLIB_USER_EXCEPTION_ACCESS_USERGROUP_INVALID'));
+				throw new Exception(JText::_('JLIB_USER_EXCEPTION_ACCESS_USERGROUP_INVALID'));
 			}
 
 			// Add the group data to the user object.
@@ -66,7 +66,7 @@ abstract class JUserHelper
 			// Store the user object.
 			if (!$user->save())
 			{
-				return new Exception($user->getError());
+				throw new Exception($user->getError());
 			}
 		}
 
@@ -126,7 +126,7 @@ abstract class JUserHelper
 			// Store the user object.
 			if (!$user->save())
 			{
-				return new JException($user->getError());
+				throw new JException($user->getError());
 			}
 		}
 
@@ -175,20 +175,22 @@ abstract class JUserHelper
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
-			return new Exception($db->getErrorMsg());
+			throw new Exception($db->getErrorMsg());
 		}
 
-		// Set the titles for the user groups.
+		// Set the IDs for the user groups.
 		for ($i = 0, $n = count($results); $i < $n; $i++)
 		{
-			$user->groups[$results[$i]->id] = $results[$i]->title;
+			$user->groups[$results[$i]->id] = $results[$i]->id;
 		}
 
 		// Store the user object.
 		if (!$user->save())
 		{
-			return new Exception($user->getError());
+			throw new Exception($user->getError());
 		}
+
+		print_r($user->groups); die('@');
 
 		// Set the group data for any preloaded user objects.
 		$temp = JFactory::getUser((int) $userId);
