@@ -365,26 +365,44 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		$doc->description = JText::_($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_FEEDAGGREGATOR_AGGREGATED_FEED_SELECTED_READING'));
 		$doc->copyright   = JText::sprintf(date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category    = JText::_('COM_FEEDAGGREGATOR_EXTERNAL_CONTENT');
+		$doc->syndicationURL = 'https://kwojo.hubzero.org/feedaggregator/feed.rss';
+
+
+		/*echo "<pre>";
+		var_dump($doc);
+		die;*/
+
+
 
 		// Start outputing results if any found
 		if (count($posts) > 0)
 		{
 			foreach ($posts as $post)
 			{
+				// Load individual item creator class
 				$item = new JFeedItem();
 
-				// Load individual item creator class
-				$item->title       = htmlspecialchars($post->title);
-				$item->link        = $post->link;
+				// sanitize ouput
+				$title = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->title);
+				$item->title       = (string) html_entity_decode(strip_tags($title));
+
+				//encapsulate link in unparseable
+				$item->link        = '<![CDATA[' . $post->link . ']]>';
 				$item->date        = date($post->created);
-				$item->description = (string) html_entity_decode(strip_tags($post->description, '<img>'));
+
+				// sanitize ouput
+				$description = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $post->description);
+				$item->description = (string) html_entity_decode(strip_tags($description, '<img>'));
 
 				$doc->addItem($item);
 			}
 		}
+
 		// Output the feed
 		header("Content-Type: application/rss+xml");
 		echo $doc->render();
+
+
 		die;
 	}
 }
