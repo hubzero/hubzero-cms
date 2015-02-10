@@ -151,38 +151,14 @@ function ProjectsParseRoute($segments)
 {
 	$vars  = array();
 
-	// Valid tasks
+	// General project tasks
 	$tasks = array(	'start', 'setup', 'edit',
 		'browse', 'intro', 'features', 'auth',
-		'wikipreview', 'fixownership','stats'
+		'delete', 'fixownership','stats'
 	);
 
 	// Valid tasks
 	$mediaTasks = array( 'img', 'deleteimg', 'upload', 'media', 'thumb' );
-
-	// Views (plugins or view panels)
-	$views = array('feed', 'info', 'team',
-		'files', 'tools', 'publications',
-		'notes', 'todo', 'activity',
-		'databases', 'links'
-	);
-
-	// Wiki actions
-	$wiki_actions = array('media', 'list', 'upload',
-		'deletefolder', 'deletefile', 'view',
-		'new', 'edit', 'save', 'cancel',
-		'delete', 'deleteversion', 'approve',
-		'rename', 'saverename', 'history',
-		'compare', 'comments', 'editcomment',
-		'addcomment', 'savecomment', 'removecomment',
-		'reportcomment', 'deleterevision', 'pdf'
-	);
-
-	// App actions
-	$app_actions = array('status', 'history', 'wiki', 'browse',
-		'edit', 'start', 'save', 'register', 'attach', 'source',
-		'cancel', 'update', 'message', 'update'
-	);
 
 	if (empty($segments[0]))
 	{
@@ -221,10 +197,6 @@ function ProjectsParseRoute($segments)
 		elseif (in_array($segments[0], $tasks))
 		{
 			$vars['task'] = $segments[0];
-			if (in_array($vars['task'], $mediaTasks))
-			{
-				$vars['controller'] = 'media';
-			}
 			return $vars;
 		}
 		elseif ($segments[0] == 'media')
@@ -239,6 +211,7 @@ function ProjectsParseRoute($segments)
 			{
 				$vars['media']  = $segments[2];
 			}
+
 			return $vars;
 		}
 		else
@@ -246,11 +219,40 @@ function ProjectsParseRoute($segments)
 			$vars['alias']  = $segments[0];
 		}
 	}
+	if (empty($segments[1]))
+	{
+		$vars['task'] = 'view';
+		return $vars;
+	}
 
 	if (!empty($segments[1]))
 	{
-		// Plugin?
-		if (in_array($segments[1], $views))
+		if ($segments[1] == 'view')
+		{
+			$vars['task'] = $segments[1];
+			if (!empty($segments[2]))
+			{
+				$vars['active'] = $segments[2];
+			}
+			return $vars;
+		}
+		elseif (in_array($segments[1], $tasks))
+		{
+			$vars['task'] = $segments[1];
+			return $vars;
+		}
+		elseif (in_array($segments[1], $mediaTasks))
+		{
+			$vars['controller'] = 'media';
+			$vars['task'] = $segments[1];
+			if (!empty($segments[2]))
+			{
+				$vars['media'] = $segments[2];
+			}
+
+			return $vars;
+		}
+		else
 		{
 			$vars['active'] = $segments[1];
 			$vars['task'] = 'view';
@@ -327,7 +329,12 @@ function ProjectsParseRoute($segments)
 			// Apps
 			if (!empty($segments[2]) && $vars['active'] == 'tools')
 			{
-				if (in_array( $segments[2], $app_actions ))
+				// App actions
+				$appActions = array('status', 'history', 'wiki', 'browse',
+					'edit', 'start', 'save', 'register', 'attach', 'source',
+					'cancel', 'update', 'message', 'update'
+				);
+				if (in_array( $segments[2], $appActions ))
 				{
 					$vars['action'] = $segments[2];
 				}
@@ -335,7 +342,7 @@ function ProjectsParseRoute($segments)
 				{
 					$vars['tool'] = $segments[2];
 				}
-				if (!empty($segments[3]) && in_array( $segments[3], $app_actions ))
+				if (!empty($segments[3]) && in_array( $segments[3], $appActions ))
 				{
 					$vars['action'] = $segments[3];
 				}
@@ -344,6 +351,17 @@ function ProjectsParseRoute($segments)
 			// Notes
 			elseif (!empty($segments[2]) && !is_numeric($segments[2]) && $vars['active'] == 'notes')
 			{
+				// Wiki actions
+				$wiki_actions = array('media', 'list', 'upload',
+					'deletefolder', 'deletefile', 'view',
+					'new', 'edit', 'save', 'cancel',
+					'delete', 'deleteversion', 'approve',
+					'rename', 'saverename', 'history',
+					'compare', 'comments', 'editcomment',
+					'addcomment', 'savecomment', 'removecomment',
+					'reportcomment', 'deleterevision', 'pdf'
+				);
+
 				$remaining = array_slice($segments, 2);
 				$action = array_pop($remaining);
 				$pagename = '';
@@ -386,40 +404,14 @@ function ProjectsParseRoute($segments)
 
 				return $vars;
 			}
+
 			// All other plugins
 			elseif (!empty($segments[2]) && !is_numeric($segments[2]))
 			{
 				$vars['action'] = $segments[2];
 			}
-
-			return $vars;
-		}
-
-		$vars['task'] = $segments[1];
-		if (!empty($segments[2]))
-		{
-			$vars['active'] = $segments[2];
-		}
-	}
-	else
-	{
-		$vars['task'] = 'view';
-	}
-
-	if (in_array($vars['task'], $mediaTasks))
-	{
-		$vars['controller'] = 'media';
-		if ($vars['task'] == 'thumb')
-		{
-			$vars['task'] = 'media';
-		}
-		if (!empty($segments[2]))
-		{
-			$vars['media'] = $segments[2];
 		}
 	}
 
 	return $vars;
 }
-
-?>
