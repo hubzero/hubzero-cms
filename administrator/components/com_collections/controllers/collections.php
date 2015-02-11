@@ -37,6 +37,21 @@ defined('_JEXEC') or die('Restricted access');
 class CollectionsControllerCollections extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of all categories
 	 *
 	 * @return  void
@@ -107,16 +122,6 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	}
 
 	/**
-	 * Create a new collection
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit a collection
 	 *
 	 * @return  void
@@ -125,11 +130,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -140,8 +141,10 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 			}
 
 			// Load category
-			$this->view->row = new CollectionsModelCollection($id);
+			$row = new CollectionsModelCollection($id);
 		}
+
+		$this->view->row = $row;
 
 		if (!$this->view->row->exists())
 		{
@@ -161,22 +164,11 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	}
 
 	/**
-	 * Save a category and come back to the edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save an entry
 	 *
-	 * @param      boolean $redirect Redirect after save?
-	 * @return     void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -204,17 +196,16 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		// Process tags
 		//$row->tag(trim(JRequest::getVar('tags', '')));
 
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			// Set the redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_COLLECTIONS_COLLECTION_SAVED')
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Set the redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_COLLECTIONS_COLLECTION_SAVED')
+		);
 	}
 
 	/**
@@ -247,7 +238,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			($this->getError() ? implode('<br />', $this->getErrors()) : JText::_('COM_COLLECTIONS_ITEMS_DELETED')),
 			($this->getError() ? 'error' : null)
 		);
@@ -311,7 +302,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_COLLECTIONS_ERROR_SELECT_ITEMS'),
 				'error'
 			);
@@ -326,7 +317,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		if (!$row->store())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -335,28 +326,8 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
-	}
-
-	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return  void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return  void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
 	}
 
 	/**
@@ -371,6 +342,8 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
+		$state = $this->getTask() == 'publish' ? 1 : 0;
+
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
@@ -378,7 +351,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::sprintf('COM_COLLECTIONS_ERROR_SELECT_TO', $this->_task),
 				'error'
 			);
@@ -396,7 +369,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 			// Store new content
 			if (!$row->store())
 			{
-				$this->addComponentMessage($row->getError(), 'error');
+				$this->setError($row->getError());
 				continue;
 			}
 			$success++;
@@ -417,7 +390,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
@@ -431,7 +404,7 @@ class CollectionsControllerCollections extends \Hubzero\Component\AdminControlle
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

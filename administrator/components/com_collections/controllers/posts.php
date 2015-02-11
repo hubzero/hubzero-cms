@@ -37,6 +37,19 @@ defined('_JEXEC') or die('Restricted access');
 class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of all categories
 	 *
 	 * @return  void
@@ -110,16 +123,6 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new collection
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit a collection
 	 *
 	 * @return  void
@@ -128,11 +131,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -143,8 +142,10 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 			}
 
 			// Load category
-			$this->view->row = new CollectionsModelPost($id);
+			$row = new CollectionsModelPost($id);
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -159,22 +160,11 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save a category and come back to the edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save an entry
 	 *
-	 * @param   boolean  $redirect  Redirect after save?
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -204,15 +194,14 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 		if ($redirect)
 		{
-			// Set the redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_COLLECTIONS_POST_SAVED')
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Set the redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_COLLECTIONS_POST_SAVED')
+		);
 	}
 
 	/**
@@ -245,7 +234,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_COLLECTIONS_ITEMS_DELETED')
 		);
 	}
@@ -259,7 +248,7 @@ class CollectionsControllerPosts extends \Hubzero\Component\AdminController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }
