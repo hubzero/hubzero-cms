@@ -50,15 +50,15 @@ if ($this->row->get('login'))
 	$submitter = $this->row->submitter();
 	if ($submitter->get('uidNumber'))
 	{
-		jimport( 'joomla.user.helper' );
+		jimport('joomla.user.helper');
 		$usertype = implode(', ', JUserHelper::getUserGroups($submitter->get('uidNumber')));
 
-		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&id=' . $submitter->get('uidNumber')) . '">' . $this->escape(stripslashes($submitter->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
+		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&id=' . $submitter->get('uidNumber')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
 		$unknown = 0;
 	}
 	else
 	{
-		$name  = '<a rel="email" href="mailto:'. $this->row->get('email') .'">';
+		$name  = '<a rel="email" href="mailto:' . $this->row->get('email') . '">';
 		$name .= ($this->row->get('login')) ? $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')' : $this->escape(stripslashes($this->row->get('name')));
 		$name .= '</a>';
 	}

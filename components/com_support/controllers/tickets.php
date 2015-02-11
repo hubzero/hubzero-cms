@@ -942,9 +942,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		//$reporter = array_map(array('JRequest', '_cleanVar'), $reporter);
 		//$problem  = array_map(array('JRequest', '_cleanVar'), $problem);
 
+		// [!] zooley - Who added this? Why?
 		// Reporter login can only be for authenticated users -- ignore any form submitted login names
-		$reporterLogin = $this->_getUser();
-		$reporter['login'] = $reporterLogin['login'];
+		//$reporterLogin = $this->_getUser();
+		//$reporter['login'] = $reporterLogin['login'];
 
 		// Probably redundant after the change to call JRequest::_cleanVar change above, It is a bit hard to
 		// tell if the Joomla  _cleanvar function does enough to allow us to remove the purifyText call

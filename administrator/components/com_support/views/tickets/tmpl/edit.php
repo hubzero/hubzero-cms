@@ -51,15 +51,15 @@ $notify   = array();
 
 if ($this->row->get('login'))
 {
-	if ($this->row->submitter('name'))
+	if ($this->row->get('name'))
 	{
 		jimport('joomla.user.helper');
 		$usertype = implode(', ', JUserHelper::getUserGroups($this->row->submitter('id')));
 
-		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&amp;task=edit&amp;id[]=' . $this->row->submitter('id')) . '">' . $this->escape($this->row->submitter('name', $this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->submitter('username'))) . ')</a>';
+		$name = '<a rel="profile" href="' . JRoute::_('index.php?option=com_members&task=edit&id=' . $this->row->submitter('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
 		$unknown = false;
 
-		$notify[] = $this->escape($this->row->submitter('name', $this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->submitter('username'))) . ')';
+		$notify[] = $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')';
 	}
 }
 
@@ -67,11 +67,11 @@ if (!$name)
 {
 	if ($this->row->get('name'))
 	{
-		$name  = $this->escape($this->row->get('name')) . ' (' . $this->escape($this->row->get('email')) . ')';
+		$name = $this->escape($this->row->get('name')) . ' (' . $this->escape($this->row->get('email')) . ')';
 	}
 	else
 	{
-		$name  = $this->escape($this->row->get('email'));
+		$name = $this->escape($this->row->get('email'));
 	}
 	$notify[] = $name;
 }
