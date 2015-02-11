@@ -881,15 +881,48 @@ class MembersModelRegistration
 			}
 			else
 			{
-				$eid = $this->getEmailId($email);
-
 				$usersConfig =  JComponentHelper::getParams( 'com_users' );
-
 				$allow_duplicate_emails = $usersConfig->get( 'allow_duplicate_emails' );
 
-				if (!$allow_duplicate_emails && ($eid && $eid != $id)) // TODO: RESOLVE MULTIPLE EMAIL ACCOUNT USAGE
+				// Check if the email is already in use
+				$db = JFactory::getDBO();
+				$query = "SELECT `id` FROM `#__users` WHERE `email` = " . $db->quote($email) . " AND `id` != " . (int)$id;
+				$db->setQuery($query);
+				$xid = intval($db->loadResult());
+
+				// 0 = not allowed
+				// 1 = allowed (i.e. no check needed)
+				// 2 = only existing accounts (grandfathered)
+				if ($xid && ($allow_duplicate_emails == 0 || $allow_duplicate_emails == 2))
 				{
-					$this->_invalid['email'] = 'An existing account is already using this e-mail address.';
+					if ($allow_duplicate_emails == 0)
+					{
+						$this->_invalid['email'] = 'An existing account is already using this e-mail address.';
+					}
+					else if ($allow_duplicate_emails == 2)
+					{
+						// If duplicates are only allowed in grandfathered accounts,
+						// then new accounts shouldn't be created with the same email.
+						if (($task == 'create' || $task == 'proxycreate'))
+						{
+							$this->_invalid['email'] = 'An existing account is already using this e-mail address.';
+						}
+						else
+						{
+							// We also need to catch existing users who might try to change their
+							// email to an existing email address on the hub. For that, we need to
+							// check and see if their email address is changing with this save.
+							$db = JFactory::getDBO();
+							$query = "SELECT `email` FROM `#__users` WHERE `id` = " . (int)$id;
+							$db->setQuery($query);
+							$currentEmail = $db->loadResult();
+
+							if ($currentEmail != $email)
+							{
+								$this->_invalid['email'] = 'An existing account is already using this e-mail address.';
+							}
+						}
+					}
 				}
 			}
 		}

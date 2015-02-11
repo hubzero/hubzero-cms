@@ -57,7 +57,7 @@
 
 		<field
 			name="allow_duplicate_emails"
-			type="radio"
+			type="list"
 			default="0"
 			label="COM_USERS_CONFIG_FIELD_DUPLICATEEMAILS_LABEL"
 			description="COM_USERS_CONFIG_FIELD_DUPLICATEEMAILS_DESC">
@@ -65,6 +65,8 @@
 				value="0">JNO</option>
 			<option
 				value="1">JYES</option>
+			<option
+				value="2">COM_USERS_CONFIG_FIELD_DUPLICATEEMAILS_GRANDFATHERED</option>
 		</field>
 
 		<field
