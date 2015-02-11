@@ -35,6 +35,21 @@ defined('_JEXEC') or die('Restricted access');
 class CronControllerJobs extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
+	}
+
+	/**
 	 * Displays a form for editing an entry
 	 *
 	 * @return	void
@@ -98,16 +113,6 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Display a form for creating a new entry
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Displays a form for editing an entry
 	 *
 	 * @param   mixed  $row
@@ -118,11 +123,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 
 		// Load info from database
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -131,8 +132,10 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 				$id = intval($id[0]);
 			}
 
-			$this->view->row = new CronModelJob($id);
+			$row = new CronModelJob($id);
 		}
+
+		$this->view->row = $row;
 
 		if (!$this->view->row->get('id'))
 		{
@@ -206,22 +209,11 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Saves an entry and redirects to listing
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save changes to an entry
 	 *
-	 * @param   boolean  $redirect  Redirect (true) or fall through to edit form (false) ?
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -282,17 +274,16 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_CRON_ITEM_SAVED')
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_CRON_ITEM_SAVED')
+		);
 	}
 
 	/**
@@ -312,7 +303,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
@@ -394,7 +385,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_CRON_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
@@ -414,29 +405,9 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_CRON_ITEMS_DELETED')
 		);
-	}
-
-	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return  void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return  void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
 	}
 
 	/**
@@ -451,6 +422,8 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
+		$state = $this->getTask() == 'publish' ? 1 : 0;
+
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
@@ -460,7 +433,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 			$action = ($state == 1) ? JText::_('COM_CRON_STATE_UNPUBLISH') : JText::_('COM_CRON_STATE_PUBLISH');
 
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::sprintf('COM_CRON_ERROR_SELECT_ITEMS', $action),
 				'error'
 			);
@@ -489,7 +462,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
@@ -502,7 +475,7 @@ class CronControllerJobs extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }
