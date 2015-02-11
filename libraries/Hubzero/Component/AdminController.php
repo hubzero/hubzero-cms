@@ -44,7 +44,7 @@ class AdminController extends SiteController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : '')
+			JRoute::_('index.php?option=' . $this->_option . ($this->_controller ? '&controller=' . $this->_controller : ''), false)
 		);
 	}
 }
