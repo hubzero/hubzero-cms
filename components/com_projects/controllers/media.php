@@ -37,6 +37,21 @@ defined('_JEXEC') or die('Restricted access');
 class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 {
 	/**
+	 * Determines task being called and attempts to execute it
+	 *
+	 * @return	void
+	 */
+	public function execute()
+	{
+		// Set the default task
+		$this->registerTask('__default', 'media');
+
+		$this->registerTask('thumb', 'media');
+
+		parent::execute();
+	}
+
+	/**
 	 * Upload project image
 	 *
 	 * @return     void
