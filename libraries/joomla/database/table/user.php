@@ -244,9 +244,39 @@ class JTableUser extends JTable
 			$usersConfig = JComponentHelper::getParams( 'com_users' );
 			$allow_dupes = $usersConfig->get( 'allow_duplicate_emails' );
 
-			if (!$allow_dupes) {
+			// 0 = not allowed
+			// 1 = allowed (i.e. no check needed)
+			// 2 = only existing accounts (grandfathered)
+			if (!$allow_dupes)
+			{
 				$this->setError(JText::_('JLIB_DATABASE_ERROR_EMAIL_INUSE'));
 				return false;
+			}
+			else if ($allow_dupes == 2)
+			{
+				// If duplicates are only allowed in grandfathered accounts,
+				// then new accounts shouldn't be created with the same email.
+				if (!$this->id)
+				{
+					$this->setError(JText::_('JLIB_DATABASE_ERROR_EMAIL_INUSE'));
+					return false;
+				}
+
+				// We also need to catch existing users who might try to change their
+				// email to an existing email address on the hub. For that, we need to
+				// check and see if their email address is changing with this save.
+				$query->clear();
+				$query->select($this->_db->quoteName('email'));
+				$query->from($this->_db->quoteName('#__users'));
+				$query->where($this->_db->quoteName('id') . ' = ' . (int) $this->id);
+				$this->_db->setQuery($query);
+				$user = $this->_db->loadObject();
+
+				if ($user->email != $this->email)
+				{
+					$this->setError(JText::_('JLIB_DATABASE_ERROR_EMAIL_INUSE'));
+					return false;
+				}
 			}
 		}
 
