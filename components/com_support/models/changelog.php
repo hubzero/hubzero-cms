@@ -463,7 +463,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 				$after->get('severity')
 			);
 		}
-		if ($after->get('owner') != $before->get('owner'))
+		if (intval($after->get('owner')) != intval($before->get('owner')))
 		{
 			$this->changed(
 				JText::_('COM_SUPPORT_CHANGELOG_FIELD_OWNER'),
@@ -479,7 +479,7 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 				$after->get('resolved', JText::_('COM_SUPPORT_UNRESOLVED'))
 			);
 		}
-		if ($after->get('status') != $before->get('status'))
+		if (intval($after->get('status')) != intval($before->get('status')))
 		{
 			$this->changed(
 				JText::_('COM_SUPPORT_CHANGELOG_FIELD_STATUS'),
