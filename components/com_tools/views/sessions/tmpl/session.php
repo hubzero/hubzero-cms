@@ -49,7 +49,8 @@ foreach ($this->shares as $share)
 JPluginHelper::importPlugin('mw');
 $dispatcher = JDispatcher::getInstance();
 
-$this->css('tools.css');
+$this->css('tools.css')
+     ->js('sessions.js');
 ?>
 <div id="session">
 <?php
