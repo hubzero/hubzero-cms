@@ -204,6 +204,20 @@ $this->css(
 		</tbody>
 	</table>
 
+<?php if ($this->comment->isPrivate()) { ?>
+	<!-- Start Spacer -->
+	<table class="tbl-private" width="100%" cellpadding="0" cellspacing="0" border="0">
+		<tbody>
+			<tr>
+				<td height="30">
+					<div style="text-align: center; font-size: 85%; display: block; padding: 1em; margin: 2em 0 0 0; text-transform: uppercase; letter-spacing: 0.1em; font-weight: bold; background: #fdf7f6; color: #ecada2;"><?php echo JText::_('COM_SUPPORT_COMMENT_PRIVATE'); ?></div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<!-- End Spacer -->
+<?php } ?>
+
 	<table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
 		<tbody>
 			<tr>

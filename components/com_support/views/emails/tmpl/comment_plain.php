@@ -71,6 +71,10 @@ $message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_CREATED_BY')).': '.$
 $message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_STATUS')).': '.$this->ticket->status()."\n";
 $message .= strtoupper(JText::_('COM_SUPPORT_TICKET_DETAILS_TAGS')).': '.$this->ticket->tags('string')."\n";
 $message .= '----------------------------'."\n\n";
+if ($this->comment->isPrivate())
+{
+	$message .= '!! ' . JText::_('COM_SUPPORT_COMMENT_PRIVATE') . " !!\n";
+}
 $message .= JText::sprintf('COM_SUPPORT_TICKET_EMAIL_COMMENT_POSTED', $this->ticket->get('id')) . ': ' . $this->comment->creator('name') . '(' . $this->comment->creator('username') . ")\n";
 $message .= JText::_('COM_SUPPORT_TICKET_EMAIL_COMMENT_CREATED') . ': ' . $this->comment->created() . "\n\n";
 if ($this->comment->changelog()->lists())
