@@ -120,38 +120,47 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		$resumption     = JRequest::getVar('resumptionToken');
 
 		// start XML
-		$response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<OAI-PMH xmlns=\"http://www.openarchives.org/OAI/2.0/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd\">";
-		$now = gmdate('c', time());
-		$response .= "<responseDate>$now</responseDate>";
+		$response  = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+		$response .= '<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">';
+		$response .= '<responseDate>' . gmdate('c', time()) . '</responseDate>';
 
 		// chose verb
 		switch ($verb)
 		{
 			case 'GetRecord':
-				$response .= "<request verb=\"GetRecord\" identifier=\"$identifier\" metadataPrefix=\"$this->metadata\">$this->hubname/oaipmh</request>";
+				$response .= '<request verb="GetRecord" identifier="' . $this->view->escape($identifier) . '" metadataPrefix="' . $this->view->escape($this->metadata) . '">' . $this->view->escape($this->hubname) . '/oaipmh</request>';
 
 				// remove url from identifier
 				$identifier = $this->stripResourcesUrl($identifier);
 
 				// check for errors
 				$check = new TablesOaipmhResult($this->database, $customs, $identifier);
+				$badID = false;
 				if ($check->identifier == '')
 				{
 					$badID = true;
 				}
 				$error = $this->errorCheck('GetRecord', $identifier, $badID);
-				if ($error == "")
+				if ($error == '')
 				{
-					if ($this->metadata == "oai_dc")
-					{
-						$response .= "<GetRecord>";
-					}
 					// get record
 					$result = new TablesOaipmhResult($this->database,$customs,$identifier);
-					$response .= $this->doRecord($result);
-					if ($this->metadata == "oai_dc")
+
+					if (!$result || !$result->title)
 					{
-						$response .= "</GetRecord>";
+						$response .= '<error code="idDoesNotExist">' . JText::sprintf('COM_OAIPMH_NO_MATCHING_IDENTIFIER', $this->hubname) . '</error>';
+					}
+					else
+					{
+						if ($this->metadata == 'oai_dc')
+						{
+							$response .= '<GetRecord>';
+						}
+						$response .= $this->doRecord($result);
+						if ($this->metadata == 'oai_dc')
+						{
+							$response .= '</GetRecord>';
+						}
 					}
 				}
 				else
@@ -161,22 +170,22 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			break;
 
 			case 'Identify':
-				$response .= "<request verb=\"Identify\">$this->hubname/oaipmh</request>";
+				$response .= '<request verb="Identify">' . $this->view->escape($this->hubname) . '/oaipmh</request>';
 				// check for errors
 				if (!empty($this->metadata) || !empty($identifier) || !empty($resumption))
 				{
-					$response .= "<error code=\"badArgument\"/>";
+					$response .= '<error code="badArgument" />';
 				}
 				else
 				{
-					$response .= " 
+					$response .= ' 
 					<Identify> 
-					<repositoryName>$repository_name</repositoryName> 
-					<baseURL>$this->hubname</baseURL>
+					<repositoryName>' . $this->view->escape($repository_name) . '</repositoryName> 
+					<baseURL>' . $this->view->escape($this->hubname) . '</baseURL>
 					<protocolVersion>2.0</protocolVersion> 
-					<adminEmail>{$this->config->get('email')}</adminEmail> 
-					<earliestDatestamp>{$this->config->get('edate')}</earliestDatestamp> 
-					<deletedRecord>{$this->config->get('del')}</deletedRecord>";
+					<adminEmail>' . $this->view->escape($this->config->get('email')) . '</adminEmail> 
+					<earliestDatestamp>' . $this->view->escape($this->config->get('edate')) . '</earliestDatestamp> 
+					<deletedRecord>' . $this->view->escape($this->config->get('del')) . '</deletedRecord>';
 					if ($this->gran == 'c')
 					{
 						$igran = "YYYY-MM-DDThh:mm:ssZ";
@@ -185,8 +194,8 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					{
 						$igran = "YYYY-MM-DD";
 					}
-					$response .= "<granularity>$igran</granularity> 
-					</Identify>";
+					$response .= '<granularity>' . $this->view->escape($igran) . '</granularity> 
+					</Identify>';
 				}
 			break;
 
@@ -195,19 +204,19 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				// TODO: add ID error check
 				if (!empty($identifier))
 				{
-					$response .= " identifier=\"$identifier\"";
+					$response .= ' identifier="' . $this->view->escape($identifier) . '"';
 				}
-				$response .= ">$this->hubname</request><ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat>";
+				$response .= '>' . $this->view->escape($this->hubname) . '</request><ListMetadataFormats><metadataFormat><metadataPrefix>oai_dc</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/oai_dc/</metadataNamespace></metadataFormat>';
 				if ($allow_ore)
 				{
-					$response .= "<metadataFormat><metadataPrefix>oai_ore</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/rdf.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/rdf/</metadataNamespace></metadataFormat>";
+					$response .= '<metadataFormat><metadataPrefix>oai_ore</metadataPrefix><schema>http://www.openarchives.org/OAI/2.0/rdf.xsd</schema><metadataNamespace>http://www.openarchives.org/OAI/2.0/rdf/</metadataNamespace></metadataFormat>';
 				}
-				$response .= "</ListMetadataFormats>";
+				$response .= '</ListMetadataFormats>';
 			break;
 
 			case 'ListIdentifiers':
 			case 'ListRecords':
-				$response .= "<request verb=\"$verb\" metadataPrefix=\"$this->metadata\">$this->hubname/oaipmh</request>";
+				$response .= '<request verb="' . $this->view->escape($verb) . '" metadataPrefix="' . $this->view->escape($this->metadata) . '">' . $this->view->escape($this->hubname) . '/oaipmh</request>';
 				// get session
 				$session = JFactory::getSession();
 				$sessionTokenResumptionTemp = $session->get($resumption);
@@ -218,7 +227,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				if ($error == '')
 				{
 					// start list
-					$verb == "ListIdentifiers" ? $response .= "<ListIdentifiers>" : $response .= "<ListRecords>";
+					$verb == "ListIdentifiers" ? $response .= '<ListIdentifiers>' : $response .= '<ListRecords>';
 					// set flow control vars
 					$begin = 0;
 					$toWrite = 50;
@@ -268,7 +277,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 								}
 
 								// record or just header?
-								if ($verb == "ListIdentifiers")
+								if ($verb == 'ListIdentifiers')
 								{
 									$response .= $this->doHeader($result);
 								}
@@ -298,10 +307,10 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 					// write resumption token if needed
 					if ($split)
 					{
-						$response .= "<resumptionToken completeListSize=\"" . count($ids) . "\" cursor=\"$begin\">$resumptionToken</resumptionToken>";
+						$response .= '<resumptionToken completeListSize="' . count($ids) . '" cursor="' . $begin . '">' . $resumptionToken . '</resumptionToken>';
 					}
 					// end list
-					$verb == "ListIdentifiers" ? $response .= "</ListIdentifiers>" : $response .= "</ListRecords>";
+					$verb == 'ListIdentifiers' ? $response .= '</ListIdentifiers>' : $response .= '</ListRecords>';
 				}
 				else
 				{
@@ -310,15 +319,15 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			break;
 
 			case 'ListSets':
-				$response .= "<request verb=\"ListSets\">$this->hubname/oaipmh</request>";
+				$response .= '<request verb="ListSets">' . $this->view->escape($this->hubname) . '/oaipmh</request>';
 				// get session
 				$session =  JFactory::getSession();
 				$sessionTokenResumptionTemp = $session->get($resumption);
 				// check for errors
 				$error = $this->errorCheck('ListSets', $resumption, $sessionTokenResumptionTemp);
-				if ($error == "")
+				if ($error == '')
 				{
-					$response .= "<ListSets>". $this->doSets($customs) . "</ListSets>";
+					$response .= '<ListSets>' . $this->doSets($customs) . '</ListSets>';
 				}
 				else
 				{
@@ -327,7 +336,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 			break;
 
 			default :
-				$response .= "<request>$this->hubname/oaipmh</request><error code=\"badVerb\">" . JText::_('COM_OAIPMH_ILLEGAL_VERB') . "</error>";
+				$response .= '<request>' . $this->view->escape($this->hubname) . '/oaipmh</request><error code="badVerb">' . JText::_('COM_OAIPMH_ILLEGAL_VERB') . '</error>';
 			break;
 		}
 
