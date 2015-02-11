@@ -395,7 +395,28 @@ $this->css('course.css')
 								</td>
 							</tr>
 						<?php } ?>
-						<?php if ($this->course->certificate()->exists()) { ?>
+						<?php
+						$cert = false;
+						if ($this->course->certificate()->exists())
+						{
+							foreach ($offerings as $offering)
+							{
+								$sections = $offering->sections(array(
+									'state'      => 1,
+									'available'  => true
+								));
+								foreach ($sections as $section)
+								{
+									if ($section->params('certificate'))
+									{
+										$cert = true;
+										break;
+									}
+								}
+							}
+						}
+						if ($cert) {
+						?>
 							<tr>
 								<th scope="row">
 									<?php echo JText::_('COM_COURSES_COURSE_CERTIFICATE'); ?>:
