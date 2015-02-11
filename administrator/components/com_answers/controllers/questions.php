@@ -45,6 +45,11 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	{
 		$this->banking = JComponentHelper::getParams('com_members')->get('bankAccounts');
 
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('open', 'state');
+		$this->registerTask('close', 'state');
+
 		parent::execute();
 	}
 
@@ -140,16 +145,6 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new question
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Displays a question for editing
 	 *
 	 * @param   object  $row  AnswersModelResponse
@@ -160,20 +155,13 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 
 		// Load object
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
-			if (is_array($id))
-			{
-				$id = $id[0];
-			}
+			$id = is_array($id) ? $id[0] : $id;
 
-			$this->view->row = new AnswersModelQuestion($id);
+			$row = new AnswersModelQuestion($id);
 		}
 
 		// Set any errors
@@ -184,33 +172,23 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 
 		// Output the HTML
 		$this->view
+			->set('row', $row)
 			->setLayout('edit')
 			->display();
 	}
 
 	/**
-	 * Save a question and fall back to edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save a question
 	 *
-	 * @param   noolean  $redirect  Redirect after save?
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming data
-		$fields = JRequest::getVar('question', array(), 'post');
+		$fields = JRequest::getVar('question', array(), 'post', 'none', 2);
 
 		// Initiate model
 		$row = new AnswersModelQuestion($fields['id']);
@@ -244,16 +222,16 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		// Add the tag(s)
 		$row->tag($fields['tags'], $this->juser->get('id'));
 
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			// Redirect back to the full questions list
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_ANSWERS_QUESTION_SAVED')
-			);
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Redirect back to the full questions list
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_ANSWERS_QUESTION_SAVED')
+		);
 	}
 
 	/**
@@ -273,7 +251,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		if (count($ids) <= 0)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -294,7 +272,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		if ($this->getError())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				implode('<br />', $this->getErrors()),
 				'error'
 			);
@@ -302,29 +280,9 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_ANSWERS_QUESTION_DELETED')
 		);
-	}
-
-	/**
-	 * Set one or more questions to open
-	 *
-	 * @return  void
-	 */
-	public function openTask()
-	{
-		$this->stateTask();
-	}
-
-	/**
-	 * Set one or more questions to closed
-	 *
-	 * @return  void
-	 */
-	public function closeTask()
-	{
-		$this->stateTask();
 	}
 
 	/**
@@ -341,7 +299,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
-		$publish = ($this->_task == 'close') ? 1 : 0;
+		$publish = ($this->getTask() == 'close') ? 1 : 0;
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -349,7 +307,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 			$action = ($publish == 1) ? JText::_('COM_ANSWERS_SET_STATE_CLOSE') : JText::_('COM_ANSWERS_SET_STATE_OPEN');
 
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::sprintf('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action),
 				'error'
 			);
@@ -389,7 +347,7 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
@@ -399,10 +357,10 @@ class AnswersControllerQuestions extends \Hubzero\Component\AdminController
 	 *
 	 * @return  void
 	 */
-	public function cancel()
+	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

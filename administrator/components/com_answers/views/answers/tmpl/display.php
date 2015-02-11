@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filterby"><?php echo JText::_('COM_ANSWERS_FILTER_BY'); ?></label>
 		<select name="filterby" id="filterby" onchange="document.adminForm.submit();">
