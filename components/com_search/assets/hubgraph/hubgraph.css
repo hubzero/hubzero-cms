@@ -330,18 +330,23 @@
 		margin: 0 !important;
 		font-size: 100% !important;
 	}
+	.results ol.tags li a:before {
+		display: none;
+	}
 	.results ol.tags li button,
+	.results ol.tags li a,
 	.facets ol.tags li button,
 	.complete .tags li button {
 		font-size: 90% !important;
-		border: 1px solid #ccc;
-		background: #eee;
+		border: 1px solid #ccc !important;
+		background: #eee !important;
 		color: #666;
 		padding: 0.2em 0.4em;
 		border-radius: 0.25em;
 		font-style: oblique;
 	}
 	.results ol.tags li button:hover,
+	.results ol.tags li a,
 	.facets ol.tags li button:hover,
 	.complete .tags li button:hover {
 		border: 1px solid #444;

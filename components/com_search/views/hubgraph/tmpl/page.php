@@ -243,7 +243,7 @@ class GenericRenderer
 				return strcasecmp($a[1], $b[1]);
 			});
 			$rv = array_map(function($tag) {
-				return '<button data-id="' . $tag[0] . '" title="' . p($tag[2], 'result') . '">' . h($tag[1]) . '</button>';
+				return '<a data-id="' . $tag[0] . '" title="' . p($tag[2], 'result') . '">' . h($tag[1]) . '</a>';
 			}, $rv);
 			return $rv ? array('<ol class="tags"><li>', implode('</li><li>', $rv), '</li></ol>') : null;
 		}
@@ -451,7 +451,7 @@ class MembersRenderer extends GenericRenderer
 
 function rmUrl($base, $key, $id)
 {
-	return preg_replace('/[&?]$/', '', preg_replace('/' . $key . '(?:\[\])?=' . preg_quote($id) . '/i', '', urldecode($base)));
+	return preg_replace('/[&?]$/', '', preg_replace('/' . $key . '(?:\[\d*\])?=' . preg_quote($id) . '/i', '', urldecode($base)));
 }
 $url = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : $_SERVER['REDIRECT_QUERY_STRING'];
 $url = JRoute::_('index.php?option=com_search' . ($url ? '&' . $url : ''));
@@ -459,6 +459,10 @@ $url = JRoute::_('index.php?option=com_search' . ($url ? '&' . $url : ''));
 $req = $this->req;
 $results = $this->results;
 $domainMap = $this->domainMap;
+$tags         = $req->getTags();
+$users        = $req->getContributors();
+$groups       = $req->getGroup();
+
 //$terms = $this->terms;
 
 $begin = ($req->getPage() - 1) * $req->getPerPage() + 1;
@@ -512,6 +516,7 @@ if (!defined('HG_AJAX')):
 			</ol>
 		</div>
 
+`
 		<div class="facets">
 			<?php
 			$timeframe = array();
@@ -585,8 +590,8 @@ if (!defined('HG_AJAX')):
 								if ($item['title']):
 							?>
 								<li>
-									<input type="hidden" name="<?php echo $transportKey ?>[]" value="<?php echo a($item['id']) ?>" />
-									<a href="<?php echo rmUrl($url, $transportKey, $item['id']) ?>"><?php echo h($item['title']) ?><span>&#x2716;</span></a>
+									<input type="hidden" name="<?php echo $transportKey ?>[]" value="<?php echo a($item['id']); ?>" />
+									<a href="<?php echo rmUrl($url, $transportKey, $item['id']) ?>"><?php echo h($item['title']); ?><span>&#x2716;</span></a>
 								</li>
 							<?php
 								endif;
