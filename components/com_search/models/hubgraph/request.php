@@ -126,7 +126,7 @@ class HubgraphRequest
 				$order = array_flip($this->form['users']);
 				$idList = implode(', ', array_fill(0, count($this->form['users']), '?'));
 				foreach (Db::query(
-					'SELECT name, uidNumber FROM `#__xprofiles WHERE` uidNumber IN (' . $idList . ')
+					'SELECT name, uidNumber FROM `#__xprofiles` WHERE uidNumber IN (' . $idList . ')
 					UNION
 					SELECT name, authorid AS uidNumber FROM `#__author_assoc` WHERE authorid IN (' . $idList . ')
 					LIMIT 1', array_merge($this->form['users'], $this->form['users'])) as $row)

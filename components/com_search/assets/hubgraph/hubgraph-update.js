@@ -221,27 +221,31 @@ jQuery(function($) {
 					setTimeout(function() {
 						working = false;
 					}, 1000);
+					activateRelated();
 				});
 			}
 		});
 
 	$(document.body).append('<style type="text/css">.result:hover .related { visibility: visible; }</style>');
 
-	$('.related').on('click', function (evt) {
-		var el = $(evt.target),
-			throbber = $('<img src="/components/com_search/assets/hubgraph/throbber.gif" class="throbber related" />');
+	var activateRelated = function() {
+		$('.related').on('click', function (evt) {
+			var el = $(evt.target),
+				throbber = $('<img src="/components/com_search/assets/hubgraph/throbber.gif" class="throbber related" />');
 
-		el.replaceWith(throbber);
-
-		$.get('/search?task=getRelated&domain=' + encodeURIComponent(el.data('domain')) + '&id=' + encodeURIComponent(el.data('id')), function(res) {
-			if (!res || !res.length) {
-				throbber.replaceWith('<p>No related results were found.</p>');
-			}
-			var ul = $('<ul class="related">');
-			res.forEach(function(item) {
-				ul.append($('<li>').append($('<strong>').text(item[0][0].toUpperCase() + item[0].substr(1, item[0].length - 1) + ': ')).append($('<a href="' + item[1] + '">').text(item[2])));
+			el.replaceWith(throbber);
+	
+			$.get('/search?task=getRelated&domain=' + encodeURIComponent(el.data('domain')) + '&id=' + encodeURIComponent(el.data('id')), function(res) {
+				if (!res || !res.length) {
+					throbber.replaceWith('<p>No related results were found.</p>');
+				}
+				var ul = $('<ul class="related">');
+				res.forEach(function(item) {
+					ul.append($('<li>').append($('<strong>').text(item[0][0].toUpperCase() + item[0].substr(1, item[0].length - 1) + ': ')).append($('<a href="' + item[1] + '">').text(item[2])));
+				});
+				throbber.replaceWith(ul);
 			});
-			throbber.replaceWith(ul);
 		});
-	});
+	};
+	activateRelated();
 });
