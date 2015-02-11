@@ -135,10 +135,11 @@ class SupportModelTicket extends \Hubzero\Base\Model
 			if (!is_object($user) || !$user->get('uidNumber'))
 			{
 				$user = new \Hubzero\User\Profile();
-				$user->set('name', $this->get('name'));
-				$user->set('username', $this->get('login'));
-				$user->set('email', $this->get('email'));
 			}
+			$user->set('name', $this->get('name'));
+			$user->set('username', $this->get('login'));
+			$user->set('email', $this->get('email'));
+
 			$this->_data->set('submitter.profile', $user);
 		}
 		if ($property)
