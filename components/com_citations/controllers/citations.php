@@ -449,7 +449,7 @@ class CitationsControllerCitations extends \Hubzero\Component\SiteController
 		);
 
 		//get the users id to make lookup
-		$userIp = $this->getIP();
+		$userIp = JRequest::ip();
 
 		//get the param for ip regex to use machine ip
 		$ipRegex = array('10.\d{2,5}.\d{2,5}.\d{2,5}');
