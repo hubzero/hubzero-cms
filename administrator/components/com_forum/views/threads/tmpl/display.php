@@ -65,7 +65,7 @@ function submitbutton(pressbutton) {
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="field-category_id"><?php echo JText::_('COM_FORUM_FILTER_CATEGORY'); ?>:</label>
 		<select name="category_id" id="field-category_id" onchange="document.adminForm.submit( );">

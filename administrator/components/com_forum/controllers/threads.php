@@ -575,7 +575,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $p, false),
 			$msg,
 			'message'
 		);
@@ -703,7 +703,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			JText::_('COM_FORUM_POSTS_DELETED')
 		);
 	}
@@ -751,7 +751,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 			$action = ($state == 1) ? JText::_('COM_FORUM_UNPUBLISH') : JText::_('COM_FORUM_PUBLISH');
 
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 				JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
 			);
@@ -782,7 +782,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			$message
 		);
 	}
@@ -811,7 +811,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 			$action = ($state == 1) ? JText::_('COM_FORUM_MAKE_NOT_STICKY') : JText::_('COM_FORUM_MAKE_STICKY');
 
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 				JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
 			);
@@ -842,7 +842,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			$message
 		);
 	}
@@ -869,7 +869,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 				JText::_('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
 				'error'
 			);
@@ -891,7 +891,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		// set message
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $category, false),
 			JText::sprintf('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
 		);
 	}
@@ -907,7 +907,7 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		$parent = ($fields['parent']) ? $fields['parent'] : $fields['id'];
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent, false)
 		);
 	}
 }

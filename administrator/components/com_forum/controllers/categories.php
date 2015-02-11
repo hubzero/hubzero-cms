@@ -342,7 +342,7 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'],
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'], false),
 			JText::_('COM_FORUM_CATEGORY_SAVED')
 		);
 	}
@@ -393,7 +393,7 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 			JText::_('COM_FORUM_CATEGORIES_DELETED')
 		);
 	}
@@ -441,7 +441,7 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 			$action = ($state == 1) ? JText::_('COM_FORUM_UNPUBLISH') : JText::_('COM_FORUM_PUBLISH');
 
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 				JText::sprintf('COM_FORUM_SELECT_ENTRY_TO', $action),
 				'error'
 			);
@@ -472,7 +472,7 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 			$message
 		);
 	}
@@ -499,7 +499,7 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 				JText::_('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'),
 				'error'
 			);
@@ -521,7 +521,7 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 
 		// set message
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $section, false),
 			JText::sprintf('COM_FORUM_ITEMS_ACCESS_CHANGED', count($ids))
 		);
 	}
@@ -536,7 +536,7 @@ class ForumControllerCategories extends \Hubzero\Component\AdminController
 		$fields = JRequest::getVar('fields', array());
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id']
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section_id=' . $fields['section_id'], false)
 		);
 	}
 }
