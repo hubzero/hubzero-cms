@@ -142,10 +142,15 @@ class GroupsHelperPages
 		$base = JRoute::_('index.php?option=com_groups&cn=' .$group->get('cn'));
 
 		// remove /groups/{group_cname} from path
-		$path = str_replace($base, '', $uri->getPath());
+		$path = trim(str_replace($base, '', $uri->getPath()), DS);
+
+		if ($path == 'index.php')
+		{
+			return array();
+		}
 
 		// get path segments & clean up
-		$segments = explode(DS, trim($path, DS));
+		$segments = explode(DS, $path);
 		$segments = array_filter($segments);
 
 		// return path segments
