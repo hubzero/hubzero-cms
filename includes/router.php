@@ -19,6 +19,14 @@ defined('JPATH_BASE') or die;
 class JRouterSite extends JRouter
 {
 	/**
+	 * Component-router objects
+	 *
+	 * @var    array
+	 * @since  3.3
+	 */
+	protected $componentRouters = array();
+
+	/**
 	 * Parse the URI
 	 *
 	 * @param	object	The URI
@@ -675,10 +683,12 @@ class JRouterSite extends JRouter
 					}
 				}
 
-				require_once $path;
+				/*require_once $path;
 				$function = substr($component, 4).'ParseRoute';
 				$function = str_replace(array("-", "."), "", $function);
-				$vars =  $function($segments);
+				$vars =  $function($segments);*/
+				$routes = $this->getComponentRouter($component);
+				$vars = $routes->parse($segments);
 
 				$this->setVars($vars);
 			}
@@ -782,10 +792,13 @@ class JRouterSite extends JRouter
 
 		// Use the custom routing handler if it exists
 		if (file_exists($path) && !empty($query)) {
-			require_once $path;
+			/*require_once $path;
 			$function	= substr($component, 4).'BuildRoute';
 			$function   = str_replace(array("-", "."), "", $function);
-			$parts		= $function($query);
+			$parts		= $function($query);*/
+			$routes = $this->getComponentRouter($component);
+			$query = $routes->preprocess($query);
+			$parts = $routes->build($query);
 
 			// encode the route segments
 			if ($component != 'com_search') {
@@ -794,7 +807,7 @@ class JRouterSite extends JRouter
 				/*
 				$parts = $this->_encodeSegments($parts);
 				 */
-				if ($component == "com_content") {
+				if ($component == 'com_content') {
 					$parts = $this->_encodeSegments($parts);
 				}
 				/* END: HUBzero Extension to fix joomla break ':' in urls in com_wiki/com_topics (others?) */
@@ -809,7 +822,7 @@ class JRouterSite extends JRouter
 			}
 
 			$result = implode('/', $parts);
-			$tmp	= ($result != "") ? $result : '';
+			$tmp    = ($result != '') ? $result : '';
 		}
 
 		/*
@@ -1116,5 +1129,51 @@ class JRouterSite extends JRouter
 		}
 
 		return $vars;
+	}
+
+	/**
+	 * Get component router
+	 *
+	 * @param   string  $component  Name of the component including com_ prefix
+	 * @return  object  Component router
+	 * @since   1.3.2
+	 */
+	public function getComponentRouter($component)
+	{
+		if (!isset($this->componentRouters[$component]))
+		{
+			$compname = ucfirst(substr($component, 4));
+
+			if (!class_exists($compname . 'Router'))
+			{
+				// Use the component routing handler if it exists
+				$path = JPATH_SITE . '/components/' . $component . '/router.php';
+
+				// Use the custom routing handler if it exists
+				if (file_exists($path))
+				{
+					require_once $path;
+				}
+			}
+
+			$name = $compname . 'Router';
+
+			if (class_exists($name))
+			{
+				$reflection = new ReflectionClass($name);
+
+				if (in_array('Hubzero\Component\Router\RouterInterface', $reflection->getInterfaceNames()))
+				{
+					$this->componentRouters[$component] = new $name;
+				}
+			}
+
+			if (!isset($this->componentRouters[$component]))
+			{
+				$this->componentRouters[$component] = new \Hubzero\Component\Router\Legacy($compname);
+			}
+		}
+
+		return $this->componentRouters[$component];
 	}
 }
