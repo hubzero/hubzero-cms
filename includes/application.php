@@ -49,7 +49,9 @@ final class JSite extends JApplication
 		{
 			// This must be done before the session is read, otherwise it will overwrite
 			// the existing session with a guest non-https session prior to redirecting to https
-			if ($app->getCfg('force_ssl') == 2)
+			// NOTE: we're including a cli check here because the console currently uses the 'site'
+			// application.  This should be remedied in the new framework.
+			if ($app->getCfg('force_ssl') == 2 && php_sapi_name() != 'cli')
 			{
 				$uri = JURI::getInstance();
 
