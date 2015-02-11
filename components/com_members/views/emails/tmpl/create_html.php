@@ -42,7 +42,7 @@ $jconfig = JFactory::getConfig();
 				</td>
 				<td width="80%" align="left" valign="bottom" class="tagline mobilehide">
 					<span class="home">
-						<a href="<?php echo $juri->base(); ?>"><?php echo $juri->base(); ?></a>
+						<a href="<?php echo $this->baseURL; ?>"><?php echo $this->baseURL; ?></a>
 					</span>
 					<br />
 					<span class="description"><?php echo $jconfig->getValue('config.MetaDesc'); ?></span>
