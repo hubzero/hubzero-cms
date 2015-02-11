@@ -75,6 +75,10 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			{
 				$task = 'tickets';
 			}
+			if ($task == 'update')
+			{
+				$task = 'ticket';
+			}
 			$pathway->addItem(
 				JText::_('COM_SUPPORT_' . strtoupper($task)),
 				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $task
@@ -113,7 +117,14 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 			}
 			if ($this->_task != 'display')
 			{
-				$this->_title .= ': ' . JText::_('COM_SUPPORT_' . strtoupper($this->_task));
+				if ($this->_task == 'update')
+				{
+					$this->_title .= ': ' . JText::_('COM_SUPPORT_TiCKET');
+				}
+				else
+				{
+					$this->_title .= ': ' . JText::_('COM_SUPPORT_' . strtoupper($this->_task));
+				}
 			}
 		}
 		if (is_object($ticket) && $ticket->exists())
