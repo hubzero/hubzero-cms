@@ -82,7 +82,7 @@ class Helper extends Module
 			$items = $rssDoc->get_items();
 
 			// Feed elements
-			$feed->items = array_slice($items, 0, $params->get('rssitems', 5));
+			$feed->items = array_slice($items, 0, $this->params->get('rssitems', 5));
 		}
 		else
 		{
