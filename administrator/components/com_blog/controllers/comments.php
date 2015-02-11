@@ -39,7 +39,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of blog entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -47,42 +47,42 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		$jconfig = JFactory::getConfig();
 		$app = JFactory::getApplication();
 
-		$this->view->filters = array();
-		$this->view->filters['entry_id']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.entry_id',
-			'entry_id',
-			0,
-			'int'
-		));
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		)));
-		// Get sorting variables
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'created'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$jconfig->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'entry_id'     => trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.entry_id',
+				'entry_id',
+				0,
+				'int'
+			)),
+			'search'  => urldecode(trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			))),
+			// Get sorting variables
+			'sort'         => trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'created'
+			));
+			'sort_Dir'     => trim($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)),
+			// Get paging variables
+			'limit'        => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$jconfig->getValue('config.list_limit'),
+				'int'
+			),
+			'start'        => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		$this->view->entry = new BlogModelEntry($this->view->filters['entry_id']);
@@ -128,12 +128,9 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -193,7 +190,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -203,8 +200,8 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Show a form for editing an entry
 	 *
-	 * @param      object $row BlogTableComment
-	 * @return     void
+	 * @param   object  $row  BlogTableComment
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
@@ -237,12 +234,9 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -252,7 +246,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Save changes to an entry and go back to edit form
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -262,8 +256,8 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Save changes to an entry
 	 *
-	 * @param      boolean $redirect Redirect (true) or fall through to edit form (false) ?
-	 * @return     void
+	 * @param   boolean  $redirect  Redirect (true) or fall through to edit form (false) ?
+	 * @return  void
 	 */
 	public function saveTask($redirect=true)
 	{
@@ -277,7 +271,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		$row = new BlogModelComment($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -285,7 +279,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -294,7 +288,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 		{
 			// Set the redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'],
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . $fields['entry_id'], false),
 				JText::_('COM_BLOG_COMMENT_SAVED')
 			);
 			return;
@@ -306,7 +300,7 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 	/**
 	 * Delete one or more entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -318,6 +312,8 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 
 		if (count($ids) > 0)
 		{
+			$this->setMessage(JText::_('COM_BLOG_COMMENT_DELETED'));
+
 			// Loop through all the IDs
 			foreach ($ids as $id)
 			{
@@ -325,28 +321,27 @@ class BlogControllerComments extends \Hubzero\Component\AdminController
 				// Delete the entry
 				if (!$entry->delete())
 				{
-					$this->addComponentMessage($entry->getError(), 'error');
+					$this->setMessage($entry->getError(), 'error');
 				}
 			}
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . JRequest::getInt('entry_id', 0),
-			JText::_('COM_BLOG_COMMENT_DELETED')
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . JRequest::getInt('entry_id', 0), false),
 		);
 	}
 
 	/**
 	 * Cancels a task and redirects to listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . JRequest::getInt('entry_id', 0)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&entry_id=' . JRequest::getInt('entry_id', 0), false)
 		);
 	}
 }

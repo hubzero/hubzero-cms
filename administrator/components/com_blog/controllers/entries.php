@@ -147,11 +147,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -161,8 +157,10 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 			}
 
 			// Load the article
-			$this->view->row = new BlogModelEntry($id);
+			$row = new BlogModelEntry($id);
 		}
+
+		$this->view->row = $row;
 
 		if (!$this->view->row->exists())
 		{
@@ -220,7 +218,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		$row = new BlogModelEntry($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -228,7 +226,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -240,7 +238,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		{
 			// Set the redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_BLOG_ENTRY_SAVED')
 			);
 			return;
@@ -278,7 +276,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_BLOG_ENTRIES_DELETED')
 		);
 	}
@@ -322,7 +320,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::sprintf('COM_BLOG_SELECT_ENTRY_TO', $this->_task),
 				'error'
 			);
@@ -361,7 +359,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
@@ -385,7 +383,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::sprintf('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->_task),
 				'error'
 			);
@@ -403,7 +401,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 			if (!$row->store())
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					$row->getError(),
 					'error'
 				);
@@ -424,7 +422,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			$message
 		);
 	}
@@ -438,7 +436,7 @@ class BlogControllerEntries extends \Hubzero\Component\AdminController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }
