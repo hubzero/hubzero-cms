@@ -85,6 +85,8 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		$this->database->setQuery($query);
 		$qsets = $this->database->loadResultArray();
 
+		$customs = array();
+
 		// get custom queries
 		$this->sets = 0;
 		if (count($qsets) > 1)
@@ -97,7 +99,7 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			$customs = new TablesOaipmhCustom($this->database, 1);
+			$customs[0] = new TablesOaipmhCustom($this->database, 1);
 			$this->sets = 1;
 		}
 
@@ -212,63 +214,82 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 				// get session
 				$session = JFactory::getSession();
 				$sessionTokenResumptionTemp = $session->get($resumption);
-				// get IDs
-				$ids = $this->getRecords($customs, $this->from, $this->until);
-				// check for errors
-				$error = $this->errorCheck($verb, $ids, $resumption, $sessionTokenResumptionTemp);
-				if ($error == '')
+				foreach ($customs as $custom)
 				{
-					// start list
-					$verb == "ListIdentifiers" ? $response .= "<ListIdentifiers>" : $response .= "<ListRecords>";
-					// set flow control vars
-					$begin = 0;
-					$toWrite = 50;
-					$completed = 0;
-					$resumptionToken = 0;
-					$split = false;
-					// check completion
-					if (!empty($resumption))
+					// get IDs
+					$ids = $this->getRecords($custom, $this->from, $this->until);
+					// check for errors
+					$error = $this->errorCheck($verb, $ids, $resumption, $sessionTokenResumptionTemp);
+					if ($error == '')
 					{
-						$session = JFactory::getSession();
-						$completed = $session->get($resumption);
-						$resumptionToken = $resumption;
-					}
-					// set up flow vars
-					if ((count($ids) - $completed) > $max_records)
-					{
-						$toWrite = $max_records;
-						$begin = $completed;
-						$split = true;
-					}
-					else
-					{
-						$toWrite = count($ids) - $completed;
-						$begin = $completed;
-					}
-					// set resumption session
-					if (empty($resumption))
-					{
-						$session = JFactory::getSession();
-						$resumptionToken = uniqid();
-					}
-					$session->set($resumptionToken, $begin + $toWrite);
-					// list records
-					// TODO: move to function
-					if (is_array($customs))
-					{
-						foreach ($customs as $custom)
+						// start list
+						$verb == "ListIdentifiers" ? $response .= "<ListIdentifiers>" : $response .= "<ListRecords>";
+						// set flow control vars
+						$begin = 0;
+						$toWrite = 50;
+						$completed = 0;
+						$resumptionToken = 0;
+						$split = false;
+						// check completion
+						if (!empty($resumption))
+						{
+							$session = JFactory::getSession();
+							$completed = $session->get($resumption);
+							$resumptionToken = $resumption;
+						}
+						// set up flow vars
+						if ((count($ids) - $completed) > $max_records)
+						{
+							$toWrite = $max_records;
+							$begin = $completed;
+							$split = true;
+						}
+						else
+						{
+							$toWrite = count($ids) - $completed;
+							$begin = $completed;
+						}
+						// set resumption session
+						if (empty($resumption))
+						{
+							$session = JFactory::getSession();
+							$resumptionToken = uniqid();
+						}
+						$session->set($resumptionToken, $begin + $toWrite);
+						// list records
+						// TODO: move to function
+						if (is_array($custom))
+						{
+							foreach ($custom as $custm)
+							{
+								for ($i=$begin; $i<($begin + $toWrite); $i++)
+								{
+									$result = new TablesOaipmhResult($this->database, $custm, $ids[$i]);
+
+									// move on if no identifier
+									if (!$result->identifier)
+									{
+										continue;
+									}
+
+									// record or just header?
+									if ($verb == "ListIdentifiers")
+									{
+										$response .= $this->doHeader($result);
+									}
+									else
+									{
+										$response .= $this->doRecord($result);
+									}
+								}
+							}
+						}
+						else
 						{
 							for ($i=$begin; $i<($begin + $toWrite); $i++)
 							{
 								$result = new TablesOaipmhResult($this->database, $custom, $ids[$i]);
-
-								// move on if no identifier
-								if (!$result->identifier)
-								{
-									continue;
-								}
-
-								// record or just header?
+								// record or just header
 								if ($verb == "ListIdentifiers")
 								{
 									$response .= $this->doHeader($result);
@@ -279,34 +300,18 @@ class OaipmhControllerXml extends \Hubzero\Component\SiteController
 								}
 							}
 						}
+						// write resumption token if needed
+						if ($split)
+						{
+							$response .= "<resumptionToken completeListSize=\"" . count($ids) . "\" cursor=\"$begin\">$resumptionToken</resumptionToken>";
+						}
+						// end list
+						$verb == "ListIdentifiers" ? $response .= "</ListIdentifiers>" : $response .= "</ListRecords>";
 					}
 					else
 					{
-						for ($i=$begin; $i<($begin + $toWrite); $i++)
-						{
-							$result = new TablesOaipmhResult($this->database, $customs, $ids[$i]);
-							// record or just header
-							if ($verb == "ListIdentifiers")
-							{
-								$response .= $this->doHeader($result);
-							}
-							else
-							{
-								$response .= $this->doRecord($result);
-							}
-						}
+						$response .= $error;
 					}
-					// write resumption token if needed
-					if ($split)
-					{
-						$response .= "<resumptionToken completeListSize=\"" . count($ids) . "\" cursor=\"$begin\">$resumptionToken</resumptionToken>";
-					}
-					// end list
-					$verb == "ListIdentifiers" ? $response .= "</ListIdentifiers>" : $response .= "</ListRecords>";
-				}
-				else
-				{
-					$response .= $error;
 				}
 			break;
 
