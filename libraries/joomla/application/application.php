@@ -139,6 +139,8 @@ class JApplication extends JObject
 			$this->_createConfiguration(JPATH_CONFIGURATION . '/' . $config['config_file']);
 		}
 
+		\Hubzero\Console\Event::fire('application.onBeforeSessionCreate', $this);
+
 		// Create the session if a session name is passed.
 		if ($config['session'] !== false)
 		{
