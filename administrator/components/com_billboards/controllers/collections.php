@@ -165,7 +165,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_SAVED')
 		);
 	}
@@ -198,7 +198,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::sprintf('COM_BILLBOARDS_COLLECTION_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
@@ -212,7 +212,7 @@ class BillboardsControllerCollections extends \Hubzero\Component\AdminController
 	{
 		// Just redirect, no checkin necessary
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 

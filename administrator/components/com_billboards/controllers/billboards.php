@@ -48,18 +48,19 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit'] = $app->getUserStateFromRequest(
-			$this->_option . '.billboards.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start'] = $app->getUserStateFromRequest(
-			$this->_option . '.billboards.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.billboards.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.billboards.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		// Get a billboard object
@@ -127,7 +128,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		if ($this->view->row->checked_out && $this->view->row->checked_out != $this->juser->get('id'))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT')
 			);
 			return;
@@ -205,6 +206,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 		// Incoming, make sure to allow HTML to pass through
 		$billboard = JRequest::getVar('billboard', array(), 'post', 'array', JREQUEST_ALLOWHTML);
 		$billboard = array_map('trim', $billboard);
+
 		$row = new BillboardsBillboard($this->database);
 
 		// If this is a new item, let's order it last
@@ -236,7 +238,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_SAVED')
 		);
 	}
@@ -285,7 +287,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_BILLBOARDS_ORDER_SUCCESSFULLY_UPDATED')
 		);
 	}
@@ -318,7 +320,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 				if (!$billboard->delete($id))
 				{
 					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						JText::_('COM_BILLBOARDS_ERROR_CANT_DELETE')
 					);
 					return;
@@ -328,7 +330,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::sprintf('COM_BILLBOARDS_BILLBOARD_SUCCESSFULLY_DELETED', count($ids))
 		);
 	}
@@ -370,7 +372,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -414,7 +416,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 			else
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					JText::_('COM_BILLBOARDS_ERROR_CHECKED_OUT')
 				);
 				return;
@@ -423,7 +425,7 @@ class BillboardsControllerBillBoards extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 

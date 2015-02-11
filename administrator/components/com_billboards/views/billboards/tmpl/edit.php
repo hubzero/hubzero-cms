@@ -40,7 +40,7 @@ JToolBarHelper::title(JText::_('COM_BILLBOARDS_MANAGER') . ': ' . $text, 'addedi
 
 $bar = JToolBar::getInstance('toolbar');
 // Add an upload button.
-$bar->appendButton('Popup', 'upload', JText::_('COM_BILLBOARDS_IMAGES'), 'index.php?option=com_media&view=images&tmpl=component&folder='.$this->media_path, 640, 520);
+$bar->appendButton('Popup', 'upload', JText::_('COM_BILLBOARDS_IMAGES'), JRoute::_('index.php?option=com_media&view=images&tmpl=component&folder=' . $this->media_path), 640, 520);
 
 JToolBarHelper::save();
 JToolBarHelper::cancel();
@@ -77,7 +77,7 @@ jQuery(document).ready(function($){
 });
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_BILLBOARDS_CONTENT'); ?></span></legend>
