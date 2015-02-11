@@ -215,8 +215,6 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask($file='', $id=0, $qid=0)
 	{
-		$this->view->setLayout('display');
-
 		$this->view->type = $this->type;
 
 		// Load the component config
@@ -236,16 +234,13 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		$this->view->qid = ($qid) ? $qid : JRequest::getInt('qid', 0);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('display')->display();
 	}
 }
 

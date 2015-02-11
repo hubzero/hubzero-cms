@@ -138,7 +138,7 @@ jQuery(document).ready(function($) {
 });
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_FEEDBACK_DETAILS'); ?></span></legend>

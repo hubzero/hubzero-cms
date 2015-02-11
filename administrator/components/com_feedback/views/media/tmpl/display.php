@@ -40,7 +40,7 @@ function passparam()
 window.onload = passparam;
 //-->
 </script>
-<form action="index.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 	<table class="formed">
 		<thead>
 			<tr>
@@ -106,7 +106,7 @@ window.onload = passparam;
 			</tr>
 			<tr>
 				<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-				<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=delete&amp;qid=<?php echo $this->qid; ?>&amp;id=<?php echo $this->id; ?>&amp;type=<?php echo $this->type; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=delete&qid=' . $this->qid . '&id=' . $this->id . '&type=' . $this->type . '&' . JUtility::getToken() . '=1'); ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 			</tr>
 <?php } else { ?>
 			<tr>

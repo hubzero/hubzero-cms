@@ -231,7 +231,9 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			{
 				if (!JFile::delete($path . DS . $existingPicture))
 				{
-					$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+					$this->setRedirect(
+						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+					);
 					return;
 				}
 			}
@@ -279,7 +281,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		if ($redirect)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::sprintf('COM_FEEDBACK_QUOTE_SAVED', $row->fullname)
 			);
 		}
@@ -318,7 +320,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_FEEDBACK_REMOVED')
 		);
 	}
@@ -331,7 +333,7 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }
