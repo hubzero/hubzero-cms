@@ -365,14 +365,6 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		$doc->description = JText::_($jconfig->getValue('config.sitename') . ' ' . JText::_('COM_FEEDAGGREGATOR_AGGREGATED_FEED_SELECTED_READING'));
 		$doc->copyright   = JText::sprintf(date("Y"), $jconfig->getValue('config.sitename'));
 		$doc->category    = JText::_('COM_FEEDAGGREGATOR_EXTERNAL_CONTENT');
-		$doc->syndicationURL = 'https://kwojo.hubzero.org/feedaggregator/feed.rss';
-
-
-		/*echo "<pre>";
-		var_dump($doc);
-		die;*/
-
-
 
 		// Start outputing results if any found
 		if (count($posts) > 0)
@@ -402,7 +394,7 @@ class FeedaggregatorControllerPosts extends \Hubzero\Component\SiteController
 		header("Content-Type: application/rss+xml");
 		echo $doc->render();
 
-
+		//do not output view
 		die;
 	}
 }
