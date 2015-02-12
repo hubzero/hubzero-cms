@@ -68,7 +68,7 @@ $menuItems = array(
 foreach ($menuItems as $k => $v)
 {
 	$active = (JRequest::getCmd('controller', 'newsletter') == $k) ? true : false ;
-	JSubMenuHelper::addEntry($v, 'index.php?option=com_newsletter&controller=' . $k, $active);
+	JSubMenuHelper::addEntry($v, JRoute::_('index.php?option=com_newsletter&controller=' . $k), $active);
 }
 
 //execute controller

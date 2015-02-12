@@ -54,7 +54,7 @@ function submitbutton(pressbutton)
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
 	<div class="col width-100">
 		<?php if ($this->newsletter->id != null) : ?>
 			<a name="distribution"></a>
@@ -87,4 +87,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="dosendtest" />
 	<input type="hidden" name="nid" value="<?php echo $this->newsletter->id; ?>" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

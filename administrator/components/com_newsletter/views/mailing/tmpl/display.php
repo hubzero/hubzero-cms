@@ -66,7 +66,7 @@ Joomla.submitbutton = function(pressbutton)
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -81,7 +81,7 @@ Joomla.submitbutton = function(pressbutton)
 				<?php foreach ($this->mailings as $k => $mailing) : ?>
 					<tr>
 						<td>
-							<input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $mailing->mailing_id; ?>" onclick="isChecked(this.checked);" />
+							<input type="checkbox" name="id[]" id="cb<?php echo $k; ?>" value="<?php echo $mailing->mailing_id; ?>" onclick="isChecked(this.checked);" />
 						</td>
 						<td>
 							<?php echo $mailing->newsletter_name; ?>
@@ -100,7 +100,7 @@ Joomla.submitbutton = function(pressbutton)
 									echo '0%';
 								}
 							 ?>
-							(<?php echo number_format($mailing->emails_sent); ?> of <?php echo number_format($mailing->emails_total); ?> emails sent)
+							(<?php echo JText::sprintf('COM_NEWSLETTER_NUM_OF_EMAILS_SENT', number_format($mailing->emails_sent), number_format($mailing->emails_total)); ?>)
 						</td>
 					</tr>
 				<?php endforeach; ?>

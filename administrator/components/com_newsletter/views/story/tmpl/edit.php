@@ -44,7 +44,7 @@ jimport('joomla.html.editor');
 $editor = JEditor::getInstance();
 ?>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_NEWSLETTER_STORY_'.strtoupper($this->type)); ?></legend>
 		<table class="admintable">
@@ -104,8 +104,11 @@ $editor = JEditor::getInstance();
 			</tbody>
 		</table>
 	</fielset>
+
 	<input type="hidden" name="story[nid]" value="<?php echo $this->newsletter->id; ?>" />
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

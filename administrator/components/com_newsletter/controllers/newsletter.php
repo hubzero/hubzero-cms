@@ -36,7 +36,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Dependency check
 	 *
-	 * @return    void
+	 * @return  void
 	 */
 	private function dependencyCheck()
 	{
@@ -62,29 +62,25 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Display all newsletters task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		//dependency check
+		// dependency check
 		if (!$this->dependencyCheck())
 		{
-			//show missing dependency layout
-			$this->view->setLayout('dependency');
-			$this->view->display();
+			// show missing dependency layout
+			$this->view->setLayout('dependency')->display();
 			return;
 		}
 
-		//set layout
-		$this->view->setLayout('display');
-
-		//instantiate newsletter campaign object
+		// instantiate newsletter campaign object
 		$newsletterNewsletter = new NewsletterNewsletter($this->database);
 
-		//get list of all newsletter campaigns
+		// get list of all newsletter campaigns
 		$this->view->newsletters = $newsletterNewsletter->getNewsletters();
 
-		//get any templates that exist
+		// get any templates that exist
 		$newsletterTemplate = new NewsletterTemplate($this->database);
 		$this->view->templates = $newsletterTemplate->getTemplates();
 
@@ -95,7 +91,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('display')->display();
 	}
 
 	/**
@@ -115,10 +111,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($task = 'edit')
 	{
-		//force layout (for when redirecting back to edit from saveTask())
-		$this->view->setLayout('edit');
-
-		//instantiate newsletter object
+		// instantiate newsletter object
 		$this->view->newsletter = new stdClass;
 		$this->view->newsletter->id          = null;
 		$this->view->newsletter->alias       = null;
@@ -136,15 +129,15 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		$this->view->newsletter->modified_by = null;
 		$this->view->newsletter->params      = null;
 
-		//default primary and secondary stories to null
+		// default primary and secondary stories to null
 		$this->view->newsletter_primary    = null;
 		$this->view->newsletter_secondary  = null;
 
-		//get any templates that exist
+		// get any templates that exist
 		$newsletterTemplate = new NewsletterTemplate($this->database);
 		$this->view->templates = $newsletterTemplate->getTemplates();
 
-		//get the request vars
+		// get the request vars
 		$ids = JRequest::getVar("id", array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
@@ -153,44 +146,44 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 			$id = null;
 		}
 
-		//are we editing
+		// are we editing
 		if ($id)
 		{
 			$newsletterNewsletter = new NewsletterNewsletter($this->database);
 			$this->view->newsletter = $newsletterNewsletter->getNewsletters($id);
 
-			//get primary stories
+			// get primary stories
 			$newsletterPrimaryStory = new NewsletterPrimaryStory($this->database);
 			$this->view->newsletter_primary = $newsletterPrimaryStory->getStories($id);
 			$this->view->newsletter_primary_highest_order = $newsletterPrimaryStory->_getCurrentHighestOrder($id);
 
-			//get secondary stories
+			// get secondary stories
 			$newsletterSecondaryStory = new NewsletterSecondaryStory($this->database);
 			$this->view->newsletter_secondary = $newsletterSecondaryStory->getStories($id);
 			$this->view->newsletter_secondary_highest_order = $newsletterSecondaryStory->_getCurrentHighestOrder($id);
 
-			//get mailing lists
+			// get mailing lists
 			$newsletterMailinglist = new NewsletterMailinglist($this->database);
 			$this->view->mailingLists = $newsletterMailinglist->getLists();
 		}
 
-		//are we passing newsletter object from saveTask()?
+		// are we passing newsletter object from saveTask()?
 		if ($this->newsletter)
 		{
 			$this->view->newsletter = $this->newsletter;
 		}
 
-		//check if we have any errors
+		// check if we have any errors
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
 
-		//set vars for view
+		// set vars for view
 		$this->view->config = $this->config;
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -234,8 +227,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		if (!isset($newsletter['id']))
 		{
 			//update the modified info
-			$newsletter['created'] 		= JFactory::getDate()->toSql();
-			$newsletter['created_by'] 	= $this->juser->get('id');
+			$newsletter['created']    = JFactory::getDate()->toSql();
+			$newsletter['created_by'] = $this->juser->get('id');
 		}
 		else
 		{
@@ -277,8 +270,8 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		}
 
 		//update the modified info
-		$newsletter['modified'] 		= JFactory::getDate()->toSql();
-		$newsletter['modified_by'] 		= $this->juser->get('id');
+		$newsletter['modified']    = JFactory::getDate()->toSql();
+		$newsletter['modified_by'] = $this->juser->get('id');
 
 		// if no plain text was entered lets take the html content
 		if (isset($newsletter['plain_content']))
@@ -290,7 +283,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 			}
 
 			// remove html from plain content
-			$newsletter['plain_content']    = strip_tags($newsletter['plain_content']);
+			$newsletter['plain_content'] = strip_tags($newsletter['plain_content']);
 		}
 
 		//save campaign
@@ -324,15 +317,17 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		else
 		{
 			//set success message
-			$this->_message = JText::_('COM_NEWSLETTER_SAVED_SUCCESS');
+			$this->setMessage(JText::_('COM_NEWSLETTER_SAVED_SUCCESS'));
 
 			//redirect back to campaigns list
-			$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter';
+			$this->setRedirect(JRoute::_('index.php?option=com_newsletter&controller=newsletter', false));
 
 			//if we just created campaign go back to edit form so we can add content
 			if (!isset($newsletter['id']) || $apply)
 			{
-				$this->_redirect = 'index.php?option=com_newsletter&controller=newsletter&task=edit&id[]=' . $newsletterNewsletter->id;
+				$this->setRedirect(
+					JRoute::_('index.php?option=com_newsletter&controller=newsletter&task=edit&id=' . $newsletterNewsletter->id, false)
+				);
 			}
 		}
 	}
@@ -361,7 +356,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 
 		//redirect back to campaigns list
 		$this->setRedirect(
-			'index.php?option=com_newsletter&controller=newsletter',
+			JRoute::_('index.php?option=com_newsletter&controller=newsletter', false),
 			JText::_('COM_NEWSLETTER_DUPLICATED_SUCCESS')
 		);
 	}
@@ -401,7 +396,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 
 		//redirect back to campaigns list
 		$this->setRedirect(
-			'index.php?option=com_newsletter&controller=newsletter',
+			JRoute::_('index.php?option=com_newsletter&controller=newsletter', false),
 			JText::_('COM_NEWSLETTER_DELETE_SUCCESS')
 		);
 	}
@@ -464,7 +459,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 
 		//redirect back to campaigns list
 		$this->setRedirect(
-			'index.php?option=com_newsletter&controller=newsletter',
+			JRoute::_('index.php?option=com_newsletter&controller=newsletter', false),
 			JText::_($msg)
 		);
 	}
@@ -472,7 +467,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Preview newsletter in lightbox
 	 * 
-	 * @return void
+	 * @return  void
 	 */
 	public function previewTask()
 	{
@@ -488,7 +483,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		if ($no_html == 0)
 		{
 			$content  = '<h2 class="modal-title">' . JText::_('COM_NEWSLETTER_PREVIEW') . '</h2><br /><br />';
-			$content .= '<iframe width="100%" height="100%" src="index.php?option=com_newsletter&task=preview&id='.$id.'&no_html=1"></iframe>';
+			$content .= '<iframe width="100%" height="100%" src="' . JRoute::_('index.php?option=com_newsletter&task=preview&id=' . $id . '&no_html=1') . '"></iframe>';
 		}
 		else
 		{
@@ -502,7 +497,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Display send test newsletter form
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function sendTestTask()
 	{
@@ -538,7 +533,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Send test newsletter
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function doSendTestTask()
 	{
@@ -600,7 +595,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 
 		//redirect after sent
 		$this->setRedirect(
-			'index.php?option=com_newsletter&controller=newsletter',
+			JRoute::_('index.php?option=com_newsletter&controller=newsletter', false),
 			$message,
 			$type
 		);
@@ -609,18 +604,15 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Display send newsletter form
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function sendNewsletterTask()
 	{
-		//set layout
-		$this->view->setLayout('send');
-
-		//get the request vars
+		// get the request vars
 		$ids = JRequest::getVar("id", array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
 
-		//make sure we have an id
+		// make sure we have an id
 		if (!$id)
 		{
 			$this->setError(JText::_('COM_NEWSLETTER_SELECT_NEWSLETTER_FOR_MAILING'));
@@ -628,15 +620,15 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		//get the newsletter
+		// get the newsletter
 		$newsletterNewsletter = new NewsletterNewsletter($this->database);
 		$this->view->newsletter = $newsletterNewsletter->getNewsletters($id);
 
-		//get newsletter mailing lists
+		// get newsletter mailing lists
 		$newsletterMailinglist = new NewsletterMailinglist($this->database);
 		$this->view->mailinglists = $newsletterMailinglist->getLists();
 
-		//get the mailings
+		// get the mailings
 		$newsletterMailing = new NewsletterMailing($this->database);
 		$this->view->mailings = $newsletterMailing->getMailings(null, $id);
 
@@ -647,23 +639,23 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 			$mailing->queueCount = $this->database->loadResult();
 		}
 
-		//check if we have any errors
+		// check if we have any errors
 		if ($this->getError())
 		{
 			$this->view->setError($this->getError());
 		}
 
-		//vars for view
+		// vars for view
 		$this->view->database = $this->database;
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('send')->display();
 	}
 
 	/**
 	 * Send Newsletter
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function doSendNewsletterTask()
 	{
@@ -749,7 +741,7 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 		{
 			//redirect after sent
 			$this->setRedirect(
-				'index.php?option=com_newsletter&controller=newsletter',
+				JRoute::_('index.php?option=com_newsletter&controller=newsletter', false),
 				JText::sprintf('COM_NEWSLETTER_NEWSLETTER_SEND_TO', $newsletterNewsletter->name, number_format($count))
 			);
 		}
@@ -758,7 +750,13 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Send Newsletter
 	 *
-	 * @return 	void
+	 * @param   $newsletter
+	 * @param   $newsletterHtmlContent
+	 * @param   $newsletterPlainContent
+	 * @param   $newsletterContacts
+	 * @param   $newsletterMailinglist
+	 * @param   $sendingTest
+	 * @return  object
 	 */
 	private function _send($newsletter, $newsletterHtmlContent, $newsletterPlainContent, $newsletterContacts, $newsletterMailinglist, $sendingTest = false)
 	{
@@ -929,9 +927,9 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Create newsletter mailing recipients
 	 *
-	 * @param  [type] $mailing
-	 * @param  [type] $emails
-	 * @return [type]
+	 * @param   object  $mailing
+	 * @param   array   $emails
+	 * @return  void
 	 */
 	private function _sendTo($mailing, &$emails)
 	{
@@ -966,10 +964,9 @@ class NewsletterControllerNewsletter extends \Hubzero\Component\AdminController
 	/**
 	 * Get Unique newsletter alias
 	 *
-	 * @param     $alias    Newsletter Alias
-	 * @param     $id       Newsletter Id
-	 *
-	 * @return    string
+	 * @param   string   $alias  Newsletter Alias
+	 * @param   integer  $id     Newsletter Id
+	 * @return  string
 	 */
 	private function _getUniqueNewsletterAlias($alias, $id)
 	{

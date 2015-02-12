@@ -47,7 +47,7 @@ JToolBarHelper::cancel();
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<?php if (!$this->list->id) : ?>
 		<p class="info"><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MUST_CREATE_BEFORE_ADD'); ?></p>
 	<?php endif; ?>

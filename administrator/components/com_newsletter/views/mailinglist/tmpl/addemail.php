@@ -46,9 +46,10 @@ JToolBarHelper::cancel('cancelemail');
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" enctype="multipart/form-data">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS'); ?></legend>
+
 		<table class="admintable">
 			<tbody>
 				<tr>
@@ -101,8 +102,11 @@ JToolBarHelper::cancel('cancelemail');
 			</tbody>
 		</table>
 	</fieldset>
+
 	<input type="hidden" name="option" value="com_newsletter" />
 	<input type="hidden" name="controller" value="mailinglist" />
 	<input type="hidden" name="mid" value="<?php echo $this->list->id; ?>" />
 	<input type="hidden" name="task" value="doimportemail" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -40,9 +40,6 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		//set layout
-		$this->view->setLayout('display');
-
 		//instantiate newsletter mailing object
 		$newsletterMailing = new NewsletterMailing( $this->database );
 		$this->view->mailings = $newsletterMailing->getMailingNewsletters();
@@ -62,7 +59,7 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('display')->display();
 	}
 
 
@@ -73,9 +70,6 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 	 */
 	public function trackingTask()
 	{
-		//set layout
-		$this->view->setLayout('tracking');
-
 		//get request vars
 		$ids = JRequest::getVar('id', array());
 		$id = (isset($ids)) ? $ids[0] : null;
@@ -136,7 +130,7 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('tracking')->display();
 	}
 
 	/**
@@ -257,23 +251,25 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 		$id = (isset($ids)) ? $ids[0] : null;
 
 		//instantiate newsletter mailing object
-		$newsletterMailing = new NewsletterMailing( $this->database );
-		$newsletterMailing->load( $id );
+		$newsletterMailing = new NewsletterMailing($this->database);
+		$newsletterMailing->load($id);
 
 		//mark as deleted
 		$newsletterMailing->deleted = 1;
 
 		//save
-		if (!$newsletterMailing->save( $newsletterMailing ))
+		if (!$newsletterMailing->save($newsletterMailing))
 		{
-			$this->setError( $newsletterMailing->getError() );
+			$this->setError($newsletterMailing->getError());
 			$this->displayTask();
 			return;
 		}
 
 		//inform and redirect
-		$this->_message = JText::_('COM_NEWSLETTER_MAILING_STOPPED');
-		$this->_redirect = 'index.php?option=com_newsletter&controller=mailing';
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_newsletter&controller=mailing', false),
+			JText::_('COM_NEWSLETTER_MAILING_STOPPED')
+		);
 	}
 
 
@@ -284,6 +280,8 @@ class NewsletterControllerMailing extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=com_newsletter&controller=mailing';
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_newsletter&controller=mailing', false)
+		);
 	}
 }

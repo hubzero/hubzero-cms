@@ -47,7 +47,7 @@ JToolBarHelper::cancel('cancelemail');
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-50">
 		<fieldset class="adminform">
 			<legend><?php echo $text; ?> Mailing List Email</legend>

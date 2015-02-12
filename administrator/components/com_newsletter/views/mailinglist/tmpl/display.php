@@ -44,7 +44,7 @@ JToolBarHelper::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT');
 JToolBarHelper::spacer();
 JToolBarHelper::preferences($this->option, '550');
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>

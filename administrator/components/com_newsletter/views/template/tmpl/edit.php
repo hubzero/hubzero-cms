@@ -49,7 +49,7 @@ JToolBarHelper::cancel();
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_TEMPLATES') . ': '. $text; ?></span></legend>

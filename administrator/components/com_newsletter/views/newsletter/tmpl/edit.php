@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form" data-formwatcher-message='You are now leaving this page to add stories and your current changes have not been saved. Click "Stay on Page" and then save the newsletter first before proceeding to add stories.'>
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" data-formwatcher-message="<?php echo JText::_('You are now leaving this page to add stories and your current changes have not been saved. Click &quot;Stay on Page&quot; and then save the newsletter first before proceeding to add stories.'); ?>">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_DETAILS'); ?></legend>
@@ -408,4 +408,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="save" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

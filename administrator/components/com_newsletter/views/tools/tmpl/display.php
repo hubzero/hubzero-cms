@@ -45,7 +45,7 @@ JHtml::_('behavior.framework');
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_NEWSLETTER_TOOLS_MOZIFY'); ?></span></legend>
@@ -137,4 +137,6 @@ JHtml::_('behavior.framework');
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="mozify" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

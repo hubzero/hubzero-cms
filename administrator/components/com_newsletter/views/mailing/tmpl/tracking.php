@@ -52,9 +52,10 @@ $this->js()
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_STATISTICS'); ?></legend>
+
 		<table class="adminlist">
 			<tbody>
 				<tr>
@@ -109,13 +110,13 @@ $this->js()
 				<tbody>
 					<?php foreach ($this->opensGeo['country'] as $country => $count) : ?>
 						<tr>
-							<td width="20px">
+							<td>
 								<?php if ($country != 'undetermined') : ?>
-									<img src="/media/system/images/flags/<?php echo strtolower($country); ?>.gif" style="vertical-align:middle;">
+									<img src="<?php echo JURI::base(); ?>/media/system/images/flags/<?php echo strtolower($country); ?>.gif" alt="<?php echo $country; ?>" />
 								<?php endif; ?>
 							</td>
 							<td><?php echo strtoupper($country); ?></td>
-							<td width="40px"><?php echo $count; ?></td>
+							<td><?php echo $count; ?></td>
 						</tr>
 					<?php endforeach; ?>
 				</tbody>
@@ -135,29 +136,26 @@ $this->js()
 			<div id="location-map-container">
 				<div id="us-map"></div>
 				<div id="world-map"></div>
-				<div class="jvectormap-world">World Map</div>
+				<div class="jvectormap-world"><?php echo JText::_('COM_NEWSLETTER_WORLD_MAP'); ?></div>
 			</div>
 		</div>
 	</fieldset>
 
 	<fieldset class="adminform">
 		<legend><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS'); ?></legend>
+
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_URL'); ?></th>
-					<th><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_COUNT'); ?></th>
+					<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_URL'); ?></th>
+					<th scope="col"><?php echo JText::_('COM_NEWSLETTER_NEWSLETTER_MAILING_CLICK_THROUGHS_COUNT'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php if (count($this->clicks) > 0) : ?>
 					<?php foreach ($this->clicks as $url => $count) : ?>
 						<tr>
-							<td>
-								<?php
-									echo '<a target="_blank" href="' . $url . '">' . $url . '</a>';
-								?>
-							</td>
+							<td><?php echo '<a target="_blank" href="' . $url . '">' . $url . '</a>'; ?></td>
 							<td><?php echo number_format($count); ?></td>
 						</tr>
 					<?php endforeach; ?>
@@ -176,4 +174,6 @@ $this->js()
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>

@@ -36,13 +36,10 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 	/**
 	 * Display Newsletter Tools
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		//set layout
-		$this->view->setLayout('display');
-
 		// Set any errors
 		if ($this->getError())
 		{
@@ -55,13 +52,13 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 		$this->view->original = ($this->original) ? $this->original : '';
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('display')->display();
 	}
 
 	/**
 	 * Mozify Image
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function mozifyTask()
 	{
@@ -123,7 +120,7 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 		);
 
 		//instantiate new hubzero image mozify object
-		$hubzeroImageMozify = new \Hubzero\Image\Mozify( $config );
+		$hubzeroImageMozify = new \Hubzero\Image\Mozify($config);
 		if (!$hubzeroImageMozify->getError())
 		{
 			$this->code     = $hubzeroImageMozify->mozify();
@@ -137,7 +134,7 @@ class NewsletterControllerTools extends \Hubzero\Component\AdminController
 			$this->original = $image;
 			$this->setError($hubzeroImageMozify->getError());
 		}
+
 		$this->displayTask();
-		return;
 	}
 }

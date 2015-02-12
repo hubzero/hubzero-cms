@@ -36,15 +36,12 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 	/**
 	 * Display Newsletter Templates Task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		//set layout
-		$this->view->setLayout('display');
-
 		//get the templates
-		$newsletterTemplate = new NewsletterTemplate( $this->database );
+		$newsletterTemplate = new NewsletterTemplate($this->database);
 		$this->view->templates = $newsletterTemplate->getTemplates();
 
 		// Set any errors
@@ -54,20 +51,18 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('display')->display();
 	}
-
 
 	/**
 	 * Add Newsletter Template Task
 	 *
-	 * @return 	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
 		$this->editTask();
 	}
-
 
 	/**
 	 * Edit Newsletter Template Task
@@ -76,19 +71,16 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 	 */
 	public function editTask()
 	{
-		//force edit layout
-		$this->view->setLayout('edit');
-
 		//default object
-		$this->view->template 							= new stdClass;
-		$this->view->template->id 						= null;
-		$this->view->template->editable					= null;
-		$this->view->template->name 					= null;
-		$this->view->template->primary_title_color 		= null;
-		$this->view->template->primary_text_color 		= null;
-		$this->view->template->secondary_title_color 	= null;
-		$this->view->template->secondary_text_color 	= null;
-		$this->view->template->template 				= null;
+		$this->view->template = new stdClass;
+		$this->view->template->id = null;
+		$this->view->template->editable = null;
+		$this->view->template->name = null;
+		$this->view->template->primary_title_color = null;
+		$this->view->template->primary_text_color = null;
+		$this->view->template->secondary_title_color = null;
+		$this->view->template->secondary_text_color = null;
+		$this->view->template->template = null;
 
 		//get request vars
 		$ids = JRequest::getVar("id", array());
@@ -97,8 +89,8 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		//are we editing or adding a new tempalte
 		if ($id)
 		{
-			$newsletterTemplate = new NewsletterTemplate( $this->database );
-			$this->view->template = $newsletterTemplate->getTemplates( $id );
+			$newsletterTemplate = new NewsletterTemplate($this->database);
+			$this->view->template = $newsletterTemplate->getTemplates($id);
 		}
 
 		//check to see if tempalte is editable
@@ -125,7 +117,7 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Output the HTML
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 
@@ -143,22 +135,24 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		$template = JRequest::getVar("template", array(), 'post', 'ARRAY', JREQUEST_ALLOWHTML);
 
 		//instantiate newsletter template object
-		$newsletterTemplate = new NewsletterTemplate( $this->database );
+		$newsletterTemplate = new NewsletterTemplate($this->database);
 
 		//save the story
-		if (!$newsletterTemplate->save( $template ))
+		if (!$newsletterTemplate->save($template))
 		{
 			//send back template object
 			$this->template = $newsletterTemplate;
 
-			$this->setError( $newsletterTemplate->getError() );
+			$this->setError($newsletterTemplate->getError());
 			$this->editTask();
 			return;
 		}
 
 		//inform user of successful save and redirect
-		$this->_message = JText::_('COM_NEWSLETTER_TEMPLATE_SAVED_SUCCESS');
-		$this->_redirect = 'index.php?option=com_newsletter&controller=template';
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_NEWSLETTER_TEMPLATE_SAVED_SUCCESS')
+		);
 	}
 
 
@@ -179,8 +173,8 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				//instantiate template object
-				$newsletterTemplate = new NewsletterTemplate( $this->database );
-				$newsletterTemplate->load( $id );
+				$newsletterTemplate = new NewsletterTemplate($this->database);
+				$newsletterTemplate->load($id);
 
 				//check to make sure this isnt our default templates
 				if ($newsletterTemplate->editable == 0)
@@ -194,7 +188,7 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 				$newsletterTemplate->deleted = 1;
 
 				//save template marking as deleted
-				if (!$newsletterTemplate->save( $newsletterTemplate ))
+				if (!$newsletterTemplate->save($newsletterTemplate))
 				{
 					$this->setError(JText::_('COM_NEWSLETTER_TEMPLATE_DELETE_FAILED'));
 					$this->displayTask();
@@ -203,11 +197,11 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 			}
 		}
 
-		//set success message
-		$this->_message = JText::_('COM_NEWSLETTER_TEMPLATE_DELETE_SUCCESS');
-
 		//redirect back to campaigns list
-		$this->_redirect = 'index.php?option=com_newsletter&controller=template';
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_NEWSLETTER_TEMPLATE_DELETE_SUCCESS')
+		);
 	}
 
 
@@ -226,32 +220,35 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 		if ($id)
 		{
 			//get template we want to duplicate
-			$newsletterTemplate = new NewsletterTemplate( $this->database );
-			$template = $newsletterTemplate->getTemplates( $id );
+			$newsletterTemplate = new NewsletterTemplate($this->database);
+			$template = $newsletterTemplate->getTemplates($id);
 
 			//set var so edit task can use
-			$new_template 							= new stdClass;
-			$new_template->id 						= null;
-			$new_template->name 					= $template->name . ' (copy)';
-			$new_template->editable					= 1;
-			$new_template->primary_title_color 		= $template->primary_title_color;
-			$new_template->primary_text_color 		= $template->primary_text_color;
-			$new_template->secondary_title_color 	= $template->secondary_title_color;
-			$new_template->secondary_text_color 	= $template->secondary_text_color;
-			$new_template->template 				= $template->template;
+			$new_template = new stdClass;
+			$new_template->id = null;
+			$new_template->name = $template->name . ' (copy)';
+			$new_template->editable = 1;
+			$new_template->primary_title_color = $template->primary_title_color;
+			$new_template->primary_text_color = $template->primary_text_color;
+			$new_template->secondary_title_color = $template->secondary_title_color;
+			$new_template->secondary_text_color = $template->secondary_text_color;
+			$new_template->template = $template->template;
 		}
 
 		//save copied template
-		$newsletterTemplate = new NewsletterTemplate( $this->database );
-		if (!$newsletterTemplate->save( $new_template ))
+		$newsletterTemplate = new NewsletterTemplate($this->database);
+		if (!$newsletterTemplate->save($new_template))
 		{
 			$this->setError(JText::_('COM_NEWSLETTER_TEMPLATE_DUPLICATE_FAILED'));
 			$this->displayTask();
 			return;
 		}
+
 		//set success message & redirect
-		$this->_message = JText::_('COM_NEWSLETTER_TEMPLATE_DUPLICATE_SUCCESS');
-		$this->_redirect = 'index.php?option=com_newsletter&controller=template';
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_NEWSLETTER_TEMPLATE_DUPLICATE_SUCCESS')
+		);
 	}
 
 
@@ -260,8 +257,10 @@ class NewsletterControllerTemplate extends \Hubzero\Component\AdminController
 	 *
 	 * @return 	void
 	 */
-	public function cancel()
+	public function cancelTask()
 	{
-		$this->_redirect = 'index.php?option=' . $this->_option . '&controller=' . $this->_controller;
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 }

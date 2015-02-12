@@ -53,15 +53,12 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		// set layout
-		$this->view->setLayout('display');
-
 		// instantiate mailing list object
 		$newsletterMailinglist = new NewsletterMailinglist($this->database);
 		$this->view->lists = $newsletterMailinglist->getLists();
 
 		// diplay list of mailing lists
-		$this->view->display();
+		$this->view->setLayout('display')->display();
 	}
 
 	/**
@@ -81,9 +78,6 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	 */
 	public function editTask()
 	{
-		// force layout
-		$this->view->setLayout('edit');
-
 		// default object
 		$this->view->list = new stdClass;
 		$this->view->list->id          = null;
@@ -111,7 +105,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		}
 
 		// ouput
-		$this->view->display();
+		$this->view->setLayout('edit')->display();
 	}
 
 	/**
@@ -134,7 +128,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		if ($newsletterMailinglist->save($list))
 		{
 			$this->setRedirect(
-				'index.php?option=com_newsletter&controller=mailinglist',
+				JRoute::_('index.php?option=com_newsletter&controller=mailinglist', false),
 				JText::_('COM_NEWSLETTER_MAILINGLIST_SAVE_SUCCESS')
 			);
 		}
@@ -181,7 +175,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 
 		// redirect back to campaigns list
 		$this->setRedirect(
-			'index.php?option=com_newsletter&controller=mailinglist',
+			JRoute::_('index.php?option=com_newsletter&controller=mailinglist', false),
 			JText::_('COM_NEWSLETTER_MAILINGLIST_DELETE_SUCCESS')
 		);
 	}
@@ -194,7 +188,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -205,9 +199,6 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	 */
 	public function manageTask()
 	{
-		//set layout
-		$this->view->setLayout('manage');
-
 		//get request vars
 		$ids = JRequest::getVar('id', array());
 		$id = (isset($ids[0])) ? $ids[0] : null;
@@ -234,7 +225,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		}
 
 		//diplay list of mailing lists
-		$this->view->display();
+		$this->view->setLayout('manage')->display();
 	}
 
 	/**
@@ -244,9 +235,6 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	 */
 	public function addEmailTask()
 	{
-		// set layout
-		$this->view->setLayout('addemail');
-
 		// get request vars
 		$mailinglistId = JRequest::getVar('id', 0);
 		$mailinglistId = (isset($mailinglistId[0])) ? $mailinglistId[0] : null;
@@ -277,7 +265,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		}
 
 		// output
-		$this->view->display();
+		$this->view->setLayout('addemail')->display();
 	}
 
 	/**
@@ -450,7 +438,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 
 		// redirect back to mailing list manage page
 		$this->setRedirect(
-			'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $this->mid
+			JRoute::_('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $this->mid, false)
 		);
 	}
 
@@ -461,11 +449,8 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 	 */
 	public function editEmailTask()
 	{
-		// set layout
-		$this->view->setLayout('editemail');
-
 		// get request vars
-		$id = JRequest::getInt('id', 0);
+		$id  = JRequest::getInt('id', 0);
 		$mid = JRequest::getInt('mid', 0);
 
 		// load mailing list
@@ -489,7 +474,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		}
 
 		// output
-		$this->view->display();
+		$this->view->setLayout('editemail')->display();
 	}
 
 	/**
@@ -509,7 +494,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		if ($newsletterMailinglistEmail->save($email))
 		{
 			$this->setRedirect(
-				'index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $email['mid'],
+				JRoute::_('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $email['mid'], false),
 				JText::_('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_SUCCESS')
 			);
 		}
@@ -561,7 +546,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 
 		// inform and redirect
 		$this->setRedirect(
-			'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $mailinglistId,
+			JRoute::_('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mailinglistId, false),
 			JText::_('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAIL_SUCCESS')
 		);
 	}
@@ -590,7 +575,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		if ($newsletterMailinglistEmail->save($newsletterMailinglistEmail))
 		{
 			$this->setRedirect(
-				'index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mid,
+				JRoute::_('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mid, false),
 				JText::_('COM_NEWSLETTER_MAILINGLIST_SUBSCRIBED_EMAIL_SUCCESS')
 			);
 		}
@@ -626,7 +611,7 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 
 		// inform user and redirect
 		$this->setRedirect(
-			'index.php?option=com_newsletter&controller=mailinglist&task=manage&id[]=' . $mid,
+			JRoute::_('index.php?option=com_newsletter&controller=mailinglist&task=manage&id=' . $mid, false),
 			JText::sprintf('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_SENT', $newsletterMailinglistEmail->email)
 		);
 	}
@@ -679,8 +664,9 @@ class NewsletterControllerMailinglist extends \Hubzero\Component\AdminController
 		$email = JRequest::getVar('email', array(), 'post');
 
 		$mid = ($email['mid']) ? $email['mid'] : JRequest::getInt('mid');
+
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id[]=' . $mid
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=manage&id=' . $mid, false)
 		);
 	}
 

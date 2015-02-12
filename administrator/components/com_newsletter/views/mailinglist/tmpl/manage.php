@@ -50,7 +50,7 @@ JToolBarHelper::cancel();
 	}
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?>:</label>
 		<select name="status">
@@ -68,11 +68,11 @@ JToolBarHelper::cancel();
 				<th><input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->list_emails); ?>);" /></th>
 				<th>
 					<?php if ($this->filters['sort'] == 'email ASC') : ?>
-						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=email DESC">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=email DESC'); ?>">
 							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL') . ' &uarr;'; ?>
 						</a>
 					<?php else : ?>
-						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=email ASC">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=email ASC'); ?>">
 							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL'); ?>
 							<?php echo ($this->filters['sort'] == 'email DESC') ? ' &darr;' : ''; ?>
 						</a>
@@ -82,11 +82,11 @@ JToolBarHelper::cancel();
 				<th><?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
 				<th>
 					<?php if ($this->filters['sort'] == 'date_added ASC') : ?>
-						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=date_added DESC">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=date_added DESC'); ?>">
 							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED') . ' &uarr;'; ?>
 						</a>
 					<?php else : ?>
-						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=date_added ASC">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=date_added ASC'); ?>">
 							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED'); ?>
 							<?php echo ($this->filters['sort'] == 'date_added DESC') ? ' &darr;' : ''; ?>
 						</a>
@@ -94,11 +94,11 @@ JToolBarHelper::cancel();
 				</th>
 				<th>
 					<?php if ($this->filters['sort'] == 'date_confirmed ASC') : ?>
-						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=date_confirmed DESC">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=date_confirmed DESC'); ?>">
 							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED') . ' &uarr;'; ?>
 						</a>
 					<?php else : ?>
-						<a href="index.php?option=com_newsletter&amp;controller=mailinglist&amp;task=manage&amp;id[]=<?php echo $this->list->id; ?>&amp;status=<?php echo $this->filters['status']; ?>&amp;sort=date_confirmed ASC">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=mailinglist&task=manage&id=' . $this->list->id . '&status=' . $this->filters['status'] . '&sort=date_confirmed ASC'); ?>">
 							<?php echo JText::_('COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED'); ?>
 							<?php echo ($this->filters['sort'] == 'date_confirmed DESC') ? ' &darr;' : ''; ?>
 						</a>
@@ -164,9 +164,12 @@ JToolBarHelper::cancel();
 			<?php endif; ?>
 		</tbody>
 	</table>
+
 	<input type="hidden" name="option" value="com_newsletter" />
 	<input type="hidden" name="controller" value="mailinglist" />
 	<input type="hidden" name="task" value="manage" />
 	<input type="hidden" name="id[]" value="<?php echo $this->list->id; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<?php echo JHTML::_('form.token'); ?>
 </form>
