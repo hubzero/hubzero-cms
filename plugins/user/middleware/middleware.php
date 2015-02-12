@@ -70,6 +70,10 @@ class plgUserMiddleware extends JPlugin
 				{
 					$row->bind($quota);
 				}
+				else
+				{
+					$row->user_id = $userId;
+				}
 
 				// If (no quota record OR a record and a quota class [e.g., not custom]) ...
 				if (!$row->id || ($row->id && $row->class_id))
