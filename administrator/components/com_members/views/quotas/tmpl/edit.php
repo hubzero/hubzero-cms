@@ -42,6 +42,8 @@ if ($canDo->get('core.edit'))
 	JToolBarHelper::spacer();
 }
 JToolBarHelper::cancel();
+
+$base = str_replace('/administrator', '', rtrim(JURI::getInstance()->base(true), '/'));
 ?>
 
 <script type="text/javascript">
@@ -91,10 +93,13 @@ JToolBarHelper::cancel();
 			<input type="hidden" name="task" value="save" />
 
 			<?php if (!$this->row->id) : ?>
-				<div class="input-wrap" data-hint="<?php echo JText::_('COM_MEMBERS_QUOTA_USER_HINT'); ?>">
+				<div class="input-wrap">
+					<script type="text/javascript" src="<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.js"></script>
+					<script type="text/javascript">var plgAutocompleterCss = "<?php echo $base; ?>/plugins/hubzero/autocompleter/autocompleter.css";</script>
+
 					<label for="field-user_id"><?php echo JText::_('COM_MEMBERS_QUOTA_USER'); ?>:</label>
-					<input type="text" name="fields[user_id]" id="field-user_id" value="" />
-					<span class="hint"><?php echo JText::_('COM_MEMBERS_QUOTA_USER_HINT'); ?></span>
+					<input type="text" name="fields[user_id]" id="field-user_id" data-options="members,multi," id="acmembers" class="autocomplete" value="" autocomplete="off" data-css="" data-script="<?php echo $base; ?>/administrator/index.php" />
+					<span><?php echo JText::_('COM_MEMBERS_QUOTA_USER_HINT'); ?></span>
 				</div>
 			<?php else : ?>
 				<input type="hidden" name="fields[user_id]" id="field-user_id" value="<?php echo $this->row->user_id; ?>" />
