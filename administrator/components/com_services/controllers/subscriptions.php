@@ -36,16 +36,28 @@ defined('_JEXEC') or die('Restricted access');
  */
 class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 {
+		/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * Subscriptions List
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
 		// Push some styles to the template
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components' . DS . $this->_option . DS . 'admin.' . $this->_name . '.css');
+		$this->css('admin.subscriptions.css');
 
 		// Get configuration
 		$app = JFactory::getApplication();
@@ -96,27 +108,13 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
 		$this->view->display();
-	}
-
-	/**
-	 * Create a new subscription
-	 * Displays the edit form
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
 	}
 
 	/**
@@ -128,13 +126,7 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		if (is_object($row))
-		{
-			$this->view->subscription = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			$id = JRequest::getInt('id', 0);
 
@@ -142,10 +134,12 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 			$this->view->subscription = $row->getSubscription($id);
 		}
 
+		$this->view->subscription = $row;
+
 		if (!$this->view->subscription)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_SERVICES_SUBSCRIPTION_NOT_FOUND')
 			);
 			return;
@@ -161,22 +155,21 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 		$this->view->funds = ($funds > 0) ? $funds : '0';
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save Subscription
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -189,7 +182,7 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 		if (!$subscription->load($id))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_SERVICES_SUBSCRIPTION_NOT_FOUND'),
 				'error'
 			);
@@ -201,48 +194,48 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 		if (!$service->loadService('', $subscription->serviceid))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_SERVICES_SERVICE_NOT_FOUND') . ' ' .  $subscription->serviceid,
 				'error'
 			);
 			return;
 		}
 
-		$author 	= JUser::getInstance($subscription->uid);
+		$author    = JUser::getInstance($subscription->uid);
 		$subscription->notes = rtrim(stripslashes(JRequest::getVar('notes', '')));
-		$action	 	= JRequest::getVar('action', '');
-		$message	= JRequest::getVar('message', '');
-		$statusmsg  = '';
-		$email		= 0;
+		$action    = JRequest::getVar('action', '');
+		$message   = JRequest::getVar('message', '');
+		$statusmsg = '';
+		$email     = 0;
 
 		switch ($action)
 		{
 			case 'refund':
-				$received_refund 				= JRequest::getInt('received_refund', 0);
-				$newunits 		    			= JRequest::getInt('newunits', 0);
-				$pending 						= $subscription->pendingpayment - $received_refund;
-				$pendingunits 					= $subscription->pendingunits - $newunits;
-				$subscription->pendingpayment 	= $pending <= 0 ? 0 : $pending;
-				$subscription->pendingunits  	= $pendingunits <= 0 ? 0 : $pendingunits;
+				$received_refund = JRequest::getInt('received_refund', 0);
+				$newunits = JRequest::getInt('newunits', 0);
+				$pending = $subscription->pendingpayment - $received_refund;
+				$pendingunits = $subscription->pendingunits - $newunits;
+				$subscription->pendingpayment = $pending <= 0 ? 0 : $pending;
+				$subscription->pendingunits = $pendingunits <= 0 ? 0 : $pendingunits;
 				$email = 0;
 				$statusmsg .= JText::_('Refund has been processed.');
 			break;
 
 			case 'activate':
-				$received_payment 				= JRequest::getInt('received_payment', 0);
-				$newunits 		    			= JRequest::getInt('newunits', 0);
-				$pending 						= $subscription->pendingpayment - $received_payment;
-				$pendingunits 					= $subscription->pendingunits - $newunits;
-				$subscription->pendingpayment 	= $pending <= 0 ? 0 : $pending;
-				$subscription->pendingunits  	= $pendingunits <= 0 ? 0 : $pendingunits;
-				$subscription->totalpaid 		= $subscription->totalpaid + $received_payment;
-				$oldunits						= $subscription->units;
+				$received_payment = JRequest::getInt('received_payment', 0);
+				$newunits = JRequest::getInt('newunits', 0);
+				$pending = $subscription->pendingpayment - $received_payment;
+				$pendingunits = $subscription->pendingunits - $newunits;
+				$subscription->pendingpayment = $pending <= 0 ? 0 : $pending;
+				$subscription->pendingunits = $pendingunits <= 0 ? 0 : $pendingunits;
+				$subscription->totalpaid = $subscription->totalpaid + $received_payment;
+				$oldunits = $subscription->units;
 
-				$months 						= $newunits * $service->unitsize;
-				$newexpire 						= ($oldunits > 0  && intval($subscription->expires) <> 0) ? JFactory::getDate(strtotime($subscription->expires . "+" . $months . "months"))->format("Y-m-d") : JFactory::getDate(strtotime("+" . $months . "months"))->format("Y-m-d");
-				$subscription->expires 			= $newunits ? $newexpire : $subscription->expires;
-				$subscription->status 			=  1;
-				$subscription->units 			= $subscription->units + $newunits;
+				$months = $newunits * $service->unitsize;
+				$newexpire = ($oldunits > 0  && intval($subscription->expires) <> 0) ? JFactory::getDate(strtotime($subscription->expires . "+" . $months . "months"))->format("Y-m-d") : JFactory::getDate(strtotime("+" . $months . "months"))->format("Y-m-d");
+				$subscription->expires = $newunits ? $newexpire : $subscription->expires;
+				$subscription->status =  1;
+				$subscription->units = $subscription->units + $newunits;
 
 				$email = ($received_payment > 0 or $newunits > 0)  ? 1 : 0;
 				$statusmsg .= JText::_('COM_SERVICES_SUBSCRIPTION_ACTIVATED');
@@ -283,15 +276,13 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 
 		if (!$subscription->check())
 		{
-			$this->addComponentMessage($subscription->getError(), 'error');
-			$this->view->setLayout('edit');
+			$this->setMessage($subscription->getError(), 'error');
 			$this->editTask($subscription);
 			return;
 		}
 		if (!$subscription->store())
 		{
-			$this->addComponentMessage($subscription->getError(), 'error');
-			$this->view->setLayout('edit');
+			$this->setMessage($subscription->getError(), 'error');
 			$this->editTask($subscription);
 			return;
 		}
@@ -301,9 +292,10 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 			$jconfig = JFactory::getConfig();
 
 			// E-mail "from" info
-			$from = array();
-			$from['email'] = $jconfig->getValue('config.mailfrom');
-			$from['name']  = $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SERVICES_SUBSCRIPTIONS');
+			$from = array(
+				'email' => $jconfig->getValue('config.mailfrom'),
+				'name'  => $jconfig->getValue('config.sitename') . ' ' . JText::_('COM_SERVICES_SUBSCRIPTIONS')
+			);
 
 			// start email message
 			$subject = JText::sprintf('COM_SERVICES_EMAIL_SUBJECT', $subscription->code);
@@ -327,7 +319,7 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_SERVICES_SUBSCRIPTION_SAVED') . ($statusmsg ? ' ' . $statusmsg : '')
 		);
 	}
@@ -335,13 +327,13 @@ class ServicesControllerSubscriptions extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

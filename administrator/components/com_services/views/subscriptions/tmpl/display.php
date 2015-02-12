@@ -49,7 +49,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<?php echo JText::sprintf('COM_SERVICES_TOTAL_SUBSCRIPTIONS', $this->total); ?>.
 		<label for="filter-filterby"><?php echo JText::_('COM_SERVICES_FILTER_BY'); ?>:</label>
@@ -127,10 +127,10 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 	}
 ?>
 			<tr class="<?php echo "row$k"; ?>">
-				<td><a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>"><?php echo $row->id . ' -- ' . $row->code; ?></a></td>
+				<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo JText::_('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>"><?php echo $row->id . ' -- ' . $row->code; ?></a></td>
 				<td><?php echo $status;  ?></td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id; ?>" title="<?php echo JText::_('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo JText::_('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>">
 						<span><?php echo $this->escape($row->category) . ' -- ' . $this->escape($row->title); ?></span>
 					</a>
 				</td>

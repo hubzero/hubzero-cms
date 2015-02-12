@@ -77,7 +77,7 @@ $priceline .= ($this->subscription->pointsprice > 0) ? JText::sprintf('COM_SERVI
 	}
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 
 <?php if (isset($this->subscription->id)) { ?>
 	<div class="col width-60 fltlft">

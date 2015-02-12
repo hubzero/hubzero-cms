@@ -39,28 +39,28 @@ if (!JFactory::getUser()->authorise('core.manage', $option))
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'service.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'subscription.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'service.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'subscription.php');
 
 $controllerName = JRequest::getCmd('controller', 'services');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'services';
 }
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_SERVICES_SERVICES'),
-	'index.php?option=com_services&controller=services',
+	JRoute::_('index.php?option=com_services&controller=services'),
 	$controllerName == 'services'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_SERVICES_SUBSCRIPTIONS'),
-	'index.php?option=com_services&controller=subscriptions',
+	JRoute::_('index.php?option=com_services&controller=subscriptions'),
 	$controllerName == 'subscriptions'
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = 'ServicesController' . ucfirst($controllerName);
 
 // Initiate controller

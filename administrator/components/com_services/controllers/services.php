@@ -37,9 +37,22 @@ defined('_JEXEC') or die('Restricted access');
 class ServicesControllerServices extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Services List
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -47,33 +60,32 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 		$app = JFactory::getApplication();
 
-		$this->view->filters = array();
-
-		// Get paging variables
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			// Get sorting variables
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'category'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		// Get sorting variables
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'category'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 
 		// get all available services
 		$objS = new Service($this->database);
@@ -90,12 +102,9 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -105,7 +114,7 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	/**
 	 * Initial setup of default jobs services
 	 *
-	 * @return     boolean Return description (if any) ...
+	 * @return  boolean
 	 */
 	protected function setupServices()
 	{
@@ -172,17 +181,6 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new subscription
-	 * Displays the edit form
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit an entry
 	 *
 	 * @param   mixed  $row
@@ -192,11 +190,7 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			$id = JRequest::getVar('id', array(0));
 			if (is_array($id))
@@ -205,9 +199,11 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 			}
 
 			// load infor from database
-			$this->view->row = new Service($this->database);
-			$this->view->row->load($id);
+			$row = new Service($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		if ($this->getError())
@@ -216,17 +212,9 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
-	}
-
-	/**
-	 * Save an entry and show the edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -234,7 +222,7 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 	 *
 	 * @return	void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -247,7 +235,7 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 		$row = new Service($this->database);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -255,7 +243,7 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 		// Store content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -263,34 +251,37 @@ class ServicesControllerServices extends \Hubzero\Component\AdminController
 		// Store content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		if ($redirect)
+		$this->setMessage(
+			JText::_('COM_SERVICES_SAVED'),
+			'message'
+		);
+
+		if ($this->_task == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_SERVICES_SAVED'),
-				'message'
-			);
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }
