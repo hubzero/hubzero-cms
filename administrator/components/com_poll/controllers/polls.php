@@ -260,7 +260,7 @@ class Polls extends AdminController
 		if ($poll->isCheckedOut($user->get('id')))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option,
+				JRoute::_('index.php?option=' . $this->_option, false),
 				JText::sprintf('DESCBEINGEDITTED', JText::_('The poll'), $poll->title),
 				'warning'
 			);
@@ -356,13 +356,13 @@ class Polls extends AdminController
 		{
 			case 'apply':
 				$msg  = JText::_('COM_POLL_ITEM_SAVED');
-				$link = 'index.php?option=com_poll&view=poll&task=edit&cid[]=' . $row->id;
+				$link = JRoute::_('index.php?option=com_poll&view=poll&task=edit&cid=' . $row->id, false);
 			break;
 
 			case 'save':
 			default:
 				$msg  = JText::_('COM_POLL_ITEM_SAVED');
-				$link = 'index.php?option=com_poll';
+				$link = JRoute::_('index.php?option=com_poll', false);
 			break;
 		}
 
@@ -396,7 +396,7 @@ class Polls extends AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option,
+			JRoute::_('index.php?option=' . $this->_option, false),
 			$msg
 		);
 	}
@@ -420,7 +420,7 @@ class Polls extends AdminController
 		{
 			$action = $publish ? 'COM_POLL_PUBLISH' : 'COM_POLL_UNPUBLISH';
 			$this->setRedirect(
-				'index.php?option=' . $this->_option,
+				JRoute::_('index.php?option=' . $this->_option, false),
 				JText::sprintf('COM_POLL_SELECT_ITEM_TO', JText::_($action), true),
 				'warning'
 			);
@@ -434,7 +434,7 @@ class Polls extends AdminController
 
 		$query = 'UPDATE `#__polls`'
 			. ' SET published = ' . (int) $publish
-			. ' WHERE id IN ('. $cids . ')'
+			. ' WHERE id IN (' . $cids . ')'
 			. ' AND (checked_out = 0 OR (checked_out = ' . (int) $user->get('id') . '))';
 		$db->setQuery($query);
 		if (!$db->query())
@@ -449,7 +449,7 @@ class Polls extends AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option
+			JRoute::_('index.php?option=' . $this->_option, false)
 		);
 	}
 
@@ -472,7 +472,7 @@ class Polls extends AdminController
 		{
 			$action = $publish ? 'COM_POLL_OPEN' : 'COM_POLL_CLOSE';
 			$this->setRedirect(
-				'index.php?option=' . $this->_option,
+				JRoute::_('index.php?option=' . $this->_option, false),
 				JText::sprintf('COM_POLL_SELECT_ITEM_TO', JText::_($action), true),
 				'warning'
 			);
@@ -501,7 +501,7 @@ class Polls extends AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option
+			JRoute::_('index.php?option=' . $this->_option, false)
 		);
 	}
 
@@ -523,7 +523,7 @@ class Polls extends AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option
+			JRoute::_('index.php?option=' . $this->_option, false)
 		);
 	}
 }
