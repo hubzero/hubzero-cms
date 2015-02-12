@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2012 Purdue University. All rights reserved.
+ * Copyright 2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
- * @copyright Copyright 2012 Purdue University. All rights reserved.
+ * @copyright Copyright 2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,37 +32,43 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Turn querystring parameters into an SEF route
- *
- * @param  array &$query Query string values
- * @return array Segments to build SEF route
+ * Routing class for the component
  */
-function oauthBuildRoute(&$query)
+class OauthRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	return $segments;
-}
-
-/**
- * Parse a SEF route
- *
- * @param  array $segments Exploded route segments
- * @return array
- */
-function oauthParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
+		$segments = array();
+
+		return $segments;
+	}
+
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
+	{
+		$vars = array();
+
+		if (empty($segments))
+		{
+			return $vars;
+		}
+
+		if (isset($segments[0]))
+		{
+			$vars['task'] = $segments[0];
+		}
+
 		return $vars;
 	}
-
-	if (isset($segments[0]))
-	{
-		$vars['task'] = $segments[0];
-	}
-
-	return $vars;
 }

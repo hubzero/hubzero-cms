@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Sam Wilson <samwilson@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,58 +32,67 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Time build route
- *
- * @param  array &$query
- * @return array Return
+ * Routing class for the component
  */
-function TimeBuildRoute(&$query)
+class TimeRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	if (!empty($query['controller'])) {
-		$segments[] = $query['controller'];
-		unset($query['controller']);
-	}
-	if (!empty($query['task'])) {
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-	if (!empty($query['id'])) {
-		$segments[] = $query['id'];
-		unset($query['id']);
-	}
-
-	return $segments;
-}
-
-/**
- * Time parse route
- *
- * @param  array $segments
- * @return array Return
- */
-function TimeParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
+		$segments = array();
+
+		if (!empty($query['controller']))
+		{
+			$segments[] = $query['controller'];
+			unset($query['controller']);
+		}
+		if (!empty($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+		if (!empty($query['id']))
+		{
+			$segments[] = $query['id'];
+			unset($query['id']);
+		}
+
+		return $segments;
+	}
+
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
+	{
+		$vars = array();
+
+		if (empty($segments))
+		{
+			return $vars;
+		}
+
+		if (isset($segments[0]))
+		{
+			$vars['controller'] = $segments[0];
+		}
+		if (isset($segments[1]))
+		{
+			$vars['task'] = $segments[1];
+		}
+		if (isset($segments[2]))
+		{
+			$vars['id'] = $segments[2];
+		}
+
 		return $vars;
 	}
-
-	if (isset($segments[0]))
-	{
-		$vars['controller'] = $segments[0];
-	}
-	if (isset($segments[1]))
-	{
-		$vars['task'] = $segments[1];
-	}
-	if (isset($segments[2]))
-	{
-		$vars['id'] = $segments[2];
-	}
-
-	return $vars;
 }
