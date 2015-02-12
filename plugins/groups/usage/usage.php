@@ -509,7 +509,7 @@ class plgGroupsUsage extends \Hubzero\Plugin\Plugin
 
 		$gb = new BlogTableEntry($database);
 
-		$total = $gb->getCount($filters);
+		$total = $gb->find('count', $filters);
 
 		return $total;
 	}
