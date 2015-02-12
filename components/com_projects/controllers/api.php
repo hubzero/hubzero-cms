@@ -53,6 +53,9 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		$this->_database = JFactory::getDBO();
 		$this->_action   = $this->segments[1] ? $this->segments[1] : 'list';
 
+		// Get the user id
+		$this->user_id = JFactory::getApplication()->getAuthn('user_id');
+
 		// Switch based on entity type and action
 		switch($this->segments[0])
 		{
@@ -66,7 +69,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 						$this->_manageFiles();
 						break;
 					default:
-						$this->_not_found();
+						return $this->_errorMessage(404, JText::_('Method unavailable'));
 						break;
 				}
 			break;
@@ -77,14 +80,117 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 			break;
 
 			default:
-				$this->_not_found();
+				$this->serviceTask();
 			break;
 		}
 	}
 
-	//--------------------------
-	// Projects functions
-	//--------------------------
+	/**
+	 * Displays a available options and parameters the API
+	 * for this component offers.
+	 *
+	 * @return  void
+	 */
+	private function serviceTask()
+	{
+		$response = new stdClass();
+		$response->component = 'projects';
+		$response->tasks = array(
+			'list' => array(
+				'description' => JText::_('Get a list of projects user is a member of'),
+				'parameters'  => array(
+					'sortby' => array(
+						'description' => JText::_('Field to sort results by.'),
+						'type'        => 'string',
+						'default'     => 'created',
+						'accepts'     => array('created', 'title', 'alias', 'id', 'publish_up', 'publish_down', 'state')
+					),
+					'sortdir' => array(
+						'description' => JText::_('Direction to sort results by.'),
+						'type'        => 'string',
+						'default'     => 'desc',
+						'accepts'     => array('asc', 'desc')
+					),
+					'limit' => array(
+						'description' => JText::_('Number of result to return.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+					'limitstart' => array(
+						'description' => JText::_('Number of where to start returning results.'),
+						'type'        => 'integer',
+						'default'     => '0'
+					),
+					'verbose' => array(
+						'description' => JText::_('Receive verbose output for project status, team member role and privacy.'),
+						'type'        => 'integer',
+						'default'     => '0',
+						'accepts'     => array('0', '1')
+					),
+				),
+			),
+			'files' => array(
+				'list' => array(
+					'description' => JText::_('Get a list of project files'),
+					'parameters'  => array(
+						'project_id' => array(
+							'description' => JText::_('Project alias or numeric id.'),
+							'type'        => 'string',
+							'default'     => '0',
+							'required'    => 'true'
+						),
+					),
+					'subdir' => array(
+						'description' => JText::_('Directory path within project repo, if not included in the asset file path.'),
+						'type'        => 'string'
+					),
+				),
+				'get' => array(
+					'description' => JText::_('Get project file metadata.'),
+					'parameters'  => array(
+						'project_id' => array(
+							'description' => JText::_('Project alias or numeric id.'),
+							'type'        => 'string',
+							'default'     => '0',
+							'required'    => 'true'
+						),
+						'asset' => array(
+							'description' => JText::_('Array of file paths.'),
+							'type'        => 'array',
+							'required'    => 'true'
+						),
+						'subdir' => array(
+							'description' => JText::_('Directory path within project repo, if not included in the asset file path.'),
+							'type'        => 'string'
+						),
+					),
+				),
+				'insert' => array(
+					'description' => JText::_('Insert a file into project.'),
+					'parameters'  => array(
+						'project_id' => array(
+							'description' => JText::_('Project alias or numeric id.'),
+							'type'        => 'string',
+							'default'     => '0',
+							'required'    => 'true'
+						),
+						'data_path' => array(
+							'description' => JText::_('Path to local or remote file.'),
+							'type'        => 'string',
+							'required'    => 'true'
+						),
+					),
+					'subdir' => array(
+						'description' => JText::_('Directory path within project repo to insert file into.'),
+						'type'        => 'string'
+					),
+				),
+			),
+		);
+
+		$this->setMessageType(JRequest::getWord('format', 'json'));
+		$this->setMessage($response);
+	}
 
 	/**
 	 * List projects user has access to
@@ -93,35 +199,43 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function _projectList()
 	{
-		//get the userid and attempt to load user profile
-		$userid = JFactory::getApplication()->getAuthn('user_id');
-
-		$result = \Hubzero\User\Profile::getInstance($userid);
+		// get the userid and attempt to load user profile
+		$user = \Hubzero\User\Profile::getInstance($this->user_id);
 
 		// make sure we have a user
-		if ($result === false)	return $this->_not_found('User not found');
+		if ($user === false)
+		{
+			return $this->_errorMessage(404, JText::_('User not found'));
+		}
 
-		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
+		include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components'
+			. DS . 'com_projects' . DS . 'tables' . DS . 'project.php');
 		$objP = new Project($this->_database);
 
 		// Set filters
-		$filters = array();
-		$filters['mine']     = 1;
-		$filters['updates']  = 1;
-		$filters['sortby']   = JRequest::getVar('sortby', 'title');
-		$filters['getowner'] = 1;
-		$filters['sortdir']  = JRequest::getVar('sortdir', 'ASC');
+		$filters = array(
+			'limit'      => JRequest::getInt('limit', 0),
+			'start'      => JRequest::getInt('limitstart', 0),
+			'sortby'     => JRequest::getWord('sortby', 'title'),
+			'sortdir'    => strtoupper(JRequest::getWord('sortdir', 'ASC')),
+			'getowner'   => 1,
+			'updates'    => 1,
+			'mine'       => 1
+		);
 
-		$setup_complete = $this->_config->get('confirm_step', 0) ? 3 : 2;
+		// Incoming
+		$verbose = JRequest::getInt('verbose', 0);
+
+		$setupComplete = $this->_config->get('confirm_step', 0) ? 3 : 2;
 
 		$response 			= new stdClass;
 		$response->projects = array();
-		$response->total 	= $objP->getCount($filters, $admin = false, $userid, 0, $setup_complete);
+		$response->total 	= $objP->getCount($filters, $admin = false, $this->user_id, 0, $setupComplete);
 		$response->success 	= true;
 
 		if ($response->total)
 		{
-			$projects = $objP->getRecords($filters, $admin = false, $userid, 0, $setup_complete);
+			$projects = $objP->getRecords($filters, $admin = false, $this->user_id, 0, $setupComplete);
 
 			$juri = JURI::getInstance();
 			$jconfig 	= JFactory::getConfig();
@@ -132,12 +246,6 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 				: trim(preg_replace('/\/administrator/', '', $juri->base()), DS);
 			$livesite = trim(preg_replace('/\/api/', '', $juri->base()), DS);
 
-			$webdir = JPATH_ROOT . DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
-			$weburl = $livesite . DS . trim($this->_config->get('imagepath', '/site/projects'), DS);
-
-			include_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS . 'helpers' . DS . 'imghandler.php' );
-			$ih = new ProjectsImgHandler();
-
 			foreach ($projects as $i => $entry)
 			{
 				$obj 			= new stdClass;
@@ -145,22 +253,60 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 				$obj->alias     = $entry->alias;
 				$obj->title     = $entry->title;
 				$obj->state     = $entry->state;
+				$obj->inSetup   = ($entry->setup_stage < $setupComplete) ? 1 : 0;
 				$obj->author 	= $entry->authorname;
 				$obj->created 	= $entry->created;
 				$obj->userRole 	= $entry->role;
+				$obj->thumbUrl 	= $livesite . DS . 'projects' . DS . $obj->alias . DS . 'thumb';
+				$obj->privacy   = $entry->private;
+				$obj->provisioned = $entry->provisioned;
+				$obj->groupOwnerId = $entry->owned_by_group;
+				$obj->userOwnerId = $entry->owned_by_user;
 
-				$path = $webdir . DS . strtolower($entry->alias) . DS . 'images';
-				$url  = $weburl . DS . strtolower($entry->alias) . DS . 'images';
+				// Explain what status/role means
+				if ($verbose)
+				{
+					// Project status
+					switch ($entry->state)
+					{
+						case 0:
+							$obj->state = ($entry->setup_stage < $setupComplete) ? JText::_('setup') : JText::_('suspended');
+							break;
 
-				// Get thumbnail
-				if ($entry->picture)
-				{
-					$thumb = is_file($path . DS . 'thumb.png') ? 'thumb.png' : $ih->createThumbName($entry->picture);
-					$obj->thumb = is_file($path . DS . $thumb) ? $url . DS . $thumb : NULL;
-				}
-				else
-				{
-					$obj->thumb = $livesite . DS . $this->_config->get('defaultpic');
+						case 1:
+						default:
+							$obj->state = JText::_('active');
+							break;
+
+						case 2:
+							$obj->state = JText::_('deleted');
+							break;
+
+						case 5:
+							$obj->state = JText::_('pending approval');
+							break;
+					}
+
+					// Privacy
+					$obj->privacy = $obj->privacy == 1 ? JText::_('private') : JText::_('public');
+
+					// Team role
+					switch ($entry->role)
+					{
+						case 0:
+						default:
+							$obj->userRole = JText::_('collaborator');
+							break;
+						case 1:
+							$obj->userRole = JText::_('manager');
+							break;
+						case 2:
+							$obj->userRole = JText::_('author');
+							break;
+						case 3:
+							$obj->userRole = JText::_('reviewer');
+							break;
+					}
 				}
 
 				$response->projects[] = $obj;
@@ -172,10 +318,6 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		return;
 	}
 
-	//--------------------------
-	// Files functions
-	//--------------------------
-
 	/**
 	 * Manage project files
 	 *
@@ -183,8 +325,43 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function _manageFiles()
 	{
-		// Require authorization
+		// get the userid and attempt to load user profile
+		$user = \Hubzero\User\Profile::getInstance($this->user_id);
+
+		// make sure we have a user
+		if ($user === false)
+		{
+			return $this->_errorMessage(404, JText::_('User not found'));
+		}
+
+		// Authorization for project team
 		$authorized = $this->_authorize();
+
+		// Missing required param
+		if (!$this->project_id)
+		{
+			// Set the error message
+			$this->_errorMessage(
+				404,
+				JText::_('Missing required parameter: project_id.'),
+				JRequest::getWord('format', 'json')
+			);
+			return;
+		}
+
+		// Project did not load?
+		if (!$this->project)
+		{
+			// Set the error message
+			$this->_errorMessage(
+				404,
+				JText::_('Project not found.'),
+				JRequest::getWord('format', 'json')
+			);
+			return;
+		}
+
+		// Unauthorized
 		if (!$authorized['manage'])
 		{
 			// Set the error message
@@ -215,7 +392,7 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		$response->action 	= $this->_action;
 		$response->project 	= $this->project_id;
 
-		$output = empty($output) ? NULL : $output[0];
+		$output = empty($output) ? NULL : json_decode($output[0], TRUE);
 
 		if (!$output || (isset($output['error']) && $output['error'] == true))
 		{
@@ -226,32 +403,12 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 		{
 			$response->success 	= true;
 			$response->error 	= NULL;
-			$response->items 	= isset($output['output']) ? $output['output'] : NULL;
+			$response->items 	= isset($output['results']) ? $output['results'] : NULL;
 			$response->message 	= isset($output['message']) ? $output['message'] : NULL;
 		}
 
 		$this->setMessage($response);
 
-		return;
-	}
-
-	//--------------------------
-	// Miscelaneous methods
-	//--------------------------
-
-	/**
-	 * Default method - not found
-	 *
-	 * @return 404, method not found error
-	 */
-	private function _not_found($text = 'Invalid task')
-	{
-		// Set the error message
-		$this->_errorMessage(
-			404,
-			$text,
-			JRequest::getWord('format', 'json')
-		);
 		return;
 	}
 
@@ -262,18 +419,16 @@ class ProjectsControllerApi extends \Hubzero\Component\ApiController
 	 */
 	private function _authorize()
 	{
-		// Get the user id
-		$this->user_id = JFactory::getApplication()->getAuthn('user_id');
-
 		// Get the project id
-		$this->project_id     = JRequest::getVar('project_id', 0);
+		$this->project_id     = JRequest::getWord('project_id', 0);
+		$this->project 		  = NULL;
 
 		$authorized           = array();
 		$authorized['view']   = false;
 		$authorized['manage'] = false;
 
-		// Not logged in and/or not using OAuth OR no project ID
-		if (!is_numeric($this->user_id) || !$this->project_id)
+		// Not logged in and/or not using OAuth
+		if (!is_numeric($this->user_id))
 		{
 			return $authorized;
 		}
