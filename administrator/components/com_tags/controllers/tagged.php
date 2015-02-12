@@ -37,6 +37,19 @@ defined('_JEXEC') or die('Restricted access');
 class TagsControllerTagged extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * List all tagged objects
 	 *
 	 * @return  void
@@ -117,16 +130,6 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Add a new entry
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit an entry
 	 *
 	 * @param   object  $row
@@ -137,11 +140,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 
 		// Load a tag object if one doesn't already exist
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -150,8 +149,10 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 				$id = $id[0];
 			}
 
-			$this->view->row = new TagsModelObject(intval($id));
+			$row = new TagsModelObject(intval($id));
 		}
+
+		$this->view->row = $row;
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -166,22 +167,11 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save an entry and return to the edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save an entry
 	 *
-	 * @param   boolean  $redirect  Redirect after saving? (defaults to 1 = yes)
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -191,7 +181,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		$row = new TagsModelObject();
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -199,7 +189,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -207,22 +197,22 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		// Store content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
+		$this->setMessage(JText::_('COM_TAGS_OBJECT_SAVED'));
+
 		// Redirect to main listing
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_TAGS_OBJECT_SAVED')
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
@@ -242,7 +232,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
@@ -258,7 +248,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_TAGS_OBJECT_REMOVED')
 		);
 	}
@@ -272,7 +262,7 @@ class TagsControllerTagged extends \Hubzero\Component\AdminController
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

@@ -46,19 +46,14 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	/**
 	 * Show a form for looking up a tag's relationships
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$tag = JRequest::getVar('tag', null);
@@ -69,36 +64,35 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Show a form for managing focus areas
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function metaTask()
 	{
-		$this->view->setLayout('meta');
-
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('meta')
+			->display();
 	}
 
 	/**
 	 * Implicit relationship lookup
 	 * Generates data in JSON format
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function implicitTask()
 	{
@@ -118,9 +112,9 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 		if (!$rv['new'])
 		{
 			$this->database->setQuery(
-				'SELECT t.id, t.tag, t.raw_tag, count(t.id) AS count FROM #__tags_object to1
-				LEFT JOIN #__tags_object to2 ON to2.tbl = to1.tbl AND to2.objectid = to1.objectid
-				INNER JOIN #__tags t ON t.id = to2.tagid
+				'SELECT t.id, t.tag, t.raw_tag, count(t.id) AS count FROM `#__tags_object` to1
+				LEFT JOIN `#__tags_object` to2 ON to2.tbl = to1.tbl AND to2.objectid = to1.objectid
+				INNER JOIN `#__tags` t ON t.id = to2.tagid
 				WHERE to1.tagid = ' . $rv['id'] . ' AND t.id != ' . $rv['id'] . ' AND to1.label IS NULL
 				GROUP BY t.id, t.tag, t.raw_tag
 				ORDER BY count DESC
@@ -154,9 +148,9 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			foreach ($follow as $idx=>$tag_id)
 			{
 				$this->database->setQuery(
-					'SELECT t.id, t.tag, t.raw_tag, count(t.id) AS count FROM #__tags_object to1
-					LEFT JOIN #__tags_object to2 ON to2.tbl = to1.tbl AND to2.objectid = to1.objectid
-					INNER JOIN #__tags t ON t.id = to2.tagid
+					'SELECT t.id, t.tag, t.raw_tag, count(t.id) AS count FROM `#__tags_object` to1
+					LEFT JOIN `#__tags_object` to2 ON to2.tbl = to1.tbl AND to2.objectid = to1.objectid
+					INNER JOIN `#__tags` t ON t.id = to2.tagid
 					WHERE to1.tagid = ' . $tag_id . ' AND t.id != ' . $tag_id . ' AND to1.label IS NULL
 					GROUP BY t.id, t.tag, t.raw_tag
 					ORDER BY count DESC
@@ -203,11 +197,12 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	 * Hierarchical relationship lookup
 	 * Generates data in JSON format
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function hierarchyTask()
 	{
 		static $DEPTH = 7;
+
 		$tag = isset($_GET['tag']) ? $_GET['tag'] : 0;
 
 		$links = array();
@@ -234,12 +229,12 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			foreach ($byDepth[$depth] as $tag)
 			{
 				$parents = 'SELECT DISTINCT t.id, t.tag, t.raw_tag, to1.label, \'in\' AS direction
-					FROM #__tags_object to1
-					INNER JOIN #__tags t ON t.id = to1.tagid
+					FROM `#__tags_object` to1
+					INNER JOIN `#__tags` t ON t.id = to1.tagid
 					WHERE to1.label IN (\'parent\', \'label\') AND to1.tbl = \'tags\' AND to1.objectid = ' . $tag['id'];
 				$children = 'SELECT DISTINCT t.id, t.tag, t.raw_tag, to1.label, \'out\' AS direction
-					FROM #__tags_object to1
-					INNER JOIN #__tags t ON t.id = to1.objectid
+					FROM `#__tags_object` to1
+					INNER JOIN `#__tags` t ON t.id = to1.objectid
 					WHERE to1.label IN (\'parent\', \'label\') AND to1.tbl = \'tags\' AND to1.tagid = ' . $tag['id'];
 
 				$this->database->setQuery(
@@ -295,7 +290,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	 * Tag suggester for autocompletion
 	 * Generates data in JSON format
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function suggestTask()
 	{
@@ -333,13 +328,13 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	/**
 	 * Update a tag's relationships
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateTask()
 	{
 		if (isset($_POST['tag']) && ($tid = (int)$_POST['tag']))
 		{
-			$this->database->setQuery('UPDATE #__tags SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
+			$this->database->setQuery('UPDATE `#__tags` SET description = ' . $this->database->quote($_POST['description']) . ' WHERE id = ' . $tid);
 			$this->database->execute();
 			$tag = $this->get_tag($tid);
 			$preload = $tag['raw_tag'];
@@ -347,20 +342,20 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			// reconcile post data with what we already know about a tag's relationships
 			foreach (array(
 				'labels'   => array(
-					'INSERT INTO #__tags_object(tbl, label, tagid, objectid) VALUES (\'tags\', \'label\', %d, %d)',
-					'DELETE FROM #__tags_object WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d'
+					'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'label\', %d, %d)',
+					'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND tagid = %d AND objectid = %d'
 				),
 				'labeled'  => array(
-					'INSERT INTO #__tags_object(tbl, label, objectid, tagid) VALUES (\'tags\', \'label\', %d, %d)',
-					'DELETE FROM #__tags_object WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d'
+					'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'label\', %d, %d)',
+					'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'label\' AND objectid = %d AND tagid = %d'
 				),
 				'parents'  => array(
-					'INSERT INTO #__tags_object(tbl, label, objectid, tagid) VALUES (\'tags\', \'parent\', %d, %d)',
-					'DELETE FROM #__tags_object WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d'
+					'INSERT INTO `#__tags_object` (tbl, label, objectid, tagid) VALUES (\'tags\', \'parent\', %d, %d)',
+					'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND objectid = %d AND tagid = %d'
 				),
 				'children' => array(
-					'INSERT INTO #__tags_object(tbl, label, tagid, objectid) VALUES (\'tags\', \'parent\', %d, %d)',
-					'DELETE FROM #__tags_object WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d'
+					'INSERT INTO `#__tags_object` (tbl, label, tagid, objectid) VALUES (\'tags\', \'parent\', %d, %d)',
+					'DELETE FROM `#__tags_object` WHERE tbl = \'tags\' AND label = \'parent\' AND tagid = %d AND objectid = %d'
 				)) as $type => $sql)
 			{
 				$ex = array_flip(array_map($normalize, $tag[$type]));
@@ -413,22 +408,22 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 				{
 					if (!isset($_POST['merge_tag']))
 					{
-						JError::raiseError(404, 'Merge target not found');
+						throw new Exception('Merge target not found', 404);
 					}
-					$this->database->setQuery('SELECT id FROM #__tags WHERE tag = \'' . preg_replace('/[^a-zA-Z0-9]/', '', strtolower(trim($_POST['merge_tag']))) . '\'');
+					$this->database->setQuery('SELECT id FROM `#__tags` WHERE tag = \'' . preg_replace('/[^a-zA-Z0-9]/', '', strtolower(trim($_POST['merge_tag']))) . '\'');
 					if (!($merge_id = $this->database->loadResult()))
 					{
-						JError::raiseError(404, 'Merge target not found');
+						throw new Exception('Merge target not found', 404);
 					}
-					$this->database->setQuery('UPDATE #__tags_object SET tagid = ' . $merge_id . ' WHERE tagid = ' . $tid);
+					$this->database->setQuery('UPDATE `#__tags_object` SET tagid = ' . $merge_id . ' WHERE tagid = ' . $tid);
 					$this->database->execute();
 				}
 				else
 				{
-					$this->database->setQuery('DELETE FROM #__tags_object WHERE tagid = ' . $tid);
+					$this->database->setQuery('DELETE FROM `#__tags_object` WHERE tagid = ' . $tid);
 					$this->database->execute();
 				}
-				$this->database->setQuery('DELETE FROM #__tags WHERE id = ' . $tid);
+				$this->database->setQuery('DELETE FROM `#__tags` WHERE id = ' . $tid);
 				$this->database->execute();
 			}
 			else
@@ -443,11 +438,11 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	/**
 	 * Update focus areas
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updatefocusareasTask()
 	{
-		$this->database->setQuery('SELECT id, tag_id, mandatory_depth, multiple_depth FROM #__focus_areas');
+		$this->database->setQuery('SELECT id, tag_id, mandatory_depth, multiple_depth FROM `#__focus_areas`');
 
 		$existing = $this->database->loadAssocList('id');
 
@@ -474,7 +469,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			$this->database->execute();
 			foreach ($_POST['types-'.$id] as $type_id)
 			{
-				$this->database->setQuery('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+				$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
 				$this->database->execute();
 			}
 		}
@@ -496,7 +491,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 			$id = $this->database->insertid();
 			foreach ($_POST['types-new-' . $idx] as $type_id)
 			{
-				$this->database->setQuery('INSERT INTO #__focus_area_resource_type_rel(focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
+				$this->database->setQuery('INSERT INTO `#__focus_area_resource_type_rel` (focus_area_id, resource_type_id) VALUES (' . $id . ', ' . ((int)$type_id) . ')');
 				$this->database->execute();
 			}
 		}
@@ -507,27 +502,27 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
 	/**
 	 * Get data for a tag
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function get_tag($tag_str, $detailed = true)
 	{
 		$this->database->setQuery(
 			is_int($tag_str)
-				? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM #__tags t LEFT JOIN #__tags_object to1 ON to1.tagid = t.id WHERE t.id = ' . $tag_str . ' GROUP BY t.id, tag, raw_tag, description'
-				: 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM #__tags t LEFT JOIN #__tags_object to1 ON to1.tagid = t.id WHERE tag = ' . $this->database->quote($tag_str) . ' OR raw_tag = ' . $this->database->quote($tag_str) . ' GROUP BY t.id, tag, raw_tag, description'
+				? 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE t.id = ' . $tag_str . ' GROUP BY t.id, tag, raw_tag, description'
+				: 'SELECT DISTINCT t.id, tag, raw_tag, description, COUNT(to1.id) AS count FROM `#__tags` t LEFT JOIN `#__tags_object` to1 ON to1.tagid = t.id WHERE tag = ' . $this->database->quote($tag_str) . ' OR raw_tag = ' . $this->database->quote($tag_str) . ' GROUP BY t.id, tag, raw_tag, description'
 		);
 		if (($tag = $this->database->loadAssoc()))
 		{
@@ -546,32 +541,32 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 
 			$this->database->setQuery(
 				'SELECT DISTINCT t.raw_tag
-				FROM #__tags_object to1
-				INNER JOIN #__tags t ON t.id = to1.tagid
+				FROM `#__tags_object` to1
+				INNER JOIN `#__tags` t ON t.id = to1.tagid
 				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.objectid = ' . $tag['id']
 			);
 			$rv['labeled'] = $this->database->loadResultArray();
 
 			$this->database->setQuery(
 				'SELECT DISTINCT t.raw_tag
-				FROM #__tags_object to1
-				INNER JOIN #__tags t ON t.id = to1.objectid
+				FROM `#__tags_object` to1
+				INNER JOIN `#__tags` t ON t.id = to1.objectid
 				WHERE to1.tbl = \'tags\' AND to1.label = \'label\' AND to1.tagid = ' . $tag['id']
 			);
 			$rv['labels'] = $this->database->loadResultArray();
 
 			$this->database->setQuery(
 				'SELECT DISTINCT t.raw_tag
-				FROM #__tags_object to1
-				INNER JOIN #__tags t ON t.id = to1.tagid
+				FROM `#__tags_object` to1
+				INNER JOIN `#__tags` t ON t.id = to1.tagid
 				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.objectid = ' . $tag['id']
 			);
 			$rv['parents'] = $this->database->loadResultArray();
 
 			$this->database->setQuery(
 				'SELECT DISTINCT t.raw_tag
-				FROM #__tags_object to1
-				INNER JOIN #__tags t ON t.id = to1.objectid
+				FROM `#__tags_object` to1
+				INNER JOIN `#__tags` t ON t.id = to1.objectid
 				WHERE to1.tbl = \'tags\' AND to1.label = \'parent\' AND to1.tagid = ' . $tag['id']
 			);
 			$rv['children'] = $this->database->loadResultArray();
@@ -581,7 +576,7 @@ class TagsControllerRelationships extends \Hubzero\Component\AdminController
 		}
 
 		$norm_tag = preg_replace('/[^a-zA-Z0-9]/', '', strtolower($tag_str));
-		$this->database->setQuery('INSERT INTO #__tags(tag, raw_tag) VALUES(\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
+		$this->database->setQuery('INSERT INTO `#__tags` (tag, raw_tag) VALUES (\'' . $norm_tag . '\', ' . $this->database->quote($tag_str) . ')');
 		$this->database->execute();
 		$id = $this->database->insertid();
 

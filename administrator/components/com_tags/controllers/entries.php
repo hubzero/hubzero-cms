@@ -37,6 +37,19 @@ defined('_JEXEC') or die('Restricted access');
 class TagsControllerEntries extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * List all tags
 	 *
 	 * @return     void
@@ -48,39 +61,40 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			'by' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.by',
+				'filterby',
+				'all'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'raw_tag'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['search'] = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		)));
-		$this->view->filters['by']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.by',
-			'filterby',
-			'all'
-		));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'raw_tag'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
@@ -103,12 +117,9 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -116,31 +127,17 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Add a new entry
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit an entry
 	 *
-	 * @param      object $tag Tag being edited
-	 * @return     void
+	 * @param   object  $tag  Tag being edited
+	 * @return  void
 	 */
 	public function editTask($tag=NULL)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
 		// Load a tag object if one doesn't already exist
-		if (is_object($tag))
-		{
-			$this->view->tag = $tag;
-		}
-		else
+		if (!is_object($tag))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -149,52 +146,42 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				$id = $id[0];
 			}
 
-			$this->view->tag = new TagsModelTag(intval($id));
+			$tag = new TagsModelTag(intval($id));
 		}
 
+		$this->view->tag = $tag;
+
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
-	}
-
-	/**
-	 * Save an entry and return to the edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @param      integer $redirect Redirect after saving? (defaults to 1 = yes)
-	 * @return     void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -204,38 +191,36 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		$row = new TagsModelTag(intval($fields['id']));
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
+		$row->set('admin', 0);
 		if (isset($fields['admin']) && $fields['admin'])
 		{
 			$row->set('admin', 1);
-		}
-		else
-		{
-			$row->set('admin', 0);
 		}
 
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
+		$this->setMessage(JText::_('COM_TAGS_TAG_SAVED'));
+
 		// Redirect to main listing
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_TAGS_TAG_SAVED')
-			);
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
@@ -255,7 +240,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_TAGS_ERROR_NO_ITEMS_SELECTED'),
 				'error'
 			);
@@ -281,7 +266,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		$this->cleancacheTask(false);
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_TAGS_TAG_REMOVED')
 		);
 	}
@@ -310,7 +295,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -333,7 +318,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		&& (!$ids || count($ids) < 1))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -437,7 +422,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				}
 
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					JText::_('COM_TAGS_TAGS_MERGED')
 				);
 			break;
@@ -463,7 +448,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 		 && (!$ids || count($ids) < 1))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -555,7 +540,7 @@ class TagsControllerEntries extends \Hubzero\Component\AdminController
 				}
 
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					JText::_('COM_TAGS_TAGS_COPIED')
 				);
 			break;

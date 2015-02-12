@@ -50,17 +50,17 @@ $task = JRequest::getCmd('task', '');
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_TAGS'),
-	'index.php?option=com_tags',
+	JRoute::_('index.php?option=com_tags'),
 	($controllerName == 'entries')
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_TAGS_RELATIONSHIPS'),
-	'index.php?option=com_tags&controller=relationships',
+	JRoute::_('index.php?option=com_tags&controller=relationships'),
 	($controllerName == 'relationships' && $task != 'meta' && $task != 'updatefocusareas')
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_TAGS_FOCUS_AREAS'),
-	'index.php?option=com_tags&controller=relationships&task=meta',
+	JRoute::_('index.php?option=com_tags&controller=relationships&task=meta'),
 	($controllerName == 'relationships' && ($task == 'meta' || $task == 'updatefocusareas'))
 );
 require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
@@ -69,7 +69,7 @@ if ($canDo->get('core.manage'))
 {
 	JSubMenuHelper::addEntry(
 		JText::_('COM_TAGS_PLUGINS'),
-		'index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags'
+		JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=tags&filter_type=tags')
 	);
 }
 

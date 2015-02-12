@@ -54,7 +54,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
 	<p class="warning"><?php echo JText::_('COM_TAGS_PIERCED_EXPLANATION'); ?></p>
 
 	<div class="col width-50 fltlft">
