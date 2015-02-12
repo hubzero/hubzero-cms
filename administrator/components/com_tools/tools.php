@@ -51,30 +51,30 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_TOOLS_PIPELINE'),
-	'index.php?option=com_tools&controller=pipeline',
+	JRoute::_('index.php?option=com_tools&controller=pipeline'),
 	$controllerName == 'pipeline'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_TOOLS_HOSTS'),
-	'index.php?option=com_tools&controller=hosts',
+	JRoute::_('index.php?option=com_tools&controller=hosts'),
 	$controllerName == 'hosts'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_TOOLS_HOST_TYPES'),
-	'index.php?option=com_tools&controller=hosttypes',
+	JRoute::_('index.php?option=com_tools&controller=hosttypes'),
 	$controllerName == 'hosttypes'
 );
 if (JComponentHelper::getParams('com_tools')->get('zones'))
 {
 	JSubMenuHelper::addEntry(
 		JText::_('COM_TOOLS_ZONES'),
-		'index.php?option=com_tools&controller=zones',
+		JRoute::_('index.php?option=com_tools&controller=zones'),
 		$controllerName == 'zones'
 	);
 }
 JSubMenuHelper::addEntry(
 	JText::_('COM_TOOLS_SESSIONS'),
-	'index.php?option=com_tools&controller=sessions',
+	JRoute::_('index.php?option=com_tools&controller=sessions'),
 	$controllerName == 'sessions'
 );
 

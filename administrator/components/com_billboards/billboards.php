@@ -51,12 +51,12 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_BILLBOARDS'),
-	'index.php?option=com_billboards&controller=billboards',
+	JRoute::_('index.php?option=com_billboards&controller=billboards'),
 	$controllerName == 'billboards'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_BILLBOARDS_COLLECTIONS'),
-	'index.php?option=com_billboards&controller=collections',
+	JRoute::_('index.php?option=com_billboards&controller=collections'),
 	$controllerName == 'collections'
 );
 

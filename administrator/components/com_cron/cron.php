@@ -47,7 +47,7 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_CRON_JOBS'),
-	'index.php?option=' .  $option . '&controller=jobs',
+	JRoute::_('index.php?option=' .  $option . '&controller=jobs'),
 	($controllerName == 'jobs')
 );
 
@@ -57,7 +57,7 @@ if ($canDo->get('core.manage'))
 {
 	JSubMenuHelper::addEntry(
 		JText::_('COM_CRON_PLUGINS'),
-		'index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron'
+		JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=cron&filter_type=cron')
 	);
 }
 

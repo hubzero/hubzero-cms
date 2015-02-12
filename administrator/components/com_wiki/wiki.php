@@ -56,7 +56,7 @@ $controllerName = 'WikiController' . ucfirst($controllerName);
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_WIKI_PAGES'),
-	'index.php?option=com_wiki',
+	JRoute::_('index.php?option=com_wiki'),
 	true
 );
 require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
@@ -65,7 +65,7 @@ if ($canDo->get('core.manage'))
 {
 	JSubMenuHelper::addEntry(
 		JText::_('COM_WIKI_PLUGINS'),
-		'index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki'
+		JRoute::_('index.php?option=com_plugins&view=plugins&filter_folder=wiki&filter_type=wiki')
 	);
 }
 

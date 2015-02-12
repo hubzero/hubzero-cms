@@ -50,17 +50,17 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_COLLECTIONS_COLLECTIONS'),
-	'index.php?option=com_collections',
+	JRoute::_('index.php?option=com_collections'),
 	$controllerName == 'collections'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_COLLECTIONS_POSTS'),
-	'index.php?option=com_collections&controller=posts',
+	JRoute::_('index.php?option=com_collections&controller=posts'),
 	$controllerName == 'posts'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_COLLECTIONS_ITEMS'),
-	'index.php?option=com_collections&controller=items',
+	JRoute::_('index.php?option=com_collections&controller=items'),
 	$controllerName == 'items'
 );
 

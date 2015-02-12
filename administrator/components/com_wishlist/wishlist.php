@@ -57,17 +57,17 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_WISHLIST_LISTS'),
-	'index.php?option=' .  $option . '&controller=lists',
+	JRoute::_('index.php?option=' .  $option . '&controller=lists'),
 	($controllerName == 'lists')
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_WISHLIST_WISHES'),
-	'index.php?option=' .  $option . '&controller=wishes&wishlist=-1',
+	JRoute::_('index.php?option=' .  $option . '&controller=wishes&wishlist=-1'),
 	($controllerName == 'wishes')
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_WISHLIST_COMMENTS'),
-	'index.php?option=' .  $option . '&controller=comments&wish=-1',
+	JRoute::_('index.php?option=' .  $option . '&controller=comments&wish=-1'),
 	($controllerName == 'comments')
 );
 

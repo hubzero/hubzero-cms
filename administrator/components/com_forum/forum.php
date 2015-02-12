@@ -50,17 +50,17 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_FORUM_SECTIONS'),
-	'index.php?option=' .  $option . '&controller=sections',
+	JRoute::_('index.php?option=' .  $option . '&controller=sections'),
 	($controllerName == 'sections')
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_FORUM_CATEGORIES'),
-	'index.php?option=' .  $option . '&controller=categories&section_id=-1',
+	JRoute::_('index.php?option=' .  $option . '&controller=categories&section_id=-1'),
 	($controllerName == 'categories')
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_FORUM_THREADS'),
-	'index.php?option=' .  $option . '&controller=threads&category_id=-1',
+	JRoute::_('index.php?option=' .  $option . '&controller=threads&category_id=-1'),
 	($controllerName == 'threads')
 );
 

@@ -50,12 +50,12 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_ANSWERS_QUESTIONS'),
-	'index.php?option=' . $option,
+	JRoute::_('index.php?option=' . $option),
 	($controllerName == 'questions')
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_ANSWERS_RESPONSES'),
-	'index.php?option=' . $option . '&controller=answers&qid=0',
+	JRoute::_('index.php?option=' . $option . '&controller=answers&qid=0'),
 	($controllerName == 'answers')
 );
 
