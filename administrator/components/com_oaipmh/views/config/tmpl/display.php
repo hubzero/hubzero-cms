@@ -1,10 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2012 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2012 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +21,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
+
 defined('_JEXEC') or die('Restricted access');
 
 JToolBarHelper::title(JText::_('COM_OAIPMH_SETTINGS'), 'generic.png');
@@ -46,7 +49,7 @@ var sets = <?php echo count($this->sets); ?>;
 function addGroup() {
 	sets++;
 
-	window.location.href = "index.php?option=com_oaipmh&task=addset&sets=" + sets;
+	window.location.href = "<?php echo JRoute::_('index.php?option=' . $this->option . '&task=addset&sets='); ?>" + sets;
 	/*jQuery.post("index.php?option=com_oaipmh",{task:"addset",sets:sets},function(){
 		location.reload();
 	});*/
@@ -55,14 +58,14 @@ function addGroup() {
 function removeGroup(id) {
 	var r = confirm("<?php echo JText::_('COM_OAIPMH_CONFIRM_REMOVAL'); ?>");
 	if (r==true) {
-		jQuery.post("index.php?option=com_oaipmh",{task:"removeset",id:id},function(){
+		jQuery.post("<?php echo JRoute::_('index.php?option=' . $this->option); ?>",{task:"removeset",id:id},function(){
 			location.reload();
 		});
 	}
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="admintable">
 		<thead>
 			<tr>
@@ -109,7 +112,7 @@ function removeGroup(id) {
 				}
 				if ($set[0] > 1)
 				{
-					echo '<br /><br />[ <a href="#" onclick="javascript:removeGroup(' . $set[0] . ')" >' . JText::_('COM_OAIPMH_REMOVE_GROUP') . '</a> ]';
+					echo '<div class="input-wrap"><a href="#" class="button" onclick="javascript:removeGroup(' . $set[0] . ')" >' . JText::_('COM_OAIPMH_REMOVE_GROUP') . '</a></div>';
 				}
 				echo '</div>';
 				$x=$i;

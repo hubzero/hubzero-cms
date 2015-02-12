@@ -1,10 +1,8 @@
 <?php
 /**
- * @package     hubzero-cms
- * @copyright   Copyright 2005-2011 Purdue University. All rights reserved.
- * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,18 +21,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
-defined('_JEXEC') or die( 'Restricted access' );
+
+namespace Components\Oaipmh\Controllers;
+
+use Hubzero\Component\AdminController;
 
 /**
  * Controller class for OAIPMH config
  */
-class OaipmhControllerConfig extends \Hubzero\Component\AdminController
+class Config extends AdminController
 {
 	/**
 	 * Display config optins
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -48,10 +53,7 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 		$this->database->setQuery($query);
 		$this->view->sets = $this->database->loadResultArray();
 
-		// get last datestamp **
-		//$query = "SELECT submitted FROM `#__publication_versions` WHERE submitted != '0000-00-00 00:00:00' ORDER BY submitted LIMIT 1";
-		//$this->database->setQuery($query);
-		$this->view->last = null; //$this->database->loadResult();
+		$this->view->last = null;
 
 		// display panel
 		$this->view->display();
@@ -60,17 +62,17 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 	/**
 	 * Save changes
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// vars
-		$queries = JRequest::getVar('queries', array(), 'post');
-		$qid     = JRequest::getVar('qid', '', 'post');
-		$display = JRequest::getVar('display', '', 'post');
+		$queries = \JRequest::getVar('queries', array(), 'post');
+		$qid     = \JRequest::getVar('qid', '', 'post');
+		$display = \JRequest::getVar('display', '', 'post');
 
 		// update specs
 		$count = count($queries);
@@ -86,20 +88,20 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 
 		// redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option,
-			JText::_('COM_OAIPMH_SETTINGS_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option, false),
+			\JText::_('COM_OAIPMH_SETTINGS_SAVED')
 		);
 	}
 
 	/**
 	 * Add a set
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function addsetTask()
 	{
 		// increment set number, load a fresh one
-		$sets = JRequest::getInt('sets', 1);
+		$sets = \JRequest::getInt('sets', 1);
 
 		$names = array(
 			'resource IDs',
@@ -137,20 +139,20 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 
 		// redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option,
-			JText::_('COM_OAIPMH_GROUP_ADDED')
+			\JRoute::_('index.php?option=' . $this->_option, false),
+			\JText::_('COM_OAIPMH_GROUP_ADDED')
 		);
 	}
 
 	/**
 	 * Remove a set
 	 * 
-	 * @return     void
+	 * @return  void
 	 */
 	public function removesetTask()
 	{
 		// remove 1 query set
-		$id = JRequest::getVar('id', '', 'request');
+		$id = \JRequest::getVar('id', '', 'request');
 
 		$SQL = "DELETE FROM `#__oaipmh_dcspecs` WHERE display = " . $this->database->Quote($id) . " LIMIT 17";
 		$this->database->setQuery($SQL);
@@ -161,8 +163,8 @@ class OaipmhControllerConfig extends \Hubzero\Component\AdminController
 
 		// redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option,
-			JText::_('COM_OAIPMH_GROUP_REMOVED')
+			\JRoute::_('index.php?option=' . $this->_option, false),
+			\JText::_('COM_OAIPMH_GROUP_REMOVED')
 		);
 	}
 }
