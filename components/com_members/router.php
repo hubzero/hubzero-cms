@@ -117,6 +117,21 @@ class MembersRouter extends \Hubzero\Component\Router\Base
 					return $vars;
 				break;
 
+				case 'login':
+				case 'logout':
+				case 'remind':
+				case 'reminding':
+				case 'reset':
+				case 'resetting':
+				case 'verify':
+				case 'verifying':
+				case 'setpassword':
+				case 'settingpassword':
+					$vars['controller'] = 'credentials';
+					$vars['task'] = $segments[0];
+					return $vars;
+				break;
+
 				case 'myaccount':
 					$juser = JFactory::getUser();
 					if (!$juser->get('guest'))
