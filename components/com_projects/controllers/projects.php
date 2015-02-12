@@ -32,9 +32,9 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Primary component controller (extends \Hubzero\Component\SiteController)
+ * Primary component controller
  */
-class ProjectsControllerProjects extends \Hubzero\Component\SiteController
+class ProjectsControllerProjects extends ProjectsControllerBase
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -43,26 +43,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	 */
 	public function execute()
 	{
-		// Publishing enabled?
-		$this->_publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
-
-		// Include scripts
-		$this->_inlcudeScripts();
-
-		// Is component on?
-		if (!$this->config->get( 'component_on', 0 ))
-		{
-			$this->_redirect = '/';
-			return;
-		}
-
-		// Incoming
-		$this->_task 		= strtolower(JRequest::getVar( 'task', '' ));
-		$this->_gid   		= JRequest::getVar( 'gid', 0 );
-		$this->_id 			= JRequest::getInt( 'id', 0 );
-		$this->_alias   	= JRequest::getVar( 'alias', '' );
-		$this->_identifier  = $this->_id ? $this->_id : $this->_alias;
-
 		// Set the default task
 		$this->registerTask('__default', 'intro');
 
@@ -77,137 +57,13 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Set notifications
-	 *
-	 * @param  string $message
-	 * @param  string $type
-	 * @return void
-	 */
-	public function setNotification( $message, $type = 'success' )
-	{
-		// If message is set push to notifications
-		if ($message != '')
-		{
-			$this->addComponentMessage($message, $type);
-		}
-	}
-
-	/**
-	 * Get notifications
-	 * @param  string $type
-	 * @return $messages if they exist
-	 */
-	public function getNotifications($type = 'success')
-	{
-		// Get messages in quene
-		$messages = $this->getComponentMessage();
-
-		// Return first message of type
-		if ($messages && count($messages) > 0)
-		{
-			foreach ($messages as $message)
-			{
-				if ($message['type'] == $type)
-				{
-					return $message['message'];
-				}
-			}
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Include necessary scripts
-	 *
-	 * @return     void
-	 */
-	protected function _inlcudeScripts()
-	{
-		// Enable publication management
-		if ($this->_publishing)
-		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'publication.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'version.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'access.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'audience.level.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'audience.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'author.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'license.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'category.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'master.type.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'screenshot.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'attachment.php');
-			require_once( JPATH_ROOT . DS . 'components'.DS
-				. 'com_publications' . DS . 'helpers' . DS . 'helper.php');
-		}
-
-		// Database development on?
-		if ( is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.database.php'))
-		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.database.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-					.'com_projects' . DS . 'tables' . DS . 'project.database.version.php');
-		}
-
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.log.php');
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'. DS
-				.'com_projects' . DS . 'tables' . DS . 'project.stats.php');
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
-				. 'helpers' . DS . 'connect.php' );
-		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'
-				. DS . 'com_projects' . DS . 'tables' . DS . 'project.remote.file.php');
-		require_once( JPATH_SITE . DS . 'components' . DS . 'com_projects'
-				. DS . 'helpers' . DS . 'remote' . DS . 'google.php' );
-	}
-
-	/**
-	 * Login view
-	 *
-	 * @return     void
-	 */
-	protected function _login()
-	{
-		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option
-			. '&task=' . $this->_task), 'server');
-
-		if (substr($rtrn, -1, 1) != '/'
-			&& substr($rtrn, -9, 9) != 'sponsored'
-			&& substr($rtrn, -9, 9) != 'sensitive')
-		{
-			$rtrn .= DS;
-		}
-
-		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login').'?return=' . base64_encode($rtrn),
-			$this->_msg,
-			'warning'
-		);
-	}
-
-	/**
 	 * Intro to projects (main view)
 	 *
 	 * @return     void
 	 */
 	public function introTask()
 	{
+		// Set task
 		$this->_task = 'intro';
 
 		// Incoming
@@ -227,9 +83,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->view->filters['updates'] = 1;
 		$this->view->filters['sortby'] 	= 'myprojects';
 
-		// How many setup steps do we have?
-		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 		// Get a record count
 		$obj = new Project( $this->database );
 		$this->view->total = $obj->getCount(
@@ -237,7 +90,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$admin = false,
 			$this->juser->get('id'),
 			0,
-			$setup_complete
+			$this->_setupComplete
 		);
 
 		// Get records
@@ -246,7 +99,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$admin = false,
 			$this->juser->get('id'),
 			0,
-			$setup_complete
+			$this->_setupComplete
 		);
 
 		// Set the pathway
@@ -268,7 +121,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->view->guest 		= $this->juser->get('guest');
 		$this->view->msg 		= isset($this->_msg) && $this->_msg
 								? $this->_msg
-								: $this->getNotifications('success');
+								: $this->_getNotifications('success');
 
 		if ($this->getError())
 		{
@@ -380,9 +233,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$this->view->filters['filterby']	= JRequest::getVar( 'filterby', 'pending' );
 		}
 
-		// Get config
-		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 		// Login for private projects
 		if ($this->juser->get('guest') && $action == 'login')
 		{
@@ -400,7 +250,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$admin = false,
 			$this->juser->get('id'),
 			0,
-			$setup_complete
+			$this->_setupComplete
 		);
 
 		// Get records
@@ -409,11 +259,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$admin = false,
 			$this->juser->get('id'),
 			0,
-			$setup_complete
+			$this->_setupComplete
 		);
 
 		// Initiate paging
-		jimport('joomla.html.pagination');
 		$this->view->pageNav = new JPagination(
 			$this->view->total,
 			$this->view->filters['start'],
@@ -432,7 +281,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->view->title 		= $this->title;
 		$this->view->reviewer 	= $reviewer;
 		$this->view->msg 		= isset($this->_msg) && $this->_msg
-								? $this->_msg : $this->getNotifications('success');
+								? $this->_msg : $this->_getNotifications('success');
 		if ($this->getError())
 		{
 			$this->view->setError( $this->getError() );
@@ -554,7 +403,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		}
 
 		// Check authorization
-		$authorized = $this->_authorize($pid);
+		$authorized = $this->_authorize();
 		if ($pid && (!$authorized or $authorized != 1 or $obj->created_by_user != $this->juser->get('id')))
 		{
 			JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
@@ -571,13 +420,10 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			}
 		}
 
-		// Do we have 2 or 3 steps in the process (configurable)
-		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-
 		// Is earlier setup stage requested and are we allowed to go there?
 		$stage = $requested_step != 6
 				 && $obj->setup_stage >= $requested_step
-				 && $obj->setup_stage != $setup_complete
+				 && $obj->setup_stage != $this->_setupComplete
 				 ? $requested_step : $obj->setup_stage;
 
 		// Get temp id for saving image before saving project
@@ -605,8 +451,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				$this->_option,
 				$authorized,
 				$this->juser->get('id'),
-				$this->getNotifications('success'),
-				$this->getNotifications('error'),
+				$this->_getNotifications('success'),
+				$this->_getNotifications('error'),
 				'save'
 			));
 
@@ -614,7 +460,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			{
 				if (isset($content[0]['msg']) && !empty($content[0]['msg']))
 				{
-					$this->setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
+					$this->_setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
 				}
 			}
 
@@ -632,7 +478,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 						$what = 'info';
 						break;
 
-				case 1: $what = $setup_complete == 3 ? 'team' : 'finalize';
+				case 1: $what = $this->_setupComplete == 3 ? 'team' : 'finalize';
 						break;
 
 				case 2: $what = 'finalize';
@@ -675,14 +521,14 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 
 		// Send to requested page
 		$layouts = array('describe', 'team', 'finalize');
-		if ($stage <= ($setup_complete - 1))
+		if ($stage <= ($this->_setupComplete - 1))
 		{
 			$layout = $layouts[$stage];
 		}
 		else
 		{
 			// Setup complete, go to project page
-			$this->setup  		= $setup_complete;
+			$this->setup  		= $this->_setupComplete;
 			$this->_identifier 	= $pid;
 			$this->_redirect 	= JRoute::_('index.php?option=' . $this->_option . a . 'alias=' . $obj->alias);
 			return;
@@ -756,8 +602,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				$this->_option,
 				$authorized,
 				$this->juser->get('id'),
-				$this->getNotifications('success'),
-				$this->getNotifications('error'),
+				$this->_getNotifications('success'),
+				$this->_getNotifications('error'),
 				$tAction
 			));
 
@@ -766,7 +612,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			{
 				if (isset($content[0]['msg']) && !empty($content[0]['msg']))
 				{
-					$this->setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
+					$this->_setNotification($content[0]['msg']['message'], $content[0]['msg']['type']);
 				}
 				if ($content[0]['html'])
 				{
@@ -802,8 +648,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->view->restricted 	= $restricted;
 
 		// Get messages	and errors
-		$this->view->msg = isset($this->_msg) ? $this->_msg : $this->getNotifications('success');
-		$error = $this->getError() ? $this->getError() : $this->getNotifications('error');
+		$this->view->msg = isset($this->_msg) ? $this->_msg : $this->_getNotifications('success');
+		$error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
 		if ($error)
 		{
 			$this->view->setError( $error );
@@ -938,8 +784,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		}
 
 		// Check if project is in setup
-		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-		if ($project->setup_stage < $setup_complete && (!$ajax && $this->active != 'team'))
+		if ($project->setup_stage < $this->_setupComplete && (!$ajax && $this->active != 'team'))
 		{
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option . a . 'task=setup'
 				. a . 'alias=' . $project->alias);
@@ -1050,7 +895,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		{
 			if ($action == 'activate')
 			{
-				if ($this->juser->get('id') == $project->created_by_user && $project->setup_stage >= $setup_complete)
+				if ($this->juser->get('id') == $project->created_by_user && $project->setup_stage >= $this->_setupComplete)
 				{
 					$layout = 'provisioned';
 				}
@@ -1093,7 +938,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			// Login required
 			if ($this->juser->get('guest'))
 			{
-				$this->_msg = JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT');
+				$this->_msg = JText::_('COM_PROJECTS_LOGIN_PRIVATE_PROJECT_AREA');
 				$this->_login();
 				return;
 			}
@@ -1106,7 +951,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 
 		// Is project suspended?
 		$suspended = 0;
-		if ($project->state == 0 && $project->setup_stage == $setup_complete)
+		if ($project->state == 0 && $project->setup_stage == $this->_setupComplete)
 		{
 			if (!$authorized)
 			{
@@ -1120,7 +965,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		}
 
 		// Is project pending approval?
-		if ($project->state == 5 && $project->setup_stage == $setup_complete)
+		if ($project->state == 5 && $project->setup_stage == $this->_setupComplete)
 		{
 			if ($reviewer)
 			{
@@ -1283,8 +1128,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					$this->_option,
 					$authorized,
 					$this->juser->get('id'),
-					$this->getNotifications('success'),
-					$this->getNotifications('error'),
+					$this->_getNotifications('success'),
+					$this->_getNotifications('error'),
 					$action,
 					array($plugin),
 					$extraParam
@@ -1300,7 +1145,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					{
 						if (isset($section['msg']) && !empty($section['msg']))
 						{
-							$this->setNotification($section['msg']['message'], $section['msg']['type']);
+							$this->_setNotification($section['msg']['message'], $section['msg']['type']);
 						}
 
 						if (isset($section['html']) && $section['html'])
@@ -1401,7 +1246,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->view->config 	= $this->config;
 		$this->view->uid 		= $this->juser->get('id');
 		$this->view->guest 		= $this->juser->get('guest');
-		$this->view->msg 		= $this->getNotifications('success');
+		$this->view->msg 		= $this->_getNotifications('success');
 
 		if ($layout == 'invited')
 		{
@@ -1409,7 +1254,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$this->view->email		  = $email;
 		}
 
-		$error 	= $this->getError() ? $this->getError() : $this->getNotifications('error');
+		$error 	= $this->getError() ? $this->getError() : $this->_getNotifications('error');
 		if ($error)
 		{
 			$this->view->setError( $error );
@@ -1432,8 +1277,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Cannot proceed without project id/alias
 		if (!$this->_identifier)
 		{
-			$this->_buildPathway();
-			$this->_buildTitle();
 			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
@@ -1455,8 +1298,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$project = $obj->getProject($this->_identifier, $this->juser->get('id'));
 		if (!$project)
 		{
-			$this->_buildPathway();
-			$this->_buildTitle();
 			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
 			return;
 		}
@@ -1467,8 +1308,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		}
 
 		// Check if project is in setup
-		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-		if ($project->setup_stage < $setup_complete)
+		if ($project->setup_stage < $this->_setupComplete)
 		{
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option
 				. a . 'task=setup') . '/?id=' . $pid;
@@ -1478,8 +1318,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Is project deleted?
 		if ($project->state == 2)
 		{
-			$this->_buildPathway();
-			$this->_buildTitle();
 			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_DELETED') );
 			return;
 		}
@@ -1491,7 +1329,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->_buildTitle($project);
 
 		// Check authorization
-		$authorized = $this->_authorize($pid);
+		$authorized = $this->_authorize();
 
 		// Login required
 		if ($this->juser->get('guest'))
@@ -1535,7 +1373,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 						&& $this->saveTask($pid, 'privacy', 0) )
 					{
 						// Set message
-						$this->setNotification(JText::_('COM_PROJECTS_SETTINGS_SAVED'));
+						$this->_setNotification(JText::_('COM_PROJECTS_SETTINGS_SAVED'));
 					}
 				}
 
@@ -1555,8 +1393,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					$this->_option,
 					$auth,
 					$this->juser->get('id'),
-					$this->getNotifications('success'),
-					$this->getNotifications('error'),
+					$this->_getNotifications('success'),
+					$this->_getNotifications('error'),
 					$tAction
 				));
 
@@ -1565,7 +1403,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				{
 					if (isset($content[0]['msg']) && !empty($content[0]['msg']))
 					{
-						$this->setNotification($content[0]['msg']['message'],
+						$this->_setNotification($content[0]['msg']['message'],
 							$content[0]['msg']['type']);
 					}
 					if ($content[0]['html'])
@@ -1594,7 +1432,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 					if ($this->saveTask($pid, 'info', 0) && $this->saveTask($pid, 1, 0))
 					{
 						// Set message
-						$this->setNotification(JText::_('COM_PROJECTS_INFO_SAVED'));
+						$this->_setNotification(JText::_('COM_PROJECTS_INFO_SAVED'));
 						$updated = 1;
 					}
 				}
@@ -1608,8 +1446,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			{
 				$objAA->recordActivity( $pid, $this->juser->get('id'),
 					JText::_('COM_PROJECTS_EDITED')
-					. ' ' . JText::_('COM_PROJECTS_PROJECT_INFORMATION'), $pid,
-					JText::_('COM_PROJECTS_PROJECT_INFORMATION'),
+					. ' ' . strtolower(JText::_('COM_PROJECTS_PROJECT_INFO')), $pid,
+					strtolower(JText::_('COM_PROJECTS_PROJECT_INFO')),
 					JRoute::_('index.php?option='
 					. $this->_option . a . 'alias=' . $project->alias
 					. a . 'active=info'), 'project' );
@@ -1651,8 +1489,8 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$this->view->publishing	= $this->_publishing;
 
 		// Get messages	and errors
-		$this->view->msg = $this->getNotifications('success');
-		$error = $this->getError() ? $this->getError() : $this->getNotifications('error');
+		$this->view->msg = $this->_getNotifications('success');
+		$error = $this->getError() ? $this->getError() : $this->_getNotifications('error');
 		if ($error)
 		{
 			$this->view->setError( $error );
@@ -1901,14 +1739,13 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			case 'finalize':
 				if ($obj->loadProject($pid))
 				{
-					$setup_complete 	= $this->config->get('confirm_step', 0) ? 3 : 2;
 					$agree 				= JRequest::getInt( 'agree', 0, 'post' );
 					$restricted 		= JRequest::getVar( 'restricted', '', 'post' );
 					$agree_irb 			= JRequest::getInt( 'agree_irb', 0, 'post' );
 					$agree_ferpa 		= JRequest::getInt( 'agree_ferpa', 0, 'post' );
 					$state				= 1;
 
-					if ($setup_complete == 3 )
+					if ($this->_setupComplete == 3 )
 					{
 						// General restricted data question
 						if ($this->config->get('restricted_data', 0) == 2)
@@ -2127,8 +1964,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		// Cannot proceed without project id/alias
 		if (!$this->_identifier)
 		{
-			$this->_buildPathway();
-			$this->_buildTitle();
 			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
@@ -2162,8 +1997,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		}
 
 		// Redirect to setup if activation not complete
-		$setup_complete = $this->config->get('confirm_step', 0) ? 3 : 2;
-		if ($project->setup_stage < $setup_complete)
+		if ($project->setup_stage < $this->_setupComplete)
 		{
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option
 				. a . 'task=setup'
@@ -2259,7 +2093,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$obj->title 		= \Hubzero\Utility\String::truncate($title, 250);
 			$obj->alias 		= $name;
 			$obj->state 		= 0;
-			$obj->setup_stage 	= $setup_complete - 1;
+			$obj->setup_stage 	= $this->_setupComplete - 1;
 			$obj->modified		= JFactory::getDate()->toSql();
 			$obj->modified_by 	= $this->juser->get('id');
 
@@ -2377,7 +2211,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		}
 
 		// Check authorization
-		$authorized = $this->_authorize($obj->id);
+		$authorized = $this->_authorize();
 		if ($authorized != 1)
 		{
 			// Only managers can change project state
@@ -2456,22 +2290,11 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 		$service = $json->service ? $json->service : 'google';
 		$this->_identifier = $json->alias;
 
-		// Cannot proceed without project id/alias
-		if (!$this->_identifier)
-		{
-			$this->_buildPathway();
-			$this->_buildTitle();
-			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
-			return;
-		}
-
 		// Load project
 		$obj = new Project( $this->database );
-		if (!$obj->loadProject($this->_identifier) )
+		if (!$this->_identifier || !$obj->loadProject($this->_identifier) )
 		{
-			$this->_buildPathway();
-			$this->_buildTitle();
-			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_CANNOT_LOAD') );
+			JError::raiseError( 404, JText::_('COM_PROJECTS_PROJECT_NOT_FOUND') );
 			return;
 		}
 
@@ -2494,7 +2317,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$error =  $error == 'access_denied'
 				? JText::_('Sorry, we cannot connect you to external file service without your permission')
 				: JText::_('Sorry, we cannot connect you to external file service at this time');
-			$this->setNotification($error, 'error');
+			$this->_setNotification($error, 'error');
 			$return = $json->return;
 		}
 
@@ -2693,7 +2516,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			// Pass success or error message
 			if ($this->getError())
 			{
-				$this->setNotification($this->getError(), 'error');
+				$this->_setNotification($this->getError(), 'error');
 			}
 			else
 			{
@@ -2701,7 +2524,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 				{
 					if ($reviewer == 'sensitive')
 					{
-						$this->setNotification(JText::_('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG') );
+						$this->_setNotification(JText::_('COM_PROJECTS_PROJECT_APPROVED_HIPAA_MSG') );
 
 						// Send out emails to team members
 						$this->_notifyTeam($obj->id);
@@ -2711,12 +2534,12 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 						$notification =  $approve == 2
 								? JText::_('COM_PROJECTS_PROJECT_REJECTED_SPS_MSG')
 								: JText::_('COM_PROJECTS_PROJECT_APPROVED_SPS_MSG');
-						$this->setNotification($notification);
+						$this->_setNotification($notification);
 					}
 				}
 				elseif ($comment)
 				{
-					$this->setNotification(JText::_('COM_PROJECTS_REVIEWER_COMMENT_POSTED') );
+					$this->_setNotification(JText::_('COM_PROJECTS_REVIEWER_COMMENT_POSTED') );
 				}
 
 				// Add to project activity feed
@@ -2789,7 +2612,7 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 			$this->view->filterby	= $filterby;
 			$this->view->uid 		= $this->juser->get('id');
 			$this->view->msg 		= isset($this->_msg) && $this->_msg
-									? $this->_msg : $this->getNotifications('success');
+									? $this->_msg : $this->_getNotifications('success');
 			if ($this->getError())
 			{
 				$this->view->setError( $this->getError() );
@@ -3221,43 +3044,6 @@ class ProjectsControllerProjects extends \Hubzero\Component\SiteController
 
 		$document = JFactory::getDocument();
 		$document->setTitle( $this->title );
-	}
-
-	/**
-	 * Authorize users
-	 *
-	 * @param  int $projectid
-	 * @param  int $check_site_admin
-	 * @return void
-	 */
-	protected function _authorize( $projectid = 0, $check_site_admin = 0 )
-	{
-		// Check login
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-
-		// Check whether user belongs to the project
-		if ($projectid != 0)
-		{
-			$pOwner = new ProjectOwner( $this->database );
-			if ($result = $pOwner->isOwner($this->juser->get('id'), $projectid))
-			{
-				return $result;
-			}
-		}
-
-		// Check if they're a site admin (from Joomla)
-		if ($check_site_admin)
-		{
-			if ($this->juser->get('id') && $this->juser->authorize($this->_option, 'manage'))
-			{
-				return 'admin';
-			}
-		}
-
-		return false;
 	}
 
 	/**
