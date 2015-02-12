@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,66 +32,71 @@
 defined('_JEXEC') or die( 'Restricted access' );
 
 /**
- * Build a SEF route from querystring vars
- *
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * Routing class for the component
  */
-function StoreBuildRoute(&$query)
+class StoreRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
+	{
+		$segments = array();
 
-	if (!empty($query['task']))
-	{
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-	if (!empty($query['controller']))
-	{
-		unset($query['controller']);
-	}
-	if (!empty($query['action']))
-	{
-		$segments[] = $query['action'];
-		unset($query['action']);
-	}
-	if (!empty($query['item']))
-	{
-		$segments[] = $query['item'];
-		unset($query['item']);
+		if (!empty($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+		if (!empty($query['controller']))
+		{
+			unset($query['controller']);
+		}
+		if (!empty($query['action']))
+		{
+			$segments[] = $query['action'];
+			unset($query['action']);
+		}
+		if (!empty($query['item']))
+		{
+			$segments[] = $query['item'];
+			unset($query['item']);
+		}
+
+		return $segments;
 	}
 
-	return $segments;
-}
-
-/**
- * Turn a SEF route into querystring vars
- *
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
- */
-function StoreParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments[0]))
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
 	{
+		$vars = array();
+
+		if (empty($segments[0]))
+		{
+			return $vars;
+		}
+
+		if (isset($segments[0]))
+		{
+			$vars['task'] = $segments[0];
+		}
+		if (isset($segments[1]))
+		{
+			$vars['action'] = $segments[1];
+		}
+		if (isset($segments[2]))
+		{
+			$vars['item'] = $segments[2];
+		}
+
 		return $vars;
 	}
-
-	if (isset($segments[0]))
-	{
-		$vars['task'] = $segments[0];
-	}
-	if (isset($segments[1]))
-	{
-		$vars['action'] = $segments[1];
-	}
-	if (isset($segments[2]))
-	{
-		$vars['item'] = $segments[2];
-	}
-
-	return $vars;
 }
-

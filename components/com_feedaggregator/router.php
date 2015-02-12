@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,92 +24,94 @@
  *
  * @package   hubzero-cms
  * @author    Kevin Wojkovich <kevinw@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Short description for 'FeedaggregatorBuildRoute'
- *
- * Long description (if any) ...
- *
- * @param  array &$query Parameter description (if any) ...
- * @return array Return description (if any) ...
+ * Routing class for the component
  */
-function FeedaggregatorBuildRoute(&$query)
+class FeedaggregatorRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	if(isset($query['task']) && isset($query['controller']))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
-		if (($query['task'] == 'new') && ($query['controller'] == 'feeds'))
-		{
-			$segments[0] = 'AddFeed';
-			unset($query['task']);
-			unset($query['controller']);
-		}
-		else if (($query['task'] == 'generateFeed') && ($query['controller'] == 'posts'))
-		{
-			$segments[0] = 'feed.rss';
+		$segments = array();
 
-			unset($query['task']);
-			unset($query['controller']);
+		if (isset($query['task']) && isset($query['controller']))
+		{
+			if (($query['task'] == 'new') && ($query['controller'] == 'feeds'))
+			{
+				$segments[0] = 'AddFeed';
+				unset($query['task']);
+				unset($query['controller']);
+			}
+			else if (($query['task'] == 'generateFeed') && ($query['controller'] == 'posts'))
+			{
+				$segments[0] = 'feed.rss';
+
+				unset($query['task']);
+				unset($query['controller']);
+			}
 		}
+		else if (isset($query['controller']))
+		{
+			if ($query['controller'] == 'feeds')
+			{
+				$segments[0] = 'feeds';
+				unset($query['controller']);
+			}
+		}
+
+		return $segments;
 	}
-	else if (isset($query['controller']))
+
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
 	{
-		if($query['controller'] == 'feeds')
+		$vars = array();
+
+		if (empty($segments))
 		{
-			$segments[0] = 'feeds';
-			unset($query['controller']);
+			return $vars;
 		}
-	}
 
-	return $segments;
-}
+		if (isset($segments[0]))
+		{
+			switch($segments[0])
+			{
+				case 'RetrieveNewPosts':
+					$vars['controller'] = 'posts';
+					$vars['task'] = 'RetrieveNewPosts';
+				break;
+				case 'AddFeed':
+					$vars['controller'] = 'feeds';
+					$vars['task'] = 'new';
+				break;
+				case 'feed.rss':
+					$vars['controller'] = 'posts';
+					$vars['task'] = 'generateFeed';
+				break;
+				case 'feeds':
+					$vars['controller'] = 'feeds';
+					$vars['task'] = 'display';
+				break;
+			} // end switch
+		}
 
-/**
- * Short description for 'FeedaggregatorParseRoute'
- *
- * Long description (if any) ...
- *
- * @param  array $segments Parameter description (if any) ...
- * @return array Return description (if any) ...
- */
-function FeedaggregatorParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
-	{
 		return $vars;
 	}
-
-	if(isset($segments[0]))
-	{
-		switch($segments[0])
-		{
-			case 'RetrieveNewPosts':
-				$vars['controller'] = 'posts';
-				$vars['task'] = 'RetrieveNewPosts';
-			break;
-			case 'AddFeed':
-				$vars['controller'] = 'feeds';
-				$vars['task'] = 'new';
-			break;
-			case 'feed.rss':
-				$vars['controller'] = 'posts';
-				$vars['task'] = 'generateFeed';
-			break;
-			case 'feeds':
-				$vars['controller'] = 'feeds';
-				$vars['task'] = 'display';
-		} // end switch
-	}
-
-	return $vars;
 }
-

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,57 +24,63 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * Turn querystring parameters into an SEF route
- *
- * @param   array  &$query  List of key/value pairs
- * @return  array  Segments to build a SEF URL from
+ * Routing class for the component
  */
-function FeedbackBuildRoute(&$query)
+class FeedbackRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	if (!empty($query['task']))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
-		$segments[] = $query['task'];
-		unset($query['task']);
+		$segments = array();
+
+		if (!empty($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+
+		return $segments;
 	}
 
-	return $segments;
-}
-
-/**
- * Parse a SEF route
- *
- * @param   array  $segments  Segments to build a SEF URL from
- * @return  array  List of key/value pairs
- */
-function FeedbackParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
 	{
+		$vars = array();
+
+		if (empty($segments))
+		{
+			return $vars;
+		}
+
+		if (isset($segments[0]) && $segments[0] == 'report_problems')
+		{
+			$vars['option'] = 'com_support';
+			$vars['controller'] = 'tickets';
+			$vars['task'] = 'new';
+		}
+		else
+		{
+			$vars['task'] = $segments[0];
+		}
+
 		return $vars;
 	}
-
-	if (isset($segments[0]) && $segments[0] == 'report_problems')
-	{
-		$vars['option'] = 'com_support';
-		$vars['controller'] = 'tickets';
-		$vars['task'] = 'new';
-	}
-	else
-	{
-		$vars['task'] = $segments[0];
-	}
-
-	return $vars;
 }

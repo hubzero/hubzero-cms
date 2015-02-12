@@ -1,146 +1,181 @@
 <?php
 /**
- * @version		$Id: router.php 14401 2010-01-26 14:10:00Z louis $
- * @package		Joomla
- * @copyright	Copyright (C) 2005 - 2010 Open Source Matters. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
+ * HUBzero CMS
+ *
+ * Copyright 2005-2015 Purdue University. All rights reserved.
+ *
+ * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
+ *
+ * The HUBzero(R) Platform for Scientific Collaboration (HUBzero) is free
+ * software: you can redistribute it and/or modify it under the terms of
+ * the GNU Lesser General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * HUBzero is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * HUBzero is a registered trademark of Purdue University.
+ *
+ * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
+// Check to ensure this file is included in Joomla!
+defined('_JEXEC') or die('Restricted access');
 
 /**
- * @param	array
- * @return	array
+ * Routing class for the component
  */
-function PollBuildRoute( &$query )
+class PollRouter extends \Hubzero\Component\Router\Base
 {
-	static $items;
-
-	$segments	= array();
-	$itemid		= null;
-
-	// Break up the poll id into numeric and alias values.
-	if (isset($query['id']) && strpos($query['id'], ':')) {
-		list($query['id'], $query['alias']) = explode(':', $query['id'], 2);
-	}
-
-	// Get the menu items for this component.
-	if (!$items) {
-		$app		= JFactory::getApplication();
-		$menu		= $app->getMenu();
-		$component	= JComponentHelper::getComponent('com_poll');
-		$items		= $menu->getItems('component_id', $component->id);
-	}
-
-	// Search for an appropriate menu item.
-	if (is_array($items))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
-		// If only the option and itemid are specified in the query, return that item.
-		if (!isset($query['view']) && !isset($query['id']) && !isset($query['catid']) && isset($query['Itemid'])) {
-			$itemid = (int) $query['Itemid'];
+		static $items;
+
+		$segments = array();
+		$itemid   = null;
+
+		// Break up the poll id into numeric and alias values.
+		if (isset($query['id']) && strpos($query['id'], ':'))
+		{
+			list($query['id'], $query['alias']) = explode(':', $query['id'], 2);
 		}
-		// Search for a specific link based on the critera given.
-		if (!$itemid) {
-			foreach ($items as $item)
+
+		// Get the menu items for this component.
+		if (!$items)
+		{
+			$app       = JFactory::getApplication();
+			$menu      = $app->getMenu();
+			$component = JComponentHelper::getComponent('com_poll');
+			$items     = $menu->getItems('component_id', $component->id);
+		}
+
+		// Search for an appropriate menu item.
+		if (is_array($items))
+		{
+			// If only the option and itemid are specified in the query, return that item.
+			if (!isset($query['view']) && !isset($query['id']) && !isset($query['catid']) && isset($query['Itemid']))
 			{
-				// Check if this menu item links to this view.
-				if (isset($item->query['view']) && $item->query['view'] == 'poll'
-					&& isset($query['view']) && $query['view'] != 'category'
-					&& isset($item->query['id']) && $item->query['id'] == $query['id'])
+				$itemid = (int) $query['Itemid'];
+			}
+			// Search for a specific link based on the critera given.
+			if (!$itemid)
+			{
+				foreach ($items as $item)
 				{
-					$itemid	= $item->id;
+					// Check if this menu item links to this view.
+					if (isset($item->query['view']) && $item->query['view'] == 'poll'
+						&& isset($query['view']) && $query['view'] != 'category'
+						&& isset($item->query['id']) && $item->query['id'] == $query['id'])
+					{
+						$itemid = $item->id;
+					}
 				}
 			}
-		}
 
-		// If no specific link has been found, search for a general one.
-		if (!$itemid) {
-			foreach ($items as $item)
+			// If no specific link has been found, search for a general one.
+			if (!$itemid)
 			{
-				if (isset($query['view']) && $query['view'] == 'poll' && isset($item->query['view']) && $item->query['view'] == 'poll')
+				foreach ($items as $item)
 				{
-					// Check for an undealt with newsfeed id.
-					if (isset($query['id']))
+					if (isset($query['view']) && $query['view'] == 'poll' && isset($item->query['view']) && $item->query['view'] == 'poll')
 					{
-						// This menu item links to the newsfeed view but we need to append the newsfeed id to it.
-						$itemid		= $item->id;
-						$segments[]	= isset($query['alias']) ? $query['id'].':'.$query['alias'] : $query['id'];
-						break;
+						// Check for an undealt with newsfeed id.
+						if (isset($query['id']))
+						{
+							// This menu item links to the newsfeed view but we need to append the newsfeed id to it.
+							$itemid = $item->id;
+							$segments[] = isset($query['alias']) ? $query['id'].':'.$query['alias'] : $query['id'];
+							break;
+						}
 					}
 				}
 			}
 		}
-	}
 
-	// Check if the router found an appropriate itemid.
-	if (!$itemid)
-	{
-		// Check if a id was specified.
-		if (isset($query['id']))
+		// Check if the router found an appropriate itemid.
+		if (!$itemid)
 		{
-			if (isset($query['alias'])) {
-				$query['id'] .= ':'.$query['alias'];
-			}
+			// Check if a id was specified.
+			if (isset($query['id']))
+			{
+				if (isset($query['alias']))
+				{
+					$query['id'] .= ':' . $query['alias'];
+				}
 
-			// Push the id onto the stack.
-			$segments[] = $query['id'];
+				// Push the id onto the stack.
+				$segments[] = $query['id'];
+				unset($query['id']);
+				unset($query['alias']);
+			}
+			if (isset($query['view']) && $query['view'] == 'latest')
+			{
+				$segments[] = $query['view'];
+			}
+			unset($query['view']);
+		}
+		else
+		{
+			$query['Itemid'] = $itemid;
+
+			// Remove the unnecessary URL segments.
+			unset($query['view']);
 			unset($query['id']);
+			unset($query['catid']);
 			unset($query['alias']);
 		}
-		if (isset($query['view']) && $query['view'] == 'latest')
+
+		return $segments;
+	}
+
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
+	{
+		$vars = array();
+
+		if ($segments[0] == 'latest')
 		{
-			$segments[] = $query['view'];
+			$vars['view'] = 'latest';
+			return $vars;
 		}
-		unset($query['view']);
-	}
-	else
-	{
-		$query['Itemid'] = $itemid;
 
-		// Remove the unnecessary URL segments.
-		unset($query['view']);
-		unset($query['id']);
-		unset($query['catid']);
-		unset($query['alias']);
-	}
+		//Get the active menu item
+		$menu  = JFactory::getApplication()->getMenu();
+		$item  = $menu->getActive();
 
-	return $segments;
-}
+		$count = count($segments);
 
-/**
- * @param	array
- * @return	array
- */
-function PollParseRoute( $segments )
-{
-	$vars = array();
+		//Standard routing for articles
+		if (!isset($item))
+		{
+			$vars['id'] = $segments[$count - 1];
+			return $vars;
+		}
 
-	if ($segments[0] == 'latest')
-	{
-		$vars['view'] = 'latest';
+		// Count route segments
+		$vars['id']   = $segments[$count-1];
+		$vars['view'] = 'poll';
+
 		return $vars;
 	}
-
-	//Get the active menu item
-	$menu	= JFactory::getApplication()->getMenu();
-	$item	= $menu->getActive();
-
-	$count	= count( $segments );
-
-	//Standard routing for articles
-	if (!isset($item))
-	{
-		$vars['id']    = $segments[$count - 1];
-		return $vars;
-	}
-
-	// Count route segments
-	$vars['id']		= $segments[$count-1];
-	$vars['view']	= 'poll';
-
-	return $vars;
 }

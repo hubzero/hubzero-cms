@@ -32,56 +32,62 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Turn querystring parameters into an SEF route
- *
- * @param  array &$query Query string values
- * @return array Segments to build SEF route
+ * Routing class for the component
  */
-function whatsnewBuildRoute(&$query)
+class WhatsnewRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	if (!empty($query['period']))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
-		$segments[] = $query['period'];
-		unset($query['period']);
+		$segments = array();
+
+		if (!empty($query['period']))
+		{
+			$segments[] = $query['period'];
+			unset($query['period']);
+		}
+		if (!empty($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+		if (!empty($query['controller']))
+		{
+			unset($query['controller']);
+		}
+
+		return $segments;
 	}
-	if (!empty($query['task']))
-	{
-		$segments[] = $query['task'];
-		unset($query['task']);
-	}
-	if (!empty($query['controller']))
-	{
-		unset($query['controller']);
-	}
 
-	return $segments;
-}
-
-/**
- * Parse a SEF route
- *
- * @param  array $segments Exploded route segments
- * @return array
- */
-function whatsnewParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
 	{
+		$vars = array();
+
+		if (empty($segments))
+		{
+			return $vars;
+		}
+
+		if (isset($segments[0]))
+		{
+			$vars['period'] = $segments[0];
+		}
+		if (isset($segments[1]))
+		{
+			$vars['task'] = $segments[1];
+		}
+
 		return $vars;
 	}
-
-	if (isset($segments[0]))
-	{
-		$vars['period'] = $segments[0];
-	}
-	if (isset($segments[1]))
-	{
-		$vars['task'] = $segments[1];
-	}
-
-	return $vars;
 }

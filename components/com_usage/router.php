@@ -32,70 +32,75 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Turn querystring parameters into an SEF route
- *
- * @param  array &$query Query string values
- * @return array Segments to build SEF route
+ * Routing class for the component
  */
-function UsageBuildRoute(&$query)
+class UsageRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	if (!empty($query['task']))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
-		$segments[] = $query['task'];
-		unset($query['task']);
+		$segments = array();
+
+		if (!empty($query['task']))
+		{
+			$segments[] = $query['task'];
+			unset($query['task']);
+		}
+		if (!empty($query['period']))
+		{
+			$segments[] = $query['period'];
+			unset($query['period']);
+		}
+		if (!empty($query['type']))
+		{
+			$segments[] = $query['type'];
+			unset($query['type']);
+		}
+
+		return $segments;
 	}
-	if (!empty($query['period']))
-	{
-		$segments[] = $query['period'];
-		unset($query['period']);
-	}
-	if (!empty($query['type']))
-	{
-		$segments[] = $query['type'];
-		unset($query['type']);
-	}
 
-	return $segments;
-}
-
-/**
- * Parse a SEF route
- *
- * @param  array $segments Exploded route segments
- * @return array
- */
-function UsageParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
 	{
+		$vars = array();
+
+		if (empty($segments))
+		{
+			return $vars;
+		}
+
+		$vars['task'] = $segments[0];
+		if (isset($segments[0]))
+		{
+			switch ($segments[0])
+			{
+				case 'maps':
+					if (isset($segments[1]))
+					{
+						$vars['type'] = $segments[1];
+					}
+				break;
+				case 'overview':
+				default:
+					if (isset($segments[1]))
+					{
+						$vars['period'] = $segments[1];
+					}
+				break;
+			}
+		}
+
 		return $vars;
 	}
-
-	$vars['task'] = $segments[0];
-	if (isset($segments[0]))
-	{
-		switch ($segments[0])
-		{
-			case 'maps':
-				if (isset($segments[1]))
-				{
-					$vars['type'] = $segments[1];
-				}
-			break;
-			case 'overview':
-			default:
-				if (isset($segments[1]))
-				{
-					$vars['period'] = $segments[1];
-				}
-			break;
-		}
-	}
-
-	return $vars;
 }
-

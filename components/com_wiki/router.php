@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,7 +23,8 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -31,103 +32,109 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Turn querystring parameters into an SEF route
- *
- * @param  array &$query Query string values
- * @return array Segments to build SEF route
+ * Routing class for the component
  */
-function WikiBuildRoute(&$query)
+class WikiRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	if (!empty($query['scope']))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
-		$segments[] = $query['scope'];
+		$segments = array();
+
+		if (!empty($query['scope']))
+		{
+			$segments[] = $query['scope'];
+		}
+		unset($query['scope']);
+		if (!empty($query['pagename']))
+		{
+			$segments[] = $query['pagename'];
+		}
+		unset($query['pagename']);
+
+		unset($query['controller']);
+
+		return $segments;
 	}
-	unset($query['scope']);
-	if (!empty($query['pagename']))
+
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
 	{
-		$segments[] = $query['pagename'];
-	}
-	unset($query['pagename']);
+		$vars = array();
 
-	unset($query['controller']);
+		if (empty($segments))
+		{
+			return $vars;
+		}
 
-	return $segments;
-}
+		//$vars['task'] = 'view';
+		$e = array_pop($segments);
+		$s = implode(DS, $segments);
+		if ($s)
+		{
+			$vars['scope'] = $s;
+		}
+		$vars['pagename'] = $e;
 
-/**
- * Parse a SEF route
- *
- * @param  array $segments Exploded route segments
- * @return array
- */
-function WikiParseRoute($segments)
-{
-	$vars = array();
+		if (!isset($vars['task']) || !$vars['task'])
+		{
+			$vars['task'] = JRequest::getWord('task', '');
+		}
 
-	if (empty($segments))
-	{
+		switch ($vars['task'])
+		{
+			case 'upload':
+			case 'download':
+			case 'deletefolder':
+			case 'deletefile':
+			case 'media':
+				$vars['controller'] = 'media';
+			break;
+
+			case 'history':
+			case 'compare':
+			case 'approve':
+			case 'deleterevision':
+				$vars['controller'] = 'history';
+			break;
+
+			case 'editcomment':
+			case 'addcomment':
+			case 'savecomment':
+			case 'reportcomment':
+			case 'removecomment':
+			case 'comments':
+				$vars['controller'] = 'comments';
+			break;
+
+			case 'delete':
+			case 'edit':
+			case 'save':
+			case 'rename':
+			case 'saverename':
+			case 'approve':
+			default:
+				$vars['controller'] = 'page';
+			break;
+		}
+
+		if (substr(strtolower($vars['pagename']), 0, strlen('image:')) == 'image:'
+		 || substr(strtolower($vars['pagename']), 0, strlen('file:')) == 'file:')
+		{
+			$vars['controller'] = 'media';
+			$vars['task'] = 'download';
+		}
+
 		return $vars;
 	}
-
-	//$vars['task'] = 'view';
-	$e = array_pop($segments);
-	$s = implode(DS, $segments);
-	if ($s)
-	{
-		$vars['scope'] = $s;
-	}
-	$vars['pagename'] = $e;
-
-	if (!isset($vars['task']) || !$vars['task'])
-	{
-		$vars['task'] = JRequest::getWord('task', '');
-	}
-
-	switch ($vars['task'])
-	{
-		case 'upload':
-		case 'download':
-		case 'deletefolder':
-		case 'deletefile':
-		case 'media':
-			$vars['controller'] = 'media';
-		break;
-
-		case 'history':
-		case 'compare':
-		case 'approve':
-		case 'deleterevision':
-			$vars['controller'] = 'history';
-		break;
-
-		case 'editcomment':
-		case 'addcomment':
-		case 'savecomment':
-		case 'reportcomment':
-		case 'removecomment':
-		case 'comments':
-			$vars['controller'] = 'comments';
-		break;
-
-		case 'delete':
-		case 'edit':
-		case 'save':
-		case 'rename':
-		case 'saverename':
-		case 'approve':
-		default:
-			$vars['controller'] = 'page';
-		break;
-	}
-
-	if (substr(strtolower($vars['pagename']), 0, strlen('image:')) == 'image:'
-	 || substr(strtolower($vars['pagename']), 0, strlen('file:')) == 'file:')
-	{
-		$vars['controller'] = 'media';
-		$vars['task'] = 'download';
-	}
-
-	return $vars;
 }

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -32,70 +32,76 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Turn querystring parameters into an SEF route
- *
- * @param  array &$query Querystring
+ * Routing class for the component
  */
-function HelpBuildRoute(&$query)
+class HelpRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	//do we have a component
-	if (!empty($query['component']))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
-		$segments[] = $query['component'];
-		unset($query['component']);
+		$segments = array();
+
+		//do we have a component
+		if (!empty($query['component']))
+		{
+			$segments[] = $query['component'];
+			unset($query['component']);
+		}
+
+		//do we have an extension
+		if (!empty($query['extension']))
+		{
+			$segments[] = $query['extension'];
+			unset($query['extension']);
+		}
+
+		//do we have a page
+		if (!empty($query['page']))
+		{
+			$segments[] = $query['page'];
+			unset($query['page']);
+		}
+
+		return $segments;
 	}
 
-	//do we have an extension
-	if (!empty($query['extension']))
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
 	{
-		$segments[] = $query['extension'];
-		unset($query['extension']);
-	}
+		$vars = array();
 
-	//do we have a page
-	if (!empty($query['page']))
-	{
-		$segments[] = $query['page'];
-		unset($query['page']);
-	}
+		if (empty($segments))
+		{
+			return $vars;
+		}
 
-	return $segments;
-}
+		//do we have a component
+		if (isset($segments[0]))
+		{
+			$vars['component'] = 'com_' . $segments[0];
+		}
 
-/**
- * Parse a SEF route
- *
- * @param  array $segments Exploded route
- * @return array
- */
-function HelpParseRoute($segments)
-{
-	$vars = array();
+		//if we have segements it easy
+		if (count($segments) > 2)
+		{
+			$vars['extension'] = $segments[1];
+			$vars['page']      = $segments[2];
+		}
+		elseif (isset($segments[1]))
+		{
+			$vars['page'] = $segments[1];
+		}
 
-	if (empty($segments))
-	{
 		return $vars;
 	}
-
-	//do we have a component
-	if (isset($segments[0]))
-	{
-		$vars['component'] = 'com_' . $segments[0];
-	}
-
-	//if we have segements it easy
-	if (count($segments) > 2)
-	{
-		$vars['extension'] = $segments[1];
-		$vars['page']      = $segments[2];
-	}
-	elseif (isset($segments[1]))
-	{
-		$vars['page'] = $segments[1];
-	}
-
-	return $vars;
 }
-

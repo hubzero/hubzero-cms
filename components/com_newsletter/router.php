@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,85 +24,101 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-function NewsletterBuildRoute(&$query)
+/**
+ * Routing class for the component
+ */
+class NewsletterRouter extends \Hubzero\Component\Router\Base
 {
-	$segments = array();
-
-	if (!empty($query['id']))
+	/**
+	 * Build the route for the component.
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 */
+	public function build(&$query)
 	{
-		$database = JFactory::getDBO();
-		$sql = "SELECT `alias` FROM #__newsletters WHERE id=" . $database->quote( $query['id'] );
-		$database->setQuery($sql);
-		$campaign = $database->loadResult();
-		$segments[] = strtolower(str_replace(" ", "", $campaign));
-		unset($query['id']);
-	}
+		$segments = array();
 
-	if (!empty($query['task']))
-	{
-		if (in_array($query['task'], array('subscribe','unsubscribe','resendconfirmation')))
+		if (!empty($query['id']))
 		{
-			$segments[] = $query['task'];
-			unset($query['task']);
+			$database = JFactory::getDBO();
+			$sql = "SELECT `alias` FROM `#__newsletters` WHERE `id`=" . $database->quote( $query['id'] );
+			$database->setQuery($sql);
+			$campaign = $database->loadResult();
+			$segments[] = strtolower(str_replace(" ", "", $campaign));
+			unset($query['id']);
 		}
-	}
 
-	return $segments;
-}
-
-function NewsletterParseRoute($segments)
-{
-	$vars = array();
-
-	if (empty($segments))
-	{
-    	return $vars;
-	}
-
-	if (isset($segments[0]))
-	{
-		$database = JFactory::getDBO();
-		$sql = "SELECT `id` FROM #__newsletters WHERE alias=" . $database->quote( $segments[0] );
-		$database->setQuery($sql);
-		$campaignId = $database->loadResult();
-
-		if ($campaignId)
+		if (!empty($query['task']))
 		{
-			$vars['id'] = $campaignId;
-		}
-		else
-		{
-			switch( $segments[0] )
+			if (in_array($query['task'], array('subscribe','unsubscribe','resendconfirmation')))
 			{
-				case 'track':
-					$vars['task'] = 'track';
-					$vars['type'] = $segments[1];
-					$vars['controller'] = 'mailing';
-					break;
-				case 'confirm':
-				case 'remove':
-				case 'subscribe':
-				case 'dosubscribe':
-				case 'unsubscribe':
-				case 'dounsubscribe':
-				case 'resendconfirmation':
-					$vars['task'] = $segments[0];
-					$vars['controller'] = 'mailinglist';
-					break;
-				default:
-					$vars['task'] = $segments[0];
+				$segments[] = $query['task'];
+				unset($query['task']);
 			}
 		}
+
+		return $segments;
 	}
 
-	return $vars;
-}
+	/**
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @return  array  The URL attributes to be used by the application.
+	 */
+	public function parse(&$segments)
+	{
+		$vars = array();
 
-?>
+		if (empty($segments))
+		{
+	    	return $vars;
+		}
+
+		if (isset($segments[0]))
+		{
+			$database = JFactory::getDBO();
+			$sql = "SELECT `id` FROM `#__newsletters` WHERE `alias`=" . $database->quote($segments[0]);
+			$database->setQuery($sql);
+			$campaignId = $database->loadResult();
+
+			if ($campaignId)
+			{
+				$vars['id'] = $campaignId;
+			}
+			else
+			{
+				switch( $segments[0] )
+				{
+					case 'track':
+						$vars['task'] = 'track';
+						$vars['type'] = $segments[1];
+						$vars['controller'] = 'mailing';
+						break;
+					case 'confirm':
+					case 'remove':
+					case 'subscribe':
+					case 'dosubscribe':
+					case 'unsubscribe':
+					case 'dounsubscribe':
+					case 'resendconfirmation':
+						$vars['task'] = $segments[0];
+						$vars['controller'] = 'mailinglist';
+						break;
+					default:
+						$vars['task'] = $segments[0];
+				}
+			}
+		}
+
+		return $vars;
+	}
+}
