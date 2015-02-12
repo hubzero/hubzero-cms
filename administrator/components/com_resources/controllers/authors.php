@@ -37,9 +37,22 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * List resource authors
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -48,37 +61,36 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['search']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-
-		// Get sorting variables
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'name'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'search' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			// Get sorting variables
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'name'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		$obj = new ResourcesContributor($this->database);
@@ -101,82 +113,56 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new entry
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($rows=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.php');
 		require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'role.type.php');
 
-		$this->view->authorid = 0;
-		if (is_array($rows))
-		{
-			$this->view->rows = $rows;
-		}
-		else
+		$authorid = 0;
+		if (!is_array($rows))
 		{
 			// Incoming
-			$this->view->authorid = JRequest::getVar('id', array(0));
-
-			if (is_array($this->view->authorid))
+			$authorid = JRequest::getVar('id', array(0));
+			if (is_array($authorid))
 			{
-				$this->view->authorid = (!empty($this->view->authorid) ? $this->view->authorid[0] : 0);
+				$authorid = (!empty($authorid) ? $authorid[0] : 0);
 			}
 
 			// Load category
 			$obj = new ResourcesContributor($this->database);
-			$this->view->rows = $obj->getRecordsForAuthor($this->view->authorid);
+			$rows = $obj->getRecordsForAuthor($authorid);
 		}
+
+		$this->view->rows = $rows;
+		$this->view->authorid = $authorid;
 
 		$model = new ResourcesContributorRole($this->database);
 		$this->view->roles = $model->getRecords(array('sort' => 'title'));
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Save an entry and come back to the edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @param      boolean $redirect Redirect after save?
-	 * @return     void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -189,7 +175,7 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		if (!$authorid)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
 			return;
 		}
@@ -233,26 +219,25 @@ class ResourcesControllerAuthors extends \Hubzero\Component\AdminController
 		// Instantiate a resource/contributor association object
 		$rc = new ResourcesContributor($this->database);
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
-			);
-			return;
+			return $this->editTask($rows);
 		}
 
-		$this->editTask($rows);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

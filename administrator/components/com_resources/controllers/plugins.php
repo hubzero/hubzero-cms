@@ -39,7 +39,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -51,6 +51,16 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 			JRequest::setVar('task', 'manage');
 		}
 
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+		$this->registerTask('orderup', 'order');
+		$this->registerTask('orderdown', 'order');
+		$this->registerTask('accesspublic', 'access');
+		$this->registerTask('accessspecial', 'access');
+		$this->registerTask('accessregistered', 'access');
+
 		$this->_folder = 'resources';
 
 		parent::execute();
@@ -59,7 +69,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	/**
 	 * List resource types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -68,42 +78,42 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'ordering'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'state' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				'',
+				'word'
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				'',
+				'word'
+			))
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'ordering'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-
-		$this->view->filters['state']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.state',
-			'state',
-			'',
-			'word'
-		);
-		$this->view->filters['search']    = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			'',
-			'word'
-		));
 
 		$where = array();
 		$this->client = JRequest::getWord('filter_client', 'site');
@@ -198,12 +208,9 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		$this->view->user = $this->juser;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -213,7 +220,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function manageTask()
 	{
@@ -224,9 +231,10 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		{
 			// Redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED')
 			);
+			return;
 		}
 
 		// Get related plugins
@@ -254,12 +262,9 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -274,7 +279,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -290,14 +295,14 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		JArrayHelper::toInteger($cid, array(0));
 
 		$this->setRedirect(
-			'index.php?option=com_plugins&task=plugin.edit&extension_id=' . $cid[0] . '&component=resources'
+			JRoute::_('index.php?option=com_plugins&task=plugin.edit&extension_id=' . $cid[0] . '&component=resources', false)
 		);
 	}
 
 	/**
 	 * Save changes to a plugin
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -311,7 +316,6 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$row->bind(JRequest::get('post')))
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -320,7 +324,6 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$row->check())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -329,7 +332,6 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$row->store())
 		{
 			$this->addComponentMessage($row->getError(), 'error');
-			$this->view->setLayout('edit');
 			$this->editTask($row);
 			return;
 		}
@@ -346,52 +348,32 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		{
 			case 'apply':
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client . '&task=edit&cid[]=' . $row->id,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client . '&task=edit&cid=' . $row->id, false),
 					JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
 				);
 			break;
 
 			case 'save':
 			default:
-				$msg = JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name);
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client,
-					$msg
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
+					JText::sprintf('COM_RESOURCES_PLUGINS_ITEM_SAVED', $row->name)
 				);
 			break;
 		}
 	}
 
 	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return     void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return     void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
-	}
-
-	/**
 	 * Set the state of a plugin
 	 *
-	 * @param      integer $access Access level to set
-	 * @return     void
+	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+
+		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
 		$id = JRequest::getVar('id', array(0), '', 'array');
@@ -402,15 +384,16 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (count($id) < 1)
 		{
 			$action = $state ? JText::_('COM_RESOURCES_PUBLISH') : JText::_('COM_RESOURCES_UNPUBLISH');
+
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 				JText::sprintf('COM_RESOURCES_ERROR_SELECT_TO', $action),
 				'error'
 			);
 			return;
 		}
 
-		$query = "UPDATE #__extensions SET enabled = ".(int) $state
+		$query = "UPDATE `#__extensions` SET enabled = ".(int) $state
 			. " WHERE extension_id IN (" . implode(',', $id) . ")"
 			. " AND `type`='plugin' AND (checked_out = 0 OR (checked_out = ". (int) $this->juser->get('id') . "))";
 
@@ -418,7 +401,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$this->database->query())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false),
 				$this->database->getErrorMsg(),
 				'error'
 			);
@@ -432,42 +415,22 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&client=' . $client, false)
 		);
-	}
-
-	/**
-	 * Reorder a plugin up
-	 *
-	 * @return     void
-	 */
-	public function orderupTask()
-	{
-		return $this->orderTask();
-	}
-
-	/**
-	 * Reorder a plugin down
-	 *
-	 * @return     void
-	 */
-	public function orderdownTask()
-	{
-		return $this->orderTask();
 	}
 
 	/**
 	 * Reorder a plugin
 	 *
-	 * @param      integer $access Access level to set
-	 * @return     void
+	 * @param   integer  $access  Access level to set
+	 * @return  void
 	 */
 	public function orderTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
 
-		$cid 	= JRequest::getVar('id', array(0), 'post', 'array');
+		$cid    = JRequest::getVar('id', array(0), 'post', 'array');
 		JArrayHelper::toInteger($cid, array(0));
 
 		$uid    = $cid[0];
@@ -486,53 +449,29 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		$row = JTable::getInstance('extension');
 		$row->load($uid);
-		$row->move($inc, 'folder='.$this->database->Quote($row->folder).' AND ordering > -10000 AND ordering < 10000 AND ('.$where.')');
+		$row->move($inc, 'folder=' . $this->database->Quote($row->folder) . ' AND ordering > -10000 AND ordering < 10000 AND (' . $where . ')');
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
-	}
-
-	/**
-	 * Set the state of an article to 'public'
-	 *
-	 * @return     void
-	 */
-	public function accesspublicTask()
-	{
-		return $this->accessTask(1);
-	}
-
-	/**
-	 * Set the state of an article to 'registered'
-	 *
-	 * @return     void
-	 */
-	public function accessregisteredTask()
-	{
-		return $this->accessTask(2);
-	}
-
-	/**
-	 * Set the state of an article to 'special'
-	 *
-	 * @return     void
-	 */
-	public function accessspecialTask()
-	{
-		return $this->accessTask(3);
 	}
 
 	/**
 	 * Set the access of a plugin
 	 *
-	 * @param      integer $access Access level to set
-	 * @return     void
+	 * @return  void
 	 */
-	public function accessTask($access=0)
+	public function accessTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or JRequest::checkToken('get') or jexit('Invalid Token');
+
+		switch ($this->_task)
+		{
+			case 'accesspublic':     $access = 1; break;
+			case 'accessregistered': $access = 2; break;
+			case 'accessspecial':    $access = 3; break;
+		}
 
 		// Incoming
 		$cid = JRequest::getVar('id', array(0), 'post', 'array');
@@ -549,7 +488,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$row->check())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -560,7 +499,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 		if (!$row->store())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -569,14 +508,14 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
 	/**
 	 * Save the ordering for an array of plugins
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveorderTask()
 	{
@@ -604,7 +543,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 				if (!$row->store())
 				{
 					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						$this->database->getErrorMsg(),
 						'error'
 					);
@@ -634,7 +573,7 @@ class ResourcesControllerPlugins extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_RESOURCES_ORDERING_SAVED')
 		);
 	}

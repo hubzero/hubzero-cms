@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="index.php?option=com_resources&amp;controller=importhooks&amp;task=save" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_RESOURCES_IMPORTHOOK_EDIT_FIELDSET_DETAILS'); ?></legend>
@@ -108,7 +108,6 @@ function submitbutton(pressbutton)
 				<input type="file" name="file" />
 			</div>
 		</fieldset>
-
 	</div>
 	<div class="col width-30 fltrt">
 		<?php if ($this->hook->get('id')) : ?>
@@ -141,9 +140,12 @@ function submitbutton(pressbutton)
 			</table>
 		<?php endif; ?>
 	</div>
+	<div class="clr"></div>
+
 	<input type="hidden" name="option" value="<?php echo $this->option ?>" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="save" />
 	<input type="hidden" name="hook[id]" value="<?php echo $this->hook->get('id'); ?>" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

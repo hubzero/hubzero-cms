@@ -68,32 +68,32 @@ if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $cont
 
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES'),
-	'index.php?option=' . $option,
+	JRoute::_('index.php?option=' . $option),
 	($controllerName == 'items' && $task != 'orphans')
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES_ORPHANS'),
-	'index.php?option=' . $option . '&controller=items&task=orphans',
+	JRoute::_('index.php?option=' . $option . '&controller=items&task=orphans'),
 	$task == 'orphans'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES_TYPES'),
-	'index.php?option=' . $option . '&controller=types',
+	JRoute::_('index.php?option=' . $option . '&controller=types'),
 	$controllerName == 'types'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES_LICENSES'),
-	'index.php?option=' . $option . '&controller=licenses',
+	JRoute::_('index.php?option=' . $option . '&controller=licenses'),
 	$controllerName == 'licenses'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES_AUTHORS'),
-	'index.php?option=' . $option . '&controller=authors',
+	JRoute::_('index.php?option=' . $option . '&controller=authors'),
 	$controllerName == 'authors'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES_ROLES'),
-	'index.php?option=' . $option . '&controller=roles',
+	JRoute::_('index.php?option=' . $option . '&controller=roles'),
 	$controllerName == 'roles'
 );
 require_once(JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_plugins' . DS . 'helpers' . DS . 'plugins.php');
@@ -102,18 +102,18 @@ if ($canDo->get('core.manage'))
 {
 	JSubMenuHelper::addEntry(
 		JText::_('COM_RESOURCES_PLUGINS'),
-		'index.php?option=' . $option . '&controller=plugins',
+		JRoute::_('index.php?option=' . $option . '&controller=plugins'),
 		$controllerName == 'plugins'
 	);
 }
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES_IMPORT'),
-	'index.php?option=' . $option . '&controller=import',
+	JRoute::_('index.php?option=' . $option . '&controller=import'),
 	$controllerName == 'import'
 );
 JSubMenuHelper::addEntry(
 	JText::_('COM_RESOURCES_IMPORTHOOK'),
-	'index.php?option=' . $option . '&controller=importhooks',
+	JRoute::_('index.php?option=' . $option . '&controller=importhooks'),
 	$controllerName == 'importhooks'
 );
 

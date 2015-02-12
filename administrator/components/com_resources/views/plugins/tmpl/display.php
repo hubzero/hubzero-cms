@@ -34,7 +34,7 @@ JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES
 JToolBarHelper::publishList();
 JToolBarHelper::unpublishList();
 ?>
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<?php echo $this->states; ?>
 
@@ -141,7 +141,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span class="text"><?php echo $alt; ?></span>
 						</span>
 					<?php } else { ?>
-						<a class="state <?php echo $cls; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id[]=<?php echo $row->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+						<a class="state <?php echo $cls; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 							<span class="text"><?php echo $alt; ?></span>
 						</a>
 					<?php } ?>
@@ -156,7 +156,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td nowrap="nowrap">
 					<?php if (in_array($row->element, $this->manage)) { ?>
-						<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=manage&amp;plugin=<?php echo $row->element; ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=manage&plugin=' . $row->element); ?>">
 							<span><?php echo JText::_('COM_RESOURCES_COL_MANAGE'); ?></span>
 						</a>
 					<?php } ?>

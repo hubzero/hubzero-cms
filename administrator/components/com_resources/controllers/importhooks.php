@@ -39,7 +39,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Display imports
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -68,7 +68,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Add an Import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -78,7 +78,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an Import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -92,30 +92,29 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 		}
 
 		// get the import object
-		$this->view->hook = new Resources\Model\Import\Hook( $id );
+		$this->view->hook = new Resources\Model\Import\Hook($id);
 
 		// Set any errors
-		if ($this->getErrors())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an Import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// check token
-		JSession::checkToken() or die( 'Invalid Token' );
+		JSession::checkToken() or die('Invalid Token');
 
 		// get request vars
 		$hook = JRequest::getVar('hook', array());
@@ -167,7 +166,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 
 		//inform user & redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			JText::_('COM_RESOURCES_IMPORTHOOK_CREATED'),
 			'passed'
 		);
@@ -211,12 +210,12 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Delete Import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
 		// check token
-		JSession::checkToken() or die( 'Invalid Token' );
+		JSession::checkToken() or die('Invalid Token');
 
 		// get request vars
 		$ids = JRequest::getVar('id', array());
@@ -236,7 +235,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 			if (!$hook->store(true))
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 					$hook->getError(),
 					'error'
 				);
@@ -246,7 +245,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 
 		//inform user & redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			JText::_('COM_RESOURCES_IMPORTHOOK_REMOVED'),
 			'passed'
 		);
@@ -255,7 +254,7 @@ class ResourcesControllerImportHooks extends \Hubzero\Component\AdminController
 	/**
 	 * Method to create import filespace if needed
 	 *
-	 * @param   object  $hook Resources\Model\Import\Hook
+	 * @param   object   $hook  Resources\Model\Import\Hook
 	 * @return  boolean
 	 */
 	private function _createImportFilespace(Resources\Model\Import\Hook $hook)

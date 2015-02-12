@@ -40,7 +40,7 @@ else
 {
 	JToolBarHelper::cancel();
 ?>
-	<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="item-form">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 		<p class="warning"><?php echo JText::_('COM_RESOURCES_ERROR_PLUGIN_NO_INTERFACE'); ?></p>
 
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />

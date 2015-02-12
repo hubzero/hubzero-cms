@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" id="item-form" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="item-form" name="adminForm">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -347,7 +347,7 @@ function submitbutton(pressbutton)
 					fields
 						.on('change', 'select', function (e){
 							var i = $(this).attr('name').replace(/^fields\[(\d+)\]\[type\]/g, "$1");
-							$.get('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type=' + this.value + '&name=' + i, {}, function (response) {
+							$.get("<?php echo JRoute::_('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type='); ?>" + this.value + '&name=' + i, {}, function (response) {
 								$('#fields-' + i + '-options').html(response);
 								//Fields.initOptions();
 							});

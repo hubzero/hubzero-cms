@@ -91,13 +91,13 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 		<?php if ($this->filters['parent_id'] > 0) { ?>
 			<tr>
 				<th colspan="9">
-					<?php echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;id=' . $this->filters['parent_id'] . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>'; ?>
+					<?php echo '<a href="' . JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->filters['parent_id']) . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>'; ?>
 				</th>
 			</tr>
 		<?php } ?>
@@ -268,7 +268,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 						</span>
 						<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
 					<?php } else { ?>
-						<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+						<a class="editlinktip hasTip" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->child_id . '&pid=' . $this->filters['parent_id']); ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
 							<?php echo $this->escape(stripslashes($row->title)); ?>
 						</a>
 						<?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $row->path . '</small>': ''; ?>
@@ -280,7 +280,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span><?php echo $alt; ?></span>
 						</span>
 					<?php } else { ?>
-						<a class="state <?php echo $class;?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+						<a class="state <?php echo $class;?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->child_id . '&pid=' . $this->filters['parent_id'] . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 							<span><?php echo $alt; ?></span>
 						</a>
 					<?php } ?>
@@ -291,7 +291,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 							<span><?php echo $row->groupname; ?></span>
 						</span>
 					<?php } else { ?>
-						<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->child_id; ?>&amp;pid=<?php echo $this->filters['parent_id']; ?>" title="<?php echo JText::_('COM_RESOURCES_CHANGE_ACCESS'); ?>">
+						<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->child_id . '&pid=' . $this->filters['parent_id']); ?>" title="<?php echo JText::_('COM_RESOURCES_CHANGE_ACCESS'); ?>">
 							<span><?php echo JText::_($row->groupname); ?></span>
 						</a>
 					<?php } ?>

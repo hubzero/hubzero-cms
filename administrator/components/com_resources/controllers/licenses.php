@@ -37,9 +37,24 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Executes a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+
+		$this->registerTask('orderup', 'reorder');
+		$this->registerTask('orderdown', 'reorder');
+
+		parent::execute();
+	}
+
+	/**
 	 * List resource types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -48,34 +63,35 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'search' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'ordering'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['search']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'ordering'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 
 		// Instantiate an object
 		$rt = new ResourcesLicense($this->database);
@@ -113,12 +129,9 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -126,31 +139,17 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Add a new type
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit a record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
+		$this->view;
 
-		if ($row)
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
 			$id = JRequest::getVar('id', array(0));
@@ -160,27 +159,28 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 			}
 
 			// Load the object
-			$this->view->row = new ResourcesLicense($this->database);
-			$this->view->row->load($id);
+			$row = new ResourcesLicense($this->database);
+			$row->load($id);
 		}
 
+		$this->view->row = $row;
+
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -222,7 +222,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_RESOURCES_ITEM_SAVED')
 		);
 	}
@@ -230,7 +230,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 	/**
 	 * Remove one or more types
 	 *
-	 * @return     void Redirects back to main listing
+	 * @return  void  Redirects back to main listing
 	 */
 	public function removeTask()
 	{
@@ -246,7 +246,7 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 		{
 			// Redirect with error message
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
 			);
@@ -263,41 +263,23 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
-	}
-
-	/**
-	 * Move an item down up the ordering
-	 *
-	 * @return     void
-	 */
-	public function orderupTask()
-	{
-		$this->reorderTask(-1);
-	}
-
-	/**
-	 * Move an item down in the ordering
-	 *
-	 * @return     void
-	 */
-	public function orderdownTask()
-	{
-		$this->reorderTask(1);
 	}
 
 	/**
 	 * Reorders a resource child
 	 * Redirects to parent resource's children listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function reorderTask($dir = 0)
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
+
+		$dir = $this->_task == 'orderup' ? -1 : 1;
 
 		// Incoming
 		$id = JRequest::getVar('id', array(0), '', 'array');
@@ -310,17 +292,19 @@ class ResourcesControllerLicenses extends \Hubzero\Component\AdminController
 		$row->move($dir);
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 }

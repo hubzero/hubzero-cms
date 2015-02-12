@@ -40,7 +40,7 @@ function dirup()
 	var urlquery = frames['imgManager'].location.search.substring(1);
 	var curdir = urlquery.substring(urlquery.indexOf('listdir=')+8);
 	var listdir = curdir.substring(0,curdir.lastIndexOf('/'));
-	frames['imgManager'].location.href='index.php?option=com_resources&controller=media&task=list&tmpl=component&listdir=' + listdir;
+	frames['imgManager'].location.href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component&listdir=');?>" + listdir;
 }
 
 function goUpDir()
@@ -48,11 +48,11 @@ function goUpDir()
 	var listdir = document.getElementById('listdir');
 	var selection = document.forms[0].dirPath;
 	var dir = selection.options[selection.selectedIndex].value;
-	frames['imgManager'].location.href='index.php?option=com_resources&controller=media&task=list&tmpl=component&listdir=' + listdir.value +'&subdir='+ dir;
+	frames['imgManager'].location.href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component&listdir=');?>" + listdir.value + '&subdir=' + dir;
 }
 </script>
 
-<form action="index.php" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
 	<p><?php echo JText::sprintf('COM_RESOURCES_MEDIA_PATH', $this->path); ?></p>
 
 	<fieldset>
@@ -62,7 +62,7 @@ function goUpDir()
 		</label>
 
 		<div id="themanager" class="manager">
-			<iframe src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=list&amp;tmpl=component&amp;listdir=<?php echo $this->listdir; ?>&amp;subdir=<?php echo $this->subdir; ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
+			<iframe src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir); ?>" name="imgManager" id="imgManager" width="98%" height="180"></iframe>
 		</div>
 	</fieldset>
 

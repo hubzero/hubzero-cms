@@ -52,7 +52,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=com_resources&amp;controller=import" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset class="adminform">
 		<table class="admintable">
 			<thead>
@@ -107,5 +107,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

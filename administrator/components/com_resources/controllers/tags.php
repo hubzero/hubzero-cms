@@ -39,7 +39,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 	/**
 	 * Manage tags on a resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -75,12 +75,9 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 		$this->view->objtags->tagMen = implode(', ', $myrawtagarray);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -91,7 +88,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 	 * Saves changes to the tag list on a resource
 	 * Redirects back to main resource listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -118,7 +115,7 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=items',
+			JRoute::_('index.php?option=' . $this->_option . '&controller=items', false),
 			JText::sprintf('COM_RESOURCES_TAGS_UPDATED', $id)
 		);
 	}
@@ -126,11 +123,13 @@ class ResourcesControllerTags extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect('index.php?option=' . $this->_option . '&controller=items');
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=items', false)
+		);
 	}
 }
 

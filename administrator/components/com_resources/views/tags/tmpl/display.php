@@ -58,7 +58,7 @@ function addtag(tag)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
 	<fieldset class="adminform">
 		<legend><span><?php echo JText::_('COM_RESOURCES_TAGS_CREATE'); ?></span></legend>
 

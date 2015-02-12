@@ -39,14 +39,12 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Upload a file or create a new folder
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
-
-		$this->view->setLayout('display');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar('listdir', '', 'post');
@@ -184,14 +182,12 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Delete a folder and contents
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefolderTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit('Invalid Token');
-
-		$this->view->setLayout('display');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar('listdir', '');
@@ -250,14 +246,12 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Deletes a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function deletefileTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit('Invalid Token');
-
-		$this->view->setLayout('display');
 
 		// Incoming directory (this should be a path built from a resource ID and its creation year/month)
 		$listdir = JRequest::getVar('listdir', '');
@@ -314,7 +308,7 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Display an upload form and file listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -362,22 +356,21 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Lists all files and folders for a given directory
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function listTask()
 	{
@@ -437,21 +430,19 @@ class ResourcesControllerMedia extends \Hubzero\Component\AdminController
 		$this->view->folders = $folders;
 		$this->view->config = $this->config;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
+
 		$this->view->display();
 	}
 
 	/**
 	 * Scans directory and builds multi-dimensional array of all files and sub-directories
 	 *
-	 * @param      string $base Directory to scan
-	 * @return     array
+	 * @param   string  $base  Directory to scan
+	 * @return  array
 	 */
 	private function _recursiveListDir($base)
 	{

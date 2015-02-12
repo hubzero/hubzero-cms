@@ -37,9 +37,22 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Determines task being called and attempts to execute it
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * List resource types
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -99,12 +112,9 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		$this->view->cats = $rt->getTypes('0');
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -112,31 +122,15 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Add a new type
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit a type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		if ($row)
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
 			$id = JRequest::getVar('id', array(0));
@@ -146,31 +140,32 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 			}
 
 			// Load the object
-			$this->view->row = new ResourcesType($this->database);
-			$this->view->row->load($id);
+			$row = new ResourcesType($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
 
 		// Get the categories
 		$this->view->categories = $this->view->row->getTypes(0);
 		$this->view->config = $this->config;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a type
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -263,9 +258,14 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		if ($this->_task == 'apply')
+		{
+			return $this->editTask($row);
+		}
+
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_RESOURCES_ITEM_SAVED')
 		);
 	}
@@ -273,9 +273,9 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	/**
 	 * Strip any non-alphanumeric characters and make lowercase
 	 *
-	 * @param      string  $txt    String to normalize
-	 * @param      boolean $dashes Allow dashes and underscores
-	 * @return     string
+	 * @param   string   $txt     String to normalize
+	 * @param   boolean  $dashes  Allow dashes and underscores
+	 * @return  string
 	 */
 	private function _normalize($txt, $dashes=false)
 	{
@@ -290,7 +290,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	/**
 	 * Remove one or more types
 	 *
-	 * @return     void Redirects back to main listing
+	 * @return  void  Redirects back to main listing
 	 */
 	public function removeTask()
 	{
@@ -306,7 +306,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 		{
 			// Redirect with error message
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
 			);
@@ -324,7 +324,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 			{
 				// Redirect with error message
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					JText::sprintf('COM_RESOURCES_TYPE_BEING_USED', $id),
 					'error'
 				);
@@ -337,7 +337,7 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
 	}
@@ -345,17 +345,19 @@ class ResourcesControllerTypes extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
-		$this->setRedirect('index.php?option=' . $this->_option . '&controller=' . $this->_controller);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
 	 * Retrieve an element's options (typically called via AJAX)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function elementTask()
 	{

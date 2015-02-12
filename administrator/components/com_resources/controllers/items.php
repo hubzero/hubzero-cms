@@ -52,7 +52,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		//$this->registerTask('publish', 'state');
 		//$this->registerTask('unpublish', 'state');
 
-		$this->registerTask('add', 'editTask');
+		$this->registerTask('add', 'edit');
 
 		$this->registerTask('orderup', 'reorder');
 		$this->registerTask('orderdown', 'reorder');
@@ -63,7 +63,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	/**
 	 * Lists standalone resources
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -72,44 +72,45 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.resources.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.resources.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.resources.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.resources.search',
+				'search',
+				''
+			)),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.resources.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.resources.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			'status' => $app->getUserStateFromRequest(
+				$this->_option . '.resources.status',
+				'status',
+				'all'
+			),
+			'type' => $app->getUserStateFromRequest(
+				$this->_option . '.resources.type',
+				'type',
+				''
+			)
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.resources.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['search']   = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.resources.search',
-			'search',
-			''
-		)));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.resources.sort',
-			'filter_order',
-			'created'
-			));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.resources.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-		$this->view->filters['status']   = trim($app->getUserStateFromRequest(
-			$this->_option . '.resources.status',
-			'status',
-			'all'
-		));
-		$this->view->filters['type']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.resources.type',
-			'type',
-			''
-		));
 
 		$model = new ResourcesResource($this->database);
 
@@ -132,12 +133,9 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$this->view->types = $rt->getMajorTypes();
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -147,7 +145,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	/**
 	 * List child resources of a parent resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function childrenTask()
 	{
@@ -165,40 +163,41 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		);
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['parent_id'] = $this->view->pid;
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.children.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'parent_id' => $this->view->pid,
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.children.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.children.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.children.search',
+				'search',
+				''
+			)),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.children.sort',
+				'filter_order',
+				'ordering'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.children.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			'status' => $app->getUserStateFromRequest(
+				$this->_option . '.children.status',
+				'status',
+				'all'
+			)
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.children.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['search']   = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.children.search',
-			'search',
-			''
-		)));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.children.sort',
-			'filter_order',
-			'ordering'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.children.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		$this->view->filters['status']   = trim($app->getUserStateFromRequest(
-			$this->_option . '.children.status',
-			'status',
-			'all'
-		));
 
 		// Get parent info
 		$this->view->parent = new ResourcesResource($this->database);
@@ -219,12 +218,9 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -234,12 +230,10 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	/**
 	 * List "child" resources without any parent associations
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function orphansTask()
 	{
-		$this->view->setLayout('children');
-
 		$this->view->pid = '-1';
 
 		// Get configuration
@@ -247,40 +241,41 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['parent_id'] = $this->view->pid;
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.orphans.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'parent_id' => $this->view->pid,
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.orphans.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.orphans.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.orphans.search',
+				'search',
+				''
+			)),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.orphans.sort',
+				'filter_order',
+				'created'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.orphans.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			'status' => $app->getUserStateFromRequest(
+				$this->_option . '.orphans.status',
+				'status',
+				'all'
+			)
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.orphans.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['search']   = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.orphans.search',
-			'search',
-			''
-		)));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.orphans.sort',
-			'filter_order',
-			'created'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.orphans.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-		$this->view->filters['status']   = trim($app->getUserStateFromRequest(
-			$this->_option . '.orphans.status',
-			'status',
-			'all'
-		));
 
 		$model = new ResourcesResource($this->database);
 
@@ -304,22 +299,21 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$this->view->sections = $rt->getTypes(29);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('children')
+			->display();
 	}
 
 	/**
 	 * Show the ratings for a resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function ratingsTask()
 	{
@@ -339,12 +333,9 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -354,7 +345,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	/**
 	 * Show a form for adding a child to a resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addchildTask()
 	{
@@ -373,7 +364,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if (!$pid)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_RESOURCES_ERROR_MISSING_PARENT_ID'),
 				'error'
 			);
@@ -486,9 +477,9 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	 * Attaches a resource as a child to another resource
 	 * Redirects to parent's children listing
 	 *
-	 * @param      integer $id  ID of the child
-	 * @param      integer $pid ID of the parent
-	 * @return     void
+	 * @param   integer  $id   ID of the child
+	 * @param   integer  $pid  ID of the parent
+	 * @return  void
 	 */
 	public function _attachChild($id, $pid)
 	{
@@ -496,7 +487,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if (!$pid)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_RESOURCES_ERROR_MISSING_PARENT_ID'),
 				'error'
 			);
@@ -506,7 +497,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false),
 				JText::_('COM_RESOURCES_ERROR_MISSING_CHILD_ID'),
 				'error'
 			);
@@ -543,27 +534,27 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if ($this->getError())
 		{
 			// Redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
-				$this->getError(),
-				'error'
-			);
+			$this->setMessage($this->getError(), 'error');
 		}
 		else
 		{
 			// Redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
-				JText::_('COM_RESOURCES_ITEM_SAVED')
-			);
+			$this->setMessage(JText::_('COM_RESOURCES_ITEM_SAVED'));
 		}
+
+		// Redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false),
+			$this->getError(),
+			'error'
+		);
 	}
 
 	/**
 	 * Removes a parent/child association
 	 * Redirects to parent's children listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removechildTask()
 	{
@@ -575,7 +566,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if (!$pid)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, true),
 				JText::_('COM_RESOURCES_ERROR_MISSING_PARENT_ID'),
 				'error'
 			);
@@ -586,7 +577,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if (!$ids || count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true),
 				JText::_('COM_RESOURCES_ERROR_MISSING_CHILD_ID'),
 				'error'
 			);
@@ -603,7 +594,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, true),
 			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
 	}
@@ -611,7 +602,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	/**
 	 * Edit form for a new resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -621,14 +612,12 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	/**
 	 * Edit form for a resource
 	 *
-	 * @param      integer $isnew Flag for editing (0) or creating new (1)
-	 * @return     void
+	 * @param   integer  $isnew  Flag for editing (0) or creating new (1)
+	 * @return  void
 	 */
 	public function editTask($isnew=0)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		$this->view->isnew = $isnew;
 
@@ -636,8 +625,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$this->view->rconfig = $this->config;
 
 		// Push some needed styles to the tmeplate
-		$document = JFactory::getDocument();
-		$document->addStyleSheet('components/' . $this->_option . '/assets/css/resources.css');
+		$this->css('resources.css');
 
 		// Incoming resource ID
 		$id = JRequest::getVar('id', array(0));
@@ -669,7 +657,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 				$task = '&task=children&pid=' . $this->view->pid;
 			}
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . $task, false),
 				JText::_('COM_RESOURCES_WARNING_CHECKED_OUT'),
 				'notice'
 			);
@@ -806,23 +794,22 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Saves a resource
 	 * Redirects to main listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -833,8 +820,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$row = new ResourcesResource($this->database);
 		if (!$row->bind($_POST))
 		{
-			echo ResourcesHtml::alert($row->getError());
-			exit();
+			throw new Exception($row->getError(), 400);
 		}
 
 		$isNew = 0;
@@ -1144,6 +1130,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	private function _emailContributors($row, $database)
 	{
 		include_once(JPATH_ROOT . DS . 'components' . DS . $this->_option . DS . 'helpers' . DS . 'helper.php');
+
 		$helper = new ResourcesHelper($row->id, $database);
 		$helper->getContributorIDs();
 
@@ -1203,8 +1190,8 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		// Ensure we have some IDs to work with
 		if (count($ids) < 1)
 		{
-			echo ResourcesHtml::alert(JText::_('COM_RESOURCES_NO_ITEM_SELECTED'));
-			exit;
+			$this->setMessage(JText::_('COM_RESOURCES_NO_ITEM_SELECTED'));
+			return $this->cancelTask();
 		}
 
 		jimport('joomla.filesystem.folder');
@@ -1289,8 +1276,8 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			echo ResourcesHtml::alert(JText::_('COM_RESOURCES_ERROR_MISSING_ID'));
-			exit;
+			$this->setMessage(JText::_('COM_RESOURCES_ERROR_MISSING_ID'));
+			return $this->cancelTask();
 		}
 
 		// Choose access level
@@ -1312,13 +1299,13 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		// Check and store changes
 		if (!$row->check())
 		{
-			echo ResourcesHtml::alert($row->getError());
-			exit;
+			$this->setMessage($row->getError());
+			return $this->cancelTask();
 		}
 		if (!$row->store())
 		{
-			echo ResourcesHtml::alert($row->getError());
-			exit;
+			$this->setMessage($row->getError());
+			return $this->cancelTask();
 		}
 
 		// Redirect
@@ -1380,7 +1367,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::sprintf('COM_RESOURCES_ERROR_SELECT_TO', $this->_task),
 				'error'
 			);
@@ -1428,27 +1415,25 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			}
 		}
 
-		$message = null;
 		if ($i)
 		{
 			if ($publish == -1)
 			{
-				$message = JText::sprintf('COM_RESOURCES_ITEMS_ARCHIVED', $i);
+				$this->setMessage(JText::sprintf('COM_RESOURCES_ITEMS_ARCHIVED', $i));
 			}
 			elseif ($publish == 1)
 			{
-				$message = JText::sprintf('COM_RESOURCES_ITEMS_PUBLISHED', $i);
+				$this->setMessage(JText::sprintf('COM_RESOURCES_ITEMS_PUBLISHED', $i));
 			}
 			elseif ($publish == 0)
 			{
-				$message = JText::sprintf('COM_RESOURCES_ITEMS_UNPUBLISHED', $i);
+				$this->setMessage(JText::sprintf('COM_RESOURCES_ITEMS_UNPUBLISHED', $i));
 			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			$this->buildRedirectURL($pid),
-			$message
+			$this->buildRedirectURL($pid)
 		);
 	}
 
@@ -1481,7 +1466,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	 * Resets the hit count of a resource
 	 * Redirects to edit task for the resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function resethitsTask()
 	{
@@ -1500,13 +1485,12 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$row->store();
 			$row->checkin();
 
-			$this->_message = JText::_('COM_RESOURCES_HITS_RESET');
+			$this->setMessage(JText::_('COM_RESOURCES_HITS_RESET'));
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id,
-			$this->_message
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false)
 		);
 	}
 
@@ -1514,7 +1498,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	 * Resets the rating of a resource
 	 * Redirects to edit task for the resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function resetratingTask()
 	{
@@ -1534,13 +1518,12 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$row->store();
 			$row->checkin();
 
-			$this->_message = JText::_('COM_RESOURCES_RATING_RESET');
+			$this->setMessage(JText::_('COM_RESOURCES_RATING_RESET'));
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id,
-			$this->_message
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false)
 		);
 	}
 
@@ -1548,7 +1531,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	 * Resets the ranking of a resource
 	 * Redirects to edit task for the resource
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function resetrankingTask()
 	{
@@ -1567,13 +1550,12 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$row->store();
 			$row->checkin();
 
-			$this->_message = JText::_('COM_RESOURCES_RANKING_RESET');
+			$this->setMessage(JText::_('COM_RESOURCES_RANKING_RESET'));
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id[]=' . $id,
-			$this->_message
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $id, false)
 		);
 	}
 
@@ -1581,7 +1563,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	 * Checks-in one or more resources
 	 * Redirects to the main listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function checkinTask()
 	{
@@ -1592,24 +1574,21 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		$ids = JRequest::getVar('id', array(0));
 
 		// Make sure we have at least one ID
-		if (count($ids) < 1)
+		if (count($ids))
 		{
-			echo ResourcesHtml::alert(JText::_('COM_RESOURCES_ERROR_MISSING_ID'));
-			exit;
-		}
-
-		// Loop through the IDs
-		foreach ($ids as $id)
-		{
-			// Load the resource and check it in
-			$row = new ResourcesResource($this->database);
-			$row->load($id);
-			$row->checkin();
+			// Loop through the IDs
+			foreach ($ids as $id)
+			{
+				// Load the resource and check it in
+				$row = new ResourcesResource($this->database);
+				$row->load($id);
+				$row->checkin();
+			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -1617,7 +1596,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 	 * Reorders a resource child
 	 * Redirects to parent resource's children lsiting
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function reorderTask()
 	{
@@ -1632,15 +1611,15 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 		// Ensure we have an ID to work with
 		if (!$id)
 		{
-			echo ResourcesHtml::alert(JText::_('COM_RESOURCES_ERROR_MISSING_ID'));
-			exit;
+			$this->setMessage(JText::_('COM_RESOURCES_ERROR_MISSING_ID'));
+			return $this->cancelTask();
 		}
 
 		// Ensure we have a parent ID to work with
 		if (!$pid)
 		{
-			echo ResourcesHtml::alert(JText::_('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
-			exit;
+			$this->setMessage(JText::_('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
+			return $this->cancelTask();
 		}
 
 		// Get the element moving down - item 1
@@ -1678,15 +1657,15 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=children&pid=' . $pid, false)
 		);
 	}
 
 	/**
 	 * Builds the appropriate URL for redirction
 	 *
-	 * @param      integer $pid Parent resource ID (optional)
-	 * @return     string
+	 * @param   integer  $pid  Parent resource ID (optional)
+	 * @return  string
 	 */
 	private function buildRedirectURL($pid=0)
 	{
@@ -1704,7 +1683,7 @@ class ResourcesControllerItems extends \Hubzero\Component\AdminController
 			$url .= '&pid=' . $pid;
 		}
 
-		return $url;
+		return JRoute::_($url, false);
 	}
 
 	/**

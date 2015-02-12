@@ -59,7 +59,7 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="index.php?option=com_resources&amp;controller=import&amp;task=save" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_RESOURCES_IMPORT_EDIT_FIELDSET_DETAILS'); ?></span></legend>

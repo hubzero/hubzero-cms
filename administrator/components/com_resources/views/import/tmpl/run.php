@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 	<p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="index.php?option=com_resources&amp;controller=import&amp;task=dorun" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=dorun'); ?>" method="post" name="adminForm" id="adminForm">
 
 	<fieldset class="adminform">
 		<table class="admintable">
@@ -207,5 +207,6 @@ function submitbutton(pressbutton)
 	<input type="hidden" name="task" value="dorun" />
 	<input type="hidden" name="id" value="<?php echo $this->import->get('id'); ?>" />
 	<input type="hidden" name="dryrun" value="<?php echo $this->dryRun; ?>" />
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

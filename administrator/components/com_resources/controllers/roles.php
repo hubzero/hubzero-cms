@@ -37,9 +37,22 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Determines task being called and attempts to execute it
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * List resource roles
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -48,34 +61,35 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'search' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['search']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'title'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 
 		// Instantiate an object
 		$model = new ResourcesContributorRole($this->database);
@@ -102,12 +116,9 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -115,31 +126,15 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Add a new role
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit a role
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		if ($row)
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming (expecting an array)
 			$id = JRequest::getVar('id', array(0));
@@ -149,9 +144,11 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 			}
 
 			// Load the object
-			$this->view->row = new ResourcesContributorRole($this->database);
-			$this->view->row->load($id);
+			$row = new ResourcesContributorRole($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
 
 		if (!$this->view->row->id)
 		{
@@ -178,22 +175,21 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 		$this->view->types = $types->getMajorTypes();
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a role
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -238,9 +234,14 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 			return;
 		}
 
+		if ($this->_task == 'apply')
+		{
+			return $this->editTask($row);
+		}
+
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_RESOURCES_ITEM_SAVED')
 		);
 	}
@@ -248,7 +249,7 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 	/**
 	 * Remove one or more types
 	 *
-	 * @return     void Redirects back to main listing
+	 * @return  void  Redirects back to main listing
 	 */
 	public function removeTask()
 	{
@@ -264,7 +265,7 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 		{
 			// Redirect with error message
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_RESOURCES_NO_ITEM_SELECTED'),
 				'error'
 			);
@@ -281,7 +282,7 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::sprintf('COM_RESOURCES_ITEMS_REMOVED', count($ids))
 		);
 	}
@@ -289,12 +290,12 @@ class ResourcesControllerRoles extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

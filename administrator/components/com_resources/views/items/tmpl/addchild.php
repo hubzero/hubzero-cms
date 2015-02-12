@@ -34,7 +34,7 @@ JToolBarHelper::title(JText::_('COM_RESOURCES') . ': ' . JText::_('COM_RESOURCES
 JToolBarHelper::cancel();
 
 ?>
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<h3><?php echo stripslashes($this->parent->title); ?></h3>
 
 	<fieldset class="adminform">

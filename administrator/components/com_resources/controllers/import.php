@@ -37,22 +37,28 @@ defined('_JEXEC') or die('Restricted access');
 class ResourcesControllerImport extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display imports
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		// set layout
-		$this->view->setLayout('display');
-
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// get all imports from archive
@@ -66,23 +72,15 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		$this->view->imports = $imports;
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Add an Import
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
 	 * Edit an Import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask()
 	{
@@ -93,7 +91,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		$id  = (isset($ids[0])) ? $ids[0] : null;
 
 		// get the import object
-		$this->view->import = new Resources\Model\Import( $id );
+		$this->view->import = new Resources\Model\Import($id);
 
 		// import params
 		$this->view->params = new JParameter($this->view->import->get('params'));
@@ -116,27 +114,26 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		));
 
 		// Set any errors
-		if ($this->getErrors())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an Import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
 		// check token
-		JSession::checkToken() or die( 'Invalid Token' );
+		JSession::checkToken() or die('Invalid Token');
 
 		// get request vars
 		$import = JRequest::getVar('import', array());
@@ -225,7 +222,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 
 		//inform user & redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			JText::_('COM_RESOURCES_IMPORT_CREATED'),
 			'passed'
 		);
@@ -234,7 +231,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Delete Import
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -257,7 +254,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 			if (!$resourceImport->delete())
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 					$resourceImport->getError(),
 					'error'
 				);
@@ -267,7 +264,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 
 		//inform user & redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display', false),
 			JText::_('COM_RESOURCES_IMPORT_REMOVED'),
 			'passed'
 		);
@@ -276,7 +273,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Run Import as Dry Run
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function runTestTask()
 	{
@@ -302,30 +299,26 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		$this->view->import = new \Resources\Model\Import($id);
 
 		// Set any errors
-		if ($this->getErrors())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// force layout
-		$this->view->setLayout('run');
-
-		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('run')
+			->display();
 	}
 
 	/**
 	 * Actually Run Import
 	 * 
-	 * @return  string JSON encoded records that just got inserted or would be
+	 * @return   string  JSON encoded records that just got inserted or would be
 	 */
 	public function doRunTask()
 	{
 		// check token
-		JSession::checkToken() or die( 'Invalid Token' );
+		JSession::checkToken() or die('Invalid Token');
 
 		// start of import
 		$start = microtime(true);
@@ -357,19 +350,27 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 		// outputted with html entities to allow browser json formatter
 		if (JRequest::getInt('format', 0) == 1)
 		{
-			echo htmlentities(json_encode(array('import'=>'success', 'time' => $time, 'records' => $resourceData)));
+			echo htmlentities(json_encode(array(
+				'import'  => 'success',
+				'time'    => $time,
+				'records' => $resourceData
+			)));
 			exit();
 		}
 
 		// return results to user
-		echo json_encode(array('import'=>'success', 'time' => $time, 'records' => $resourceData));
+		echo json_encode(array(
+			'import'  => 'success',
+			'time'    => $time,
+			'records' => $resourceData
+		));
 		exit();
 	}
 
 	/**
 	 * Get progress of import task
 	 * 
-	 * @return  string JSON encoded total and position
+	 * @return  string  JSON encoded total and position
 	 */
 	public function progressTask()
 	{
@@ -396,9 +397,9 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Return Hook for Post Parsing or Post Convert
 	 *
-	 * @param     $type      Hook we want
-	 * @param     $import    Resource Import Model
-	 * @return    Closure
+	 * @param   string   $type    Hook we want
+	 * @param   object   $import  Resource Import Model
+	 * @return  Closure
 	 */
 	private function _hooks($type, $import)
 	{
@@ -448,7 +449,7 @@ class ResourcesControllerImport extends \Hubzero\Component\AdminController
 	/**
 	 * Method to create import filespace if needed
 	 *
-	 * @param   object  $import Resources\Model\Import
+	 * @param   object   $import  Resources\Model\Import
 	 * @return  boolean
 	 */
 	private function _createImportFilespace(Resources\Model\Import $import)

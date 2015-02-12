@@ -81,7 +81,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>: </label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
@@ -262,17 +262,17 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $row->id; ?>
 				</td>
 				<td>
-					<a class="editlinktip hasTip" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->id;  echo $filterstring; ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+					<a class="editlinktip hasTip" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . $filterstring); ?>" title="<?php echo JText::_('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
 						<span><?php echo $this->escape(stripslashes($row->title)); ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="state <?php echo $class; ?> hasTip" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task; ?>&amp;id=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo $alt; ?> :: <?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+					<a class="state <?php echo $class; ?> hasTip" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . $filterstring . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo $alt; ?> :: <?php echo JText::sprintf('COM_RESOURCES_SET_TASK_TO', $task); ?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				</td>
 				<td>
-					<a class="access <?php echo $color_access; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task_access; ?>&amp;id=<?php echo $row->id; echo $filterstring; ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('COM_RESOURCES_CHANGE_ACCESS'); ?>">
+					<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . $filterstring . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('COM_RESOURCES_CHANGE_ACCESS'); ?>">
 						<span><?php echo $this->escape(JText::_($row->groupname)); ?></span>
 					</a>
 				</td>
@@ -291,22 +291,22 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td style="white-space: nowrap">
 					<?php if ($row->children > 0) { ?>
-						<a class="glyph menulist" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=children&amp;pid=<?php echo $row->id; ?>">
+						<a class="glyph menulist" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=children&pid=' . $row->id); ?>">
 							<span><?php echo $row->children; ?></span>
 						</a>
 					<?php } else { ?>
-						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=addchild&amp;pid=<?php echo $row->id; ?>">
+						<a class="state add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addchild&pid=' . $row->id); ?>">
 							<span><?php echo JText::_('COM_RESOURCES_ADD'); ?></span>
 						</a>
 					<?php } ?>
 				</td>
 				<td style="white-space: nowrap">
 					<?php if ($tags > 0) { ?>
-						<a class="glyph tag" href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>">
+						<a class="glyph tag" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tags&id=' . $row->id); ?>">
 							<span><?php echo $tags; ?></span>
 						</a>
 					<?php } else { ?>
-						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=tags&amp;id=<?php echo $row->id; ?>">
+						<a class="state add" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=tags&id=' . $row->id); ?>">
 							<span><?php echo JText::_('COM_RESOURCES_ADD'); ?></span>
 						</a>
 					<?php } ?>

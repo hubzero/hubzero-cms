@@ -57,7 +57,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_RESOURCES_SEARCH_PLACEHOLDER'); ?>" />
@@ -109,7 +109,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->authorid ?>" onclick="isChecked(this.checked, this);" />
+						<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->authorid; ?>" onclick="isChecked(this.checked, this);" />
 					<?php } ?>
 				</td>
 				<td>
@@ -117,7 +117,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.edit')) { ?>
-						<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->authorid; ?>">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->authorid); ?>">
 							<span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : JText::_('COM_RESOURCES_UNKNOWN'); ?></span>
 						</a>
 					<?php } else { ?>
@@ -128,7 +128,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 				</td>
 				<td>
 					<?php if ($row->authorid > 0) { ?>
-						<a class="state <?php echo $scls; ?>" href="index.php?option=com_members&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->authorid; ?>">
+						<a class="state <?php echo $scls; ?>" href="<?php echo JRoute::_('index.php?option=com_members&task=edit&id=' . $row->authorid); ?>">
 							<span><?php echo $stickyAlt; ?></span>
 						</a>
 					<?php } else { ?>

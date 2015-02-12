@@ -171,12 +171,12 @@ function doFileoptions()
 }
 function popratings()
 {
-	window.open('index.php?option=<?php echo $this->option; ?>&task=ratings&id=<?php echo $this->row->id; ?>&no_html=1', 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
+	window.open("<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1'); ?>", 'ratings', 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=400,height=480,directories=no,location=no');
 	return false;
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form" class="editform">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -447,7 +447,7 @@ function popratings()
 			</label>
 			<input type="button" value="<?php echo JText::_('COM_RESOURCES_APPLY'); ?>" onclick="doFileoptions();" />
 		</p>
-		<iframe width="100%" height="400" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;listdir=<?php echo $path . DS . $dir_id; ?>"></iframe>
+		<iframe width="100%" height="400" name="filer" id="filer" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id); ?>"></iframe>
 		<input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
 	<?php
 		if ($this->row->standalone == 1) {
