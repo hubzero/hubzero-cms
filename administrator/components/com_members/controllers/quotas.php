@@ -224,10 +224,17 @@ class MembersControllerQuotas extends \Hubzero\Component\AdminController
 			}
 		}
 
-		if (isset($fields['user_id']) && !is_numeric($fields['user_id']))
+		$user = JFactory::getUser($fields['user_id']);
+
+		if (!is_object($user) || !$user->get('id'))
 		{
-			$fields['user_id'] = JFactory::getUser($fields['user_id'])->get('id');
+			$this->view->task = 'edit';
+			$this->setError(JText::_('COM_MEMBERS_QUOTA_USER_NOT_FOUND'));
+			$this->editTask($row->id);
+			return;
 		}
+
+		$fields['user_id'] = $user->get('id');
 
 		// Try to save
 		if (!$row->save($fields))
