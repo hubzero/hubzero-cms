@@ -31,17 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 
-if (version_compare(JVERSION, '1.6', 'lt'))
-{
-	$jacl = JFactory::getACL();
-	$jacl->addACL($option, 'manage', 'users', 'super administrator');
-	$jacl->addACL($option, 'manage', 'users', 'administrator');
-	$jacl->addACL($option, 'manage', 'users', 'manager');
-}
-
-jimport('joomla.application.component.helper');
-jimport('joomla.application.component.view');
-
+require_once JPATH_COMPONENT_SITE . DS . 'controllers' . DS . 'base.php';
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.activity.php' );
 require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.microblog.php' );
@@ -52,7 +42,6 @@ require_once( JPATH_COMPONENT_ADMINISTRATOR . DS . 'tables' . DS . 'project.todo
 
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'html.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'imghandler.php' );
-include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'autocomplete.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'helper.php' );
 include_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'tags.php' );
 
