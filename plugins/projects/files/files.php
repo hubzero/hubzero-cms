@@ -7167,6 +7167,27 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 				return false;
 			}
 
+			// Destination directory exists?
+			if ($this->subdir && !is_dir($this->prefix . $this->path . DS . $this->subdir))
+			{
+				// Create directory
+				if (!JFolder::create( $this->prefix . $this->path . DS . $this->subdir ))
+				{
+					// Failed to create directory
+					$this->setError( JText::_('COM_PROJECTS_FILES_ERROR_DIR_CREATE') );
+				}
+				else
+				{
+					// Success
+					$created = $this->_git->makeEmptyFolder($this->path, $this->subdir);
+					$commitMsg = JText::_('COM_PROJECTS_CREATED_DIRECTORY') . '  ' . escapeshellarg($this->subdir);
+					if ($this->_git->gitCommit($this->path, $commitMsg))
+					{
+						$assets[] = $this->subdir;
+					}
+				}
+			}
+
 			// Proceed with copy if no error
 			if (!$this->getError())
 			{
