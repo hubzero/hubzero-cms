@@ -193,7 +193,7 @@ class ProjectPubStamp extends JTable
 		}
 
 		$query  = "SELECT * FROM $this->_tbl WHERE projectid=$projectid ";
-		$query .= "AND reference='" . mysql_real_escape_string($reference) . "' AND type='$type' LIMIT 1";
+		$query .= "AND reference='" . ($reference) . "' AND type= " . $this->_db->Quote($type) . " LIMIT 1";
 
 		$this->_db->setQuery( $query );
 		if ($result = $this->_db->loadAssoc())
@@ -224,9 +224,10 @@ class ProjectPubStamp extends JTable
 		$now = JFactory::getDate()->toSql();
 
 		$obj = new ProjectPubStamp($this->_db);
+		$obj->checkStamp( $projectid, $reference, $type );
 
 		// Load record
-		if ($obj->checkStamp( $projectid, $reference, $type ))
+		if ($obj->id)
 		{
 			if ($obj->expires && $obj->expires != '0000-00-00 00:00:00' && $obj->expires < $now)
 			{
