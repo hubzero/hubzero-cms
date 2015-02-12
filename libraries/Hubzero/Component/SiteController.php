@@ -420,7 +420,7 @@ class SiteController extends Object implements ControllerInterface
 	 */
 	public function unregisterTask($task)
 	{
-		unset($this->taskMap[strtolower($task)]);
+		unset($this->_taskMap[strtolower($task)]);
 
 		return $this;
 	}
@@ -460,12 +460,10 @@ class SiteController extends Object implements ControllerInterface
 			// Preserve component messages after redirect
 			if (count($this->componentMessageQueue))
 			{
-				$session = \JFactory::getSession();
-				$session->set('component.message.queue', $this->componentMessageQueue);
+				\JFactory::getSession()->set('component.message.queue', $this->componentMessageQueue);
 			}
 
-			$app = \JFactory::getApplication();
-			$app->redirect($this->_redirect, $this->_message, $this->_messageType);
+			\JFactory::getApplication()->redirect($this->_redirect, $this->_message, $this->_messageType);
 		}
 	}
 
