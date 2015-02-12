@@ -38,32 +38,32 @@ if (!\JFactory::getUser()->authorise('core.manage', $option))
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__. DS . 'helpers' . DS . 'html.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
 $controllerName = \JRequest::getCmd('controller', \JRequest::getCmd('view', 'info'));
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'info';
 }
 
 \JSubMenuHelper::addEntry(
 	\JText::_('COM_SYSTEM_LDAP'),
-	'index.php?option=' . $option . '&controller=ldap',
+	\JRoute::_('index.php?option=' . $option . '&controller=ldap'),
 	$controllerName == 'ldap'
 );
 \JSubMenuHelper::addEntry(
 	\JText::_('COM_SYSTEM_GEO'),
-	'index.php?option=' . $option . '&controller=geodb',
+	\JRoute::_('index.php?option=' . $option . '&controller=geodb'),
 	$controllerName == 'geodb'
 );
 \JSubMenuHelper::addEntry(
 	\JText::_('COM_SYSTEM_APC'),
-	'index.php?option=' . $option . '&controller=apc',
+	\JRoute::_('index.php?option=' . $option . '&controller=apc'),
 	$controllerName == 'apc'
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
 $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller

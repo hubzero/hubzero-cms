@@ -380,8 +380,8 @@ class Apc extends AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=host',
-			JText::_('Cache cleared')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=host', false),
+			\JText::_('Cache cleared')
 		);
 	}
 

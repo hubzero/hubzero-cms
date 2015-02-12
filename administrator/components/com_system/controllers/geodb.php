@@ -90,7 +90,7 @@ class Geodb extends AdminController
 		$table->store();
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			\JText::_('COM_SYSTEM_GEO_IMPORT_COMPLETE')
 		);
 	}

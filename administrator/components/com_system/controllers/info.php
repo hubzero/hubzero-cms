@@ -47,7 +47,7 @@ class Info extends AdminController
 	{
 		if (!$this->juser->authorise('core.admin'))
 		{
-			return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
+			throw new Exception(\JText::_('JERROR_ALERTNOAUTHOR'), 404);
 		}
 
 		include_once(JPATH_COMPONENT . DS . 'models' . DS . 'info.php');

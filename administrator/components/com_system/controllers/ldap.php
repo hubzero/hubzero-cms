@@ -91,8 +91,8 @@ class Ldap extends AdminController
 		$table->store();
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			JText::_('COM_SYSTEM_LDAP_IMPORT_COMPLETE')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_SYSTEM_LDAP_IMPORT_COMPLETE')
 		);
 	}
 
@@ -105,29 +105,23 @@ class Ldap extends AdminController
 	{
 		$result = \Hubzero\Utility\Ldap::deleteAllGroups();
 
-		$messageType = 'info';
-		$message     = \JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
+		$this->setMessage(\JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'), 'info');
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
-			$messageType = 'error';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]), 'error');
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
-			$messageType = 'warning';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])), 'warning');
 		}
 		elseif (isset($result['success']))
 		{
-			$messageType = 'passed';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_GROUP_ENTRIES_DELETED', $result['deleted']);
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_GROUP_ENTRIES_DELETED', $result['deleted']), 'passed');
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			$message,
-			$messageType
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -140,29 +134,23 @@ class Ldap extends AdminController
 	{
 		$result = \Hubzero\Utility\Ldap::deleteAllUsers();
 
-		$messageType = 'info';
-		$message     = \JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
+		$this->setMessage(\JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'), 'info');
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
-			$messageType = 'error';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]), 'error');
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
-			$messageType = 'warning';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])), 'warning');
 		}
 		elseif (isset($result['success']))
 		{
-			$messageType = 'passed';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']);
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_USER_ENTRIES_DELETED', $result['deleted']), 'passed');
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			$message,
-			$messageType
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -175,29 +163,23 @@ class Ldap extends AdminController
 	{
 		$result = \Hubzero\Utility\Ldap::syncAllGroups();
 
-		$messageType = 'info';
-		$message     = \JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
+		$this->setMessage(\JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'), 'info');
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
-			$messageType = 'error';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]), 'error');
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
-			$messageType = 'warning';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])), 'warning');
 		}
 		elseif (isset($result['success']))
 		{
-			$messageType = 'passed';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']);
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_GROUPS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']), 'passed');
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			$message,
-			$messageType
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -210,29 +192,26 @@ class Ldap extends AdminController
 	{
 		$result = \Hubzero\Utility\Ldap::syncAllUsers();
 
-		$messageType = 'info';
-		$message     = \JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN');
+		$this->setMessage(
+			\JText::_('COM_SYSTEM_LDAP_ERROR_RESULT_UNKNOWN'),
+			'info'
+		);
 
 		if (isset($result['errors']) && isset($result['fatal']) && !empty($result['fatal'][0]))
 		{
-			$messageType = 'error';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]);
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_ERROR_EXPORT_FAILED', $result['fatal'][0]), 'error');
 		}
 		elseif (isset($result['errors']) && isset($result['warning']) && !empty($result['warning'][0]))
 		{
-			$messageType = 'warning';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning']));
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_WARNING_COMPLETED_WITH_ERRORS', count($result['warning'])), 'warning');
 		}
 		elseif (isset($result['success']))
 		{
-			$messageType = 'passed';
-			$message     = \JText::sprintf('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']);
+			$this->setMessage(\JText::sprintf('COM_SYSTEM_LDAP_USERS_EXPORTED', $result['added'], $result['modified'], $result['deleted'], $result['unchanged']), 'passed');
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-			$message,
-			$messageType
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

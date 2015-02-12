@@ -34,7 +34,7 @@ JToolBarHelper::title(JText::_('COM_SYSTEM_LDAP_CONFIGURATION'), 'config.png');
 JToolBarHelper::preferences($this->option, '550');
 ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-50 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SYSTEM_LDAP_HUBCONFIG'); ?></legend>
