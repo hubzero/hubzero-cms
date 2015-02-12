@@ -142,9 +142,9 @@ endforeach;
 				</div>
 				<div class="forgots">
 					<?php if (!isset($user)) : ?>
-						<a class="forgot-username" href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>"><?php echo JText::_('COM_USERS_LOGIN_REMIND');?></a>
+						<a class="forgot-username" href="<?php echo JRoute::_('index.php?option=com_members&task=remind'); ?>"><?php echo JText::_('COM_USERS_LOGIN_REMIND');?></a>
 					<?php endif; ?>
-					<a class="forgot-password" href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>"><?php echo JText::_('COM_USERS_LOGIN_RESET'); ?></a>
+					<a class="forgot-password" href="<?php echo JRoute::_('index.php?option=com_members&task=reset'); ?>"><?php echo JText::_('COM_USERS_LOGIN_RESET'); ?></a>
 				</div>
 				<input type="hidden" name="option" value="com_users" />
 				<input type="hidden" name="authenticator" value="hubzero" />
