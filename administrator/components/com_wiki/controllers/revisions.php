@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -39,12 +39,15 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
 		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
 		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
+
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
 
 		parent::execute();
 	}
@@ -52,7 +55,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	/**
 	 * Display all revisions for a page in the wiki(s)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -60,45 +63,46 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 		$config = JFactory::getConfig();
 
-		$this->view->filters = array();
-		// Paging
-		$this->view->filters['limit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			// Paging
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			// Sorting
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'version'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			// Filters
+			'search' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'pageid' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.pageid',
+				'pageid',
+				0,
+				'int'
+			),
+			'state' => array(0, 1, 2)
 		);
-		$this->view->filters['start']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		// Sorting
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'version'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
 		$this->view->filters['sortby'] = $this->view->filters['sort']  . ' ' . $this->view->filters['sort_Dir'];
-		// Filters
-		$this->view->filters['search'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		$this->view->filters['pageid']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.pageid',
-			'pageid',
-			0,
-			'int'
-		);
-		$this->view->filters['state'] = array(0, 1, 2);
 
 		$this->view->page = new WikiModelPage(intval($this->view->filters['pageid']));
 
@@ -127,16 +131,6 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new revision
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit a revision
 	 *
 	 * @param   object  $row  Record
@@ -150,7 +144,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		if (!$pageid)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'error'
 			);
@@ -159,11 +153,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 
 		$this->view->page = new WikiModelPage(intval($pageid));
 
-		if (is_object($row))
-		{
-			$this->view->revision = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -172,8 +162,10 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 				$id = $id[0];
 			}
 
-			$this->view->revision = new WikiModelRevision($id);
+			$row = new WikiModelRevision($id);
 		}
+
+		$this->view->revision = $row;
 
 		if (!$this->view->revision->exists())
 		{
@@ -198,22 +190,11 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save a revision and go back to the edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save a revision
 	 *
-	 * @param   boolean  $redirect
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -227,7 +208,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		$before = $row->get('approved');
 		if (!$row->bind($revision))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -255,7 +236,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -277,28 +258,16 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 			}
 		}
 
-		// Log the change
-		/*$log = new WikiTableLog($this->database);
-		$log->pid = $page->id;
-		$log->uid = $this->juser->get('id');
-		$log->timestamp = date('Y-m-d H:i:s', time());
-		$log->action = ($revision['id']) ? 'revision_edited' : 'revision_created';
-		$log->actorid = $this->juser->get('id');
-		if (!$log->store())
-		{
-			$this->setError($log->getError());
-		}*/
-
 		// Set the redirect
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->get('pageid'),
-				JText::_('COM_WIKI_REVISION_SAVED')
-			);
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $row->get('pageid'), false),
+			JText::_('COM_WIKI_REVISION_SAVED')
+		);
 	}
 
 	/**
@@ -316,7 +285,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 		if (count($ids) <= 0)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
@@ -357,7 +326,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 					// Instantiate a new view
 					$this->view->ids = $ids;
 
-					$this->addComponentMessage(JText::_('COM_WIKI_CONFIRM_DELETE'), 'error');
+					$this->setMessage(JText::_('COM_WIKI_CONFIRM_DELETE'), 'error');
 
 					// Output the HTML
 					$this->view->display();
@@ -379,7 +348,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 						if ($count <= 1)
 						{
 							$this->setRedirect(
-								'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
+								JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 								JText::_('COM_WIKI_ERROR_CANNOT_REMOVE_REVISION'),
 								'error'
 							);
@@ -388,17 +357,6 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 
 						// Delete it
 						$revision->delete();
-
-						// Log the action
-						/*$log = new WikiTableLog($this->database);
-						$log->pid = $pageid;
-						$log->uid = $this->juser->get('id');
-						$log->timestamp = date('Y-m-d H:i:s', time());
-						$log->action = 'revision_removed';
-						$log->actorid = $this->juser->get('id');
-						if (!$log->store()) {
-							$this->setError($log->getError());
-						}*/
 					}
 
 					$msg = JText::sprintf('COM_WIKI_PAGES_DELETED', count($ids));
@@ -406,7 +364,7 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 
 				// Set the redirect
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 					$msg
 				);
 			break;
@@ -436,40 +394,28 @@ class WikiControllerRevisions extends \Hubzero\Component\AdminController
 			if (!$revision->store())
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false),
 					$revision->getError(),
 					'error'
 				);
 				return;
 			}
-
-			// Log the action
-			/*$log = new WikiTableLog($this->database);
-			$log->pid = $pageid;
-			$log->uid = $this->juser->get('id');
-			$log->timestamp = date('Y-m-d H:i:s', time());
-			$log->action = 'revision_approved';
-			$log->actorid = $this->juser->get('id');
-			if (!$log->store())
-			{
-				$this->setError($log->getError());
-			}*/
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . $pageid, false)
 		);
 	}
 
 	/**
 	 * Cancel a task and redirect to main listing
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . JRequest::getInt('pageid', 0)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&pageid=' . JRequest::getInt('pageid', 0), false)
 		);
 	}
 }

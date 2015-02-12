@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" class="editform" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" class="editform" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -105,6 +105,7 @@ function submitbutton(pressbutton)
 					<td>
 						<?php echo $this->row->get('pageid'); ?>
 						<input type="hidden" name="fields[pageid]" id="field-pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
+						<input type="hidden" name="pageid" value="<?php echo $this->escape($this->row->get('pageid')); ?>" />
 					</td>
 				</tr>
 			</tbody>

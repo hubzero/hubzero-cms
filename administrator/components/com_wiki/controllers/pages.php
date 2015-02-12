@@ -46,6 +46,12 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		define('WIKI_SUBPAGE_SEPARATOR', $this->config->get('subpage_separator', '/'));
 		define('WIKI_MAX_PAGENAME_LENGTH', $this->config->get('max_pagename_length', 100));
 
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('accesspublic', 'access');
+		$this->registerTask('accessregistered', 'access');
+		$this->registerTask('accessspecial', 'access');
+
 		parent::execute();
 	}
 
@@ -139,16 +145,6 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new entry
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit an entry
 	 *
 	 * @return  void
@@ -157,11 +153,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -171,8 +163,10 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 			}
 
 			// Load the article
-			$this->view->row = new WikiModelPage(intval($id));
+			$row = new WikiModelPage(intval($id));
 		}
+
+		$this->view->row = $row;
 
 		if (!$this->view->row->exists())
 		{
@@ -193,22 +187,11 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save changes to an entry and go back to edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save changes to an entry
 	 *
-	 * @param   boolean  $redirect  Redirect (true) or fall through to edit form (false) ?
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -221,7 +204,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		$row = new WikiModelPage(intval($page['id']));
 		if (!$row->bind($page))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -239,32 +222,32 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		if (!$row->updateAuthors($page['authors']))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		$row->tag($page['tags']);
 
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			// Set the redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_WIKI_PAGE_SAVED')
-			);
+			JRequest::setVar('id', $row->get('id'));
+
+			return $this->editTask($row);
 		}
 
-		JRequest::setVar('id', $row->get('id'));
-
-		$this->editTask($row);
+		// Set the redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_WIKI_PAGE_SAVED')
+		);
 	}
 
 	/**
@@ -281,7 +264,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		if (count($ids) <= 0)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
@@ -321,7 +304,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 					// Instantiate a new view
 					$this->view->ids = $ids;
 
-					$this->addComponentMessage(JText::_('COM_WIKI_CONFIRM_DELETE'), 'error');
+					$this->setMessage(JText::_('COM_WIKI_CONFIRM_DELETE'), 'error');
 
 					// Output the HTML
 					$this->view->display();
@@ -342,7 +325,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 				}
 
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					JText::sprintf('COM_WIKI_PAGES_DELETED', count($ids))
 				);
 			break;
@@ -350,42 +333,11 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Set the access level to public
-	 *
-	 * @return  void
-	 */
-	public function accesspublicTask()
-	{
-		$this->accessTask(0);
-	}
-
-	/**
-	 * Set the access level to registered users
-	 *
-	 * @return  void
-	 */
-	public function accessregisteredTask()
-	{
-		$this->accessTask(1);
-	}
-
-	/**
-	 * Set the access level to special
-	 *
-	 * @return  void
-	 */
-	public function accessspecialTask()
-	{
-		$this->accessTask(2);
-	}
-
-	/**
 	 * Set the access level
 	 *
-	 * @param   integer  $access  Access value to set
 	 * @return  void
 	 */
-	public function accessTask($access = 0)
+	public function accessTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or jexit('Invalid Token');
@@ -397,11 +349,18 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
 			return;
+		}
+
+		switch ($this->getTask())
+		{
+			case 'accesspublic':     $access = 0; break;
+			case 'accessregistered': $access = 1; break;
+			case 'accessspecial':    $access = 2; break;
 		}
 
 		// Load the article
@@ -412,7 +371,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		if (!$row->store())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -420,7 +379,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -441,7 +400,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
@@ -455,7 +414,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		if (!$page->store())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$page->getError(),
 				'error'
 			);
@@ -464,7 +423,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -485,7 +444,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_WIKI_ERROR_MISSING_ID'),
 				'warning'
 			);
@@ -498,17 +457,12 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 
 		if (!$page->store())
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				$page->getError(),
-				'error'
-			);
-			return;
+			$this->setMessage($page->getError(), 'error');
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -520,7 +474,7 @@ class WikiControllerPages extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }
