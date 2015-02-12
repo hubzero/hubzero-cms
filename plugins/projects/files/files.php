@@ -6904,6 +6904,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			$base = substr($base, 0, strlen($base)-13);
 		}
+		if (substr($base, -3) == 'api')
+		{
+			$base = substr($base, 0, strlen($base)-3);
+		}
 		$this->base = $base;
 
 		// File actions
@@ -7038,6 +7042,8 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		{
 			foreach ($docs as $file)
 			{
+				$file = $this->subdir ? substr($file, strlen($this->subdir) +1) : $file;
+
 				$metadata = $this->getItemMetadata(trim($file));
 				if ($metadata)
 				{
@@ -7087,44 +7093,109 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 	}
 
 	/**
-	 * Insert file(s) into project via upload or copy (TBD)
+	 * Insert file(s) into project via upload or local copy
 	 *
 	 * @return     returns array with inserted file(s) info
 	 */
 	public function insertFile()
 	{
 		// Incoming
-		$dataUrl  = isset($this->_data->dataUrl)
-					? $this->_data->dataUrl
-					: JRequest::getVar( 'dataUrl', '' ); // path to local file to copy from
+		$dataPath  = isset($this->_data->dataPath)
+					? $this->_data->dataPath
+					: JRequest::getVar( 'data_path', '' ); // path to local or remote file to copy
 		$results  = array();
 		$assets   = array();
 
-		// Via local copy
-		if ($dataUrl && is_file($dataUrl))
+		// Via remote/local copy
+		if ($dataPath)
 		{
-			$file 		= ProjectsHtml::makeSafeFile(basename($dataUrl));
+			$dataPath = urldecode($dataPath);
+
+			// Figure destination
+			$file 		= ProjectsHtml::makeSafeFile(basename($dataPath));
 			$localPath	= $this->subdir ? $this->subdir . DS . $file : $file;
 			$fullPath	= $this->prefix . $this->path . DS . $localPath;
 
-			if (!JFile::copy($dataUrl, $fullPath))
+			// Are we updating?
+			$newFile = is_file($fullPath) ? false : true;
+
+			$tempPath = NULL;
+
+			// Local file not found? Try to download as remote
+			if (!is_file($dataPath))
 			{
-				$this->setError(JText::_('Error inserting file into project'));
+				$ch = curl_init();
+				curl_setopt($ch, $dataPath);
+
+				$tempPath = $this->getProjectPath ($this->_project->alias, 'temp') . DS . $file; // temp
+				$tempFile = fopen($tempPath, 'w+');
+
+				if (!$tempFile)
+				{
+					$this->setError(JText::_('There was a problem creating a temp file for remote data'));
+					return false;
+				}
+
+				// Download file to a temp directory
+				if (curl_setopt($ch, CURLOPT_URL, $dataPath))
+				{
+					curl_setopt($ch, CURLOPT_FILE, $tempFile);
+					curl_exec ($ch);
+					$success = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+					if ($success !== 200)
+					{
+						$this->setError(JText::_('Error: failed to download data file'));
+						unlink($tempPath);
+					}
+				}
+				else
+				{
+					$this->setError(JText::_('Error: failed to locate or access data path.'));
+				}
+
+				// Close connections
+				curl_close ($ch);
+				fclose($tempFile);
+			}
+
+			$dataPath = $tempPath && is_file($tempPath) ? $tempPath : $dataPath;
+
+			// Have file?
+			if (!is_file($dataPath))
+			{
+				$this->setError(JText::_('Error: source data file not found.'));
 				return false;
 			}
 
-			// Git add & commit
-			$commitMsg 		= '';
-			$this->_git->gitAdd($this->path, $localPath, $commitMsg);
-			$this->_git->gitCommit($this->path, $commitMsg);
+			// Proceed with copy if no error
+			if (!$this->getError())
+			{
+				if (!JFile::copy($dataPath, $fullPath))
+				{
+					$this->setError(JText::_('Error inserting file into project'));
+					return false;
+				}
+				elseif ($tempPath && is_file($tempPath))
+				{
+					unlink($tempPath);
+				}
 
-			// Store in session
-			$this->registerUpdate('uploaded', $localPath);
+				// Git add & commit
+				$commitMsg 		= '';
+				$this->_git->gitAdd($this->path, $localPath, $commitMsg, $newFile);
 
-			// After upload actions
-			$this->onAfterUpdate();
+				if ($this->_git->gitCommit($this->path, $commitMsg))
+				{
+					// Store in session
+					$updateType = $newFile ? 'uploaded' : 'updated';
+					$this->registerUpdate($updateType, $localPath);
+				}
 
-			$assets[] = $localPath;
+				// After upload actions
+				$this->onAfterUpdate();
+			}
+
+			$assets[] = $file;
 		}
 		else
 		{
@@ -7252,7 +7323,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$obj->type			= 'file';
 		$obj->name			= basename($file);
 		$obj->localPath		= $this->subdir ? $this->subdir . DS . $file : $file;
-		$fullPath			= $this->prefix . $this->path . DS . $file;
+		$fullPath			= $this->prefix . $this->path . DS . $obj->localPath;
 
 		// Dir path
 		$obj->dirname 		= dirname($obj->localPath) == '.' ? NULL : dirname($obj->localPath);

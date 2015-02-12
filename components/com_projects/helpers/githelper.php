@@ -478,12 +478,17 @@ class ProjectsGitHelper extends JObject
 	 */
 	public function gitCommit ($path = '', $commitMsg = '', $author = '', $date = '' )
 	{
-		// Get author profile
-		$author  = $author ? $author : $this->getGitAuthor();
+		// Check if there is anything to commit
+		$changes = $this->callGit($path, ' diff --cached --name-only');
+		if (empty($changes))
+		{
+			return false;
+		}
 
-		chdir($this->_prefix . $path);
 		$date = $date ? ' --date="' . $date . '"' : '';
-		exec($this->_gitpath . ' commit -a -m "' . $commitMsg . '" --author="' . $author . '"' . $date . '  2>&1', $out);
+		$author = $author ? $author : $this->getGitAuthor();
+
+		$this->callGit($path, ' commit -a -m "' . $commitMsg . '" --author="' . $author . '"' . $date . '  2>&1');
 
 		return true;
 	}
