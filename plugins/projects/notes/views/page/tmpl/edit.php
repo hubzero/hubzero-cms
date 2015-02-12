@@ -110,8 +110,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 	<?php if ($this->page->exists() && $this->page->access('edit')) { ?>
 		<p><?php echo JText::sprintf('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', JRoute::_($this->page->link('rename'))); ?></p>
 	<?php } ?>
-		<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#image')); ?></p>
-		<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#file')); ?></p>
+		<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#image')); ?></p>
+		<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#file')); ?></p>
 
 		<div id="file-manager" data-instructions="<?php echo JText::_('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
 			<iframe name="filer" id="filer" src="<?php echo rtrim(JURI::getInstance()->base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
@@ -157,8 +157,8 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 					<div id="file-uploader-list"></div>
 				</div>
 				<div class="col span-half omega">
-					<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#image')); ?></p>
-					<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=' . $this->option . '&scope=' . $this->page->get('scope') . '&pagename=Help:WikiMacros#file')); ?></p>
+					<p><?php echo JText::sprintf('COM_WIKI_IMAGE_MACRO_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#image')); ?></p>
+					<p><?php echo JText::sprintf('COM_WIKI_FILE_MACRO_HINT', JRoute::_('index.php?option=com_wiki&pagename=Help:WikiMacros#file')); ?></p>
 				</div>
 			</div><!-- / .grid -->
 		</div>
