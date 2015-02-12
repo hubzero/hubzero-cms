@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -37,6 +37,23 @@ defined('_JEXEC') or die('Restricted access');
 class WishlistControllerComments extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+		$this->registerTask('publicize', 'anon');
+		$this->registerTask('anonymize', 'anon');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of entries
 	 *
 	 * @return     void
@@ -48,18 +65,44 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['search']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		));
-		$this->view->filters['wish']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.wish',
-			'wish',
-			0,
-			'int'
-		));
+		$this->view->filters = array(
+			'search' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
+			'wish' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.wish',
+				'wish',
+				0,
+				'int'
+			),
+			// Get sorting variables
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
+		);
+		$this->view->filters['sortby'] = $this->view->filters['sort'];
 		if (!$this->view->filters['wish'])
 		{
 			$this->setRedirect(
@@ -69,32 +112,6 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 			);
 			return;
 		}
-		// Get sorting variables
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'title'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		$this->view->filters['sortby'] = $this->view->filters['sort'];
-
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
 
 		$this->view->wish = new Wish($this->database);
 		$this->view->wish->load($this->view->filters['wish']);
@@ -103,13 +120,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$this->view->wishlist->load($this->view->wish->wishlist);
 
 		$obj = new \Hubzero\Item\Comment($this->database);
-		//$obj->getResults(array('id' => $wishid, 'category' => 'wish'));
 
-		// Get record count
-		//$this->view->total = $obj->get_count($this->view->filters['wishlist'], $this->view->filters, true);
-
-		// Get records
-		//$comments1 = $obj->get_wishes($this->view->filters['wishlist'], $this->view->filters, true);
 		$filters = array(
 			'item_type' => 'wish',
 			'parent'    => 0,
@@ -167,26 +178,13 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
 		$this->view->display();
-	}
-
-	/**
-	 * Create a new category
-	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
 	}
 
 	/**
@@ -198,15 +196,9 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		$this->view->wish = JRequest::getInt('wish', 0);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -217,9 +209,11 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 			}
 
 			// Load category
-			$this->view->row = new \Hubzero\Item\Comment($this->database);
-			$this->view->row->load($id);
+			$row = new \Hubzero\Item\Comment($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
 
 		if (!$this->view->row->id)
 		{
@@ -230,35 +224,23 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Save an entry and come back to the edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @param      integer $redirect Redirect the page after saving
-	 * @return     void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -271,7 +253,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		$row = new \Hubzero\Item\Comment($this->database);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -281,7 +263,7 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -289,28 +271,27 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->item_id,
-				JText::_('COM_WISHLIST_COMMENT_SAVED')
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option='.$this->_option . '&controller=' . $this->_controller . '&wish=' . $row->item_id, false),
+			JText::_('COM_WISHLIST_COMMENT_SAVED')
+		);
 	}
 
 	/**
 	 * Remove one or more entries
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -342,52 +323,33 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		// Redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish, false),
 			JText::sprintf('COM_WISHLIST_ITEMS_REMOVED', count($ids))
 		);
 	}
 
 	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return     void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return     void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
-	}
-
-	/**
 	 * Set the state of an entry
 	 *
-	 * @param      integer $state State to set
-	 * @return     void
+	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
+		$state = $this->getTask() == 'publish' ? 1 : 0;
+
 		// Incoming
 		$wish = JRequest::getInt('wish', 0);
-		$ids = JRequest::getVar('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+		$ids  = JRequest::getVar('id', array());
+		$ids  = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''),
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false),
 				($state == 1 ? JText::_('COM_WISHLIST_SELECT_PUBLISH') : JText::_('COM_WISHLIST_SELECT_UNPUBLISH')),
 				'error'
 			);
@@ -420,52 +382,33 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false),
 			$message
 		);
 	}
 
 	/**
-	 * Calls stateTask to publish entries
+	 * Set the anonymous state of an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function publicizeTask()
-	{
-		$this->anonTask(0);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return     void
-	 */
-	public function anonymizeTask()
-	{
-		$this->anonTask(1);
-	}
-
-	/**
-	 * Set the state of an entry
-	 *
-	 * @param      integer $state State to set
-	 * @return     void
-	 */
-	public function anonTask($state=0)
+	public function anonTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
 
+		$state = $this->getTask() == 'anonymize' ? 1 : 0;
+
 		// Incoming
 		$wish = JRequest::getInt('wish', 0);
-		$ids = JRequest::getVar('id', array());
-		$ids = (!is_array($ids) ? array($ids) : $ids);
+		$ids  = JRequest::getVar('id', array());
+		$ids  = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : '')
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false)
 			);
 			return;
 		}
@@ -482,21 +425,22 @@ class WishlistControllerComments extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : '')
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($wish ? '&wish=' . $wish : ''), false)
 		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$wish = JRequest::getInt('wish', 0);
+
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&wish=' . $wish, false)
 		);
 	}
 }

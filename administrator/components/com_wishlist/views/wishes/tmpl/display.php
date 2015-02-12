@@ -69,7 +69,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_WISHLIST_SEARCH'); ?>:</label>
@@ -236,7 +236,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php } ?>
 				</td>
 				<td>
-					<a class="glyph comment" href="index.php?option=<?php echo $this->option ?>&amp;controller=comments&amp;wish=<?php echo $row->id; ?>">
+					<a class="glyph comment" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=comments&wish=' . $row->id); ?>">
 						<span><?php echo $this->escape(stripslashes($row->numreplies)); ?></span>
 					</a>
 				</td>
