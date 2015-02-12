@@ -51,7 +51,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -79,10 +79,10 @@ if ($this->rows)
 ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<span><?php echo $this->escape(stripslashes($row->get('zone'))); ?></span>
 					</a>
 				</td>
@@ -90,7 +90,7 @@ if ($this->rows)
 					<?php echo $this->escape(stripslashes($row->get('type'))); ?>
 				</td>
 				<td>
-					<a class="state <?php echo ($row->get('state') == 'up') ? 'publish' : 'unpublish'; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=state&amp;id=<?php echo $row->get('id'); ?>&amp;state=<?php echo ($row->get('state') == 'up') ? 'down' : 'up'; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state <?php echo ($row->get('state') == 'up') ? 'publish' : 'unpublish'; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . ($row->get('state') == 'up' ? 'down' : 'up') . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><?php echo $this->escape(stripslashes($row->get('state'))); ?></span>
 					</a>
 				</td>
@@ -101,7 +101,7 @@ if ($this->rows)
 					<?php echo $this->escape(stripslashes($row->get('ssh_key_path'))); ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;zone=<?php echo $row->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=locations&zone=' . $row->get('id')); ?>">
 						<span><?php echo $row->locations('count'); ?></span>
 					</a>
 				</td>

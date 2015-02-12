@@ -54,7 +54,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -93,7 +93,7 @@ if ($this->rows)
 					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->hostname; ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;hostname=<?php echo $row->hostname; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&hostname=' . $row->hostname); ?>">
 						<span><?php echo $this->escape($row->hostname); ?></span>
 					</a>
 				</td>
@@ -106,7 +106,7 @@ if ($this->rows)
 							echo '<strong>';
 						}
 						?>
-					<a class="<?php echo ($value != '0') ? 'active' : 'inactive'; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=toggle&amp;hostname=<?php echo $row->hostname; ?>&amp;item=<?php echo $key; ?>">
+					<a class="<?php echo ($value != '0') ? 'active' : 'inactive'; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle&hostname=' . $row->hostname . '&item=' . $key); ?>">
 						<span><?php echo $this->escape($key); ?></span>
 					</a>
 						<?php
@@ -119,7 +119,7 @@ if ($this->rows)
 				?>
 				</td>
 				<td>
-					<a class="state <?php echo ($row->status == 'up') ? 'publish' : 'unpublish'; ?>" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=status&amp;hostname=<?php echo $row->hostname; ?>">
+					<a class="state <?php echo ($row->status == 'up') ? 'publish' : 'unpublish'; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&hostname=' . $row->hostname); ?>">
 						<span><?php echo $this->escape($row->status); ?></span>
 					</a>
 				</td>

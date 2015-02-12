@@ -47,9 +47,12 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	{
 		if (!$this->config->get('zones'))
 		{
-			$this->setRedirect('index.php?option=' . $this->_option);
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->_option, false));
 			return;
 		}
+
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
 
 		parent::execute();
 	}
@@ -57,7 +60,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of hosts
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -66,41 +69,43 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['zone']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.zone',
-			'zone',
-			''
-		));
-		$this->view->filters['master']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.master',
-			'master',
-			''
-		));
-		// Sorting
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'zone'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
+		$this->view->filters = array(
+			'zone' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.zone',
+				'zone',
+				''
+			)),
+			'master' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.master',
+				'master',
+				''
+			)),
+			// Sorting
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'zone'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
+
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
@@ -120,12 +125,9 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -135,75 +137,51 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a record
 	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
-	 * Edit a record
-	 *
-	 * @return     void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		// Get the middleware database
 		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$mw = new ToolsModelMiddleware($mwdb);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getInt('id', 0);
 
-			$this->view->row = new MiddlewareModelZone($id);
+			$row = new MiddlewareModelZone($id);
 		}
+
+		$this->view->row = $row;
+
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('state', 'down');
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save changes to a record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
-	 * Save changes to a record
-	 *
-	 * @param      boolean $redirect Redirect after save?
-	 * @return     void
-	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -214,7 +192,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		$row = new MiddlewareModelZone($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -222,7 +200,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -249,18 +227,19 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 				return;
 			}
 		}*/
+		$this->setMessage(
+			Jtext::_('COM_TOOLS_ITEM_SAVED'),
+			'message'
+		);
 
-		if ($redirect)
+		if ($this->getTask() == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('COM_TOOLS_ITEM_SAVED'),
-				'message'
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
@@ -280,8 +259,9 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 		if ($state != 'up' && $state != 'down')
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
+			return;
 		}
 
 		// Get the middleware database
@@ -293,17 +273,15 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			$row->state = $state;
 			if (!$row->store())
 			{
-				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				$this->setMessage(
 					JText::_('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
 					'error'
 				);
-				return;
 			}
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -331,14 +309,13 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 			{
 				if (!$row->delete(intval($id)))
 				{
-					JError::raiseError(500, $row->getError());
-					return;
+					throw new Exception($row->getError(), false);
 				}
 			}
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_TOOLS_ITEM_DELETED'),
 			'message'
 		);
@@ -347,19 +324,19 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
 	/**
 	 * Upload a file to the wiki via AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function ajaxUploadTask()
 	{
@@ -516,7 +493,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	/**
 	 * Upload a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -613,7 +590,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	/**
 	 * Upload a file to the wiki via AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function ajaxRemoveTask()
 	{
@@ -678,7 +655,7 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	/**
 	 * Delete a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removefileTask()
 	{
@@ -735,35 +712,27 @@ class ToolsControllerZones extends \Hubzero\Component\AdminController
 	/**
 	 * Display a file and its info
 	 *
-	 * @param      string  $file File name
-	 * @param      integer $id   User ID
-	 * @return     void
+	 * @param   string   $file  File name
+	 * @param   integer  $id    User ID
+	 * @return  void
 	 */
 	public function pictureTask($file='', $id=0)
 	{
-		$this->view->setLayout('display');
-
-		// Load the component config
-		$this->view->config = $this->config;
-
 		// Incoming
-		if (!$id)
-		{
-			$id = JRequest::getInt('id', 0);
-		}
+		$id = $id ?: JRequest::getInt('id', 0);
 
 		$this->view->zone = MiddlewareModelZone::getInstance($id);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->set('config', $this->config)
+			->setLayout('picture')
+			->display();
 	}
 }

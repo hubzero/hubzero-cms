@@ -39,6 +39,19 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of host types
 	 *
 	 * @return     void
@@ -50,30 +63,31 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		// Sorting
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'value'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			// Sorting
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'value'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -107,12 +121,9 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -122,36 +133,25 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a record
 	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
-	 * Edit a record
-	 *
-	 * @return     void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
 	public function editTask($row = null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$item = JRequest::getVar('item', '', 'get');
 
 			$mwdb = ToolsHelperUtils::getMWDBO();
 
-			$this->view->row = new MwHosttype($mwdb);
-			$this->view->row->load($item);
+			$row = new MwHosttype($mwdb);
+			$row->load($item);
 		}
+
+		$this->view->row = $row;
 
 		if ($this->view->row->value > 0)
 		{
@@ -165,24 +165,23 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		$this->view->refs = $this->_refs($this->view->row->value);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
-		$this->view->set('status', (isset($item) && $item != '') ? 'exists' : 'new');
-		$this->view->setLayout('edit')->display();
+		$this->view
+			->set('status', (isset($item) && $item != '') ? 'exists' : 'new')
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Get a count of references
 	 *
-	 * @param      mixed $value
-	 * @return     integer
+	 * @param   mixed    $value
+	 * @return  integer
 	 */
 	private function _refs($value)
 	{
@@ -202,21 +201,11 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save changes to a record and return to edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save changes to a record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -229,7 +218,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		$row = new MwHosttype($mwdb);
 		if (!$row->bind($fields))
 		{
-			$this->setError($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -264,7 +253,7 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->setError($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -281,28 +270,30 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 
 		if (!$result)
 		{
-			$this->setError($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		if ($redirect)
+		$this->setMessage(
+			Jtext::_('COM_TOOLS_ITEM_SAVED'),
+			'message'
+		);
+
+		if ($this->getTask() == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('COM_TOOLS_ITEM_SAVED'),
-				'message'
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
 	 * Delete a hostname record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -323,14 +314,13 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 			{
 				if (!$row->delete($id))
 				{
-					JError::raiseError(500, $row->getError());
-					return;
+					throw new Exception($row->getError(), 500);
 				}
 			}
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_TOOLS_ITEM_DELETED'),
 			'message'
 		);
@@ -339,12 +329,12 @@ class ToolsControllerHosttypes extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

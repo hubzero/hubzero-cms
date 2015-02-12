@@ -36,16 +36,27 @@ include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_t
 include_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_tools' . DS . 'tables' . DS . 'hosttype.php');
 
 /**
- * Short description for 'ToolsController'
- *
- * Long description (if any) ...
+ * Tools controller class for hosts
  */
 class ToolsControllerHosts extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of hosts
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -54,43 +65,44 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['hostname']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.hostname',
-			'hostname',
-			''
-		));
-		$this->view->filters['hosttype']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.hosttype',
-			'hosttype',
-			''
-		));
-		// Sorting
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'hostname'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['limit']        = ($this->view->filters['limit'] == 'all') ? 0 : $this->view->filters['limit'];
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'hostname' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.hostname',
+				'hostname',
+				''
+			)),
+			'hosttype' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.hosttype',
+				'hosttype',
+				''
+			)),
+			// Sorting
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'hostname'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 		// In case limit has been changed, adjust limitstart accordingly
+		$this->view->filters['limit'] = ($this->view->filters['limit'] == 'all') ? 0 : $this->view->filters['limit'];
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
 		// Get the middleware database
@@ -115,12 +127,9 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -130,7 +139,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 	/**
 	 * Check the status of a host
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function statusTask()
 	{
@@ -160,9 +169,9 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 	/**
 	 * Execute a middleware command
 	 *
-	 * @param      string $comm      Command to execute
-	 * @param      array  &$fnoutput Command output
-	 * @return     integer 1 = success, 0 = failure
+	 * @param   string   $comm       Command to execute
+	 * @param   array    &$fnoutput  Command output
+	 * @return  integer  1 = success, 0 = failure
 	 */
 	protected function _middleware($comm, &$fnoutput)
 	{
@@ -205,17 +214,8 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a record
 	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
-	 * Edit a record
-	 *
-	 * @return     void
+	 * @param   mixed  $row
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
@@ -224,11 +224,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Get the middleware database
 		$mwdb = ToolsHelperUtils::getMWDBO();
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$hostname = JRequest::getVar('hostname', '', 'get');
@@ -237,9 +233,11 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 			// clean at least some of it. See RFC 1034 for valid character set info
 			$hostname = preg_replace("/[^A-Za-z0-9-.]/", '', $hostname);
 
-			$this->view->row = new MwHost($mwdb);
-			$this->view->row->load($hostname);
+			$row = new MwHost($mwdb);
+			$row->load($hostname);
 		}
+
+		$this->view->row = $row;
 
 		$ht = new MwHosttype($mwdb);
 		$this->view->hosttypes = $ht->getRecords();
@@ -262,34 +260,23 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
-		$this->view->setLayout('edit')->display();
-	}
-
-	/**
-	 * Save changes to a record and return to edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save changes to a record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -303,7 +290,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$row = new MwHost($mwdb);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -315,7 +302,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 
 		if (!$row->hostname)
 		{
-			$this->addComponentMessage(Jtext::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'), 'error');
+			$this->setMessage(Jtext::_('COM_TOOLS_ERROR_INVALID_HOSTNAME'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -352,7 +339,7 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Check content
 		if (!$row->check())
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -360,28 +347,30 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store($insert, $fields['id']))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
 
-		if ($redirect)
+		$this->setMessage(
+			Jtext::_('COM_TOOLS_ITEM_SAVED'),
+			'message'
+		);
+
+		if ($this->getTask() == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('COM_TOOLS_ITEM_SAVED'),
-				'message'
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
 	 * Toggle a hostname provision
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function toggleTask()
 	{
@@ -400,23 +389,21 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 		$mwdb->setQuery($query);
 		if (!$mwdb->queryBatch())
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			$this->setMessage(
 				JText::_('COM_TOOLS_ERROR_PROVISION_UPDATE_FAILED'),
 				'error'
 			);
-			return;
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
 	/**
 	 * Delete one or more hostname records
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -438,14 +425,13 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 				$id = preg_replace("/[^A-Za-z0-9-.]/", '', $id);
 				if (!$row->delete($id))
 				{
-					JError::raiseError(500, $row->getError());
-					return;
+					throw new Exception($row->getError(), 500);
 				}
 			}
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_TOOLS_ITEM_DELETED'),
 			'message'
 		);
@@ -454,12 +440,12 @@ class ToolsControllerHosts extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

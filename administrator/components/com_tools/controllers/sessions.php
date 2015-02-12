@@ -53,45 +53,46 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['username']     = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.username',
-			'username',
-			''
-		));
-		$this->view->filters['appname']     = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.appname',
-			'appname',
-			''
-		));
-		$this->view->filters['exechost']     = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.exechost',
-			'exechost',
-			''
-		));
-		// Sorting
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'start'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'username' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.username',
+				'username',
+				''
+			)),
+			'appname' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.appname',
+				'appname',
+				''
+			)),
+			'exechost' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.exechost',
+				'exechost',
+				''
+			)),
+			// Sorting
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'start'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
@@ -114,12 +115,9 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -129,7 +127,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	/**
 	 * Delete one or more hostname records
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -138,6 +136,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
+		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		$mwdb = ToolsHelperUtils::getMWDBO();
 
@@ -180,7 +179,7 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_TOOLS_SESSIONS_TERMINATED'),
 			'message'
 		);
@@ -189,9 +188,9 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	/**
 	 * Invoke the Python script to do real work.
 	 *
-	 * @param      string  $comm Parameter description (if any) ...
-	 * @param      array   &$output Parameter description (if any) ...
-	 * @return     integer Session ID
+	 * @param   string   $comm     Command to execute
+	 * @param   array    &$output  Output from executed command
+	 * @return  integer  Session ID
 	 */
 	public function middleware($comm, &$output)
 	{
@@ -268,12 +267,12 @@ class ToolsControllerSessions extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

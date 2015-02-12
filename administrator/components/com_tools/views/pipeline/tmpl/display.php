@@ -54,7 +54,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?></label>
 		<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_TOOLS_SEARCH_PLACEHOLDER'); ?>" />
@@ -114,12 +114,12 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<?php echo $this->escape($row['id']); ?>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row['id']; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row['id']); ?>">
 						<?php echo $this->escape(stripslashes($row['toolname'])); ?>
 					</a>
 				</td>
 				<td>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row['id']; ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row['id']); ?>">
 						<?php echo $this->escape(stripslashes($row['title'])); ?>
 					</a>
 				</td>
@@ -135,7 +135,7 @@ for ($i=0, $n=count($this->rows); $i < $n; $i++)
 					<time><?php echo $this->escape($row['state_changed']); ?></time>
 				</td>
 				<td>
-					<a class="glyph menulist" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;controller=versions&amp;id=<?php echo $row['id'];?>">
+					<a class="glyph menulist" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=versions&id=' . $row['id']); ?>">
 						<span><?php echo $this->escape($row['versions']); ?></span>
 					</a>
 				</td>

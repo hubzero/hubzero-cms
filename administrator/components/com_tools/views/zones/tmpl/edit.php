@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
@@ -75,45 +75,44 @@ function submitbutton(pressbutton)
 	<div id="zone-document">
 		<div id="page-profile" class="tab">
 			<div class="col width-60 fltlft">
+				<fieldset class="adminform">
+					<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
 
-			<fieldset class="adminform">
-				<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
+					<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
+					<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+					<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
+					<input type="hidden" name="task" value="save" />
 
-				<input type="hidden" name="fields[id]" value="<?php echo $this->row->get('id'); ?>" />
-				<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-				<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-				<input type="hidden" name="task" value="save" />
+					<div class="input-wrap" data-hint="<?php echo JText::_('COM_TOOLS_FIELD_ZONE_HINT'); ?>">
+						<label for="field-zone"><?php echo JText::_('COM_TOOLS_FIELD_ZONE'); ?>:</label>
+						<input type="text" name="fields[zone]" id="field-zone" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('zone'))); ?>" />
+						<span class="hint"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_HINT'); ?></span>
+					</div>
 
-				<div class="input-wrap" data-hint="<?php echo JText::_('COM_TOOLS_FIELD_ZONE_HINT'); ?>">
-					<label for="field-zone"><?php echo JText::_('COM_TOOLS_FIELD_ZONE'); ?>:</label>
-					<input type="text" name="fields[zone]" id="field-zone" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('zone'))); ?>" />
-					<span class="hint"><?php echo JText::_('COM_TOOLS_FIELD_ZONE_HINT'); ?></span>
-				</div>
+					<div class="input-wrap">
+						<label for="field-zone"><?php echo JText::_('COM_TOOLS_FIELD_TITLE'); ?>:</label>
+						<input type="text" name="fields[title]" id="field-title" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+					</div>
 
-				<div class="input-wrap">
-					<label for="field-zone"><?php echo JText::_('COM_TOOLS_FIELD_TITLE'); ?>:</label>
-					<input type="text" name="fields[title]" id="field-title" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
-				</div>
+					<div class="input-wrap">
+						<label for="field-master"><?php echo JText::_('COM_TOOLS_FIELD_MASTER'); ?>:</label>
+						<input type="text" name="fields[master]" id="field-master" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('master'))); ?>" />
+					</div>
 
-				<div class="input-wrap">
-					<label for="field-master"><?php echo JText::_('COM_TOOLS_FIELD_MASTER'); ?>:</label>
-					<input type="text" name="fields[master]" id="field-master" maxlength="255" value="<?php echo $this->escape(stripslashes($this->row->get('master'))); ?>" />
-				</div>
+					<div class="input-wrap">
+						<label for="field-type"><?php echo JText::_('COM_TOOLS_FIELD_TYPE'); ?>:</label>
+						<select name="fields[type]" id="field-type">
+							<option value="local"<?php if ($this->row->get('type') == 'local') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TOOLS_FIELD_TYPE_LOCAL'); ?></option>
+							<option value="remote"<?php if ($this->row->get('type') == 'remote') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TOOLS_FIELD_TYPE_REMOTE'); ?></option>
+						</select>
+					</div>
 
-				<div class="input-wrap">
-					<label for="field-type"><?php echo JText::_('COM_TOOLS_FIELD_TYPE'); ?>:</label>
-					<select name="fields[type]" id="field-type">
-						<option value="local"<?php if ($this->row->get('type') == 'local') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TOOLS_FIELD_TYPE_LOCAL'); ?></option>
-						<option value="remote"<?php if ($this->row->get('type') == 'remote') { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_TOOLS_FIELD_TYPE_REMOTE'); ?></option>
-					</select>
-				</div>
-
-				<div class="input-wrap">
-					<?php echo JText::_('COM_TOOLS_FIELD_STATE'); ?>:<br />
-					<label for="field-state-up"><input class="option" type="radio" name="fields[state]" id="field-state-up" size="30" value="up"<?php if ($this->row->get('state') == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_TOOLS_FIELD_STATE_UP'); ?></label>
-					<label for="field-state-down"><input class="option" type="radio" name="fields[state]" id="field-state-down" size="30" value="down"<?php if ($this->row->get('state') == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_TOOLS_FIELD_STATE_DOWN'); ?></label>
-				</div>
-			</fieldset>
+					<div class="input-wrap">
+						<?php echo JText::_('COM_TOOLS_FIELD_STATE'); ?>:<br />
+						<label for="field-state-up"><input class="option" type="radio" name="fields[state]" id="field-state-up" size="30" value="up"<?php if ($this->row->get('state') == 'up') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_TOOLS_FIELD_STATE_UP'); ?></label>
+						<label for="field-state-down"><input class="option" type="radio" name="fields[state]" id="field-state-down" size="30" value="down"<?php if ($this->row->get('state') == 'down') { echo ' checked="checked"'; } ?> /> <?php echo JText::_('COM_TOOLS_FIELD_STATE_DOWN'); ?></label>
+					</div>
+				</fieldset>
 			</div>
 			<div class="col width-40 fltrt">
 				<table class="meta">
@@ -139,9 +138,9 @@ function submitbutton(pressbutton)
 						     ->js('jquery.fileuploader.js', 'system');
 					?>
 					<div style="padding-top: 2.5em">
-						<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=upload&amp;id=<?php echo $this->row->get('id'); ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
+						<div id="ajax-uploader" data-action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=upload&id=' . $this->row->get('id') . '&no_html=1&' . JUtility::getToken() . '=1'); ?>">
 							<noscript>
-								<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+								<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&id=' . $this->row->get('id')); ?>"></iframe>
 							</noscript>
 						</div>
 					</div>
@@ -185,7 +184,7 @@ function submitbutton(pressbutton)
 								</tr>
 								<tr>
 									<td><input type="hidden" name="currentfile" id="currentfile" value="<?php echo $file; ?>" /></td>
-									<td><a id="img-delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=removefile&amp;id=<?php echo $this->row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
+									<td><a id="img-delete" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->row->get('id') . '&' . JUtility::getToken() . '=1'); ?>">[ <?php echo JText::_('DELETE'); ?> ]</a></td>
 								</tr>
 							</tbody>
 						</table>
@@ -258,11 +257,13 @@ function submitbutton(pressbutton)
 			<fieldset class="adminform">
 				<legend><span><?php echo JText::_('COM_TOOLS_FIELDSET_LOCATIONS'); ?></span></legend>
 			<?php if ($this->row->get('id')) { ?>
-				<iframe width="100%" height="400" name="locationslist" id="locationslist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=locations&amp;tmpl=component&amp;zone=<?php echo $this->row->get('id'); ?>"></iframe>
+				<iframe width="100%" height="400" name="locationslist" id="locationslist" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=locations&tmpl=component&zone=' . $this->row->get('id')); ?>"></iframe>
 			<?php } else { ?>
 				<p><?php echo JText::_('COM_TOOLS_LOCATIONS_ADDED_LATER'); ?></p>
 			<?php } ?>
-		</fieldset>
+			</fieldset>
 		</div>
+	</div>
+
 	<?php echo JHTML::_('form.token'); ?>
 </form>

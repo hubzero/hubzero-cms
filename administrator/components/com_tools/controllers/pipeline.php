@@ -38,6 +38,19 @@ defined('_JEXEC') or die('Restricted access');
 class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display entries in the pipeline
 	 *
 	 * @return     void
@@ -105,12 +118,9 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -120,13 +130,11 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		// Incoming instance ID
 		$id = JRequest::getInt('id', 0);
@@ -134,46 +142,32 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		// Do we have an ID?
 		if (!$id)
 		{
-			$this->cancelTask();
-			return;
+			return $this->cancelTask();
 		}
 
-		if (is_object($row))
+		if (!is_object($row))
 		{
-			$this->view->row = $row;
+			$row = ToolsModelTool::getInstance($id);
 		}
-		else
-		{
-			$this->view->row = ToolsModelTool::getInstance($id);
-		}
+
+		$this->view->row = $row;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
-		$this->view->display();
-	}
-
-	/**
-	 * Save an entry and show the edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an entry
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -186,7 +180,7 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		if (!$fields['id'])
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_TOOLS_ERROR_MISSING_ID'),
 				'error'
 			);
@@ -197,7 +191,8 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 		if (!$row)
 		{
 			JRequest::setVar('id', $fields['id']);
-			$this->addComponentMessage(JText::_('COM_TOOLS_ERROR_TOOL_NOT_FOUND'), 'error');
+
+			$this->setMessage(JText::_('COM_TOOLS_ERROR_TOOL_NOT_FOUND'), 'error');
 			$this->editTask();
 			return;
 		}
@@ -206,45 +201,43 @@ class ToolsControllerPipeline extends \Hubzero\Component\AdminController
 
 		if (!$row->title)
 		{
-			$this->addComponentMessage(JText::_('COM_TOOLS_ERROR_MISSING_TITLE'), 'error');
+			$this->setMessage(JText::_('COM_TOOLS_ERROR_MISSING_TITLE'), 'error');
 			$this->editTask($row);
 			return;
 		}
 
 		$row->update();
 
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id']
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'], false)
 			);
 			return;
 		}
-		else
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_TOOLS_ITEM_DELETED')
-			);
-		}
+
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_TOOLS_ITEM_SAVED')
+		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
 	/**
 	 * Temp function to issue new service DOIs for tool versions published previously
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
 	public function batchdoiTask()
 	{

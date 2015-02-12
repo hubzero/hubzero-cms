@@ -39,9 +39,22 @@ include_once(JPATH_ROOT . DS . 'components' . DS . 'com_tools' . DS . 'models' .
 class ToolsControllerLocations extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of hosts
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -50,29 +63,30 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		$app = JFactory::getApplication();
 
 		// Get filters
-		$this->view->filters = array();
-		$this->view->filters['zone']       = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.zone',
-			'zone',
-			0,
-			'int'
-		));
-		$this->view->filters['tmpl']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.tmpl',
-			'tmpl',
-			''
+		$this->view->filters = array(
+			'zone' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.zone',
+				'zone',
+				0,
+				'int'
+			)),
+			'tmpl' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.tmpl',
+				'tmpl',
+				''
+			),
+			// Sorting
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'zone'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			)
 		);
-		// Sorting
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'zone'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
 
 		if ($this->view->filters['tmpl'] == 'component')
 		{
@@ -117,12 +131,9 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -132,40 +143,26 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 	/**
 	 * Edit a record
 	 *
-	 * @return     void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
-	 * Edit a record
-	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
-
-		$this->view->setLayout('edit');
 
 		// Get the middleware database
 		$mwdb = ToolsHelperUtils::getMWDBO();
 
 		$mw = new ToolsModelMiddleware($mwdb);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getInt('id', 0);
 
-			$this->view->row = new MiddlewareModelLocation($id);
+			$row = new MiddlewareModelLocation($id);
 		}
+
+		$this->view->row = $row;
 
 		$this->view->zone = JRequest::getInt('zone', 0);
 		if (!$this->view->row->exists())
@@ -175,35 +172,23 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		$this->view->tmpl = JRequest::getVar('tmpl', '');
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save changes to a record
 	 *
-	 * @return     void
+	 * @return  void
 	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
-	 * Save changes to a record
-	 *
-	 * @param      boolean $redirect Redirect after save?
-	 * @return     void
-	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -215,7 +200,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		$row = new MiddlewareModelLocation($fields['id']);
 		if (!$row->bind($fields))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -223,7 +208,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			$this->addComponentMessage($row->getError(), 'error');
+			$this->setMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -241,23 +226,25 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if ($redirect)
+		$this->setMessage(
+			Jtext::_('COM_TOOLS_ITEM_SAVED'),
+			'message'
+		);
+
+		if ($this->getTask() == 'apply')
 		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				Jtext::_('COM_TOOLS_ITEM_SAVED'),
-				'message'
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+		);
 	}
 
 	/**
 	 * Toggle a zone's state
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function stateTask()
 	{
@@ -271,10 +258,10 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		if ($state != 'up' && $state != 'down')
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 			);
+			return;
 		}
-
 
 		$row = new MiddlewareModelLocation($id);
 		if ($row->exists())
@@ -283,7 +270,7 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 			if (!$row->store())
 			{
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					JText::_('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
 					'error'
 				);
@@ -292,14 +279,14 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
 	/**
 	 * Delete one or more records
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -318,14 +305,13 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 
 				if (!$row->delete())
 				{
-					JError::raiseError(500, $row->getError());
-					return;
+					throw new Exception($row->getError(), 500);
 				}
 			}
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 			JText::_('COM_TOOLS_ITEM_DELETED'),
 			'message'
 		);
@@ -334,12 +320,12 @@ class ToolsControllerLocations extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

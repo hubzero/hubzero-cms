@@ -52,14 +52,14 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
 			<div class="submenu-box">
 				<div class="submenu-pad">
 					<ul id="submenu" class="member">
-						<li><a href="index.php?option=com_tools&amp;controller=zones&mp;task=edit&amp;id=<?php echo $this->row->id; ?>" id="profile"><?php echo JText::_('JDETAILS'); ?></a></li>
+						<li><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=zones&task=edit&id=' . $this->row->id); ?>" id="profile"><?php echo JText::_('JDETAILS'); ?></a></li>
 						<li><a href="#" onclick="return false;" id="locations" class="active"><?php echo JText::_('COM_TOOLS_LOCATIONS'); ?></a></li>
 					</ul>
 					<div class="clr"></div>

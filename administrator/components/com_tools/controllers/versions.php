@@ -38,6 +38,19 @@ defined('_JEXEC') or die('Restricted access');
 class ToolsControllerVersions extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display all versions for a specific entry
 	 *
 	 * @return     void
@@ -114,12 +127,9 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
@@ -129,9 +139,10 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 	/**
 	 * Edit an entry version
 	 *
-	 * @return     unknown Return description (if any) ...
+	 * @param   mixed  $row
+	 * @return  void
 	 */
-	public function editTask()
+	public function editTask($row)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
@@ -142,45 +153,39 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		// Do we have an ID?
 		if (!$id || !$version)
 		{
-			$this->cancelTask();
-			return;
+			return $this->cancelTask();
 		}
 
 		$this->view->parent = ToolsModelTool::getInstance($id);
 
-		$this->view->row = ToolsModelVersion::getInstance($version);
+		if (!is_object($row))
+		{
+			$row = ToolsModelVersion::getInstance($version);
+		}
+		$this->view->row = $row;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Display results
-		$this->view->display();
-	}
-
-	/**
-	 * Save an entry version and show the edit form
-	 *
-	 * @return     void
-	 */
-	public function applyTask()
-	{
-	    $this->saveTask();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save an entry version
 	 *
-	 * @param      boolean $redirect Parameter description (if any) ...
-	 * @return     unknown Return description (if any) ...
+	 * @return  void
 	 */
-	public function saveTask($redirect = true)
+	public function saveTask()
 	{
+		// Check for request forgeries
+		JRequest::checkToken() or jexit('Invalid Token');
+
 		// Incoming instance ID
 		$fields = JRequest::getVar('fields', array(), 'post');
 
@@ -188,7 +193,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		if (!$fields['version'])
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_TOOLS_ERROR_MISSING_ID'),
 				'error'
 			);
@@ -200,7 +205,8 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		{
 			JRequest::setVar('id', $fields['id']);
 			JRequest::setVar('version', $fields['version']);
-			$this->addComponentMessage(JText::_('COM_TOOLS_ERROR_TOOL_NOT_FOUND'), 'error');
+
+			$this->setMessage(JText::_('COM_TOOLS_ERROR_TOOL_NOT_FOUND'), 'error');
 			$this->editTask();
 			return;
 		}
@@ -213,7 +219,7 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 
 		if (!$row->vnc_command)
 		{
-			$this->addComponentMessage(JText::_('COM_TOOLS_ERROR_MISSING_COMMAND'), 'error');
+			$this->setMessage(JText::_('COM_TOOLS_ERROR_MISSING_COMMAND'), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -232,31 +238,29 @@ class ToolsControllerVersions extends \Hubzero\Component\AdminController
 		$row->hostreq = $hostreq;
 		$row->update();
 
-		if ($this->_task == 'apply')
+		if ($this->getTask() == 'apply')
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'] . '&version=' . $fields['version']
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=edit&id=' . $fields['id'] . '&version=' . $fields['version'], false)
 			);
 			return;
 		}
-		else
-		{
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_TOOLS_ITEM_SAVED')
-			);
-		}
+
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			JText::_('COM_TOOLS_ITEM_SAVED')
+		);
 	}
 
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }
