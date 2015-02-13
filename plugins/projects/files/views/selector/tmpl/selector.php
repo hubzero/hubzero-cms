@@ -113,8 +113,8 @@ defined('_JEXEC') or die( 'Restricted access' );
 				<li class="<?php echo $item->type == 'folder' ? 'type-folder' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) { echo ' selectedfilter preselected'; } ?><?php echo $allowed; ?><?php echo $opened ? ' opened' : ''; ?>" id="<?php echo $liId; ?>">
 					<span class="item-info"><?php echo $item->type == 'file' ? $item->formattedSize : ''; ?></span>
 					<span class="item-wrap <?php echo $levelCss; ?>" id="<?php echo urlencode($item->localPath); ?>">
-						<?php if($item->type == 'folder') { ?><span class="collapsor">&nbsp;</span><?php } ?>
-						<img src="<?php echo $icon; ?>" alt="" /> <span title="<?php echo $item->localPath; echo $item->type == 'file' ? ' [' . $item->mimeType . ']' : '' ?>"><?php echo ProjectsHtml::shortenFileName($item->name, 50); ?></span>
+						<?php if ($item->type == 'folder') { ?><span class="collapsor">&nbsp;</span><?php } ?>
+						<img src="<?php echo $icon; ?>" alt="" /> <span title="<?php echo $item->localPath; ?>"><?php echo ProjectsHtml::shortenFileName($item->name, 50); ?></span>
 					</span>
 
 				</li>

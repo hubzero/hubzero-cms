@@ -650,6 +650,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->items = NULL;
 		if ($this->_project->id)
 		{
+			$this->minimal = true;
 			$view->items = $this->getList();
 		}
 
@@ -4795,13 +4796,22 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$entry['message'] 	= isset($gitData['message']) ? $gitData['message'] : NULL;
 
 			// SFTP?
-			if (preg_match("/[SFTP]/", $entry['message']))
+			if (stripos($entry['message'], '[SFTP]') !== false)
 			{
-				$profile = \Hubzero\User\Profile::getInstance( trim($entry['author']) );
-				if ($profile)
+				if (isset($this->_profileAssoc) && isset($this->_profileAssoc[trim($entry['author'])]))
 				{
-					$entry['author'] = $profile->get('name');
-					$entry['email'] = $profile->get('email');
+					$entry['author'] = $this->_profileAssoc[trim($entry['author'])]->get('name');
+					$entry['email']  = $this->_profileAssoc[trim($entry['author'])]->get('email');
+				}
+				else
+				{
+					$profile = \Hubzero\User\Profile::getInstance( trim($entry['author']) );
+					if ($profile)
+					{
+						$entry['author'] = $profile->get('name');
+						$entry['email'] = $profile->get('email');
+						$this->_profileAssoc[trim($entry['author'])] = $profile;
+					}
 				}
 			}
 
@@ -7279,6 +7289,10 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$parts 		= explode('.', $file);
 		$ext   		= count($parts) > 1 ? array_pop($parts) : '';
 		$obj->ext   = strtolower($ext);
+		if (isset($this->minimal) && $this->minimal == true)
+		{
+			return $obj;
+		}
 
 		// Get last commit data
 		if (isset($this->_fileinfo) && $this->_fileinfo && isset($this->_fileinfo[$obj->localPath]))
