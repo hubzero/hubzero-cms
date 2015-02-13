@@ -83,6 +83,7 @@ class View extends AbstractView
 		{
 			$this->_mailTemplate->setBuffer($content, 'component');
 			$content = $this->_mailTemplate->render();
+			$this->_mailTemplate->setBuffer(null, array('type' => 'head', 'name' => 'email'));
 		}
 
 		// return content
