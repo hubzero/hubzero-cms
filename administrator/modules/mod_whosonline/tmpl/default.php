@@ -84,7 +84,7 @@ foreach ($this->rows as $row)
 									$juser = JUser::getInstance($row->username);
 
 									// Display link if we are authorized
-									if ($this->juser->authorize('com_users', 'manage'))
+									if ($editAuthorized = $this->juser->authorize('com_users', 'manage'))
 									{
 										echo '<a href="' . JRoute::_('index.php?option=com_users&task=edit&cid[]='. $row->userid) . '" title="' . JText::_('MOD_WHOSONLINE_EDIT_USER') . '">' . $this->escape($juser->get('name')) . ' [' . $this->escape($juser->get('username')) . ']' . '</a>';
 									}
