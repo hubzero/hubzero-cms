@@ -86,21 +86,27 @@ class plgUserMiddleware extends JPlugin
 					);
 
 					$db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c LEFT JOIN `#__users_quotas_classes_groups` AS g ON g.`class_id`=c.`id` WHERE g.`group_id` IN (" . implode(',', $gids) . ")");
-					if ($cids = $db->loadObjectList())
+					$cids = $db->loadObjectList();
+					if (count($cids) <= 0)
 					{
-						// Loop through each usergroup and find the highest quota values
-						foreach ($cids as $cls);
+						$db->setQuery("SELECT c.* FROM `#__users_quotas_classes` AS c WHERE c.`alias`=" . $db->quote('default'));
+						$cids = $db->loadObjectList();
+					}
+					// Loop through each usergroup and find the highest quota values
+					foreach ($cids as $cls);
+					{
+						$cls->hard_blocks = intval($cls->hard_blocks);
+						$cls->soft_blocks = intval($cls->soft_blocks);
+
+						if ($cls->hard_blocks > $val['hard_blocks']
+						 && $cls->soft_blocks > $val['soft_blocks'])
 						{
-							if ($cls->hard_blocks > $val['hard_blocks']
-							 && $cls->soft_blocks > $val['soft_blocks'])
-							{
-								$row->class_id = $cls->id;
-							}
-							//$val['hard_files']  = ($val['hard_files']  > $cls->hard_files  ?: $cls->hard_files);
-							//$val['soft_files']  = ($val['soft_files']  > $cls->soft_files  ?: $cls->soft_files);
-							$val['hard_blocks'] = ($val['hard_blocks'] > $cls->hard_blocks ?: $cls->hard_blocks);
-							$val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks ?: $cls->soft_blocks);
+							$row->class_id = $cls->id;
 						}
+						//$val['hard_files']  = ($val['hard_files']  > $cls->hard_files  ?: $cls->hard_files);
+						//$val['soft_files']  = ($val['soft_files']  > $cls->soft_files  ?: $cls->soft_files);
+						$val['hard_blocks'] = ($val['hard_blocks'] > $cls->hard_blocks ? $val['hard_blocks'] : $cls->hard_blocks);
+						$val['soft_blocks'] = ($val['soft_blocks'] > $cls->soft_blocks ? $val['soft_blocks'] : $cls->soft_blocks);
 					}
 
 					$row->hard_files  = $val['hard_files'];
@@ -110,12 +116,12 @@ class plgUserMiddleware extends JPlugin
 
 					if (!$row->check())
 					{
-						throw new JException($row->getError());
+						throw new Exception($row->getError());
 					}
 
 					if (!$row->store())
 					{
-						throw new JException($row->getError());
+						throw new Exception($row->getError());
 					}
 				}
 
@@ -163,10 +169,10 @@ class plgUserMiddleware extends JPlugin
 
 				if (!$db->query())
 				{
-					throw new JException($db->getErrorMsg());
+					throw new Exception($db->getErrorMsg());
 				}
 			}
-			catch (JException $e)
+			catch (Exception $e)
 			{
 				$this->_subject->setError($e->getMessage());
 				return false;
