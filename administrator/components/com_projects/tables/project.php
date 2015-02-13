@@ -255,14 +255,9 @@ class Project extends JTable
 		{
 			$query .= " WHERE p.provisioned = 0 ";
 			$query .= $showall ? "" : " AND p.state != 2 ";
-			if ($search)
-			{
-				$query .= $showall
-						? " AND p.title LIKE '%".$search."%' "
-						: " AND p.title LIKE '%".$search."%' ";
-			}
 		}
-		else {
+		else
+		{
 			if ($mine)
 			{
 				$query .= $uid
@@ -311,6 +306,10 @@ class Project extends JTable
 					? " AND (p.params NOT LIKE '%grant_status=1%'
 						AND p.params NOT LIKE '%grant_status=2%') "
 					: " AND p.state = 5 ";
+		}
+		if ($search)
+		{
+			$query .= " AND (p.title LIKE '%".$search."%' OR p.alias LIKE '%".$search."%') ";
 		}
 
 		if (!$filters['count'])
