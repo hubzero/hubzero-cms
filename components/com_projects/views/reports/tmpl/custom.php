@@ -52,7 +52,6 @@ $filter = JRequest::getVar( 'searchterm', '');
 		} ?>
 	</div>
 	<div class="report-block">
-		<h3><?php echo JText::_('Publications Report'); ?></h3>
 		<form id="reportForm" method="post" action="">
 			<fieldset>
 				<input type="hidden"  name="controller" value="reports" />
@@ -74,7 +73,17 @@ $filter = JRequest::getVar( 'searchterm', '');
 				<div class="groupblock">
 					<div class="block">
 						<label><?php echo JText::_('Filter by tag'); ?>:
-						<input type="text" value="<?php echo $filter; ?>" id="searchterm" name="searchterm" placeholder="<?php echo JText::_('Enter a tag'); ?>" />
+						<?php JPluginHelper::importPlugin( 'hubzero' );
+						$dispatcher = JDispatcher::getInstance();
+
+						$tf = $dispatcher->trigger( 'onGetMultiEntry', array(array('tags', 'searchterm', 'searchterm','', $filter)) );
+
+						if (count($tf) > 0) {
+							echo $tf[0];
+						} else {
+							echo '<textarea name="searchterm" id="searchterm" rows="6" cols="35">'. $this->tags .'</textarea>'."\n";
+						}
+						?>
 						</label>
 					</div>
 				</div>
