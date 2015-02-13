@@ -835,28 +835,45 @@ class MembersControllerRegister extends \Hubzero\Component\SiteController
 					}
 
 					// Notify administration
-					/*$subject = $this->jconfig->getValue('config.sitename') .' '.JText::_('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_CREATION');
+					if ($usersConfig->get('mail_to_admin', 0))
+					{
+						$eview  = new \Hubzero\Mail\View(array(
+							'name'   => 'emails',
+							'layout' => 'admincreate_plain'
+						));
+						$eview->option     = $this->_option;
+						$eview->controller = $this->_controller;
+						$eview->sitename   = $this->jconfig->get('sitename');
+						$eview->xprofile   = $xprofile;
+						$eview->baseUrl    = $this->baseURL;
+						$eview->config     = $this->jconfig;
 
-					$eaview = new \Hubzero\Component\View(array(
-						'name'   => 'emails',
-						'layout' => 'admincreate'
-					));
-					$eaview->option     = $this->_option;
-					$eaview->controller = $this->_controller;
-					$eaview->sitename   = $this->jconfig->getValue('config.sitename');
-					$eaview->xprofile   = $xprofile;
-					$eaview->baseURL    = $this->baseURL;
-					$message = $eaview->loadTemplate();
-					$message = str_replace("\n", "\r\n", $message);
+						$plain = $eview->loadTemplate(false);
+						$plain = str_replace("\n", "\r\n", $plain);
 
-					$msg = new \Hubzero\Mail\Message();
-					$msg->setSubject($subject)
-					    ->addTo($hubMonitorEmail)
-					    ->addFrom($this->jconfig->getValue('config.mailfrom'), $this->jconfig->getValue('config.sitename') . ' Administrator')
-					    ->addHeader('X-Component', $this->_option)
-					    ->setBody($message)
-					    ->send();*/
-					// @FIXME: LOG ACCOUNT CREATION ACTIVITY SOMEWHERE
+						// HTML
+						$eview->setLayout('admincreate_html');
+
+						$html = $eview->loadTemplate();
+						$html = str_replace("\n", "\r\n", $html);
+
+						$hubMonitorEmail = $this->jconfig->get('mailfrom');
+
+						$message = new \Hubzero\Mail\Message();
+						$message->setSubject($this->jconfig->get('sitename') . ' ' . JText::_('COM_MEMBERS_REGISTER_EMAIL_ACCOUNT_CREATION'))
+						        ->addTo($hubMonitorEmail)
+						        ->addFrom($this->jconfig->get('mailfrom'), $this->jconfig->get('sitename') . ' Administrator')
+						        ->addHeader('X-Component', $this->_option)
+						        ->addHeader('X-Component-Object', 'user_creation_admin_notification')
+						        ->addPart($plain, 'text/plain')
+						        ->addPart($html, 'text/html');
+
+						// Send mail
+						if (!$message->send())
+						{
+							\JFactory::getLogger()->error('Members admin notification email failed: ' . JText::sprintf('Failed to mail %s', $hubMonitorEmail));
+						}
+					}
 
 					// Instantiate a new view
 					$this->view->setLayout('create');
