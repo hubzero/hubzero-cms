@@ -419,7 +419,7 @@ class MembersControllerApi extends \Hubzero\Component\ApiController
 		// Validate the password
 		if (!empty($pw))
 		{
-			$msg = \Hubzero\Password\Rule::validate($pw, $password_rules, $result);
+			$msg = \Hubzero\Password\Rule::validate($pw, $password_rules, $userid);
 		}
 		else
 		{
