@@ -57,6 +57,59 @@ class ProjectsControllerProjects extends ProjectsControllerBase
 	}
 
 	/**
+	 * Return results for autocompleter
+	 *
+	 * @return     string JSON
+	 */
+	public function autocompleteTask()
+	{
+		$filters = array(
+			'limit'    => 20,
+			'start'    => 0,
+			'admin'    => 0,
+			'search'   => trim(JRequest::getString('value', '')),
+			'getowner' => 1
+		);
+
+		// Get a record count
+		$obj = new Project( $this->database );
+
+		// Get records
+		$rows = $obj->getRecords(
+			$this->view->filters, false,
+			$this->juser->get('id'), 0, $this->_setupComplete
+		);
+
+		// Output search results in JSON format
+		$json = array();
+		if (count($rows) > 0)
+		{
+			foreach ($rows as $row)
+			{
+				$title = str_replace("\n", '', stripslashes(trim($row->title)));
+				$title = str_replace("\r", '', $title);
+
+				$item = array(
+					'id'   => $row->alias,
+					'name' => $title
+				);
+
+				// Push exact matches to the front
+				if ($row->alias == $filters['search'])
+				{
+					array_unshift($json, $item);
+				}
+				else
+				{
+					$json[] = $item;
+				}
+			}
+		}
+
+		echo json_encode($json);
+	}
+
+	/**
 	 * Intro to projects (main view)
 	 *
 	 * @return     void
