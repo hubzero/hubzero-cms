@@ -556,6 +556,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Instantiate a new table row and bind the incoming data
 		$section = new ForumModelSection($id);
+
 		if (!$section->bind($fields))
 		{
 			$this->setRedirect(
@@ -1094,7 +1095,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		$this->_authorize('thread', $this->view->thread->get('id'));
 		$this->_authorize('post');
 
-		// If the access is anything beyond public, 
+		// If the access is anything beyond public,
 		// make sure they're logged in.
 		if ($this->view->thread->get('access') > 0)
 		{
@@ -1948,7 +1949,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 	/**
 	 * Unsubscribe user from forum emails
-	 * 
+	 *
 	 * @return void
 	 */
 	public function unsubscribe()

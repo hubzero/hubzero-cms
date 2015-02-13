@@ -89,7 +89,7 @@ $this->css()
 							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
 						</label>
 					</div>
-					<div class="col span-half omega">
+					<div class="col span-quarter">
 						<label for="field-closed">
 							<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) { echo ' checked="checked"'; } ?> />
 							<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
