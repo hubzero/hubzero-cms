@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access');
 /**
  * Projects Reports controller class
  */
-class ProjectsControllerReports extends \Hubzero\Component\SiteController
+class ProjectsControllerReports extends ProjectsControllerBase
 {
 	/**
 	 * Display reports
@@ -45,16 +45,6 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 	{
 		// Incoming
 		$period = JRequest::getVar( 'period', 'alltime');
-
-		// Publishing enabled?
-		$this->_publishing = JPluginHelper::isEnabled('projects', 'publications') ? 1 : 0;
-		if ($this->_publishing)
-		{
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'publication.php');
-			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
-				.'com_publications' . DS . 'tables' . DS . 'version.php');
-		}
 
 		// Instantiate a project and related classes
 		$obj   = new Project( $this->database );
@@ -145,7 +135,8 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 		$admin = ProjectsHelper::checkReviewerAuth('general', $this->config);
 
 		// Check authorization
-		$authorized   = $this->_authorize();
+		$groups = $this->config->get('reportgroup', '') ? array($this->config->get('reportgroup', '')) : array();
+		$authorized   = $this->_authorize(0, $groups);
 
 		if (!$authorized)
 		{
@@ -251,7 +242,8 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 		$this->view->title = $this->_title;
 
 		// Check authorization
-		$authorized   = $this->_authorize();
+		$groups = $this->config->get('reportgroup', '') ? array($this->config->get('reportgroup', '')) : array();
+		$authorized   = $this->_authorize(0, $groups);
 
 		if (!$authorized)
 		{
@@ -279,7 +271,6 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 
 		$this->view->msg = isset($this->_msg) ? $this->_msg : '';
 		$this->view->display();
-
 	}
 
 	/**
@@ -333,67 +324,5 @@ class ProjectsControllerReports extends \Hubzero\Component\SiteController
 		}
 		$document = JFactory::getDocument();
 		$document->setTitle( $this->_title );
-	}
-
-	/**
-	 * Check user access
-	 *
-	 * @param      array $curatorgroups
-	 * @return     mixed False if no access, string if has access
-	 */
-	protected function _authorize( $curatorgroups = array() )
-	{
-		// Check if they are logged in
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-
-		$authorized = false;
-
-		// Check if they're a site admin (from Joomla)
-		if ($this->juser->authorize($this->_option, 'manage'))
-		{
-			$authorized = 'admin';
-		}
-
-		// Check if they are in reports
-		$reportgroup = $this->config->get('reportgroup', '');
-		if ($reportgroup && $group = \Hubzero\User\Group::getInstance($reportgroup))
-		{
-			// Check if they're a member of this group
-			$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
-			if ($ugs && count($ugs) > 0)
-			{
-				foreach ($ugs as $ug)
-				{
-					if ($group && $ug->cn == $group->get('cn'))
-					{
-						$authorized = true;
-						return $authorized;
-					}
-				}
-			}
-		}
-
-		return $authorized;
-	}
-
-	/**
-	 * Login view
-	 *
-	 * @return     void
-	 */
-	protected function _login()
-	{
-		$rtrn = JRequest::getVar('REQUEST_URI',
-			JRoute::_('index.php?option=' . $this->_option
-			. '&controller=reports&task=' . $this->_task), 'server');
-
-		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
-			$this->_msg,
-			'warning'
-		);
 	}
 }
