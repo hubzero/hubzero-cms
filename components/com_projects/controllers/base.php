@@ -79,6 +79,12 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 	 */
 	protected function _includeScripts()
 	{
+		// No need in some controllers
+		if ($this->_controller == 'media')
+		{
+			return;
+		}
+
 		// Enable publication management
 		if ($this->_publishing)
 		{
@@ -192,16 +198,8 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 		$rtrn = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option='
 			. $this->_option . '&controller=' . $this->_controller . $task), 'server');
 
-		// Needed for a weird redirect problem with /files
-		if (substr($rtrn, -1, 1) != '/'
-			&& substr($rtrn, -9, 9) != 'sponsored'
-			&& substr($rtrn, -9, 9) != 'sensitive')
-		{
-			$rtrn .= DS;
-		}
-
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_users&view=login').'?return=' . base64_encode($rtrn),
+			JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
 			$this->_msg,
 			'warning'
 		);
@@ -213,7 +211,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 	 * @param  int $check_site_admin
 	 * @return void
 	 */
-	protected function _authorize( $check_site_admin = 0 )
+	protected function _authorize( $check_site_admin = 0, $groups = array() )
 	{
 		// Check login
 		if ($this->juser->get('guest'))
@@ -237,6 +235,30 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			if ($this->juser->get('id') && $this->juser->authorize($this->_option, 'manage'))
 			{
 				return 'admin';
+			}
+		}
+
+		// Check if user is in authorized groups (e.g. reviewers)
+		if (!empty($groups))
+		{
+			foreach ($groups as $gr)
+			{
+				if ($group = \Hubzero\User\Group::getInstance($gr))
+				{
+					// Check if they're a member of this group
+					$ugs = \Hubzero\User\Helper::getGroups($this->juser->get('id'));
+					if ($ugs && count($ugs) > 0)
+					{
+						foreach ($ugs as $ug)
+						{
+							if ($group && $ug->cn == $group->get('cn'))
+							{
+								$authorized = true;
+								return $authorized;
+							}
+						}
+					}
+				}
 			}
 		}
 
