@@ -26,54 +26,31 @@
  * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
- * @since     Class available since release 1.3.2
  */
-
-namespace Hubzero\User;
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Users database model
+ * Members password reset token database model
  *
  * @uses \Hubzero\Database\Relational
  */
-class User extends \Hubzero\Database\Relational
+class Token extends \Hubzero\Database\Relational
 {
 	/**
-	 * Defines a one to many relationship between users and reset tokens
+	 * The table namespace
 	 *
-	 * @return \Hubzero\Database\Relationship\oneToMany
-	 * @since  1.3.2
+	 * @var string
 	 **/
-	public function tokens()
-	{
-		return $this->oneToMany('Token');
-	}
+	protected $namespace = 'xprofiles';
 
 	/**
-	 * Checks to see if the current user has exceeded the site
-	 * password reset request limit for a given time period
+	 * Automatically fillable fields
 	 *
-	 * @return bool
+	 * @var array
 	 **/
-	public function hasExceededResetLimit()
-	{
-		$params     = \JComponentHelper::getParams('com_users');
-		$resetCount = (int)$params->get('reset_count', 10);
-		$resetHours = (int)$params->get('reset_time', 1);
-		$result     = true;
-
-		// Get the user's tokens
-		$threshold = date("Y-m-d H:i:s", strtotime(\JFactory::getDate()->toSql() . " {$resetHours} hours ago"));
-		$tokens    = $this->tokens()->where('created', '>=', $threshold)->rows();
-
-		if ($tokens->count() < $resetCount)
-		{
-			$result = false;
-		}
-
-		return $result;
-	}
+	public $initiate = array(
+		'created'
+	);
 }

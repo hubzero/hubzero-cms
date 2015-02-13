@@ -31,6 +31,8 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+require_once JPATH_COMPONENT . DS . 'models' . DS . 'token.php';
+
 /**
  * Members controller class for profiles
  */
@@ -201,7 +203,8 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Get the user object
-		$user = JUser::getInstance($user->first()->id);
+		$user  = $user->first();
+		$juser = JUser::getInstance($user->id);
 
 		// Make sure the user isn't blocked
 		if ($user->block)
@@ -215,7 +218,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Make sure the user isn't a super admin
-		if ($user->authorise('core.admin'))
+		if ($juser->authorise('core.admin'))
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=reset', false),
@@ -226,7 +229,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Make sure the user has not exceeded the reset limit
-		if (!$this->checkResetLimit($user))
+		if ($user->hasExceededResetLimit())
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=reset', false),
@@ -241,14 +244,10 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		$salt        = JUserHelper::getSalt('crypt-md5');
 		$hashedToken = md5($token.$salt).':'.$salt;
 
-		$user->activation = $hashedToken;
+		// Save the token
+		$user->tokens()->save(['token' => $hashedToken]);
 
-		// Save the user to the database
-		if (!$user->save(true))
-		{
-			throw new JException($user->getError(), 500);
-		}
-
+		// Send an email
 		$config	= JFactory::getConfig();
 		$eview  = new \Hubzero\Mail\View(array(
 			'name'   => 'emails',
@@ -292,8 +291,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Push the user data into the session
-		$app = JFactory::getApplication();
-		$app->setUserState('com_users.reset.user', $user->id);
+		JFactory::getApplication()->setUserState('com_users.reset.user', $user->id);
 
 		// Everything went well...go to the token verification page
 		$this->setRedirect(
@@ -310,6 +308,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 	 */
 	public function verifyTask()
 	{
+		$this->setTitle();
 		$this->view->display();
 	}
 
@@ -323,7 +322,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		// Check the request token
 		JSession::checkToken('request') or jexit(JText::_('JINVALID_TOKEN'));
 
-		// Grab the token
+		// Grab the token (not to be confused with the CSRF token above!)
 		if (!$token = trim(JRequest::getVar('token', false)))
 		{
 			$this->setRedirect(
@@ -339,8 +338,8 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		$id  = $app->getUserState('com_users.reset.user', null);
 
 		// Get the user object
-		$user  = JUser::getInstance($id);
-		$parts = explode(':', $user->activation);
+		$user  = \Hubzero\User\User::oneOrFail($id);
+		$parts = explode(':', $user->tokens()->latest()->token);
 		$crypt = $parts[0];
 
 		if (!isset($parts[1]))
@@ -407,6 +406,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 			}
 		}
 
+		$this->setTitle();
 		$this->view->display();
 	}
 
@@ -433,10 +433,10 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		}
 
 		// Get the user object
-		$user = JUser::getInstance($id);
+		$user = \Hubzero\User\User::oneOrFail($id);
 
 		// Check for a user and that the tokens match
-		if (empty($user) || $user->activation !== $token)
+		if ($user->tokens()->latest()->token !== $token)
 		{
 			$this->setRedirect(
 				JRoute::_('index.php?option=' . $this->_option . '&task=setpassword', false),
@@ -461,7 +461,7 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 		$profile = new \Hubzero\User\Profile();
 		$profile->load($id);
 
-		if (\Hubzero\User\Helper::isXDomainUser($user->get('id')))
+		if (\Hubzero\User\Helper::isXDomainUser($user->id))
 		{
 			throw new JException(JText::_('COM_MEMBERS_CREDENTIALS_ERROR_LINKED_ACCOUNT'), 403);
 		}
@@ -574,46 +574,6 @@ class MembersControllerCredentials extends \Hubzero\Component\SiteController
 				'passed'
 			);
 		}
-	}
-
-	/**
-	 * Method to check if user reset limit has been exceeded within the allowed time period.
-	 *
-	 * @param   JUser  the user doing the password reset
-	 *
-	 * @return  boolean true if user can do the reset, false if limit exceeded
-	 *
-	 * @since	2.5
-	 */
-	public function checkResetLimit($user)
-	{
-		$params = JFactory::getApplication()->getParams();
-		$maxCount = (int) $params->get('reset_count');
-		$resetHours = (int) $params->get('reset_time');
-		$result = true;
-
-		$lastResetTime = strtotime($user->lastResetTime) ? strtotime($user->lastResetTime) : 0;
-		$hoursSinceLastReset = (strtotime(JFactory::getDate()->toSql()) - $lastResetTime) / 3600;
-
-		// If it's been long enough, start a new reset count
-		if ($hoursSinceLastReset > $resetHours)
-		{
-			$user->lastResetTime = JFactory::getDate()->toSql();
-			$user->resetCount = 1;
-		}
-
-		// If we are under the max count, just increment the counter
-		elseif ($user->resetCount < $maxCount)
-		{
-			$user->resetCount;
-		}
-
-		// At this point, we know we have exceeded the maximum resets for the time period
-		else
-		{
-			$result = false;
-		}
-		return $result;
 	}
 
 	/**
