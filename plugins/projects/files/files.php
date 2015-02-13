@@ -7470,6 +7470,16 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			return false;
 		}
 
+		// When running gc from admin
+		if (!isset($this->_config))
+		{
+			$this->_config = JComponentHelper::getParams('com_projects');
+			$this->prefix  = $this->_config->get('offroot', 0) ? '' : JPATH_ROOT;
+
+			// Include Git Helper
+			$this->getGitHelper();
+		}
+
 		// Build upload path for project files
 		$dir = strtolower($identifier);
 		$webdir = DS . trim($this->_config->get('webpath'), DS);
