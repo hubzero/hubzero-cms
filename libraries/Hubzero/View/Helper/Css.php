@@ -30,7 +30,7 @@
 
 namespace Hubzero\View\Helper;
 
-use Hubzero\Document\Assets;
+use Hubzero\Document\Asset\Stylesheet;
 
 /**
  * Helper for pushing styles to the document.
@@ -54,45 +54,19 @@ class Css extends AbstractHelper
 			$extension = 'plg_' . $extension . '_' . $element;
 		}
 
-		// Adding style declarations
-		if ($extension === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
-		{
-			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
-			return $this->getView();
-		}
+		$asset = new Stylesheet($extension, $stylesheet);
 
-		if ($stylesheet && substr($stylesheet, -4) != '.css')
+		if ($asset->exists())
 		{
-			$stylesheet .= '.css';
+			if ($asset->isDeclaration())
+			{
+				\JFactory::getDocument()->addStyleDeclaration($asset->contents());
+			}
+			else
+			{
+				\JFactory::getDocument()->addStyleSheet($asset->link());
+			}
 		}
-
-		// Adding from an absolute path
-		$dir = $this->_assetDir($stylesheet, 'css');
-		if ($dir == '/')
-		{
-			Assets::addStylesheet($dir . $stylesheet);
-			return $this->getView();
-		}
-
-		// Adding a system stylesheet
-		if ($extension == 'system')
-		{
-			Assets::addSystemStylesheet($stylesheet, $dir);
-			return $this->getView();
-		}
-
-		// Adding an extension stylesheet
-		switch (substr($extension, 0, 4))
-		{
-			case 'com_': Assets::addComponentStylesheet($extension, $stylesheet, $dir);          break;
-			case 'plg_':
-				list($ex, $folder, $element) = explode('_', $extension);
-				Assets::addPluginStylesheet($folder, $element, $stylesheet, $dir);
-			break;
-			case 'mod_': Assets::addModuleStylesheet($extension, $stylesheet, $dir);             break;
-			default:     Assets::addComponentStylesheet('com_' . $extension, $stylesheet, $dir); break;
-		}
-
 		return $this->getView();
 	}
 
@@ -108,31 +82,5 @@ class Css extends AbstractHelper
 			return 'plg_' . $this->getView()->getFolder() . '_' . $this->getView()->getElement();
 		}
 		return $this->getView()->get('option', \JRequest::getCmd('option'));
-	}
-
-	/**
-	 * Determine the asset directory
-	 *
-	 * @param   string  $path     File path
-	 * @param   string  $default  Default directory
-	 * @return  string
-	 */
-	private function _assetDir(&$path, $default='')
-	{
-		if (substr($path, 0, 2) == './')
-		{
-			$path = substr($path, 2);
-
-			return '';
-		}
-
-		if (substr($path, 0, 1) == '/')
-		{
-			$path = substr($path, 1);
-
-			return '/';
-		}
-
-		return $default;
 	}
 }

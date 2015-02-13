@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,13 +24,15 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
 namespace Hubzero\Base\Traits;
 
-use Hubzero\Document\Assets;
+use Hubzero\Document\Asset\Image;
+use Hubzero\Document\Asset\Javascript;
+use Hubzero\Document\Asset\Stylesheet;
 use Hubzero\Component\ControllerInterface;
 use Hubzero\Plugin\Plugin;
 use Hubzero\Module\Module;
@@ -50,52 +52,26 @@ trait AssetAware
 	 */
 	public function css($stylesheet = '', $extension = null, $element = null)
 	{
-		$extension = $extension ?: $this->_extension();
+		$extension = $extension ?: $this->detectExtensionName();
 
 		if ($element)
 		{
 			$extension = 'plg_' . $extension . '_' . $element;
 		}
 
-		// Adding style declarations
-		if ($extension === true || strstr($stylesheet, '{') || strstr($stylesheet, '@'))
-		{
-			\JFactory::getDocument()->addStyleDeclaration($stylesheet);
-			return $this;
-		}
+		$asset = new Stylesheet($extension, $stylesheet);
 
-		if ($stylesheet && substr($stylesheet, -4) != '.css')
+		if ($asset->exists())
 		{
-			$stylesheet .= '.css';
+			if ($asset->isDeclaration())
+			{
+				\JFactory::getDocument()->addStyleDeclaration($asset->contents());
+			}
+			else
+			{
+				\JFactory::getDocument()->addStyleSheet($asset->link());
+			}
 		}
-
-		// Adding from an absolute path
-		$dir = $this->_assetDir($stylesheet, 'css');
-		if ($dir == '/')
-		{
-			Assets::addStylesheet($dir . $stylesheet);
-			return $this;
-		}
-
-		// Adding a system stylesheet
-		if ($extension == 'system')
-		{
-			Assets::addSystemStylesheet($stylesheet, $dir);
-			return $this;
-		}
-
-		// Adding an extension stylesheet
-		switch (substr($extension, 0, 4))
-		{
-			case 'com_': Assets::addComponentStylesheet($extension, $stylesheet, $dir);          break;
-			case 'plg_':
-				list($ex, $folder, $element) = explode('_', $extension);
-				Assets::addPluginStylesheet($folder, $element, $stylesheet, $dir);
-			break;
-			case 'mod_': Assets::addModuleStylesheet($extension, $stylesheet, $dir);             break;
-			default:     Assets::addComponentStylesheet('com_' . $extension, $stylesheet, $dir); break;
-		}
-
 		return $this;
 	}
 
@@ -109,47 +85,26 @@ trait AssetAware
 	 */
 	public function js($asset = '', $extension = null, $element = null)
 	{
-		$extension = $extension ?: $this->_extension();
+		$extension = $extension ?: $this->detectExtensionName();
 
 		if ($element)
 		{
 			$extension = 'plg_' . $extension . '_' . $element;
 		}
 
-		// Adding style declarations
-		if ($extension === true || strstr($asset, '(') || strstr($asset, ';'))
-		{
-			\JFactory::getDocument()->addScriptDeclaration($asset);
-			return $this;
-		}
+		$asset = new Javascript($extension, $asset);
 
-		// Adding from an absolute path
-		$dir = $this->_assetDir($asset, 'js');
-		if ($dir == '/')
+		if ($asset->exists())
 		{
-			Assets::addScript($dir . $asset);
-			return $this;
+			if ($asset->isDeclaration())
+			{
+				\JFactory::getDocument()->addScriptDeclaration($asset->contents());
+			}
+			else
+			{
+				\JFactory::getDocument()->addScript($asset->link());
+			}
 		}
-
-		// Adding a system stylesheet
-		if ($extension == 'system')
-		{
-			Assets::addSystemScript($asset, $dir);
-			return $this;
-		}
-
-		// Adding an extension stylesheet
-		switch (substr($extension, 0, 4))
-		{
-			case 'com_': Assets::addComponentScript($extension, $asset, $dir);          break;
-			case 'plg_':
-				list($ex, $folder, $element) = explode('_', $extension);
-				Assets::addPluginScript($folder, $element, $asset, $dir);
-			break;
-			case 'mod_': Assets::addModuleScript($extension, $asset, $dir);             break;
-			default:     Assets::addComponentScript('com_' . $extension, $asset, $dir); break;
-		}
-
 		return $this;
 	}
 
@@ -163,34 +118,16 @@ trait AssetAware
 	 */
 	public function img($asset, $extension = null, $element = null)
 	{
-		$extension = $extension ?: $this->_extension();
+		$extension = $extension ?: $this->detectExtensionName();
 
 		if ($element)
 		{
 			$extension = 'plg_' . $extension . '_' . $element;
 		}
 
-		$dir = $this->_assetDir($asset, 'img');
-		if ($dir == '/')
-		{
-			return rtrim(\JURI::base(true), '/') . $dir . $asset;
-		}
+		$asset = new Image($extension, $asset);
 
-		if ($extension == 'system')
-		{
-			return Assets::getSystemImage($asset);
-		}
-
-		switch (substr($extension, 0, 4))
-		{
-			case 'com_': return Assets::getComponentImage($extension, $asset, $dir);          break;
-			case 'plg_':
-				list($ex, $folder, $element) = explode('_', $extension);
-				return Assets::getPluginImage($folder, $element, $asset, $dir);
-			break;
-			case 'mod_': return Assets::getModuleImage($extension, $asset, $dir);             break;
-			default:     return Assets::getComponentImage('com_' . $extension, $asset, $dir); break;
-		}
+		return $asset->link();
 	}
 
 	/**
@@ -198,7 +135,7 @@ trait AssetAware
 	 *
 	 * @return  string
 	 */
-	private function _extension()
+	private function detectExtensionName()
 	{
 		if ($this instanceof Plugin)
 		{
@@ -212,31 +149,5 @@ trait AssetAware
 		{
 			return $this->module->module;
 		}
-	}
-
-	/**
-	 * Determine the asset directory
-	 *
-	 * @param   string  $path     File path
-	 * @param   string  $default  Default directory
-	 * @return  string
-	 */
-	private function _assetDir(&$path, $default='')
-	{
-		if (substr($path, 0, 2) == './')
-		{
-			$path = substr($path, 2);
-
-			return '';
-		}
-
-		if (substr($path, 0, 1) == '/')
-		{
-			$path = substr($path, 1);
-
-			return '/';
-		}
-
-		return $default;
 	}
 }

@@ -30,6 +30,8 @@
 
 namespace Hubzero\Document;
 
+use Hubzero\Document\Asset\Javascript;
+use Hubzero\Document\Asset\Stylesheet;
 use JFactory;
 use JURI;
 use Exception;
@@ -48,7 +50,7 @@ class Assets
 	public static function base()
 	{
 		$base = JPATH_SITE;
-		if (JFactory::getApplication()->isAdmin())
+		if (\JFactory::getApplication()->isAdmin())
 		{
 			$base = JPATH_ADMINISTRATOR;
 		}
@@ -98,7 +100,7 @@ class Assets
 
 		$root = self::base();
 
-		JFactory::getDocument()->addStyleSheet(rtrim(JURI::base(true), DS) . $stylesheet . '?v=' . filemtime($root . $stylesheet));
+		\JFactory::getDocument()->addStyleSheet(rtrim(\JURI::base(true), DS) . $stylesheet . '?v=' . filemtime($root . $stylesheet));
 	}
 
 	/**
@@ -121,7 +123,7 @@ class Assets
 
 		$root = self::base();
 
-		JFactory::getDocument()->addScript(rtrim(JURI::base(true), DS) . $script . '?v=' . filemtime($root . $script));
+		\JFactory::getDocument()->addScript(rtrim(\JURI::base(true), DS) . $script . '?v=' . filemtime($root . $script));
 	}
 
 	/**
@@ -134,47 +136,24 @@ class Assets
 	 */
 	public static function addComponentStylesheet($component, $stylesheet = '', $dir = 'css')
 	{
-		$app = JFactory::getApplication();
-		$template = $app->getTemplate();
-
-		$root = self::base();
-
-		if (empty($stylesheet))
+		if ($dir != 'css')
 		{
-			$stylesheet = substr($component, 4) . '.css';
-		}
-		if (substr(strtolower($stylesheet), -4) != '.css')
-		{
-			$stylesheet .= '.css';
+			$stylesheet = $dir . '/' . $stylesheet;
 		}
 
-		// Build a list of possible paths
-		$paths = array();
+		$asset = new Stylesheet($component, $stylesheet);
 
 		if (defined('JPATH_GROUPCOMPONENT'))
 		{
 			$base = substr(JPATH_GROUPCOMPONENT, strlen(JPATH_ROOT));
 
-			$paths[] = $base . DS . 'assets' . DS . 'css' . DS . $stylesheet;
-			$paths[] = $base . DS . $stylesheet;
-		}
-		else
-		{
-			$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $component . DS . $stylesheet;
-			$paths[] = DS . 'components' . DS . $component . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $stylesheet;
-			$paths[] = DS . 'components' . DS . $component . DS . $stylesheet;
+			$asset->setPath('source', $base . DS . 'assets' . DS . 'css' . DS . $asset->file());
+			$asset->setPath('override', $base . DS . 'assets' . DS . 'css' . DS . $asset->file());
 		}
 
-		// Run through each path until we find one that works
-		foreach ($paths as $path)
+		if ($asset->exists())
 		{
-			if (file_exists($root . $path))
-			{
-				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet(rtrim(JURI::base(true), DS) . $path . '?v=' . filemtime($root . $path));
-				break;
-			}
+			\JFactory::getDocument()->addStyleSheet($asset->link());
 		}
 	}
 
@@ -188,45 +167,24 @@ class Assets
 	 */
 	public static function addComponentScript($component, $script = '', $dir = 'js')
 	{
-		if (empty($script))
+		if ($dir != 'js')
 		{
-			$script = substr($component, 4);
+			$script = $dir . '/' . $script;
 		}
 
-		// We need to momentarily strip the file extension
-		if (substr(strtolower($script), -3) == '.js')
-		{
-			$script = substr($script, 0, -3);
-		}
+		$asset = new Javascript($component, $script);
 
-		$base = DS . 'components' . DS . $component;
 		if (defined('JPATH_GROUPCOMPONENT'))
 		{
 			$base = substr(JPATH_GROUPCOMPONENT, strlen(JPATH_ROOT));
+
+			$asset->setPath('source', $base . DS . 'assets' . DS . ($dir ? DS . $dir : '') . DS . $asset->file());
+			$asset->setPath('override', $base . DS . 'assets' . DS . ($dir ? DS . $dir : '') . DS . $asset->file());
 		}
 
-		// Build a list of possible paths
-		$paths = array();
-
-		// @deprecated  Support for deprecated jquery suffix
-		$paths[] = $base . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
-		$paths[] = $base . DS . $script . '.jquery.js';
-
-		$paths[] = $base . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.js';
-		$paths[] = $base . DS . $script . '.js';
-
-		$root = self::base();
-
-		// Run through each path until we find one that works
-		foreach ($paths as $path)
+		if ($asset->exists())
 		{
-			if (file_exists($root . $path))
-			{
-				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addScript(rtrim(JURI::base(true), DS) . $path . '?v=' . filemtime($root . $path));
-				break;
-			}
+			\JFactory::getDocument()->addScript($asset->link());
 		}
 	}
 
@@ -239,41 +197,16 @@ class Assets
 	 */
 	public static function addSystemStylesheet($stylesheet, $dir = 'css')
 	{
-		if (!$stylesheet)
+		if ($dir != 'css')
 		{
-			return;
+			$stylesheet = $dir . '/' . $stylesheet;
 		}
 
-		if (substr(strtolower($stylesheet), -4) != '.css')
+		$asset = new Stylesheet('system', $stylesheet);
+
+		if ($asset->exists())
 		{
-			$stylesheet .= '.css';
-		}
-
-		$template  = JFactory::getApplication()->getTemplate();
-
-		// Build a list of possible paths
-		$paths = array();
-
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $stylesheet;
-		$paths[] = DS . 'media' . DS . 'system' . ($dir ? DS . $dir : '') . DS . $stylesheet;
-
-		// Run through each path until we find one that works
-		foreach ($paths as $i => $path)
-		{
-			$base = JPATH_ROOT;
-			$b = str_replace('/administrator', '', rtrim(JURI::base(true), DS));
-			if ($i == 0)
-			{
-				$base = (JFactory::getApplication()->isAdmin() ? JPATH_ADMINISTRATOR : JPATH_SITE);
-				$b = rtrim(JURI::base(true), DS);
-			}
-			if (file_exists($base . $path))
-			{
-				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet($b . $path . '?v=' . filemtime($base . $path));
-				break;
-			}
+			\JFactory::getDocument()->addStyleSheet($asset->link());
 		}
 	}
 
@@ -286,36 +219,16 @@ class Assets
 	 */
 	public static function addSystemScript($script, $dir = 'js')
 	{
-		if (!$script)
+		if ($dir != 'js')
 		{
-			return;
+			$script = $dir . '/' . $script;
 		}
 
-		// We need to momentarily strip the file extension
-		if (substr(strtolower($script), -3) == '.js')
+		$asset = new Javascript('system', $script);
+
+		if ($asset->exists())
 		{
-			$script = substr($script, 0, -3);
-		}
-
-		$base = DS . 'media' . DS . 'system' . ($dir ? DS . $dir : '');
-
-		// Build a list of possible paths
-		$paths = array();
-		// @deprecated  Support for deprecated jquery suffix
-		$paths[] = $base . DS . $script . '.jquery.js';
-
-		$paths[] = $base . DS . $script . '.js';
-
-		// Run through each path until we find one that works
-		foreach ($paths as $path)
-		{
-			if (file_exists(JPATH_ROOT . $path))
-			{
-				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addScript(str_replace('/administrator', '', rtrim(JURI::base(true), DS)) . $path . '?v=' . filemtime(JPATH_ROOT . $path));
-				break;
-			}
+			\JFactory::getDocument()->addScript($asset->link());
 		}
 	}
 
@@ -436,41 +349,16 @@ class Assets
 	 */
 	public static function addModuleStyleSheet($module, $stylesheet = '', $dir = 'css')
 	{
-		$template = JFactory::getApplication()->getTemplate();
-
-		if (empty($stylesheet))
+		if ($dir != 'css')
 		{
-			$stylesheet = $module . '.css';
-		}
-		if (!$stylesheet)
-		{
-			return;
+			$stylesheet = $dir . '/' . $stylesheet;
 		}
 
-		if (substr(strtolower($stylesheet), -4) != '.css')
+		$asset = new Stylesheet($module, $stylesheet);
+
+		if ($asset->exists())
 		{
-			$stylesheet .= '.css';
-		}
-
-		$root = self::base();
-
-		// Build a list of possible paths
-		$paths = array();
-
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $stylesheet;
-		$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $stylesheet;
-		$paths[] = DS . 'modules' . DS . $module . DS . $stylesheet;
-
-		// Run through each path until we find one that works
-		foreach ($paths as $path)
-		{
-			if (file_exists($root . $path))
-			{
-				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet(rtrim(JURI::base(true), DS) . $path . '?v=' . filemtime($root . $path));
-				break;
-			}
+			\JFactory::getDocument()->addStyleSheet($asset->link());
 		}
 	}
 
@@ -484,48 +372,16 @@ class Assets
 	 */
 	public static function addModuleScript($module, $script = '', $dir = 'js')
 	{
-		$template = JFactory::getApplication()->getTemplate();
-
-		if (empty($script))
+		if ($dir != 'js')
 		{
-			$script = $module;
+			$script = $dir . '/' . $script;
 		}
 
-		if (!$script)
+		$asset = new Javascript($module, $script);
+
+		if ($asset->exists())
 		{
-			return;
-		}
-
-		// We need to momentarily strip the file extension
-		if (substr(strtolower($script), -3) == '.js')
-		{
-			$script = substr($script, 0, -3);
-		}
-
-		$root = self::base();
-
-		// Build a list of possible paths
-		$paths = array();
-
-		// @deprecated  Support for deprecated jquery suffix
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.jquery.js';
-		$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
-		$paths[] = DS . 'modules' . DS . $module . DS . $script . '.jquery.js';
-
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . $module . DS . $script . '.js';
-		$paths[] = DS . 'modules' . DS . $module . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.js';
-		$paths[] = DS . 'modules' . DS . $module . DS . $script . '.js';
-
-		// Run through each path until we find one that works
-		foreach ($paths as $path)
-		{
-			if (file_exists($root . $path))
-			{
-				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addScript(rtrim(JURI::base(true), DS) . $path . '?v=' . filemtime($root . $path));
-				break;
-			}
+			\JFactory::getDocument()->addScript($asset->link());
 		}
 	}
 
@@ -591,53 +447,16 @@ class Assets
 	 */
 	public static function addPluginStyleSheet($folder, $plugin, $stylesheet = '', $dir = 'css')
 	{
-		$template = JFactory::getApplication()->getTemplate();
-
-		if (empty($stylesheet))
+		if ($dir != 'css')
 		{
-			if (!$plugin)
-			{
-				return;
-			}
-			$stylesheet = $plugin . '.css';
+			$stylesheet = $dir . '/' . $stylesheet;
 		}
 
-		if (substr(strtolower($stylesheet), -4) != '.css')
+		$asset = new Stylesheet('plg_' . $folder . '_' . $plugin, $stylesheet);
+
+		if ($asset->exists())
 		{
-			$stylesheet .= '.css';
-		}
-
-		// Build a list of possible paths
-		$paths = array();
-
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $stylesheet;
-		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $stylesheet;
-		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $stylesheet;
-
-		// Run through each path until we find one that works
-		foreach ($paths as $i => $path)
-		{
-			$root = JPATH_SITE;
-			if ($i == 0)
-			{
-				$root = self::base();
-			}
-
-			if (file_exists($root . $path))
-			{
-				if ($i == 0)
-				{
-					$b = rtrim(JURI::base(true), DS);
-				}
-				else
-				{
-					$b = str_replace('/administrator', '', rtrim(JURI::base(true), DS));
-				}
-				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addStyleSheet($b . $path . '?v=' . filemtime($root . $path));
-				break;
-			}
+			\JFactory::getDocument()->addStyleSheet($asset->link());
 		}
 	}
 
@@ -652,60 +471,16 @@ class Assets
 	 */
 	public static function addPluginScript($folder, $plugin, $script = '', $dir = 'js')
 	{
-		$template = JFactory::getApplication()->getTemplate();
-
-		if (empty($script))
+		if ($dir != 'js')
 		{
-			$script = $plugin;
+			$script = $dir . '/' . $script;
 		}
 
-		if (!$script)
+		$asset = new Javascript('plg_' . $folder . '_' . $plugin, $script);
+
+		if ($asset->exists())
 		{
-			return;
-		}
-
-		// We need to momentarily strip the file extension
-		if (substr(strtolower($script), -3) == '.js')
-		{
-			$script = substr($script, 0, -3);
-		}
-
-		// Build a list of possible paths
-		$paths = array();
-
-		// @deprecated  Support for deprecated jquery suffix
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.jquery.js';
-		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.jquery.js';
-		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.jquery.js';
-
-		$paths[] = DS . 'templates' . DS . $template . DS . 'html' . DS . 'plg_' . $folder . '_' . $plugin . DS . $script . '.js';
-		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . 'assets' . ($dir ? DS . $dir : '') . DS . $script . '.js';
-		$paths[] = DS . 'plugins' . DS . $folder . DS . $plugin . DS . $script . '.js';
-
-		// Run through each path until we find one that works
-		foreach ($paths as $i => $path)
-		{
-			$root = JPATH_SITE;
-			if ($i == 0 || $i == 3)
-			{
-				$root = self::base();
-			}
-
-			if (file_exists($root . $path))
-			{
-				if ($i == 0 || $i == 3)
-				{
-					$b = rtrim(JURI::base(true), DS);
-				}
-				else
-				{
-					$b = str_replace('/administrator', '', rtrim(JURI::base(true), DS));
-				}
-				// Push script to the document
-				$jdocument = JFactory::getDocument();
-				$jdocument->addScript($b . $path . '?v=' . filemtime($root . $path));
-				break;
-			}
+			\JFactory::getDocument()->addScript($asset->link());
 		}
 	}
 

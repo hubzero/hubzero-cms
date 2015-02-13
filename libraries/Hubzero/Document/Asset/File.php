@@ -138,8 +138,10 @@ class File extends Object
 		if (strstr($this->name, '.'))
 		{
 			jimport('joomla.filesystem.file');
-			//$this->type = strtolower(\JFile::getExt($name));
-			$this->name = \JFile::stripExt($this->name);
+			if (strtolower(\JFile::getExt($name)) == $this->type)
+			{
+				$this->name = \JFile::stripExt($this->name);
+			}
 		}
 
 		$this->directory = $this->dir($this->name, $this->type());
@@ -214,6 +216,16 @@ class File extends Object
 	}
 
 	/**
+	 * Is the asset a declaration?
+	 *
+	 * @return  boolean
+	 */
+	public function isDeclaration()
+	{
+		return $this->declaration;
+	}
+
+	/**
 	 * Adds to the list of paths
 	 *
 	 * @param   string  $type  The type of path to add.
@@ -265,7 +277,7 @@ class File extends Object
 				else if ($this->extensionType() == 'system')
 				{
 					$base .= DS . 'media' . DS . $this->extensionType();
-					$path[] = $base . DS . $this->directory . DS . $this->file();
+					$paths[] = $base . DS . $this->directory . DS . $this->file();
 				}
 				else
 				{
@@ -304,10 +316,6 @@ class File extends Object
 		{
 			$this->paths['override']  = JPATH_ROOT . DS . 'templates' . DS . \JFactory::getApplication()->getTemplate() . DS . 'html';
 			$this->paths['override'] .= DS . $this->extensionName() . DS . ($this->extensionType() == 'system' ? $this->type() . DS : '') . $this->file();
-			if (!file_exists($this->overridePath()))
-			{
-				$this->paths['override'] = '';
-			}
 		}
 		return $this->paths['override'];
 	}
@@ -329,9 +337,9 @@ class File extends Object
 			{
 				$this->paths['target'] = $this->sourcePath();
 
-				if ($path = $this->overridePath())
+				if ($this->overridePath() && file_exists($this->overridePath()))
 				{
-					$this->paths['target'] = $path;
+					$this->paths['target'] = $this->overridePath();
 				}
 			}
 		}
@@ -391,7 +399,7 @@ class File extends Object
 			return $output;
 		}
 
-		$relative = substr($output, strlen(JPATH_ROOT));
+		$relative = substr($output, strlen(JPATH_BASE));
 
 		return rtrim(\JURI::base(true), DS) . $relative . ($timestamp ? '?v=' . $this->lastModified() : '');
 	}

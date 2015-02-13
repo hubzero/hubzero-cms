@@ -30,7 +30,7 @@
 
 namespace Hubzero\View\Helper;
 
-use Hubzero\Document\Assets;
+use Hubzero\Document\Asset\Image;
 
 /**
  * Helper for generating paths to image assets.
@@ -54,32 +54,9 @@ class Img extends AbstractHelper
 			$extension = 'plg_' . $extension . '_' . $element;
 		}
 
-		// Adding from an absolute path
-		$dir = $this->_assetDir($asset, 'img');
-		if ($dir == '/')
-		{
-			return rtrim(\JURI::base(true), '/') . $dir . $asset;
-		}
+		$asset = new Image($extension, $asset);
 
-		// Adding a system stylesheet
-		if ($extension == 'system')
-		{
-			return Assets::getSystemImage($dir . $asset);
-		}
-
-		// Adding an extension stylesheet
-		switch (substr($extension, 0, 4))
-		{
-			case 'com_': $path = Assets::getComponentImage($extension, $asset, $dir);          break;
-			case 'plg_':
-				list($ex, $folder, $element) = explode('_', $extension);
-				$path = Assets::getPluginImage($folder, $element, $asset, $dir);
-			break;
-			case 'mod_': $path = Assets::getModuleImage($extension, $asset, $dir);             break;
-			default:     $path = Assets::getComponentImage('com_' . $extension, $asset, $dir); break;
-		}
-
-		return $path;
+		return $asset->link();
 	}
 
 	/**
@@ -95,31 +72,5 @@ class Img extends AbstractHelper
 		}
 
 		return $this->getView()->get('option', \JRequest::getCmd('option'));
-	}
-
-	/**
-	 * Determine the asset directory
-	 *
-	 * @param   string  $path     File path
-	 * @param   string  $default  Default directory
-	 * @return  string
-	 */
-	private function _assetDir(&$path, $default='')
-	{
-		if (substr($path, 0, 2) == './')
-		{
-			$path = substr($path, 2);
-
-			return '';
-		}
-
-		if (substr($path, 0, 1) == '/')
-		{
-			$path = substr($path, 1);
-
-			return '/';
-		}
-
-		return $default;
 	}
 }

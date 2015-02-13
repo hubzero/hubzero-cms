@@ -30,7 +30,7 @@
 
 namespace Hubzero\View\Helper;
 
-use Hubzero\Document\Assets;
+use Hubzero\Document\Asset\Javascript;
 
 /**
  * Helper for pushing scripts to the document.
@@ -54,40 +54,19 @@ class Js extends AbstractHelper
 			$extension = 'plg_' . $extension . '_' . $element;
 		}
 
-		// Adding style declarations
-		if ($extension === true || strstr($asset, '(') || strstr($asset, ';'))
-		{
-			\JFactory::getDocument()->addScriptDeclaration($asset);
-			return $this->getView();
-		}
+		$asset = new Javascript($extension, $asset);
 
-		// Adding from an absolute path
-		$dir = $this->_assetDir($asset, 'js');
-		if ($dir == '/')
+		if ($asset->exists())
 		{
-			Assets::addScript($dir . $asset);
-			return $this->getView();
+			if ($asset->isDeclaration())
+			{
+				\JFactory::getDocument()->addScriptDeclaration($asset->contents());
+			}
+			else
+			{
+				\JFactory::getDocument()->addScript($asset->link());
+			}
 		}
-
-		// Adding a system stylesheet
-		if ($extension == 'system')
-		{
-			Assets::addSystemScript($asset, $dir);
-			return $this->getView();
-		}
-
-		// Adding an extension stylesheet
-		switch (substr($extension, 0, 4))
-		{
-			case 'com_': Assets::addComponentScript($extension, $asset, $dir);          break;
-			case 'plg_':
-				list($ex, $folder, $element) = explode('_', $extension);
-				Assets::addPluginScript($folder, $element, $asset, $dir);
-			break;
-			case 'mod_': Assets::addModuleScript($extension, $asset, $dir);             break;
-			default:     Assets::addComponentScript('com_' . $extension, $asset, $dir); break;
-		}
-
 		return $this->getView();
 	}
 
@@ -104,31 +83,5 @@ class Js extends AbstractHelper
 		}
 
 		return $this->getView()->get('option', \JRequest::getCmd('option'));
-	}
-
-	/**
-	 * Determine the asset directory
-	 *
-	 * @param   string  $path     File path
-	 * @param   string  $default  Default directory
-	 * @return  string
-	 */
-	private function _assetDir(&$path, $default='')
-	{
-		if (substr($path, 0, 2) == './')
-		{
-			$path = substr($path, 2);
-
-			return '';
-		}
-
-		if (substr($path, 0, 1) == '/')
-		{
-			$path = substr($path, 1);
-
-			return '/';
-		}
-
-		return $default;
 	}
 }
