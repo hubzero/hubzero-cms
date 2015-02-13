@@ -731,6 +731,53 @@ class Base
 	}
 
 	/**
+	 * Saves extension params (only applies to J2.5 and up!)
+	 *
+	 * @param  string $element the element to which the params apply
+	 * @param  array  $params  the params being saved
+	 * @return bool
+	 **/
+	public function saveParams($element, $params)
+	{
+		$element = strtolower($element);
+
+		// First, make sure it's there
+		if (substr($element, 0, 4) == 'plg_')
+		{
+			$ext   = explode("_", $element);
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `folder` = " . $this->baseDb->quote($ext[1]) . " AND `element` = " . $this->baseDb->quote($ext[2]);
+		}
+		else
+		{
+			$query = "SELECT `extension_id` FROM `#__extensions` WHERE `element` = " . $this->baseDb->quote($element);
+		}
+
+		$this->baseDb->setQuery($query);
+		if (!$id = $this->baseDb->loadResult())
+		{
+			return false;
+		}
+
+		// Build params JSON
+		if (is_array($params))
+		{
+			$params = json_encode($params);
+		}
+		else if ($params instanceof \JRegistry)
+		{
+			$params = $params->toString('JSON');
+		}
+		else
+		{
+			return false;
+		}
+
+		$query = "UPDATE `#__extensions` SET `params` = " . $this->baseDb->quote($params) . " WHERE `extension_id` = " . $this->baseDb->quote($id);
+		$this->baseDb->setQuery($query);
+		$this->baseDb->query();
+	}
+
+	/**
 	 * Add, as needed, the module entry to the appropriate table, depending on the Joomla version
 	 *
 	 * @param $element - (string) plugin element
