@@ -650,6 +650,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$view->items = NULL;
 		if ($this->_project->id)
 		{
+			$this->minimal = true;
 			$view->items = $this->getList();
 		}
 
@@ -4777,7 +4778,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$entry['fpath']		= $fpath;
 			$e 					= $norecurse ? $entry['name'] : $entry['fpath'];
 			$entry['bytes']		= filesize($this->prefix . $fullpath . DS . $e);
-			$entry['size']		= ProjectsHtml::formatSize($entry['bytes']);
+			$entry['size']		= $entry['bytes'] ? ProjectsHtml::formatSize($entry['bytes']) : 'unknown';
 			$entry['ext']		= ProjectsHtml::getFileAttribs( $e, $fullpath, 'ext', $this->prefix );
 
 			// Get last commit data
@@ -4795,13 +4796,22 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$entry['message'] 	= isset($gitData['message']) ? $gitData['message'] : NULL;
 
 			// SFTP?
-			if (preg_match("/[SFTP]/", $entry['message']))
+			if (stripos($entry['message'], '[SFTP]') !== false)
 			{
-				$profile = \Hubzero\User\Profile::getInstance( trim($entry['author']) );
-				if ($profile)
+				if (isset($this->_profileAssoc) && isset($this->_profileAssoc[trim($entry['author'])]))
 				{
-					$entry['author'] = $profile->get('name');
-					$entry['email'] = $profile->get('email');
+					$entry['author'] = $this->_profileAssoc[trim($entry['author'])]->get('name');
+					$entry['email']  = $this->_profileAssoc[trim($entry['author'])]->get('email');
+				}
+				else
+				{
+					$profile = \Hubzero\User\Profile::getInstance( trim($entry['author']) );
+					if ($profile)
+					{
+						$entry['author'] = $profile->get('name');
+						$entry['email'] = $profile->get('email');
+						$this->_profileAssoc[trim($entry['author'])] = $profile;
+					}
 				}
 			}
 
@@ -7372,6 +7382,17 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$ext   		= count($parts) > 1 ? array_pop($parts) : '';
 		$obj->ext   = strtolower($ext);
 
+		if (isset($this->minimal) && $this->minimal == true)
+		{
+			return $obj;
+		}
+		// Mime type
+		if (isset($this->mt))
+		{
+			$mTypeParts = explode(';', $this->mt->getMimeType($fullPath));
+			$obj->mimeType   = ProjectsHtml::fixUpMimeType($obj->name, $mTypeParts[0]);
+		}
+
 		// Get last commit data
 		if (isset($this->_fileinfo) && $this->_fileinfo && isset($this->_fileinfo[$obj->localPath]))
 		{
@@ -7389,12 +7410,12 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		$obj->date			= isset($gitData['date']) ? $gitData['date'] : NULL;
 		$obj->author 		= isset($gitData['author']) ? $gitData['author'] : NULL;
 		$obj->email 		= isset($gitData['email']) ? $gitData['email'] : NULL;
-		$obj->md5hash		= hash_file('md5', $fullPath);
 		$obj->commitHash 	= $hash ? $hash : $gitData['hash'];
 
 		// Get public link
 		if ($this->_audience == 'external')
 		{
+			$obj->md5hash		= hash_file('md5', $fullPath);
 			require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 				.'com_projects' . DS . 'tables' . DS . 'project.public.stamp.php');
 
@@ -7420,13 +7441,6 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 		else
 		{
 			$obj->fullPath = $fullPath;
-		}
-
-		// Mime type
-		if (isset($this->mt))
-		{
-			$mTypeParts = explode(';', $this->mt->getMimeType($fullPath));
-			$obj->mimeType   = ProjectsHtml::fixUpMimeType($obj->name, $mTypeParts[0]);
 		}
 
 		return $obj;
