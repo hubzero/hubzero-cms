@@ -23,7 +23,7 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Nicholas J. Kisseberth <nkissebe@purdue.edu>
+ * @author    Sam Wilson <samwilson@purdue.edu>
  * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
@@ -31,10 +31,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 ?>
+
 <?php echo $this->xprofile->get('name');
-if ($this->xprofile->get('orginization')) {
+if ($this->xprofile->get('orginization'))
+{
 	echo ' / ' . $this->xprofile->get('orginization');
-} ?> (<?php echo $this->xprofile->get('email'); ?>) has requested the new account '<?php echo $this->xprofile->get('username'); ?>' on <?php echo $this->sitename; ?>.
+} ?> (<?php echo $this->xprofile->get('email'); ?>) has requested the new account
+'<?php echo $this->xprofile->get('username'); ?>' on <?php echo $this->sitename; ?>.
 
 Click the following link to review this user's account:
-<?php echo $this->baseURL . JRoute::_($this->xprofile->getLink()); ?>
+<?php echo $this->baseUrl . JRoute::_($this->xprofile->getLink()); ?>
