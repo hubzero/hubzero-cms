@@ -48,8 +48,8 @@ else
 		'available' => true,
 		'state'     => 1,
 		'sort'      => 'publish_up',
-		'sort_Dir'  => 'DESC',
-		'limit'     => ($this->course->isStudent() ? 0 : 1)
+		'sort_Dir'  => 'DESC'/*,
+		'limit'     => ($this->course->isStudent() ? 0 : 1)*/
 	);
 }
 $offerings = $this->course->offerings($filters, true);
@@ -546,6 +546,8 @@ $this->css('course.css')
 								     ->set('section', $dflt)
 								     ->set('sections', $sections)
 								     ->display();
+
+								$c++;
 							}
 							else
 							{
@@ -561,9 +563,13 @@ $this->css('course.css')
 									</a>
 								</p>
 								<?php
-							}
+								$c++;
 
-							$c++;
+								if (!$this->course->isManager())
+								{
+									break;
+								}
+							}
 						}
 					}
 				}
