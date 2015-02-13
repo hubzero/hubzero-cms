@@ -32,9 +32,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 /**
- * Projects controller class
+ * Projects media controller class
  */
-class ProjectsControllerMedia extends \Hubzero\Component\SiteController
+class ProjectsControllerMedia extends ProjectsControllerBase
 {
 	/**
 	 * Determines task being called and attempts to execute it
@@ -81,7 +81,7 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 		// Check authorization - extra check
 		if ($id)
 		{
-			$authorized = $this->_authorize($id);
+			$authorized = $this->_authorize();
 			if (!$authorized)
 			{
 				JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
@@ -426,43 +426,6 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 	}
 
 	/**
-	 * Authorize users
-	 *
-	 * @param  int $projectid
-	 * @param  int $check_site_admin
-	 * @return void
-	 */
-	protected function _authorize( $projectid = 0, $check_site_admin = 0 )
-	{
-		// Check login
-		if ($this->juser->get('guest'))
-		{
-			return false;
-		}
-
-		// Check whether user belongs to the project
-		if ($projectid != 0)
-		{
-			$pOwner = new ProjectOwner( $this->database );
-			if ($result = $pOwner->isOwner($this->juser->get('id'), $projectid))
-			{
-				return $result;
-			}
-		}
-
-		// Check if they're a site admin (from Joomla)
-		if ($check_site_admin)
-		{
-			if ($this->juser->get('id') && $this->juser->authorize($this->_option, 'manage'))
-			{
-				return 'admin';
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Show images within projects
 	 *
 	 * @return     void
@@ -503,7 +466,7 @@ class ProjectsControllerMedia extends \Hubzero\Component\SiteController
 				// Other images are non-public; in 'preview' folder
 				// Check authorization
 				/*
-				if (!$this->_authorize($obj->id))
+				if (!$this->_authorize())
 				{
 					JError::raiseError( 403, JText::_('ALERTNOTAUTH') );
 					return;
