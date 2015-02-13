@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
@@ -91,13 +91,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="7">
-					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
+					(<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>)
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=sections&amp;offering=<?php echo $this->offering->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=sections&offering=' . $this->offering->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>:
 					<?php echo $this->escape(stripslashes($this->section->get('title'))); ?>

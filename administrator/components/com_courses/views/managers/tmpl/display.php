@@ -40,7 +40,7 @@ $offerings = $this->course->offerings();
 	</dl>
 <?php } ?>
 <div id="groups">
-	<form action="index.php" method="post">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post">
 		<table>
 			<tbody>
 				<tr>

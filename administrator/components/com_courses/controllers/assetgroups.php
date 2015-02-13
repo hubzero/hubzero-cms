@@ -44,7 +44,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 	/**
 	 * Determines task being called and attempts to execute it
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function execute()
 	{
@@ -56,13 +56,19 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 			JRequest::setVar('task', 'manage');
 		}
 
+		$this->registerTask('add', 'edit');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+		$this->registerTask('orderup', 'order');
+		$this->registerTask('orderdown', 'order');
+
 		parent::execute();
 	}
 
 	/**
 	 * Displays a list of courses
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -71,55 +77,48 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['unit']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.unit',
-			'unit',
-			0
+		$this->view->filters = array(
+			'unit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.unit',
+				'unit',
+				0
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			'state' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.state',
+				'state',
+				'-1'
+			),
+			// Filters for returning results
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		$this->view->unit = CoursesModelUnit::getInstance($this->view->filters['unit']);
 		if (!$this->view->unit->exists())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses'
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
 		}
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->unit->get('offering_id'));
 		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		)));
-		$this->view->filters['state']  = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.state',
-			'state',
-			'-1'
-		));
-		// Filters for returning results
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-
-		/*$this->view->filters['count'] = true;
-
-		$this->view->total = $this->view->unit->assetgroups(null, $this->view->filters);
-
-		$this->view->filters['count'] = false;
-
-		$this->view->rows = $this->view->unit->assetgroups(null, $this->view->filters);*/
 		$rows = $this->view->unit->assetgroups(null, $this->view->filters);
 
 		// establish the hierarchy of the menu
@@ -134,12 +133,6 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		{
 			$children[0][] = $v;
 			$children[$v->get('id')] = $v->children();
-
-			//$v->set('name', '');
-			/*$pt      = $v->get('parent');
-			$list    = @$children[$pt] ? $children[$pt] : array();
-			array_push($list, $v);
-			$children[$pt] = $list;*/
 		}
 
 		// second pass - get an indent list of the items
@@ -158,12 +151,9 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -201,27 +191,6 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 					$spacer = '&nbsp;&nbsp;';
 				}
 
-				/*if (!is_a($v, 'stdClass'))
-				{
-					$data = $v->toArray();
-				}
-				else
-				{
-					foreach (get_object_vars($v) as $key => $val)
-					{
-						if (substr($key, 0, 1) != '_')
-						{
-							$data[$key] = $val;
-						}
-					}
-				}
-
-				$k = new stdClass;
-				foreach ($data as $key => $val)
-				{
-					$k->$key = $val;
-				}*/
-
 				if ($v->get('parent') == 0)
 				{
 					$txt = '';
@@ -242,31 +211,15 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new course
-	 *
-	 * @return	void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Displays an edit form
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function editTask($model=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		if (is_object($model))
-		{
-			$this->view->row = $model;
-		}
-		else
+		if (!is_object($model))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -277,8 +230,10 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 				$id = (!empty($id)) ? $id[0] : '';
 			}
 
-			$this->view->row = new CoursesModelAssetgroup($id);
+			$model = new CoursesModelAssetgroup($id);
 		}
+
+		$this->view->row = $model;
 
 		if (!$this->view->row->get('unit_id'))
 		{
@@ -309,22 +264,21 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		$this->view->assetgroups = $this->treeRecurse(0, '', array(), $children, max(0, $levellimit-1));
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Saves changes to a course or saves a new entry if creating
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -360,7 +314,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $model->get('unit_id'),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $model->get('unit_id'), false),
 			JText::_('COM_COURSES_ASSETGROUP_SAVED')
 		);
 	}
@@ -384,7 +338,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0),
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0), false),
 				JText::_('COM_COURSES_ERROR_NO_ID'),
 				'error'
 			);
@@ -396,7 +350,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		{
 			// Redirect back to the courses page
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $assetgroup->get('unit_id'),
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $assetgroup->get('unit_id'), false),
 				JText::_('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $assetgroup->getError(),
 				'error'
 			);
@@ -405,7 +359,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $assetgroup->get('unit_id'),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . $assetgroup->get('unit_id'), false),
 			JText::_('COM_COURSES_ITEM_COPIED')
 		);
 	}
@@ -453,39 +407,20 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0), false),
 			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
 
 	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return     void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return     void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
-	}
-
-	/**
 	 * Set the state of an entry
 	 *
-	 * @param      integer $state State to set
-	 * @return     void
+	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask()
 	{
+		$state = $this->_task == 'publish' ? 1 : 0;
+
 		// Incoming
 		$ids = JRequest::getVar('id', array(0));
 		$ids = (!is_array($ids) ? array($ids) : $ids);
@@ -494,7 +429,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0),
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0), false),
 				($state == 1 ? JText::_('COM_COURSES_SELECT_PUBLISH') : JText::_('COM_COURSES_SELECT_UNPUBLISH')),
 				'error'
 			);
@@ -526,29 +461,9 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0), false),
 			$message
 		);
-	}
-
-	/**
-	 * Reorder a record up
-	 *
-	 * @return     void
-	 */
-	public function orderupTask()
-	{
-		$this->orderTask();
-	}
-
-	/**
-	 * Reorder a record up
-	 *
-	 * @return     void
-	 */
-	public function orderdownTask()
-	{
-		$this->orderTask();
 	}
 
 	/**
@@ -586,7 +501,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0), false)
 		);
 	}
 
@@ -598,7 +513,7 @@ class CoursesControllerAssetgroups extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&unit=' . JRequest::getInt('unit', 0), false)
 		);
 	}
 }

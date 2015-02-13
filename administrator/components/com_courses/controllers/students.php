@@ -69,7 +69,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		/*if (!$this->view->offering->exists())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses'
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
 		}*/
@@ -141,12 +141,9 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -172,12 +169,9 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -193,16 +187,10 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
 		$offering = JRequest::getInt('offering', 0);
 		$this->view->offering = CoursesModelOffering::getInstance($offering);
 
-		if (is_object($model))
-		{
-			$this->view->row = $model;
-		}
-		else
+		if (!is_object($model))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -216,29 +204,29 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 			$course_id  = $this->view->offering->get('course_id');
 			$section_id = $this->view->offering->section()->get('id');
 
-			$this->view->row = CoursesModelStudent::getInstance($id, null, null, null); //, $course_id, $offering, $section_id);
+			$model = CoursesModelStudent::getInstance($id, null, null, null); //, $course_id, $offering, $section_id);
 		}
+
+		$this->view->row = $model;
 
 		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		//getComponentMessage();
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Saves data to database and return to the edit form
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function applyTask()
 	{
@@ -348,7 +336,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'],
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $fields['offering_id'] . '&section=' . $fields['section_id'], false),
 				($c > 0 ? JText::sprintf('COM_COURSES_STUDENTS_SAVED', $c) : null)
 			);
 			return;
@@ -404,7 +392,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false),
 			($num > 0 ? JText::sprintf('COM_COURSES_STUDENTS_REMOVED', $num) : null)
 		);
 	}
@@ -412,7 +400,7 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -420,14 +408,14 @@ class CoursesControllerStudents extends \Hubzero\Component\AdminController
 		$section_id  = JRequest::getInt('section', 0);
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : '')
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($offering_id ? '&offering=' . $offering_id : '') . ($section_id ? '&section=' . $section_id : ''), false)
 		);
 	}
 
 	/**
 	 * Save students info as CSV file
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function csvTask()
 	{

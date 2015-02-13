@@ -41,7 +41,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 	/**
 	 * Short description for 'addmanager'
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -108,7 +108,7 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 	/**
 	 * Remove one or more users from the course manager list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -175,13 +175,11 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of 'manager' for a specific course
 	 *
-	 * @param      object $profile \Hubzero\User\Profile
-	 * @return     void
+	 * @param   object  $profile  \Hubzero\User\Profile
+	 * @return  void
 	 */
 	public function displayTask($course=null)
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
 		if (!$course)
 		{
@@ -193,16 +191,15 @@ class CoursesControllerEnrollment extends \Hubzero\Component\AdminController
 		$this->view->course = $course;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 

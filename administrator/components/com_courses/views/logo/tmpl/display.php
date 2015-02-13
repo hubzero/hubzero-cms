@@ -31,7 +31,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="media">
-	<form action="index.php" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
 		<table class="formed">
 			<thead>
 				<tr>
@@ -94,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 				</tr>
 				<tr>
 					<td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-					<td><a href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;tmpl=component&amp;task=remove&amp;type=<?php echo $this->type; ?>&amp;file=<?php echo $this->file; ?>&amp;id=<?php echo $this->id; ?>&amp;<?php echo JUtility::getToken(); ?>=1">[ <?php echo JText::_('COM_COURSES_DELETE'); ?> ]</a></td>
+					<td><a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&tmpl=component&task=remove&type=' . $this->type . '&file=' . $this->file . '&id=' . $this->id . '&' . JUtility::getToken() . '=1'); ?>">[ <?php echo JText::_('COM_COURSES_DELETE'); ?> ]</a></td>
 				</tr>
 <?php } else { ?>
 				<tr>

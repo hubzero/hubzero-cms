@@ -66,7 +66,7 @@ jQuery(document).ready(function($){
 
 </script>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 
 	<table class="adminlist">
 		<thead>
@@ -90,7 +90,7 @@ jQuery(document).ready(function($){
 					<input type="submit" value="<?php echo JText::_('COM_COURSES_ATTACH_ASSET'); ?>" onclick="setTask('link');" />
 				</th>
 				<th colspan="4" style="text-align:right;">
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=add&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo JText::_('COM_COURSES_CREATE_ASSET'); ?></a>
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=add&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>" class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}"><?php echo JText::_('COM_COURSES_CREATE_ASSET'); ?></a>
 				</th>
 			</tr>
 			<tr>
@@ -117,7 +117,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id[]=<?php echo $row->id; ?>&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>">
+					<a class="edit-asset" rel="{handler: 'iframe', size: {x: 570, y: 550}}" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl']); ?>">
 						<?php echo $this->escape(stripslashes($row->title)); ?>
 					</a>
 				<?php } else { ?>
@@ -155,7 +155,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="state delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unlink&amp;asset=<?php echo $row->id; ?>&amp;scope=<?php echo $this->filters['asset_scope']; ?>&amp;scope_id=<?php echo $this->filters['asset_scope_id']; ?>&amp;course_id=<?php echo $this->filters['course_id']; ?>&amp;tmpl=<?php echo $this->filters['tmpl']; ?>&amp;<?php echo JUtility::getToken(); ?>=1">
+					<a class="state delete" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unlink&asset=' . $row->id . '&scope=' . $this->filters['asset_scope'] . '&scope_id=' . $this->filters['asset_scope_id'] . '&course_id=' . $this->filters['course_id'] . '&tmpl=' . $this->filters['tmpl'] . '&' . JUtility::getToken() . '=1'); ?>">
 						<span><img src="components/<?php echo $this->option; ?>/assets/img/trash.png" width="15" height="15" alt="<?php echo JText::_('COM_COURSES_REMOVE'); ?>" /></span>
 					</a>
 				<?php } ?>

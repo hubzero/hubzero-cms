@@ -39,7 +39,7 @@ class CoursesControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Build file path
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	private function _buildUploadPath($listdir, $subdir='')
 	{
@@ -56,7 +56,7 @@ class CoursesControllerMedia extends \Hubzero\Component\AdminController
 	/**
 	 * Upload a file to the wiki via AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function ajaxUploadTask()
 	{

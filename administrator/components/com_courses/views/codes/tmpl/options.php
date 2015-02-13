@@ -72,7 +72,7 @@ function submitbutton(pressbutton)
 	} else {
 		submitform(pressbutton);
 	}
-	window.top.setTimeout("window.parent.location='index.php?option=<?php echo $this->option; ?>&controller=<?php echo $this->controller; ?>&section=<?php echo $this->section->get('id'); ?>'", 700);
+	window.top.setTimeout("window.parent.location='<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&section=' . $this->section->get('id')); ?>'", 700);
 }
 
 jQuery(document).ready(function($){
@@ -86,7 +86,7 @@ jQuery(document).ready(function($){
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
 	<fieldset>
 		<div class="configuration">

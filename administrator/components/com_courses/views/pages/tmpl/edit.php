@@ -73,7 +73,7 @@ Joomla.submitbutton = function(pressbutton) {
 <p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
 <?php } ?>
 
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-70 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -152,7 +152,7 @@ Joomla.submitbutton = function(pressbutton) {
 			<?php if (!$this->row->get('id')) { ?>
 				<p><?php echo JText::_('COM_COURSES_UPLOAD_ADDED_LATER'); ?></p>
 			<?php } else { ?>
-				<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=pages&amp;task=files&amp;tmpl=component&amp;listdir=<?php echo $this->row->get('offering_id'); ?>&amp;course=<?php echo $this->course->get('id'); ?>"></iframe>
+				<iframe width="100%" height="300" name="filelist" id="filelist" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=pages&task=files&tmpl=component&listdir=' . $this->row->get('offering_id') . '&course=' . $this->course->get('id')); ?>"></iframe>
 			<?php } ?>
 		</fieldset>
 	</div>

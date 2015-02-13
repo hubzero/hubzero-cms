@@ -37,10 +37,25 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'section' . DS . 'badge.php');
 
 /**
- * Courses controller class for managing membership and course info
+ * Courses controller class for managing sections
  */
 class CoursesControllerSections extends \Hubzero\Component\AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('publish', 'state');
+		$this->registerTask('unpublish', 'state');
+
+		parent::execute();
+	}
+
 	/**
 	 * Displays a list of courses
 	 *
@@ -64,7 +79,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		if (!$this->view->offering->exists())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses'
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false)
 			);
 			return;
 		}
@@ -124,12 +139,9 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -137,31 +149,15 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new course
-	 *
-	 * @return	void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Displays an edit form
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function editTask($model=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		if (is_object($model))
-		{
-			$this->view->row = $model;
-		}
-		else
+		if (!is_object($model))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -172,8 +168,10 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$this->view->row = CoursesModelSection::getInstance($id);
+			$model = CoursesModelSection::getInstance($id);
 		}
+
+		$this->view->row = $model;
 
 		if (!$this->view->row->get('offering_id'))
 		{
@@ -185,26 +183,15 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		$this->view->badge    = CoursesModelSectionBadge::loadBySectionId($this->view->row->get('id'));
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
-	}
-
-	/**
-	 * Save a course and fall through to edit view
-	 *
-	 * @return void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -555,7 +542,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 					$offering = CoursesModelOffering::getInstance($model->get('offering_id'));
 					$course   = CoursesModelCourse::getInstance($offering->get('course_id'));
 
-					$data                  = array();
+					$data = array();
 					$data['Name']          = $course->get('title');
 					$data['Description']   = trim($course->get('title')) . ' Badge';
 					$data['CriteriaUrl']   = rtrim(JURI::root(), DS) . DS . 'courses' . DS . 'badge' . DS . $badgeObj->get('id') . DS . 'criteria';
@@ -580,7 +567,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 						if (isset($provider_badge_id) && $provider_badge_id)
 						{
 							// We've successfully created a badge, so save that id to the database
-							$badgeObj->bind(array('provider_badge_id'=>$provider_badge_id));
+							$badgeObj->bind(array('provider_badge_id' => $provider_badge_id));
 							$badgeObj->store();
 						}
 						else
@@ -605,17 +592,16 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 			return;
 		}
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Output messsage and redirect
-			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $model->get('offering_id'),
-				JText::_('COM_COURSES_ITEM_SAVED')
-			);
-			return;
+			return $this->editTask($model);
 		}
 
-		$this->editTask($model);
+		// Output messsage and redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $model->get('offering_id'), false),
+			JText::_('COM_COURSES_ITEM_SAVED')
+		);
 	}
 
 	/**
@@ -656,8 +642,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 				// Delete course
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'));
-					return;
+					throw new Exception(JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'), 500);
 				}
 
 				$num++;
@@ -691,7 +676,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . $offering_id, false),
 			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
@@ -717,28 +702,8 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0), false)
 		);
-	}
-
-	/**
-	 * Publish a course
-	 *
-	 * @return void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Unpublish a course
-	 *
-	 * @return void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
 	}
 
 	/**
@@ -750,6 +715,8 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 	{
 		// Check for request forgeries
 		JRequest::checkToken('get') or JRequest::checkToken() or jexit('Invalid Token');
+
+		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
 		$ids = JRequest::getVar('id', array());
@@ -786,7 +753,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		if ($this->getErrors())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				implode('<br />', $this->getErrors()),
 				'error'
 			);
@@ -795,7 +762,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0),
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0), false),
 				($state ? JText::sprintf('COM_COURSES_ITEMS_PUBLISHED', $num) : JText::sprintf('COM_COURSES_ITEMS_UNPUBLISHED', $num))
 			);
 		}
@@ -809,7 +776,7 @@ class CoursesControllerSections extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&offering=' . JRequest::getInt('offering', 0), false)
 		);
 	}
 }

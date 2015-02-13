@@ -42,7 +42,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	/**
 	 * Displays a list of courses
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -64,16 +64,15 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		JRequest::setVar('hidemainmenu', 1);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->setLayout('display')->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -120,7 +119,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		{
 			// Output messsage and redirect
 			$this->setRedirect(
-				'index.php?option=' . $this->_option, //'&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
+				JRoute::_('index.php?option=' . $this->_option, false), //'&controller=' . $this->_controller . '&course=' . $model->get('course_id') . '&certificate=' . $model->get('id'),
 				JText::_('COM_COURSES_SETTINGS_SAVED')
 			);
 			return;
@@ -141,7 +140,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		if (!$certificate->exists())
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=courses',
+				JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false),
 				JText::_('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
 				'error'
 			);
@@ -170,13 +169,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		if (is_object($model))
-		{
-			$this->view->row = $model;
-		}
-		else
+		if (!is_object($model))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array());
@@ -187,8 +180,10 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
-			$this->view->row = new CoursesModelCertificate($id);
+			$model = new CoursesModelCertificate($id);
 		}
+
+		$this->view->row = $model;
 
 		if (!$this->view->row->get('course_id'))
 		{
@@ -201,16 +196,15 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -353,7 +347,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=courses',
+			JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false),
 			JText::_('COM_COURSES_ITEM_REMOVED')
 		);
 	}
@@ -366,7 +360,7 @@ class CoursesControllerCertificates extends \Hubzero\Component\AdminController
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=courses'
+			JRoute::_('index.php?option=' . $this->_option . '&controller=courses', false)
 		);
 	}
 }

@@ -41,7 +41,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 	/**
 	 * Add a user to the manager list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -117,7 +117,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 	/**
 	 * Remove one or more users from the course manager list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -163,7 +163,7 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 	/**
 	 * Remove one or more users from the course manager list
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function updateTask()
 	{
@@ -210,15 +210,13 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 	/**
 	 * Display a list of 'manager' for a specific section
 	 *
-	 * @param      object $model CoursesModelOffering
-	 * @return     void
+	 * @param   object  $model  CoursesModelOffering
+	 * @return  void
 	 */
 	public function displayTask($model=null)
 	{
-		$this->view->setLayout('display');
-
 		// Incoming
-		if (!is_a($model, 'CoursesModelOffering'))
+		if (!($model instanceof CoursesModelOffering))
 		{
 			$model = CoursesModelOffering::getInstance(JRequest::getInt('offering', 0, 'get'));
 			if (($section = JRequest::getInt('section', 0)))
@@ -230,16 +228,15 @@ class CoursesControllerSupervisors extends \Hubzero\Component\AdminController
 		$this->view->model = $model;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 

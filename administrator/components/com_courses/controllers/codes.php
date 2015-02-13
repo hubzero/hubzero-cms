@@ -34,14 +34,14 @@ defined('_JEXEC') or die('Restricted access');
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models' . DS . 'course.php');
 
 /**
- * Courses controller class for managing membership and course info
+ * Courses controller class for membership codes
  */
 class CoursesControllerCodes extends \Hubzero\Component\AdminController
 {
 	/**
-	 * Displays a list of courses
+	 * Displays a list of codes
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -50,11 +50,35 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		$config = JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['section']    = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.section',
-			'section',
-			0
+		$this->view->filters = array(
+			'section' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.section',
+				'section',
+				0
+			),
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			)),
+			'redeemed' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.redeemed',
+				'redeemed',
+				'-1'
+			),
+			// Filters for returning results
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			)
 		);
 
 		$this->view->section = CoursesModelSection::getInstance($this->view->filters['section']);
@@ -68,29 +92,6 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		$this->view->offering = CoursesModelOffering::getInstance($this->view->section->get('offering_id'));
 		$this->view->course = CoursesModelCourse::getInstance($this->view->offering->get('course_id'));
 
-		$this->view->filters['search']  = urldecode(trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.search',
-			'search',
-			''
-		)));
-		$this->view->filters['redeemed']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.redeemed',
-			'redeemed',
-			'-1'
-		);
-		// Filters for returning results
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
 		// In case limit has been changed, adjust limitstart accordingly
 		$this->view->filters['start'] = ($this->view->filters['limit'] != 0 ? (floor($this->view->filters['start'] / $this->view->filters['limit']) * $this->view->filters['limit']) : 0);
 
@@ -111,12 +112,9 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -126,7 +124,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	/**
 	 * Create a new course
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function addTask()
 	{
@@ -136,19 +134,15 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	/**
 	 * Displays an edit form
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function editTask($model=null)
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
+		$this->view;
 
-		if (is_object($model))
-		{
-			$this->view->row = $model;
-		}
-		else
+		if (!is_object($model))
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array());
@@ -163,8 +157,10 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 				$id = 0;
 			}
 
-			$this->view->row = new CoursesModelSectionCode($id);
+			$model = new CoursesModelSectionCode($id);
 		}
+
+		$this->view->row = $model;
 
 		if (!$this->view->row->get('offering_id'))
 		{
@@ -174,16 +170,15 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		$this->view->section = CoursesModelSection::getInstance($this->view->row->get('section_id'));
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
@@ -218,7 +213,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $model->get('section_id'),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $model->get('section_id'), false),
 			JText::_('COM_COURSES_CODE_SAVED')
 		);
 	}
@@ -261,8 +256,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 				// Delete record
 				if (!$model->delete())
 				{
-					JError::raiseError(500, JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'));
-					return;
+					throw new Exception(JText::_('COM_COURSES_ERROR_UNABLE_TO_REMOVE_ENTRY'), 500);
 				}
 
 				$num++;
@@ -271,7 +265,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 
 		// Redirect back to the courses page
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0), false),
 			JText::sprintf('COM_COURSES_ITEMS_REMOVED', $num)
 		);
 	}
@@ -279,7 +273,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function generateTask()
 	{
@@ -317,7 +311,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		if (!JRequest::getInt('no_html', 0))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . $section, false)
 			);
 		}
 	}
@@ -325,7 +319,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	/**
 	 * Generate QRcode
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function qrcodeTask()
 	{
@@ -336,19 +330,8 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 
 		if (!$code)
 		{
-			JError::raiseError(500, JText::_('No code provided'));
-			return;
+			throw new Exception(JText::_('No code provided'), 500);
 		}
-
-		/*$section  = CoursesModelSection::getInstance($code->get('section_id'));
-		if (!$section->exists())
-		{
-			JError::raiseError(500, JText::_('Section not found'));
-			return;
-		}
-		$offering = CoursesModelOffering::getInstance($section->get('offering_id'));
-		$course   = CoursesModelCourse::getInstance($offering->get('course_id'));*/
-		//$juri = JURI::getInstance();
 
 		$url = rtrim(JURI::base(), '/') . '/' . ltrim(JRoute::_('index.php?option=' . $this->_option . '&controller=courses&task=redeem&code=' . $code), '/');
 
@@ -364,7 +347,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function optionsTask()
 	{
@@ -373,12 +356,9 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		$this->view->section = CoursesModelSection::getInstance($section);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -388,7 +368,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	/**
 	 * Generate a coupon code
 	 *
-	 * @return    string
+	 * @return  string
 	 */
 	private function _generateCode()
 	{
@@ -404,19 +384,19 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return	void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0)
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0), false)
 		);
 	}
 
 	/**
 	 * Quote a value for a CSV file
 	 *
-	 * @param   string $val
+	 * @param   string  $val
 	 * @return  string
 	 */
 	public static function quoteCsv($val)
@@ -437,7 +417,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	/**
 	 * Quote a CSV row
 	 *
-	 * @param   array  $vals 
+	 * @param   array   $vals 
 	 * @return  string
 	 */
 	public function quoteCsvRow($vals)
@@ -459,7 +439,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		if (!$section)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0),
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0), false),
 				JText::_('No section specified'),
 				'warning'
 			);
@@ -474,7 +454,7 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 		if (empty($ids))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0),
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&section=' . JRequest::getInt('section', 0), false),
 				JText::_('No codes selected'),
 				'warning'
 			);

@@ -70,7 +70,7 @@ jQuery(document).ready(function($){
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -110,7 +110,7 @@ jQuery(document).ready(function($){
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_ASSETS'); ?></span></legend>
 			<?php if ($this->row->get('id')) { ?>
-				<iframe width="100%" height="400" name="assets" id="assets" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=assets&amp;tmpl=component&amp;scope=asset_group&amp;scope_id=<?php echo $this->row->get('id'); ?>&amp;course_id=<?php echo $this->offering->get('course_id'); ?>"></iframe>
+				<iframe width="100%" height="400" name="assets" id="assets" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=assets&tmpl=component&scope=asset_group&scope_id=' . $this->row->get('id') . '&course_id=' . $this->offering->get('course_id')); ?>"></iframe>
 			<?php } else { ?>
 				<p><?php echo JText::_('COM_COURSES_ENTRY_MUST_BE_SAVED_BEFORE_ASSETS'); ?></p>
 			<?php } ?>

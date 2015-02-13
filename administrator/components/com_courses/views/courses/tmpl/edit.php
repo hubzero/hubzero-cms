@@ -70,7 +70,7 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -148,7 +148,7 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_MANAGERS'); ?></span></legend>
 		<?php if ($this->row->get('id')) { ?>
-			<iframe height="400" name="managers" id="managers" src="index.php?option=<?php echo $this->option; ?>&amp;controller=managers&amp;tmpl=component&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+			<iframe height="400" name="managers" id="managers" src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=managers&tmpl=component&id=' . $this->row->get('id')); ?>"></iframe>
 		<?php } else { ?>
 			<p class="warning"><?php echo JText::_('COM_COURSES_FIELDSET_MANAGERS_WARNING'); ?></p>
 		<?php } ?>
@@ -231,9 +231,9 @@ function submitbutton(pressbutton)
 				$file = end($pics);
 			?>
 			<div style="padding-top: 2.5em">
-				<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;task=upload&amp;type=course&amp;id=<?php echo $this->row->get('id'); ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
+				<div id="ajax-uploader" data-action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=course&id=' . $this->row->get('id') . '&no_html=1&' . JUtility::getToken() . '=1'); ?>">
 					<noscript>
-						<iframe height="350" name="filer" id="filer" src="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;file=<?php echo $file; ?>&amp;type=course&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+						<iframe height="350" name="filer" id="filer" src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $file . '&type=course&id=' . $this->row->get('id')); ?>"></iframe>
 					</noscript>
 				</div>
 			</div>
@@ -267,7 +267,7 @@ function submitbutton(pressbutton)
 								<span id="img-name"><?php echo $this->row->get('logo', JText::_('COM_COURSES_NONE')); ?></span>
 							</td>
 							<td>
-								<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;task=remove&amp;currentfile=<?php echo $logo; ?>&amp;type=course&amp;id=<?php echo $this->row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('COM_COURSES_DELETE'); ?>">[ x ]</a>
+								<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=course&id=' . $this->row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('COM_COURSES_DELETE'); ?>">[ x ]</a>
 							</td>
 						</tr>
 						<tr>

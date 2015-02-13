@@ -41,7 +41,7 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 	/**
 	 * Upload a file to the wiki via AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function ajaxUploadTask()
 	{
@@ -223,7 +223,7 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 	/**
 	 * Upload a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function uploadTask()
 	{
@@ -343,7 +343,7 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 	/**
 	 * Upload a file to the wiki via AJAX
 	 *
-	 * @return     string
+	 * @return  string
 	 */
 	public function ajaxRemoveTask()
 	{
@@ -433,7 +433,7 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 	/**
 	 * Delete a file
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function removeTask()
 	{
@@ -521,8 +521,9 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 	/**
 	 * Display a file and its info
 	 *
-	 * @param      integer $id ID
-	 * @return     string
+	 * @param   string   $type  Type
+	 * @param   integer  $id    ID
+	 * @return  string
 	 */
 	protected function _path($type, $id)
 	{
@@ -558,14 +559,12 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 	/**
 	 * Display a file and its info
 	 *
-	 * @param      string  $file File name
-	 * @param      integer $id   User ID
-	 * @return     void
+	 * @param   string   $file  File name
+	 * @param   integer  $id    User ID
+	 * @return  void
 	 */
 	public function displayTask($file='', $id=0)
 	{
-		$this->view->setLayout('display');
-
 		// Load the component config
 		$this->view->config = $this->config;
 
@@ -608,16 +607,15 @@ class CoursesControllerLogo extends \Hubzero\Component\AdminController
 		}
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 

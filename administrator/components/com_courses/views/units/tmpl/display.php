@@ -67,7 +67,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="i<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
@@ -93,10 +93,10 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="9">
-					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
+					(<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>)
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
 					<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
@@ -156,7 +156,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				<?php } else { ?>
@@ -167,7 +167,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
 					</a>
 				<?php } else { ?>
@@ -178,7 +178,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;offering=<?php echo $this->offering->get('id'); ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK',$task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&offering=' . $this->offering->get('id') . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK',$task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -209,14 +209,14 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 					<?php if ($canDo->get('core.manage') && $assetgroups > 0) { ?>
-						<a class="glyph list" href="index.php?option=<?php echo $this->option; ?>&amp;controller=assetgroups&amp;unit=<?php echo $row->get('id'); ?>">
+						<a class="glyph list" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=assetgroups&unit=' . $row->get('id')); ?>">
 							<?php echo $assetgroups; ?>
 						</a>
 					<?php } else { ?>
 						<?php echo $assetgroups; ?>
 						<?php if ($canDo->get('core.manage')) { ?>
 						&nbsp;
-						<a class="state add" href="index.php?option=<?php echo $this->option; ?>&amp;controller=assetgroups&amp;unit=<?php echo $row->get('id'); ?>&amp;task=add">
+						<a class="state add" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=assetgroups&unit=' . $row->get('id') . '&task=add'); ?>">
 							<span><?php echo JText::_('[ + ]'); ?></span>
 						</a>
 						<?php } ?>
@@ -224,7 +224,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="glyph assets" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+					<a class="glyph assets" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $assets; ?>
 					</a>
 				<?php } else { ?>

@@ -89,7 +89,7 @@ function saveAndUpdate()
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="<?php echo ($this->tmpl == 'component') ? 'component-form' : 'item-form'; ?>" enctype="multipart/form-data">
 <?php if ($this->tmpl == 'component') { ?>
 	<fieldset>
 		<div class="configuration">
@@ -167,7 +167,7 @@ function saveAndUpdate()
 				<textarea name="fields[content]" id="field-content" rows="4" cols="35"><?php echo $this->escape(stripslashes($this->row->get('content'))); ?></textarea>
 			</div>
 
-			<iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;listdir=<?php echo $id; ?>&amp;course=<?php echo $this->escape($this->course_id); ?>"></iframe>
+			<iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=media&tmpl=component&listdir=' . $id . '&course=' . $this->escape($this->course_id)); ?>"></iframe>
 		</fieldset>
 	</div>
 	<div class="clr"></div>

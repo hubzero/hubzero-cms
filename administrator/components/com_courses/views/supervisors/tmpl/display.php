@@ -41,7 +41,7 @@ $offerings = $course->offerings();
 	</dl>
 <?php } ?>
 <div id="groups">
-	<form action="index.php" method="post">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post">
 		<table>
 			<tbody>
 				<tr>
@@ -133,7 +133,7 @@ $offerings = $course->offerings();
 						<input type="checkbox" name="entries[<?php echo $i; ?>][select]" value="<?php echo $manager->get('id'); ?>" />
 					</td>
 					<td class="paramlist_key">
-						<a href="index.php?option=com_members&amp;controller=members&amp;task=edit&amp;id[]=<?php echo $u->get('id'); ?>" target="_parent">
+						<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=members&task=edit&id=' . $u->get('id')); ?>" target="_parent">
 							<?php echo $this->escape($u->get('name')) . ' (' . $this->escape($u->get('username')) . ')'; ?>
 						</a>
 					</td>

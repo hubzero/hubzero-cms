@@ -64,7 +64,7 @@ function submitbutton(pressbutton)
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<div class="col width-60 fltlft">
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('JDETAILS'); ?></span></legend>
@@ -195,7 +195,7 @@ function submitbutton(pressbutton)
 		<fieldset class="adminform">
 			<legend><span><?php echo JText::_('COM_COURSES_QR_CODE'); ?></span></legend>
 			<?php if ($this->row->get('id')) { ?>
-				<img src="<?php echo 'index.php?option=com_courses&controller=codes&task=qrcode&no_html=1&code=' . $this->row->get('code'); ?>" alt="QR Code" />
+				<img src="<?php echo JRoute::_('index.php?option=com_courses&controller=codes&task=qrcode&no_html=1&code=' . $this->row->get('code')); ?>" alt="QR Code" />
 			<?php } else { ?>
 				<p class="warning"><?php echo JText::_('COM_COURSES_QR_CODE_ENTY_MOST_BE_SAVED'); ?></p>
 			<?php } ?>

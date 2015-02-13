@@ -39,9 +39,23 @@ require_once(JPATH_ROOT . DS . 'components' . DS . 'com_courses' . DS . 'models'
 class CoursesControllerAssets extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Determines task being called and attempts to execute it
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('orderup', 'reorder');
+		$this->registerTask('orderdown', 'reorder');
+
+		parent::execute();
+	}
+
+	/**
 	 * Manage course pages
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
@@ -127,12 +141,9 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		);
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
@@ -142,7 +153,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	/**
 	 * Link an asset to an object
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function linkTask()
 	{
@@ -171,7 +182,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : 'message')
 		);
@@ -180,7 +191,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	/**
 	 * Unlink an asset from an object
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function unlinkTask()
 	{
@@ -216,20 +227,10 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id,
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false),
 			($this->getError() ? $this->getError() : null),
 			($this->getError() ? 'error' : 'message')
 		);
-	}
-
-	/**
-	 * Create a course page
-	 *
-	 * @return void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
 	}
 
 	/**
@@ -241,13 +242,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view->setLayout('edit');
-
-		if (is_object($model))
-		{
-			$this->view->row = $model;
-		}
-		else
+		if (!is_object($model))
 		{
 			// Incoming
 			$ids = JRequest::getVar('id', array());
@@ -262,40 +257,34 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 				$id = 0;
 			}
 
-			$this->view->row = new CoursesTableAsset($this->database);
-			$this->view->row->load($id);
+			$model = new CoursesTableAsset($this->database);
+			$model->load($id);
 		}
 
-		/*if (!$this->view->row->get('offering_id'))
-		{
-			$this->view->row->set('offering_id', JRequest::getInt('offering', 0));
-		}
+		$this->view->row = $model;
 
-		$this->view->offering = CoursesModelOffering::getInstance($this->view->row->get('offering_id'));*/
 		$this->view->tmpl      = JRequest::getVar('tmpl', '');
 		$this->view->scope     = JRequest::getVar('scope', 'asset_group');
 		$this->view->scope_id  = JRequest::getInt('scope_id', 0);
 		$this->view->course_id = JRequest::getInt('course_id', 0);
-
-		$this->view->config = $this->config;
+		$this->view->config    = $this->config;
 
 		// Set any errors
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output the HTML
-		$this->view->display();
+		$this->view
+			->setLayout('edit')
+			->display();
 	}
 
 	/**
 	 * Save a course page
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function saveTask()
 	{
@@ -454,39 +443,21 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id']
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $fields['scope'] . '&scope_id=' . $fields['scope_id'] . '&course_id=' . $fields['course_id'], false)
 		);
 	}
 
 	/**
 	 * Cancel a course page task
 	 *
-	 * @return void
+	 * @return  void
 	 */
-	public function orderdownTask()
-	{
-		$this->reorderTask(1);
-	}
-
-	/**
-	 * Cancel a course page task
-	 *
-	 * @return void
-	 */
-	public function orderupTask()
-	{
-		$this->reorderTask(-1);
-	}
-
-	/**
-	 * Cancel a course page task
-	 *
-	 * @return void
-	 */
-	public function reorderTask($move=1)
+	public function reorderTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
+
+		$move = $this->_task == 'orderup' ? -1 : 1;
 
 		// Incoming
 		$id = JRequest::getVar('id', array());
@@ -508,14 +479,14 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		}
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
 		);
 	}
 
 	/**
 	 * Cancel a course page task
 	 *
-	 * @return void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
@@ -525,7 +496,7 @@ class CoursesControllerAssets extends \Hubzero\Component\AdminController
 		$course_id = JRequest::getInt('course_id', 0);
 
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&tmpl=' . $tmpl . '&scope=' . $scope . '&scope_id=' . $scope_id . '&course_id=' . $course_id, false)
 		);
 	}
 }

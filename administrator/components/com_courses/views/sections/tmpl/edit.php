@@ -75,7 +75,7 @@ jQuery(document).ready(function($){
 <?php if ($this->getError()) { ?>
 	<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="index.php" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data">
 
 	<nav role="navigation" class="sub-navigation">
 		<div id="submenu-box">
@@ -252,9 +252,9 @@ jQuery(document).ready(function($){
 						$logo = $this->row->params('logo');
 						?>
 						<div style="padding-top: 2.5em">
-							<div id="ajax-uploader" data-action="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;task=upload&amp;type=section&amp;id=<?php echo $this->row->get('id'); ?>&amp;no_html=1&amp;<?php echo JUtility::getToken(); ?>=1">
+							<div id="ajax-uploader" data-action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&task=upload&type=section&id=' . $this->row->get('id') . '&no_html=1&' . JUtility::getToken() . '=1'); ?>">
 								<noscript>
-									<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;file=<?php echo $logo; ?>&amp;type=section&amp;id=<?php echo $this->row->get('id'); ?>"></iframe>
+									<iframe width="100%" height="350" name="filer" id="filer" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file=' . $logo . '&type=section&id=' . $this->row->get('id')); ?>"></iframe>
 								</noscript>
 							</div>
 						</div>
@@ -288,7 +288,7 @@ jQuery(document).ready(function($){
 											<span id="img-name"><?php echo $this->row->params('logo', JText::_('COM_COURSES_NONE')); ?></span>
 										</td>
 										<td>
-											<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="index.php?option=<?php echo $this->option; ?>&amp;controller=logo&amp;tmpl=component&amp;task=remove&amp;currentfile=<?php echo $logo; ?>&amp;type=section&amp;id=<?php echo $this->row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::_('COM_COURSES_DELETE'); ?>">[ x ]</a>
+											<a id="img-delete" <?php echo $logo ? '' : 'style="display: none;"'; ?> href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=logo&tmpl=component&task=remove&currentfile=' . $logo . '&type=section&id=' . $this->row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::_('COM_COURSES_DELETE'); ?>">[ x ]</a>
 										</td>
 									</tr>
 									<tr>
@@ -428,7 +428,7 @@ jQuery(document).ready(function($){
 			<fieldset class="adminform">
 				<legend><span><?php echo JText::_('COM_COURSES_FIELDSET_MANAGERS'); ?></span></legend>
 				<?php if ($this->row->get('id')) { ?>
-					<iframe width="100%" height="500" name="managers" id="managers" frameborder="0" src="index.php?option=<?php echo $this->option; ?>&amp;controller=supervisors&amp;tmpl=component&amp;offering=<?php echo $this->row->get('offering_id'); ?>&amp;section=<?php echo $this->row->get('id'); ?>"></iframe>
+					<iframe width="100%" height="500" name="managers" id="managers" frameborder="0" src="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=supervisors&tmpl=component&offering=' . $this->row->get('offering_id') . '&section=' . $this->row->get('id')); ?>"></iframe>
 				<?php } else { ?>
 					<p class="warning"><?php echo JText::_('COM_COURSES_FIELDSET_MANAGERS_WARNING'); ?></p>
 				<?php } ?>

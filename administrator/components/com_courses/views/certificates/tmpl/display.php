@@ -54,7 +54,7 @@ JHTML::_('behavior.framework');
 
 $this->css('certificates.css');
 ?>
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 	<?php if ($this->getError()) { ?>
 		<p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 	<?php } ?>

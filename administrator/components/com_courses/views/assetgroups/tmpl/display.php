@@ -74,7 +74,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
@@ -100,13 +100,13 @@ function submitbutton(pressbutton)
 		<thead>
 			<tr>
 				<th colspan="7">
-					(<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
+					(<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('alias'))); ?>
 					</a>)
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=units&amp;offering=<?php echo $this->unit->get('offering_id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=units&offering=' . $this->unit->get('offering_id')); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>:
 					<?php echo $this->escape(stripslashes($this->unit->get('title'))); ?>
@@ -160,7 +160,7 @@ foreach ($this->rows as $row)
 ?>
 			<tr class="<?php echo "row$k" . ($row->get('state') == 2 ? ' archived' : ''); ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($row->get('id')); ?>
@@ -168,7 +168,7 @@ foreach ($this->rows as $row)
 				<td>
 					<?php echo $row->treename; ?>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id=<?php echo $row->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&unit=' . $this->unit->get('id') . '&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('title'))); ?>
 					</a>
 				<?php } else { ?>
@@ -179,7 +179,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id=<?php echo $row->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&unit=' . $this->unit->get('id') . '&id=' . $row->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($row->get('alias'))); ?>
 					</a>
 				<?php } else { ?>
@@ -190,7 +190,7 @@ foreach ($this->rows as $row)
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
-					<a class="state <?php echo $class; ?>" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=<?php echo $task;?>&amp;unit=<?php echo $this->unit->get('id'); ?>&amp;id=<?php echo $row->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK',$task);?>">
+					<a class="state <?php echo $class; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&unit=' . $this->unit->get('id') . '&id=' . $row->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK',$task);?>">
 						<span><?php echo $alt; ?></span>
 					</a>
 				<?php } else { ?>
@@ -202,12 +202,12 @@ foreach ($this->rows as $row)
 				<td class="order" style="whitespace:nowrap">
 					<?php echo $row->treename; ?>
 					<?php echo $row->get('ordering'); ?>
-					<span><?php echo $this->pageNav->orderUpIcon( $i, isset($this->ordering[$row->get('parent')][$orderkey - 1]), 'orderup', 'COM_COURSES_MOVE_UP', $ordering ); ?></span>
-					<span><?php echo $this->pageNav->orderDownIcon( $i, $n, isset($this->ordering[$row->get('parent')][$orderkey + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', $ordering ); ?></span>
+					<span><?php echo $this->pageNav->orderUpIcon($i, isset($this->ordering[$row->get('parent')][$orderkey - 1]), 'orderup', 'COM_COURSES_MOVE_UP', $ordering); ?></span>
+					<span><?php echo $this->pageNav->orderDownIcon($i, $n, isset($this->ordering[$row->get('parent')][$orderkey + 1]), 'orderdown', 'COM_COURSES_MOVE_DOWN', $ordering); ?></span>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a class="glyph assets" href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $row->get('id'); ?>">
+					<a class="glyph assets" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
 						<?php echo $assets; ?>
 					</a>
 				<?php } else { ?>

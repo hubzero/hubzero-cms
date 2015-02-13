@@ -56,7 +56,7 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
 		<div class="col width-50 fltlft">
 			<label for="filter_search"><?php echo JText::_('COM_COURSES_SEARCH'); ?>:</label>
@@ -88,7 +88,7 @@ function submitbutton(pressbutton)
 						<?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
 					</a>:
 					<?php if ($this->offering->exists()) { ?>
-					<a href="index.php?option=<?php echo $this->option; ?>&amp;controller=offerings&amp;course=<?php echo $this->course->get('id'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id')); ?>">
 						<?php echo $this->escape(stripslashes($this->offering->get('title'))); ?>
 					</a>:
 					<?php } ?>
@@ -128,14 +128,14 @@ function submitbutton(pressbutton)
 	foreach ($rows as $page) { ?>
 			<tr>
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $this->escape($page->get('id')); ?>" onclick="isChecked(this.checked);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $this->escape($page->get('id')); ?>" onclick="isChecked(this.checked);" />
 				</td>
 				<td>
 					<?php echo $this->escape($page->get('id')); ?>
 				</td>
 				<td>
 				<?php if ($canDo->get('core.edit')) { ?>
-					<a href="index.php?option=<?php echo $this->option ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=edit&amp;id=<?php echo $this->escape($page->get('id')); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $this->escape($page->get('id'))); ?>">
 						<?php echo $this->escape(stripslashes($page->get('title'))); ?>
 					</a>
 				<?php } else { ?>
@@ -147,25 +147,25 @@ function submitbutton(pressbutton)
 				<td>
 				<?php if ($canDo->get('core.edit.state')) { ?>
 					<?php if ($page->get('active') == 1) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=unpublish&amp;id=<?php echo $page->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_UNPUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=unpublish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_UNPUBLISHED')); ?>">
 						<span class="state publish">
 							<span class="text"><?php echo JText::_('COM_COURSES_PUBLISHED'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($page->get('active') == 2) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id=<?php echo $page->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state trash">
 							<span class="text"><?php echo JText::_('COM_COURSES_TRASHED'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($page->get('active') == 3) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id=<?php echo $page->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state pending">
 							<span class="text"><?php echo JText::_('COM_COURSES_DRAFT'); ?></span>
 						</span>
 					</a>
 					<?php } else if ($page->get('active') == 0) { ?>
-					<a class="jgrid" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=publish&amp;id=<?php echo $page->get('id'); ?>&amp;<?php echo JUtility::getToken(); ?>=1" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
+					<a class="jgrid" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=publish&id=' . $page->get('id') . '&' . JUtility::getToken() . '=1'); ?>" title="<?php echo JText::sprintf('COM_COURSES_SET_TASK', JText::_('COM_COURSES_PUBLISHED')); ?>">
 						<span class="state unpublish">
 							<span class="text"><?php echo JText::_('COM_COURSES_UNPUBLISHED'); ?></span>
 						</span>
