@@ -167,7 +167,7 @@ if ($this->config->get('access-manage-section')) {
 					<table class="entries categories">
 						<caption>
 							<label for="field-title">
-								<?php echo JText::_('PLG_GROUPS_FORUM_NEW_SECTION'); ?>
+								<?php echo JText::_('PLG_GROUPS_FORUM_NEW_SECTION') . ' '; ?>
 								<input type="text" name="fields[title]" id="field-title" value="" />
 							</label>
 							<input type="submit" value="<?php echo JText::_('PLG_GROUPS_FORUM_SAVE'); ?>" />

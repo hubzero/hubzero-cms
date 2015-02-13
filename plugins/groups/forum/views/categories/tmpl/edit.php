@@ -31,7 +31,7 @@ $this->css()
 			</legend>
 
 			<div class="grid">
-				<div class="col span-half">
+				<div class="col span-third">
 					<label for="field-section_id">
 						<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_SECTION'); ?>
 						<select name="fields[section_id]" id="field-section_id">
@@ -42,14 +42,24 @@ $this->css()
 						</select>
 					</label>
 				</div>
-				<div class="col span-half omega">
+				<div class="col span-third">
 					<label for="field-closed" id="comment-anonymous-label">
 						<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_LOCKED'); ?><br />
 						<input class="option" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) { echo ' checked="checked"'; } ?> />
 						<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_CLOSED'); ?>
 					</label>
 				</div>
+				<div class="col span-quarter omega">
+					<label for="field-access"><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_ACCESS'); ?>:</label><br />
+					<select name="fields[access]" id="field-access">
+						<option value="0"<?php echo ($this->category->get('access') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
+						<option value="1"<?php echo ($this->category->get('access') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+						<option value="4"<?php echo ($this->category->get('access') == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
+					</select>
+				</div>
 			</div>
+
+
 
 			<label for="field-title">
 				<?php echo JText::_('PLG_GROUPS_FORUM_FIELD_TITLE'); ?>
