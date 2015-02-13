@@ -50,12 +50,13 @@ $this->css()
 					</label>
 				</div>
 				<div class="col span-quarter omega">
-					<label for="field-access"><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_ACCESS'); ?>:</label><br />
+					<label for="field-access"><?php echo JText::_('PLG_GROUPS_FORUM_ACCESS_DESCRIPTION'); ?>:
 					<select name="fields[access]" id="field-access">
 						<option value="0"<?php echo ($this->category->get('access') == 0) ? ' selected="selected"' : ''; ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PUBLIC'); ?></option>
-						<option value="1"<?php echo ($this->category->get('access') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_REGISTERED'); ?></option>
+						<option value="1"<?php echo ($this->category->get('access') == 1) ? ' selected="selected"' : ''; ?>><?php echo JText::_('PLG_GROUPS_FORUM_ACCESS_REGISTERED'); ?></option>
 						<option value="4"<?php echo ($this->category->get('access') == 4) ? ' selected="selected"' : ''; ?>><?php echo JText::_('PLG_GROUPS_FORUM_FIELD_READ_ACCESS_OPTION_PRIVATE'); ?></option>
 					</select>
+					</label>
 				</div>
 			</div>
 
