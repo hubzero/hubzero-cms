@@ -4796,7 +4796,7 @@ class plgProjectsFiles extends \Hubzero\Plugin\Plugin
 			$entry['message'] 	= isset($gitData['message']) ? $gitData['message'] : NULL;
 
 			// SFTP?
-			if (stripos($entry['message'], '[SFTP]') !== false)
+			if (strpos($entry['message'], '[SFTP]') !== false)
 			{
 				if (isset($this->_profileAssoc) && isset($this->_profileAssoc[trim($entry['author'])]))
 				{
