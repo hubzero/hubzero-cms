@@ -347,7 +347,7 @@ function submitbutton(pressbutton)
 					fields
 						.on('change', 'select', function (e){
 							var i = $(this).attr('name').replace(/^fields\[(\d+)\]\[type\]/g, "$1");
-							$.get("<?php echo JRoute::_('index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type='); ?>" + this.value + '&name=' + i, {}, function (response) {
+							$.get('/administrator/index.php?option=com_resources&controller=types&no_html=1&task=element&ctrl=fields&type=' + this.value + '&name=' + i, {}, function (response) {
 								$('#fields-' + i + '-options').html(response);
 								//Fields.initOptions();
 							});
