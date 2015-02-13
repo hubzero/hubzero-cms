@@ -78,7 +78,7 @@ class Helper extends Module
 		}
 		$this->quote = $quote;
 
-		parent::display();
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 
 	/**

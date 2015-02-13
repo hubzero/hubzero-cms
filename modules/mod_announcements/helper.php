@@ -98,6 +98,6 @@ class Helper extends Module
 		$this->cid       = (int) $this->params->get('catid', 0);
 		$this->container = $this->params->get('container', 'block-announcements');
 
-		parent::display();
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 }

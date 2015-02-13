@@ -48,6 +48,6 @@ class Helper extends Module
 		$this->css()
 		     ->js();
 
-		parent::display();
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 }

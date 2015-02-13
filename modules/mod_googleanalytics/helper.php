@@ -56,6 +56,6 @@ class Helper extends Module
 			return;
 		}
 
-		parent::display();
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 }

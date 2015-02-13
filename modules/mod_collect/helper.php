@@ -74,7 +74,7 @@ class Helper extends Module
 			return $this->collect();
 		}
 
-		parent::display();
+		require $this->getLayoutPath($this->params->get('layout', 'default'));
 	}
 
 	/**
