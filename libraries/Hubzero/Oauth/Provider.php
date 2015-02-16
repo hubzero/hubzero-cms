@@ -129,6 +129,11 @@ class Provider
 	 */
 	function __construct($params = array())
 	{
+		if (!class_exists('OAuthProvider'))
+		{
+			throw new \Exception('OAuthProvider class not found.', 500);
+		}
+
 		$this->_provider = new OAuthProvider($params);
 
 		$this->_provider->consumerHandler(array($this,'consumerHandler'));
