@@ -44,6 +44,21 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 	protected $_autoloadLanguage = true;
 
 	/**
+	 * Return some info about this plugin
+	 * 
+	 * @return  object
+	 */
+	public function onToolSessionIdentify()
+	{
+		$obj = new stdClass;
+		$obj->name  = $this->_name;
+		$obj->type  = $this->_type;
+		$obj->title = JText::_('PLG_' . $this->_type . '_' . $this->_name . '_TITLE');
+
+		return $obj;
+	}
+
+	/**
 	 * Render a tool session
 	 * 
 	 * @param   object  $tool
