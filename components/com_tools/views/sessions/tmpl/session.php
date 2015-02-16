@@ -47,7 +47,12 @@ foreach ($this->shares as $share)
 }
 
 JPluginHelper::importPlugin('mw');
+JPluginHelper::importPlugin('tools');
 $dispatcher = JDispatcher::getInstance();
+
+// We actually need to do this first so we know what viewer is the active one.
+$output  = $dispatcher->trigger('onToolSessionView', array($this->app, $this->output, $readOnly));
+$plugins = $dispatcher->trigger('onToolSessionIdentify');
 
 $this->css('tools.css')
      ->js('sessions.js');
@@ -68,30 +73,59 @@ if (!$this->app->sess) {
 	<div id="app-wrap">
 		<div id="app-header">
 			<h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) : ?>editable<?php endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->app->caption; ?></h2>
-		<?php if ($this->app->sess) { ?>
-			<ul class="app-toolbar" id="session-options">
-				<li>
-					<a id="app-btn-keep" class="keep" href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">
-						<span><?php echo JText::_('COM_TOOLS_KEEP_FOR_LATER'); ?></span>
-					</a>
-				</li>
-			<?php if ($this->app->owns) { ?>
-				<li>
-					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_WARNING'); ?>">
-						<span><?php echo JText::_('COM_TOOLS_TERMINATE'); ?></span>
-					</a>
-				</li>
-			<?php } else { ?>
-				<li>
-					<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_WARNING'); ?>">
-						<span><?php echo JText::_('COM_TOOLS_STOP_SHARING'); ?></span>
-					</a>
-				</li>
+			<?php if ($this->app->sess) { ?>
+				<ul class="app-toolbar" id="session-options">
+					<li>
+						<a id="app-btn-keep" class="keep" href="<?php echo JRoute::_('index.php?option=com_members&task=myaccount'); ?>">
+							<span><?php echo JText::_('COM_TOOLS_KEEP_FOR_LATER'); ?></span>
+						</a>
+					</li>
+					<?php if ($this->app->owns) { ?>
+						<li>
+							<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=stop&sess='.$this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_WARNING'); ?>">
+								<span><?php echo JText::_('COM_TOOLS_TERMINATE'); ?></span>
+							</a>
+						</li>
+					<?php } else { ?>
+						<li>
+							<a id="app-btn-close" class="terminate sessiontips" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess.'&return='.$this->rtrn); ?>" title="<?php echo JText::_('COM_TOOLS_TERMINATE_WARNING'); ?>">
+								<span><?php echo JText::_('COM_TOOLS_STOP_SHARING'); ?></span>
+							</a>
+						</li>
+					<?php } ?>
+					<?php if (count($plugins) > 1) { ?>
+						<li>
+							<a id="app-btn-options" class="options" href="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+								<span><?php echo JText::_('COM_TOOLS_SESSION_OPTIONS'); ?></span>
+							</a>
+						</li>
+					<?php } ?>
+				</ul>
 			<?php } ?>
-			</ul>
-		<?php } ?>
 		</div><!-- #app-header -->
-
+		<?php if (count($plugins) > 1) { ?>
+			<div id="app-options">
+				<form method="get" action="<?php echo JRoute::_('index.php?option='.$this->option.'&app='.$this->toolname.'&task=session&sess='.$this->app->sess); ?>">
+					<fieldset>
+						<?php
+						$declared = JRequest::getWord('viewer');
+						$viewer = ($declared ? $declared : JFactory::getSession()->get('tool_viewer'));
+						?>
+						<?php echo JText::sprintf('COM_TOOLS_SESSION_USING_VIEWER', JText::_('PLG_TOOLS_' . $viewer . '_TITLE')); ?>
+						<label for="app-viewer">
+							<?php echo JText::_('COM_TOOLS_SESSION_VIEWER_CHANGE'); ?>
+						</label>
+						<select name="viewer" id="app-viewer">
+							<?php foreach ($plugins as $plugin) { ?>
+								<option value="<?php echo JText::_($plugin->name); ?>"<?php if ($viewer == $plugin->name) { echo ' selected="selected"'; } ?>><?php echo $plugin->title; ?></option>
+							<?php } ?>
+						</select>
+						<input type="submit" value="<?php echo JText::_('COM_TOOLS_GO'); ?>" />
+						<input type="hidden" name="sess" value="<?php echo $this->app->sess; ?>" />
+					</fieldset>
+				</form>
+			</div>
+		<?php } ?>
 		<div id="app-content" tabindex="1" class="<?php if ($readOnly) { echo 'view-only'; } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
 			<noscript>
 				<p class="warning">
@@ -101,10 +135,6 @@ if (!$this->app->sess) {
 			<input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
 			<input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
 			<?php
-			JPluginHelper::importPlugin('tools');
-			$dispatcher = JDispatcher::getInstance();
-
-			$output = $dispatcher->trigger('onToolSessionView', array($this->app, $this->output, $readOnly));
 			$output = implode("\n", $output);
 			if (!trim($output))
 			{
