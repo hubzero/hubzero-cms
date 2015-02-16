@@ -16,6 +16,20 @@ String.prototype.nohtml = function () {
 jQuery(document).ready(function(jq){
 	var $ = jq;
 
+	if ($('#app-btn-options').length) {
+		$('#app-btn-options').on('click', function (e){
+			e.preventDefault();
+
+			var par = $($(this).parent());
+			if (par.hasClass('active')) {
+				par.removeClass('active');
+			} else {
+				par.addClass('active');
+			}
+			$('#app-options').slideToggle();
+		});
+	}
+
 	var holdTheInterval = setInterval(function(){
 			$.get('/index.php?option=com_tools&controller=storage&task=diskusage&no_html=1&msgs=0', {}, function(data) {
 				$('#diskusage').html(data);

@@ -257,6 +257,14 @@
 		right: 0;
 		top: 0;
 	}*/
+	#app-options {
+		padding: 1em;
+		display: none;
+		color: #aaa;
+	}
+	#app-options strong {
+		color: #ccc;
+	}
 	#app-footer {
 		overflow: hidden;
 		zoom: 1;
@@ -533,7 +541,6 @@
 		background-position: 8px -326px;
 	}
 
-	#app-header a.about span,
 	#app-footer a.refresh span,
 	#app-footer a.popout span {
 		width: 2px;
@@ -541,12 +548,23 @@
 		text-indent: 555em;
 		white-space: nowrap;
 	}
-	#app-header a.about span {
-		background: url("/components/com_tools/assets/img/session.png") 8px -364px no-repeat;
+	#app-header a.options span {
+		width: 0.8em;
+		padding: 0.2em 0.3em;
+		white-space: nowrap;
+		font-size: 2em;
+		line-height: 1;
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	}
-	#app-header ul li.active a.about span,
-	#app-header a.about:hover span {
-		background-position: 8px -396px;
+	#app-header a.options span:before {
+		content: "\2699";
+		font-family: "Fontcons";
+		margin-right: 5em;
+	}
+	#app-header ul li.active a.options span,
+	#app-header a.options:hover span {
+		color: #fff;
+		font-weight: normal;
 	}
 	#app-footer a.refresh span {
 		background: url("/components/com_tools/assets/img/session.png") 8px -86px no-repeat;
