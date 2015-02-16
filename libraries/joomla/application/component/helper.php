@@ -314,7 +314,7 @@ class JComponentHelper
 		$file = substr($option, 4);
 
 		// Define component path.
-		define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
+		/*define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
 		define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option);
 		define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/' . $option);
 
@@ -327,7 +327,27 @@ class JComponentHelper
 		else
 		{
 			$path = JPATH_COMPONENT . '/' . $file . '.php';
+		}*/
+
+		// [!] HUBZERO - Set path and constants for combined components
+		$client = ($app->isAdmin() ? 'admin' : 'site');
+
+		// Get component path
+		if (is_dir(JPATH_SITE . '/components/' . $option . '/' . $client))
+		{
+			define('JPATH_COMPONENT', JPATH_SITE . '/components/' . $option . '/' . $client);
+			define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option . '/site');
+			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_SITE . '/components/' . $option . '/admin');
 		}
+		else
+		{
+			define('JPATH_COMPONENT', JPATH_BASE . '/components/' . $option);
+			define('JPATH_COMPONENT_SITE', JPATH_SITE . '/components/' . $option);
+			define('JPATH_COMPONENT_ADMINISTRATOR', JPATH_ADMINISTRATOR . '/components/' . $option);
+		}
+
+		$path = JPATH_COMPONENT . '/' . $file . '.php';
+		// [!] HUBZERO - END Set path and constants for combined components
 
 		// If component is disabled throw error
 		if (!self::isEnabled($option) || !file_exists($path))
@@ -346,18 +366,6 @@ class JComponentHelper
 
 		// Execute the component.
 		$contents = self::executeComponent($path);
-
-		// Build the component toolbar
-		$path = JApplicationHelper::getPath('toolbar');
-		if ($path && $app->isAdmin())
-		{
-			JLog::add('Files in the format toolbar.COMPONENTNAME.php are considered deprecated and will not be loaded in Joomla 3.0.', JLog::WARNING, 'deprecated');
-			// Get the task again, in case it has changed
-			$task = JRequest::getString('task');
-
-			// Make the toolbar
-			include_once $path;
-		}
 
 		// Revert the scope
 		$app->scope = $scope;
