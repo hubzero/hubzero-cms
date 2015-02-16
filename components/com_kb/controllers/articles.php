@@ -55,8 +55,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		$this->view->setLayout('display');
-
 		// Set the pathway
 		$this->_buildPathway(null, null, null);
 
@@ -70,15 +68,9 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		$this->view->config   = $this->config;
 		$this->view->archive  = $this->archive;
 
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
-		$this->view->display();
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 
 	/**
@@ -88,8 +80,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	 */
 	public function categoryTask()
 	{
-		$this->view->setLayout('category');
-
 		// Make sure we have an ID
 		if (!($alias = JRequest::getVar('alias', '')))
 		{
@@ -141,12 +131,10 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 			'section'  => $sect,
 			'category' => $cat,
 			'search'   => JRequest::getVar('search',''),
-			'state'    => 1
+			'state'    => 1,
+			'access'   => $this->juser->getAuthorisedViewLevels()
 		);
-		if ($this->juser->get('guest'))
-		{
-			$this->view->filters['access'] = 0;
-		}
+
 		if (!in_array($this->view->filters['sort'], array('recent', 'popularity')))
 		{
 			$this->view->filters['sort'] = 'recent';
@@ -184,14 +172,15 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		$this->view->catid  = $sect;
 		$this->view->config = $this->config;
 		$this->view->juser  = $this->juser;
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
+
+		$this->view
+			->setLayout('category')
+			->display();
 	}
 
 	/**
@@ -201,8 +190,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	 */
 	public function articleTask()
 	{
-		$this->view->setLayout('article');
-
 		// Incoming
 		$alias = JRequest::getVar('alias', '');
 		$id    = JRequest::getInt('id', 0);
@@ -273,14 +260,15 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		$this->view->juser   = $this->juser;
 		$this->view->helpful = $this->helpful;
 		$this->view->catid   = $this->view->section->get('id');
-		if ($this->getError())
+
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
+
+		$this->view
+			->setLayout('article')
+			->display();
 	}
 
 	/**
@@ -422,8 +410,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 
 		if (JRequest::getInt('no_html', 0))
 		{
-			$this->view->setLayout('_vote');
-
 			$this->view->item = $row;
 			$this->view->type = $type;
 			$this->view->vote = $vote;
@@ -432,7 +418,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 			{
 				$this->view->setError($this->getError());
 			}
-			$this->view->display();
+			$this->view->setLayout('_vote')->display();
 		}
 		else
 		{

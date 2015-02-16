@@ -37,6 +37,21 @@ defined('_JEXEC') or die('Restricted access');
 class KbControllerCategories extends \Hubzero\Component\AdminController
 {
 	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+		$this->registerTask('unpublish', 'state');
+		$this->registerTask('publish', 'state');
+
+		parent::execute();
+	}
+
+	/**
 	 * Display a list of all categories
 	 *
 	 * @return  void
@@ -50,7 +65,17 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		// Get filters
 		$this->view->filters = array(
 			'state'  => -1,
-			'access' => -1,
+			'access' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
+				0,
+				'int'
+			),
+			'search' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.search',
+				'search',
+				''
+			),
 			'empty'  => 1
 		);
 		$this->view->filters['section'] = $app->getUserStateFromRequest(
@@ -109,15 +134,6 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 			$this->view->filters['limit']
 		);
 
-		// Set any errors
-		if ($this->getError())
-		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
-		}
-
 		// Output the HTML
 		$this->view->display();
 	}
@@ -141,11 +157,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		if (is_object($row))
-		{
-			$this->view->row = $row;
-		}
-		else
+		if (!is_object($row))
 		{
 			// Incoming
 			$id = JRequest::getVar('id', array(0));
@@ -157,8 +169,10 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 			}
 
 			// Load category
-			$this->view->row = new KbModelCategory($id);
+			$row = new KbModelCategory($id);
 		}
+
+		$this->view->row = $row;
 
 		$archive = new KbModelArchive();
 
@@ -183,22 +197,11 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Save a category and come back to the edit form
-	 *
-	 * @return  void
-	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
 	 * Save a category
 	 *
-	 * @param   boolean  $redirect  Redirect the page after saving
 	 * @return  void
 	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
 		JRequest::checkToken() or jexit('Invalid Token');
@@ -224,11 +227,6 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 			JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
-		}
-
-		if (!isset($fields['access']))
-		{
-			$row->set('access', JRequest::getInt('access', 0, 'post'));
 		}
 
 		// Store new content
@@ -257,17 +255,16 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 			}
 		}
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			// Redirect
-			$this->setRedirect(
-				'index.php?option='.$this->_option . '&controller=' . $this->_controller . ($articles ? '&id=0' : ''),
-				JText::_('COM_KB_CATEGORY_SAVED')
-			);
-			return;
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		// Redirect
+		$this->setRedirect(
+			JRoute::_('index.php?option='.$this->_option . '&controller=' . $this->_controller . ($articles ? '&id=0' : ''), false),
+			JText::_('COM_KB_CATEGORY_SAVED')
+		);
 	}
 
 	/**
@@ -317,7 +314,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 				if (!$id)
 				{
 					$this->setRedirect(
-						'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 						JText::_('COM_KB_NO_ID'),
 						'error'
 					);
@@ -340,7 +337,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 
 				// Set the redirect
 				$this->setRedirect(
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 					$msg,
 					$typ
 				);
@@ -353,30 +350,30 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	 *
 	 * @return     void
 	 */
-	public function accesspublicTask()
+	/*public function accesspublicTask()
 	{
 		return $this->accessTask(0);
-	}
+	}*/
 
 	/**
 	 * Set the access level of an article to 'registered'
 	 *
 	 * @return     void
 	 */
-	public function accessregisteredTask()
+	/*public function accessregisteredTask()
 	{
 		return $this->accessTask(1);
-	}
+	}*/
 
 	/**
 	 * Set the access level of an article to 'special'
 	 *
 	 * @return     void
 	 */
-	public function accessspecialTask()
+	/*public function accessspecialTask()
 	{
 		return $this->accessTask(2);
-	}
+	}*/
 
 	/**
 	 * Set the access level of an article
@@ -384,7 +381,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	 * @param      integer $access Access level to set
 	 * @return     void
 	 */
-	public function accessTask($access=0)
+	/*public function accessTask($access=0)
 	{
 		// Incoming
 		$id = JRequest::getInt('id', 0);
@@ -393,7 +390,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		if (!$id)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				JText::_('COM_KB_NO_ID'),
 				'error'
 			);
@@ -408,7 +405,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		if (!$row->store(true))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$row->getError(),
 				'error'
 			);
@@ -417,41 +414,21 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
-	}
-
-	/**
-	 * Calls stateTask to publish entries
-	 *
-	 * @return     void
-	 */
-	public function publishTask()
-	{
-		$this->stateTask(1);
-	}
-
-	/**
-	 * Calls stateTask to unpublish entries
-	 *
-	 * @return     void
-	 */
-	public function unpublishTask()
-	{
-		$this->stateTask(0);
-	}
+	}*/
 
 	/**
 	 * Set the state of an entry
 	 *
-	 * @param      integer $state State to set
-	 * @return     void
+	 * @return  void
 	 */
-	public function stateTask($state=0)
+	public function stateTask()
 	{
+		$state = $this->_task == 'publish' ? 1 : 0;
+
 		// Incoming
 		$cid = JRequest::getInt('cid', 0);
-
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
@@ -459,7 +436,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				($state == 1 ? JText::_('COM_KB_SELECT_PUBLISH') : JText::_('COM_KB_SELECT_UNPUBLISH')),
 				'error'
 			);
@@ -478,9 +455,6 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 		// Set message
 		switch ($state)
 		{
-			case '-1':
-				$message = JText::sprintf('COM_KB_ARCHIVED', count($ids));
-			break;
 			case '1':
 				$message = JText::sprintf('COM_KB_PUBLISHED', count($ids));
 			break;
@@ -491,7 +465,7 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''),
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&id=' . $cid : ''), false),
 			$message
 		);
 	}
@@ -499,13 +473,13 @@ class KbControllerCategories extends \Hubzero\Component\AdminController
 	/**
 	 * Cancel a task (redirects to default task)
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function cancelTask()
 	{
 		// Set the redirect
 		$this->setRedirect(
-			'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

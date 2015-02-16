@@ -81,8 +81,6 @@ class KbTableArticle extends JTable
 		$juser = JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->access = $this->access ?: 0;
-
 			$this->created    = JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
@@ -216,7 +214,8 @@ class KbTableArticle extends JTable
 	{
 		$query = "FROM $this->_tbl AS a
 					LEFT JOIN #__faq_categories AS c ON c.id = a.section
-					LEFT JOIN #__faq_categories AS cc ON cc.id = a.category ";
+					LEFT JOIN #__faq_categories AS cc ON cc.id = a.category
+					LEFT JOIN #__viewlevels AS v ON v.id = a.access ";
 
 		if (isset($filters['user_id']) && $filters['user_id'] > 0)
 		{
@@ -238,9 +237,19 @@ class KbTableArticle extends JTable
 			$where[] = "a.`state`=" . $this->_db->Quote($filters['state']);
 			$where[] = "c.`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['access']) && $filters['access'] >= 0)
+		if (isset($filters['access']))
 		{
-			$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
+			if (is_array($filters['access']))
+			{
+				if (!empty($filters['access']))
+				{
+					$where[] = "a.`access` IN (" . implode(",", $filters['access']) . ")";
+				}
+			}
+			else if ($filters['access'] > 0)
+			{
+				$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
+			}
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
@@ -304,7 +313,7 @@ class KbTableArticle extends JTable
 
 			case 'list':
 			default:
-				$query  = "SELECT a.*, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
+				$query  = "SELECT a.*, v.title as access_level, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
 				if (isset($filters['user_id']) && $filters['user_id'] > 0)
 				{
 					$query .= ", v.vote, v.user_id ";

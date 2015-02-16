@@ -95,7 +95,7 @@ class plgWhatsnewKb extends \Hubzero\Plugin\Plugin
 
 		$f_from = " FROM #__faq AS f";
 
-		$f_where = "f.state=1 AND f.created > '$period->cStartDate' AND f.created < '$period->cEndDate'";
+		$f_where = "f.state=1 AND f.created > '$period->cStartDate' AND f.created < '$period->cEndDate' AND f.access IN (" . implode(',', \JFactory::getUser()->getAuthorisedViewLevels()) . ")";
 
 		$order_by  = " ORDER BY created DESC, title";
 		$order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";

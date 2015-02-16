@@ -166,11 +166,11 @@ class KbModelArchive extends \Hubzero\Base\Object
 	{
 		if (!isset($filters['state']))
 		{
-			$filters['state']   = \Hubzero\Base\Model::APP_STATE_PUBLISHED;
+			$filters['state'] = \Hubzero\Base\Model::APP_STATE_PUBLISHED;
 		}
-		if (!isset($filters['access']) && JFactory::getUser()->get('guest'))
+		if (!isset($filters['access']))
 		{
-			$filters['access']  = 0;
+			$filters['access'] = \JFactory::getUser()->getAuthorisedViewLevels();
 		}
 		if (!isset($filters['section']))
 		{
@@ -178,7 +178,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 		}
 		if (!isset($filters['empty']))
 		{
-			$filters['empty']   = false;
+			$filters['empty'] = false;
 		}
 		if (!isset($filters['sort']))
 		{
@@ -240,7 +240,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access'] = 0;
+			$filters['access'] = \JFactory::getUser()->getAuthorisedViewLevels();
 		}
 		if (!isset($filters['start']))
 		{

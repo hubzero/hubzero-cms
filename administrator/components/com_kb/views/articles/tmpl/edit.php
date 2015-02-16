@@ -213,9 +213,10 @@ function submitbutton(pressbutton)
 			<div class="input-wrap">
 				<label for="field-access"><?php echo JText::_('COM_KB_ACCESS_LEVEL'); ?>:</label>
 				<select name="fields[access]" id="field-access">
-					<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ACCESS_PUBLIC'); ?></option>
+					<?php /*<option value="0"<?php if ($this->row->get('access') == 0) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ACCESS_PUBLIC'); ?></option>
 					<option value="1"<?php if ($this->row->get('access') == 1) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ACCESS_REGISTERED'); ?></option>
-					<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ACCESS_SPECIAL'); ?></option>
+					<option value="2"<?php if ($this->row->get('access') == 2) { echo ' selected="selected"'; } ?>><?php echo JText::_('COM_KB_ACCESS_SPECIAL'); ?></option>*/ ?>
+					<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->row->get('access')); ?>
 				</select>
 			</div>
 		</fieldset>

@@ -75,17 +75,30 @@ function submitbutton(pressbutton)
 }
 </script>
 
-<form action="index.php" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
-		<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
-		<?php echo KbHelperHtml::sectionSelect($this->sections, $this->filters['section'], 'section'); ?>
+		<div class="col width-40 fltlft">
+			<label for="filter_search"><?php echo JText::_('JSEARCH_FILTER'); ?>:</label>
+			<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" />
 
-		<?php if (isset($this->categories) && $this->categories->total() > 0) { ?>
+			<input type="submit" value="<?php echo JText::_('COM_KB_GO'); ?>" />
+			<button type="button" onclick="$('#filter_search').val('');$('#filter-state').val('');this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+		</div>
+		<div class="col width-60 fltrt">
 			<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
-			<?php echo KbHelperHtml::sectionSelect($this->categories, $this->filters['category'], 'category'); ?>
-		<?php } ?>
+			<?php echo KbHelperHtml::sectionSelect($this->sections, $this->filters['section'], 'section'); ?>
 
-		<input type="submit" value="<?php echo JText::_('COM_KB_GO'); ?>" />
+			<?php if (isset($this->categories) && $this->categories->total() > 0) { ?>
+				<label><?php echo JText::_('COM_KB_CATEGORY'); ?>:</label>
+				<?php echo KbHelperHtml::sectionSelect($this->categories, $this->filters['category'], 'category'); ?>
+			<?php } ?>
+
+			<label for="filter-access"><?php echo JText::_('JFIELD_ACCESS_LABEL'); ?>:</label>
+			<select name="access" id="filter-access" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS');?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->filters['access']); ?>
+			</select>
+		</div>
 	</fieldset>
 	<div class="clr"></div>
 
@@ -131,7 +144,7 @@ foreach ($this->rows as $row)
 		break;
 	}
 
-	if (!$row->get('access', 0))
+	/*if (!$row->get('access', 0))
 	{
 		$row->set('groupname', 'Public');
 		$color_access = 'public';
@@ -148,17 +161,17 @@ foreach ($this->rows as $row)
 		$row->set('groupname', 'Special');
 		$color_access = 'special';
 		$task_access  = 'accesspublic';
-	}
+	}*/
 
 	$tags = $row->tags('cloud');
 ?>
 			<tr class="<?php echo "row$k"; ?>">
 				<td>
-					<input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
+					<input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" onclick="isChecked(this.checked, this);" />
 				</td>
 				<td>
 					<?php if ($row->get('checked_out') && $row->get('checked_out') != $juser->get('id')) { ?>
-							<span class="checkedout" title="Checked out :: <?php echo $this->escape($row->get('editor')); ?>">
+							<span class="checkedout" title="<?php echo JText::_('JLIB_HTML_CHECKED_OUT'); ?> :: <?php echo $this->escape($row->get('editor')); ?>">
 								<span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
 							</span>
 					<?php } else { ?>
@@ -188,15 +201,15 @@ foreach ($this->rows as $row)
 					<?php } ?>
 				</td>
 				<td>
-					<?php if ($canDo->get('core.edit.state')) { ?>
+					<?php /*if ($canDo->get('core.edit.state')) { ?>
 						<a class="access <?php echo $color_access; ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->get('id')); ?>" title="<?php echo JText::_('COM_KB_CHANGE_ACCESS'); ?>">
 							<?php echo $row->get('groupname'); ?>
 						</a>
-					<?php } else { ?>
-						<span class="access <?php echo $color_access; ?>">
-							<?php echo $row->get('groupname'); ?>
+					<?php } else {*/ ?>
+						<span class="access">
+							<?php echo $row->get('access_level'); ?>
 						</span>
-					<?php } ?>
+					<?php //} ?>
 				</td>
 				<td>
 					<?php echo $this->escape($row->get('ctitle')); echo ($row->get('cctitle') ? ' (' . $this->escape($row->get('cctitle')) . ')' : ''); ?>

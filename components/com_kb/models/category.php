@@ -208,7 +208,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 		}
 		if (!isset($filters['access']))
 		{
-			$filters['access']  = 0;
+			$filters['access']  = \JFactory::getUser()->getAuthorisedViewLevels();
 		}
 		if (!isset($filters['empty']))
 		{

@@ -82,10 +82,6 @@ class KbTableCategory extends JTable
 			}
 		}
 
-		if (!$this->id)
-		{
-			$this->access = $this->access ? $this->access : 0;
-		}
 		$this->access = intval($this->access);
 
 		return true;
@@ -193,7 +189,7 @@ class KbTableCategory extends JTable
 	 */
 	private function _buildQuery($filters=array())
 	{
-		$query = "FROM `$this->_tbl` AS a LEFT JOIN `#__viewlevels` AS g ON g.`id` = (a.`access` + 1)";
+		$query = "FROM `$this->_tbl` AS a LEFT JOIN `#__viewlevels` AS g ON g.`id` = a.`access`";
 
 		$where = array();
 
@@ -205,9 +201,19 @@ class KbTableCategory extends JTable
 		{
 			$where[] = "a.`state`=" . $this->_db->Quote($filters['state']);
 		}
-		if (isset($filters['access']) && $filters['access'] >= 0)
+		if (isset($filters['access']))
 		{
-			$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
+			if (is_array($filters['access']))
+			{
+				if (!empty($filters['access']))
+				{
+					$where[] = "a.`access` IN (" . implode(",", $filters['access']) . ")";
+				}
+			}
+			else if ($filters['access'] > 0)
+			{
+				$where[] = "a.`access`=" . $this->_db->Quote($filters['access']);
+			}
 		}
 		if (isset($filters['search']) && $filters['search'])
 		{
@@ -288,9 +294,19 @@ class KbTableCategory extends JTable
 				{
 					$access .= " AND fa.`state`=" . $this->_db->Quote($filters['state']);
 				}
-				if (isset($filters['access']) && $filters['access'] >= 0)
+				if (isset($filters['access']))
 				{
-					$access .= " AND fa.`access`=" . $this->_db->Quote($filters['access']);
+					if (is_array($filters['access']))
+					{
+						if (!empty($filters['access']))
+						{
+							$where[] = "fa.`access` IN (" . implode(",", $filters['access']) . ")";
+						}
+					}
+					else if ($filters['access'] > 0)
+					{
+						$where[] = "fa.`access`=" . $this->_db->Quote($filters['access']);
+					}
 				}
 
 				if (isset($filters['section']) && $filters['section'] > 0)
