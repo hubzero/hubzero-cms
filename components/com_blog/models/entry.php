@@ -31,9 +31,9 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'entry.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'tags.php');
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'models' . DS . 'comment.php');
+require_once(__DIR__ . DS . '..' . DS . 'tables' . DS . 'entry.php');
+require_once(__DIR__ . DS . 'tags.php');
+require_once(__DIR__ . DS . 'comment.php');
 
 /**
  * Model class for a blog entry

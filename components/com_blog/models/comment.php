@@ -31,7 +31,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_ROOT . DS . 'components' . DS . 'com_blog' . DS . 'tables' . DS . 'comment.php');
+require_once(__DIR__ . DS . '..' . DS . 'tables' . DS . 'comment.php');
 
 /**
  * Blog model class for a comment
