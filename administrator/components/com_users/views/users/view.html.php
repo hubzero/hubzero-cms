@@ -61,7 +61,7 @@ class UsersViewUsers extends JViewLegacy
 
 		if ($canDo->get('core.edit.state')) {
 			JToolBarHelper::divider();
-			JToolBarHelper::publish('users.activate', 'COM_USERS_TOOLBAR_ACTIVATE', true);
+			JToolBarHelper::publish('users.approve', 'COM_USERS_TOOLBAR_APPROVE', true);
 			JToolBarHelper::unpublish('users.block', 'COM_USERS_TOOLBAR_BLOCK', true);
 			JToolBarHelper::custom('users.unblock', 'unblock.png', 'unblock_f2.png', 'COM_USERS_TOOLBAR_UNBLOCK', true);
 			JToolBarHelper::divider();

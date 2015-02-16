@@ -42,6 +42,7 @@ class UsersModelUsers extends JModelList
 				'registerDate', 'a.registerDate',
 				'lastvisitDate', 'a.lastvisitDate',
 				'activation', 'a.activation',
+				'approved', 'a.approved',
 			);
 		}
 
@@ -74,6 +75,9 @@ class UsersModelUsers extends JModelList
 
 		$active = $this->getUserStateFromRequest($this->context.'.filter.active', 'filter_active', '*');
 		$this->setState('filter.active', $active);
+
+		$approved = $this->getUserStateFromRequest($this->context.'.filter.approved', 'filter_approved', '*');
+		$this->setState('filter.approved', $approved);
 
 		$state = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '*');
 		$this->setState('filter.state', $state);
@@ -124,6 +128,7 @@ class UsersModelUsers extends JModelList
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
 		$id	.= ':'.$this->getState('filter.active');
+		$id	.= ':'.$this->getState('filter.approved');
 		$id	.= ':'.$this->getState('filter.state');
 		$id	.= ':'.$this->getState('filter.group_id');
 		$id .= ':'.$this->getState('filter.range');
@@ -290,6 +295,14 @@ class UsersModelUsers extends JModelList
 			{
 				$query->where($query->length('a.activation').' = 32');
 			}
+		}
+
+		// If the model is set to check the approved state, add to the query.
+		$approved = $this->getState('filter.approved');
+
+		if (is_numeric($approved))
+		{
+			$query->where('a.approved = '.$db->quote($approved));
 		}
 
 		// Filter the items over the group id if set.

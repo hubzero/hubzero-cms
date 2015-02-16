@@ -503,6 +503,90 @@ class UsersModelUser extends JModelAdmin
 	}
 
 	/**
+	 * Method to approve user records.
+	 *
+	 * @param   array  &$pks  The ids of the items to approve.
+	 *
+	 * @return  boolean  True on success.
+	 */
+	function approve(&$pks)
+	{
+		// Initialise variables.
+		$dispatcher = JDispatcher::getInstance();
+		$user       = JFactory::getUser();
+
+		// Check if I am a Super Admin
+		$iAmSuperAdmin = $user->authorise('core.admin');
+		$table         = $this->getTable();
+		$pks           = (array) $pks;
+
+		JPluginHelper::importPlugin('user');
+
+		// Access checks.
+		foreach ($pks as $i => $pk)
+		{
+			if ($table->load($pk))
+			{
+				$old	= $table->getProperties();
+				$allow	= $user->authorise('core.edit.state', 'com_users');
+
+				// Don't allow non-super-admin to delete a super admin
+				$allow = (!$iAmSuperAdmin && JAccess::check($pk, 'core.admin')) ? false : $allow;
+
+				if ($allow)
+				{
+					$table->approved = 1;
+
+					// Allow an exception to be thrown.
+					try
+					{
+						if (!$table->check())
+						{
+							$this->setError($table->getError());
+
+							return false;
+						}
+
+						// Trigger the onUserBeforeSave event.
+						$result = $dispatcher->trigger('onUserBeforeSave', array($old, false, $table->getProperties()));
+
+						if (in_array(false, $result, true))
+						{
+							// Plugin will have to raise it's own error or throw an exception.
+							return false;
+						}
+
+						// Store the table.
+						if (!$table->store())
+						{
+							$this->setError($table->getError());
+
+							return false;
+						}
+
+						// Fire the onAftereStoreUser event
+						$dispatcher->trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
+					}
+					catch (Exception $e)
+					{
+						$this->setError($e->getMessage());
+
+						return false;
+					}
+				}
+				else
+				{
+					// Prune items that you can't change.
+					unset($pks[$i]);
+					JError::raiseWarning(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Method to perform batch operations on an item or a set of items.
 	 *
 	 * @param   array  $commands  An array of commands to perform.
