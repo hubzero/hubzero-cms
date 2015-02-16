@@ -140,21 +140,15 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	{
 		JRequest::setVar('hidemainmenu', 1);
 
-		$this->view;
-
 		if (!is_object($model))
 		{
 			// Incoming
-			$ids = JRequest::getVar('id', array());
+			$id = JRequest::getVar('id', array(0));
 
 			// Get the single ID we're working with
-			if (is_array($ids))
+			if (is_array($id))
 			{
-				$id = (!empty($ids)) ? $ids[0] : 0;
-			}
-			else
-			{
-				$id = 0;
+				$id = (!empty($id)) ? $id[0] : 0;
 			}
 
 			$model = new CoursesModelSectionCode($id);
@@ -317,14 +311,12 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Generate QRcode
+	 * Generate QR code
 	 *
 	 * @return  void
 	 */
 	public function qrcodeTask()
 	{
-		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'phpqrcode' . DS . 'qrlib.php');
-
 		$no_html = JRequest::getInt('no_html', 0);
 		$code = JRequest::getVar('code');
 
@@ -337,11 +329,11 @@ class CoursesControllerCodes extends \Hubzero\Component\AdminController
 
 		if ($no_html)
 		{
-			echo QRcode::png($url);
+			echo \PHPQRCode\QRcode::png($url);
 			return;
 		}
 
-		echo QRcode::text($url);
+		echo \PHPQRCode\QRcode::text($url);
 	}
 
 	/**

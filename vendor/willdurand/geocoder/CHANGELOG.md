@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+### 2.8.2 (2015-01-07
+
+* Fixed: encoding issue for `maxmind` provider
+
+### 2.8.1 (2014-12-08)
+
+* Fixed: freegeoip `zip_code` property because of an API change
+
 ### 2.8.0 (2014-10-03)
 
 * Added: Allow for greater flexibility in setting curl parameters by passing in
