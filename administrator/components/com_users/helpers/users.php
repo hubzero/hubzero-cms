@@ -133,6 +133,24 @@ class UsersHelper
 	}
 
 	/**
+	 * Get a list of filter options for the approved state of a user.
+	 *
+	 * @return  array  An array of JHtmlOption elements.
+	 *
+	 * @since   1.6
+	 */
+	static function getApprovedOptions()
+	{
+		// Build the filter options.
+		$options = array();
+		$options[] = JHtml::_('select.option', '0', JText::_('COM_USERS_UNAPPROVED'));
+		$options[] = JHtml::_('select.option', '1', JText::_('COM_USERS_APPROVED_MANUALLY'));
+		$options[] = JHtml::_('select.option', '2', JText::_('COM_USERS_APPROVED_AUTOMATICALLY'));
+
+		return $options;
+	}
+
+	/**
 	 * Get a list of the user groups for filtering.
 	 *
 	 * @return  array  An array of JHtmlOption elements.

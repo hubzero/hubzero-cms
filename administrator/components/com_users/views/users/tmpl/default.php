@@ -39,9 +39,9 @@ $loggeduser = JFactory::getUser();
 				<?php echo JHtml::_('select.options', UsersHelper::getStateOptions(), 'value', 'text', $this->state->get('filter.state'));?>
 			</select>
 
-			<select name="filter_active" class="inputbox" onchange="this.form.submit()">
-				<option value="*"><?php echo JText::_('COM_USERS_FILTER_ACTIVE');?></option>
-				<?php echo JHtml::_('select.options', UsersHelper::getActiveOptions(), 'value', 'text', $this->state->get('filter.active'));?>
+			<select name="filter_approved" class="inputbox" onchange="this.form.submit()">
+				<option value="*"><?php echo JText::_('COM_USERS_FILTER_APPROVED');?></option>
+				<?php echo JHtml::_('select.options', UsersHelper::getApprovedOptions(), 'value', 'text', $this->state->get('filter.approved'));?>
 			</select>
 
 			<select name="filter_group_id" class="inputbox" onchange="this.form.submit()">
@@ -73,7 +73,7 @@ $loggeduser = JFactory::getUser();
 					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_ENABLED', 'a.block', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="5%">
-					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_ACTIVATED', 'a.activation', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_USERS_HEADING_APPROVED', 'a.approved', $listDirn, $listOrder); ?>
 				</th>
 				<th class="nowrap" width="10%">
 					<?php echo JText::_('COM_USERS_HEADING_GROUPS'); ?>
@@ -149,7 +149,11 @@ $loggeduser = JFactory::getUser();
 					<?php endif; ?>
 				</td>
 				<td class="center">
-					<?php echo JHtml::_('grid.boolean', $i, !$item->activation, 'users.activate', null); ?>
+					<?php if ($canChange) : ?>
+						<?php echo JHtml::_('grid.boolean', $i, $item->approved, 'users.approve', null); ?>
+					<?php else : ?>
+						<?php echo JHtml::_('grid.boolean', $i, $item->approved, null, null); ?>
+					<?php endif; ?>
 				</td>
 				<td class="center">
 					<?php if (substr_count($item->group_names, "\n") > 1) : ?>

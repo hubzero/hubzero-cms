@@ -146,4 +146,40 @@ class UsersControllerUsers extends JControllerAdmin
 
 		$this->setRedirect('index.php?option=com_users&view=users');
 	}
+
+	/**
+	 * Method to approve users
+	 *
+	 * @return  void
+	 */
+	public function approve()
+	{
+		// Check for request forgeries.
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Initialise variables.
+		$ids = JRequest::getVar('cid', array(), '', 'array');
+
+		if (empty($ids))
+		{
+			JError::raiseWarning(500, JText::_('COM_USERS_USERS_NO_ITEM_SELECTED'));
+		}
+		else
+		{
+			// Get the model.
+			$model = $this->getModel();
+
+			// Change the state of the records.
+			if (!$model->approve($ids))
+			{
+				JError::raiseWarning(500, $model->getError());
+			}
+			else
+			{
+				$this->setMessage(JText::plural('COM_USERS_N_USERS_APPROVED', count($ids)));
+			}
+		}
+
+		$this->setRedirect('index.php?option=com_users&view=users');
+	}
 }
