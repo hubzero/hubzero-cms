@@ -518,6 +518,7 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$credit 	= JRequest::getVar( 'credit', '', 'post' );
 		$sendInvite = 0;
 		$code 		= ProjectsHtml::generateCode();
+		$uid 		= JRequest::getInt( 'uid', 0, 'post' );
 
 		$regex = '/^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-]+)+/';
 		$email = preg_match($regex, $email) ? $email : '';
@@ -535,6 +536,37 @@ class PublicationsBlockAuthors extends PublicationsModelBlock
 		$row->credit 		= $credit;
 		$row->modified_by 	= $actor;
 		$row->modified 		= JFactory::getDate()->toSql();
+
+		// Check that profile exists
+		if ($uid)
+		{
+			$profile = \Hubzero\User\Profile::getInstance($uid);
+			$uid = $profile->get('uidNumber') ? $uid : 0;
+		}
+
+		// Tying author to a user account?
+		if ($uid && !$row->user_id)
+		{
+			// Do we have an owner with this user id?
+			$owner = $objO->getOwnerId( $pub->_project->id, $uid );
+
+			if ($owner)
+			{
+				// Update owner assoc
+				$row->project_owner_id = $owner;
+			}
+			else
+			{
+				// Update associated project owner account
+				if ($objO->load($row->project_owner_id) && !$objO->userid)
+				{
+					$objO->userid = $uid;
+					$objO->status = 1;
+					$objO->store();
+				}
+			}
+		}
+		$row->user_id = $uid;
 
 		if ($row->store())
 		{
