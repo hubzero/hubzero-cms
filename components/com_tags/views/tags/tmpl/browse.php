@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -54,7 +54,7 @@ $this->css()
 				<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_TAGS_SEARCH'); ?>" />
 				<fieldset class="entry-search">
 					<label for="entry-search-text"><?php echo JText::_('COM_TAGS_SEARCH_TAGS'); ?></label>
-					<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_TAGS_SEARCH_ENTER_TAGS'); ?>" />
+					<input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
 				</fieldset>
 			</div><!-- / .container -->
 
@@ -116,44 +116,54 @@ $this->css()
 						</tr>
 					</thead>
 					<tbody>
-				<?php
-				if ($this->rows->total())
-				{
-					$cls = 'even';
-					foreach ($this->rows as $row)
+					<?php
+					if ($this->rows->total())
 					{
-						$cls = ($cls == 'even' ? 'odd' : 'even');
-				?>
-						<tr class="<?php echo $cls . ($row->get('admin') ? ' admin' : ''); ?>">
-							<td>
-								<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
-									<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
-								</a>
-							</td>
-							<td>
-								<?php echo $row->get('substitutes') ? $this->escape(stripslashes($row->substitutes('string'))) : '<span>' . JText::_('COM_TAGS_NONE') . '</span>'; ?>
-							</td>
-					<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
-							<td>
-						<?php if ($this->config->get('access-delete-tag')) { ?>
-								<a class="icon-delete delete delete-tag" data-confirm="<?php echo JText::_('COM_TAGS_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
-									<?php echo JText::_('COM_TAGS_DELETE_TAG'); ?>
-								</a>
-						<?php } ?>
-							</td>
-							<td>
-						<?php if ($this->config->get('access-edit-tag')) { ?>
-								<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo JText::_('COM_TAGS_EDIT_TAG'); ?> &quot;<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>&quot;">
-									<?php echo JText::_('COM_TAGS_EDIT'); ?>
-								</a>
-						<?php } ?>
-							</td>
-					<?php } ?>
-						</tr>
-				<?php
+						$cls = 'even';
+						foreach ($this->rows as $row)
+						{
+							$cls = ($cls == 'even' ? 'odd' : 'even');
+							?>
+							<tr class="<?php echo $cls . ($row->get('admin') ? ' admin' : ''); ?>">
+								<td>
+									<a class="entry-title" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
+										<?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
+									</a>
+								</td>
+								<td>
+									<?php echo $row->get('substitutes') ? $this->escape(stripslashes($row->substitutes('string'))) : '<span>' . JText::_('COM_TAGS_NONE') . '</span>'; ?>
+								</td>
+							<?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
+								<td>
+									<?php if ($this->config->get('access-delete-tag')) { ?>
+										<a class="icon-delete delete delete-tag" data-confirm="<?php echo JText::_('COM_TAGS_CONFIRM_DELETE'); ?>" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+											<?php echo JText::_('JACTION_DELETE'); ?>
+										</a>
+									<?php } ?>
+								</td>
+								<td>
+									<?php if ($this->config->get('access-edit-tag')) { ?>
+										<a class="icon-edit edit" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo JText::sprintf('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))); ?>">
+											<?php echo JText::_('JACTION_EDIT'); ?>
+										</a>
+									<?php } ?>
+								</td>
+							<?php } ?>
+							</tr>
+							<?php
+						}
 					}
-				}
-				?>
+					else
+					{
+						?>
+							<tr class="odd">
+								<td colspan="<?php echo ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2); ?>">
+									<?php echo JText::_('COM_TAGS_NO_RESULTS'); ?>
+								</td>
+							</tr>
+							<?php
+					}
+					?>
 					</tbody>
 				</table>
 				<?php
