@@ -13792,3 +13792,4 @@
 ./administrator/components/com_dataviewer/html/jquery.js
 ./administrator/components/com_dataviewer/html/jquery.min.js
 ./migrations/Migration20150113130000ComPublications.php
+./components/com_members/views/emails/tmpl/admincreate.php
