@@ -1930,7 +1930,7 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			// Set the error message
 			$this->setError(JText::_('EVENTS_EVENT_MUST_END_AFTER_START'));
 			// Fall through to the edit view
-			$this->edit($row);
+			$this->editTask($row);
 			return;
 		}
 
