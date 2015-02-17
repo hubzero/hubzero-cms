@@ -1,4 +1,4 @@
-@import url("/components/com_tags/assets/css/tags.css");
+@import url("../../../../components/com_tags/assets/css/tags.css");
 
 .entries tbody td a.entry-title {
 	background: #fadea3 !important;
@@ -12,4 +12,29 @@
 }
 .entries tbody td a.entry-title:hover:before {
 	border-color: transparent #f3ae22 transparent transparent !important;
+}
+
+#introduction .data-entry {
+	padding: 0;
+	background: transparent;
+}
+#introduction .entry-search ul.token-input-list-act,
+#introduction .entry-search ul.token-input-list-acg,
+#introduction .entry-search ul.token-input-list-acm {
+	border-top: 1px solid rgba(0, 0, 0, .19);
+	border-bottom: 1px solid rgba(0, 0, 0, .19);
+	border-left: 1px solid rgba(0, 0, 0, .19);
+	border-right: none;
+}
+#introduction .data-entry input.entry-search-submit,
+#introduction .data-entry .entry-search input[type="text"],
+#introduction .data-entry .entry-search input {
+	border: 1px solid rgba(0, 0, 0, .19);
+}
+#introduction p {
+	font-size: 1.2em;
+}
+#content .grid h2 {
+	border: none;
+	margin-bottom: 0.7em;
 }

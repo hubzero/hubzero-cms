@@ -66,23 +66,16 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask()
 	{
-		$this->view->cloud = new TagsModelCloud();
-
-		$this->view->config = $this->config;
-
 		// Set the page title
 		$this->_buildTitle(null);
 
 		// Set the pathway
 		$this->_buildPathway(null);
 
-		// Output HTML
-		foreach ($this->getErrors() as $error)
-		{
-			$this->view->setError($error);
-		}
-
-		$this->view->display();
+		$this->view
+			->set('cloud', new TagsModelCloud())
+			->set('config', $this->config)
+			->display();
 	}
 
 	/**
@@ -307,12 +300,9 @@ class TagsControllerTags extends \Hubzero\Component\SiteController
 		$this->view->active = $area;
 		$this->view->search = implode(', ', $rt);
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
