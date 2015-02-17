@@ -53,6 +53,11 @@
 					<option value="yellow">TPL_KAMELEON_FIELD_THEME_YELLOW</option>
 				</field>
 				<field name="color" type="color" default="" label="TPL_KAMELEON_FIELD_COLOR_LABEL" description="TPL_KAMELEON_FIELD_COLOR_DESC" />
+				<field name="login" type="list" default="0" label="TPL_KAMELEON_FIELD_LOGIN_LABEL" description="TPL_KAMELEON_FIELD_LOGIN_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+					<option value="2">TPL_KAMELEON_FIELD_LOGIN_SEASONAL</option>
+				</field>
 			</fieldset>
 		</fields>
 	</config>

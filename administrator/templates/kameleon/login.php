@@ -96,6 +96,10 @@ $browser = new \Hubzero\Browser\Detector();
 		</script>
 	</head>
 	<body id="login-body">
+		<div id="bg-canvas-wrapper">
+			<canvas id="bg-canvas"></canvas>
+		</div>
+
 		<jdoc:include type="modules" name="notices" />
 
 		<header id="header" role="banner">
@@ -121,5 +125,20 @@ $browser = new \Hubzero\Browser\Detector();
 				</section><!-- / #main -->
 			</section><!-- / #component-content -->
 		</div><!-- / #wrap -->
+
+		<?php
+		if ($this->params->get('login'))
+		{
+			$m = 11;
+			if ($this->params->get('login') == 2)
+			{
+				$m = intval(JFactory::getDate()->format('m'));
+			}
+			if ($m < 4 || $m > 10)
+			{
+				?><script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/login.js"></script><?php
+			}
+		}
+		?>
 	</body>
 </html>
