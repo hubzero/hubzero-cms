@@ -1423,7 +1423,8 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 			// Yes - edit mode
 
 			// Are they authorized to make edits?
-			if (!$this->_authorize($row->created_by))
+			if (!$this->_authorize($row->created_by)
+				&& !($this->juser->get('id') == $row->created_by))
 			{
 				// Not authorized - redirect
 				$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
@@ -1667,7 +1668,9 @@ class EventsControllerEvents extends \Hubzero\Component\SiteController
 		$event = new EventsEvent($this->database);
 		$event->load($id);
 
-		if (!$this->_authorize($event->created_by))
+		// Are they authorized to delete this event? Do they own it? Own it!
+		if (!$this->_authorize($event->created_by)
+			&& !($this->juser->get('id') == $event->created_by))
 		{
 			$this->_redirect = JRoute::_('index.php?option=' . $this->_option);
 			return;

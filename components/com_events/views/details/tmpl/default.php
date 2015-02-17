@@ -39,7 +39,7 @@ $this->css()
 <header id="content-header">
 	<h2><?php echo $this->title; ?></h2>
 
-	<?php if ($this->authorized) { ?>
+	<?php if ($this->auth) { ?>
 	<div id="content-header-extra">
 		<ul id="useroptions">
 			<li class="last"><a class="icon-add add btn" href="<?php echo JRoute::_('index.php?option='.$this->option.'&task=add'); ?>"><?php echo JText::_('EVENTS_ADD_EVENT'); ?></a></li>
@@ -62,7 +62,7 @@ $this->css()
 	<?php
 	if ($this->row) {
 		$html  = '<h3>'. $this->escape(stripslashes($this->row->title));
-		if ($this->authorized || $this->row->created_by == $juser->get('id')) {
+		if ($this->auth || $this->row->created_by == $juser->get('id')) {
 			$html .= '&nbsp;&nbsp;';
 			$html .= '<a class="edit" href="'. JRoute::_('index.php?option='.$this->option.'&task=edit&id='.$this->row->id) .'" title="'.JText::_('EVENTS_EDIT').'">'.strtolower(JText::_('EVENTS_EDIT')).'</a>'."\n";
 			$html .= '&nbsp;&nbsp;'."\n";
