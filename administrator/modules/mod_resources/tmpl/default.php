@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -60,12 +60,15 @@ $this->draft = $this->draftInternal + $this->draftUser;
 					{label: '<?php echo strtolower(JText::_('MOD_RESOURCES_UNPUBLISHED')); ?>', data: <?php echo round(($this->unpublished / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_unpublished", "#fff"); ?>'}
 				], {
 					legend: {
-						show: true
+						show: false
 					},
 					series: {
 						pie: {
 							innerRadius: 0.5,
 							show: true,
+							label: {
+								show: false
+							},
 							stroke: {
 								color: '#efefef'
 							}
@@ -81,45 +84,66 @@ $this->draft = $this->draftInternal + $this->draftUser;
 
 		<p class="resources-total"><?php echo $total; ?></p>
 	</div>
-	<div class="overview-container">
-		<table class="resources-stats-overview">
+	<div class="overview-container resources-stats-overview">
+		<table>
 			<tbody>
 				<tr>
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=1'); ?>" title="<?php echo JText::_('MOD_RESOURCES_PUBLISHED_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_published", "#656565"); ?>;"></span><?php echo JText::_('MOD_RESOURCES_PUBLISHED'); ?>
+						</a>
+					</th>
 					<td>
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=1" title="<?php echo JText::_('MOD_RESOURCES_PUBLISHED_TITLE'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=1'); ?>" title="<?php echo JText::_('MOD_RESOURCES_PUBLISHED_TITLE'); ?>">
 							<?php echo $this->escape($this->published); ?>
-							<span><?php echo JText::_('MOD_RESOURCES_PUBLISHED'); ?></span>
-						</a>
-					</td>
-					<td class="pending-items">
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=3" title="<?php echo JText::_('MOD_RESOURCES_PENDING_TITLE'); ?>">
-							<?php echo $this->escape($this->pending); ?>
-							<span><?php echo JText::_('MOD_RESOURCES_PENDING'); ?></span>
-						</a>
-					</td>
-					<td>
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=2" title="<?php echo JText::_('MOD_RESOURCES_DRAFT_TITLE'); ?>">
-							<?php echo $this->escape($this->draft); ?>
-							<span><?php echo JText::_('MOD_RESOURCES_DRAFT'); ?></span>
 						</a>
 					</td>
 				</tr>
-			</tbody>
-		</table>
-
-		<table class="resources-stats-overview">
-			<tbody>
 				<tr>
-					<td>
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=0" title="<?php echo JText::_('MOD_RESOURCES_UNPUBLISHED_TITLE'); ?>">
-							<?php echo $this->escape($this->unpublished); ?>
-							<span><?php echo JText::_('MOD_RESOURCES_UNPUBLISHED'); ?></span>
+					<th scope="row" class="pending-items">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=3'); ?>" title="<?php echo JText::_('MOD_RESOURCES_PENDING_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_pending", "#f9d180"); ?>;"></span><?php echo JText::_('MOD_RESOURCES_PENDING'); ?>
+						</a>
+					</th>
+					<td class="pending-items">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=3'); ?>" title="<?php echo JText::_('MOD_RESOURCES_PENDING_TITLE'); ?>">
+							<?php echo $this->escape($this->pending); ?>
 						</a>
 					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=2'); ?>" title="<?php echo JText::_('MOD_RESOURCES_DRAFT_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_draft", "#999"); ?>;"></span><?php echo JText::_('MOD_RESOURCES_DRAFT'); ?>
+						</a>
+					</th>
 					<td>
-						<a href="index.php?option=com_resources&amp;c=resources&amp;status=4" title="<?php echo JText::_('MOD_RESOURCES_REMOVED_TITLE'); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=2'); ?>" title="<?php echo JText::_('MOD_RESOURCES_DRAFT_TITLE'); ?>">
+							<?php echo $this->escape($this->draft); ?>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=0'); ?>" title="<?php echo JText::_('MOD_RESOURCES_UNPUBLISHED_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_removed", "#ccc"); ?>;"></span><?php echo JText::_('MOD_RESOURCES_UNPUBLISHED'); ?>
+						</a>
+					</th>
+					<td>
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=0'); ?>" title="<?php echo JText::_('MOD_RESOURCES_UNPUBLISHED_TITLE'); ?>">
+							<?php echo $this->escape($this->unpublished); ?>
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=4'); ?>" title="<?php echo JText::_('MOD_RESOURCES_REMOVED_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_unpublished", "#fff"); ?>;"></span><?php echo JText::_('MOD_RESOURCES_REMOVED'); ?>
+						</a>
+					</th>
+					<td>
+						<a href="<?php echo JRoute::_('index.php?option=com_resources&c=resources&status=4'); ?>" title="<?php echo JText::_('MOD_RESOURCES_REMOVED_TITLE'); ?>">
 							<?php echo $this->escape($this->removed); ?>
-							<span><?php echo JText::_('MOD_RESOURCES_REMOVED'); ?></span>
 						</a>
 					</td>
 				</tr>

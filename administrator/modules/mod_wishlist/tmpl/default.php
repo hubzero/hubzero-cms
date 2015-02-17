@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2014 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,7 +24,7 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2014 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
@@ -65,12 +65,15 @@ if ($total == 0)
 					{label: '<?php echo strtolower(JText::_('MOD_WISHLIST_REJECTED')); ?>', data: <?php echo round(($this->rejected / $total)*100, 2); ?>, color: '<?php echo $this->params->get("color_rejected", "#333333"); ?>'}
 				], {
 					legend: {
-						show: true
+						show: false
 					},
 					series: {
 						pie: {
 							innerRadius: 0.5,
 							show: true,
+							label: {
+								show: false
+							},
 							stroke: {
 								color: '#efefef'
 							}
@@ -86,46 +89,78 @@ if ($total == 0)
 
 		<p class="wishlist-total"><?php echo $total; ?></p>
 	</div>
-	<div class="overview-container">
-		<table class="wishlist-stats-overview">
+	<div class="overview-container wishlist-stats-overview">
+		<table>
 			<tbody>
-				<tr>
-					<td class="pending-items">
-						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=pending" title="<?php echo JText::_('MOD_WISHLIST_PENDING_TITLE'); ?>">
+				<tr class="pending-items">
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=pending'); ?>" title="<?php echo JText::_('MOD_WISHLIST_PENDING_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_pending", "#656565"); ?>;"></span><?php echo JText::_('MOD_WISHLIST_PENDING'); ?>
+						</a>
+					</th>
+					<td>
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=pending'); ?>" title="<?php echo JText::_('MOD_WISHLIST_PENDING_TITLE'); ?>">
 							<?php echo $this->escape($this->pending); ?>
-							<span><?php echo JText::_('MOD_WISHLIST_PENDING'); ?></span>
-						</a>
-					</td>
-					<td class="accepted-items">
-						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=accepted" title="<?php echo JText::_('MOD_WISHLIST_ACCEPTED_TITLE'); ?>">
-							<?php echo $this->escape($this->accepted); ?>
-							<span><?php echo JText::_('MOD_WISHLIST_ACCEPTED'); ?></span>
-						</a>
-					</td>
-					<td class="granted-items">
-						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=granted" title="<?php echo JText::_('MOD_WISHLIST_GRANTED_TITLE'); ?>">
-							<?php echo $this->escape($this->granted); ?>
-							<span><?php echo JText::_('MOD_WISHLIST_GRANTED'); ?></span>
 						</a>
 					</td>
 				</tr>
-				<tr>
-					<td class="rejected-items">
-						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=rejected" title="<?php echo JText::_('MOD_WISHLIST_REJECTED_TITLE'); ?>">
+				<tr class="accepted-items">
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=accepted'); ?>" title="<?php echo JText::_('MOD_WISHLIST_ACCEPTED_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_accepted", "#f9d180"); ?>;"></span><?php echo JText::_('MOD_WISHLIST_ACCEPTED'); ?>
+						</a>
+					</th>
+					<td>
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=accepted'); ?>" title="<?php echo JText::_('MOD_WISHLIST_ACCEPTED_TITLE'); ?>">
+							<?php echo $this->escape($this->accepted); ?>
+						</a>
+					</td>
+				</tr>
+				<tr class="granted-items">
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=granted'); ?>" title="<?php echo JText::_('MOD_WISHLIST_GRANTED_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_granted", "#999"); ?>;"></span><?php echo JText::_('MOD_WISHLIST_GRANTED'); ?>
+						</a>
+					</th>
+					<td>
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=granted'); ?>" title="<?php echo JText::_('MOD_WISHLIST_GRANTED_TITLE'); ?>">
+							<?php echo $this->escape($this->granted); ?>
+						</a>
+					</td>
+				</tr>
+				<tr class="rejected-items">
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=rejected'); ?>" title="<?php echo JText::_('MOD_WISHLIST_REJECTED_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_rejected", "#333333"); ?>;"></span><?php echo JText::_('MOD_WISHLIST_REJECTED'); ?>
+						</a>
+					</th>
+					<td>
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=rejected'); ?>" title="<?php echo JText::_('MOD_WISHLIST_REJECTED_TITLE'); ?>">
 							<?php echo $this->escape($this->rejected); ?>
-							<span><?php echo JText::_('MOD_WISHLIST_REJECTED'); ?></span>
 						</a>
 					</td>
-					<td class="withdrawn-items">
-						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=withdrawn" title="<?php echo JText::_('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>">
+				</tr>
+				<tr class="withdrawn-items">
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=withdrawn'); ?>" title="<?php echo JText::_('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_withdrawn", "#ffffff"); ?>;"></span><?php echo JText::_('MOD_WISHLIST_WITHDRAWN'); ?>
+						</a>
+					</th>
+					<td>
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=withdrawn'); ?>" title="<?php echo JText::_('MOD_WISHLIST_WITHDRAWN_TITLE'); ?>">
 							<?php echo $this->escape($this->withdrawn); ?>
-							<span><?php echo JText::_('MOD_WISHLIST_WITHDRAWN'); ?></span>
 						</a>
 					</td>
-					<td class="removed-items">
-						<a href="index.php?option=com_wishlist&amp;controller=wishes&amp;wishlist=<?php echo $this->wishlist; ?>&amp;filterby=deleted" title="<?php echo JText::_('MOD_WISHLIST_REMOVED_TITLE'); ?>">
+				</tr>
+				<tr class="removed-items">
+					<th scope="row">
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=deleted'); ?>" title="<?php echo JText::_('MOD_WISHLIST_REMOVED_TITLE'); ?>">
+							<span style="background-color: <?php echo $this->params->get("color_removed", "#cccccc"); ?>;"></span><?php echo JText::_('MOD_WISHLIST_REMOVED'); ?>
+						</a>
+					</th>
+					<td>
+						<a href="<?php echo JRoute::_('index.php?option=com_wishlist&controller=wishes&wishlist=' . $this->wishlist . '&filterby=deleted'); ?>" title="<?php echo JText::_('MOD_WISHLIST_REMOVED_TITLE'); ?>">
 							<?php echo $this->escape($this->removed); ?>
-							<span><?php echo JText::_('MOD_WISHLIST_REMOVED'); ?></span>
 						</a>
 					</td>
 				</tr>
