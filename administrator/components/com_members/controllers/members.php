@@ -418,7 +418,7 @@ class MembersControllerMembers extends \Hubzero\Component\AdminController
 		$ec = JRequest::getInt('emailConfirmed', 0, 'post');
 		if ($ec)
 		{
-			$profile->set('emailConfirmed', 1);
+			$profile->set('emailConfirmed', $ec);
 		}
 		else
 		{
