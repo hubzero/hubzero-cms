@@ -48,6 +48,7 @@ class plgOaipmhResources extends \Hubzero\Plugin\Plugin
 		require_once(__DIR__ . DS . 'data' . DS . 'miner.php');
 
 		$provider = new \Plugins\Oaipmh\Resources\Data\Miner();
+		$provider->set('type', $this->params->get('type'));
 
 		$service->register($provider->name(), $provider);
 	}
