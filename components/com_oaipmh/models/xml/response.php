@@ -23,27 +23,62 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Oaipmh\Controllers;
+namespace Components\Oaipmh\Models\Xml;
 
-use Hubzero\Component\AdminController;
+use DOMDocument;
+
+require_once(__DIR__ . DS . 'element.php');
 
 /**
- * Controller class for OAIPMH config
+ * XML Response Builder
  */
-class Config extends AdminController
+class Response extends Element
 {
 	/**
-	 * Display config optins
-	 * 
+	 * @var  bool
+	 */
+	protected $formatOutput;
+
+	/**
+	 * Constructor
+	 *
+	 * @param   string   $version
+	 * @param   string   $encoding
+	 * @param   boolean  $formatOutput
 	 * @return  void
 	 */
-	public function displayTask()
+	public function __construct($version = '1.0', $encoding = 'utf-8', $formatOutput = false)
 	{
-		// display panel
-		$this->view->display();
+		$this->dom = new DOMDocument($version, $encoding);
+		$this->formatOutput = (bool) $formatOutput;
+		$this->current = $this->dom;
+	}
+
+	/**
+	 * @param   boolean  $formatOutput
+	 * @return  string
+	 */
+	public function getXml($formatOutput = null)
+	{
+		$this->dom->formatOutput = is_bool($formatOutput) ? $formatOutput : $this->formatOutput;
+
+		return $this->dom->saveXML();
+	}
+
+	/**
+	 * @param   string   $filename
+	 * @param   boolean  $formatOutput
+	 * @return  boolean
+	 */
+	public function save($filename, $formatOutput = null)
+	{
+		$this->dom->formatOutput = is_bool($formatOutput) ? $formatOutput : $this->formatOutput;
+
+		return false !== $this->dom->save($filename);
 	}
 }

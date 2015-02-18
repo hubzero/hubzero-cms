@@ -23,27 +23,34 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
+ * @author    Shawn Rice <zooley@purdue.edu>
  * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Oaipmh\Controllers;
-
-use Hubzero\Component\AdminController;
+namespace Components\Oaipmh\Models;
 
 /**
- * Controller class for OAIPMH config
+ * Interface for OAI-PMH data provider
  */
-class Config extends AdminController
+interface Provider
 {
 	/**
-	 * Display config optins
-	 * 
-	 * @return  void
+	 * Return data for sets
 	 */
-	public function displayTask()
-	{
-		// display panel
-		$this->view->display();
-	}
+	public function sets();
+
+	/**
+	 * Return data for records
+	 *
+	 * @param  array  $filters
+	 */
+	public function records($filters = array());
+
+	/**
+	 * Return a single record
+	 *
+	 * @param  integer  $id
+	 */
+	public function record($id);
 }

@@ -32,98 +32,20 @@ defined('_JEXEC') or die('Restricted access');
 JToolBarHelper::title(JText::_('COM_OAIPMH_SETTINGS'), 'generic.png');
 JToolBarHelper::preferences('com_oaipmh', 500);
 JToolBarHelper::spacer();
-JToolBarHelper::save('save', 'COM_OAIPMH_SAVE_SETTINGS');
-JToolBarHelper::cancel();
-JToolBarHelper::spacer();
 JToolBarHelper::help('oaipmh');
 
-//$this->last;
-JHtml::_('behavior.switcher', 'submenu');
+$this->css();
 
-$document =  JFactory::getDocument();
+$lang = \JFactory::getLanguage()->getTag();
 ?>
 
-<script type="text/javascript">
-var sets = <?php echo count($this->sets); ?>;
-
-function addGroup() {
-	sets++;
-
-	window.location.href = "<?php echo JRoute::_('index.php?option=' . $this->option . '&task=addset&sets='); ?>" + sets;
-	/*jQuery.post("index.php?option=com_oaipmh",{task:"addset",sets:sets},function(){
-		location.reload();
-	});*/
-}
-
-function removeGroup(id) {
-	var r = confirm("<?php echo JText::_('COM_OAIPMH_CONFIRM_REMOVAL'); ?>");
-	if (r==true) {
-		jQuery.post("<?php echo JRoute::_('index.php?option=' . $this->option); ?>",{task:"removeset",id:id},function(){
-			location.reload();
-		});
-	}
-}
-</script>
-
-<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
-	<table class="admintable">
-		<thead>
-			<tr>
-				<th><?php echo JText::_('COM_OAIPMH_TABLE_SPECS'); ?></th>
-				<th id="toolbar-new">
-					<span><a class="button" href="#" onclick="javascript:addGroup()"><?php echo JText::_('COM_OAIPMH_ADD_GROUP'); ?></a></span>
-				</th>
-			</tr>
-		</thead>
-	</table>
-
-	<nav role="navigation" class="sub-navigation">
-		<div id="submenu-box">
-			<div class="submenu-box">
-				<div class="submenu-pad">
-					<ul id="submenu" class="member-nav">
-						<?php
-							foreach ($this->sets as $set)
-							{
-								echo '<li><a onclick="return false;" href="#tabs-' . $set[0] . '" id="tab' . $set[0] . '">' . JText::sprintf('COM_OAIPMH_GROUP_TITLE', $set[0]) . '</a></li>';
-							}
-						?>
-					</ul>
-					<div class="clr"></div>
-				</div>
-			</div>
-			<div class="clr"></div>
-		</div>
-	</nav><!-- / .sub-navigation -->
-
-	<div id="member-document">
-		<?php
-			$x = 0;
-			foreach ($this->sets as $set)
-			{
-				echo '<div id="page-tab' . $set[0] . '" class="tab">';
-				for ($i=$x;$i<=$x+16;$i++)
-				{
-					echo '<div class="input-wrap">';
-					echo '<label>' . $this->dcs[$i][1] . '</label><br />';
-					echo '<textarea rows="3" name="queries[]">' . $this->dcs[$i][2] . '</textarea>';
-					echo '<input type="hidden" name="qid[]" value="' . $this->escape($this->dcs[$i][0]) . '" />';
-					echo '</div>';
-				}
-				if ($set[0] > 1)
-				{
-					echo '<div class="input-wrap"><a href="#" class="button" onclick="javascript:removeGroup(' . $set[0] . ')" >' . JText::_('COM_OAIPMH_REMOVE_GROUP') . '</a></div>';
-				}
-				echo '</div>';
-				$x=$i;
-			}
-		?>
-	</div>
-
+<form action="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
 	<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 	<input type="hidden" name="task" value="save" />
 	<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
+
+	<?php include_once(JPATH_COMPONENT . DS . 'help' . DS . $lang . DS . 'oaipmh.phtml'); ?>
 
 	<?php echo JHTML::_('form.token'); ?>
 </form>
