@@ -50,10 +50,15 @@ class ResourcesElementTextarea extends ResourcesElement
 	{
 		$rows = isset($element->rows) ? $element->rows : 6;
 		$cols = isset($element->cols) ? $element->cols : 50;
-		$class = isset($element->class) ? 'class="' . $element->class . '"' : 'class="text_area"';
+		$cls = array();
+		if (isset($element->class))
+		{
+			$cls[] = $element->class;
+		}
+		$cls[] = (\JFactory::getApplication()->isAdmin() ? 'no-footer' : 'minimal no-footer');
 		// convert <br /> tags so they are not visible when editing
 		$value = str_replace('<br />', "\n", $value);
 
-		return '<span class="field-wrap">' . JFactory::getEditor()->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => 'minimal no-footer')) . '</span>';
+		return '<span class="field-wrap">' . JFactory::getEditor()->display($control_name . '[' . $name . ']', $value, '', '', $cols, $rows, false, $control_name . '-' . $name, null, null, array('class' => implode(' ', $cls))) . '</span>';
 	}
 }
