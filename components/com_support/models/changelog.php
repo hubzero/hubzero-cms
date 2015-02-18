@@ -471,14 +471,14 @@ class SupportModelChangelog extends \Hubzero\Base\Object
 				$after->owner('username', JText::_('COM_SUPPORT_NONE'))
 			);
 		}
-		if ($after->get('resolved') != $before->get('resolved'))
+		/*if ($after->get('resolved') != $before->get('resolved'))
 		{
 			$this->changed(
 				JText::_('COM_SUPPORT_CHANGELOG_FIELD_RESOLUTION'),
 				$before->get('resolved', JText::_('COM_SUPPORT_UNRESOLVED')),
 				$after->get('resolved', JText::_('COM_SUPPORT_UNRESOLVED'))
 			);
-		}
+		}*/
 		if (intval($after->get('status')) != intval($before->get('status')))
 		{
 			$this->changed(
