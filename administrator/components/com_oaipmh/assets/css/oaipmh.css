@@ -1,0 +1,14 @@
+/**
+ * @package     hubzero-cms
+ * @file        administrator/components/com_oaipmh/assets/css/oaipmh.css
+ * @copyright   Copyright 2005-2015 Purdue University. All rights reserved.
+ * @license     http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
+ */
+
+.com_oaipmh article h1 {
+	display: none;
+}
+.com_oaipmh ul li,
+.com_oaipmh ol li {
+	margin: 0.5em 0 0.5em 1.5em;
+}

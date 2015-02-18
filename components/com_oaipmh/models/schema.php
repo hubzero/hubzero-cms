@@ -28,18 +28,40 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Oaipmh\Models;
 
-$controllerName = JRequest::getCmd('controller', 'xml');
-if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
+/**
+ * Interface for OAI-PMH Schemas
+ */
+interface Schema
 {
-	$controllerName = 'xml';
-}
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'OaipmhController' . ucfirst(strtolower($controllerName));
+	/**
+	 * Check if a schema format is handled
+	 *
+	 * @param  string  $type
+	 */
+	public static function handles($type);
 
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+	/**
+	 * Count import records
+	 *
+	 * @param  array  $iterator
+	 */
+	public function sets($iterator);
+
+	/**
+	 * Count import records
+	 *
+	 * @param  array    $iterator
+	 * @param  boolean  $metadata
+	 */
+	public function records($iterator, $metadata=true);
+
+	/**
+	 * Process an import
+	 *
+	 * @param  object   $result
+	 * @param  boolean  $metadata
+	 */
+	public function record($result, $metadata=true);
+}

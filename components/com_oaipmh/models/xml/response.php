@@ -28,18 +28,57 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Oaipmh\Models\Xml;
 
-$controllerName = JRequest::getCmd('controller', 'xml');
-if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
+use DOMDocument;
+
+require_once(__DIR__ . DS . 'element.php');
+
+/**
+ * XML Response Builder
+ */
+class Response extends Element
 {
-	$controllerName = 'xml';
-}
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'OaipmhController' . ucfirst(strtolower($controllerName));
+	/**
+	 * @var  bool
+	 */
+	protected $formatOutput;
 
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+	/**
+	 * Constructor
+	 *
+	 * @param   string   $version
+	 * @param   string   $encoding
+	 * @param   boolean  $formatOutput
+	 * @return  void
+	 */
+	public function __construct($version = '1.0', $encoding = 'utf-8', $formatOutput = false)
+	{
+		$this->dom = new DOMDocument($version, $encoding);
+		$this->formatOutput = (bool) $formatOutput;
+		$this->current = $this->dom;
+	}
+
+	/**
+	 * @param   boolean  $formatOutput
+	 * @return  string
+	 */
+	public function getXml($formatOutput = null)
+	{
+		$this->dom->formatOutput = is_bool($formatOutput) ? $formatOutput : $this->formatOutput;
+
+		return $this->dom->saveXML();
+	}
+
+	/**
+	 * @param   string   $filename
+	 * @param   boolean  $formatOutput
+	 * @return  boolean
+	 */
+	public function save($filename, $formatOutput = null)
+	{
+		$this->dom->formatOutput = is_bool($formatOutput) ? $formatOutput : $this->formatOutput;
+
+		return false !== $this->dom->save($filename);
+	}
+}

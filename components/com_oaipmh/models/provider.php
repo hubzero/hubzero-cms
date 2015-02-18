@@ -28,18 +28,29 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Oaipmh\Models;
 
-$controllerName = JRequest::getCmd('controller', 'xml');
-if (!file_exists(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php'))
+/**
+ * Interface for OAI-PMH data provider
+ */
+interface Provider
 {
-	$controllerName = 'xml';
-}
-require_once(JPATH_COMPONENT_SITE . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'OaipmhController' . ucfirst(strtolower($controllerName));
+	/**
+	 * Return data for sets
+	 */
+	public function sets();
 
-// Instantiate controller
-$controller = new $controllerName();
-$controller->execute();
-$controller->redirect();
+	/**
+	 * Return data for records
+	 *
+	 * @param  array  $filters
+	 */
+	public function records($filters = array());
+
+	/**
+	 * Return a single record
+	 *
+	 * @param  integer  $id
+	 */
+	public function record($id);
+}
