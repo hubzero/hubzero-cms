@@ -137,7 +137,7 @@ class CartControllerOrder extends ComponentController
 	public function placeTask()
 	{
 		// Get the current active trancsaction
-		$cart = new CartModelCart();
+		$cart = new CartModelCurrentCart();
 
 		$transaction = $cart->liftTransaction();
 		//print_r($transaction); die;
@@ -200,7 +200,7 @@ class CartControllerOrder extends ComponentController
 		$test = false;
 		// TESTING ***********************
 		if ($test) {
-			$postBackTransactionId = 96;
+			$postBackTransactionId = 243;
 		}
 
 		$params =  JComponentHelper::getParams(JRequest::getVar('option'));
@@ -277,14 +277,14 @@ class CartControllerOrder extends ComponentController
 			$logger->log(LoggingLevel::ERROR);
 
 			// Handle error
-			$cart->handleTransactionError($postBackTransactionId, $error);
+			CartModelCart::handleTransactionError($postBackTransactionId, $error);
 
 			return false;
 		}
 
 		// No error
-		$message = 'Transaction completed';
-		$message .= ' Transaction ID: ' . $postBackTransactionId;
+		$message = 'Transaction completed. ';
+		$message .= 'Transaction ID: ' . $postBackTransactionId;
 
 		// Log info
 		if (!$test) {
@@ -292,8 +292,9 @@ class CartControllerOrder extends ComponentController
 			$logger->setPostback($_POST);
 			$logger->log(LoggingLevel::INFO);
 		}
+
 		// Finalize order -- whatever needs to be done
-		return($this->completeOrder($tInfo));
+		$this->completeOrder($tInfo);
 
 	}
 
@@ -304,8 +305,6 @@ class CartControllerOrder extends ComponentController
 	 */
 	private function completeOrder($tInfo)
 	{
-		// Initialize static cart
-
 		// Initialize logger
 		$logger = new CartMessenger('Complete order');
 
@@ -313,7 +312,7 @@ class CartControllerOrder extends ComponentController
 		$logger->emailOrderComplete($tInfo->info);
 
 		// Handle transaction according to items handlers
-		return CartModelCart::completeTransaction($tInfo);
+		CartModelCart::completeTransaction($tInfo);
 	}
 
 }

@@ -27,7 +27,7 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-class Pro_Membership_Type_Handler extends Type_Handler
+class Access_Group_Membership_Type_Handler extends Type_Handler
 {
     /**
      * Constructor
@@ -45,11 +45,42 @@ class Pro_Membership_Type_Handler extends Type_Handler
         include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
         $ms = new StorefrontModelMemberships();
 
+        /* NEW
+        $subscription = StorefrontModelMemberships::getSubscriptionObject($this->type, $this->pId, $this->uId);
+        // Get the expiration for the current subscription (if any)
+        $currentExpiration = $subscription->getExpiration();
+        */
+
         // Get current registration
         $membership = $ms->getMembershipInfo($this->crtId, $this->item['info']->pId);
         $expiration = $membership['crtmExpires'];
 
-        // Here also set the user group membership in the future (user group can be pulled from the meta)...
+        /* Add the user to the corresponding user access group (pull access group ID from the meta) */
+        try
+        {
+            // Get user ID for the cart
+            require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+            $userId = CartModelCart::getCartUser($this->crtId);
+
+            // Get Joomla! user group ID to set the user to (from meta)
+            require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Product.php');
+            $userGId = StorefrontModelProduct::getMeta($this->item['info']->pId, 'userGroupId');
+
+            JUserHelper::addUserToGroup($userId, $userGId);
+
+            $table = JTable::getInstance('User', 'JTable', array());
+            $table->load($userId);
+
+            // Trigger the onAftereStoreUser event
+            $dispatcher = JDispatcher::getInstance();
+            $dispatcher->trigger('onUserAfterSave', array($table->getProperties(), false, true, null));
+        }
+        catch (Exception $e)
+        {
+            // Error
+            mail('ilya@shunko.com', 'PRO member purchase error', $e->getMessage());
+            return false;
+        }
 
         mail('ilya@shunko.com', 'PRO member purchase', serialize($membership));
     }

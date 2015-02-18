@@ -42,13 +42,27 @@ class Membership_Model_Handler extends Model_Handler
 
     public function handle()
     {
-        include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
-        $ms = new StorefrontModelMemberships();
+        $itemInfo = $this->item['info'];
 
-        // Get new expiration date
-        $productMembership = $ms->getNewExpirationInfo($this->crtId, $this->item);
+        // Get user
+        require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'models' . DS . 'Cart.php');
+        $uId = CartModelCart::getCartUser($this->crtId);
+
+        // Get product type
+        require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+        $warehouse = new StorefrontModelWarehouse();
+        $pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
+        $type = $pType['ptName'];
+
+        require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Memberships.php');
+        $subscription = StorefrontModelMemberships::getSubscriptionObject($type, $itemInfo->pId, $uId);
+        // Get the expiration for the current subscription (if any)
+        $currentExpiration = $subscription->getExpiration();
+
+        // Calculate new expiration
+        $newExpires = StorefrontModelMemberships::calculateNewExpiration($currentExpiration, $this->item);
 
         // Update/Create membership expiration date with new value
-        $ms->setMembershipExpiration($this->crtId, $this->item['info']->pId, $productMembership->newExpires);
+        $subscription->setExpiration($newExpires);
     }
 }

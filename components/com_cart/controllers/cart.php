@@ -65,7 +65,6 @@ class CartControllerCart extends ComponentController
 	public function homeTask()
 	{
 		$cart = new CartModelCurrentCart();
-		//print_r($cart); die;
 
 		// Initialize errors array
 		$errors = array();
@@ -197,14 +196,17 @@ class CartControllerCart extends ComponentController
 			// make sure the cart is empty
 			if ($expressCheckout && !empty($skus) && $cart->isEmpty())
 			{
+				// Get the latest synced cart info, it will also enable cart syncing that was turned off before
+				$cart->getCartInfo(true);
+
 				// Redirect directly to checkout, skip the cart page
-				$redirect_url  = JRoute::_('index.php?option=' . 'com_cart') . 'checkout';
+				$redirect_url  = JRoute::_('index.php?option=' . 'com_cart') . DS . 'checkout';
 				$app = JFactory::getApplication();
 				$app->redirect($redirect_url);
 			}
 
 			// prevent resubmitting form by refresh
-			// If not an ajax call, redirect to cart
+			// redirect to cart
 			$redirect_url = JRoute::_('index.php?option=' . 'com_cart');
 			$app = JFactory::getApplication();
 			$app->redirect($redirect_url);

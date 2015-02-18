@@ -42,6 +42,7 @@ class Type_Handler
     // Item info
     var $item;
 
+    // Cart ID
     var $crtId;
 
     /**

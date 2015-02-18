@@ -57,7 +57,7 @@ $controllerName = 'CartController' . ucfirst(strtolower($controllerName));
 
 // Instantiate controller and execute
 $controller = new $controllerName();
-$controller->disableDefaultTask();
+//$controller->disableDefaultTask();
 $controller->execute();
 $controller->redirect();
 

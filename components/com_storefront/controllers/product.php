@@ -119,7 +119,6 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		require_once(JPATH_BASE . DS . 'components' . DS . 'com_cart' . DS . 'helpers' . DS . 'Audit.php');
 		$auditor = Audit::getAuditor($product, $cart->getCartInfo()->crtId);
 		$auditorResponse = $auditor->audit();
-
 		//print_r($auditor); die;
 
 		if ($auditorResponse->status != 'ok')
@@ -210,14 +209,35 @@ class StorefrontControllerProduct extends \Hubzero\Component\SiteController
 		}
 		$this->view->price = $priceRange;
 
-		//print_r($data); die;
-
 		// Add custom page JS
-		if ($data && count($data->options) > 1) {
+		if ($data && (count($data->options) > 1 || count($data->skus) > 1)) {
 			$js = $this->getDisplayJs($data->options, $data->skus);
 			$doc =& JFactory::getDocument();
 			$doc->addScriptDeclaration($js);
 		}
+
+		// Get images (if any), gets all images from /site/storefront/products/$pId
+		$allowedImgExt = array('jpg', 'gif', 'png');
+		$productImg = array();
+		$imgWebPath = DS . 'site' . DS . 'storefront' . DS . 'products' . DS . $pId;
+		$imgPath = JPATH_ROOT . $imgWebPath;
+		$files = scandir($imgPath);
+		foreach ($files as $file)
+		{
+			if (in_array(pathinfo($file, PATHINFO_EXTENSION), $allowedImgExt))
+			{
+				if (substr($file, 0, 7) == 'default')
+				{
+					// Let the default image to be the first one
+					array_unshift($productImg, $imgWebPath . DS . $file);
+				}
+				else
+				{
+					$productImg[] = $imgWebPath . DS . $file;
+				}
+			}
+		}
+		$this->view->productImg = $productImg;
 
 		$this->view->productAvailable = $productAvailable;
 

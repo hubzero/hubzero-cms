@@ -48,11 +48,9 @@ class CartControllerTest extends ComponentController
 		// Get the task
 		$this->_task  = JRequest::getVar('task', '');
 
-		$this->_getStyles();
-
 		if (empty($this->_task))
 		{
-			$this->_task = 'home';
+			$this->_task = 'display';
 			$this->registerTask('__default', $this->_task);
 		}
 
@@ -64,7 +62,7 @@ class CartControllerTest extends ComponentController
 	 *
 	 * @return     void
 	 */
-	public function homeTask()
+	public function displayTask()
 	{
 
 		die('no access');
@@ -410,7 +408,7 @@ class CartControllerTest extends ComponentController
 			$curl_err = curl_error($ch);
 			curl_close($ch);
 
-			//print_r($req); print_r($curl_err); die;
+			//print_r($req); echo '<br>'; print_r($curl_err); die;
 
 			// Redirect to confirmation page
 			$redirect_url  = JURI::root() . 'cart/order/complete?' . $req;

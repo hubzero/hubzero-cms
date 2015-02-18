@@ -30,7 +30,7 @@
 
 require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'ProductTypes' . DS . 'Subscriptions' . DS . 'BaseSubscription.php');
 
-class Pro_Membership_Subscription extends BaseSubscription
+class Access_Group_Membership_Subscription extends BaseSubscription
 {
 
     public function __construct($pId, $uId)
@@ -40,6 +40,7 @@ class Pro_Membership_Subscription extends BaseSubscription
 
     public function _getExpiration()
     {
+        // This will get expiration from the correct place
         echo 'ff';
     }
 

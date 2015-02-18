@@ -975,6 +975,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		$this->_db->setQuery($sql);
 		$this->_db->query();
 
+		$return = new stdClass();
 		$return->pId = $pId;
 		return $return;
 	}
@@ -1231,6 +1232,7 @@ class StorefrontModelWarehouse extends \Hubzero\Base\Object
 		//echo '<br>'; echo $this->_db->_sql;
 		$this->_db->query();
 
+		$return = new stdClass();
 		$return->cnId = $cnId;
 		return $return;
 	}

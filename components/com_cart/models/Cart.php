@@ -657,7 +657,7 @@ abstract class CartModelCart
     }
 
     /**
-     * Update current transaction status
+     * Update transaction status
      *
      * @param   string  status
      * @param   int     Transaction ID
@@ -743,6 +743,62 @@ abstract class CartModelCart
 				WHERE ({$sqlCoupons}) AND `crtId` = {$tInfo->info->crtId}";
         $db->setQuery($sql);
         $db->query();
+    }
+
+    /**
+     * Handle the error processing the transaction
+     *
+     * @param	int transaction ID
+     * @param 	object error
+     * @return	void
+     */
+    public static function handleTransactionError($tId, $error)
+    {
+        // Release transaction items back to inventory
+        self::releaseTransaction($tId);
+
+        // Update status to 'error processing'
+        self::updateTransactionStatus('error processing', $tId);
+    }
+
+    /**
+     * Releases locked transaction items back to inventory and marks the transaction status as 'released'
+     *
+     * @param int Transaction ID
+     * @return void
+     */
+    public static function releaseTransaction($tId)
+    {
+        $db = JFactory::getDBO();
+
+        // Check if the transaction can be released (status is pending)
+        // Get info
+        $sql = "SELECT t.`tStatus` FROM `#__cart_transactions` t WHERE t.tStatus = 'pending' AND t.`tId` = {$tId}";
+        $db->setQuery($sql);
+        $db->query();
+
+        if (!$db->getNumRows())
+        {
+            return false;
+        }
+
+        // Get transaction items
+        $tItems = self::getTransactionItems($tId);
+
+        /* Go through each item and return the quantity back to inventory if needed */
+        require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+        $warehouse = new StorefrontModelWarehouse();
+
+        if (!empty($tItems))
+        {
+            foreach ($tItems as $sId => $itemInfo)
+            {
+                $qty = $itemInfo['transactionInfo']->qty;
+                $warehouse->updateInventory($sId, $qty, 'add');
+            }
+        }
+        // update status
+        self::updateTransactionStatus('released', $tId);
     }
 
     /**

@@ -483,44 +483,6 @@ class CartModelCurrentCart extends CartModelCart
     }
 
     /**
-     * Releases locked transaction items back to inventory and marks the transaction status as 'released'
-     *
-     * @param int Transaction ID
-     * @return void
-     */
-    public function releaseTransaction($tId)
-    {
-        // Check if the transaction can be released (status is pending)
-        // Get info
-        $sql = "SELECT t.`tStatus` FROM `#__cart_transactions` t WHERE t.tStatus = 'pending' AND t.`tId` = {$tId}";
-        $this->_db->setQuery($sql);
-        $this->_db->query();
-
-        if (!$this->_db->getNumRows())
-        {
-            return false;
-        }
-
-        // Get transaction items
-        $tItems = $this->getTransactionItems($tId);
-
-        // Go through each item and return the quantity back to inventory if needed
-        include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
-        $warehouse = new StorefrontModelWarehouse();
-
-        if (!empty($tItems))
-        {
-            foreach ($tItems as $sId => $itemInfo)
-            {
-                $qty = $itemInfo['transactionInfo']->qty;
-                $warehouse->updateInventory($sId, $qty, 'add');
-            }
-        }
-        // update status
-        $this->updateTransactionStatus('released', $tId);
-    }
-
-    /**
      * Checks if transaction shipping info is correct and saves it
      *
      * @param void (gets info from POST)
@@ -697,22 +659,6 @@ class CartModelCurrentCart extends CartModelCart
         $transactionInfo->steps = $steps;
 
         return $transactionInfo;
-    }
-
-    /**
-     * Handle the error processing the transaction
-     *
-     * @param	int transaction ID
-     * @param 	object error
-     * @return	void
-     */
-    public function handleTransactionError($tId, $error)
-    {
-        // Release transaction items back to inventory
-        $this->releaseTransaction($tId);
-
-        // Update status to 'error processing'
-        $this->updateTransactionStatus('error processing', $tId);
     }
 
     /**
@@ -1408,30 +1354,35 @@ class CartModelCurrentCart extends CartModelCart
         {
             if (in_array($item['info']->ptId, $membershipTypes) && !empty($item['meta']['ttl']))
             {
-                $membershipSIdInfo = $ms->getNewExpirationInfo($this->crtId, $item);
+                $itemInfo = $item['info'];
 
-                /*
-                // If membership, lookup existing membership (if any)
-                $membershipInfo = $ms->getMembershipInfo($this->crtId, $item['info']->pId);
+                // Get product type
+                require_once(JPATH_ROOT . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+                $warehouse = new StorefrontModelWarehouse();
+                $pType = $warehouse->getProductTypeInfo($itemInfo->ptId);
+                $type = $pType['ptName'];
 
-                // Calculate correct TTL for one SKU
-                $ttl = $ms->getTtl($item['meta']['ttl'], $item['cartInfo']->qty);
+                // Get user
+                $jUser = JFactory::getUser();
 
-                // Calculate the new expiration date
-                if ($membershipInfo && $membershipInfo['crtmActive'])
+                // Get the correct membership Object
+                $subscription = StorefrontModelMemberships::getSubscriptionObject($type, $itemInfo->pId, $jUser->id);
+                // Get the expiration for the current subscription (if any)
+                $currentExpiration = $subscription->getExpiration();
+
+                // Calculate new expiration
+                $newExpires = StorefrontModelMemberships::calculateNewExpiration($currentExpiration, $item);
+
+                $membershipSIdInfo = new stdClass();
+                $membershipSIdInfo->newExpires = strtotime($newExpires);
+
+                if ($currentExpiration && $currentExpiration['crtmActive'])
                 {
-                    // New expiration date is an old not-expired date + TTL
-                    $membershipSIdInfo->newExpires = strtotime('+ ' . $ttl, strtotime($membershipInfo['crtmExpires']));
-                    $membershipSIdInfo->existingExpires = strtotime($membershipInfo['crtmExpires']);
+                    $membershipSIdInfo->existingExpires = strtotime($currentExpiration['crtmExpires']);
                 }
-                else
-                {
-                    // New expiration date is now + TTL
-                    $membershipSIdInfo->newExpires = strtotime('+ ' . $ttl);
-                }
-                */
 
                 $memberships[$sId] = $membershipSIdInfo;
+
                 unset($membershipSIdInfo);
             }
 
@@ -1796,6 +1747,9 @@ class CartModelCurrentCart extends CartModelCart
             echo "<br>Linking carts";
         }
 
+        //print_r($this); die;
+
+
         // Kill the old cookie
         setcookie("cartId", '', time() - $this->cookieTTL); // Set the cookie lifetime in the past
 
@@ -1854,6 +1808,7 @@ class CartModelCurrentCart extends CartModelCart
                     catch (Exception $e)
                     {
                         $this->cart->messages[] = array($e->getMessage(), 'warning');
+                        $this->cart->hasMessages = true;
                     }
                 }
             }
@@ -1967,7 +1922,7 @@ class CartModelCurrentCart extends CartModelCart
         // Initialize required steps
         $steps = array();
 
-        include_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
+        require_once(JPATH_BASE . DS . 'components' . DS . 'com_storefront' . DS . 'models' . DS . 'Warehouse.php');
         $warehouse = new StorefrontModelWarehouse();
 
         $transactionSubtotalAmount = 0;
@@ -2065,7 +2020,7 @@ class CartModelCurrentCart extends CartModelCart
             $warehouse->updateInventory($sId, $item['transactionInfo']->qty, 'subtract');
         }
 
-        $this->updateTransactionStatus('pending', $this->cart->tId);
+        parent::updateTransactionStatus('pending', $this->cart->tId);
 
         return true;
     }

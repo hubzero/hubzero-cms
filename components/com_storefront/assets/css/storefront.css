@@ -1,6 +1,11 @@
 #price {
-	font-size: 1.4em;
-	margin: 0 0 2em;
+	font-size: 3em;
+	line-height: 1em;
+	margin: 0 0 0.2em;
+}
+
+#productInfo {
+	margin-bottom: 4em;
 }
 
 #productOptions ul {
