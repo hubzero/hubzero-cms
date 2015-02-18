@@ -1298,6 +1298,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Bind data
 		/* @var $model ForumTablePost */
 		$model = new ForumTablePost($this->database);
+
 		if (!$model->bind($fields))
 		{
 			$this->addPluginMessage($model->getError(), 'error');
@@ -1323,6 +1324,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		$parent = ($model->parent) ? $model->parent : $model->id;
 
+		//update
 		$this->upload($parent, $model->id);
 
 		if ($fields['id'])
@@ -1499,6 +1501,8 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 		// Incoming
 		$id = JRequest::getInt('thread', 0);
 
+		$this->markForDelete($id);
+
 		// Initiate a forum object
 		$model = new ForumTablePost($this->database);
 		$model->load($id);
@@ -1588,6 +1592,7 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 
 		// Construct our file path
 		$path = JPATH_ROOT . DS . trim($this->params->get('filepath', '/site/forum'), DS) . DS . $listdir;
+
 		if ($post_id)
 		{
 			$path .= DS . $post_id;
@@ -1637,6 +1642,34 @@ class plgGroupsForum extends \Hubzero\Plugin\Plugin
 				$this->setError($row->getError());
 			}
 		}
+	}
+
+	/**
+	 * Marks a file for deletion
+	 *
+	 * @param      integer the ID of the post which is associated with the attachment
+	 * @return     NULL
+	 */
+	public function markForDelete($post_id)
+	{
+		// Check if they are logged in
+		if ($this->juser->get('guest'))
+		{
+			return;
+		}
+
+		// Load attachment object
+		$row = new ForumTableAttachment($this->database);
+		$row->loadByPost($post_id);
+
+		//mark for deletion
+		$row->set('status', 2);
+
+		if (!$row->store())
+		{
+			$this->setError($row->getError());
+		}
+
 	}
 
 	/**

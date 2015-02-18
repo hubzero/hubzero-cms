@@ -257,20 +257,28 @@ $this->thread->set('category', $this->category->get('alias'));
 						<?php
 						foreach ($this->thread->attachments() as $attachment)
 						{
-							$cls = 'file';
-							$title = trim($attachment->get('description', $attachment->get('filename')));
-							$title = ($title ? $title : $attachment->get('filename'));
-							if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
+							if ($attachment->get('status') != 2)
 							{
-								$cls = 'img';
-							}
+
+								$cls = 'file';
+								$title = trim($attachment->get('description', $attachment->get('filename')));
+								$title = ($title ? $title : $attachment->get('filename'));
+
+								// trims long titles
+								$title = (strlen($title) > 25) ? substr($title,0,22) . '...' : $title;
+
+								if (preg_match("/bmp|gif|jpg|jpe|jpeg|png/i", $attachment->get('filename')))
+								{
+									$cls = 'img';
+								}
 							?>
 							<li>
 								<a class="<?php echo $cls; ?> attachment" href="<?php echo JRoute::_($this->thread->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename')); ?>">
 									<?php echo $this->escape(stripslashes($title)); ?>
 								</a>
 							</li>
-							<?php
+				<?php
+							} // end status check
 						}
 						?>
 					</ul>

@@ -626,6 +626,9 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 			return;
 		}
 
+		// Delete the attachment associated with the post
+		$this->markForDelete($id);
+
 		// Redirect to main listing
 		$this->setRedirect(
 			JRoute::_('index.php?option=' . $this->_option . '&section=' . $section . '&category=' . $category),
@@ -847,6 +850,34 @@ class ForumControllerThreads extends \Hubzero\Component\SiteController
 				$this->setError($row->getError());
 			}
 		}
+	}
+
+	/**
+	 * Marks a file for deletion
+	 *
+	 * @param      integer the ID of the post which is associated with the attachment
+	 * @return     NULL
+	 */
+	public function markForDelete($post_id)
+	{
+		// Check if they are logged in
+		if ($this->juser->get('guest'))
+		{
+			return;
+		}
+
+		// Load attachment object
+		$row = new ForumTableAttachment($this->database);
+		$row->loadByPost($post_id);
+
+		//mark for deletion
+		$row->set('status', 2);
+
+		if (!$row->store())
+		{
+			$this->setError($row->getError());
+		}
+
 	}
 
 	/**
