@@ -215,7 +215,7 @@ class Asset
 	 */
 	private function getRootId()
 	{
-		$assets = self::getInstance('Asset', 'JTable', array('dbo' => \JFactory::getDbo()));
+		$assets = \JTable::getInstance('Asset', 'JTable', array('dbo' => \JFactory::getDbo()));
 		$rootId = $assets->getRootId();
 		if (!empty($rootId))
 		{
