@@ -213,7 +213,7 @@ class Miner extends Object implements Provider
 	public function record($id)
 	{
 		$this->database->setQuery(
-			"SELECT pv.*, pv.doi AS identifier, t.alias AS type
+			"SELECT pv.*, pv.doi AS identifier, rt.alias AS type
 			FROM `#__publication_versions` AS pv
 			INNER JOIN `#__publications` AS p ON p.id = pv.publication_id
 			INNER JOIN `#__publication_master_types` AS rt ON rt.id = p.master_type
