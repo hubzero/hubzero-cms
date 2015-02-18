@@ -407,7 +407,7 @@ $this->css('course.css')
 								));
 								foreach ($sections as $section)
 								{
-									if ($section->params('certificate'))
+									if ($section->params('certificate') && $section->get('enrollment') != 2)
 									{
 										$cert = true;
 										break;
@@ -538,7 +538,7 @@ $this->css('course.css')
 							}
 
 							$sections = $offering->sections($filters);
-							if ($sections->total() > 0)
+							if ($this->course->isManager() && $sections->total() > 0)
 							{
 								$this->view('_button')
 								     ->set('course', $this->course)
