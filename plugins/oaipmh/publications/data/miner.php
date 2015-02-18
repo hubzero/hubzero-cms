@@ -216,7 +216,7 @@ class Miner extends Object implements Provider
 			"SELECT pv.*, pv.doi AS identifier, t.alias AS type
 			FROM `#__publication_versions` AS pv
 			INNER JOIN `#__publications` AS p ON p.id = pv.publication_id
-			INNER JOIN `#__publications_master_types` AS rt ON rt.id = p.master_type
+			INNER JOIN `#__publication_master_types` AS rt ON rt.id = p.master_type
 			WHERE p.id = " . $this->database->quote($id)
 		);
 		$record = $this->database->loadObject();
