@@ -281,7 +281,7 @@
 	ul#status-bar li a {
 		color: #666;
 	}
-	ul#status-bar li a:hover {
+	ul#status-bar li a:hover, ul#status-bar li.active a {
 		color: #000;
 	}
 	ul#status-bar li a, ul#status-bar li a:hover {
@@ -312,6 +312,21 @@
 	}
 	ul#status-bar li a.c_passed {
 		color: #64a16e;
+	}
+	ul#status-bar.moving li.active:after,
+	ul#status-bar li a:before {
+		width: 8px;
+		height: 10px;
+		font-size: 10px;
+		font-family: 'Fontcons';
+		color: #c4d2d6;
+		margin-right: 0.2em;
+	}
+	ul#status-bar.moving li.active:after {
+		content: "\25B6";
+		color: #bdbdbd;
+		margin-left: 5px;
+		font-size: 12px;
 	}
 	ul#status-bar li a.c_wip:before,
 	ul#status-bar li a.c_wip {
@@ -697,42 +712,6 @@
 	}
 	input.uploader {
 		margin-right: 0.5em;
-	}
-	ul#c-options {
-		list-style: none;
-		margin: 0.5em 0 1.5em 0;
-		padding: 0.5em 0 0 0;
-		border-top: 1px dotted #999;
-		font-size: 85%;
-	}
-	ul#c-options li {
-		display: inline;
-		padding: 0.2em 1em 0.2em 20px;
-		color: #4689b4;
-		cursor: pointer;
-	}
-	ul#c-options li.active {
-		color: #000000;
-		cursor: auto;
-		font-weight: bold;
-	}
-	ul#c-options li:hover {
-		color: #000;
-	}
-	ul#c-options li.active:hover {
-		color: #000000;
-	}
-	ul#c-options li#c-tab-files {
-		background: url("/components/com_projects/assets/img/icons/doc.gif") 0 0 no-repeat;
-	}
-	ul#c-options li#c-tab-apps {
-		background: url("/components/com_projects/assets/img/icons/app.gif") 0 0 no-repeat;
-	}
-	ul#c-options li#c-tab-links {
-		background: url("/components/com_projects/assets/img/icons/link.gif") 0 0 no-repeat;
-	}
-	ul#c-options li#c-tab-article {
-		background: url("/components/com_projects/assets/img/icons/article.gif") 0 0 no-repeat;
 	}
 	ul.c-list {
 		list-style: none;
@@ -1349,37 +1328,14 @@
 		color: #333;
 		text-align: left;
 	}
-	.maypublish .pub-review-controls {
-		background: #ecfce9;
-		border-color: #d4f2cf;
-	}
 	.maypublish .pub-review-content {
 		border-color: #d4f2cf;
 	}
 	.maypublish .prominent {
 		color: green;
 	}
-	.draft_incomplete .pub-review-controls {
-		background: #fbe7dd;
-		border-color: #e9c9ba;
-	}
 	.draft_incomplete .pub-review-content {
 		border-color: #e9c9ba;
-	}
-	.darkarchive .whatsnext {
-		padding-right: 3em;
-		padding-top: 1em;
-		background: url("images/next_archive.png") right 0 no-repeat;
-	}
-	.posting .whatsnext {
-		padding-right: 3em;
-		padding-top: 1em;
-		background: url("images/next_ready.png") right 0 no-repeat;
-	}
-	.publishing .whatsnext {
-		padding-right: 3em;
-		padding-top: 1em;
-		background: url("images/next_publish.png") right 0 no-repeat;
 	}
 	.pub-review-content .columns {
 		margin-top: -1em;
