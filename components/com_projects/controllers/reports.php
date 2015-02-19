@@ -60,8 +60,8 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$this->_buildPathway();
 
 		// Set the page title
-		$this->_buildTitle(null);
-		$this->view->title = $this->_title;
+		$this->_buildTitle();
+		$this->view->title = $this->title;
 
 		if (is_file(JPATH_ROOT . DS . 'administrator' . DS . 'components'.DS
 			.'com_projects' . DS . 'tables' . DS . 'project.stats.php'))
@@ -238,8 +238,8 @@ class ProjectsControllerReports extends ProjectsControllerBase
 		$this->_buildPathway();
 
 		// Set the page title
-		$this->_buildTitle(null);
-		$this->view->title = $this->_title;
+		$this->_buildTitle();
+		$this->view->title = $this->title;
 
 		// Check authorization
 		$groups = $this->config->get('reportgroup', '') ? array($this->config->get('reportgroup', '')) : array();
@@ -271,58 +271,5 @@ class ProjectsControllerReports extends ProjectsControllerBase
 
 		$this->view->msg = isset($this->_msg) ? $this->_msg : '';
 		$this->view->display();
-	}
-
-	/**
-	 * Build the "trail"
-	 *
-	 * @return void
-	 */
-	protected function _buildPathway()
-	{
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
-		{
-			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		$pathway->addItem(
-			JText::_('COM_PROJECTS_REPORTS'),
-			'index.php?option=' . $this->_option . '&controller=reports&task=display'
-		);
-
-		if ($this->_task == 'custom')
-		{
-			$pathway->addItem(
-				JText::_('COM_PROJECTS_REPORTS_CUSTOM'),
-				'index.php?option=' . $this->_option . '&controller='
-					. $this->_controller .  '&task=custom'
-			);
-		}
-	}
-
-	/**
-	 * Build the title for this component
-	 *
-	 * @return void
-	 */
-	protected function _buildTitle()
-	{
-		if (!$this->_title)
-		{
-			$this->_title = JText::_(strtoupper($this->_option)) . ': '
-				. JText::_(strtoupper($this->_option . '_' . $this->_controller));
-		}
-
-		if ($this->_task == 'custom')
-		{
-			$this->_title .= ' - ' . JText::_('COM_PROJECTS_CUSTOM');
-		}
-		$document = JFactory::getDocument();
-		$document->setTitle( $this->_title );
 	}
 }

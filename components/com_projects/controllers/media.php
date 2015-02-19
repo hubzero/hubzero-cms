@@ -245,22 +245,208 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 	}
 
 	/**
+	 * Upload a file to the profile via AJAX
+	 *
+	 * @return     string
+	 */
+	public function doajaxuploadTask()
+	{
+		//allowed extensions for uplaod
+		$allowedExtensions = array('png', 'jpe', 'jpeg', 'jpg', 'gif');
+
+		//max upload size
+		$sizeLimit = $this->config->get('maxAllowed', '40000000');
+
+		// get the file
+		if (isset($_GET['qqfile']))
+		{
+			$stream = true;
+			$file = $_GET['qqfile'];
+			$size = (int) $_SERVER["CONTENT_LENGTH"];
+		}
+		elseif (isset($_FILES['qqfile']))
+		{
+			$stream = false;
+			$file = $_FILES['qqfile']['name'];
+			$size = (int) $_FILES['qqfile']['size'];
+		}
+		else
+		{
+			echo json_encode(array('error' => 'Please select a file to upload'));
+			return;
+		}
+
+		//check to make sure we have a file and its not too big
+		if ($size == 0)
+		{
+			echo json_encode(array('error' => 'File is empty'));
+			return;
+		}
+		if ($size > $sizeLimit)
+		{
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
+			echo json_encode(array('error' => 'File is too large. Max file upload size is ' . $max));
+			return;
+		}
+		//check to make sure we have an allowable extension
+		$pathinfo = pathinfo($file);
+		$filename = $pathinfo['filename'];
+		$ext      = $pathinfo['extension'];
+		if ($allowedExtensions && !in_array(strtolower($ext), $allowedExtensions))
+		{
+			$these = implode(', ', $allowedExtensions);
+			echo json_encode(array('error' => 'File has an invalid extension, it should be one of '. $these . '.'));
+			return;
+		}
+
+		// Make the filename safe
+		jimport('joomla.filesystem.file');
+		$file = JFile::makeSafe($file);
+
+		// Load project
+		$obj = new Project( $this->database );
+		if (!$obj->loadProject($this->_identifier))
+		{
+			echo json_encode(array('error' => 'Error loading project'));
+			return;
+		}
+
+		// Make sure user is authorized (project manager)
+		$authorized = $this->_authorize();
+		if ($authorized != 1)
+		{
+			echo json_encode(array('error' => 'Unauthorized action'));
+			return;
+		}
+
+		// Build project image path
+		$path  = JPATH_ROOT . DS . trim($this->config->get('imagepath', '/site/projects'), DS);
+		$path .= DS . $obj->alias . DS . 'images';
+
+		if (!is_dir( $path ))
+		{
+			jimport('joomla.filesystem.folder');
+			if (!JFolder::create( $path ))
+			{
+				echo json_encode(array('error' => JText::_('COM_PROJECTS_UNABLE_TO_CREATE_UPLOAD_PATH')));
+				return;
+			}
+		}
+
+		// Delete older file with same name
+		if (file_exists($path . DS . $file))
+		{
+			JFile::delete($path . DS . $file);
+		}
+
+		if ($stream)
+		{
+			//read the php input stream to upload file
+			$input = fopen("php://input", "r");
+			$temp = tmpfile();
+			$realSize = stream_copy_to_stream($input, $temp);
+			fclose($input);
+
+			if (ProjectsHelper::virusCheck($temp))
+			{
+				JFile::delete($temp);
+				echo json_encode(array('error' => JText::_('Virus detected, refusing to upload')));
+				return;
+			}
+
+			//move from temp location to target location which is user folder
+			$target = fopen($path . DS . $file , "w");
+			fseek($temp, 0, SEEK_SET);
+			stream_copy_to_stream($temp, $target);
+			fclose($target);
+		}
+		else
+		{
+			move_uploaded_file($_FILES['qqfile']['tmp_name'], $path . DS . $file);
+		}
+
+		// Perform the upload
+		if (!is_file($path . DS . $file))
+		{
+			echo json_encode(array('error' => JText::_('COM_PROJECTS_ERROR_UPLOADING')));
+			return;
+		}
+		else
+		{
+			//resize image to max 200px and rotate in case user didnt before uploading
+			$hi = new \Hubzero\Image\Processor($path . DS . $file);
+			if (count($hi->getErrors()) == 0)
+			{
+				$hi->autoRotate();
+				$hi->resize(200);
+				$hi->setImageType(IMAGETYPE_PNG);
+				$hi->save($path . DS . $file);
+			}
+			else
+			{
+				echo json_encode(array('error' => $hi->getError()));
+				return;
+			}
+
+			// Delete previous thumb
+			if (file_exists($path . DS . 'thumb.png'))
+			{
+				JFile::delete($path . DS . 'thumb.png');
+			}
+
+			// create thumb
+			$hi = new \Hubzero\Image\Processor($path . DS . $file);
+			if (count($hi->getErrors()) == 0)
+			{
+				$hi->resize(50, false, true, true);
+				$hi->save($path . DS . 'thumb.png');
+			}
+			else
+			{
+				echo json_encode(array('error' => $hi->getError()));
+				return;
+			}
+
+			// Save picture name
+			$obj->picture = $file;
+			if (!$obj->store())
+			{
+				echo json_encode(array('error' => $obj->getError()));
+				return;
+			}
+			elseif ($obj->setup_stage >= $this->_setupComplete)
+			{
+				// Record activity
+				$this->project = $obj;
+				$this->_postActivity(JText::_('COM_PROJECTS_REPLACED_PROJECT_PICTURE'));
+			}
+		}
+
+		echo json_encode(array(
+			'success'   => true
+		));
+	}
+
+	/**
 	 * Delete image
 	 *
 	 * @return     void
 	 */
 	public function deleteimgTask()
 	{
-		$prefix = JPATH_ROOT;
-
 		// Incoming
-		$this->_id 			= JRequest::getInt( 'id', 0 );
-		$this->_alias   	= JRequest::getVar( 'alias', '' );
-		$this->_identifier  = $this->_id ? $this->_id : $this->_alias;
+		$ajax = JRequest::getInt( 'ajax', 0 );
+
+		$prefix = JPATH_ROOT;
 
 		// Check if they are logged in
 		if ($this->juser->get('guest'))
 		{
+			if ($ajax)
+			{
+				echo json_encode(array('error' => JText::_('User login required')));
+				return;
+			}
 			return false;
 		}
 
@@ -269,6 +455,11 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		if (!$this->_identifier && !$tempid)
 		{
 			$this->setError( JText::_('COM_PROJECTS_ERROR_NO_ID') );
+			if ($ajax)
+			{
+				echo json_encode(array('error' => $this->getError()));
+				return;
+			}
 			$this->imgTask( $this->_identifier, $tempid );
 			return;
 		}
@@ -295,6 +486,11 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		if (!$file)
 		{
 			$this->setError( JText::_('COM_PROJECTS_FILE_NOT_FOUND') );
+			if ($ajax)
+			{
+				echo json_encode(array('error' => $this->getError()));
+				return;
+			}
 			$this->imgTask( $this->_identifier, $tempid );
 			return;
 		}
@@ -309,6 +505,11 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 		if (!file_exists($path . DS . $file) or !$file)
 		{
 			$this->setError( JText::_('COM_PROJECTS_FILE_NOT_FOUND') );
+			if ($ajax)
+			{
+				echo json_encode(array('error' => $this->getError()));
+				return;
+			}
 		}
 		else
 		{
@@ -319,6 +520,11 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 			if (!JFile::delete($path . DS . $file))
 			{
 				$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
+				if ($ajax)
+				{
+					echo json_encode(array('error' => $this->getError()));
+					return;
+				}
 				$this->imgTask( $this->_identifier, $tempid, $file );
 				return;
 			}
@@ -331,6 +537,11 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 				if (!JFile::delete($path . DS . $curthumb))
 				{
 					$this->setError( JText::_('COM_PROJECTS_UNABLE_TO_DELETE_FILE') );
+					if ($ajax)
+					{
+						echo json_encode(array('error' => $this->getError()));
+						return;
+					}
 					$this->imgTask( $this->_identifier, $tempid );
 					return;
 				}
@@ -350,8 +561,23 @@ class ProjectsControllerMedia extends ProjectsControllerBase
 				if (!$obj->store())
 				{
 					$this->setError( $obj->getError() );
+					echo json_encode(array('error' => $obj->getError()));
+					return;
 				}
 			}
+		}
+
+		if ($ajax && $this->getError())
+		{
+			echo json_encode(array('error' => $this->getError()));
+			return;
+		}
+		elseif ($ajax)
+		{
+			echo json_encode(array(
+				'success'   => true
+			));
+			return;	
 		}
 
 		// Push through to the image view
