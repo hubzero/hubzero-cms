@@ -160,7 +160,8 @@ class ProjectsRouter extends \Hubzero\Component\Router\Base
 		$tasks = array(
 			'edit', 'browse', 'intro',
 			'features', 'auth', 'delete',
-			'fixownership', 'suspend', 'reinstate'
+			'fixownership', 'suspend', 'reinstate',
+			'process'
 		);
 
 		// Media tasks
