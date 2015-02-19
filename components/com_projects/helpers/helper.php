@@ -263,14 +263,14 @@ class ProjectsHelper extends JObject {
 	 * @param  string $title
 	 * @return     void
 	 */
-	public static function suggestAlias ($title = '')
+	public static function suggestAlias ($title = '', $maxLength = 30)
 	{
 		if ($title)
 		{
 			$name = preg_replace('/ /', '', $title);
 			$name = strtolower($name);
 			$name = preg_replace('/[^a-z0-9]/', '', $name);
-			$name = substr($name, 0, 30);
+			$name = substr($name, 0, $maxLength);
 			return $name;
 		}
 		return false;

@@ -739,7 +739,7 @@ class ProjectsHtml
 	 */
 	public static function getProjectImageSrc( $alias = '', $picture = '', $config = '' )
 	{
-		if ($alias === NULL || !$picture)
+		if ($alias === NULL)
 		{
 			return false;
 		}
@@ -747,12 +747,16 @@ class ProjectsHtml
 		{
 			$config = JComponentHelper::getParams('com_projects');
 		}
-		$path = trim($config->get('imagepath', '/site/projects'), DS)
-				. DS . $alias . DS . 'images';
-
-		$src  = file_exists( JPATH_ROOT . DS . $path . DS . $picture )
-					? $path . DS . $picture
+		$path    = trim($config->get('imagepath', '/site/projects'), DS)
+					. DS . $alias . DS . 'images';
+		$default = trim($config->get('matsterpic', '/components/com_projects/assets/img/projects-large.gif'), DS);
+		$default = is_file( JPATH_ROOT . DS . $default )
+					? $default
 					: NULL;
+
+		$src  = $picture && is_file( JPATH_ROOT . DS . $path . DS . $picture )
+					? $path . DS . $picture
+					: $default;
 		return $src;
 	}
 

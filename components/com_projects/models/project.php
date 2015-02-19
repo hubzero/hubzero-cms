@@ -239,5 +239,83 @@ class ProjectsModelProject extends \Hubzero\Base\Model
 	{
 		// Do nothing here yet.
 	}
+
+	/**
+	 * Check alias name
+	 *
+	 * @param     string $name Alias name
+	 * @return    boolean False if error, True on success
+	 */
+	public function check($name = '', $pid = 0, $ajax = 0)
+	{
+		// Load config
+		$this->config();
+
+		// Set name length
+		$minLength = $this->_config->get('min_name_length', 3);
+		$maxLength = $this->_config->get('max_name_length', 30);
+
+		// Array of reserved names (task names and default dirs)
+		$reserved = explode(',', $this->_config->get('reserved_names'));
+		$tasks    = array('start', 'setup', 'browse',
+			'intro', 'features', 'deleteimg',
+			'reports', 'stats', 'view', 'edit',
+			'suspend', 'reinstate', 'fixownership',
+			'delete', 'intro', 'activate', 'process',
+			'upload', 'img', 'verify', 'autocomplete',
+			'showcount', 'preview', 'auth', 'public',
+			'get', 'media'
+		);
+
+		if ($name)
+		{
+			$name = preg_replace('/ /', '', $name);
+			$name = strtolower($name);
+		}
+
+		// Perform checks
+		if (!$name)
+		{
+			// Cannot be empty
+			$this->setError( JText::_('COM_PROJECTS_ERROR_NAME_EMPTY'));
+		}
+		elseif (strlen($name) < intval($minLength))
+		{
+			// Check for length
+			$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_TOO_SHORT'));
+		}
+		elseif (strlen($name) > intval($maxLength))
+		{
+			$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_TOO_LONG'));
+		}
+		elseif (preg_match('/[^a-z0-9]/', $name))
+		{
+			// Check for illegal characters
+			$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_INVALID'));
+		}
+		elseif (is_numeric($name))
+		{
+			// Check for all numeric (not allowed)
+			$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_INVALID_NUMERIC'));
+		}
+		else
+		{
+			// Verify name uniqueness
+			$database = JFactory::getDBO();
+			$obj = new Project( $database );
+			if (!$obj->checkUniqueName( $name, $pid )
+				|| in_array( $name, $reserved ) ||
+				in_array( $name, $tasks ))
+			{
+				$this->setError(JText::_('COM_PROJECTS_ERROR_NAME_NOT_UNIQUE'));
+			}
+		}
+		if ($this->getError())
+		{
+			return false;
+		}
+
+		return true;
+	}
 }
 
