@@ -406,7 +406,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 				$pathway->addItem(
 					stripslashes(JText::_('COM_PROJECTS_PROVISIONED_PROJECT')),
 					JRoute::_('index.php?option=' . $this->_option . '&alias='
-					.$project->alias) . '/?action=activate'
+					.$project->alias . '&action=activate')
 				);
 			}
 			else
@@ -424,7 +424,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			case 'reports':
 				$pathway->addItem(
 					JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_controller)),
-					'index.php?option=' . $this->_option . '&controller=' . $this->_controller
+					JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller)
 				);
 				break;
 
@@ -467,7 +467,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 				{
 					$pathway->addItem(
 						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-						'index.php?option=' . $this->_option . '&task=' . $this->_task
+						JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
 					break;
 				}
@@ -475,7 +475,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 
 			case 'browse':
 			case 'process':
-				$reviewer 	= JRequest::getVar( 'reviewer', '' );
+				$reviewer 	= JRequest::getWord( 'reviewer', '' );
 				if ($reviewer == 'sponsored' || $reviewer == 'sensitive')
 				{
 					$title = $reviewer == 'sponsored'
@@ -485,14 +485,14 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 					$pathway->addItem(
 						$title,
 						JRoute::_('index.php?option=' . $this->_option
-						. '&task=browse') . '?reviewer=' . $reviewer
+						. '&task=browse&reviewer=' . $reviewer)
 					);
 				}
 				else
 				{
 					$pathway->addItem(
 						JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-						'index.php?option=' . $this->_option . '&task=' . $this->_task
+						JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
 					);
 				}
 			break;
@@ -505,7 +505,7 @@ class ProjectsControllerBase extends \Hubzero\Component\SiteController
 			default:
 				$pathway->addItem(
 					JText::_(strtoupper($this->_option).'_'.strtoupper($this->_task)),
-					'index.php?option=' . $this->_option . '&task=' . $this->_task
+					JRoute::_('index.php?option=' . $this->_option . '&task=' . $this->_task)
 				);
 				break;
 		}
