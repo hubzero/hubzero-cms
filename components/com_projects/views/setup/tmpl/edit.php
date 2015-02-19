@@ -35,12 +35,9 @@ $this->css()
 $this->project->title = ProjectsHtml::cleanText($this->project->title);
 $privacy = $this->project->private ? JText::_('COM_PROJECTS_PRIVATE') : JText::_('COM_PROJECTS_PUBLIC');
 
-// Get project params
-$params = new JParameter( $this->project->params );
-
 // Get layout from project params or component
-$layout = $params->get('layout', $this->config->get('layout', 'standard'));
-$theme = $params->get('theme', $this->config->get('theme', 'light'));
+$layout = $this->params->get('layout', $this->config->get('layout', 'standard'));
+$theme  = $this->params->get('theme', $this->config->get('theme', 'light'));
 
 if ($layout == 'extended')
 {
@@ -64,28 +61,29 @@ else
 	} else {
 		echo ProjectsHtml::writeProjectHeader($this, 1); ?>
 	<?php } ?>
-	<div class="status-msg">
-		<?php
-		// Display error or success message
-		if ($this->getError()) {
-			echo ('<p class="witherror">' . $this->getError().'</p>');
-		}
-		elseif ($this->msg) {
-			echo ('<p>' . $this->msg . '</p>');
-		}
-		?>
-	</div>
+	<?php
+		// Display status message
+		$this->view('_statusmsg', 'projects')
+		     ->set('error', $this->getError())
+		     ->set('msg', $this->msg)
+		     ->display();
+	?>
 
 	<div id="edit-project-content">
 		<h3 class="edit-title"><?php echo ucwords(JText::_('COM_PROJECTS_EDIT_PROJECT')); ?></h3>
 		<section class="main section">
 			<div class="grid">
-			<div class="col span3">
-				<ul id="panelist">
-					<?php foreach ($this->sections as $section) { ?>
-					<li <?php if ($section == $this->section) { echo 'class="activepane"'; } ?>><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'task=edit' . a . 'alias=' . $this->project->alias).'/?edit='.strtolower($section); ?>"><?php echo JText::_('COM_PROJECTS_EDIT_PROJECT_PANE_'.strtoupper($section)); ?></a></li>
-					<?php } ?>
-				</ul>
+				<div class="col span3">
+				<?php
+					// Display sections menu
+					$this->view('_sections')
+					     ->set('sections', $this->sections)
+					     ->set('section', $this->section)
+					     ->set('option', $this->option)
+					     ->set('project', $this->project)
+					     ->display();
+				?>
+
 				<?php if ($this->section != 'info') { ?>
 				<div class="tips">
 					<h3><?php echo JText::_('COM_PROJECTS_TIPS'); ?></h3>
@@ -116,15 +114,13 @@ else
 				<?php } ?>
 			</div><!-- / .aside -->
 			<div id="edit-project" class="col span9 omega">
-				<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'task=edit' . a . 'alias=' . $this->project->alias); ?>">
+				<form id="hubForm" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=edit&alias=' . $this->project->alias); ?>">
 					<div>
 						<input type="hidden" id="pid" name="id" value="<?php echo $this->project->id; ?>" />
-						<input type="hidden"  name="task" value="edit" />
-						<input type="hidden"  name="save" value="1" />
-						<input type="hidden"  name="edit" value="<?php echo $this->section; ?>" />
+						<input type="hidden"  name="task" value="save" />
+						<input type="hidden"  name="active" value="<?php echo $this->section; ?>" />
 						<input type="hidden"  name="name" value="<?php echo $this->project->alias; ?>" />
-					</div>
-					<div>
+
 						<?php
 							switch ($this->section)
 							{
@@ -151,23 +147,22 @@ else
 													$project = new ProjectsModelProject($this->project);
 													echo \JFactory::getEditor()->display('about', $this->escape($project->about('raw')), '', '', 35, 25, false, 'about', null, null, array('class' => 'minimal no-footer'));
 												?>
-												<?php if (!JPluginHelper::isEnabled('projects', 'apps') && !$this->publishing) { ?>
-													<input type="hidden"  name="type" value="<?php echo $this->project->type; ?>" />
-												<?php } ?>
 											</td>
-										</tr>
-
-										<tr>
-											<td class="htd"><?php echo JText::_('COM_PROJECTS_THUMB'); ?></td>
-											<td><iframe class="filer filerMini" src="<?php echo JRoute::_('index.php?option='.$this->option. a . 'alias=' . $this->project->alias . a . 'task=img').'/?no_html=1&file='.stripslashes($this->project->picture); ?>"></iframe></td>
 										</tr>
 									</tbody>
 								</table>
-								<p class="submitarea">
-									<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
-									<span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . a . 'alias=' . $this->project->alias . '&active=info'); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
-								</p>
+								<?php
+									// Display project image upload
+									$this->view('_picture')
+									     ->set('project', $this->project)
+									     ->set('option', $this->option)
+									     ->display();
+								?>
 							</div><!-- / .basic info -->
+							<p class="submitarea">
+								<input type="submit" class="btn" value="<?php echo JText::_('COM_PROJECTS_SAVE_CHANGES'); ?>"  />
+								<span><a href="<?php echo JRoute::_('index.php?option=' . $this->option . '&alias=' . $this->project->alias . '&active=info'); ?>" class="btn btn-cancel"><?php echo JText::_('COM_PROJECTS_CANCEL'); ?></a></span>
+							</p>
 						<?php
 								break;
 								case 'team':
@@ -274,12 +269,12 @@ else
 						?>
 					</div>
 				</form>
-			</div><!-- / .subject -->
-			</div>
+				</div><!-- / .omega -->
+			</div><!-- / .grid -->
 		</section><!-- / .main section -->
 	</div><!-- / #edit-project-content -->
-<?php if ($layout != 'extended') { ?>
-</div><!-- / .main-content -->
+<?php if ($layout == 'extended') { ?>
+</div><!-- / .project-inner-wrap -->
 <?php } ?>
 </div>
 <?php if ($this->section == 'info') { ?>
