@@ -700,7 +700,7 @@ class PublicationsControllerCuration extends \Hubzero\Component\SiteController
 
 		// Update DOI record if DOI provisioned locally
 		$shoulder  = $this->config->get('doi_shoulder');
-		if ($row->doi && $shoulder && preg_match("/" . $shoulder . "/", $case))
+		if ($row->doi && $shoulder && preg_match("/" . $shoulder . "/", $row->doi))
 		{
 			// Collect DOI metadata
 			$metadata = PublicationUtilities::collectMetadata($pub);
