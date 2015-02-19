@@ -476,7 +476,7 @@ class PublicationUtilities
 		}
 
 		// Get previous version DOI
-		$lastPub = $row->getLastPubRelease($objP->id);
+		$lastPub = $row->getLastPubRelease($pub->id);
 		if ($lastPub && $lastPub->doi)
 		{
 			$metadata['relatedDoi'] = $row->version_number > 1 ? $lastPub->doi : '';
