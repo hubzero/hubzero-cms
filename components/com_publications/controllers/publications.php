@@ -2111,8 +2111,6 @@ class PublicationsControllerPublications extends \Hubzero\Component\SiteControll
 			. 'helpers' . DS . 'helper.php' );
 		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
 			. 'helpers' . DS . 'imghandler.php' );
-		require_once( JPATH_ROOT . DS . 'components' . DS . 'com_projects' . DS
-			. 'helpers' . DS . 'autocomplete.php' );
 		require_once( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS
 			. 'com_projects' . DS . 'tables' . DS . 'project.activity.php' );
 
