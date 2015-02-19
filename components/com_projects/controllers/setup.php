@@ -1001,6 +1001,7 @@ class ProjectsControllerSetup extends ProjectsControllerBase
 		$this->view->config 	= $this->config;
 		$this->view->task 		= $this->_task;
 		$this->view->publishing	= $this->_publishing;
+		$this->view->active		= 'edit';
 
 		// Get messages	and errors
 		$this->view->msg = $this->_getNotifications('success');
