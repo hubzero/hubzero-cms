@@ -189,7 +189,7 @@ HUB.ProjectTeam = {
 						{
 							for (var k = 0; k < bselected.length; k++) 
 							{
-								$(item).attr('href', $(item).attr('href') + '&owner[]=' + bselected[k]);
+								$(item).attr('href', $(item).attr('href') + '?owner[]=' + bselected[k]);
 							}
 						}
 						// Add our selected groups variables
@@ -197,7 +197,7 @@ HUB.ProjectTeam = {
 						{
 							for (var k = 0; k < bgroups.length; k++) 
 							{
-								$(item).attr('href', $(item).attr('href') + '&group[]=' + bgroups[k]);
+								$(item).attr('href', $(item).attr('href') + '?group[]=' + bgroups[k]);
 							}
 						}
 						var href = $(item).attr('href');
@@ -264,11 +264,6 @@ HUB.ProjectTeam = {
 		}
 		
 		$(el).after('<form id="' + form + '" class="editable" action="index.php">' + 
-			'<input type="hidden" name="option" value="com_projects" />' +
-			'<input type="hidden" name="id" value="' + $('#pid').val() + '" />' +
-			'<input type="hidden" name="task" value="view" />' +
-			'<input type="hidden" name="active" value="team" />' +
-			'<input type="hidden" name="action" value="assignrole" />' +
 			'<label>' + 
 				'<select name="role">' + 
 					'<option value="1" ' + m_selected + '>manager</option>' + 
@@ -287,10 +282,11 @@ HUB.ProjectTeam = {
 			$('#' + form).addClass('hidden');
 			$(el).removeClass('hidden');
 		});
+		var formAction = '/projects/' + $('#pid').val() + '/team/assignrole/?1=1';
 		
 		$('#' + save).on('click', function(e){
 			e.preventDefault();
-			$.ajax({ type:'POST', url: 'index.php', data:$('#' + form).serialize(), success: function(response) {
+			$.ajax({ type:'POST', url: formAction, data:$('#' + form).serialize(), success: function(response) {
 			      $('#cbody').html(response);
 				  HUB.ProjectTeam.initialize();
 			}});

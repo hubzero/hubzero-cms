@@ -25,6 +25,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die( 'Restricted access' );
 $i = 1;
+
 ?>
 <div id="abox-content">
 <h3><?php echo JText::_('COM_PROJECTS_DELETE_TEAM_MEMBERS'); ?></h3>
@@ -42,15 +43,7 @@ if (!$this->getError()) {
 	<fieldset >
 		<input type="hidden" name="id" value="<?php echo $this->project->id; ?>" />
 		<input type="hidden" name="action" value="removeowner" />
-		<input type="hidden" name="ajax" value="1" />
-		<input type="hidden" name="no_html" value="1" />
-		<?php if($this->setup) { ?>
-		<input type="hidden" name="task" value="setup" />
-		<input type="hidden" name="step" value="1" />
-		<?php } else { ?>
-		<input type="hidden" name="task" value="edit" />
-		<input type="hidden" name="edit" value="team" />
-		<?php } ?>
+		<input type="hidden" name="active" value="team" />
 		<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 		<p class="anote"><?php echo JText::_('COM_PROJECTS_DELETE_TEAM_MEMBERS_NOTE'); ?></p>
 		<p><?php echo JText::_('COM_PROJECTS_DELETE_TEAM_MEMBERS_CONFIRM'); ?></p>
@@ -60,7 +53,7 @@ if (!$this->getError()) {
 			$i++;
 			echo '<input type="hidden" name="owner[]" value="'.$owner->id.'" />';
 		} ?></p>
-		<?php if($self) { ?><p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_WARNING_SELF_DELETE'); ?></p><?php } ?>
+		<?php if ($self) { ?><p class="warning"><?php echo JText::_('COM_PROJECTS_TEAM_WARNING_SELF_DELETE'); ?></p><?php } ?>
 		<p class="submitarea">
 			<input type="submit" value="<?php echo JText::_('COM_PROJECTS_DELETE'); ?>" class="btn" />
 			<input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo JText::_('COM_PROJECTS_CANCEL'); ?>" />

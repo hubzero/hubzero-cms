@@ -69,32 +69,6 @@
 		display: block;
 		margin-top: 1em;
 	}
-	/*
-	.userinvited {
-		line-height: 1em;
-		background: url("images/user_invited.gif") 0 4px no-repeat;
-	}
-	.useractive {
-		line-height: 1em;
-		background: url("images/user_active.gif") 0 4px no-repeat;
-	}
-	.usercurator {
-		line-height: 1em;
-		background: url("images/user_curator.gif") 0 4px no-repeat;
-	}
-	.userowner {
-		line-height: 1em;
-		background: url("images/user_owner.gif") 0 4px no-repeat;
-	}
-	.usercreator {
-		line-height: 1em;
-		background: url("images/user_creator.gif") 0 4px no-repeat;
-	}
-	.userinactive {
-		line-height: 1em;
-		background: url("images/user_inactive.gif") 0 4px no-repeat;
-	}
-	*/
 	.invited {
 		display: block;
 		color: #9bbc7d;
@@ -120,9 +94,22 @@
 		color: #999;
 		margin: 1em 0 1em 0;
 	}
-	#setup .status-msg {
-		margin-top: -2em;
-		margin-bottom: 2em;
+	#hubForm .combine_options {
+		margin: 1em 0;
+	}
+	#hubForm .combine_options label {
+		display: inline;
+	}
+	#hubForm .combine_options .option {
+		margin: 0 !important;
+		padding: 0;
+	}
+	#hubForm .editable label {
+		padding: 0;
+	}
+	#hubForm .editable label select {
+		font-size: 110%;
+		padding: 0.3em 0;
 	}
 	
 /* Publication authors listing

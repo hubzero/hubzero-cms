@@ -845,6 +845,10 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 				$this->_message = array('message' => $this->_msg, 'type' => 'success');
 			}
 
+			$url = 'index.php?option=' . $this->_option . '&alias=' . $this->_project->alias . '&task=';
+			$url .= $setup ? 'setup' : 'edit';
+			$url .= '&active=team';
+			$this->_referer = JRoute::_($url);
 			return; // redirect
 		}
 	}
@@ -1020,7 +1024,7 @@ class plgProjectsTeam extends \Hubzero\Plugin\Plugin
 			}
 
 			$this->_task = $s ? 'setup' : 'edit';
-			return $this->view ( $edit = 1 );
+			return $this->display ( $edit = 1 );
 		}
 	}
 
