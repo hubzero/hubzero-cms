@@ -60,6 +60,32 @@ class Pagination
 	public $limit;
 
 	/**
+	 * The HUBzero paginator
+	 *
+	 * @var object
+	 **/
+	private $paginator;
+
+	/**
+	 * Attempts to forward calls to the paginator itself
+	 *
+	 * @param  string $name the method name being called
+	 * @param  array  $arguments the method arguments provided
+	 * @return $this
+	 * @since  1.3.2
+	 **/
+	public function __call($name, $arguments)
+	{
+		// See if we need to call a method on the HUBzero paginator
+		if (in_array($name, get_class_methods($this->getPaginator())))
+		{
+			call_user_func_array(array($this->getPaginator(), $name), $arguments);
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Initializes pagination object
 	 *
 	 * @return object
@@ -90,6 +116,22 @@ class Pagination
 	 **/
 	public function __toString()
 	{
-		return with(new \JPagination($this->total, $this->start, $this->limit))->getListFooter();
+		return $this->getPaginator()->render();
+	}
+
+	/**
+	 * Gets the HUBzero paginator, or creates a new one
+	 *
+	 * @return \Hubzero\Pagination\Paginator
+	 * @since  1.3.2
+	 **/
+	protected function getPaginator()
+	{
+		if (!isset($this->paginator))
+		{
+			$this->paginator = new \Hubzero\Pagination\Paginator($this->total, $this->start, $this->limit);
+		}
+
+		return $this->paginator;
 	}
 }
