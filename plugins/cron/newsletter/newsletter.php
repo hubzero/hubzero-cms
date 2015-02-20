@@ -111,6 +111,11 @@ class plgCronNewsletter extends JPlugin
 		// loop through each newsletter recipient, prepare and mail
 		foreach ($queuedEmails as $queuedEmail)
 		{
+			if (in_array($queuedEmail->email, $processed))
+			{
+				continue;
+			}
+
 			// get tracking & unsubscribe token
 			$emailToken = NewsletterHelper::generateMailingToken($queuedEmail);
 
