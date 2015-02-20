@@ -139,9 +139,11 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 				}
 			}
 
+			$matched = false;
+
 			foreach ($browsers as $minimum)
 			{
-				if ($minimum->os != '*' && $minimum->os != strtolower($browser->os()))
+				if ($minimum->os != '*' && $minimum->os != strtolower($browser->platform()))
 				{
 					continue;
 				}
@@ -150,6 +152,8 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 				{
 					continue;
 				}
+
+				// If we get to here, we have a matching OS and browser
 
 				if ($minimum->major > $browser->major())
 				{
@@ -160,6 +164,13 @@ class plgToolsNovnc extends \Hubzero\Plugin\Plugin
 				{
 					return false;
 				}
+
+				$matched = true;
+			}
+
+			if (!$matched)
+			{
+				return false;
 			}
 		}
 
