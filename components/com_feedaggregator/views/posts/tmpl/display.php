@@ -118,8 +118,8 @@ $this->js('posts')
 								<input type="button" data-id="<?php echo $post->id; ?>" data-action="remove" class="removeBtn btn actionBtn <?php echo 'btnGrp' . $post->id; ?>" value="<?php echo JText::_('COM_FEEDAGGREGATOR_REMOVE'); ?>" id="remove-<?php echo $post->id;?>" <?php echo ($post->status == "removed" ? 'disabled' : ''); ?> />
 								<div class="postpreview-container">
 									<div class="postpreview" id="content-fancybox<?php echo $post->id; ?>">
-										<h1><?php echo $post->title; ?></h1>
-										<p class="description"><?php echo $post->description; ?></p>
+										<h1><?php echo (string) html_entity_decode(strip_tags($post->title)); ?></h1>
+										<p class="description"><?php echo (string) html_entity_decode(strip_tags($post->description)); ?></p>
 										<p><a target="_blank" href="<?php echo urldecode($post->link); ?>"><?php echo JText::_('COM_FEEDAGGREGATOR_LINK_ORIGINAL_POST'); ?></a></p>
 										<div class="button-container">
 											<hr />
