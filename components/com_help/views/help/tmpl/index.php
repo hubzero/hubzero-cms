@@ -31,36 +31,32 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-\JFactory::getDocument()->setTitle(\JText::_('COM_HELP'));
-?>
-<a name="help-top"></a>
-<div class="help-header">
-	<?php if ($this->page != 'index') : ?>
-		<button class="back" onclick="window.history.back();" title="<?php echo JText::_('COM_HELP_GO_BACK'); ?>"><?php echo JText::_('COM_HELP_GO_BACK'); ?></button>
-	<?php endif; ?>
-</div>
+//var to hold content
+$content = '';
 
-<?php echo $this->content; ?>
+//loop through each component and pages group passed in
+foreach ($this->pages as $component)
+{
+	//build content to return
+	$content .= '<h2>' . JText::sprintf('COM_HELP_COMPONENT_HELP', $component['name']) . '</h2>';
 
-<div class="help-footer">
-	<a class="top" href="#help-top"><?php echo JText::_('COM_HELP_BACK_TO_TOP'); ?></a>
-	<?php if ($this->page != 'index') : ?>
-		<a class="index" href="<?php echo JRoute::_('index.php?option=com_help&component=' . str_replace('com_', '', $this->component) . '&page=index'); ?>">
-			<?php echo JText::_('COM_HELP_INDEX'); ?>
-		</a>
-	<?php endif; ?>
-	<p class="modified">
-		<?php echo JText::sprintf('COM_HELP_LAST_MODIFIED', date('l, F d, Y @ g:ia', $this->modified)); ?>
-	</p>
-</div>
+	//make sure we have pages
+	if (count($component['pages']) > 0)
+	{
+		$content .= '<p>' . JText::sprintf('COM_HELP_PAGE_INDEX_EXPLANATION', $component['name']) . '</p>';
+		$content .= '<ul>';
+		foreach ($component['pages'] as $page)
+		{
+			$name = str_replace('.' . $this->layoutExt, '', $page);
 
-<script>
-var $ = (typeof(jq) !== "undefined" ? jq : jQuery);
-
-$(document).ready(function() {
-	var history = window.history;
-	if (history.length > 1) {
-		$('.back').show();
+			$content .= '<li><a href="' . JRoute::_('index.php?option=com_help&component=' . str_replace('com_', '', $component['option']) . '&page=' . $name) . '">' . ucwords(str_replace('_', ' ', $name)) .'</a></li>';
+		}
+		$content .= '</ul>';
 	}
-});
-</script>
+	else
+	{
+		$content .= '<p>' . JText::_('COM_HELP_NO_PAGES_FOUND') . '</p>';
+	}
+}
+
+echo $content;

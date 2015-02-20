@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,220 +24,164 @@
  *
  * @package   hubzero-cms
  * @author    Christopher Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Help\Controllers;
 
-//import filesystem library
-jimport('joomla.filesystem.folder');
+use Hubzero\Component\SiteController;
+use Hubzero\Component\View;
+use Exception;
 
 /**
  * Help controller class
  */
-class HelpControllerHelp extends \Hubzero\Component\SiteController
+class Help extends SiteController
 {
 	/**
-	 * Method to set the document path
+	 * Help file extension
 	 *
-	 * @return	void
+	 * @var  string
 	 */
-	protected function _buildPathway()
-	{
-		$pathway = JFactory::getApplication()->getPathway();
-
-		if (count($pathway->getPathWay()) <= 0)
-		{
-			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
-				'index.php?option=' . $this->_option
-			);
-		}
-		if ($this->_task)
-		{
-			$pathway->addItem(
-				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
-				'index.php?option=' . $this->_option . '&task=' . $this->_task
-			);
-		}
-	}
-
-	/**
-	 * Method to build and set the document title
-	 *
-	 * @return	void
-	 */
-	protected function _buildTitle()
-	{
-		$this->_title = JText::_(strtoupper($this->_option));
-		if ($this->_task)
-		{
-			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
-		}
-		$document = JFactory::getDocument();
-		$document->setTitle($this->_title);
-	}
+	protected $layoutExt = 'phtml';
 
 	/**
 	 * Display Help Article Pages
 	 *
-	 * @return     array
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		//force help template
-		JRequest::setVar('tmpl', 'help');
+		// Force help template
+		\JRequest::setVar('tmpl', 'help');
 
-		//var to hold content
-		$this->view->content = '';
+		// Get the page we are trying to access
+		$page      = \JRequest::getWord('page', 'index');
+		$component = \JRequest::getWord('component', 'com_help');
+		$name      = str_replace('com_', '', $component);
+		$extension = \JRequest::getWord('extension', '');
 
-		//get the page we are trying to access
-		$page      = JRequest::getWord('page', 'index');
-		$component = JRequest::getWord('component', 'com_help');
-		$extension = JRequest::getWord('extension', '');
+		$tmpl = \JFactory::getApplication()->getTemplate();
+		$lang = \JFactory::getLanguage()->getTag();
 
-		//template override help page
-		$templateHelpPage = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS .  'html' . DS . $component  . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . $page . '.phtml';
-		$templateHelpPageAlt = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS .  'html' . DS . 'plg_'.str_replace('com_', '', $component).'_'.$page . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . 'index.phtml';
+		$paths = array(
+			// Template override help page
+			JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS .  'html' . DS . 'plg_' . $name . '_' . $page . DS . 'help' . DS . $lang . DS . 'index.' . $this->layoutExt,
+			JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS .  'html' . DS . $component  . DS . 'help' . DS . $lang . DS . $page . '.' . $this->layoutExt,
+			// Path to help page
+			JPATH_ROOT . DS . 'components' . DS . $component . DS . 'help' . DS . $lang . DS . $page . '.' . $this->layoutExt,
+			JPATH_ROOT . DS . 'plugins' . DS . $name . DS . $page . DS . 'help' . DS . $lang . DS . 'index.' . $this->layoutExt
+		);
 
-		//path to help page
-		$helpPage    = JPATH_ROOT . DS . 'components' . DS . $component . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . $page . '.phtml';
-		$helpPageAlt = JPATH_ROOT . DS . 'plugins' . DS . str_replace('com_', '', $component) . DS . $page . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . 'index.phtml';
-
-		//if we have an extension
+		// If we have an extension
 		if (isset($extension) && $extension != '')
 		{
-			$helpPage            = JPATH_ROOT . DS . 'plugins' . DS . str_replace('com_', '', $component) . DS . $extension . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . $page . '.phtml';
-			$templateHelpPageAlt = JPATH_ROOT . DS . 'templates' . DS . JFactory::getApplication()->getTemplate() . DS .  'html' . DS . 'plg_'.str_replace('com_', '', $component).'_'.$extension . DS . 'help' . DS . JFactory::getLanguage()->getTag() . DS . $page . '.phtml';
+			$paths[2] = JPATH_ROOT . DS . 'plugins' . DS . $name . DS . $extension . DS . 'help' . DS . $lang . DS . $page . '.' . $this->layoutExt;
+			$paths[0] = JPATH_ROOT . DS . 'templates' . DS . $tmpl . DS .  'html' . DS . 'plg_' . $name . '_' . $extension . DS . 'help' . DS . $lang . DS . $page . '.' . $this->layoutExt;
 		}
 
-		//store  final page
 		$finalHelpPage = '';
 
-		//determine path for help page, check template first
-		if (file_exists($templateHelpPageAlt))
+		// Determine path for help page
+		foreach ($paths as $path)
 		{
-			$finalHelpPage = $templateHelpPageAlt;
-		}
-		else if (file_exists($templateHelpPage))
-		{
-			$finalHelpPage = $templateHelpPage;
-		}
-		else if (file_exists($helpPage))
-		{
-			$finalHelpPage = $helpPage;
-		}
-		else if (file_exists($helpPageAlt))
-		{
-			$finalHelpPage = $helpPageAlt;
+			if (file_exists($path))
+			{
+				$finalHelpPage = $path;
+			}
 		}
 
-		//if we have an existing pge
+		$content = '';
+
+		// If we have an existing page
 		if ($finalHelpPage != '')
 		{
 			ob_start();
-			require_once( $finalHelpPage );
-			$this->view->content = ob_get_contents();
+			require_once($finalHelpPage);
+			$content = ob_get_contents();
 			ob_end_clean();
 		}
 		else if (isset($component) && $component != '' && $page == 'index')
 		{
-			//get list of component pages
-			$pages[] = $this->helpPagesForComponent( $component );
+			// Get list of component pages
+			$pages[] = $this->helpPagesForComponent($component);
 
 			//display page
-			$this->view->content = $this->displayHelpPageIndexForPages( $pages, 'h2' );
+			$view = with(new View(array(
+					'name'   => $this->_controller,
+					'layout' => 'index'
+				)))
+				->set('option', $this->_option)
+				->set('controller', $this->_controller)
+				->set('layoutExt', $this->layoutExt)
+				->set('pages', $pages);
+
+			$content = $view->loadTemplate();
 		}
 		else
 		{
-			//raise error to avoid security bug
-			JError::raiseError( 404, JText::_('Help page not found.') );
+			// Raise error to avoid security bug
+			throw new Exception(\JText::_('COM_HELP_PAGE_NOT_FOUND'), 404);
 		}
 
-		// set vars for views
-		$this->view->modified  = filemtime($finalHelpPage);
-		$this->view->component = $component;
-		$this->view->extension = $extension;
-		$this->view->page      = $page;
-
-		//display
-		$this->view->display();
+		// Set vars for views
+		$this->view
+			->set('modified', filemtime($finalHelpPage))
+			->set('component', $component)
+			->set('extension', $extension)
+			->set('content', $content)
+			->set('page', $page)
+			->display();
 	}
 
 	/**
 	 * Get array of help pages for component
 	 *
-	 * @param      $component    Component to get pages for
-	 * @return     array
+	 * @param   string  $component  Component to get pages for
+	 * @return  array
 	 */
-	private function helpPagesForComponent( $component )
+	private function helpPagesForComponent($component)
 	{
-		//get component name from database
-		$sql = "SELECT `name` FROM `#__extensions` WHERE `type`=" . $this->database->quote( 'component' ) . " AND `element`=" . $this->database->quote( $component ) . " AND `enabled`=1";
-		$this->database->setQuery( $sql );
+		// Get component name from database
+		$this->database->setQuery(
+			"SELECT `name`
+			FROM `#__extensions`
+			WHERE `type`=" . $this->database->quote('component') . "
+			AND `element`=" . $this->database->quote($component) . "
+			AND `enabled`=1"
+		);
 		$name = $this->database->loadResult();
 
-		//make sure we have a component
+		// Make sure we have a component
 		if ($name == '')
 		{
 			$name = str_replace('com_', '', $component);
-			return array('name' => ucfirst($name), 'option' => $component, 'pages' => array());
+
+			return array(
+				'name'   => ucfirst($name),
+				'option' => $component,
+				'pages'  => array()
+			);
 		}
 
-		//path to help pages
-		$helpPagesPath = JPATH_ROOT . DS . 'components' . DS . $component . DS . 'help' . DS . JFactory::getLanguage()->getTag();
+		// Path to help pages
+		$helpPagesPath = JPATH_SITE . DS . 'components' . DS . $component . DS . 'help' . DS . \JFactory::getLanguage()->getTag();
 
-		//make sure directory exists
+		// Make sure directory exists
 		$pages = array();
 		if (is_dir($helpPagesPath))
 		{
-			//get help pages for this component
-			$pages = JFolder::files( $helpPagesPath , '.phtml' );
+			// Get help pages for this component
+			jimport('joomla.filesystem.folder');
+			$pages = \JFolder::files($helpPagesPath , '.' . $this->layoutExt);
 		}
 
-		//return pages
-		return array( 'name' => $name, 'option' => $component, 'pages' => $pages );
-	}
-
-	/**
-	 * Get array of help pages for component
-	 *
-	 * @param      $componentAndPages    Component info and corresponding help pages
-	 * @param      $headingLevel         Leading level for component separation
-	 * @return     array
-	 */
-	private function displayHelpPageIndexForPages( $componentAndPages, $headingLevel = 'h1' )
-	{
-		//var to hold content
-		$content = '';
-
-		//loop through each component and pages group passed in
-		foreach ($componentAndPages as $component)
-		{
-			//build content to return
-			$content .= "<".$headingLevel.">{$component['name']} Help</".$headingLevel.">";
-
-			//make sure we have pages
-			if (count($component['pages']) > 0)
-			{
-				$content .= '<p>' . JText::_('Below is a list of help pages for the "'.$component['name'].'" component, that might help answer any questions you might have.') . '</p>';
-				$content .= '<ul>';
-				foreach ($component['pages'] as $page)
-				{
-					$name = str_replace('.phtml', '', $page);
-					$url  = JRoute::_('index.php?option=com_help&component='.str_replace('com_', '', $component['option']).'&page='.$name);
-					$content .= '<li><a href="'.$url.'">' . ucwords(str_replace('_', ' ', $name)) .'</a></li>';
-				}
-				$content .= '</ul>';
-			}
-			else
-			{
-				$content .= "<p>Currently there are no help pages for this component.</p>";
-			}
-		}
-
-		return $content;
+		// Return pages
+		return array(
+			'name'   => $name,
+			'option' => $component,
+			'pages'  => $pages
+		);
 	}
 }
