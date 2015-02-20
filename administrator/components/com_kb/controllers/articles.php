@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,21 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Kb\Models\Archive;
+use Components\Kb\Models\Article;
+use Components\Kb\Tables;
 
 /**
  * Controller class for knowledge base articles
  */
-class KbControllerArticles extends \Hubzero\Component\AdminController
+class Articles extends AdminController
 {
 	/**
 	 * Execute a task
@@ -59,8 +63,8 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	public function displayTask()
 	{
 		// Get configuration
-		$config = JFactory::getConfig();
-		$app = JFactory::getApplication();
+		$config = \JFactory::getConfig();
+		$app = \JFactory::getApplication();
 
 		// Get filters
 		$this->view->filters = array(
@@ -68,74 +72,65 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 				$this->_option . '.' . $this->_controller . '.search',
 				'search',
 				''
+			),
+			'orphans' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.orphans',
+				'orphans',
+				0,
+				'int'
+			),
+			'category' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.category',
+				'category',
+				0,
+				'int'
+			),
+			'section' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.section',
+				'section',
+				0,
+				'int'
+			),
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sort',
+				'filter_order',
+				'title'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.sortdir',
+				'filter_order_Dir',
+				'ASC'
+			),
+			// Get paging variables
+			'limit' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			),
+			'start' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'state' => -1,
+			'access' => $app->getUserStateFromRequest(
+				$this->_option . '.' . $this->_controller . '.access',
+				'access',
+				0,
+				'int'
 			)
 		);
-		$this->view->filters['orphans']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.orphans',
-			'orphans',
-			0,
-			'int'
-		);
-		$this->view->filters['category']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.category',
-			'category',
-			0,
-			'int'
-		);
-		$this->view->filters['section']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.section',
-			'section',
-			0,
-			'int'
-		);
-		$this->view->filters['sort']         = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sort',
-			'filter_order',
-			'title'
-		));
-		$this->view->filters['sort_Dir']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.sortdir',
-			'filter_order_Dir',
-			'ASC'
-		));
-		$this->view->filters['filterby']       = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
+		$this->view->filters['filterby'] = $this->view->filters['sort'] . ' ' . $this->view->filters['sort_Dir'];
 
-		// Get paging variables
-		$this->view->filters['limit']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
-		$this->view->filters['start']        = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.limitstart',
-			'limitstart',
-			0,
-			'int'
-		);
-		$this->view->filters['state'] = -1;
-		$this->view->filters['access'] = $app->getUserStateFromRequest(
-			$this->_option . '.' . $this->_controller . '.access',
-			'access',
-			0,
-			'int'
-		);
-
-		$a = new KbModelArchive();
+		$a = new Archive();
 
 		// Get record count
 		$this->view->total = $a->articles('count', $this->view->filters);
 
 		// Get records
 		$this->view->rows  = $a->articles('list', $this->view->filters);
-
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Get the sections
 		$this->view->sections = $a->categories('list', array(
@@ -165,19 +160,19 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
 		if (!is_object($row))
 		{
 			// Incoming
-			$id = JRequest::getVar('id', array(0));
+			$id = \JRequest::getVar('id', array(0));
 			if (is_array($id) && !empty($id))
 			{
 				$id = $id[0];
 			}
 
 			// Load category
-			$row = new KbModelArticle($id);
+			$row = new Article($id);
 		}
 
 		$this->view->row = $row;
@@ -186,8 +181,8 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		if ($this->view->row->get('checked_out') && $this->view->row->get('checked_out')  != $this->juser->get('id'))
 		{
 			$this->setRedirect(
-				'index.php?option=' . $this->_option . '&controller=' . $this->_controller,
-				JText::_('COM_KB_CHECKED_OUT'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_KB_CHECKED_OUT'),
 				'warning'
 			);
 			return;
@@ -196,15 +191,15 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		if (!$this->view->row->exists())
 		{
 			$this->view->row->set('created_by', $this->juser->get('id'));
-			$this->view->row->set('created', JFactory::getDate()->toSql());
+			$this->view->row->set('created', \JFactory::getDate()->toSql());
 		}
 
-		$this->view->params = new JParameter(
+		$this->view->params = new \JParameter(
 			$this->view->row->get('params'),
 			JPATH_COMPONENT . DS . 'kb.xml'
 		);
 
-		$c = new KbModelArchive();
+		$c = new Archive();
 
 		// Get the sections
 		$this->view->sections = $c->categories('list', array('section' => 0, 'empty' => 1));
@@ -234,13 +229,13 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$fields = JRequest::getVar('fields', array(), 'post', 'none', 2);
+		$fields = \JRequest::getVar('fields', array(), 'post', 'none', 2);
 
 		// Initiate extended database class
-		$row = new KbModelArticle($fields['id']);
+		$row = new Article($fields['id']);
 		if (!$row->bind($fields))
 		{
 			JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
@@ -249,7 +244,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		}
 
 		// Get parameters
-		$params = JRequest::getVar('params', array(), 'post');
+		$params = \JRequest::getVar('params', array(), 'post');
 
 		$p = $row->param();
 
@@ -266,7 +261,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		// Store new content
 		if (!$row->store(true))
 		{
-			JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
+			\JFactory::getApplication()->enqueueMessage($row->getError(), 'error');
 			$this->editTask($row);
 			return;
 		}
@@ -275,7 +270,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 
 		// Save the tags
 		$row->tag(
-			JRequest::getVar('tags', '', 'post'),
+			\JRequest::getVar('tags', '', 'post'),
 			$this->juser->get('id')
 		);
 
@@ -286,8 +281,8 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_KB_ARTICLE_SAVED')
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_KB_ARTICLE_SAVED')
 		);
 	}
 
@@ -299,11 +294,11 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$cid = JRequest::getInt('cid', 0);
-		$ids = JRequest::getVar('id', array());
+		$cid = \JRequest::getInt('cid', 0);
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		if (count($ids) > 0)
@@ -311,90 +306,17 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 			foreach ($ids as $id)
 			{
 				// Delete the category
-				$article = new KbModelArticle(intval($id));
+				$article = new Article(intval($id));
 				$article->delete();
 			}
 		}
 
 		// Redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::sprintf('COM_KB_ITEMS_REMOVED', count($ids))
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_KB_ITEMS_REMOVED', count($ids))
 		);
 	}
-
-	/**
-	 * Set the access level of an article to 'public'
-	 *
-	 * @return  void
-	 */
-	/*public function accesspublicTask()
-	{
-		return $this->accessTask(0);
-	}*/
-
-	/**
-	 * Set the access level of an article to 'registered'
-	 *
-	 * @return  void
-	 */
-	/*public function accessregisteredTask()
-	{
-		return $this->accessTask(1);
-	}*/
-
-	/**
-	 * Set the access level of an article to 'special'
-	 *
-	 * @return  void
-	 */
-	/*public function accessspecialTask()
-	{
-		return $this->accessTask(2);
-	}*/
-
-	/**
-	 * Set the access level of an article
-	 *
-	 * @param   integer  $access  Access level to set
-	 * @return  void
-	 */
-	/*public function accessTask($access=0)
-	{
-		// Incoming
-		$id = JRequest::getInt('id', 0);
-
-		// Make sure we have an ID to work with
-		if (!$id)
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_KB_NO_ID'),
-				'error'
-			);
-			return;
-		}
-
-		// Load the article
-		$row = new KbModelArticle($id);
-		$row->set('access', $access);
-
-		// Check and store the changes
-		if (!$row->store())
-		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				$row->getError(),
-				'error'
-			);
-			return;
-		}
-
-		// Set the redirect
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
-		);
-	}*/
 
 	/**
 	 * Sets the state of one or more entries
@@ -406,16 +328,16 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		$state = $this->_task == 'publish' ? 1 : 0;
 
 		// Incoming
-		$cid = JRequest::getInt('cid', 0);
-		$ids = JRequest::getVar('id', array());
+		$cid = \JRequest::getInt('cid', 0);
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (count($ids) < 1)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				($state == 1 ? JText::_('COM_KB_SELECT_PUBLISH') : JText::_('COM_KB_SELECT_UNPUBLISH')),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				($state == 1 ? \JText::_('COM_KB_SELECT_PUBLISH') : \JText::_('COM_KB_SELECT_UNPUBLISH')),
 				'error'
 			);
 			return;
@@ -425,7 +347,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		foreach ($ids as $id)
 		{
 			// Updating an article
-			$row = new KbModelArticle(intval($id));
+			$row = new Article(intval($id));
 			$row->set('state', $state);
 			$row->store();
 		}
@@ -434,19 +356,19 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		switch ($state)
 		{
 			case '-1':
-				$message = JText::sprintf('COM_KB_ARCHIVED', count($ids));
+				$message = \JText::sprintf('COM_KB_ARCHIVED', count($ids));
 			break;
 			case '1':
-				$message = JText::sprintf('COM_KB_PUBLISHED', count($ids));
+				$message = \JText::sprintf('COM_KB_PUBLISHED', count($ids));
 			break;
 			case '0':
-				$message = JText::sprintf('COM_KB_UNPUBLISHED', count($ids));
+				$message = \JText::sprintf('COM_KB_UNPUBLISHED', count($ids));
 			break;
 		}
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&section=' . $cid : ''), false),
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . ($cid ? '&section=' . $cid : ''), false),
 			$message
 		);
 	}
@@ -458,18 +380,18 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	 */
 	public function cancelTask()
 	{
-		$filters = JRequest::getVar('filters', array());
+		$filters = \JRequest::getVar('filters', array());
 
 		if (isset($filters['id']) && $filters['id'])
 		{
 			// Bind the posted data to the article object and check it in
-			$article = new KbTableArticle($this->database);
+			$article = new Tables\Article($this->database);
 			$article->load(intval($filters['id']));
 			$article->checkin();
 		}
 
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -481,27 +403,27 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	public function resethitsTask()
 	{
 		// Incoming
-		$cid = JRequest::getInt('cid', 0);
-		$id  = JRequest::getInt('id', 0);
+		$cid = \JRequest::getInt('cid', 0);
+		$id  = \JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_KB_NO_ID'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_KB_NO_ID'),
 				'error'
 			);
 		}
 
 		// Load and reset the article's hits
-		$article = new KbModelArticle($id);
+		$article = new Article($id);
 		$article->set('hits', 0);
 
 		if (!$article->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$article->getError(),
 				'error'
 			);
@@ -510,7 +432,7 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 
@@ -522,28 +444,28 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 	public function resetvotesTask()
 	{
 		// Incoming
-		$cid = JRequest::getInt('cid', 0);
-		$id  = JRequest::getInt('id', 0);
+		$cid = \JRequest::getInt('cid', 0);
+		$id  = \JRequest::getInt('id', 0);
 
 		// Make sure we have an ID to work with
 		if (!$id)
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::_('COM_KB_NO_ID'),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_KB_NO_ID'),
 				'error'
 			);
 		}
 
 		// Load and reset the article's ratings
-		$article = new KbModelArticle($id);
+		$article = new Article($id);
 		$article->set('helpful', 0);
 		$article->set('nothelpful', 0);
 
 		if (!$article->store())
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
 				$article->getError(),
 				'error'
 			);
@@ -551,12 +473,12 @@ class KbControllerArticles extends \Hubzero\Component\AdminController
 		}
 
 		// Delete all the entries associated with this article
-		$helpful = new KbTableVote($this->database);
+		$helpful = new Tables\Vote($this->database);
 		$helpful->deleteVote($id);
 
 		// Set the redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 		);
 	}
 }

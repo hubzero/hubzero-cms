@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,12 +24,15 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb\Models;
+
+use Components\Kb\Tables;
+use Hubzero\Base\ItemList;
+use Hubzero\Base\Model;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'category.php');
 require_once(__DIR__ . '/article.php');
@@ -37,14 +40,14 @@ require_once(__DIR__ . '/article.php');
 /**
  * Knowledgebase model for a category
  */
-class KbModelCategory extends \Hubzero\Base\Model
+class Category extends Model
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'KbTableCategory';
+	protected $_tbl_name = '\\Components\\Kb\\Tables\\Category';
 
 	/**
 	 * KbModelCategory
@@ -121,7 +124,7 @@ class KbModelCategory extends \Hubzero\Base\Model
 	 */
 	public function articles($rtrn='list', $filters=array(), $clear=false)
 	{
-		$tbl = new KbTableArticle($this->_db);
+		$tbl = new Tables\Article($this->_db);
 
 		if ($this->get('section'))
 		{
@@ -168,20 +171,20 @@ class KbModelCategory extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_articles instanceof \Hubzero\Base\ItemList || $clear)
+				if (!$this->_articles instanceof ItemList || $clear)
 				{
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new KbModelArticle($result);
+							$results[$key] = new Article($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_articles = new \Hubzero\Base\ItemList($results);
+					$this->_articles = new ItemList($results);
 				}
 				return $this->_articles;
 			break;
@@ -237,20 +240,20 @@ class KbModelCategory extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_children instanceof \Hubzero\Base\ItemList || $clear)
+				if (!$this->_children instanceof ItemList || $clear)
 				{
 					if ($results = $this->_tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new KbModelCategory($result);
+							$results[$key] = new Category($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_children = new \Hubzero\Base\ItemList($results);
+					$this->_children = new ItemList($results);
 				}
 				return $this->_children;
 			break;
@@ -264,9 +267,9 @@ class KbModelCategory extends \Hubzero\Base\Model
 	 */
 	public function parent()
 	{
-		if (!($this->_parent instanceof KbModelCategory))
+		if (!($this->_parent instanceof Category))
 		{
-			$this->_parent = KbModelCategory::getInstance($this->get('section', 0));
+			$this->_parent = Category::getInstance($this->get('section', 0));
 		}
 		return $this->_parent;
 	}

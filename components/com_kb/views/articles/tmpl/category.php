@@ -51,7 +51,7 @@ $this->css()
 	<?php } ?>
 		<div class="subject">
 			<form action="<?php echo JRoute::_($this->category->link()); ?>" method="post">
-	
+
 				<div class="container data-entry">
 					<input class="entry-search-submit" type="submit" value="<?php echo JText::_('COM_KB_SEARCH'); ?>" />
 					<fieldset class="entry-search">
@@ -63,7 +63,7 @@ $this->css()
 						<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 					</fieldset>
 				</div><!-- / .container -->
-	
+
 				<div class="container">
 					<ul class="entries-menu">
 						<li>
@@ -77,7 +77,7 @@ $this->css()
 							</a>
 						</li>
 					</ul>
-	
+
 					<table class="articles entries">
 						<caption>
 							<?php
@@ -132,9 +132,17 @@ $this->css()
 						</tbody>
 					</table>
 					<?php
-					$this->pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-					$this->pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-					echo $this->pageNav->getListFooter();
+					// Initiate paging
+					jimport('joomla.html.pagination');
+					$pageNav = new JPagination(
+						$this->total,
+						$this->filters['start'],
+						$this->filters['limit']
+					);
+
+					$pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+					$pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+					echo $pageNav->getListFooter();
 					?>
 					<div class="clearfix"></div>
 				</div><!-- / .container -->

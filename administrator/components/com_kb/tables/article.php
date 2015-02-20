@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb\Tables;
 
 /**
  * Table class for knowledge base articles
  */
-class KbTableArticle extends JTable
+class Article extends \JTable
 {
 	/**
 	 * Constructor
@@ -58,8 +57,7 @@ class KbTableArticle extends JTable
 
 		if (trim($this->title) == '')
 		{
-			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
-			return false;
+			$this->setError(\JText::_('COM_KB_ERROR_EMPTY_TITLE'));
 		}
 
 		if (!$this->alias)
@@ -73,21 +71,25 @@ class KbTableArticle extends JTable
 			$this->_db->setQuery("SELECT COUNT(*) FROM `#__faq_categories` WHERE `section`=" . $this->_db->quote($this->section) . " AND `alias`=" . $this->_db->quote($this->alias));
 			if ($result = $this->_db->loadResult())
 			{
-				$this->setError(JText::_('COM_KB_ERROR_ALIAS_IN_USE'));
-				return false;
+				$this->setError(\JText::_('COM_KB_ERROR_ALIAS_IN_USE'));
 			}
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created    = JFactory::getDate()->toSql();
+			$this->created    = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 		else
 		{
-			$this->modified    = JFactory::getDate()->toSql();
+			$this->modified    = \JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
+		}
+
+		if ($this->getError())
+		{
+			return false;
 		}
 
 		return true;
@@ -215,7 +217,7 @@ class KbTableArticle extends JTable
 		$query = "FROM $this->_tbl AS a
 					LEFT JOIN #__faq_categories AS c ON c.id = a.section
 					LEFT JOIN #__faq_categories AS cc ON cc.id = a.category
-					LEFT JOIN #__viewlevels AS v ON v.id = a.access ";
+					LEFT JOIN #__viewlevels AS vl ON vl.id = a.access ";
 
 		if (isset($filters['user_id']) && $filters['user_id'] > 0)
 		{
@@ -313,7 +315,7 @@ class KbTableArticle extends JTable
 
 			case 'list':
 			default:
-				$query  = "SELECT a.*, v.title as access_level, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
+				$query  = "SELECT a.*, vl.title as access_level, c.title AS ctitle, c.alias AS calias, cc.title AS cctitle, cc.alias AS ccalias ";
 				if (isset($filters['user_id']) && $filters['user_id'] > 0)
 				{
 					$query .= ", v.vote, v.user_id ";

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,22 +24,26 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb\Models;
+
+use Components\Kb\Tables;
+use Hubzero\Base\Object;
+use Hubzero\Base\ItemList;
+use Hubzero\Base\Model;
 
 require_once(__DIR__ . '/category.php');
 
 /**
  * Knowledgebase archive model class
  */
-class KbModelArchive extends \Hubzero\Base\Object
+class Archive extends Object
 {
 	/**
-	 * KbModelCategory
+	 * Category
 	 *
 	 * @var object
 	 */
@@ -94,16 +98,16 @@ class KbModelArchive extends \Hubzero\Base\Object
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
+		$this->_db = \JFactory::getDBO();
 
-		$this->_config = JComponentHelper::getParams('com_kb');
+		$this->_config = \JComponentHelper::getParams('com_kb');
 	}
 
 	/**
 	 * Returns a reference to this model
 	 *
-	 * @param      string $key
-	 * @return     object KbModelArchive
+	 * @param   string  $key
+	 * @return  object
 	 */
 	static function &getInstance($key='site')
 	{
@@ -134,7 +138,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 		{
 			$this->_category = null;
 
-			if ($this->_categories instanceof \Hubzero\Base\ItemList)
+			if ($this->_categories instanceof ItemList)
 			{
 				foreach ($this->_categories as $key => $entry)
 				{
@@ -148,7 +152,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 
 			if (!$this->_category)
 			{
-				$this->_category = KbModelCategory::getInstance($id);
+				$this->_category = Category::getInstance($id);
 			}
 		}
 		return $this->_category;
@@ -166,7 +170,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 	{
 		if (!isset($filters['state']))
 		{
-			$filters['state'] = \Hubzero\Base\Model::APP_STATE_PUBLISHED;
+			$filters['state'] = Model::APP_STATE_PUBLISHED;
 		}
 		if (!isset($filters['access']))
 		{
@@ -194,7 +198,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 			case 'count':
 				if (!isset($this->_categories_count) || !is_numeric($this->_categories_count) || $clear)
 				{
-					$tbl = new KbTableCategory($this->_db);
+					$tbl = new Tables\Category($this->_db);
 					$this->_categories_count = (int) $tbl->find('count', $filters);
 				}
 				return $this->_categories_count;
@@ -203,21 +207,21 @@ class KbModelArchive extends \Hubzero\Base\Object
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_categories instanceof \Hubzero\Base\ItemList || $clear)
+				if (!$this->_categories instanceof ItemList || $clear)
 				{
-					$tbl = new KbTableCategory($this->_db);
+					$tbl = new Tables\Category($this->_db);
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new KbModelCategory($result);
+							$results[$key] = new Category($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_categories = new \Hubzero\Base\ItemList($results);
+					$this->_categories = new ItemList($results);
 					return $this->_categories;
 				}
 			break;
@@ -236,7 +240,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 	{
 		if (!isset($filters['state']))
 		{
-			$filters['state']  = \Hubzero\Base\Model::APP_STATE_PUBLISHED;
+			$filters['state']  = Model::APP_STATE_PUBLISHED;
 		}
 		if (!isset($filters['access']))
 		{
@@ -266,7 +270,7 @@ class KbModelArchive extends \Hubzero\Base\Object
 			case 'count':
 				if (!isset($this->_articles_count) || !is_numeric($this->_articles_count) || $clear)
 				{
-					$tbl = new KbTableArticle($this->_db);
+					$tbl = new Tables\Article($this->_db);
 					$this->_articles_count = (int) $tbl->find('count', $filters);
 				}
 				return $this->_articles_count;
@@ -275,25 +279,25 @@ class KbModelArchive extends \Hubzero\Base\Object
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_articles instanceof \Hubzero\Base\ItemList || $clear)
+				if (!$this->_articles instanceof ItemList || $clear)
 				{
 					if (isset($filters['sort']))
 					{
 						$filters['order'] = $filters['sort'] . " " . $filters['sort_Dir'];
 					}
-					$tbl = new KbTableArticle($this->_db);
+					$tbl = new Tables\Article($this->_db);
 					if ($results = $tbl->find('list', $filters))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new KbModelArticle($result);
+							$results[$key] = new Article($result);
 						}
 					}
 					else
 					{
 						$results = array();
 					}
-					$this->_articles = new \Hubzero\Base\ItemList($results);
+					$this->_articles = new ItemList($results);
 					return $this->_articles;
 				}
 			break;

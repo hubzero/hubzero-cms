@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,18 +24,25 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb\Models;
+
+use Components\Kb\Tables;
+use Hubzero\User\Profile;
+use Hubzero\Base\Object;
+use Hubzero\Base\ItemList;
+use Hubzero\Base\Model;
+use Hubzero\Utility\String;
+use stdClass;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'article.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_kb' . DS . 'tables' . DS . 'vote.php');
 require_once(__DIR__ . '/tags.php');
 require_once(__DIR__ . '/comment.php');
-if (!class_exists('KbModelCategory'))
+if (!class_exists(__NAMESPACE__ . '\Category'))
 {
 	require_once(__DIR__ . '/category.php');
 }
@@ -43,14 +50,14 @@ if (!class_exists('KbModelCategory'))
 /**
  * Knowledgebase model for an article
  */
-class KbModelArticle extends \Hubzero\Base\Model
+class Article extends Model
 {
 	/**
 	 * Table class name
 	 *
 	 * @var string
 	 */
-	protected $_tbl_name = 'KbTableArticle';
+	protected $_tbl_name = '\\Components\\Kb\\Tables\\Article';
 
 	/**
 	 * Model context
@@ -146,21 +153,21 @@ class KbModelArticle extends \Hubzero\Base\Model
 
 		if (!$this->get('calias'))
 		{
-			$section = KbModelCategory::getInstance($this->get('section'));
+			$section = Category::getInstance($this->get('section'));
 
 			$this->set('calias', $section->get('alias'));
 
 			if ($this->get('category'))
 			{
-				$category = KbModelCategory::getInstance($this->get('category'));
+				$category = Category::getInstance($this->get('category'));
 
 				$this->set('ccalias', $section->get('alias'));
 			}
 		}
 
-		$params = new JRegistry($this->get('params'));
+		$params = new \JRegistry($this->get('params'));
 
-		$this->_params = JComponentHelper::getParams('com_kb');
+		$this->_params = \JComponentHelper::getParams('com_kb');
 		$this->_params->merge($params);
 	}
 
@@ -234,7 +241,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 		}
 
 		$pdt = strftime('Y', $dt) . '-' . strftime('m', $dt) . '-' . strftime('d', $dt) . ' 00:00:00';
-		$today = JFactory::getDate()->toSql();
+		$today = \JFactory::getDate()->toSql();
 
 		if ($this->param('close_comments') != 'now' && $today < $pdt)
 		{
@@ -280,11 +287,11 @@ class KbModelArticle extends \Hubzero\Base\Model
 		switch (strtolower($as))
 		{
 			case 'date':
-				return JHTML::_('date', $this->get($key), JText::_('DATE_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('DATE_FORMAT_HZ1'));
 			break;
 
 			case 'time':
-				return JHTML::_('date', $this->get($key), JText::_('TIME_FORMAT_HZ1'));
+				return \JHTML::_('date', $this->get($key), \JText::_('TIME_FORMAT_HZ1'));
 			break;
 
 			default:
@@ -306,12 +313,12 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -332,7 +339,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 */
 	public function comments($rtrn='list', $filters=array(), $clear=false)
 	{
-		$tbl = new KbTableComment($this->_db);
+		$tbl = new Tables\Comment($this->_db);
 
 		if (!isset($filters['entry_id']))
 		{
@@ -381,13 +388,13 @@ class KbModelArticle extends \Hubzero\Base\Model
 			case 'list':
 			case 'results':
 			default:
-				if (!$this->_comments instanceof \Hubzero\Base\ItemList || $clear)
+				if (!$this->_comments instanceof ItemList || $clear)
 				{
 					if ($results = $tbl->getAllComments($filters['entry_id']))
 					{
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new KbModelComment($result);
+							$results[$key] = new Comment($result);
 							$results[$key]->set('section', $this->get('calias'));
 							$results[$key]->set('category', $this->get('ccalias'));
 							$results[$key]->set('article', $this->get('alias'));
@@ -397,7 +404,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 					{
 						$results = array();
 					}
-					$this->_comments = new \Hubzero\Base\ItemList($results);
+					$this->_comments = new ItemList($results);
 				}
 				return $this->_comments;
 			break;
@@ -431,7 +438,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 			}
 		}
 
-		$cloud = new KbModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->render($as, array('admin' => $admin));
 	}
@@ -443,7 +450,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 */
 	public function tag($tags=null, $user_id=0, $admin=0)
 	{
-		$cloud = new KbModelTags($this->get('id'));
+		$cloud = new Tags($this->get('id'));
 
 		return $cloud->setTags($tags, $user_id, $admin);
 	}
@@ -501,11 +508,11 @@ class KbModelArticle extends \Hubzero\Base\Model
 			case 'feed':
 				$link .= '/comments.rss';
 
-				$feed = JRoute::_($link);
+				$feed = \JRoute::_($link);
 				if (substr($feed, 0, 4) != 'http')
 				{
-					$jconfig = JFactory::getConfig();
-					$live_site = rtrim(JURI::base(), '/');
+					$jconfig = \JFactory::getConfig();
+					$live_site = rtrim(\JURI::base(), '/');
 
 					$feed = $live_site . '/' . ltrim($feed, '/');
 				}
@@ -588,7 +595,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 
 		if ($shorten)
 		{
-			$content = \Hubzero\Utility\String::truncate($content, $shorten, $options);
+			$content = String::truncate($content, $shorten, $options);
 		}
 		return $content;
 	}
@@ -603,13 +610,13 @@ class KbModelArticle extends \Hubzero\Base\Model
 	{
 		if ($this->get('voted', -1) == -1)
 		{
-			$juser = ($user_id) ? JUser::getInstance($user_id) : JFactory::getUser();
+			$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
 
 			// See if a person from this IP has already voted in the last week
-			$tbl = new KbTableVote($this->_db);
+			$tbl = new Tables\Vote($this->_db);
 			$this->set(
 				'voted',
-				$tbl->getVote($this->get('id'), $juser->get('id'), JRequest::ip(), 'entry')
+				$tbl->getVote($this->get('id'), $juser->get('id'), \JRequest::ip(), 'entry')
 			);
 		}
 
@@ -627,7 +634,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 	{
 		if (!$this->exists())
 		{
-			$this->setError(JText::_('No record found'));
+			$this->setError(\JText::_('No record found'));
 			return false;
 		}
 
@@ -635,16 +642,16 @@ class KbModelArticle extends \Hubzero\Base\Model
 
 		if ($vote === 0)
 		{
-			$this->setError(JText::_('No vote provided'));
+			$this->setError(\JText::_('No vote provided'));
 			return false;
 		}
 
-		$juser = ($user_id) ? JUser::getInstance($user_id) : JFactory::getUser();
+		$juser = ($user_id) ? \JUser::getInstance($user_id) : \JFactory::getUser();
 
-		$al = new KbTableVote($this->_db);
+		$al = new Tables\Vote($this->_db);
 		$al->object_id = $this->get('id');
 		$al->type      = 'entry';
-		$al->ip        = JRequest::ip();
+		$al->ip        = \JRequest::ip();
 		$al->user_id   = $juser->get('id');
 		$al->vote      = $vote;
 
@@ -678,7 +685,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 
 		if ($this->get('created_by') == $juser->get('id'))
 		{
-			$this->setError(JText::_('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
+			$this->setError(\JText::_('COM_KB_NOTICE_CANT_VOTE_FOR_OWN'));
 			return false;
 		}
 
@@ -773,7 +780,7 @@ class KbModelArticle extends \Hubzero\Base\Model
 		$this->tag('');
 
 		// Remove vote logs
-		$tbl = new KbTableVote($this->_db);
+		$tbl = new Tables\Vote($this->_db);
 		if (!$tbl->deleteVote($this->get('id'), null, null, 'entry'))
 		{
 			$this->setError($tbl->getError());
@@ -807,9 +814,9 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 */
 	public function category()
 	{
-		if (!($this->_category instanceof KbModelCategory))
+		if (!($this->_category instanceof Category))
 		{
-			$this->_category = KbModelCategory::getInstance($this->get('category'));
+			$this->_category = Category::getInstance($this->get('category'));
 		}
 		return $this->_category;
 	}
@@ -821,9 +828,9 @@ class KbModelArticle extends \Hubzero\Base\Model
 	 */
 	public function section()
 	{
-		if (!($this->_section instanceof KbModelCategory))
+		if (!($this->_section instanceof Category))
 		{
-			$this->_section = KbModelCategory::getInstance($this->get('section'));
+			$this->_section = Category::getInstance($this->get('section'));
 		}
 		return $this->_section;
 	}

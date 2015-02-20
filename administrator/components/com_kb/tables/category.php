@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb\Tables;
 
 /**
  * Table class for knowledge base categories
  */
-class KbTableCategory extends JTable
+class Category extends \JTable
 {
 	/**
 	 * Constructor
@@ -57,8 +56,7 @@ class KbTableCategory extends JTable
 		$this->title = trim($this->title);
 		if ($this->title == '')
 		{
-			$this->setError(JText::_('COM_KB_ERROR_EMPTY_TITLE'));
-			return false;
+			$this->setError(\JText::_('COM_KB_ERROR_EMPTY_TITLE'));
 		}
 
 		if (!$this->alias)
@@ -77,12 +75,16 @@ class KbTableCategory extends JTable
 			$this->_db->setQuery("SELECT COUNT(*) FROM `#__faq` WHERE `section`=" . $this->_db->quote($this->section) . " AND `alias`=" . $this->_db->quote($this->alias));
 			if ($result = $this->_db->loadResult())
 			{
-				$this->setError(JText::_('COM_KB_ERROR_ALIAS_IN_USE'));
-				return false;
+				$this->setError(\JText::_('COM_KB_ERROR_ALIAS_IN_USE'));
 			}
 		}
 
 		$this->access = intval($this->access);
+
+		if ($this->getError())
+		{
+			return false;
+		}
 
 		return true;
 	}

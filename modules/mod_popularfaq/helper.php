@@ -31,7 +31,7 @@
 namespace Modules\PopularFaq;
 
 use Hubzero\Module\Module;
-use KbModelArchive;
+use Components\Kb\Models\Archive;
 use JFactory;
 
 /**
@@ -48,7 +48,7 @@ class Helper extends Module
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'archive.php');
 
-		$a = new KbModelArchive();
+		$a = new Archive();
 		$this->rows = $a->articles(
 			'popular',
 			array('limit' => intval($this->params->get('limit', 5)))

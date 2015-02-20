@@ -148,9 +148,9 @@ class KbRouter extends \Hubzero\Component\Router\Base
 
 				include_once(JPATH_ROOT . DS . 'components' . DS . 'com_kb' . DS . 'models' . DS . 'archive.php');
 
-				$db = JFactory::getDBO();
+				$db = \JFactory::getDBO();
 
-				$category = new KbTableCategory($db);
+				$category = new \Components\Kb\Tables\Category($db);
 				$category->loadAlias($title2);
 
 				if ($category->id)
@@ -173,7 +173,7 @@ class KbRouter extends \Hubzero\Component\Router\Base
 					return $vars;
 				}
 
-				$article = new KbTableArticle($db);
+				$article = new \Components\Kb\Tables\Article($db);
 				$article->loadAlias($title2, $category->id);
 
 				if ($article->id)

@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,26 +24,32 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb\Controllers;
+
+use Components\Kb\Models\Archive;
+use Components\Kb\Models\Category;
+use Components\Kb\Models\Article;
+use Components\Kb\Models\Comment;
+use Hubzero\Component\SiteController;
+use Exception;
 
 /**
  * Knowledge Base controller
  */
-class KbControllerArticles extends \Hubzero\Component\SiteController
+class Articles extends SiteController
 {
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
-		$this->archive = new KbModelArchive();
+		$this->archive = new Archive();
 
 		parent::execute();
 	}
@@ -63,7 +69,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 
 		// Output HTML
 		$this->view->database = $this->database;
-		$this->view->title    = JText::_('COM_KB');
+		$this->view->title    = \JText::_('COM_KB');
 		$this->view->catid    = 0;
 		$this->view->config   = $this->config;
 		$this->view->archive  = $this->archive;
@@ -76,12 +82,12 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	/**
 	 * Displays a list of articles for a given category
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function categoryTask()
 	{
 		// Make sure we have an ID
-		if (!($alias = JRequest::getVar('alias', '')))
+		if (!($alias = \JRequest::getVar('alias', '')))
 		{
 			$this->displayTask();
 			return;
@@ -91,12 +97,12 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		$sect = -1;
 		$cat  = -1;
 
-		$this->view->category = new KbModelCategory($alias);
-		$this->view->section  = new KbModelCategory($this->view->category->get('section'));
+		$this->view->category = new Category($alias);
+		$this->view->section  = new Category($this->view->category->get('section'));
 		if ($alias == 'all')
 		{
 			$this->view->category->set('alias', 'all');
-			$this->view->category->set('title', JText::_('COM_KB_ALL_ARTICLES'));
+			$this->view->category->set('title', \JText::_('COM_KB_ALL_ARTICLES'));
 			$this->view->category->set('id', 0);
 			$this->view->category->set('state', 1);
 		}
@@ -117,20 +123,19 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 
 		if (!$this->view->category->isPublished())
 		{
-			JError::raiseError(404, JText::_('COM_KB_ERROR_CATEGORY_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_KB_ERROR_CATEGORY_NOT_FOUND'), 404);
 		}
 
 		// Get configuration
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		$this->view->filters = array(
-			'limit'    => JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
-			'start'    => JRequest::getInt('limitstart', 0),
-			'sort'     => JRequest::getWord('sort', 'recent'),
+			'limit'    => \JRequest::getInt('limit', $jconfig->getValue('config.list_limit')),
+			'start'    => \JRequest::getInt('limitstart', 0),
+			'sort'     => \JRequest::getWord('sort', 'recent'),
 			'section'  => $sect,
 			'category' => $cat,
-			'search'   => JRequest::getVar('search',''),
+			'search'   => \JRequest::getVar('search',''),
 			'state'    => 1,
 			'access'   => $this->juser->getAuthorisedViewLevels()
 		);
@@ -150,14 +155,6 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		// Get the records
 		$this->view->articles = $this->view->category->articles('list', $this->view->filters);
 
-		// Initiate paging
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
-
 		// Get all main categories for menu
 		$this->view->categories = $this->archive->categories();
 
@@ -168,7 +165,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		$this->_buildTitle($this->view->section, $this->view->category, null);
 
 		// Output HTML
-		$this->view->title  = JText::_('COM_KB');
+		$this->view->title  = \JText::_('COM_KB');
 		$this->view->catid  = $sect;
 		$this->view->config = $this->config;
 		$this->view->juser  = $this->juser;
@@ -186,27 +183,25 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	/**
 	 * Displays a knowledge base article
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function articleTask()
 	{
 		// Incoming
-		$alias = JRequest::getVar('alias', '');
-		$id    = JRequest::getInt('id', 0);
+		$alias = \JRequest::getVar('alias', '');
+		$id    = \JRequest::getInt('id', 0);
 
 		// Load the article
-		$this->view->article = new KbModelArticle(($alias ? $alias : $id), JRequest::getVar('category'));
+		$this->view->article = new Article(($alias ? $alias : $id), \JRequest::getVar('category'));
 
 		if (!$this->view->article->exists())
 		{
-			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		if (!$this->view->article->isPublished())
 		{
-			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		// Is the user logged in?
@@ -223,23 +218,21 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		}
 		else
 		{*/
-			$this->view->vote = strtolower(JRequest::getVar('vote', ''));
+			$this->view->vote = strtolower(\JRequest::getVar('vote', ''));
 		//}
 
 		// Load the category object
-		$this->view->section = new KbModelCategory($this->view->article->get('section'));
+		$this->view->section = new Category($this->view->article->get('section'));
 		if (!$this->view->section->isPublished())
 		{
-			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		// Load the category object
 		$this->view->category = $this->view->article->category();
 		if ($this->view->category->exists() && !$this->view->category->isPublished())
 		{
-			JError::raiseError(404, JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'));
-			return;
+			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		// Get all main categories for menu
@@ -247,7 +240,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 
 		$this->view->subcategories = $this->view->section->children('list');
 
-		$this->view->replyto = new KbModelComment(JRequest::getInt('reply', 0));
+		$this->view->replyto = new Comment(\JRequest::getInt('reply', 0));
 
 		// Set the pathway
 		$this->_buildPathway($this->view->section, $this->view->category, $this->view->article);
@@ -256,7 +249,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		$this->_buildTitle($this->view->section, $this->view->category, $this->view->article);
 
 		// Output HTML
-		$this->view->title   = JText::_('COM_KB');
+		$this->view->title   = \JText::_('COM_KB');
 		$this->view->juser   = $this->juser;
 		$this->view->helpful = $this->helpful;
 		$this->view->catid   = $this->view->section->get('id');
@@ -281,13 +274,12 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway($section=null, $category=null, $article=null)
 	{
-		$app = JFactory::getApplication();
-		$pathway = $app->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -335,7 +327,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle($section=null, $category=null, $article=null)
 	{
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = \JText::_(strtoupper($this->_option));
 		if (is_object($section) && $section->get('title') != '')
 		{
 			$this->_title .= ': ' . stripslashes($section->get('title'));
@@ -348,7 +340,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		{
 			$this->_title .= ': ' . stripslashes($article->get('title'));
 		}
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->_title);
 	}
 
@@ -363,23 +355,23 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$return = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
+			$return = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
 
 		// Incoming
-		$type = strtolower(JRequest::getVar('type', ''));
-		$vote = strtolower(JRequest::getVar('vote', ''));
-		$id   = JRequest::getInt('id', 0);
+		$type = strtolower(\JRequest::getVar('type', ''));
+		$vote = strtolower(\JRequest::getVar('vote', ''));
+		$id   = \JRequest::getInt('id', 0);
 
 		// Did they vote?
 		if (!$vote)
 		{
 			// Already voted
-			$this->setError(JText::_('COM_KB_USER_DIDNT_VOTE'));
+			$this->setError(\JText::_('COM_KB_USER_DIDNT_VOTE'));
 			$this->articleTask();
 			return;
 		}
@@ -387,7 +379,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		if (!in_array($type, array('entry', 'comment')))
 		{
 			// Already voted
-			$this->setError(JText::_('COM_KB_WRONG_VOTE_TYPE'));
+			$this->setError(\JText::_('COM_KB_WRONG_VOTE_TYPE'));
 			$this->displayTask();
 			return;
 		}
@@ -396,10 +388,10 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		switch ($type)
 		{
 			case 'entry':
-				$row = new KbModelArticle($id);
+				$row = new Article($id);
 			break;
 			case 'comment':
-				$row = new KbModelComment($id);
+				$row = new Comment($id);
 			break;
 		}
 
@@ -408,7 +400,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 			$this->setError($row->getError());
 		}
 
-		if (JRequest::getInt('no_html', 0))
+		if (\JRequest::getInt('no_html', 0))
 		{
 			$this->view->item = $row;
 			$this->view->type = $type;
@@ -424,9 +416,8 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		{
 			if ($type == 'entry')
 			{
-				//JRequest::setVar('alias', $row->get('alias'));
 				$this->setRedirect(
-					JRoute::_($row->link())
+					\JRoute::_($row->link())
 				);
 				return;
 			}
@@ -445,21 +436,21 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		// Ensure the user is logged in
 		if ($this->juser->get('guest'))
 		{
-			$return = JRequest::getVar('REQUEST_URI', JRoute::_('index.php?option=' . $this->_option), 'server');
+			$return = \JRequest::getVar('REQUEST_URI', \JRoute::_('index.php?option=' . $this->_option), 'server');
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($return))
 			);
 			return;
 		}
 
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$comment = JRequest::getVar('comment', array(), 'post', 'none', 2);
+		$comment = \JRequest::getVar('comment', array(), 'post', 'none', 2);
 
 		// Instantiate a new comment object and pass it the data
-		$row = new KbModelComment($comment['id']);
+		$row = new Comment($comment['id']);
 		if (!$row->bind($comment))
 		{
 			$this->setError($row->getError());
@@ -476,7 +467,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		}
 
 		$this->setRedirect(
-			JRoute::_($row->link() . '#comments')
+			\JRoute::_($row->link() . '#comments')
 		);
 	}
 
@@ -495,37 +486,37 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		}
 
 		// Incoming
-		$alias = JRequest::getVar('alias', '');
-		$id    = JRequest::getInt('id', 0);
+		$alias = \JRequest::getVar('alias', '');
+		$id    = \JRequest::getInt('id', 0);
 
 		// Load the article
-		$category = new KbModelCategory(JRequest::getVar('category'));
+		$category = new Category(\JRequest::getVar('category'));
 
-		$article = new KbModelArticle(($alias ? $alias : $id), $category->get('id'));
+		$article = new Article(($alias ? $alias : $id), $category->get('id'));
 		if (!$article->exists())
 		{
-			throw new JException(JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
+			throw new Exception(\JText::_('COM_KB_ERROR_ARTICLE_NOT_FOUND'), 404);
 		}
 
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
 		// Set the mime encoding for the document
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
 
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		// Start a new feed object
-		$feed = new JDocumentFeed;
-		$feed->link = JRoute::_($article->link());
+		$feed = new \JDocumentFeed;
+		$feed->link = \JRoute::_($article->link());
 
 		// Build some basic RSS document information
-		$feed->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_(strtoupper($this->_option));
+		$feed->title  = $jconfig->getValue('config.sitename') . ' - ' . \JText::_(strtoupper($this->_option));
 		$feed->title .= ($article->get('title')) ? ': ' . stripslashes($article->get('title')) : '';
-		$feed->title .= ': ' . JText::_('COM_KB_COMMENTS');
+		$feed->title .= ': ' . \JText::_('COM_KB_COMMENTS');
 
-		$feed->description = JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($article->get('title')));
-		$feed->copyright   = JText::sprintf('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
+		$feed->description = \JText::sprintf('COM_KB_COMMENTS_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'), stripslashes($article->get('title')));
+		$feed->copyright   = \JText::sprintf('COM_KB_COMMENTS_RSS_COPYRIGHT', gmdate("Y"), $jconfig->getValue('config.sitename'));
 
 		// Start outputing results if any found
 		$feed = $this->_feedItem($feed, $article->comments('list'));
@@ -547,16 +538,16 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 		foreach ($comments as $comment)
 		{
 			// Load individual item creator class
-			$item = new JFeedItem();
+			$item = new \JFeedItem();
 
-			$item->author = JText::_('COM_KB_ANONYMOUS');
+			$item->author = \JText::_('COM_KB_ANONYMOUS');
 			if (!$comment->get('anonymous'))
 			{
 				$item->author = $comment->creator('name', $item->author);
 			}
 
 			// Prepare the title
-			$item->title = JText::sprintf('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author) . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
+			$item->title = \JText::sprintf('COM_KB_COMMENTS_RSS_COMMENT_TITLE', $item->author) . ' @ ' . $comment->created('time') . ' on ' . $comment->created('date');
 
 			// URL link to article
 			$item->link = $feed->link . '#c' . $comment->get('id');
@@ -564,7 +555,7 @@ class KbControllerArticles extends \Hubzero\Component\SiteController
 			// Strip html from feed item description text
 			if ($comment->isReported())
 			{
-				$item->description = JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
+				$item->description = \JText::_('COM_KB_COMMENT_REPORTED_AS_ABUSIVE');
 			}
 			else
 			{

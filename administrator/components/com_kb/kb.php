@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,44 +24,41 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Kb;
 
-$option = 'com_kb';
-
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_kb'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	throw new \Exception(\JText::_('JERROR_ALERTNOAUTHOR'), 403);
 }
 
 // Include scripts
 require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'archive.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'html.php');
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'html.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = JRequest::getCmd('controller', 'categories');
-if (!file_exists(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', 'categories');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'categories';
 }
 
-JSubMenuHelper::addEntry(
-	JText::_('COM_KB_CATEGORIES'),
-	'index.php?option=com_kb&id=0',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_KB_CATEGORIES'),
+	\JRoute::_('index.php?option=com_kb&id=0', false),
 	$controllerName == 'categories'
 );
-JSubMenuHelper::addEntry(
-	JText::_('COM_KB_ARTICLES'),
-	'index.php?option=com_kb&controller=articles&id=0',
+\JSubMenuHelper::addEntry(
+	\JText::_('COM_KB_ARTICLES'),
+	\JRoute::_('index.php?option=com_kb&controller=articles&id=0', false),
 	$controllerName == 'articles'
 );
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'KbController' . ucfirst($controllerName);
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 
 // Instantiate controller
 $controller = new $controllerName();
