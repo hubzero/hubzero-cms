@@ -7,6 +7,16 @@ use DateTime;
 use RuntimeException;
 use InvalidArgumentException;
 
+require_once(__DIR__ . DS . 'FieldInterface.php');
+require_once(__DIR__ . DS . 'AbstractField.php');
+require_once(__DIR__ . DS . 'DayOfMonthField.php');
+require_once(__DIR__ . DS . 'DayOfWeekField.php');
+require_once(__DIR__ . DS . 'FieldFactory.php');
+require_once(__DIR__ . DS . 'HoursField.php');
+require_once(__DIR__ . DS . 'MinutesField.php');
+require_once(__DIR__ . DS . 'MonthField.php');
+require_once(__DIR__ . DS . 'YearField.php');
+
 /**
  * CRON expression parser that can determine whether or not a CRON expression is
  * due to run, the next run date and previous run date of a CRON expression.

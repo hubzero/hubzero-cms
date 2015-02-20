@@ -89,10 +89,10 @@ class plgCronCache extends JPlugin
 	/**
 	 * Trash all expired cache data
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function trashExpiredData(CronModelJob $job)
+	public function trashExpiredData(\Components\Cron\Models\Job $job)
 	{
 		if (!is_dir($this->_path))
 		{
@@ -108,10 +108,10 @@ class plgCronCache extends JPlugin
 	/**
 	 * Clean out old system CSS files
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function cleanSystemCss(CronModelJob $job)
+	public function cleanSystemCss(\Components\Cron\Models\Job $job)
 	{
 		if (!is_dir($this->_path))
 		{

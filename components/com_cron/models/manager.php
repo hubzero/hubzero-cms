@@ -28,58 +28,65 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Cron\Models;
+
+use Components\Cron\Models\Job;
+use Components\Cron\Tables\Job as Table;
+use Hubzero\Base\ItemList;
+use Hubzero\Base\Model;
 
 require_once(__DIR__ . '/job.php');
 
 /**
  * Table class for cron jobs
  */
-class CronModelJobs extends \Hubzero\Base\Model
+class Manager extends Model
 {
 	/**
-	 * CronModelJob
+	 * Job
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_job = null;
 
 	/**
 	 * Record count for total number of jobs
 	 *
-	 * @var integer
+	 * @var  integer
 	 */
 	private $_jobs_count = null;
 
 	/**
-	 * \Hubzero\Base\ItemList
+	 * ItemList
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_jobs = null;
 
 	/**
 	 * Constructor
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function __construct()
 	{
-		$this->_db = JFactory::getDBO();
-		$this->_tbl = new CronTableJob($this->_db);
+		$this->_db  = \JFactory::getDBO();
+		$this->_tbl = new Table($this->_db);
 	}
 
 	/**
 	 * Returns a reference to a cron Jobs model
 	 *
-	 * @return     object CronModelJobs
+	 * @return  object
 	 */
 	static function &getInstance()
 	{
 		static $instance;
 
-		$instance = new CronModelJobs();
+		if (!isset($instance))
+		{
+			$instance = new self();
+		}
 
 		return $instance;
 	}
@@ -87,8 +94,8 @@ class CronModelJobs extends \Hubzero\Base\Model
 	/**
 	 * Set and get a specific job
 	 *
-	 * @param      integer $id Record ID
-	 * @return     object CronModelJob
+	 * @param   integer  $id  Record ID
+	 * @return  object   Job
 	 */
 	public function job($id=null)
 	{
@@ -101,7 +108,7 @@ class CronModelJobs extends \Hubzero\Base\Model
 			$this->_job = null;
 
 			// If the list of all jobs is available ...
-			if ($this->_jobs instanceof \Hubzero\Base\ItemList)
+			if ($this->_jobs instanceof ItemList)
 			{
 				// Find a job in the list that matches the ID passed
 				foreach ($this->jobs() as $job)
@@ -117,7 +124,7 @@ class CronModelJobs extends \Hubzero\Base\Model
 
 			if (!$this->_job)
 			{
-				$this->_job = CronModelJob::getInstance($id);
+				$this->_job = Job::getInstance($id);
 			}
 		}
 		// Return current job
@@ -127,10 +134,10 @@ class CronModelJobs extends \Hubzero\Base\Model
 	/**
 	 * Get a list of jobs
 	 *
-	 * @param      string  $rtrn    What data to fetch
-	 * @param      array   $filters Filters to apply to data fetch
-	 * @param      boolean $clear   Clear cached data?
-	 * @return     mixed
+	 * @param   string   $rtrn     What data to fetch
+	 * @param   array    $filters  Filters to apply to data fetch
+	 * @param   boolean  $clear    Clear cached data?
+	 * @return  mixed
 	 */
 	public function jobs($rtrn='list', $filters=array(), $clear=false)
 	{
@@ -147,14 +154,14 @@ class CronModelJobs extends \Hubzero\Base\Model
 			case 'list':
 			case 'all':
 			default:
-				if (!($this->_jobs instanceof \Hubzero\Base\ItemList) || $clear)
+				if (!($this->_jobs instanceof ItemList) || $clear)
 				{
-					if (($results = $this->_tbl->find($filters)))
+					if ($results = $this->_tbl->find($filters))
 					{
 						// Loop through all the items and turn into models
 						foreach ($results as $key => $result)
 						{
-							$results[$key] = new CronModelJob($result);
+							$results[$key] = new Job($result);
 						}
 					}
 					else
@@ -162,7 +169,7 @@ class CronModelJobs extends \Hubzero\Base\Model
 						$results = array();
 					}
 
-					$this->_jobs = new \Hubzero\Base\ItemList($results);
+					$this->_jobs = new ItemList($results);
 				}
 
 				return $this->_jobs;

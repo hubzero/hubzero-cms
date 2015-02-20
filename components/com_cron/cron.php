@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,27 +23,17 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @author    Shawn Rice <zooley@purdue.edu>
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Cron;
 
-// Include model
-require_once(__DIR__ . DS . 'models' . DS . 'jobs.php');
-
-// Include controller
-$controllerName = JRequest::getCmd('controller', 'jobs');
-if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
-{
-	throw new JException(JText::sprintf('Controller "%s" not found.', $controllerName), 404);
-}
-require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'CronController' . ucfirst(strtolower($controllerName));
+require_once(__DIR__ . DS . 'models' . DS . 'manager.php');
+require_once(__DIR__ . DS . 'controllers' . DS . 'jobs.php');
 
 // Instantiate controller
-$controller = new $controllerName();
+$controller = new \Components\Cron\Controllers\Jobs();
 $controller->execute();
 $controller->redirect();

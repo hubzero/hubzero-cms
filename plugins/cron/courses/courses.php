@@ -68,10 +68,10 @@ class plgCronCourses extends JPlugin
 	/**
 	 * Sync claimed/denied passport badges
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function syncPassportBadgeStatus(CronModelJob $job)
+	public function syncPassportBadgeStatus(\Components\Cron\Models\Job $job)
 	{
 		$params = JComponentHelper::getParams('com_courses');
 
@@ -160,10 +160,10 @@ class plgCronCourses extends JPlugin
 	/**
 	 * Email instructor course digest
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function emailInstructorDigest(CronModelJob $job)
+	public function emailInstructorDigest(\Components\Cron\Models\Job $job)
 	{
 		$lang     = JFactory::getLanguage();
 		$database = JFactory::getDBO();

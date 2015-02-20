@@ -69,10 +69,10 @@ class plgCronNewsletter extends JPlugin
 	/**
 	 * Processes any queued newsletter mailings.
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function processMailings(CronModelJob $job)
+	public function processMailings(\Components\Cron\Models\Job $job)
 	{
 		// load needed libraries
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.php';
@@ -197,10 +197,10 @@ class plgCronNewsletter extends JPlugin
 	/**
 	 * Processes newsletter mailing actions (clicks, opens, etc) IP addresses into location data for stats
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function processIps(CronModelJob $job)
+	public function processIps(\Components\Cron\Models\Job $job)
 	{
 		// load needed libraries
 		require_once JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_newsletter' . DS . 'tables' . DS . 'mailing.recipient.action.php';

@@ -79,10 +79,10 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Close tickets in a pending state for a specific amount of time
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function cleanTempUploads(CronModelJob $job)
+	public function cleanTempUploads(\Components\Cron\Models\Job $job)
 	{
 		$params = $job->get('params');
 
@@ -119,10 +119,10 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Close tickets in a pending state for a specific amount of time
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function onClosePending(CronModelJob $job)
+	public function onClosePending(\Components\Cron\Models\Job $job)
 	{
 		$params = $job->get('params');
 
@@ -469,10 +469,10 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Send emails reminding people of their open tickets
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function sendTicketsReminder(CronModelJob $job)
+	public function sendTicketsReminder(\Components\Cron\Models\Job $job)
 	{
 		$params = $job->get('params');
 
@@ -622,10 +622,10 @@ class plgCronSupport extends JPlugin
 	/**
 	 * Send emails reminding people of their open tickets
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function sendTicketList(CronModelJob $job)
+	public function sendTicketList(\Components\Cron\Models\Job $job)
 	{
 		$params = $job->get('params');
 

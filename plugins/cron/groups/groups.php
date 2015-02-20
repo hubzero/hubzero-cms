@@ -68,10 +68,10 @@ class plgCronGroups extends JPlugin
 	/**
 	 * Remove unused group folders
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function cleanGroupFolders(CronModelJob $job)
+	public function cleanGroupFolders(\Components\Cron\Models\Job $job)
 	{
 		// include needed libraries
 		jimport('joomla.filesystem.folder');
@@ -107,10 +107,10 @@ class plgCronGroups extends JPlugin
 	/**
 	 * Send scheduled group announcements
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function sendGroupAnnouncements(CronModelJob $job)
+	public function sendGroupAnnouncements(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
 

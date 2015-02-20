@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2013 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,73 +24,68 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2013 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Cron\Models;
+
+use Components\Cron\Models\Expression;
+use Components\Cron\Tables\Job as Table;
+use Hubzero\Base\ItemList;
+use Hubzero\Base\Model;
+use Hubzero\User\Profile;
 
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'tables' . DS . 'job.php');
-
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'FieldInterface.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'AbstractField.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'DayOfMonthField.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'DayOfWeekField.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'FieldFactory.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'HoursField.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'MinutesField.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'MonthField.php');
-require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'YearField.php');
 require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_cron' . DS . 'helpers' . DS . 'Cron' . DS . 'CronExpression.php');
 
 /**
  * Table class for a cron job model
  */
-class CronModelJob extends \Hubzero\Base\Model
+class Job extends Model
 {
 	/**
 	 * Table class name
 	 *
-	 * @var string
+	 * @var  string
 	 */
-	protected $_tbl_name = 'CronTableJob';
+	protected $_tbl_name = 'Components\\Cron\\Tables\\Job';
 
 	/**
 	 * Cron expression
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_expression = NULL;
 
 	/**
 	 * JProfiler
 	 *
-	 * @var object
+	 * @var  object
 	 */
 	private $_profiler = NULL;
 
 	/**
 	 * Constructor
 	 *
-	 * @param      integer $id Record ID, array, or object
-	 * @return     void
+	 * @param   integer  $id  Record ID, array, or object
+	 * @return  void
 	 */
 	public function __construct($oid=null)
 	{
 		parent::__construct($oid);
 
-		$this->set('params', new JRegistry($this->get('params')));
+		$this->set('params', new \JRegistry($this->get('params')));
 
 		jimport('joomla.error.profiler');
-		$this->_profiler = new JProfiler('cron_job_' . $this->get('id'));
+		$this->_profiler = new \JProfiler('cron_job_' . $this->get('id'));
 	}
 
 	/**
-	 * Returns a reference to a CronModelJob
+	 * Returns a reference to this object
 	 *
-	 * @param      integer $oid Record ID
-	 * @return     object CronModelJob
+	 * @param   integer  $oid  Record ID
+	 * @return  object
 	 */
 	static function &getInstance($oid=null)
 	{
@@ -103,7 +98,7 @@ class CronModelJob extends \Hubzero\Base\Model
 
 		if (!isset($instances[$oid]))
 		{
-			$instances[$oid] = new CronModelJob($oid);
+			$instances[$oid] = new self($oid);
 		}
 
 		return $instances[$oid];
@@ -116,18 +111,18 @@ class CronModelJob extends \Hubzero\Base\Model
 	 * it will return that property value. Otherwise,
 	 * it returns the entire object
 	 *
-	 * @param      string $property Property to retrieve
-	 * @param      mixed  $default  Default value if property not set
-	 * @return     mixed
+	 * @param   string  $property Property to retrieve
+	 * @param   mixed   $default   Default value if property not set
+	 * @return  mixed
 	 */
 	public function creator($property=null, $default=null)
 	{
-		if (!($this->_creator instanceof \Hubzero\User\Profile))
+		if (!($this->_creator instanceof Profile))
 		{
-			$this->_creator = \Hubzero\User\Profile::getInstance($this->get('created_by'));
+			$this->_creator = Profile::getInstance($this->get('created_by'));
 			if (!$this->_creator)
 			{
-				$this->_creator = new \Hubzero\User\Profile();
+				$this->_creator = new Profile();
 			}
 		}
 		if ($property)
@@ -141,8 +136,8 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Store the record in the database
 	 *
-	 * @param     boolean $check Perform data validation?
-	 * @return    boolean True on success, False on error
+	 * @param   boolean  $check  Perform data validation?
+	 * @return  boolean  True on success, False on error
 	 */
 	public function store($check=true)
 	{
@@ -165,13 +160,13 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Get a cron expression
 	 *
-	 * @return     object
+	 * @return  object
 	 */
 	public function expression()
 	{
-		if (!($this->_expression instanceof Cron\CronExpression))
+		if (!($this->_expression instanceof \Cron\CronExpression))
 		{
-			$this->_expression = Cron\CronExpression::factory($this->get('recurrence'));
+			$this->_expression = \Cron\CronExpression::factory($this->get('recurrence'));
 		}
 		return $this->_expression;
 	}
@@ -179,7 +174,7 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Check if the job is available
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function isAvailable()
 	{
@@ -201,7 +196,7 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Has the job started?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function started()
 	{
@@ -225,7 +220,7 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Has the job ended?
 	 *
-	 * @return     boolean
+	 * @return  boolean
 	 */
 	public function ended()
 	{
@@ -249,7 +244,7 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Get the last run timestamp
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function lastRun($format='Y-m-d H:i:s')
 	{
@@ -259,7 +254,7 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Get the next run timestamp
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function nextRun($format='Y-m-d H:i:s')
 	{
@@ -269,8 +264,8 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Mark a time
 	 *
-	 * @param      string $label
-	 * @return     boolean
+	 * @param   string   $label
+	 * @return  boolean
 	 */
 	public function mark($label)
 	{
@@ -293,7 +288,7 @@ class CronModelJob extends \Hubzero\Base\Model
 	/**
 	 * Return data about this job, icluding profile info as an array
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	public function toArray()
 	{

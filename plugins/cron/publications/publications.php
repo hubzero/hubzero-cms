@@ -74,10 +74,10 @@ class plgCronPublications extends JPlugin
 	/**
 	 * Send emails to authors with the monthly stats
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function sendAuthorStats(CronModelJob $job)
+	public function sendAuthorStats(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
@@ -225,10 +225,10 @@ class plgCronPublications extends JPlugin
 	/**
 	 * Compute unique user stats from text logs
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function rollUserStats(CronModelJob $job)
+	public function rollUserStats(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
 		$pconfig = JComponentHelper::getParams('com_publications');
@@ -267,10 +267,10 @@ class plgCronPublications extends JPlugin
 	/**
 	 * Archive publications beyond grace period
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function runMkAip(CronModelJob $job)
+	public function runMkAip(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
 		$config = JComponentHelper::getParams('com_publications');

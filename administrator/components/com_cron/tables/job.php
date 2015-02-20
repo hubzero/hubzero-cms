@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,142 +24,22 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Cron\Tables;
 
 /**
  * CRON table class for jobs
  */
-class CronTableJob extends JTable
+class Job extends \JTable
 {
-	/**
-	 * int(11) Primary key
-	 *
-	 * @var integer
-	 */
-	var $id           = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $title        = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $state        = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $plugin       = NULL;
-
-	/**
-	 * varchar(255)
-	 *
-	 * @var string
-	 */
-	var $event        = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $last_run     = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $next_run     = NULL;
-
-	/**
-	 * varchar(50)
-	 *
-	 * @var string
-	 */
-	var $recurrence   = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $created      = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $created_by   = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $modified     = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $modified_by  = NULL;
-
-	/**
-	 * int(3)
-	 *
-	 * @var integer
-	 */
-	var $active       = NULL;
-
-	/**
-	 * int(11)
-	 *
-	 * @var integer
-	 */
-	var $ordering     = NULL;
-
-	/**
-	 * text
-	 *
-	 * @var string
-	 */
-	var $params     = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_up     = NULL;
-
-	/**
-	 * datetime(0000-00-00 00:00:00)
-	 *
-	 * @var string
-	 */
-	var $publish_down     = NULL;
-
 	/**
 	 * Constructor
 	 *
-	 * @param      object &$db JDatabase
-	 * @return     void
+	 * @param   object  &$db  JDatabase
+	 * @return  void
 	 */
 	public function __construct(&$db)
 	{
@@ -169,19 +49,19 @@ class CronTableJob extends JTable
 	/**
 	 * Validate data
 	 *
-	 * @return     boolean True if data is valid
+	 * @return  boolean  True if data is valid
 	 */
 	public function check()
 	{
 		if (trim($this->title) == '')
 		{
-			$this->setError(JText::_('COM_CRON_ERROR_EMPTY_TITLE'));
+			$this->setError(\JText::_('COM_CRON_ERROR_EMPTY_TITLE'));
 			return false;
 		}
 
 		if (!$this->recurrence)
 		{
-			$this->setError(JText::_('COM_CRON_ERROR_EMPTY_RECURRENCE'));
+			$this->setError(\JText::_('COM_CRON_ERROR_EMPTY_RECURRENCE'));
 			return false;
 		}
 
@@ -189,7 +69,7 @@ class CronTableJob extends JTable
 
 		if (preg_match('/[^-,*\/ \\d]/', $this->recurrence) !== 0)
 		{
-			$this->setError(JText::_('Cron String contains invalid character.'));
+			$this->setError(\JText::_('Cron String contains invalid character.'));
 			return false;
 		}
 
@@ -201,26 +81,26 @@ class CronTableJob extends JTable
 		}
 		if (!$this->event)
 		{
-			$this->setError(JText::_('Missing plugin.'));
+			$this->setError(\JText::_('Missing plugin.'));
 			return false;
 		}
 
 		$bits = @explode(' ', $this->recurrence);
 		if (count($bits) != 5)
 		{
-			$this->setError(JText::_('Cron string is invalid. Too many or too little sections.'));
+			$this->setError(\JText::_('Cron string is invalid. Too many or too little sections.'));
 			return false;
 		}
 
-		$juser = JFactory::getUser();
+		$juser = \JFactory::getUser();
 		if (!$this->id)
 		{
-			$this->created = JFactory::getDate()->toSql();
+			$this->created = \JFactory::getDate()->toSql();
 			$this->created_by = $juser->get('id');
 		}
 		else
 		{
-			$this->modified = JFactory::getDate()->toSql();
+			$this->modified = \JFactory::getDate()->toSql();
 			$this->modified_by = $juser->get('id');
 		}
 
@@ -240,8 +120,8 @@ class CronTableJob extends JTable
 	/**
 	 * Build a query
 	 *
-	 * @param      array $filters Parameters to build query from
-	 * @return     string SQL
+	 * @param   array   $filters  Parameters to build query from
+	 * @return  string  SQL
 	 */
 	private function _buildQuery($filters=array())
 	{
@@ -265,7 +145,7 @@ class CronTableJob extends JTable
 
 		if (isset($filters['available']) && $filters['available'])
 		{
-			$now = JFactory::getDate()->toSql();
+			$now = \JFactory::getDate()->toSql();
 
 			$where[] = "(c.publish_up = '0000-00-00 00:00:00' OR c.publish_up <= " . $this->_db->Quote($now) . ")";
 			$where[] = "(c.publish_down = '0000-00-00 00:00:00' OR c.publish_down > " . $this->_db->Quote($now) . ")";

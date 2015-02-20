@@ -74,10 +74,10 @@ class plgCronProjects extends JPlugin
 	/**
 	 * Compute and log overall projects usage stats
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function computeStats(CronModelJob $job)
+	public function computeStats(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
@@ -122,10 +122,10 @@ class plgCronProjects extends JPlugin
 	/**
 	 * Auto sync project repositories connected with GDrive
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function googleSync(CronModelJob $job)
+	public function googleSync(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();
@@ -202,10 +202,10 @@ class plgCronProjects extends JPlugin
 	/**
 	 * Optimize project repos
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function gitGc(CronModelJob $job)
+	public function gitGc(\Components\Cron\Models\Job $job)
 	{
 		$database = JFactory::getDBO();
 		$juri = JURI::getInstance();

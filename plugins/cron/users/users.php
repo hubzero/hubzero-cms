@@ -63,10 +63,10 @@ class plgCronUsers extends JPlugin
 	/**
 	 * Remove user accounts with negative, numeric, usernames
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function cleanAuthTempAccounts(CronModelJob $job)
+	public function cleanAuthTempAccounts(\Components\Cron\Models\Job $job)
 	{
 		$db = JFactory::getDBO();
 

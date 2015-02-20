@@ -63,10 +63,10 @@ class plgCronMembers extends JPlugin
 	/**
 	 * Calculate point royalties for members
 	 *
-	 * @param   object   $job  CronModelJob
+	 * @param   object   $job  \Components\Cron\Models\Job
 	 * @return  boolean
 	 */
-	public function onPointRoyalties(CronModelJob $job)
+	public function onPointRoyalties(\Components\Cron\Models\Job $job)
 	{
 		/*
 		jimport('joomla.error.profiler');
