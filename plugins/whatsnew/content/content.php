@@ -110,48 +110,26 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 			{
 				foreach ($rows as $key => $row)
 				{
-					/*$database->setQuery("SELECT alias, parent FROM `#__menu` WHERE link='index.php?option=com_content&view=article&id=" . $database->quote($row->id) . "' AND published=1 LIMIT 1");
-					$menuitem = $database->loadRow();
-					if ($menuitem[1])
-					{
-						$p = $this->_recursiveMenuLookup($menuitem[1]);
-						$path = implode(DS, $p);
-						if ($menuitem[0])
-						{
-							$path .= DS . $menuitem[0];
-						}
-						else if ($row->alias)
-						{
-							$path .= DS . $row->alias;
-						}
-					}
-					else if ($menuitem[0])
-					{
-						$path = DS . $menuitem[0];
-					}
-					else
-					{
-						$path = '';
-						if ($row->fsection)
-						{
-							$path .= DS . $row->fsection;
-						}
-						if ($row->category && $row->category != $row->fsection)
-						{
-							$path .= DS . $row->category;
-						}
-						if ($row->alias)
-						{
-							$path .= DS . $row->alias;
-						}
-						if (!$path)
-						{
-							$path = '/content/article/' . $row->id;
-						}
-					}*/
-
 					$path = JRoute::_($row->href);
 
+					preg_match_all("/\{xhub:\s*[^\}]*\}/i", $rows[$key]->text, $matches, PREG_SET_ORDER);
+					if ($matches)
+					{
+						foreach ($matches as $match)
+						{
+							if (preg_match("/\{xhub:\s*([^\s]+)\s*(.*)/i", $match[0], $tag))
+							{
+								switch (strtolower(trim($tag[1])))
+								{
+									case 'include':
+										$rows[$key]->text = str_replace($match[0], '', $rows[$key]->text);
+									break;
+								}
+							}
+						}
+					}
+
+					$rows[$key]->text = JHtml::_('content.prepare', $rows[$key]->text, '', 'com_content.article');
 					$rows[$key]->text = strip_tags($row->text);
 					$rows[$key]->href = $path;
 				}
@@ -165,6 +143,39 @@ class plgWhatsnewContent extends \Hubzero\Plugin\Plugin
 			$database->setQuery($c_count . $c_from . " WHERE " . $c_where);
 			return $database->loadResult();
 		}
+	}
+
+	/**
+	 * Special formatting for results
+	 * 
+	 * @param      object $row    Database row
+	 * @param      string $period Time period
+	 * @return     string
+	 */
+	public static function out($row, $period)
+	{
+		$juri = JURI::getInstance();
+
+		if (strstr($row->href, 'index.php'))
+		{
+			$row->href = JRoute::_($row->href);
+		}
+		if (substr($row->href,0,1) == '/')
+		{
+			$row->href = substr($row->href, 1, strlen($row->href));
+		}
+
+		$html  = "\t" . '<li>' . "\n";
+		$html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . stripslashes($row->title) . '</a></p>' . "\n";
+		if ($row->text)
+		{
+			$html .= "\t\t" . '<p>' . \Hubzero\Utility\String::truncate(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text)), 200) . '</p>' . "\n";
+		}
+		$html .= "\t\t" . '<p class="href">' . $juri->base() . $row->href . '</p>' . "\n";
+		$html .= "\t" . '</li>' . "\n";
+
+		// Return output
+		return $html;
 	}
 
 	/**
