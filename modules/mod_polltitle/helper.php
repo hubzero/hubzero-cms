@@ -32,7 +32,7 @@
 namespace Modules\PollTitle;
 
 use Hubzero\Module\Module;
-use PollModelPoll;
+use Components\Poll\Tables\Poll;
 use JFactory;
 
 /**
@@ -49,7 +49,7 @@ class Helper extends Module
 	{
 		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_poll' . DS . 'models' . DS . 'poll.php');
 
-		$model = new PollModelPoll();
+		$model = new Poll();
 
 		// Load the latest poll
 		$this->poll = $model->getLatest();

@@ -11,6 +11,5 @@
 		<url addpath="/administrator/components/com_poll/elements">
 			<param name="id" type="poll" default="0" label="Poll" description="A poll" />
 		</url>
-		<params />
 	</state>
 </metadata>

@@ -34,6 +34,7 @@ use Components\Poll\Tables\Poll;
 use Hubzero\Component\AdminController;
 use Exception;
 use JPagination;
+use JRoute;
 use JRequest;
 use JFactory;
 use JString;

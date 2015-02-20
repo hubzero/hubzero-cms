@@ -155,7 +155,7 @@ class PollRouter extends \Hubzero\Component\Router\Base
 
 		if ($segments[0] == 'latest')
 		{
-			$vars['view'] = 'latest';
+			$vars['task'] = 'latest';
 			return $vars;
 		}
 
@@ -174,7 +174,7 @@ class PollRouter extends \Hubzero\Component\Router\Base
 
 		// Count route segments
 		$vars['id']   = $segments[$count-1];
-		$vars['view'] = 'poll';
+		$vars['task'] = 'poll';
 
 		return $vars;
 	}

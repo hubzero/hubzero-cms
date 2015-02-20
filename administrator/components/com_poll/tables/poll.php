@@ -142,4 +142,91 @@ class Poll extends \JTable
 
 		return false;
 	}
+
+	/**
+	 * Add vote
+	 *
+	 * @param   integer  $poll_id    The id of the poll
+	 * @param   integer  $option_id  The id of the option selected
+	 * @return  void
+	 */
+	public function vote($poll_id, $option_id)
+	{
+		$poll_id   = (int) $poll_id;
+		$option_id = (int) $option_id;
+
+		$query = 'UPDATE `#__poll_data`'
+			. ' SET hits = hits + 1'
+			. ' WHERE pollid = ' . (int) $poll_id
+			. ' AND id = ' . (int) $option_id
+			;
+		$this->_db->setQuery($query);
+		$this->_db->query();
+
+		$query = 'UPDATE `#__polls`'
+			. ' SET voters = voters + 1'
+			. ' WHERE id = ' . (int) $poll_id
+			;
+		$this->_db->setQuery($query);
+		$this->_db->query();
+
+		$query = 'INSERT INTO `#__poll_date`'
+			. ' SET date = ' . $this->_db->quote(\JFactory::getDate()->toMySQL())
+			. ', vote_id = ' . (int) $option_id
+			. ', poll_id = ' . (int) $poll_id
+		;
+		$this->_db->setQuery($query);
+		$this->_db->query();
+	}
+
+	/**
+	 * Get the latest poll
+	 *
+	 * @return  object
+	 */
+	public function getLatest()
+	{
+		$result = null;
+
+		$query = 'SELECT id'
+			.' FROM `#__polls`'
+			.' WHERE published = 1 AND open = 1 ORDER BY id DESC Limit 1'
+			;
+		$this->_db->setQuery($query);
+		$result = $this->_db->loadResult();
+
+		if ($this->_db->getErrorNum())
+		{
+			$this->setError($this->_db->stderr());
+			return false;
+		}
+
+		$poll = new self($this->_db);
+		$poll->load($result);
+
+		return $poll;
+	}
+
+	/**
+	 * Get options for a poll
+	 *
+	 * @param   integer  $id    The id of the poll
+	 * @return  array
+	 */
+	public function getPollOptions($id)
+	{
+		$query = 'SELECT id, text' .
+			' FROM `#__poll_data`' .
+			' WHERE pollid = ' . (int) $id .
+			' AND text <> ""' .
+			' ORDER BY id';
+		$this->_db->setQuery($query);
+
+		if (!($options = $this->_db->loadObjectList()))
+		{
+			return array();
+		}
+
+		return $options;
+	}
 }

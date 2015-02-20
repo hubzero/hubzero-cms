@@ -28,11 +28,40 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-namespace Components\Poll;
+defined('_JEXEC') or die('Restricted access');
 
-// Require the base controller
-require_once(__DIR__ . DS . 'controllers' . DS . 'polls.php');
+$this->css('poll_bars.css');
+?>
 
-$controller = new Controllers\Polls();
-$controller->execute();
-$controller->redirect();
+<header id="content-header">
+	<h2><?php echo JText::_('COM_POLL'); ?></h2>
+
+	<div id="content-header-extra">
+		<p>
+			<a class="icon-stats btn" href="<?php echo JRoute::_('index.php?option=com_poll&view=latest'); ?>">
+				<?php echo JText::_('COM_POLL_TAKE_LATEST_POLL'); ?>
+			</a>
+		</p>
+	</div><!-- / #content-header-extra -->
+</header><!-- / #content-header -->
+
+<form action="<?php echo JRoute::_('index.php?option=com_poll&view=poll'); ?>" method="post" name="poll" id="poll">
+	<section class="main section">
+		<label for="id">
+			<?php echo JText::_('COM_POLL_SELECT'); ?>
+			<?php echo $this->lists['polls']; ?>
+		</label>
+	</section>
+	<section class="below section">
+		<?php
+		$this->view('default_graph')
+			->set('first_vote', $this->first_vote)
+			->set('last_vote', $this->last_vote)
+			->set('lists', $this->lists)
+			->set('params', $this->params)
+			->set('poll', $this->poll)
+			->set('votes', $this->votes)
+			->display();
+		?>
+	</section><!-- / .main section -->
+</form>

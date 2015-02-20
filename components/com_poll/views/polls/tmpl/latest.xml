@@ -36,7 +36,5 @@ HUBzero is a registered trademark of Purdue University.
 	<state>
 		<name>View latest poll</name>
 		<description>View latest poll</description>
-		<params>
-		</params>
 	</state>
 </metadata>
