@@ -82,7 +82,7 @@ $this->js('posts')
 								($post->status == "removed" AND $this->filters['filterby'] == "removed") OR
 								($this->task == "PostsById")): ?>
 						<tr id="row-<?php echo $post->id; ?>">
-							<td><a class="fancybox-inline" rel="group1" href="#content-fancybox<?php echo $post->id; ?>"><?php echo $post->shortTitle; ?></a></td>
+							<td><a class="fancybox-inline" rel="group1" href="#content-fancybox<?php echo $post->id; ?>"><?php echo (string) html_entity_decode(strip_tags($post->shortTitle)); ?></a></td>
 							<td><?php echo $post->created; ?>
 							<td><?php echo $post->name;?></td>
 							<td id="status-<?php echo $post->id; ?>">
