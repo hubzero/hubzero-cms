@@ -635,6 +635,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$filters['search'] = '';
 			}
 
+
 			$query->query = $sq->getQuery($query->conditions);
 
 			// Get a record count
@@ -693,6 +694,11 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 					$query = $folder->queries[0];
 					$this->view->filters['show'] = $query->id;
 					break;
+				}
+				else
+				{	// for no custom queries.
+					$query = new SupportQuery($this->database);
+					$query->count = 0;
 				}
 			}
 			//$folder = reset($this->view->folders);
@@ -1843,7 +1849,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 				$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 			}
 
-			// Message people watching this ticket, 
+			// Message people watching this ticket,
 			// but ONLY if the comment was NOT marked private
 			foreach ($row->watchers() as $watcher)
 			{
@@ -2061,7 +2067,7 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 	 *   no_html = 1;
 	 *   type    = 1;
 	 *   sesstoken (optional)
-	 *   
+	 *
 	 *   login    (optional) default: automated
 	 *   severity (optional) default: normal
 	 *   category (optional) default: Tools

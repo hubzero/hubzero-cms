@@ -199,6 +199,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 			));
 			// Get the records
 			$this->view->rows = $obj->getRecords($query->query, $this->view->filters);
+
 		}
 
 		$watching = new SupportTableWatching($this->database);
@@ -242,6 +243,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$ids[] = $record->ticket_id;
 				}
 				$this->view->rows = $obj->getRecords("(f.id IN ('" . implode("','", $ids) . "'))", $this->view->filters);
+
 			}
 		}
 
@@ -261,6 +263,10 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				$this->view->setError($error);
 			}
 		}
+
+		var_dump($obj->getRecords('all'));
+		var_dump($this->view->rows);
+		die;
 
 		// Output the HTML
 		$this->view->display();

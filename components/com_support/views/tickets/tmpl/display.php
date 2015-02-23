@@ -101,6 +101,7 @@ $this->css()
 										</a>
 									</span>
 								<?php } ?>
+								<?php if (isset($folder->queries)) : ?>
 								<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
 									<?php foreach ($folder->queries as $query) { ?>
 										<li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
@@ -120,6 +121,7 @@ $this->css()
 										</li>
 									<?php } ?>
 								</ul>
+							<?php endif; ?>
 							</li>
 						<?php } ?>
 					<?php } ?>
