@@ -1144,10 +1144,36 @@ class SupportControllerTickets extends \Hubzero\Component\SiteController
 		$row->set('section', 1);
 		$row->set('group', $group);
 
-		// Save the data
-		if (!$row->store())
+		// check if previous ticket submitted is the same as this one.
+		$ticket = new SupportTicket($this->database);
+		$filters = array('status' => 'new', 'sort' => 'id' ,'sortdir' => 'DESC', 'limit' => '1', 'start' => 0);
+		$prevSubmission = $ticket->getTickets($filters , false);
+
+		if(!isset($prevSubmission[0]))
 		{
-			$this->setError($row->getError());
+			// Save the data
+			if (!$row->store())
+			{
+				$this->setError($row->getError());
+			}
+		}
+		elseif ($prevSubmission[0]->summary != $row->get('summary') && (strtotime($prevSubmission[0]->created) - time() > 15))
+		{
+			// Save the data
+			if (!$row->store())
+			{
+				$this->setError($row->getError());
+			}
+		}
+		else
+		{
+			$this->setRedirect(
+				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->controller . '&task=tickets'),
+				JText::_('A previous submission matching the contents of this submission was found to have been submitted just prior to your submission.\n
+					Please review the contents of your submission and try again.'),
+				'error'
+			);
+			return;
 		}
 
 		$attachment = $this->uploadTask($row->get('id'));
