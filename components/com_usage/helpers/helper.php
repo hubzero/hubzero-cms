@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Usage\Helpers;
 
 /**
  * Usage helper class
  */
-class UsageHelper
+class Helper
 {
 	/**
 	 * Return a usage database object
@@ -47,7 +46,7 @@ class UsageHelper
 
 		if (!is_object($instance))
 		{
-			$config = JComponentHelper::getParams('com_usage');
+			$config = \JComponentHelper::getParams('com_usage');
 
 			$options['driver']   = $config->get('statsDBDriver');
 			$options['host']     = $config->get('statsDBHost');
@@ -61,19 +60,19 @@ class UsageHelper
 			 && (!isset($options['user']) || $options['user'] == '')
 			 && (!isset($options['database']) || $options['database'] == ''))
 			{
-				$instance = JFactory::getDBO();
+				$instance = \JFactory::getDBO();
 			}
 			else
 			{
-				$instance = JDatabase::getInstance($options);
-				if (JError::isError($instance))
+				$instance = \JDatabase::getInstance($options);
+				if (\JError::isError($instance))
 				{
-					$instance = JFactory::getDBO();
+					$instance = \JFactory::getDBO();
 				}
 			}
 		}
 
-		if (JError::isError($instance))
+		if (\JError::isError($instance))
 		{
 			return null;
 		}
@@ -168,7 +167,7 @@ class UsageHelper
 				{
 					foreach ($results as $row)
 					{
-						$formattedval = UsageHelper::valformat($row->value, $valfmt);
+						$formattedval = self::valformat($row->value, $valfmt);
 						if (strstr($formattedval, "day") !== FALSE)
 						{
 							$chopchar = strrpos($formattedval, ',');
@@ -209,7 +208,7 @@ class UsageHelper
 								array_push($toplistset, array('n/a', 0, 'n/a', 'n/a'));
 								$rank++;
 							}
-							$formattedval = UsageHelper::valformat($row->value, $valfmt);
+							$formattedval = self::valformat($row->value, $valfmt);
 							if (strstr($formattedval, 'day') !== FALSE)
 							{
 								$chopchar = strrpos($formattedval, ',');
@@ -484,7 +483,7 @@ class UsageHelper
 	 */
 	public static function seldate_next($seldate, $period)
 	{
-		return(UsageHelper::seldate_shift($seldate, $period, 1));
+		return(self::seldate_shift($seldate, $period, 1));
 	}
 
 	/**
@@ -498,7 +497,7 @@ class UsageHelper
 	 */
 	public function seldate_prev($seldate, $period)
 	{
-		return(UsageHelper::seldate_shift($seldate, $period, 0));
+		return(self::seldate_shift($seldate, $period, 0));
 	}
 
 	/**
@@ -514,7 +513,7 @@ class UsageHelper
 		$date = $seldate;
 		for ($i = 0; $i < 12; $i++)
 		{
-			$date = UsageHelper::seldate_shift($date, 'month', 1);
+			$date = self::seldate_shift($date, 'month', 1);
 		}
 		return($date);
 	}
@@ -532,7 +531,7 @@ class UsageHelper
 		$date = $seldate;
 		for ($i = 0; $i < 12; $i++)
 		{
-			$date = UsageHelper::seldate_shift($date, 'month', 0);
+			$date = self::seldate_shift($date, 'month', 0);
 		}
 		return($date);
 	}
@@ -597,10 +596,10 @@ class UsageHelper
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      unknown $seldate Parameter description (if any) ...
-	 * @param      unknown $period Parameter description (if any) ...
-	 * @param      unknown $right Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   unknown  $seldate  Parameter description (if any) ...
+	 * @param   unknown  $period   Parameter description (if any) ...
+	 * @param   unknown  $right    Parameter description (if any) ...
+	 * @return  mixed    Return description (if any) ...
 	 */
 	public static function seldate_shift($seldate, $period, $right)
 	{
@@ -671,9 +670,9 @@ class UsageHelper
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      array &$arr Parameter description (if any) ...
-	 * @param      unknown $date Parameter description (if any) ...
-	 * @return     array Return description (if any) ...
+	 * @param   array    &$arr  Parameter description (if any) ...
+	 * @param   unknown  $date  Parameter description (if any) ...
+	 * @return  array    Return description (if any) ...
 	 */
 	public static function seldate_valuedescsortkey(&$arr, $date)
 	{
@@ -687,7 +686,7 @@ class UsageHelper
 		$tmax = 0;
 		for ($i = 0; $i < count($arr); $i++)
 		{
-			$dateval = UsageHelper::seldate_value($arr[$i], $date);
+			$dateval = self::seldate_value($arr[$i], $date);
 			$len = strlen($dateval);
 			if ($len > $dmax)
 			{
@@ -703,7 +702,7 @@ class UsageHelper
 		for ($i = 0; $i < count($arr); $i++)
 		{
 			$arr[$i]['sortkey'] = '';
-			$dateval = UsageHelper::seldate_value($arr[$i], $date);
+			$dateval = self::seldate_value($arr[$i], $date);
 			if (!$dateval)
 			{
 				$dateval = "0";
@@ -718,8 +717,8 @@ class UsageHelper
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      unknown &$arr Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   unknown  &$arr  Parameter description (if any) ...
+	 * @return  mixed    Return description (if any) ...
 	 */
 	public static function seldate_valuedescsort(&$arr)
 	{
@@ -731,9 +730,9 @@ class UsageHelper
 	 *
 	 * Long description (if any) ...
 	 *
-	 * @param      number $value Parameter description (if any) ...
-	 * @param      integer $format Parameter description (if any) ...
-	 * @return     mixed Return description (if any) ...
+	 * @param   number   $value   Parameter description (if any) ...
+	 * @param   integer  $format  Parameter description (if any) ...
+	 * @return  mixed    Return description (if any) ...
 	 */
 	public static function valformat($value, $format)
 	{
@@ -758,11 +757,11 @@ class UsageHelper
 			$hr -= ($day * 24);
 			if ($day == 1)
 			{
-				$day = '1 ' . JText::_('COM_USAGE_DAY') . ', ';
+				$day = '1 ' . \JText::_('COM_USAGE_DAY') . ', ';
 			}
 			elseif ($day > 1)
 			{
-				$day = number_format($day) . ' ' . JText::_('COM_USAGE_DAYS') . ', ';
+				$day = number_format($day) . ' ' . \JText::_('COM_USAGE_DAYS') . ', ';
 			}
 			else
 			{
@@ -786,12 +785,12 @@ class UsageHelper
 	/**
 	 * Build a list of select options
 	 *
-	 * @param      object  $db           JDatabase
-	 * @param      string  $enddate       Parameter description (if any) ...
-	 * @param      integer $thisyear      Current year
-	 * @param      array   $monthsReverse List of months (Dec -> Jan)
-	 * @param      string  $func          Function to perform
-	 * @return     string HTML
+	 * @param   object   $db             JDatabase
+	 * @param   string   $enddate        Parameter description (if any) ...
+	 * @param   integer  $thisyear       Current year
+	 * @param   array    $monthsReverse  List of months (Dec -> Jan)
+	 * @param   string   $func           Function to perform
+	 * @return  string   HTML
 	 */
 	public static function options($db, $enddate, $thisyear, $monthsReverse, $func='')
 	{
@@ -801,7 +800,7 @@ class UsageHelper
 			foreach ($monthsReverse as $key => $month)
 			{
 				$value = $i . '-' . $key;
-				if (UsageHelper::$func($db, $value))
+				if (self::$func($db, $value))
 				{
 					$o .= '<option value="' . $value . '"';
 					if ($value == $enddate)

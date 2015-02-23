@@ -28,13 +28,18 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Usage\Controllers;
+
+use Hubzero\Component\SiteController;
+use Components\Usage\Helpers\Helper;
+use Exception;
+
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'helper.php');
 
 /**
  * Usage controller class for results
  */
-class UsageControllerResults extends \Hubzero\Component\SiteController
+class Results extends SiteController
 {
 	/**
 	 * Execute a task
@@ -74,21 +79,20 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 		$monthsReverse = array_reverse($months, TRUE);
 
 		// Incoming
-		$enddate = JRequest::getVar('selectedPeriod', 0, 'post');
+		$enddate = \JRequest::getVar('selectedPeriod', 0, 'post');
 
 		// Establish a connection to the usage database
-		$udb = UsageHelper::getUDBO();
+		$udb = Helper::getUDBO();
 		if (!is_object($udb))
 		{
-			JError::raiseError(500, JText::_('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'));
-			return;
+			throw new Exception(\JText::_('COM_USAGE_ERROR_CONNECTING_TO_DATABASE'), 500);
 		}
 
-		$this->view->no_html = JRequest::getVar('no_html', 0);
+		$this->view->no_html = \JRequest::getVar('no_html', 0);
 
 		// Get plugins
-		JPluginHelper::importPlugin('usage');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('usage');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Trigger the functions that return the areas we'll be using
 		$this->view->cats = $dispatcher->trigger('onUsageAreas', array());
@@ -104,18 +108,18 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 		$this->view->task = $this->_task;
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task)
 		{
 			$pathway->addItem(
-				JText::_('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
+				\JText::_('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -132,22 +136,21 @@ class UsageControllerResults extends \Hubzero\Component\SiteController
 		);
 
 		// Build the page title
-		$this->view->title  = JText::_(strtoupper($this->_option));
-		$this->view->title .= ($this->_task) ? ': ' . JText::_('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
+		$this->view->title  = \JText::_(strtoupper($this->_option));
+		$this->view->title .= ($this->_task) ? ': ' . \JText::_('PLG_' . strtoupper($this->_name) . '_' . strtoupper($this->_task)) : '';
 
 		// Set the page title
-		$document = JFactory::getDocument();
-		$document->setTitle($this->view->title);
+		\JFactory::getDocument()->setTitle($this->view->title);
 
 		// Output HTML
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
+
+		$this->view
+			->setLayout('default')
+			->display();
 	}
 }
 
