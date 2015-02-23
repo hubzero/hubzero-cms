@@ -209,7 +209,7 @@ class Cart extends JTable
 					$selection  = '';
 					$selection .= 'size=';
 					$selection .= $sizechoice;
-					$selection .= '\n';
+					$selection .= "\n";
 					$selection .= 'color=';
 					$selection .= $colorchoice;
 

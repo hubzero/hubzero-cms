@@ -114,13 +114,13 @@ $this->css()
 					<h4><span class="coin">&nbsp;</span><?php echo JText::_('COM_STORE_ORDER_SUMMARY'); ?></h4>
 					<?php foreach ($this->items as $item) { ?>
 						<p>
-							<?php echo \Hubzero\Utility\String::truncate($item->title, 28); ?>
+							<?php echo \Hubzero\Utility\String::truncate($item->title, 60); ?>
 					<?php if ($item->selectedsize) { ?>
 						</p>
 						<p>
-							<?php echo JText::_('COM_STORE_SIZE') . ' ' . $item->selectedsize . ' (x ' . $item->quantity . ')'; ?>
+							<?php echo JText::_('COM_STORE_SIZE') . ' ' . $item->selectedsize . '&nbsp;(x ' . $item->quantity . ')'; ?>
 					<?php } else if ($item->category != 'service') { ?>
-							(x <?php echo $item->quantity; ?>)
+							&nbsp;(x <?php echo $item->quantity; ?>)
 					<?php } ?>
 							<span><?php echo ($item->price*$item->quantity); ?></span>
 						</p>
