@@ -60,7 +60,7 @@ $this->css()
 			<?php if ($this->rows) { ?>
 				<p>
 					<?php echo JText::sprintf('COM_STORE_THERE_ARE_ITEMS_IN_CART', count($this->rows)); ?>
-					<a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" ><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>
+					&nbsp;<a href="<?php echo JRoute::_('index.php?option=' . $this->option); ?>" ><?php echo JText::_('COM_STORE_CONTINUE'); ?></a>
 				</p>
 		
 				<form id="myCart" method="post" action="<?php echo JRoute::_('index.php?option=' . $this->option . '&task=cart'); ?>">
