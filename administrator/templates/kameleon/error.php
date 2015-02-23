@@ -42,25 +42,25 @@ $browser = new \Hubzero\Browser\Detector();
 <!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $browser->name() . ' ' . $browser->name() . $browser->major(); ?>"> <!--<![endif]-->
 	<head>
-		<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/error.css'); ?>" />
+		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css?v=<?php echo filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/error.css'); ?>" />
 
 	<?php if ($this->direction == 'rtl') : ?>
-		<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/common/rtl.css" />
+		<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/common/rtl.css" />
 	<?php endif; ?>
 
 	<?php if (JDEBUG) : ?>
-		<link type="text/css" rel="stylesheet" href="../media/cms/css/debug.css" />
+		<link type="text/css" rel="stylesheet" href="<?php echo str_replace('/administrator', '', $this->baseurl); ?>/media/cms/css/debug.css" />
 	<?php endif; ?>
 
 		<!--[if lt IE 9]>
-			<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/html5.js"></script>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
 		<![endif]-->
 
 		<!--[if IE 9]>
-			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
 		<![endif]-->
 	</head>
 	<body id="error-body">

@@ -32,19 +32,19 @@
 defined('_JEXEC') or die;
 
 // Load base styles
-$this->addStyleSheet('templates/' . $this->template . '/css/component.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/component.css'));
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/component.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/component.css'));
 // Load theme
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 {
-	$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 // Load language direction CSS
 if ($this->direction == 'rtl')
 {
-	$this->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
 }
 
-$this->addScript('templates/' . $this->template . '/js/component.js');
+$this->addScript($this->baseurl . '/templates/' . $this->template . '/js/component.js');
 
 $browser = new \Hubzero\Browser\Detector();
 ?>
