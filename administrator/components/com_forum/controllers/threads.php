@@ -693,6 +693,9 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 			{
 				$id = intval($id);
 
+				// deletes attachments
+				$this->markForDelete($id);
+
 				if (!$thread->delete($id))
 				{
 					JError::raiseError(500, $thread->getError());
@@ -744,6 +747,8 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 
 		$ids = JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
+		//attachment state
+		$attachment_state = 0;
 
 		// Check for an ID
 		if (count($ids) < 1)
@@ -768,6 +773,15 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 			{
 				JError::raiseError(500, $row->getError());
 				return;
+			}
+
+			if ($state == 1)
+			{
+				$this->markForPublish($id);
+			}
+			elseif ($state == 0)
+			{
+				$this->markForDelete($id);
 			}
 		}
 
@@ -909,5 +923,63 @@ class ForumControllerThreads extends \Hubzero\Component\AdminController
 		$this->setRedirect(
 			'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&category_id=' . $fields['category_id'] . '&task=thread&parent=' . $parent
 		);
+	}
+
+
+	/**
+	 * Marks a file for deletion
+	 *
+	 * @param      integer the ID of the post which is associated with the attachment
+	 * @return     NULL
+	 */
+	public function markForDelete($post_id)
+	{
+		// Check if they are logged in
+		if ($this->juser->get('guest'))
+		{
+			return;
+		}
+
+		// Load attachment object
+		$row = new ForumTableAttachment($this->database);
+		$row->loadByPost($post_id);
+
+		//mark for deletion
+		$row->set('status', 2);
+
+		if (!$row->store())
+		{
+			$this->setError($row->getError());
+		}
+
+	}
+
+
+	/**
+	 * Marks a file for deletion
+	 *
+	 * @param      integer the ID of the post which is associated with the attachment
+	 * @return     NULL
+	 */
+	public function markForPublish($post_id)
+	{
+		// Check if they are logged in
+		if ($this->juser->get('guest'))
+		{
+			return;
+		}
+
+		// Load attachment object
+		$row = new ForumTableAttachment($this->database);
+		$row->loadByPost($post_id);
+
+		//mark for deletion
+		$row->set('status', 0);
+
+		if (!$row->store())
+		{
+			$this->setError($row->getError());
+		}
+
 	}
 }
