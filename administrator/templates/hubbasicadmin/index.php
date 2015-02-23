@@ -35,17 +35,17 @@ $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 
 // Load CSS
-$doc->addStyleSheet('templates/' . $this->template . '/css/template.css');
-$doc->addStyleSheet('templates/' . $this->template . '/css/common/icons.css');
+$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/template.css');
+$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/icons.css');
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray')
 {
-	$doc->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
 if ($this->direction == 'rtl')
 {
-	$doc->addStyleSheet('templates/' . $this->template . '/css/common/rtl.css');
+	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
 }
 
 $browser = new \Hubzero\Browser\Detector();
@@ -61,16 +61,16 @@ $v = $browser->major();
 	<head>
 		<jdoc:include type="head" />
 <?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
-		<link href="templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
 <?php } ?>
-		<script src="templates/<?php echo $this->template; ?>/js/index.js" type="text/javascript"></script>
+		<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js" type="text/javascript"></script>
 		<!--[if IE 7]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
+			<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 		<!--[if IE 8]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
+			<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 	</head>
 	<body id="minwidth-body">

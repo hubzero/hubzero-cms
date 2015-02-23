@@ -34,8 +34,8 @@ defined('_JEXEC') or die;
 $app = JFactory::getApplication();
 
 // Load base styles
-$this->addStyleSheet('templates/' . $this->template . '/css/index.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/index.css'));
-$this->addStyleSheet('templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/cpanel.css'));
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/index.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/index.css'));
+$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/cpanel.css?v=' . filemtime(JPATH_ROOT . '/administrator/templates/' . $this->template . '/css/cpanel.css'));
 // Load theme
 if ($theme = $this->params->get('theme'))
 {
@@ -46,13 +46,13 @@ if ($theme = $this->params->get('theme'))
 	}
 	else if ($theme != 'gray')
 	{
-		$this->addStyleSheet('templates/' . $this->template . '/css/themes/' . $theme . '.css');
+		$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $theme . '.css');
 	}
-};
+}
 // Load language direction CSS
 if ($this->direction == 'rtl')
 {
-	$this->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+	$this->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/common/rtl.css');
 }
 
 $htheme = $this->params->get('header', 'light');
@@ -67,19 +67,19 @@ $browser = new \Hubzero\Browser\Detector();
 	<head>
 		<jdoc:include type="head" />
 
-		<script type="text/javascript" src="../media/system/js/jquery.uniform.min.js"></script>
-		<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/placeholder.js"></script>
-		<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/index.js"></script>
+		<script type="text/javascript" src="<?php echo str_replace('/administrator', '', $this->baseurl); ?>/media/system/js/jquery.uniform.min.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/placeholder.js"></script>
+		<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/index.js"></script>
 
 		<!--[if lt IE 9]>
-			<script type="text/javascript" src="templates/<?php echo $this->template; ?>/js/html5.js"></script>
+			<script type="text/javascript" src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js"></script>
 		<![endif]-->
 
 		<!--[if IE 9]>
-			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie9.css" />
 		<![endif]-->
 		<!--[if IE 8]>
-			<link type="text/css" rel="stylesheet" href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
+			<link type="text/css" rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" />
 		<![endif]-->
 	</head>
 	<body id="cpanel-body">
