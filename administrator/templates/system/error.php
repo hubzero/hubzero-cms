@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<title><?php echo $this->error->getCode(); ?> - <?php echo htmlspecialchars($this->error->getMessage(), ENT_QUOTES, 'UTF-8'); ?></title>
-		<link rel="stylesheet" href="templates/system/css/error.css" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $this->baseurl; ?>/templates/system/css/error.css" type="text/css" />
 	</head>
 	<body>
 		<table width="550" align="center" class="outline">
