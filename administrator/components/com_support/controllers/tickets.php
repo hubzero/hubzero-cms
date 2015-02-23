@@ -169,6 +169,11 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$this->view->filters['show'] = $query->id;
 					break;
 				}
+				else
+				{	// for no custom queries.
+					$query = new SupportQuery($this->database);
+					$query->count = 0;
+				}
 			}
 			//$folder = reset($this->view->folders);
 			//$query = $folder->queries[0];
@@ -676,7 +681,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 				$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 			}
 
-			// Message people watching this ticket, 
+			// Message people watching this ticket,
 			// but ONLY if the comment was NOT marked private
 			$this->acl = SupportACL::getACL();
 			foreach ($row->watchers() as $watcher)
@@ -1012,7 +1017,7 @@ class SupportControllerTickets extends \Hubzero\Component\AdminController
 					$rowc->addTo($cc, JText::_('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'));
 				}
 
-				// Message people watching this ticket, 
+				// Message people watching this ticket,
 				// but ONLY if the comment was NOT marked private
 				if (!$rowc->isPrivate())
 				{
