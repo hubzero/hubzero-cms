@@ -81,6 +81,7 @@ $this->css();
 									</a>
 								</span>
 								<ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
+									<?php if (isset($folder->queries)) : ?>
 									<?php foreach ($folder->queries as $query) { ?>
 										<li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) { echo ' class="active"'; }?>>
 											<a class="query" href="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
@@ -96,6 +97,7 @@ $this->css();
 											</span>
 										</li>
 									<?php } ?>
+								<?php endif; ?>
 								</ul>
 							</li>
 						<?php } ?>
@@ -166,7 +168,7 @@ $this->css();
 							</li>
 						</ul>
 						<fieldset id="filter-bar">
-							<label for="filter_search"><?php echo JText::_('COM_SUPPORT_FIND'); ?>:</label> 
+							<label for="filter_search"><?php echo JText::_('COM_SUPPORT_FIND'); ?>:</label>
 							<input type="text" name="search" id="filter_search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo JText::_('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER'); ?>" />
 
 							<input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
@@ -464,7 +466,7 @@ jQuery(document).ready(function($){
 				fitToView: false
 			});
 		} else {
-			alert('<?php echo JText::_('Please select two or more items to batch process.'); ?>'); 
+			alert('<?php echo JText::_('Please select two or more items to batch process.'); ?>');
 		}
 	});*/
 
