@@ -37,20 +37,20 @@ $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 
 // Load CSS
-//$doc->addStyleSheet('templates/system/css/system.css');
-$doc->addStyleSheet('templates/'.$this->template.'/css/template.css');
-$doc->addStyleSheet('templates/'.$this->template.'/css/common/icons.css');
-$doc->addStyleSheet('templates/'.$this->template.'/css/cpanel.css');
+//$doc->addStyleSheet($this->baseurl . '/templates/system/css/system.css');
+$doc->addStyleSheet($this->baseurl . '/templates/'.$this->template.'/css/template.css');
+$doc->addStyleSheet($this->baseurl . '/templates/'.$this->template.'/css/common/icons.css');
+$doc->addStyleSheet($this->baseurl . '/templates/'.$this->template.'/css/cpanel.css');
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray') {
-	$doc->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
 if ($this->direction == 'rtl') {
-	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+	$doc->addStyleSheet($this->baseurl . '/templates/'.$this->template.'/css/common/rtl.css');
 }
 
-$doc->addScript('templates/' . $this->template . '/js/index.js');
+$doc->addScript($this->baseurl . '/templates/' . $this->template . '/js/index.js');
 /*
 $doc->addScriptDeclaration('
 	var sTimeout = ((' . $app->getCfg('lifetime') . '-1)*60*1000);
@@ -85,15 +85,15 @@ $juser = JFactory::getUser();
 	<head>
 		<jdoc:include type="head" />
 <?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
-		<link href="templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
 <?php } ?>
 		<!--[if IE 7]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
+			<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 		<!--[if IE 8]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
+			<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 	</head>
 	<body id="cpanel-body">

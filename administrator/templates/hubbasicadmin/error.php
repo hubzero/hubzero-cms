@@ -53,23 +53,23 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 <!--[if IE 9 ]>    <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?php echo $this->direction; ?>" lang="<?php echo $this->language; ?>" class="<?php echo $jv . ' ' . $b . ' ' . $b . $v; ?>"> <!--<![endif]-->
 	<head>
-		<link href="templates/<?php echo $this->template; ?>/css/template.css" rel="stylesheet" type="text/css" />
-		<link href="templates/<?php echo $this->template; ?>/css/common/icons.css" rel="stylesheet" type="text/css" />
-		<link href="templates/<?php echo $this->template; ?>/css/error.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/template.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/common/icons.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/error.css" rel="stylesheet" type="text/css" />
 <?php if ($this->direction == 'rtl') : ?>
-		<link href="templates/<?php echo $this->template; ?>/css/common/rtl.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/common/rtl.css" rel="stylesheet" type="text/css" />
 <?php endif; ?>
 
 <?php if ($b == 'firefox' && intval($v) < 4 && $browser->getBrowserMinorVersion() < 5) { ?>
-		<link href="templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/firefox.css" rel="stylesheet" type="text/css" />
 <?php } ?>
 		<!--[if IE 7]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie7.css" rel="stylesheet" type="text/css" />
+			<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 		<!--[if IE 8]>
-			<link href="templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
-			<script src="templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
+			<link href="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/css/browser/ie8.css" rel="stylesheet" type="text/css" />
+			<script src="<?php echo $this->baseurl; ?>/templates/<?php echo $this->template; ?>/js/html5.js" type="text/javascript"></script>
 		<![endif]-->
 	</head>
 	<body id="error-body">

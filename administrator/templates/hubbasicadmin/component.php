@@ -35,14 +35,14 @@ jimport('joomla.filesystem.file');
 
 $doc = JFactory::getDocument();
 
-$doc->addStyleSheet('templates/'.$this->template.'/css/component.css');
+$doc->addStyleSheet($this->baseurl . '/templates/'.$this->template.'/css/component.css');
 if ($this->params->get('theme') && $this->params->get('theme') != 'gray') {
-	$doc->addStyleSheet('templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
+	$doc->addStyleSheet($this->baseurl . '/templates/' . $this->template . '/css/themes/' . $this->params->get('theme') . '.css');
 }
 
 // Load language direction CSS
 if ($this->direction == 'rtl') {
-	$doc->addStyleSheet('templates/'.$this->template.'/css/common/rtl.css');
+	$doc->addStyleSheet($this->baseurl . '/templates/'.$this->template.'/css/common/rtl.css');
 }
 
 if (version_compare(JVERSION, '1.6', 'ge'))
@@ -50,7 +50,7 @@ if (version_compare(JVERSION, '1.6', 'ge'))
 	$doc->addScript('/media/system/js/mootools-core-uncompressed.js');
 	$doc->addScript('/media/system/js/core-uncompressed.js');
 	$doc->addScript('/media/system/js/mootools-more-uncompressed.js');
-	$doc->addScript('templates/' . $this->template . '/js/component.js');
+	$doc->addScript($this->baseurl . '/templates/' . $this->template . '/js/component.js');
 }
 
 $browser = new \Hubzero\Browser\Detector();
