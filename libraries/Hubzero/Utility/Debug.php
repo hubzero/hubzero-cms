@@ -227,7 +227,7 @@ class Debug
 	{
 		if (!$renderer)
 		{
-			$renderer = isset($_SERVER['argv']) && count($_SERVER['argv']) ? 'console' : 'html';
+			$renderer = php_sapi_name() === 'cli' ? 'console' : 'html'; //isset($_SERVER['argv']) && count($_SERVER['argv']) ? 'console' : 'html';
 		}
 
 		return $this->setRenderer($renderer)
