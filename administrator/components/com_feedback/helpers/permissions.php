@@ -26,13 +26,12 @@
  * HUBzero is a registered trademark of Purdue University.
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedback\Helpers;
 
 /**
  * Permissions helper
  */
-class FeedbackHelperPermissions
+class Permissions
 {
 	/**
 	 * Name of the component
@@ -46,7 +45,7 @@ class FeedbackHelperPermissions
 	 *
 	 * @param   string   $extension  The extension.
 	 * @param   integer  $assetId    The asset ID.
-	 * @return  object   JObject
+	 * @return  object   \JObject
 	 */
 	public static function getActions($assetType='component', $assetId = 0)
 	{
@@ -57,8 +56,8 @@ class FeedbackHelperPermissions
 			$assetName .= '.' . (int) $assetId;
 		}
 
-		$user = JFactory::getUser();
-		$result = new JObject;
+		$user = \JFactory::getUser();
+		$result = new \JObject;
 
 		$actions = array(
 			'core.admin',

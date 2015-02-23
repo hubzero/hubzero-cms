@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,18 +24,34 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedback\Controllers;
+
+use Hubzero\Component\AdminController;
+use Components\Feedback\Tables\Quote;
+use Hubzero\User\Profile;
 
 /**
  * Feedback controller class for quotes
  */
-class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
+class Quotes extends AdminController
 {
+	/**
+	 * Execute a task
+	 *
+	 * @return  void
+	 */
+	public function execute()
+	{
+		$this->registerTask('add', 'edit');
+		$this->registerTask('apply', 'save');
+
+		parent::execute();
+	}
+
 	/**
 	 * Display a list of quotes
 	 *
@@ -43,65 +59,56 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	 */
 	public function displayTask()
 	{
-		if (JRequest::getMethod() == 'POST')
+		if (\JRequest::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+			\JRequest::checkToken() or jexit('Invalid Token');
 		}
 
 		// Get site configuration
-		$app = JFactory::getApplication();
-		$config = JFactory::getConfig();
+		$app = \JFactory::getApplication();
+		$config = \JFactory::getConfig();
 
 		// Incoming
-		$this->view->filters = array();
-		$this->view->filters['search'] = urldecode($app->getUserStateFromRequest(
-			$this->_option . '.search',
-			'search',
-			''
-		));
-
-		// Get sorting variables
-		$this->view->filters['sort']     = trim($app->getUserStateFromRequest(
-			$this->_option . '.sortby',
-			'filter_order',
-			'date'
-		));
-		$this->view->filters['sort_Dir'] = trim($app->getUserStateFromRequest(
-			$this->_option . '.sortdir',
-			'filter_order_Dir',
-			'DESC'
-		));
-
-		// Get paging variables
-		$this->view->filters['start']  = $app->getUserStateFromRequest(
-			$this->_option . '.limitstart',
-			'limitstart',
-			0,
-			'int'
+		$this->view->filters = array(
+			'search' => urldecode($app->getUserStateFromRequest(
+				$this->_option . '.search',
+				'search',
+				''
+			)),
+			// Get sorting variables
+			'sort' => $app->getUserStateFromRequest(
+				$this->_option . '.sortby',
+				'filter_order',
+				'date'
+			),
+			'sort_Dir' => $app->getUserStateFromRequest(
+				$this->_option . '.sortdir',
+				'filter_order_Dir',
+				'DESC'
+			),
+			// Get paging variables
+			'start'  => $app->getUserStateFromRequest(
+				$this->_option . '.limitstart',
+				'limitstart',
+				0,
+				'int'
+			),
+			'limit'  => $app->getUserStateFromRequest(
+				$this->_option . '.limit',
+				'limit',
+				$config->getValue('config.list_limit'),
+				'int'
+			)
 		);
-		$this->view->filters['limit']  = $app->getUserStateFromRequest(
-			$this->_option . '.limit',
-			'limit',
-			$config->getValue('config.list_limit'),
-			'int'
-		);
 
-		$obj = new FeedbackQuotes($this->database);
+		$obj = new Quote($this->database);
 
 		// Get a record count
 		$this->view->total = $obj->find('count', $this->view->filters);
 
 		// Get records
 		$this->view->rows  = $obj->find('list', $this->view->filters);
-
-		// Initiate paging class
-		jimport('joomla.html.pagination');
-		$this->view->pageNav = new JPagination(
-			$this->view->total,
-			$this->view->filters['start'],
-			$this->view->filters['limit']
-		);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)
@@ -114,47 +121,33 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	}
 
 	/**
-	 * Create a new entry
-	 *
-	 * @return  void
-	 */
-	public function addTask()
-	{
-		$this->editTask();
-	}
-
-	/**
 	 * Edit an entry
 	 *
 	 * @return  void
 	 */
 	public function editTask($row=null)
 	{
-		JRequest::setVar('hidemainmenu', 1);
+		\JRequest::setVar('hidemainmenu', 1);
 
-		// Incoming ID
-		$id = JRequest::getVar('id', array(0));
-		$id = (is_array($id) ? $id[0] : $id);
-
-		if (JRequest::getMethod() == 'POST')
+		if (\JRequest::getMethod() == 'POST')
 		{
 			// Check for request forgeries
-			JRequest::checkToken() or jexit('Invalid Token');
+			\JRequest::checkToken() or jexit('Invalid Token');
 		}
 
-		if (is_object($row))
+		if (!is_object($row))
 		{
-			$this->view->row = $row;
-			$this->view->id  = $row->id;
-		}
-		else
-		{
+			// Incoming ID
+			$id = \JRequest::getVar('id', array(0));
+			$id = (is_array($id) ? $id[0] : $id);
+
 			// Initiate database class and load info
-			$this->view->row = new FeedbackQuotes($this->database);
-			$this->view->row->load($id);
-
-			$this->view->id = $id;
+			$row = new Quote($this->database);
+			$row->load($id);
 		}
+
+		$this->view->row = $row;
+		$this->view->id  = $row->id;
 
 		$this->view->pictures = array();
 		$this->view->path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
@@ -167,10 +160,10 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			$this->view->pictures = $pictures;
 		}
 
-		$username = trim(JRequest::getVar('username', ''));
+		$username = trim(\JRequest::getVar('username', ''));
 		if ($username)
 		{
-			$profile = new \Hubzero\User\Profile();
+			$profile = new Profile();
 			$profile->load($username);
 
 			$this->view->row->fullname = $profile->get('name');
@@ -178,9 +171,9 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			$this->view->row->user_id  = $profile->get('uidNumber');
 		}
 
-		if (!$id)
+		if (!$this->view->row->id)
 		{
-			$this->view->row->date = JFactory::getDate()->toSql();
+			$this->view->row->date = \JFactory::getDate()->toSql();
 		}
 
 		// Set any errors
@@ -200,24 +193,14 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	 *
 	 * @return  void
 	 */
-	public function applyTask()
-	{
-		$this->saveTask(false);
-	}
-
-	/**
-	 * Save an entry
-	 *
-	 * @return  void
-	 */
-	public function saveTask($redirect=true)
+	public function saveTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Initiate class and bind posted items to database fields
-		$row = new FeedbackQuotes($this->database);
-		$row->notable_quote = JRequest::getInt('notable_quotes', 0);
+		$row = new Quote($this->database);
+		$row->notable_quote = \JRequest::getInt('notable_quotes', 0);
 
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
 
@@ -229,10 +212,10 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 		{
 			if (!isset($_POST['existingPictures']) or in_array($existingPicture, $_POST['existingPictures']) === false)
 			{
-				if (!JFile::delete($path . DS . $existingPicture))
+				if (!\JFile::delete($path . DS . $existingPicture))
 				{
 					$this->setRedirect(
-						JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+						\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
 					);
 					return;
 				}
@@ -254,39 +237,39 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 			}
 			foreach ($files['files']['name'] as $fileIndex => $file)
 			{
-				JFile::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
+				\JFile::upload($files['files']['tmp_name'][$fileIndex], $path . DS . $files['files']['name'][$fileIndex]);
 			}
 		}
 
 		if (!$row->bind($_POST))
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			$this->setError($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Check new content
 		if (!$row->check())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			$this->setError($row->getError());
+			return $this->editTask($row);
 		}
 
 		// Store new content
 		if (!$row->store())
 		{
-			JError::raiseError(500, $row->getError());
-			return;
+			$this->setError($row->getError());
+			return $this->editTask($row);
 		}
 
-		if ($redirect)
+		if ($this->_task == 'apply')
 		{
-			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-				JText::sprintf('COM_FEEDBACK_QUOTE_SAVED', $row->fullname)
-			);
+			return $this->editTask($row);
 		}
 
-		$this->editTask($row);
+		$this->setRedirect(
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::sprintf('COM_FEEDBACK_QUOTE_SAVED', $row->fullname)
+		);
 	}
 
 	/**
@@ -297,20 +280,24 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 	public function removeTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$ids = JRequest::getVar('id', array());
+		$ids = \JRequest::getVar('id', array());
 		$ids = (!is_array($ids) ? array($ids) : $ids);
 
 		// Check for an ID
 		if (!count($ids))
 		{
-			JError::raiseError(500, JText::_('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'));
+			$this->setRedirect(
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+				\JText::_('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'),
+				'error'
+			);
 			return;
 		}
 
-		$row = new FeedbackQuotes($this->database);
+		$row = new Quote($this->database);
 
 		foreach ($ids as $id)
 		{
@@ -320,20 +307,8 @@ class FeedbackControllerQuotes extends \Hubzero\Component\AdminController
 
 		// Output messsage and redirect
 		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
-			JText::_('COM_FEEDBACK_REMOVED')
-		);
-	}
-
-	/**
-	 * Cancel a task and redirect to main listing
-	 *
-	 * @return  void
-	 */
-	public function cancelTask()
-	{
-		$this->setRedirect(
-			JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false)
+			\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller, false),
+			\JText::_('COM_FEEDBACK_REMOVED')
 		);
 	}
 }

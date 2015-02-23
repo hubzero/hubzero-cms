@@ -28,13 +28,15 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedback\Controllers;
+
+use Hubzero\Component\AdminController;
+use Hubzero\Utility\String;
 
 /**
  * Feedback controller class for handling media (files)
  */
-class FeedbackControllerMedia extends \Hubzero\Component\AdminController
+class Media extends AdminController
 {
 	/**
 	 * Execute a task
@@ -43,11 +45,11 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 	 */
 	public function execute()
 	{
-		$this->type = JRequest::getVar('type', '', 'post');
+		$this->type = \JRequest::getVar('type', '', 'post');
 
 		if (!$this->type)
 		{
-			$this->type = JRequest::getVar('type', 'regular', 'get');
+			$this->type = \JRequest::getVar('type', 'regular', 'get');
 		}
 		$this->type = ($this->type == 'regular') ? $this->type : 'selected';
 
@@ -62,35 +64,35 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 	public function uploadTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit('Invalid Token');
+		\JRequest::checkToken() or jexit('Invalid Token');
 
 		// Incoming
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('FEEDBACK_NO_ID'));
+			$this->setError(\JText::_('FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
 			return;
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('FEEDBACK_NO_FILE'));
+			$this->setError(\JText::_('FEEDBACK_NO_FILE'));
 			$this->displayTask('', $id);
 			return;
 		}
 
 		// Build upload path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($id);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . String::pad($id);
 
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\JText::_('UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
 				return;
 			}
@@ -98,20 +100,20 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
-		$qid = JRequest::getInt('qid', 0);
+		$qid = \JRequest::getInt('qid', 0);
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('ERROR_UPLOADING'));
+			$this->setError(\JText::_('ERROR_UPLOADING'));
 			$file = $curfile;
 		}
 		else
 		{
-			$row = new FeedbackQuotes($this->database);
+			$row = new Quote($this->database);
 			$row->load($qid);
 
 			// Do we have an old file we're replacing?
@@ -122,7 +124,7 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 				// Yes - remove it
 				if (file_exists($path . DS . $curfile))
 				{
-					if (!JFile::delete($path . DS . $curfile))
+					if (!\JFile::delete($path . DS . $curfile))
 					{
 						$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
 						$this->displayTask($file['name'], $id);
@@ -152,44 +154,44 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 	public function deleteTask()
 	{
 		// Check for request forgeries
-		JRequest::checkToken('get') or jexit('Invalid Token');
+		\JRequest::checkToken('get') or jexit('Invalid Token');
 
 		// Incoming member ID
-		$id = JRequest::getInt('id', 0);
+		$id = \JRequest::getInt('id', 0);
 		if (!$id)
 		{
-			$this->setError(JText::_('FEEDBACK_NO_ID'));
+			$this->setError(\JText::_('FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
 			return;
 		}
 
-		$qid = JRequest::getInt('qid', 0);
+		$qid = \JRequest::getInt('qid', 0);
 
-		$row = new FeedbackQuotes($this->database);
+		$row = new Quote($this->database);
 		$row->load($qid);
 
 		// Incoming file
 		if (!$row->picture)
 		{
-			$this->setError(JText::_('FEEDBACK_NO_FILE'));
+			$this->setError(\JText::_('FEEDBACK_NO_FILE'));
 			$this->displayTask('', $id);
 			return;
 		}
 
 		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($id);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . String::pad($id);
 
 		if (!file_exists($path . DS . $row->picture) or !$row->picture)
 		{
-			$this->setError(JText::_('FILE_NOT_FOUND'));
+			$this->setError(\JText::_('FILE_NOT_FOUND'));
 		}
 		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $row->picture))
+			if (!\JFile::delete($path . DS . $row->picture))
 			{
-				$this->setError(JText::_('UNABLE_TO_DELETE_FILE'));
+				$this->setError(\JText::_('UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);
 				return;
 			}
@@ -221,17 +223,17 @@ class FeedbackControllerMedia extends \Hubzero\Component\AdminController
 		$this->view->config = $this->config;
 
 		// Do have an ID or do we need to get one?
-		$this->view->id = ($id) ? $id : JRequest::getInt('id', 0);
+		$this->view->id = ($id) ? $id : \JRequest::getInt('id', 0);
 
-		$this->view->dir = \Hubzero\Utility\String::pad($this->view->id);
+		$this->view->dir = String::pad($this->view->id);
 
 		// Do we have a file or do we need to get one?
-		$this->view->file = ($file) ? $file : JRequest::getVar('file', '');
+		$this->view->file = ($file) ? $file : \JRequest::getVar('file', '');
 
 		// Build the directory path
 		$this->view->path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $this->view->dir;
 
-		$this->view->qid = ($qid) ? $qid : JRequest::getInt('qid', 0);
+		$this->view->qid = ($qid) ? $qid : \JRequest::getInt('qid', 0);
 
 		// Set any errors
 		foreach ($this->getErrors() as $error)

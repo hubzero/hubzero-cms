@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,24 @@
  *
  * @package   hubzero-cms
  * @author    Alissa Nedossekina <alisa@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedback\Controllers;
+
+use Components\Feedback\Tables\Quote;
+use Hubzero\Component\SiteController;
+use Hubzero\User\Profile;
+use Hubzero\Utility\Number;
+use Hubzero\Utility\String;
+use Hubzero\Utility\Sanitize;
+use DirectoryIterator;
 
 /**
  * Feedback controller class
  */
-class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
+class Feedback extends SiteController
 {
 	/**
 	 * Determine task and execute it
@@ -55,19 +62,19 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildPathway()
 	{
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
 		if ($this->_task && in_array($this->_task, array('story', 'poll', 'sendstory', 'suggestions')))
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
+				\JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task)),
 				'index.php?option=' . $this->_option . '&task=' . $this->_task
 			);
 		}
@@ -80,13 +87,13 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	 */
 	protected function _buildTitle()
 	{
-		$this->_title = JText::_(strtoupper($this->_option));
+		$this->_title = \JText::_(strtoupper($this->_option));
 		if ($this->_task && in_array($this->_task, array('story', 'poll', 'sendstory', 'suggestions')))
 		{
-			$this->_title .= ': ' . JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
+			$this->_title .= ': ' . \JText::_(strtoupper($this->_option) . '_' . strtoupper($this->_task));
 		}
 
-		JFactory::getDocument()->setTitle($this->_title);
+		\JFactory::getDocument()->setTitle($this->_title);
 	}
 
 	/**
@@ -97,10 +104,10 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	public function displayTask()
 	{
 		// Check if wishlistcomponent entry is there
-		$this->view->wishlist = JComponentHelper::isEnabled('com_wishlist', true);
+		$this->view->wishlist = \JComponentHelper::isEnabled('com_wishlist', true);
 
 		// Check if poll component entry is there
-		$this->view->poll = JComponentHelper::isEnabled('com_poll', true);
+		$this->view->poll = \JComponentHelper::isEnabled('com_poll', true);
 
 		// Set page title
 		$this->_buildTitle();
@@ -110,12 +117,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Set any messages
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
@@ -130,15 +134,13 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	public function quotesTask()
 	{
 		// Get quotes
-		$filters = array(
+		$sq = new Quote($this->database);
+		$this->view->quotes = $sq->find('list', array(
 			'notable_quote' => 1
-		);
-
-		$sq = new FeedbackQuotes($this->database);
-		$this->view->quotes = $sq->find('list', $filters);
+		));
 
 		$this->view->path    = trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS;
-		$this->view->quoteId = JRequest::getInt('quoteid', null);
+		$this->view->quoteId = \JRequest::getInt('quoteid', null);
 
 		$this->view->display();
 	}
@@ -153,15 +155,15 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Check to see if the user temp folder for holding pics is there, if so then remove it
 		if (is_dir(JPATH_ROOT . '/tmp/feedback/' . $this->juser->get('id')))
 		{
-			JFolder::delete(JPATH_ROOT . '/tmp/feedback/' . $this->juser->get('id'));
+			\JFolder::delete(JPATH_ROOT . '/tmp/feedback/' . $this->juser->get('id'));
 		}
 
 		if ($this->juser->get('guest'))
 		{
-			$here = JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
+			$here = \JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task);
 			$this->setRedirect(
-				JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($here)),
-				JText::_('COM_FEEDBACK_STORY_LOGIN'),
+				\JRoute::_('index.php?option=com_users&view=login&return=' . base64_encode($here)),
+				\JText::_('COM_FEEDBACK_STORY_LOGIN'),
 				'warning'
 			);
 			return;
@@ -169,8 +171,8 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 
 		// Incoming
 		$this->view->quote = array(
-			'long'  => JRequest::getVar('quote', '', 'post'),
-			'short' => JRequest::getVar('short_quote', '', 'post')
+			'long'  => \JRequest::getVar('quote', '', 'post'),
+			'short' => \JRequest::getVar('short_quote', '', 'post')
 		);
 
 		// Set page title
@@ -180,11 +182,11 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Set the pathway
 		$this->_buildPathway();
 
-		$this->view->user = \Hubzero\User\Profile::getInstance($this->juser->get('id'));
+		$this->view->user = Profile::getInstance($this->juser->get('id'));
 
 		if (!is_object($row))
 		{
-			$row = new FeedbackQuotes($this->database);
+			$row = new Quote($this->database);
 			$row->org      = $this->view->user->get('organization');
 			$row->fullname = $this->view->user->get('name');
 		}
@@ -194,12 +196,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->view->row = $row;
 
 		// Set error messages
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
@@ -223,12 +222,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$this->_buildPathway();
 
 		// Set error messages
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		// Output HTML
@@ -245,19 +241,19 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		if ($this->juser->get('guest'))
 		{
 			$this->setRedirect(
-				JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task)
+				\JRoute::_('index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=' . $this->_task)
 			);
 			return;
 		}
 
-		$fields = JRequest::getVar('fields', array(), 'post');
+		$fields = \JRequest::getVar('fields', array(), 'post');
 		$fields = array_map('trim', $fields);
 
-		$dir  = \Hubzero\Utility\String::pad($fields['user_id']);
+		$dir  = String::pad($fields['user_id']);
 		$path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
 
 		// Initiate class and bind posted items to database fields
-		$row = new FeedbackQuotes($this->database);
+		$row = new Quote($this->database);
 		if (!$row->bind($fields))
 		{
 			$this->setError($row->getError());
@@ -268,7 +264,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Check that a story was entered
 		if (!$row->quote)
 		{
-			$this->setError(JText::_('COM_FEEDBACK_ERROR_MISSING_STORY'));
+			$this->setError(\JText::_('COM_FEEDBACK_ERROR_MISSING_STORY'));
 			$this->storyTask($row);
 			return;
 		}
@@ -276,7 +272,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Check for an author
 		if (!$row->fullname)
 		{
-			$this->setError(JText::_('COM_FEEDBACK_ERROR_MISSING_AUTHOR'));
+			$this->setError(\JText::_('COM_FEEDBACK_ERROR_MISSING_AUTHOR'));
 			$this->storyTask($row);
 			return;
 		}
@@ -284,15 +280,15 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Check for an organization
 		if (!$row->org)
 		{
-			$this->setError(JText::_('COM_FEEDBACK_ERROR_MISSING_ORGANIZATION'));
+			$this->setError(\JText::_('COM_FEEDBACK_ERROR_MISSING_ORGANIZATION'));
 			$this->storyTask($row);
 			return;
 		}
 
 		// Code cleaner for xhtml transitional compliance
-		$row->quote = \Hubzero\Utility\Sanitize::stripAll($row->quote);
+		$row->quote = Sanitize::stripAll($row->quote);
 		$row->quote = str_replace('<br>', '<br />', $row->quote);
-		$row->date  = JFactory::getDate()->toSql();
+		$row->date  = \JFactory::getDate()->toSql();
 
 		// Check content
 		if (!$row->check())
@@ -319,9 +315,9 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $row->id;
 		if (!is_dir($path))
 		{
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\JText::_('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
 			}
 		}
 
@@ -348,7 +344,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 						continue;
 					}
 
-					if (JFile::move($tempDir . '/' . $name, $path . '/' . $name))
+					if (\JFile::move($tempDir . '/' . $name, $path . '/' . $name))
 					{
 						array_push($addedPictures, $name);
 					}
@@ -356,7 +352,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			}
 
 			// Remove temp folder
-			JFolder::delete($tempDir);
+			\JFolder::delete($tempDir);
 		}
 
 		$this->view->addedPictures = $addedPictures;
@@ -394,7 +390,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 	public function suggestionsTask()
 	{
 		$this->setRedirect(
-			JRoute::_('index.php?option=com_wishlist')
+			\JRoute::_('index.php?option=com_wishlist')
 		);
 	}
 
@@ -409,7 +405,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Check if they're logged in
 		if ($this->juser->get('guest'))
 		{
-			echo json_encode(array('error' => JText::_('COM_FEEDBACK_STORY_LOGIN')));
+			echo json_encode(array('error' => \JText::_('COM_FEEDBACK_STORY_LOGIN')));
 			return;
 		}
 
@@ -431,7 +427,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		}
 		else
 		{
-			echo json_encode(array('error' => JText::_('COM_FEEDBACK_ERROR_FILE_NOT_FOUND')));
+			echo json_encode(array('error' => \JText::_('COM_FEEDBACK_ERROR_FILE_NOT_FOUND')));
 			return;
 		}
 
@@ -441,29 +437,29 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				echo json_encode(array('error' => JText::_('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
+				echo json_encode(array('error' => \JText::_('COM_FEEDBACK_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH')));
 				return;
 			}
 		}
 
 		if (!is_writable($path))
 		{
-			echo json_encode(array('error' => JText::_('COM_FEEDBACK_ERROR_UPLOAD_PATH_IS_NOT_WRITABLE')));
+			echo json_encode(array('error' => \JText::_('COM_FEEDBACK_ERROR_UPLOAD_PATH_IS_NOT_WRITABLE')));
 			return;
 		}
 
 		// Check to make sure we have a file and its not too big
 		if ($size == 0)
 		{
-			echo json_encode(array('error' => JText::_('COM_FEEDBACK_ERROR_EMPTY_FILE')));
+			echo json_encode(array('error' => \JText::_('COM_FEEDBACK_ERROR_EMPTY_FILE')));
 			return;
 		}
 		if ($size > $sizeLimit)
 		{
-			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', \Hubzero\Utility\Number::formatBytes($sizeLimit));
-			echo json_encode(array('error' => JText::sprintf('COM_FEEDBACK_ERROR_FILE_TOO_LARGE', $max)));
+			$max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', Number::formatBytes($sizeLimit));
+			echo json_encode(array('error' => \JText::sprintf('COM_FEEDBACK_ERROR_FILE_TOO_LARGE', $max)));
 			return;
 		}
 
@@ -474,7 +470,7 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
 		$filename = urldecode($filename);
-		$filename = JFile::makeSafe($filename);
+		$filename = \JFile::makeSafe($filename);
 		$filename = str_replace(' ', '_', $filename);
 
 		$ext = $pathinfo['extension'];
@@ -504,13 +500,13 @@ class FeedbackControllerFeedback extends \Hubzero\Component\SiteController
 			move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
 		}
 
-		if (!JFile::isSafe($file))
+		if (!\JFile::isSafe($file))
 		{
-			if (JFile::delete($file))
+			if (\JFile::delete($file))
 			{
 				echo json_encode(array(
 					'success' => false,
-					'error'  => JText::_('COM_FEEDBACK_ERROR_FILE_FAILED_VIRUS_SCAN')
+					'error'  => \JText::_('COM_FEEDBACK_ERROR_FILE_FAILED_VIRUS_SCAN')
 				));
 				return;
 			}

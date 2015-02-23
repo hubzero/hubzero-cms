@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -23,17 +23,16 @@
  * HUBzero is a registered trademark of Purdue University.
  *
  * @package   hubzero-cms
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedback\Tables;
 
 /**
  * Table class for feedback quote
  */
-class FeedbackQuotes extends JTable
+class Quote extends \JTable
 {
 	/**
 	 * Constructor
@@ -56,7 +55,7 @@ class FeedbackQuotes extends JTable
 		$this->quote = trim($this->quote);
 		if ($this->quote == '')
 		{
-			$this->setError(JText::_('Quote must contain text.'));
+			$this->setError(\JText::_('Quote must contain text.'));
 			return false;
 		}
 		$this->quote = str_replace('<br>', '<br />', $this->quote);
@@ -200,12 +199,12 @@ class FeedbackQuotes extends JTable
 		// If no primary key is given, return false.
 		if ($pk === null)
 		{
-			$e = new JException(JText::_('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
+			$e = new \JException(\JText::_('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
 			$this->setError($e);
 			return false;
 		}
 
-		$config = JComponentHelper::getParams('com_feedback');
+		$config = \JComponentHelper::getParams('com_feedback');
 
 		$path = JPATH_ROOT . DS . trim($config->get('uploadpath', '/site/quotes'), DS) . DS . $pk;
 		$this->_delTree($path);

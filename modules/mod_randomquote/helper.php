@@ -32,7 +32,7 @@
 namespace Modules\RandomQuote;
 
 use Hubzero\Module\Module;
-use FeedbackQuotes;
+use Components\Feedback\Tables\Quote;
 use JFactory;
 
 /**
@@ -47,7 +47,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quotes.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
 
 		$database = JFactory::getDBO();
 
@@ -59,7 +59,7 @@ class Helper extends Module
 		$quotesrc = $this->params->get('quotesrc', 'miniquote');
 
 		// Get quotes
-		$sq = new FeedbackQuotes($database);
+		$sq = new Quote($database);
 		$quote = $sq->find('one', array(
 			'limit'         => 1,
 			'notable_quote' => ($this->params->get('quotepool') == 'notable_quotes' ?  1 : 0),

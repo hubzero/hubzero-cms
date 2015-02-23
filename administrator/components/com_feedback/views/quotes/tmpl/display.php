@@ -30,7 +30,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-$canDo = FeedbackHelperPermissions::getActions('quote');
+$canDo = Components\Feedback\Helpers\Permissions::getActions('quote');
 
 JToolBarHelper::title(JText::_('COM_FEEDBACK'), 'feedback.png');
 if ($canDo->get('core.admin'))
@@ -92,7 +92,16 @@ function submitbutton(pressbutton)
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="8"><?php echo $this->pageNav->getListFooter(); ?></td>
+				<td colspan="8"><?php
+				// Initiate paging class
+				jimport('joomla.html.pagination');
+				$pageNav = new JPagination(
+					$this->total,
+					$this->filters['start'],
+					$this->filters['limit']
+				);
+				echo $pageNav->getListFooter();
+				?></td>
 			</tr>
 		</tfoot>
 		<tbody>

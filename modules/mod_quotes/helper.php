@@ -32,7 +32,7 @@
 namespace Modules\Quotes;
 
 use Hubzero\Module\Module;
-use FeedbackQuotes;
+use Components\Feedback\Tables\Quote;
 use JFactory;
 use JRequest;
 use JComponentHelper;
@@ -49,7 +49,7 @@ class Helper extends Module
 	 */
 	public function run()
 	{
-		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quotes.php');
+		require_once(JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . 'com_feedback' . DS . 'tables' . DS . 'quote.php');
 
 		$this->database = JFactory::getDBO();
 
@@ -61,7 +61,7 @@ class Helper extends Module
 		);
 
 		// Get quotes
-		$sq = new FeedbackQuotes($this->database);
+		$sq = new Quote($this->database);
 		$this->quotes = $sq->find('list', $this->filters);
 
 		$feedbackConfig = JComponentHelper::getParams('com_feedback');

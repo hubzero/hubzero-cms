@@ -27,27 +27,24 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die( 'Restricted access' );
+namespace Components\Feedback;
 
-$option = JRequest::getCmd('option', 'com_feedback');
-
-if (!JFactory::getUser()->authorise('core.manage', $option))
+if (!\JFactory::getUser()->authorise('core.manage', 'com_feedback'))
 {
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+	return \JError::raiseWarning(404, \JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Include scripts
-require_once(JPATH_COMPONENT . DS . 'tables' . DS . 'quotes.php');
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'permissions.php');
+require_once(__DIR__ . DS . 'tables' . DS . 'quote.php');
+require_once(__DIR__ . DS . 'helpers' . DS . 'permissions.php');
 
-$controllerName = JRequest::getCmd('controller', 'quotes');
-if (!file_exists(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php'))
+$controllerName = \JRequest::getCmd('controller', 'quotes');
+if (!file_exists(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php'))
 {
 	$controllerName = 'quotes';
 }
-require_once(JPATH_COMPONENT . DS . 'controllers' . DS . $controllerName . '.php');
-$controllerName = 'FeedbackController' . ucfirst(strtolower($controllerName));
+require_once(__DIR__ . DS . 'controllers' . DS . $controllerName . '.php');
+$controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 
 // Initiate controller
 $controller = new $controllerName();

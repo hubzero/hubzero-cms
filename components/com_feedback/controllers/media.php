@@ -28,13 +28,16 @@
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Feedback\Controllers;
+
+use Components\Feedback\Tables\Quotes;
+use Hubzero\Component\SiteController;
+use Hubzero\Utility\String;
 
 /**
  * Feedback controller class for media management
  */
-class FeedbackControllerMedia extends \Hubzero\Component\SiteController
+class Media extends SiteController
 {
 	/**
 	 * Upload an image
@@ -45,37 +48,37 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$this->setError(JText::_('COM_FEEDBACK_NOTAUTH'));
+			$this->setError(\JText::_('COM_FEEDBACK_NOTAUTH'));
 			$this->displayTask('', 0);
 			return;
 		}
 
 		// Incoming
-		if (!($id = JRequest::getInt('id', 0)))
+		if (!($id = \JRequest::getInt('id', 0)))
 		{
-			$this->setError(JText::_('COM_FEEDBACK_NO_ID'));
+			$this->setError(\JText::_('COM_FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
 			return;
 		}
 
 		// Incoming file
-		$file = JRequest::getVar('upload', '', 'files', 'array');
+		$file = \JRequest::getVar('upload', '', 'files', 'array');
 		if (!$file['name'])
 		{
-			$this->setError(JText::_('COM_FEEDBACK_NO_FILE'));
+			$this->setError(\JText::_('COM_FEEDBACK_NO_FILE'));
 			$this->displayTask('', $id);
 			return;
 		}
 
 		// Build upload path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($id);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . String::pad($id);
 
 		if (!is_dir($path))
 		{
 			jimport('joomla.filesystem.folder');
-			if (!JFolder::create($path))
+			if (!\JFolder::create($path))
 			{
-				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
+				$this->setError(\JText::_('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
 				$this->displayTask('', $id);
 				return;
 			}
@@ -83,25 +86,25 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 
 		// Make the filename safe
 		jimport('joomla.filesystem.file');
-		$file['name'] = JFile::makeSafe($file['name']);
+		$file['name'] = \JFile::makeSafe($file['name']);
 		$file['name'] = str_replace(' ', '_', $file['name']);
 
 		// Perform the upload
-		if (!JFile::upload($file['tmp_name'], $path . DS . $file['name']))
+		if (!\JFile::upload($file['tmp_name'], $path . DS . $file['name']))
 		{
-			$this->setError(JText::_('COM_FEEDBACK_ERROR_UPLOADING'));
+			$this->setError(\JText::_('COM_FEEDBACK_ERROR_UPLOADING'));
 			$file = $curfile;
 		}
 		else
 		{
 			// Do we have an old file we're replacing?
-			$curfile = JRequest::getVar('currentfile', '');
+			$curfile = \JRequest::getVar('currentfile', '');
 
 			if ($curfile != '' && file_exists($path . DS . $curfile))
 			{
-				if (!JFile::delete($path . DS . $curfile))
+				if (!\JFile::delete($path . DS . $curfile))
 				{
-					$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
+					$this->setError(\JText::_('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
 					$this->displayTask($file['name'], $id);
 					return;
 				}
@@ -123,30 +126,30 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 	{
 		if ($this->juser->get('guest'))
 		{
-			$this->setError(JText::_('COM_FEEDBACK_NOTAUTH'));
+			$this->setError(\JText::_('COM_FEEDBACK_NOTAUTH'));
 			$this->displayTask('', 0);
 			return;
 		}
 
 		// Incoming member ID
-		if (!($id = JRequest::getInt('id', 0)))
+		if (!($id = \JRequest::getInt('id', 0)))
 		{
-			$this->setError(JText::_('COM_FEEDBACK_NO_ID'));
+			$this->setError(\JText::_('COM_FEEDBACK_NO_ID'));
 			$this->displayTask('', $id);
 			return;
 		}
 
 		if ($this->juser->get('id') != $id)
 		{
-			$this->setError(JText::_('COM_FEEDBACK_NOTAUTH'));
+			$this->setError(\JText::_('COM_FEEDBACK_NOTAUTH'));
 			$this->displayTask('', $this->juser->get('id'));
 			return;
 		}
 
 		// Incoming file
-		if (!($file = JRequest::getVar('file', '')))
+		if (!($file = \JRequest::getVar('file', '')))
 		{
-			$this->setError(JText::_('COM_FEEDBACK_NO_FILE'));
+			$this->setError(\JText::_('COM_FEEDBACK_NO_FILE'));
 			$this->displayTask($file, $id);
 			return;
 		}
@@ -154,19 +157,19 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		$file = basename($file);
 
 		// Build the file path
-		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . \Hubzero\Utility\String::pad($id);
+		$path = JPATH_ROOT . DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . String::pad($id);
 
 		if (!file_exists($path . DS . $file) or !$file)
 		{
-			$this->setError(JText::_('COM_FEEDBACK_FILE_NOT_FOUND'));
+			$this->setError(\JText::_('COM_FEEDBACK_FILE_NOT_FOUND'));
 		}
 		else
 		{
 			// Attempt to delete the file
 			jimport('joomla.filesystem.file');
-			if (!JFile::delete($path . DS . $file))
+			if (!\JFile::delete($path . DS . $file))
 			{
-				$this->setError(JText::_('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
+				$this->setError(\JText::_('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
 				$this->displayTask($file, $id);
 				return;
 			}
@@ -187,19 +190,17 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 	 */
 	public function displayTask($file='', $id=0)
 	{
-		$this->view->setLayout('display');
-
 		// Do have an ID or do we need to get one?
 		if (!$id)
 		{
-			$id = JRequest::getInt('id', 0);
+			$id = \JRequest::getInt('id', 0);
 		}
-		$dir = \Hubzero\Utility\String::pad($id);
+		$dir = String::pad($id);
 
 		// Do we have a file or do we need to get one?
 		$file = ($file)
 			  ? $file
-			  : JRequest::getVar('file', '');
+			  : \JRequest::getVar('file', '');
 
 		// Build the directory path
 		$path = DS . trim($this->config->get('uploadpath', '/site/quotes'), DS) . DS . $dir;
@@ -213,14 +214,14 @@ class FeedbackControllerMedia extends \Hubzero\Component\SiteController
 		$this->view->file_path = $path;
 		$this->view->id        = $id;
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
-		$this->view->display();
+
+		$this->view
+			->setLayout('display')
+			->display();
 	}
 }
 
