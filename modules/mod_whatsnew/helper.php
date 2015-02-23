@@ -37,7 +37,7 @@ use JFactory;
 use JRoute;
 use JPluginHelper;
 use JDispatcher;
-use WhatsnewPeriod;
+use Components\Whatsnew\Helpers\Period;
 use MembersModelTags;
 
 /**
@@ -207,8 +207,7 @@ class Helper extends Module
 		$dispatcher = JDispatcher::getInstance();
 
 		// Process the keyword for exact time period
-		$p = new WhatsnewPeriod($this->period);
-		$p->process();
+		$p = new Period($this->period);
 
 		// Get the search results
 		$results = $dispatcher->trigger('onWhatsnew', array(

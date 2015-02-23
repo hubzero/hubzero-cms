@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,49 +24,50 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Whatsnew\Helpers;
 
 /**
  * Whats New helper class for time periods
  */
-class WhatsnewPeriod extends JObject
+class Period
 {
 	/**
 	 * The original search text - should NEVER BE CHANGED
 	 *
-	 * @var string
+	 * @var  string
 	 */
 	private $_period = NULL;
 
 	/**
 	 * Container for storing overloaded data
 	 *
-	 * @var array
+	 * @var  array
 	 */
-	private $_data   = array();
+	private $_data = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param      string $period Time period (month, week, etc)
-	 * @return     void
+	 * @param   string  $period  Time period (month, week, etc)
+	 * @return  void
 	 */
 	public function __construct($period=NULL)
 	{
-		$this->_period = $period;
+		$this->setPeriod($period);
+
+		$this->process();
 	}
 
 	/**
 	 * Method to set an overloaded variable to the component
 	 *
-	 * @param	string	$property	Name of overloaded variable to add
-	 * @param	mixed	$value 		Value of the overloaded variable
-	 * @return	void
+	 * @param   string  $property  Name of overloaded variable to add
+	 * @param   mixed   $value     Value of the overloaded variable
+	 * @return  void
 	 */
 	public function __set($property, $value)
 	{
@@ -76,8 +77,8 @@ class WhatsnewPeriod extends JObject
 	/**
 	 * Method to get an overloaded variable of the component
 	 *
-	 * @param	string	$property	Name of overloaded variable to retrieve
-	 * @return	mixed 	Value of the overloaded variable
+	 * @param   string  $property  Name of overloaded variable to retrieve
+	 * @return  mixed   Value of the overloaded variable
 	 */
 	public function __get($property)
 	{
@@ -90,11 +91,23 @@ class WhatsnewPeriod extends JObject
 	/**
 	 * Processes the _period text into actual dates
 	 *
-	 * @return     void
+	 * @return  void
+	 */
+	public function setPeriod($period)
+	{
+		$this->_period = trim((string) $period);
+
+		return $this;
+	}
+
+	/**
+	 * Processes the _period text into actual dates
+	 *
+	 * @return  void
 	 */
 	public function process()
 	{
-		if (trim($this->_period) == '')
+		if (!$this->_period)
 		{
 			return;
 		}
@@ -102,27 +115,26 @@ class WhatsnewPeriod extends JObject
 		$this->period = $this->_period;
 
 		// Determine last week and last month date
-		//$today = time();
 		switch ($this->period)
 		{
 			case 'week':
-				$this->endTime   = JFactory::getDate('now')->toSql(); //$today;
-				$this->startTime = JFactory::getDate('-1 week')->toSql(); //$this->endTime - (7*24*60*60);
+				$this->endTime   = \JFactory::getDate('now')->toSql();
+				$this->startTime = \JFactory::getDate('-1 week')->toSql();
 			break;
 
 			case 'month':
-				$this->endTime   = JFactory::getDate('now')->toSql(); //$today;
-				$this->startTime = JFactory::getDate('-1 month')->toSql(); //$this->endTime - (31*24*60*60);
+				$this->endTime   = \JFactory::getDate('now')->toSql();
+				$this->startTime = \JFactory::getDate('-1 month')->toSql();
 			break;
 
 			case 'quarter':
-				$this->endTime   = JFactory::getDate('now')->toSql(); //$today;
-				$this->startTime = JFactory::getDate('-3 months')->toSql(); //$this->endTime - (3*31*24*60*60);
+				$this->endTime   = \JFactory::getDate('now')->toSql();
+				$this->startTime = \JFactory::getDate('-3 months')->toSql();
 			break;
 
 			case 'year':
-				$this->endTime   = JFactory::getDate('now')->toSql(); //$today;
-				$this->startTime = JFactory::getDate('-1 year')->toSql(); //$this->endTime - (365*24*60*60);
+				$this->endTime   = \JFactory::getDate('now')->toSql();
+				$this->startTime = \JFactory::getDate('-1 year')->toSql();
 			break;
 
 			default:
@@ -139,15 +151,15 @@ class WhatsnewPeriod extends JObject
 					$this->endTime   = strtotime('08/31/' . $this->period);
 					$this->startTime = strtotime('09/01/' . ($this->period-1));
 				}
-				$this->endTime   = date("Y-m-d H:i:s", $this->endTime);
-				$this->startTime = date("Y-m-d H:i:s", $this->startTime);
+				$this->endTime   = gmdate("Y-m-d H:i:s", $this->endTime);
+				$this->startTime = gmdate("Y-m-d H:i:s", $this->startTime);
 			break;
 		}
 
-		$this->cStartDate = $this->startTime; //date("Y-m-d H:i:s", $this->startTime);
-		$this->dStartDate = substr($this->startTime, 0, strlen('0000-00-00')); //date("Y-m-d", $this->startTime);
-		$this->cEndDate   = $this->endTime; //date("Y-m-d H:i:s", $this->endTime);
-		$this->dEndDate   = substr($this->endTime, 0, strlen('0000-00-00')); //date("Y-m-d", $this->endTime);
+		$this->cStartDate = $this->startTime;
+		$this->dStartDate = substr($this->startTime, 0, strlen('0000-00-00'));
+		$this->cEndDate   = $this->endTime;
+		$this->dEndDate   = substr($this->endTime, 0, strlen('0000-00-00'));
 	}
 }
 

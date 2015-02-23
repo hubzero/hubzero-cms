@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2005-2011 Purdue University. All rights reserved.
+ * Copyright 2005-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,25 +24,31 @@
  *
  * @package   hubzero-cms
  * @author    Shawn Rice <zooley@purdue.edu>
- * @copyright Copyright 2005-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2005-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Whatsnew\Controllers;
+
+use Components\Whatsnew\Helpers\Period;
+use Hubzero\Component\SiteController;
+
+require_once(dirname(__DIR__) . DS . 'helpers' . DS . 'period.php');
 
 /**
  * Controller class for dipslaying what's new
  */
-class WhatsnewControllerResults extends \Hubzero\Component\SiteController
+class Results extends SiteController
 {
 	/**
 	 * Execute a task
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function execute()
 	{
+		\JPluginHelper::importPlugin('whatsnew');
+
 		$this->registerTask('feedrss', 'feed');
 
 		parent::execute();
@@ -51,34 +57,34 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 	/**
 	 * Display a list of new item's
 	 *
-	 * @return     void
+	 * @return  void
 	 */
 	public function displayTask()
 	{
-		$menu = JFactory::getApplication()->getMenu()->getActive();
+		$menu = \JFactory::getApplication()->getMenu()->getActive();
 		if (!$menu)
 		{
-			$menu = new stdClass;
+			$menu = new \stdClass;
 			$menu->params = '';
 		}
 
-		$menu->param = new JRegistry($menu->params);
+		$menu->param = new \JRegistry($menu->params);
 
 		// Incoming
-		$this->view->period = JRequest::getVar('period', $menu->param->get('period', 'month'));
+		$this->view->period = \JRequest::getVar('period', $menu->param->get('period', 'month'));
 
 		// Get configuration
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		// Paging variables
-		$this->view->start = JRequest::getInt('limitstart', 0);
-		$this->view->limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$this->view->start = \JRequest::getInt('limitstart', 0);
+		$this->view->limit = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 
 		// Get categories
 		$areas = $this->_getAreas();
 
 		// Was there a category passed in the querystring?
-		$area = trim(JRequest::getWord('category', ''));
+		$area = trim(\JRequest::getWord('category', ''));
 
 		// Check the search string for a category prefix
 		if ($this->view->period != NULL)
@@ -130,12 +136,11 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		}
 
 		// Load plugins
-		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher = JDispatcher::getInstance();
+		
+		$dispatcher = \JDispatcher::getInstance();
 
 		// Process the keyword for exact phrase matches, etc.
-		$p = new WhatsnewPeriod($this->view->period);
-		$p->process();
+		$p = new Period($this->view->period);
 
 		// Get the search result totals
 		$this->view->totals = $dispatcher->trigger(
@@ -215,17 +220,17 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		}
 
 		// Set the page title
-		$this->view->title = JText::_(strtoupper($this->_option)) . ': ' . $this->_jtext($this->view->period);
+		$this->view->title = \JText::_(strtoupper($this->_option)) . ': ' . $this->_jtext($this->view->period);
 
-		$document = JFactory::getDocument();
+		$document = \JFactory::getDocument();
 		$document->setTitle($this->view->title);
 
 		// Set the pathway
-		$pathway = JFactory::getApplication()->getPathway();
+		$pathway = \JFactory::getApplication()->getPathway();
 		if (count($pathway->getPathWay()) <= 0)
 		{
 			$pathway->addItem(
-				JText::_(strtoupper($this->_option)),
+				\JText::_(strtoupper($this->_option)),
 				'index.php?option=' . $this->_option
 			);
 		}
@@ -236,33 +241,30 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 		// Build some options for the time period <select>
 		$this->view->periodlist = array();
-		$this->view->periodlist[] = JHTMLSelect::option('week', JText::_('COM_WHATSNEW_OPT_WEEK'));
-		$this->view->periodlist[] = JHTMLSelect::option('month', JText::_('COM_WHATSNEW_OPT_MONTH'));
-		$this->view->periodlist[] = JHTMLSelect::option('quarter', JText::_('COM_WHATSNEW_OPT_QUARTER'));
-		$this->view->periodlist[] = JHTMLSelect::option('year', JText::_('COM_WHATSNEW_OPT_YEAR'));
+		$this->view->periodlist[] = \JHtml::_('select.option', 'week', \JText::_('COM_WHATSNEW_OPT_WEEK'));
+		$this->view->periodlist[] = \JHtml::_('select.option', 'month', \JText::_('COM_WHATSNEW_OPT_MONTH'));
+		$this->view->periodlist[] = \JHtml::_('select.option', 'quarter', \JText::_('COM_WHATSNEW_OPT_QUARTER'));
+		$this->view->periodlist[] = \JHtml::_('select.option', 'year', \JText::_('COM_WHATSNEW_OPT_YEAR'));
 
 		$thisyear = strftime("%Y",time());
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('10/1/' . $y))
 			{
-				$this->view->periodlist[] = JHTMLSelect::option($y, JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
+				$this->view->periodlist[] = \JHtml::_('select.option', $y, \JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y);
 			}
 		}
 		for ($y = $thisyear; $y >= 2002; $y--)
 		{
 			if (time() >= strtotime('01/01/' . $y))
 			{
-				$this->view->periodlist[] = JHTMLSelect::option('c_' . $y, JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
+				$this->view->periodlist[] = \JHtml::_('select.option', 'c_' . $y, \JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y);
 			}
 		}
 
-		if ($this->getError())
+		foreach ($this->getErrors() as $error)
 		{
-			foreach ($this->getErrors() as $error)
-			{
-				$this->view->setError($error);
-			}
+			$this->view->setError($error);
 		}
 
 		$this->view->display();
@@ -277,31 +279,31 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 	{
 		include_once(JPATH_ROOT . DS . 'libraries' . DS . 'joomla' . DS . 'document' . DS . 'feed' . DS . 'feed.php');
 
-		$app = JFactory::getApplication();
+		$app = \JFactory::getApplication();
 
 		// Set the mime encoding for the document
-		$jdoc = JFactory::getDocument();
+		$jdoc = \JFactory::getDocument();
 		$jdoc->setMimeEncoding('application/rss+xml');
 
 		// Start a new feed object
-		$doc = new JDocumentFeed;
-		$doc->link = JRoute::_('index.php?option=' . $this->_option);
+		$doc = new \JDocumentFeed;
+		$doc->link = \JRoute::_('index.php?option=' . $this->_option);
 
 		// Incoming
-		$period = JRequest::getVar('period', 'month');
+		$period = \JRequest::getVar('period', 'month');
 
 		// Get configuration
-		$jconfig = JFactory::getConfig();
+		$jconfig = \JFactory::getConfig();
 
 		// Paging variables
-		$start = JRequest::getInt('limitstart', 0);
-		$limit = JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
+		$start = \JRequest::getInt('limitstart', 0);
+		$limit = \JRequest::getInt('limit', $jconfig->getValue('config.list_limit'));
 
 		// Get categories
 		$areas = $this->_getAreas();
 
 		// Was there a category passed in the querystring?
-		$area = trim(JRequest::getWord('category', ''));
+		$area = trim(\JRequest::getWord('category', ''));
 
 		// Check the search string for a category prefix
 		if ($period != NULL)
@@ -352,16 +354,11 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 			$activeareas = $areas;
 		}
 
-		// Load plugins
-		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher = JDispatcher::getInstance();
-
 		// Process the keyword for exact phrase matches, etc.
-		$p = new WhatsnewPeriod($period);
-		$p->process();
+		$p = new Period($period);
 
 		// Fetch results
-		$results = $dispatcher->trigger(
+		$results = \JDispatcher::getInstance()->trigger(
 			'onWhatsNew',
 			array(
 				$p,
@@ -370,8 +367,6 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 				$activeareas
 			)
 		);
-
-		$jconfig = JFactory::getConfig();
 
 		// Run through the array of arrays returned from plugins and find the one that returned results
 		$rows = array();
@@ -388,11 +383,11 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 		}
 
 		// Build some basic RSS document information
-		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . JText::_('COM_WHATSNEW_RSS_TITLE') . ': ' . $period;
+		$doc->title  = $jconfig->getValue('config.sitename') . ' - ' . \JText::_('COM_WHATSNEW_RSS_TITLE') . ': ' . $period;
 		$doc->title .= ($area) ? ': ' . $area : '';
-		$doc->description = JText::sprintf('COM_WHATSNEW_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
-		$doc->copyright   = JText::sprintf('COM_WHATSNEW_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
-		$doc->category    = JText::_('COM_WHATSNEW_RSS_CATEGORY');
+		$doc->description = \JText::sprintf('COM_WHATSNEW_RSS_DESCRIPTION', $jconfig->getValue('config.sitename'));
+		$doc->copyright   = \JText::sprintf('COM_WHATSNEW_RSS_COPYRIGHT', date("Y"), $jconfig->getValue('config.sitename'));
+		$doc->category    = \JText::_('COM_WHATSNEW_RSS_CATEGORY');
 
 		// Start outputing results if any found
 		if (count($rows) > 0)
@@ -419,7 +414,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 						}
 					}
 				}
-				$link = JRoute::_($row->href);
+				$link = \JRoute::_($row->href);
 
 				if (!isset($row->text) && isset($row->itext))
 				{
@@ -434,7 +429,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 
 				if (isset($row->ranking) || isset($row->rating))
 				{
-					$resourceEx = new ResourcesHelper($row->id, $this->database);
+					$resourceEx = new \ResourcesHelper($row->id, $this->database);
 					$resourceEx->getCitationsCount();
 					$resourceEx->getLastCitationDate();
 					$resourceEx->getContributors();
@@ -443,7 +438,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 				}
 
 				// Load individual item creator class
-				$item = new JFeedItem();
+				$item = new \JFeedItem();
 				$item->title       = $title;
 				$item->link        = $link;
 				$item->description = $description;
@@ -463,17 +458,17 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 	/**
 	 * Get the translated text value for a give time period
 	 *
-	 * @param      string $period Time period
-	 * @return     string
+	 * @param   string  $period  Time period
+	 * @return  string
 	 */
 	private function _jtext($period)
 	{
 		switch ($period)
 		{
-			case 'week':    return JText::_('COM_WHATSNEW_OPT_WEEK');    break;
-			case 'month':   return JText::_('COM_WHATSNEW_OPT_MONTH');   break;
-			case 'quarter': return JText::_('COM_WHATSNEW_OPT_QUARTER'); break;
-			case 'year':    return JText::_('COM_WHATSNEW_OPT_YEAR');    break;
+			case 'week':    return \JText::_('COM_WHATSNEW_OPT_WEEK');    break;
+			case 'month':   return \JText::_('COM_WHATSNEW_OPT_MONTH');   break;
+			case 'quarter': return \JText::_('COM_WHATSNEW_OPT_QUARTER'); break;
+			case 'year':    return \JText::_('COM_WHATSNEW_OPT_YEAR');    break;
 			default:
 				$thisyear = strftime("%Y", time());
 				for ($y = $thisyear; $y >= 2002; $y--)
@@ -482,7 +477,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 					{
 						if ($y == $period)
 						{
-							return JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y;
+							return \JText::_('COM_WHATSNEW_OPT_FISCAL_YEAR') . ' ' . $y;
 						}
 					}
 				}
@@ -492,7 +487,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 					{
 						if ('c_' . $y == $period)
 						{
-							return JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
+							return \JText::_('COM_WHATSNEW_OPT_CALENDAR_YEAR') . ' ' . $y;
 						}
 					}
 				}
@@ -503,7 +498,7 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 	/**
 	 * Get a list of active plugins
 	 *
-	 * @return     array
+	 * @return  array
 	 */
 	private function _getAreas()
 	{
@@ -513,12 +508,8 @@ class WhatsnewControllerResults extends \Hubzero\Component\SiteController
 			// No - so we'll need to get it
 			$areas = array();
 
-			// Load the whatsnew plugins
-			JPluginHelper::importPlugin('whatsnew');
-			$dispatcher = JDispatcher::getInstance();
-
 			// Trigger the functions that return the areas we'll be searching
-			$searchareas = $dispatcher->trigger('onWhatsNewAreas');
+			$searchareas = \JDispatcher::getInstance()->trigger('onWhatsNewAreas');
 
 			// Build an array of the areas
 			foreach ($searchareas as $area)

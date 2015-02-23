@@ -2,7 +2,7 @@
 /**
  * HUBzero CMS
  *
- * Copyright 2009-2011 Purdue University. All rights reserved.
+ * Copyright 2009-2015 Purdue University. All rights reserved.
  *
  * This file is part of: The HUBzero(R) Platform for Scientific Collaboration
  *
@@ -24,17 +24,16 @@
  *
  * @package   hubzero-cms
  * @author    Chris Smoak <csmoak@purdue.edu>
- * @copyright Copyright 2009-2011 Purdue University. All rights reserved.
+ * @copyright Copyright 2009-2015 Purdue University. All rights reserved.
  * @license   http://www.gnu.org/licenses/lgpl-3.0.html LGPLv3
  */
 
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+namespace Components\Whatsnew\Helpers;
 
 /**
  * Helper class for returning "what's new" results
  */
-class WhatsnewHelperFinder
+class Finder
 {
 	/**
 	 * Get what's new based on a time period and category
@@ -44,14 +43,14 @@ class WhatsnewHelperFinder
 	 * @param   integer $limit    Limit number of results returned
 	 * @return  array
 	 */
-	public static function getWhatsNewBasedOnPeriodAndCategory($period = 'month', $category = '', $limit = 0)
+	public static function getBasedOnPeriodAndCategory($period = 'month', $category = '', $limit = 0)
 	{
 		// parse the time period for use by the whats new plugins
-		$p = self::parseTimePeriod( $period );
+		$p = self::parseTimePeriod($period);
 
 		// load whats new plugins
-		JPluginHelper::importPlugin('whatsnew');
-		$dispatcher = JDispatcher::getInstance();
+		\JPluginHelper::importPlugin('whatsnew');
+		$dispatcher = \JDispatcher::getInstance();
 
 		// get the search areas
 		$areas = array();
@@ -98,14 +97,13 @@ class WhatsnewHelperFinder
 	 * For example, "month" will calculate a timestamp (YYYY-MM-DD hh:mm:ss)
 	 * of 1 month from "now"
 	 *
-	 * @param   string $period Time period
+	 * @param   string  $period  Time period
 	 * @return  object
 	 */
 	public static function parseTimePeriod($period)
 	{
-		require_once(JPATH_ROOT . DS . 'components' . DS . 'com_whatsnew' . DS . 'helpers' . DS . 'period.php');
-		$p = new WhatsnewPeriod($period);
-		$p->process();
-		return $p;
+		require_once(__DIR__ . DS . 'period.php');
+
+		return new Period($period);
 	}
 }
