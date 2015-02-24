@@ -494,7 +494,7 @@ class WishlistControllerWishlist extends \Hubzero\Component\SiteController
 		{
 			$this->view->setError($this->getError());
 		}
-		$this->view->display();
+		$this->view->setLayout('wish')->display();
 	}
 
 	/**
