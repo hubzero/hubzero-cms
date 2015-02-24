@@ -83,10 +83,10 @@ $group = JRequest::getVar('group', '');
 	<p class="info"><?php echo JText::_('COM_SUPPORT_TROUBLE_TICKET_TIMES'); ?></p>
 
 	<?php if ($this->getError()) { ?>
-		<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_FIELDS'); ?></p>
+		<p class="error"><?php echo implode('<br />', $this->getErrors()); //JText::_('COM_SUPPORT_ERROR_MISSING_FIELDS'); ?></p>
 	<?php } ?>
 
-	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new'.$tmpl); ?>" id="hubForm" method="post" enctype="multipart/form-data">
+	<form action="<?php echo JRoute::_('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new' . $tmpl); ?>" id="hubForm" method="post" enctype="multipart/form-data">
 		<div class="explaination">
 			<p><?php echo JText::_('COM_SUPPORT_TROUBLE_OTHER_OPTIONS'); ?></p>
 		</div>
@@ -96,39 +96,39 @@ $group = JRequest::getVar('group', '');
 			<input type="hidden" name="option" value="<?php echo $this->option; ?>" />
 			<input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 			<input type="hidden" name="task" value="save" />
-			<input type="hidden" name="verified" value="<?php echo $this->verified; ?>" />
+			<input type="hidden" name="verified" value="<?php echo $this->row->get('verified'); ?>" />
 
-			<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->problem['referer']); ?>" />
-			<input type="hidden" name="problem[tool]" value="<?php echo $this->escape($this->problem['tool']); ?>" />
-			<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->problem['osver']); ?>" />
-			<input type="hidden" name="problem[browserver]" value="<?php echo $this->escape($this->problem['browserver']); ?>" />
-			<input type="hidden" name="problem[short]" value="<?php echo $this->escape($this->problem['short']); ?>" />
+			<input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->row->get('referer')); ?>" />
+			<input type="hidden" name="problem[tool]" value="<?php echo $this->escape($this->row->get('tool')); ?>" />
+			<input type="hidden" name="problem[osver]" value="<?php echo $this->escape($this->row->get('osver')); ?>" />
+			<input type="hidden" name="problem[browserver]" value="<?php echo $this->escape($this->row->get('browserver')); ?>" />
+			<input type="hidden" name="problem[short]" value="<?php echo $this->escape($this->row->get('short')); ?>" />
 			<?php if ($group) { ?>
 				<input type="hidden" name="group" value="<?php echo $group; ?>" />
 			<?php } ?>
 			<input type="hidden" name="no_html" value="0" />
-			<?php if ($this->verified) { ?>
+			<?php if ($this->row->get('verified')) { ?>
 				<input type="hidden" name="botcheck" value="" />
 			<?php } ?>
 
 			<label for="reporter_login">
 				<?php echo JText::_('COM_SUPPORT_USERNAME'); ?>
-				<input type="text" name="reporter[login]" value="<?php echo (isset($this->reporter['login'])) ? $this->escape($this->reporter['login']) : ''; ?>" id="reporter_login" />
+				<input type="text" name="reporter[login]" value="<?php echo $this->row->get('login', $this->row->submitter('username')); ?>" id="reporter_login" />
 			</label>
 
-			<label for="reporter_name"<?php echo ($this->getError() && $this->reporter['name'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
+			<label for="reporter_name"<?php echo ($this->getError() && !$this->row->get('name')) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_SUPPORT_NAME'); ?> <span class="required"><?php echo JText::_('COM_SUPPORT_REQUIRED'); ?></span>
-				<input type="text" name="reporter[name]" value="<?php echo (isset($this->reporter['name'])) ? $this->escape($this->reporter['name']) : ''; ?>" id="reporter_name" />
+				<input type="text" name="reporter[name]" value="<?php echo $this->row->get('name', $this->row->submitter('name')); ?>" id="reporter_name" />
 			</label>
-			<?php if ($this->getError() && $this->reporter['name'] == '') { ?>
+			<?php if ($this->getError() && !$this->row->get('name')) { ?>
 				<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_NAME'); ?></p>
 			<?php } ?>
 
-			<label for="reporter_email"<?php echo ($this->getError() && $this->reporter['email'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
+			<label for="reporter_email"<?php echo ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_SUPPORT_EMAIL'); ?> <span class="required"><?php echo JText::_('COM_SUPPORT_REQUIRED'); ?></span>
-				<input type="text" name="reporter[email]" value="<?php echo (isset($this->reporter['email'])) ? $this->escape($this->reporter['email']) : ''; ?>" id="reporter_email" />
+				<input type="text" name="reporter[email]" value="<?php echo $this->row->get('email', $this->row->submitter('email')); ?>" id="reporter_email" />
 			</label>
-			<?php if ($this->getError() && $this->reporter['email'] == '') { ?>
+			<?php if ($this->getError() && !$this->row->get('email')) { ?>
 				<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>
 			<?php } ?>
 
@@ -136,25 +136,25 @@ $group = JRequest::getVar('group', '');
 				<?php echo JText::_('COM_SUPPORT_ORGANIZATION'); ?>
 				<input type="text" name="reporter[org]" value="<?php echo (isset($this->reporter['org'])) ? $this->escape($this->reporter['org']) : ''; ?>" id="reporter_org" />
 			</label>*/ ?>
-			<input type="hidden" name="reporter[org]" value="<?php echo (isset($this->reporter['org'])) ? $this->escape($this->reporter['org']) : ''; ?>" id="reporter_org" />
+			<input type="hidden" name="reporter[org]" value="<?php echo $this->row->get('organization', $this->row->submitter('organization')); ?>" id="reporter_org" />
 
 			<div class="grid">
 				<div class="col span6">
-					<label for="problem_os"<?php echo ($this->getError() && $this->problem['os'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
+					<label for="problem_os"<?php echo ($this->getError() && !$this->row->get('os')) ? ' class="fieldWithErrors"' : ''; ?>>
 						<?php echo JText::_('COM_SUPPORT_OS'); ?>
 						<select name="problem[os]" id="problem_os">
 						<?php foreach ($oses as $avalue => $alabel) { ?>
-							<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->problem['os'] || $alabel == $this->problem['os']) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
+							<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->get('os') || $alabel == $this->row->get('os')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
 						<?php } ?>
 						</select>
 					</label>
 				</div>
 				<div class="col span6 omega">
-					<label for="problem_browser"<?php echo ($this->getError() && $this->problem['browser'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
+					<label for="problem_browser"<?php echo ($this->getError() && $this->row->get('browser') == '') ? ' class="fieldWithErrors"' : ''; ?>>
 						<?php echo JText::_('COM_SUPPORT_BROWSER'); ?>
 						<select name="problem[browser]" id="problem_browser">
 						<?php foreach ($browsers as $avalue => $alabel) { ?>
-							<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->problem['browser'] || $alabel == $this->problem['browser']) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
+							<option value="<?php echo $avalue; ?>"<?php echo ($avalue == $this->row->get('browser') || $alabel == $this->row->get('browser')) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($alabel); ?></option>
 						<?php } ?>
 						</select>
 					</label>
@@ -165,11 +165,11 @@ $group = JRequest::getVar('group', '');
 		<fieldset>
 			<legend><?php echo JText::_('COM_SUPPORT_TROUBLE_YOUR_PROBLEM'); ?></legend>
 
-			<label for="problem_long"<?php echo ($this->getError() && $this->problem['long'] == '') ? ' class="fieldWithErrors"' : ''; ?>>
+			<label for="problem_long"<?php echo ($this->getError() && !$this->row->get('report')) ? ' class="fieldWithErrors"' : ''; ?>>
 				<?php echo JText::_('COM_SUPPORT_TROUBLE_DESCRIPTION'); ?> <span class="required"><?php echo JText::_('JREQUIRED'); ?></span>
-				<textarea name="problem[long]" cols="40" rows="10" id="problem_long"><?php echo (isset($this->problem['long'])) ? $this->escape(stripslashes($this->problem['long'])) : ''; ?></textarea>
+				<textarea name="problem[long]" cols="40" rows="10" id="problem_long"><?php echo $this->row->get('report'); ?></textarea>
 			</label>
-			<?php if ($this->getError() && (!isset($this->problem['long']) || $this->problem['long'] == '')) { ?>
+			<?php if ($this->getError() && !$this->row->get('report')) { ?>
 				<p class="error"><?php echo JText::_('COM_SUPPORT_ERROR_MISSING_DESCRIPTION'); ?></p>
 			<?php } ?>
 
@@ -203,7 +203,7 @@ $group = JRequest::getVar('group', '');
 			</fieldset>
 		</fieldset><div class="clear"></div>
 
-		<?php if ($this->verified && $this->acl->check('update', 'tickets') > 0) { ?>
+		<?php if ($this->row->get('verified') && $this->acl->check('update', 'tickets') > 0) { ?>
 			<fieldset>
 				<legend><?php echo JText::_('COM_SUPPORT_DETAILS'); ?></legend>
 
@@ -212,13 +212,13 @@ $group = JRequest::getVar('group', '');
 					<?php
 					JPluginHelper::importPlugin('hubzero');
 					$dispatcher = JDispatcher::getInstance();
-				$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
+					$tf = $dispatcher->trigger('onGetMultiEntry', array(array('tags', 'tags', 'actags', '', '')));
 
-				if (count($tf) > 0) {
-					echo $tf[0];
-				} else { ?>
-					<input type="text" name="tags" id="tags" value="" size="35" />
-				<?php } ?>
+					if (count($tf) > 0) {
+						echo $tf[0];
+					} else { ?>
+						<input type="text" name="tags" id="tags" value="" size="35" />
+					<?php } ?>
 				</label>
 
 				<div class="grid">
@@ -252,18 +252,17 @@ $group = JRequest::getVar('group', '');
 					<div class="col span6 omega">
 						<label for="ticket-field-status">
 							<?php
-							$row = new SupportModelTicket();
 							echo JText::_('COM_SUPPORT_COMMENT_STATUS'); ?>:
 							<select name="problem[status]" id="ticket-field-status">
 								<optgroup label="<?php echo JText::_('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
 									<option value="0" selected="selected"><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_NEW'); ?></option>
-									<?php foreach ($row->statuses('open') as $status) { ?>
+									<?php foreach ($this->row->statuses('open') as $status) { ?>
 										<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
 									<?php } ?>
 								</optgroup>
 								<optgroup label="<?php echo JText::_('COM_SUPPORT_CLOSED'); ?>">
 									<option value="0"><?php echo JText::_('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
-									<?php foreach ($row->statuses('closed') as $status) { ?>
+									<?php foreach ($this->row->statuses('closed') as $status) { ?>
 										<option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
 									<?php } ?>
 								</optgroup>
@@ -301,7 +300,7 @@ $group = JRequest::getVar('group', '');
 			</fieldset>
 		<?php } ?>
 
-		<?php if (!$this->verified) { ?>
+		<?php if (!$this->row->get('verified')) { ?>
 			<div class="explaination">
 				<p><?php echo JText::_('COM_SUPPORT_MATH_EXPLANATION'); ?></p>
 			</div>
