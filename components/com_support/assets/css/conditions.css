@@ -55,6 +55,7 @@
 		margin: 0;
 		border: none;
 		padding: 0;
+		width: 100%;
 	}
 	.query fieldset p {
 		border-bottom: 1px solid rgba(0, 0, 0, 0.07);
